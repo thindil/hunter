@@ -29,13 +29,9 @@ begin
    Init;
    Set_On_Exception(On_Exception'Access);
    Gtk_New(Builder);
-   if Add_From_File
-      (Builder,
-      "ui/hunter.glade",
-      Error'Access) =
-         Guint(0) then
-         Put_Line("Error : " & Get_Message(Error));
-         return;
+   if Add_From_File(Builder, "ui/hunter.glade", Error'Access) = Guint(0) then
+      Put_Line("Error : " & Get_Message(Error));
+      return;
    end if;
    CreateErrorDialog(Builder);
    CreateMainWindow(Builder);

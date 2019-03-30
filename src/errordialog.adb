@@ -35,8 +35,7 @@ package body ErrorDialog is
       if Exists("error.log") then
          Open(ErrorFile, Append_File, "error.log");
       else
-         Create
-           (ErrorFile, Append_File, "error.log");
+         Create(ErrorFile, Append_File, "error.log");
       end if;
       Append(ErrorText, Ada.Calendar.Formatting.Image(Clock));
       Append(ErrorText, LF);
@@ -57,8 +56,8 @@ package body ErrorDialog is
          Put_Line(To_String(ErrorText));
       else
          Set_Text
-            (Gtk_Text_Buffer(Get_Object(Builder, "errorbuffer")),
-         To_String(ErrorText));
+           (Gtk_Text_Buffer(Get_Object(Builder, "errorbuffer")),
+            To_String(ErrorText));
          Show_All(Gtk_Widget(Get_Object(Builder, "errordialog")));
       end if;
    end SaveException;
