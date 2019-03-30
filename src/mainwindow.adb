@@ -15,6 +15,8 @@
 
 with Gtk.Main;
 with Gtk.Widget; use Gtk.Widget;
+with Gtk.Paned; use Gtk.Paned;
+with Glib; use Glib;
 
 package body MainWindow is
 
@@ -26,10 +28,18 @@ package body MainWindow is
       Gtk.Main.Main_Quit;
    end Quit;
 
+   procedure ResizePaned(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      Set_Position
+        (Gtk_Paned(Get_Object(Object, "paned1")),
+         Gint(Float(Get_Allocated_Width(Gtk_Widget(Get_Object(Object, "mainwindow")))) * 0.4));
+   end ResizePaned;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder) is
    begin
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
+      Register_Handler(Builder, "Resize_Paned", ResizePaned'Access);
       Do_Connect(Builder);
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
    end CreateMainWindow;
