@@ -48,8 +48,9 @@ package body MainWindow is
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, "fileslist"));
       FileIter: Gtk_Tree_Iter;
-      Files: Search_Type;
-      FoundFile: Directory_Entry_Type;
+      Files, Children: Search_Type;
+      FoundFile, FoundChild: Directory_Entry_Type;
+      Size: Natural;
    begin
       FilesList.Clear;
       Start_Search(Files, Name, "");
@@ -57,19 +58,36 @@ package body MainWindow is
          Get_Next_Entry(Files, FoundFile);
          Append(FilesList, FileIter);
          Set(FilesList, FileIter, 0, Simple_Name(FoundFile));
-         Set(FilesList, FileIter, 1, "");
          if Kind(FoundFile) = Directory then
             if Simple_Name(FoundFile)(1) = '.' then
                Set(FilesList, FileIter, 2, 1);
             else
                Set(FilesList, FileIter, 2, 2);
             end if;
+            Size := 0;
+            Start_Search(Children, Full_Name(FoundFile), "");
+            while More_Entries(Children) loop
+               Get_Next_Entry(Children, FoundChild);
+               Size := Size + 1;
+            end loop;
+            End_Search(Children);
+            if Size > 1 then
+               Size := Size - 2;
+            end if;
+            Set(FilesList, FileIter, 1, Natural'Image(Size));
+            Set(FilesList, FileIter, 3, Gint'Last);
          else
             if Simple_Name(FoundFile)(1) = '.' then
                Set(FilesList, FileIter, 2, 3);
             else
                Set(FilesList, FileIter, 2, 4);
             end if;
+            Set
+              (FilesList, FileIter, 1,
+               File_Size'Image(Ada.Directories.Size(Full_Name(FoundFile))));
+            Set
+              (FilesList, FileIter, 3,
+               Gint(Ada.Directories.Size(Full_Name(FoundFile))));
          end if;
       end loop;
       End_Search(Files);
