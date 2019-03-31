@@ -128,6 +128,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="gchararray"/>
       <!-- column-name size -->
       <column type="gchararray"/>
+      <!-- column-name type -->
+      <column type="guint"/>
     </columns>
   </object>
   <object class="GtkWindow" id="mainwindow">

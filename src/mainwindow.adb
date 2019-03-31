@@ -56,24 +56,47 @@ package body MainWindow is
       while More_Entries(Files) loop
          Get_Next_Entry(Files, FoundFile);
          Append(FilesList, FileIter);
+         Set(FilesList, FileIter, 0, Simple_Name(FoundFile));
+         Set(FilesList, FileIter, 1, "");
          if Kind(FoundFile) = Directory then
             if Simple_Name(FoundFile)(1) = '.' then
-               Set(FilesList, FileIter, 0, "   " & Simple_Name(FoundFile));
+               Set(FilesList, FileIter, 2, 1);
             else
-               Set(FilesList, FileIter, 0, "  " & Simple_Name(FoundFile));
+               Set(FilesList, FileIter, 2, 2);
             end if;
          else
             if Simple_Name(FoundFile)(1) = '.' then
-               Set(FilesList, FileIter, 0, " " & Simple_Name(FoundFile));
+               Set(FilesList, FileIter, 2, 3);
             else
-               Set(FilesList, FileIter, 0, Simple_Name(FoundFile));
+               Set(FilesList, FileIter, 2, 4);
             end if;
          end if;
-         Set(FilesList, FileIter, 1, "");
       end loop;
       End_Search(Files);
       Set_Sort_Column_Id(FilesList, 0, Sort_Ascending);
    end LoadDirectory;
+
+   function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
+      B: Gtk_Tree_Iter) return Gint is
+      FileTypeA: constant Gint := Get_Int(Model, A, 2);
+      FileTypeB: constant Gint := Get_Int(Model, B, 2);
+      FileNameA: constant String := Get_String(Model, A, 0);
+      FileNameB: constant String := Get_String(Model, B, 0);
+   begin
+      if FileTypeA > FileTypeB then
+         return 1;
+      end if;
+      if FileTypeA < FileTypeB then
+         return -1;
+      end if;
+      if FileNameA > FileNameB then
+         return 1;
+      end if;
+      if FileNameA < FileNameB then
+         return -1;
+      end if;
+      return 0;
+   end SortFiles;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder) is
    begin
@@ -81,6 +104,9 @@ package body MainWindow is
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Resize_Paned", ResizePaned'Access);
       Do_Connect(Builder);
+      Set_Sort_Func
+        (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
+         SortFiles'Access);
       LoadDirectory(Value("HOME"));
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
    end CreateMainWindow;
