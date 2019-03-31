@@ -130,6 +130,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="gchararray"/>
       <!-- column-name type -->
       <column type="guint"/>
+      <!-- column-name numericsize -->
+      <column type="guint"/>
     </columns>
   </object>
   <object class="GtkWindow" id="mainwindow">
@@ -218,7 +220,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="title" translatable="yes">Size</property>
                             <property name="clickable">True</property>
                             <property name="sort_indicator">True</property>
-                            <property name="sort_column_id">1</property>
+                            <property name="sort_column_id">3</property>
                             <child>
                               <object class="GtkCellRendererText"/>
                               <attributes>
