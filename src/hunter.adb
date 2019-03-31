@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Environment_Variables;
 with Gtk.Main; use Gtk.Main;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Bindings; use Gtkada.Bindings;
@@ -26,6 +27,11 @@ procedure Hunter is
    Builder: Gtkada_Builder;
    Error: aliased GError;
 begin
+   if not Ada.Environment_Variables.Exists("RUNFROMSCRIPT") then
+      Put_Line
+        ("The program can be run only via 'hunter.sh' script. Please don't run binary directly.");
+      return;
+   end if;
    Init;
    Set_On_Exception(On_Exception'Access);
    Gtk_New(Builder);
