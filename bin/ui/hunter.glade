@@ -202,6 +202,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="clickable">True</property>
                             <property name="sort_indicator">True</property>
                             <property name="sort_column_id">0</property>
+                            <child>
+                              <object class="GtkCellRendererText"/>
+                              <attributes>
+                                <attribute name="text">0</attribute>
+                              </attributes>
+                            </child>
                           </object>
                         </child>
                         <child>
@@ -211,6 +217,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="clickable">True</property>
                             <property name="sort_indicator">True</property>
                             <property name="sort_column_id">1</property>
+                            <child>
+                              <object class="GtkCellRendererText"/>
+                              <attributes>
+                                <attribute name="text">1</attribute>
+                              </attributes>
+                            </child>
                           </object>
                         </child>
                       </object>
