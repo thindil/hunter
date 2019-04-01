@@ -15,6 +15,7 @@
 
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Directories; use Ada.Directories;
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Gtk.Main;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Paned; use Gtk.Paned;
@@ -111,10 +112,10 @@ package body MainWindow is
       if FileTypeA < FileTypeB then
          return -1;
       end if;
-      if FileNameA > FileNameB then
+      if To_Lower(FileNameA) > To_Lower(FileNameB) then
          return 1;
       end if;
-      if FileNameA < FileNameB then
+      if To_Lower(FileNameA) < To_Lower(FileNameB) then
          return -1;
       end if;
       return 0;
