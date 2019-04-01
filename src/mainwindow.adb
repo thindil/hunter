@@ -51,7 +51,8 @@ package body MainWindow is
       FileIter: Gtk_Tree_Iter;
       Files, Children: Search_Type;
       FoundFile, FoundChild: Directory_Entry_Type;
-      Size: Natural;
+      Size, Multiplier: Natural;
+      type SizeShortcuts is (B, KiB, MiB, GiB, TiB, PiB);
    begin
       FilesList.Clear;
       Start_Search(Files, Name, "");
@@ -86,9 +87,16 @@ package body MainWindow is
             else
                Set(FilesList, FileIter, 2, 4);
             end if;
+            Size := Natural(Ada.Directories.Size(Full_Name(FoundFile)));
+            Multiplier := 0;
+            while Size > 1024 loop
+               Size := Size / 1024;
+               Multiplier := Multiplier + 1;
+            end loop;
             Set
               (FilesList, FileIter, 1,
-               File_Size'Image(Ada.Directories.Size(Full_Name(FoundFile))));
+               Natural'Image(Size) & " " &
+               SizeShortcuts'Image(SizeShortcuts'Val(Multiplier)));
             Set
               (FilesList, FileIter, 3,
                Gint(Ada.Directories.Size(Full_Name(FoundFile))));
