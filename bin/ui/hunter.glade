@@ -111,6 +111,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="model">fileslist</property>
                         <property name="search_column">0</property>
                         <signal name="cursor-changed" handler="Show_File_Info" swapped="no"/>
+                        <signal name="row-activated" handler="Activate_File" swapped="no"/>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection"/>
                         </child>

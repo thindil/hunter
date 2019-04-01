@@ -163,12 +163,35 @@ package body MainWindow is
       end if;
    end ShowFileInfo;
 
+   procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
+      FilesIter: Gtk_Tree_Iter;
+      FilesModel: Gtk_Tree_Model;
+   begin
+      Get_Selected
+        (Gtk.Tree_View.Get_Selection
+           (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
+         FilesModel, FilesIter);
+      if FilesIter = Null_Iter then
+         return;
+      end if;
+      if Get_Int(FilesModel, FilesIter, 2) < 3 then
+         CurrentDirectory :=
+           CurrentDirectory &
+           To_Unbounded_String("/" & Get_String(FilesModel, FilesIter, 0));
+         LoadDirectory(To_String(CurrentDirectory), "fileslist");
+         Set_Cursor
+           (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
+            Gtk_Tree_Path_New_From_String("0"), null, False);
+      end if;
+   end ActivateFile;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder) is
    begin
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Resize_Paned", ResizePaned'Access);
       Register_Handler(Builder, "Show_File_Info", ShowFileInfo'Access);
+      Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Do_Connect(Builder);
       Set_Sort_Func
         (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
