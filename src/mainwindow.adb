@@ -22,6 +22,7 @@ with Gtk.Paned; use Gtk.Paned;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Enums; use Gtk.Enums;
+with Gtk.Tree_View; use Gtk.Tree_View;
 with Glib; use Glib;
 
 package body MainWindow is
@@ -140,6 +141,9 @@ package body MainWindow is
          SortFiles'Access);
       LoadDirectory(Value("HOME"));
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
+      Set_Cursor
+        (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
+         Gtk_Tree_Path_New_From_String("0"), null, False);
    end CreateMainWindow;
 
 end MainWindow;
