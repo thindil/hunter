@@ -56,6 +56,9 @@ package body MainWindow is
       Start_Search(Files, Name, "");
       while More_Entries(Files) loop
          Get_Next_Entry(Files, FoundFile);
+         if Simple_Name(FoundFile) = "." then
+            goto End_Of_Loop;
+         end if;
          Append(FilesList, FileIter);
          Set(FilesList, FileIter, 0, Simple_Name(FoundFile));
          if Kind(FoundFile) = Directory then
@@ -89,6 +92,7 @@ package body MainWindow is
               (FilesList, FileIter, 3,
                Gint(Ada.Directories.Size(Full_Name(FoundFile))));
          end if;
+         <<End_Of_Loop>>
       end loop;
       End_Search(Files);
       Set_Sort_Column_Id(FilesList, 0, Sort_Ascending);
