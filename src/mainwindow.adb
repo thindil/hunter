@@ -67,7 +67,9 @@ package body MainWindow is
       while More_Entries(Files) loop
          Get_Next_Entry(Files, FoundFile);
          if Simple_Name(FoundFile) = "." or
-           (Simple_Name(FoundFile) = ".." and ListName = "fileslist1") then
+           (Simple_Name(FoundFile) = ".." and
+            (ListName = "fileslist1" or
+             CurrentDirectory = To_Unbounded_String("/"))) then
             goto End_Of_Loop;
          end if;
          Append(FilesList, FileIter);
