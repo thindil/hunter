@@ -90,11 +90,11 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
           </packing>
         </child>
         <child>
-          <object class="GtkNotebook">
+          <object class="GtkNotebook" id="filesbook">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="show_tabs">False</property>
             <property name="scrollable">True</property>
+            <property name="enable_popup">True</property>
             <child>
               <object class="GtkPaned" id="paned1">
                 <property name="visible">True</property>
