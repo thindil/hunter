@@ -79,12 +79,17 @@ package body MainWindow is
                Set(FilesList, FileIter, 2, 2);
             end if;
             Size := 0;
-            Start_Search(Children, Full_Name(FoundFile), "");
-            while More_Entries(Children) loop
-               Get_Next_Entry(Children, FoundChild);
-               Size := Size + 1;
-            end loop;
-            End_Search(Children);
+            begin
+               Start_Search(Children, Full_Name(FoundFile), "");
+               while More_Entries(Children) loop
+                  Get_Next_Entry(Children, FoundChild);
+                  Size := Size + 1;
+               end loop;
+               End_Search(Children);
+            exception
+               when Use_Error =>
+                  null;
+            end;
             if Size > 1 then
                Size := Size - 2;
             end if;
