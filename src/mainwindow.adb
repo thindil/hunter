@@ -31,6 +31,7 @@ package body MainWindow is
 
    Builder: Gtkada_Builder;
    CurrentDirectory: Unbounded_String;
+   Setting: Boolean;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
@@ -58,6 +59,7 @@ package body MainWindow is
       Size, Multiplier: Natural;
       type SizeShortcuts is (B, KiB, MiB, GiB, TiB, PiB);
    begin
+      Setting := True;
       FilesList.Clear;
       Start_Search(Files, Name, "");
       while More_Entries(Files) loop
@@ -115,6 +117,7 @@ package body MainWindow is
       end loop;
       End_Search(Files);
       Set_Sort_Column_Id(FilesList, 0, Sort_Ascending);
+      Setting := False;
    end LoadDirectory;
 
    function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
@@ -143,6 +146,9 @@ package body MainWindow is
       FilesIter: Gtk_Tree_Iter;
       FilesModel: Gtk_Tree_Model;
    begin
+      if Setting then
+         return;
+      end if;
       Get_Selected
         (Gtk.Tree_View.Get_Selection
            (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
