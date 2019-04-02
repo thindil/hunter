@@ -25,6 +25,7 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
+with Gtk.Notebook; use Gtk.Notebook;
 with Glib; use Glib;
 
 package body MainWindow is
@@ -117,6 +118,16 @@ package body MainWindow is
       end loop;
       End_Search(Files);
       Set_Sort_Column_Id(FilesList, 0, Sort_Ascending);
+      if ListName = "fileslist" then
+         declare
+            Filesbook: constant Gtk_Notebook :=
+              Gtk_Notebook(Get_Object(Builder, "filesbook"));
+         begin
+            Set_Tab_Label_Text
+              (Filesbook, Get_Nth_Page(Filesbook, 0),
+               To_String(CurrentDirectory));
+         end;
+      end if;
       Setting := False;
    end LoadDirectory;
 
