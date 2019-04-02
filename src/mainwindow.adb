@@ -16,6 +16,7 @@
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Directories; use Ada.Directories;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
+with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.Main;
 with Gtk.Widget; use Gtk.Widget;
@@ -183,6 +184,7 @@ package body MainWindow is
    procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
       FilesIter: Gtk_Tree_Iter;
       FilesModel: Gtk_Tree_Model;
+      NewDirectory: Unbounded_String;
    begin
       Get_Selected
         (Gtk.Tree_View.Get_Selection
@@ -192,9 +194,18 @@ package body MainWindow is
          return;
       end if;
       if Get_Int(FilesModel, FilesIter, 2) < 3 then
-         CurrentDirectory :=
-           CurrentDirectory &
-           To_Unbounded_String("/" & Get_String(FilesModel, FilesIter, 0));
+         NewDirectory :=
+           To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
+         if NewDirectory /= To_Unbounded_String("..") then
+            CurrentDirectory :=
+              CurrentDirectory &
+              To_Unbounded_String("/" & Get_String(FilesModel, FilesIter, 0));
+         else
+            CurrentDirectory :=
+              Unbounded_Slice
+                (CurrentDirectory, 1,
+                 Index(CurrentDirectory, "/", Backward) - 1);
+         end if;
          LoadDirectory(To_String(CurrentDirectory), "fileslist");
          Set_Cursor
            (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
