@@ -202,6 +202,9 @@ package body MainWindow is
          NewDirectory :=
            To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
          if NewDirectory /= To_Unbounded_String("..") then
+            if CurrentDirectory = To_Unbounded_String("/") then
+               CurrentDirectory := Null_Unbounded_String;
+            end if;
             CurrentDirectory :=
               CurrentDirectory &
               To_Unbounded_String("/" & Get_String(FilesModel, FilesIter, 0));
@@ -210,6 +213,9 @@ package body MainWindow is
               Unbounded_Slice
                 (CurrentDirectory, 1,
                  Index(CurrentDirectory, "/", Backward) - 1);
+            if CurrentDirectory = Null_Unbounded_String then
+               CurrentDirectory := To_Unbounded_String("/");
+            end if;
          end if;
          LoadDirectory(To_String(CurrentDirectory), "fileslist");
          Set_Cursor
