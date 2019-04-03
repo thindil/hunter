@@ -73,11 +73,13 @@ package body MainWindow is
       loop
          begin
             exit when not More_Entries(Files);
+            Get_Next_Entry(Files, FoundFile);
          exception
             when Use_Error =>
                null;
+            when Status_Error =>
+               exit;
          end;
-         Get_Next_Entry(Files, FoundFile);
          if Simple_Name(FoundFile) = "." or
            (Simple_Name(FoundFile) = ".." and
             (ListName = "fileslist1" or
@@ -103,20 +105,19 @@ package body MainWindow is
             Size := 0;
             Start_Search(Children, Full_Name(FoundFile), "");
             loop
+               Size := Size + 1;
                begin
                   exit when not More_Entries(Children);
+                  Get_Next_Entry(Children, FoundChild);
                exception
                   when Use_Error =>
                      null;
+                  when Status_Error =>
+                     exit;
                end;
-               Get_Next_Entry(Children, FoundChild);
-               Size := Size + 1;
             end loop;
             End_Search(Children);
-            if Size > 1 then
-               Size := Size - 2;
-            end if;
-            Set(FilesList, FileIter, 2, File_Size'Image(Size));
+            Set(FilesList, FileIter, 2, File_Size'Image(Size - 3));
          else
             if Simple_Name(FoundFile)(1) = '.' then
                Set(FilesList, FileIter, 1, 3);
