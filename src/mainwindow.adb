@@ -77,9 +77,12 @@ package body MainWindow is
          Set(FilesList, FileIter, 0, Simple_Name(FoundFile));
          if Kind(FoundFile) = Directory then
             if Simple_Name(FoundFile)(1) = '.' then
-               Set(FilesList, FileIter, 2, 1);
+               Set(FilesList, FileIter, 1, 1);
             else
-               Set(FilesList, FileIter, 2, 2);
+               Set(FilesList, FileIter, 1, 2);
+            end if;
+            if ListName = "fileslist1" then
+               goto End_Of_Loop;
             end if;
             Size := 0;
             begin
@@ -96,13 +99,16 @@ package body MainWindow is
             if Size > 1 then
                Size := Size - 2;
             end if;
-            Set(FilesList, FileIter, 1, File_Size'Image(Size));
+            Set(FilesList, FileIter, 2, File_Size'Image(Size));
             Set(FilesList, FileIter, 3, Gint'Last);
          else
             if Simple_Name(FoundFile)(1) = '.' then
-               Set(FilesList, FileIter, 2, 3);
+               Set(FilesList, FileIter, 1, 3);
             else
-               Set(FilesList, FileIter, 2, 4);
+               Set(FilesList, FileIter, 1, 4);
+            end if;
+            if ListName = "fileslist1" then
+               goto End_Of_Loop;
             end if;
             if Kind(Full_Name(FoundFile)) = Ordinary_File then
                Size := Ada.Directories.Size(Full_Name(FoundFile));
@@ -112,7 +118,7 @@ package body MainWindow is
                   Multiplier := Multiplier + 1;
                end loop;
                Set
-                 (FilesList, FileIter, 1,
+                 (FilesList, FileIter, 2,
                   File_Size'Image(Size) & " " &
                   SizeShortcuts'Image(SizeShortcuts'Val(Multiplier)));
                Size := Ada.Directories.Size(Full_Name(FoundFile));
@@ -121,7 +127,7 @@ package body MainWindow is
                end if;
                Set(FilesList, FileIter, 3, Gint(Size));
             else
-               Set(FilesList, FileIter, 1, "0");
+               Set(FilesList, FileIter, 2, "0");
                Set(FilesList, FileIter, 3, 0);
             end if;
          end if;
@@ -147,8 +153,8 @@ package body MainWindow is
 
    function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
       B: Gtk_Tree_Iter) return Gint is
-      FileTypeA: constant Gint := Get_Int(Model, A, 2);
-      FileTypeB: constant Gint := Get_Int(Model, B, 2);
+      FileTypeA: constant Gint := Get_Int(Model, A, 1);
+      FileTypeB: constant Gint := Get_Int(Model, B, 1);
       FileNameA: constant String := Get_String(Model, A, 0);
       FileNameB: constant String := Get_String(Model, B, 0);
    begin
@@ -181,7 +187,7 @@ package body MainWindow is
       if FilesIter = Null_Iter then
          return;
       end if;
-      if Get_Int(FilesModel, FilesIter, 2) < 3 then
+      if Get_Int(FilesModel, FilesIter, 1) < 3 then
          LoadDirectory
            (To_String(CurrentDirectory) & "/" &
             Get_String(FilesModel, FilesIter, 0),
@@ -206,7 +212,7 @@ package body MainWindow is
       if FilesIter = Null_Iter then
          return;
       end if;
-      if Get_Int(FilesModel, FilesIter, 2) < 3 then
+      if Get_Int(FilesModel, FilesIter, 1) < 3 then
          NewDirectory :=
            To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
          if NewDirectory /= To_Unbounded_String("..") then
