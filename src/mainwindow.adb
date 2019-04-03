@@ -58,7 +58,8 @@ package body MainWindow is
       FileIter: Gtk_Tree_Iter;
       Files, Children: Search_Type;
       FoundFile, FoundChild: Directory_Entry_Type;
-      Size, Multiplier: Natural;
+      Size: File_Size;
+      Multiplier: Natural;
       type SizeShortcuts is (B, KiB, MiB, GiB, TiB, PiB);
    begin
       Setting := True;
@@ -100,7 +101,7 @@ package body MainWindow is
             if Size > 1 then
                Size := Size - 2;
             end if;
-            Set(FilesList, FileIter, 1, Natural'Image(Size));
+            Set(FilesList, FileIter, 1, File_Size'Image(Size));
             Set(FilesList, FileIter, 3, Gint'Last);
          else
             if Simple_Name(FoundFile)(1) = '.' then
@@ -109,7 +110,7 @@ package body MainWindow is
                Set(FilesList, FileIter, 2, 4);
             end if;
             if Kind(Full_Name(FoundFile)) = Ordinary_File then
-               Size := Natural(Ada.Directories.Size(Full_Name(FoundFile)));
+               Size := Ada.Directories.Size(Full_Name(FoundFile));
                Multiplier := 0;
                while Size > 1024 loop
                   Size := Size / 1024;
@@ -117,11 +118,13 @@ package body MainWindow is
                end loop;
                Set
                  (FilesList, FileIter, 1,
-                  Natural'Image(Size) & " " &
+                  File_Size'Image(Size) & " " &
                   SizeShortcuts'Image(SizeShortcuts'Val(Multiplier)));
-               Set
-                 (FilesList, FileIter, 3,
-                  Gint(Ada.Directories.Size(Full_Name(FoundFile))));
+               Size := Ada.Directories.Size(Full_Name(FoundFile));
+               if Size > File_Size(Gint'Last) then
+                  Size := File_Size(Gint'Last);
+               end if;
+               Set(FilesList, FileIter, 3, Gint(Size));
             else
                Set(FilesList, FileIter, 1, "0");
                Set(FilesList, FileIter, 3, 0);
