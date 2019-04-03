@@ -64,12 +64,7 @@ package body MainWindow is
    begin
       Setting := True;
       FilesList.Clear;
-      begin
-         Start_Search(Files, Name, "");
-      exception
-         when Use_Error =>
-            null;
-      end;
+      Start_Search(Files, Name, "");
       while More_Entries(Files) loop
          Get_Next_Entry(Files, FoundFile);
          if Simple_Name(FoundFile) = "." or
@@ -145,6 +140,9 @@ package body MainWindow is
          end;
       end if;
       Setting := False;
+   exception
+      when Use_Error =>
+         Setting := False;
    end LoadDirectory;
 
    function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
