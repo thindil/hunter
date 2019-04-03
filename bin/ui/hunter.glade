@@ -29,10 +29,10 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <columns>
       <!-- column-name name -->
       <column type="gchararray"/>
-      <!-- column-name size -->
-      <column type="gchararray"/>
       <!-- column-name type -->
       <column type="guint"/>
+      <!-- column-name size -->
+      <column type="gchararray"/>
       <!-- column-name numericsize -->
       <column type="guint"/>
     </columns>
@@ -41,11 +41,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <columns>
       <!-- column-name name -->
       <column type="gchararray"/>
-      <!-- column-name size -->
-      <column type="gchararray"/>
       <!-- column-name type -->
-      <column type="guint"/>
-      <!-- column-name numericsize -->
       <column type="guint"/>
     </columns>
   </object>
@@ -141,7 +137,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <child>
                               <object class="GtkCellRendererText"/>
                               <attributes>
-                                <attribute name="text">1</attribute>
+                                <attribute name="text">2</attribute>
                               </attributes>
                             </child>
                           </object>
@@ -209,21 +205,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                   <object class="GtkCellRendererText"/>
                                   <attributes>
                                     <attribute name="text">0</attribute>
-                                  </attributes>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
-                              <object class="GtkTreeViewColumn">
-                                <property name="resizable">True</property>
-                                <property name="title" translatable="yes">Size</property>
-                                <property name="clickable">True</property>
-                                <property name="sort_indicator">True</property>
-                                <property name="sort_column_id">3</property>
-                                <child>
-                                  <object class="GtkCellRendererText"/>
-                                  <attributes>
-                                    <attribute name="text">1</attribute>
                                   </attributes>
                                 </child>
                               </object>
