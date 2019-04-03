@@ -18,6 +18,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Main;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Paned; use Gtk.Paned;
@@ -64,8 +65,18 @@ package body MainWindow is
    begin
       Setting := True;
       FilesList.Clear;
+      if not Is_Read_Accessible_File(Name) then
+         Setting := False;
+         return;
+      end if;
       Start_Search(Files, Name, "");
-      while More_Entries(Files) loop
+      loop
+         begin
+            exit when not More_Entries(Files);
+         exception
+            when Use_Error =>
+               null;
+         end;
          Get_Next_Entry(Files, FoundFile);
          if Simple_Name(FoundFile) = "." or
            (Simple_Name(FoundFile) = ".." and
@@ -75,7 +86,7 @@ package body MainWindow is
          end if;
          Append(FilesList, FileIter);
          Set(FilesList, FileIter, 0, Simple_Name(FoundFile));
-         if Kind(FoundFile) = Directory then
+         if Is_Directory(Full_Name(FoundFile)) then
             if Simple_Name(FoundFile)(1) = '.' then
                Set(FilesList, FileIter, 1, 1);
             else
@@ -84,23 +95,28 @@ package body MainWindow is
             if ListName = "fileslist1" then
                goto End_Of_Loop;
             end if;
+            Set(FilesList, FileIter, 3, Gint'Last);
+            if not Is_Read_Accessible_File(Full_Name(FoundFile)) then
+               Set(FilesList, FileIter, 2, "?");
+               goto End_Of_Loop;
+            end if;
             Size := 0;
-            begin
-               Start_Search(Children, Full_Name(FoundFile), "");
-               while More_Entries(Children) loop
-                  Get_Next_Entry(Children, FoundChild);
-                  Size := Size + 1;
-               end loop;
-               End_Search(Children);
-            exception
-               when Use_Error =>
-                  null;
-            end;
+            Start_Search(Children, Full_Name(FoundFile), "");
+            loop
+               begin
+                  exit when not More_Entries(Children);
+               exception
+                  when Use_Error =>
+                     null;
+               end;
+               Get_Next_Entry(Children, FoundChild);
+               Size := Size + 1;
+            end loop;
+            End_Search(Children);
             if Size > 1 then
                Size := Size - 2;
             end if;
             Set(FilesList, FileIter, 2, File_Size'Image(Size));
-            Set(FilesList, FileIter, 3, Gint'Last);
          else
             if Simple_Name(FoundFile)(1) = '.' then
                Set(FilesList, FileIter, 1, 3);
@@ -108,6 +124,11 @@ package body MainWindow is
                Set(FilesList, FileIter, 1, 4);
             end if;
             if ListName = "fileslist1" then
+               goto End_Of_Loop;
+            end if;
+            if not Is_Read_Accessible_File(Full_Name(FoundFile)) then
+               Set(FilesList, FileIter, 2, "?");
+               Set(FilesList, FileIter, 3, 0);
                goto End_Of_Loop;
             end if;
             if Kind(Full_Name(FoundFile)) = Ordinary_File then
@@ -146,9 +167,6 @@ package body MainWindow is
          end;
       end if;
       Setting := False;
-   exception
-      when Use_Error =>
-         Setting := False;
    end LoadDirectory;
 
    function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
