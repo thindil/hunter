@@ -63,7 +63,12 @@ package body MainWindow is
    begin
       Setting := True;
       FilesList.Clear;
-      Start_Search(Files, Name, "");
+      begin
+         Start_Search(Files, Name, "");
+      exception
+         when Use_Error =>
+            null;
+      end;
       while More_Entries(Files) loop
          Get_Next_Entry(Files, FoundFile);
          if Simple_Name(FoundFile) = "." or
