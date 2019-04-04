@@ -70,6 +70,10 @@ package body MainWindow is
       Setting := True;
       FilesList.Clear;
       if not Is_Read_Accessible_File(Name) then
+         Append(FilesList, FileIter);
+         Set
+           (FilesList, FileIter, 0,
+            "You don't have permissions to preview this directory.");
          Setting := False;
          return;
       end if;
