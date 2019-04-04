@@ -99,6 +99,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkScrolledWindow">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="hscrollbar_policy">never</property>
                     <property name="shadow_type">in</property>
                     <child>
                       <object class="GtkTreeView" id="treefiles">
@@ -120,7 +121,10 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="sort_indicator">True</property>
                             <property name="sort_column_id">0</property>
                             <child>
-                              <object class="GtkCellRendererText"/>
+                              <object class="GtkCellRendererText">
+                                <property name="ellipsize">end</property>
+                                <property name="max_width_chars">80</property>
+                              </object>
                               <attributes>
                                 <attribute name="text">0</attribute>
                               </attributes>
