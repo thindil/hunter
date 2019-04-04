@@ -105,6 +105,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkTreeView" id="treefiles">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
+                        <property name="has_focus">True</property>
                         <property name="model">fileslist</property>
                         <property name="search_column">0</property>
                         <signal name="cursor-changed" handler="Show_File_Info" swapped="no"/>
