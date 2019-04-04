@@ -28,6 +28,9 @@ with Gtk.Enums; use Gtk.Enums;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Notebook; use Gtk.Notebook;
+with Gtk.Dialog; use Gtk.Dialog;
+with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Window; use Gtk.Window;
 with Glib; use Glib;
 
 package body MainWindow is
@@ -223,6 +226,10 @@ package body MainWindow is
       FilesIter: Gtk_Tree_Iter;
       FilesModel: Gtk_Tree_Model;
       NewDirectory: Unbounded_String;
+      MessageDialog: constant Gtk_Message_Dialog :=
+        Gtk_Message_Dialog_New
+          (Gtk_Window(Get_Object(Object, "mainwindow")), Modal, Message_Error,
+           Buttons_Close, "You can't enter this directory.");
    begin
       Get_Selected
         (Gtk.Tree_View.Get_Selection
@@ -234,6 +241,13 @@ package body MainWindow is
       if Get_Int(FilesModel, FilesIter, 1) < 3 then
          NewDirectory :=
            To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
+         if not Is_Read_Accessible_File
+             (To_String(CurrentDirectory) & "/" & To_String(NewDirectory)) then
+            if Run(MessageDialog) /= Gtk_Response_None then
+               Destroy(MessageDialog);
+            end if;
+            return;
+         end if;
          if NewDirectory /= To_Unbounded_String("..") then
             if CurrentDirectory = To_Unbounded_String("/") then
                CurrentDirectory := Null_Unbounded_String;
