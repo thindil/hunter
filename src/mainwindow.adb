@@ -61,7 +61,8 @@ package body MainWindow is
       FoundFile, FoundChild: Directory_Entry_Type;
       Size: File_Size;
       Multiplier: Natural;
-      type SizeShortcuts is (B, KiB, MiB, GiB, TiB, PiB);
+      SizeShortcuts: constant array(Natural range <>) of String(1 .. 3) :=
+        ("B  ", "KiB", "MiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
    begin
       Setting := True;
       FilesList.Clear;
@@ -141,8 +142,7 @@ package body MainWindow is
                end loop;
                Set
                  (FilesList, FileIter, 2,
-                  File_Size'Image(Size) & " " &
-                  SizeShortcuts'Image(SizeShortcuts'Val(Multiplier)));
+                  File_Size'Image(Size) & " " & SizeShortcuts(Multiplier));
                Size := Ada.Directories.Size(Full_Name(FoundFile));
                if Size > File_Size(Gint'Last) then
                   Size := File_Size(Gint'Last);
