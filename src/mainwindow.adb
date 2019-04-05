@@ -93,6 +93,7 @@ package body MainWindow is
               (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
                Gdk_Cursor_New(Arrow));
             Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
+            Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btnopen")), False);
          end if;
          Setting := False;
          return;
@@ -237,6 +238,7 @@ package body MainWindow is
          return;
       end if;
       if Get_Int(FilesModel, FilesIter, 1) < 3 then
+         Set_Sensitive(Gtk_Widget(Get_Object(Object, "btnopen")), True);
          LoadDirectory
            (To_String(CurrentDirectory) & "/" &
             Get_String(FilesModel, FilesIter, 0),
