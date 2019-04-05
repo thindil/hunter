@@ -19,7 +19,7 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Main;
+with Gtk.Main; use Gtk.Main;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.List_Store; use Gtk.List_Store;
@@ -32,6 +32,9 @@ with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Window; use Gtk.Window;
 with Glib; use Glib;
+with Gdk; use Gdk;
+with Gdk.Cursor; use Gdk.Cursor;
+with Gdk.Window; use Gdk.Window;
 
 package body MainWindow is
 
@@ -42,7 +45,7 @@ package body MainWindow is
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
       Unref(Object);
-      Gtk.Main.Main_Quit;
+      Main_Quit;
    end Quit;
 
    procedure ResizePaned(Object: access Gtkada_Builder_Record'Class) is
@@ -66,14 +69,31 @@ package body MainWindow is
       Multiplier: Natural;
       SizeShortcuts: constant array(Natural range <>) of String(1 .. 3) :=
         ("B  ", "KiB", "MiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
+      MainWindow: constant Gdk_Window :=
+        Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow")));
    begin
       Setting := True;
+      if MainWindow /= null then
+         Set_Cursor(MainWindow, Gdk_Cursor_New(Clock));
+         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), False);
+         while Events_Pending loop
+            if Main_Iteration_Do(False) then
+               exit;
+            end if;
+         end loop;
+      end if;
       FilesList.Clear;
       if not Is_Read_Accessible_File(Name) then
          Append(FilesList, FileIter);
          Set
            (FilesList, FileIter, 0,
             "You don't have permissions to preview this directory.");
+         if MainWindow /= null then
+            Set_Cursor
+              (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
+               Gdk_Cursor_New(Arrow));
+            Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
+         end if;
          Setting := False;
          return;
       end if;
@@ -83,9 +103,9 @@ package body MainWindow is
             exit when not More_Entries(Files);
             Get_Next_Entry(Files, FoundFile);
          exception
-            when Use_Error =>
+            when Ada.Directories.Use_Error =>
                null;
-            when Status_Error =>
+            when Ada.Directories.Status_Error =>
                exit;
          end;
          if Simple_Name(FoundFile) = "." or Simple_Name(FoundFile) = ".." then
@@ -115,9 +135,9 @@ package body MainWindow is
                   exit when not More_Entries(Children);
                   Get_Next_Entry(Children, FoundChild);
                exception
-                  when Use_Error =>
+                  when Ada.Directories.Use_Error =>
                      null;
-                  when Status_Error =>
+                  when Ada.Directories.Status_Error =>
                      exit;
                end;
             end loop;
@@ -170,6 +190,12 @@ package body MainWindow is
               (Filesbook, Get_Nth_Page(Filesbook, 0),
                To_String(CurrentDirectory));
          end;
+      end if;
+      if MainWindow /= null then
+         Set_Cursor
+           (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
+            Gdk_Cursor_New(Arrow));
+         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
       end if;
       Setting := False;
    end LoadDirectory;
