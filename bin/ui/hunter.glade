@@ -68,10 +68,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               <object class="GtkToolButton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Quit from program [Ctrl+Q]</property>
                 <property name="label" translatable="yes">Quit</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-quit</property>
                 <signal name="clicked" handler="Main_Quit" swapped="no"/>
+                <accelerator key="q" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -92,10 +94,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               <object class="GtkToolButton" id="btngoup">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Go to upper directory [ALT+U]</property>
                 <property name="label" translatable="yes">Up</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-goto-top</property>
                 <signal name="clicked" handler="Go_Up_Directory" swapped="no"/>
+                <accelerator key="u" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -106,10 +110,28 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               <object class="GtkToolButton">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Open selected file or directory [ALT+O]</property>
                 <property name="label" translatable="yes">Open</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-open</property>
                 <signal name="clicked" handler="Activate_File" swapped="no"/>
+                <accelerator key="o" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Reload directory list and preview. [ALT+R]</property>
+                <property name="label" translatable="yes">Reload</property>
+                <property name="use_underline">True</property>
+                <property name="stock_id">gtk-refresh</property>
+                <signal name="clicked" handler="Reload" swapped="no"/>
+                <accelerator key="r" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
