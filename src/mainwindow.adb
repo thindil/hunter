@@ -88,10 +88,7 @@ package body MainWindow is
             when Status_Error =>
                exit;
          end;
-         if Simple_Name(FoundFile) = "." or
-           (Simple_Name(FoundFile) = ".." and
-            (ListName = "fileslist1" or
-             CurrentDirectory = To_Unbounded_String("/"))) then
+         if Simple_Name(FoundFile) = "." or Simple_Name(FoundFile) = ".." then
             goto End_Of_Loop;
          end if;
          Append(FilesList, FileIter);
@@ -252,28 +249,34 @@ package body MainWindow is
             end if;
             return;
          end if;
-         if NewDirectory /= To_Unbounded_String("..") then
-            if CurrentDirectory = To_Unbounded_String("/") then
-               CurrentDirectory := Null_Unbounded_String;
-            end if;
-            CurrentDirectory :=
-              CurrentDirectory &
-              To_Unbounded_String("/" & Get_String(FilesModel, FilesIter, 0));
-         else
-            CurrentDirectory :=
-              Unbounded_Slice
-                (CurrentDirectory, 1,
-                 Index(CurrentDirectory, "/", Backward) - 1);
-            if CurrentDirectory = Null_Unbounded_String then
-               CurrentDirectory := To_Unbounded_String("/");
-            end if;
+         if CurrentDirectory = To_Unbounded_String("/") then
+            CurrentDirectory := Null_Unbounded_String;
          end if;
+         CurrentDirectory :=
+           CurrentDirectory &
+           To_Unbounded_String("/" & Get_String(FilesModel, FilesIter, 0));
          LoadDirectory(To_String(CurrentDirectory), "fileslist");
          Set_Cursor
            (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
             Gtk_Tree_Path_New_From_String("0"), null, False);
       end if;
+      Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btngoup")), True);
    end ActivateFile;
+
+   procedure GoUpDirectory(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      CurrentDirectory :=
+        Unbounded_Slice
+          (CurrentDirectory, 1, Index(CurrentDirectory, "/", Backward) - 1);
+      if CurrentDirectory = Null_Unbounded_String then
+         CurrentDirectory := To_Unbounded_String("/");
+         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btngoup")), False);
+      end if;
+      LoadDirectory(To_String(CurrentDirectory), "fileslist");
+      Set_Cursor
+        (Gtk_Tree_View(Get_Object(Object, "treefiles")),
+         Gtk_Tree_Path_New_From_String("0"), null, False);
+   end GoUpDirectory;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder) is
    begin
@@ -282,6 +285,7 @@ package body MainWindow is
       Register_Handler(Builder, "Resize_Paned", ResizePaned'Access);
       Register_Handler(Builder, "Show_File_Info", ShowFileInfo'Access);
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
+      Register_Handler(Builder, "Go_Up_Directory", GoUpDirectory'Access);
       Do_Connect(Builder);
       Set_Sort_Func
         (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
