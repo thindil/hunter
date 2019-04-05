@@ -304,6 +304,14 @@ package body MainWindow is
          Gtk_Tree_Path_New_From_String("0"), null, False);
    end GoUpDirectory;
 
+   procedure Reload(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      LoadDirectory(To_String(CurrentDirectory), "fileslist");
+      Set_Cursor
+        (Gtk_Tree_View(Get_Object(Object, "treefiles")),
+         Gtk_Tree_Path_New_From_String("0"), null, False);
+   end Reload;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder) is
    begin
       Builder := NewBuilder;
@@ -312,6 +320,7 @@ package body MainWindow is
       Register_Handler(Builder, "Show_File_Info", ShowFileInfo'Access);
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Register_Handler(Builder, "Go_Up_Directory", GoUpDirectory'Access);
+      Register_Handler(Builder, "Reload", Reload'Access);
       Do_Connect(Builder);
       Set_Sort_Func
         (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
