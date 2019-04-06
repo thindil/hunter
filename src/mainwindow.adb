@@ -39,7 +39,7 @@ with Gdk.Window; use Gdk.Window;
 package body MainWindow is
 
    Builder: Gtkada_Builder;
-   CurrentDirectory: Unbounded_String;
+   CurrentDirectory, CurrentSelected: Unbounded_String;
    Setting: Boolean;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
@@ -237,6 +237,12 @@ package body MainWindow is
       if FilesIter = Null_Iter then
          return;
       end if;
+      if CurrentSelected =
+        To_Unbounded_String(Get_String(FilesModel, FilesIter, 0)) then
+         return;
+      end if;
+      CurrentSelected :=
+        To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
       if Get_Int(FilesModel, FilesIter, 1) < 3 then
          Set_Sensitive(Gtk_Widget(Get_Object(Object, "btnopen")), True);
          LoadDirectory
