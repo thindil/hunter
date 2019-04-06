@@ -31,6 +31,8 @@ with Gtk.Notebook; use Gtk.Notebook;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Window; use Gtk.Window;
+with Gtk.Text_Buffer; use Gtk.Text_Buffer;
+with Gtk.Text_View; use Gtk.Text_View;
 with Glib; use Glib;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
@@ -84,10 +86,11 @@ package body MainWindow is
       end if;
       FilesList.Clear;
       if not Is_Read_Accessible_File(Name) then
-         Append(FilesList, FileIter);
-         Set
-           (FilesList, FileIter, 0,
+         Set_Text
+           (Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview"))),
             "You don't have permissions to preview this directory.");
+         Show_All(Gtk_Widget(Get_Object(Builder, "scrolltext")));
+         Hide(Gtk_Widget(Get_Object(Builder, "scrolllist")));
          if MainWindow /= null then
             Set_Cursor
               (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
@@ -245,12 +248,12 @@ package body MainWindow is
         To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
       if Get_Int(FilesModel, FilesIter, 1) < 3 then
          Set_Sensitive(Gtk_Widget(Get_Object(Object, "btnopen")), True);
+         Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
+         Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          LoadDirectory
            (To_String(CurrentDirectory) & "/" &
             Get_String(FilesModel, FilesIter, 0),
             "fileslist1");
-         Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
-         Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
