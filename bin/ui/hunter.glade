@@ -75,7 +75,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="tooltip_text" translatable="yes">Quit from program [Ctrl+Q]</property>
                 <property name="label" translatable="yes">Quit</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-quit</property>
+                <property name="icon_name">application-exit</property>
                 <signal name="clicked" handler="Main_Quit" swapped="no"/>
                 <accelerator key="q" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
@@ -101,7 +101,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="tooltip_text" translatable="yes">Go to upper directory [ALT+U]</property>
                 <property name="label" translatable="yes">Up</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-goto-top</property>
+                <property name="icon_name">go-top</property>
                 <signal name="clicked" handler="Go_Up_Directory" swapped="no"/>
                 <accelerator key="u" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
@@ -117,7 +117,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="tooltip_text" translatable="yes">Open selected file or directory [ALT+O]</property>
                 <property name="label" translatable="yes">Open</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-open</property>
+                <property name="icon_name">document-open</property>
                 <signal name="clicked" handler="Activate_File" swapped="no"/>
                 <accelerator key="o" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
@@ -133,7 +133,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="tooltip_text" translatable="yes">Reload directory list and preview. [ALT+R]</property>
                 <property name="label" translatable="yes">Reload</property>
                 <property name="use_underline">True</property>
-                <property name="stock_id">gtk-refresh</property>
+                <property name="icon_name">view-refresh</property>
                 <signal name="clicked" handler="Reload" swapped="no"/>
                 <accelerator key="r" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
@@ -188,7 +188,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <child>
                               <object class="GtkCellRendererPixbuf"/>
                               <attributes>
-                                <attribute name="stock-id">2</attribute>
+                                <attribute name="icon-name">2</attribute>
                               </attributes>
                             </child>
                             <child>
@@ -279,7 +279,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                 <child>
                                   <object class="GtkCellRendererPixbuf"/>
                                   <attributes>
-                                    <attribute name="stock-id">2</attribute>
+                                    <attribute name="icon-name">2</attribute>
                                   </attributes>
                                 </child>
                                 <child>
