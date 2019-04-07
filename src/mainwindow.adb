@@ -339,6 +339,9 @@ package body MainWindow is
       Set_Sort_Func
         (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
          SortFiles'Access);
+      Set_Sort_Func
+        (Gtk_List_Store(Get_Object(Builder, "fileslist1")), 0,
+         SortFiles'Access);
       CurrentDirectory := To_Unbounded_String(Value("HOME"));
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
