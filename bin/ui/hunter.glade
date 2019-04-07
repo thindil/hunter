@@ -31,6 +31,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="gchararray"/>
       <!-- column-name type -->
       <column type="guint"/>
+      <!-- column-name icon -->
+      <column type="gchararray"/>
       <!-- column-name size -->
       <column type="gchararray"/>
       <!-- column-name numericsize -->
@@ -43,6 +45,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="gchararray"/>
       <!-- column-name type -->
       <column type="guint"/>
+      <!-- column-name icon -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkWindow" id="mainwindow">
@@ -182,6 +186,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="sort_indicator">True</property>
                             <property name="sort_column_id">0</property>
                             <child>
+                              <object class="GtkCellRendererPixbuf"/>
+                              <attributes>
+                                <attribute name="stock-id">2</attribute>
+                              </attributes>
+                            </child>
+                            <child>
                               <object class="GtkCellRendererText">
                                 <property name="ellipsize">end</property>
                                 <property name="max_width_chars">80</property>
@@ -202,7 +212,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <child>
                               <object class="GtkCellRendererText"/>
                               <attributes>
-                                <attribute name="text">2</attribute>
+                                <attribute name="text">3</attribute>
                               </attributes>
                             </child>
                           </object>
@@ -266,6 +276,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                 <property name="clickable">True</property>
                                 <property name="sort_indicator">True</property>
                                 <property name="sort_column_id">0</property>
+                                <child>
+                                  <object class="GtkCellRendererPixbuf"/>
+                                  <attributes>
+                                    <attribute name="stock-id">2</attribute>
+                                  </attributes>
+                                </child>
                                 <child>
                                   <object class="GtkCellRendererText"/>
                                   <attributes>

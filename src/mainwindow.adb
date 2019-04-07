@@ -123,12 +123,13 @@ package body MainWindow is
             else
                Set(FilesList, FileIter, 1, 2);
             end if;
+            Set(FilesList, FileIter, 2, "gtk-directory");
             if ListName = "fileslist1" then
                goto End_Of_Loop;
             end if;
-            Set(FilesList, FileIter, 3, Gint'Last);
+            Set(FilesList, FileIter, 4, Gint'Last);
             if not Is_Read_Accessible_File(Full_Name(FoundFile)) then
-               Set(FilesList, FileIter, 2, "?");
+               Set(FilesList, FileIter, 3, "?");
                goto End_Of_Loop;
             end if;
             Size := 0;
@@ -146,19 +147,20 @@ package body MainWindow is
                end;
             end loop;
             End_Search(Children);
-            Set(FilesList, FileIter, 2, File_Size'Image(Size - 3));
+            Set(FilesList, FileIter, 3, File_Size'Image(Size - 3));
          else
             if Simple_Name(FoundFile)(1) = '.' then
                Set(FilesList, FileIter, 1, 3);
             else
                Set(FilesList, FileIter, 1, 4);
             end if;
+            Set(FilesList, FileIter, 2, "gtk-file");
             if ListName = "fileslist1" then
                goto End_Of_Loop;
             end if;
             if not Is_Read_Accessible_File(Full_Name(FoundFile)) then
-               Set(FilesList, FileIter, 2, "?");
-               Set(FilesList, FileIter, 3, 0);
+               Set(FilesList, FileIter, 3, "?");
+               Set(FilesList, FileIter, 4, 0);
                goto End_Of_Loop;
             end if;
             if Kind(Full_Name(FoundFile)) = Ordinary_File then
@@ -169,16 +171,16 @@ package body MainWindow is
                   Multiplier := Multiplier + 1;
                end loop;
                Set
-                 (FilesList, FileIter, 2,
+                 (FilesList, FileIter, 3,
                   File_Size'Image(Size) & " " & SizeShortcuts(Multiplier));
                Size := Ada.Directories.Size(Full_Name(FoundFile));
                if Size > File_Size(Gint'Last) then
                   Size := File_Size(Gint'Last);
                end if;
-               Set(FilesList, FileIter, 3, Gint(Size));
+               Set(FilesList, FileIter, 4, Gint(Size));
             else
-               Set(FilesList, FileIter, 2, "0");
-               Set(FilesList, FileIter, 3, 0);
+               Set(FilesList, FileIter, 3, "0");
+               Set(FilesList, FileIter, 4, 0);
             end if;
          end if;
          <<End_Of_Loop>>
