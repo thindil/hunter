@@ -123,7 +123,7 @@ package body MainWindow is
             else
                Set(FilesList, FileIter, 1, 2);
             end if;
-            Set(FilesList, FileIter, 2, "gtk-directory");
+            Set(FilesList, FileIter, 2, "folder");
             if ListName = "fileslist1" then
                goto End_Of_Loop;
             end if;
@@ -154,7 +154,7 @@ package body MainWindow is
             else
                Set(FilesList, FileIter, 1, 4);
             end if;
-            Set(FilesList, FileIter, 2, "gtk-file");
+            Set(FilesList, FileIter, 2, "text-x-generic-template");
             if ListName = "fileslist1" then
                goto End_Of_Loop;
             end if;
