@@ -334,6 +334,22 @@ package body MainWindow is
          Gtk_Tree_Path_New_From_String("0"), null, False);
    end Reload;
 
+   function ShowToolbar
+     (Object: access Gtkada_Builder_Record'Class) return Boolean is
+   begin
+      Hide(Gtk_Widget(Get_Object(Object, "imgtoolbar")));
+      Show_All(Gtk_Widget(Get_Object(Object, "toolbar")));
+      return False;
+   end ShowToolbar;
+
+   function HideToolbar
+     (Object: access Gtkada_Builder_Record'Class) return Boolean is
+   begin
+      Show_All(Gtk_Widget(Get_Object(Object, "imgtoolbar")));
+      Hide(Gtk_Widget(Get_Object(Object, "toolbar")));
+      return False;
+   end HideToolbar;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder) is
    begin
       Builder := NewBuilder;
@@ -343,6 +359,8 @@ package body MainWindow is
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Register_Handler(Builder, "Go_Up_Directory", GoUpDirectory'Access);
       Register_Handler(Builder, "Reload", Reload'Access);
+      Register_Handler(Builder, "Show_Toolbar", ShowToolbar'Access);
+      Register_Handler(Builder, "Hide_Toolbar", HideToolbar'Access);
       Do_Connect(Builder);
       Set_Sort_Func
         (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
@@ -357,6 +375,7 @@ package body MainWindow is
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+      Hide(Gtk_Widget(Get_Object(Builder, "imgtoolbar")));
    end CreateMainWindow;
 
 end MainWindow;
