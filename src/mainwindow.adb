@@ -77,7 +77,7 @@ package body MainWindow is
    begin
       Setting := True;
       if MainWindow /= null then
-         Set_Cursor(MainWindow, Gdk_Cursor_New(Clock));
+         Set_Cursor(MainWindow, Gdk_Cursor_New(Watch));
          Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), False);
          while Events_Pending loop
             if Main_Iteration_Do(False) then
