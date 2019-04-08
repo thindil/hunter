@@ -27,13 +27,14 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
-with Gtk.Notebook; use Gtk.Notebook;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Window; use Gtk.Window;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
+with Gtk.Stack; use Gtk.Stack;
 with Glib; use Glib;
+with Glib.Values; use Glib.Values;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
@@ -197,12 +198,13 @@ package body MainWindow is
       Set_Sort_Column_Id(FilesList, 0, Sort_Ascending);
       if ListName = "fileslist" then
          declare
-            Filesbook: constant Gtk_Notebook :=
-              Gtk_Notebook(Get_Object(Builder, "filesbook"));
+            FileStack: constant Gtk_Stack :=
+              Gtk_Stack(Get_Object(Builder, "filestack"));
+            Value: GValue;
          begin
-            Set_Tab_Label_Text
-              (Filesbook, Get_Nth_Page(Filesbook, 0),
-               To_String(CurrentDirectory));
+            Init_Set_String(Value, To_String(CurrentDirectory));
+            Child_Set_Property
+              (FileStack, Get_Visible_Child(FileStack), "title", Value);
          end;
       end if;
       if MainWindow /= null then
