@@ -123,7 +123,11 @@ package body MainWindow is
             else
                Set(FilesList, FileIter, 1, 2);
             end if;
-            Set(FilesList, FileIter, 2, "folder");
+            if Is_Symbolic_Link(Full_Name(FoundFile)) then
+               Set(FilesList, FileIter, 2, "emblem-symbolic-link");
+            else
+               Set(FilesList, FileIter, 2, "folder");
+            end if;
             if ListName = "fileslist1" then
                goto End_Of_Loop;
             end if;
@@ -154,7 +158,11 @@ package body MainWindow is
             else
                Set(FilesList, FileIter, 1, 4);
             end if;
-            Set(FilesList, FileIter, 2, "text-x-generic-template");
+            if Is_Symbolic_Link(Full_Name(FoundFile)) then
+               Set(FilesList, FileIter, 2, "emblem-symbolic-link");
+            else
+               Set(FilesList, FileIter, 2, "text-x-generic-template");
+            end if;
             if ListName = "fileslist1" then
                goto End_Of_Loop;
             end if;
