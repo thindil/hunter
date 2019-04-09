@@ -16,9 +16,12 @@
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Directories; use Ada.Directories;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.Expect; use GNAT.Expect;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Paned; use Gtk.Paned;
@@ -35,6 +38,7 @@ with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
+with Gtk.Text_Iter; use Gtk.Text_Iter;
 with Glib; use Glib;
 with Glib.Values; use Glib.Values;
 with Gdk; use Gdk;
@@ -246,6 +250,8 @@ package body MainWindow is
    procedure ShowFileInfo(Object: access Gtkada_Builder_Record'Class) is
       FilesIter: Gtk_Tree_Iter;
       FilesModel: Gtk_Tree_Model;
+      ProcessDesc: Process_Descriptor;
+      Result: Expect_Match;
    begin
       if Setting then
          return;
@@ -274,6 +280,41 @@ package body MainWindow is
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
+         Non_Blocking_Spawn
+           (ProcessDesc, "xdg-mime",
+            Argument_String_To_List
+              ("query filetype " & To_String(CurrentDirectory) & "/" &
+               To_String(CurrentSelected)).all);
+         Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+         case Result is
+            when 1 =>
+               declare
+                  MimeType: constant String := Expect_Out(ProcessDesc);
+                  Buffer: constant Gtk_Text_Buffer :=
+                    Get_Buffer
+                      (Gtk_Text_View(Get_Object(Builder, "filetextview")));
+                  Iter: Gtk_Text_Iter;
+                  File: File_Type;
+               begin
+                  Set_Text(Buffer, "");
+                  Get_Start_Iter(Buffer, Iter);
+                  if MimeType(1 .. 4) = "text" then
+                     Open
+                       (File, In_File,
+                        To_String(CurrentDirectory) & "/" &
+                        To_String(CurrentSelected));
+                     while not End_Of_File(File) loop
+                        Insert(Buffer, Iter, Get_Line(File) & LF);
+                     end loop;
+                     Close(File);
+                  else
+                     Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
+                  end if;
+               end;
+            when others =>
+               null;
+         end case;
+         Close(ProcessDesc);
       end if;
    end ShowFileInfo;
 
