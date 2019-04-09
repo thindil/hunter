@@ -255,7 +255,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn">
-                            <property name="resizable">True</property>
                             <property name="title" translatable="yes">Name</property>
                             <property name="expand">True</property>
                             <property name="clickable">True</property>
@@ -280,7 +279,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                         </child>
                         <child>
                           <object class="GtkTreeViewColumn">
-                            <property name="resizable">True</property>
                             <property name="title" translatable="yes">Size</property>
                             <property name="clickable">True</property>
                             <property name="sort_indicator">True</property>
