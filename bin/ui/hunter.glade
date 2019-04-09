@@ -49,6 +49,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="gchararray"/>
     </columns>
   </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="tooltip_text" translatable="yes">Show toolbar [ALT+T]</property>
+    <property name="icon_name">object-flip-vertical</property>
+  </object>
   <object class="GtkWindow" id="mainwindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Hunter</property>
@@ -70,109 +76,126 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
             <property name="can_focus">False</property>
             <property name="orientation">vertical</property>
             <child>
-              <object class="GtkEventBox">
+              <object class="GtkBox" id="toolbar">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="visible_window">False</property>
-                <signal name="leave-notify-event" handler="Hide_Toolbar" swapped="no"/>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkBox" id="toolbar">
-                    <property name="visible">True</property>
+                  <object class="GtkToolbar">
                     <property name="can_focus">False</property>
-                    <property name="orientation">vertical</property>
                     <child>
-                      <object class="GtkToolbar">
+                      <object class="GtkToolButton" id="btnquit">
+                        <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <child>
-                          <object class="GtkToolButton" id="btnquit">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Quit from program [Ctrl+Q]</property>
-                            <property name="label" translatable="yes">Quit</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">application-exit</property>
-                            <signal name="clicked" handler="Main_Quit" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkSeparatorToolItem">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="btngoup">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Go to upper directory [ALT+U]</property>
-                            <property name="label" translatable="yes">Up</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">go-top</property>
-                            <signal name="clicked" handler="Go_Up_Directory" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="btnopen">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Open selected file or directory [ALT+O]</property>
-                            <property name="label" translatable="yes">Open</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">document-open</property>
-                            <signal name="clicked" handler="Activate_File" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
-                        <child>
-                          <object class="GtkToolButton" id="btnreload">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Reload directory list and preview. [ALT+R]</property>
-                            <property name="label" translatable="yes">Reload</property>
-                            <property name="use_underline">True</property>
-                            <property name="icon_name">view-refresh</property>
-                            <signal name="clicked" handler="Reload" swapped="no"/>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="homogeneous">True</property>
-                          </packing>
-                        </child>
+                        <property name="tooltip_text" translatable="yes">Quit from program [Ctrl+Q]</property>
+                        <property name="label" translatable="yes">Quit</property>
+                        <property name="use_underline">True</property>
+                        <property name="icon_name">application-exit</property>
+                        <signal name="clicked" handler="Main_Quit" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
+                        <property name="homogeneous">True</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkStackSwitcher">
+                      <object class="GtkSeparatorToolItem">
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
-                        <property name="stack">filestack</property>
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="btngoup">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Go to upper directory [ALT+U]</property>
+                        <property name="label" translatable="yes">Up</property>
+                        <property name="use_underline">True</property>
+                        <property name="icon_name">go-top</property>
+                        <signal name="clicked" handler="Go_Up_Directory" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="btnopen">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Open selected file or directory [ALT+O]</property>
+                        <property name="label" translatable="yes">Open</property>
+                        <property name="use_underline">True</property>
+                        <property name="icon_name">document-open</property>
+                        <signal name="clicked" handler="Activate_File" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="btnreload">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Reload directory list and preview. [ALT+R]</property>
+                        <property name="label" translatable="yes">Reload</property>
+                        <property name="use_underline">True</property>
+                        <property name="icon_name">view-refresh</property>
+                        <signal name="clicked" handler="Reload" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorToolItem">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkToolButton" id="btnhidetoolbar">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="tooltip_text" translatable="yes">Hide toolbar [ALT-T]</property>
+                        <property name="label" translatable="yes">Hide</property>
+                        <property name="use_underline">True</property>
+                        <property name="icon_name">object-flip-vertical</property>
+                        <signal name="clicked" handler="Hide_Toolbar" swapped="no"/>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="homogeneous">True</property>
                       </packing>
                     </child>
                   </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkStackSwitcher">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="stack">filestack</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -182,20 +205,13 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </packing>
             </child>
             <child>
-              <object class="GtkEventBox">
+              <object class="GtkButton" id="btnshowtoolbar">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="visible_window">False</property>
-                <property name="above_child">True</property>
-                <signal name="enter-notify-event" handler="Show_Toolbar" swapped="no"/>
-                <child>
-                  <object class="GtkImage" id="imgtoolbar">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="icon_name">object-flip-vertical</property>
-                    <property name="icon_size">1</property>
-                  </object>
-                </child>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="image">image1</property>
+                <property name="always_show_image">True</property>
+                <signal name="clicked" handler="Show_Toolbar" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
