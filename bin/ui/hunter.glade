@@ -84,7 +84,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkToolbar">
                         <property name="can_focus">False</property>
                         <child>
-                          <object class="GtkToolButton">
+                          <object class="GtkToolButton" id="btnquit">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Quit from program [Ctrl+Q]</property>
@@ -92,7 +92,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="use_underline">True</property>
                             <property name="icon_name">application-exit</property>
                             <signal name="clicked" handler="Main_Quit" swapped="no"/>
-                            <accelerator key="q" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -118,7 +117,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="use_underline">True</property>
                             <property name="icon_name">go-top</property>
                             <signal name="clicked" handler="Go_Up_Directory" swapped="no"/>
-                            <accelerator key="u" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -134,7 +132,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="use_underline">True</property>
                             <property name="icon_name">document-open</property>
                             <signal name="clicked" handler="Activate_File" swapped="no"/>
-                            <accelerator key="o" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -142,7 +139,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                           </packing>
                         </child>
                         <child>
-                          <object class="GtkToolButton">
+                          <object class="GtkToolButton" id="btnreload">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="tooltip_text" translatable="yes">Reload directory list and preview. [ALT+R]</property>
@@ -150,7 +147,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="use_underline">True</property>
                             <property name="icon_name">view-refresh</property>
                             <signal name="clicked" handler="Reload" swapped="no"/>
-                            <accelerator key="r" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
