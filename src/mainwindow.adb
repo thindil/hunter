@@ -33,11 +33,16 @@ with Gtk.Window; use Gtk.Window;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Accel_Map; use Gtk.Accel_Map;
+with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Glib; use Glib;
 with Glib.Values; use Glib.Values;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
+with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
+with Gdk.Event;
+with Gdk.Types; use Gdk.Types;
 
 package body MainWindow is
 
@@ -352,6 +357,45 @@ package body MainWindow is
       return False;
    end HideToolbar;
 
+   function KeyPressed(Self: access Gtk_Widget_Record'Class;
+      Event: Gdk.Event.Gdk_Event_Key) return Boolean is
+      pragma Unreferenced(Self);
+      KeyMods: constant Gdk_Modifier_Type :=
+        Event.State and Get_Default_Mod_Mask;
+      Key: Gtk_Accel_Key;
+      Found: Boolean;
+   begin
+      Lookup_Entry("<mainwindow>/BtnQuit", Key, Found);
+      if not Found then
+         return False;
+      end if;
+      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
+         Quit(Builder);
+      end if;
+      Lookup_Entry("<mainwindow>/BtnGoUp", Key, Found);
+      if not Found then
+         return False;
+      end if;
+      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
+         GoUpDirectory(Builder);
+      end if;
+      Lookup_Entry("<mainwindow>/BtnOpen", Key, Found);
+      if not Found then
+         return False;
+      end if;
+      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
+         ActivateFile(Builder);
+      end if;
+      Lookup_Entry("<mainwindow>/BtnReload", Key, Found);
+      if not Found then
+         return False;
+      end if;
+      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
+         Reload(Builder);
+      end if;
+      return False;
+   end KeyPressed;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder) is
    begin
       Builder := NewBuilder;
@@ -364,6 +408,12 @@ package body MainWindow is
       Register_Handler(Builder, "Show_Toolbar", ShowToolbar'Access);
       Register_Handler(Builder, "Hide_Toolbar", HideToolbar'Access);
       Do_Connect(Builder);
+      Add_Entry("<mainwindow>/BtnQuit", GDK_LC_q, 4);
+      Add_Entry("<mainwindow>/BtnGoUp", GDK_LC_u, 8);
+      Add_Entry("<mainwindow>/BtnOpen", GDK_LC_o, 8);
+      Add_Entry("<mainwindow>/BtnReload", GDK_LC_r, 8);
+      On_Key_Press_Event
+        (Gtk_Widget(Get_Object(Builder, "mainwindow")), KeyPressed'Access);
       Set_Sort_Func
         (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
          SortFiles'Access);
