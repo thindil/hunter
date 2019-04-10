@@ -269,6 +269,7 @@ package body MainWindow is
       end if;
       CurrentSelected :=
         To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
+      Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btnopen")), True);
       if Get_Int(FilesModel, FilesIter, 1) < 3 then
          Set_Sensitive(Gtk_Widget(Get_Object(Object, "btnopen")), True);
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
@@ -295,6 +296,8 @@ package body MainWindow is
                       (Gtk_Text_View(Get_Object(Builder, "filetextview")));
                   Iter: Gtk_Text_Iter;
                   File: File_Type;
+                  ProcessDesc2: Process_Descriptor;
+                  Result2: Expect_Match;
                begin
                   Set_Text(Buffer, "");
                   Get_Start_Iter(Buffer, Iter);
@@ -309,6 +312,25 @@ package body MainWindow is
                      Close(File);
                   else
                      Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
+                     Non_Blocking_Spawn
+                       (ProcessDesc2, "xdg-mime",
+                        Argument_String_To_List
+                          ("query default " & MimeType).all);
+                     begin
+                        Expect
+                          (ProcessDesc2, Result2, Regexp => ".+",
+                           Timeout => 1_000);
+                     exception
+                        when Process_Died =>
+                           if not Is_Executable_File
+                               (To_String(CurrentDirectory) & "/" &
+                                To_String(CurrentSelected)) then
+                              Set_Sensitive
+                                (Gtk_Widget(Get_Object(Builder, "btnopen")),
+                                 False);
+                           end if;
+                     end;
+                     Close(ProcessDesc2);
                   end if;
                end;
             when others =>
