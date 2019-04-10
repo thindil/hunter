@@ -453,18 +453,6 @@ package body MainWindow is
          Gtk_Tree_Path_New_From_String("0"), null, False);
    end Reload;
 
-   procedure ShowToolbar(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      Hide(Gtk_Widget(Get_Object(Object, "btnshowtoolbar")));
-      Show_All(Gtk_Widget(Get_Object(Object, "toolbar")));
-   end ShowToolbar;
-
-   procedure HideToolbar(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      Show_All(Gtk_Widget(Get_Object(Object, "btnshowtoolbar")));
-      Hide(Gtk_Widget(Get_Object(Object, "toolbar")));
-   end HideToolbar;
-
    function KeyPressed(Self: access Gtk_Widget_Record'Class;
       Event: Gdk.Event.Gdk_Event_Key) return Boolean is
       pragma Unreferenced(Self);
@@ -501,17 +489,6 @@ package body MainWindow is
       if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
          Reload(Builder);
       end if;
-      Lookup_Entry("<mainwindow>/BtnShowHide", Key, Found);
-      if not Found then
-         return False;
-      end if;
-      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
-         if Is_Visible(Gtk_Widget(Get_Object(Builder, "btnshowtoolbar"))) then
-            ShowToolbar(Builder);
-         else
-            HideToolbar(Builder);
-         end if;
-      end if;
       return False;
    end KeyPressed;
 
@@ -524,14 +501,11 @@ package body MainWindow is
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Register_Handler(Builder, "Go_Up_Directory", GoUpDirectory'Access);
       Register_Handler(Builder, "Reload", Reload'Access);
-      Register_Handler(Builder, "Show_Toolbar", ShowToolbar'Access);
-      Register_Handler(Builder, "Hide_Toolbar", HideToolbar'Access);
       Do_Connect(Builder);
       Add_Entry("<mainwindow>/BtnQuit", GDK_LC_q, 4);
       Add_Entry("<mainwindow>/BtnGoUp", GDK_LC_u, 8);
       Add_Entry("<mainwindow>/BtnOpen", GDK_LC_o, 8);
       Add_Entry("<mainwindow>/BtnReload", GDK_LC_r, 8);
-      Add_Entry("<mainwindow>/BtnShowHide", GDK_LC_t, 8);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "mainwindow")), KeyPressed'Access);
       Set_Sort_Func
@@ -547,7 +521,6 @@ package body MainWindow is
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
-      Hide(Gtk_Widget(Get_Object(Builder, "btnshowtoolbar")));
    end CreateMainWindow;
 
 end MainWindow;
