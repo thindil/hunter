@@ -247,11 +247,32 @@ package body MainWindow is
       return 0;
    end SortFiles;
 
+   function GetMimeType(FileName: String) return String is
+      ProcessDesc: Process_Descriptor;
+      Result: Expect_Match;
+   begin
+      Non_Blocking_Spawn
+        (ProcessDesc, "xdg-mime",
+         Argument_String_To_List("query filetype " & FileName).all);
+      Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+      case Result is
+         when 1 =>
+            declare
+               MimeType: constant String := Expect_Out(ProcessDesc);
+            begin
+               Close(ProcessDesc);
+               return MimeType;
+            end;
+         when others =>
+            null;
+      end case;
+      Close(ProcessDesc);
+      return "";
+   end GetMimeType;
+
    procedure ShowFileInfo(Object: access Gtkada_Builder_Record'Class) is
       FilesIter: Gtk_Tree_Iter;
       FilesModel: Gtk_Tree_Model;
-      ProcessDesc: Process_Descriptor;
-      Result: Expect_Match;
    begin
       if Setting then
          return;
@@ -281,62 +302,49 @@ package body MainWindow is
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
-         Non_Blocking_Spawn
-           (ProcessDesc, "xdg-mime",
-            Argument_String_To_List
-              ("query filetype " & To_String(CurrentDirectory) & "/" &
-               To_String(CurrentSelected)).all);
-         Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
-         case Result is
-            when 1 =>
-               declare
-                  MimeType: constant String := Expect_Out(ProcessDesc);
-                  Buffer: constant Gtk_Text_Buffer :=
-                    Get_Buffer
-                      (Gtk_Text_View(Get_Object(Builder, "filetextview")));
-                  Iter: Gtk_Text_Iter;
-                  File: File_Type;
-                  ProcessDesc2: Process_Descriptor;
-                  Result2: Expect_Match;
+         declare
+            MimeType: constant String :=
+              GetMimeType
+                (To_String(CurrentDirectory) & "/" &
+                 To_String(CurrentSelected));
+            Buffer: constant Gtk_Text_Buffer :=
+              Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview")));
+            Iter: Gtk_Text_Iter;
+            File: File_Type;
+            ProcessDesc2: Process_Descriptor;
+            Result2: Expect_Match;
+         begin
+            Set_Text(Buffer, "");
+            Get_Start_Iter(Buffer, Iter);
+            if MimeType(1 .. 4) = "text" then
+               Open
+                 (File, In_File,
+                  To_String(CurrentDirectory) & "/" &
+                  To_String(CurrentSelected));
+               while not End_Of_File(File) loop
+                  Insert(Buffer, Iter, Get_Line(File) & LF);
+               end loop;
+               Close(File);
+            else
+               Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
+               Non_Blocking_Spawn
+                 (ProcessDesc2, "xdg-mime",
+                  Argument_String_To_List("query default " & MimeType).all);
                begin
-                  Set_Text(Buffer, "");
-                  Get_Start_Iter(Buffer, Iter);
-                  if MimeType(1 .. 4) = "text" then
-                     Open
-                       (File, In_File,
-                        To_String(CurrentDirectory) & "/" &
-                        To_String(CurrentSelected));
-                     while not End_Of_File(File) loop
-                        Insert(Buffer, Iter, Get_Line(File) & LF);
-                     end loop;
-                     Close(File);
-                  else
-                     Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
-                     Non_Blocking_Spawn
-                       (ProcessDesc2, "xdg-mime",
-                        Argument_String_To_List
-                          ("query default " & MimeType).all);
-                     begin
-                        Expect
-                          (ProcessDesc2, Result2, Regexp => ".+",
-                           Timeout => 1_000);
-                     exception
-                        when Process_Died =>
-                           if not Is_Executable_File
-                               (To_String(CurrentDirectory) & "/" &
-                                To_String(CurrentSelected)) then
-                              Set_Sensitive
-                                (Gtk_Widget(Get_Object(Builder, "btnopen")),
-                                 False);
-                           end if;
-                     end;
-                     Close(ProcessDesc2);
-                  end if;
+                  Expect
+                    (ProcessDesc2, Result2, Regexp => ".+", Timeout => 1_000);
+               exception
+                  when Process_Died =>
+                     if not Is_Executable_File
+                         (To_String(CurrentDirectory) & "/" &
+                          To_String(CurrentSelected)) then
+                        Set_Sensitive
+                          (Gtk_Widget(Get_Object(Builder, "btnopen")), False);
+                     end if;
                end;
-            when others =>
-               null;
-         end case;
-         Close(ProcessDesc);
+               Close(ProcessDesc2);
+            end if;
+         end;
       end if;
    end ShowFileInfo;
 
