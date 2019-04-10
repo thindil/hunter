@@ -39,6 +39,7 @@ with Gtk.Stack; use Gtk.Stack;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Text_Iter; use Gtk.Text_Iter;
+with Gtk.Label; use Gtk.Label;
 with Glib; use Glib;
 with Glib.Values; use Glib.Values;
 with Gdk; use Gdk;
@@ -214,6 +215,10 @@ package body MainWindow is
             Init_Set_String(Value, To_String(CurrentDirectory));
             Child_Set_Property
               (FileStack, Get_Visible_Child(FileStack), "title", Value);
+            Set_Markup
+              (Gtk_Label(Get_Object(Builder, "lblpath")),
+               "<span font_weight=""bold"">" & To_String(CurrentDirectory) &
+               "</span>");
          end;
       end if;
       if MainWindow /= null then
