@@ -270,6 +270,21 @@ package body MainWindow is
       return "";
    end GetMimeType;
 
+   function CanBeOpened(MimeType: String) return Boolean is
+      ProcessDesc: Process_Descriptor;
+      Result: Expect_Match;
+   begin
+      Non_Blocking_Spawn
+        (ProcessDesc, "xdg-mime",
+         Argument_String_To_List("query default " & MimeType).all);
+      Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+      Close(ProcessDesc);
+      return True;
+   exception
+      when Process_Died =>
+         return False;
+   end CanBeOpened;
+
    procedure ShowFileInfo(Object: access Gtkada_Builder_Record'Class) is
       FilesIter: Gtk_Tree_Iter;
       FilesModel: Gtk_Tree_Model;
@@ -311,8 +326,6 @@ package body MainWindow is
               Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview")));
             Iter: Gtk_Text_Iter;
             File: File_Type;
-            ProcessDesc2: Process_Descriptor;
-            Result2: Expect_Match;
          begin
             Set_Text(Buffer, "");
             Get_Start_Iter(Buffer, Iter);
@@ -327,22 +340,13 @@ package body MainWindow is
                Close(File);
             else
                Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
-               Non_Blocking_Spawn
-                 (ProcessDesc2, "xdg-mime",
-                  Argument_String_To_List("query default " & MimeType).all);
-               begin
-                  Expect
-                    (ProcessDesc2, Result2, Regexp => ".+", Timeout => 1_000);
-               exception
-                  when Process_Died =>
-                     if not Is_Executable_File
-                         (To_String(CurrentDirectory) & "/" &
-                          To_String(CurrentSelected)) then
-                        Set_Sensitive
-                          (Gtk_Widget(Get_Object(Builder, "btnopen")), False);
-                     end if;
-               end;
-               Close(ProcessDesc2);
+               if not CanBeOpened(MimeType) and
+                 not Is_Executable_File
+                   (To_String(CurrentDirectory) & "/" &
+                    To_String(CurrentSelected)) then
+                  Set_Sensitive
+                    (Gtk_Widget(Get_Object(Builder, "btnopen")), False);
+               end if;
             end if;
          end;
       end if;
@@ -352,10 +356,16 @@ package body MainWindow is
       FilesIter: Gtk_Tree_Iter;
       FilesModel: Gtk_Tree_Model;
       NewDirectory: Unbounded_String;
-      MessageDialog: constant Gtk_Message_Dialog :=
-        Gtk_Message_Dialog_New
-          (Gtk_Window(Get_Object(Object, "mainwindow")), Modal, Message_Error,
-           Buttons_Close, "You can't enter this directory.");
+      procedure ShowMessage(Message: String) is
+         MessageDialog: constant Gtk_Message_Dialog :=
+           Gtk_Message_Dialog_New
+             (Gtk_Window(Get_Object(Object, "mainwindow")), Modal,
+              Message_Error, Buttons_Close, Message);
+      begin
+         if Run(MessageDialog) /= Gtk_Response_None then
+            Destroy(MessageDialog);
+         end if;
+      end ShowMessage;
    begin
       Get_Selected
         (Gtk.Tree_View.Get_Selection
@@ -369,9 +379,7 @@ package body MainWindow is
            To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
          if not Is_Read_Accessible_File
              (To_String(CurrentDirectory) & "/" & To_String(NewDirectory)) then
-            if Run(MessageDialog) /= Gtk_Response_None then
-               Destroy(MessageDialog);
-            end if;
+            ShowMessage("You can't enter this directory.");
             return;
          end if;
          if CurrentDirectory = To_Unbounded_String("/") then
@@ -385,6 +393,39 @@ package body MainWindow is
            (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
             Gtk_Tree_Path_New_From_String("0"), null, False);
          Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+      else
+         declare
+            MimeType: constant String :=
+              GetMimeType
+                (To_String(CurrentDirectory) & "/" &
+                 To_String(CurrentSelected));
+            Pid: GNAT.OS_Lib.Process_Id;
+            Openable: constant Boolean := CanBeOpened(MimeType);
+         begin
+            if not Openable and
+              not Is_Executable_File
+                (To_String(CurrentDirectory) & "/" &
+                 To_String(CurrentSelected)) then
+               ShowMessage("I can't open this file.");
+               return;
+            elsif Openable then
+               Pid :=
+                 Non_Blocking_Spawn
+                   ("xdg-open",
+                    Argument_String_To_List
+                      (To_String(CurrentDirectory) & "/" &
+                       To_String(CurrentSelected)).all);
+            else
+               Pid :=
+                 Non_Blocking_Spawn
+                   (To_String(CurrentDirectory) & "/" &
+                    To_String(CurrentSelected),
+                    Argument_String_To_List("").all);
+            end if;
+            if Pid = GNAT.Os_Lib.Invalid_Pid then
+               ShowMessage("I can't open this file.");
+            end if;
+         end;
       end if;
       Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btngoup")), True);
    end ActivateFile;
