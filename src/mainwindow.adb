@@ -20,6 +20,7 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Command_Line; use Ada.Command_Line;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.Expect; use GNAT.Expect;
 with Gtk.Main; use Gtk.Main;
@@ -257,7 +258,7 @@ package body MainWindow is
       Result: Expect_Match;
    begin
       Non_Blocking_Spawn
-        (ProcessDesc, "xdg-mime",
+        (ProcessDesc, Containing_Directory(Command_Name) & "/xdg-mime",
          Argument_String_To_List("query filetype " & FileName).all);
       Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
       case Result is
@@ -280,7 +281,7 @@ package body MainWindow is
       Result: Expect_Match;
    begin
       Non_Blocking_Spawn
-        (ProcessDesc, "xdg-mime",
+        (ProcessDesc, Containing_Directory(Command_Name) & "/xdg-mime",
          Argument_String_To_List("query default " & MimeType).all);
       Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
       Close(ProcessDesc);
@@ -416,7 +417,7 @@ package body MainWindow is
             elsif Openable then
                Pid :=
                  Non_Blocking_Spawn
-                   ("xdg-open",
+                   (Containing_Directory(Command_Name) & "/xdg-open",
                     Argument_String_To_List
                       (To_String(CurrentDirectory) & "/" &
                        To_String(CurrentSelected)).all);
