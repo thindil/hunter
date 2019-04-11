@@ -33,8 +33,6 @@
 #
 #---------------------------------------------
 
-export XDG_UTILS_DEBUG_LEVEL=5
-
 manualpage()
 {
 cat << _MANUALPAGE
