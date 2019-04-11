@@ -62,17 +62,6 @@ package body MainWindow is
       Main_Quit;
    end Quit;
 
-   procedure ResizePaned(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      Set_Position
-        (Gtk_Paned(Get_Object(Object, "paned1")),
-         Gint
-           (Float
-              (Get_Allocated_Width
-                 (Gtk_Widget(Get_Object(Object, "mainwindow")))) *
-            0.4));
-   end ResizePaned;
-
    procedure LoadDirectory(Name, ListName: String) is
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, ListName));
@@ -502,7 +491,6 @@ package body MainWindow is
    begin
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
-      Register_Handler(Builder, "Resize_Paned", ResizePaned'Access);
       Register_Handler(Builder, "Show_File_Info", ShowFileInfo'Access);
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Register_Handler(Builder, "Go_Up_Directory", GoUpDirectory'Access);
@@ -526,6 +514,13 @@ package body MainWindow is
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
+      Set_Position
+        (Gtk_Paned(Get_Object(Builder, "paned1")),
+         Gint
+           (Float
+              (Get_Allocated_Width
+                 (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
+            0.3));
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
    end CreateMainWindow;
 
