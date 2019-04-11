@@ -54,7 +54,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="title" translatable="yes">Hunter</property>
     <property name="window_position">center</property>
     <property name="icon_name">system-file-manager</property>
-    <signal name="check-resize" handler="Resize_Paned" swapped="no"/>
     <signal name="destroy" handler="Main_Quit" swapped="no"/>
     <child>
       <placeholder/>
@@ -216,7 +215,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             </child>
                             <child>
                               <object class="GtkCellRendererText">
-                                <property name="ellipsize">end</property>
+                                <property name="ellipsize">start</property>
                                 <property name="max_width_chars">80</property>
                               </object>
                               <attributes>
@@ -243,7 +242,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     </child>
                   </object>
                   <packing>
-                    <property name="resize">False</property>
+                    <property name="resize">True</property>
                     <property name="shrink">True</property>
                   </packing>
                 </child>
