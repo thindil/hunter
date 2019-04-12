@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Environment_Variables;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Gtk.Main; use Gtk.Main;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Bindings; use Gtkada.Bindings;
@@ -41,6 +41,10 @@ begin
    end if;
    CreateErrorDialog(Builder);
    CreateMainWindow(Builder);
+   Clear("LD_LIBRARY_PATH");
+   Clear("GDK_PIXBUF_MODULE_FILE");
+   Clear("GDK_PIXBUF_MODULEDIR");
+   Clear("FONTCONFIG_FILE");
    Main;
 exception
    when An_Exception : others =>
