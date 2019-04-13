@@ -1,7 +1,8 @@
 Hunter is (or better, will be) a graphical file manager for Linux, heavy
 inspired by [Ranger](https://ranger.github.io/). At this moment, Hunter is
 under heavy development and have only basic features of file viewer than
-manager.
+manager. To open files, the program uses default applications from [XDG MIME
+Application Specification](https://specifications.freedesktop.org/mime-apps-spec/mime-apps-spec-latest.html).
 
 **Note:** This version of README.md is about development version of the
 program. Some things may be different in released version of Hunter.
@@ -64,6 +65,14 @@ xdg-mime and xdg-open scripts are part of the xdg-utils project and released
 under MIT license:
 
 https://github.com/freedesktop/xdg-utils
+
+GtkAda library distributed with the program are under GPLv3 license.
+
+https://github.com/AdaCore/gtkada
+
+Gtk library distributed with the program is under LGPLv2.1 license:
+
+https://www.gtk.org/
 
 ----
 
