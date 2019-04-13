@@ -7,7 +7,7 @@ Application Specification](https://specifications.freedesktop.org/mime-apps-spec
 **Note:** This version of README.md is about development version of the
 program. Some things may be different in released version of Hunter.
 
-## Build game from sources
+## Build the program from sources
 
 To build you need:
 
