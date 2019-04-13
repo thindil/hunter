@@ -247,8 +247,8 @@ package body MainWindow is
       Result: Expect_Match;
    begin
       Non_Blocking_Spawn
-        (ProcessDesc, Containing_Directory(Command_Name) & "/xdg-mime",
-         Argument_String_To_List("query filetype " & FileName).all);
+        (ProcessDesc, "file",
+         Argument_String_To_List("-b --mime-type " & FileName).all);
       Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
       case Result is
          when 1 =>
