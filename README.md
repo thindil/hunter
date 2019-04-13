@@ -36,9 +36,8 @@ this file is) to compile:
 * If you prefer using console: in main source code directory type `gprbuild`
   for debug mode build or for release mode: `gprbuild -XMode=release`
 
-## Running Steam Sky
+## Running Hunter
 
-### Linux
 If you use downloaded AppImage version, you don't need any additional
 libraries. Just run it as any AppImage file. More informations about AppImage
 files usage, you can find at:
@@ -48,6 +47,15 @@ https://docs.appimage.org/user-guide/run-appimages.html
 When you trying to run build by yourself version of the program, use script
 `hunter.sh`. The program will not works if you try to start it by binary file
 `hunter` from `bin` directory.
+
+### Wrong theme used by the program
+
+Hunter uses GTK library in version 3.14. Your selected theme probably don't
+support this version of GTK or don't have compiled support for it. In this
+second situation, please check documentation of selected theme to find how to
+recompile it. If your theme completely don't support GTK in version 3.14 you
+can still use default GTK theme by adding environment variable `GTK_THEME`.
+For example: `GTK_THEME=Adwaita ./hunter-x86-64.AppImage`.
 
 ## Licenses
 Hunter is available under [GPLv3](COPYING) license.
