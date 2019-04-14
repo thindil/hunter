@@ -19,7 +19,7 @@ package MainWindow is
 
    -- Quit from program
    procedure Quit(Object: access Gtkada_Builder_Record'Class);
-   -- Create main window
-   procedure CreateMainWindow(NewBuilder: Gtkada_Builder);
+   -- Create main window and show content of selected directory
+   procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String);
 
 end MainWindow;
