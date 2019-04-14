@@ -49,6 +49,12 @@ When you trying to run build by yourself version of the program, use script
 `hunter.sh`. The program will not works if you try to start it by binary file
 `hunter` from `bin` directory.
 
+### Starting parameter
+
+You can set directory to view when starting the program by adding it full path
+to the starting commmand. For example, to view root directory `/` run the
+program with `hunter.sh /`
+
 ### Wrong theme used by the program
 
 Hunter uses GTK library in version 3.14. Your selected theme probably don't
