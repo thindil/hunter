@@ -487,7 +487,7 @@ package body MainWindow is
       return False;
    end KeyPressed;
 
-   procedure CreateMainWindow(NewBuilder: Gtkada_Builder) is
+   procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
@@ -508,7 +508,11 @@ package body MainWindow is
       Set_Sort_Func
         (Gtk_List_Store(Get_Object(Builder, "fileslist1")), 0,
          SortFiles'Access);
-      CurrentDirectory := To_Unbounded_String(Value("HOME"));
+      if Ada.Directories.Exists(Directory) then
+         CurrentDirectory := To_Unbounded_String(Directory);
+      else
+         CurrentDirectory := To_Unbounded_String(Value("HOME"));
+      end if;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       Set_Cursor

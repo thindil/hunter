@@ -15,6 +15,7 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Command_Line; use Ada.Command_Line;
 with Gtk.Main; use Gtk.Main;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Bindings; use Gtkada.Bindings;
@@ -40,7 +41,11 @@ begin
       return;
    end if;
    CreateErrorDialog(Builder);
-   CreateMainWindow(Builder);
+   if Argument_Count < 1 then
+      CreateMainWindow(Builder, Value("HOME"));
+   else
+      CreateMainWindow(Builder, Argument(1));
+   end if;
    Clear("LD_LIBRARY_PATH");
    Clear("GDK_PIXBUF_MODULE_FILE");
    Clear("GDK_PIXBUF_MODULEDIR");
