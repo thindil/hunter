@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Command line argument to start the program with showing selected directory
+- Better searching for files/directories in viewed directory
 
 ### Changed
 - Updated README.md
