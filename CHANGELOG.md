@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Command line argument to start the program with showing selected directory
+
 ### Changed
 - Updated README.md
 - Use file command to determine files mime types instead of xdg-mime
