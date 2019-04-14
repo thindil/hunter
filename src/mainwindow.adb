@@ -18,6 +18,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Command_Line; use Ada.Command_Line;
@@ -41,6 +42,10 @@ with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Text_Iter; use Gtk.Text_Iter;
 with Gtk.Label; use Gtk.Label;
+with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
+with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
+with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
+with Gtk.GEntry; use Gtk.GEntry;
 with Glib; use Glib;
 with Glib.Values; use Glib.Values;
 with Gdk; use Gdk;
@@ -448,6 +453,19 @@ package body MainWindow is
          Gtk_Tree_Path_New_From_String("0"), null, False);
    end Reload;
 
+   procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class) is
+      SearchEntry: constant Gtk_Widget :=
+        Gtk_Widget(Get_Object(Object, "searchfile"));
+   begin
+      if not Is_Visible(SearchEntry) then
+         Show_All(SearchEntry);
+         Grab_Focus(SearchEntry);
+      else
+         Hide(SearchEntry);
+         Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+      end if;
+   end ToggleSearch;
+
    function KeyPressed(Self: access Gtk_Widget_Record'Class;
       Event: Gdk.Event.Gdk_Event_Key) return Boolean is
       pragma Unreferenced(Self);
@@ -484,8 +502,53 @@ package body MainWindow is
       if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
          Reload(Builder);
       end if;
+      Lookup_Entry("<mainwindow>/BtnSearch", Key, Found);
+      if not Found then
+         return False;
+      end if;
+      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
+         Set_Active
+           (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btnsearch")),
+            not Get_Active
+              (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btnsearch"))));
+      end if;
       return False;
    end KeyPressed;
+
+   function VisibleFiles(Model: Gtk_Tree_Model;
+      Iter: Gtk_Tree_Iter) return Boolean is
+      SearchEntry: constant Gtk_GEntry :=
+        Gtk_GEntry(Get_Object(Builder, "searchfile"));
+   begin
+      if Setting then
+         return True;
+      end if;
+      if Get_Text(SearchEntry) = "" then
+         return True;
+      end if;
+      if Index
+          (To_Lower(Get_String(Model, Iter, 0)),
+           To_Lower(Get_Text(SearchEntry)), 1) >
+        0 then
+         return True;
+      end if;
+      return False;
+   end VisibleFiles;
+
+   procedure SearchFiles(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
+      if N_Children
+          (Gtk_List_Store(Get_Object(Object, "fileslist")), Null_Iter) >
+        0 then
+         Set_Cursor
+           (Gtk_Tree_View(Get_Object(Object, "treefiles")),
+            Gtk_Tree_Path_New_From_String("0"), null, False);
+      end if;
+      if Is_Visible(Gtk_Widget(Get_Object(Object, "searchfile"))) then
+         Grab_Focus(Gtk_Widget(Get_Object(Object, "searchfile")));
+      end if;
+   end SearchFiles;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
@@ -495,19 +558,28 @@ package body MainWindow is
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Register_Handler(Builder, "Go_Up_Directory", GoUpDirectory'Access);
       Register_Handler(Builder, "Reload", Reload'Access);
+      Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
+      Register_Handler(Builder, "Search_Files", SearchFiles'Access);
       Do_Connect(Builder);
       Add_Entry("<mainwindow>/BtnQuit", GDK_LC_q, 4);
       Add_Entry("<mainwindow>/BtnGoUp", GDK_LC_u, 8);
       Add_Entry("<mainwindow>/BtnOpen", GDK_LC_o, 8);
       Add_Entry("<mainwindow>/BtnReload", GDK_LC_r, 8);
+      Add_Entry("<mainwindow>/BtnSearch", GDK_LC_f, 8);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "mainwindow")), KeyPressed'Access);
       Set_Sort_Func
         (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
          SortFiles'Access);
       Set_Sort_Func
+        (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
+         SortFiles'Access);
+      Set_Sort_Func
         (Gtk_List_Store(Get_Object(Builder, "fileslist1")), 0,
          SortFiles'Access);
+      Set_Visible_Func
+        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
+         VisibleFiles'Access);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
@@ -515,6 +587,7 @@ package body MainWindow is
       end if;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
+      Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);

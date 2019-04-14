@@ -39,6 +39,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="guint"/>
     </columns>
   </object>
+  <object class="GtkTreeModelFilter" id="filesfilter">
+    <property name="child_model">fileslist</property>
+  </object>
+  <object class="GtkTreeModelSort" id="filessort">
+    <property name="model">filesfilter</property>
+  </object>
   <object class="GtkListStore" id="fileslist1">
     <columns>
       <!-- column-name name -->
@@ -139,6 +145,21 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </packing>
             </child>
             <child>
+              <object class="GtkToggleToolButton" id="btnsearch">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Search for the file or directory [ALT+F]</property>
+                <property name="label" translatable="yes">Search</property>
+                <property name="use_underline">True</property>
+                <property name="icon_name">edit-find</property>
+                <signal name="toggled" handler="Toggle_Search" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
               <object class="GtkSeparatorToolItem">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -176,6 +197,21 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
           </packing>
         </child>
         <child>
+          <object class="GtkSearchEntry" id="searchfile">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="primary_icon_name">edit-find-symbolic</property>
+            <property name="primary_icon_activatable">False</property>
+            <property name="primary_icon_sensitive">False</property>
+            <signal name="changed" handler="Search_Files" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkStack" id="filestack">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
@@ -195,7 +231,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="has_focus">True</property>
-                        <property name="model">fileslist</property>
+                        <property name="model">filessort</property>
                         <property name="search_column">0</property>
                         <signal name="cursor-changed" handler="Show_File_Info" swapped="no"/>
                         <signal name="row-activated" handler="Activate_File" swapped="no"/>
@@ -338,7 +374,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
       </object>
