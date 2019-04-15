@@ -67,6 +67,37 @@ package body MainWindow is
       Main_Quit;
    end Quit;
 
+   function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
+      B: Gtk_Tree_Iter) return Gint is
+      FileTypeA: constant Gint := Get_Int(Model, A, 1);
+      FileTypeB: constant Gint := Get_Int(Model, B, 1);
+      FileNameA: constant String := Get_String(Model, A, 0);
+      FileNameB: constant String := Get_String(Model, B, 0);
+   begin
+      if FileTypeA > FileTypeB then
+         return 1;
+      end if;
+      if FileTypeA < FileTypeB then
+         return -1;
+      end if;
+      if To_Lower(FileNameA) > To_Lower(FileNameB) then
+         return 1;
+      end if;
+      if To_Lower(FileNameA) < To_Lower(FileNameB) then
+         return -1;
+      end if;
+      return 0;
+   end SortFiles;
+
+   function EmptySortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
+      B: Gtk_Tree_Iter) return Gint is
+      pragma Unreferenced(Model);
+      pragma Unreferenced(A);
+      pragma Unreferenced(B);
+   begin
+      return 0;
+   end EmptySortFiles;
+
    procedure LoadDirectory(Name, ListName: String) is
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, ListName));
@@ -106,6 +137,15 @@ package body MainWindow is
          end if;
          Setting := False;
          return;
+      end if;
+      if ListName = "fileslist1" then
+         Set_Sort_Func
+           (Gtk_List_Store(Get_Object(Builder, ListName)), 0,
+            EmptySortFiles'Access);
+      else
+         Set_Sort_Func
+           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
+            SortFiles'Access);
       end if;
       Start_Search(Files, Name, "");
       loop
@@ -200,11 +240,12 @@ package body MainWindow is
          <<End_Of_Loop>>
       end loop;
       End_Search(Files);
-      Set_Sort_Column_Id(FilesList, 0, Sort_Ascending);
       if ListName = "fileslist" then
          declare
             FileStack: constant Gtk_Stack :=
               Gtk_Stack(Get_Object(Builder, "filestack"));
+            FilesSort: constant Gtk_Tree_Model_Sort :=
+              Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
             Value: GValue;
          begin
             Init_Set_String(Value, To_String(CurrentDirectory));
@@ -214,7 +255,14 @@ package body MainWindow is
               (Gtk_Label(Get_Object(Builder, "lblpath")),
                "<span font_weight=""bold"">" & To_String(CurrentDirectory) &
                "</span>");
+            Set_Sort_Func(FilesSort, 0, SortFiles'Access);
+            Set_Sort_Column_Id(FilesSort, 0, Sort_Ascending);
          end;
+      else
+         Set_Sort_Func
+           (Gtk_List_Store(Get_Object(Builder, ListName)), 0,
+            SortFiles'Access);
+         Set_Sort_Column_Id(FilesList, 0, Sort_Ascending);
       end if;
       if MainWindow /= null then
          Set_Cursor
@@ -224,28 +272,6 @@ package body MainWindow is
       end if;
       Setting := False;
    end LoadDirectory;
-
-   function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
-      B: Gtk_Tree_Iter) return Gint is
-      FileTypeA: constant Gint := Get_Int(Model, A, 1);
-      FileTypeB: constant Gint := Get_Int(Model, B, 1);
-      FileNameA: constant String := Get_String(Model, A, 0);
-      FileNameB: constant String := Get_String(Model, B, 0);
-   begin
-      if FileTypeA > FileTypeB then
-         return 1;
-      end if;
-      if FileTypeA < FileTypeB then
-         return -1;
-      end if;
-      if To_Lower(FileNameA) > To_Lower(FileNameB) then
-         return 1;
-      end if;
-      if To_Lower(FileNameA) < To_Lower(FileNameB) then
-         return -1;
-      end if;
-      return 0;
-   end SortFiles;
 
    function GetMimeType(FileName: String) return String is
       ProcessDesc: Process_Descriptor;
@@ -568,15 +594,6 @@ package body MainWindow is
       Add_Entry("<mainwindow>/BtnSearch", GDK_LC_f, 8);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "mainwindow")), KeyPressed'Access);
-      Set_Sort_Func
-        (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
-         SortFiles'Access);
-      Set_Sort_Func
-        (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
-         SortFiles'Access);
-      Set_Sort_Func
-        (Gtk_List_Store(Get_Object(Builder, "fileslist1")), 0,
-         SortFiles'Access);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
          VisibleFiles'Access);
