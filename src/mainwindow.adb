@@ -35,17 +35,10 @@ with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Window; use Gtk.Window;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
-with Gtk.Accel_Map; use Gtk.Accel_Map;
-with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Text_Iter; use Gtk.Text_Iter;
-with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.GEntry; use Gtk.GEntry;
 with Glib; use Glib;
-with Gdk; use Gdk;
-with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
-with Gdk.Event;
-with Gdk.Types; use Gdk.Types;
 with MainWindow.LoadData; use MainWindow.LoadData;
 
 package body MainWindow is
@@ -277,55 +270,6 @@ package body MainWindow is
       end if;
    end ToggleSearch;
 
-   function KeyPressed(Self: access Gtk_Widget_Record'Class;
-      Event: Gdk.Event.Gdk_Event_Key) return Boolean is
-      pragma Unreferenced(Self);
-      KeyMods: constant Gdk_Modifier_Type :=
-        Event.State and Get_Default_Mod_Mask;
-      Key: Gtk_Accel_Key;
-      Found: Boolean;
-   begin
-      Lookup_Entry("<mainwindow>/BtnQuit", Key, Found);
-      if not Found then
-         return False;
-      end if;
-      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
-         Quit(Builder);
-      end if;
-      Lookup_Entry("<mainwindow>/BtnGoUp", Key, Found);
-      if not Found then
-         return False;
-      end if;
-      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
-         GoUpDirectory(Builder);
-      end if;
-      Lookup_Entry("<mainwindow>/BtnOpen", Key, Found);
-      if not Found then
-         return False;
-      end if;
-      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
-         ActivateFile(Builder);
-      end if;
-      Lookup_Entry("<mainwindow>/BtnReload", Key, Found);
-      if not Found then
-         return False;
-      end if;
-      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
-         Reload(Builder);
-      end if;
-      Lookup_Entry("<mainwindow>/BtnSearch", Key, Found);
-      if not Found then
-         return False;
-      end if;
-      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
-         Set_Active
-           (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btnsearch")),
-            not Get_Active
-              (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btnsearch"))));
-      end if;
-      return False;
-   end KeyPressed;
-
    function VisibleFiles(Model: Gtk_Tree_Model;
       Iter: Gtk_Tree_Iter) return Boolean is
       SearchEntry: constant Gtk_GEntry :=
@@ -372,13 +316,6 @@ package body MainWindow is
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
       Register_Handler(Builder, "Search_Files", SearchFiles'Access);
       Do_Connect(Builder);
-      Add_Entry("<mainwindow>/BtnQuit", GDK_LC_q, 4);
-      Add_Entry("<mainwindow>/BtnGoUp", GDK_LC_u, 8);
-      Add_Entry("<mainwindow>/BtnOpen", GDK_LC_o, 8);
-      Add_Entry("<mainwindow>/BtnReload", GDK_LC_r, 8);
-      Add_Entry("<mainwindow>/BtnSearch", GDK_LC_f, 8);
-      On_Key_Press_Event
-        (Gtk_Widget(Get_Object(Builder, "mainwindow")), KeyPressed'Access);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
          VisibleFiles'Access);

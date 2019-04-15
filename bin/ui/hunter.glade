@@ -83,6 +83,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="use_underline">True</property>
                 <property name="icon_name">application-exit</property>
                 <signal name="clicked" handler="Main_Quit" swapped="no"/>
+                <accelerator key="q" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -108,6 +109,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="use_underline">True</property>
                 <property name="icon_name">go-top</property>
                 <signal name="clicked" handler="Go_Up_Directory" swapped="no"/>
+                <accelerator key="u" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -123,6 +125,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="use_underline">True</property>
                 <property name="icon_name">document-open</property>
                 <signal name="clicked" handler="Activate_File" swapped="no"/>
+                <accelerator key="o" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -138,6 +141,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="use_underline">True</property>
                 <property name="icon_name">view-refresh</property>
                 <signal name="clicked" handler="Reload" swapped="no"/>
+                <accelerator key="r" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -152,7 +156,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="label" translatable="yes">Search</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">edit-find</property>
-                <signal name="toggled" handler="Toggle_Search" swapped="no"/>
+                <signal name="clicked" handler="Toggle_Search" swapped="no"/>
+                <accelerator key="f" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
