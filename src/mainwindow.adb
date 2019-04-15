@@ -22,7 +22,6 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Command_Line; use Ada.Command_Line;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.Expect; use GNAT.Expect;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Paned; use Gtk.Paned;
@@ -40,6 +39,7 @@ with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.GEntry; use Gtk.GEntry;
 with Glib; use Glib;
 with MainWindow.LoadData; use MainWindow.LoadData;
+with Utils; use Utils;
 
 package body MainWindow is
 
@@ -50,44 +50,6 @@ package body MainWindow is
       Unref(Object);
       Main_Quit;
    end Quit;
-
-   function GetMimeType(FileName: String) return String is
-      ProcessDesc: Process_Descriptor;
-      Result: Expect_Match;
-   begin
-      Non_Blocking_Spawn
-        (ProcessDesc, "file",
-         Argument_String_To_List("-b --mime-type " & FileName).all);
-      Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
-      case Result is
-         when 1 =>
-            declare
-               MimeType: constant String := Expect_Out(ProcessDesc);
-            begin
-               Close(ProcessDesc);
-               return MimeType;
-            end;
-         when others =>
-            null;
-      end case;
-      Close(ProcessDesc);
-      return "";
-   end GetMimeType;
-
-   function CanBeOpened(MimeType: String) return Boolean is
-      ProcessDesc: Process_Descriptor;
-      Result: Expect_Match;
-   begin
-      Non_Blocking_Spawn
-        (ProcessDesc, Containing_Directory(Command_Name) & "/xdg-mime",
-         Argument_String_To_List("query default " & MimeType).all);
-      Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
-      Close(ProcessDesc);
-      return True;
-   exception
-      when Process_Died =>
-         return False;
-   end CanBeOpened;
 
    procedure ShowFileInfo(Object: access Gtkada_Builder_Record'Class) is
       FilesIter: Gtk_Tree_Iter;
