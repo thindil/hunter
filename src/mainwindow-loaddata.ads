@@ -13,22 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Gtkada.Builder; use Gtkada.Builder;
+package MainWindow.LoadData is
 
-package MainWindow is
-
-   -- Quit from program
-   procedure Quit(Object: access Gtkada_Builder_Record'Class);
-   -- Create main window and show content of selected directory
-   procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String);
-
-private
-   -- Gtk Builder used to read data from glade file
-   Builder: Gtkada_Builder;
-   -- If true, the program is in the setting mode
-   Setting: Boolean;
-   -- Currently selected directory to show
-   CurrentDirectory: Unbounded_String;
-
-end MainWindow;
+   -- Load selected directory with Name to Gtk_Store_List with ListName
+   procedure LoadDirectory(Name, ListName: String);
+end MainWindow.LoadData;
