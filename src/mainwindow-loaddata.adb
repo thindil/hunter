@@ -112,7 +112,7 @@ package body MainWindow.LoadData is
       else
          Set_Sort_Func
            (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
-            SortFiles'Access);
+            EmptySortFiles'Access);
       end if;
       Start_Search(Files, Name, "");
       loop
