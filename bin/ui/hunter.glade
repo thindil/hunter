@@ -438,7 +438,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem and attach (if possible) file 'error.log'</property>
+                <property name="label" translatable="yes">Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at</property>
                 <property name="wrap">True</property>
                 <property name="max_width_chars">80</property>
               </object>
@@ -446,6 +446,34 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="expand">False</property>
                 <property name="fill">True</property>
                 <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLinkButton">
+                <property name="label" translatable="yes">https://github.com/thindil/steamsky/issues</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="halign">center</property>
+                <property name="relief">none</property>
+                <property name="uri">https://github.com/thindil/hunter/issues</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes"> and attach (if possible) file 'error.log'.</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
               </packing>
             </child>
             <child>
@@ -477,7 +505,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               <packing>
                 <property name="expand">True</property>
                 <property name="fill">True</property>
-                <property name="position">1</property>
+                <property name="position">3</property>
               </packing>
             </child>
           </object>
