@@ -13,9 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Main; use Gtk.Main;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Bindings; use Gtkada.Bindings;
@@ -44,7 +45,7 @@ begin
    if Argument_Count < 1 then
       CreateMainWindow(Builder, Value("HOME"));
    else
-      CreateMainWindow(Builder, Argument(1));
+      CreateMainWindow(Builder, Full_Name(Argument(1)));
    end if;
    Clear("LD_LIBRARY_PATH");
    Clear("GDK_PIXBUF_MODULE_FILE");
