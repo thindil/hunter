@@ -5,7 +5,7 @@ cd "$prefix"
 prefix=`pwd`
 
 if [ -d lib ]; then
-   if [ -z XDG_DATA_DIRS ]; then
+   if [ -z ${XDG_DATA_DIRS+x} ]; then
       export XDG_DATA_DIRS=/usr/share
    fi
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$prefix/lib
