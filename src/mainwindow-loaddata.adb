@@ -16,8 +16,10 @@
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.String_Split; use GNAT.String_Split;
+with Gtk.Button; use Gtk.Button;
+with Gtk.Box; use Gtk.Box;
 with Gtk.Enums; use Gtk.Enums;
-with Gtk.Label; use Gtk.Label;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Stack; use Gtk.Stack;
@@ -64,6 +66,32 @@ package body MainWindow.LoadData is
    begin
       return 0;
    end EmptySortFiles;
+
+   procedure RemovePathButtons
+     (Widget: not null access Gtk_Widget_Record'Class) is
+   begin
+      Destroy(Widget);
+   end RemovePathButtons;
+
+   procedure PathClicked(Self: access Gtk_Button_Record'Class) is
+      Value: GValue;
+      Tokens: Slice_Set;
+   begin
+      Init_Set_Int(Value, 0);
+      Child_Get_Property
+        (Gtk_Box(Get_Object(Builder, "boxpath")), Gtk_Widget(Self), "position",
+         Value);
+      if Get_Int(Value) > 0 then
+         Create(Tokens, To_String(CurrentDirectory), "/");
+         CurrentDirectory := Null_Unbounded_String;
+         for I in 2 .. (Get_Int(Value) + 1) loop
+            Append(CurrentDirectory, "/" & Slice(Tokens, Slice_Number(I)));
+         end loop;
+      else
+         CurrentDirectory := To_Unbounded_String("/");
+      end if;
+      LoadDirectory(To_String(CurrentDirectory), "fileslist");
+   end PathClicked;
 
    procedure LoadDirectory(Name, ListName: String) is
       FilesList: constant Gtk_List_Store :=
@@ -214,14 +242,27 @@ package body MainWindow.LoadData is
             FilesSort: constant Gtk_Tree_Model_Sort :=
               Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
             Value: GValue;
+            Tokens: Slice_Set;
+            Button: Gtk_Button;
+            ButtonBox: constant Gtk_Box :=
+              Gtk_Box(Get_Object(Builder, "boxpath"));
          begin
             Init_Set_String(Value, To_String(CurrentDirectory));
             Child_Set_Property
               (FileStack, Get_Visible_Child(FileStack), "title", Value);
-            Set_Markup
-              (Gtk_Label(Get_Object(Builder, "lblpath")),
-               "<span font_weight=""bold"">" & To_String(CurrentDirectory) &
-               "</span>");
+            Foreach(ButtonBox, RemovePathButtons'Access);
+            Gtk_New(Button, "/");
+            Pack_Start(ButtonBox, Button);
+            On_Clicked(Button, PathClicked'Access);
+            if CurrentDirectory /= To_Unbounded_String("/") then
+               Create(Tokens, To_String(CurrentDirectory), "/");
+               for I in 2 .. Slice_Count(Tokens) loop
+                  Gtk_New(Button, Slice(Tokens, I));
+                  Pack_Start(ButtonBox, Button);
+                  On_Clicked(Button, PathClicked'Access);
+               end loop;
+            end if;
+            Show_All(ButtonBox);
             Set_Sort_Func(FilesSort, 0, SortFiles'Access);
             Set_Sort_Column_Id(FilesSort, 0, Sort_Ascending);
          end;
