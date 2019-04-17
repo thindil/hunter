@@ -313,7 +313,7 @@ package body MainWindow is
       end if;
       Hide(Gtk_Widget(Self));
       CurrentDirectory := To_Unbounded_String(Containing_Directory(Name));
-      LoadDirectory(To_String(CurrentDirectory), "fileslist");
+      Reload(Builder);
    end IconPressed;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
