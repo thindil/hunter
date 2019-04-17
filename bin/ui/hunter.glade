@@ -174,11 +174,41 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="homogeneous">True</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkMenuToolButton" id="btnnew">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Add new file [ALT+N] or press arrow to see more options.</property>
+                <property name="label" translatable="yes">New</property>
+                <property name="use_underline">True</property>
+                <property name="icon_name">document-new</property>
+                <signal name="clicked" handler="Add_New" object="newmenufile" swapped="no"/>
+                <accelerator key="n" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkEntry" id="entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="primary_icon_name">window-close</property>
+            <property name="secondary_icon_name">mail-send</property>
+            <property name="primary_icon_tooltip_text" translatable="yes">Close</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
           </packing>
         </child>
         <child>
@@ -199,7 +229,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -214,7 +244,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -380,7 +410,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>
@@ -516,6 +546,32 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
             <property name="position">1</property>
           </packing>
         </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkMenu" id="newmenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="newmenufile">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="tooltip_text" translatable="yes">Add new file.</property>
+        <property name="label" translatable="yes">New File</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Add_New" object="newmenufile" swapped="no"/>
+        <accelerator key="n" signal="activate" modifiers="GDK_MOD1_MASK"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="newmenudirectory">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="tooltip_text" translatable="yes">Add new directory.</property>
+        <property name="label" translatable="yes">New Directory</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Add_New" object="newmenudirectory" swapped="no"/>
+        <accelerator key="d" signal="activate" modifiers="GDK_MOD1_MASK"/>
       </object>
     </child>
   </object>
