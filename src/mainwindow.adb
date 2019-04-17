@@ -26,6 +26,7 @@ with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
+with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
@@ -38,12 +39,16 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
 with Glib; use Glib;
+with Glib.Object; use Glib.Object;
+with Gdk.Event; use Gdk.Event;
 with MainWindow.LoadData; use MainWindow.LoadData;
 with Utils; use Utils;
 
 package body MainWindow is
 
    CurrentSelected: Unbounded_String;
+   type NewActions is (FILE, DIRECTORY);
+   NewAction: NewActions;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
@@ -267,6 +272,50 @@ package body MainWindow is
       end if;
    end SearchFiles;
 
+   procedure AddNew(User_Data: access GObject_Record'Class) is
+      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
+   begin
+      if User_Data = Get_Object(Builder, "newmenudirectory") then
+         NewAction := DIRECTORY;
+         Set_Icon_Tooltip_Text
+           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+            "Create new directory.");
+      else
+         NewAction := FILE;
+         Set_Icon_Tooltip_Text
+           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary, "Create new file.");
+      end if;
+      Show_All(GEntry);
+      Grab_Focus(GEntry);
+   end AddNew;
+
+   procedure IconPressed(Self: access Gtk_Entry_Record'Class;
+      Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button) is
+      pragma Unreferenced(Event);
+      Name: constant String :=
+        To_String(CurrentDirectory) & "/" & Get_Text(Self);
+      File: File_Type;
+   begin
+      if Icon_Pos = Gtk_Entry_Icon_Primary then
+         Set_Text(Self, "");
+         Hide(Gtk_Widget(Self));
+         return;
+      end if;
+      if Get_Text(Self) = "" then
+         return;
+      end if;
+      if NewAction = DIRECTORY then
+         Create_Path(Name);
+      else
+         Create_Path(Containing_Directory(Name));
+         Create(File, Out_File, Name);
+         Close(File);
+      end if;
+      Hide(Gtk_Widget(Self));
+      CurrentDirectory := To_Unbounded_String(Containing_Directory(Name));
+      LoadDirectory(To_String(CurrentDirectory), "fileslist");
+   end IconPressed;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -277,18 +326,25 @@ package body MainWindow is
       Register_Handler(Builder, "Reload", Reload'Access);
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
       Register_Handler(Builder, "Search_Files", SearchFiles'Access);
+      Register_Handler(Builder, "Add_New", AddNew'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
          VisibleFiles'Access);
+      On_Icon_Press
+        (Gtk_GEntry(Get_Object(Builder, "entry")), IconPressed'Access);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
          CurrentDirectory := To_Unbounded_String(Value("HOME"));
       end if;
+      Set_Menu
+        (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
+         Gtk_Widget(Get_Object(Builder, "newmenu")));
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
+      Hide(Gtk_Widget(Get_Object(Builder, "entry")));
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
