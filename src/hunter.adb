@@ -51,6 +51,7 @@ begin
    Clear("GDK_PIXBUF_MODULE_FILE");
    Clear("GDK_PIXBUF_MODULEDIR");
    Clear("FONTCONFIG_FILE");
+   Clear("RUNFROMSCRIPT");
    Main;
 exception
    when An_Exception : others =>
