@@ -295,6 +295,7 @@ package body MainWindow is
          Create(File, Out_File, Name);
          Close(File);
       end if;
+      Set_Text(Self, "");
       Hide(Gtk_Widget(Self));
       CurrentDirectory := To_Unbounded_String(Containing_Directory(Name));
       Reload(Builder);
