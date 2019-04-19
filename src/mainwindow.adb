@@ -312,7 +312,7 @@ package body MainWindow is
       for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
          Append(Message, SelectedItems(I));
          if Is_Directory(To_String(SelectedItems(I))) then
-            Append(Message, "(and it content)");
+            Append(Message, "(and its content)");
          end if;
          if I /= SelectedItems.Last_Index then
             Append(Message, LF);
