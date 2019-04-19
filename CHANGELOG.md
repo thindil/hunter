@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Command line argument to start the program with showing selected directory
 - Better searching for files/directories in viewed directory
 - Option to create new files/directories
+- Option to delete files/directories
 
 ### Changed
 - Updated README.md
