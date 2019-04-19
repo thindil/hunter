@@ -220,6 +220,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
             <property name="primary_icon_name">window-close</property>
             <property name="secondary_icon_name">mail-send</property>
             <property name="primary_icon_tooltip_text" translatable="yes">Close</property>
+            <signal name="activate" handler="Create_New" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>

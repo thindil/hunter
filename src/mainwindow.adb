@@ -273,9 +273,8 @@ package body MainWindow is
       Grab_Focus(GEntry);
    end AddNew;
 
-   procedure IconPressed(Self: access Gtk_Entry_Record'Class;
-      Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button) is
-      pragma Unreferenced(Event);
+   procedure CreateItem(Self: access Gtk_Entry_Record'Class;
+      Icon_Pos: Gtk_Entry_Icon_Position) is
       Name: constant String :=
         To_String(CurrentDirectory) & "/" & Get_Text(Self);
       File: File_Type;
@@ -299,6 +298,13 @@ package body MainWindow is
       Hide(Gtk_Widget(Self));
       CurrentDirectory := To_Unbounded_String(Containing_Directory(Name));
       Reload(Builder);
+   end CreateItem;
+
+   procedure IconPressed(Self: access Gtk_Entry_Record'Class;
+      Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button) is
+      pragma Unreferenced(Event);
+   begin
+      CreateItem(Self, Icon_Pos);
    end IconPressed;
 
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
@@ -333,6 +339,12 @@ package body MainWindow is
       Destroy(MessageDialog);
    end DeleteItem;
 
+   procedure CreateNew(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      CreateItem
+        (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);
+   end CreateNew;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -345,6 +357,7 @@ package body MainWindow is
       Register_Handler(Builder, "Search_Files", SearchFiles'Access);
       Register_Handler(Builder, "Add_New", AddNew'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
+      Register_Handler(Builder, "Create_New", CreateNew'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
