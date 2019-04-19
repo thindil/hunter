@@ -16,6 +16,7 @@
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
@@ -47,6 +48,9 @@ with Utils; use Utils;
 package body MainWindow is
 
    CurrentSelected: Unbounded_String;
+   package UnboundedString_Container is new Vectors(Positive,
+      Unbounded_String);
+   SelectedItems: UnboundedString_Container.Vector;
    type NewActions is (FILE, DIRECTORY);
    NewAction: NewActions;
 
@@ -56,43 +60,48 @@ package body MainWindow is
       Main_Quit;
    end Quit;
 
+   procedure GetSelectedItems(Model: Gtk_Tree_Model; Path: Gtk_Tree_Path;
+      Iter: Gtk_Tree_Iter) is
+      pragma Unreferenced(Path);
+   begin
+      SelectedItems.Append
+        (CurrentDirectory &
+         To_Unbounded_String("/" & Get_String(Model, Iter, 0)));
+   end GetSelectedItems;
+
    procedure ShowFileInfo(Object: access Gtkada_Builder_Record'Class) is
-      FilesIter: Gtk_Tree_Iter;
-      FilesModel: Gtk_Tree_Model;
    begin
       if Setting then
          return;
       end if;
-      Get_Selected
+      SelectedItems.Clear;
+      Selected_Foreach
         (Gtk.Tree_View.Get_Selection
            (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
-         FilesModel, FilesIter);
-      if FilesIter = Null_Iter then
+         GetSelectedItems'Access);
+      if SelectedItems.Length = 0 then
+         return;
+      elsif SelectedItems.Length > 1 then
+         Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
+         Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
          return;
       end if;
-      if CurrentSelected =
-        To_Unbounded_String(Get_String(FilesModel, FilesIter, 0)) then
+      if CurrentSelected = SelectedItems(1) then
          return;
       end if;
-      CurrentSelected :=
-        To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
+      CurrentSelected := SelectedItems(1);
       Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btnopen")), True);
-      if Get_Int(FilesModel, FilesIter, 1) < 3 then
+      if Is_Directory(To_String(CurrentSelected)) then
          Set_Sensitive(Gtk_Widget(Get_Object(Object, "btnopen")), True);
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
-         LoadDirectory
-           (To_String(CurrentDirectory) & "/" &
-            Get_String(FilesModel, FilesIter, 0),
-            "fileslist1");
+         LoadDirectory(To_String(CurrentSelected), "fileslist1");
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
          declare
             MimeType: constant String :=
-              GetMimeType
-                (To_String(CurrentDirectory) & "/" &
-                 To_String(CurrentSelected));
+              GetMimeType(To_String(CurrentSelected));
             Buffer: constant Gtk_Text_Buffer :=
               Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview")));
             Iter: Gtk_Text_Iter;
@@ -101,10 +110,7 @@ package body MainWindow is
             Set_Text(Buffer, "");
             Get_Start_Iter(Buffer, Iter);
             if MimeType(1 .. 4) = "text" then
-               Open
-                 (File, In_File,
-                  To_String(CurrentDirectory) & "/" &
-                  To_String(CurrentSelected));
+               Open(File, In_File, To_String(CurrentSelected));
                while not End_Of_File(File) loop
                   Insert(Buffer, Iter, Get_Line(File) & LF);
                end loop;
@@ -112,9 +118,7 @@ package body MainWindow is
             else
                Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
                if not CanBeOpened(MimeType) and
-                 not Is_Executable_File
-                   (To_String(CurrentDirectory) & "/" &
-                    To_String(CurrentSelected)) then
+                 not Is_Executable_File(To_String(CurrentSelected)) then
                   Set_Sensitive
                     (Gtk_Widget(Get_Object(Builder, "btnopen")), False);
                end if;
@@ -124,9 +128,6 @@ package body MainWindow is
    end ShowFileInfo;
 
    procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
-      FilesIter: Gtk_Tree_Iter;
-      FilesModel: Gtk_Tree_Model;
-      NewDirectory: Unbounded_String;
       procedure ShowMessage(Message: String) is
          MessageDialog: constant Gtk_Message_Dialog :=
            Gtk_Message_Dialog_New
@@ -138,27 +139,15 @@ package body MainWindow is
          end if;
       end ShowMessage;
    begin
-      Get_Selected
-        (Gtk.Tree_View.Get_Selection
-           (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
-         FilesModel, FilesIter);
-      if FilesIter = Null_Iter then
-         return;
-      end if;
-      if Get_Int(FilesModel, FilesIter, 1) < 3 then
-         NewDirectory :=
-           To_Unbounded_String(Get_String(FilesModel, FilesIter, 0));
-         if not Is_Read_Accessible_File
-             (To_String(CurrentDirectory) & "/" & To_String(NewDirectory)) then
+      if Is_Directory(To_String(CurrentSelected)) then
+         if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage("You can't enter this directory.");
             return;
          end if;
          if CurrentDirectory = To_Unbounded_String("/") then
             CurrentDirectory := Null_Unbounded_String;
          end if;
-         CurrentDirectory :=
-           CurrentDirectory &
-           To_Unbounded_String("/" & Get_String(FilesModel, FilesIter, 0));
+         CurrentDirectory := CurrentSelected;
          LoadDirectory(To_String(CurrentDirectory), "fileslist");
          Set_Cursor
            (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
@@ -174,23 +163,18 @@ package body MainWindow is
             Openable: constant Boolean := CanBeOpened(MimeType);
          begin
             if not Openable and
-              not Is_Executable_File
-                (To_String(CurrentDirectory) & "/" &
-                 To_String(CurrentSelected)) then
+              not Is_Executable_File(To_String(CurrentSelected)) then
                ShowMessage("I can't open this file.");
                return;
             elsif Openable then
                Pid :=
                  Non_Blocking_Spawn
                    (Containing_Directory(Command_Name) & "/xdg-open",
-                    Argument_String_To_List
-                      (To_String(CurrentDirectory) & "/" &
-                       To_String(CurrentSelected)).all);
+                    Argument_String_To_List(To_String(CurrentSelected)).all);
             else
                Pid :=
                  Non_Blocking_Spawn
-                   (To_String(CurrentDirectory) & "/" &
-                    To_String(CurrentSelected),
+                   (To_String(CurrentSelected),
                     Argument_String_To_List("").all);
             end if;
             if Pid = GNAT.Os_Lib.Invalid_Pid then
