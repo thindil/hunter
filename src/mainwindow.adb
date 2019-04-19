@@ -300,6 +300,38 @@ package body MainWindow is
       Reload(Builder);
    end IconPressed;
 
+   procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
+      MessageDialog: constant Gtk_Message_Dialog :=
+        Gtk_Message_Dialog_New
+          (Gtk_Window(Get_Object(Object, "mainwindow")), Modal, Message_Error,
+           Buttons_Yes_No, "");
+      Message: Unbounded_String := To_Unbounded_String("Delete?" & LF);
+      Response: Gtk_Response_Type;
+   begin
+      for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
+         Append(Message, SelectedItems(I));
+         if Is_Directory(To_String(SelectedItems(I))) then
+            Append(Message, "(and it content)");
+         end if;
+         if I /= SelectedItems.Last_Index then
+            Append(Message, LF);
+         end if;
+      end loop;
+      Set_Markup(MessageDialog, To_String(Message));
+      Response := Run(MessageDialog);
+      if Response = GTK_RESPONSE_YES then
+         for Item of SelectedItems loop
+            if Is_Directory(To_String(Item)) then
+               Delete_Tree(To_String(Item));
+            else
+               Delete_File(To_String(Item));
+            end if;
+         end loop;
+         Reload(Object);
+      end if;
+      Destroy(MessageDialog);
+   end DeleteItem;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -311,6 +343,7 @@ package body MainWindow is
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
       Register_Handler(Builder, "Search_Files", SearchFiles'Access);
       Register_Handler(Builder, "Add_New", AddNew'Access);
+      Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
