@@ -198,6 +198,7 @@ package body MainWindow is
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Object, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
+      Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
    end GoUpDirectory;
 
    procedure Reload(Object: access Gtkada_Builder_Record'Class) is
@@ -206,6 +207,7 @@ package body MainWindow is
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Object, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
+      Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
    end Reload;
 
    procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class) is
