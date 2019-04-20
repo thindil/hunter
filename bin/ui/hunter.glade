@@ -516,7 +516,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
             </child>
             <child>
               <object class="GtkLinkButton">
-                <property name="label" translatable="yes">https://github.com/thindil/steamsky/issues</property>
+                <property name="label" translatable="yes">https://github.com/thindil/hunter/issues</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
