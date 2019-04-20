@@ -51,8 +51,8 @@ package body MainWindow is
    package UnboundedString_Container is new Vectors(Positive,
       Unbounded_String);
    SelectedItems: UnboundedString_Container.Vector;
-   type NewActions is (FILE, DIRECTORY);
-   NewAction: NewActions;
+   type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME);
+   NewAction: ItemActions;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
@@ -262,12 +262,12 @@ package body MainWindow is
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
       if User_Data = Get_Object(Builder, "newmenudirectory") then
-         NewAction := DIRECTORY;
+         NewAction := CREATEDIRECTORY;
          Set_Icon_Tooltip_Text
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
             "Create new directory.");
       else
-         NewAction := FILE;
+         NewAction := CREATEFILE;
          Set_Icon_Tooltip_Text
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary, "Create new file.");
       end if;
@@ -289,13 +289,18 @@ package body MainWindow is
       if Get_Text(Self) = "" then
          return;
       end if;
-      if NewAction = DIRECTORY then
-         Create_Path(Name);
-      else
-         Create_Path(Containing_Directory(Name));
-         Create(File, Out_File, Name);
-         Close(File);
-      end if;
+      case NewAction is
+         when CREATEDIRECTORY =>
+            Create_Path(Name);
+         when CREATEFILE =>
+            Create_Path(Containing_Directory(Name));
+            Create(File, Out_File, Name);
+            Close(File);
+         when RENAME =>
+            if To_String(CurrentSelected) /= Name then
+               Rename(To_String(CurrentSelected), Name);
+            end if;
+      end case;
       Set_Text(Self, "");
       Hide(Gtk_Widget(Self));
       CurrentDirectory := To_Unbounded_String(Containing_Directory(Name));
@@ -347,6 +352,22 @@ package body MainWindow is
         (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);
    end CreateNew;
 
+   procedure StartRename(Object: access Gtkada_Builder_Record'Class) is
+      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Object, "entry"));
+   begin
+      NewAction := RENAME;
+      if Is_Directory(To_String(CurrentSelected)) then
+         Set_Icon_Tooltip_Text
+           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary, "Rename directory.");
+      else
+         Set_Icon_Tooltip_Text
+           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary, "Rename file.");
+      end if;
+      Set_Text(Gtk_GEntry(GEntry), Simple_Name(To_String(CurrentSelected)));
+      Show_All(GEntry);
+      Grab_Focus(GEntry);
+   end StartRename;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -360,6 +381,7 @@ package body MainWindow is
       Register_Handler(Builder, "Add_New", AddNew'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Create_New", CreateNew'Access);
+      Register_Handler(Builder, "Start_Rename", StartRename'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
