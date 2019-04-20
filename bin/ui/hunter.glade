@@ -206,6 +206,22 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="homogeneous">True</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkToolButton" id="btnrename">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Rename selected file or directory [CTRL-R]</property>
+                <property name="label" translatable="yes">Rename</property>
+                <property name="use_underline">True</property>
+                <property name="icon_name">edit-find-replace</property>
+                <signal name="clicked" handler="Start_Rename" swapped="no"/>
+                <accelerator key="r" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
