@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Better searching for files/directories in viewed directory
 - Option to create new files/directories
 - Option to delete files/directories
+- Option to rename files/directories
 
 ### Changed
 - Updated README.md
