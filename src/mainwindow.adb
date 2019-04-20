@@ -127,17 +127,18 @@ package body MainWindow is
       end if;
    end ShowFileInfo;
 
+   procedure ShowMessage(Message: String) is
+      MessageDialog: constant Gtk_Message_Dialog :=
+        Gtk_Message_Dialog_New
+          (Gtk_Window(Get_Object(Builder, "mainwindow")), Modal, Message_Error,
+           Buttons_Close, Message);
+   begin
+      if Run(MessageDialog) /= Gtk_Response_None then
+         Destroy(MessageDialog);
+      end if;
+   end ShowMessage;
+
    procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
-      procedure ShowMessage(Message: String) is
-         MessageDialog: constant Gtk_Message_Dialog :=
-           Gtk_Message_Dialog_New
-             (Gtk_Window(Get_Object(Object, "mainwindow")), Modal,
-              Message_Error, Buttons_Close, Message);
-      begin
-         if Run(MessageDialog) /= Gtk_Response_None then
-            Destroy(MessageDialog);
-         end if;
-      end ShowMessage;
    begin
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
@@ -150,9 +151,9 @@ package body MainWindow is
          CurrentDirectory := CurrentSelected;
          LoadDirectory(To_String(CurrentDirectory), "fileslist");
          Set_Cursor
-           (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
+           (Gtk_Tree_View(Get_Object(Object, "treefiles")),
             Gtk_Tree_Path_New_From_String("0"), null, False);
-         Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+         Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
       else
          declare
             MimeType: constant String :=
@@ -182,7 +183,7 @@ package body MainWindow is
             end if;
          end;
       end if;
-      Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btngoup")), True);
+      Set_Sensitive(Gtk_Widget(Get_Object(Object, "btngoup")), True);
    end ActivateFile;
 
    procedure GoUpDirectory(Object: access Gtkada_Builder_Record'Class) is
@@ -289,18 +290,29 @@ package body MainWindow is
       if Get_Text(Self) = "" then
          return;
       end if;
-      case NewAction is
-         when CREATEDIRECTORY =>
-            Create_Path(Name);
-         when CREATEFILE =>
-            Create_Path(Containing_Directory(Name));
-            Create(File, Out_File, Name);
-            Close(File);
-         when RENAME =>
-            if To_String(CurrentSelected) /= Name then
-               Rename(To_String(CurrentSelected), Name);
-            end if;
-      end case;
+      if Is_Write_Accessible_File(Containing_Directory(Name)) then
+         case NewAction is
+            when CREATEDIRECTORY =>
+               Create_Path(Name);
+            when CREATEFILE =>
+               Create_Path(Containing_Directory(Name));
+               Create(File, Out_File, Name);
+               Close(File);
+            when RENAME =>
+               if To_String(CurrentSelected) /= Name then
+                  Rename(To_String(CurrentSelected), Name);
+               end if;
+         end case;
+      else
+         if NewAction /= RENAME then
+            ShowMessage
+              ("You don't have permissions to write to " &
+               Containing_Directory(Name));
+         else
+            ShowMessage("You don't have permissions to rename " & Name);
+         end if;
+         return;
+      end if;
       Set_Text(Self, "");
       Hide(Gtk_Widget(Self));
       CurrentDirectory := To_Unbounded_String(Containing_Directory(Name));
