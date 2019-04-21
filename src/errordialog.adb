@@ -18,8 +18,10 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with Gtk.Label; use Gtk.Label;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Widget; use Gtk.Widget;
 
@@ -31,11 +33,13 @@ package body ErrorDialog is
       PrintToTerminal: Boolean) is
       ErrorFile: File_Type;
       ErrorText: Unbounded_String;
+      ErrorFilePath: constant String :=
+        Value("HOME") & "/.cache/hunter/error.log";
    begin
-      if Exists("error.log") then
-         Open(ErrorFile, Append_File, "error.log");
+      if Ada.Directories.Exists(ErrorFilePath) then
+         Open(ErrorFile, Append_File, ErrorFilePath);
       else
-         Create(ErrorFile, Append_File, "error.log");
+         Create(ErrorFile, Append_File, ErrorFilePath);
       end if;
       Append(ErrorText, Ada.Calendar.Formatting.Image(Clock));
       Append(ErrorText, LF);
@@ -68,8 +72,14 @@ package body ErrorDialog is
    end On_Exception;
 
    procedure CreateErrorDialog(NewBuilder: Gtkada_Builder) is
+      Label: constant Gtk_Label :=
+        Gtk_Label(Get_Object(NewBuilder, "lblerror"));
    begin
       Builder := NewBuilder;
+      Set_Label
+        (Label,
+         Get_Label(Label) & " from '" & Value("HOME") &
+         "/.cache/hunter' directory.");
    end CreateErrorDialog;
 
 end ErrorDialog;

@@ -531,10 +531,10 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </packing>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="lblerror">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes"> and attach (if possible) file 'error.log'.</property>
+                <property name="label" translatable="yes"> and attach (if possible) file 'error.log'</property>
               </object>
               <packing>
                 <property name="expand">False</property>

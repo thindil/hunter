@@ -34,6 +34,9 @@ begin
         ("The program can be run only via 'hunter.sh' script. Please don't run binary directly.");
       return;
    end if;
+   if not Ada.Directories.Exists(Value("HOME") & "/" & ".cache/hunter") then
+      Create_Path(Value("HOME") & "/" & ".cache/hunter");
+   end if;
    Init;
    Set_On_Exception(On_Exception'Access);
    Gtk_New(Builder);
