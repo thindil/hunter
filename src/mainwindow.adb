@@ -19,6 +19,7 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
@@ -355,6 +356,12 @@ package body MainWindow is
          end loop;
          Reload(Object);
       end if;
+      Destroy(MessageDialog);
+   exception
+      when An_Exception : Ada.Directories.USE_ERROR =>
+         ShowMessage
+           ("Could not delete selected files or directories. Reason: " &
+            Exception_Message(An_Exception));
       Destroy(MessageDialog);
    end DeleteItem;
 
