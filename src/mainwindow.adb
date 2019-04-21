@@ -282,6 +282,7 @@ package body MainWindow is
       Name: constant String :=
         To_String(CurrentDirectory) & "/" & Get_Text(Self);
       File: File_Type;
+      ActionString, ActionBlocker: Unbounded_String;
    begin
       if Icon_Pos = Gtk_Entry_Icon_Primary then
          Set_Text(Self, "");
@@ -289,6 +290,26 @@ package body MainWindow is
          return;
       end if;
       if Get_Text(Self) = "" then
+         return;
+      end if;
+      if Ada.Directories.Exists(Name) then
+         case NewAction is
+            when CREATEDIRECTORY =>
+               ActionString := To_Unbounded_String("create directory with");
+            when CREATEFILE =>
+               ActionString := To_Unbounded_String("create file with");
+            when RENAME =>
+               ActionString := To_Unbounded_String("rename with new");
+         end case;
+         if Is_Directory(Name) then
+            ActionBlocker := To_Unbounded_String("directory");
+         else
+            ActionBlocker := To_Unbounded_String("file");
+         end if;
+         ShowMessage
+           ("You can't " & To_String(ActionString) & " name '" & Name &
+            "' because there exists " & To_String(ActionBlocker) &
+            " with that name.");
          return;
       end if;
       if Is_Write_Accessible_File(Containing_Directory(Name)) then
@@ -362,7 +383,7 @@ package body MainWindow is
          ShowMessage
            ("Could not delete selected files or directories. Reason: " &
             Exception_Message(An_Exception));
-      Destroy(MessageDialog);
+         Destroy(MessageDialog);
    end DeleteItem;
 
    procedure CreateNew(Object: access Gtkada_Builder_Record'Class) is
