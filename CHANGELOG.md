@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Option to create new files/directories
 - Option to delete files/directories
 - Option to rename files/directories
+- Option to move files/directories
 
 ### Changed
 - Updated README.md
