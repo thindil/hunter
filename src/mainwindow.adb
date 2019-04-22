@@ -51,7 +51,7 @@ package body MainWindow is
    CurrentSelected: Unbounded_String;
    package UnboundedString_Container is new Vectors(Positive,
       Unbounded_String);
-   SelectedItems: UnboundedString_Container.Vector;
+   SelectedItems, MoveItemsList: UnboundedString_Container.Vector;
    type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME);
    NewAction: ItemActions;
 
@@ -408,6 +408,30 @@ package body MainWindow is
       Grab_Focus(GEntry);
    end StartRename;
 
+   procedure MoveItems(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      if MoveItemsList.Length > 0
+        and then Containing_Directory(To_String(MoveItemsList(1))) =
+          To_String(CurrentDirectory) then
+         return;
+      end if;
+      if MoveItemsList.Length = 0 then
+         MoveItemsList := SelectedItems;
+         return;
+      end if;
+      if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
+         ShowMessage
+           ("You don't have permissions to move selected items here.");
+      end if;
+      for Name of MoveItemsList loop
+         Rename
+           (To_String(Name),
+            To_String(CurrentDirectory) & "/" & Simple_Name(To_String(Name)));
+      end loop;
+      MoveItemsList.Clear;
+      Reload(Object);
+   end MoveItems;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -422,6 +446,7 @@ package body MainWindow is
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Create_New", CreateNew'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
+      Register_Handler(Builder, "Move_Items", MoveItems'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
