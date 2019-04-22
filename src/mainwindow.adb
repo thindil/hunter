@@ -51,7 +51,8 @@ package body MainWindow is
    CurrentSelected: Unbounded_String;
    package UnboundedString_Container is new Vectors(Positive,
       Unbounded_String);
-   SelectedItems, MoveItemsList: UnboundedString_Container.Vector;
+   SelectedItems, MoveItemsList,
+   CopyItemsList: UnboundedString_Container.Vector;
    type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME);
    NewAction: ItemActions;
 
@@ -422,6 +423,7 @@ package body MainWindow is
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
          ShowMessage
            ("You don't have permissions to move selected items here.");
+         return;
       end if;
       for Name of MoveItemsList loop
          Rename
@@ -431,6 +433,57 @@ package body MainWindow is
       MoveItemsList.Clear;
       Reload(Object);
    end MoveItems;
+
+   procedure CopyItems(Object: access Gtkada_Builder_Record'Class) is
+      procedure CopyItem(Name: String) is
+         procedure ProcessFile(Item: Directory_Entry_Type) is
+         begin
+            Put_Line(Full_Name(Item));
+         end ProcessFile;
+         procedure ProcessDirectory(Item: Directory_Entry_Type) is
+         begin
+            Put_Line(Full_Name(Item));
+            if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
+               CopyItem(Full_Name(Item));
+            end if;
+         exception
+            when Ada.Directories.Name_Error =>
+               null;
+         end ProcessDirectory;
+      begin
+         if Is_Directory(Name) then
+            Search
+              (Name, "", (Directory => False, others => True),
+               ProcessFile'Access);
+            Search
+              (Name, "", (Directory => True, others => False),
+               ProcessDirectory'Access);
+         else
+            Copy_File
+              (Name, To_String(CurrentDirectory) & "/" & Simple_Name(Name));
+         end if;
+      end CopyItem;
+   begin
+      if CopyItemsList.Length > 0
+        and then Containing_Directory(To_String(CopyItemsList(1))) =
+          To_String(CurrentDirectory) then
+         return;
+      end if;
+      if CopyItemsList.Length = 0 then
+         CopyItemsList := SelectedItems;
+         return;
+      end if;
+      if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
+         ShowMessage
+           ("You don't have permissions to move selected items here.");
+         return;
+      end if;
+      for Name of CopyItemsList loop
+         CopyItem(To_String(Name));
+      end loop;
+      CopyItemsList.Clear;
+      Reload(Object);
+   end CopyItems;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
@@ -447,6 +500,7 @@ package body MainWindow is
       Register_Handler(Builder, "Create_New", CreateNew'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
       Register_Handler(Builder, "Move_Items", MoveItems'Access);
+      Register_Handler(Builder, "Copy_Items", CopyItems'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),

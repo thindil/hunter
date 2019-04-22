@@ -238,6 +238,22 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="homogeneous">True</property>
               </packing>
             </child>
+            <child>
+              <object class="GtkToggleToolButton" id="btncopy">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Copy selected files [ALT-C]. Pressed button means start copying currently selected files or directories. Press again to copy them.</property>
+                <property name="label" translatable="yes">Copy</property>
+                <property name="use_underline">True</property>
+                <property name="icon_name">edit-copy</property>
+                <signal name="clicked" handler="Copy_Items" swapped="no"/>
+                <accelerator key="c" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
