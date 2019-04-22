@@ -435,14 +435,15 @@ package body MainWindow is
    end MoveItems;
 
    procedure CopyItems(Object: access Gtkada_Builder_Record'Class) is
+      Path: Unbounded_String;
       procedure CopyItem(Name: String) is
          procedure ProcessFile(Item: Directory_Entry_Type) is
          begin
-            Put_Line(Full_Name(Item));
+            Copy_File
+              (Full_Name(Item), To_String(Path) & "/" & Simple_Name(Item));
          end ProcessFile;
          procedure ProcessDirectory(Item: Directory_Entry_Type) is
          begin
-            Put_Line(Full_Name(Item));
             if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
                CopyItem(Full_Name(Item));
             end if;
@@ -452,6 +453,8 @@ package body MainWindow is
          end ProcessDirectory;
       begin
          if Is_Directory(Name) then
+            Append(Path, "/" & Simple_Name(Name));
+            Create_Path(To_String(Path));
             Search
               (Name, "", (Directory => False, others => True),
                ProcessFile'Access);
@@ -459,8 +462,7 @@ package body MainWindow is
               (Name, "", (Directory => True, others => False),
                ProcessDirectory'Access);
          else
-            Copy_File
-              (Name, To_String(CurrentDirectory) & "/" & Simple_Name(Name));
+            Copy_File(Name, To_String(Path) & "/" & Simple_Name(Name));
          end if;
       end CopyItem;
    begin
@@ -475,10 +477,11 @@ package body MainWindow is
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
          ShowMessage
-           ("You don't have permissions to move selected items here.");
+           ("You don't have permissions to copy selected items here.");
          return;
       end if;
       for Name of CopyItemsList loop
+         Path := CurrentDirectory;
          CopyItem(To_String(Name));
       end loop;
       CopyItemsList.Clear;
