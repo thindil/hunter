@@ -159,9 +159,7 @@ package body MainWindow is
       else
          declare
             MimeType: constant String :=
-              GetMimeType
-                (To_String(CurrentDirectory) & "/" &
-                 To_String(CurrentSelected));
+              GetMimeType(To_String(CurrentSelected));
             Pid: GNAT.OS_Lib.Process_Id;
             Openable: constant Boolean := CanBeOpened(MimeType);
          begin
