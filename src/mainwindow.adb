@@ -350,8 +350,8 @@ package body MainWindow is
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
       MessageDialog: constant Gtk_Message_Dialog :=
         Gtk_Message_Dialog_New
-          (Gtk_Window(Get_Object(Object, "mainwindow")), Modal, Message_Error,
-           Buttons_Yes_No, "");
+          (Gtk_Window(Get_Object(Object, "mainwindow")), Modal,
+           Message_Question, Buttons_Yes_No, "");
       Message: Unbounded_String := To_Unbounded_String("Delete?" & LF);
       Response: Gtk_Response_Type;
    begin
