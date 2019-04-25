@@ -81,9 +81,7 @@ package body MainWindow is
         (Gtk.Tree_View.Get_Selection
            (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
          GetSelectedItems'Access);
-      if SelectedItems.Length = 0 then
-         return;
-      elsif SelectedItems.Length > 1 then
+      if SelectedItems.Length /= 1 then
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
          return;
@@ -186,6 +184,15 @@ package body MainWindow is
       Set_Sensitive(Gtk_Widget(Get_Object(Object, "btngoup")), True);
    end ActivateFile;
 
+   procedure Reload(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      LoadDirectory(To_String(CurrentDirectory), "fileslist");
+      Set_Cursor
+        (Gtk_Tree_View(Get_Object(Object, "treefiles")),
+         Gtk_Tree_Path_New_From_String("0"), null, False);
+      Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+   end Reload;
+
    procedure GoUpDirectory(Object: access Gtkada_Builder_Record'Class) is
    begin
       CurrentDirectory :=
@@ -195,21 +202,8 @@ package body MainWindow is
          CurrentDirectory := To_Unbounded_String("/");
          Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btngoup")), False);
       end if;
-      LoadDirectory(To_String(CurrentDirectory), "fileslist");
-      Set_Cursor
-        (Gtk_Tree_View(Get_Object(Object, "treefiles")),
-         Gtk_Tree_Path_New_From_String("0"), null, False);
-      Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+      Reload(Object);
    end GoUpDirectory;
-
-   procedure Reload(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      LoadDirectory(To_String(CurrentDirectory), "fileslist");
-      Set_Cursor
-        (Gtk_Tree_View(Get_Object(Object, "treefiles")),
-         Gtk_Tree_Path_New_From_String("0"), null, False);
-      Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
-   end Reload;
 
    procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class) is
       SearchEntry: constant Gtk_Widget :=
