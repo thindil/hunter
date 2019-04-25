@@ -31,4 +31,6 @@ private
    -- Currently selected directory to show
    CurrentDirectory: Unbounded_String;
 
+   -- Reload directory listing and preview of selected item
+   procedure Reload(Object: access Gtkada_Builder_Record'Class);
 end MainWindow;

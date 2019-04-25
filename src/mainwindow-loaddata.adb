@@ -91,6 +91,7 @@ package body MainWindow.LoadData is
          CurrentDirectory := To_Unbounded_String("/");
       end if;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
+      Reload(Builder);
    end PathClicked;
 
    procedure LoadDirectory(Name, ListName: String) is
