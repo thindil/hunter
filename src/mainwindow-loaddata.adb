@@ -257,7 +257,7 @@ package body MainWindow.LoadData is
             On_Clicked(Button, PathClicked'Access);
             if CurrentDirectory /= To_Unbounded_String("/") then
                Create(Tokens, To_String(CurrentDirectory), "/");
-               for I in 2 .. Slice_Count(Tokens) loop
+               for I in 3 .. Slice_Count(Tokens) loop
                   Gtk_New(Button, Slice(Tokens, I));
                   Pack_Start(ButtonBox, Button);
                   On_Clicked(Button, PathClicked'Access);
