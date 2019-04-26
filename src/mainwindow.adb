@@ -201,6 +201,8 @@ package body MainWindow is
           (CurrentDirectory, 1, Index(CurrentDirectory, "/", Backward) - 1);
       if CurrentDirectory = Null_Unbounded_String then
          CurrentDirectory := To_Unbounded_String("/");
+      end if;
+      if CurrentDirectory = To_Unbounded_String("/") then
          Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btngoup")), False);
       end if;
       Reload(Object);
