@@ -89,6 +89,7 @@ package body MainWindow.LoadData is
          end loop;
       else
          CurrentDirectory := To_Unbounded_String("/");
+         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btngoup")), False);
       end if;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       Reload(Builder);
