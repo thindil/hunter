@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Detecting current icons for the program in AppImage
 - Link in error dialog
+- Block go up button when reach root directory
 
 ## [0.1] - 2019-04-12
 - Initial release
