@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.2] - 2019-04-26
 
 ### Added
 - Command line argument to start the program with showing selected directory
