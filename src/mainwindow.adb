@@ -483,6 +483,12 @@ package body MainWindow is
       Reload(Object);
    end CopyItems;
 
+   procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      CurrentDirectory := To_Unbounded_String(Value("HOME"));
+      Reload(Object);
+   end GoHome;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -499,6 +505,7 @@ package body MainWindow is
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
       Register_Handler(Builder, "Move_Items", MoveItems'Access);
       Register_Handler(Builder, "Copy_Items", CopyItems'Access);
+      Register_Handler(Builder, "Go_Home", GoHome'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
