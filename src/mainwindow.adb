@@ -23,6 +23,7 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.GEntry; use Gtk.GEntry;
@@ -483,11 +484,38 @@ package body MainWindow is
       Reload(Object);
    end CopyItems;
 
-   procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
+   procedure GoToBookmark(User_Data: access GObject_Record'Class) is
+      File: File_Type;
+      Line: Unbounded_String;
+      EqualIndex: Natural;
    begin
-      CurrentDirectory := To_Unbounded_String(Value("HOME"));
-      Reload(Object);
-   end GoHome;
+      if User_Data = Get_Object(Builder, "bookmarkhome") then
+         CurrentDirectory := To_Unbounded_String(Value("HOME"));
+      elsif User_Data = Get_Object(Builder, "bookmarkdesktop") then
+         if not Ada.Environment_Variables.Exists("XDG_DESKTOP_DIR")
+           or else Value("XDG_DESKTOP_DIR") = "" then
+            Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
+            while not End_Of_File(File) loop
+               Line := To_Unbounded_String(Get_Line(File));
+               EqualIndex := Index(Line, "=");
+               if EqualIndex > 0 then
+                  if Slice(Line, 1, EqualIndex - 1) = "XDG_DESKTOP_DIR" then
+                     Set
+                       ("XDG_DESKTOP_DIR",
+                        Slice(Line, EqualIndex + 2, Length(Line) - 1));
+                     exit;
+                  end if;
+               end if;
+            end loop;
+            Close(File);
+         end if;
+         CurrentDirectory :=
+           To_Unbounded_String(Expand_Path(Value("XDG_DESKTOP_DIR")));
+      end if;
+      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
+         Reload(Builder);
+      end if;
+   end GoToBookmark;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
@@ -505,7 +533,7 @@ package body MainWindow is
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
       Register_Handler(Builder, "Move_Items", MoveItems'Access);
       Register_Handler(Builder, "Copy_Items", CopyItems'Access);
-      Register_Handler(Builder, "Go_Home", GoHome'Access);
+      Register_Handler(Builder, "Go_To_Bookmark", GoToBookmark'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
@@ -520,6 +548,9 @@ package body MainWindow is
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
          Gtk_Widget(Get_Object(Builder, "newmenu")));
+      Set_Menu
+        (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),
+         Gtk_Widget(Get_Object(Builder, "bookmarksmenu")));
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
