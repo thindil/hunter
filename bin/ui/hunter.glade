@@ -24,6 +24,29 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <!-- interface-license-type gplv3 -->
   <!-- interface-name hunter -->
   <!-- interface-copyright 2019 Bartek thindil Jasicki -->
+  <object class="GtkMenu" id="bookmarksmenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="bookmarkhome">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Home</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Go_To_Bookmark" object="bookmarkhome" swapped="no"/>
+        <accelerator key="h" signal="activate" modifiers="GDK_MOD1_MASK"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="bookmarkdesktop">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Desktop</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Go_To_Bookmark" object="bookmarkdesktop" swapped="no"/>
+      </object>
+    </child>
+  </object>
   <object class="GtkTextBuffer" id="errorbuffer"/>
   <object class="GtkListStore" id="fileslist">
     <columns>
@@ -101,19 +124,19 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="btnhome">
+              <object class="GtkMenuToolButton" id="btnbookmarks">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Go to your home directory [ALT+H]</property>
+                <property name="tooltip_text" translatable="yes">Go to your home directory [ALT+H] or press arrow to see more bookmarks</property>
                 <property name="label" translatable="yes">Home</property>
                 <property name="use_underline">True</property>
                 <property name="icon_name">user-home</property>
-                <signal name="clicked" handler="Go_Home" swapped="no"/>
+                <signal name="clicked" handler="Go_To_Bookmark" object="bookmarkhome" swapped="no"/>
                 <accelerator key="h" signal="clicked" modifiers="GDK_MOD1_MASK"/>
               </object>
               <packing>
                 <property name="expand">False</property>
-                <property name="homogeneous">True</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -642,7 +665,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="tooltip_text" translatable="yes">Add new file.</property>
-        <property name="label" translatable="yes">New File</property>
+        <property name="label" translatable="yes">_New File</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="Add_New" object="newmenufile" swapped="no"/>
         <accelerator key="n" signal="activate" modifiers="GDK_MOD1_MASK"/>
@@ -653,7 +676,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="tooltip_text" translatable="yes">Add new directory.</property>
-        <property name="label" translatable="yes">New Directory</property>
+        <property name="label" translatable="yes">New _Directory</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="Add_New" object="newmenudirectory" swapped="no"/>
         <accelerator key="d" signal="activate" modifiers="GDK_MOD1_MASK"/>
