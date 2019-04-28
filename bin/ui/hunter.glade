@@ -46,6 +46,60 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
         <signal name="activate" handler="Go_To_Bookmark" object="bookmarkdesktop" swapped="no"/>
       </object>
     </child>
+    <child>
+      <object class="GtkMenuItem" id="bookmarkdownload">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">D_ownload</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Go_To_Bookmark" object="bookmarkdownload" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="bookmarkpublic">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Public</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Go_To_Bookmark" object="bookmarkpublic" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="bookmarkdocuments">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Do_cuments</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Go_To_Bookmark" object="bookmarkdocuments" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="bookmarkmusic">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Music</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Go_To_Bookmark" object="bookmarkmusic" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="bookmarkpictures">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">P_ictures</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Go_To_Bookmark" object="bookmarkpictures" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="bookmarkvideos">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Videos</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Go_To_Bookmark" object="bookmarkvideos" swapped="no"/>
+      </object>
+    </child>
   </object>
   <object class="GtkTextBuffer" id="errorbuffer"/>
   <object class="GtkListStore" id="fileslist">
