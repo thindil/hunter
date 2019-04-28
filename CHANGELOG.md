@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Option to go to XDG user directories (like Download, Documents, etc)
+
 ## [0.2] - 2019-04-26
 
 ### Added
