@@ -485,32 +485,45 @@ package body MainWindow is
    end CopyItems;
 
    procedure GoToBookmark(User_Data: access GObject_Record'Class) is
-      File: File_Type;
-      Line: Unbounded_String;
-      EqualIndex: Natural;
-   begin
-      if User_Data = Get_Object(Builder, "bookmarkhome") then
-         CurrentDirectory := To_Unbounded_String(Value("HOME"));
-      elsif User_Data = Get_Object(Builder, "bookmarkdesktop") then
+      function GetXDGDirectory(Name: String) return Unbounded_String is
+         File: File_Type;
+         Line: Unbounded_String;
+         EqualIndex: Natural;
+      begin
          if not Ada.Environment_Variables.Exists("XDG_DESKTOP_DIR")
-           or else Value("XDG_DESKTOP_DIR") = "" then
+           or else Value(Name) = "" then
             Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
             while not End_Of_File(File) loop
                Line := To_Unbounded_String(Get_Line(File));
                EqualIndex := Index(Line, "=");
                if EqualIndex > 0 then
-                  if Slice(Line, 1, EqualIndex - 1) = "XDG_DESKTOP_DIR" then
-                     Set
-                       ("XDG_DESKTOP_DIR",
-                        Slice(Line, EqualIndex + 2, Length(Line) - 1));
+                  if Slice(Line, 1, EqualIndex - 1) = Name then
+                     Set(Name, Slice(Line, EqualIndex + 2, Length(Line) - 1));
                      exit;
                   end if;
                end if;
             end loop;
             Close(File);
          end if;
-         CurrentDirectory :=
-           To_Unbounded_String(Expand_Path(Value("XDG_DESKTOP_DIR")));
+         return To_Unbounded_String(Expand_Path(Value(Name)));
+      end GetXDGDirectory;
+   begin
+      if User_Data = Get_Object(Builder, "bookmarkhome") then
+         CurrentDirectory := To_Unbounded_String(Value("HOME"));
+      elsif User_Data = Get_Object(Builder, "bookmarkdesktop") then
+         CurrentDirectory := GetXDGDirectory("XDG_DESKTOP_DIR");
+      elsif User_Data = Get_Object(Builder, "bookmarkdownload") then
+         CurrentDirectory := GetXDGDirectory("XDG_DOWNLOAD_DIR");
+      elsif User_Data = Get_Object(Builder, "bookmarkpublic") then
+         CurrentDirectory := GetXDGDirectory("XDG_PUBLICSHARE_DIR");
+      elsif User_Data = Get_Object(Builder, "bookmarkdocuments") then
+         CurrentDirectory := GetXDGDirectory("XDG_DOCUMENTS_DIR");
+      elsif User_Data = Get_Object(Builder, "bookmarkmusic") then
+         CurrentDirectory := GetXDGDirectory("XDG_MUSIC_DIR");
+      elsif User_Data = Get_Object(Builder, "bookmarkpictures") then
+         CurrentDirectory := GetXDGDirectory("XDG_PICTURES_DIR");
+      elsif User_Data = Get_Object(Builder, "bookmarkvideos") then
+         CurrentDirectory := GetXDGDirectory("XDG_VIDEOS_DIR");
       end if;
       if Ada.Directories.Exists(To_String(CurrentDirectory)) then
          Reload(Builder);
