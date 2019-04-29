@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Option to go to XDG user directories (like Download, Documents, etc)
+- Option to go to GTK bookmark locations
 
 ## [0.2] - 2019-04-26
 
