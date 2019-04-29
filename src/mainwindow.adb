@@ -56,6 +56,12 @@ package body MainWindow is
    CopyItemsList: UnboundedString_Container.Vector;
    type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME);
    NewAction: ItemActions;
+   type Bookmark_Record is record
+      MenuName: Unbounded_String;
+      Path: Unbounded_String;
+   end record;
+   package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
+   BookmarksList: Bookmarks_Container.Vector;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
@@ -485,12 +491,41 @@ package body MainWindow is
    end CopyItems;
 
    procedure GoToBookmark(User_Data: access GObject_Record'Class) is
+   begin
+      for I in BookmarksList.Iterate loop
+         if User_Data =
+           Get_Object(Builder, To_String(BookmarksList(I).MenuName)) then
+            CurrentDirectory := BookmarksList(I).Path;
+            exit;
+         end if;
+      end loop;
+      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
+         Reload(Builder);
+      end if;
+   end GoToBookmark;
+
+   procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
+      XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
+        ((To_Unbounded_String("bookmarkdesktop"),
+          To_Unbounded_String("XDG_DESKTOP_DIR")),
+         (To_Unbounded_String("bookmarkdownload"),
+          To_Unbounded_String("XDG_DOWNLOAD_DIR")),
+         (To_Unbounded_String("bookmarkpublic"),
+          To_Unbounded_String("XDG_PUBLICSHARE_DIR")),
+         (To_Unbounded_String("bookmarkdocuments"),
+          To_Unbounded_String("XDG_DOCUMENTS_DIR")),
+         (To_Unbounded_String("bookmarkmusic"),
+          To_Unbounded_String("XDG_MUSIC_DIR")),
+         (To_Unbounded_String("bookmarkpictures"),
+          To_Unbounded_String("XDG_PICTURES_DIR")),
+         (To_Unbounded_String("bookmarkvideos"),
+          To_Unbounded_String("XDG_VIDEOS_DIR")));
       function GetXDGDirectory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String;
          EqualIndex: Natural;
       begin
-         if not Ada.Environment_Variables.Exists("XDG_DESKTOP_DIR")
+         if not Ada.Environment_Variables.Exists(Name)
            or else Value(Name) = "" then
             Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
             while not End_Of_File(File) loop
@@ -507,30 +542,6 @@ package body MainWindow is
          end if;
          return To_Unbounded_String(Expand_Path(Value(Name)));
       end GetXDGDirectory;
-   begin
-      if User_Data = Get_Object(Builder, "bookmarkhome") then
-         CurrentDirectory := To_Unbounded_String(Value("HOME"));
-      elsif User_Data = Get_Object(Builder, "bookmarkdesktop") then
-         CurrentDirectory := GetXDGDirectory("XDG_DESKTOP_DIR");
-      elsif User_Data = Get_Object(Builder, "bookmarkdownload") then
-         CurrentDirectory := GetXDGDirectory("XDG_DOWNLOAD_DIR");
-      elsif User_Data = Get_Object(Builder, "bookmarkpublic") then
-         CurrentDirectory := GetXDGDirectory("XDG_PUBLICSHARE_DIR");
-      elsif User_Data = Get_Object(Builder, "bookmarkdocuments") then
-         CurrentDirectory := GetXDGDirectory("XDG_DOCUMENTS_DIR");
-      elsif User_Data = Get_Object(Builder, "bookmarkmusic") then
-         CurrentDirectory := GetXDGDirectory("XDG_MUSIC_DIR");
-      elsif User_Data = Get_Object(Builder, "bookmarkpictures") then
-         CurrentDirectory := GetXDGDirectory("XDG_PICTURES_DIR");
-      elsif User_Data = Get_Object(Builder, "bookmarkvideos") then
-         CurrentDirectory := GetXDGDirectory("XDG_VIDEOS_DIR");
-      end if;
-      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
-         Reload(Builder);
-      end if;
-   end GoToBookmark;
-
-   procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
@@ -565,6 +576,16 @@ package body MainWindow is
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),
          Gtk_Widget(Get_Object(Builder, "bookmarksmenu")));
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
+      BookmarksList.Append
+        (New_Item =>
+           (MenuName => To_Unbounded_String("bookmarkhome"),
+            Path => To_Unbounded_String(Value("HOME"))));
+      for I in XDGBookmarks'Range loop
+         BookmarksList.Append
+           (New_Item =>
+              (MenuName => XDGBookmarks(I).MenuName,
+               Path => GetXDGDirectory(To_String(XDGBookmarks(I).Path))));
+      end loop;
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
       Hide(Gtk_Widget(Get_Object(Builder, "entry")));
