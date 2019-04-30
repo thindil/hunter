@@ -76,6 +76,9 @@ package body MainWindow is
       Iter: Gtk_Tree_Iter) is
       pragma Unreferenced(Path);
    begin
+      if CurrentDirectory = To_Unbounded_String("/") then
+         CurrentDirectory := Null_Unbounded_String;
+      end if;
       SelectedItems.Append
         (CurrentDirectory &
          To_Unbounded_String("/" & Get_String(Model, Iter, 0)));
