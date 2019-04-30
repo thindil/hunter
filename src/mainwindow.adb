@@ -44,7 +44,6 @@ with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
-with Gtk.Window; use Gtk.Window;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
 with Gdk.Event; use Gdk.Event;
@@ -58,7 +57,7 @@ package body MainWindow is
       Unbounded_String);
    SelectedItems, MoveItemsList,
    CopyItemsList: UnboundedString_Container.Vector;
-   type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME);
+   type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE);
    NewAction: ItemActions;
    type Bookmark_Record is record
       MenuName: Unbounded_String;
@@ -308,6 +307,8 @@ package body MainWindow is
                ActionString := To_Unbounded_String("create file with");
             when RENAME =>
                ActionString := To_Unbounded_String("rename with new");
+            when others =>
+               null;
          end case;
          if Is_Directory(Name) then
             ActionBlocker := To_Unbounded_String("directory");
@@ -332,6 +333,8 @@ package body MainWindow is
                if To_String(CurrentSelected) /= Name then
                   Rename(To_String(CurrentSelected), Name);
                end if;
+            when others =>
+               null;
          end case;
       else
          if NewAction /= RENAME then
@@ -357,12 +360,8 @@ package body MainWindow is
    end IconPressed;
 
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
-      MessageDialog: constant Gtk_Message_Dialog :=
-        Gtk_Message_Dialog_New
-          (Gtk_Window(Get_Object(Object, "mainwindow")), Modal,
-           Message_Question, Buttons_Yes_No, "");
+      pragma Unreferenced(Object);
       Message: Unbounded_String := To_Unbounded_String("Delete?" & LF);
-      Response: Gtk_Response_Type;
    begin
       for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
          Append(Message, SelectedItems(I));
@@ -373,25 +372,8 @@ package body MainWindow is
             Append(Message, LF);
          end if;
       end loop;
-      Set_Markup(MessageDialog, To_String(Message));
-      Response := Run(MessageDialog);
-      if Response = GTK_RESPONSE_YES then
-         for Item of SelectedItems loop
-            if Is_Directory(To_String(Item)) then
-               Delete_Tree(To_String(Item));
-            else
-               Delete_File(To_String(Item));
-            end if;
-         end loop;
-         Reload(Object);
-      end if;
-      Destroy(MessageDialog);
-   exception
-      when An_Exception : Ada.Directories.USE_ERROR =>
-         ShowMessage
-           ("Could not delete selected files or directories. Reason: " &
-            Exception_Message(An_Exception));
-         Destroy(MessageDialog);
+      NewAction := DELETE;
+      ShowMessage(To_String(Message), MESSAGE_QUESTION);
    end DeleteItem;
 
    procedure CreateNew(Object: access Gtkada_Builder_Record'Class) is
@@ -529,7 +511,6 @@ package body MainWindow is
       Response
         (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
          Gint(GTK_RESPONSE_YES));
-      HideMessage(Object);
    end MessageYes;
 
    procedure MessageNo(Object: access Gtkada_Builder_Record'Class) is
@@ -537,8 +518,35 @@ package body MainWindow is
       Response
         (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
          Gint(GTK_RESPONSE_NO));
-      HideMessage(Object);
    end MessageNo;
+
+   procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
+      Response_Id: Gint) is
+      pragma Unreferenced(Self);
+   begin
+      if Response_Id /= Gint(GTK_RESPONSE_YES) then
+         HideMessage(Builder);
+         return;
+      end if;
+      if NewAction = DELETE then
+         for Item of SelectedItems loop
+            if Is_Directory(To_String(Item)) then
+               Delete_Tree(To_String(Item));
+            else
+               Delete_File(To_String(Item));
+            end if;
+         end loop;
+      end if;
+      HideMessage(Builder);
+      Reload(Builder);
+   exception
+      when An_Exception : Ada.Directories.USE_ERROR =>
+         if NewAction = DELETE then
+            ShowMessage
+              ("Could not delete selected files or directories. Reason: " &
+               Exception_Message(An_Exception));
+         end if;
+   end MessageResponse;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
@@ -611,6 +619,9 @@ package body MainWindow is
          VisibleFiles'Access);
       On_Icon_Press
         (Gtk_GEntry(Get_Object(Builder, "entry")), IconPressed'Access);
+      On_Response
+        (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")),
+         MessageResponse'Access);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
