@@ -27,6 +27,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.GEntry; use Gtk.GEntry;
+with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
@@ -137,11 +138,16 @@ package body MainWindow is
       end if;
    end ShowFileInfo;
 
-   procedure ShowMessage(Message: String) is
+   procedure ShowMessage(Message: String;
+      MessageType: Gtk_Message_Type := Message_Error) is
+      InfoBar: constant GObject := Get_Object(Builder, "actioninfo");
    begin
+      Set_Message_Type(Gtk_Info_Bar(InfoBar), MessageType);
       Set_Text(Gtk_Label(Get_Object(Builder, "lblactioninfo")), Message);
-      Show_All(Gtk_Widget(Get_Object(Builder, "actioninfo")));
-      Hide(Gtk_Widget(Get_Object(Builder, "actionbox")));
+      Show_All(Gtk_Widget(InfoBar));
+      if MessageType /= Message_Question then
+         Hide(Gtk_Widget(Get_Object(Builder, "actionbox")));
+      end if;
    end ShowMessage;
 
    procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
@@ -518,6 +524,22 @@ package body MainWindow is
       Hide(Gtk_Widget(Get_Object(Object, "actioninfo")));
    end HideMessage;
 
+   procedure MessageYes(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      Response
+        (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
+         Gint(GTK_RESPONSE_YES));
+      HideMessage(Object);
+   end MessageYes;
+
+   procedure MessageNo(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      Response
+        (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
+         Gint(GTK_RESPONSE_NO));
+      HideMessage(Object);
+   end MessageNo;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
         ((To_Unbounded_String("Desktop"),
@@ -581,6 +603,8 @@ package body MainWindow is
       Register_Handler(Builder, "Copy_Items", CopyItems'Access);
       Register_Handler(Builder, "Go_Home", GoHome'Access);
       Register_Handler(Builder, "Hide_Message", HideMessage'Access);
+      Register_Handler(Builder, "Message_Yes", MessageYes'Access);
+      Register_Handler(Builder, "Message_No", MessageNo'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
