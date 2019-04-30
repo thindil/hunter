@@ -27,6 +27,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.GEntry; use Gtk.GEntry;
+with Gtk.Label; use Gtk.Label;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
@@ -137,14 +138,10 @@ package body MainWindow is
    end ShowFileInfo;
 
    procedure ShowMessage(Message: String) is
-      MessageDialog: constant Gtk_Message_Dialog :=
-        Gtk_Message_Dialog_New
-          (Gtk_Window(Get_Object(Builder, "mainwindow")), Modal, Message_Error,
-           Buttons_Close, Message);
    begin
-      if Run(MessageDialog) /= Gtk_Response_None then
-         Destroy(MessageDialog);
-      end if;
+      Set_Text(Gtk_Label(Get_Object(Builder, "lblactioninfo")), Message);
+      Show_All(Gtk_Widget(Get_Object(Builder, "actioninfo")));
+      Hide(Gtk_Widget(Get_Object(Builder, "actionbox")));
    end ShowMessage;
 
    procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
@@ -516,6 +513,11 @@ package body MainWindow is
       end if;
    end GoHome;
 
+   procedure HideMessage(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      Hide(Gtk_Widget(Get_Object(Object, "actioninfo")));
+   end HideMessage;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
         ((To_Unbounded_String("Desktop"),
@@ -578,6 +580,7 @@ package body MainWindow is
       Register_Handler(Builder, "Move_Items", MoveItems'Access);
       Register_Handler(Builder, "Copy_Items", CopyItems'Access);
       Register_Handler(Builder, "Go_Home", GoHome'Access);
+      Register_Handler(Builder, "Hide_Message", HideMessage'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
@@ -654,6 +657,7 @@ package body MainWindow is
          end;
       end if;
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
+      HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
       Hide(Gtk_Widget(Get_Object(Builder, "entry")));
       Set_Cursor
