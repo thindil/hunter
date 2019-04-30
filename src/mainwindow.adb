@@ -588,6 +588,9 @@ package body MainWindow is
          CurrentDirectory := To_Unbounded_String(Directory);
       else
          CurrentDirectory := To_Unbounded_String(Value("HOME"));
+         if not Ada.Directories.Exists(To_String(CurrentDirectory)) then
+            CurrentDirectory := To_Unbounded_String("/");
+         end if;
       end if;
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
