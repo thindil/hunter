@@ -15,6 +15,7 @@
 
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Button; use Gtk.Button;
@@ -28,13 +29,15 @@ with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with Glib.Values; use Glib.Values;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
+with MainWindow; use MainWindow;
 
-package body MainWindow.LoadData is
+package body LoadData is
 
    function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
       B: Gtk_Tree_Iter) return Gint is
@@ -285,4 +288,4 @@ package body MainWindow.LoadData is
       Setting := False;
    end LoadDirectory;
 
-end MainWindow.LoadData;
+end LoadData;

@@ -13,8 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package MainWindow.LoadData is
+package LoadData is
 
    -- Load selected directory with Name to Gtk_Store_List with ListName
    procedure LoadDirectory(Name, ListName: String);
-end MainWindow.LoadData;
+
+end LoadData;

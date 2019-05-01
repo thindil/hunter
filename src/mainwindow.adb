@@ -43,8 +43,8 @@ with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
 with Gdk.Event; use Gdk.Event;
-with MainWindow.LoadData; use MainWindow.LoadData;
-with MainWindow.Messages; use MainWindow.Messages;
+with LoadData; use LoadData;
+with Messages; use Messages;
 with Utils; use Utils;
 
 package body MainWindow is
