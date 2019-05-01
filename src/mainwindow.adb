@@ -13,19 +13,16 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
-with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Shell; use Gtk.Menu_Shell;
@@ -45,6 +42,7 @@ with Glib.Object; use Glib.Object;
 with Gdk.Event; use Gdk.Event;
 with LoadData; use LoadData;
 with Messages; use Messages;
+with SearchItems; use SearchItems;
 with Utils; use Utils;
 
 package body MainWindow is
@@ -201,54 +199,6 @@ package body MainWindow is
       end if;
       Reload(Object);
    end GoUpDirectory;
-
-   procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class) is
-      SearchEntry: constant Gtk_Widget :=
-        Gtk_Widget(Get_Object(Object, "searchfile"));
-   begin
-      if not Is_Visible(SearchEntry) then
-         Show_All(SearchEntry);
-         Grab_Focus(SearchEntry);
-      else
-         Hide(SearchEntry);
-         Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
-      end if;
-   end ToggleSearch;
-
-   function VisibleFiles(Model: Gtk_Tree_Model;
-      Iter: Gtk_Tree_Iter) return Boolean is
-      SearchEntry: constant Gtk_GEntry :=
-        Gtk_GEntry(Get_Object(Builder, "searchfile"));
-   begin
-      if Setting then
-         return True;
-      end if;
-      if Get_Text(SearchEntry) = "" then
-         return True;
-      end if;
-      if Index
-          (To_Lower(Get_String(Model, Iter, 0)),
-           To_Lower(Get_Text(SearchEntry)), 1) >
-        0 then
-         return True;
-      end if;
-      return False;
-   end VisibleFiles;
-
-   procedure SearchFiles(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
-      if N_Children
-          (Gtk_List_Store(Get_Object(Object, "fileslist")), Null_Iter) >
-        0 then
-         Set_Cursor
-           (Gtk_Tree_View(Get_Object(Object, "treefiles")),
-            Gtk_Tree_Path_New_From_String("0"), null, False);
-      end if;
-      if Is_Visible(Gtk_Widget(Get_Object(Object, "searchfile"))) then
-         Grab_Focus(Gtk_Widget(Get_Object(Object, "searchfile")));
-      end if;
-   end SearchFiles;
 
    procedure AddNew(User_Data: access GObject_Record'Class) is
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
