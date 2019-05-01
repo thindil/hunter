@@ -10,6 +10,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated interface
 
+### Fixed
+- Reset directory listing on hide search entry
+
 ## [0.2] - 2019-04-26
 
 ### Added
