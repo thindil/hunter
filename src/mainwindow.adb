@@ -16,19 +16,15 @@
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
-with Gtk.Label; use Gtk.Label;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
@@ -48,17 +44,13 @@ with Glib; use Glib;
 with Glib.Object; use Glib.Object;
 with Gdk.Event; use Gdk.Event;
 with MainWindow.LoadData; use MainWindow.LoadData;
+with MainWindow.Messages; use MainWindow.Messages;
 with Utils; use Utils;
 
 package body MainWindow is
 
    CurrentSelected: Unbounded_String;
-   package UnboundedString_Container is new Vectors(Positive,
-      Unbounded_String);
-   SelectedItems, MoveItemsList,
-   CopyItemsList: UnboundedString_Container.Vector;
-   type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE);
-   NewAction: ItemActions;
+   MoveItemsList, CopyItemsList: UnboundedString_Container.Vector;
    type Bookmark_Record is record
       MenuName: Unbounded_String;
       Path: Unbounded_String;
@@ -139,18 +131,6 @@ package body MainWindow is
          end;
       end if;
    end ShowFileInfo;
-
-   procedure ShowMessage(Message: String;
-      MessageType: Gtk_Message_Type := Message_Error) is
-      InfoBar: constant GObject := Get_Object(Builder, "actioninfo");
-   begin
-      Set_Message_Type(Gtk_Info_Bar(InfoBar), MessageType);
-      Set_Text(Gtk_Label(Get_Object(Builder, "lblactioninfo")), Message);
-      Show_All(Gtk_Widget(InfoBar));
-      if MessageType /= Message_Question then
-         Hide(Gtk_Widget(Get_Object(Builder, "actionbox")));
-      end if;
-   end ShowMessage;
 
    procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
    begin
@@ -503,53 +483,6 @@ package body MainWindow is
          Reload(Builder);
       end if;
    end GoHome;
-
-   procedure HideMessage(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      Hide(Gtk_Widget(Get_Object(Object, "actioninfo")));
-   end HideMessage;
-
-   procedure MessageYes(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      Response
-        (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
-         Gint(GTK_RESPONSE_YES));
-   end MessageYes;
-
-   procedure MessageNo(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      Response
-        (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
-         Gint(GTK_RESPONSE_NO));
-   end MessageNo;
-
-   procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
-      Response_Id: Gint) is
-      pragma Unreferenced(Self);
-   begin
-      if Response_Id /= Gint(GTK_RESPONSE_YES) then
-         HideMessage(Builder);
-         return;
-      end if;
-      if NewAction = DELETE then
-         for Item of SelectedItems loop
-            if Is_Directory(To_String(Item)) then
-               Delete_Tree(To_String(Item));
-            else
-               Delete_File(To_String(Item));
-            end if;
-         end loop;
-      end if;
-      HideMessage(Builder);
-      Reload(Builder);
-   exception
-      when An_Exception : Ada.Directories.USE_ERROR =>
-         if NewAction = DELETE then
-            ShowMessage
-              ("Could not delete selected files or directories. Reason: " &
-               Exception_Message(An_Exception));
-         end if;
-   end MessageResponse;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=

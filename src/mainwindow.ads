@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
 
@@ -30,6 +31,14 @@ private
    Setting: Boolean;
    -- Currently selected directory to show
    CurrentDirectory: Unbounded_String;
+   -- Types of action on files and directories
+   type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE);
+   -- Current performed action on files or directories
+   NewAction: ItemActions;
+   package UnboundedString_Container is new Vectors(Positive,
+      Unbounded_String);
+   -- List of currently selected files and directories by user
+   SelectedItems: UnboundedString_Container.Vector;
 
    -- Reload directory listing and preview of selected item
    procedure Reload(Object: access Gtkada_Builder_Record'Class);
