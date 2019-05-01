@@ -33,6 +33,7 @@ package body SearchItems is
          Show_All(SearchEntry);
          Grab_Focus(SearchEntry);
       else
+         Set_Text(Gtk_GEntry(SearchEntry), "");
          Hide(SearchEntry);
          Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
       end if;

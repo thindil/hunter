@@ -21,7 +21,8 @@ package SearchItems is
    -- Show or hide search text entry
    procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class);
    -- Set which files or directories are currently visible
-   function VisibleFiles(Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean;
+   function VisibleFiles(Model: Gtk_Tree_Model;
+      Iter: Gtk_Tree_Iter) return Boolean;
    -- Search for files or directories as user enter text in search entry
    procedure SearchFiles(Object: access Gtkada_Builder_Record'Class);
 
