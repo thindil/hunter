@@ -15,9 +15,10 @@
 
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 
-package Mainwindow.Messages is
+package Messages is
 
    -- Show message with selected type to the user
    procedure ShowMessage(Message: String;
@@ -32,4 +33,4 @@ package Mainwindow.Messages is
    procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
       Response_Id: Gint);
 
-end Mainwindow.Messages;
+end Messages;

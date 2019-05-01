@@ -19,12 +19,6 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package MainWindow is
 
-   -- Quit from program
-   procedure Quit(Object: access Gtkada_Builder_Record'Class);
-   -- Create main window and show content of selected directory
-   procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String);
-
-private
    -- Gtk Builder used to read data from glade file
    Builder: Gtkada_Builder;
    -- If true, the program is in the setting mode
@@ -40,6 +34,11 @@ private
    -- List of currently selected files and directories by user
    SelectedItems: UnboundedString_Container.Vector;
 
+   -- Quit from program
+   procedure Quit(Object: access Gtkada_Builder_Record'Class);
+   -- Create main window and show content of selected directory
+   procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String);
    -- Reload directory listing and preview of selected item
    procedure Reload(Object: access Gtkada_Builder_Record'Class);
+
 end MainWindow;

@@ -15,13 +15,15 @@
 
 with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Object; use Glib.Object;
+with MainWindow; use MainWindow;
 
-package body Mainwindow.Messages is
+package body Messages is
 
    procedure ShowMessage(Message: String;
       MessageType: Gtk_Message_Type := Message_Error) is
@@ -82,4 +84,4 @@ package body Mainwindow.Messages is
          end if;
    end MessageResponse;
 
-end Mainwindow.Messages;
+end Messages;
