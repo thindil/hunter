@@ -40,6 +40,7 @@ with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
 with Gdk.Event; use Gdk.Event;
+with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with SearchItems; use SearchItems;
@@ -49,12 +50,6 @@ package body MainWindow is
 
    CurrentSelected: Unbounded_String;
    MoveItemsList, CopyItemsList: UnboundedString_Container.Vector;
-   type Bookmark_Record is record
-      MenuName: Unbounded_String;
-      Path: Unbounded_String;
-   end record;
-   package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
-   BookmarksList: Bookmarks_Container.Vector;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
@@ -409,30 +404,6 @@ package body MainWindow is
       CopyItemsList.Clear;
       Reload(Object);
    end CopyItems;
-
-   procedure GoToBookmark(Self: access Gtk_Menu_Item_Record'Class) is
-      MenuLabel: constant Unbounded_String :=
-        To_Unbounded_String(Get_Label(Self));
-   begin
-      for I in BookmarksList.Iterate loop
-         if MenuLabel = BookmarksList(I).MenuName then
-            CurrentDirectory := BookmarksList(I).Path;
-            exit;
-         end if;
-      end loop;
-      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
-         Reload(Builder);
-      end if;
-   end GoToBookmark;
-
-   procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
-   begin
-      CurrentDirectory := To_Unbounded_String(Value("HOME"));
-      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
-         Reload(Builder);
-      end if;
-   end GoHome;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
