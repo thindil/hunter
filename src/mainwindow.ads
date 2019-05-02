@@ -33,6 +33,8 @@ package MainWindow is
       Unbounded_String);
    -- List of currently selected files and directories by user
    SelectedItems: UnboundedString_Container.Vector;
+   -- Full path to currently selected file or directory
+   CurrentSelected: Unbounded_String;
 
    -- Quit from program
    procedure Quit(Object: access Gtkada_Builder_Record'Class);
