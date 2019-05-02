@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Reset directory listing on hide search entry
+- Copy permissions on copying files or directories
 
 ## [0.2] - 2019-04-26
 
