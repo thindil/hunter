@@ -26,11 +26,13 @@ package body CopyItems is
 
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
       Path: Unbounded_String;
+      Success: Boolean := True;
       procedure CopyItem(Name: String) is
          procedure ProcessFile(Item: Directory_Entry_Type) is
          begin
-            Copy_File
-              (Full_Name(Item), To_String(Path) & "/" & Simple_Name(Item));
+            GNAT.OS_Lib.Copy_File
+              (Full_Name(Item), To_String(Path) & "/" & Simple_Name(Item),
+               Success, Copy, Full);
          end ProcessFile;
          procedure ProcessDirectory(Item: Directory_Entry_Type) is
          begin
@@ -52,7 +54,9 @@ package body CopyItems is
               (Name, "", (Directory => True, others => False),
                ProcessDirectory'Access);
          else
-            Copy_File(Name, To_String(Path) & "/" & Simple_Name(Name));
+            GNAT.OS_Lib.Copy_File
+              (Name, To_String(Path) & "/" & Simple_Name(Name), Success, Copy,
+               Full);
          end if;
       end CopyItem;
    begin
@@ -73,6 +77,9 @@ package body CopyItems is
       for Name of CopyItemsList loop
          Path := CurrentDirectory;
          CopyItem(To_String(Name));
+         if not Success then
+            exit;
+         end if;
       end loop;
       CopyItemsList.Clear;
       Reload(Object);
