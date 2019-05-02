@@ -40,6 +40,7 @@ with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
 with Bookmarks; use Bookmarks;
+with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
 with LoadData; use LoadData;
 with Messages; use Messages;
@@ -48,7 +49,7 @@ with Utils; use Utils;
 
 package body MainWindow is
 
-   MoveItemsList, CopyItemsList: UnboundedString_Container.Vector;
+   MoveItemsList: UnboundedString_Container.Vector;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
@@ -252,60 +253,6 @@ package body MainWindow is
       Reload(Object);
    end MoveItems;
 
-   procedure CopyItems(Object: access Gtkada_Builder_Record'Class) is
-      Path: Unbounded_String;
-      procedure CopyItem(Name: String) is
-         procedure ProcessFile(Item: Directory_Entry_Type) is
-         begin
-            Copy_File
-              (Full_Name(Item), To_String(Path) & "/" & Simple_Name(Item));
-         end ProcessFile;
-         procedure ProcessDirectory(Item: Directory_Entry_Type) is
-         begin
-            if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
-               CopyItem(Full_Name(Item));
-            end if;
-         exception
-            when Ada.Directories.Name_Error =>
-               null;
-         end ProcessDirectory;
-      begin
-         if Is_Directory(Name) then
-            Append(Path, "/" & Simple_Name(Name));
-            Create_Path(To_String(Path));
-            Search
-              (Name, "", (Directory => False, others => True),
-               ProcessFile'Access);
-            Search
-              (Name, "", (Directory => True, others => False),
-               ProcessDirectory'Access);
-         else
-            Copy_File(Name, To_String(Path) & "/" & Simple_Name(Name));
-         end if;
-      end CopyItem;
-   begin
-      if CopyItemsList.Length > 0
-        and then Containing_Directory(To_String(CopyItemsList(1))) =
-          To_String(CurrentDirectory) then
-         return;
-      end if;
-      if CopyItemsList.Length = 0 then
-         CopyItemsList := SelectedItems;
-         return;
-      end if;
-      if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
-         ShowMessage
-           ("You don't have permissions to copy selected items here.");
-         return;
-      end if;
-      for Name of CopyItemsList loop
-         Path := CurrentDirectory;
-         CopyItem(To_String(Name));
-      end loop;
-      CopyItemsList.Clear;
-      Reload(Object);
-   end CopyItems;
-
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
         ((To_Unbounded_String("Desktop"),
@@ -366,7 +313,7 @@ package body MainWindow is
       Register_Handler(Builder, "Create_New", CreateNew'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
       Register_Handler(Builder, "Move_Items", MoveItems'Access);
-      Register_Handler(Builder, "Copy_Items", CopyItems'Access);
+      Register_Handler(Builder, "Copy_Items", CopyData'Access);
       Register_Handler(Builder, "Go_Home", GoHome'Access);
       Register_Handler(Builder, "Hide_Message", HideMessage'Access);
       Register_Handler(Builder, "Message_Yes", MessageYes'Access);
