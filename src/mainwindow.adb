@@ -44,12 +44,11 @@ with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
 with LoadData; use LoadData;
 with Messages; use Messages;
+with MoveItems; use MoveItems;
 with SearchItems; use SearchItems;
 with Utils; use Utils;
 
 package body MainWindow is
-
-   MoveItemsList: UnboundedString_Container.Vector;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
@@ -228,31 +227,6 @@ package body MainWindow is
       Grab_Focus(GEntry);
    end StartRename;
 
-   procedure MoveItems(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      if MoveItemsList.Length > 0
-        and then Containing_Directory(To_String(MoveItemsList(1))) =
-          To_String(CurrentDirectory) then
-         return;
-      end if;
-      if MoveItemsList.Length = 0 then
-         MoveItemsList := SelectedItems;
-         return;
-      end if;
-      if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
-         ShowMessage
-           ("You don't have permissions to move selected items here.");
-         return;
-      end if;
-      for Name of MoveItemsList loop
-         Rename
-           (To_String(Name),
-            To_String(CurrentDirectory) & "/" & Simple_Name(To_String(Name)));
-      end loop;
-      MoveItemsList.Clear;
-      Reload(Object);
-   end MoveItems;
-
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
         ((To_Unbounded_String("Desktop"),
@@ -312,7 +286,7 @@ package body MainWindow is
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Create_New", CreateNew'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
-      Register_Handler(Builder, "Move_Items", MoveItems'Access);
+      Register_Handler(Builder, "Move_Items", MoveData'Access);
       Register_Handler(Builder, "Copy_Items", CopyData'Access);
       Register_Handler(Builder, "Go_Home", GoHome'Access);
       Register_Handler(Builder, "Hide_Message", HideMessage'Access);
