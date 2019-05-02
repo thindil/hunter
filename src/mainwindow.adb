@@ -39,8 +39,8 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
-with Gdk.Event; use Gdk.Event;
 with Bookmarks; use Bookmarks;
+with CreateItems; use CreateItems;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with SearchItems; use SearchItems;
@@ -48,7 +48,6 @@ with Utils; use Utils;
 
 package body MainWindow is
 
-   CurrentSelected: Unbounded_String;
    MoveItemsList, CopyItemsList: UnboundedString_Container.Vector;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
@@ -195,98 +194,6 @@ package body MainWindow is
       Reload(Object);
    end GoUpDirectory;
 
-   procedure AddNew(User_Data: access GObject_Record'Class) is
-      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
-   begin
-      if User_Data = Get_Object(Builder, "newmenudirectory") then
-         NewAction := CREATEDIRECTORY;
-         Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
-            "Create new directory.");
-      else
-         NewAction := CREATEFILE;
-         Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary, "Create new file.");
-      end if;
-      Show_All(GEntry);
-      Grab_Focus(GEntry);
-   end AddNew;
-
-   procedure CreateItem(Self: access Gtk_Entry_Record'Class;
-      Icon_Pos: Gtk_Entry_Icon_Position) is
-      Name: constant String :=
-        To_String(CurrentDirectory) & "/" & Get_Text(Self);
-      File: File_Type;
-      ActionString, ActionBlocker: Unbounded_String;
-   begin
-      if Icon_Pos = Gtk_Entry_Icon_Primary then
-         Set_Text(Self, "");
-         Hide(Gtk_Widget(Self));
-         return;
-      end if;
-      if Get_Text(Self) = "" then
-         return;
-      end if;
-      if Ada.Directories.Exists(Name) then
-         case NewAction is
-            when CREATEDIRECTORY =>
-               ActionString := To_Unbounded_String("create directory with");
-            when CREATEFILE =>
-               ActionString := To_Unbounded_String("create file with");
-            when RENAME =>
-               ActionString := To_Unbounded_String("rename with new");
-            when others =>
-               null;
-         end case;
-         if Is_Directory(Name) then
-            ActionBlocker := To_Unbounded_String("directory");
-         else
-            ActionBlocker := To_Unbounded_String("file");
-         end if;
-         ShowMessage
-           ("You can't " & To_String(ActionString) & " name '" & Name &
-            "' because there exists " & To_String(ActionBlocker) &
-            " with that name.");
-         return;
-      end if;
-      if Is_Write_Accessible_File(Containing_Directory(Name)) then
-         case NewAction is
-            when CREATEDIRECTORY =>
-               Create_Path(Name);
-            when CREATEFILE =>
-               Create_Path(Containing_Directory(Name));
-               Create(File, Out_File, Name);
-               Close(File);
-            when RENAME =>
-               if To_String(CurrentSelected) /= Name then
-                  Rename(To_String(CurrentSelected), Name);
-               end if;
-            when others =>
-               null;
-         end case;
-      else
-         if NewAction /= RENAME then
-            ShowMessage
-              ("You don't have permissions to write to " &
-               Containing_Directory(Name));
-         else
-            ShowMessage("You don't have permissions to rename " & Name);
-         end if;
-         return;
-      end if;
-      Set_Text(Self, "");
-      Hide(Gtk_Widget(Self));
-      CurrentDirectory := To_Unbounded_String(Containing_Directory(Name));
-      Reload(Builder);
-   end CreateItem;
-
-   procedure IconPressed(Self: access Gtk_Entry_Record'Class;
-      Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button) is
-      pragma Unreferenced(Event);
-   begin
-      CreateItem(Self, Icon_Pos);
-   end IconPressed;
-
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
       Message: Unbounded_String := To_Unbounded_String("Delete?" & LF);
@@ -303,12 +210,6 @@ package body MainWindow is
       NewAction := DELETE;
       ShowMessage(To_String(Message), MESSAGE_QUESTION);
    end DeleteItem;
-
-   procedure CreateNew(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      CreateItem
-        (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);
-   end CreateNew;
 
    procedure StartRename(Object: access Gtkada_Builder_Record'Class) is
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Object, "entry"));
