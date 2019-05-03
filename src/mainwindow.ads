@@ -19,28 +19,64 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package MainWindow is
 
-   -- Gtk Builder used to read data from glade file
+-- ****v* MainWindow/Builder
+-- FUNCTION
+-- Gtk Builder used to read data from glade file
+-- SOURCE
    Builder: Gtkada_Builder;
-   -- If true, the program is in the setting mode
+-- ****
+-- ****v* MainWindow/Setting
+-- FUNCTION
+-- If true, the program is in the setting mode
+-- SOURCE
    Setting: Boolean;
-   -- Currently selected directory to show
+-- ****
+-- ****v* MainWindow/CurrentDirectory
+-- FUNCTION
+-- Currently selected directory to show
+-- SOURCE
    CurrentDirectory: Unbounded_String;
+-- ****
    -- Types of action on files and directories
    type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE);
-   -- Current performed action on files or directories
+-- ****v* MainWindow/NewAction
+-- FUNCTION
+-- Current performed action on files or directories
+-- SOURCE
    NewAction: ItemActions;
+-- ****
    package UnboundedString_Container is new Vectors(Positive,
       Unbounded_String);
-   -- List of currently selected files and directories by user
+-- ****v* MainWindow/SelectedItems
+-- FUNCTION
+-- List of currently selected files and directories by user
+-- SOURCE
    SelectedItems: UnboundedString_Container.Vector;
-   -- Full path to currently selected file or directory
+-- ****
+-- ****v* MainWindow/CurrentSelected
+-- FUNCTION
+-- Full path to currently selected file or directory
+-- SOURCE
    CurrentSelected: Unbounded_String;
+-- ****
 
-   -- Quit from program
+-- ****f* MainWindow/Quit
+-- FUNCTION
+-- Quit from program
+-- SOURCE
    procedure Quit(Object: access Gtkada_Builder_Record'Class);
-   -- Create main window and show content of selected directory
+-- ****
+-- ****f* MainWindow/CreateMainWindow
+-- FUNCTION
+-- Create main window and show content of selected directory
+-- SOURCE
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String);
-   -- Reload directory listing and preview of selected item
+-- ****
+-- ****f* MainWindow/Reload
+-- FUNCTION
+-- Reload directory listing and preview of selected item
+-- SOURCE
    procedure Reload(Object: access Gtkada_Builder_Record'Class);
+-- ****
 
 end MainWindow;

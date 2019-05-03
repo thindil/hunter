@@ -20,15 +20,31 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package CreateItems is
 
-   -- Create new file or directory with selected name
+-- ****f* CreateItems/CreateItem
+-- FUNCTION
+-- Create new file or directory with selected name
+-- SOURCE
    procedure CreateItem(Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position);
-   -- Show text entry for enter new file/directory name
+-- ****
+-- ****f* CreateItems/AddNew
+-- FUNCTION
+-- Show text entry for enter new file/directory name
+-- SOURCE
    procedure AddNew(User_Data: access GObject_Record'Class);
-   -- Create new file or directory when user press icon
+-- ****
+-- ****f* CreateItems/IconPressed
+-- FUNCTION
+-- Create new file or directory when user press icon
+-- SOURCE
    procedure IconPressed(Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button);
-   -- Create new file or directory when user press enter in text entry
+-- ****
+-- ****f* CreateItems/CreateNew
+-- FUNCTION
+-- Create new file or directory when user press enter in text entry
+-- SOURCE
    procedure CreateNew(Object: access Gtkada_Builder_Record'Class);
+-- ****
 
 end CreateItems;

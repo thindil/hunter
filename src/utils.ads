@@ -15,10 +15,18 @@
 
 package Utils is
 
-   -- Return MIME Type of selected file (full path)
+-- ****f* Utils/GetMimeType
+-- FUNCTION
+-- Return MIME Type of selected file (full path)
+-- SOURCE
    function GetMimeType(FileName: String) return String;
+-- ****
 
-   -- Return True if there is application associated with selected MIME Type, otherwise False
+-- ****f* Utils/CanBeOpened
+-- FUNCTION
+-- Return True if there is application associated with selected MIME Type, otherwise False
+-- SOURCE
    function CanBeOpened(MimeType: String) return Boolean;
+-- ****
 
 end Utils;

@@ -22,18 +22,28 @@ package Bookmarks is
 
    -- Data structure for bookmarks
    type Bookmark_Record is record
-      -- Menu label for bookmark
       MenuName: Unbounded_String;
-      -- Absolute path to bookmarked location
       Path: Unbounded_String;
    end record;
    package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
-   -- List of all bookmarked locations
+-- ****v* Bookmarks/BookmarksList
+-- FUNCTION
+-- List of all bookmarked locations
+-- SOURCE
    BookmarksList: Bookmarks_Container.Vector;
+-- ****
 
-   -- Go to selected bookmark location
+-- ****f* Bookmarks/GoToBookmark
+-- FUNCTION
+-- Go to selected bookmark location
+-- SOURCE
    procedure GoToBookmark(Self: access Gtk_Menu_Item_Record'Class);
-   -- Go to user home directory
+-- ****
+-- ****f* Bookmarks/GoHome
+-- FUNCTION
+-- Go to user home directory
+-- SOURCE
    procedure GoHome(Object: access Gtkada_Builder_Record'Class);
+-- ****
 
 end Bookmarks;

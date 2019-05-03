@@ -18,12 +18,24 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package ErrorDialog is
 
-   -- Save exception data to file and show error dialog
+-- ****f* ErrorDialog/SaveException
+-- FUNCTION
+-- Save exception data to file and show error dialog
+-- SOURCE
    procedure SaveException(An_Exception: Exception_Occurrence;
       PrintToTerminal: Boolean);
-   -- Handle GUI exceptions
+-- ****
+-- ****f* ErrorDialog/On_Exception
+-- FUNCTION
+-- Handle GUI exceptions
+-- SOURCE
    procedure On_Exception(An_Exception: Exception_Occurrence);
-   -- Create error dialog UI
+-- ****
+-- ****f* ErrorDialog/CreateErrorDialog
+-- FUNCTION
+-- Create error dialog UI
+-- SOURCE
    procedure CreateErrorDialog(NewBuilder: Gtkada_Builder);
+-- ****
 
 end ErrorDialog;

@@ -15,7 +15,11 @@
 
 package LoadData is
 
-   -- Load selected directory with Name to Gtk_Store_List with ListName
+-- ****f* LoadData/LoadDirectory
+-- FUNCTION
+-- Load selected directory with Name to Gtk_Store_List with ListName
+-- SOURCE
    procedure LoadDirectory(Name, ListName: String);
+-- ****
 
 end LoadData;
