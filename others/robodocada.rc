@@ -1,0 +1,14 @@
+header markers:
+  -- ****
+remark markers:
+  --
+end markers:
+  -- ****
+options:
+  --src src
+  --doc docs
+  --html
+  --multidoc
+  --index
+  --internal
+  --documenttitle "Hunter code documentation"
