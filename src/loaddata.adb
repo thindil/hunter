@@ -39,8 +39,11 @@ with MainWindow; use MainWindow;
 
 package body LoadData is
 
+-- ****if* LoadData/SortFiles
+-- SOURCE
    function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
       B: Gtk_Tree_Iter) return Gint is
+-- ****
       FileTypeA: constant Gint := Get_Int(Model, A, 1);
       FileTypeB: constant Gint := Get_Int(Model, B, 1);
       FileNameA: constant String := Get_String(Model, A, 0);
@@ -61,22 +64,31 @@ package body LoadData is
       return 0;
    end SortFiles;
 
+-- ****if* LoadData/EmptySortFiles
+-- SOURCE
    function EmptySortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
       B: Gtk_Tree_Iter) return Gint is
       pragma Unreferenced(Model);
       pragma Unreferenced(A);
       pragma Unreferenced(B);
+-- ****
    begin
       return 0;
    end EmptySortFiles;
 
+-- ****if* LoadData/RemovePathButtons
+-- SOURCE
    procedure RemovePathButtons
      (Widget: not null access Gtk_Widget_Record'Class) is
+-- ****
    begin
       Destroy(Widget);
    end RemovePathButtons;
 
+-- ****if* LoadData/PathClicked
+-- SOURCE
    procedure PathClicked(Self: access Gtk_Button_Record'Class) is
+-- ****
       Value: GValue;
       Tokens: Slice_Set;
    begin
@@ -98,7 +110,10 @@ package body LoadData is
       Reload(Builder);
    end PathClicked;
 
+-- ****if* LoadData/LoadDirectory
+-- SOURCE
    procedure LoadDirectory(Name, ListName: String) is
+-- ****
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, ListName));
       FileIter: Gtk_Tree_Iter;

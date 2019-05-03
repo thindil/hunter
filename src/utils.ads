@@ -21,7 +21,6 @@ package Utils is
 -- SOURCE
    function GetMimeType(FileName: String) return String;
 -- ****
-
 -- ****f* Utils/CanBeOpened
 -- FUNCTION
 -- Return True if there is application associated with selected MIME Type, otherwise False

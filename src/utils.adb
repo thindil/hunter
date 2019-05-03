@@ -20,7 +20,10 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 
 package body Utils is
 
+-- ****if* Utils/GetMimeType
+-- SOURCE
    function GetMimeType(FileName: String) return String is
+-- ****
       ProcessDesc: Process_Descriptor;
       Result: Expect_Match;
    begin
@@ -43,7 +46,10 @@ package body Utils is
       return "";
    end GetMimeType;
 
+-- ****if* Utils/CanBeOpened
+-- SOURCE
    function CanBeOpened(MimeType: String) return Boolean is
+-- ****
       ProcessDesc: Process_Descriptor;
       Result: Expect_Match;
    begin

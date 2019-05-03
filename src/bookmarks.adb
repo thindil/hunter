@@ -19,7 +19,10 @@ with MainWindow; use MainWindow;
 
 package body Bookmarks is
 
+-- ****if* Bookmarks/GoToBookmark
+-- SOURCE
    procedure GoToBookmark(Self: access Gtk_Menu_Item_Record'Class) is
+-- ****
       MenuLabel: constant Unbounded_String :=
         To_Unbounded_String(Get_Label(Self));
    begin
@@ -34,8 +37,11 @@ package body Bookmarks is
       end if;
    end GoToBookmark;
 
+-- ****if* Bookmarks/GoHome
+-- SOURCE
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
+-- ****
    begin
       CurrentDirectory := To_Unbounded_String(Value("HOME"));
       if Ada.Directories.Exists(To_String(CurrentDirectory)) then

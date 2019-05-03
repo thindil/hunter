@@ -20,12 +20,20 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package Bookmarks is
 
-   -- Data structure for bookmarks
+-- ****t* Bookmarks/Bookmark_Record
+-- FUNCTION
+-- Data structure for bookmarks
+-- SOURCE
    type Bookmark_Record is record
       MenuName: Unbounded_String;
       Path: Unbounded_String;
    end record;
+-- ****
+-- ****t* Bookmarks/Bookmarks_Container
+-- SOURCE
    package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
+-- ****
+
 -- ****v* Bookmarks/BookmarksList
 -- FUNCTION
 -- List of all bookmarked locations
