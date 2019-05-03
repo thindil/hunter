@@ -20,17 +20,37 @@ with Glib; use Glib;
 
 package Messages is
 
-   -- Show message with selected type to the user
+-- ****f* Messages/ShowMessage
+-- FUNCTION
+-- Show message with selected type to the user
+-- SOURCE
    procedure ShowMessage(Message: String;
       MessageType: Gtk_Message_Type := Message_Error);
-   -- Hide message
+-- ****
+-- ****f* Messages/HideMessage
+-- FUNCTION
+-- Hide message
+-- SOURCE
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class);
-   -- Emit Gtk Response Yes for message if user pressed Yes button
+-- ****
+-- ****f* Messages/MessageYes
+-- FUNCTION
+-- Emit Gtk Response Yes for message if user pressed Yes button
+-- SOURCE
    procedure MessageYes(Object: access Gtkada_Builder_Record'Class);
-   -- Emit Gtk Response No for message if user pressed No button
+-- ****
+-- ****f* Messages/MessageNo
+-- FUNCTION
+-- Emit Gtk Response No for message if user pressed No button
+-- SOURCE
    procedure MessageNo(Object: access Gtkada_Builder_Record'Class);
-   -- Hide message or do action, depends on the user response
+-- ****
+-- ****f* Messages/MessageResponse
+-- FUNCTION
+-- Hide message or do action, depends on the user response
+-- SOURCE
    procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
       Response_Id: Gint);
+-- ****
 
 end Messages;

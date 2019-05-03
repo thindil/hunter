@@ -17,7 +17,11 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package CopyItems is
 
-   -- Copy selected files/directories to new location
+-- ****f* CopyItems/CopyData
+-- FUNCTION
+-- Copy selected files/directories to new location
+-- SOURCE
    procedure CopyData(Object: access Gtkada_Builder_Record'Class);
+-- ****
 
 end CopyItems;
