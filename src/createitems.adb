@@ -23,8 +23,11 @@ with Messages; use Messages;
 
 package body CreateItems is
 
+-- ****if* CreateItems/CreateItem
+-- SOURCE
    procedure CreateItem(Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position) is
+-- ****
       Name: constant String :=
         To_String(CurrentDirectory) & "/" & Get_Text(Self);
       File: File_Type;
@@ -91,7 +94,10 @@ package body CreateItems is
       Reload(Builder);
    end CreateItem;
 
+-- ****if* CreateItems/AddNew
+-- SOURCE
    procedure AddNew(User_Data: access GObject_Record'Class) is
+-- ****
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
       if User_Data = Get_Object(Builder, "newmenudirectory") then
@@ -108,14 +114,20 @@ package body CreateItems is
       Grab_Focus(GEntry);
    end AddNew;
 
+-- ****if* CreateItems/IconPressed
+-- SOURCE
    procedure IconPressed(Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button) is
       pragma Unreferenced(Event);
+-- ****
    begin
       CreateItem(Self, Icon_Pos);
    end IconPressed;
 
+-- ****if* CreateItems/CreateNew
+-- SOURCE
    procedure CreateNew(Object: access Gtkada_Builder_Record'Class) is
+-- ****
    begin
       CreateItem
         (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);

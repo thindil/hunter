@@ -27,10 +27,16 @@ with Gtk.Widget; use Gtk.Widget;
 
 package body ErrorDialog is
 
+-- ****iv* ErrorDialog/Builder
+-- SOURCE
    Builder: Gtkada_Builder;
+-- ****
 
+-- ****if* ErrorDialog/SaveException
+-- SOURCE
    procedure SaveException(An_Exception: Exception_Occurrence;
       PrintToTerminal: Boolean) is
+-- ****
       ErrorFile: File_Type;
       ErrorText: Unbounded_String;
       ErrorFilePath: constant String :=
@@ -66,12 +72,18 @@ package body ErrorDialog is
       end if;
    end SaveException;
 
+-- ****if* ErrorDialog/On_Exception
+-- SOURCE
    procedure On_Exception(An_Exception: Exception_Occurrence) is
+-- ****
    begin
       SaveException(An_Exception, False);
    end On_Exception;
 
+-- ****if* ErrorDialog/CreateErrorDialog
+-- SOURCE
    procedure CreateErrorDialog(NewBuilder: Gtkada_Builder) is
+-- ****
       Label: constant Gtk_Label :=
         Gtk_Label(Get_Object(NewBuilder, "lblerror"));
    begin

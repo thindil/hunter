@@ -37,16 +37,24 @@ package MainWindow is
 -- SOURCE
    CurrentDirectory: Unbounded_String;
 -- ****
-   -- Types of action on files and directories
+-- ****t* MainWindow/ItemActions
+-- FUNCTION
+-- Types of action on files and directories
+-- SOURCE
    type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE);
+-- ****
 -- ****v* MainWindow/NewAction
 -- FUNCTION
 -- Current performed action on files or directories
 -- SOURCE
    NewAction: ItemActions;
 -- ****
+-- ****t* MainWindow/UnboundedString_Container
+-- SOURCE
    package UnboundedString_Container is new Vectors(Positive,
       Unbounded_String);
+-- ****
+
 -- ****v* MainWindow/SelectedItems
 -- FUNCTION
 -- List of currently selected files and directories by user

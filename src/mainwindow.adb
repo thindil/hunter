@@ -50,15 +50,21 @@ with Utils; use Utils;
 
 package body MainWindow is
 
+-- ****if* MainWindow/Quit
+-- SOURCE
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
+-- ****
    begin
       Unref(Object);
       Main_Quit;
    end Quit;
 
+-- ****if* MainWindow/GetSelectedItems
+-- SOURCE
    procedure GetSelectedItems(Model: Gtk_Tree_Model; Path: Gtk_Tree_Path;
       Iter: Gtk_Tree_Iter) is
       pragma Unreferenced(Path);
+-- ****
    begin
       if CurrentDirectory = To_Unbounded_String("/") then
          CurrentDirectory := Null_Unbounded_String;
@@ -68,7 +74,10 @@ package body MainWindow is
          To_Unbounded_String("/" & Get_String(Model, Iter, 0)));
    end GetSelectedItems;
 
+-- ****if* MainWindow/ShowFileInfo
+-- SOURCE
    procedure ShowFileInfo(Object: access Gtkada_Builder_Record'Class) is
+-- ****
    begin
       if Setting then
          return;
@@ -124,7 +133,10 @@ package body MainWindow is
       end if;
    end ShowFileInfo;
 
+-- ****if* MainWindow/ActivateFile
+-- SOURCE
    procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
+-- ****
    begin
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
@@ -170,7 +182,10 @@ package body MainWindow is
       Set_Sensitive(Gtk_Widget(Get_Object(Object, "btngoup")), True);
    end ActivateFile;
 
+-- ****if* MainWindow/Reload
+-- SOURCE
    procedure Reload(Object: access Gtkada_Builder_Record'Class) is
+-- ****
    begin
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       Set_Cursor
@@ -180,7 +195,10 @@ package body MainWindow is
       ShowFileInfo(Object);
    end Reload;
 
+-- ****if* MainWindow/GoUpDirectory
+-- SOURCE
    procedure GoUpDirectory(Object: access Gtkada_Builder_Record'Class) is
+-- ****
    begin
       CurrentDirectory :=
         Unbounded_Slice
@@ -194,8 +212,11 @@ package body MainWindow is
       Reload(Object);
    end GoUpDirectory;
 
+-- ****if* MainWindow/DeleteItem
+-- SOURCE
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
+-- ****
       Message: Unbounded_String := To_Unbounded_String("Delete?" & LF);
    begin
       for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
@@ -211,7 +232,10 @@ package body MainWindow is
       ShowMessage(To_String(Message), MESSAGE_QUESTION);
    end DeleteItem;
 
+-- ****if* MainWindow/StartRename
+-- SOURCE
    procedure StartRename(Object: access Gtkada_Builder_Record'Class) is
+-- ****
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Object, "entry"));
    begin
       NewAction := RENAME;
@@ -227,7 +251,10 @@ package body MainWindow is
       Grab_Focus(GEntry);
    end StartRename;
 
+-- ****if* MainWindow/CreateMainWindow
+-- SOURCE
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
+-- ****
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
         ((To_Unbounded_String("Desktop"),
           To_Unbounded_String("XDG_DESKTOP_DIR")),
