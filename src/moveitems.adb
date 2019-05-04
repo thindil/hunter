@@ -27,10 +27,7 @@ package body MoveItems is
    MoveItemsList: UnboundedString_Container.Vector;
 -- ****
 
--- ****if* MoveItems/MoveData
--- SOURCE
    procedure MoveData(Object: access Gtkada_Builder_Record'Class) is
--- ****
    begin
       if MoveItemsList.Length > 0
         and then Containing_Directory(To_String(MoveItemsList(1))) =

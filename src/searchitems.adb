@@ -25,10 +25,7 @@ with MainWindow; use MainWindow;
 
 package body SearchItems is
 
--- ****if* SearchItems/ToggleSearch
--- SOURCE
    procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class) is
--- ****
       SearchEntry: constant Gtk_Widget :=
         Gtk_Widget(Get_Object(Object, "searchfile"));
    begin
@@ -42,11 +39,8 @@ package body SearchItems is
       end if;
    end ToggleSearch;
 
--- ****if* SearchItems/VisibleFiles
--- SOURCE
    function VisibleFiles(Model: Gtk_Tree_Model;
       Iter: Gtk_Tree_Iter) return Boolean is
--- ****
       SearchEntry: constant Gtk_GEntry :=
         Gtk_GEntry(Get_Object(Builder, "searchfile"));
    begin
@@ -65,10 +59,7 @@ package body SearchItems is
       return False;
    end VisibleFiles;
 
--- ****if* SearchItems/SearchFiles
--- SOURCE
    procedure SearchFiles(Object: access Gtkada_Builder_Record'Class) is
--- ****
    begin
       Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
       if N_Children
