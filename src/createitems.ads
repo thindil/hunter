@@ -20,31 +20,31 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package CreateItems is
 
--- ****f* CreateItems/CreateItem
--- FUNCTION
--- Create new file or directory with selected name
--- SOURCE
-   procedure CreateItem(Self: access Gtk_Entry_Record'Class;
-      Icon_Pos: Gtk_Entry_Icon_Position);
--- ****
--- ****f* CreateItems/AddNew
--- FUNCTION
--- Show text entry for enter new file/directory name
--- SOURCE
+   -- ****f* CreateItems/AddNew
+   -- FUNCTION
+   -- Show text entry for enter new file/directory name
+   -- PARAMETERS
+   -- User_Data - Which menu option was selected (create file or directory)
+   -- SOURCE
    procedure AddNew(User_Data: access GObject_Record'Class);
--- ****
--- ****f* CreateItems/IconPressed
--- FUNCTION
--- Create new file or directory when user press icon
--- SOURCE
+   -- ****
+   -- ****f* CreateItems/IconPressed
+   -- FUNCTION
+   -- Create new file or directory when user press icon or hide text entry
+   -- PARAMETERS
+   -- Self     - Text entry with name for new file/directory
+   -- Icon_Pos - Position of text entry icon which was pressed
+   -- SOURCE
    procedure IconPressed(Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button);
--- ****
--- ****f* CreateItems/CreateNew
--- FUNCTION
--- Create new file or directory when user press enter in text entry
--- SOURCE
+   -- ****
+   -- ****f* CreateItems/CreateNew
+   -- FUNCTION
+   -- Create new file or directory when user press enter in text entry
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure CreateNew(Object: access Gtkada_Builder_Record'Class);
--- ****
+   -- ****
 
 end CreateItems;
