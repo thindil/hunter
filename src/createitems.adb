@@ -23,8 +23,17 @@ with Messages; use Messages;
 
 package body CreateItems is
 
+   -- ****if* CreateItems/CreateItem
+   -- FUNCTION
+   -- Create new file or directory or hide text entry
+   -- PARAMETERS
+   -- Self     - Text entry with name for new file/directory
+   -- Icon_Pos - Position of text entry icon which was pressed or if key
+   --            Enter was pressed, simulate pressing proper icon
+   -- SOURCE
    procedure CreateItem(Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position) is
+   -- ****
       Name: constant String :=
         To_String(CurrentDirectory) & "/" & Get_Text(Self);
       File: File_Type;
