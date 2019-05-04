@@ -20,38 +20,47 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package Bookmarks is
 
--- ****t* Bookmarks/Bookmark_Record
--- FUNCTION
--- Data structure for bookmarks
--- SOURCE
+   -- ****t* Bookmarks/Bookmark_Record
+   -- FUNCTION
+   -- Data structure for bookmarks
+   -- PARAMETERS
+   -- MenuName - Text visible to user in menu for this bookmark
+   -- Path     - Full path to this bookmark location
+   -- SOURCE
    type Bookmark_Record is record
       MenuName: Unbounded_String;
       Path: Unbounded_String;
    end record;
--- ****
--- ****t* Bookmarks/Bookmarks_Container
--- SOURCE
+   -- ****
+   -- ****t* Bookmarks/Bookmarks_Container
+   -- FUNCTION
+   -- Used to store all bookmarks
+   -- SOURCE
    package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
--- ****
+   -- ****
 
--- ****v* Bookmarks/BookmarksList
--- FUNCTION
--- List of all bookmarked locations
--- SOURCE
+   -- ****v* Bookmarks/BookmarksList
+   -- FUNCTION
+   -- List of all bookmarked locations
+   -- SOURCE
    BookmarksList: Bookmarks_Container.Vector;
--- ****
+   -- ****
 
--- ****f* Bookmarks/GoToBookmark
--- FUNCTION
--- Go to selected bookmark location
--- SOURCE
+   -- ****f* Bookmarks/GoToBookmark
+   -- FUNCTION
+   -- Go to selected bookmark location
+   -- PARAMETERS
+   -- Self - Selected entry in bookmarks menu
+   -- SOURCE
    procedure GoToBookmark(Self: access Gtk_Menu_Item_Record'Class);
--- ****
--- ****f* Bookmarks/GoHome
--- FUNCTION
--- Go to user home directory
--- SOURCE
+   -- ****
+   -- ****f* Bookmarks/GoHome
+   -- FUNCTION
+   -- Go to user home directory
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure GoHome(Object: access Gtkada_Builder_Record'Class);
--- ****
+   -- ****
 
 end Bookmarks;
