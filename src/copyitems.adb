@@ -22,10 +22,12 @@ with Messages; use Messages;
 
 package body CopyItems is
 
--- ****iv* CopyItems/CopyItemsList
--- SOURCE
+   -- ****iv* CopyItems/CopyItemsList
+   -- FUNCTION
+   -- Stores names of all selected to copy files and directories
+   -- SOURCE
    CopyItemsList: UnboundedString_Container.Vector;
--- ****
+   -- ****
 
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
       Path: Unbounded_String;
