@@ -110,10 +110,7 @@ package body LoadData is
       Reload(Builder);
    end PathClicked;
 
--- ****if* LoadData/LoadDirectory
--- SOURCE
    procedure LoadDirectory(Name, ListName: String) is
--- ****
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, ListName));
       FileIter: Gtk_Tree_Iter;

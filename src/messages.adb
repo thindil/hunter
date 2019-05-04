@@ -25,11 +25,8 @@ with MainWindow; use MainWindow;
 
 package body Messages is
 
--- ****if* Messages/ShowMessage
--- SOURCE
    procedure ShowMessage(Message: String;
       MessageType: Gtk_Message_Type := Message_Error) is
--- ****
       InfoBar: constant GObject := Get_Object(Builder, "actioninfo");
    begin
       Set_Message_Type(Gtk_Info_Bar(InfoBar), MessageType);
@@ -40,40 +37,28 @@ package body Messages is
       end if;
    end ShowMessage;
 
--- ****if* Messages/HideMessage
--- SOURCE
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class) is
--- ****
    begin
       Hide(Gtk_Widget(Get_Object(Object, "actioninfo")));
    end HideMessage;
 
--- ****if* Messages/MessageYes
--- SOURCE
    procedure MessageYes(Object: access Gtkada_Builder_Record'Class) is
--- ****
    begin
       Response
         (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
          Gint(GTK_RESPONSE_YES));
    end MessageYes;
 
--- ****if* Messages/MessageNo
--- SOURCE
    procedure MessageNo(Object: access Gtkada_Builder_Record'Class) is
--- ****
    begin
       Response
         (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
          Gint(GTK_RESPONSE_NO));
    end MessageNo;
 
--- ****if* Messages/MessageResponse
--- SOURCE
    procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
       Response_Id: Gint) is
       pragma Unreferenced(Self);
--- ****
    begin
       if Response_Id /= Gint(GTK_RESPONSE_YES) then
          HideMessage(Builder);

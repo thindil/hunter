@@ -27,10 +27,7 @@ package body CopyItems is
    CopyItemsList: UnboundedString_Container.Vector;
 -- ****
 
--- ****if* CopyItems/CopyData
--- SOURCE
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
--- ****
       Path: Unbounded_String;
       Success: Boolean := True;
       procedure CopyItem(Name: String) is

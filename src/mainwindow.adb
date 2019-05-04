@@ -50,10 +50,7 @@ with Utils; use Utils;
 
 package body MainWindow is
 
--- ****if* MainWindow/Quit
--- SOURCE
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
--- ****
    begin
       Unref(Object);
       Main_Quit;
@@ -182,10 +179,7 @@ package body MainWindow is
       Set_Sensitive(Gtk_Widget(Get_Object(Object, "btngoup")), True);
    end ActivateFile;
 
--- ****if* MainWindow/Reload
--- SOURCE
    procedure Reload(Object: access Gtkada_Builder_Record'Class) is
--- ****
    begin
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       Set_Cursor
@@ -251,10 +245,7 @@ package body MainWindow is
       Grab_Focus(GEntry);
    end StartRename;
 
--- ****if* MainWindow/CreateMainWindow
--- SOURCE
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
--- ****
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
         ((To_Unbounded_String("Desktop"),
           To_Unbounded_String("XDG_DESKTOP_DIR")),
