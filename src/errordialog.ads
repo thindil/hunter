@@ -18,24 +18,32 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package ErrorDialog is
 
--- ****f* ErrorDialog/SaveException
--- FUNCTION
--- Save exception data to file and show error dialog
--- SOURCE
+   -- ****f* ErrorDialog/SaveException
+   -- FUNCTION
+   -- Save exception data to file and show error dialog
+   -- PARAMETERS
+   -- An_Exception    - Exception's data which occured
+   -- PrintToTerminal - If true, information about exception will be printed
+   --                   in terminal
+   -- SOURCE
    procedure SaveException(An_Exception: Exception_Occurrence;
       PrintToTerminal: Boolean);
--- ****
--- ****f* ErrorDialog/On_Exception
--- FUNCTION
--- Handle GUI exceptions
--- SOURCE
+   -- ****
+   -- ****f* ErrorDialog/On_Exception
+   -- FUNCTION
+   -- Handle GUI exceptions
+   -- PARAMETERS
+   -- An_Exception - Exception's data which occured
+   -- SOURCE
    procedure On_Exception(An_Exception: Exception_Occurrence);
--- ****
--- ****f* ErrorDialog/CreateErrorDialog
--- FUNCTION
--- Create error dialog UI
--- SOURCE
+   -- ****
+   -- ****f* ErrorDialog/CreateErrorDialog
+   -- FUNCTION
+   -- Create error dialog UI
+   -- PARAMETERS
+   -- NewBuilder: Gtk Builder with UI data read from .glade file
+   -- SOURCE
    procedure CreateErrorDialog(NewBuilder: Gtkada_Builder);
--- ****
+   -- ****
 
 end ErrorDialog;
