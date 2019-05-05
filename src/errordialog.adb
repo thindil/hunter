@@ -29,7 +29,7 @@ package body ErrorDialog is
 
    -- ****iv* ErrorDialog/Builder
    -- FUNCTION
-   -- Gtk Builder used to read data from .glade file
+   -- Gtk Builder with UI data from .glade file
    -- SOURCE
    Builder: Gtkada_Builder;
    -- ****
