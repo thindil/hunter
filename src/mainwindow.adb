@@ -56,12 +56,18 @@ package body MainWindow is
       Main_Quit;
    end Quit;
 
--- ****if* MainWindow/GetSelectedItems
--- SOURCE
+   -- ****if* MainWindow/GetSelectedItems
+   -- FUNCTION
+   -- Add selected file or directory to SelectedItems list.
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model with content of currently selected directory
+   -- Path  - Gtk_Tree_Path to selected element in Model
+   -- Iter  - Gtk_Tree_Iter to selected element in Model
+   -- SOURCE
    procedure GetSelectedItems(Model: Gtk_Tree_Model; Path: Gtk_Tree_Path;
       Iter: Gtk_Tree_Iter) is
       pragma Unreferenced(Path);
--- ****
+      -- ****
    begin
       if CurrentDirectory = To_Unbounded_String("/") then
          CurrentDirectory := Null_Unbounded_String;
@@ -71,10 +77,14 @@ package body MainWindow is
          To_Unbounded_String("/" & Get_String(Model, Iter, 0)));
    end GetSelectedItems;
 
--- ****if* MainWindow/ShowFileInfo
--- SOURCE
+   -- ****if* MainWindow/ShowFileInfo
+   -- FUNCTION
+   -- Show info about selected item in preview view.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure ShowFileInfo(Object: access Gtkada_Builder_Record'Class) is
--- ****
+   -- ****
    begin
       if Setting then
          return;
@@ -130,10 +140,16 @@ package body MainWindow is
       end if;
    end ShowFileInfo;
 
--- ****if* MainWindow/ActivateFile
--- SOURCE
+   -- ****if* MainWindow/ActivateFile
+   -- FUNCTION
+   -- "Activate" selected file or directory. Action depends on what selected
+   -- item is. For example: it go to selected directory, opens text files in
+   -- editor and so on.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
--- ****
+   -- ****
    begin
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
@@ -189,10 +205,14 @@ package body MainWindow is
       ShowFileInfo(Object);
    end Reload;
 
--- ****if* MainWindow/GoUpDirectory
--- SOURCE
+   -- ****if* MainWindow/GoUpDirectory
+   -- FUNCTION
+   -- Go to upper directory in path.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure GoUpDirectory(Object: access Gtkada_Builder_Record'Class) is
--- ****
+   -- ****
    begin
       CurrentDirectory :=
         Unbounded_Slice
@@ -206,11 +226,15 @@ package body MainWindow is
       Reload(Object);
    end GoUpDirectory;
 
--- ****if* MainWindow/DeleteItem
--- SOURCE
+   -- ****if* MainWindow/DeleteItem
+   -- FUNCTION
+   -- Show message to start deleting selected files and directories.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
--- ****
+      -- ****
       Message: Unbounded_String := To_Unbounded_String("Delete?" & LF);
    begin
       for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
@@ -226,10 +250,15 @@ package body MainWindow is
       ShowMessage(To_String(Message), MESSAGE_QUESTION);
    end DeleteItem;
 
--- ****if* MainWindow/StartRename
--- SOURCE
+   -- ****if* MainWindow/StartRename
+   -- FUNCTION
+   -- Show text entry to start renaming selected file or directory and fill it
+   -- with current element name.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure StartRename(Object: access Gtkada_Builder_Record'Class) is
--- ****
+      -- ****
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Object, "entry"));
    begin
       NewAction := RENAME;

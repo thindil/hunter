@@ -54,7 +54,7 @@ package body LoadData is
    -- SOURCE
    function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
       B: Gtk_Tree_Iter) return Gint is
-   -- ****
+      -- ****
       FileTypeA: constant Gint := Get_Int(Model, A, 1);
       FileTypeB: constant Gint := Get_Int(Model, B, 1);
       FileNameA: constant String := Get_String(Model, A, 0);
@@ -92,7 +92,7 @@ package body LoadData is
       pragma Unreferenced(Model);
       pragma Unreferenced(A);
       pragma Unreferenced(B);
-   -- ****
+      -- ****
    begin
       return 0;
    end EmptySortFiles;
@@ -104,7 +104,7 @@ package body LoadData is
    -- Widget - Button to remove
    -- SOURCE
    procedure RemovePathButtons
-      (Widget: not null access Gtk_Widget_Record'Class) is
+     (Widget: not null access Gtk_Widget_Record'Class) is
    -- ****
    begin
       Destroy(Widget);
@@ -117,7 +117,7 @@ package body LoadData is
    -- Self - Button which was clicked by user
    -- SOURCE
    procedure PathClicked(Self: access Gtk_Button_Record'Class) is
-   -- ****
+      -- ****
       Value: GValue;
       Tokens: Slice_Set;
    begin

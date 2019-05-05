@@ -33,7 +33,7 @@ package body CreateItems is
    -- SOURCE
    procedure CreateItem(Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position) is
-   -- ****
+      -- ****
       Name: constant String :=
         To_String(CurrentDirectory) & "/" & Get_Text(Self);
       File: File_Type;
