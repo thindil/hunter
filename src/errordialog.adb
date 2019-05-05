@@ -27,10 +27,12 @@ with Gtk.Widget; use Gtk.Widget;
 
 package body ErrorDialog is
 
--- ****iv* ErrorDialog/Builder
--- SOURCE
+   -- ****iv* ErrorDialog/Builder
+   -- FUNCTION
+   -- Gtk Builder used to read data from .glade file
+   -- SOURCE
    Builder: Gtkada_Builder;
--- ****
+   -- ****
 
    procedure SaveException(An_Exception: Exception_Occurrence;
       PrintToTerminal: Boolean) is
