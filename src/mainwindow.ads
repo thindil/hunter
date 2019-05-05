@@ -19,72 +19,87 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package MainWindow is
 
--- ****v* MainWindow/Builder
--- FUNCTION
--- Gtk Builder used to read data from glade file
--- SOURCE
+   -- ****v* MainWindow/Builder
+   -- FUNCTION
+   -- Gtk Builder used to read data from glade file
+   -- SOURCE
    Builder: Gtkada_Builder;
--- ****
--- ****v* MainWindow/Setting
--- FUNCTION
--- If true, the program is in the setting mode
--- SOURCE
+   -- ****
+   -- ****v* MainWindow/Setting
+   -- FUNCTION
+   -- If true, the program is in the setting mode
+   -- SOURCE
    Setting: Boolean;
--- ****
--- ****v* MainWindow/CurrentDirectory
--- FUNCTION
--- Currently selected directory to show
--- SOURCE
+   -- ****
+   -- ****v* MainWindow/CurrentDirectory
+   -- FUNCTION
+   -- Currently selected directory to show
+   -- SOURCE
    CurrentDirectory: Unbounded_String;
--- ****
--- ****t* MainWindow/ItemActions
--- FUNCTION
--- Types of action on files and directories
--- SOURCE
+   -- ****
+   -- ****t* MainWindow/ItemActions
+   -- FUNCTION
+   -- Types of action on files and directories
+   -- OPTIONS
+   -- CREATEFILE      - create file
+   -- CREATEDIRECTORY - create directory
+   -- RENAME          - rename file or directory
+   -- DELETE          - delete file or directory
+   -- SOURCE
    type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE);
--- ****
--- ****v* MainWindow/NewAction
--- FUNCTION
--- Current performed action on files or directories
--- SOURCE
+   -- ****
+   -- ****v* MainWindow/NewAction
+   -- FUNCTION
+   -- Current performed action on files or directories
+   -- SOURCE
    NewAction: ItemActions;
--- ****
--- ****t* MainWindow/UnboundedString_Container
--- SOURCE
+   -- ****
+   -- ****t* MainWindow/UnboundedString_Container
+   -- FUNCTION
+   -- Used to store various Unbounded_String data in list.
+   -- SOURCE
    package UnboundedString_Container is new Vectors(Positive,
       Unbounded_String);
--- ****
+   -- ****
 
--- ****v* MainWindow/SelectedItems
--- FUNCTION
--- List of currently selected files and directories by user
--- SOURCE
+   -- ****v* MainWindow/SelectedItems
+   -- FUNCTION
+   -- List of currently selected files and directories by user
+   -- SOURCE
    SelectedItems: UnboundedString_Container.Vector;
--- ****
--- ****v* MainWindow/CurrentSelected
--- FUNCTION
--- Full path to currently selected file or directory
--- SOURCE
+   -- ****
+   -- ****v* MainWindow/CurrentSelected
+   -- FUNCTION
+   -- Full path to currently selected file or directory
+   -- SOURCE
    CurrentSelected: Unbounded_String;
--- ****
+   -- ****
 
--- ****f* MainWindow/Quit
--- FUNCTION
--- Quit from program
--- SOURCE
+   -- ****f* MainWindow/Quit
+   -- FUNCTION
+   -- Quit from program
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure Quit(Object: access Gtkada_Builder_Record'Class);
--- ****
--- ****f* MainWindow/CreateMainWindow
--- FUNCTION
--- Create main window and show content of selected directory
--- SOURCE
+   -- ****
+   -- ****f* MainWindow/CreateMainWindow
+   -- FUNCTION
+   -- Create main window and show content of selected directory
+   -- PARAMETERS
+   -- NewBuilder - Gtk Builder with UI data read from .glade file
+   -- Directory  - Full path to the directory which will be show at the
+   --              program start
+   -- SOURCE
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String);
--- ****
--- ****f* MainWindow/Reload
--- FUNCTION
--- Reload directory listing and preview of selected item
--- SOURCE
+   -- ****
+   -- ****f* MainWindow/Reload
+   -- FUNCTION
+   -- Reload directory listing and preview of selected item
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure Reload(Object: access Gtkada_Builder_Record'Class);
--- ****
+   -- ****
 
 end MainWindow;

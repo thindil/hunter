@@ -41,7 +41,7 @@ package ErrorDialog is
    -- FUNCTION
    -- Create error dialog UI
    -- PARAMETERS
-   -- NewBuilder: Gtk Builder with UI data read from .glade file
+   -- NewBuilder - Gtk Builder with UI data read from .glade file
    -- SOURCE
    procedure CreateErrorDialog(NewBuilder: Gtkada_Builder);
    -- ****
