@@ -15,17 +15,25 @@
 
 package Utils is
 
--- ****f* Utils/GetMimeType
--- FUNCTION
--- Return MIME Type of selected file (full path)
--- SOURCE
+   -- ****f* Utils/GetMimeType
+   -- FUNCTION
+   -- Check MIME Type of selected file
+   -- PARAMETERS
+   -- FileName - full path to the selected file to check MIME Type
+   -- RESULT
+   -- String with MIME Type of selected file
+   -- SOURCE
    function GetMimeType(FileName: String) return String;
--- ****
--- ****f* Utils/CanBeOpened
--- FUNCTION
--- Return True if there is application associated with selected MIME Type, otherwise False
--- SOURCE
+   -- ****
+   -- ****f* Utils/CanBeOpened
+   -- FUNCTION
+   -- Check if there is application associated to open selected MIME Type
+   -- PARAMETERS
+   -- MimeType - MIME Type to check
+   -- RESULT
+   -- Return True if there is application associated with selected MIME Type, otherwise False
+   -- SOURCE
    function CanBeOpened(MimeType: String) return Boolean;
--- ****
+   -- ****
 
 end Utils;
