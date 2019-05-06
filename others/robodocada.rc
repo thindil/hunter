@@ -12,3 +12,18 @@ options:
   --index
   --internal
   --documenttitle "Hunter code documentation"
+  --syntaxcolors
+keywords:
+  procedure
+  function
+  return
+  is
+  type
+  record
+  pragma
+  end
+  package
+  new
+  access
+  not
+  null
