@@ -18,24 +18,32 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package SearchItems is
 
--- ****f* SearchItems/ToggleSearch
--- FUNCTION
--- Show or hide search text entry
--- SOURCE
+   -- ****f* SearchItems/ToggleSearch
+   -- FUNCTION
+   -- Show or hide search text entry
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class);
--- ****
--- ****f* SearchItems/VisibleFiles
--- FUNCTION
--- Set which files or directories are currently visible
--- SOURCE
+   -- ****
+   -- ****f* SearchItems/VisibleFiles
+   -- FUNCTION
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model which contains all files and directories in
+   --         current directory
+   -- Iter  - Gtk_Tree_Iter to currently checked file or directory
+   -- Set which files or directories are currently visible
+   -- SOURCE
    function VisibleFiles(Model: Gtk_Tree_Model;
       Iter: Gtk_Tree_Iter) return Boolean;
--- ****
--- ****f* SearchItems/SearchFiles
--- FUNCTION
--- Search for files or directories as user enter text in search entry
--- SOURCE
+   -- ****
+   -- ****f* SearchItems/SearchFiles
+   -- FUNCTION
+   -- Search for files or directories as user enter text in search entry
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure SearchFiles(Object: access Gtkada_Builder_Record'Class);
--- ****
+   -- ****
 
 end SearchItems;
