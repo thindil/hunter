@@ -17,11 +17,13 @@ with Gtkada.Builder; use Gtkada.Builder;
 
 package MoveItems is
 
--- ****f* MoveItems/MoveData
--- FUNCTION
--- Move selected files/directories to new place
--- SOURCE
+   -- ****f* MoveItems/MoveData
+   -- FUNCTION
+   -- Move selected files/directories to new place
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure MoveData(Object: access Gtkada_Builder_Record'Class);
--- ****
+   -- ****
 
 end MoveItems;
