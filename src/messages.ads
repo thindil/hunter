@@ -20,37 +20,50 @@ with Glib; use Glib;
 
 package Messages is
 
--- ****f* Messages/ShowMessage
--- FUNCTION
--- Show message with selected type to the user
--- SOURCE
+   -- ****f* Messages/ShowMessage
+   -- FUNCTION
+   -- Show message with selected type to the user
+   -- PARAMETERS
+   -- Message    - Text of message to show to the user
+   -- MesageType - Gtk_Message_Type of message to show to the user. Default is
+   --              Message_Error
+   -- SOURCE
    procedure ShowMessage(Message: String;
       MessageType: Gtk_Message_Type := Message_Error);
--- ****
--- ****f* Messages/HideMessage
--- FUNCTION
--- Hide message
--- SOURCE
+   -- ****
+   -- ****f* Messages/HideMessage
+   -- FUNCTION
+   -- Hide message
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class);
--- ****
--- ****f* Messages/MessageYes
--- FUNCTION
--- Emit Gtk Response Yes for message if user pressed Yes button
--- SOURCE
+   -- ****
+   -- ****f* Messages/MessageYes
+   -- FUNCTION
+   -- Emit Gtk Response Yes for message if user pressed Yes button
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure MessageYes(Object: access Gtkada_Builder_Record'Class);
--- ****
--- ****f* Messages/MessageNo
--- FUNCTION
--- Emit Gtk Response No for message if user pressed No button
--- SOURCE
+   -- ****
+   -- ****f* Messages/MessageNo
+   -- FUNCTION
+   -- Emit Gtk Response No for message if user pressed No button
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure MessageNo(Object: access Gtkada_Builder_Record'Class);
--- ****
--- ****f* Messages/MessageResponse
--- FUNCTION
--- Hide message or do action, depends on the user response
--- SOURCE
+   -- ****
+   -- ****f* Messages/MessageResponse
+   -- FUNCTION
+   -- Hide message or do action, depends on the user response
+   -- PARAMETERS
+   -- Self        - Gtk_Info_Bar which contains the message
+   -- Response_Id - Gtk_Response depends on which button user clicked
+   -- SOURCE
    procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
       Response_Id: Gint);
--- ****
+   -- ****
 
 end Messages;
