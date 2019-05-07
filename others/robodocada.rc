@@ -13,6 +13,11 @@ options:
   --internal
   --documenttitle "Hunter code documentation"
   --syntaxcolors
+  --css others/robodoc.css
+  --sections
+  --toc
+  --masterindex "Index,index"
+  --sourceindex "Source files,sources"
 keywords:
   procedure
   function
@@ -27,3 +32,10 @@ keywords:
   access
   not
   null
+  subtype
+  renames
+  range
+  out
+  in
+  constant
+  private
