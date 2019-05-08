@@ -64,6 +64,14 @@ recompile it. If your theme completely don't support GTK in version 3.14 you
 can still use default GTK theme by adding environment variable `GTK_THEME`.
 For example: `GTK_THEME=Adwaita ./hunter-x86-64.AppImage`.
 
+## Generating code documentation
+
+To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsber.home.xs4all.nl/Robo/)
+and script **robofix.py** from [RoboAda](https://github.com/thindil/roboada)
+(to fix syntax colors of source code). If you have both, in main program
+directory (where this file is) enter terminal commands: `robodoc --rc
+others/robodocada.rc` and after it `./robofix.py docs`.
+
 ## Licenses
 Hunter is available under [GPLv3](COPYING) license.
 
