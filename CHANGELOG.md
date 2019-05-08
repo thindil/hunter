@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Option to go to XDG user directories (like Download, Documents, etc)
 - Option to go to GTK bookmark locations
+- Code documentation
 
 ### Changed
 - Updated interface
