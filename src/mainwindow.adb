@@ -170,8 +170,11 @@ package body MainWindow is
             MimeType: constant String :=
               GetMimeType(To_String(CurrentSelected));
             Pid: GNAT.OS_Lib.Process_Id;
-            Openable: constant Boolean := CanBeOpened(MimeType);
+            Openable: Boolean := CanBeOpened(MimeType);
          begin
+            if MimeType(1 .. 4) = "text" and not Openable then
+               Openable := CanBeOpened("text/plain");
+            end if;
             if not Openable and
               not Is_Executable_File(To_String(CurrentSelected)) then
                ShowMessage("I can't open this file.");
