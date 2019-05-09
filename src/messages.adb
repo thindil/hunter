@@ -17,6 +17,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Widget; use Gtk.Widget;
@@ -67,7 +68,7 @@ package body Messages is
       if NewAction = DELETE then
          for Item of SelectedItems loop
             if Is_Directory(To_String(Item)) then
-               Delete_Tree(To_String(Item));
+               Remove_Dir(To_String(Item), True);
             else
                Delete_File(To_String(Item));
             end if;
@@ -82,6 +83,8 @@ package body Messages is
               ("Could not delete selected files or directories. Reason: " &
                Exception_Message(An_Exception));
          end if;
+      when Directory_Error =>
+         ShowMessage("Can't delete selected files or directories.");
    end MessageResponse;
 
 end Messages;
