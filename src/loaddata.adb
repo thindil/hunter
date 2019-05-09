@@ -16,6 +16,7 @@
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Button; use Gtk.Button;
@@ -143,10 +144,10 @@ package body LoadData is
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, ListName));
       FileIter: Gtk_Tree_Iter;
-      Files, Children: Search_Type;
-      FoundFile, FoundChild: Directory_Entry_Type;
       Size: File_Size;
-      Multiplier: Natural;
+      Directory, SubDirectory: Dir_Type;
+      Multiplier, Last, SubLast: Natural;
+      FileName, SubFileName: String(1..1024);
       SizeShortcuts: constant array(Natural range <>) of String(1 .. 3) :=
         ("B  ", "KiB", "MiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
       MainWindow: constant Gdk_Window :=
@@ -188,29 +189,22 @@ package body LoadData is
            (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
             EmptySortFiles'Access);
       end if;
-      Start_Search(Files, Name, "");
+      Open(Directory, Name);
       loop
-         begin
-            exit when not More_Entries(Files);
-            Get_Next_Entry(Files, FoundFile);
-         exception
-            when Ada.Directories.Use_Error =>
-               null;
-            when Ada.Directories.Status_Error =>
-               exit;
-         end;
-         if Simple_Name(FoundFile) = "." or Simple_Name(FoundFile) = ".." then
+         Read(Directory, FileName, Last);
+         exit when Last = 0;
+         if FileName(1 .. Last) = "." or FileName(1 .. Last) = ".." then
             goto End_Of_Loop;
          end if;
          Append(FilesList, FileIter);
-         Set(FilesList, FileIter, 0, Simple_Name(FoundFile));
-         if Is_Directory(Full_Name(FoundFile)) then
-            if Simple_Name(FoundFile)(1) = '.' then
+         Set(FilesList, FileIter, 0, FileName(1 .. Last));
+         if Is_Directory(Name & "/" & FileName(1 .. Last)) then
+            if FileName(1) = '.' then
                Set(FilesList, FileIter, 1, 1);
             else
                Set(FilesList, FileIter, 1, 2);
             end if;
-            if Is_Symbolic_Link(Full_Name(FoundFile)) then
+            if Is_Symbolic_Link(Name & "/" & FileName(1 .. Last)) then
                Set(FilesList, FileIter, 2, "emblem-symbolic-link");
             else
                Set(FilesList, FileIter, 2, "folder");
@@ -219,33 +213,26 @@ package body LoadData is
                goto End_Of_Loop;
             end if;
             Set(FilesList, FileIter, 4, Gint'Last);
-            if not Is_Read_Accessible_File(Full_Name(FoundFile)) then
+            if Is_Read_Accessible_File(Name & "/" & FileName(1 .. Last)) then
+               Open(SubDirectory, Name & "/" & FileName(1 .. Last));
+               Size := 0;
+               loop
+                  Read(SubDirectory, SubFileName, SubLast);
+                  exit when SubLast = 0;
+                  Size := Size + 1;
+               end loop;
+               Close(SubDirectory);
+               Set(FilesList, FileIter, 3, File_Size'Image(Size - 2));
+            else
                Set(FilesList, FileIter, 3, "?");
-               goto End_Of_Loop;
             end if;
-            Size := 0;
-            Start_Search(Children, Full_Name(FoundFile), "");
-            loop
-               Size := Size + 1;
-               begin
-                  exit when not More_Entries(Children);
-                  Get_Next_Entry(Children, FoundChild);
-               exception
-                  when Ada.Directories.Use_Error =>
-                     null;
-                  when Ada.Directories.Status_Error =>
-                     exit;
-               end;
-            end loop;
-            End_Search(Children);
-            Set(FilesList, FileIter, 3, File_Size'Image(Size - 3));
          else
-            if Simple_Name(FoundFile)(1) = '.' then
+            if FileName(1) = '.' then
                Set(FilesList, FileIter, 1, 3);
             else
                Set(FilesList, FileIter, 1, 4);
             end if;
-            if Is_Symbolic_Link(Full_Name(FoundFile)) then
+            if Is_Symbolic_Link(Name & "/" & FileName(1 .. Last)) then
                Set(FilesList, FileIter, 2, "emblem-symbolic-link");
             else
                Set(FilesList, FileIter, 2, "text-x-generic-template");
@@ -253,13 +240,16 @@ package body LoadData is
             if ListName = "fileslist1" then
                goto End_Of_Loop;
             end if;
-            if not Is_Read_Accessible_File(Full_Name(FoundFile)) then
+            if not Is_Read_Accessible_File(Name & "/" & FileName(1 .. Last)) then
                Set(FilesList, FileIter, 3, "?");
                Set(FilesList, FileIter, 4, 0);
                goto End_Of_Loop;
             end if;
-            if Kind(Full_Name(FoundFile)) = Ordinary_File then
-               Size := Ada.Directories.Size(Full_Name(FoundFile));
+            if Is_Symbolic_Link(Name & "/" & FileName(1 .. Last)) then
+               Set(FilesList, FileIter, 3, "->");
+               Set(FilesList, FileIter, 4, 0);
+            elsif Is_Regular_File(Name & "/" & FileName(1 .. Last)) then
+               Size := Ada.Directories.Size(Name & "/" & FileName(1 .. Last));
                Multiplier := 0;
                while Size > 1024 loop
                   Size := Size / 1024;
@@ -268,7 +258,7 @@ package body LoadData is
                Set
                  (FilesList, FileIter, 3,
                   File_Size'Image(Size) & " " & SizeShortcuts(Multiplier));
-               Size := Ada.Directories.Size(Full_Name(FoundFile));
+               Size := Ada.Directories.Size(Name & "/" & FileName(1..Last));
                if Size > File_Size(Gint'Last) then
                   Size := File_Size(Gint'Last);
                end if;
@@ -280,7 +270,7 @@ package body LoadData is
          end if;
          <<End_Of_Loop>>
       end loop;
-      End_Search(Files);
+      Close(Directory);
       if ListName = "fileslist" then
          declare
             FileStack: constant Gtk_Stack :=
