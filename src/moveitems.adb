@@ -16,7 +16,9 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with CopyItems; use CopyItems;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 
@@ -30,6 +32,7 @@ package body MoveItems is
    -- ****
 
    procedure MoveData(Object: access Gtkada_Builder_Record'Class) is
+      Success: Boolean := True;
    begin
       if MoveItemsList.Length > 0
         and then Containing_Directory(To_String(MoveItemsList(1))) =
@@ -46,9 +49,22 @@ package body MoveItems is
          return;
       end if;
       for Name of MoveItemsList loop
-         Rename
-           (To_String(Name),
-            To_String(CurrentDirectory) & "/" & Simple_Name(To_String(Name)));
+         begin
+            Rename
+              (To_String(Name),
+               To_String(CurrentDirectory) & "/" &
+               Simple_Name(To_String(Name)));
+         exception
+            when Ada.Directories.Use_Error =>
+               CopyItem(To_String(Name), CurrentDirectory, Success);
+               if Success then
+                  if Is_Directory(To_String(Name)) then
+                     Remove_Dir(To_String(Name), True);
+                  else
+                     Delete_File(To_String(Name));
+                  end if;
+               end if;
+         end;
       end loop;
       MoveItemsList.Clear;
       Reload(Object);

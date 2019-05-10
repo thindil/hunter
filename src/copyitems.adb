@@ -15,7 +15,6 @@
 
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -32,38 +31,6 @@ package body CopyItems is
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
       Path: Unbounded_String;
       Success: Boolean := True;
-      procedure CopyItem(Name: String) is
-         procedure ProcessFile(Item: Directory_Entry_Type) is
-         begin
-            GNAT.OS_Lib.Copy_File
-              (Full_Name(Item), To_String(Path) & "/" & Simple_Name(Item),
-               Success, Copy, Full);
-         end ProcessFile;
-         procedure ProcessDirectory(Item: Directory_Entry_Type) is
-         begin
-            if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
-               CopyItem(Full_Name(Item));
-            end if;
-         exception
-            when Ada.Directories.Name_Error =>
-               null;
-         end ProcessDirectory;
-      begin
-         if Is_Directory(Name) then
-            Append(Path, "/" & Simple_Name(Name));
-            Create_Path(To_String(Path));
-            Search
-              (Name, "", (Directory => False, others => True),
-               ProcessFile'Access);
-            Search
-              (Name, "", (Directory => True, others => False),
-               ProcessDirectory'Access);
-         else
-            GNAT.OS_Lib.Copy_File
-              (Name, To_String(Path) & "/" & Simple_Name(Name), Success, Copy,
-               Full);
-         end if;
-      end CopyItem;
    begin
       if CopyItemsList.Length > 0
         and then Containing_Directory(To_String(CopyItemsList(1))) =
@@ -81,7 +48,7 @@ package body CopyItems is
       end if;
       for Name of CopyItemsList loop
          Path := CurrentDirectory;
-         CopyItem(To_String(Name));
+         CopyItem(To_String(Name), Path, Success);
          if not Success then
             exit;
          end if;
@@ -89,5 +56,38 @@ package body CopyItems is
       CopyItemsList.Clear;
       Reload(Object);
    end CopyData;
+
+   procedure CopyItem(Name: String; Path: in out Unbounded_String; Success: in out Boolean) is
+      procedure ProcessFile(Item: Directory_Entry_Type) is
+      begin
+         GNAT.OS_Lib.Copy_File
+            (Full_Name(Item), To_String(Path) & "/" & Simple_Name(Item),
+         Success, Copy, Full);
+      end ProcessFile;
+      procedure ProcessDirectory(Item: Directory_Entry_Type) is
+      begin
+         if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
+            CopyItem(Full_Name(Item), Path, Success);
+         end if;
+      exception
+         when Ada.Directories.Name_Error =>
+            null;
+      end ProcessDirectory;
+   begin
+      if Is_Directory(Name) then
+         Append(Path, "/" & Simple_Name(Name));
+         Create_Path(To_String(Path));
+         Search
+            (Name, "", (Directory => False, others => True),
+         ProcessFile'Access);
+         Search
+            (Name, "", (Directory => True, others => False),
+         ProcessDirectory'Access);
+      else
+         GNAT.OS_Lib.Copy_File
+            (Name, To_String(Path) & "/" & Simple_Name(Name), Success, Copy,
+            Full);
+      end if;
+   end CopyItem;
 
 end CopyItems;

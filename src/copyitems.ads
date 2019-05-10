@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
 
 package CopyItems is
@@ -24,6 +25,16 @@ package CopyItems is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure CopyData(Object: access Gtkada_Builder_Record'Class);
+   -- ****
+   -- ****f* CopyItems/CopyItem
+   -- FUNCTION
+   -- Copy selected file or directory to new location
+   -- PARAMETERS
+   -- Name    - Full path to file or directory to copy
+   -- Path    - Full path to new home location of file or directory
+   -- Success - True if item was successfully copied, otherwise False
+   -- SOURCE
+   procedure CopyItem(Name: String; Path: in out Unbounded_String; Success: in out Boolean);
    -- ****
 
 end CopyItems;
