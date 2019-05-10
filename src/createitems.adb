@@ -15,7 +15,6 @@
 
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Widget; use Gtk.Widget;
 with MainWindow; use MainWindow;
@@ -36,7 +35,7 @@ package body CreateItems is
       -- ****
       Name: constant String :=
         To_String(CurrentDirectory) & "/" & Get_Text(Self);
-      File: File_Type;
+      File: File_Descriptor;
       ActionString, ActionBlocker: Unbounded_String;
    begin
       if Icon_Pos = Gtk_Entry_Icon_Primary then
@@ -75,7 +74,7 @@ package body CreateItems is
                Create_Path(Name);
             when CREATEFILE =>
                Create_Path(Containing_Directory(Name));
-               Create(File, Out_File, Name);
+               File := Create_File(Name, Binary);
                Close(File);
             when RENAME =>
                if To_String(CurrentSelected) /= Name then
