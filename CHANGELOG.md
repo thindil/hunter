@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Reset directory listing on hide search entry
 - Copy permissions on copying files or directories
 - Deleting directories with invalid symbolic links
+- Creating empty files
 
 ## [0.2] - 2019-04-26
 
