@@ -147,7 +147,7 @@ package body LoadData is
       Size: File_Size;
       Directory, SubDirectory: Dir_Type;
       Multiplier, Last, SubLast: Natural;
-      FileName, SubFileName: String(1..1024);
+      FileName, SubFileName: String(1 .. 1024);
       SizeShortcuts: constant array(Natural range <>) of String(1 .. 3) :=
         ("B  ", "KiB", "MiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
       MainWindow: constant Gdk_Window :=
@@ -240,7 +240,8 @@ package body LoadData is
             if ListName = "fileslist1" then
                goto End_Of_Loop;
             end if;
-            if not Is_Read_Accessible_File(Name & "/" & FileName(1 .. Last)) then
+            if not Is_Read_Accessible_File
+                (Name & "/" & FileName(1 .. Last)) then
                Set(FilesList, FileIter, 3, "?");
                Set(FilesList, FileIter, 4, 0);
                goto End_Of_Loop;
@@ -258,7 +259,7 @@ package body LoadData is
                Set
                  (FilesList, FileIter, 3,
                   File_Size'Image(Size) & " " & SizeShortcuts(Multiplier));
-               Size := Ada.Directories.Size(Name & "/" & FileName(1..Last));
+               Size := Ada.Directories.Size(Name & "/" & FileName(1 .. Last));
                if Size > File_Size(Gint'Last) then
                   Size := File_Size(Gint'Last);
                end if;
