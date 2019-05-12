@@ -57,12 +57,13 @@ package body CopyItems is
       Reload(Object);
    end CopyData;
 
-   procedure CopyItem(Name: String; Path: in out Unbounded_String; Success: in out Boolean) is
+   procedure CopyItem(Name: String; Path: in out Unbounded_String;
+      Success: in out Boolean) is
       procedure ProcessFile(Item: Directory_Entry_Type) is
       begin
          GNAT.OS_Lib.Copy_File
-            (Full_Name(Item), To_String(Path) & "/" & Simple_Name(Item),
-         Success, Copy, Full);
+           (Full_Name(Item), To_String(Path) & "/" & Simple_Name(Item),
+            Success, Copy, Full);
       end ProcessFile;
       procedure ProcessDirectory(Item: Directory_Entry_Type) is
       begin
@@ -78,14 +79,14 @@ package body CopyItems is
          Append(Path, "/" & Simple_Name(Name));
          Create_Path(To_String(Path));
          Search
-            (Name, "", (Directory => False, others => True),
-         ProcessFile'Access);
+           (Name, "", (Directory => False, others => True),
+            ProcessFile'Access);
          Search
-            (Name, "", (Directory => True, others => False),
-         ProcessDirectory'Access);
+           (Name, "", (Directory => True, others => False),
+            ProcessDirectory'Access);
       else
          GNAT.OS_Lib.Copy_File
-            (Name, To_String(Path) & "/" & Simple_Name(Name), Success, Copy,
+           (Name, To_String(Path) & "/" & Simple_Name(Name), Success, Copy,
             Full);
       end if;
    end CopyItem;
