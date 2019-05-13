@@ -25,21 +25,21 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo21">MainWindow/Builder</a></li>
-<li>2. <a href="#robo22">MainWindow/CreateMainWindow</a></li>
-<li>3. <a href="#robo23">MainWindow/CurrentDirectory</a></li>
-<li>4. <a href="#robo24">MainWindow/CurrentSelected</a></li>
-<li>5. <a href="#robo28">MainWindow/ItemActions</a></li>
-<li>6. <a href="#robo29">MainWindow/NewAction</a></li>
-<li>7. <a href="#robo30">MainWindow/Quit</a></li>
-<li>8. <a href="#robo31">MainWindow/Reload</a></li>
-<li>9. <a href="#robo32">MainWindow/SelectedItems</a></li>
-<li>10. <a href="#robo33">MainWindow/Setting</a></li>
-<li>11. <a href="#robo36">MainWindow/UnboundedString_Container</a></li>
+<li>1. <a href="#robo24">MainWindow/Builder</a></li>
+<li>2. <a href="#robo25">MainWindow/CreateMainWindow</a></li>
+<li>3. <a href="#robo26">MainWindow/CurrentDirectory</a></li>
+<li>4. <a href="#robo27">MainWindow/CurrentSelected</a></li>
+<li>5. <a href="#robo31">MainWindow/ItemActions</a></li>
+<li>6. <a href="#robo32">MainWindow/NewAction</a></li>
+<li>7. <a href="#robo33">MainWindow/Quit</a></li>
+<li>8. <a href="#robo34">MainWindow/Reload</a></li>
+<li>9. <a href="#robo35">MainWindow/SelectedItems</a></li>
+<li>10. <a href="#robo36">MainWindow/Setting</a></li>
+<li>11. <a href="#robo39">MainWindow/UnboundedString_Container</a></li>
 </ul>
 <hr />
 <a name="MainWindow2fBuilder"></a>
-<a name="robo21"></a><h2>MainWindow/Builder [ Variables ]</h2>
+<a name="robo24"></a><h2>MainWindow/Builder [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -51,14 +51,14 @@
 
 <hr />
 <a name="MainWindow2fCreateMainWindow"></a>
-<a name="robo22"></a><h2>MainWindow/CreateMainWindow [ Functions ]</h2>
+<a name="robo25"></a><h2>MainWindow/CreateMainWindow [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create main window and show content of selected directory
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> NewBuilder - Gtk <a href="#robo21">Builder</a> with UI data read from .glade file
+<pre> NewBuilder - Gtk <a href="./errordialog_adb.html#robo14">Builder</a> with UI data read from .glade file
  Directory  - Full path to the directory which will be show at the
               program start
 </pre>
@@ -68,7 +68,7 @@
 
 <hr />
 <a name="MainWindow2fCurrentDirectory"></a>
-<a name="robo23"></a><h2>MainWindow/CurrentDirectory [ Variables ]</h2>
+<a name="robo26"></a><h2>MainWindow/CurrentDirectory [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -80,7 +80,7 @@
 
 <hr />
 <a name="MainWindow2fCurrentSelected"></a>
-<a name="robo24"></a><h2>MainWindow/CurrentSelected [ Variables ]</h2>
+<a name="robo27"></a><h2>MainWindow/CurrentSelected [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -92,7 +92,7 @@
 
 <hr />
 <a name="MainWindow2fItemActions"></a>
-<a name="robo28"></a><h2>MainWindow/ItemActions [ Types ]</h2>
+<a name="robo31"></a><h2>MainWindow/ItemActions [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -110,61 +110,61 @@
 
 <hr />
 <a name="MainWindow2fNewAction"></a>
-<a name="robo29"></a><h2>MainWindow/NewAction [ Variables ]</h2>
+<a name="robo32"></a><h2>MainWindow/NewAction [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Current performed action on files or directories
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>NewAction</strong><span class="sign">:</span> <a href="#robo28">ItemActions</a><span class="sign">;</span>
+<pre class="source">   <strong>NewAction</strong><span class="sign">:</span> <a href="#robo31">ItemActions</a><span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="MainWindow2fQuit"></a>
-<a name="robo30"></a><h2>MainWindow/Quit [ Functions ]</h2>
+<a name="robo33"></a><h2>MainWindow/Quit [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> <strong>Quit</strong> from program
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="#robo21">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo14">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>Quit</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>Quit</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
 </pre>
 
 <hr />
 <a name="MainWindow2fReload"></a>
-<a name="robo31"></a><h2>MainWindow/Reload [ Functions ]</h2>
+<a name="robo34"></a><h2>MainWindow/Reload [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> <strong>Reload</strong> directory listing and preview of selected item
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="#robo21">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo14">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>Reload</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>Reload</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
 </pre>
 
 <hr />
 <a name="MainWindow2fSelectedItems"></a>
-<a name="robo32"></a><h2>MainWindow/SelectedItems [ Variables ]</h2>
+<a name="robo35"></a><h2>MainWindow/SelectedItems [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> List of currently selected files and directories by user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>SelectedItems</strong><span class="sign">:</span> <a href="#robo36">UnboundedString_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
+<pre class="source">   <strong>SelectedItems</strong><span class="sign">:</span> <a href="#robo39">UnboundedString_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="MainWindow2fSetting"></a>
-<a name="robo33"></a><h2>MainWindow/Setting [ Variables ]</h2>
+<a name="robo36"></a><h2>MainWindow/Setting [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -176,7 +176,7 @@
 
 <hr />
 <a name="MainWindow2fUnboundedString5fContainer"></a>
-<a name="robo36"></a><h2>MainWindow/UnboundedString_Container [ Types ]</h2>
+<a name="robo39"></a><h2>MainWindow/UnboundedString_Container [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -189,7 +189,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue May 07 2019 07:49:25
+<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri May 10 2019 10:37:23
 </p>
 </div> <!-- footer -->
 </body>
