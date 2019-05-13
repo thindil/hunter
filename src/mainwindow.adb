@@ -19,13 +19,10 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Main; use Gtk.Main;
-with Gtk.Menu_Item; use Gtk.Menu_Item;
-with Gtk.Menu_Shell; use Gtk.Menu_Shell;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Paned; use Gtk.Paned;
@@ -278,51 +275,6 @@ package body MainWindow is
    end StartRename;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
-      XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
-        ((To_Unbounded_String("Desktop"),
-          To_Unbounded_String("XDG_DESKTOP_DIR")),
-         (To_Unbounded_String("Download"),
-          To_Unbounded_String("XDG_DOWNLOAD_DIR")),
-         (To_Unbounded_String("Public"),
-          To_Unbounded_String("XDG_PUBLICSHARE_DIR")),
-         (To_Unbounded_String("Documents"),
-          To_Unbounded_String("XDG_DOCUMENTS_DIR")),
-         (To_Unbounded_String("Music"), To_Unbounded_String("XDG_MUSIC_DIR")),
-         (To_Unbounded_String("Pictures"),
-          To_Unbounded_String("XDG_PICTURES_DIR")),
-         (To_Unbounded_String("Videos"),
-          To_Unbounded_String("XDG_VIDEOS_DIR")));
-      BookmarksMenus: constant array(Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String("bookmarkhome"),
-         To_Unbounded_String("bookmarkdesktop"),
-         To_Unbounded_String("bookmarkdownload"),
-         To_Unbounded_String("bookmarkpublic"),
-         To_Unbounded_String("bookmarkdocuments"),
-         To_Unbounded_String("bookmarkmusic"),
-         To_Unbounded_String("bookmarkpictures"),
-         To_Unbounded_String("bookmarkvideos"));
-      function GetXDGDirectory(Name: String) return Unbounded_String is
-         File: File_Type;
-         Line: Unbounded_String;
-         EqualIndex: Natural;
-      begin
-         if not Ada.Environment_Variables.Exists(Name)
-           or else Value(Name) = "" then
-            Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
-            while not End_Of_File(File) loop
-               Line := To_Unbounded_String(Get_Line(File));
-               EqualIndex := Index(Line, "=");
-               if EqualIndex > 0 then
-                  if Slice(Line, 1, EqualIndex - 1) = Name then
-                     Set(Name, Slice(Line, EqualIndex + 2, Length(Line) - 1));
-                     exit;
-                  end if;
-               end if;
-            end loop;
-            Close(File);
-         end if;
-         return To_Unbounded_String(Expand_Path(Value(Name)));
-      end GetXDGDirectory;
    begin
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
@@ -342,6 +294,8 @@ package body MainWindow is
       Register_Handler(Builder, "Hide_Message", HideMessage'Access);
       Register_Handler(Builder, "Message_Yes", MessageYes'Access);
       Register_Handler(Builder, "Message_No", MessageNo'Access);
+      Register_Handler
+        (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
@@ -363,63 +317,9 @@ package body MainWindow is
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
          Gtk_Widget(Get_Object(Builder, "newmenu")));
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
-      -- Set bookmarks - XDG directories and GTK bookmarks
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),
          Gtk_Widget(Get_Object(Builder, "bookmarksmenu")));
-      BookmarksList.Append
-        (New_Item =>
-           (MenuName => To_Unbounded_String("Home"),
-            Path => To_Unbounded_String(Value("HOME"))));
-      for I in XDGBookmarks'Range loop
-         BookmarksList.Append
-           (New_Item =>
-              (MenuName => XDGBookmarks(I).MenuName,
-               Path => GetXDGDirectory(To_String(XDGBookmarks(I).Path))));
-         On_Activate
-           (Gtk_Menu_Item(Get_Object(Builder, To_String(BookmarksMenus(I)))),
-            GoToBookmark'Access);
-      end loop;
-      if Ada.Directories.Exists
-          (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
-         declare
-            File: File_Type;
-            Line, Path: Unbounded_String;
-            BookmarkExist: Boolean;
-            MenuItem: Gtk_Menu_Item;
-         begin
-            Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
-            while not End_Of_File(File) loop
-               Line := To_Unbounded_String(Get_Line(File));
-               if Slice(Line, 1, 7) = "file://" then
-                  Path := Unbounded_Slice(Line, 8, Length(Line));
-                  BookmarkExist := False;
-                  for I in BookmarksList.Iterate loop
-                     if BookmarksList(I).Path = Path then
-                        BookmarkExist := True;
-                        exit;
-                     end if;
-                  end loop;
-                  if not BookmarkExist then
-                     BookmarksList.Append
-                       (New_Item =>
-                          (MenuName =>
-                             To_Unbounded_String(Simple_Name(To_String(Path))),
-                           Path => Path));
-                     MenuItem :=
-                       Gtk_Menu_Item_New_With_Label
-                         (Simple_Name(To_String(Path)));
-                     On_Activate(MenuItem, GoToBookmark'Access);
-                     Append
-                       (Gtk_Menu_Shell(Get_Object(Builder, "bookmarksmenu")),
-                        MenuItem);
-                     Show_All(Gtk_Widget(MenuItem));
-                  end if;
-               end if;
-            end loop;
-            Close(File);
-         end;
-      end if;
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
