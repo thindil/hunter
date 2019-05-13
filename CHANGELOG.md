@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Deleting directories with invalid symbolic links
 - Creating empty files
 - Crash on moving files or directories to new location
+- Showing close button in box on questions
 
 ## [0.2] - 2019-04-26
 
