@@ -30,6 +30,13 @@ package body Messages is
       MessageType: Gtk_Message_Type := Message_Error) is
       InfoBar: constant GObject := Get_Object(Builder, "actioninfo");
    begin
+      if MessageType /= Message_Question then
+         Set_Show_Close_Button
+           (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), True);
+      else
+         Set_Show_Close_Button
+           (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), False);
+      end if;
       Set_Message_Type(Gtk_Info_Bar(InfoBar), MessageType);
       Set_Text(Gtk_Label(Get_Object(Builder, "lblactioninfo")), Message);
       Show_All(Gtk_Widget(InfoBar));
