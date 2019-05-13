@@ -67,6 +67,7 @@ package body Messages is
    procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
       Response_Id: Gint) is
       pragma Unreferenced(Self);
+      GoUp: Boolean := False;
    begin
       if Response_Id /= Gint(GTK_RESPONSE_YES) then
          HideMessage(Builder);
@@ -76,12 +77,20 @@ package body Messages is
          for Item of SelectedItems loop
             if Is_Directory(To_String(Item)) then
                Remove_Dir(To_String(Item), True);
+               if Item = CurrentDirectory then
+                  GoUp := True;
+               end if;
             else
                Delete_File(To_String(Item));
             end if;
          end loop;
       end if;
       HideMessage(Builder);
+      if GoUp then
+         CurrentDirectory :=
+           To_Unbounded_String
+             (Normalize_Pathname(To_String(CurrentDirectory) & "/.."));
+      end if;
       Reload(Builder);
    exception
       when An_Exception : USE_ERROR =>
