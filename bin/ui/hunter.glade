@@ -27,6 +27,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <object class="GtkMenu" id="bookmarksmenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <signal name="show" handler="Create_Bookmark_Menu" swapped="no"/>
     <child>
       <object class="GtkMenuItem" id="bookmarkhome">
         <property name="visible">True</property>
