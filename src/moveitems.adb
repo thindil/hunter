@@ -18,6 +18,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with CopyItems; use CopyItems;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -32,7 +33,8 @@ package body MoveItems is
    -- ****
 
    procedure MoveData(Object: access Gtkada_Builder_Record'Class) is
-      Success: Boolean := True;
+      pragma Unreferenced(Object);
+      OverwriteItem: Boolean := False;
    begin
       if MoveItemsList.Length > 0
         and then Containing_Directory(To_String(MoveItemsList(1))) =
@@ -48,26 +50,58 @@ package body MoveItems is
            ("You don't have permissions to move selected items here.");
          return;
       end if;
-      for Name of MoveItemsList loop
+      NewAction := MOVE;
+      MoveSelected(OverwriteItem);
+   end MoveData;
+
+   procedure MoveSelected(Overwrite: in out Boolean) is
+      ItemType: Unbounded_String;
+      Success: Boolean := True;
+   begin
+      while MoveItemsList.Length > 0 loop
+         if Exists
+             (To_String(CurrentDirectory) & "/" &
+              Simple_Name(To_String(MoveItemsList(1)))) and
+           not Overwrite then
+            if Is_Directory
+                (To_String(CurrentDirectory) & "/" &
+                 Simple_Name(To_String(MoveItemsList(1)))) then
+               ItemType := To_Unbounded_String("Directory");
+            else
+               ItemType := To_Unbounded_String("File");
+            end if;
+            ShowMessage
+              (To_String(ItemType) & " " &
+               Simple_Name(To_String(MoveItemsList(1))) &
+               " exists. Do you want to overwrite it?",
+               Message_Question);
+            return;
+         end if;
          begin
             Rename
-              (To_String(Name),
+              (To_String(MoveItemsList(1)),
                To_String(CurrentDirectory) & "/" &
-               Simple_Name(To_String(Name)));
+               Simple_Name(To_String(MoveItemsList(1))));
          exception
             when Ada.Directories.Use_Error =>
-               CopyItem(To_String(Name), CurrentDirectory, Success);
+               CopyItem
+                 (To_String(MoveItemsList(1)), CurrentDirectory, Success);
                if Success then
-                  if Is_Directory(To_String(Name)) then
-                     Remove_Dir(To_String(Name), True);
+                  if Is_Directory(To_String(MoveItemsList(1))) then
+                     Remove_Dir(To_String(MoveItemsList(1)), True);
                   else
-                     Delete_File(To_String(Name));
+                     Delete_File(To_String(MoveItemsList(1)));
                   end if;
                end if;
          end;
+         MoveItemsList.Delete(Index => 1);
+         if not YesForAll then
+            Overwrite := False;
+         end if;
       end loop;
       MoveItemsList.Clear;
-      Reload(Object);
-   end MoveData;
+      HideMessage(Builder);
+      Reload(Builder);
+   end MoveSelected;
 
 end MoveItems;

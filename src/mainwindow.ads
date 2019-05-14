@@ -46,8 +46,10 @@ package MainWindow is
    -- RENAME          - rename file or directory
    -- DELETE          - delete file or directory
    -- COPY            - copy file or directory
+   -- Move            - move file or directory
    -- SOURCE
-   type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY);
+   type ItemActions is
+     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE);
    -- ****
    -- ****v* MainWindow/NewAction
    -- FUNCTION

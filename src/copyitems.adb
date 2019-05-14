@@ -30,6 +30,7 @@ package body CopyItems is
    -- ****
 
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
       OverwriteItem: Boolean := False;
    begin
       if CopyItemsList.Length > 0
@@ -48,7 +49,6 @@ package body CopyItems is
       end if;
       NewAction := COPY;
       CopySelected(OverwriteItem);
-      Reload(Object);
    end CopyData;
 
    procedure CopyItem(Name: String; Path: in out Unbounded_String;
