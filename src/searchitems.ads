@@ -28,11 +28,15 @@ package SearchItems is
    -- ****
    -- ****f* SearchItems/VisibleFiles
    -- FUNCTION
+   -- Check if selected file or directory should be visible, when user
+   -- search for selected names.
    -- PARAMETERS
    -- Model - Gtk_Tree_Model which contains all files and directories in
    --         current directory
    -- Iter  - Gtk_Tree_Iter to currently checked file or directory
    -- Set which files or directories are currently visible
+   -- RESULT
+   -- True if selected item or directory should be visible, otherwise false
    -- SOURCE
    function VisibleFiles(Model: Gtk_Tree_Model;
       Iter: Gtk_Tree_Iter) return Boolean;
