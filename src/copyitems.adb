@@ -121,6 +121,7 @@ package body CopyItems is
       end loop;
       CopyItemsList.Clear;
       HideMessage(Builder);
+      Reload(Builder);
    end CopySelected;
 
 end CopyItems;

@@ -61,6 +61,7 @@ package body Messages is
       elsif User_Data = Get_Object(Builder, "btnno") then
          ResponseValue := Gint(GTK_RESPONSE_NO);
       elsif User_Data = Get_Object(Builder, "btnyesall") then
+         YesForAll := True;
          ResponseValue := Gint(GTK_RESPONSE_ACCEPT);
       elsif User_Data = Get_Object(Builder, "btnnoall") then
          ResponseValue := Gint(GTK_RESPONSE_REJECT);
@@ -73,28 +74,24 @@ package body Messages is
       pragma Unreferenced(Self);
       OverwriteItem: Boolean := True;
    begin
-      if Response_Id /= Gint(GTK_RESPONSE_YES) and
-        Response_Id /= Gint(GTK_RESPONSE_ACCEPT) then
+      if NewAction = DELETE then
          HideMessage(Builder);
-         return;
-      end if;
-      if Response_Id = Gint(GTK_RESPONSE_ACCEPT) then
-         YesForAll := True;
-      end if;
-      case NewAction is
-         when DELETE =>
-            HideMessage(Builder);
+         if Response_Id = Gint(GTK_RESPONSE_YES) then
             if DeleteSelected then
                CurrentDirectory :=
                  To_Unbounded_String
                    (Normalize_Pathname(To_String(CurrentDirectory) & "/.."));
             end if;
-         when COPY =>
-            CopySelected(OverwriteItem);
-         when others =>
-            null;
-      end case;
-      Reload(Builder);
+            Reload(Builder);
+         end if;
+      elsif NewAction = COPY then
+         if Response_Id = Gint(GTK_RESPONSE_REJECT) then
+            HideMessage(Builder);
+            Reload(Builder);
+            return;
+         end if;
+         CopySelected(OverwriteItem);
+      end if;
    end MessageResponse;
 
 end Messages;
