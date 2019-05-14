@@ -292,8 +292,7 @@ package body MainWindow is
       Register_Handler(Builder, "Copy_Items", CopyData'Access);
       Register_Handler(Builder, "Go_Home", GoHome'Access);
       Register_Handler(Builder, "Hide_Message", HideMessage'Access);
-      Register_Handler(Builder, "Message_Yes", MessageYes'Access);
-      Register_Handler(Builder, "Message_No", MessageNo'Access);
+      Register_Handler(Builder, "Set_Response", SetResponse'Access);
       Register_Handler
         (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
       Do_Connect(Builder);
