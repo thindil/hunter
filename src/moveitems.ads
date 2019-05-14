@@ -25,5 +25,14 @@ package MoveItems is
    -- SOURCE
    procedure MoveData(Object: access Gtkada_Builder_Record'Class);
    -- ****
+   -- ****f* MoveItems/MoveSelected
+   -- FUNCTION
+   -- Move selected files and directories
+   -- PARAMETERS
+   -- Overwrite - If True, overwrite existing file or directory, otherwise
+   --             ask for overwrite permission. Value is set to False if
+   --             permission was only for one file or directory
+   -- SOURCE
+   procedure MoveSelected(Overwrite: in out Boolean);
 
 end MoveItems;

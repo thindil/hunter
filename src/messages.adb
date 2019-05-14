@@ -21,6 +21,7 @@ with Gtk.Widget; use Gtk.Widget;
 with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
 with MainWindow; use MainWindow;
+with MoveItems; use MoveItems;
 
 package body Messages is
 
@@ -91,6 +92,13 @@ package body Messages is
             return;
          end if;
          CopySelected(OverwriteItem);
+      elsif NewAction = MOVE then
+         if Response_Id = Gint(GTK_RESPONSE_REJECT) then
+            HideMessage(Builder);
+            Reload(Builder);
+            return;
+         end if;
+         MoveSelected(OverwriteItem);
       end if;
    end MessageResponse;
 
