@@ -45,8 +45,9 @@ package MainWindow is
    -- CREATEDIRECTORY - create directory
    -- RENAME          - rename file or directory
    -- DELETE          - delete file or directory
+   -- COPY            - copy file or directory
    -- SOURCE
-   type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE);
+   type ItemActions is (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY);
    -- ****
    -- ****v* MainWindow/NewAction
    -- FUNCTION

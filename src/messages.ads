@@ -17,9 +17,17 @@ with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
+with Glib.Object; use Glib.Object;
 
 package Messages is
 
+   -- ****v* Messages/YesToAll
+   -- FUNCTION
+   -- Set to True if user clicked Yes for All button in response to question,
+   -- otherwise False
+   -- SOURCE
+   YesForAll: Boolean;
+   -- ****
    -- ****f* Messages/ShowMessage
    -- FUNCTION
    -- Show message with selected type to the user
@@ -39,21 +47,13 @@ package Messages is
    -- SOURCE
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class);
    -- ****
-   -- ****f* Messages/MessageYes
+   -- ****f* Messages/SetResponse
    -- FUNCTION
-   -- Emit Gtk Response Yes for message if user pressed Yes button
+   -- Set proper GTK Response for info bar buttons
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- User_Data - Which button to set
    -- SOURCE
-   procedure MessageYes(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-   -- ****f* Messages/MessageNo
-   -- FUNCTION
-   -- Emit Gtk Response No for message if user pressed No button
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure MessageNo(Object: access Gtkada_Builder_Record'Class);
+   procedure SetResponse(User_Data: access GObject_Record'Class);
    -- ****
    -- ****f* Messages/MessageResponse
    -- FUNCTION

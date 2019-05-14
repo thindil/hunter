@@ -30,12 +30,22 @@ package CopyItems is
    -- FUNCTION
    -- Copy selected file or directory to new location
    -- PARAMETERS
-   -- Name    - Full path to file or directory to copy
-   -- Path    - Full path to new home location of file or directory
-   -- Success - True if item was successfully copied, otherwise False
+   -- Name      - Full path to file or directory to copy
+   -- Path      - Full path to new home location of file or directory
+   -- Success   - True if item was successfully copied, otherwise False
    -- SOURCE
    procedure CopyItem(Name: String; Path: in out Unbounded_String;
       Success: in out Boolean);
    -- ****
+   -- ****f* CopyItems/CopySelected
+   -- FUNCTION
+   -- Copy selected files and directories
+   -- PARAMETERS
+   -- Overwrite - If True, overwrite existing file or directory, otherwise
+   --             ask for overwrite permission. Value is set to False if
+   --             permission was only for one file or directory
+   -- SOURCE
+   procedure CopySelected(Overwrite: in out Boolean);
+-- ****
 
 end CopyItems;

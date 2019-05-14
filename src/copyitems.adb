@@ -16,6 +16,7 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 
@@ -29,8 +30,7 @@ package body CopyItems is
    -- ****
 
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
-      Path: Unbounded_String;
-      Success: Boolean := True;
+      OverwriteItem: Boolean := False;
    begin
       if CopyItemsList.Length > 0
         and then Containing_Directory(To_String(CopyItemsList(1))) =
@@ -46,14 +46,8 @@ package body CopyItems is
            ("You don't have permissions to copy selected items here.");
          return;
       end if;
-      for Name of CopyItemsList loop
-         Path := CurrentDirectory;
-         CopyItem(To_String(Name), Path, Success);
-         if not Success then
-            exit;
-         end if;
-      end loop;
-      CopyItemsList.Clear;
+      NewAction := COPY;
+      CopySelected(OverwriteItem);
       Reload(Object);
    end CopyData;
 
@@ -85,10 +79,47 @@ package body CopyItems is
            (Name, "", (Directory => True, others => False),
             ProcessDirectory'Access);
       else
+         if Exists(To_String(Path) & "/" & Simple_Name(Name)) then
+            Delete_File(To_String(Path) & "/" & Simple_Name(Name));
+         end if;
          GNAT.OS_Lib.Copy_File
            (Name, To_String(Path) & "/" & Simple_Name(Name), Success, Copy,
             Full);
       end if;
    end CopyItem;
+
+   procedure CopySelected(Overwrite: in out Boolean) is
+      Path, ItemType: Unbounded_String;
+      Success: Boolean := True;
+   begin
+      while CopyItemsList.Length > 0 loop
+         Path := CurrentDirectory;
+         if Exists
+             (To_String(Path) & "/" &
+              Simple_Name(To_String(CopyItemsList(1)))) and
+           not Overwrite then
+            if Is_Directory
+                (To_String(Path) & "/" &
+                 Simple_Name(To_String(CopyItemsList(1)))) then
+               ItemType := To_Unbounded_String("Directory");
+            else
+               ItemType := To_Unbounded_String("File");
+            end if;
+            ShowMessage
+              (To_String(ItemType) & " " &
+               Simple_Name(To_String(CopyItemsList(1))) &
+               " exists. Do you want to overwrite it?",
+               Message_Question);
+            return;
+         end if;
+         CopyItem(To_String(CopyItemsList(1)), Path, Success);
+         exit when not Success;
+         CopyItemsList.Delete(Index => 1);
+         if not YesForAll then
+            Overwrite := False;
+         end if;
+      end loop;
+      CopyItemsList.Clear;
+   end CopySelected;
 
 end CopyItems;

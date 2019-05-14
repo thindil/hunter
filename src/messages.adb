@@ -18,7 +18,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Widget; use Gtk.Widget;
-with Glib.Object; use Glib.Object;
+with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
 with MainWindow; use MainWindow;
 
@@ -41,6 +41,10 @@ package body Messages is
       if MessageType /= Message_Question then
          Hide(Gtk_Widget(Get_Object(Builder, "actionbox")));
       end if;
+      if NewAction = DELETE then
+         Hide(Gtk_Widget(Get_Object(Builder, "btnnoall")));
+         Hide(Gtk_Widget(Get_Object(Builder, "btnyesall")));
+      end if;
    end ShowMessage;
 
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class) is
@@ -48,37 +52,47 @@ package body Messages is
       Hide(Gtk_Widget(Get_Object(Object, "actioninfo")));
    end HideMessage;
 
-   procedure MessageYes(Object: access Gtkada_Builder_Record'Class) is
+   procedure SetResponse(User_Data: access GObject_Record'Class) is
+      ResponseValue: Gint;
    begin
-      Response
-        (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
-         Gint(GTK_RESPONSE_YES));
-   end MessageYes;
-
-   procedure MessageNo(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      Response
-        (Gtk_Info_Bar(Get_Object(Object, "actioninfo")),
-         Gint(GTK_RESPONSE_NO));
-   end MessageNo;
+      YesForAll := False;
+      if User_Data = Get_Object(Builder, "btnyes") then
+         ResponseValue := Gint(GTK_RESPONSE_YES);
+      elsif User_Data = Get_Object(Builder, "btnno") then
+         ResponseValue := Gint(GTK_RESPONSE_NO);
+      elsif User_Data = Get_Object(Builder, "btnyesall") then
+         ResponseValue := Gint(GTK_RESPONSE_ACCEPT);
+      elsif User_Data = Get_Object(Builder, "btnnoall") then
+         ResponseValue := Gint(GTK_RESPONSE_REJECT);
+      end if;
+      Response(Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), ResponseValue);
+   end SetResponse;
 
    procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
       Response_Id: Gint) is
       pragma Unreferenced(Self);
-      GoUp: Boolean := False;
+      OverwriteItem: Boolean := True;
    begin
       HideMessage(Builder);
-      if Response_Id /= Gint(GTK_RESPONSE_YES) then
+      if Response_Id /= Gint(GTK_RESPONSE_YES) and
+        Response_Id /= Gint(GTK_RESPONSE_ACCEPT) then
          return;
       end if;
-      if NewAction = DELETE then
-         GoUp := DeleteSelected;
+      if Response_Id = Gint(GTK_RESPONSE_ACCEPT) then
+         YesForAll := True;
       end if;
-      if GoUp then
-         CurrentDirectory :=
-           To_Unbounded_String
-             (Normalize_Pathname(To_String(CurrentDirectory) & "/.."));
-      end if;
+      case NewAction is
+         when DELETE =>
+            if DeleteSelected then
+               CurrentDirectory :=
+                 To_Unbounded_String
+                   (Normalize_Pathname(To_String(CurrentDirectory) & "/.."));
+            end if;
+         when COPY =>
+            CopySelected(OverwriteItem);
+         when others =>
+            null;
+      end case;
       Reload(Builder);
    end MessageResponse;
 
