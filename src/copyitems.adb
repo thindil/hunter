@@ -120,6 +120,7 @@ package body CopyItems is
          end if;
       end loop;
       CopyItemsList.Clear;
+      HideMessage(Builder);
    end CopySelected;
 
 end CopyItems;
