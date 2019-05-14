@@ -73,9 +73,9 @@ package body Messages is
       pragma Unreferenced(Self);
       OverwriteItem: Boolean := True;
    begin
-      HideMessage(Builder);
       if Response_Id /= Gint(GTK_RESPONSE_YES) and
         Response_Id /= Gint(GTK_RESPONSE_ACCEPT) then
+         HideMessage(Builder);
          return;
       end if;
       if Response_Id = Gint(GTK_RESPONSE_ACCEPT) then
@@ -83,6 +83,7 @@ package body Messages is
       end if;
       case NewAction is
          when DELETE =>
+            HideMessage(Builder);
             if DeleteSelected then
                CurrentDirectory :=
                  To_Unbounded_String
