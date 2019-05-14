@@ -13,15 +13,13 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
-with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Object; use Glib.Object;
+with DeleteItems; use DeleteItems;
 with MainWindow; use MainWindow;
 
 package body Messages is
@@ -69,38 +67,19 @@ package body Messages is
       pragma Unreferenced(Self);
       GoUp: Boolean := False;
    begin
+      HideMessage(Builder);
       if Response_Id /= Gint(GTK_RESPONSE_YES) then
-         HideMessage(Builder);
          return;
       end if;
       if NewAction = DELETE then
-         for Item of SelectedItems loop
-            if Is_Directory(To_String(Item)) then
-               Remove_Dir(To_String(Item), True);
-               if Item = CurrentDirectory then
-                  GoUp := True;
-               end if;
-            else
-               Delete_File(To_String(Item));
-            end if;
-         end loop;
+         GoUp := DeleteSelected;
       end if;
-      HideMessage(Builder);
       if GoUp then
          CurrentDirectory :=
            To_Unbounded_String
              (Normalize_Pathname(To_String(CurrentDirectory) & "/.."));
       end if;
       Reload(Builder);
-   exception
-      when An_Exception : USE_ERROR =>
-         if NewAction = DELETE then
-            ShowMessage
-              ("Could not delete selected files or directories. Reason: " &
-               Exception_Message(An_Exception));
-         end if;
-      when Directory_Error =>
-         ShowMessage("Can't delete selected files or directories.");
    end MessageResponse;
 
 end Messages;
