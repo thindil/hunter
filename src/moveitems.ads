@@ -34,5 +34,12 @@ package MoveItems is
    --             permission was only for one file or directory
    -- SOURCE
    procedure MoveSelected(Overwrite: in out Boolean);
+   -- ****
+   -- ****f* CopyItems/SkipCopying
+   -- FUNCTION
+   -- Skip moving current file and move to next
+   -- SOURCE
+   procedure SkipMoving;
+   -- ****
 
 end MoveItems;

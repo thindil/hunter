@@ -46,6 +46,12 @@ package CopyItems is
    --             permission was only for one file or directory
    -- SOURCE
    procedure CopySelected(Overwrite: in out Boolean);
--- ****
+   -- ****
+   -- ****f* CopyItems/SkipCopying
+   -- FUNCTION
+   -- Skip copying current file and move to next
+   -- SOURCE
+   procedure SkipCopying;
+   -- ****
 
 end CopyItems;
