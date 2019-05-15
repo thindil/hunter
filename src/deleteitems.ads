@@ -22,5 +22,6 @@ package DeleteItems is
    -- True if current directory was deleted too, otherwise false
    -- SOURCE
    function DeleteSelected return Boolean;
+   -- ****
 
 end DeleteItems;

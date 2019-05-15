@@ -35,7 +35,7 @@ package MoveItems is
    -- SOURCE
    procedure MoveSelected(Overwrite: in out Boolean);
    -- ****
-   -- ****f* CopyItems/SkipCopying
+   -- ****f* MoveItems/SkipMoving
    -- FUNCTION
    -- Skip moving current file and move to next
    -- SOURCE
