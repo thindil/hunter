@@ -104,4 +104,11 @@ package body MoveItems is
       Reload(Builder);
    end MoveSelected;
 
+   procedure SkipMoving is
+      OverwriteItem: Boolean := False;
+   begin
+      MoveItemsList.Delete(Index => 1);
+      MoveSelected(OverwriteItem);
+   end SkipMoving;
+
 end MoveItems;

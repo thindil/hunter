@@ -90,6 +90,9 @@ package body Messages is
             HideMessage(Builder);
             Reload(Builder);
             return;
+         elsif Response_Id = Gint(GTK_RESPONSE_NO) then
+            SkipCopying;
+            return;
          end if;
          CopySelected(OverwriteItem);
       elsif NewAction = MOVE then
@@ -97,8 +100,14 @@ package body Messages is
             HideMessage(Builder);
             Reload(Builder);
             return;
+         elsif Response_Id = Gint(GTK_RESPONSE_NO) then
+            SkipMoving;
+            return;
          end if;
          MoveSelected(OverwriteItem);
+      end if;
+      if Response_Id = Gint(GTK_RESPONSE_CLOSE) then
+         HideMessage(Builder);
       end if;
    end MessageResponse;
 

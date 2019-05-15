@@ -124,4 +124,11 @@ package body CopyItems is
       Reload(Builder);
    end CopySelected;
 
+   procedure SkipCopying is
+      OverwriteItem: Boolean := False;
+   begin
+      CopyItemsList.Delete(Index => 1);
+      CopySelected(OverwriteItem);
+   end SkipCopying;
+
 end CopyItems;
