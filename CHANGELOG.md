@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Code documentation
 - Open all text files in application used to open plain text files if there
   no set application to open them
+- Confirmation on overwrite files and directories during copying and moving
 
 ### Changed
 - Updated interface
