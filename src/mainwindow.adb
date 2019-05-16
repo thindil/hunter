@@ -17,7 +17,7 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings; use Ada.Strings;
+with Ada.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.GEntry; use Gtk.GEntry;
@@ -192,7 +192,6 @@ package body MainWindow is
             end if;
          end;
       end if;
-      Set_Sensitive(Gtk_Widget(Get_Object(Object, "btngoup")), True);
    end ActivateFile;
 
    procedure Reload(Object: access Gtkada_Builder_Record'Class) is
@@ -204,27 +203,6 @@ package body MainWindow is
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
       ShowFileInfo(Object);
    end Reload;
-
-   -- ****if* MainWindow/GoUpDirectory
-   -- FUNCTION
-   -- Go to upper directory in path.
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure GoUpDirectory(Object: access Gtkada_Builder_Record'Class) is
-   -- ****
-   begin
-      CurrentDirectory :=
-        Unbounded_Slice
-          (CurrentDirectory, 1, Index(CurrentDirectory, "/", Backward) - 1);
-      if CurrentDirectory = Null_Unbounded_String then
-         CurrentDirectory := To_Unbounded_String("/");
-      end if;
-      if CurrentDirectory = To_Unbounded_String("/") then
-         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btngoup")), False);
-      end if;
-      Reload(Object);
-   end GoUpDirectory;
 
    -- ****if* MainWindow/DeleteItem
    -- FUNCTION
@@ -280,7 +258,6 @@ package body MainWindow is
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Show_File_Info", ShowFileInfo'Access);
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
-      Register_Handler(Builder, "Go_Up_Directory", GoUpDirectory'Access);
       Register_Handler(Builder, "Reload", Reload'Access);
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
       Register_Handler(Builder, "Search_Files", SearchFiles'Access);
