@@ -195,22 +195,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </packing>
             </child>
             <child>
-              <object class="GtkToolButton" id="btnreload">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Reload directory list and preview. [ALT+R]</property>
-                <property name="label" translatable="yes">Reload</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">view-refresh</property>
-                <signal name="clicked" handler="Reload" swapped="no"/>
-                <accelerator key="r" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkToggleToolButton" id="btnsearch">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
@@ -786,6 +770,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
         </child>
       </object>
     </child>
+  </object>
+  <object class="GtkImage" id="imgreload">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="icon_name">view-refresh</property>
+    <property name="icon_size">1</property>
   </object>
   <object class="GtkMenu" id="newmenu">
     <property name="visible">True</property>

@@ -297,6 +297,10 @@ package body LoadData is
                      Gtk_New(Button, Slice(Tokens, I));
                      Pack_Start(ButtonBox, Button);
                      On_Clicked(Button, PathClicked'Access);
+                     if I = Slice_Count(Tokens) then
+                        Set_Tooltip_Text
+                          (Gtk_Widget(Button), "Reload current directory");
+                     end if;
                   end if;
                end loop;
             end if;
