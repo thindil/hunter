@@ -200,7 +200,7 @@ package body MainWindow is
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Object, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
-      Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+      Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
       ShowFileInfo(Object);
    end Reload;
 
@@ -258,7 +258,6 @@ package body MainWindow is
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Show_File_Info", ShowFileInfo'Access);
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
-      Register_Handler(Builder, "Reload", Reload'Access);
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
       Register_Handler(Builder, "Search_Files", SearchFiles'Access);
       Register_Handler(Builder, "Add_New", AddNew'Access);
