@@ -24,7 +24,6 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
-with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
@@ -273,19 +272,13 @@ package body LoadData is
       Close(Directory);
       if ListName = "fileslist" then
          declare
-            FileStack: constant Gtk_Stack :=
-              Gtk_Stack(Get_Object(Builder, "filestack"));
             FilesSort: constant Gtk_Tree_Model_Sort :=
               Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
-            Value: GValue;
             Tokens: Slice_Set;
             Button: Gtk_Button;
             ButtonBox: constant Gtk_Box :=
               Gtk_Box(Get_Object(Builder, "boxpath"));
          begin
-            Init_Set_String(Value, To_String(CurrentDirectory));
-            Child_Set_Property
-              (FileStack, Get_Visible_Child(FileStack), "title", Value);
             Foreach(ButtonBox, RemovePathButtons'Access);
             Gtk_New(Button, "/");
             Pack_Start(ButtonBox, Button);
