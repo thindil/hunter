@@ -283,6 +283,7 @@ package body MainWindow is
         (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")),
          MessageResponse'Access);
       Add_Entry("<mainwindow>/reload", GDK_LC_r, 8);
+      Add_Entry("<mainwindow>/goup", GDK_LC_u, 8);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
