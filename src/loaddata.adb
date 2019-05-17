@@ -19,6 +19,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
+with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Enums; use Gtk.Enums;
@@ -38,6 +39,8 @@ with Gdk.Window; use Gdk.Window;
 with MainWindow; use MainWindow;
 
 package body LoadData is
+
+   Accelerators: Gtk_Accel_Group;
 
    -- ****if* LoadData/SortFiles
    -- FUNCTION
@@ -107,6 +110,7 @@ package body LoadData is
      (Widget: not null access Gtk_Widget_Record'Class) is
    -- ****
    begin
+      Set_Accel_Path(Widget, "", Accelerators);
       Destroy(Widget);
    end RemovePathButtons;
 
@@ -150,8 +154,12 @@ package body LoadData is
         ("B  ", "KiB", "MiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
       MainWindow: constant Gdk_Window :=
         Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow")));
+
    begin
       Setting := True;
+      if Accelerators = null then
+         Accelerators := Gtk_Accel_Group(Get_Object(Builder, "accelerators"));
+      end if;
       if MainWindow /= null then
          Set_Cursor(MainWindow, Gdk_Cursor_New(Watch));
          Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), False);
@@ -292,10 +300,17 @@ package body LoadData is
                      On_Clicked(Button, PathClicked'Access);
                      if I = Slice_Count(Tokens) then
                         Set_Tooltip_Text
-                          (Gtk_Widget(Button), "Reload current directory");
+                          (Gtk_Widget(Button),
+                           "Reload current directory [ALT+R]");
+                        Set_Accel_Path
+                          (Gtk_Widget(Button), "<mainwindow>/reload",
+                           Accelerators);
                      end if;
                   end if;
                end loop;
+            else
+               Set_Accel_Path
+                 (Gtk_Widget(Button), "<mainwindow>/reload", Accelerators);
             end if;
             Show_All(ButtonBox);
             Set_Sort_Func(FilesSort, 0, SortFiles'Access);

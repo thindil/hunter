@@ -20,6 +20,7 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Main; use Gtk.Main;
@@ -36,6 +37,7 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
+with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
@@ -280,6 +282,7 @@ package body MainWindow is
       On_Response
         (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")),
          MessageResponse'Access);
+      Add_Entry("<mainwindow>/reload", GDK_LC_r, 8);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
