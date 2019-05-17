@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated interface
 
+### Fixed
+- Double reload on press path buttons
+
 ## [0.3] - 2019-05-15
 
 ### Added
