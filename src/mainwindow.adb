@@ -303,7 +303,7 @@ package body MainWindow is
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
       Set_Position
-        (Gtk_Paned(Get_Object(Builder, "paned1")),
+        (Gtk_Paned(Get_Object(Builder, "filespaned")),
          Gint
            (Float
               (Get_Allocated_Width
