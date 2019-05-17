@@ -24,6 +24,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <!-- interface-license-type gplv3 -->
   <!-- interface-name hunter -->
   <!-- interface-copyright 2019 Bartek thindil Jasicki -->
+  <object class="GtkAccelGroup" id="accelerators"/>
   <object class="GtkMenu" id="bookmarksmenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -124,6 +125,9 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="default_width">800</property>
     <property name="default_height">600</property>
     <property name="icon_name">system-file-manager</property>
+    <accel-groups>
+      <group name="accelerators"/>
+    </accel-groups>
     <signal name="destroy" handler="Main_Quit" swapped="no"/>
     <child>
       <placeholder/>
