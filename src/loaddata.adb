@@ -138,7 +138,6 @@ package body LoadData is
       else
          CurrentDirectory := To_Unbounded_String("/");
       end if;
-      LoadDirectory(To_String(CurrentDirectory), "fileslist");
       Reload(Builder);
    end PathClicked;
 
