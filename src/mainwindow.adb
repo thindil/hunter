@@ -96,6 +96,7 @@ package body MainWindow is
       if SelectedItems.Length /= 1 then
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
+         Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
          return;
       end if;
       if CurrentSelected = SelectedItems(1) then
@@ -103,6 +104,7 @@ package body MainWindow is
       end if;
       CurrentSelected := SelectedItems(1);
       Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btnopen")), True);
+      Show_All(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
       if Is_Directory(To_String(CurrentSelected)) then
          Set_Sensitive(Gtk_Widget(Get_Object(Object, "btnopen")), True);
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
@@ -133,6 +135,7 @@ package body MainWindow is
                  not Is_Executable_File(To_String(CurrentSelected)) then
                   Set_Sensitive
                     (Gtk_Widget(Get_Object(Builder, "btnopen")), False);
+                  Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
                end if;
             end if;
          end;
