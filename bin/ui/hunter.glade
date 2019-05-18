@@ -140,6 +140,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
         <child>
           <object class="GtkToolbar" id="toolbar">
             <property name="can_focus">False</property>
+            <property name="toolbar_style">icons</property>
+            <property name="icon_size">2</property>
             <child>
               <object class="GtkToolButton" id="btnquit">
                 <property name="visible">True</property>
