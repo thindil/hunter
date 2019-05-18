@@ -284,6 +284,15 @@ package body MainWindow is
          MessageResponse'Access);
       Add_Entry("<mainwindow>/reload", GDK_LC_r, 8);
       Add_Entry("<mainwindow>/goup", GDK_LC_u, 8);
+      Add_Entry("<mainwindow>/path1", GDK_1, 8);
+      Add_Entry("<mainwindow>/path2", GDK_2, 8);
+      Add_Entry("<mainwindow>/path3", GDK_3, 8);
+      Add_Entry("<mainwindow>/path4", GDK_4, 8);
+      Add_Entry("<mainwindow>/path5", GDK_5, 8);
+      Add_Entry("<mainwindow>/path6", GDK_6, 8);
+      Add_Entry("<mainwindow>/path7", GDK_7, 8);
+      Add_Entry("<mainwindow>/path8", GDK_9, 8);
+      Add_Entry("<mainwindow>/path9", GDK_9, 8);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else

@@ -304,6 +304,10 @@ package body LoadData is
                  (Gtk_Widget(Button), "Go to upper directory [ALT+U]");
                Set_Accel_Path
                  (Gtk_Widget(Button), "<mainwindow>/goup", Accelerators);
+            else
+               Set_Accel_Path
+                 (Gtk_Widget(Button), "<mainwindow>/path1", Accelerators);
+               Set_Tooltip_Text(Gtk_Widget(Button), "[ALT+1]");
             end if;
             for I in 2 .. Slice_Count(Tokens) loop
                if Slice(Tokens, I) /= "" then
@@ -322,6 +326,15 @@ package body LoadData is
                      Set_Accel_Path
                        (Gtk_Widget(Button), "<mainwindow>/reload",
                         Accelerators);
+                  elsif I < 11 then
+                     Set_Accel_Path
+                       (Gtk_Widget(Button),
+                        "<mainwindow>/path" & Slice_Number'Image(I)(2),
+                        Accelerators);
+                     Set_Tooltip_Text
+                       (Gtk_Widget(Button),
+                        "Go to this directory [ALT+" &
+                        Slice_Number'Image(I)(2) & "]");
                   end if;
                end if;
             end loop;
