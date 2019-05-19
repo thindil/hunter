@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Keyboard shortcuts for path buttons
 - Preview for images
+- Option to open selected file or directory with custom command
 
 ### Changed
 - Updated interface
