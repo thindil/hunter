@@ -107,7 +107,8 @@ package MainWindow is
    -- ****
    -- ****f* MainWindow/OpenItemWith
    -- FUNCTION
-   -- Open selected item or directory with entered by user command
+   -- Open selected item or directory with entered by user command. That
+   -- command can have argumets either.
    -- PARAMETERS
    -- Self     - Text entry with command to use
    -- Icon_Pos - Position of text entry icon which was pressed or if key

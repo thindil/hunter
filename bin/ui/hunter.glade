@@ -640,6 +640,22 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="toolbar_style">icons</property>
                         <property name="icon_size">2</property>
                         <child>
+                          <object class="GtkToolButton" id="btnrun">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Execute selected program.</property>
+                            <property name="label" translatable="yes">Run</property>
+                            <property name="use_underline">True</property>
+                            <property name="icon_name">media-playback-start</property>
+                            <signal name="clicked" handler="Execute_File" swapped="no"/>
+                            <accelerator key="e" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
+                        <child>
                           <object class="GtkToolButton" id="btnopen">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
