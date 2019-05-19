@@ -148,11 +148,6 @@ package body Bookmarks is
         (Gtk_Container(Get_Object(Object, "bookmarksmenu")),
          RemoveMenu'Access);
       BookmarksList.Clear;
-      BookmarksList.Append
-        (New_Item =>
-           (MenuName => To_Unbounded_String("Home"),
-            Path => To_Unbounded_String(Value("HOME"))));
-      AddMenuItem;
       for I in XDGBookmarks'Range loop
          if Ada.Directories.Exists
              (To_String(GetXDGDirectory(To_String(XDGBookmarks(I).Path)))) then
