@@ -106,10 +106,10 @@ package body MainWindow is
       CurrentSelected := SelectedItems(1);
       Show_All(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
       if Is_Directory(To_String(CurrentSelected)) then
-         Set_Sensitive(Gtk_Widget(Get_Object(Object, "btnopen")), True);
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrollimage")));
+         Hide(Gtk_Widget(Get_Object(Builder, "btnrun")));
          LoadDirectory(To_String(CurrentSelected), "fileslist1");
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
@@ -125,6 +125,9 @@ package body MainWindow is
          begin
             Set_Text(Buffer, "");
             Get_Start_Iter(Buffer, Iter);
+            if not Is_Executable_File(To_String(CurrentSelected)) then
+               Hide(Gtk_Widget(Get_Object(Builder, "btnrun")));
+            end if;
             if MimeType(1 .. 4) = "text" then
                Open(File, In_File, To_String(CurrentSelected));
                while not End_Of_File(File) loop
@@ -139,8 +142,7 @@ package body MainWindow is
                Show_All(Gtk_Widget(Get_Object(Object, "scrollimage")));
             else
                Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
-               if not CanBeOpened(MimeType) and
-                 not Is_Executable_File(To_String(CurrentSelected)) then
+               if not CanBeOpened(MimeType) then
                   Hide(Gtk_Widget(Get_Object(Builder, "btnopen")));
                end if;
             end if;
@@ -183,23 +185,19 @@ package body MainWindow is
             if MimeType(1 .. 4) = "text" and not Openable then
                Openable := CanBeOpened("text/plain");
             end if;
-            if not Openable and
-              not Is_Executable_File(To_String(CurrentSelected)) then
-               ShowMessage("I can't open this file.");
+            if not Openable then
+               ShowMessage
+                 ("I can't open this file. No application associated with this type of files.");
                return;
-            elsif Openable then
+            else
                Pid :=
                  Non_Blocking_Spawn
                    (Containing_Directory(Command_Name) & "/xdg-open",
                     Argument_String_To_List(To_String(CurrentSelected)).all);
-            else
-               Pid :=
-                 Non_Blocking_Spawn
-                   (To_String(CurrentSelected),
-                    Argument_String_To_List("").all);
             end if;
             if Pid = GNAT.Os_Lib.Invalid_Pid then
-               ShowMessage("I can't open this file.");
+               ShowMessage
+                 ("I can't open this file. Can't start application asociated with this type of files.");
             end if;
          end;
       end if;
@@ -313,7 +311,7 @@ package body MainWindow is
       end if;
       Command := Locate_Exec_On_Path(To_String(CommandName));
       if Command = null then
-         ShowMessage("Command " & To_String(CommandName) & " not exist.");
+         ShowMessage("Command " & To_String(CommandName) & " does not exist.");
          Set_Text(Self, "");
          Hide(Gtk_Widget(Self));
          return;
@@ -335,6 +333,26 @@ package body MainWindow is
       Hide(Gtk_Widget(Self));
    end OpenItemWith;
 
+   -- ****if* MainWindow/ExecuteFile
+   -- FUNCTION
+   -- Execute selected file. That file must be graphical application or
+   -- all output will be redirected to terminal (invisible to user).
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI (unused)
+   -- SOURCE
+   procedure ExecuteFile(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
+      pragma Unreferenced(Object);
+      Pid: GNAT.OS_Lib.Process_Id;
+   begin
+      Pid :=
+        Non_Blocking_Spawn
+          (To_String(CurrentSelected), Argument_String_To_List("").all);
+      if Pid = GNAT.Os_Lib.Invalid_Pid then
+         ShowMessage("I can't execute this file.");
+      end if;
+   end ExecuteFile;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -353,6 +371,7 @@ package body MainWindow is
       Register_Handler(Builder, "Hide_Message", HideMessage'Access);
       Register_Handler(Builder, "Set_Response", SetResponse'Access);
       Register_Handler(Builder, "Start_Open_With", StartOpenWith'Access);
+      Register_Handler(Builder, "Execute_File", ExecuteFile'Access);
       Register_Handler
         (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
       Do_Connect(Builder);
