@@ -636,6 +636,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="visible">True</property>
                         <property name="can_focus">False</property>
                         <property name="halign">center</property>
+                        <property name="valign">end</property>
                         <property name="toolbar_style">icons</property>
                         <property name="icon_size">2</property>
                         <child>
@@ -654,10 +655,27 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                             <property name="homogeneous">True</property>
                           </packing>
                         </child>
+                        <child>
+                          <object class="GtkToolButton" id="btnopenwith">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="tooltip_text" translatable="yes">Open selected file or directory with command [ALT+W]</property>
+                            <property name="label" translatable="yes">Open with...</property>
+                            <property name="use_underline">True</property>
+                            <property name="icon_name">system-run</property>
+                            <signal name="clicked" handler="Start_Open_With" swapped="no"/>
+                            <accelerator key="w" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="homogeneous">True</property>
+                          </packing>
+                        </child>
                       </object>
                       <packing>
                         <property name="expand">False</property>
-                        <property name="fill">True</property>
+                        <property name="fill">False</property>
+                        <property name="pack_type">end</property>
                         <property name="position">3</property>
                       </packing>
                     </child>

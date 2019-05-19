@@ -18,10 +18,10 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
-with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Main; use Gtk.Main;
@@ -104,7 +104,6 @@ package body MainWindow is
          return;
       end if;
       CurrentSelected := SelectedItems(1);
-      Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btnopen")), True);
       Show_All(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
       if Is_Directory(To_String(CurrentSelected)) then
          Set_Sensitive(Gtk_Widget(Get_Object(Object, "btnopen")), True);
@@ -142,9 +141,7 @@ package body MainWindow is
                Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
                if not CanBeOpened(MimeType) and
                  not Is_Executable_File(To_String(CurrentSelected)) then
-                  Set_Sensitive
-                    (Gtk_Widget(Get_Object(Builder, "btnopen")), False);
-                  Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
+                  Hide(Gtk_Widget(Get_Object(Builder, "btnopen")));
                end if;
             end if;
          end;
@@ -266,6 +263,78 @@ package body MainWindow is
       Grab_Focus(GEntry);
    end StartRename;
 
+   -- ****if* MainWindow/StartOpenWith
+   -- FUNCTION
+   -- Show text entry to start opening selected file or directory with custom
+   -- command.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure StartOpenWith(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
+      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Object, "entry"));
+   begin
+      NewAction := OPENWITH;
+      Set_Icon_Tooltip_Text
+        (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+         "Enter command to use to open selected item.");
+      Set_Text(Gtk_GEntry(GEntry), "");
+      Show_All(GEntry);
+      Grab_Focus(GEntry);
+   end StartOpenWith;
+
+   procedure OpenItemWith(Self: access Gtk_Entry_Record'Class;
+      Icon_Pos: Gtk_Entry_Icon_Position) is
+      Command: GNAT.OS_Lib.String_Access;
+      Arguments: Argument_List_Access;
+      Pid: Process_Id;
+      CommandName, CommandArguments: Unbounded_String;
+      EnteredCommand: constant String := Get_Text(Self);
+   begin
+      if Icon_Pos = Gtk_Entry_Icon_Primary then
+         Set_Text(Self, "");
+         Hide(Gtk_Widget(Self));
+         return;
+      end if;
+      if Get_Text(Self) = "" then
+         return;
+      end if;
+      if Index(Get_Text(Self), " ") > 0 then
+         CommandName :=
+           To_Unbounded_String
+             (EnteredCommand(1 .. Index(EnteredCommand, " ") - 1));
+         CommandArguments :=
+           To_Unbounded_String
+             (EnteredCommand
+                (Index(EnteredCommand, " ") + 1 .. EnteredCommand'Length));
+      else
+         CommandName := To_Unbounded_String(EnteredCommand);
+         CommandArguments := Null_Unbounded_String;
+      end if;
+      Command := Locate_Exec_On_Path(To_String(CommandName));
+      if Command = null then
+         ShowMessage("Command " & To_String(CommandName) & " not exist.");
+         Set_Text(Self, "");
+         Hide(Gtk_Widget(Self));
+         return;
+      end if;
+      Arguments :=
+        Argument_String_To_List
+          (Command.all & " " & To_String(CommandArguments) & " " &
+           To_String(CurrentSelected));
+      Free(Command);
+      Pid :=
+        Non_Blocking_Spawn
+          (Program_Name => Arguments(Arguments'First).all,
+           Args => Arguments(Arguments'First + 1 .. Arguments'Last));
+      Free(Arguments);
+      if Pid = Invalid_Pid then
+         ShowMessage("Can't start command: " & Get_Text(Self));
+      end if;
+      Set_Text(Self, "");
+      Hide(Gtk_Widget(Self));
+   end OpenItemWith;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -283,6 +352,7 @@ package body MainWindow is
       Register_Handler(Builder, "Go_Home", GoHome'Access);
       Register_Handler(Builder, "Hide_Message", HideMessage'Access);
       Register_Handler(Builder, "Set_Response", SetResponse'Access);
+      Register_Handler(Builder, "Start_Open_With", StartOpenWith'Access);
       Register_Handler
         (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
       Do_Connect(Builder);
