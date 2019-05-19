@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Keyboard shortcuts for path buttons
+- Preview for images
 
 ### Changed
 - Updated interface
