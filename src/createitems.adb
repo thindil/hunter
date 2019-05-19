@@ -120,13 +120,22 @@ package body CreateItems is
       Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button) is
       pragma Unreferenced(Event);
    begin
-      CreateItem(Self, Icon_Pos);
+      if NewAction /= OPENWITH then
+         CreateItem(Self, Icon_Pos);
+      else
+         OpenItemWith(Self, Icon_Pos);
+      end if;
    end IconPressed;
 
    procedure CreateNew(Object: access Gtkada_Builder_Record'Class) is
    begin
-      CreateItem
-        (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);
+      if NewAction /= OPENWITH then
+         CreateItem
+           (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);
+      else
+         OpenItemWith
+           (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);
+      end if;
    end CreateNew;
 
 end CreateItems;

@@ -16,6 +16,7 @@
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
+with Gtk.GEntry; use Gtk.GEntry;
 
 package MainWindow is
 
@@ -46,10 +47,11 @@ package MainWindow is
    -- RENAME          - rename file or directory
    -- DELETE          - delete file or directory
    -- COPY            - copy file or directory
-   -- Move            - move file or directory
+   -- MOVE            - move file or directory
+   -- OPENWITH        - open selected file or directory with command
    -- SOURCE
    type ItemActions is
-     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE);
+     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH);
    -- ****
    -- ****v* MainWindow/NewAction
    -- FUNCTION
@@ -64,7 +66,6 @@ package MainWindow is
    package UnboundedString_Container is new Vectors(Positive,
       Unbounded_String);
    -- ****
-
    -- ****v* MainWindow/SelectedItems
    -- FUNCTION
    -- List of currently selected files and directories by user
@@ -103,6 +104,17 @@ package MainWindow is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure Reload(Object: access Gtkada_Builder_Record'Class);
+   -- ****
+   -- ****f* MainWindow/OpenItemWith
+   -- FUNCTION
+   -- Open selected item or directory with entered by user command
+   -- PARAMETERS
+   -- Self     - Text entry with command to use
+   -- Icon_Pos - Position of text entry icon which was pressed or if key
+   --            Enter was pressed, simulate pressing proper icon
+   -- SOURCE
+   procedure OpenItemWith(Self: access Gtk_Entry_Record'Class;
+      Icon_Pos: Gtk_Entry_Icon_Position);
    -- ****
 
 end MainWindow;
