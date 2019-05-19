@@ -23,6 +23,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
+with Gtk.Image; use Gtk.Image;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
@@ -109,10 +110,12 @@ package body MainWindow is
          Set_Sensitive(Gtk_Widget(Get_Object(Object, "btnopen")), True);
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
+         Hide(Gtk_Widget(Get_Object(Object, "scrollimage")));
          LoadDirectory(To_String(CurrentSelected), "fileslist1");
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
+         Hide(Gtk_Widget(Get_Object(Object, "scrollimage")));
          declare
             MimeType: constant String :=
               GetMimeType(To_String(CurrentSelected));
@@ -129,6 +132,12 @@ package body MainWindow is
                   Insert(Buffer, Iter, Get_Line(File) & LF);
                end loop;
                Close(File);
+            elsif MimeType(1 .. 5) = "image" then
+               Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
+               Set
+                 (Gtk_Image(Get_Object(Object, "imgpreview")),
+                  To_String(CurrentSelected));
+               Show_All(Gtk_Widget(Get_Object(Object, "scrollimage")));
             else
                Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
                if not CanBeOpened(MimeType) and
