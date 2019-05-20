@@ -15,6 +15,7 @@
 
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -93,6 +94,11 @@ package body MoveItems is
                      Delete_File(To_String(MoveItemsList(1)));
                   end if;
                end if;
+            when An_Exception : Ada.Directories.Name_Error =>
+               ShowMessage
+                 ("Can't move " & Simple_Name(To_String(MoveItemsList(1))) &
+                  ". Reason: " & Exception_Message(An_Exception));
+               return;
          end;
          MoveItemsList.Delete(Index => 1);
          if not YesForAll then
