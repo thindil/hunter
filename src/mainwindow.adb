@@ -28,6 +28,7 @@ with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Paned; use Gtk.Paned;
+with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_Iter; use Gtk.Text_Iter;
 with Gtk.Text_View; use Gtk.Text_View;
@@ -77,39 +78,47 @@ package body MainWindow is
          To_Unbounded_String("/" & Get_String(Model, Iter, 0)));
    end GetSelectedItems;
 
-   -- ****if* MainWindow/ShowFileInfo
+   -- ****if* MainWindow/ShowItemInfo
    -- FUNCTION
-   -- Show info about selected item in preview view.
+   -- Show detailed information (name, size, modification date, etc) about
+   -- selected file or directory.
    -- PARAMETERS
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
-   procedure ShowFileInfo(Object: access Gtkada_Builder_Record'Class) is
+   procedure ShowItemInfo(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
+      Buffer: constant Gtk_Text_Buffer :=
+        Get_Buffer(Gtk_Text_View(Get_Object(Object, "filetextview")));
+      Iter: Gtk_Text_Iter;
+   begin
+      Set_Text(Buffer, "");
+      Get_Start_Iter(Buffer, Iter);
+      Insert
+        (Buffer, Iter,
+         "Name: " & Simple_Name(To_String(CurrentSelected)) & LF);
+      if not Is_Directory(Full_Name(To_String(CurrentSelected))) then
+         Insert
+           (Buffer, Iter,
+            "Size: " &
+            CountFileSize(Size(Full_Name(To_String(CurrentSelected)))) & LF);
+      end if;
+   end ShowItemInfo;
+
+   -- ****if* MainWindow/PreviewItem
+   -- FUNCTION
+   -- Preview selected file or directory. If preview is not available, show
+   -- info about selected file or directory.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure PreviewItem(Object: access Gtkada_Builder_Record'Class) is
    -- ****
    begin
-      if Setting then
-         return;
-      end if;
-      SelectedItems.Clear;
-      Selected_Foreach
-        (Gtk.Tree_View.Get_Selection
-           (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
-         GetSelectedItems'Access);
-      if SelectedItems.Length /= 1 then
-         Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
-         Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
-         Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
-         return;
-      end if;
-      if CurrentSelected = SelectedItems(1) then
-         return;
-      end if;
-      CurrentSelected := SelectedItems(1);
-      Show_All(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
       if Is_Directory(To_String(CurrentSelected)) then
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrollimage")));
-         Hide(Gtk_Widget(Get_Object(Builder, "btnrun")));
+         Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
          LoadDirectory(To_String(CurrentSelected), "fileslist1");
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
@@ -119,7 +128,7 @@ package body MainWindow is
             MimeType: constant String :=
               GetMimeType(To_String(CurrentSelected));
             Buffer: constant Gtk_Text_Buffer :=
-              Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview")));
+              Get_Buffer(Gtk_Text_View(Get_Object(Object, "filetextview")));
             Iter: Gtk_Text_Iter;
             File: File_Type;
          begin
@@ -141,14 +150,51 @@ package body MainWindow is
                   To_String(CurrentSelected));
                Show_All(Gtk_Widget(Get_Object(Object, "scrollimage")));
             else
-               Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
+               Set_Active
+                 (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo")),
+                  True);
+               ShowItemInfo(Object);
+               Hide(Gtk_Widget(Get_Object(Object, "btnpreview")));
                if not CanBeOpened(MimeType) then
-                  Hide(Gtk_Widget(Get_Object(Builder, "btnopen")));
+                  Hide(Gtk_Widget(Get_Object(Object, "btnopen")));
                end if;
             end if;
          end;
       end if;
-   end ShowFileInfo;
+   end PreviewItem;
+
+   -- ****if* MainWindow/ShowItem
+   -- FUNCTION
+   -- Show info about selected item or preview it.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure ShowItem(Object: access Gtkada_Builder_Record'Class) is
+   -- ****
+   begin
+      if Setting then
+         return;
+      end if;
+      SelectedItems.Clear;
+      Selected_Foreach
+        (Gtk.Tree_View.Get_Selection
+           (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
+         GetSelectedItems'Access);
+      if SelectedItems.Length /= 1 then
+         Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
+         Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
+         Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
+         return;
+      end if;
+      if CurrentSelected = SelectedItems(1) then
+         return;
+      end if;
+      CurrentSelected := SelectedItems(1);
+      Show_All(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
+      Set_Active
+        (Gtk_Radio_Tool_Button(Get_Object(Object, "btnpreview")), True);
+      PreviewItem(Object);
+   end ShowItem;
 
    -- ****if* MainWindow/ActivateFile
    -- FUNCTION
@@ -210,7 +256,7 @@ package body MainWindow is
         (Gtk_Tree_View(Get_Object(Object, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
       Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
-      ShowFileInfo(Object);
+      ShowItem(Object);
    end Reload;
 
    -- ****if* MainWindow/DeleteItem
@@ -357,7 +403,7 @@ package body MainWindow is
    begin
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
-      Register_Handler(Builder, "Show_File_Info", ShowFileInfo'Access);
+      Register_Handler(Builder, "Show_Item", ShowItem'Access);
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
       Register_Handler(Builder, "Search_Files", SearchFiles'Access);
@@ -372,6 +418,8 @@ package body MainWindow is
       Register_Handler(Builder, "Set_Response", SetResponse'Access);
       Register_Handler(Builder, "Start_Open_With", StartOpenWith'Access);
       Register_Handler(Builder, "Execute_File", ExecuteFile'Access);
+      Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
+      Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler
         (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
       Do_Connect(Builder);
