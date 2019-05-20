@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Widget; use Gtk.Widget;
@@ -77,9 +78,17 @@ package body CreateItems is
                File := Create_File(Name, Binary);
                Close(File);
             when RENAME =>
-               if To_String(CurrentSelected) /= Name then
-                  Rename(To_String(CurrentSelected), Name);
-               end if;
+               begin
+                  if To_String(CurrentSelected) /= Name then
+                     Rename(To_String(CurrentSelected), Name);
+                  end if;
+               exception
+                  when An_Exception : Ada.Directories.Name_Error =>
+                     ShowMessage
+                       ("Can't rename " &
+                        Simple_Name(To_String(CurrentSelected)) &
+                        ". Reason: " & Exception_Message(An_Exception));
+               end;
             when others =>
                null;
          end case;
