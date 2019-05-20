@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Double reload on press path buttons
+- Crash on moving invalid symbolic links
 
 ## [0.3] - 2019-05-15
 
