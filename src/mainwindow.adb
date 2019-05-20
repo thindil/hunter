@@ -96,7 +96,7 @@ package body MainWindow is
       Insert
         (Buffer, Iter,
          "Name: " & Simple_Name(To_String(CurrentSelected)) & LF);
-      if not Is_Directory(Full_Name(To_String(CurrentSelected))) then
+      if Is_Regular_File(Full_Name(To_String(CurrentSelected))) then
          Insert
            (Buffer, Iter,
             "Size: " &
