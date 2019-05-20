@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
+
 package Utils is
 
    -- ****f* Utils/GetMimeType
@@ -35,5 +37,14 @@ package Utils is
    -- SOURCE
    function CanBeOpened(MimeType: String) return Boolean;
    -- ****
+   -- ****f* Utils/CountFileSize
+   -- FUNCTION
+   -- Convert file size to human readable format
+   -- PARAMETERS
+   -- Size - Size of file in bytes
+   -- RESULT
+   -- Return formated string with info about file size (in MiB, GiB, etc)
+   -- SOURCE
+   function CountFileSize(Size: File_Size) return String;
 
 end Utils;

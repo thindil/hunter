@@ -37,6 +37,7 @@ with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
 with MainWindow; use MainWindow;
+with Utils; use Utils;
 
 package body LoadData is
 
@@ -147,10 +148,8 @@ package body LoadData is
       FileIter: Gtk_Tree_Iter;
       Size: File_Size;
       Directory, SubDirectory: Dir_Type;
-      Multiplier, Last, SubLast: Natural;
+      Last, SubLast: Natural;
       FileName, SubFileName: String(1 .. 1024);
-      SizeShortcuts: constant array(Natural range <>) of String(1 .. 3) :=
-        ("B  ", "KiB", "MiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
       MainWindow: constant Gdk_Window :=
         Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow")));
 
@@ -256,15 +255,7 @@ package body LoadData is
                Set(FilesList, FileIter, 4, 0);
             elsif Is_Regular_File(Name & "/" & FileName(1 .. Last)) then
                Size := Ada.Directories.Size(Name & "/" & FileName(1 .. Last));
-               Multiplier := 0;
-               while Size > 1024 loop
-                  Size := Size / 1024;
-                  Multiplier := Multiplier + 1;
-               end loop;
-               Set
-                 (FilesList, FileIter, 3,
-                  File_Size'Image(Size) & " " & SizeShortcuts(Multiplier));
-               Size := Ada.Directories.Size(Name & "/" & FileName(1 .. Last));
+               Set(FilesList, FileIter, 3, CountFileSize(Size));
                if Size > File_Size(Gint'Last) then
                   Size := File_Size(Gint'Last);
                end if;

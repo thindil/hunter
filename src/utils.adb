@@ -14,7 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Directories; use Ada.Directories;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 
@@ -57,5 +56,20 @@ package body Utils is
       when Process_Died =>
          return False;
    end CanBeOpened;
+
+   function CountFileSize(Size: File_Size) return String is
+      Multiplier: Natural;
+      NewSize: File_Size;
+      SizeShortcuts: constant array(Natural range <>) of String(1 .. 3) :=
+        ("B  ", "KiB", "MiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
+   begin
+      NewSize := Size;
+      Multiplier := 0;
+      while NewSize > 1024 loop
+         NewSize := NewSize / 1024;
+         Multiplier := Multiplier + 1;
+      end loop;
+      return File_Size'Image(NewSize) & " " & SizeShortcuts(Multiplier);
+   end CountFileSize;
 
 end Utils;
