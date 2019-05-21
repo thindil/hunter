@@ -124,6 +124,10 @@ package body MainWindow is
          else
             Set_Label(Gtk_Label(Get_Object(Object, "lblsize")), "Unknown");
          end if;
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lbllastmodified")),
+            Ada.Calendar.Formatting.Image
+              (Modification_Time(Full_Name(To_String(CurrentSelected)))));
       else
          Set_Label(Gtk_Label(Get_Object(Object, "lblsize")), "Unknown");
       end if;
