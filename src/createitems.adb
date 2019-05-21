@@ -47,7 +47,7 @@ package body CreateItems is
       if Get_Text(Self) = "" then
          return;
       end if;
-      if Ada.Directories.Exists(Name) then
+      if Ada.Directories.Exists(Name) or Is_Symbolic_Link(Name) then
          case NewAction is
             when CREATEDIRECTORY =>
                ActionString := To_Unbounded_String("create directory with");
