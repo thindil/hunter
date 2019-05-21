@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
@@ -20,15 +21,18 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Image; use Gtk.Image;
+with Gtk.Label; use Gtk.Label;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_Iter; use Gtk.Text_Iter;
 with Gtk.Text_View; use Gtk.Text_View;
@@ -87,21 +91,44 @@ package body MainWindow is
    -- SOURCE
    procedure ShowItemInfo(Object: access Gtkada_Builder_Record'Class) is
       -- ****
-      Buffer: constant Gtk_Text_Buffer :=
-        Get_Buffer(Gtk_Text_View(Get_Object(Object, "filetextview")));
-      Iter: Gtk_Text_Iter;
+      Amount: Natural := 0;
+      Directory: Dir_Type;
+      Last: Natural;
+      FileName: String(1 .. 1024);
    begin
-      Set_Text(Buffer, "");
-      Get_Start_Iter(Buffer, Iter);
-      Insert
-        (Buffer, Iter,
-         "Name: " & Simple_Name(To_String(CurrentSelected)) & LF);
+      Set_Label
+        (Gtk_Label(Get_Object(Object, "lblname")),
+         Full_Name(To_String(CurrentSelected)));
+      Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
       if Is_Regular_File(Full_Name(To_String(CurrentSelected))) then
-         Insert
-           (Buffer, Iter,
-            "Size: " &
-            CountFileSize(Size(Full_Name(To_String(CurrentSelected)))) & LF);
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lblsize")),
+            CountFileSize(Size(Full_Name(To_String(CurrentSelected)))));
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lbllastmodified")),
+            Ada.Calendar.Formatting.Image
+              (Modification_Time(Full_Name(To_String(CurrentSelected)))));
+      elsif Is_Directory(Full_Name(To_String(CurrentSelected))) then
+         Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Elements:");
+         if Is_Read_Accessible_File(Full_Name(To_String(CurrentSelected))) then
+            Open(Directory, Full_Name(To_String(CurrentSelected)));
+            loop
+               Read(Directory, FileName, Last);
+               exit when Last = 0;
+               Amount := Amount + 1;
+            end loop;
+            Close(Directory);
+            Set_Label
+              (Gtk_Label(Get_Object(Object, "lblsize")),
+               Natural'Image(Amount - 2));
+         else
+            Set_Label(Gtk_Label(Get_Object(Object, "lblsize")), "Unknown");
+         end if;
+      else
+         Set_Label(Gtk_Label(Get_Object(Object, "lblsize")), "Unknown");
       end if;
+      Set_Visible_Child_Name
+        (Gtk_Stack(Get_Object(Builder, "infostack")), "info");
    end ShowItemInfo;
 
    -- ****if* MainWindow/PreviewItem
@@ -158,9 +185,12 @@ package body MainWindow is
                if not CanBeOpened(MimeType) then
                   Hide(Gtk_Widget(Get_Object(Object, "btnopen")));
                end if;
+               return;
             end if;
          end;
       end if;
+      Set_Visible_Child_Name
+        (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
    end PreviewItem;
 
    -- ****if* MainWindow/ShowItem
