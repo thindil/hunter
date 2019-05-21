@@ -15,7 +15,6 @@
 
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
-with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -78,28 +77,24 @@ package body MoveItems is
                Message_Question);
             return;
          end if;
-         begin
-            Rename
-              (To_String(MoveItemsList(1)),
-               To_String(CurrentDirectory) & "/" &
-               Simple_Name(To_String(MoveItemsList(1))));
-         exception
-            when Ada.Directories.Use_Error =>
-               CopyItem
-                 (To_String(MoveItemsList(1)), CurrentDirectory, Success);
-               if Success then
-                  if Is_Directory(To_String(MoveItemsList(1))) then
-                     Remove_Dir(To_String(MoveItemsList(1)), True);
-                  else
-                     Delete_File(To_String(MoveItemsList(1)));
-                  end if;
+         Rename_File
+           (To_String(MoveItemsList(1)),
+            To_String(CurrentDirectory) & "/" &
+            Simple_Name(To_String(MoveItemsList(1))),
+            Success);
+         if not Success then
+            CopyItem(To_String(MoveItemsList(1)), CurrentDirectory, Success);
+            if Success then
+               if Is_Directory(To_String(MoveItemsList(1))) then
+                  Remove_Dir(To_String(MoveItemsList(1)), True);
+               else
+                  Delete_File(To_String(MoveItemsList(1)));
                end if;
-            when An_Exception : Ada.Directories.Name_Error =>
-               ShowMessage
-                 ("Can't move " & Simple_Name(To_String(MoveItemsList(1))) &
-                  ". Reason: " & Exception_Message(An_Exception));
+            else
+               ShowMessage("Can't move " & To_String(MoveItemsList(1)) & ".");
                return;
-         end;
+            end if;
+         end if;
          MoveItemsList.Delete(Index => 1);
          if not YesForAll then
             Overwrite := False;
