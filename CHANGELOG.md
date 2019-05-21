@@ -15,6 +15,7 @@ All notable changes to this project will be documented in this file.
 - Double reload on press path buttons
 - Crash on moving invalid symbolic links
 - Crash on trying renaming invalid symbolic links
+- Crash on creating new file or directory when invalid symbolic link exists
 
 ## [0.3] - 2019-05-15
 
