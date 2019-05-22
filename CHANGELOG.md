@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Crash on moving invalid symbolic links
 - Crash on trying renaming invalid symbolic links
 - Crash on creating new file or directory when invalid symbolic link exists
+- Copying whole directories
 
 ## [0.3] - 2019-05-15
 
