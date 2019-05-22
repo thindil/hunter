@@ -95,30 +95,28 @@ package body MainWindow is
       Directory: Dir_Type;
       Last: Natural;
       FileName: String(1 .. 1024);
+      SelectedPath: constant String := Full_Name(To_String(CurrentSelected));
    begin
-      Set_Label
-        (Gtk_Label(Get_Object(Object, "lblname")),
-         Full_Name(To_String(CurrentSelected)));
+      Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
       Hide(Gtk_Widget(Get_Object(Object, "lblfiletype")));
       Hide(Gtk_Widget(Get_Object(Object, "lblfiletype2")));
-      if Is_Regular_File(Full_Name(To_String(CurrentSelected))) then
+      if Is_Regular_File(SelectedPath) then
          Show_All(Gtk_Widget(Get_Object(Object, "lblfiletype")));
          Show_All(Gtk_Widget(Get_Object(Object, "lblfiletype2")));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblsize")),
-            CountFileSize(Size(Full_Name(To_String(CurrentSelected)))));
+            CountFileSize(Size(SelectedPath)));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lbllastmodified")),
-            Ada.Calendar.Formatting.Image
-              (Modification_Time(Full_Name(To_String(CurrentSelected)))));
+            Ada.Calendar.Formatting.Image(Modification_Time(SelectedPath)));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblfiletype")),
-            GetMimeType(Full_Name(To_String(CurrentSelected))));
-      elsif Is_Directory(Full_Name(To_String(CurrentSelected))) then
+            GetMimeType(SelectedPath));
+      elsif Is_Directory(SelectedPath) then
          Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Elements:");
-         if Is_Read_Accessible_File(Full_Name(To_String(CurrentSelected))) then
-            Open(Directory, Full_Name(To_String(CurrentSelected)));
+         if Is_Read_Accessible_File(SelectedPath) then
+            Open(Directory, SelectedPath);
             loop
                Read(Directory, FileName, Last);
                exit when Last = 0;
@@ -133,8 +131,7 @@ package body MainWindow is
          end if;
          Set_Label
            (Gtk_Label(Get_Object(Object, "lbllastmodified")),
-            Ada.Calendar.Formatting.Image
-              (Modification_Time(Full_Name(To_String(CurrentSelected)))));
+            Ada.Calendar.Formatting.Image(Modification_Time(SelectedPath)));
       else
          Set_Label(Gtk_Label(Get_Object(Object, "lblsize")), "Unknown");
       end if;
