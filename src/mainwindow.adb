@@ -22,6 +22,7 @@ with Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
@@ -96,14 +97,21 @@ package body MainWindow is
       Last: Natural;
       FileName: String(1 .. 1024);
       SelectedPath: constant String := Full_Name(To_String(CurrentSelected));
+      ObjectsNames: constant array(Positive range <>) of Unbounded_String :=
+        (To_Unbounded_String("lblfiletype"),
+         To_Unbounded_String("lblfiletype2"),
+         To_Unbounded_String("lblprogram"),
+         To_Unbounded_String("lblprogram2"));
    begin
       Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
-      Hide(Gtk_Widget(Get_Object(Object, "lblfiletype")));
-      Hide(Gtk_Widget(Get_Object(Object, "lblfiletype2")));
+      for Name of ObjectsNames loop
+         Hide(Gtk_Widget(Get_Object(Object, To_String(Name))));
+      end loop;
       if Is_Regular_File(SelectedPath) then
-         Show_All(Gtk_Widget(Get_Object(Object, "lblfiletype")));
-         Show_All(Gtk_Widget(Get_Object(Object, "lblfiletype2")));
+         for Name of ObjectsNames loop
+            Show_All(Gtk_Widget(Get_Object(Object, To_String(Name))));
+         end loop;
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblsize")),
             CountFileSize(Size(SelectedPath)));
@@ -113,6 +121,30 @@ package body MainWindow is
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblfiletype")),
             GetMimeType(SelectedPath));
+         if not CanBeOpened(GetMimeType(SelectedPath)) then
+            Set_Label(Gtk_Label(Get_Object(Object, "lblprogram")), "none");
+         else
+            declare
+               ProcessDesc: Process_Descriptor;
+               Result: Expect_Match;
+               DesktopFile: Unbounded_String;
+            begin
+               Non_Blocking_Spawn
+                 (ProcessDesc,
+                  Containing_Directory(Command_Name) & "/xdg-mime",
+                  Argument_String_To_List
+                    ("query default " & GetMimeType(SelectedPath)).all);
+               Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+               if Result = 1 then
+                  DesktopFile :=
+                    To_Unbounded_String(Expect_Out_Match(ProcessDesc));
+                  Set_Label
+                    (Gtk_Label(Get_Object(Object, "lblprogram")),
+                     To_String(DesktopFile));
+               end if;
+               Close(ProcessDesc);
+            end;
+         end if;
       elsif Is_Directory(SelectedPath) then
          Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Elements:");
          if Is_Read_Accessible_File(SelectedPath) then
@@ -369,7 +401,7 @@ package body MainWindow is
       Icon_Pos: Gtk_Entry_Icon_Position) is
       Command: GNAT.OS_Lib.String_Access;
       Arguments: Argument_List_Access;
-      Pid: Process_Id;
+      Pid: GNAT.OS_Lib.Process_Id;
       CommandName, CommandArguments: Unbounded_String;
       EnteredCommand: constant String := Get_Text(Self);
    begin
@@ -410,7 +442,7 @@ package body MainWindow is
           (Program_Name => Arguments(Arguments'First).all,
            Args => Arguments(Arguments'First + 1 .. Arguments'Last));
       Free(Arguments);
-      if Pid = Invalid_Pid then
+      if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage("Can't start command: " & Get_Text(Self));
       end if;
       Set_Text(Self, "");
