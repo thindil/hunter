@@ -51,18 +51,19 @@ package body CopyItems is
       CopySelected(OverwriteItem);
    end CopyData;
 
-   procedure CopyItem(Name: String; Path: in out Unbounded_String;
+   procedure CopyItem(Name: String; Path: Unbounded_String;
       Success: in out Boolean) is
+      NewPath: Unbounded_String := Path;
       procedure ProcessFile(Item: Directory_Entry_Type) is
       begin
          GNAT.OS_Lib.Copy_File
-           (Full_Name(Item), To_String(Path) & "/" & Simple_Name(Item),
+           (Full_Name(Item), To_String(NewPath) & "/" & Simple_Name(Item),
             Success, Copy, Full);
       end ProcessFile;
       procedure ProcessDirectory(Item: Directory_Entry_Type) is
       begin
          if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
-            CopyItem(Full_Name(Item), Path, Success);
+            CopyItem(Full_Name(Item), NewPath, Success);
          end if;
       exception
          when Ada.Directories.Name_Error =>
@@ -70,8 +71,8 @@ package body CopyItems is
       end ProcessDirectory;
    begin
       if Is_Directory(Name) then
-         Append(Path, "/" & Simple_Name(Name));
-         Create_Path(To_String(Path));
+         Append(NewPath, "/" & Simple_Name(Name));
+         Create_Path(To_String(NewPath));
          Search
            (Name, "", (Directory => False, others => True),
             ProcessFile'Access);

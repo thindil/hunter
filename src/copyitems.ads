@@ -34,7 +34,7 @@ package CopyItems is
    -- Path      - Full path to new home location of file or directory
    -- Success   - True if item was successfully copied, otherwise False
    -- SOURCE
-   procedure CopyItem(Name: String; Path: in out Unbounded_String;
+   procedure CopyItem(Name: String; Path: Unbounded_String;
       Success: in out Boolean);
    -- ****
    -- ****f* CopyItems/CopySelected
