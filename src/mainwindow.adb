@@ -127,7 +127,9 @@ package body MainWindow is
             declare
                ProcessDesc: Process_Descriptor;
                Result: Expect_Match;
-               DesktopFile: Unbounded_String;
+               DesktopFile, FileLine: Unbounded_String;
+               FullPathToDesktop: GNAT.OS_Lib.String_Access;
+               File: File_Type;
             begin
                Non_Blocking_Spawn
                  (ProcessDesc,
@@ -138,9 +140,30 @@ package body MainWindow is
                if Result = 1 then
                   DesktopFile :=
                     To_Unbounded_String(Expect_Out_Match(ProcessDesc));
-                  Set_Label
-                    (Gtk_Label(Get_Object(Object, "lblprogram")),
-                     To_String(DesktopFile));
+                  FullPathToDesktop :=
+                    Locate_Regular_File
+                      (To_String(DesktopFile),
+                       "/usr/share/applications:/usr/share/applnk:/usr/local/share/applications:/usr/local/share/applnk:" &
+                       Value("HOME") & "/.local/share/applications:" &
+                       Value("HOME") & "/.local/share/applnk");
+                  if FullPathToDesktop /= null then
+                     Open(File, In_File, FullPathToDesktop.all);
+                     while not End_Of_File(File) loop
+                        FileLine := To_Unbounded_String(Get_Line(File));
+                        if Slice(FileLine, 1, 4) = "Name" then
+                           Set_Label
+                             (Gtk_Label(Get_Object(Object, "lblprogram")),
+                              Slice(FileLine, 6, Length(FileLine)));
+                           exit;
+                        end if;
+                     end loop;
+                     Close(File);
+                     Free(FullPathToDesktop);
+                  else
+                     Set_Label
+                       (Gtk_Label(Get_Object(Object, "lblprogram")),
+                        To_String(DesktopFile) & " (not installed)");
+                  end if;
                end if;
                Close(ProcessDesc);
             end;
