@@ -500,7 +500,7 @@ package body MainWindow is
    -- Object - GtkAda Builder used to create UI (unused)
    -- SOURCE
    procedure ShowAssociated(Object: access Gtkada_Builder_Record'Class) is
-      -- ****
+   -- ****
    begin
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Object, "filestack")), "associated");
@@ -513,6 +513,7 @@ package body MainWindow is
    -- User_Data - Which button was clicked
    -- SOURCE
    procedure ShowFiles(User_Data: access GObject_Record'Class) is
+   -- ****
    begin
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "filestack")), "files");
