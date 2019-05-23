@@ -25,6 +25,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
+with Gtk.Button; use Gtk.Button;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
@@ -100,7 +101,7 @@ package body MainWindow is
       ObjectsNames: constant array(Positive range <>) of Unbounded_String :=
         (To_Unbounded_String("lblfiletype"),
          To_Unbounded_String("lblfiletype2"),
-         To_Unbounded_String("lblprogram"),
+         To_Unbounded_String("btnprogram"),
          To_Unbounded_String("lblprogram2"));
    begin
       Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
@@ -122,7 +123,7 @@ package body MainWindow is
            (Gtk_Label(Get_Object(Object, "lblfiletype")),
             GetMimeType(SelectedPath));
          if not CanBeOpened(GetMimeType(SelectedPath)) then
-            Set_Label(Gtk_Label(Get_Object(Object, "lblprogram")), "none");
+            Set_Label(Gtk_Button(Get_Object(Object, "btnprogram")), "none");
          else
             declare
                ProcessDesc: Process_Descriptor;
@@ -152,7 +153,7 @@ package body MainWindow is
                         FileLine := To_Unbounded_String(Get_Line(File));
                         if Slice(FileLine, 1, 4) = "Name" then
                            Set_Label
-                             (Gtk_Label(Get_Object(Object, "lblprogram")),
+                             (Gtk_Button(Get_Object(Object, "btnprogram")),
                               Slice(FileLine, 6, Length(FileLine)));
                            exit;
                         end if;
@@ -492,6 +493,31 @@ package body MainWindow is
       end if;
    end ExecuteFile;
 
+   -- ****if* MainWindow/ShowAssociated
+   -- FUNCTION
+   -- Show setting for associating program for selected file
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI (unused)
+   -- SOURCE
+   procedure ShowAssociated(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
+   begin
+      Set_Visible_Child_Name
+        (Gtk_Stack(Get_Object(Object, "filestack")), "associated");
+   end ShowAssociated;
+
+   -- ****if* MainWindow/ShowFiles
+   -- FUNCTION
+   -- Back to files listing and preview/info
+   -- PARAMETERS
+   -- User_Data - Which button was clicked
+   -- SOURCE
+   procedure ShowFiles(User_Data: access GObject_Record'Class) is
+   begin
+      Set_Visible_Child_Name
+        (Gtk_Stack(Get_Object(Builder, "filestack")), "files");
+   end ShowFiles;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -513,6 +539,8 @@ package body MainWindow is
       Register_Handler(Builder, "Execute_File", ExecuteFile'Access);
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
+      Register_Handler(Builder, "Show_Associated", ShowAssociated'Access);
+      Register_Handler(Builder, "Show_Files", ShowFiles'Access);
       Register_Handler
         (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
       Do_Connect(Builder);
