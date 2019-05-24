@@ -30,6 +30,7 @@ with Gtk.Container; use Gtk.Container;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
+with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
@@ -519,7 +520,8 @@ package body MainWindow is
    -- User_Data - Which button was clicked
    -- SOURCE
    procedure ShowFiles(User_Data: access GObject_Record'Class) is
-   -- ****
+      -- ****
+      pragma Unreferenced(User_Data);
    begin
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
@@ -581,6 +583,56 @@ package body MainWindow is
             CurrentDirectory := To_Unbounded_String("/");
          end if;
       end if;
+      declare
+         ApplicationsPaths: constant array
+           (Positive range <>) of Unbounded_String :=
+           (To_Unbounded_String("/usr/share/applications"),
+            To_Unbounded_String("/usr/share/applnk"),
+            To_Unbounded_String("/usr/local/share/applications"),
+            To_Unbounded_String("/usr/local/share/applnk"),
+            To_Unbounded_String(Value("HOME") & "/.local/share/applications"),
+            To_Unbounded_String(Value("HOME") & "/.local/share/applnk"));
+         SubDirectory: Dir_Type;
+         SubLast: Natural;
+         SubFileName: String(1 .. 1024);
+         File: File_Type;
+         FileLine: Unbounded_String;
+         FilesList: constant Gtk_List_Store :=
+           Gtk_List_Store(Get_Object(Builder, "applicationsstore"));
+         FileIter: Gtk_Tree_Iter;
+      begin
+         for Path of ApplicationsPaths loop
+            if not Ada.Directories.Exists(To_String(Path)) then
+               goto End_Of_Loop;
+            end if;
+            Open(SubDirectory, To_String(Path));
+            loop
+               Read(SubDirectory, SubFileName, SubLast);
+               exit when SubLast = 0;
+               if Extension(SubFileName(1 .. SubLast)) = "desktop" then
+                  Open
+                    (File, In_File,
+                     To_String(Path) & "/" &
+                     Simple_Name(SubFileName(1 .. SubLast)));
+                  while not End_Of_File(File) loop
+                     FileLine := To_Unbounded_String(Get_Line(File));
+                     if Length(FileLine) > 5
+                       and then Slice(FileLine, 1, 5) = "Name=" then
+                        Append(FilesList, FileIter);
+                        Set
+                          (FilesList, FileIter, 0,
+                           Slice(FileLine, 6, Length(FileLine)));
+                        Set(FilesList, FileIter, 1, SubFileName(1 .. SubLast));
+                        exit;
+                     end if;
+                  end loop;
+                  Close(File);
+               end if;
+            end loop;
+            Close(SubDirectory);
+            <<End_Of_Loop>>
+         end loop;
+      end;
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
          Gtk_Widget(Get_Object(Builder, "newmenu")));
