@@ -15,9 +15,18 @@
 
 with Ada.Exceptions; use Ada.Exceptions;
 with Gtkada.Builder; use Gtkada.Builder;
+with Gtk.Widget; use Gtk.Widget;
 
 package ErrorDialog is
 
+   -- ****f* ErrorDialog/HideButton
+   -- FUNCTION
+   -- Hide all toolbar buttons except Close button
+   -- PARAMETERS
+   -- Widget - Toolbar button to check
+   -- SOURCE
+   procedure HideButton(Widget: not null access Gtk_Widget_Record'Class);
+   -- ****
    -- ****f* ErrorDialog/SaveException
    -- FUNCTION
    -- Save exception data to file and show error dialog
