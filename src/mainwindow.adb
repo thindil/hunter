@@ -521,6 +521,7 @@ package body MainWindow is
    begin
       Foreach
         (Gtk_Container(Get_Object(Builder, "toolbar")), HideButton'Access);
+      Hide(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Show_All(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
       Show_All(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Set_Visible_Child_Name
@@ -538,6 +539,7 @@ package body MainWindow is
       pragma Unreferenced(User_Data);
    begin
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
+      Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Set_Visible_Child_Name
