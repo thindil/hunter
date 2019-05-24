@@ -27,7 +27,6 @@ with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tool_Item; use Gtk.Tool_Item;
-with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 
 package body ErrorDialog is
@@ -39,19 +38,12 @@ package body ErrorDialog is
    Builder: Gtkada_Builder;
    -- ****
 
-   -- ****if* ErrorDialog/HideButton
-   -- FUNCTION
-   -- Hide all toolbar buttons except Close button
-   -- PARAMETERS
-   -- Widget - Toolbar button to check
-   -- SOURCE
    procedure HideButton(Widget: not null access Gtk_Widget_Record'Class) is
-   -- ****
    begin
       if Get_Item_Index
           (Gtk_Toolbar(Get_Object(Builder, "toolbar")),
            Gtk_Tool_Item(Widget)) >
-        0 then
+        1 then
          Hide(Widget);
       end if;
    end HideButton;

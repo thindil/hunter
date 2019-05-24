@@ -26,6 +26,7 @@ with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Button; use Gtk.Button;
+with Gtk.Container; use Gtk.Container;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
@@ -49,6 +50,7 @@ with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
+with ErrorDialog; use ErrorDialog;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with MoveItems; use MoveItems;
@@ -502,6 +504,10 @@ package body MainWindow is
    procedure ShowAssociated(Object: access Gtkada_Builder_Record'Class) is
    -- ****
    begin
+      Foreach
+        (Gtk_Container(Get_Object(Builder, "toolbar")), HideButton'Access);
+      Show_All(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
+      Show_All(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Object, "filestack")), "associated");
    end ShowAssociated;
@@ -515,6 +521,9 @@ package body MainWindow is
    procedure ShowFiles(User_Data: access GObject_Record'Class) is
    -- ****
    begin
+      Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
+      Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
+      Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "filestack")), "files");
    end ShowFiles;
@@ -583,6 +592,8 @@ package body MainWindow is
       HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
       Hide(Gtk_Widget(Get_Object(Builder, "entry")));
+      Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
+      Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
