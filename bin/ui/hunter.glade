@@ -32,12 +32,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <!-- column-name file -->
       <column type="gchararray"/>
     </columns>
-    <data>
-      <row>
-        <col id="0" translatable="yes">none</col>
-        <col id="1" translatable="yes">none</col>
-      </row>
-    </data>
   </object>
   <object class="GtkMenu" id="bookmarksmenu">
     <property name="visible">True</property>
