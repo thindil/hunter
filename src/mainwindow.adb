@@ -60,6 +60,14 @@ with Utils; use Utils;
 
 package body MainWindow is
 
+   -- ****iv* MainWindow/DesktopFile
+   -- FUNCTION
+   -- Name of .desktop file or name of application associated with selected
+   -- file.
+   -- SOURCE
+   DesktopFile: Unbounded_String;
+   -- ****
+
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
       Unref(Object);
@@ -86,6 +94,27 @@ package body MainWindow is
         (CurrentDirectory &
          To_Unbounded_String("/" & Get_String(Model, Iter, 0)));
    end GetSelectedItems;
+
+   -- ****if* MainWindow/FindFileName
+   -- FUNCTION
+   -- Find name of associated program with selected file. If found, replace
+   -- .desktop file name with name of application.
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model with content of currently selected directory
+   -- Path  - Gtk_Tree_Path to selected element in Model
+   -- Iter  - Gtk_Tree_Iter to selected element in Model
+   -- SOURCE
+   function FindFileName(Model: Gtk_Tree_Model; Path: Gtk_Tree_Path;
+      Iter: Gtk_Tree_Iter) return Boolean is
+      pragma Unreferenced(Path);
+      -- ****
+   begin
+      if Get_String(Model, Iter, 1) = To_String(DesktopFile) then
+         DesktopFile := To_Unbounded_String(Get_String(Model, Iter, 0));
+         return True;
+      end if;
+      return False;
+   end FindFileName;
 
    -- ****if* MainWindow/ShowItemInfo
    -- FUNCTION
@@ -131,9 +160,6 @@ package body MainWindow is
             declare
                ProcessDesc: Process_Descriptor;
                Result: Expect_Match;
-               DesktopFile, FileLine: Unbounded_String;
-               FullPathToDesktop: GNAT.OS_Lib.String_Access;
-               File: File_Type;
             begin
                Non_Blocking_Spawn
                  (ProcessDesc,
@@ -144,25 +170,13 @@ package body MainWindow is
                if Result = 1 then
                   DesktopFile :=
                     To_Unbounded_String(Expect_Out_Match(ProcessDesc));
-                  FullPathToDesktop :=
-                    Locate_Regular_File
-                      (To_String(DesktopFile),
-                       "/usr/share/applications:/usr/share/applnk:/usr/local/share/applications:/usr/local/share/applnk:" &
-                       Value("HOME") & "/.local/share/applications:" &
-                       Value("HOME") & "/.local/share/applnk");
-                  if FullPathToDesktop /= null then
-                     Open(File, In_File, FullPathToDesktop.all);
-                     while not End_Of_File(File) loop
-                        FileLine := To_Unbounded_String(Get_Line(File));
-                        if Slice(FileLine, 1, 4) = "Name" then
-                           Set_Label
-                             (Gtk_Button(Get_Object(Object, "btnprogram")),
-                              Slice(FileLine, 6, Length(FileLine)));
-                           exit;
-                        end if;
-                     end loop;
-                     Close(File);
-                     Free(FullPathToDesktop);
+                  Foreach
+                    (Gtk_List_Store(Get_Object(Object, "applicationsstore")),
+                     FindFileName'Access);
+                  if Index(DesktopFile, ".desktop") = 0 then
+                     Set_Label
+                       (Gtk_Button(Get_Object(Object, "btnprogram")),
+                        To_String(DesktopFile));
                   else
                      Set_Label
                        (Gtk_Label(Get_Object(Object, "lblprogram")),
