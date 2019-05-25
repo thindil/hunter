@@ -519,11 +519,14 @@ package body MainWindow is
    procedure ShowAssociated(Object: access Gtkada_Builder_Record'Class) is
    -- ****
    begin
-      Foreach
-        (Gtk_Container(Get_Object(Builder, "toolbar")), HideButton'Access);
-      Hide(Gtk_Widget(Get_Object(Builder, "boxpath")));
-      Show_All(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
-      Show_All(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+      Foreach(Gtk_Container(Get_Object(Object, "toolbar")), HideButton'Access);
+      Hide(Gtk_Widget(Get_Object(Object, "boxpath")));
+      Set_Label
+        (Gtk_Label(Get_Object(Object, "lblcurrentassoc")),
+         "Currenlty used program: " &
+         Get_Label(Gtk_Button(Get_Object(Object, "btnprogram"))));
+      Show_All(Gtk_Widget(Get_Object(Object, "btntoolapply")));
+      Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Object, "filestack")), "associated");
    end ShowAssociated;
