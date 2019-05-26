@@ -543,12 +543,34 @@ package body MainWindow is
    -- SOURCE
    procedure ShowFiles(User_Data: access GObject_Record'Class) is
       -- ****
-      pragma Unreferenced(User_Data);
+      Pid: GNAT.OS_Lib.Process_Id;
+      ProgramIter: Gtk_Tree_Iter;
+      ProgramModel: Gtk_Tree_Model;
    begin
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+      if User_Data = Get_Object(Builder, "btntoolapply") and
+        Get_Visible_Child_Name(Gtk_Stack(Get_Object(Builder, "filestack"))) =
+          "associated" then
+         Get_Selected
+           (Gtk.Tree_View.Get_Selection
+              (Gtk_Tree_View(Get_Object(Builder, "treeprograms"))),
+            ProgramModel, ProgramIter);
+         if ProgramIter /= Null_Iter then
+            Pid :=
+              Non_Blocking_Spawn
+                (Containing_Directory(Command_Name) & "/xdg-mime",
+                 Argument_String_To_List
+                   ("default " & Get_String(ProgramModel, ProgramIter, 1) &
+                    " " & GetMimeType(To_String(CurrentSelected))).all);
+            if Pid = GNAT.Os_Lib.Invalid_Pid then
+               ShowMessage("I can't set new associated file.");
+            end if;
+         end if;
+      end if;
+      Reload(Builder);
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "filestack")), "files");
    end ShowFiles;
