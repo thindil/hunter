@@ -222,6 +222,9 @@ package body MainWindow is
    procedure PreviewItem(Object: access Gtkada_Builder_Record'Class) is
    -- ****
    begin
+      if Setting then
+         return;
+      end if;
       if Is_Directory(To_String(CurrentSelected)) then
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
@@ -258,14 +261,15 @@ package body MainWindow is
                   To_String(CurrentSelected));
                Show_All(Gtk_Widget(Get_Object(Object, "scrollimage")));
             else
-               Set_Active
-                 (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo")),
-                  True);
-               ShowItemInfo(Object);
                Hide(Gtk_Widget(Get_Object(Object, "btnpreview")));
                if not CanBeOpened(MimeType) then
                   Hide(Gtk_Widget(Get_Object(Object, "btnopen")));
                end if;
+               Setting := True;
+               Set_Active
+                 (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo")),
+                  True);
+               Setting := False;
                return;
             end if;
          end;
