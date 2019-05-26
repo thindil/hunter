@@ -24,6 +24,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Container; use Gtk.Container;
@@ -36,6 +37,7 @@ with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
+with Gtk.Toggle_Button; use Gtk.Toggle_Button;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_Iter; use Gtk.Text_Iter;
@@ -133,8 +135,8 @@ package body MainWindow is
       ObjectsNames: constant array(Positive range <>) of Unbounded_String :=
         (To_Unbounded_String("lblfiletype"),
          To_Unbounded_String("lblfiletype2"),
-         To_Unbounded_String("btnprogram"),
-         To_Unbounded_String("lblprogram2"));
+         To_Unbounded_String("btnprogram"), To_Unbounded_String("lblprogram2"),
+         To_Unbounded_String("cbtnownerexecute"));
    begin
       Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
@@ -208,6 +210,51 @@ package body MainWindow is
       else
          Set_Label(Gtk_Label(Get_Object(Object, "lblsize")), "Unknown");
       end if;
+      declare
+         ProcessDesc: Process_Descriptor;
+         Result: Expect_Match;
+         FileStats: Unbounded_String;
+         Tokens: Slice_Set;
+      begin
+         Non_Blocking_Spawn
+           (ProcessDesc, "stat",
+            Argument_String_To_List("-c""%A %U %G"" " & To_String(CurrentSelected)).all);
+         Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+         if Result = 1 then
+            FileStats := To_Unbounded_String(Expect_Out_Match(ProcessDesc));
+            Create(Tokens, To_String(FileStats), " ");
+            if Slice(Tokens, 1)(3) = '-' then
+               Set_Active
+                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerread")),
+                  False);
+            else
+               Set_Active
+                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerread")),
+                  True);
+            end if;
+            if Slice(Tokens, 1)(4) = '-' then
+               Set_Active
+                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerwrite")),
+                  False);
+            else
+               Set_Active
+                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerwrite")),
+                  True);
+            end if;
+            Set_Label
+              (Gtk_Label(Get_Object(Object, "lblowner")), Slice(Tokens, 2));
+            if Slice(Tokens, 1)(5) = '-' then
+               Set_Active
+                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerexecute")),
+                  False);
+            else
+               Set_Active
+                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerexecute")),
+                  True);
+            end if;
+         end if;
+         Close(ProcessDesc);
+      end;
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "infostack")), "info");
    end ShowItemInfo;
