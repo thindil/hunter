@@ -137,7 +137,8 @@ package body MainWindow is
          To_Unbounded_String("lblfiletype2"),
          To_Unbounded_String("btnprogram"), To_Unbounded_String("lblprogram2"),
          To_Unbounded_String("cbtnownerexecute"),
-         To_Unbounded_String("cbtngroupexecute"));
+         To_Unbounded_String("cbtngroupexecute"),
+         To_Unbounded_String("cbtnothersexecute"));
    begin
       Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
@@ -216,13 +217,16 @@ package body MainWindow is
          Result: Expect_Match;
          FileStats: Unbounded_String;
          Tokens: Slice_Set;
-         ButtonNames: constant array(3 .. 8) of Unbounded_String :=
+         ButtonNames: constant array(3 .. 11) of Unbounded_String :=
            (To_Unbounded_String("cbtnownerread"),
             To_Unbounded_String("cbtnownerwrite"),
             To_Unbounded_String("cbtnownerexecute"),
             To_Unbounded_String("cbtngroupread"),
             To_Unbounded_String("cbtngroupwrite"),
-            To_Unbounded_String("cbtngroupexecute"));
+            To_Unbounded_String("cbtngroupexecute"),
+            To_Unbounded_String("cbtnothersread"),
+            To_Unbounded_String("cbtnotherswrite"),
+            To_Unbounded_String("cbtnothersexecute"));
       begin
          Non_Blocking_Spawn
            (ProcessDesc, "stat",
