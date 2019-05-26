@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Keyboard shortcuts for path buttons
 - Preview for images
 - Option to open selected file or directory with custom command
+- Option to set associated application with selected file
 
 ### Changed
 - Updated interface
