@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Preview for images
 - Option to open selected file or directory with custom command
 - Option to set associated application with selected file
+- Info about file or directory permissions
 
 ### Changed
 - Updated interface
