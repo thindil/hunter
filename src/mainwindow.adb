@@ -136,7 +136,8 @@ package body MainWindow is
         (To_Unbounded_String("lblfiletype"),
          To_Unbounded_String("lblfiletype2"),
          To_Unbounded_String("btnprogram"), To_Unbounded_String("lblprogram2"),
-         To_Unbounded_String("cbtnownerexecute"));
+         To_Unbounded_String("cbtnownerexecute"),
+         To_Unbounded_String("cbtngroupexecute"));
    begin
       Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
@@ -215,45 +216,46 @@ package body MainWindow is
          Result: Expect_Match;
          FileStats: Unbounded_String;
          Tokens: Slice_Set;
+         ButtonNames: constant array(3 .. 8) of Unbounded_String :=
+           (To_Unbounded_String("cbtnownerread"),
+            To_Unbounded_String("cbtnownerwrite"),
+            To_Unbounded_String("cbtnownerexecute"),
+            To_Unbounded_String("cbtngroupread"),
+            To_Unbounded_String("cbtngroupwrite"),
+            To_Unbounded_String("cbtngroupexecute"));
       begin
          Non_Blocking_Spawn
            (ProcessDesc, "stat",
-            Argument_String_To_List("-c""%A %U %G"" " & To_String(CurrentSelected)).all);
+            Argument_String_To_List
+              ("-c""%A %U %G"" " & To_String(CurrentSelected)).all);
          Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
          if Result = 1 then
             FileStats := To_Unbounded_String(Expect_Out_Match(ProcessDesc));
             Create(Tokens, To_String(FileStats), " ");
-            if Slice(Tokens, 1)(3) = '-' then
-               Set_Active
-                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerread")),
-                  False);
-            else
-               Set_Active
-                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerread")),
-                  True);
-            end if;
-            if Slice(Tokens, 1)(4) = '-' then
-               Set_Active
-                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerwrite")),
-                  False);
-            else
-               Set_Active
-                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerwrite")),
-                  True);
-            end if;
             Set_Label
               (Gtk_Label(Get_Object(Object, "lblowner")), Slice(Tokens, 2));
-            if Slice(Tokens, 1)(5) = '-' then
-               Set_Active
-                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerexecute")),
-                  False);
-            else
-               Set_Active
-                 (Gtk_Toggle_Button(Get_Object(Object, "cbtnownerexecute")),
-                  True);
-            end if;
+            Set_Label
+              (Gtk_Label(Get_Object(Object, "lblgroup")),
+               Slice(Tokens, 3)
+                 (Slice(Tokens, 3)'First .. Slice(Tokens, 3)'Last - 1));
+            for I in ButtonNames'Range loop
+               if Slice(Tokens, 1)(I) = '-' then
+                  Set_Active
+                    (Gtk_Toggle_Button
+                       (Get_Object(Object, To_String(ButtonNames(I)))),
+                     False);
+               else
+                  Set_Active
+                    (Gtk_Toggle_Button
+                       (Get_Object(Object, To_String(ButtonNames(I)))),
+                     True);
+               end if;
+            end loop;
          end if;
          Close(ProcessDesc);
+      exception
+         when Process_Died =>
+            return;
       end;
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "infostack")), "info");
