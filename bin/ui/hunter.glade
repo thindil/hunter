@@ -840,6 +840,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                               <object class="GtkLabel" id="lblname">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="wrap">True</property>
+                                <property name="wrap_mode">word-char</property>
                                 <property name="xalign">0</property>
                               </object>
                               <packing>
@@ -851,6 +853,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                               <object class="GtkLabel" id="lblsize">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="wrap">True</property>
+                                <property name="wrap_mode">word-char</property>
                                 <property name="xalign">0</property>
                               </object>
                               <packing>
@@ -862,6 +866,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                               <object class="GtkLabel" id="lbllastmodified">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="wrap">True</property>
+                                <property name="wrap_mode">word-char</property>
                                 <property name="xalign">0</property>
                               </object>
                               <packing>
@@ -885,6 +891,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                               <object class="GtkLabel" id="lblfiletype">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
+                                <property name="wrap">True</property>
+                                <property name="wrap_mode">word-char</property>
                                 <property name="xalign">0</property>
                               </object>
                               <packing>
