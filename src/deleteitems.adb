@@ -13,11 +13,13 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 
@@ -47,5 +49,22 @@ package body DeleteItems is
          ShowMessage("Can't delete selected files or directories.");
          return GoUp;
    end DeleteSelected;
+
+   procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+      Message: Unbounded_String := To_Unbounded_String("Delete?" & LF);
+   begin
+      for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
+         Append(Message, SelectedItems(I));
+         if Is_Directory(To_String(SelectedItems(I))) then
+            Append(Message, "(and its content)");
+         end if;
+         if I /= SelectedItems.Last_Index then
+            Append(Message, LF);
+         end if;
+      end loop;
+      NewAction := DELETE;
+      ShowMessage(To_String(Message), MESSAGE_QUESTION);
+   end DeleteItem;
 
 end DeleteItems;

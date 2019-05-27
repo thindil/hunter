@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtkada.Builder; use Gtkada.Builder;
+
 package DeleteItems is
 
    -- ****f* DeleteItems/DeleteSelected
@@ -22,6 +24,15 @@ package DeleteItems is
    -- True if current directory was deleted too, otherwise false
    -- SOURCE
    function DeleteSelected return Boolean;
+   -- ****
+
+   -- ****f* DeleteItems/DeleteItem
+   -- FUNCTION
+   -- Show message to start deleting selected files and directories.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure DeleteItem(Object: access Gtkada_Builder_Record'Class);
    -- ****
 
 end DeleteItems;

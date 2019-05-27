@@ -34,7 +34,6 @@ with Gtk.Label; use Gtk.Label;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
-with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
 with Gtk.Toggle_Button; use Gtk.Toggle_Button;
@@ -53,6 +52,7 @@ with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
+with DeleteItems; use DeleteItems;
 with ErrorDialog; use ErrorDialog;
 with LoadData; use LoadData;
 with Messages; use Messages;
@@ -438,30 +438,6 @@ package body MainWindow is
       Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
       PreviewItem(Object);
    end Reload;
-
-   -- ****if* MainWindow/DeleteItem
-   -- FUNCTION
-   -- Show message to start deleting selected files and directories.
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
-      -- ****
-      Message: Unbounded_String := To_Unbounded_String("Delete?" & LF);
-   begin
-      for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
-         Append(Message, SelectedItems(I));
-         if Is_Directory(To_String(SelectedItems(I))) then
-            Append(Message, "(and its content)");
-         end if;
-         if I /= SelectedItems.Last_Index then
-            Append(Message, LF);
-         end if;
-      end loop;
-      NewAction := DELETE;
-      ShowMessage(To_String(Message), MESSAGE_QUESTION);
-   end DeleteItem;
 
    -- ****if* MainWindow/StartRename
    -- FUNCTION
