@@ -54,15 +54,23 @@ package body ActivateItems is
             if MimeType(1 .. 4) = "text" and not Openable then
                Openable := CanBeOpened("text/plain");
             end if;
-            if not Openable then
-               ShowMessage
-                 ("I can't open this file. No application associated with this type of files.");
-               return;
+            if not Is_Executable_File(To_String(CurrentSelected)) then
+               if not Openable then
+                  ShowMessage
+                    ("I can't open this file. No application associated with this type of files.");
+                  return;
+               else
+                  Pid :=
+                    Non_Blocking_Spawn
+                      (Containing_Directory(Command_Name) & "/xdg-open",
+                       Argument_String_To_List
+                         (To_String(CurrentSelected)).all);
+               end if;
             else
                Pid :=
                  Non_Blocking_Spawn
-                   (Containing_Directory(Command_Name) & "/xdg-open",
-                    Argument_String_To_List(To_String(CurrentSelected)).all);
+                   (Full_Name(To_String(CurrentSelected)),
+                    Argument_String_To_List("").all);
             end if;
             if Pid = GNAT.Os_Lib.Invalid_Pid then
                ShowMessage
@@ -142,7 +150,8 @@ package body ActivateItems is
    begin
       Pid :=
         Non_Blocking_Spawn
-          (To_String(CurrentSelected), Argument_String_To_List("").all);
+          (Full_Name(To_String(CurrentSelected)),
+           Argument_String_To_List("").all);
       if Pid = GNAT.Os_Lib.Invalid_Pid then
          ShowMessage("I can't execute this file.");
       end if;
