@@ -142,6 +142,11 @@ package body MainWindow is
    begin
       Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
+      if Is_Symbolic_Link(To_String(CurrentSelected)) then
+         Set_Label(Gtk_Label(Get_Object(Object, "lblname2")), "Links to:");
+      else
+         Set_Label(Gtk_Label(Get_Object(Object, "lblname2")), "Full path:");
+      end if;
       for Name of ObjectsNames loop
          Hide(Gtk_Widget(Get_Object(Object, To_String(Name))));
       end loop;
