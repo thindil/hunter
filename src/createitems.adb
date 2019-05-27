@@ -17,6 +17,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Widget; use Gtk.Widget;
+with ActivateItems; use ActivateItems;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 
