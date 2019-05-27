@@ -210,7 +210,14 @@ package body MainWindow is
            (Gtk_Label(Get_Object(Object, "lbllastmodified")),
             Ada.Calendar.Formatting.Image(Modification_Time(SelectedPath)));
       else
+         if SelectedPath = "" then
+            Set_Label(Gtk_Label(Get_Object(Object, "lblname")), "Unknown");
+         end if;
          Set_Label(Gtk_Label(Get_Object(Object, "lblsize")), "Unknown");
+         for I in 5 .. 7 loop
+            Show_All
+              (Gtk_Widget(Get_Object(Object, To_String(ObjectsNames(I)))));
+         end loop;
       end if;
       declare
          ProcessDesc: Process_Descriptor;
