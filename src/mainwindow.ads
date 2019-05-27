@@ -16,7 +16,6 @@
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
-with Gtk.GEntry; use Gtk.GEntry;
 
 package MainWindow is
 
@@ -104,18 +103,6 @@ package MainWindow is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure Reload(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-   -- ****f* MainWindow/OpenItemWith
-   -- FUNCTION
-   -- Open selected item or directory with entered by user command. That
-   -- command can have argumets either.
-   -- PARAMETERS
-   -- Self     - Text entry with command to use
-   -- Icon_Pos - Position of text entry icon which was pressed or if key
-   --            Enter was pressed, simulate pressing proper icon
-   -- SOURCE
-   procedure OpenItemWith(Self: access Gtk_Entry_Record'Class;
-      Icon_Pos: Gtk_Entry_Icon_Position);
    -- ****
 
 end MainWindow;
