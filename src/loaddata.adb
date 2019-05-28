@@ -298,7 +298,8 @@ package body LoadData is
             else
                Set_Accel_Path
                  (Gtk_Widget(Button), "<mainwindow>/path1", Accelerators);
-               Set_Tooltip_Text(Gtk_Widget(Button), "[ALT+1]");
+               Set_Tooltip_Text
+                 (Gtk_Widget(Button), "Go to this directory [ALT+1]");
             end if;
             for I in 2 .. Slice_Count(Tokens) loop
                if Slice(Tokens, I) /= "" then
