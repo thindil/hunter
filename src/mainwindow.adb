@@ -182,6 +182,7 @@ package body MainWindow is
            Gtk_List_Store(Get_Object(Builder, "applicationslist"));
          FileIter: Gtk_Tree_Iter;
       begin
+         Setting := True;
          for Path of ApplicationsPaths loop
             if not Ada.Directories.Exists(To_String(Path)) then
                goto End_Of_Loop;
@@ -213,6 +214,7 @@ package body MainWindow is
             Close(SubDirectory);
             <<End_Of_Loop>>
          end loop;
+         Setting := False;
       end;
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
