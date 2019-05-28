@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
@@ -21,11 +20,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
-with Gtk.Button; use Gtk.Button;
-with Gtk.Container; use Gtk.Container;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
-with Gtk.Label; use Gtk.Label;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
@@ -33,7 +29,6 @@ with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
-with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
@@ -44,13 +39,11 @@ with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
-with ErrorDialog; use ErrorDialog;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with MoveItems; use MoveItems;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
-with Utils; use Utils;
 
 package body MainWindow is
 
@@ -94,27 +87,6 @@ package body MainWindow is
       Grab_Focus(GEntry);
    end StartRename;
 
-   -- ****if* MainWindow/ShowAssociated
-   -- FUNCTION
-   -- Show setting for associating program for selected file
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI (unused)
-   -- SOURCE
-   procedure ShowAssociated(Object: access Gtkada_Builder_Record'Class) is
-   -- ****
-   begin
-      Foreach(Gtk_Container(Get_Object(Object, "toolbar")), HideButton'Access);
-      Hide(Gtk_Widget(Get_Object(Object, "boxpath")));
-      Set_Label
-        (Gtk_Label(Get_Object(Object, "lblcurrentassoc")),
-         "Currenlty used program: " &
-         Get_Label(Gtk_Button(Get_Object(Object, "btnprogram"))));
-      Show_All(Gtk_Widget(Get_Object(Object, "btntoolapply")));
-      Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
-      Set_Visible_Child_Name
-        (Gtk_Stack(Get_Object(Object, "filestack")), "associated");
-   end ShowAssociated;
-
    -- ****if* MainWindow/ShowFiles
    -- FUNCTION
    -- Back to files listing and preview/info
@@ -123,33 +95,12 @@ package body MainWindow is
    -- SOURCE
    procedure ShowFiles(User_Data: access GObject_Record'Class) is
       -- ****
-      Pid: GNAT.OS_Lib.Process_Id;
-      ProgramIter: Gtk_Tree_Iter;
-      ProgramModel: Gtk_Tree_Model;
+      pragma Unreferenced(User_Data);
    begin
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
-      if User_Data = Get_Object(Builder, "btntoolapply") and
-        Get_Visible_Child_Name(Gtk_Stack(Get_Object(Builder, "filestack"))) =
-          "associated" then
-         Get_Selected
-           (Gtk.Tree_View.Get_Selection
-              (Gtk_Tree_View(Get_Object(Builder, "treeprograms"))),
-            ProgramModel, ProgramIter);
-         if ProgramIter /= Null_Iter then
-            Pid :=
-              Non_Blocking_Spawn
-                (Containing_Directory(Command_Name) & "/xdg-mime",
-                 Argument_String_To_List
-                   ("default " & Get_String(ProgramModel, ProgramIter, 1) &
-                    " " & GetMimeType(To_String(CurrentSelected))).all);
-            if Pid = GNAT.Os_Lib.Invalid_Pid then
-               ShowMessage("I can't set new associated file.");
-            end if;
-         end if;
-      end if;
       Reload(Builder);
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "filestack")), "files");
@@ -176,8 +127,8 @@ package body MainWindow is
       Register_Handler(Builder, "Execute_File", ExecuteFile'Access);
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
-      Register_Handler(Builder, "Show_Associated", ShowAssociated'Access);
       Register_Handler(Builder, "Show_Files", ShowFiles'Access);
+      Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
       Register_Handler
         (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
       Do_Connect(Builder);
