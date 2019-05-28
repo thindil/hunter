@@ -15,6 +15,7 @@
 
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtkada.Builder; use Gtkada.Builder;
+with Glib.Object; use Glib.Object;
 
 package SearchItems is
 
@@ -26,28 +27,30 @@ package SearchItems is
    -- SOURCE
    procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class);
    -- ****
-   -- ****f* SearchItems/VisibleFiles
+   -- ****f* SearchItems/VisibleItems
    -- FUNCTION
-   -- Check if selected file or directory should be visible, when user
-   -- search for selected names.
+   -- Check if selected file, directory or application should be visible,
+   -- when user search for selected names.
    -- PARAMETERS
    -- Model - Gtk_Tree_Model which contains all files and directories in
-   --         current directory
-   -- Iter  - Gtk_Tree_Iter to currently checked file or directory
-   -- Set which files or directories are currently visible
+   --         current directory or all available applications
+   -- Iter  - Gtk_Tree_Iter to currently checked file or directory or
+   --         application
    -- RESULT
-   -- True if selected item or directory should be visible, otherwise false
+   -- True if selected file, directory or application should be visible,
+   -- otherwise false.
    -- SOURCE
-   function VisibleFiles(Model: Gtk_Tree_Model;
+   function VisibleItems(Model: Gtk_Tree_Model;
       Iter: Gtk_Tree_Iter) return Boolean;
    -- ****
-   -- ****f* SearchItems/SearchFiles
+   -- ****f* SearchItems/SearchItems
    -- FUNCTION
-   -- Search for files or directories as user enter text in search entry
+   -- Search for files and directories or applications (depends on what user
+   -- search) as user enter text in search entry
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- User_Data - Which search entry was used (for files or applications)
    -- SOURCE
-   procedure SearchFiles(Object: access Gtkada_Builder_Record'Class);
+   procedure SearchItem(User_Data: access GObject_Record'Class);
    -- ****
 
 end SearchItems;
