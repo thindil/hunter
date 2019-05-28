@@ -115,7 +115,6 @@ package body MainWindow is
       Register_Handler(Builder, "Show_Item", ShowItem'Access);
       Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
-      Register_Handler(Builder, "Search_Files", SearchFiles'Access);
       Register_Handler(Builder, "Add_New", AddNew'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Create_New", CreateNew'Access);
@@ -133,10 +132,14 @@ package body MainWindow is
       Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
       Register_Handler
         (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
+      Register_Handler(Builder, "Search_Items", SearchItem'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
-         VisibleFiles'Access);
+         VisibleItems'Access);
+      Set_Visible_Func
+        (Gtk_Tree_Model_Filter(Get_Object(Builder, "applicationsfilter")),
+         VisibleItems'Access);
       On_Icon_Press
         (Gtk_GEntry(Get_Object(Builder, "entry")), IconPressed'Access);
       On_Response
@@ -176,7 +179,7 @@ package body MainWindow is
          File: File_Type;
          FileLine: Unbounded_String;
          FilesList: constant Gtk_List_Store :=
-           Gtk_List_Store(Get_Object(Builder, "applicationsstore"));
+           Gtk_List_Store(Get_Object(Builder, "applicationslist"));
          FileIter: Gtk_Tree_Iter;
       begin
          for Path of ApplicationsPaths loop

@@ -15,6 +15,7 @@
 
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
@@ -39,13 +40,17 @@ package body SearchItems is
       end if;
    end ToggleSearch;
 
-   function VisibleFiles(Model: Gtk_Tree_Model;
+   function VisibleItems(Model: Gtk_Tree_Model;
       Iter: Gtk_Tree_Iter) return Boolean is
-      SearchEntry: constant Gtk_GEntry :=
-        Gtk_GEntry(Get_Object(Builder, "searchfile"));
+      SearchEntry: Gtk_GEntry;
    begin
       if Setting then
          return True;
+      end if;
+      if Model = +(Gtk_List_Store(Get_Object(Builder, "fileslist"))) then
+         SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchfile"));
+      else
+         SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchapplication"));
       end if;
       if Get_Text(SearchEntry) = "" then
          return True;
@@ -57,21 +62,32 @@ package body SearchItems is
          return True;
       end if;
       return False;
-   end VisibleFiles;
+   end VisibleItems;
 
-   procedure SearchFiles(Object: access Gtkada_Builder_Record'Class) is
+   procedure SearchItem(User_Data: access GObject_Record'Class) is
+      Name: Unbounded_String;
    begin
-      Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
+      if User_Data = Get_Object(Builder, "searchfile") then
+         Name := To_Unbounded_String("file");
+      else
+         Name := To_Unbounded_String("application");
+      end if;
+      Refilter
+        (Gtk_Tree_Model_Filter
+           (Get_Object(Builder, To_String(Name) & "sfilter")));
       if N_Children
-          (Gtk_List_Store(Get_Object(Object, "fileslist")), Null_Iter) >
+          (Gtk_List_Store(Get_Object(Builder, To_String(Name) & "slist")),
+           Null_Iter) >
         0 then
          Set_Cursor
-           (Gtk_Tree_View(Get_Object(Object, "treefiles")),
+           (Gtk_Tree_View(Get_Object(Builder, "tree" & To_String(Name) & "s")),
             Gtk_Tree_Path_New_From_String("0"), null, False);
       end if;
-      if Is_Visible(Gtk_Widget(Get_Object(Object, "searchfile"))) then
-         Grab_Focus(Gtk_Widget(Get_Object(Object, "searchfile")));
+      if Is_Visible
+          (Gtk_Widget(Get_Object(Builder, "search" & To_String(Name)))) then
+         Grab_Focus
+           (Gtk_Widget(Get_Object(Builder, "search" & To_String(Name))));
       end if;
-   end SearchFiles;
+   end SearchItem;
 
 end SearchItems;
