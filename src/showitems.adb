@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Containers; use Ada.Containers;
@@ -127,7 +128,9 @@ package body ShowItems is
             CountFileSize(Size(SelectedPath)));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lbllastmodified")),
-            Ada.Calendar.Formatting.Image(Modification_Time(SelectedPath)));
+            Ada.Calendar.Formatting.Image
+              (Modification_Time(SelectedPath), False,
+               Ada.Calendar.Time_Zones.UTC_Time_Offset));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblfiletype")),
             GetMimeType(SelectedPath));
