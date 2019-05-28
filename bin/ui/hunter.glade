@@ -39,6 +39,9 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="gchararray"/>
     </columns>
   </object>
+  <object class="GtkTreeModelSort" id="applicationssort">
+    <property name="model">applicationsstore</property>
+  </object>
   <object class="GtkMenu" id="bookmarksmenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -1292,9 +1295,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="position">1</property>
               </packing>
             </child>
-            <child>
-              <placeholder/>
-            </child>
           </object>
           <packing>
             <property name="expand">True</property>
@@ -1319,8 +1319,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
           <object class="GtkTreeView" id="treeprograms">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="model">applicationsstore</property>
-            <property name="headers_visible">False</property>
+            <property name="model">applicationssort</property>
             <property name="search_column">0</property>
             <property name="activate_on_single_click">True</property>
             <signal name="row-activated" handler="Set_Associated" swapped="no"/>
@@ -1330,6 +1329,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
             <child>
               <object class="GtkTreeViewColumn">
                 <property name="title" translatable="yes">Name</property>
+                <property name="sort_indicator">True</property>
                 <property name="sort_column_id">0</property>
                 <child>
                   <object class="GtkCellRendererText"/>
