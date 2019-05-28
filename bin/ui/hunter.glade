@@ -24,6 +24,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <!-- interface-license-type gplv3 -->
   <!-- interface-name hunter -->
   <!-- interface-copyright 2019 Bartek thindil Jasicki -->
+  <object class="GtkPopover">
+    <property name="can_focus">False</property>
+    <child>
+      <placeholder/>
+    </child>
+  </object>
   <object class="GtkAccelGroup" id="accelerators"/>
   <object class="GtkListStore" id="applicationsstore">
     <columns>
@@ -125,6 +131,21 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <!-- column-name icon -->
       <column type="gchararray"/>
     </columns>
+  </object>
+  <object class="GtkMenu" id="newmenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="newmenudirectory">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="tooltip_text" translatable="yes">Add new directory.</property>
+        <property name="label" translatable="yes">New _Directory</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Add_New" object="newmenudirectory" swapped="no"/>
+        <accelerator key="d" signal="activate" modifiers="GDK_MOD1_MASK"/>
+      </object>
+    </child>
   </object>
   <object class="GtkWindow" id="mainwindow">
     <property name="can_focus">False</property>
@@ -913,21 +934,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkButton" id="btnprogram">
-                                <property name="label" translatable="yes">button</property>
-                                <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">True</property>
-                                <property name="tooltip_text" translatable="yes">Change the program used to open this type of files.</property>
-                                <property name="halign">start</property>
-                                <signal name="clicked" handler="Show_Associated" swapped="no"/>
-                              </object>
-                              <packing>
-                                <property name="left_attach">1</property>
-                                <property name="top_attach">4</property>
-                              </packing>
-                            </child>
-                            <child>
                               <object class="GtkLabel">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
@@ -1158,6 +1164,22 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                 <property name="top_attach">7</property>
                               </packing>
                             </child>
+                            <child>
+                              <object class="GtkMenuButton" id="btnprogram">
+                                <property name="visible">True</property>
+                                <property name="can_focus">True</property>
+                                <property name="receives_default">True</property>
+                                <property name="halign">start</property>
+                                <property name="popover">popover1</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="left_attach">1</property>
+                                <property name="top_attach">4</property>
+                              </packing>
+                            </child>
                           </object>
                           <packing>
                             <property name="name">info</property>
@@ -1271,75 +1293,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </packing>
             </child>
             <child>
-              <object class="GtkBox" id="programbox">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="orientation">vertical</property>
-                <child>
-                  <object class="GtkLabel" id="lblcurrentassoc">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Select new program from the list below:</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkScrolledWindow">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="hscrollbar_policy">never</property>
-                    <property name="shadow_type">in</property>
-                    <child>
-                      <object class="GtkTreeView" id="treeprograms">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <property name="model">applicationsstore</property>
-                        <property name="search_column">0</property>
-                        <child internal-child="selection">
-                          <object class="GtkTreeSelection"/>
-                        </child>
-                        <child>
-                          <object class="GtkTreeViewColumn">
-                            <property name="title" translatable="yes">Name</property>
-                            <property name="sort_column_id">0</property>
-                            <child>
-                              <object class="GtkCellRendererText"/>
-                              <attributes>
-                                <attribute name="text">0</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="expand">True</property>
-                    <property name="fill">True</property>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-              </object>
-              <packing>
-                <property name="name">associated</property>
-                <property name="title" translatable="yes">associated</property>
-                <property name="position">2</property>
-              </packing>
+              <placeholder/>
             </child>
           </object>
           <packing>
@@ -1351,18 +1305,42 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       </object>
     </child>
   </object>
-  <object class="GtkMenu" id="newmenu">
-    <property name="visible">True</property>
+  <object class="GtkPopover" id="popover1">
+    <property name="height_request">400</property>
     <property name="can_focus">False</property>
+    <property name="relative_to">btnprogram</property>
     <child>
-      <object class="GtkMenuItem" id="newmenudirectory">
+      <object class="GtkScrolledWindow">
         <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="tooltip_text" translatable="yes">Add new directory.</property>
-        <property name="label" translatable="yes">New _Directory</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="Add_New" object="newmenudirectory" swapped="no"/>
-        <accelerator key="d" signal="activate" modifiers="GDK_MOD1_MASK"/>
+        <property name="can_focus">True</property>
+        <property name="hscrollbar_policy">never</property>
+        <property name="shadow_type">in</property>
+        <child>
+          <object class="GtkTreeView" id="treeprograms">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="model">applicationsstore</property>
+            <property name="headers_visible">False</property>
+            <property name="search_column">0</property>
+            <property name="activate_on_single_click">True</property>
+            <signal name="row-activated" handler="Set_Associated" swapped="no"/>
+            <child internal-child="selection">
+              <object class="GtkTreeSelection"/>
+            </child>
+            <child>
+              <object class="GtkTreeViewColumn">
+                <property name="title" translatable="yes">Name</property>
+                <property name="sort_column_id">0</property>
+                <child>
+                  <object class="GtkCellRendererText"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
       </object>
     </child>
   </object>
