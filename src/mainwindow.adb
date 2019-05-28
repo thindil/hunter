@@ -20,6 +20,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
+with Gtk.Enums; use Gtk.Enums;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.List_Store; use Gtk.List_Store;
@@ -29,6 +30,7 @@ with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
+with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
@@ -216,6 +218,9 @@ package body MainWindow is
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),
          Gtk_Widget(Get_Object(Builder, "bookmarksmenu")));
+      Set_Sort_Column_Id
+        (Gtk_Tree_Model_Sort(Get_Object(Builder, "applicationssort")), 0,
+         Sort_Ascending);
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
