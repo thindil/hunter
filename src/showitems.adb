@@ -340,7 +340,7 @@ package body ShowItems is
    begin
       Get_Selected
         (Gtk.Tree_View.Get_Selection
-           (Gtk_Tree_View(Get_Object(Object, "treeprograms"))),
+           (Gtk_Tree_View(Get_Object(Object, "treeapplications"))),
          ProgramModel, ProgramIter);
       if ProgramIter /= Null_Iter then
          Pid :=
