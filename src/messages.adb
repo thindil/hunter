@@ -76,15 +76,18 @@ package body Messages is
       OverwriteItem: Boolean := True;
    begin
       if NewAction = DELETE then
-         HideMessage(Builder);
          if Response_Id = Gint(Gtk_Response_Yes) then
             if DeleteSelected then
                CurrentDirectory :=
                  To_Unbounded_String
                    (Normalize_Pathname(To_String(CurrentDirectory) & "/.."));
+            else
+               Reload(Builder);
+               return;
             end if;
             Reload(Builder);
          end if;
+         HideMessage(Builder);
       elsif NewAction = COPY then
          if Response_Id = Gint(Gtk_Response_Reject) then
             HideMessage(Builder);
