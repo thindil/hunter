@@ -48,8 +48,8 @@ package body ErrorDialog is
       end if;
    end HideButton;
 
-   procedure SaveException(An_Exception: Exception_Occurrence;
-      PrintToTerminal: Boolean) is
+   procedure SaveException
+     (An_Exception: Exception_Occurrence; PrintToTerminal: Boolean) is
       ErrorFile: File_Type;
       ErrorText: Unbounded_String;
       ErrorFilePath: constant String :=

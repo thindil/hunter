@@ -46,8 +46,8 @@ package ActivateItems is
    -- Icon_Pos - Position of text entry icon which was pressed or if key
    --            Enter was pressed, simulate pressing proper icon
    -- SOURCE
-   procedure OpenItemWith(Self: access Gtk_Entry_Record'Class;
-      Icon_Pos: Gtk_Entry_Icon_Position);
+   procedure OpenItemWith
+     (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position);
    -- ****
    -- ****f* ActivateItems/ExecuteFile
    -- FUNCTION

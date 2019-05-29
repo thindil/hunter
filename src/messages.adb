@@ -25,8 +25,8 @@ with MoveItems; use MoveItems;
 
 package body Messages is
 
-   procedure ShowMessage(Message: String;
-      MessageType: Gtk_Message_Type := Message_Error) is
+   procedure ShowMessage
+     (Message: String; MessageType: Gtk_Message_Type := Message_Error) is
       InfoBar: constant GObject := Get_Object(Builder, "actioninfo");
    begin
       if MessageType /= Message_Question then
@@ -58,26 +58,26 @@ package body Messages is
    begin
       YesForAll := False;
       if User_Data = Get_Object(Builder, "btnyes") then
-         ResponseValue := Gint(GTK_RESPONSE_YES);
+         ResponseValue := Gint(Gtk_Response_Yes);
       elsif User_Data = Get_Object(Builder, "btnno") then
-         ResponseValue := Gint(GTK_RESPONSE_NO);
+         ResponseValue := Gint(Gtk_Response_No);
       elsif User_Data = Get_Object(Builder, "btnyesall") then
          YesForAll := True;
-         ResponseValue := Gint(GTK_RESPONSE_ACCEPT);
+         ResponseValue := Gint(Gtk_Response_Accept);
       elsif User_Data = Get_Object(Builder, "btnnoall") then
-         ResponseValue := Gint(GTK_RESPONSE_REJECT);
+         ResponseValue := Gint(Gtk_Response_Reject);
       end if;
       Response(Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), ResponseValue);
    end SetResponse;
 
-   procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
-      Response_Id: Gint) is
+   procedure MessageResponse
+     (Self: access Gtk_Info_Bar_Record'Class; Response_Id: Gint) is
       pragma Unreferenced(Self);
       OverwriteItem: Boolean := True;
    begin
       if NewAction = DELETE then
          HideMessage(Builder);
-         if Response_Id = Gint(GTK_RESPONSE_YES) then
+         if Response_Id = Gint(Gtk_Response_Yes) then
             if DeleteSelected then
                CurrentDirectory :=
                  To_Unbounded_String
@@ -86,27 +86,27 @@ package body Messages is
             Reload(Builder);
          end if;
       elsif NewAction = COPY then
-         if Response_Id = Gint(GTK_RESPONSE_REJECT) then
+         if Response_Id = Gint(Gtk_Response_Reject) then
             HideMessage(Builder);
             Reload(Builder);
             return;
-         elsif Response_Id = Gint(GTK_RESPONSE_NO) then
+         elsif Response_Id = Gint(Gtk_Response_No) then
             SkipCopying;
             return;
          end if;
          CopySelected(OverwriteItem);
       elsif NewAction = MOVE then
-         if Response_Id = Gint(GTK_RESPONSE_REJECT) then
+         if Response_Id = Gint(Gtk_Response_Reject) then
             HideMessage(Builder);
             Reload(Builder);
             return;
-         elsif Response_Id = Gint(GTK_RESPONSE_NO) then
+         elsif Response_Id = Gint(Gtk_Response_No) then
             SkipMoving;
             return;
          end if;
          MoveSelected(OverwriteItem);
       end if;
-      if Response_Id = Gint(GTK_RESPONSE_CLOSE) then
+      if Response_Id = Gint(Gtk_Response_Close) then
          HideMessage(Builder);
       end if;
    end MessageResponse;

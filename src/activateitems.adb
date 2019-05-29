@@ -64,7 +64,7 @@ package body ActivateItems is
                    (Containing_Directory(Command_Name) & "/xdg-open",
                     Argument_String_To_List(To_String(CurrentSelected)).all);
             end if;
-            if Pid = GNAT.Os_Lib.Invalid_Pid then
+            if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
                  ("I can't open this file. Can't start application asociated with this type of files.");
             end if;
@@ -84,7 +84,8 @@ package body ActivateItems is
       Grab_Focus(GEntry);
    end StartOpenWith;
 
-   procedure OpenItemWith(Self: access Gtk_Entry_Record'Class;
+   procedure OpenItemWith
+     (Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position) is
       Command: GNAT.OS_Lib.String_Access;
       Arguments: Argument_List_Access;
@@ -144,7 +145,7 @@ package body ActivateItems is
         Non_Blocking_Spawn
           (Full_Name(To_String(CurrentSelected)),
            Argument_String_To_List("").all);
-      if Pid = GNAT.Os_Lib.Invalid_Pid then
+      if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage("I can't execute this file.");
       end if;
    end ExecuteFile;
