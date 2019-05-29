@@ -36,8 +36,8 @@ package Messages is
    -- MesageType - Gtk_Message_Type of message to show to the user. Default is
    --              Message_Error
    -- SOURCE
-   procedure ShowMessage(Message: String;
-      MessageType: Gtk_Message_Type := Message_Error);
+   procedure ShowMessage
+     (Message: String; MessageType: Gtk_Message_Type := Message_Error);
    -- ****
    -- ****f* Messages/HideMessage
    -- FUNCTION
@@ -62,8 +62,8 @@ package Messages is
    -- Self        - Gtk_Info_Bar which contains the message
    -- Response_Id - Gtk_Response depends on which button user clicked
    -- SOURCE
-   procedure MessageResponse(Self: access Gtk_Info_Bar_Record'Class;
-      Response_Id: Gint);
+   procedure MessageResponse
+     (Self: access Gtk_Info_Bar_Record'Class; Response_Id: Gint);
    -- ****
 
 end Messages;

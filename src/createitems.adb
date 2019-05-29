@@ -31,7 +31,8 @@ package body CreateItems is
    -- Icon_Pos - Position of text entry icon which was pressed or if key
    --            Enter was pressed, simulate pressing proper icon
    -- SOURCE
-   procedure CreateItem(Self: access Gtk_Entry_Record'Class;
+   procedure CreateItem
+     (Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position) is
       -- ****
       Name: constant String :=
@@ -122,8 +123,9 @@ package body CreateItems is
       Grab_Focus(GEntry);
    end AddNew;
 
-   procedure IconPressed(Self: access Gtk_Entry_Record'Class;
-      Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button) is
+   procedure IconPressed
+     (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position;
+      Event: Gdk_Event_Button) is
       pragma Unreferenced(Event);
    begin
       if NewAction /= OPENWITH then

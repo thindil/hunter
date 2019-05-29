@@ -63,8 +63,9 @@ package body ShowItems is
    -- Path  - Gtk_Tree_Path to selected element in Model
    -- Iter  - Gtk_Tree_Iter to selected element in Model
    -- SOURCE
-   function FindFileName(Model: Gtk_Tree_Model; Path: Gtk_Tree_Path;
-      Iter: Gtk_Tree_Iter) return Boolean is
+   function FindFileName
+     (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
+      return Boolean is
       pragma Unreferenced(Path);
       -- ****
    begin
@@ -83,8 +84,8 @@ package body ShowItems is
    -- Path  - Gtk_Tree_Path to selected element in Model
    -- Iter  - Gtk_Tree_Iter to selected element in Model
    -- SOURCE
-   procedure GetSelectedItems(Model: Gtk_Tree_Model; Path: Gtk_Tree_Path;
-      Iter: Gtk_Tree_Iter) is
+   procedure GetSelectedItems
+     (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter) is
       pragma Unreferenced(Path);
       -- ****
    begin
@@ -349,7 +350,7 @@ package body ShowItems is
               Argument_String_To_List
                 ("default " & Get_String(ProgramModel, ProgramIter, 1) & " " &
                  GetMimeType(To_String(CurrentSelected))).all);
-         if Pid = GNAT.Os_Lib.Invalid_Pid then
+         if Pid = GNAT.OS_Lib.Invalid_Pid then
             ShowMessage("I can't set new associated file.");
          else
             Set_Label

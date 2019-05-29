@@ -51,8 +51,8 @@ package body CopyItems is
       CopySelected(OverwriteItem);
    end CopyData;
 
-   procedure CopyItem(Name: String; Path: Unbounded_String;
-      Success: in out Boolean) is
+   procedure CopyItem
+     (Name: String; Path: Unbounded_String; Success: in out Boolean) is
       NewPath: Unbounded_String := Path;
       procedure ProcessFile(Item: Directory_Entry_Type) is
       begin

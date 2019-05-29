@@ -56,8 +56,8 @@ package body LoadData is
    -- 0 if first element should be sort with second (equal)
    -- -1 if first element should be sort before second
    -- SOURCE
-   function SortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
-      B: Gtk_Tree_Iter) return Gint is
+   function SortFiles
+     (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint is
       -- ****
       FileTypeA: constant Gint := Get_Int(Model, A, 1);
       FileTypeB: constant Gint := Get_Int(Model, B, 1);
@@ -91,8 +91,8 @@ package body LoadData is
    -- RESULT
    -- This function always return 0;
    -- SOURCE
-   function EmptySortFiles(Model: Gtk_Tree_Model; A: Gtk_Tree_Iter;
-      B: Gtk_Tree_Iter) return Gint is
+   function EmptySortFiles
+     (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint is
       pragma Unreferenced(Model);
       pragma Unreferenced(A);
       pragma Unreferenced(B);

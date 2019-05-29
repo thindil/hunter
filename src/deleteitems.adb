@@ -40,7 +40,7 @@ package body DeleteItems is
       end loop;
       return GoUp;
    exception
-      when An_Exception : USE_ERROR =>
+      when An_Exception : Use_Error =>
          ShowMessage
            ("Could not delete selected files or directories. Reason: " &
             Exception_Message(An_Exception));
@@ -64,7 +64,7 @@ package body DeleteItems is
          end if;
       end loop;
       NewAction := DELETE;
-      ShowMessage(To_String(Message), MESSAGE_QUESTION);
+      ShowMessage(To_String(Message), Message_Question);
    end DeleteItem;
 
 end DeleteItems;

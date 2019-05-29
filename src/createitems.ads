@@ -35,8 +35,9 @@ package CreateItems is
    -- Self     - Text entry with name for new file/directory
    -- Icon_Pos - Position of text entry icon which was pressed
    -- SOURCE
-   procedure IconPressed(Self: access Gtk_Entry_Record'Class;
-      Icon_Pos: Gtk_Entry_Icon_Position; Event: Gdk_Event_Button);
+   procedure IconPressed
+     (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position;
+      Event: Gdk_Event_Button);
    -- ****
    -- ****f* CreateItems/CreateNew
    -- FUNCTION

@@ -35,8 +35,8 @@ package ErrorDialog is
    -- PrintToTerminal - If true, information about exception will be printed
    --                   in terminal
    -- SOURCE
-   procedure SaveException(An_Exception: Exception_Occurrence;
-      PrintToTerminal: Boolean);
+   procedure SaveException
+     (An_Exception: Exception_Occurrence; PrintToTerminal: Boolean);
    -- ****
    -- ****f* ErrorDialog/On_Exception
    -- FUNCTION

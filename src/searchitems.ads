@@ -40,8 +40,8 @@ package SearchItems is
    -- True if selected file, directory or application should be visible,
    -- otherwise false.
    -- SOURCE
-   function VisibleItems(Model: Gtk_Tree_Model;
-      Iter: Gtk_Tree_Iter) return Boolean;
+   function VisibleItems
+     (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean;
    -- ****
    -- ****f* SearchItems/SearchItems
    -- FUNCTION

@@ -40,8 +40,8 @@ package body SearchItems is
       end if;
    end ToggleSearch;
 
-   function VisibleItems(Model: Gtk_Tree_Model;
-      Iter: Gtk_Tree_Iter) return Boolean is
+   function VisibleItems
+     (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean is
       SearchEntry: Gtk_GEntry;
    begin
       if Setting then
