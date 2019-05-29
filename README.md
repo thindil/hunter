@@ -15,7 +15,7 @@ To build you need:
 
   https://www.adacore.com/download/
 
-  It is recommended to use GNAT GPL 2018 to compile the program.
+  It is recommended to use GNAT GPL 2019 to compile the program.
   The program does not work with old compilers (like GCC 4.9) since it
   lacks full support for Ada 2012.
 
@@ -24,7 +24,7 @@ To build you need:
 
   https://www.adacore.com/download/more
 
-  At this moment tested version of GtkAda is 2018 and the program require GTK
+  At this moment tested version of GtkAda is 2019 and the program require GTK
   library in version 3.14 (may not works with other versions).
 
 If you have all the required packages, navigate to the main directory(where
