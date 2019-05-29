@@ -152,7 +152,7 @@ package body ShowItems is
                   DesktopFile :=
                     To_Unbounded_String(Expect_Out_Match(ProcessDesc));
                   Foreach
-                    (Gtk_List_Store(Get_Object(Object, "applicationsstore")),
+                    (Gtk_List_Store(Get_Object(Object, "applicationslist")),
                      FindFileName'Access);
                   if Index(DesktopFile, ".desktop") = 0 then
                      Set_Label
