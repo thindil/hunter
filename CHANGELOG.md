@@ -21,13 +21,13 @@ All notable changes to this project will be documented in this file.
 - Crash on creating new file or directory when invalid symbolic link exists
 - Copying whole directories
 - Updated file or directory preview when file or directory was updated
-  (copied, moved, etc)
+  (copied, moved, etc.)
 - Info about interrupted deleting files or directories
 
 ## [0.3] - 2019-05-15
 
 ### Added
-- Option to go to XDG user directories (like Download, Documents, etc)
+- Option to go to XDG user directories (like Download, Documents, etc.)
 - Option to go to GTK bookmark locations
 - Code documentation
 - Open all text files in application used to open plain text files if there
