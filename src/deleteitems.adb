@@ -26,11 +26,16 @@ with Messages; use Messages;
 package body DeleteItems is
 
    function DeleteSelected return Boolean is
-      GoUp: Boolean := False;
+      GoUp, Success: Boolean := False;
    begin
       for Item of SelectedItems loop
          if Is_Directory(To_String(Item)) then
-            Remove_Dir(To_String(Item), True);
+            Spawn
+              (Locate_Exec_On_Path("rm").all,
+               Argument_String_To_List("-rf " & To_String(Item)).all, Success);
+            if not Success then
+               raise Directory_Error with To_String(Item);
+            end if;
             if Item = CurrentDirectory then
                GoUp := True;
             end if;
@@ -45,8 +50,10 @@ package body DeleteItems is
            ("Could not delete selected files or directories. Reason: " &
             Exception_Message(An_Exception));
          raise;
-      when Directory_Error =>
-         ShowMessage("Can't delete selected files or directories.");
+      when An_Exception : Directory_Error =>
+         ShowMessage
+           ("Can't delete selected directory: " &
+            Exception_Message(An_Exception));
          raise;
       when others =>
          ShowMessage("Unknown error during deleting files or direcotries.");
