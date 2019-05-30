@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
   (copied, moved, etc.)
 - Info about interrupted deleting files or directories
 - Typos in Changelog
+- Deleting directories
 
 ## [0.3] - 2019-05-15
 
