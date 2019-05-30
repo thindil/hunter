@@ -77,14 +77,17 @@ package body Messages is
    begin
       if NewAction = DELETE then
          if Response_Id = Gint(Gtk_Response_Yes) then
-            if DeleteSelected then
-               CurrentDirectory :=
-                 To_Unbounded_String
-                   (Normalize_Pathname(To_String(CurrentDirectory) & "/.."));
-            else
-               Reload(Builder);
-               return;
-            end if;
+            begin
+               if DeleteSelected then
+                  CurrentDirectory :=
+                     To_Unbounded_String
+                        (Normalize_Pathname(To_String(CurrentDirectory) & "/.."));
+               end if;
+            exception
+               when others =>
+                  Reload(Builder);
+                  return;
+            end;
             Reload(Builder);
          end if;
          HideMessage(Builder);
