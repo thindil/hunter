@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Updated file or directory preview when file or directory was updated
   (copied, moved, etc.)
 - Info about interrupted deleting files or directories
+- Typos in Changelog
 
 ## [0.3] - 2019-05-15
 
