@@ -44,10 +44,13 @@ package body DeleteItems is
          ShowMessage
            ("Could not delete selected files or directories. Reason: " &
             Exception_Message(An_Exception));
-         return GoUp;
+         raise;
       when Directory_Error =>
          ShowMessage("Can't delete selected files or directories.");
-         return GoUp;
+         raise;
+      when others =>
+         ShowMessage("Unknown error during deleting files or direcotries.");
+         raise;
    end DeleteSelected;
 
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
