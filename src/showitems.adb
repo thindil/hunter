@@ -19,6 +19,7 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
@@ -212,6 +213,8 @@ package body ShowItems is
             To_Unbounded_String("cbtnothersread"),
             To_Unbounded_String("cbtnotherswrite"),
             To_Unbounded_String("cbtnothersexecute"));
+         CanChange: Boolean := False;
+         Button: Gtk_Toggle_Button;
       begin
          Non_Blocking_Spawn
            (ProcessDesc, "stat",
@@ -227,18 +230,19 @@ package body ShowItems is
               (Gtk_Label(Get_Object(Object, "lblgroup")),
                Slice(Tokens, 3)
                  (Slice(Tokens, 3)'First .. Slice(Tokens, 3)'Last - 1));
+            if Value("USER") = Slice(Tokens, 2) then
+               CanChange := True;
+            end if;
             for I in ButtonNames'Range loop
+               Button :=
+                 Gtk_Toggle_Button
+                   (Get_Object(Object, To_String(ButtonNames(I))));
                if Slice(Tokens, 1)(I) = '-' then
-                  Set_Active
-                    (Gtk_Toggle_Button
-                       (Get_Object(Object, To_String(ButtonNames(I)))),
-                     False);
+                  Set_Active(Button, False);
                else
-                  Set_Active
-                    (Gtk_Toggle_Button
-                       (Get_Object(Object, To_String(ButtonNames(I)))),
-                     True);
+                  Set_Active(Button, True);
                end if;
+               Set_Sensitive(Gtk_Widget(Button), CanChange);
             end loop;
          end if;
          Close(ProcessDesc);
