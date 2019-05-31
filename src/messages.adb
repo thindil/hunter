@@ -80,8 +80,9 @@ package body Messages is
             begin
                if DeleteSelected then
                   CurrentDirectory :=
-                     To_Unbounded_String
-                        (Normalize_Pathname(To_String(CurrentDirectory) & "/.."));
+                    To_Unbounded_String
+                      (Normalize_Pathname
+                         (To_String(CurrentDirectory) & "/.."));
                end if;
             exception
                when others =>
