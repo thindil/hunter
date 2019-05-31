@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Info about interrupted deleting files or directories
 - Typos in Changelog
 - Deleting directories
+- Refresh preview of directory after deleting last file or directory inside
 
 ## [0.3] - 2019-05-15
 
