@@ -56,6 +56,9 @@ package body CopyItems is
       NewPath: Unbounded_String := Path;
       procedure ProcessFile(Item: Directory_Entry_Type) is
       begin
+         if Exists(To_String(NewPath) & "/" & Simple_Name(Item)) then
+            Delete_File(To_String(NewPath) & "/" & Simple_Name(Item));
+         end if;
          GNAT.OS_Lib.Copy_File
            (Full_Name(Item), To_String(NewPath) & "/" & Simple_Name(Item),
             Success, Copy, Full);
