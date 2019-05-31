@@ -57,11 +57,21 @@ package body MainWindow is
 
    procedure Reload(Object: access Gtkada_Builder_Record'Class) is
    begin
+      if CurrentDirectory = Null_Unbounded_String then
+         CurrentDirectory := To_Unbounded_String("/");
+      end if;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
-      Set_Cursor
-        (Gtk_Tree_View(Get_Object(Object, "treefiles")),
-         Gtk_Tree_Path_New_From_String("0"), null, False);
-      Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
+      if N_Children
+          (Get_Model(Gtk_Tree_View(Get_Object(Object, "treefiles"))),
+           Null_Iter) =
+        0 then
+         CurrentSelected := CurrentDirectory;
+      else
+         Set_Cursor
+           (Gtk_Tree_View(Get_Object(Object, "treefiles")),
+            Gtk_Tree_Path_New_From_String("0"), null, False);
+         Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
+      end if;
       PreviewItem(Object);
    end Reload;
 

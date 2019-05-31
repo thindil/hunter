@@ -257,6 +257,8 @@ package body ShowItems is
       end if;
       if Is_Directory(To_String(CurrentSelected)) then
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
+         Show_All(Gtk_Widget(Get_Object(Object, "btnpreview")));
+         Show_All(Gtk_Widget(Get_Object(Object, "btnopen")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrollimage")));
          Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
@@ -306,6 +308,15 @@ package body ShowItems is
       end if;
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+      if Get_Active
+          (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo"))) then
+         Setting := True;
+         Set_Active
+           (Gtk_Radio_Tool_Button(Get_Object(Object, "btnpreview")), True);
+         Set_Visible_Child_Name
+           (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+         Setting := False;
+      end if;
    end PreviewItem;
 
    procedure ShowItem(Object: access Gtkada_Builder_Record'Class) is
