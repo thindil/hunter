@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - Typos in Changelog
 - Deleting directories
 - Refresh preview of directory after deleting last file or directory inside
+- Overwritting directory content during copying
 
 ## [0.3] - 2019-05-15
 
