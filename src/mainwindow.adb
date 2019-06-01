@@ -161,6 +161,8 @@ package body MainWindow is
       Register_Handler(Builder, "Search_Items", SearchItem'Access);
       Register_Handler(Builder, "Set_Permission", SetPermission'Access);
       Register_Handler(Builder, "Show_About", ShowAbout'Access);
+      Register_Handler(Builder, "Add_Bookmark", AddBookmark'Access);
+      Register_Handler(Builder, "Remove_Bookmark", RemoveBookmark'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
@@ -248,6 +250,7 @@ package body MainWindow is
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
          Gtk_Widget(Get_Object(Builder, "newmenu")));
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
+      CreateBookmarkMenu(Builder);
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),
          Gtk_Widget(Get_Object(Builder, "bookmarksmenu")));

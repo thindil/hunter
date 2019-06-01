@@ -42,6 +42,7 @@ with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Toggle_Button; use Gtk.Toggle_Button;
 with Gtk.Widget; use Gtk.Widget;
+with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -263,6 +264,8 @@ package body ShowItems is
       if Setting then
          return;
       end if;
+      Hide(Gtk_Widget(Get_Object(Object, "btnaddbookmark")));
+      Hide(Gtk_Widget(Get_Object(Object, "btnremovebookmark")));
       if Is_Directory(To_String(CurrentSelected)) then
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
          Show_All(Gtk_Widget(Get_Object(Object, "btnpreview")));
@@ -270,6 +273,21 @@ package body ShowItems is
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrollimage")));
          Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
+         declare
+            BookmarkExists: Boolean := False;
+         begin
+            for Bookmark of BookmarksList loop
+               if Bookmark.Path = CurrentSelected then
+                  Show_All
+                    (Gtk_Widget(Get_Object(Object, "btnremovebookmark")));
+                  BookmarkExists := True;
+                  exit;
+               end if;
+            end loop;
+            if not BookmarkExists then
+               Show_All(Gtk_Widget(Get_Object(Object, "btnaddbookmark")));
+            end if;
+         end;
          LoadDirectory(To_String(CurrentSelected), "fileslist1");
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
