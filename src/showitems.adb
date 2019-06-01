@@ -20,6 +20,8 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
@@ -112,6 +114,7 @@ package body ShowItems is
          To_Unbounded_String("cbtngroupexecute"),
          To_Unbounded_String("cbtnothersexecute"));
    begin
+      Setting := True;
       Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
       if Is_Symbolic_Link(To_String(CurrentSelected)) then
@@ -252,6 +255,7 @@ package body ShowItems is
       end;
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "infostack")), "info");
+      Setting := False;
    end ShowItemInfo;
 
    procedure PreviewItem(Object: access Gtkada_Builder_Record'Class) is
@@ -366,7 +370,7 @@ package body ShowItems is
                 ("default " & Get_String(ProgramModel, ProgramIter, 1) & " " &
                  GetMimeType(To_String(CurrentSelected))).all);
          if Pid = GNAT.OS_Lib.Invalid_Pid then
-            ShowMessage("I can't set new associated file.");
+            ShowMessage("Could not set new associated file.");
          else
             Set_Label
               (Gtk_Button(Get_Object(Object, "btnprogram")),
@@ -376,5 +380,62 @@ package body ShowItems is
            (Gtk_Toggle_Button(Get_Object(Object, "btnprogram")), False);
       end if;
    end SetAssociated;
+
+   procedure SetPermission(Object: access Gtkada_Builder_Record'Class) is
+      ButtonNames: constant array(2 .. 10) of Unbounded_String :=
+        (To_Unbounded_String("cbtnownerread"),
+         To_Unbounded_String("cbtnownerwrite"),
+         To_Unbounded_String("cbtnownerexecute"),
+         To_Unbounded_String("cbtngroupread"),
+         To_Unbounded_String("cbtngroupwrite"),
+         To_Unbounded_String("cbtngroupexecute"),
+         To_Unbounded_String("cbtnothersread"),
+         To_Unbounded_String("cbtnotherswrite"),
+         To_Unbounded_String("cbtnothersexecute"));
+      UserPermission, GroupPermission, OthersPermission: Natural := 0;
+      Success: Boolean;
+   begin
+      if Setting then
+         return;
+      end if;
+      for I in ButtonNames'Range loop
+         if Get_Active
+             (Gtk_Toggle_Button
+                (Get_Object(Object, To_String(ButtonNames(I))))) then
+            case I is
+               when 2 =>
+                  UserPermission := UserPermission + 4;
+               when 3 =>
+                  UserPermission := UserPermission + 2;
+               when 4 =>
+                  UserPermission := UserPermission + 1;
+               when 5 =>
+                  GroupPermission := GroupPermission + 4;
+               when 6 =>
+                  GroupPermission := GroupPermission + 2;
+               when 7 =>
+                  GroupPermission := GroupPermission + 1;
+               when 8 =>
+                  OthersPermission := OthersPermission + 4;
+               when 9 =>
+                  OthersPermission := OthersPermission + 2;
+               when 10 =>
+                  OthersPermission := OthersPermission + 1;
+            end case;
+         end if;
+      end loop;
+      Spawn
+        (Locate_Exec_On_Path("chmod").all,
+         Argument_String_To_List
+           (Trim(Natural'Image(UserPermission), Both) &
+            Trim(Natural'Image(GroupPermission), Both) &
+            Trim(Natural'Image(OthersPermission), Both) & " " &
+            To_String(CurrentSelected)).all,
+         Success);
+      if not Success then
+         ShowMessage
+           ("Could not change permissions for " & To_String(CurrentSelected));
+      end if;
+   end SetPermission;
 
 end ShowItems;

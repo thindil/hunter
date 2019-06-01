@@ -51,4 +51,12 @@ package ShowItems is
    -- SOURCE
    procedure SetAssociated(Object: access Gtkada_Builder_Record'Class);
    -- ****
+   -- ****f* ShowItems/SetPermission
+   -- FUNCTION
+   -- Set selected permissions to selected file or directory
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure SetPermission(Object: access Gtkada_Builder_Record'Class);
+   -- ****
 end ShowItems;
