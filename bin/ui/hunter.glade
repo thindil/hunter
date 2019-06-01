@@ -153,6 +153,48 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       </object>
     </child>
   </object>
+  <object class="GtkAboutDialog" id="aboutdialog">
+    <property name="can_focus">False</property>
+    <property name="modal">True</property>
+    <property name="window_position">center</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="icon_name">system-file-manager</property>
+    <property name="type_hint">dialog</property>
+    <property name="deletable">False</property>
+    <property name="transient_for">mainwindow</property>
+    <property name="program_name">Hunter</property>
+    <property name="version">0.4</property>
+    <property name="copyright" translatable="yes">©2019 Bartek thindil Jasicki</property>
+    <property name="comments" translatable="yes">Graphical File Manager for Linux</property>
+    <property name="website">https://thindil.github.io/hunter/</property>
+    <property name="authors">Bartek thindil Jasicki &lt;thindil@laeran.pl&gt;</property>
+    <property name="logo_icon_name">system-file-manager</property>
+    <property name="license_type">gpl-3-0</property>
+    <child>
+      <placeholder/>
+    </child>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
   <object class="GtkWindow" id="mainwindow">
     <property name="can_focus">False</property>
     <property name="title" translatable="yes">Hunter</property>
@@ -323,6 +365,32 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               <packing>
                 <property name="expand">False</property>
                 <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSeparatorToolItem">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="btnabout">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">Show informations about the program [ALT-A].</property>
+                <property name="label" translatable="yes">About</property>
+                <property name="use_underline">True</property>
+                <property name="icon_name">help-about</property>
+                <signal name="clicked" handler="Show_About" swapped="no"/>
+                <accelerator key="a" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
             <child>
@@ -977,6 +1045,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="Set_Permission" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -992,6 +1061,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="Set_Permission" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1007,6 +1077,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="can_focus">False</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="Set_Permission" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1058,6 +1129,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="Set_Permission" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1073,6 +1145,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="Set_Permission" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1088,6 +1161,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="Set_Permission" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1127,6 +1201,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="Set_Permission" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1142,6 +1217,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="Set_Permission" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1157,6 +1233,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="draw_indicator">True</property>
+                                    <signal name="toggled" handler="Set_Permission" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
