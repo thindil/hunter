@@ -24,12 +24,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <!-- interface-license-type gplv3 -->
   <!-- interface-name hunter -->
   <!-- interface-copyright 2019 Bartek thindil Jasicki -->
-  <object class="GtkPopover">
-    <property name="can_focus">False</property>
-    <child>
-      <placeholder/>
-    </child>
-  </object>
   <object class="GtkAccelGroup" id="accelerators"/>
   <object class="GtkListStore" id="applicationslist">
     <columns>
@@ -683,7 +677,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkToolButton" id="btnrun">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Execute selected program.</property>
+                            <property name="tooltip_text" translatable="yes">Execute selected program [ALT-E].</property>
                             <property name="label" translatable="yes">Run</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">media-playback-start</property>
@@ -699,7 +693,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkToolButton" id="btnopen">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Open selected file or directory [ALT+O]</property>
+                            <property name="tooltip_text" translatable="yes">Open selected file or directory [ALT-O]</property>
                             <property name="label" translatable="yes">Open</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">document-open</property>
@@ -715,7 +709,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkToolButton" id="btnopenwith">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Open selected file or directory with command [ALT+W]</property>
+                            <property name="tooltip_text" translatable="yes">Open selected file or directory with command [ALT-W]</property>
                             <property name="label" translatable="yes">Open with...</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">system-run</property>
@@ -741,7 +735,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkRadioToolButton" id="btnpreview">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Preview file or directory [ALT+P]</property>
+                            <property name="tooltip_text" translatable="yes">Preview file or directory [ALT-P]</property>
                             <property name="label" translatable="yes">Preview</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">document-print-preview</property>
@@ -757,7 +751,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkRadioToolButton" id="btnfileinfo">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">File or directory informations [ALT+I]</property>
+                            <property name="tooltip_text" translatable="yes">File or directory informations [ALT-I]</property>
                             <property name="label" translatable="yes">Info</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">document-properties</property>
