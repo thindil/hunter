@@ -20,6 +20,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
+with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
@@ -118,6 +119,21 @@ package body MainWindow is
         (Gtk_Stack(Get_Object(Builder, "filestack")), "files");
    end ShowFiles;
 
+   -- ****if* MainWindow/ShowAbout
+   -- FUNCTION
+   -- Show dialog with informations about the program
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure ShowAbout(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
+      AboutDialog: constant GObject := Get_Object(Object, "aboutdialog");
+   begin
+      if Run(Gtk_Dialog(AboutDialog)) = Gtk_Response_Delete_Event then
+         Hide(Gtk_Widget(AboutDialog));
+      end if;
+   end ShowAbout;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -143,6 +159,8 @@ package body MainWindow is
       Register_Handler
         (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
       Register_Handler(Builder, "Search_Items", SearchItem'Access);
+      Register_Handler(Builder, "Set_Permission", SetPermission'Access);
+      Register_Handler(Builder, "Show_About", ShowAbout'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
