@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.4] - 2019-06-02
 
 ### Added
 - Keyboard shortcuts for path buttons
@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated interface
 - Updated README.md
+- Updated code documentation
 
 ### Fixed
 - Double reload on press path buttons
