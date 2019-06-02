@@ -46,5 +46,6 @@ package Utils is
    -- Return formated string with info about file size (in MiB, GiB, etc)
    -- SOURCE
    function CountFileSize(Size: File_Size) return String;
+   -- ****
 
 end Utils;
