@@ -176,8 +176,28 @@ package body Bookmarks is
    end AddBookmark;
 
    procedure RemoveBookmark(Object: access Gtkada_Builder_Record'Class) is
+      NewFile, OldFile: File_Type;
+      Line, Path: Unbounded_String;
    begin
-      null;
+      Rename
+        (Value("HOME") & "/.config/gtk-3.0/bookmarks",
+         Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Open(OldFile, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Create(NewFile, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      while not End_Of_File(OldFile) loop
+         Line := To_Unbounded_String(Get_Line(OldFile));
+         if Slice(Line, 1, 7) = "file://" then
+            Path := Unbounded_Slice(Line, 8, Length(Line));
+            if Path /= CurrentSelected then
+               Put_Line(NewFile, To_String(Line));
+            end if;
+         end if;
+      end loop;
+      Close(NewFile);
+      Close(OldFile);
+      Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      CreateBookmarkMenu(Object);
+      Reload(Object);
    end RemoveBookmark;
 
 end Bookmarks;
