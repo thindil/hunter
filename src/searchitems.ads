@@ -43,7 +43,7 @@ package SearchItems is
    function VisibleItems
      (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean;
    -- ****
-   -- ****f* SearchItems/SearchItems
+   -- ****f* SearchItems/SearchItem
    -- FUNCTION
    -- Search for files and directories or applications (depends on what user
    -- search) as user enter text in search entry
