@@ -25,98 +25,43 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo26">MainWindow/ActivateFile</a></li>
-<li>2. <a href="#robo31">MainWindow/DeleteItem</a></li>
-<li>3. <a href="#robo32">MainWindow/GetSelectedItems</a></li>
-<li>4. <a href="#robo33">MainWindow/GoUpDirectory</a></li>
-<li>5. <a href="#robo40">MainWindow/ShowFileInfo</a></li>
-<li>6. <a href="#robo41">MainWindow/StartRename</a></li>
+<li>1. <a href="#robo45">MainWindow/ShowAbout</a></li>
+<li>2. <a href="#robo46">MainWindow/ShowFiles</a></li>
+<li>3. <a href="#robo47">MainWindow/StartRename</a></li>
 </ul>
 <hr />
-<a name="MainWindow2fActivateFile"></a>
-<a name="robo26"></a><h2>MainWindow/ActivateFile [ Functions ]</h2>
+<a name="MainWindow2fShowAbout"></a>
+<a name="robo45"></a><h2>MainWindow/ShowAbout [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> "Activate" selected file or directory. Action depends on what selected
- item is. For example: it go to selected directory, opens text files in
- editor and so on.
+<pre> Show dialog with informations about the program
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo17">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ActivateFile</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowAbout</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
 </span></pre>
 
 <hr />
-<a name="MainWindow2fDeleteItem"></a>
-<a name="robo31"></a><h2>MainWindow/DeleteItem [ Functions ]</h2>
+<a name="MainWindow2fShowFiles"></a>
+<a name="robo46"></a><h2>MainWindow/ShowFiles [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Show message to start deleting selected files and directories.
+<pre> Back to files listing and preview/info
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo17">Builder</a> used to create UI
+<pre> User_Data - Which button was clicked
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>DeleteItem</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
-</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Object<span class="sign"><span class="sign">)</span>;</span>
-</pre>
-
-<hr />
-<a name="MainWindow2fGetSelectedItems"></a>
-<a name="robo32"></a><h2>MainWindow/GetSelectedItems [ Functions ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Add selected file or directory to <a href="./mainwindow_ads.html#robo38">SelectedItems</a> list.
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Model - Gtk_Tree_Model with content of currently selected directory
- Path  - Gtk_Tree_Path to selected element in Model
- Iter  - Gtk_Tree_Iter to selected element in Model
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>GetSelectedItems</strong><span class="sign">(</span>Model<span class="sign">:</span> Gtk_Tree_Model<span class="sign">;</span> Path<span class="sign">:</span> Gtk_Tree_Path<span class="sign">;</span>
-      Iter<span class="sign">:</span> Gtk_Tree_Iter<span class="sign">)</span> <span class="keyword">is</span>
-      <span class="keyword">pragma</span> Unreferenced<span class="sign">(</span>Path<span class="sign">)</span><span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="MainWindow2fGoUpDirectory"></a>
-<a name="robo33"></a><h2>MainWindow/GoUpDirectory [ Functions ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Go to upper directory in path.
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo17">Builder</a> used to create UI
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>GoUpDirectory</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
-</span></pre>
-
-<hr />
-<a name="MainWindow2fShowFileInfo"></a>
-<a name="robo40"></a><h2>MainWindow/ShowFileInfo [ Functions ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Show info about selected item in preview view.
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo17">Builder</a> used to create UI
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowFileInfo</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowFiles</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
 </span></pre>
 
 <hr />
 <a name="MainWindow2fStartRename"></a>
-<a name="robo41"></a><h2>MainWindow/StartRename [ Functions ]</h2>
+<a name="robo47"></a><h2>MainWindow/StartRename [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -124,7 +69,7 @@
  with current element name.
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo17">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>StartRename</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
@@ -132,7 +77,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/mainwindow.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed May 15 2019 07:04:46
+<p>Generated from ./src/mainwindow.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Jun 02 2019 07:47:46
 </p>
 </div> <!-- footer -->
 </body>

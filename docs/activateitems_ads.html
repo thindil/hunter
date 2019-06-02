@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<title>./src/activateitems.ads</title>
+<!-- Source: ./src/activateitems.ads -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">Hunter code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./sources.html#top">Source files</a>
+<a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_functions.html#top">Functions</a>
+<a class="menuitem" href="./robo_types.html#top">Types</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo0">ActivateIetms/ActivateFile</a></li>
+<li>2. <a href="#robo1">ActivateItems/ExecuteFile</a></li>
+<li>3. <a href="#robo2">ActivateItems/OpenItemWith</a></li>
+<li>4. <a href="#robo3">ActivateItems/StartOpenWith</a></li>
+</ul>
+<hr />
+<a name="ActivateIetms2fActivateFile"></a>
+<a name="robo0"></a><h2>ActivateIetms/ActivateFile [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> "Activate" selected file or directory. Action depends on what selected
+ item is. For example: it go to selected directory, opens text files in
+ editor and so on.
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ActivateFile</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+</pre>
+
+<hr />
+<a name="ActivateItems2fExecuteFile"></a>
+<a name="robo1"></a><h2>ActivateItems/ExecuteFile [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Execute selected file. That file must be graphical application or
+ all output will be redirected to terminal (invisible to user).
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI (unused)
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ExecuteFile</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+</pre>
+
+<hr />
+<a name="ActivateItems2fOpenItemWith"></a>
+<a name="robo2"></a><h2>ActivateItems/OpenItemWith [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Open selected item or directory with entered by user command. That
+ command can have argumets either.
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self     - Text entry with command to use
+ Icon_Pos - Position of text entry icon which was pressed or if key
+            Enter was pressed, simulate pressing proper icon
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>OpenItemWith</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Entry_Record<span class="keyword">'Class</span><span class="sign">;</span> Icon_Pos<span class="sign">:</span> Gtk_Entry_Icon_Position<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+
+<hr />
+<a name="ActivateItems2fStartOpenWith"></a>
+<a name="robo3"></a><h2>ActivateItems/StartOpenWith [ Functions ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show text entry to start opening selected file or directory with custom
+ command.
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>StartOpenWith</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/activateitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Jun 02 2019 07:47:46
+</p>
+</div> <!-- footer -->
+</body>
+</html>
