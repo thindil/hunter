@@ -25,22 +25,22 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo43">Messages/HideMessage</a></li>
-<li>2. <a href="#robo44">Messages/MessageResponse</a></li>
-<li>3. <a href="#robo45">Messages/SetResponse</a></li>
-<li>4. <a href="#robo46">Messages/ShowMessage</a></li>
-<li>5. <a href="#robo47">Messages/YesToAll</a></li>
+<li>1. <a href="#robo49">Messages/HideMessage</a></li>
+<li>2. <a href="#robo50">Messages/MessageResponse</a></li>
+<li>3. <a href="#robo51">Messages/SetResponse</a></li>
+<li>4. <a href="#robo52">Messages/ShowMessage</a></li>
+<li>5. <a href="#robo53">Messages/YesToAll</a></li>
 </ul>
 <hr />
 <a name="Messages2fHideMessage"></a>
-<a name="robo43"></a><h2>Messages/HideMessage [ Functions ]</h2>
+<a name="robo49"></a><h2>Messages/HideMessage [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Hide message
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo17">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>HideMessage</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
@@ -48,7 +48,7 @@
 
 <hr />
 <a name="Messages2fMessageResponse"></a>
-<a name="robo44"></a><h2>Messages/MessageResponse [ Functions ]</h2>
+<a name="robo50"></a><h2>Messages/MessageResponse [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -59,13 +59,13 @@
  Response_Id - Gtk_Response depends on which button user clicked
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>MessageResponse</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Info_Bar_Record<span class="keyword">'Class</span><span class="sign">;</span>
-      Response_Id<span class="sign">:</span> Gint<span class="sign"><span class="sign">)</span>;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>MessageResponse</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Info_Bar_Record<span class="keyword">'Class</span><span class="sign">;</span> Response_Id<span class="sign">:</span> Gint<span class="sign"><span class="sign">)</span>;</span>
 </pre>
 
 <hr />
 <a name="Messages2fSetResponse"></a>
-<a name="robo45"></a><h2>Messages/SetResponse [ Functions ]</h2>
+<a name="robo51"></a><h2>Messages/SetResponse [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -80,7 +80,7 @@
 
 <hr />
 <a name="Messages2fShowMessage"></a>
-<a name="robo46"></a><h2>Messages/ShowMessage [ Functions ]</h2>
+<a name="robo52"></a><h2>Messages/ShowMessage [ Functions ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_functions.html#robo_top_of_doc">Functions</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -92,13 +92,13 @@
               Message_Error
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowMessage</strong><span class="sign">(</span>Message<span class="sign">:</span> String<span class="sign">;</span>
-      MessageType<span class="sign">:</span> Gtk_Message_Type <span class="sign">:</span><span class="sign">=</span> Message_Error<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowMessage</strong>
+     <span class="sign">(</span>Message<span class="sign">:</span> String<span class="sign">;</span> MessageType<span class="sign">:</span> Gtk_Message_Type <span class="sign">:</span><span class="sign">=</span> Message_Error<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="Messages2fYesToAll"></a>
-<a name="robo47"></a><h2>Messages/YesToAll [ Variables ]</h2>
+<a name="robo53"></a><h2>Messages/YesToAll [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -111,7 +111,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed May 15 2019 07:04:46
+<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Jun 02 2019 07:47:46
 </p>
 </div> <!-- footer -->
 </body>
