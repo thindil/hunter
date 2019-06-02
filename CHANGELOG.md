@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Info about file or directory permissions
 - Option to set file or directory permissions
 - Info about the program
+- Option to add or remove bookmarks to the directories
 
 ### Changed
 - Updated interface
