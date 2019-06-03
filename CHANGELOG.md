@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+- Updated RoboDOC configuration file
+
 ## [0.4] - 2019-06-02
 
 ### Added
