@@ -18,6 +18,9 @@ options:
   --toc
   --masterindex "Index,index"
   --sourceindex "Source files,sources"
+headertypes:
+  f Subprograms robo_subprograms
+  h Packages robo_packages
 keywords:
   procedure
   function
