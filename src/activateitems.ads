@@ -18,7 +18,7 @@ with Gtk.GEntry; use Gtk.GEntry;
 
 package ActivateItems is
 
-   -- ****f* ActivateIetms/ActivateFile
+   -- ****f* ActivateItems/ActivateFile
    -- FUNCTION
    -- "Activate" selected file or directory. Action depends on what selected
    -- item is. For example: it go to selected directory, opens text files in
