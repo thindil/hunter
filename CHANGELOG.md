@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Updated RoboDOC configuration file
+- Updated code documenation
 
 ## [0.4] - 2019-06-02
 
