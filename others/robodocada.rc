@@ -20,7 +20,7 @@ options:
   --sourceindex "Source files,sources"
 headertypes:
   f Subprograms robo_subprograms
-  h Packages robo_packages
+  h Packages robo_packages 1
 keywords:
   procedure
   function
