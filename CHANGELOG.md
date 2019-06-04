@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 - Updated RoboDOC configuration file
 - Updated code documenation
 
+### Fixed
+- Typo in code documentation
+
 ## [0.4] - 2019-06-02
 
 ### Added
