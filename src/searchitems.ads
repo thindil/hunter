@@ -17,7 +17,12 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtkada.Builder; use Gtkada.Builder;
 with Glib.Object; use Glib.Object;
 
+-- ****h* Hunter/SearchItems
+-- FUNCTION
+-- Provide code to show search UI and show search results.
+-- SOURCE
 package SearchItems is
+-- ****
 
    -- ****f* SearchItems/ToggleSearch
    -- FUNCTION

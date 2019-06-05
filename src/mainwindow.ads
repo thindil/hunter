@@ -17,7 +17,12 @@ with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
 
+-- ****h* Hunter/MainWindow
+-- FUNCTION
+-- Provide code to show and manipulate the main program window.
+-- SOURCE
 package MainWindow is
+-- ****
 
    -- ****v* MainWindow/Builder
    -- FUNCTION

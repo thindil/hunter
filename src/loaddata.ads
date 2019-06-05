@@ -13,7 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+-- ****h* Hunter/LoadData
+-- FUNCTION
+-- Provide code to load directories information.
+-- SOURCE
 package LoadData is
+-- ****
 
    -- ****f* LoadData/LoadDirectory
    -- FUNCTION

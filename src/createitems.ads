@@ -18,7 +18,12 @@ with Gdk.Event; use Gdk.Event;
 with Glib.Object; use Glib.Object;
 with Gtkada.Builder; use Gtkada.Builder;
 
+-- ****h* Hunter/CreateItems
+-- FUNCTION
+-- Provide code for create files and directories.
+-- SOURCE
 package CreateItems is
+-- ****
 
    -- ****f* CreateItems/AddNew
    -- FUNCTION
