@@ -219,11 +219,11 @@ package body ShowItems is
             To_Unbounded_String("cbtnothersexecute"));
          CanChange: Boolean := False;
          Button: Gtk_Toggle_Button;
+         Arguments: constant Argument_List :=
+           (new String'("-c""%A %U %G"),
+            new String'(To_String(CurrentSelected)));
       begin
-         Non_Blocking_Spawn
-           (ProcessDesc, "stat",
-            Argument_String_To_List
-              ("-c""%A %U %G"" " & To_String(CurrentSelected)).all);
+         Non_Blocking_Spawn(ProcessDesc, "stat", Arguments);
          Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
          if Result = 1 then
             FileStats := To_Unbounded_String(Expect_Out_Match(ProcessDesc));
@@ -412,6 +412,7 @@ package body ShowItems is
          To_Unbounded_String("cbtnothersexecute"));
       UserPermission, GroupPermission, OthersPermission: Natural := 0;
       Success: Boolean;
+      Arguments: Argument_List(1 .. 2);
    begin
       if Setting then
          return;
@@ -442,14 +443,13 @@ package body ShowItems is
             end case;
          end if;
       end loop;
-      Spawn
-        (Locate_Exec_On_Path("chmod").all,
-         Argument_String_To_List
+      Arguments :=
+        (new String'
            (Trim(Natural'Image(UserPermission), Both) &
             Trim(Natural'Image(GroupPermission), Both) &
-            Trim(Natural'Image(OthersPermission), Both) & " " &
-            To_String(CurrentSelected)).all,
-         Success);
+            Trim(Natural'Image(OthersPermission), Both)),
+         new String'(To_String(CurrentSelected)));
+      Spawn(Locate_Exec_On_Path("chmod").all, Arguments, Success);
       if not Success then
          ShowMessage
            ("Could not change permissions for " & To_String(CurrentSelected));

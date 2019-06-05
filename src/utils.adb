@@ -22,10 +22,10 @@ package body Utils is
    function GetMimeType(FileName: String) return String is
       ProcessDesc: Process_Descriptor;
       Result: Expect_Match;
+      Arguments: constant Argument_List :=
+        (new String'("-b"), new String'("--mime-type"), new String'(FileName));
    begin
-      Non_Blocking_Spawn
-        (ProcessDesc, "file",
-         Argument_String_To_List("-b --mime-type " & FileName).all);
+      Non_Blocking_Spawn(ProcessDesc, "file", Arguments);
       Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
       case Result is
          when 1 =>

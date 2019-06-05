@@ -50,6 +50,8 @@ package body ActivateItems is
               GetMimeType(To_String(CurrentSelected));
             Pid: GNAT.OS_Lib.Process_Id;
             Openable: Boolean := CanBeOpened(MimeType);
+            Arguments: constant Argument_List :=
+              (new String'(To_String(CurrentSelected)), new String'(""));
          begin
             if MimeType(1 .. 4) = "text" and not Openable then
                Openable := CanBeOpened("text/plain");
@@ -62,7 +64,7 @@ package body ActivateItems is
                Pid :=
                  Non_Blocking_Spawn
                    (Containing_Directory(Command_Name) & "/xdg-open",
-                    Argument_String_To_List(To_String(CurrentSelected)).all);
+                    Arguments(Arguments'First .. Arguments'Last - 1));
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
@@ -88,7 +90,7 @@ package body ActivateItems is
      (Self: access Gtk_Entry_Record'Class;
       Icon_Pos: Gtk_Entry_Icon_Position) is
       Command: GNAT.OS_Lib.String_Access;
-      Arguments: Argument_List_Access;
+      Arguments: Argument_List(1 .. 3);
       Pid: GNAT.OS_Lib.Process_Id;
       CommandName, CommandArguments: Unbounded_String;
       EnteredCommand: constant String := Get_Text(Self);
@@ -121,20 +123,25 @@ package body ActivateItems is
          return;
       end if;
       Arguments :=
-        Argument_String_To_List
-          (Command.all & " " & To_String(CommandArguments) & " " &
-           To_String(CurrentSelected));
-      Free(Command);
-      Pid :=
-        Non_Blocking_Spawn
-          (Program_Name => Arguments(Arguments'First).all,
-           Args => Arguments(Arguments'First + 1 .. Arguments'Last));
-      Free(Arguments);
+        (Command, new String'(To_String(CommandArguments)),
+         new String'(To_String(CurrentSelected)));
+      if CommandArguments /= Null_Unbounded_String then
+         Pid :=
+           Non_Blocking_Spawn
+             (Program_Name => Arguments(Arguments'First).all,
+              Args => Arguments(Arguments'First + 1 .. Arguments'Last));
+      else
+         Pid :=
+           Non_Blocking_Spawn
+             (Program_Name => Arguments(Arguments'First).all,
+              Args => Arguments(Arguments'First + 2 .. Arguments'Last));
+      end if;
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage("Can't start command: " & Get_Text(Self));
       end if;
       Set_Text(Self, "");
       Hide(Gtk_Widget(Self));
+      Free(Command);
    end OpenItemWith;
 
    procedure ExecuteFile(Object: access Gtkada_Builder_Record'Class) is
