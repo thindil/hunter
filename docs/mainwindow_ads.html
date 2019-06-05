@@ -19,29 +19,49 @@
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo34">MainWindow/Builder</a></li>
-<li>2. <a href="#robo35">MainWindow/CreateMainWindow</a></li>
-<li>3. <a href="#robo36">MainWindow/CurrentDirectory</a></li>
-<li>4. <a href="#robo37">MainWindow/CurrentSelected</a></li>
-<li>5. <a href="#robo38">MainWindow/ItemActions</a></li>
-<li>6. <a href="#robo39">MainWindow/NewAction</a></li>
-<li>7. <a href="#robo40">MainWindow/Quit</a></li>
-<li>8. <a href="#robo41">MainWindow/Reload</a></li>
-<li>9. <a href="#robo42">MainWindow/SelectedItems</a></li>
-<li>10. <a href="#robo44">MainWindow/Setting</a></li>
-<li>11. <a href="#robo48">MainWindow/UnboundedString_Container</a></li>
+<li>1. <a href="#robo7">Hunter/MainWindow</a></li>
+<ul>
+<li>1.1. <a href="#robo47">MainWindow/Builder</a></li>
+<li>1.2. <a href="#robo48">MainWindow/CreateMainWindow</a></li>
+<li>1.3. <a href="#robo49">MainWindow/CurrentDirectory</a></li>
+<li>1.4. <a href="#robo50">MainWindow/CurrentSelected</a></li>
+<li>1.5. <a href="#robo51">MainWindow/ItemActions</a></li>
+<li>1.6. <a href="#robo52">MainWindow/NewAction</a></li>
+<li>1.7. <a href="#robo53">MainWindow/Quit</a></li>
+<li>1.8. <a href="#robo54">MainWindow/Reload</a></li>
+<li>1.9. <a href="#robo55">MainWindow/SelectedItems</a></li>
+<li>1.10. <a href="./showitems_ads.html#robo56">MainWindow/SetAssociated</a></li>
+<li>1.11. <a href="#robo57">MainWindow/Setting</a></li>
+<li>1.12. <a href="./mainwindow_adb.html#robo58">MainWindow/ShowAbout</a></li>
+<li>1.13. <a href="./mainwindow_adb.html#robo59">MainWindow/ShowFiles</a></li>
+<li>1.14. <a href="./mainwindow_adb.html#robo60">MainWindow/StartRename</a></li>
+<li>1.15. <a href="#robo61">MainWindow/UnboundedString_Container</a></li>
+</ul>
 </ul>
 <hr />
-<a name="MainWindow2fBuilder"></a>
-<a name="robo34"></a><h2>MainWindow/Builder [ Variables ]</h2>
+<a name="Hunter2fMainWindow"></a>
+<a name="robo7"></a><h2>Hunter/MainWindow [ Packages ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Provide code to show and manipulate the main program window.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="keyword">package</span> <strong>MainWindow</strong> <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="MainWindow2fBuilder"></a>
+<a name="robo47"></a><h2>MainWindow/Builder [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Gtk <strong>Builder</strong> used to read data from glade file
 </pre>
@@ -51,14 +71,14 @@
 
 <hr />
 <a name="MainWindow2fCreateMainWindow"></a>
-<a name="robo35"></a><h2>MainWindow/CreateMainWindow [ Subprograms ]</h2>
+<a name="robo48"></a><h2>MainWindow/CreateMainWindow [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create main window and show content of selected directory
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> NewBuilder - Gtk <a href="#robo34">Builder</a> with UI data read from .glade file
+<pre> NewBuilder - Gtk <a href="#robo47">Builder</a> with UI data read from .glade file
  Directory  - Full path to the directory which will be show at the
               program start
 </pre>
@@ -68,9 +88,9 @@
 
 <hr />
 <a name="MainWindow2fCurrentDirectory"></a>
-<a name="robo36"></a><h2>MainWindow/CurrentDirectory [ Variables ]</h2>
+<a name="robo49"></a><h2>MainWindow/CurrentDirectory [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Currently selected directory to show
 </pre>
@@ -80,9 +100,9 @@
 
 <hr />
 <a name="MainWindow2fCurrentSelected"></a>
-<a name="robo37"></a><h2>MainWindow/CurrentSelected [ Variables ]</h2>
+<a name="robo50"></a><h2>MainWindow/CurrentSelected [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Full path to currently selected file or directory
 </pre>
@@ -92,9 +112,9 @@
 
 <hr />
 <a name="MainWindow2fItemActions"></a>
-<a name="robo38"></a><h2>MainWindow/ItemActions [ Types ]</h2>
+<a name="robo51"></a><h2>MainWindow/ItemActions [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Types of action on files and directories
 </pre>
@@ -114,26 +134,26 @@
 
 <hr />
 <a name="MainWindow2fNewAction"></a>
-<a name="robo39"></a><h2>MainWindow/NewAction [ Variables ]</h2>
+<a name="robo52"></a><h2>MainWindow/NewAction [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Current performed action on files or directories
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>NewAction</strong><span class="sign">:</span> <a href="#robo38">ItemActions</a><span class="sign">;</span>
+<pre class="source">   <strong>NewAction</strong><span class="sign">:</span> <a href="#robo51">ItemActions</a><span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="MainWindow2fQuit"></a>
-<a name="robo40"></a><h2>MainWindow/Quit [ Subprograms ]</h2>
+<a name="robo53"></a><h2>MainWindow/Quit [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> <strong>Quit</strong> from program
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="#robo34">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="#robo47">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>Quit</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
@@ -141,14 +161,14 @@
 
 <hr />
 <a name="MainWindow2fReload"></a>
-<a name="robo41"></a><h2>MainWindow/Reload [ Subprograms ]</h2>
+<a name="robo54"></a><h2>MainWindow/Reload [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> <strong>Reload</strong> directory listing and preview of selected item
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="#robo34">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="#robo47">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>Reload</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
@@ -156,21 +176,21 @@
 
 <hr />
 <a name="MainWindow2fSelectedItems"></a>
-<a name="robo42"></a><h2>MainWindow/SelectedItems [ Variables ]</h2>
+<a name="robo55"></a><h2>MainWindow/SelectedItems [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> List of currently selected files and directories by user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>SelectedItems</strong><span class="sign">:</span> <a href="#robo48">UnboundedString_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
+<pre class="source">   <strong>SelectedItems</strong><span class="sign">:</span> <a href="#robo61">UnboundedString_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="MainWindow2fSetting"></a>
-<a name="robo44"></a><h2>MainWindow/Setting [ Variables ]</h2>
+<a name="robo57"></a><h2>MainWindow/Setting [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> If true, the program is in the setting mode
 </pre>
@@ -180,9 +200,9 @@
 
 <hr />
 <a name="MainWindow2fUnboundedString5fContainer"></a>
-<a name="robo48"></a><h2>MainWindow/UnboundedString_Container [ Types ]</h2>
+<a name="robo61"></a><h2>MainWindow/UnboundedString_Container [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store various Unbounded_String data in list.
 </pre>
@@ -193,7 +213,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Jun 02 2019 19:37:50
+<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Jun 04 2019 09:45:08
 </p>
 </div> <!-- footer -->
 </body>

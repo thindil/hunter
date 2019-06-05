@@ -19,28 +19,44 @@
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo49">Messages/HideMessage</a></li>
-<li>2. <a href="#robo50">Messages/MessageResponse</a></li>
-<li>3. <a href="#robo51">Messages/SetResponse</a></li>
-<li>4. <a href="#robo52">Messages/ShowMessage</a></li>
-<li>5. <a href="#robo53">Messages/YesToAll</a></li>
+<li>1. <a href="#robo8">Hunter/Messages</a></li>
+<ul>
+<li>1.1. <a href="#robo62">Messages/HideMessage</a></li>
+<li>1.2. <a href="#robo63">Messages/MessageResponse</a></li>
+<li>1.3. <a href="#robo64">Messages/SetResponse</a></li>
+<li>1.4. <a href="#robo65">Messages/ShowMessage</a></li>
+<li>1.5. <a href="#robo66">Messages/YesToAll</a></li>
+</ul>
 </ul>
 <hr />
-<a name="Messages2fHideMessage"></a>
-<a name="robo49"></a><h2>Messages/HideMessage [ Subprograms ]</h2>
+<a name="Hunter2fMessages"></a>
+<a name="robo8"></a><h2>Hunter/Messages [ Packages ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Provide code to show or hide messages to the user.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="keyword">package</span> <strong>Messages</strong> <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="Messages2fHideMessage"></a>
+<a name="robo62"></a><h2>Messages/HideMessage [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Hide message
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo47">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>HideMessage</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
@@ -48,9 +64,9 @@
 
 <hr />
 <a name="Messages2fMessageResponse"></a>
-<a name="robo50"></a><h2>Messages/MessageResponse [ Subprograms ]</h2>
+<a name="robo63"></a><h2>Messages/MessageResponse [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Hide message or do action, depends on the user response
 </pre>
@@ -65,9 +81,9 @@
 
 <hr />
 <a name="Messages2fSetResponse"></a>
-<a name="robo51"></a><h2>Messages/SetResponse [ Subprograms ]</h2>
+<a name="robo64"></a><h2>Messages/SetResponse [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set proper GTK Response for info bar buttons
 </pre>
@@ -80,9 +96,9 @@
 
 <hr />
 <a name="Messages2fShowMessage"></a>
-<a name="robo52"></a><h2>Messages/ShowMessage [ Subprograms ]</h2>
+<a name="robo65"></a><h2>Messages/ShowMessage [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show message with selected type to the user
 </pre>
@@ -98,9 +114,9 @@
 
 <hr />
 <a name="Messages2fYesToAll"></a>
-<a name="robo53"></a><h2>Messages/YesToAll [ Variables ]</h2>
+<a name="robo66"></a><h2>Messages/YesToAll [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set to True if user clicked Yes for All button in response to question,
  otherwise False
@@ -111,7 +127,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Jun 02 2019 19:37:50
+<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Jun 04 2019 09:45:08
 </p>
 </div> <!-- footer -->
 </body>

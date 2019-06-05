@@ -19,29 +19,45 @@
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo0">ActivateIetms/ActivateFile</a></li>
-<li>2. <a href="#robo1">ActivateItems/ExecuteFile</a></li>
-<li>3. <a href="#robo2">ActivateItems/OpenItemWith</a></li>
-<li>4. <a href="#robo3">ActivateItems/StartOpenWith</a></li>
+<li>1. <a href="#robo0">Hunter/ActivateItems</a></li>
+<ul>
+<li>1.1. <a href="#robo13">ActivateItems/ActivateFile</a></li>
+<li>1.2. <a href="#robo14">ActivateItems/ExecuteFile</a></li>
+<li>1.3. <a href="#robo15">ActivateItems/OpenItemWith</a></li>
+<li>1.4. <a href="#robo16">ActivateItems/StartOpenWith</a></li>
+</ul>
 </ul>
 <hr />
-<a name="ActivateIetms2fActivateFile"></a>
-<a name="robo0"></a><h2>ActivateIetms/ActivateFile [ Subprograms ]</h2>
+<a name="Hunter2fActivateItems"></a>
+<a name="robo0"></a><h2>Hunter/ActivateItems [ Packages ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Provide code for open or execute selected files or directories.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="keyword">package</span> <strong>ActivateItems</strong> <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="ActivateItems2fActivateFile"></a>
+<a name="robo13"></a><h2>ActivateItems/ActivateFile [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> "Activate" selected file or directory. Action depends on what selected
  item is. For example: it go to selected directory, opens text files in
  editor and so on.
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo47">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>ActivateFile</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
@@ -49,15 +65,15 @@
 
 <hr />
 <a name="ActivateItems2fExecuteFile"></a>
-<a name="robo1"></a><h2>ActivateItems/ExecuteFile [ Subprograms ]</h2>
+<a name="robo14"></a><h2>ActivateItems/ExecuteFile [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Execute selected file. That file must be graphical application or
  all output will be redirected to terminal (invisible to user).
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI (unused)
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo47">Builder</a> used to create UI (unused)
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>ExecuteFile</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
@@ -65,9 +81,9 @@
 
 <hr />
 <a name="ActivateItems2fOpenItemWith"></a>
-<a name="robo2"></a><h2>ActivateItems/OpenItemWith [ Subprograms ]</h2>
+<a name="robo15"></a><h2>ActivateItems/OpenItemWith [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Open selected item or directory with entered by user command. That
  command can have argumets either.
@@ -84,15 +100,15 @@
 
 <hr />
 <a name="ActivateItems2fStartOpenWith"></a>
-<a name="robo3"></a><h2>ActivateItems/StartOpenWith [ Subprograms ]</h2>
+<a name="robo16"></a><h2>ActivateItems/StartOpenWith [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show text entry to start opening selected file or directory with custom
  command.
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo34">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo47">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>StartOpenWith</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
@@ -100,7 +116,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/activateitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Jun 02 2019 19:37:50
+<p>Generated from ./src/activateitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Jun 04 2019 09:45:08
 </p>
 </div> <!-- footer -->
 </body>
