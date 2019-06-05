@@ -27,12 +27,12 @@ package body DeleteItems is
 
    function DeleteSelected return Boolean is
       GoUp, Success: Boolean := False;
+      Arguments: Argument_List := (new String'("-rf"), new String'(""));
    begin
       for Item of SelectedItems loop
          if Is_Directory(To_String(Item)) then
-            Spawn
-              (Locate_Exec_On_Path("rm").all,
-               Argument_String_To_List("-rf " & To_String(Item)).all, Success);
+            Arguments(2) := new String'(To_String(Item));
+            Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
             if not Success then
                raise Directory_Error with To_String(Item);
             end if;
