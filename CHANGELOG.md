@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Typo in code documentation
+- Detecting files and directories name with space inside
 
 ## [0.4] - 2019-06-02
 
