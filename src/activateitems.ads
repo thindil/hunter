@@ -16,7 +16,12 @@
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtk.GEntry; use Gtk.GEntry;
 
+-- ****h* Hunter/ActivateItems
+-- FUNCTION
+-- Provide code for open or execute selected files or directories.
+-- SOURCE
 package ActivateItems is
+-- ****
 
    -- ****f* ActivateItems/ActivateFile
    -- FUNCTION

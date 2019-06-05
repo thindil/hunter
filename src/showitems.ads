@@ -15,7 +15,13 @@
 
 with Gtkada.Builder; use Gtkada.Builder;
 
+-- ****h* ShowItems/ShowItems
+-- FUNCTION
+-- Provide code to show informations and set some settings for selected files
+-- or directories.
+-- SOURCE
 package ShowItems is
+-- ****
 
    -- ****f* ShowItems/ShowItemInfo
    -- FUNCTION

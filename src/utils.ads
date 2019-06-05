@@ -15,7 +15,12 @@
 
 with Ada.Directories; use Ada.Directories;
 
+-- ****h* Hunter/Utils
+-- FUNCTION
+-- Various utility subprograms.
+-- SOURCE
 package Utils is
+-- ****
 
    -- ****f* Utils/GetMimeType
    -- FUNCTION

@@ -19,7 +19,12 @@ with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
 
+-- ****h* Hunter/Messages
+-- FUNCTION
+-- Provide code to show or hide messages to the user.
+-- SOURCE
 package Messages is
+-- ****
 
    -- ****v* Messages/YesToAll
    -- FUNCTION

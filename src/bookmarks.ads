@@ -17,7 +17,12 @@ with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
 
+-- ****h* Hunter/Bookmarks
+-- FUNCTION
+-- Provide code for add, delete or go to locations bookmarks
+-- SOURCE
 package Bookmarks is
+-- ****
 
    -- ****t* Bookmarks/Bookmark_Record
    -- FUNCTION

@@ -16,7 +16,12 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
 
+-- ****h* Hunter/CopyItems
+-- FUNCTION
+-- Provide code for copy selected files or directories.
+-- SOURCE
 package CopyItems is
+-- ****
 
    -- ****f* CopyItems/CopyData
    -- FUNCTION

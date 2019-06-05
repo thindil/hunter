@@ -15,7 +15,12 @@
 
 with Gtkada.Builder; use Gtkada.Builder;
 
+-- ****h* Hunter/MoveItems
+-- FUNCTION
+-- Provide code to move selected files or directories.
+-- SOURCE
 package MoveItems is
+-- ****
 
    -- ****f* MoveItems/MoveData
    -- FUNCTION

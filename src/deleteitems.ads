@@ -15,7 +15,12 @@
 
 with Gtkada.Builder; use Gtkada.Builder;
 
+-- ****h* Hunter/DeleteItems
+-- FUNCTION
+-- Provide code to delete files and directories
+-- SOURCE
 package DeleteItems is
+-- ****
 
    -- ****f* DeleteItems/DeleteSelected
    -- FUNCTION

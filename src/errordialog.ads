@@ -17,7 +17,12 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtk.Widget; use Gtk.Widget;
 
+-- ****h* Hunter/ErrorDialog
+-- FUNCTION
+-- Provide code to show informations about program crash (unhandled exception).
+-- SOURCE
 package ErrorDialog is
+-- ****
 
    -- ****f* ErrorDialog/HideButton
    -- FUNCTION
