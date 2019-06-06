@@ -254,6 +254,7 @@ package body ShowItems is
          when Process_Died =>
             return;
       end;
+      Set_Label(Gtk_Label(Get_Object(Builder, "lblframe")), "Information");
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "infostack")), "info");
       Setting := False;
@@ -333,6 +334,7 @@ package body ShowItems is
             end if;
          end;
       end if;
+      Set_Label(Gtk_Label(Get_Object(Builder, "lblframe")), "Preview");
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
       if Get_Active
