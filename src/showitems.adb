@@ -292,6 +292,7 @@ package body ShowItems is
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
+         Clear(Gtk_Image(Get_Object(Object, "imgpreview")));
          Hide(Gtk_Widget(Get_Object(Object, "scrollimage")));
          declare
             MimeType: constant String :=
