@@ -29,6 +29,7 @@ with Gtk.Main; use Gtk.Main;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
@@ -36,6 +37,8 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
+with Gdk.Event; use Gdk.Event;
+with Gdk.Types; use Gdk.Types;
 with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
 with ActivateItems; use ActivateItems;
 with Bookmarks; use Bookmarks;
@@ -134,6 +137,31 @@ package body MainWindow is
       end if;
    end ShowAbout;
 
+   -- ****if* MainWindow/EntryKeyPressed
+   -- FUNCTION
+   -- Close text entry on press Escape key
+   -- PARAMETERS
+   -- Self  - Currently active entry
+   -- Event - Detailed informations about key pressed event (key code,
+   --         modifiers, etc)
+   -- SOURCE
+   function EntryKeyPressed
+     (Self: access Gtk_Widget_Record'Class; Event: Gdk.Event.Gdk_Event_Key)
+      return Boolean is
+   -- ****
+   begin
+      if Event.Keyval = GDK_Escape then
+         if Self = Gtk_Widget(Get_Object(Builder, "searchfile")) then
+            Set_Active
+              (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btnsearch")),
+               False);
+         else
+            Hide(Self);
+         end if;
+      end if;
+      return False;
+   end EntryKeyPressed;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -175,6 +203,11 @@ package body MainWindow is
       On_Response
         (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")),
          MessageResponse'Access);
+      On_Key_Press_Event
+        (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);
+      On_Key_Press_Event
+        (Gtk_Widget(Get_Object(Builder, "searchfile")),
+         EntryKeyPressed'Access);
       Add_Entry("<mainwindow>/reload", GDK_LC_r, 8);
       Add_Entry("<mainwindow>/goup", GDK_LC_u, 8);
       Add_Entry("<mainwindow>/path1", GDK_1, 8);
