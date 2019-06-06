@@ -28,7 +28,7 @@ with Utils; use Utils;
 
 package body ActivateItems is
 
-   procedure ActivateFile(Object: access Gtkada_Builder_Record'Class) is
+   procedure ActivateFile(User_Data: access GObject_Record'Class) is
    begin
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
@@ -39,12 +39,19 @@ package body ActivateItems is
             CurrentDirectory := Null_Unbounded_String;
          end if;
          CurrentDirectory := CurrentSelected;
-         LoadDirectory(To_String(CurrentDirectory), "fileslist");
+         if User_Data = Get_Object(Builder, "treefiles") then
+            LoadDirectory(To_String(CurrentDirectory), "fileslist");
+         else
+            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+         end if;
          Set_Cursor
-           (Gtk_Tree_View(Get_Object(Object, "treefiles")),
-            Gtk_Tree_Path_New_From_String("0"), null, False);
-         Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
+           (Gtk_Tree_View(User_Data), Gtk_Tree_Path_New_From_String("0"), null,
+            False);
+         Grab_Focus(Gtk_Widget(User_Data));
       else
+         if User_Data = Get_Object(Builder, "treedestination") then
+            return;
+         end if;
          declare
             MimeType: constant String :=
               GetMimeType(To_String(CurrentSelected));

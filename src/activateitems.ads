@@ -15,6 +15,7 @@
 
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtk.GEntry; use Gtk.GEntry;
+with Glib.Object; use Glib.Object;
 
 -- ****h* Hunter/ActivateItems
 -- FUNCTION
@@ -29,9 +30,10 @@ package ActivateItems is
    -- item is. For example: it go to selected directory, opens text files in
    -- editor and so on.
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- User_Data - Which Gtk Tree View is active: main or destination for
+   --             copy or move files and directories.
    -- SOURCE
-   procedure ActivateFile(Object: access Gtkada_Builder_Record'Class);
+   procedure ActivateFile(User_Data: access GObject_Record'Class);
    -- ****
    -- ****f* ActivateItems/StartOpenWith
    -- FUNCTION

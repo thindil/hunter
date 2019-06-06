@@ -184,13 +184,13 @@ package body LoadData is
          Setting := False;
          return;
       end if;
-      if ListName = "fileslist1" then
+      if ListName = "fileslist" then
          Set_Sort_Func
-           (Gtk_List_Store(Get_Object(Builder, ListName)), 0,
+           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
             EmptySortFiles'Access);
       else
          Set_Sort_Func
-           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
+           (Gtk_List_Store(Get_Object(Builder, ListName)), 0,
             EmptySortFiles'Access);
       end if;
       Open(Directory, Name);
