@@ -120,6 +120,7 @@ package body MainWindow is
       Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+      Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
       Reload(Builder);
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "filestack")), "files");
