@@ -220,7 +220,7 @@ package body MainWindow is
       Add_Entry("<mainwindow>/path5", GDK_5, 8);
       Add_Entry("<mainwindow>/path6", GDK_6, 8);
       Add_Entry("<mainwindow>/path7", GDK_7, 8);
-      Add_Entry("<mainwindow>/path8", GDK_9, 8);
+      Add_Entry("<mainwindow>/path8", GDK_8, 8);
       Add_Entry("<mainwindow>/path9", GDK_9, 8);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
