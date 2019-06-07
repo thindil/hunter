@@ -16,8 +16,12 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Label; use Gtk.Label;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Stack; use Gtk.Stack;
+with Gtk.Widget; use Gtk.Widget;
 with MainWindow; use MainWindow;
+with LoadData; use LoadData;
 with Messages; use Messages;
 
 package body CopyItems is
@@ -30,7 +34,6 @@ package body CopyItems is
    -- ****
 
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
       OverwriteItem: Boolean := False;
    begin
       if CopyItemsList.Length > 0
@@ -40,6 +43,11 @@ package body CopyItems is
       end if;
       if CopyItemsList.Length = 0 then
          CopyItemsList := SelectedItems;
+         LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+         Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
+         Set_Label(Gtk_Label(Get_Object(Builder, "lblframe")), "Destination");
+         Set_Visible_Child_Name
+           (Gtk_Stack(Get_Object(Builder, "infostack")), "destination");
          return;
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
@@ -125,6 +133,7 @@ package body CopyItems is
       end loop;
       CopyItemsList.Clear;
       HideMessage(Builder);
+      Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
       Reload(Builder);
    end CopySelected;
 

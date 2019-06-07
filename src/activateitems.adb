@@ -19,6 +19,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with LoadData; use LoadData;
@@ -29,7 +30,18 @@ with Utils; use Utils;
 package body ActivateItems is
 
    procedure ActivateFile(User_Data: access GObject_Record'Class) is
+      DestinationIter: Gtk_Tree_Iter;
+      DestinationModel: Gtk_Tree_Model;
    begin
+      if User_Data = Get_Object(Builder, "treedestination") then
+         Get_Selected
+           (Gtk.Tree_View.Get_Selection(Gtk_Tree_View(User_Data)),
+            DestinationModel, DestinationIter);
+         CurrentSelected :=
+           CurrentDirectory &
+           To_Unbounded_String
+             ("/" & Get_String(DestinationModel, DestinationIter, 0));
+      end if;
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage("You can't enter this directory.");
