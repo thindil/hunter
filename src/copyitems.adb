@@ -45,9 +45,13 @@ package body CopyItems is
          CopyItemsList := SelectedItems;
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
          Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
-         Set_Label(Gtk_Label(Get_Object(Builder, "lblframe")), "Destination");
+         Set_Tooltip_Text
+           (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
+            "Stop copying files and directories [ALT-C]");
+         Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
+         Set_Label(Gtk_Label(Get_Object(Object, "lblframe")), "Destination");
          Set_Visible_Child_Name
-           (Gtk_Stack(Get_Object(Builder, "infostack")), "destination");
+           (Gtk_Stack(Get_Object(Object, "infostack")), "destination");
          return;
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
