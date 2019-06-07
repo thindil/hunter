@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Typo in code documentation
 - Detecting files and directories name with space inside
 - Memory leaks when previewin images
+- Shortcut for one of buttons in current directory path
 
 ## [0.4] - 2019-06-02
 
