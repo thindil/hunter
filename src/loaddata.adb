@@ -152,7 +152,6 @@ package body LoadData is
       FileName, SubFileName: String(1 .. 1024);
       MainWindow: constant Gdk_Window :=
         Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow")));
-
    begin
       Setting := True;
       if Accelerators = null then
@@ -184,7 +183,7 @@ package body LoadData is
          Setting := False;
          return;
       end if;
-      if ListName = "fileslist" then
+      if ListName /= "fileslist1" then
          Set_Sort_Func
            (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
             EmptySortFiles'Access);
@@ -334,6 +333,13 @@ package body LoadData is
             Set_Sort_Func(FilesSort, 0, SortFiles'Access);
             Set_Sort_Column_Id(FilesSort, 0, Sort_Ascending);
          end;
+      elsif ListName = "fileslist2" then
+         Set_Sort_Func
+           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2")), 0,
+            SortFiles'Access);
+         Set_Sort_Column_Id
+           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2")), 0,
+            Sort_Ascending);
       else
          Set_Sort_Func
            (Gtk_List_Store(Get_Object(Builder, ListName)), 0,
