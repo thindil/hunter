@@ -128,8 +128,7 @@ package body LoadData is
    begin
       Init_Set_Int(Value, 0);
       Child_Get_Property
-        (Gtk_Box(Get_Parent(Self)), Gtk_Widget(Self), "position",
-         Value);
+        (Gtk_Box(Get_Parent(Self)), Gtk_Widget(Self), "position", Value);
       if Get_Int(Value) > 0 then
          Create(Tokens, To_String(CurrentDirectory), "/");
          CurrentDirectory := Null_Unbounded_String;

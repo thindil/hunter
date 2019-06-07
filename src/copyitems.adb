@@ -39,6 +39,7 @@ package body CopyItems is
       if CopyItemsList.Length > 0
         and then Containing_Directory(To_String(CopyItemsList(1))) =
           To_String(CurrentDirectory) then
+         CopyItemsList.Clear;
          return;
       end if;
       if CopyItemsList.Length = 0 then
@@ -49,7 +50,9 @@ package body CopyItems is
            (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
             "Stop copying files and directories [ALT-C]");
          Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
-         Set_Label(Gtk_Label(Get_Object(Object, "lblframe")), "Destination");
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lblframe")),
+            "Destination directory");
          Set_Visible_Child_Name
            (Gtk_Stack(Get_Object(Object, "infostack")), "destination");
          return;
@@ -109,7 +112,7 @@ package body CopyItems is
       Success: Boolean := True;
    begin
       while CopyItemsList.Length > 0 loop
-         Path := CurrentDirectory;
+         Path := CopyDestination;
          if Exists
              (To_String(Path) & "/" &
               Simple_Name(To_String(CopyItemsList(1)))) and
@@ -138,6 +141,8 @@ package body CopyItems is
       CopyItemsList.Clear;
       HideMessage(Builder);
       Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+      Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+      Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Reload(Builder);
    end CopySelected;
 
