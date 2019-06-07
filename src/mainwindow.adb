@@ -113,6 +113,9 @@ package body MainWindow is
       -- ****
       pragma Unreferenced(User_Data);
    begin
+      Set_Active
+        (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy")), False);
+      Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
