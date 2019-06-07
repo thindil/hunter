@@ -222,6 +222,17 @@ package body MainWindow is
       Add_Entry("<mainwindow>/path7", GDK_7, 8);
       Add_Entry("<mainwindow>/path8", GDK_8, 8);
       Add_Entry("<mainwindow>/path9", GDK_9, 8);
+      Add_Entry("<mainwindow>/reload2", GDK_LC_r, 9);
+      Add_Entry("<mainwindow>/goup2", GDK_LC_u, 9);
+      Add_Entry("<mainwindow>/path12", GDK_exclam, 8);
+      Add_Entry("<mainwindow>/path22", GDK_at, 8);
+      Add_Entry("<mainwindow>/path32", GDK_numbersign, 8);
+      Add_Entry("<mainwindow>/path42", GDK_dollar, 8);
+      Add_Entry("<mainwindow>/path52", GDK_percent, 8);
+      Add_Entry("<mainwindow>/path62", GDK_asciicircum, 8);
+      Add_Entry("<mainwindow>/path72", GDK_ampersand, 8);
+      Add_Entry("<mainwindow>/path82", GDK_parenleft, 8);
+      Add_Entry("<mainwindow>/path92", GDK_parenright, 8);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else

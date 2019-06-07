@@ -128,7 +128,7 @@ package body LoadData is
    begin
       Init_Set_Int(Value, 0);
       Child_Get_Property
-        (Gtk_Box(Get_Object(Builder, "boxpath")), Gtk_Widget(Self), "position",
+        (Gtk_Box(Get_Parent(Self)), Gtk_Widget(Self), "position",
          Value);
       if Get_Int(Value) > 0 then
          Create(Tokens, To_String(CurrentDirectory), "/");
@@ -139,7 +139,11 @@ package body LoadData is
       else
          CurrentDirectory := To_Unbounded_String("/");
       end if;
-      Reload(Builder);
+      if Get_Parent(Self) = Gtk_Widget(Get_Object(Builder, "boxpath")) then
+         Reload(Builder);
+      else
+         LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+      end if;
    end PathClicked;
 
    procedure LoadDirectory(Name, ListName: String) is
@@ -267,15 +271,22 @@ package body LoadData is
          <<End_Of_Loop>>
       end loop;
       Close(Directory);
-      if ListName = "fileslist" then
+      if ListName /= "fileslist1" then
          declare
-            FilesSort: constant Gtk_Tree_Model_Sort :=
-              Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
+            FilesSort: Gtk_Tree_Model_Sort;
             Tokens: Slice_Set;
             Button: Gtk_Button;
-            ButtonBox: constant Gtk_Box :=
-              Gtk_Box(Get_Object(Builder, "boxpath"));
+            ButtonBox: Gtk_Box;
          begin
+            if ListName = "fileslist" then
+               FilesSort :=
+                 Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
+               ButtonBox := Gtk_Box(Get_Object(Builder, "boxpath"));
+            else
+               FilesSort :=
+                 Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2"));
+               ButtonBox := Gtk_Box(Get_Object(Builder, "boxpath2"));
+            end if;
             Foreach(ButtonBox, RemovePathButtons'Access);
             CurrentDirectory :=
               To_Unbounded_String
@@ -285,20 +296,43 @@ package body LoadData is
             On_Clicked(Button, PathClicked'Access);
             Create(Tokens, To_String(CurrentDirectory), "/");
             if CurrentDirectory = To_Unbounded_String("/") then
-               Set_Tooltip_Text
-                 (Gtk_Widget(Button), "Reload current directory [ALT+R]");
-               Set_Accel_Path
-                 (Gtk_Widget(Button), "<mainwindow>/reload", Accelerators);
+               if ListName = "fileslist" then
+                  Set_Tooltip_Text
+                    (Gtk_Widget(Button), "Reload current directory [ALT+R]");
+                  Set_Accel_Path
+                    (Gtk_Widget(Button), "<mainwindow>/reload", Accelerators);
+               else
+                  Set_Tooltip_Text
+                    (Gtk_Widget(Button),
+                     "Reload current directory [ALT+SHIFT+R]");
+                  Set_Accel_Path
+                    (Gtk_Widget(Button), "<mainwindow>/reload2", Accelerators);
+               end if;
             elsif Slice_Count(Tokens) = 2 then
-               Set_Tooltip_Text
-                 (Gtk_Widget(Button), "Go to upper directory [ALT+U]");
-               Set_Accel_Path
-                 (Gtk_Widget(Button), "<mainwindow>/goup", Accelerators);
+               if ListName = "fileslist" then
+                  Set_Tooltip_Text
+                    (Gtk_Widget(Button), "Go to upper directory [ALT+U]");
+                  Set_Accel_Path
+                    (Gtk_Widget(Button), "<mainwindow>/goup", Accelerators);
+               else
+                  Set_Tooltip_Text
+                    (Gtk_Widget(Button),
+                     "Go to upper directory [ALT+SHIFT+U]");
+                  Set_Accel_Path
+                    (Gtk_Widget(Button), "<mainwindow>/goup2", Accelerators);
+               end if;
             else
-               Set_Accel_Path
-                 (Gtk_Widget(Button), "<mainwindow>/path1", Accelerators);
-               Set_Tooltip_Text
-                 (Gtk_Widget(Button), "Go to this directory [ALT+1]");
+               if ListName = "fileslist" then
+                  Set_Accel_Path
+                    (Gtk_Widget(Button), "<mainwindow>/path1", Accelerators);
+                  Set_Tooltip_Text
+                    (Gtk_Widget(Button), "Go to this directory [ALT+1]");
+               else
+                  Set_Accel_Path
+                    (Gtk_Widget(Button), "<mainwindow>/path12", Accelerators);
+                  Set_Tooltip_Text
+                    (Gtk_Widget(Button), "Go to this directory [ALT+SHIFT+1]");
+               end if;
             end if;
             for I in 2 .. Slice_Count(Tokens) loop
                if Slice(Tokens, I) /= "" then
@@ -306,26 +340,58 @@ package body LoadData is
                   Pack_Start(ButtonBox, Button);
                   On_Clicked(Button, PathClicked'Access);
                   if I = Slice_Count(Tokens) - 1 then
-                     Set_Tooltip_Text
-                       (Gtk_Widget(Button), "Go to upper directory [ALT+U]");
-                     Set_Accel_Path
-                       (Gtk_Widget(Button), "<mainwindow>/goup", Accelerators);
+                     if ListName = "fileslist" then
+                        Set_Tooltip_Text
+                          (Gtk_Widget(Button),
+                           "Go to upper directory [ALT+U]");
+                        Set_Accel_Path
+                          (Gtk_Widget(Button), "<mainwindow>/goup",
+                           Accelerators);
+                     else
+                        Set_Tooltip_Text
+                          (Gtk_Widget(Button),
+                           "Go to upper directory [ALT+SHIFT+U]");
+                        Set_Accel_Path
+                          (Gtk_Widget(Button), "<mainwindow>/goup2",
+                           Accelerators);
+                     end if;
                   elsif I = Slice_Count(Tokens) then
-                     Set_Tooltip_Text
-                       (Gtk_Widget(Button),
-                        "Reload current directory [ALT+R]");
-                     Set_Accel_Path
-                       (Gtk_Widget(Button), "<mainwindow>/reload",
-                        Accelerators);
+                     if ListName = "fileslist" then
+                        Set_Tooltip_Text
+                          (Gtk_Widget(Button),
+                           "Reload current directory [ALT+R]");
+                        Set_Accel_Path
+                          (Gtk_Widget(Button), "<mainwindow>/reload",
+                           Accelerators);
+                     else
+                        Set_Tooltip_Text
+                          (Gtk_Widget(Button),
+                           "Reload current directory [ALT+SHIFT+R]");
+                        Set_Accel_Path
+                          (Gtk_Widget(Button), "<mainwindow>/reload2",
+                           Accelerators);
+                     end if;
                   elsif I < 11 then
-                     Set_Accel_Path
-                       (Gtk_Widget(Button),
-                        "<mainwindow>/path" & Slice_Number'Image(I)(2),
-                        Accelerators);
-                     Set_Tooltip_Text
-                       (Gtk_Widget(Button),
-                        "Go to this directory [ALT+" &
-                        Slice_Number'Image(I)(2) & "]");
+                     if ListName = "fileslist" then
+                        Set_Accel_Path
+                          (Gtk_Widget(Button),
+                           "<mainwindow>/path" & Slice_Number'Image(I)(2),
+                           Accelerators);
+                        Set_Tooltip_Text
+                          (Gtk_Widget(Button),
+                           "Go to this directory [ALT+" &
+                           Slice_Number'Image(I)(2) & "]");
+                     else
+                        Set_Accel_Path
+                          (Gtk_Widget(Button),
+                           "<mainwindow>/path" & Slice_Number'Image(I)(2) &
+                           "2",
+                           Accelerators);
+                        Set_Tooltip_Text
+                          (Gtk_Widget(Button),
+                           "Go to this directory [ALT+SHIFT+" &
+                           Slice_Number'Image(I)(2) & "]");
+                     end if;
                   end if;
                end if;
             end loop;
@@ -333,13 +399,6 @@ package body LoadData is
             Set_Sort_Func(FilesSort, 0, SortFiles'Access);
             Set_Sort_Column_Id(FilesSort, 0, Sort_Ascending);
          end;
-      elsif ListName = "fileslist2" then
-         Set_Sort_Func
-           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2")), 0,
-            SortFiles'Access);
-         Set_Sort_Column_Id
-           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2")), 0,
-            Sort_Ascending);
       else
          Set_Sort_Func
            (Gtk_List_Store(Get_Object(Builder, ListName)), 0,
