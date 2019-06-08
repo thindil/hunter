@@ -22,7 +22,6 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
-with CopyItems; use CopyItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -42,7 +41,7 @@ package body ActivateItems is
            CurrentDirectory &
            To_Unbounded_String
              ("/" & Get_String(DestinationModel, DestinationIter, 0));
-         CopyDestination := CurrentSelected;
+         DestinationPath := CurrentSelected;
       end if;
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then

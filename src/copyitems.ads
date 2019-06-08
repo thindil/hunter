@@ -23,14 +23,6 @@ with Gtkada.Builder; use Gtkada.Builder;
 package CopyItems is
 -- ****
 
-   -- ****v* CopyItems/CopyDestination
-   -- FUNCTION
-   -- Full path to directory where selected files and directories will be
-   -- copied.
-   -- SOURCE
-   CopyDestination: Unbounded_String;
-   -- ****
-
    -- ****f* CopyItems/CopyData
    -- FUNCTION
    -- Copy selected files/directories to new location

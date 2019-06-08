@@ -82,6 +82,13 @@ package MainWindow is
    -- SOURCE
    CurrentSelected: Unbounded_String;
    -- ****
+   -- ****v* MainWindow/DestinationPath
+   -- FUNCTION
+   -- Full path to directory where selected files and directories will be
+   -- copied or moved.
+   -- SOURCE
+   DestinationPath: Unbounded_String;
+   -- ****
 
    -- ****f* MainWindow/Quit
    -- FUNCTION
