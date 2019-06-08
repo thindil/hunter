@@ -141,6 +141,7 @@ package body LoadData is
       if Get_Parent(Self) = Gtk_Widget(Get_Object(Builder, "boxpath")) then
          Reload(Builder);
       else
+         DestinationPath := CurrentDirectory;
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
       end if;
    end PathClicked;
