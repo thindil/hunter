@@ -18,8 +18,12 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Label; use Gtk.Label;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Stack; use Gtk.Stack;
+with Gtk.Widget; use Gtk.Widget;
 with CopyItems; use CopyItems;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 
@@ -33,16 +37,27 @@ package body MoveItems is
    -- ****
 
    procedure MoveData(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
       OverwriteItem: Boolean := False;
    begin
       if MoveItemsList.Length > 0
         and then Containing_Directory(To_String(MoveItemsList(1))) =
           To_String(CurrentDirectory) then
+         MoveItemsList.Clear;
          return;
       end if;
       if MoveItemsList.Length = 0 then
          MoveItemsList := SelectedItems;
+         LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+         Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
+         Set_Tooltip_Text
+           (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
+            "Stop moving files and directories [ALT-C]");
+         Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lblframe")),
+            "Destination directory");
+         Set_Visible_Child_Name
+           (Gtk_Stack(Get_Object(Object, "infostack")), "destination");
          return;
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
@@ -60,11 +75,11 @@ package body MoveItems is
    begin
       while MoveItemsList.Length > 0 loop
          if Exists
-             (To_String(CurrentDirectory) & "/" &
+             (To_String(DestinationPath) & "/" &
               Simple_Name(To_String(MoveItemsList(1)))) and
            not Overwrite then
             if Is_Directory
-                (To_String(CurrentDirectory) & "/" &
+                (To_String(DestinationPath) & "/" &
                  Simple_Name(To_String(MoveItemsList(1)))) then
                ItemType := To_Unbounded_String("Directory");
             else
@@ -79,11 +94,11 @@ package body MoveItems is
          end if;
          Rename_File
            (To_String(MoveItemsList(1)),
-            To_String(CurrentDirectory) & "/" &
+            To_String(DestinationPath) & "/" &
             Simple_Name(To_String(MoveItemsList(1))),
             Success);
          if not Success then
-            CopyItem(To_String(MoveItemsList(1)), CurrentDirectory, Success);
+            CopyItem(To_String(MoveItemsList(1)), DestinationPath, Success);
             if Success then
                if Is_Directory(To_String(MoveItemsList(1))) then
                   Remove_Dir(To_String(MoveItemsList(1)), True);
@@ -102,6 +117,9 @@ package body MoveItems is
       end loop;
       MoveItemsList.Clear;
       HideMessage(Builder);
+      Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+      Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+      Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Reload(Builder);
    end MoveSelected;
 
