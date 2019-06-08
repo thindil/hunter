@@ -112,7 +112,7 @@ package body CopyItems is
       Success: Boolean := True;
    begin
       while CopyItemsList.Length > 0 loop
-         Path := CopyDestination;
+         Path := DestinationPath;
          if Exists
              (To_String(Path) & "/" &
               Simple_Name(To_String(CopyItemsList(1)))) and
