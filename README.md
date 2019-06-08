@@ -1,8 +1,7 @@
-Hunter is (or better, will be) a graphical file manager for Linux, heavy
-inspired by [Ranger](https://ranger.github.io/). At this moment, Hunter is
-under heavy development and have only basic features of a file manager. To open
-files, the program uses default applications from [XDG MIME Application
-Specification](https://specifications.freedesktop.org/mime-apps-spec/mime-apps-spec-latest.html).
+Hunter is a graphical file manager for Linux, inspired by [Ranger](https://ranger.github.io/).
+At this moment, Hunter is under heavy development and have only basic features
+of a file manager. To open files, the program uses default applications
+from [XDG MIME Application Specification](https://specifications.freedesktop.org/mime-apps-spec/mime-apps-spec-latest.html).
 
 **Note:** This version of README.md is about development version of the
 program. Some things may be different in released version of Hunter.
