@@ -125,7 +125,6 @@ package body MainWindow is
       Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
-      Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
       Reload(Builder);
@@ -316,7 +315,6 @@ package body MainWindow is
       HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
       Hide(Gtk_Widget(Get_Object(Builder, "entry")));
-      Hide(Gtk_Widget(Get_Object(Builder, "btntoolapply")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
