@@ -30,6 +30,7 @@ with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Widget; use Gtk.Widget;
+with Gtk.Window; use Gtk.Window;
 with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with Glib.Values; use Glib.Values;
@@ -410,6 +411,11 @@ package body LoadData is
            (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
             Gdk_Cursor_New(Arrow));
          Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
+      end if;
+      if ListName = "fileslist" then
+         Set_Title
+           (Gtk_Window(Get_Object(Builder, "mainwindow")),
+            "Hunter - " & To_String(CurrentDirectory));
       end if;
       Setting := False;
    end LoadDirectory;
