@@ -24,17 +24,9 @@ with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
 with CopyItems; use CopyItems;
 with LoadData; use LoadData;
-with MainWindow; use MainWindow;
 with Messages; use Messages;
 
 package body MoveItems is
-
-   -- ****iv* MoveItems/MoveItemsList
-   -- FUNCTION
-   -- Stores names of all selected to move files and directories
-   -- SOURCE
-   MoveItemsList: UnboundedString_Container.Vector;
-   -- ****
 
    procedure MoveData(Object: access Gtkada_Builder_Record'Class) is
       OverwriteItem: Boolean := False;
