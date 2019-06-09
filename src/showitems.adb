@@ -41,10 +41,13 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Toggle_Button; use Gtk.Toggle_Button;
+with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Widget; use Gtk.Widget;
 with Bookmarks; use Bookmarks;
+with CopyItems; use CopyItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with MoveItems; use MoveItems;
 with Messages; use Messages;
 with Utils; use Utils;
 
@@ -368,6 +371,12 @@ package body ShowItems is
          return;
       end if;
       CurrentSelected := SelectedItems(1);
+      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncut"))) then
+         MoveItemsList := SelectedItems;
+      end if;
+      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncopy"))) then
+         CopyItemsList := SelectedItems;
+      end if;
       if Get_Visible_Child_Name(Gtk_Stack(Get_Object(Object, "infostack"))) =
         "destination" then
          return;

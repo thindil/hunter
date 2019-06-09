@@ -15,6 +15,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
+with MainWindow; use MainWindow;
 
 -- ****h* Hunter/CopyItems
 -- FUNCTION
@@ -22,6 +23,13 @@ with Gtkada.Builder; use Gtkada.Builder;
 -- SOURCE
 package CopyItems is
 -- ****
+
+   -- ****v* CopyItems/CopyItemsList
+   -- FUNCTION
+   -- Stores names of all selected to copy files and directories
+   -- SOURCE
+   CopyItemsList: UnboundedString_Container.Vector;
+   -- ****
 
    -- ****f* CopyItems/CopyData
    -- FUNCTION

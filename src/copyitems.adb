@@ -20,18 +20,10 @@ with Gtk.Label; use Gtk.Label;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
-with MainWindow; use MainWindow;
 with LoadData; use LoadData;
 with Messages; use Messages;
 
 package body CopyItems is
-
-   -- ****iv* CopyItems/CopyItemsList
-   -- FUNCTION
-   -- Stores names of all selected to copy files and directories
-   -- SOURCE
-   CopyItemsList: UnboundedString_Container.Vector;
-   -- ****
 
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
       OverwriteItem: Boolean := False;

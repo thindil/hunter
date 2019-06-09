@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Gtkada.Builder; use Gtkada.Builder;
+with MainWindow; use MainWindow;
 
 -- ****h* Hunter/MoveItems
 -- FUNCTION
@@ -21,6 +22,13 @@ with Gtkada.Builder; use Gtkada.Builder;
 -- SOURCE
 package MoveItems is
 -- ****
+
+   -- ****v* MoveItems/MoveItemsList
+   -- FUNCTION
+   -- Stores names of all selected to move files and directories
+   -- SOURCE
+   MoveItemsList: UnboundedString_Container.Vector;
+   -- ****
 
    -- ****f* MoveItems/MoveData
    -- FUNCTION
