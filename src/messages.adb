@@ -95,6 +95,9 @@ package body Messages is
       elsif NewAction = COPY then
          if Response_Id = Gint(Gtk_Response_Reject) then
             HideMessage(Builder);
+            Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+            Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
             Reload(Builder);
             return;
          elsif Response_Id = Gint(Gtk_Response_No) then
@@ -105,6 +108,9 @@ package body Messages is
       elsif NewAction = MOVE then
          if Response_Id = Gint(Gtk_Response_Reject) then
             HideMessage(Builder);
+            Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+            Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
             Reload(Builder);
             return;
          elsif Response_Id = Gint(Gtk_Response_No) then
