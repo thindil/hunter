@@ -35,6 +35,10 @@ package body MoveItems is
         and then Containing_Directory(To_String(MoveItemsList(1))) =
           To_String(CurrentDirectory) then
          MoveItemsList.Clear;
+         Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+         Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+         Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+         Reload(Object);
          return;
       end if;
       if MoveItemsList.Length = 0 then
