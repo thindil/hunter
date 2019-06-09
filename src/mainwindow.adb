@@ -113,13 +113,14 @@ package body MainWindow is
       -- ****
       pragma Unreferenced(User_Data);
    begin
-      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
+      if Get_Active
+          (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
          Set_Active
-            (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy")), False);
+           (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy")), False);
       end if;
       if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) then
          Set_Active
-            (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut")), False);
+           (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut")), False);
       end if;
       Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
