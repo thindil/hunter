@@ -368,6 +368,10 @@ package body ShowItems is
          return;
       end if;
       CurrentSelected := SelectedItems(1);
+      if Get_Visible_Child_Name(Gtk_Stack(Get_Object(Object, "infostack"))) =
+        "destination" then
+         return;
+      end if;
       Show_All(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
       Set_Active
         (Gtk_Radio_Tool_Button(Get_Object(Object, "btnpreview")), True);
