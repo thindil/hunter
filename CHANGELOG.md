@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Updated RoboDOC configuration file
 - Updated code documenation
 - Updated interface
+- Updated README.md
 
 ### Fixed
 - Typo in code documentation
