@@ -18,6 +18,7 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Gtk.Container; use Gtk.Container;
+with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Shell; use Gtk.Menu_Shell;
 with Gtk.Widget; use Gtk.Widget;
@@ -35,10 +36,21 @@ package body Bookmarks is
       MenuLabel: constant Unbounded_String :=
         To_Unbounded_String(Get_Label(Self));
 -- ****
+      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
       for I in BookmarksList.Iterate loop
          if MenuLabel = BookmarksList(I).MenuName then
-            CurrentDirectory := BookmarksList(I).Path;
+            if BookmarksList(I).Path /= Null_Unbounded_String then
+               CurrentDirectory := BookmarksList(I).Path;
+            else
+               NewAction := GOTOPATH;
+               Set_Icon_Tooltip_Text
+                 (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+                  "Go to selected destination.");
+               Set_Text(Gtk_GEntry(GEntry), To_String(CurrentDirectory));
+               Show_All(GEntry);
+               Grab_Focus(GEntry);
+            end if;
             exit;
          end if;
       end loop;
@@ -163,6 +175,11 @@ package body Bookmarks is
             Close(File);
          end;
       end if;
+      BookmarksList.Append
+        (New_Item =>
+           (MenuName => To_Unbounded_String("Enter destination"),
+            Path => Null_Unbounded_String));
+      AddMenuItem;
    end CreateBookmarkMenu;
 
    procedure AddBookmark(Object: access Gtkada_Builder_Record'Class) is

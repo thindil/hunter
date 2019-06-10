@@ -49,6 +49,14 @@ package body CreateItems is
       if Get_Text(Self) = "" then
          return;
       end if;
+      if NewAction = GOTOPATH then
+         if not Ada.Directories.Exists(Get_Text(Self)) then
+            ShowMessage("Directory " & Name & " doesn't exists.");
+            return;
+         end if;
+         CurrentDirectory := To_Unbounded_String(Get_Text(Self));
+         goto Update_UI;
+      end if;
       if Ada.Directories.Exists(Name) or Is_Symbolic_Link(Name) then
          case NewAction is
             when CREATEDIRECTORY =>
@@ -100,9 +108,10 @@ package body CreateItems is
          end if;
          return;
       end if;
+      CurrentDirectory := To_Unbounded_String(Containing_Directory(Name));
+      <<Update_UI>>
       Set_Text(Self, "");
       Hide(Gtk_Widget(Self));
-      CurrentDirectory := To_Unbounded_String(Containing_Directory(Name));
       Reload(Builder);
    end CreateItem;
 
