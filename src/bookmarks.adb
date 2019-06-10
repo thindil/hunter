@@ -33,9 +33,9 @@ package body Bookmarks is
    -- Self - Selected entry in bookmarks menu
    -- SOURCE
    procedure GoToBookmark(Self: access Gtk_Menu_Item_Record'Class) is
+-- ****
       MenuLabel: constant Unbounded_String :=
         To_Unbounded_String(Get_Label(Self));
--- ****
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
       for I in BookmarksList.Iterate loop
