@@ -53,9 +53,11 @@ package MainWindow is
    -- COPY            - copy file or directory
    -- MOVE            - move file or directory
    -- OPENWITH        - open selected file or directory with command
+   -- GOTOPATH        - go to selected path
    -- SOURCE
    type ItemActions is
-     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH);
+     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
+      GOTOPATH);
    -- ****
    -- ****v* MainWindow/NewAction
    -- FUNCTION
