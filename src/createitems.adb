@@ -25,7 +25,7 @@ package body CreateItems is
 
    -- ****if* CreateItems/CreateItem
    -- FUNCTION
-   -- Create new file or directory or hide text entry
+   -- Create new or rename existing file or directory or hide text entry
    -- PARAMETERS
    -- Self     - Text entry with name for new file/directory
    -- Icon_Pos - Position of text entry icon which was pressed or if key
