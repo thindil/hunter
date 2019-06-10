@@ -25,7 +25,7 @@ with MainWindow; use MainWindow;
 
 package body Bookmarks is
 
-   -- ****f* Bookmarks/GoToBookmark
+   -- ****if* Bookmarks/GoToBookmark
    -- FUNCTION
    -- Go to selected bookmark location
    -- PARAMETERS
