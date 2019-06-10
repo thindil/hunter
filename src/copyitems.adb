@@ -22,6 +22,7 @@ with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
 with LoadData; use LoadData;
 with Messages; use Messages;
+with ShowItems; use ShowItems;
 
 package body CopyItems is
 
@@ -35,7 +36,8 @@ package body CopyItems is
          Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
          Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
-         Reload(Object);
+         CurrentSelected := Null_Unbounded_String;
+         ShowItem(Object);
          return;
       end if;
       if CopyItemsList.Length = 0 then
