@@ -373,12 +373,10 @@ package body ShowItems is
       CurrentSelected := SelectedItems(1);
       if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncut"))) then
          MoveItemsList := SelectedItems;
+         return;
       end if;
       if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncopy"))) then
          CopyItemsList := SelectedItems;
-      end if;
-      if Get_Visible_Child_Name(Gtk_Stack(Get_Object(Object, "infostack"))) =
-        "destination" then
          return;
       end if;
       Show_All(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
