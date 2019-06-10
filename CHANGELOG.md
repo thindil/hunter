@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Option to go to selected directory
+
 ### Changed
 - Updated RoboDOC configuration file
 - Updated code documenation
