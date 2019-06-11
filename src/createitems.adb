@@ -14,7 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Stack; use Gtk.Stack;
@@ -25,13 +24,6 @@ with MainWindow; use MainWindow;
 with Messages; use Messages;
 
 package body CreateItems is
-
-   -- ****iv* CreateItems/LinkTarget
-   -- FUNCTION
-   -- Destination for new symbolic link
-   -- SOURCE
-   LinkTarget: Unbounded_String;
-   -- ****
 
    -- ****if* CreateItems/CreateItem
    -- FUNCTION
@@ -129,6 +121,7 @@ package body CreateItems is
                   Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
                   Set_Visible_Child_Name
                     (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+                  NewAction := CREATEFILE;
                end;
             when others =>
                null;

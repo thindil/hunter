@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gdk.Event; use Gdk.Event;
 with Glib.Object; use Glib.Object;
@@ -24,6 +25,13 @@ with Gtkada.Builder; use Gtkada.Builder;
 -- SOURCE
 package CreateItems is
 -- ****
+
+   -- ****v* CreateItems/LinkTarget
+   -- FUNCTION
+   -- Destination for new symbolic link
+   -- SOURCE
+   LinkTarget: Unbounded_String;
+   -- ****
 
    -- ****f* CreateItems/AddNew
    -- FUNCTION

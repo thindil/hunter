@@ -45,6 +45,7 @@ with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Widget; use Gtk.Widget;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
+with CreateItems; use CreateItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with MoveItems; use MoveItems;
@@ -377,6 +378,10 @@ package body ShowItems is
       end if;
       if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncopy"))) then
          CopyItemsList := SelectedItems;
+         return;
+      end if;
+      if NewAction = CREATELINK then
+         LinkTarget := CurrentSelected;
          return;
       end if;
       Show_All(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
