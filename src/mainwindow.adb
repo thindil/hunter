@@ -76,7 +76,7 @@ package body MainWindow is
             Gtk_Tree_Path_New_From_String("0"), null, False);
          Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
       end if;
-      PreviewItem(Object);
+      ShowItem(Object);
    end Reload;
 
    -- ****if* MainWindow/StartRename
