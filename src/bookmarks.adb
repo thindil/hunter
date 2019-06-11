@@ -21,7 +21,9 @@ with Gtk.Container; use Gtk.Container;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Shell; use Gtk.Menu_Shell;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 
 package body Bookmarks is
@@ -55,7 +57,13 @@ package body Bookmarks is
          end if;
       end loop;
       if Ada.Directories.Exists(To_String(CurrentDirectory)) then
-         Reload(Builder);
+         if Get_Visible_Child_Name
+             (Gtk_Stack(Get_Object(Builder, "infostack"))) =
+           "destination" then
+            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+         else
+            Reload(Builder);
+         end if;
       end if;
    end GoToBookmark;
 
@@ -63,7 +71,13 @@ package body Bookmarks is
    begin
       CurrentDirectory := To_Unbounded_String(Value("HOME"));
       if Ada.Directories.Exists(To_String(CurrentDirectory)) then
-         Reload(Object);
+         if Get_Visible_Child_Name
+             (Gtk_Stack(Get_Object(Object, "infostack"))) =
+           "destination" then
+            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+         else
+            Reload(Object);
+         end if;
       end if;
    end GoHome;
 

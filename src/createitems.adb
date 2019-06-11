@@ -16,8 +16,10 @@
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
 with ActivateItems; use ActivateItems;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 
@@ -52,6 +54,12 @@ package body CreateItems is
       if NewAction = GOTOPATH then
          if not Ada.Directories.Exists(Get_Text(Self)) then
             ShowMessage("Directory " & Name & " doesn't exists.");
+            return;
+         end if;
+         if not Is_Read_Accessible_File(Get_Text(Self)) then
+            ShowMessage
+              ("You don't have permissions to enter directory " &
+               Get_Text(Self));
             return;
          end if;
          CurrentDirectory := To_Unbounded_String(Get_Text(Self));
@@ -112,7 +120,12 @@ package body CreateItems is
       <<Update_UI>>
       Set_Text(Self, "");
       Hide(Gtk_Widget(Self));
-      Reload(Builder);
+      if Get_Visible_Child_Name(Gtk_Stack(Get_Object(Builder, "infostack"))) =
+        "destination" then
+         LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+      else
+         Reload(Builder);
+      end if;
    end CreateItem;
 
    procedure AddNew(User_Data: access GObject_Record'Class) is
