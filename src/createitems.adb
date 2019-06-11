@@ -26,11 +26,17 @@ with Messages; use Messages;
 
 package body CreateItems is
 
+   -- ****iv* CreateItems/LinkTarget
+   -- FUNCTION
+   -- Destination for new symbolic link
+   -- SOURCE
    LinkTarget: Unbounded_String;
+   -- ****
 
    -- ****if* CreateItems/CreateItem
    -- FUNCTION
-   -- Create new or rename existing file or directory or hide text entry
+   -- Create new or rename existing file, directory or symbolic link or hide
+   -- text entry
    -- PARAMETERS
    -- Self     - Text entry with name for new file/directory
    -- Icon_Pos - Position of text entry icon which was pressed or if key
