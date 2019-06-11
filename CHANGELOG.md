@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Option to go to selected directory
+- Option to create links to files and directories
 
 ### Changed
 - Updated RoboDOC configuration file
