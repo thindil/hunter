@@ -54,10 +54,11 @@ package MainWindow is
    -- MOVE            - move file or directory
    -- OPENWITH        - open selected file or directory with command
    -- GOTOPATH        - go to selected path
+   -- CREATELINK      - create symbolic link to selected file or directory
    -- SOURCE
    type ItemActions is
      (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
-      GOTOPATH);
+      GOTOPATH, CREATELINK);
    -- ****
    -- ****v* MainWindow/NewAction
    -- FUNCTION

@@ -16,6 +16,7 @@
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Label; use Gtk.Label;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
 with ActivateItems; use ActivateItems;
@@ -24,6 +25,8 @@ with MainWindow; use MainWindow;
 with Messages; use Messages;
 
 package body CreateItems is
+
+   LinkTarget: Unbounded_String;
 
    -- ****if* CreateItems/CreateItem
    -- FUNCTION
@@ -73,6 +76,8 @@ package body CreateItems is
                ActionString := To_Unbounded_String("create file with");
             when RENAME =>
                ActionString := To_Unbounded_String("rename with new");
+            when CREATELINK =>
+               ActionString := To_Unbounded_String("create link with");
             when others =>
                null;
          end case;
@@ -103,6 +108,22 @@ package body CreateItems is
                        ("Can't rename " & To_String(CurrentSelected) & ".");
                   end if;
                end if;
+            when CREATELINK =>
+               declare
+                  Arguments: constant Argument_List :=
+                    (new String'("-s"), new String'(To_String(LinkTarget)),
+                     new String'
+                       (To_String(CurrentDirectory) & "/" & Get_Text(Self)));
+               begin
+                  Spawn(Locate_Exec_On_Path("ln").all, Arguments, Success);
+                  if not Success then
+                     ShowMessage("Can't create symbolic link.");
+                  end if;
+                  Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+                  Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+                  Set_Visible_Child_Name
+                    (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+               end;
             when others =>
                null;
          end case;
@@ -136,6 +157,19 @@ package body CreateItems is
          Set_Icon_Tooltip_Text
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
             "Create new directory.");
+      elsif User_Data = Get_Object(Builder, "newmenulink") then
+         NewAction := CREATELINK;
+         LinkTarget := CurrentSelected;
+         Set_Icon_Tooltip_Text
+           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+            "Create new link to selected file or directory.");
+         LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+         Set_Label
+           (Gtk_Label(Get_Object(Builder, "lblframe")),
+            "Destination directory");
+         Set_Visible_Child_Name
+           (Gtk_Stack(Get_Object(Builder, "infostack")), "destination");
       else
          NewAction := CREATEFILE;
          Set_Icon_Tooltip_Text
