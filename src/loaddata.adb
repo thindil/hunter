@@ -21,7 +21,8 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Button; use Gtk.Button;
-with Gtk.Box; use Gtk.Box;
+with Gtk.Flow_Box; use Gtk.Flow_Box;
+with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
@@ -33,7 +34,6 @@ with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
 with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
-with Glib.Values; use Glib.Values;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
@@ -124,22 +124,19 @@ package body LoadData is
    -- SOURCE
    procedure PathClicked(Self: access Gtk_Button_Record'Class) is
       -- ****
-      Value: GValue;
       Tokens: Slice_Set;
+      Index: constant Gint := Get_Index(Gtk_Flow_Box_Child(Get_Parent(Self)));
    begin
-      Init_Set_Int(Value, 0);
-      Child_Get_Property
-        (Gtk_Box(Get_Parent(Self)), Gtk_Widget(Self), "position", Value);
-      if Get_Int(Value) > 0 then
+      if Index > 0 then
          Create(Tokens, To_String(CurrentDirectory), "/");
          CurrentDirectory := Null_Unbounded_String;
-         for I in 2 .. (Get_Int(Value) + 1) loop
+         for I in 2 .. (Index + 1) loop
             Append(CurrentDirectory, "/" & Slice(Tokens, Slice_Number(I)));
          end loop;
       else
          CurrentDirectory := To_Unbounded_String("/");
       end if;
-      if Get_Parent(Self) = Gtk_Widget(Get_Object(Builder, "boxpath")) then
+      if Get_Parent(Get_Parent(Self)) = Gtk_Widget(Get_Object(Builder, "boxpath")) then
          Reload(Builder);
       else
          DestinationPath := CurrentDirectory;
@@ -277,23 +274,23 @@ package body LoadData is
             FilesSort: Gtk_Tree_Model_Sort;
             Tokens: Slice_Set;
             Button: Gtk_Button;
-            ButtonBox: Gtk_Box;
+            ButtonBox: Gtk_Flow_Box;
          begin
             if ListName = "fileslist" then
                FilesSort :=
                  Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
-               ButtonBox := Gtk_Box(Get_Object(Builder, "boxpath"));
+               ButtonBox := Gtk_Flow_Box(Get_Object(Builder, "boxpath"));
             else
                FilesSort :=
                  Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2"));
-               ButtonBox := Gtk_Box(Get_Object(Builder, "boxpath2"));
+               ButtonBox := Gtk_Flow_Box(Get_Object(Builder, "boxpath2"));
             end if;
             Foreach(ButtonBox, RemovePathButtons'Access);
             CurrentDirectory :=
               To_Unbounded_String
                 (Normalize_Pathname(To_String(CurrentDirectory)));
             Gtk_New(Button, "/");
-            Pack_Start(ButtonBox, Button);
+            Insert(ButtonBox, Button, -1);
             On_Clicked(Button, PathClicked'Access);
             Create(Tokens, To_String(CurrentDirectory), "/");
             if CurrentDirectory = To_Unbounded_String("/") then
@@ -338,7 +335,7 @@ package body LoadData is
             for I in 2 .. Slice_Count(Tokens) loop
                if Slice(Tokens, I) /= "" then
                   Gtk_New(Button, Slice(Tokens, I));
-                  Pack_Start(ButtonBox, Button);
+                  Insert(ButtonBox, Button, -1);
                   On_Clicked(Button, PathClicked'Access);
                   if I = Slice_Count(Tokens) - 1 then
                      if ListName = "fileslist" then
