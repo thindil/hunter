@@ -21,9 +21,9 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Button; use Gtk.Button;
+with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
-with Gtk.Enums; use Gtk.Enums;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
@@ -136,7 +136,8 @@ package body LoadData is
       else
          CurrentDirectory := To_Unbounded_String("/");
       end if;
-      if Get_Parent(Get_Parent(Self)) = Gtk_Widget(Get_Object(Builder, "boxpath")) then
+      if Get_Parent(Get_Parent(Self)) =
+        Gtk_Widget(Get_Object(Builder, "boxpath")) then
          Reload(Builder);
       else
          DestinationPath := CurrentDirectory;
