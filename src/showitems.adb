@@ -362,10 +362,13 @@ package body ShowItems is
         (Gtk.Tree_View.Get_Selection
            (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
          GetSelectedItems'Access);
-      if SelectedItems.Length /= 1 then
+      if SelectedItems.Length > 1 then
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
          Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
+         return;
+      elsif SelectedItems.Length = 0 then
+         PreviewItem(Object);
          return;
       end if;
       if CurrentSelected = SelectedItems(1) then
