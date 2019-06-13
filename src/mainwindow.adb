@@ -203,7 +203,9 @@ package body MainWindow is
       Register_Handler(Builder, "Show_About", ShowAbout'Access);
       Register_Handler(Builder, "Add_Bookmark", AddBookmark'Access);
       Register_Handler(Builder, "Remove_Bookmark", RemoveBookmark'Access);
-      Register_Handler(Builder, "Toggle_Preferences", TogglePreferences'Access);
+      Register_Handler
+        (Builder, "Toggle_Preferences", TogglePreferences'Access);
+      Register_Handler(Builder, "Save_Preferences", SaveSettings'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),

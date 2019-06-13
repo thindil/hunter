@@ -26,10 +26,9 @@ package Preferences is
    -- FUNCTION
    -- Data structure to the program settings
    -- SOURCE
-   type Settings_Data is
-      record
-         ShowHidden: Boolean; -- If true, show hidden files
-      end record;
+   type Settings_Data is record
+      ShowHidden: Boolean; -- If true, show hidden files
+   end record;
    -- ****
    -- ****v* Preferences/Settings
    -- FUNCTION
@@ -52,6 +51,17 @@ package Preferences is
    -- settings.
    -- SOURCE
    procedure LoadSettings;
+   -- ****
+   -- ****f* Preferences/SaveSettings
+   -- FUNCTION
+   -- Save the program settings to file and update program to the new
+   -- configuration if needed.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- RESULT
+   -- Always True to stop default handler from running
+   -- SOURCE
+   function SaveSettings(Object: access Gtkada_Builder_Record'Class) return Boolean;
    -- ****
 
 end Preferences;
