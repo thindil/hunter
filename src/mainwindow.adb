@@ -209,6 +209,12 @@ package body MainWindow is
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
          VisibleItems'Access);
       Set_Visible_Func
+        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")),
+         VisibleItems'Access);
+      Set_Visible_Func
+        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")),
+         VisibleItems'Access);
+      Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "applicationsfilter")),
          VisibleItems'Access);
       On_Icon_Press
@@ -306,6 +312,7 @@ package body MainWindow is
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
          Gtk_Widget(Get_Object(Builder, "newmenu")));
+      LoadSettings;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       CreateBookmarkMenu(Builder);
       Set_Menu

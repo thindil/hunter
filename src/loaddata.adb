@@ -29,6 +29,7 @@ with Gtk.Main; use Gtk.Main;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
@@ -416,6 +417,19 @@ package body LoadData is
             "Hunter - " & To_String(CurrentDirectory));
       end if;
       Setting := False;
+      if ListName = "fileslist" then
+         Refilter
+            (Gtk_Tree_Model_Filter
+               (Get_Object(Builder, "filesfilter")));
+      elsif ListName = "fileslist2" then
+         Refilter
+            (Gtk_Tree_Model_Filter
+               (Get_Object(Builder, "filesfilter2")));
+      else
+         Refilter
+            (Gtk_Tree_Model_Filter
+               (Get_Object(Builder, "filesfilter1")));
+      end if;
    end LoadDirectory;
 
 end LoadData;
