@@ -15,8 +15,20 @@
 
 with Gtkada.Builder; use Gtkada.Builder;
 
+-- ****h* Hunter/Preferences
+-- FUNCTION
+-- Provide code for save/restore and manipulate the program settings
+-- SOURCE
 package Preferences is
+-- ****
 
+   -- ****f* Preferences/TogglePreferences
+   -- FUNCTION
+   -- Show or hide the program preferences window
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure TogglePreferences(Object: access Gtkada_Builder_Record'Class);
+   -- ****
 
 end Preferences;
