@@ -23,6 +23,7 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 with MainWindow; use MainWindow;
+with Preferences; use Preferences;
 
 package body SearchItems is
 
@@ -47,8 +48,15 @@ package body SearchItems is
       if Setting then
          return True;
       end if;
+      if Model /= +(Gtk_List_Store(Get_Object(Builder, "applicationslist"))) then
+         if (Get_Int(Model, Iter, 1) = 1 or Get_Int(Model, Iter, 1) = 3) and not Settings.ShowHidden then
+            return False;
+         end if;
+      end if;
       if Model = +(Gtk_List_Store(Get_Object(Builder, "fileslist"))) then
          SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchfile"));
+      elsif Model = +(Gtk_List_Store(Get_Object(Builder, "fileslist2"))) then
+         return True;
       else
          SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchapplication"));
       end if;
