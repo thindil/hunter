@@ -48,8 +48,10 @@ package body SearchItems is
       if Setting then
          return True;
       end if;
-      if Model /= +(Gtk_List_Store(Get_Object(Builder, "applicationslist"))) then
-         if (Get_Int(Model, Iter, 1) = 1 or Get_Int(Model, Iter, 1) = 3) and not Settings.ShowHidden then
+      if Model /=
+        +(Gtk_List_Store(Get_Object(Builder, "applicationslist"))) then
+         if (Get_Int(Model, Iter, 1) = 1 or Get_Int(Model, Iter, 1) = 3) and
+           not Settings.ShowHidden then
             return False;
          end if;
       end if;

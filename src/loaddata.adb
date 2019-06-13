@@ -418,17 +418,11 @@ package body LoadData is
       end if;
       Setting := False;
       if ListName = "fileslist" then
-         Refilter
-            (Gtk_Tree_Model_Filter
-               (Get_Object(Builder, "filesfilter")));
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
       elsif ListName = "fileslist2" then
-         Refilter
-            (Gtk_Tree_Model_Filter
-               (Get_Object(Builder, "filesfilter2")));
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
       else
-         Refilter
-            (Gtk_Tree_Model_Filter
-               (Get_Object(Builder, "filesfilter1")));
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")));
       end if;
    end LoadDirectory;
 
