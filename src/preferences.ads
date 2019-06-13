@@ -59,9 +59,10 @@ package Preferences is
    -- PARAMETERS
    -- Object - GtkAda Builder used to create UI
    -- RESULT
-   -- Always True to stop default handler from running
+   -- Always False so default handler will be running too.
    -- SOURCE
-   function SaveSettings(Object: access Gtkada_Builder_Record'Class) return Boolean;
+   function SaveSettings
+     (Object: access Gtkada_Builder_Record'Class) return Boolean;
    -- ****
 
 end Preferences;
