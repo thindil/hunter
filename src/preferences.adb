@@ -20,6 +20,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Widget; use Gtk.Widget;
+with MainWindow; use MainWindow;
 
 package body Preferences is
 
@@ -56,6 +57,7 @@ package body Preferences is
         (ConfigFile, In_File,
          Ada.Environment_Variables.Value("HOME") &
          "/.config/hunter/hunter.cfg");
+      Setting := True;
       while not End_Of_File(ConfigFile) loop
          RawData := To_Unbounded_String(Get_Line(ConfigFile));
          if Length(RawData) > 0 then
@@ -64,13 +66,18 @@ package body Preferences is
             Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
             if FieldName = To_Unbounded_String("ShowHidden") then
                Settings.ShowHidden := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchhidden")),
+                  Settings.ShowHidden);
             end if;
          end if;
       end loop;
+      Setting := False;
       Close(ConfigFile);
    end LoadSettings;
 
-   function SaveSettings(Object: access Gtkada_Builder_Record'Class) return Boolean is
+   function SaveSettings
+     (Object: access Gtkada_Builder_Record'Class) return Boolean is
       Changed: Boolean := False;
       ConfigFile: File_Type;
       procedure SaveBoolean(Value: Boolean; Name: String) is
@@ -82,6 +89,9 @@ package body Preferences is
          end if;
       end SaveBoolean;
    begin
+      if Setting then
+         return False;
+      end if;
       if Get_Active(Gtk_Switch(Get_Object(Object, "switchhidden"))) /=
         Settings.ShowHidden then
          Changed := True;
@@ -92,7 +102,7 @@ package body Preferences is
          Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter2")));
       end if;
       if not Changed then
-         return True;
+         return False;
       end if;
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") & "/.config/hunter") then
@@ -105,7 +115,7 @@ package body Preferences is
          "/.config/hunter/hunter.cfg");
       SaveBoolean(Settings.ShowHidden, "ShowHidden");
       Close(ConfigFile);
-      return True;
+      return False;
    end SaveSettings;
 
 end Preferences;
