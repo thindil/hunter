@@ -13,6 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories;
+with Ada.Environment_Variables;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Widget; use Gtk.Widget;
 
 package body Preferences is
@@ -26,5 +30,36 @@ package body Preferences is
          Show_All(Popup);
       end if;
    end TogglePreferences;
+
+   procedure LoadSettings is
+      File: File_Type;
+      RawData, FieldName, Value: Unbounded_String;
+      EqualIndex: Natural;
+      function LoadBoolean return Boolean is
+      begin
+         if Value = To_Unbounded_String("Yes") then
+            return True;
+         end if;
+         return False;
+      end LoadBoolean;
+   begin
+      Settings := (ShowHidden => True);
+      if not Ada.Directories.Exists(Ada.Environment_Variables.Value("HOME") & "/.config/hunter/hunter.cfg") then
+         return;
+      end if;
+      Open (File, In_File, Ada.Environment_Variables.Value("HOME") & "/.config/hunter/hunter.cfg");
+      While not End_Of_File(File) Loop
+         RawData := To_Unbounded_String(Get_Line(File));
+         if Length(RawData) > 0 then
+            EqualIndex := Index(RawData, "=");
+            FieldName := Head(RawData, EqualIndex - 2);
+            Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
+            if FieldName = To_Unbounded_String("ShowHidden") then
+               Settings.ShowHidden := LoadBoolean;
+            end if;
+         end if;
+      end loop;
+      Close(File);
+   end LoadSettings;
 
 end Preferences;
