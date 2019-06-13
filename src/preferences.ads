@@ -22,6 +22,22 @@ with Gtkada.Builder; use Gtkada.Builder;
 package Preferences is
 -- ****
 
+   -- ****t* Preferences/Settings_Data
+   -- FUNCTION
+   -- Data structure to the program settings
+   -- SOURCE
+   type Settings_Data is
+      record
+         ShowHidden: Boolean; -- If true, show hidden files
+      end record;
+   -- ****
+   -- ****v* Preferences/Settings
+   -- FUNCTION
+   -- The program settings
+   -- SOURCE
+   Settings: Settings_Data;
+   -- ****
+
    -- ****f* Preferences/TogglePreferences
    -- FUNCTION
    -- Show or hide the program preferences window
@@ -29,6 +45,13 @@ package Preferences is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure TogglePreferences(Object: access Gtkada_Builder_Record'Class);
+   -- ****
+   -- ****f* Preferences/LoadSettings
+   -- FUNCTION
+   -- Load the program settings from file. If file not exists, load default
+   -- settings.
+   -- SOURCE
+   procedure LoadSettings;
    -- ****
 
 end Preferences;
