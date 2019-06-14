@@ -28,6 +28,7 @@ package Preferences is
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean; -- If true, show hidden files
+      ShowLastModified: Boolean; -- If true, show column with last modification time on files list
    end record;
    -- ****
    -- ****v* Preferences/Settings
