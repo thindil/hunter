@@ -34,6 +34,7 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
+with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
@@ -328,6 +329,9 @@ package body MainWindow is
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
       Hide(Gtk_Widget(Get_Object(Builder, "entry")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+      Set_Visible
+        (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 1),
+         Settings.ShowLastModified);
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);

@@ -19,6 +19,8 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
+with Gtk.Tree_View; use Gtk.Tree_View;
+with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with MainWindow; use MainWindow;
 
@@ -47,7 +49,7 @@ package body Preferences is
          return False;
       end LoadBoolean;
    begin
-      Settings := (ShowHidden => True);
+      Settings := (ShowHidden => True, ShowLastModified => False);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -69,6 +71,11 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchhidden")),
                   Settings.ShowHidden);
+            elsif FieldName = To_Unbounded_String("ShowLastModified") then
+               Settings.ShowLastModified := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchlastmodified")),
+                  Settings.ShowLastModified);
             end if;
          end if;
       end loop;
@@ -101,6 +108,15 @@ package body Preferences is
          Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter1")));
          Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter2")));
       end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchlastmodified"))) /=
+        Settings.ShowLastModified then
+         Changed := True;
+         Settings.ShowLastModified :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchlastmodified")));
+         Set_Visible
+           (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 1),
+            Settings.ShowLastModified);
+      end if;
       if not Changed then
          return False;
       end if;
@@ -114,6 +130,7 @@ package body Preferences is
          Ada.Environment_Variables.Value("HOME") &
          "/.config/hunter/hunter.cfg");
       SaveBoolean(Settings.ShowHidden, "ShowHidden");
+      SaveBoolean(Settings.ShowLastModified, "ShowLastModified");
       Close(ConfigFile);
       return False;
    end SaveSettings;

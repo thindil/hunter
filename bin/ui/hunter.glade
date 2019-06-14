@@ -1701,9 +1701,10 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkSwitch">
+                  <object class="GtkSwitch" id="switchlastmodified">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <signal name="state-set" handler="Save_Preferences" swapped="no"/>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
