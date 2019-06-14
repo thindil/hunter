@@ -205,6 +205,8 @@ package body ShowItems is
             Show_All
               (Gtk_Widget(Get_Object(Object, To_String(ObjectsNames(I)))));
          end loop;
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lbllastmodified")), "Unknown");
       end if;
       declare
          ProcessDesc: Process_Descriptor;
