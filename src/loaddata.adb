@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Calendar.Formatting;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -205,6 +206,17 @@ package body LoadData is
          end if;
          Append(FilesList, FileIter);
          Set(FilesList, FileIter, 0, FileName(1 .. Last));
+         if ListName = "fileslist" then
+            begin
+               Set
+                 (FilesList, FileIter, 5,
+                  Ada.Calendar.Formatting.Image
+                    (Modification_Time(Name & "/" & FileName(1 .. Last))));
+            exception
+               when others =>
+                  Set(FilesList, FileIter, 5, "unknown");
+            end;
+         end if;
          if Is_Directory(Name & "/" & FileName(1 .. Last)) then
             if FileName(1) = '.' then
                Set(FilesList, FileIter, 1, 1);
