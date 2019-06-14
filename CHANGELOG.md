@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Option to go to selected directory
 - Option to create links to files and directories
 - Option to show or hide hidden files and directories
+- Info about last modification time to files and directories listing
 
 ### Changed
 - Updated RoboDOC configuration file
