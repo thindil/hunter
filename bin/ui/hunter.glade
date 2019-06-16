@@ -1650,15 +1650,16 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="can_focus">False</property>
     <property name="relative_to">btnpreferences</property>
     <child>
-      <object class="GtkScrolledWindow">
+      <object class="GtkBox">
         <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="hscrollbar_policy">never</property>
-        <property name="shadow_type">in</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
         <child>
-          <object class="GtkViewport">
+          <object class="GtkFrame">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
+            <property name="label_xalign">0.5</property>
+            <property name="shadow_type">out</property>
             <child>
               <object class="GtkGrid">
                 <property name="visible">True</property>
@@ -1713,7 +1714,28 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 </child>
               </object>
             </child>
+            <child type="label">
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Directory Listing</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                </attributes>
+              </object>
+            </child>
           </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>
