@@ -239,7 +239,7 @@ package body ShowItems is
             Set_Label
               (Gtk_Label(Get_Object(Object, "lblgroup")),
                Slice(Tokens, 3)
-                 (Slice(Tokens, 3)'First .. Slice(Tokens, 3)'Last - 1));
+                 (Slice(Tokens, 3)'First .. Slice(Tokens, 3)'Last));
             if Value("USER") = Slice(Tokens, 2) then
                CanChange := True;
             end if;
