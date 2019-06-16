@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - Shortcut for one of buttons in current directory path
 - Showing path buttons for very long paths
 - Showing modification time for invalid links
+- Showing owner group name
 
 ## [0.4] - 2019-06-02
 
