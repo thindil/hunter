@@ -49,7 +49,7 @@ package body Preferences is
          return False;
       end LoadBoolean;
    begin
-      Settings := (ShowHidden => True, ShowLastModified => False);
+      Settings := (ShowHidden => True, ShowLastModified => False, ScaleImages => False);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -76,6 +76,11 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchlastmodified")),
                   Settings.ShowLastModified);
+            elsif FieldName = To_Unbounded_String("ScaleImages") then
+               Settings.ScaleImages := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchscaleimages")),
+                  Settings.ScaleImages);
             end if;
          end if;
       end loop;
@@ -117,6 +122,12 @@ package body Preferences is
            (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 1),
             Settings.ShowLastModified);
       end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages"))) /=
+        Settings.ScaleImages then
+         Changed := True;
+         Settings.ScaleImages :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages")));
+      end if;
       if not Changed then
          return False;
       end if;
@@ -131,6 +142,7 @@ package body Preferences is
          "/.config/hunter/hunter.cfg");
       SaveBoolean(Settings.ShowHidden, "ShowHidden");
       SaveBoolean(Settings.ShowLastModified, "ShowLastModified");
+      SaveBoolean(Settings.ScaleImages, "ScaleImages");
       Close(ConfigFile);
       return False;
    end SaveSettings;

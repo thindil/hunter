@@ -29,6 +29,7 @@ package Preferences is
    type Settings_Data is record
       ShowHidden: Boolean; -- If true, show hidden files
       ShowLastModified: Boolean; -- If true, show column with last modification time on files list
+      ScaleImages: Boolean; -- If true, scale images in preview
    end record;
    -- ****
    -- ****v* Preferences/Settings
