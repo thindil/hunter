@@ -43,6 +43,8 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Toggle_Button; use Gtk.Toggle_Button;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Widget; use Gtk.Widget;
+with Gdk.Pixbuf; use Gdk.Pixbuf;
+with Glib.Error; use Glib.Error;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
@@ -50,6 +52,7 @@ with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with MoveItems; use MoveItems;
 with Messages; use Messages;
+with Preferences; use Preferences;
 with Utils; use Utils;
 
 package body ShowItems is
@@ -321,11 +324,24 @@ package body ShowItems is
                end loop;
                Close(File);
             elsif MimeType(1 .. 5) = "image" then
-               Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
-               Set
-                 (Gtk_Image(Get_Object(Object, "imgpreview")),
-                  To_String(CurrentSelected));
-               Show_All(Gtk_Widget(Get_Object(Object, "scrollimage")));
+               declare
+                  Image: Gdk_Pixbuf;
+                  Error: GError;
+               begin
+                  Gdk_New_From_File(Image, To_String(CurrentSelected), Error);
+                  if Error /= null then
+                     ShowMessage("Could not load image file: " & To_String(CurrentSelected));
+                     return;
+                  end if;
+                  if Settings.ScaleImages then
+                     Image := Scale_Simple(Image, 10, 10);
+                  end if;
+                  Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
+                  Set
+                     (Gtk_Image(Get_Object(Object, "imgpreview")),
+                  Image);
+                  Show_All(Gtk_Widget(Get_Object(Object, "scrollimage")));
+               end;
             else
                Hide(Gtk_Widget(Get_Object(Object, "btnpreview")));
                if not CanBeOpened(MimeType) then
