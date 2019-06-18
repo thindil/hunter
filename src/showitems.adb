@@ -44,6 +44,7 @@ with Gtk.Toggle_Button; use Gtk.Toggle_Button;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Widget; use Gtk.Widget;
 with Gdk.Pixbuf; use Gdk.Pixbuf;
+with Glib; use Glib;
 with Glib.Error; use Glib.Error;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
@@ -325,21 +326,48 @@ package body ShowItems is
                Close(File);
             elsif MimeType(1 .. 5) = "image" then
                declare
-                  Image: Gdk_Pixbuf;
+                  Pixbuf: Gdk_Pixbuf;
                   Error: GError;
+                  Image: constant Gtk_Image :=
+                    Gtk_Image(Get_Object(Object, "imgpreview"));
+                  ScaleFactor: Float;
+                  MaxHeight: constant Gint :=
+                    Get_Allocated_Height
+                      (Gtk_Widget(Get_Object(Object, "infostack"))) -
+                    5;
+                  MaxWidth: constant Gint :=
+                    Get_Allocated_Width
+                      (Gtk_Widget(Get_Object(Object, "infostack"))) -
+                    5;
                begin
-                  Gdk_New_From_File(Image, To_String(CurrentSelected), Error);
+                  Gdk_New_From_File(Pixbuf, To_String(CurrentSelected), Error);
                   if Error /= null then
-                     ShowMessage("Could not load image file: " & To_String(CurrentSelected));
+                     ShowMessage
+                       ("Could not load image file: " &
+                        To_String(CurrentSelected));
                      return;
                   end if;
                   if Settings.ScaleImages then
-                     Image := Scale_Simple(Image, 10, 10);
+                     if (Get_Width(Pixbuf) - MaxWidth) >
+                       (Get_Height(Pixbuf) - MaxHeight) then
+                        ScaleFactor :=
+                          Float(MaxWidth) / Float(Get_Width(Pixbuf));
+                     else
+                        ScaleFactor :=
+                          Float(MaxHeight) / Float(Get_Height(Pixbuf));
+                     end if;
+                     Pixbuf :=
+                       Scale_Simple
+                         (Pixbuf,
+                          Gint
+                            (Float'Floor
+                               (Float(Get_Width(Pixbuf)) * ScaleFactor)),
+                          Gint
+                            (Float'Floor
+                               (Float(Get_Height(Pixbuf)) * ScaleFactor)));
                   end if;
                   Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
-                  Set
-                     (Gtk_Image(Get_Object(Object, "imgpreview")),
-                  Image);
+                  Set(Image, Pixbuf);
                   Show_All(Gtk_Widget(Get_Object(Object, "scrollimage")));
                end;
             else
