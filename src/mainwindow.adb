@@ -175,6 +175,24 @@ package body MainWindow is
       return False;
    end EntryKeyPressed;
 
+   -- ****if* MainWindow/UpdateImage
+   -- FUNCTION
+   -- If scaling images in preview is enabled, scale it on resize preview of it
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- RESULT
+   -- This function always return False
+   -- SOURCE
+   function UpdateImage(Object: access Gtkada_Builder_Record'Class) return Boolean is
+      -- ****
+   begin
+      if not Settings.ScaleImages then
+         return False;
+      end if;
+      PreviewItem(Object);
+      return False;
+   end UpdateImage;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -207,6 +225,7 @@ package body MainWindow is
       Register_Handler
         (Builder, "Toggle_Preferences", TogglePreferences'Access);
       Register_Handler(Builder, "Save_Preferences", SaveSettings'Access);
+      Register_Handler(Builder, "Update_Image", UpdateImage'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
