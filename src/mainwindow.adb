@@ -157,6 +157,8 @@ package body MainWindow is
    -- Self  - Currently active entry
    -- Event - Detailed informations about key pressed event (key code,
    --         modifiers, etc)
+   -- RESULT
+   -- This function always return False
    -- SOURCE
    function EntryKeyPressed
      (Self: access Gtk_Widget_Record'Class; Event: Gdk.Event.Gdk_Event_Key)
@@ -183,8 +185,9 @@ package body MainWindow is
    -- RESULT
    -- This function always return False
    -- SOURCE
-   function UpdateImage(Object: access Gtkada_Builder_Record'Class) return Boolean is
-      -- ****
+   function UpdateImage
+     (Object: access Gtkada_Builder_Record'Class) return Boolean is
+   -- ****
    begin
       if not Settings.ScaleImages then
          return False;
