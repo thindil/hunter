@@ -49,7 +49,8 @@ package body Preferences is
          return False;
       end LoadBoolean;
    begin
-      Settings := (ShowHidden => True, ShowLastModified => False, ScaleImages => False);
+      Settings :=
+        (ShowHidden => True, ShowLastModified => False, ScaleImages => False);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
