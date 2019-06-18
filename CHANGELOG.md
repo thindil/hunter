@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Option to show or hide information about files and directories last
   modification time
 - Info about last modification time to files and directories listing
+- Option to enable or disable scaling images in preview
 
 ### Changed
 - Updated RoboDOC configuration file
