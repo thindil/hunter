@@ -23,6 +23,7 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with MainWindow; use MainWindow;
+with ShowItems; use ShowItems;
 
 package body Preferences is
 
@@ -128,6 +129,7 @@ package body Preferences is
          Changed := True;
          Settings.ScaleImages :=
            Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages")));
+         PreviewItem(Object);
       end if;
       if not Changed then
          return False;
