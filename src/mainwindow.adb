@@ -352,7 +352,7 @@ package body MainWindow is
       Hide(Gtk_Widget(Get_Object(Builder, "entry")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Set_Visible
-        (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 1),
+        (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 2),
          Settings.ShowLastModified);
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),

@@ -121,7 +121,7 @@ package body Preferences is
          Settings.ShowLastModified :=
            Get_Active(Gtk_Switch(Get_Object(Object, "switchlastmodified")));
          Set_Visible
-           (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 1),
+           (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 2),
             Settings.ShowLastModified);
       end if;
       if Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages"))) /=

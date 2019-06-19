@@ -682,20 +682,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                               </object>
                             </child>
                             <child>
-                              <object class="GtkTreeViewColumn" id="modifiedcolumn">
-                                <property name="title" translatable="yes">Modified</property>
-                                <property name="clickable">True</property>
-                                <property name="sort_indicator">True</property>
-                                <property name="sort_column_id">5</property>
-                                <child>
-                                  <object class="GtkCellRendererText"/>
-                                  <attributes>
-                                    <attribute name="text">5</attribute>
-                                  </attributes>
-                                </child>
-                              </object>
-                            </child>
-                            <child>
                               <object class="GtkTreeViewColumn">
                                 <property name="title" translatable="yes">Size</property>
                                 <property name="clickable">True</property>
@@ -705,6 +691,20 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                   <object class="GtkCellRendererText"/>
                                   <attributes>
                                     <attribute name="text">3</attribute>
+                                  </attributes>
+                                </child>
+                              </object>
+                            </child>
+                            <child>
+                              <object class="GtkTreeViewColumn" id="modifiedcolumn">
+                                <property name="title" translatable="yes">Modified</property>
+                                <property name="clickable">True</property>
+                                <property name="sort_indicator">True</property>
+                                <property name="sort_column_id">5</property>
+                                <child>
+                                  <object class="GtkCellRendererText"/>
+                                  <attributes>
+                                    <attribute name="text">5</attribute>
                                   </attributes>
                                 </child>
                               </object>
