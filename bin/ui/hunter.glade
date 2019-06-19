@@ -1683,6 +1683,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkSwitch" id="switchhidden">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Show hidden files and directories in directory listing and in directories preview.</property>
                     <property name="active">True</property>
                     <signal name="state-set" handler="Save_Preferences" swapped="no"/>
                   </object>
@@ -1707,6 +1708,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkSwitch" id="switchlastmodified">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Show the column with last modification date for files and directories.</property>
                     <signal name="state-set" handler="Save_Preferences" swapped="no"/>
                   </object>
                   <packing>
@@ -1760,6 +1762,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkSwitch" id="switchscaleimages">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">Scale images in preview. When disabled, images shows with natural size. When enabled, images are resized to the size of the preview window.</property>
                     <signal name="state-set" handler="Save_Preferences" swapped="no"/>
                   </object>
                   <packing>
