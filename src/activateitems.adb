@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -72,6 +71,7 @@ package body ActivateItems is
             Openable: Boolean := CanBeOpened(MimeType);
             Arguments: constant Argument_List :=
               (new String'(To_String(CurrentSelected)), new String'(""));
+            ExecutableName: constant String := FindExecutable("xdg-open");
          begin
             if MimeType(1 .. 4) = "text" and not Openable then
                Openable := CanBeOpened("text/plain");
@@ -81,9 +81,12 @@ package body ActivateItems is
                  ("I can't open this file. No application associated with this type of files.");
                return;
             else
+               if ExecutableName = "" then
+                  return;
+               end if;
                Pid :=
                  Non_Blocking_Spawn
-                   (Containing_Directory(Command_Name) & "/xdg-open",
+                   (ExecutableName,
                     Arguments(Arguments'First .. Arguments'Last - 1));
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
