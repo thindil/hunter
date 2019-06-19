@@ -16,6 +16,7 @@
 with Ada.Command_Line; use Ada.Command_Line;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Messages; use Messages;
 
 package body Utils is
 
@@ -24,8 +25,12 @@ package body Utils is
       Result: Expect_Match;
       Arguments: constant Argument_List :=
         (new String'("-b"), new String'("--mime-type"), new String'(FileName));
+      ExecutableName: constant String := FindExecutable("file");
    begin
-      Non_Blocking_Spawn(ProcessDesc, "file", Arguments);
+      if ExecutableName = "" then
+         return "";
+      end if;
+      Non_Blocking_Spawn(ProcessDesc, ExecutableName, Arguments);
       Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
       case Result is
          when 1 =>
@@ -45,9 +50,13 @@ package body Utils is
    function CanBeOpened(MimeType: String) return Boolean is
       ProcessDesc: Process_Descriptor;
       Result: Expect_Match;
+      ExecutableName: constant String := FindExecutable("xdg-mime");
    begin
+      if ExecutableName = "" then
+         return False;
+      end if;
       Non_Blocking_Spawn
-        (ProcessDesc, Containing_Directory(Command_Name) & "/xdg-mime",
+        (ProcessDesc, ExecutableName,
          Argument_String_To_List("query default " & MimeType).all);
       Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
       Close(ProcessDesc);
@@ -71,5 +80,19 @@ package body Utils is
       end loop;
       return File_Size'Image(NewSize) & " " & SizeShortcuts(Multiplier);
    end CountFileSize;
+
+   function FindExecutable(Name: String) return String is
+      ExecutablePath: String_Access;
+   begin
+      if Exists(Containing_Directory(Command_Name) & "/" & Name) then
+         return Containing_Directory(Command_Name) & "/" & Name;
+      end if;
+      ExecutablePath := Locate_Exec_On_Path(Name);
+      if ExecutablePath = null then
+         ShowMessage("Could not found executable: " & Name);
+         return "";
+      end if;
+      return ExecutablePath.all;
+   end FindExecutable;
 
 end Utils;

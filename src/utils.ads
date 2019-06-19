@@ -52,5 +52,16 @@ package Utils is
    -- SOURCE
    function CountFileSize(Size: File_Size) return String;
    -- ****
+   -- ****f* Utils/FindExecutable
+   -- FUNCTION
+   -- Find executable file with selected name in this same directory where
+   -- the program is or in PATH variable
+   -- PARAMETERS
+   -- Name - Name of executable file to find
+   -- RESULT
+   -- Full path to the executable file or empty string and show message if
+   -- file could not be found.
+   -- SOURCE
+   function FindExecutable(Name: String) return String;
 
 end Utils;

@@ -16,7 +16,6 @@
 with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
@@ -155,10 +154,13 @@ package body ShowItems is
             declare
                ProcessDesc: Process_Descriptor;
                Result: Expect_Match;
+               ExecutableName: constant String := FindExecutable("xdg-mime");
             begin
+               if ExecutableName = "" then
+                  return;
+               end if;
                Non_Blocking_Spawn
-                 (ProcessDesc,
-                  Containing_Directory(Command_Name) & "/xdg-mime",
+                 (ProcessDesc, ExecutableName,
                   Argument_String_To_List
                     ("query default " & GetMimeType(SelectedPath)).all);
                Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
@@ -443,15 +445,19 @@ package body ShowItems is
       Pid: GNAT.OS_Lib.Process_Id;
       ProgramIter: Gtk_Tree_Iter;
       ProgramModel: Gtk_Tree_Model;
+      ExecutableName: constant String := FindExecutable("xdg-mime");
    begin
       Get_Selected
         (Gtk.Tree_View.Get_Selection
            (Gtk_Tree_View(Get_Object(Object, "treeapplications"))),
          ProgramModel, ProgramIter);
       if ProgramIter /= Null_Iter then
+         if ExecutableName = "" then
+            return;
+         end if;
          Pid :=
            Non_Blocking_Spawn
-             (Containing_Directory(Command_Name) & "/xdg-mime",
+             (ExecutableName,
               Argument_String_To_List
                 ("default " & Get_String(ProgramModel, ProgramIter, 1) & " " &
                  GetMimeType(To_String(CurrentSelected))).all);
