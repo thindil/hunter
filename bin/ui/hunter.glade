@@ -640,7 +640,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                       <object class="GtkScrolledWindow">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="hscrollbar_policy">never</property>
                         <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTreeView" id="treefiles">
@@ -912,7 +911,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                   <object class="GtkScrolledWindow" id="scrolltext">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">never</property>
                                     <property name="shadow_type">in</property>
                                     <child>
                                       <object class="GtkTextView" id="filetextview">
@@ -934,7 +932,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                   <object class="GtkScrolledWindow" id="scrolllist">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <property name="hscrollbar_policy">never</property>
                                     <property name="shadow_type">in</property>
                                     <child>
                                       <object class="GtkTreeView">
@@ -1395,7 +1392,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                               <object class="GtkScrolledWindow" id="scrolldestination">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <property name="hscrollbar_policy">never</property>
                                 <property name="shadow_type">in</property>
                                 <child>
                                   <object class="GtkTreeView" id="treedestination">
@@ -1410,6 +1406,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     </child>
                                     <child>
                                       <object class="GtkTreeViewColumn">
+                                        <property name="resizable">True</property>
                                         <property name="title" translatable="yes">Name</property>
                                         <property name="expand">True</property>
                                         <property name="clickable">True</property>
@@ -1434,6 +1431,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                     </child>
                                     <child>
                                       <object class="GtkTreeViewColumn">
+                                        <property name="resizable">True</property>
                                         <property name="title" translatable="yes">Size</property>
                                         <property name="clickable">True</property>
                                         <property name="sort_indicator">True</property>
