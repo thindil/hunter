@@ -229,6 +229,8 @@ package body MainWindow is
         (Builder, "Toggle_Preferences", TogglePreferences'Access);
       Register_Handler(Builder, "Save_Preferences", SaveSettings'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
+      Register_Handler
+        (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
