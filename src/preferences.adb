@@ -17,11 +17,13 @@ with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Gtk.Adjustment; use Gtk.Adjustment;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
+with Glib; use Glib;
 with MainWindow; use MainWindow;
 with ShowItems; use ShowItems;
 
@@ -87,6 +89,9 @@ package body Preferences is
             elsif FieldName = To_Unbounded_String("AutoCloseMessagesTime") then
                Settings.AutoCloseMessagesTime :=
                  Natural'Value(To_String(Value));
+               Set_Value
+                 (Gtk_Adjustment(Get_Object(Builder, "adjseconds")),
+                  Gdouble(Settings.AutoCloseMessagesTime));
             end if;
          end if;
       end loop;
