@@ -81,5 +81,11 @@ package Preferences is
    -- SOURCE
    procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class);
    -- ****
+   -- ****f* Preferences/SavePreferences
+   -- FUNCTION
+   -- Save the program preferences to the file.
+   -- SOURCE
+   procedure SavePreferences;
+   -- ****
 
 end Preferences;

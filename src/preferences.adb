@@ -101,7 +101,47 @@ package body Preferences is
 
    function SaveSettings
      (Object: access Gtkada_Builder_Record'Class) return Boolean is
-      Changed: Boolean := False;
+   begin
+      if Setting then
+         return False;
+      end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchhidden"))) /=
+        Settings.ShowHidden then
+         Settings.ShowHidden :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchhidden")));
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter1")));
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter2")));
+      end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchlastmodified"))) /=
+        Settings.ShowLastModified then
+         Settings.ShowLastModified :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchlastmodified")));
+         Set_Visible
+           (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 2),
+            Settings.ShowLastModified);
+      end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages"))) /=
+        Settings.ScaleImages then
+         Settings.ScaleImages :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages")));
+         PreviewItem(Object);
+      end if;
+      return False;
+   end SaveSettings;
+
+   procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      if Natural
+          (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds")))) /=
+        Settings.AutoCloseMessagesTime then
+         Settings.AutoCloseMessagesTime :=
+           Natural
+             (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds"))));
+      end if;
+   end SaveSettingsProc;
+
+   procedure SavePreferences is
       ConfigFile: File_Type;
       procedure SaveBoolean(Value: Boolean; Name: String) is
       begin
@@ -112,37 +152,6 @@ package body Preferences is
          end if;
       end SaveBoolean;
    begin
-      if Setting then
-         return False;
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchhidden"))) /=
-        Settings.ShowHidden then
-         Changed := True;
-         Settings.ShowHidden :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchhidden")));
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter1")));
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter2")));
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchlastmodified"))) /=
-        Settings.ShowLastModified then
-         Changed := True;
-         Settings.ShowLastModified :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchlastmodified")));
-         Set_Visible
-           (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 2),
-            Settings.ShowLastModified);
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages"))) /=
-        Settings.ScaleImages then
-         Changed := True;
-         Settings.ScaleImages :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages")));
-         PreviewItem(Object);
-      end if;
-      if not Changed then
-         return False;
-      end if;
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") & "/.config/hunter") then
          Ada.Directories.Create_Path
@@ -160,38 +169,6 @@ package body Preferences is
          "AutoCloseMessagesTime =" &
          Natural'Image(Settings.AutoCloseMessagesTime));
       Close(ConfigFile);
-      return False;
-   end SaveSettings;
-
-   procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class) is
-      ConfigFile: File_Type;
-      procedure SaveBoolean(Value: Boolean; Name: String) is
-      begin
-         if Value then
-            Put_Line(ConfigFile, Name & " = Yes");
-         else
-            Put_Line(ConfigFile, Name & " = No");
-         end if;
-      end SaveBoolean;
-   begin
-      if Natural(Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds")))) =
-        Settings.AutoCloseMessagesTime then
-         return;
-      end if;
-      Settings.AutoCloseMessagesTime :=
-        Natural(Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds"))));
-      Create
-        (ConfigFile, Append_File,
-         Ada.Environment_Variables.Value("HOME") &
-         "/.config/hunter/hunter.cfg");
-      SaveBoolean(Settings.ShowHidden, "ShowHidden");
-      SaveBoolean(Settings.ShowLastModified, "ShowLastModified");
-      SaveBoolean(Settings.ScaleImages, "ScaleImages");
-      Put_Line
-        (ConfigFile,
-         "AutoCloseMessagesTime =" &
-         Natural'Image(Settings.AutoCloseMessagesTime));
-      Close(ConfigFile);
-   end SaveSettingsProc;
+   end SavePreferences;
 
 end Preferences;

@@ -57,6 +57,7 @@ package body MainWindow is
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
+      SavePreferences;
       Unref(Object);
       Main_Quit;
    end Quit;
