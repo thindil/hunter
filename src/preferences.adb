@@ -51,7 +51,8 @@ package body Preferences is
       end LoadBoolean;
    begin
       Settings :=
-        (ShowHidden => True, ShowLastModified => False, ScaleImages => False);
+        (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
+         AutoCloseMessagesTime => 10);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -83,6 +84,9 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchscaleimages")),
                   Settings.ScaleImages);
+            elsif FieldName = To_Unbounded_String("AutoCloseMessagesTime") then
+               Settings.AutoCloseMessagesTime :=
+                 Natural'Value(To_String(Value));
             end if;
          end if;
       end loop;
@@ -146,6 +150,10 @@ package body Preferences is
       SaveBoolean(Settings.ShowHidden, "ShowHidden");
       SaveBoolean(Settings.ShowLastModified, "ShowLastModified");
       SaveBoolean(Settings.ScaleImages, "ScaleImages");
+      Put_Line
+        (ConfigFile,
+         "AutoCloseMessagesTime=" &
+         Natural'Image(Settings.AutoCloseMessagesTime));
       Close(ConfigFile);
       return False;
    end SaveSettings;

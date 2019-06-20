@@ -30,6 +30,7 @@ package Preferences is
       ShowHidden: Boolean; -- If true, show hidden files
       ShowLastModified: Boolean; -- If true, show column with last modification time on files list
       ScaleImages: Boolean; -- If true, scale images in preview
+      AutoCloseMessagesTime: Natural; -- Amount of seconds after which current message will be auto hidden
    end record;
    -- ****
    -- ****v* Preferences/Settings
