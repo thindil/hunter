@@ -57,7 +57,8 @@ https://docs.appimage.org/user-guide/run-appimages.html
 
 When you trying to run build by yourself version of the program, use script
 `hunter.sh`. The program will not works if you try to start it by binary file
-`hunter` from `bin` directory.
+`hunter` from `bin` directory. To work the program needs scripts *xdg-open*
+and *xdg-mime*. In most Linux distributions they are in *xdg-utils* package.
 
 ### Starting parameter
 
@@ -85,8 +86,8 @@ others/robodocada.rc` and after it `./robofix.py docs`.
 ## Licenses
 Hunter is available under [GPLv3](COPYING) license.
 
-xdg-mime and xdg-open scripts are part of the xdg-utils project and released
-under MIT license:
+xdg-mime and xdg-open scripts distributed with the program are part of the
+xdg-utils project and released under MIT license:
 
 https://github.com/freedesktop/xdg-utils
 
