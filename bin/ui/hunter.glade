@@ -30,6 +30,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="value">10</property>
     <property name="step_increment">1</property>
     <property name="page_increment">10</property>
+    <signal name="value-changed" handler="Save_Preferences_Proc" swapped="no"/>
   </object>
   <object class="GtkListStore" id="applicationslist">
     <columns>

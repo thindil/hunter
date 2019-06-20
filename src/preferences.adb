@@ -157,10 +157,41 @@ package body Preferences is
       SaveBoolean(Settings.ScaleImages, "ScaleImages");
       Put_Line
         (ConfigFile,
-         "AutoCloseMessagesTime=" &
+         "AutoCloseMessagesTime =" &
          Natural'Image(Settings.AutoCloseMessagesTime));
       Close(ConfigFile);
       return False;
    end SaveSettings;
+
+   procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class) is
+      ConfigFile: File_Type;
+      procedure SaveBoolean(Value: Boolean; Name: String) is
+      begin
+         if Value then
+            Put_Line(ConfigFile, Name & " = Yes");
+         else
+            Put_Line(ConfigFile, Name & " = No");
+         end if;
+      end SaveBoolean;
+   begin
+      if Natural(Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds")))) =
+        Settings.AutoCloseMessagesTime then
+         return;
+      end if;
+      Settings.AutoCloseMessagesTime :=
+        Natural(Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds"))));
+      Create
+        (ConfigFile, Append_File,
+         Ada.Environment_Variables.Value("HOME") &
+         "/.config/hunter/hunter.cfg");
+      SaveBoolean(Settings.ShowHidden, "ShowHidden");
+      SaveBoolean(Settings.ShowLastModified, "ShowLastModified");
+      SaveBoolean(Settings.ScaleImages, "ScaleImages");
+      Put_Line
+        (ConfigFile,
+         "AutoCloseMessagesTime =" &
+         Natural'Image(Settings.AutoCloseMessagesTime));
+      Close(ConfigFile);
+   end SaveSettingsProc;
 
 end Preferences;

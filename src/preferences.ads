@@ -63,9 +63,23 @@ package Preferences is
    -- Object - GtkAda Builder used to create UI
    -- RESULT
    -- Always False so default handler will be running too.
+   -- SEE ALSO
+   -- Preferences/SaveSettingsProc
    -- SOURCE
    function SaveSettings
      (Object: access Gtkada_Builder_Record'Class) return Boolean;
+   -- ****
+   -- ****f* Preferences/SaveSettingsProc
+   -- FUNCTION
+   -- Save the program settings to file and update program to the new
+   -- configuration if needed. Some GTK elements need procedures instead
+   -- of function.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SEE ALSO
+   -- Preferences/SaveSettings
+   -- SOURCE
+   procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class);
    -- ****
 
 end Preferences;
