@@ -18,12 +18,30 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Widget; use Gtk.Widget;
+with Glib.Main; use Glib.Main;
 with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
 with MainWindow; use MainWindow;
 with MoveItems; use MoveItems;
+with Preferences; use Preferences;
 
 package body Messages is
+
+   Source_Id: G_Source_Id := No_Source_Id;
+
+   -- ****if* Messages/AutoHideMessage
+   -- FUNCTION
+   -- Auto hide message after selected amount of seconds
+   -- RESULT
+   -- Returns always False to stop timer
+   -- SOURCE
+   function AutoHideMessage return Boolean is
+   -- ****
+   begin
+      Hide(Gtk_Widget(Get_Object(Builder, "actioninfo")));
+      Source_Id := No_Source_Id;
+      return False;
+   end AutoHideMessage;
 
    procedure ShowMessage
      (Message: String; MessageType: Gtk_Message_Type := Message_Error) is
@@ -32,6 +50,16 @@ package body Messages is
       if MessageType /= Message_Question then
          Set_Show_Close_Button
            (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), True);
+         if Source_Id /= No_Source_Id then
+            Remove(Source_Id);
+            Source_Id := No_Source_Id;
+         end if;
+         if Settings.AutoCloseMessagesTime > 0 then
+            Source_Id :=
+              Timeout_Add
+                (Guint(Settings.AutoCloseMessagesTime) * 1000,
+                 AutoHideMessage'Access);
+         end if;
       else
          Set_Show_Close_Button
            (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), False);
@@ -51,6 +79,10 @@ package body Messages is
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class) is
    begin
       Hide(Gtk_Widget(Get_Object(Object, "actioninfo")));
+      if Source_Id /= No_Source_Id then
+         Remove(Source_Id);
+         Source_Id := No_Source_Id;
+      end if;
    end HideMessage;
 
    procedure SetResponse(User_Data: access GObject_Record'Class) is
