@@ -1823,6 +1823,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkScale">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
+                    <property name="tooltip_text" translatable="yes">After that amount of seconds, all messages will be automatically closed by the program. If you set it to 0, this feature will be disabled.</property>
                     <property name="adjustment">adjseconds</property>
                     <property name="round_digits">0</property>
                     <property name="digits">0</property>
