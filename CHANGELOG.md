@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
   modification time
 - Info about last modification time to files and directories listing
 - Option to enable or disable scaling images in preview
+- Option to set time amount after which messages are auto closes
 
 ### Changed
 - Updated RoboDOC configuration file
