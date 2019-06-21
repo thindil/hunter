@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Showing path buttons for very long paths
 - Showing modification time for invalid links
 - Showing owner group name
+- Running the program after extracting AppImage
 
 ## [0.4] - 2019-06-02
 
