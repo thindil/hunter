@@ -25,12 +25,17 @@ package Preferences is
    -- ****t* Preferences/Settings_Data
    -- FUNCTION
    -- Data structure to the program settings
+   -- OPTIONS
+   -- ShowHidden            - If true, show hidden files
+   -- ShowLastModified      - If true, show column with last modification time on files list
+   -- ScaleImages           - If true, scale images in preview
+   -- AutoCloseMessagesTime - Amount of seconds after which current message will be auto hidden
    -- SOURCE
    type Settings_Data is record
-      ShowHidden: Boolean; -- If true, show hidden files
-      ShowLastModified: Boolean; -- If true, show column with last modification time on files list
-      ScaleImages: Boolean; -- If true, scale images in preview
-      AutoCloseMessagesTime: Natural; -- Amount of seconds after which current message will be auto hidden
+      ShowHidden: Boolean;
+      ShowLastModified: Boolean;
+      ScaleImages: Boolean;
+      AutoCloseMessagesTime: Natural;
    end record;
    -- ****
    -- ****v* Preferences/Settings
