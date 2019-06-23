@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.5] - 2019-06-23
 
 ### Added
 - Option to go to selected directory
