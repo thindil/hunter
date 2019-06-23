@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Updated code documenation
 - Updated interface
 - Updated README.md
+- Program icon
 
 ### Fixed
 - Typo in code documentation
