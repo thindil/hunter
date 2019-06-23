@@ -205,7 +205,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="comments" translatable="yes">Graphical File Manager for Linux</property>
     <property name="website">https://thindil.github.io/hunter/</property>
     <property name="authors">Bartek thindil Jasicki &lt;thindil@laeran.pl&gt;</property>
-    <property name="logo_icon_name">system-file-manager</property>
+    <property name="logo">hunter-icon.png</property>
     <property name="license_type">gpl-3-0</property>
     <child>
       <placeholder/>
@@ -238,7 +238,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="window_position">center</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
-    <property name="icon_name">system-file-manager</property>
+    <property name="icon">hunter-icon.png</property>
     <accel-groups>
       <group name="accelerators"/>
     </accel-groups>
