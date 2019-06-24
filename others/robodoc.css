@@ -32,13 +32,13 @@ body
 {
     background-color:    #282a36;
     color:               #f8f8f2;
-    font-family:         Arial, serif;
+    font-family: Verdana, serif;
     border-color:        rgb(226,199,143);
 }
 
 pre
 {
-    font-family:      monospace;
+    font: 0.95em Monaco, Courier, Monospace;
     margin:      15px;
     padding:     5px;
     white-space: pre;
@@ -85,7 +85,6 @@ p.item_name
 {
     background-color: #44475a;
     color:            #bd93f9;
-    font-family:      "Times New Roman", serif;
     font-style:       normal;
     border-color:     #44475a;
 }
@@ -94,7 +93,7 @@ a.menuitem
 {
     font-size: 120%;
     background-color:    #282a36;
-    color:               #ffb86c;
+    color:               #ff5555;
     font-variant:        normal;
     text-transform:      none;
     font-weight:         normal;
@@ -110,9 +109,8 @@ a.menuitem
 #logo, #logo a
 {
     font-size: 130%;
-    background-color:   #6272a4;
-    color:              #8be9fd;
-    font-family:        Georgia, serif;
+    background-color:   #44475a;
+    color:              #f8f8f2;
     font-style:         normal;
     font-variant:       normal;
     text-transform:     none;
@@ -146,14 +144,13 @@ a.menuitem
 
 #content a
 {
-    color:              #ffb86c;
+    color:              #ff5555;
     text-decoration:    none;
 }
 
 #content a:hover, #content a:active
 {
-    color:              #f8f8f2;
-    background-color:   #44475a;
+    color:              #ffb86c;
 }
 
 a.indexitem
@@ -164,7 +161,6 @@ a.indexitem
 h1, h2, h3, h4, h5, h6
 {
     background-color: #44475a;
-    font-family:      Arial, serif;
     font-style:       normal;
     font-variant:     normal;
     text-transform:   none;
@@ -208,7 +204,7 @@ h6
 
 .menuitem:hover
 {
-    background-color:   #ffb86c;
+    background-color:   #ff5555;
     color:              #282a36;
 }
 
@@ -245,8 +241,6 @@ h6
 
 div#footer
 {
-    background-color: #6272a4;
-    color:      #8be9fd;;
     clear:      left;
     width:      100%;
     font-size:   71%;
@@ -254,9 +248,13 @@ div#footer
 
 div#footer a
 {
-    color:           #44475a;
+    color:           #ff5555;
 }
 
+div#footer a:hover
+{
+    color:           #ffb86c;
+}
 div#footer p
 {
     margin:0;
