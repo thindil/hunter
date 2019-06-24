@@ -19,8 +19,10 @@ options:
   --masterindex "Index,index"
   --sourceindex "Source files,sources"
 headertypes:
-  f Subprograms robo_subprograms
-  h Packages robo_packages 1
+  h Packages robo_packages 3
+  t Types robo_types 2
+  v Variables robo_variables 1
+  f Subprograms robo_subprograms 0
 keywords:
   procedure
   function
