@@ -47,7 +47,7 @@ pre
 
 pre.source
 {
-    background-color: #44475a;
+    background-color: #333640;
     border: dashed #f1fa8c 1px;
 }
 
@@ -93,7 +93,7 @@ a.menuitem
 {
     font-size: 120%;
     background-color:    #282a36;
-    color:               #ff5555;
+    color:               #ffb86c;
     font-variant:        normal;
     text-transform:      none;
     font-weight:         normal;
@@ -144,13 +144,13 @@ a.menuitem
 
 #content a
 {
-    color:              #ff5555;
+    color:              #ffb86c;
     text-decoration:    none;
 }
 
 #content a:hover, #content a:active
 {
-    color:              #ffb86c;
+    color:              #ff5555;
 }
 
 a.indexitem
@@ -204,7 +204,7 @@ h6
 
 .menuitem:hover
 {
-    background-color:   #ff5555;
+    background-color:   #ffb86c;
     color:              #282a36;
 }
 
