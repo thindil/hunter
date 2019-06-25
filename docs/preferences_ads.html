@@ -28,13 +28,13 @@
 <ul>
 <li>1. <a href="#robo10">Hunter/Preferences</a></li>
 <ul>
-<li>1.1. <a href="#robo77">Preferences/LoadSettings</a></li>
-<li>1.2. <a href="#robo78">Preferences/SavePreferences</a></li>
-<li>1.3. <a href="#robo79">Preferences/SaveSettings</a></li>
-<li>1.4. <a href="#robo80">Preferences/SaveSettingsProc</a></li>
-<li>1.5. <a href="#robo81">Preferences/Settings</a></li>
-<li>1.6. <a href="#robo82">Preferences/Settings_Data</a></li>
-<li>1.7. <a href="#robo83">Preferences/TogglePreferences</a></li>
+<li>1.1. <a href="#robo18">Preferences/Settings_Data</a></li>
+<li>1.2. <a href="#robo32">Preferences/Settings</a></li>
+<li>1.3. <a href="#robo80">Preferences/LoadSettings</a></li>
+<li>1.4. <a href="#robo81">Preferences/SavePreferences</a></li>
+<li>1.5. <a href="#robo82">Preferences/SaveSettings</a></li>
+<li>1.6. <a href="#robo83">Preferences/SaveSettingsProc</a></li>
+<li>1.7. <a href="#robo84">Preferences/TogglePreferences</a></li>
 </ul>
 </ul>
 <hr />
@@ -50,88 +50,8 @@
 </pre>
 
 <hr />
-<a name="Preferences2fLoadSettings"></a>
-<a name="robo77"></a><h2>Preferences/LoadSettings [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Load the program settings from file. If file not exists, load default
- settings.
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>LoadSettings</strong><span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="Preferences2fSavePreferences"></a>
-<a name="robo78"></a><h2>Preferences/SavePreferences [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Save the program preferences to the file.
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SavePreferences</strong><span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="Preferences2fSaveSettings"></a>
-<a name="robo79"></a><h2>Preferences/SaveSettings [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Save the program settings to file and update program to the new
- configuration if needed.
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo49">Builder</a> used to create UI
-</pre>
-<p class="item_name">RESULT</p>
-<pre> Always False so default handler will be running too.
-</pre>
-<p class="item_name">SEE ALSO</p>
-<pre> <a href="#robo10">Preferences</a>/<a href="#robo80">SaveSettingsProc</a>
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>SaveSettings</strong>
-     <span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="Preferences2fSaveSettingsProc"></a>
-<a name="robo80"></a><h2>Preferences/SaveSettingsProc [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Save the program settings to file and update program to the new
- configuration if needed. Some GTK elements need procedures instead
- of function.
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo49">Builder</a> used to create UI
-</pre>
-<p class="item_name">SEE ALSO</p>
-<pre> <a href="#robo10">Preferences</a>/<a href="#robo79">SaveSettings</a>
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SaveSettingsProc</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
-</pre>
-
-<hr />
-<a name="Preferences2fSettings"></a>
-<a name="robo81"></a><h2>Preferences/Settings [ Variables ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> The program settings
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <strong>Settings</strong><span class="sign">:</span> <a href="#robo82">Settings_Data</a><span class="sign">;</span>
-</pre>
-
-<hr />
 <a name="Preferences2fSettings5fData"></a>
-<a name="robo82"></a><h2>Preferences/Settings_Data [ Types ]</h2>
+<a name="robo18"></a><h2>Preferences/Settings_Data [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -153,15 +73,95 @@
 </pre>
 
 <hr />
+<a name="Preferences2fSettings"></a>
+<a name="robo32"></a><h2>Preferences/Settings [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> The program settings
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>Settings</strong><span class="sign">:</span> <a href="#robo18">Settings_Data</a><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Preferences2fLoadSettings"></a>
+<a name="robo80"></a><h2>Preferences/LoadSettings [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Load the program settings from file. If file not exists, load default
+ settings.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>LoadSettings</strong><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Preferences2fSavePreferences"></a>
+<a name="robo81"></a><h2>Preferences/SavePreferences [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Save the program preferences to the file.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SavePreferences</strong><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Preferences2fSaveSettings"></a>
+<a name="robo82"></a><h2>Preferences/SaveSettings [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Save the program settings to file and update program to the new
+ configuration if needed.
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
+</pre>
+<p class="item_name">RESULT</p>
+<pre> Always False so default handler will be running too.
+</pre>
+<p class="item_name">SEE ALSO</p>
+<pre> <a href="#robo10">Preferences</a>/<a href="#robo83">SaveSettingsProc</a>
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SaveSettings</strong>
+     <span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Preferences2fSaveSettingsProc"></a>
+<a name="robo83"></a><h2>Preferences/SaveSettingsProc [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Save the program settings to file and update program to the new
+ configuration if needed. Some GTK elements need procedures instead
+ of function.
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
+</pre>
+<p class="item_name">SEE ALSO</p>
+<pre> <a href="#robo10">Preferences</a>/<a href="#robo82">SaveSettings</a>
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SaveSettingsProc</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+</pre>
+
+<hr />
 <a name="Preferences2fTogglePreferences"></a>
-<a name="robo83"></a><h2>Preferences/TogglePreferences [ Subprograms ]</h2>
+<a name="robo84"></a><h2>Preferences/TogglePreferences [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show or hide the program preferences window
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo49">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>TogglePreferences</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
@@ -169,7 +169,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/preferences.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jun 21 2019 07:26:14
+<p>Generated from ./src/preferences.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Jun 24 2019 09:44:49
 </p>
 </div> <!-- footer -->
 </body>
