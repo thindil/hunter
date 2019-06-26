@@ -23,6 +23,12 @@ headertypes:
   t Types robo_types 2
   v Variables robo_variables 1
   f Subprograms robo_subprograms 0
+item order:
+  FUNCTION
+  SOURCE
+  OPTIONS
+  PARAMETERS
+  RESULT
 keywords:
   procedure
   function
