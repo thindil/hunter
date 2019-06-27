@@ -238,7 +238,9 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="window_position">center</property>
     <property name="default_width">800</property>
     <property name="default_height">600</property>
+    <property name="hide_titlebar_when_maximized">True</property>
     <property name="icon">hunter-icon.png</property>
+    <property name="decorated">False</property>
     <accel-groups>
       <group name="accelerators"/>
     </accel-groups>
@@ -252,225 +254,206 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkToolbar" id="toolbar">
+          <object class="GtkHeaderBar">
+            <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="toolbar_style">icons</property>
-            <property name="icon_size">2</property>
+            <property name="show_close_button">True</property>
             <child>
-              <object class="GtkToolButton" id="btnquit">
-                <property name="visible">True</property>
+              <object class="GtkToolbar" id="toolbar">
                 <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Quit from program [Ctrl+Q]</property>
-                <property name="label" translatable="yes">Quit</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">application-exit</property>
-                <signal name="clicked" handler="Main_Quit" swapped="no"/>
-                <accelerator key="q" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <property name="toolbar_style">icons</property>
+                <property name="icon_size">2</property>
+                <child>
+                  <object class="GtkMenuToolButton" id="btnbookmarks">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Go to your home directory [ALT+H] or press arrow to see more bookmarks</property>
+                    <property name="label" translatable="yes">Home</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">user-home</property>
+                    <signal name="clicked" handler="Go_Home" swapped="no"/>
+                    <accelerator key="h" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleToolButton" id="btnsearch">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Search for the file or directory [ALT+F]</property>
+                    <property name="label" translatable="yes">Search</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">edit-find</property>
+                    <signal name="clicked" handler="Toggle_Search" swapped="no"/>
+                    <accelerator key="f" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparatorToolItem">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkMenuToolButton" id="btnnew">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Add new file [ALT+N] or press arrow to see more options.</property>
+                    <property name="label" translatable="yes">New</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">document-new</property>
+                    <signal name="clicked" handler="Add_New" object="btnnew" swapped="no"/>
+                    <accelerator key="n" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="btndelete">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Delete selected file(s) or folder(s) [ALT-Delete].</property>
+                    <property name="label" translatable="yes">Delete</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">edit-delete</property>
+                    <signal name="clicked" handler="Delete_Item" swapped="no"/>
+                    <accelerator key="Delete" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="btnrename">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Rename selected file or directory [CTRL-R]</property>
+                    <property name="label" translatable="yes">Rename</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">document-save-as</property>
+                    <signal name="clicked" handler="Start_Rename" swapped="no"/>
+                    <accelerator key="r" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleToolButton" id="btncut">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Move selected files [ALT-M]. Pressed button means start moving currently selected files or directories. Press again to move them.</property>
+                    <property name="label" translatable="yes">Cut</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">edit-cut</property>
+                    <signal name="clicked" handler="Move_Items" swapped="no"/>
+                    <accelerator key="m" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleToolButton" id="btncopy">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Copy selected files [ALT-C]. Pressed button means start copying currently selected files or directories. Press again to copy them.</property>
+                    <property name="label" translatable="yes">Copy</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">edit-copy</property>
+                    <signal name="clicked" handler="Copy_Items" swapped="no"/>
+                    <accelerator key="c" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparatorToolItem">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="btnpreferences">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Show the program preferences [ALT-P]</property>
+                    <property name="label" translatable="yes">Preferences</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">preferences-desktop</property>
+                    <signal name="clicked" handler="Toggle_Preferences" swapped="no"/>
+                    <accelerator key="p" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="btnabout">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Show informations about the program [ALT-A].</property>
+                    <property name="label" translatable="yes">About</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">help-about</property>
+                    <signal name="clicked" handler="Show_About" swapped="no"/>
+                    <accelerator key="a" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">False</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkSeparatorToolItem">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToolButton" id="btntoolcancel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Discard all changes and back to files list [ALT-C]</property>
+                    <property name="label" translatable="yes">Cancel</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">dialog-cancel</property>
+                    <signal name="clicked" handler="Show_Files" object="btntoolcancel" swapped="no"/>
+                    <accelerator key="c" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparatorToolItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkMenuToolButton" id="btnbookmarks">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Go to your home directory [ALT+H] or press arrow to see more bookmarks</property>
-                <property name="label" translatable="yes">Home</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">user-home</property>
-                <signal name="clicked" handler="Go_Home" swapped="no"/>
-                <accelerator key="h" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleToolButton" id="btnsearch">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Search for the file or directory [ALT+F]</property>
-                <property name="label" translatable="yes">Search</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">edit-find</property>
-                <signal name="clicked" handler="Toggle_Search" swapped="no"/>
-                <accelerator key="f" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparatorToolItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkMenuToolButton" id="btnnew">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Add new file [ALT+N] or press arrow to see more options.</property>
-                <property name="label" translatable="yes">New</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">document-new</property>
-                <signal name="clicked" handler="Add_New" object="btnnew" swapped="no"/>
-                <accelerator key="n" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="btndelete">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Delete selected file(s) or folder(s) [ALT-Delete].</property>
-                <property name="label" translatable="yes">Delete</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">edit-delete</property>
-                <signal name="clicked" handler="Delete_Item" swapped="no"/>
-                <accelerator key="Delete" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="btnrename">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Rename selected file or directory [CTRL-R]</property>
-                <property name="label" translatable="yes">Rename</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">document-save-as</property>
-                <signal name="clicked" handler="Start_Rename" swapped="no"/>
-                <accelerator key="r" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleToolButton" id="btncut">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Move selected files [ALT-M]. Pressed button means start moving currently selected files or directories. Press again to move them.</property>
-                <property name="label" translatable="yes">Cut</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">edit-cut</property>
-                <signal name="clicked" handler="Move_Items" swapped="no"/>
-                <accelerator key="m" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToggleToolButton" id="btncopy">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Copy selected files [ALT-C]. Pressed button means start copying currently selected files or directories. Press again to copy them.</property>
-                <property name="label" translatable="yes">Copy</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">edit-copy</property>
-                <signal name="clicked" handler="Copy_Items" swapped="no"/>
-                <accelerator key="c" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparatorToolItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="btnpreferences">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Show the program preferences [ALT-P]</property>
-                <property name="label" translatable="yes">Preferences</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">preferences-desktop</property>
-                <signal name="clicked" handler="Toggle_Preferences" swapped="no"/>
-                <accelerator key="p" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="btnabout">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Show informations about the program [ALT-A].</property>
-                <property name="label" translatable="yes">About</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">help-about</property>
-                <signal name="clicked" handler="Show_About" swapped="no"/>
-                <accelerator key="a" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">False</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkSeparatorToolItem">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="btntoolcancel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="tooltip_text" translatable="yes">Discard all changes and back to files list [ALT-C]</property>
-                <property name="label" translatable="yes">Cancel</property>
-                <property name="use_underline">True</property>
-                <property name="icon_name">dialog-cancel</property>
-                <signal name="clicked" handler="Show_Files" object="btntoolcancel" swapped="no"/>
-                <accelerator key="c" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
             </child>
           </object>
           <packing>
@@ -491,7 +474,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
