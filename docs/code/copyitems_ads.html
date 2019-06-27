@@ -67,11 +67,11 @@
 <p class="item_name">FUNCTION</p>
 <pre> Copy selected files/directories to new location
 </pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
-</pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>CopyData</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
 </pre>
 
 <hr />
@@ -82,14 +82,14 @@
 <p class="item_name">FUNCTION</p>
 <pre> Copy selected file or directory to new location
 </pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CopyItem</strong>
+     <span class="sign">(</span>Name<span class="sign">:</span> String<span class="sign">;</span> Path<span class="sign">:</span> Unbounded_String<span class="sign">;</span> Success<span class="sign">:</span> <span class="keyword">in</span> <span class="keyword">out</span> Boolean<span class="sign">)</span><span class="sign">;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Name      - Full path to file or directory to copy
  Path      - Full path to new home location of file or directory
  Success   - True if item was successfully copied, otherwise False
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CopyItem</strong>
-     <span class="sign">(</span>Name<span class="sign">:</span> String<span class="sign">;</span> Path<span class="sign">:</span> Unbounded_String<span class="sign">;</span> Success<span class="sign">:</span> <span class="keyword">in</span> <span class="keyword">out</span> Boolean<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
@@ -100,13 +100,13 @@
 <p class="item_name">FUNCTION</p>
 <pre> Copy selected files and directories
 </pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CopySelected</strong><span class="sign">(</span>Overwrite<span class="sign">:</span> <span class="keyword">in</span> <span class="keyword">out</span> Boolean<span class="sign">)</span><span class="sign">;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Overwrite - If True, overwrite existing file or directory, otherwise
              ask for overwrite permission. Value is set to False if
              permission was only for one file or directory
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CopySelected</strong><span class="sign">(</span>Overwrite<span class="sign">:</span> <span class="keyword">in</span> <span class="keyword">out</span> Boolean<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
@@ -123,7 +123,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/copyitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Jun 24 2019 09:44:49
+<p>Generated from ./src/copyitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Jun 25 2019 09:23:29
 </p>
 </div> <!-- footer -->
 </body>

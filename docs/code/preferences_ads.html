@@ -57,12 +57,6 @@
 <p class="item_name">FUNCTION</p>
 <pre> Data structure to the program settings
 </pre>
-<p class="item_name">OPTIONS</p>
-<pre> ShowHidden            - If true, show hidden files
- ShowLastModified      - If true, show column with last modification time on files list
- ScaleImages           - If true, scale images in preview
- AutoCloseMessagesTime - Amount of seconds after which current message will be auto hidden
-</pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">type</span> <strong>Settings_Data</strong> <span class="keyword">is</span> <span class="keyword">record</span>
       ShowHidden<span class="sign">:</span> Boolean<span class="sign">;</span>
@@ -70,6 +64,12 @@
       ScaleImages<span class="sign">:</span> Boolean<span class="sign">;</span>
       AutoCloseMessagesTime<span class="sign">:</span> Natural<span class="sign">;</span>
    <span class="keyword">end</span> <span class="keyword">record</span><span class="sign">;</span>
+</pre>
+<p class="item_name">OPTIONS</p>
+<pre> ShowHidden            - If true, show hidden files
+ ShowLastModified      - If true, show column with last modification time on files list
+ ScaleImages           - If true, scale images in preview
+ AutoCloseMessagesTime - Amount of seconds after which current message will be auto hidden
 </pre>
 
 <hr />
@@ -118,6 +118,10 @@
 <pre> Save the program settings to file and update program to the new
  configuration if needed.
 </pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SaveSettings</strong>
+     <span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="sign">;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
 </pre>
@@ -126,10 +130,6 @@
 </pre>
 <p class="item_name">SEE ALSO</p>
 <pre> <a href="#robo10">Preferences</a>/<a href="#robo83">SaveSettingsProc</a>
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>SaveSettings</strong>
-     <span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="sign">;</span>
 </pre>
 
 <hr />
@@ -142,14 +142,14 @@
  configuration if needed. Some GTK elements need procedures instead
  of function.
 </pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SaveSettingsProc</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
 </pre>
 <p class="item_name">SEE ALSO</p>
 <pre> <a href="#robo10">Preferences</a>/<a href="#robo82">SaveSettings</a>
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SaveSettingsProc</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
 </pre>
 
 <hr />
@@ -160,16 +160,16 @@
 <p class="item_name">FUNCTION</p>
 <pre> Show or hide the program preferences window
 </pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
-</pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>TogglePreferences</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/preferences.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Jun 24 2019 09:44:49
+<p>Generated from ./src/preferences.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Jun 25 2019 09:23:29
 </p>
 </div> <!-- footer -->
 </body>
