@@ -69,7 +69,7 @@ package Preferences is
    -- RESULT
    -- Always False so default handler will be running too.
    -- SEE ALSO
-   -- Preferences/SaveSettingsProc
+   -- SaveSettingsProc
    -- SOURCE
    function SaveSettings
      (Object: access Gtkada_Builder_Record'Class) return Boolean;
@@ -82,7 +82,7 @@ package Preferences is
    -- PARAMETERS
    -- Object - GtkAda Builder used to create UI
    -- SEE ALSO
-   -- Preferences/SaveSettings
+   -- SaveSettings
    -- SOURCE
    procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class);
    -- ****
