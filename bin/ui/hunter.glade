@@ -195,8 +195,9 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="modal">True</property>
     <property name="window_position">center</property>
     <property name="destroy_with_parent">True</property>
-    <property name="icon_name">system-file-manager</property>
+    <property name="icon">hunter-icon.png</property>
     <property name="type_hint">dialog</property>
+    <property name="decorated">False</property>
     <property name="deletable">False</property>
     <property name="transient_for">mainwindow</property>
     <property name="program_name">Hunter</property>
