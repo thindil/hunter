@@ -255,28 +255,28 @@ package body MainWindow is
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "searchfile")),
          EntryKeyPressed'Access);
-      Add_Entry("<mainwindow>/reload", GDK_LC_r, 8);
-      Add_Entry("<mainwindow>/goup", GDK_LC_u, 8);
-      Add_Entry("<mainwindow>/path1", GDK_1, 8);
-      Add_Entry("<mainwindow>/path2", GDK_2, 8);
-      Add_Entry("<mainwindow>/path3", GDK_3, 8);
-      Add_Entry("<mainwindow>/path4", GDK_4, 8);
-      Add_Entry("<mainwindow>/path5", GDK_5, 8);
-      Add_Entry("<mainwindow>/path6", GDK_6, 8);
-      Add_Entry("<mainwindow>/path7", GDK_7, 8);
-      Add_Entry("<mainwindow>/path8", GDK_8, 8);
-      Add_Entry("<mainwindow>/path9", GDK_9, 8);
-      Add_Entry("<mainwindow>/reload2", GDK_LC_r, 9);
-      Add_Entry("<mainwindow>/goup2", GDK_LC_u, 9);
-      Add_Entry("<mainwindow>/path12", GDK_exclam, 8);
-      Add_Entry("<mainwindow>/path22", GDK_at, 8);
-      Add_Entry("<mainwindow>/path32", GDK_numbersign, 8);
-      Add_Entry("<mainwindow>/path42", GDK_dollar, 8);
-      Add_Entry("<mainwindow>/path52", GDK_percent, 8);
-      Add_Entry("<mainwindow>/path62", GDK_asciicircum, 8);
-      Add_Entry("<mainwindow>/path72", GDK_ampersand, 8);
-      Add_Entry("<mainwindow>/path82", GDK_parenleft, 8);
-      Add_Entry("<mainwindow>/path92", GDK_parenright, 8);
+      Add_Entry("<mainwindow>/reload", GDK_LC_r, Mod1_Mask);
+      Add_Entry("<mainwindow>/goup", GDK_LC_u, Mod1_Mask);
+      Add_Entry("<mainwindow>/path1", GDK_1, Mod1_Mask);
+      Add_Entry("<mainwindow>/path2", GDK_2, Mod1_Mask);
+      Add_Entry("<mainwindow>/path3", GDK_3, Mod1_Mask);
+      Add_Entry("<mainwindow>/path4", GDK_4, Mod1_Mask);
+      Add_Entry("<mainwindow>/path5", GDK_5, Mod1_Mask);
+      Add_Entry("<mainwindow>/path6", GDK_6, Mod1_Mask);
+      Add_Entry("<mainwindow>/path7", GDK_7, Mod1_Mask);
+      Add_Entry("<mainwindow>/path8", GDK_8, Mod1_Mask);
+      Add_Entry("<mainwindow>/path9", GDK_9, Mod1_Mask);
+      Add_Entry("<mainwindow>/reload2", GDK_LC_r, Mod1_Mask + Shift_Mask);
+      Add_Entry("<mainwindow>/goup2", GDK_LC_u, Mod1_Mask + Shift_Mask);
+      Add_Entry("<mainwindow>/path12", GDK_exclam, Mod1_Mask);
+      Add_Entry("<mainwindow>/path22", GDK_at, Mod1_Mask);
+      Add_Entry("<mainwindow>/path32", GDK_numbersign, Mod1_Mask);
+      Add_Entry("<mainwindow>/path42", GDK_dollar, Mod1_Mask);
+      Add_Entry("<mainwindow>/path52", GDK_percent, Mod1_Mask);
+      Add_Entry("<mainwindow>/path62", GDK_asciicircum, Mod1_Mask);
+      Add_Entry("<mainwindow>/path72", GDK_ampersand, Mod1_Mask);
+      Add_Entry("<mainwindow>/path82", GDK_parenleft, Mod1_Mask);
+      Add_Entry("<mainwindow>/path92", GDK_parenright, Mod1_Mask);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
