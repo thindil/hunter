@@ -32,7 +32,7 @@ procedure Hunter is
 begin
    -- Start Gettext internationalization
    Setlocale;
-   Bind_Text_Domain("hunter", "/home/thindil/Projekty/hunter/hunter/po");
+   Bind_Text_Domain("hunter", Value("LOCALESDIR"));
    Text_Domain("hunter");
    if not Ada.Environment_Variables.Exists("RUNFROMSCRIPT") then
       Put_Line

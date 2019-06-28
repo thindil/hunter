@@ -12,9 +12,11 @@ if [ -d lib ]; then
    export FONTCONFIG_FILE=$prefix/etc/fonts/fonts.conf
    export XDG_DATA_DIRS=$XDG_DATA_DIRS:$prefix/share
    export GSETTINGS_BACKEND=memory
+   export LOCALESDIR=$prefix/share/locale
 else
    # built-locally
    eval "$(gtkada-env.sh --print-only)"
+   export LOCALESDIR=$prefix/po
 fi
 
 cd bin || exit
