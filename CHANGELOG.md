@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Updated interface
+- Updated code documentation
 
 ## [0.5] - 2019-06-23
 
