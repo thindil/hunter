@@ -1,0 +1,377 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-06-28 09:32+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: bin/ui/hunter.glade:1517
+msgid " and attach (if possible) file 'error.log'"
+msgstr ""
+
+#: bin/ui/hunter.glade:420
+msgid "About"
+msgstr ""
+
+#: bin/ui/hunter.glade:850
+msgid "Add"
+msgstr ""
+
+#: bin/ui/hunter.glade:849
+msgid "Add bookmark to this directory [ALT-B]."
+msgstr ""
+
+#: bin/ui/hunter.glade:174
+msgid "Add new directory."
+msgstr ""
+
+#: bin/ui/hunter.glade:313
+msgid "Add new file [ALT+N] or press arrow to see more options."
+msgstr ""
+
+#: bin/ui/hunter.glade:185
+msgid "Add new link to selected file or directory."
+msgstr ""
+
+#: bin/ui/hunter.glade:1810
+msgid ""
+"After that amount of seconds, all messages will be automatically closed by "
+"the program. If you set it to 0, this feature will be disabled."
+msgstr ""
+
+#: bin/ui/hunter.glade:1111
+msgid "Associated program:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1183 bin/ui/hunter.glade:1267 bin/ui/hunter.glade:1339
+msgid "Can execute"
+msgstr ""
+
+#: bin/ui/hunter.glade:1151 bin/ui/hunter.glade:1235 bin/ui/hunter.glade:1307
+msgid "Can read"
+msgstr ""
+
+#: bin/ui/hunter.glade:1167 bin/ui/hunter.glade:1251 bin/ui/hunter.glade:1323
+msgid "Can write"
+msgstr ""
+
+#: bin/ui/hunter.glade:446
+msgid "Cancel"
+msgstr ""
+
+#: bin/ui/hunter.glade:1547
+msgid "Click to show technical info"
+msgstr ""
+
+#: bin/ui/hunter.glade:472
+msgid "Close"
+msgstr ""
+
+#: bin/ui/hunter.glade:378
+msgid "Copy"
+msgstr ""
+
+#: bin/ui/hunter.glade:377
+msgid ""
+"Copy selected files [ALT-C]. Pressed button means start copying currently "
+"selected files or directories. Press again to copy them."
+msgstr ""
+
+#: bin/ui/hunter.glade:362
+msgid "Cut"
+msgstr ""
+
+#: bin/ui/hunter.glade:330
+msgid "Delete"
+msgstr ""
+
+#: bin/ui/hunter.glade:329
+msgid "Delete selected file(s) or folder(s) [ALT-Delete]."
+msgstr ""
+
+#: bin/ui/hunter.glade:65
+msgid "Desktop"
+msgstr ""
+
+#: bin/ui/hunter.glade:1717
+msgid "Directory Listing"
+msgstr ""
+
+#: bin/ui/hunter.glade:445
+msgid "Discard all changes and back to files list [ALT-C]"
+msgstr ""
+
+#: bin/ui/hunter.glade:86
+msgid "Documents"
+msgstr ""
+
+#: bin/ui/hunter.glade:72
+msgid "Download"
+msgstr ""
+
+#: bin/ui/hunter.glade:1590
+msgid "Enter program name"
+msgstr ""
+
+#: bin/ui/hunter.glade:748
+msgid "Execute selected program [ALT-E]."
+msgstr ""
+
+#: bin/ui/hunter.glade:822
+msgid "File or directory informations [ALT-I]"
+msgstr ""
+
+#: bin/ui/hunter.glade:1086
+msgid "File type:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1011
+msgid "Full path:"
+msgstr ""
+
+#: bin/ui/hunter.glade:271
+msgid "Go to your home directory [ALT+H] or press arrow to see more bookmarks"
+msgstr ""
+
+#: bin/ui/hunter.glade:206
+msgid "Graphical File Manager for Linux"
+msgstr ""
+
+#: bin/ui/hunter.glade:1207
+msgid "Group:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1799
+msgid "Hide messages after:"
+msgstr ""
+
+#: bin/ui/hunter.glade:57 bin/ui/hunter.glade:272
+msgid "Home"
+msgstr ""
+
+#: bin/ui/hunter.glade:238
+msgid "Hunter"
+msgstr ""
+
+#: bin/ui/hunter.glade:823
+msgid "Info"
+msgstr ""
+
+#: bin/ui/hunter.glade:1826
+msgid "Interface"
+msgstr ""
+
+#: bin/ui/hunter.glade:1035
+msgid "Last Modified:"
+msgstr ""
+
+#: bin/ui/hunter.glade:693
+msgid "Modified"
+msgstr ""
+
+#: bin/ui/hunter.glade:361
+msgid ""
+"Move selected files [ALT-M]. Pressed button means start moving currently "
+"selected files or directories. Press again to move them."
+msgstr ""
+
+#: bin/ui/hunter.glade:93
+msgid "Music"
+msgstr ""
+
+#: bin/ui/hunter.glade:653 bin/ui/hunter.glade:941 bin/ui/hunter.glade:1401
+#: bin/ui/hunter.glade:1619
+msgid "Name"
+msgstr ""
+
+#: bin/ui/hunter.glade:314
+msgid "New"
+msgstr ""
+
+#: bin/ui/hunter.glade:175
+msgid "New _Directory"
+msgstr ""
+
+#: bin/ui/hunter.glade:186
+msgid "New _Link"
+msgstr ""
+
+#: bin/ui/hunter.glade:540
+msgid "No for all"
+msgstr ""
+
+#: bin/ui/hunter.glade:1487
+msgid ""
+"Oops, something bad happens and progam crashed. Please, remember what you "
+"done before crash and report this problem at"
+msgstr ""
+
+#: bin/ui/hunter.glade:765
+msgid "Open"
+msgstr ""
+
+#: bin/ui/hunter.glade:764
+msgid "Open selected file or directory [ALT-O]"
+msgstr ""
+
+#: bin/ui/hunter.glade:780
+msgid "Open selected file or directory with command [ALT-W]"
+msgstr ""
+
+#: bin/ui/hunter.glade:781
+msgid "Open with..."
+msgstr ""
+
+#: bin/ui/hunter.glade:1291
+msgid "Others:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1123
+msgid "Owner:"
+msgstr ""
+
+#: bin/ui/hunter.glade:100
+msgid "Pictures"
+msgstr ""
+
+#: bin/ui/hunter.glade:404
+msgid "Preferences"
+msgstr ""
+
+#: bin/ui/hunter.glade:807 bin/ui/hunter.glade:1453 bin/ui/hunter.glade:1771
+msgid "Preview"
+msgstr ""
+
+#: bin/ui/hunter.glade:806
+msgid "Preview file or directory [ALT-P]"
+msgstr ""
+
+#: bin/ui/hunter.glade:79
+msgid "Public"
+msgstr ""
+
+#: bin/ui/hunter.glade:866
+msgid "Remove"
+msgstr ""
+
+#: bin/ui/hunter.glade:865
+msgid "Remove bookmark to this directory [ALT-B]"
+msgstr ""
+
+#: bin/ui/hunter.glade:346
+msgid "Rename"
+msgstr ""
+
+#: bin/ui/hunter.glade:345
+msgid "Rename selected file or directory [CTRL-R]"
+msgstr ""
+
+#: bin/ui/hunter.glade:749
+msgid "Run"
+msgstr ""
+
+#: bin/ui/hunter.glade:1757
+msgid ""
+"Scale images in preview. When disabled, images shows with natural size. When "
+"enabled, images are resized to the size of the preview window."
+msgstr ""
+
+#: bin/ui/hunter.glade:1745
+msgid "Scale images:"
+msgstr ""
+
+#: bin/ui/hunter.glade:288
+msgid "Search"
+msgstr ""
+
+#: bin/ui/hunter.glade:287
+msgid "Search for the file or directory [ALT+F]"
+msgstr ""
+
+#: bin/ui/hunter.glade:1678
+msgid ""
+"Show hidden files and directories in directory listing and in directories "
+"preview."
+msgstr ""
+
+#: bin/ui/hunter.glade:1666
+msgid "Show hidden files:"
+msgstr ""
+
+#: bin/ui/hunter.glade:419
+msgid "Show informations about the program [ALT-A]."
+msgstr ""
+
+#: bin/ui/hunter.glade:1691
+msgid "Show modification time:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1703
+msgid "Show the column with last modification date for files and directories."
+msgstr ""
+
+#: bin/ui/hunter.glade:403
+msgid "Show the program preferences [ALT-P]"
+msgstr ""
+
+#: bin/ui/hunter.glade:678 bin/ui/hunter.glade:1426
+msgid "Size"
+msgstr ""
+
+#: bin/ui/hunter.glade:1023
+msgid "Size:"
+msgstr ""
+
+#: src/hunter.adb:60
+msgid "Test"
+msgstr ""
+
+#: src/hunter.adb:40
+msgid ""
+"The program can be run only via 'hunter.sh' script. Please don't run binary "
+"directly."
+msgstr ""
+
+#: bin/ui/hunter.glade:107
+msgid "Videos"
+msgstr ""
+
+#: bin/ui/hunter.glade:554
+msgid "Yes for all"
+msgstr ""
+
+#: bin/ui/hunter.glade:1560
+msgid "error"
+msgstr ""
+
+#: bin/ui/hunter.glade:1475
+msgid "files"
+msgstr ""
+
+#: bin/ui/hunter.glade:1499
+msgid "https://github.com/thindil/hunter/issues"
+msgstr ""
+
+#: bin/ui/hunter.glade:998 bin/ui/hunter.glade:1443
+msgid "page0"
+msgstr ""
+
+#: bin/ui/hunter.glade:1378
+msgid "page1"
+msgstr ""
+
+#: bin/ui/hunter.glade:205
+msgid "©2019 Bartek thindil Jasicki"
+msgstr ""

@@ -20,6 +20,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Main; use Gtk.Main;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Bindings; use Gtkada.Bindings;
+with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Error; use Glib.Error;
 with ErrorDialog; use ErrorDialog;
@@ -29,6 +30,10 @@ procedure Hunter is
    Builder: Gtkada_Builder;
    Error: aliased GError;
 begin
+   -- Start Gettext internationalization
+   Setlocale;
+   Bind_Text_Domain("hunter", "/home/thindil/Projekty/hunter/hunter/po");
+   Text_Domain("hunter");
    if not Ada.Environment_Variables.Exists("RUNFROMSCRIPT") then
       Put_Line
         ("The program can be run only via 'hunter.sh' script. Please don't run binary directly.");
@@ -37,6 +42,7 @@ begin
    if not Ada.Directories.Exists(Value("HOME") & "/" & ".cache/hunter") then
       Create_Path(Value("HOME") & "/" & ".cache/hunter");
    end if;
+   -- Start GTK
    Init;
    Set_On_Exception(On_Exception'Access);
    Gtk_New(Builder);
