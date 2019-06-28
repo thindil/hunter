@@ -19,6 +19,7 @@ with Ada.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Enums; use Gtk.Enums;
@@ -197,6 +198,36 @@ package body MainWindow is
       return False;
    end UpdateImage;
 
+   -- ****if* MainWindow/WindowKeyPressed
+   -- FUNCTION
+   -- Close the program with keyboard shortcut
+   -- PARAMETERS
+   -- Self  - Main window of the program (not used)
+   -- Event - Detailed informations about key pressed event (key code,
+   --         modifiers, etc)
+   -- RESULT
+   -- This function always return False
+   -- SOURCE
+   function WindowKeyPressed
+     (Self: access Gtk_Widget_Record'Class; Event: Gdk.Event.Gdk_Event_Key)
+      return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+      KeyMods: constant Gdk_Modifier_Type :=
+        Event.State and Get_Default_Mod_Mask;
+      Key: Gtk_Accel_Key;
+      Found: Boolean;
+   begin
+      Lookup_Entry("<mainwindow>/quit", Key, Found);
+      if not Found then
+         return False;
+      end if;
+      if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
+         Quit(Builder);
+      end if;
+      return False;
+   end WindowKeyPressed;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Builder := NewBuilder;
@@ -255,6 +286,9 @@ package body MainWindow is
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "searchfile")),
          EntryKeyPressed'Access);
+      On_Key_Press_Event
+        (Gtk_Widget(Get_Object(Builder, "mainwindow")),
+         WindowKeyPressed'Access);
       Add_Entry("<mainwindow>/reload", GDK_LC_r, Mod1_Mask);
       Add_Entry("<mainwindow>/goup", GDK_LC_u, Mod1_Mask);
       Add_Entry("<mainwindow>/path1", GDK_1, Mod1_Mask);
@@ -277,6 +311,7 @@ package body MainWindow is
       Add_Entry("<mainwindow>/path72", GDK_ampersand, Mod1_Mask);
       Add_Entry("<mainwindow>/path82", GDK_parenleft, Mod1_Mask);
       Add_Entry("<mainwindow>/path92", GDK_parenright, Mod1_Mask);
+      Add_Entry("<mainwindow>/quit", GDK_LC_q, Control_Mask);
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
