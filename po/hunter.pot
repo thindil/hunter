@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-28 09:32+0200\n"
+"POT-Creation-Date: 2019-06-28 09:38+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -332,16 +332,6 @@ msgstr ""
 
 #: bin/ui/hunter.glade:1023
 msgid "Size:"
-msgstr ""
-
-#: src/hunter.adb:60
-msgid "Test"
-msgstr ""
-
-#: src/hunter.adb:40
-msgid ""
-"The program can be run only via 'hunter.sh' script. Please don't run binary "
-"directly."
 msgstr ""
 
 #: bin/ui/hunter.glade:107
