@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-06-28 10:14+0200\n"
+"POT-Creation-Date: 2019-06-29 06:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,30 @@ msgstr ""
 
 #: bin/ui/hunter.glade:1517
 msgid " and attach (if possible) file 'error.log'"
+msgstr ""
+
+#: src/activateitems.adb:148
+msgid " does not exist."
+msgstr ""
+
+#: src/createitems.adb:59
+msgid " doesn't exists."
+msgstr ""
+
+#: src/copyitems.adb:130
+msgid " exists. Do you want to overwrite it?"
+msgstr ""
+
+#: src/createitems.adb:94
+msgid " name '"
+msgstr ""
+
+#: src/createitems.adb:95
+msgid " with that name."
+msgstr ""
+
+#: src/createitems.adb:94
+msgid "' because there exists "
 msgstr ""
 
 #: bin/ui/hunter.glade:420
@@ -67,6 +91,18 @@ msgstr ""
 msgid "Can write"
 msgstr ""
 
+#: src/createitems.adb:124
+msgid "Can't create symbolic link."
+msgstr ""
+
+#: src/createitems.adb:111
+msgid "Can't rename "
+msgstr ""
+
+#: src/activateitems.adb:168
+msgid "Can't start command: "
+msgstr ""
+
 #: bin/ui/hunter.glade:446
 msgid "Cancel"
 msgstr ""
@@ -79,6 +115,10 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
+#: src/activateitems.adb:147
+msgid "Command "
+msgstr ""
+
 #: bin/ui/hunter.glade:378
 msgid "Copy"
 msgstr ""
@@ -87,6 +127,18 @@ msgstr ""
 msgid ""
 "Copy selected files [ALT-C]. Pressed button means start copying currently "
 "selected files or directories. Press again to copy them."
+msgstr ""
+
+#: src/createitems.adb:165
+msgid "Create new directory."
+msgstr ""
+
+#: src/createitems.adb:183
+msgid "Create new file."
+msgstr ""
+
+#: src/createitems.adb:171
+msgid "Create new link to selected file or directory."
 msgstr ""
 
 #: bin/ui/hunter.glade:362
@@ -105,6 +157,18 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
+#: src/copyitems.adb:54 src/createitems.adb:176
+msgid "Destination directory"
+msgstr ""
+
+#: src/copyitems.adb:123
+msgid "Directory"
+msgstr ""
+
+#: src/createitems.adb:59
+msgid "Directory "
+msgstr ""
+
 #: bin/ui/hunter.glade:1717
 msgid "Directory Listing"
 msgstr ""
@@ -121,12 +185,24 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
+#: src/activateitems.adb:109
+msgid "Enter command to use to open selected item."
+msgstr ""
+
+#: src/bookmarks.adb:195
+msgid "Enter destination"
+msgstr ""
+
 #: bin/ui/hunter.glade:1590
 msgid "Enter program name"
 msgstr ""
 
 #: bin/ui/hunter.glade:748
 msgid "Execute selected program [ALT-E]."
+msgstr ""
+
+#: src/copyitems.adb:125
+msgid "File"
 msgstr ""
 
 #: bin/ui/hunter.glade:822
@@ -139,6 +215,10 @@ msgstr ""
 
 #: bin/ui/hunter.glade:1011
 msgid "Full path:"
+msgstr ""
+
+#: src/bookmarks.adb:52
+msgid "Go to selected destination."
 msgstr ""
 
 #: bin/ui/hunter.glade:271
@@ -163,6 +243,21 @@ msgstr ""
 
 #: bin/ui/hunter.glade:238
 msgid "Hunter"
+msgstr ""
+
+#: src/activateitems.adb:184
+msgid "I can't execute this file."
+msgstr ""
+
+#: src/activateitems.adb:97
+msgid ""
+"I can't open this file. Can't start application asociated with this type of "
+"files."
+msgstr ""
+
+#: src/activateitems.adb:83
+msgid ""
+"I can't open this file. No application associated with this type of files."
 msgstr ""
 
 #: bin/ui/hunter.glade:823
@@ -334,6 +429,10 @@ msgstr ""
 msgid "Size:"
 msgstr ""
 
+#: src/copyitems.adb:50
+msgid "Stop copying files and directories [ALT-C]"
+msgstr ""
+
 #: bin/ui/hunter.glade:107
 msgid "Videos"
 msgstr ""
@@ -342,8 +441,52 @@ msgstr ""
 msgid "Yes for all"
 msgstr ""
 
+#: src/createitems.adb:93
+msgid "You can't "
+msgstr ""
+
+#: src/activateitems.adb:48
+msgid "You can't enter this directory."
+msgstr ""
+
+#: src/copyitems.adb:62
+msgid "You don't have permissions to copy selected items here."
+msgstr ""
+
+#: src/createitems.adb:64
+msgid "You don't have permissions to enter directory "
+msgstr ""
+
+#: src/createitems.adb:142
+msgid "You don't have permissions to rename "
+msgstr ""
+
+#: src/createitems.adb:138
+msgid "You don't have permissions to write to "
+msgstr ""
+
+#: src/createitems.adb:75
+msgid "create directory with"
+msgstr ""
+
+#: src/createitems.adb:78
+msgid "create file with"
+msgstr ""
+
+#: src/createitems.adb:83
+msgid "create link with"
+msgstr ""
+
+#: src/createitems.adb:88
+msgid "directory"
+msgstr ""
+
 #: bin/ui/hunter.glade:1560
 msgid "error"
+msgstr ""
+
+#: src/createitems.adb:90
+msgid "file"
 msgstr ""
 
 #: bin/ui/hunter.glade:1475
@@ -360,6 +503,10 @@ msgstr ""
 
 #: bin/ui/hunter.glade:1378
 msgid "page1"
+msgstr ""
+
+#: src/createitems.adb:80
+msgid "rename with new"
 msgstr ""
 
 #: bin/ui/hunter.glade:205
