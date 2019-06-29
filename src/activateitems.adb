@@ -21,6 +21,7 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -44,7 +45,7 @@ package body ActivateItems is
       end if;
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
-            ShowMessage("You can't enter this directory.");
+            ShowMessage(Gettext("You can't enter this directory."));
             return;
          end if;
          if CurrentDirectory = To_Unbounded_String("/") then
@@ -78,7 +79,8 @@ package body ActivateItems is
             end if;
             if not Openable then
                ShowMessage
-                 ("I can't open this file. No application associated with this type of files.");
+                 (Gettext
+                    ("I can't open this file. No application associated with this type of files."));
                return;
             else
                if ExecutableName = "" then
@@ -91,7 +93,8 @@ package body ActivateItems is
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
-                 ("I can't open this file. Can't start application asociated with this type of files.");
+                 (Gettext
+                    ("I can't open this file. Can't start application asociated with this type of files."));
             end if;
          end;
       end if;
@@ -103,7 +106,7 @@ package body ActivateItems is
       NewAction := OPENWITH;
       Set_Icon_Tooltip_Text
         (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
-         "Enter command to use to open selected item.");
+         Gettext("Enter command to use to open selected item."));
       Set_Text(Gtk_GEntry(GEntry), "");
       Show_All(GEntry);
       Grab_Focus(GEntry);
@@ -140,7 +143,9 @@ package body ActivateItems is
       end if;
       Command := Locate_Exec_On_Path(To_String(CommandName));
       if Command = null then
-         ShowMessage("Command " & To_String(CommandName) & " does not exist.");
+         ShowMessage
+           (Gettext("Command ") & To_String(CommandName) &
+            Gettext(" does not exist."));
          Set_Text(Self, "");
          Hide(Gtk_Widget(Self));
          return;
@@ -160,7 +165,7 @@ package body ActivateItems is
               Args => Arguments(Arguments'First + 2 .. Arguments'Last));
       end if;
       if Pid = GNAT.OS_Lib.Invalid_Pid then
-         ShowMessage("Can't start command: " & Get_Text(Self));
+         ShowMessage(Gettext("Can't start command: ") & Get_Text(Self));
       end if;
       Set_Text(Self, "");
       Hide(Gtk_Widget(Self));
@@ -176,7 +181,7 @@ package body ActivateItems is
           (Full_Name(To_String(CurrentSelected)),
            Argument_String_To_List("").all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
-         ShowMessage("I can't execute this file.");
+         ShowMessage(Gettext("I can't execute this file."));
       end if;
    end ExecuteFile;
 
