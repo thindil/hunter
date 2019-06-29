@@ -20,6 +20,7 @@ with Gtk.Label; use Gtk.Label;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with ShowItems; use ShowItems;
@@ -46,18 +47,19 @@ package body CopyItems is
          Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
          Set_Tooltip_Text
            (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
-            "Stop copying files and directories [ALT-C]");
+            Gettext("Stop copying files and directories [ALT-C]"));
          Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblframe")),
-            "Destination directory");
+            Gettext("Destination directory"));
          Set_Visible_Child_Name
            (Gtk_Stack(Get_Object(Object, "infostack")), "destination");
          return;
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
          ShowMessage
-           ("You don't have permissions to copy selected items here.");
+           (Gettext
+              ("You don't have permissions to copy selected items here."));
          return;
       end if;
       NewAction := COPY;
@@ -118,14 +120,14 @@ package body CopyItems is
             if Is_Directory
                 (To_String(Path) & "/" &
                  Simple_Name(To_String(CopyItemsList(1)))) then
-               ItemType := To_Unbounded_String("Directory");
+               ItemType := To_Unbounded_String(Gettext("Directory"));
             else
-               ItemType := To_Unbounded_String("File");
+               ItemType := To_Unbounded_String(Gettext("File"));
             end if;
             ShowMessage
               (To_String(ItemType) & " " &
                Simple_Name(To_String(CopyItemsList(1))) &
-               " exists. Do you want to overwrite it?",
+               Gettext(" exists. Do you want to overwrite it?"),
                Message_Question);
             return;
          end if;

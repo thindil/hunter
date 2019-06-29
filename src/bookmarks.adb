@@ -23,6 +23,7 @@ with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Shell; use Gtk.Menu_Shell;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 
@@ -48,7 +49,7 @@ package body Bookmarks is
                NewAction := GOTOPATH;
                Set_Icon_Tooltip_Text
                  (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
-                  "Go to selected destination.");
+                  Gettext("Go to selected destination."));
                Set_Text(Gtk_GEntry(GEntry), To_String(CurrentDirectory));
                Show_All(GEntry);
                Grab_Focus(GEntry);
@@ -191,7 +192,7 @@ package body Bookmarks is
       end if;
       BookmarksList.Append
         (New_Item =>
-           (MenuName => To_Unbounded_String("Enter destination"),
+           (MenuName => To_Unbounded_String(Gettext("Enter destination")),
             Path => Null_Unbounded_String));
       AddMenuItem;
    end CreateBookmarkMenu;

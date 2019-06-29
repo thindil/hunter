@@ -18,6 +18,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Intl; use Gtkada.Intl;
 with ActivateItems; use ActivateItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -54,12 +55,13 @@ package body CreateItems is
       end if;
       if NewAction = GOTOPATH then
          if not Ada.Directories.Exists(Get_Text(Self)) then
-            ShowMessage("Directory " & Name & " doesn't exists.");
+            ShowMessage
+              (Gettext("Directory ") & Name & Gettext(" doesn't exists."));
             return;
          end if;
          if not Is_Read_Accessible_File(Get_Text(Self)) then
             ShowMessage
-              ("You don't have permissions to enter directory " &
+              (Gettext("You don't have permissions to enter directory ") &
                Get_Text(Self));
             return;
          end if;
@@ -69,25 +71,28 @@ package body CreateItems is
       if Ada.Directories.Exists(Name) or Is_Symbolic_Link(Name) then
          case NewAction is
             when CREATEDIRECTORY =>
-               ActionString := To_Unbounded_String("create directory with");
+               ActionString :=
+                 To_Unbounded_String(Gettext("create directory with"));
             when CREATEFILE =>
-               ActionString := To_Unbounded_String("create file with");
+               ActionString :=
+                 To_Unbounded_String(Gettext("create file with"));
             when RENAME =>
-               ActionString := To_Unbounded_String("rename with new");
+               ActionString := To_Unbounded_String(Gettext("rename with new"));
             when CREATELINK =>
-               ActionString := To_Unbounded_String("create link with");
+               ActionString :=
+                 To_Unbounded_String(Gettext("create link with"));
             when others =>
                null;
          end case;
          if Is_Directory(Name) then
-            ActionBlocker := To_Unbounded_String("directory");
+            ActionBlocker := To_Unbounded_String(Gettext("directory"));
          else
-            ActionBlocker := To_Unbounded_String("file");
+            ActionBlocker := To_Unbounded_String(Gettext("file"));
          end if;
          ShowMessage
-           ("You can't " & To_String(ActionString) & " name '" & Name &
-            "' because there exists " & To_String(ActionBlocker) &
-            " with that name.");
+           (Gettext("You can't ") & To_String(ActionString) &
+            Gettext(" name '") & Name & Gettext("' because there exists ") &
+            To_String(ActionBlocker) & Gettext(" with that name."));
          return;
       end if;
       if Is_Write_Accessible_File(Containing_Directory(Name)) then
@@ -103,7 +108,8 @@ package body CreateItems is
                   Rename_File(To_String(CurrentSelected), Name, Success);
                   if not Success then
                      ShowMessage
-                       ("Can't rename " & To_String(CurrentSelected) & ".");
+                       (Gettext("Can't rename ") & To_String(CurrentSelected) &
+                        ".");
                   end if;
                end if;
             when CREATELINK =>
@@ -115,7 +121,7 @@ package body CreateItems is
                begin
                   Spawn(Locate_Exec_On_Path("ln").all, Arguments, Success);
                   if not Success then
-                     ShowMessage("Can't create symbolic link.");
+                     ShowMessage(Gettext("Can't create symbolic link."));
                   end if;
                   Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
                   Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
@@ -129,10 +135,11 @@ package body CreateItems is
       else
          if NewAction /= RENAME then
             ShowMessage
-              ("You don't have permissions to write to " &
+              (Gettext("You don't have permissions to write to ") &
                Containing_Directory(Name));
          else
-            ShowMessage("You don't have permissions to rename " & Name);
+            ShowMessage
+              (Gettext("You don't have permissions to rename ") & Name);
          end if;
          return;
       end if;
@@ -155,24 +162,25 @@ package body CreateItems is
          NewAction := CREATEDIRECTORY;
          Set_Icon_Tooltip_Text
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
-            "Create new directory.");
+            Gettext("Create new directory."));
       elsif User_Data = Get_Object(Builder, "newmenulink") then
          NewAction := CREATELINK;
          LinkTarget := CurrentSelected;
          Set_Icon_Tooltip_Text
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
-            "Create new link to selected file or directory.");
+            Gettext("Create new link to selected file or directory."));
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
          Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Set_Label
            (Gtk_Label(Get_Object(Builder, "lblframe")),
-            "Destination directory");
+            Gettext("Destination directory"));
          Set_Visible_Child_Name
            (Gtk_Stack(Get_Object(Builder, "infostack")), "destination");
       else
          NewAction := CREATEFILE;
          Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary, "Create new file.");
+           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+            Gettext("Create new file."));
       end if;
       Show_All(GEntry);
       Grab_Focus(GEntry);
