@@ -27,6 +27,7 @@ with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tool_Item; use Gtk.Tool_Item;
+with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 
 package body ErrorDialog is
@@ -104,8 +105,8 @@ package body ErrorDialog is
       Builder := NewBuilder;
       Set_Label
         (Label,
-         Get_Label(Label) & " from '" & Value("HOME") &
-         "/.cache/hunter' directory.");
+         Get_Label(Label) & Gettext(" from '") & Value("HOME") &
+         Gettext("/.cache/hunter' directory."));
    end CreateErrorDialog;
 
 end ErrorDialog;
