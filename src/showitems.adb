@@ -43,6 +43,7 @@ with Gtk.Toggle_Button; use Gtk.Toggle_Button;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Widget; use Gtk.Widget;
 with Gdk.Pixbuf; use Gdk.Pixbuf;
+with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Error; use Glib.Error;
 with Bookmarks; use Bookmarks;
@@ -126,9 +127,11 @@ package body ShowItems is
       Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
       if Is_Symbolic_Link(To_String(CurrentSelected)) then
-         Set_Label(Gtk_Label(Get_Object(Object, "lblname2")), "Links to:");
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lblname2")), Gettext("Links to:"));
       else
-         Set_Label(Gtk_Label(Get_Object(Object, "lblname2")), "Full path:");
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lblname2")), Gettext("Full path:"));
       end if;
       for Name of ObjectsNames loop
          Hide(Gtk_Widget(Get_Object(Object, To_String(Name))));
@@ -149,7 +152,8 @@ package body ShowItems is
            (Gtk_Label(Get_Object(Object, "lblfiletype")),
             GetMimeType(SelectedPath));
          if not CanBeOpened(GetMimeType(SelectedPath)) then
-            Set_Label(Gtk_Button(Get_Object(Object, "btnprogram")), "none");
+            Set_Label
+              (Gtk_Button(Get_Object(Object, "btnprogram")), Gettext("none"));
          else
             declare
                ProcessDesc: Process_Descriptor;
@@ -177,7 +181,7 @@ package body ShowItems is
                   else
                      Set_Label
                        (Gtk_Label(Get_Object(Object, "lblprogram")),
-                        To_String(DesktopFile) & " (not installed)");
+                        To_String(DesktopFile) & Gettext(" (not installed)"));
                   end if;
                end if;
                Close(ProcessDesc);
@@ -197,22 +201,26 @@ package body ShowItems is
               (Gtk_Label(Get_Object(Object, "lblsize")),
                Natural'Image(Amount - 2));
          else
-            Set_Label(Gtk_Label(Get_Object(Object, "lblsize")), "Unknown");
+            Set_Label
+              (Gtk_Label(Get_Object(Object, "lblsize")), Gettext("Unknown"));
          end if;
          Set_Label
            (Gtk_Label(Get_Object(Object, "lbllastmodified")),
             Ada.Calendar.Formatting.Image(Modification_Time(SelectedPath)));
       else
          if SelectedPath = "" then
-            Set_Label(Gtk_Label(Get_Object(Object, "lblname")), "Unknown");
+            Set_Label
+              (Gtk_Label(Get_Object(Object, "lblname")), Gettext("Unknown"));
          end if;
-         Set_Label(Gtk_Label(Get_Object(Object, "lblsize")), "Unknown");
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lblsize")), Gettext("Unknown"));
          for I in 5 .. 7 loop
             Show_All
               (Gtk_Widget(Get_Object(Object, To_String(ObjectsNames(I)))));
          end loop;
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lbllastmodified")), "Unknown");
+           (Gtk_Label(Get_Object(Object, "lbllastmodified")),
+            Gettext("Unknown"));
       end if;
       declare
          ProcessDesc: Process_Descriptor;
@@ -266,7 +274,8 @@ package body ShowItems is
          when Process_Died =>
             return;
       end;
-      Set_Label(Gtk_Label(Get_Object(Builder, "lblframe")), "Information");
+      Set_Label
+        (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Information"));
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "infostack")), "info");
       Setting := False;
@@ -345,7 +354,7 @@ package body ShowItems is
                   Gdk_New_From_File(Pixbuf, To_String(CurrentSelected), Error);
                   if Error /= null then
                      ShowMessage
-                       ("Could not load image file: " &
+                       (Gettext("Could not load image file: ") &
                         To_String(CurrentSelected));
                      return;
                   end if;
@@ -462,7 +471,7 @@ package body ShowItems is
                 ("default " & Get_String(ProgramModel, ProgramIter, 1) & " " &
                  GetMimeType(To_String(CurrentSelected))).all);
          if Pid = GNAT.OS_Lib.Invalid_Pid then
-            ShowMessage("Could not set new associated file.");
+            ShowMessage(Gettext("Could not set new associated file."));
          else
             Set_Label
               (Gtk_Button(Get_Object(Object, "btnprogram")),
@@ -526,7 +535,8 @@ package body ShowItems is
       Spawn(Locate_Exec_On_Path("chmod").all, Arguments, Success);
       if not Success then
          ShowMessage
-           ("Could not change permissions for " & To_String(CurrentSelected));
+           (Gettext("Could not change permissions for ") &
+            To_String(CurrentSelected));
       end if;
    end SetPermission;
 
