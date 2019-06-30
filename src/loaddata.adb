@@ -35,6 +35,7 @@ with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
 with Gtkada.Builder; use Gtkada.Builder;
+with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
@@ -175,7 +176,7 @@ package body LoadData is
       if not Is_Read_Accessible_File(Name) then
          Set_Text
            (Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview"))),
-            "You don't have permissions to preview this directory.");
+            Gettext("You don't have permissions to preview this directory."));
          Show_All(Gtk_Widget(Get_Object(Builder, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Builder, "scrolllist")));
          if MainWindow /= null then
@@ -310,26 +311,28 @@ package body LoadData is
             if CurrentDirectory = To_Unbounded_String("/") then
                if ListName = "fileslist" then
                   Set_Tooltip_Text
-                    (Gtk_Widget(Button), "Reload current directory [ALT+R]");
+                    (Gtk_Widget(Button),
+                     Gettext("Reload current directory [ALT+R]"));
                   Set_Accel_Path
                     (Gtk_Widget(Button), "<mainwindow>/reload", Accelerators);
                else
                   Set_Tooltip_Text
                     (Gtk_Widget(Button),
-                     "Reload current directory [ALT+SHIFT+R]");
+                     Gettext("Reload current directory [ALT+SHIFT+R]"));
                   Set_Accel_Path
                     (Gtk_Widget(Button), "<mainwindow>/reload2", Accelerators);
                end if;
             elsif Slice_Count(Tokens) = 2 then
                if ListName = "fileslist" then
                   Set_Tooltip_Text
-                    (Gtk_Widget(Button), "Go to upper directory [ALT+U]");
+                    (Gtk_Widget(Button),
+                     Gettext("Go to upper directory [ALT+U]"));
                   Set_Accel_Path
                     (Gtk_Widget(Button), "<mainwindow>/goup", Accelerators);
                else
                   Set_Tooltip_Text
                     (Gtk_Widget(Button),
-                     "Go to upper directory [ALT+SHIFT+U]");
+                     Gettext("Go to upper directory [ALT+SHIFT+U]"));
                   Set_Accel_Path
                     (Gtk_Widget(Button), "<mainwindow>/goup2", Accelerators);
                end if;
@@ -338,12 +341,14 @@ package body LoadData is
                   Set_Accel_Path
                     (Gtk_Widget(Button), "<mainwindow>/path1", Accelerators);
                   Set_Tooltip_Text
-                    (Gtk_Widget(Button), "Go to this directory [ALT+1]");
+                    (Gtk_Widget(Button),
+                     Gettext("Go to this directory [ALT+1]"));
                else
                   Set_Accel_Path
                     (Gtk_Widget(Button), "<mainwindow>/path12", Accelerators);
                   Set_Tooltip_Text
-                    (Gtk_Widget(Button), "Go to this directory [ALT+SHIFT+1]");
+                    (Gtk_Widget(Button),
+                     Gettext("Go to this directory [ALT+SHIFT+1]"));
                end if;
             end if;
             for I in 2 .. Slice_Count(Tokens) loop
@@ -355,14 +360,14 @@ package body LoadData is
                      if ListName = "fileslist" then
                         Set_Tooltip_Text
                           (Gtk_Widget(Button),
-                           "Go to upper directory [ALT+U]");
+                           Gettext("Go to upper directory [ALT+U]"));
                         Set_Accel_Path
                           (Gtk_Widget(Button), "<mainwindow>/goup",
                            Accelerators);
                      else
                         Set_Tooltip_Text
                           (Gtk_Widget(Button),
-                           "Go to upper directory [ALT+SHIFT+U]");
+                           Gettext("Go to upper directory [ALT+SHIFT+U]"));
                         Set_Accel_Path
                           (Gtk_Widget(Button), "<mainwindow>/goup2",
                            Accelerators);
@@ -371,14 +376,14 @@ package body LoadData is
                      if ListName = "fileslist" then
                         Set_Tooltip_Text
                           (Gtk_Widget(Button),
-                           "Reload current directory [ALT+R]");
+                           Gettext("Reload current directory [ALT+R]"));
                         Set_Accel_Path
                           (Gtk_Widget(Button), "<mainwindow>/reload",
                            Accelerators);
                      else
                         Set_Tooltip_Text
                           (Gtk_Widget(Button),
-                           "Reload current directory [ALT+SHIFT+R]");
+                           Gettext("Reload current directory [ALT+SHIFT+R]"));
                         Set_Accel_Path
                           (Gtk_Widget(Button), "<mainwindow>/reload2",
                            Accelerators);
@@ -391,7 +396,7 @@ package body LoadData is
                            Accelerators);
                         Set_Tooltip_Text
                           (Gtk_Widget(Button),
-                           "Go to this directory [ALT+" &
+                           Gettext("Go to this directory [ALT+") &
                            Slice_Number'Image(I)(2) & "]");
                      else
                         Set_Accel_Path
@@ -401,7 +406,7 @@ package body LoadData is
                            Accelerators);
                         Set_Tooltip_Text
                           (Gtk_Widget(Button),
-                           "Go to this directory [ALT+SHIFT+" &
+                           Gettext("Go to this directory [ALT+SHIFT+") &
                            Slice_Number'Image(I)(2) & "]");
                      end if;
                   end if;

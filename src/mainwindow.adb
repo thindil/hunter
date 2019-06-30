@@ -37,6 +37,7 @@ with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
 with Gdk.Event; use Gdk.Event;
@@ -97,10 +98,12 @@ package body MainWindow is
       NewAction := RENAME;
       if Is_Directory(To_String(CurrentSelected)) then
          Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary, "Rename directory.");
+           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+            Gettext("Rename directory."));
       else
          Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary, "Rename file.");
+           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+            Gettext("Rename file."));
       end if;
       Set_Text(Gtk_GEntry(GEntry), Simple_Name(To_String(CurrentSelected)));
       Show_All(GEntry);

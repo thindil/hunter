@@ -20,6 +20,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 
@@ -47,16 +48,18 @@ package body DeleteItems is
    exception
       when An_Exception : Use_Error =>
          ShowMessage
-           ("Could not delete selected files or directories. Reason: " &
+           (Gettext
+              ("Could not delete selected files or directories. Reason: ") &
             Exception_Message(An_Exception));
          raise;
       when An_Exception : Directory_Error =>
          ShowMessage
-           ("Can't delete selected directory: " &
+           (Gettext("Can't delete selected directory: ") &
             Exception_Message(An_Exception));
          raise;
       when others =>
-         ShowMessage("Unknown error during deleting files or direcotries.");
+         ShowMessage
+           (Gettext("Unknown error during deleting files or direcotries."));
          raise;
    end DeleteSelected;
 
@@ -67,7 +70,7 @@ package body DeleteItems is
       for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
          Append(Message, SelectedItems(I));
          if Is_Directory(To_String(SelectedItems(I))) then
-            Append(Message, "(and its content)");
+            Append(Message, Gettext("(and its content)"));
          end if;
          if I /= SelectedItems.Last_Index then
             Append(Message, LF);
