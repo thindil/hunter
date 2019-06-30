@@ -1,0 +1,637 @@
+# Polish translations for Hunter package.
+# Copyright (C) 2019 Bartek thindil Jasicki
+# This file is distributed under the same license as the Hunter package.
+#  Bartek thindil Jasicki <thindil@laeran.pl>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Hunter 0.6\n"
+"Report-Msgid-Bugs-To: thindil@laeran.pl\n"
+"POT-Creation-Date: 2019-06-30 07:07+0200\n"
+"PO-Revision-Date: 2019-06-30 07:10+0200\n"
+"Last-Translator:  <thindil@laeran.pl>\n"
+"Language-Team: Polish\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+
+#: src/showitems.adb:184
+msgid " (not installed)"
+msgstr " (nie zainstalowany)"
+
+#: bin/ui/hunter.glade:1517
+msgid " and attach (if possible) file 'error.log'"
+msgstr " i dołącz (jeżeli dostępny) plik 'error.log'"
+
+#: src/activateitems.adb:148
+msgid " does not exist."
+msgstr " nie istnieje."
+
+#: src/createitems.adb:59
+msgid " doesn't exists."
+msgstr " nie istnieje."
+
+#: src/copyitems.adb:130 src/moveitems.adb:91
+msgid " exists. Do you want to overwrite it?"
+msgstr " istnieje. Czy chcesz go nadpisać?"
+
+#: src/errordialog.adb:108
+msgid " from '"
+msgstr " z '"
+
+#: src/createitems.adb:94
+msgid " name '"
+msgstr " nazwa '"
+
+#: src/createitems.adb:95
+msgid " with that name."
+msgstr " z taką nazwą."
+
+#: src/createitems.adb:94
+msgid "' because there exists "
+msgstr "' ponieważ istnieje "
+
+#: src/deleteitems.adb:73
+msgid "(and its content)"
+msgstr "(i jego zawartość)"
+
+#: src/errordialog.adb:109
+msgid "/.cache/hunter' directory."
+msgstr "/.cache/hunter katalogu."
+
+#: bin/ui/hunter.glade:420
+msgid "About"
+msgstr "O programie"
+
+#: bin/ui/hunter.glade:850
+msgid "Add"
+msgstr "Dodaj"
+
+#: bin/ui/hunter.glade:849
+msgid "Add bookmark to this directory [ALT-B]."
+msgstr "Dodaj zakładkę do tego katalogu [ALT-B]"
+
+#: bin/ui/hunter.glade:174
+msgid "Add new directory."
+msgstr "Dodaj nowy katalog."
+
+#: bin/ui/hunter.glade:313
+msgid "Add new file [ALT+N] or press arrow to see more options."
+msgstr "Dodaj nowy plik [ALT+N] lub naciśnij strzałkę aby zobaczyć więcej opcji."
+
+#: bin/ui/hunter.glade:185
+msgid "Add new link to selected file or directory."
+msgstr "Dodaj nowy link do wybranego pliku lub katalogu."
+
+#: bin/ui/hunter.glade:1810
+msgid ""
+"After that amount of seconds, all messages will be automatically closed by "
+"the program. If you set it to 0, this feature will be disabled."
+msgstr ""
+"Po tej ilości sekund, wszystkie powiadomienia będą automatycznie zamknięte "
+"przez program. Jeżeli ustawisz tę wartość na 0, ta opcja będzie wyłączona."
+
+#: bin/ui/hunter.glade:1111
+msgid "Associated program:"
+msgstr "Przypisany program:"
+
+#: bin/ui/hunter.glade:1183 bin/ui/hunter.glade:1267 bin/ui/hunter.glade:1339
+msgid "Can execute"
+msgstr "Może uruchamiać"
+
+#: bin/ui/hunter.glade:1151 bin/ui/hunter.glade:1235 bin/ui/hunter.glade:1307
+msgid "Can read"
+msgstr "Może czytać"
+
+#: bin/ui/hunter.glade:1167 bin/ui/hunter.glade:1251 bin/ui/hunter.glade:1323
+msgid "Can write"
+msgstr "Może zapisywać do"
+
+#: src/createitems.adb:124
+msgid "Can't create symbolic link."
+msgstr "Nie można utworzyć linku symbolicznego."
+
+#: src/deleteitems.adb:57
+msgid "Can't delete selected directory: "
+msgstr "Nie można utworzyć wybranego katalogu: "
+
+#: src/moveitems.adb:110
+msgid "Can't move "
+msgstr "Nie można przenieść "
+
+#: src/createitems.adb:111
+msgid "Can't rename "
+msgstr "Nie można zmienić nazwy "
+
+#: src/activateitems.adb:168
+msgid "Can't start command: "
+msgstr "Nie można wykonać komendy: "
+
+#: bin/ui/hunter.glade:446
+msgid "Cancel"
+msgstr "Przerwij"
+
+#: bin/ui/hunter.glade:1547
+msgid "Click to show technical info"
+msgstr "Kliknij aby pokazać informacje techniczne"
+
+#: bin/ui/hunter.glade:472
+msgid "Close"
+msgstr "Zamknij"
+
+#: src/activateitems.adb:147
+msgid "Command "
+msgstr "Komenda "
+
+#: bin/ui/hunter.glade:378
+msgid "Copy"
+msgstr "Kopiuj"
+
+#: bin/ui/hunter.glade:377
+msgid ""
+"Copy selected files [ALT-C]. Pressed button means start copying currently "
+"selected files or directories. Press again to copy them."
+msgstr ""
+"Kopiuj wybrane pliki [ALT-C]. Wciśnięty przycisk oznacza rozpoczęcie "
+"kopiowania obecnie wybranych plików i katalogów. Naciśnij go ponownie aby "
+"skopiować je."
+
+#: src/showitems.adb:538
+msgid "Could not change permissions for "
+msgstr ""
+
+#: src/deleteitems.adb:52
+msgid "Could not delete selected files or directories. Reason: "
+msgstr ""
+
+#: src/utils.adb:93
+msgid "Could not found executable: "
+msgstr ""
+
+#: src/showitems.adb:357
+msgid "Could not load image file: "
+msgstr ""
+
+#: src/showitems.adb:474
+msgid "Could not set new associated file."
+msgstr ""
+
+#: src/createitems.adb:165
+msgid "Create new directory."
+msgstr ""
+
+#: src/createitems.adb:183
+msgid "Create new file."
+msgstr ""
+
+#: src/createitems.adb:171
+msgid "Create new link to selected file or directory."
+msgstr ""
+
+#: bin/ui/hunter.glade:362
+msgid "Cut"
+msgstr ""
+
+#: bin/ui/hunter.glade:330
+msgid "Delete"
+msgstr ""
+
+#: bin/ui/hunter.glade:329
+msgid "Delete selected file(s) or folder(s) [ALT-Delete]."
+msgstr ""
+
+#: bin/ui/hunter.glade:65
+msgid "Desktop"
+msgstr ""
+
+#: src/copyitems.adb:54 src/createitems.adb:176 src/moveitems.adb:57
+msgid "Destination directory"
+msgstr ""
+
+#: src/copyitems.adb:123 src/moveitems.adb:84
+msgid "Directory"
+msgstr ""
+
+#: src/createitems.adb:59
+msgid "Directory "
+msgstr ""
+
+#: bin/ui/hunter.glade:1717
+msgid "Directory Listing"
+msgstr ""
+
+#: bin/ui/hunter.glade:445
+msgid "Discard all changes and back to files list [ALT-C]"
+msgstr ""
+
+#: bin/ui/hunter.glade:86
+msgid "Documents"
+msgstr ""
+
+#: bin/ui/hunter.glade:72
+msgid "Download"
+msgstr ""
+
+#: src/activateitems.adb:109
+msgid "Enter command to use to open selected item."
+msgstr ""
+
+#: src/bookmarks.adb:195
+msgid "Enter destination"
+msgstr ""
+
+#: bin/ui/hunter.glade:1590
+msgid "Enter program name"
+msgstr ""
+
+#: bin/ui/hunter.glade:748
+msgid "Execute selected program [ALT-E]."
+msgstr ""
+
+#: src/copyitems.adb:125 src/moveitems.adb:86
+msgid "File"
+msgstr ""
+
+#: bin/ui/hunter.glade:822
+msgid "File or directory informations [ALT-I]"
+msgstr ""
+
+#: bin/ui/hunter.glade:1086
+msgid "File type:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1011 src/showitems.adb:134
+msgid "Full path:"
+msgstr ""
+
+#: src/bookmarks.adb:52
+msgid "Go to selected destination."
+msgstr ""
+
+#: src/loaddata.adb:399
+msgid "Go to this directory [ALT+"
+msgstr ""
+
+#: src/loaddata.adb:345
+msgid "Go to this directory [ALT+1]"
+msgstr ""
+
+#: src/loaddata.adb:409
+msgid "Go to this directory [ALT+SHIFT+"
+msgstr ""
+
+#: src/loaddata.adb:351
+msgid "Go to this directory [ALT+SHIFT+1]"
+msgstr ""
+
+#: src/loaddata.adb:335 src/loaddata.adb:370
+msgid "Go to upper directory [ALT+SHIFT+U]"
+msgstr ""
+
+#: src/loaddata.adb:329 src/loaddata.adb:363
+msgid "Go to upper directory [ALT+U]"
+msgstr ""
+
+#: bin/ui/hunter.glade:271
+msgid "Go to your home directory [ALT+H] or press arrow to see more bookmarks"
+msgstr ""
+
+#: bin/ui/hunter.glade:206
+msgid "Graphical File Manager for Linux"
+msgstr ""
+
+#: bin/ui/hunter.glade:1207
+msgid "Group:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1799
+msgid "Hide messages after:"
+msgstr ""
+
+#: bin/ui/hunter.glade:57 bin/ui/hunter.glade:272
+msgid "Home"
+msgstr ""
+
+#: bin/ui/hunter.glade:238
+msgid "Hunter"
+msgstr ""
+
+#: src/activateitems.adb:184
+msgid "I can't execute this file."
+msgstr ""
+
+#: src/activateitems.adb:97
+msgid ""
+"I can't open this file. Can't start application asociated with this type of "
+"files."
+msgstr ""
+
+#: src/activateitems.adb:83
+msgid ""
+"I can't open this file. No application associated with this type of files."
+msgstr ""
+
+#: bin/ui/hunter.glade:823
+msgid "Info"
+msgstr ""
+
+#: src/showitems.adb:278
+msgid "Information"
+msgstr ""
+
+#: bin/ui/hunter.glade:1826
+msgid "Interface"
+msgstr ""
+
+#: bin/ui/hunter.glade:1035
+msgid "Last Modified:"
+msgstr ""
+
+#: src/showitems.adb:131
+msgid "Links to:"
+msgstr ""
+
+#: bin/ui/hunter.glade:693
+msgid "Modified"
+msgstr ""
+
+#: bin/ui/hunter.glade:361
+msgid ""
+"Move selected files [ALT-M]. Pressed button means start moving currently "
+"selected files or directories. Press again to move them."
+msgstr ""
+
+#: bin/ui/hunter.glade:93
+msgid "Music"
+msgstr ""
+
+#: bin/ui/hunter.glade:653 bin/ui/hunter.glade:941 bin/ui/hunter.glade:1401
+#: bin/ui/hunter.glade:1619
+msgid "Name"
+msgstr ""
+
+#: bin/ui/hunter.glade:314
+msgid "New"
+msgstr ""
+
+#: bin/ui/hunter.glade:175
+msgid "New _Directory"
+msgstr ""
+
+#: bin/ui/hunter.glade:186
+msgid "New _Link"
+msgstr ""
+
+#: bin/ui/hunter.glade:540
+msgid "No for all"
+msgstr ""
+
+#: bin/ui/hunter.glade:1487
+msgid ""
+"Oops, something bad happens and progam crashed. Please, remember what you "
+"done before crash and report this problem at"
+msgstr ""
+
+#: bin/ui/hunter.glade:765
+msgid "Open"
+msgstr ""
+
+#: bin/ui/hunter.glade:764
+msgid "Open selected file or directory [ALT-O]"
+msgstr ""
+
+#: bin/ui/hunter.glade:780
+msgid "Open selected file or directory with command [ALT-W]"
+msgstr ""
+
+#: bin/ui/hunter.glade:781
+msgid "Open with..."
+msgstr ""
+
+#: bin/ui/hunter.glade:1291
+msgid "Others:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1123
+msgid "Owner:"
+msgstr ""
+
+#: bin/ui/hunter.glade:100
+msgid "Pictures"
+msgstr ""
+
+#: bin/ui/hunter.glade:404
+msgid "Preferences"
+msgstr ""
+
+#: bin/ui/hunter.glade:807 bin/ui/hunter.glade:1453 bin/ui/hunter.glade:1771
+msgid "Preview"
+msgstr ""
+
+#: bin/ui/hunter.glade:806
+msgid "Preview file or directory [ALT-P]"
+msgstr ""
+
+#: bin/ui/hunter.glade:79
+msgid "Public"
+msgstr ""
+
+#: src/loaddata.adb:315 src/loaddata.adb:379
+msgid "Reload current directory [ALT+R]"
+msgstr ""
+
+#: src/loaddata.adb:321 src/loaddata.adb:386
+msgid "Reload current directory [ALT+SHIFT+R]"
+msgstr ""
+
+#: bin/ui/hunter.glade:866
+msgid "Remove"
+msgstr ""
+
+#: bin/ui/hunter.glade:865
+msgid "Remove bookmark to this directory [ALT-B]"
+msgstr ""
+
+#: bin/ui/hunter.glade:346
+msgid "Rename"
+msgstr ""
+
+#: src/mainwindow.adb:102
+msgid "Rename directory."
+msgstr ""
+
+#: src/mainwindow.adb:106
+msgid "Rename file."
+msgstr ""
+
+#: bin/ui/hunter.glade:345
+msgid "Rename selected file or directory [CTRL-R]"
+msgstr ""
+
+#: bin/ui/hunter.glade:749
+msgid "Run"
+msgstr ""
+
+#: bin/ui/hunter.glade:1757
+msgid ""
+"Scale images in preview. When disabled, images shows with natural size. When "
+"enabled, images are resized to the size of the preview window."
+msgstr ""
+
+#: bin/ui/hunter.glade:1745
+msgid "Scale images:"
+msgstr ""
+
+#: bin/ui/hunter.glade:288
+msgid "Search"
+msgstr ""
+
+#: bin/ui/hunter.glade:287
+msgid "Search for the file or directory [ALT+F]"
+msgstr ""
+
+#: bin/ui/hunter.glade:1678
+msgid ""
+"Show hidden files and directories in directory listing and in directories "
+"preview."
+msgstr ""
+
+#: bin/ui/hunter.glade:1666
+msgid "Show hidden files:"
+msgstr ""
+
+#: bin/ui/hunter.glade:419
+msgid "Show informations about the program [ALT-A]."
+msgstr ""
+
+#: bin/ui/hunter.glade:1691
+msgid "Show modification time:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1703
+msgid "Show the column with last modification date for files and directories."
+msgstr ""
+
+#: bin/ui/hunter.glade:403
+msgid "Show the program preferences [ALT-P]"
+msgstr ""
+
+#: bin/ui/hunter.glade:678 bin/ui/hunter.glade:1426
+msgid "Size"
+msgstr ""
+
+#: bin/ui/hunter.glade:1023
+msgid "Size:"
+msgstr ""
+
+#: src/copyitems.adb:50
+msgid "Stop copying files and directories [ALT-C]"
+msgstr ""
+
+#: src/moveitems.adb:53
+msgid "Stop moving files and directories [ALT-C]"
+msgstr ""
+
+#: src/showitems.adb:205 src/showitems.adb:213 src/showitems.adb:216
+#: src/showitems.adb:223
+msgid "Unknown"
+msgstr ""
+
+#: src/deleteitems.adb:62
+msgid "Unknown error during deleting files or direcotries."
+msgstr ""
+
+#: bin/ui/hunter.glade:107
+msgid "Videos"
+msgstr ""
+
+#: bin/ui/hunter.glade:554
+msgid "Yes for all"
+msgstr ""
+
+#: src/createitems.adb:93
+msgid "You can't "
+msgstr ""
+
+#: src/activateitems.adb:48
+msgid "You can't enter this directory."
+msgstr ""
+
+#: src/copyitems.adb:62
+msgid "You don't have permissions to copy selected items here."
+msgstr ""
+
+#: src/createitems.adb:64
+msgid "You don't have permissions to enter directory "
+msgstr ""
+
+#: src/moveitems.adb:65
+msgid "You don't have permissions to move selected items here."
+msgstr ""
+
+#: src/loaddata.adb:179
+msgid "You don't have permissions to preview this directory."
+msgstr ""
+
+#: src/createitems.adb:142
+msgid "You don't have permissions to rename "
+msgstr ""
+
+#: src/createitems.adb:138
+msgid "You don't have permissions to write to "
+msgstr ""
+
+#: src/createitems.adb:75
+msgid "create directory with"
+msgstr ""
+
+#: src/createitems.adb:78
+msgid "create file with"
+msgstr ""
+
+#: src/createitems.adb:83
+msgid "create link with"
+msgstr ""
+
+#: src/createitems.adb:88
+msgid "directory"
+msgstr ""
+
+#: bin/ui/hunter.glade:1560
+msgid "error"
+msgstr ""
+
+#: src/createitems.adb:90
+msgid "file"
+msgstr ""
+
+#: bin/ui/hunter.glade:1475
+msgid "files"
+msgstr ""
+
+#: bin/ui/hunter.glade:1499
+msgid "https://github.com/thindil/hunter/issues"
+msgstr ""
+
+#: src/showitems.adb:156
+msgid "none"
+msgstr ""
+
+#: bin/ui/hunter.glade:998 bin/ui/hunter.glade:1443
+msgid "page0"
+msgstr ""
+
+#: bin/ui/hunter.glade:1378
+msgid "page1"
+msgstr ""
+
+#: src/createitems.adb:80
+msgid "rename with new"
+msgstr ""
+
+#: bin/ui/hunter.glade:205
+msgid "©2019 Bartek thindil Jasicki"
+msgstr ""
