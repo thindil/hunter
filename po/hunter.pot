@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-06-29 07:37+0200\n"
+"POT-Creation-Date: 2019-06-30 07:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: src/showitems.adb:184
+msgid " (not installed)"
+msgstr ""
 
 #: bin/ui/hunter.glade:1517
 msgid " and attach (if possible) file 'error.log'"
@@ -29,7 +33,7 @@ msgstr ""
 msgid " doesn't exists."
 msgstr ""
 
-#: src/copyitems.adb:130
+#: src/copyitems.adb:130 src/moveitems.adb:91
 msgid " exists. Do you want to overwrite it?"
 msgstr ""
 
@@ -111,6 +115,10 @@ msgstr ""
 msgid "Can't delete selected directory: "
 msgstr ""
 
+#: src/moveitems.adb:110
+msgid "Can't move "
+msgstr ""
+
 #: src/createitems.adb:111
 msgid "Can't rename "
 msgstr ""
@@ -145,8 +153,24 @@ msgid ""
 "selected files or directories. Press again to copy them."
 msgstr ""
 
+#: src/showitems.adb:538
+msgid "Could not change permissions for "
+msgstr ""
+
 #: src/deleteitems.adb:52
 msgid "Could not delete selected files or directories. Reason: "
+msgstr ""
+
+#: src/utils.adb:93
+msgid "Could not found executable: "
+msgstr ""
+
+#: src/showitems.adb:357
+msgid "Could not load image file: "
+msgstr ""
+
+#: src/showitems.adb:474
+msgid "Could not set new associated file."
 msgstr ""
 
 #: src/createitems.adb:165
@@ -177,11 +201,11 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
-#: src/copyitems.adb:54 src/createitems.adb:176
+#: src/copyitems.adb:54 src/createitems.adb:176 src/moveitems.adb:57
 msgid "Destination directory"
 msgstr ""
 
-#: src/copyitems.adb:123
+#: src/copyitems.adb:123 src/moveitems.adb:84
 msgid "Directory"
 msgstr ""
 
@@ -221,7 +245,7 @@ msgstr ""
 msgid "Execute selected program [ALT-E]."
 msgstr ""
 
-#: src/copyitems.adb:125
+#: src/copyitems.adb:125 src/moveitems.adb:86
 msgid "File"
 msgstr ""
 
@@ -233,7 +257,7 @@ msgstr ""
 msgid "File type:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1011
+#: bin/ui/hunter.glade:1011 src/showitems.adb:134
 msgid "Full path:"
 msgstr ""
 
@@ -308,12 +332,20 @@ msgstr ""
 msgid "Info"
 msgstr ""
 
+#: src/showitems.adb:278
+msgid "Information"
+msgstr ""
+
 #: bin/ui/hunter.glade:1826
 msgid "Interface"
 msgstr ""
 
 #: bin/ui/hunter.glade:1035
 msgid "Last Modified:"
+msgstr ""
+
+#: src/showitems.adb:131
+msgid "Links to:"
 msgstr ""
 
 #: bin/ui/hunter.glade:693
@@ -493,6 +525,15 @@ msgstr ""
 msgid "Stop copying files and directories [ALT-C]"
 msgstr ""
 
+#: src/moveitems.adb:53
+msgid "Stop moving files and directories [ALT-C]"
+msgstr ""
+
+#: src/showitems.adb:205 src/showitems.adb:213 src/showitems.adb:216
+#: src/showitems.adb:223
+msgid "Unknown"
+msgstr ""
+
 #: src/deleteitems.adb:62
 msgid "Unknown error during deleting files or direcotries."
 msgstr ""
@@ -519,6 +560,10 @@ msgstr ""
 
 #: src/createitems.adb:64
 msgid "You don't have permissions to enter directory "
+msgstr ""
+
+#: src/moveitems.adb:65
+msgid "You don't have permissions to move selected items here."
 msgstr ""
 
 #: src/loaddata.adb:179
@@ -563,6 +608,10 @@ msgstr ""
 
 #: bin/ui/hunter.glade:1499
 msgid "https://github.com/thindil/hunter/issues"
+msgstr ""
+
+#: src/showitems.adb:156
+msgid "none"
 msgstr ""
 
 #: bin/ui/hunter.glade:998 bin/ui/hunter.glade:1443
