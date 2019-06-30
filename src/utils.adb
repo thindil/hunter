@@ -16,6 +16,7 @@
 with Ada.Command_Line; use Ada.Command_Line;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtkada.Intl; use Gtkada.Intl;
 with Messages; use Messages;
 
 package body Utils is
@@ -89,7 +90,7 @@ package body Utils is
       end if;
       ExecutablePath := Locate_Exec_On_Path(Name);
       if ExecutablePath = null then
-         ShowMessage("Could not found executable: " & Name);
+         ShowMessage(Gettext("Could not found executable: ") & Name);
          return "";
       end if;
       return ExecutablePath.all;
