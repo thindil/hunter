@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-06-29 06:56+0200\n"
+"POT-Creation-Date: 2019-06-29 07:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,6 +33,10 @@ msgstr ""
 msgid " exists. Do you want to overwrite it?"
 msgstr ""
 
+#: src/errordialog.adb:108
+msgid " from '"
+msgstr ""
+
 #: src/createitems.adb:94
 msgid " name '"
 msgstr ""
@@ -43,6 +47,14 @@ msgstr ""
 
 #: src/createitems.adb:94
 msgid "' because there exists "
+msgstr ""
+
+#: src/deleteitems.adb:73
+msgid "(and its content)"
+msgstr ""
+
+#: src/errordialog.adb:109
+msgid "/.cache/hunter' directory."
 msgstr ""
 
 #: bin/ui/hunter.glade:420
@@ -95,6 +107,10 @@ msgstr ""
 msgid "Can't create symbolic link."
 msgstr ""
 
+#: src/deleteitems.adb:57
+msgid "Can't delete selected directory: "
+msgstr ""
+
 #: src/createitems.adb:111
 msgid "Can't rename "
 msgstr ""
@@ -127,6 +143,10 @@ msgstr ""
 msgid ""
 "Copy selected files [ALT-C]. Pressed button means start copying currently "
 "selected files or directories. Press again to copy them."
+msgstr ""
+
+#: src/deleteitems.adb:52
+msgid "Could not delete selected files or directories. Reason: "
 msgstr ""
 
 #: src/createitems.adb:165
@@ -219,6 +239,30 @@ msgstr ""
 
 #: src/bookmarks.adb:52
 msgid "Go to selected destination."
+msgstr ""
+
+#: src/loaddata.adb:399
+msgid "Go to this directory [ALT+"
+msgstr ""
+
+#: src/loaddata.adb:345
+msgid "Go to this directory [ALT+1]"
+msgstr ""
+
+#: src/loaddata.adb:409
+msgid "Go to this directory [ALT+SHIFT+"
+msgstr ""
+
+#: src/loaddata.adb:351
+msgid "Go to this directory [ALT+SHIFT+1]"
+msgstr ""
+
+#: src/loaddata.adb:335 src/loaddata.adb:370
+msgid "Go to upper directory [ALT+SHIFT+U]"
+msgstr ""
+
+#: src/loaddata.adb:329 src/loaddata.adb:363
+msgid "Go to upper directory [ALT+U]"
 msgstr ""
 
 #: bin/ui/hunter.glade:271
@@ -357,6 +401,14 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
+#: src/loaddata.adb:315 src/loaddata.adb:379
+msgid "Reload current directory [ALT+R]"
+msgstr ""
+
+#: src/loaddata.adb:321 src/loaddata.adb:386
+msgid "Reload current directory [ALT+SHIFT+R]"
+msgstr ""
+
 #: bin/ui/hunter.glade:866
 msgid "Remove"
 msgstr ""
@@ -367,6 +419,14 @@ msgstr ""
 
 #: bin/ui/hunter.glade:346
 msgid "Rename"
+msgstr ""
+
+#: src/mainwindow.adb:102
+msgid "Rename directory."
+msgstr ""
+
+#: src/mainwindow.adb:106
+msgid "Rename file."
 msgstr ""
 
 #: bin/ui/hunter.glade:345
@@ -433,6 +493,10 @@ msgstr ""
 msgid "Stop copying files and directories [ALT-C]"
 msgstr ""
 
+#: src/deleteitems.adb:62
+msgid "Unknown error during deleting files or direcotries."
+msgstr ""
+
 #: bin/ui/hunter.glade:107
 msgid "Videos"
 msgstr ""
@@ -455,6 +519,10 @@ msgstr ""
 
 #: src/createitems.adb:64
 msgid "You don't have permissions to enter directory "
+msgstr ""
+
+#: src/loaddata.adb:179
+msgid "You don't have permissions to preview this directory."
 msgstr ""
 
 #: src/createitems.adb:142
