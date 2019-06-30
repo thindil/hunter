@@ -161,167 +161,167 @@ msgstr ""
 
 #: src/showitems.adb:538
 msgid "Could not change permissions for "
-msgstr ""
+msgstr "Nie można zmienić uprawnień dla "
 
 #: src/deleteitems.adb:52
 msgid "Could not delete selected files or directories. Reason: "
-msgstr ""
+msgstr "Nie można skasować wybranych plików lub katalogów. Przyczyna: "
 
 #: src/utils.adb:93
 msgid "Could not found executable: "
-msgstr ""
+msgstr "Nie można znaleźć pliku uruchomieniowego: "
 
 #: src/showitems.adb:357
 msgid "Could not load image file: "
-msgstr ""
+msgstr "Nie można załadować pliku obrazkowego: "
 
 #: src/showitems.adb:474
 msgid "Could not set new associated file."
-msgstr ""
+msgstr "Nie można ustawić nowego przypisanego programu."
 
 #: src/createitems.adb:165
 msgid "Create new directory."
-msgstr ""
+msgstr "Stwórz nowy katalog."
 
 #: src/createitems.adb:183
 msgid "Create new file."
-msgstr ""
+msgstr "Stwórz nowy plik."
 
 #: src/createitems.adb:171
 msgid "Create new link to selected file or directory."
-msgstr ""
+msgstr "Stwórz nowy link do wybranego pliku lub katalogu."
 
 #: bin/ui/hunter.glade:362
 msgid "Cut"
-msgstr ""
+msgstr "Wytnij"
 
 #: bin/ui/hunter.glade:330
 msgid "Delete"
-msgstr ""
+msgstr "Skasuj"
 
 #: bin/ui/hunter.glade:329
 msgid "Delete selected file(s) or folder(s) [ALT-Delete]."
-msgstr ""
+msgstr "Skasuj wybran(e) plik(i) lub katalog(i [ALT-Delete])"
 
 #: bin/ui/hunter.glade:65
 msgid "Desktop"
-msgstr ""
+msgstr "Pulpit"
 
 #: src/copyitems.adb:54 src/createitems.adb:176 src/moveitems.adb:57
 msgid "Destination directory"
-msgstr ""
+msgstr "Katalog docelowy"
 
 #: src/copyitems.adb:123 src/moveitems.adb:84
 msgid "Directory"
-msgstr ""
+msgstr "Katalog"
 
 #: src/createitems.adb:59
 msgid "Directory "
-msgstr ""
+msgstr "Katalog "
 
 #: bin/ui/hunter.glade:1717
 msgid "Directory Listing"
-msgstr ""
+msgstr "Zawartość Katalogu"
 
 #: bin/ui/hunter.glade:445
 msgid "Discard all changes and back to files list [ALT-C]"
-msgstr ""
+msgstr "Odrzuć wszystkie zmiany i wróć do listy plików [ALT-C]"
 
 #: bin/ui/hunter.glade:86
 msgid "Documents"
-msgstr ""
+msgstr "Dokumenty"
 
 #: bin/ui/hunter.glade:72
 msgid "Download"
-msgstr ""
+msgstr "Pobrane"
 
 #: src/activateitems.adb:109
 msgid "Enter command to use to open selected item."
-msgstr ""
+msgstr "Wprowadź komendę użytą do otwarcia wybranej rzeczy."
 
 #: src/bookmarks.adb:195
 msgid "Enter destination"
-msgstr ""
+msgstr "Wprowadź katalog docelowy"
 
 #: bin/ui/hunter.glade:1590
 msgid "Enter program name"
-msgstr ""
+msgstr "Wprowadź nazwę programu"
 
 #: bin/ui/hunter.glade:748
 msgid "Execute selected program [ALT-E]."
-msgstr ""
+msgstr "Uruchom wybrany program [ALT-E]"
 
 #: src/copyitems.adb:125 src/moveitems.adb:86
 msgid "File"
-msgstr ""
+msgstr "Plik"
 
 #: bin/ui/hunter.glade:822
 msgid "File or directory informations [ALT-I]"
-msgstr ""
+msgstr "Informacje o pliku lub katalogu [ALT-I]"
 
 #: bin/ui/hunter.glade:1086
 msgid "File type:"
-msgstr ""
+msgstr "Typ pliku:"
 
 #: bin/ui/hunter.glade:1011 src/showitems.adb:134
 msgid "Full path:"
-msgstr ""
+msgstr "Pełna ścieżka:"
 
 #: src/bookmarks.adb:52
 msgid "Go to selected destination."
-msgstr ""
+msgstr "Idź do wybranej lokacji."
 
 #: src/loaddata.adb:399
 msgid "Go to this directory [ALT+"
-msgstr ""
+msgstr "Idź do tego katalogu [ALT+"
 
 #: src/loaddata.adb:345
 msgid "Go to this directory [ALT+1]"
-msgstr ""
+msgstr "Idź do tego katalogu [ALT+1]"
 
 #: src/loaddata.adb:409
 msgid "Go to this directory [ALT+SHIFT+"
-msgstr ""
+msgstr "Idź do tego katalogu [ALT+SHIFT+"
 
 #: src/loaddata.adb:351
 msgid "Go to this directory [ALT+SHIFT+1]"
-msgstr ""
+msgstr "Idź do tego katalogu [ALT+SHIFT+1]"
 
 #: src/loaddata.adb:335 src/loaddata.adb:370
 msgid "Go to upper directory [ALT+SHIFT+U]"
-msgstr ""
+msgstr "Idź do nadrzędnego katalogu [ALT+SHIFT+U]"
 
 #: src/loaddata.adb:329 src/loaddata.adb:363
 msgid "Go to upper directory [ALT+U]"
-msgstr ""
+msgstr "Idź do nadrzędnego katalogu [ALT+U]"
 
 #: bin/ui/hunter.glade:271
 msgid "Go to your home directory [ALT+H] or press arrow to see more bookmarks"
-msgstr ""
+msgstr "Idź do katalogu domowego [ALT+H] albo naciśnij strzałkę aby zobaczyć więcej zakładek"
 
 #: bin/ui/hunter.glade:206
 msgid "Graphical File Manager for Linux"
-msgstr ""
+msgstr "Graficzny Menadżer Plików dla Linuxa"
 
 #: bin/ui/hunter.glade:1207
 msgid "Group:"
-msgstr ""
+msgstr "Grupa:"
 
 #: bin/ui/hunter.glade:1799
 msgid "Hide messages after:"
-msgstr ""
+msgstr "Ukryj powiadomienia po:"
 
 #: bin/ui/hunter.glade:57 bin/ui/hunter.glade:272
 msgid "Home"
-msgstr ""
+msgstr "Katalog domowy"
 
 #: bin/ui/hunter.glade:238
 msgid "Hunter"
-msgstr ""
+msgstr "Hunter"
 
 #: src/activateitems.adb:184
 msgid "I can't execute this file."
-msgstr ""
+msgstr "Nie mogę uruchomić tego pliku"
 
 #: src/activateitems.adb:97
 msgid ""
