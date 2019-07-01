@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 - Updated interface
 - Updated code documentation
 
+### Fixed
+- Typo in info about unknown error during deleting files and directories
+
 ## [0.5] - 2019-06-23
 
 ### Added
