@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-06-30 07:07+0200\n"
+"POT-Creation-Date: 2019-07-01 07:24+0200\n"
 "PO-Revision-Date: 2019-06-30 07:10+0200\n"
 "Last-Translator:  <thindil@laeran.pl>\n"
 "Language-Team: Polish\n"
@@ -80,7 +80,8 @@ msgstr "Dodaj nowy katalog."
 
 #: bin/ui/hunter.glade:313
 msgid "Add new file [ALT+N] or press arrow to see more options."
-msgstr "Dodaj nowy plik [ALT+N] lub naciśnij strzałkę aby zobaczyć więcej opcji."
+msgstr ""
+"Dodaj nowy plik [ALT+N] lub naciśnij strzałkę aby zobaczyć więcej opcji."
 
 #: bin/ui/hunter.glade:185
 msgid "Add new link to selected file or directory."
@@ -297,7 +298,9 @@ msgstr "Idź do nadrzędnego katalogu [ALT+U]"
 
 #: bin/ui/hunter.glade:271
 msgid "Go to your home directory [ALT+H] or press arrow to see more bookmarks"
-msgstr "Idź do katalogu domowego [ALT+H] albo naciśnij strzałkę aby zobaczyć więcej zakładek"
+msgstr ""
+"Idź do katalogu domowego [ALT+H] albo naciśnij strzałkę aby zobaczyć więcej "
+"zakładek"
 
 #: bin/ui/hunter.glade:206
 msgid "Graphical File Manager for Linux"
@@ -328,8 +331,8 @@ msgid ""
 "I can't open this file. Can't start application asociated with this type of "
 "files."
 msgstr ""
-"Nie mogę otworzyć tego pliku. Nie można uruchomić aplikacji powiązanej "
-"z tym typem plików."
+"Nie mogę otworzyć tego pliku. Nie można uruchomić aplikacji powiązanej z tym "
+"typem plików."
 
 #: src/activateitems.adb:83
 msgid ""
@@ -553,7 +556,7 @@ msgid "Unknown"
 msgstr "Nieznany"
 
 #: src/deleteitems.adb:62
-msgid "Unknown error during deleting files or direcotries."
+msgid "Unknown error during deleting files or directories."
 msgstr ""
 
 #: bin/ui/hunter.glade:107
