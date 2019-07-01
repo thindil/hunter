@@ -517,40 +517,40 @@ msgstr "Pokaż ukryte pliki:"
 
 #: bin/ui/hunter.glade:419
 msgid "Show informations about the program [ALT-A]."
-msgstr ""
+msgstr "Pokaż informacje o programie [ALT-A]"
 
 #: bin/ui/hunter.glade:1691
 msgid "Show modification time:"
-msgstr ""
+msgstr "Pokaż czas modyfikacji:"
 
 #: bin/ui/hunter.glade:1703
 msgid "Show the column with last modification date for files and directories."
-msgstr ""
+msgstr "Pokaż kolumnę z datą ostaniej modyfikacji dla plików i katalogów."
 
 #: bin/ui/hunter.glade:403
 msgid "Show the program preferences [ALT-P]"
-msgstr ""
+msgstr "Pokaż preferencje programu [ALT-P]"
 
 #: bin/ui/hunter.glade:678 bin/ui/hunter.glade:1426
 msgid "Size"
-msgstr ""
+msgstr "Rozmiar"
 
 #: bin/ui/hunter.glade:1023
 msgid "Size:"
-msgstr ""
+msgstr "Rozmiar:"
 
 #: src/copyitems.adb:50
 msgid "Stop copying files and directories [ALT-C]"
-msgstr ""
+msgstr "Przestań kopiować pliki i katalogi [ALT-C]"
 
 #: src/moveitems.adb:53
 msgid "Stop moving files and directories [ALT-C]"
-msgstr ""
+msgstr "Przestań przenosić pliki i katalogi [ALT-C]"
 
 #: src/showitems.adb:205 src/showitems.adb:213 src/showitems.adb:216
 #: src/showitems.adb:223
 msgid "Unknown"
-msgstr ""
+msgstr "Nieznany"
 
 #: src/deleteitems.adb:62
 msgid "Unknown error during deleting files or direcotries."
