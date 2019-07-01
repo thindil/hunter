@@ -59,7 +59,7 @@ package body DeleteItems is
          raise;
       when others =>
          ShowMessage
-           (Gettext("Unknown error during deleting files or direcotries."));
+           (Gettext("Unknown error during deleting files or directories."));
          raise;
    end DeleteSelected;
 
