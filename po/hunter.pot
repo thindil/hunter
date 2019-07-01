@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-06-30 07:07+0200\n"
+"POT-Creation-Date: 2019-07-01 07:24+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -535,7 +535,7 @@ msgid "Unknown"
 msgstr ""
 
 #: src/deleteitems.adb:62
-msgid "Unknown error during deleting files or direcotries."
+msgid "Unknown error during deleting files or directories."
 msgstr ""
 
 #: bin/ui/hunter.glade:107
