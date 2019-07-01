@@ -328,180 +328,192 @@ msgid ""
 "I can't open this file. Can't start application asociated with this type of "
 "files."
 msgstr ""
+"Nie mogę otworzyć tego pliku. Nie można uruchomić aplikacji powiązanej "
+"z tym typem plików."
 
 #: src/activateitems.adb:83
 msgid ""
 "I can't open this file. No application associated with this type of files."
 msgstr ""
+"Nie mogę otworzyć tego pliku. Nie ma aplikacji powiązanej z tym typem plików."
 
 #: bin/ui/hunter.glade:823
 msgid "Info"
-msgstr ""
+msgstr "Informacja"
 
 #: src/showitems.adb:278
 msgid "Information"
-msgstr ""
+msgstr "Informacja"
 
 #: bin/ui/hunter.glade:1826
 msgid "Interface"
-msgstr ""
+msgstr "Interfejs"
 
 #: bin/ui/hunter.glade:1035
 msgid "Last Modified:"
-msgstr ""
+msgstr "Ostatnio Zmodyfikowany:"
 
 #: src/showitems.adb:131
 msgid "Links to:"
-msgstr ""
+msgstr "Linkuje do:"
 
 #: bin/ui/hunter.glade:693
 msgid "Modified"
-msgstr ""
+msgstr "Zmodyfikowany"
 
 #: bin/ui/hunter.glade:361
 msgid ""
 "Move selected files [ALT-M]. Pressed button means start moving currently "
 "selected files or directories. Press again to move them."
 msgstr ""
+"Przenieś wybrane pliki [ALT-M]. Naciśnięty przycisk oznacza rozpoczęcie "
+"przenoszenia obecnie wybranych plików lub katalogów. Naciśnij go ponownie "
+"aby przenieść je."
 
 #: bin/ui/hunter.glade:93
 msgid "Music"
-msgstr ""
+msgstr "Muzyka"
 
 #: bin/ui/hunter.glade:653 bin/ui/hunter.glade:941 bin/ui/hunter.glade:1401
 #: bin/ui/hunter.glade:1619
 msgid "Name"
-msgstr ""
+msgstr "Nazwa"
 
 #: bin/ui/hunter.glade:314
 msgid "New"
-msgstr ""
+msgstr "Nowy"
 
 #: bin/ui/hunter.glade:175
 msgid "New _Directory"
-msgstr ""
+msgstr "Nowy _Katalog"
 
 #: bin/ui/hunter.glade:186
 msgid "New _Link"
-msgstr ""
+msgstr "Nowy _Link"
 
 #: bin/ui/hunter.glade:540
 msgid "No for all"
-msgstr ""
+msgstr "Nie dla wszystkich"
 
 #: bin/ui/hunter.glade:1487
 msgid ""
 "Oops, something bad happens and progam crashed. Please, remember what you "
 "done before crash and report this problem at"
 msgstr ""
+"Ups, coś złego stało się i program wykrzaczył się. Proszę, zapamiętaj co "
+"robiłeś(aś) zanim to nastąpiło i zgłoś problem na"
 
 #: bin/ui/hunter.glade:765
 msgid "Open"
-msgstr ""
+msgstr "Otwórz"
 
 #: bin/ui/hunter.glade:764
 msgid "Open selected file or directory [ALT-O]"
-msgstr ""
+msgstr "Otwórz wybrany plik lub katalog [ALT-O]"
 
 #: bin/ui/hunter.glade:780
 msgid "Open selected file or directory with command [ALT-W]"
-msgstr ""
+msgstr "Otwórz wybrany plik lub katalog przy pomocy komendy [ALT-W]"
 
 #: bin/ui/hunter.glade:781
 msgid "Open with..."
-msgstr ""
+msgstr "Otwórz z..."
 
 #: bin/ui/hunter.glade:1291
 msgid "Others:"
-msgstr ""
+msgstr "Inne:"
 
 #: bin/ui/hunter.glade:1123
 msgid "Owner:"
-msgstr ""
+msgstr "Właściciel:"
 
 #: bin/ui/hunter.glade:100
 msgid "Pictures"
-msgstr ""
+msgstr "Obrazy"
 
 #: bin/ui/hunter.glade:404
 msgid "Preferences"
-msgstr ""
+msgstr "Preferencje"
 
 #: bin/ui/hunter.glade:807 bin/ui/hunter.glade:1453 bin/ui/hunter.glade:1771
 msgid "Preview"
-msgstr ""
+msgstr "Podgląd"
 
 #: bin/ui/hunter.glade:806
 msgid "Preview file or directory [ALT-P]"
-msgstr ""
+msgstr "Podgląd pliku lub katalogu [ALT-P]"
 
 #: bin/ui/hunter.glade:79
 msgid "Public"
-msgstr ""
+msgstr "Publiczny"
 
 #: src/loaddata.adb:315 src/loaddata.adb:379
 msgid "Reload current directory [ALT+R]"
-msgstr ""
+msgstr "Przeładuj obecny katalog [ALT+R]"
 
 #: src/loaddata.adb:321 src/loaddata.adb:386
 msgid "Reload current directory [ALT+SHIFT+R]"
-msgstr ""
+msgstr "Przeładuj obecny katalog [ALT+SHIFT+R]"
 
 #: bin/ui/hunter.glade:866
 msgid "Remove"
-msgstr ""
+msgstr "Usuń"
 
 #: bin/ui/hunter.glade:865
 msgid "Remove bookmark to this directory [ALT-B]"
-msgstr ""
+msgstr "Usuń zakładkę dla tego katalogu [ALT-B]"
 
 #: bin/ui/hunter.glade:346
 msgid "Rename"
-msgstr ""
+msgstr "Zmień nazwę"
 
 #: src/mainwindow.adb:102
 msgid "Rename directory."
-msgstr ""
+msgstr "Zmień nazwę katalogu."
 
 #: src/mainwindow.adb:106
 msgid "Rename file."
-msgstr ""
+msgstr "Zmień nazwę pliku."
 
 #: bin/ui/hunter.glade:345
 msgid "Rename selected file or directory [CTRL-R]"
-msgstr ""
+msgstr "Zmień nazwę wybranego pliku lub katalogu [CTRL-R]"
 
 #: bin/ui/hunter.glade:749
 msgid "Run"
-msgstr ""
+msgstr "Uruchom"
 
 #: bin/ui/hunter.glade:1757
 msgid ""
 "Scale images in preview. When disabled, images shows with natural size. When "
 "enabled, images are resized to the size of the preview window."
 msgstr ""
+"Skaluj obrazek w podglądzie. Kiedy wyłączone, obrazki są pokazywane w "
+"naturalnym rozmiarze. Kiedy włączone, obrazki są skalowane do rozmiaru okna "
+"podglądu."
 
 #: bin/ui/hunter.glade:1745
 msgid "Scale images:"
-msgstr ""
+msgstr "Skaluj obrazki:"
 
 #: bin/ui/hunter.glade:288
 msgid "Search"
-msgstr ""
+msgstr "Szukaj"
 
 #: bin/ui/hunter.glade:287
 msgid "Search for the file or directory [ALT+F]"
-msgstr ""
+msgstr "Szukaj pliku lub katalogu [ALT+F]"
 
 #: bin/ui/hunter.glade:1678
 msgid ""
 "Show hidden files and directories in directory listing and in directories "
 "preview."
 msgstr ""
+"Pokaż ukryte pliki i katalogi na liście plików oraz w podglądzie katalogów."
 
 #: bin/ui/hunter.glade:1666
 msgid "Show hidden files:"
-msgstr ""
+msgstr "Pokaż ukryte pliki:"
 
 #: bin/ui/hunter.glade:419
 msgid "Show informations about the program [ALT-A]."
