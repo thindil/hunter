@@ -557,83 +557,83 @@ msgstr "Nieznany"
 
 #: src/deleteitems.adb:62
 msgid "Unknown error during deleting files or directories."
-msgstr ""
+msgstr "Nieznany błąd podczas kasowania plików lub katalogów"
 
 #: bin/ui/hunter.glade:107
 msgid "Videos"
-msgstr ""
+msgstr "Wideo"
 
 #: bin/ui/hunter.glade:554
 msgid "Yes for all"
-msgstr ""
+msgstr "Tak dla wszystkich"
 
 #: src/createitems.adb:93
 msgid "You can't "
-msgstr ""
+msgstr "Nie możesz "
 
 #: src/activateitems.adb:48
 msgid "You can't enter this directory."
-msgstr ""
+msgstr "Nie możesz wejść do tego katalogu."
 
 #: src/copyitems.adb:62
 msgid "You don't have permissions to copy selected items here."
-msgstr ""
+msgstr "Nie masz uprawnień aby skopiować wybrane rzeczy tutaj."
 
 #: src/createitems.adb:64
 msgid "You don't have permissions to enter directory "
-msgstr ""
+msgstr "Nie masz uprawnień aby wejść do katalogu "
 
 #: src/moveitems.adb:65
 msgid "You don't have permissions to move selected items here."
-msgstr ""
+msgstr "Nie masz uprawnień aby przenieść wybrane rzeczy tutaj."
 
 #: src/loaddata.adb:179
 msgid "You don't have permissions to preview this directory."
-msgstr ""
+msgstr "Nie masz uprawnień aby zobaczyć zawartość tego katalogu."
 
 #: src/createitems.adb:142
 msgid "You don't have permissions to rename "
-msgstr ""
+msgstr "Nie masz uprawnień aby zmienić nazwę "
 
 #: src/createitems.adb:138
 msgid "You don't have permissions to write to "
-msgstr ""
+msgstr "Nie masz uprawnień do zapisu do "
 
 #: src/createitems.adb:75
 msgid "create directory with"
-msgstr ""
+msgstr "stworzyć katalog z"
 
 #: src/createitems.adb:78
 msgid "create file with"
-msgstr ""
+msgstr "stworzyć plik z"
 
 #: src/createitems.adb:83
 msgid "create link with"
-msgstr ""
+msgstr "stworzyć link z"
 
 #: src/createitems.adb:88
 msgid "directory"
-msgstr ""
+msgstr "katalog"
 
 #: bin/ui/hunter.glade:1560
 msgid "error"
-msgstr ""
+msgstr "błąd"
 
 #: src/createitems.adb:90
 msgid "file"
-msgstr ""
+msgstr "plik"
 
 #: bin/ui/hunter.glade:1475
 msgid "files"
-msgstr ""
+msgstr "pliki"
 
 #: bin/ui/hunter.glade:1499
 msgid "https://github.com/thindil/hunter/issues"
-msgstr ""
+msgstr "https://github.com/thindil/hunter/issues"
 
 #: src/showitems.adb:156
 msgid "none"
-msgstr ""
+msgstr "brak"
 
 #: bin/ui/hunter.glade:998 bin/ui/hunter.glade:1443
 msgid "page0"
@@ -645,7 +645,7 @@ msgstr ""
 
 #: src/createitems.adb:80
 msgid "rename with new"
-msgstr ""
+msgstr "zmienić nazwę na nową"
 
 #: bin/ui/hunter.glade:205
 msgid "©2019 Bartek thindil Jasicki"
