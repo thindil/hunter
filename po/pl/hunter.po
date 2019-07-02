@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-07-01 07:24+0200\n"
+"POT-Creation-Date: 2019-07-01 07:33+0200\n"
 "PO-Revision-Date: 2019-06-30 07:10+0200\n"
 "Last-Translator:  <thindil@laeran.pl>\n"
 "Language-Team: Polish\n"
@@ -635,18 +635,6 @@ msgstr "https://github.com/thindil/hunter/issues"
 msgid "none"
 msgstr "brak"
 
-#: bin/ui/hunter.glade:998 bin/ui/hunter.glade:1443
-msgid "page0"
-msgstr ""
-
-#: bin/ui/hunter.glade:1378
-msgid "page1"
-msgstr ""
-
 #: src/createitems.adb:80
 msgid "rename with new"
 msgstr "zmienić nazwę na nową"
-
-#: bin/ui/hunter.glade:205
-msgid "©2019 Bartek thindil Jasicki"
-msgstr ""
