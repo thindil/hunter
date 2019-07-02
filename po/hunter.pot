@@ -8,13 +8,13 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-07-01 07:24+0200\n"
+"POT-Creation-Date: 2019-07-01 07:33+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/showitems.adb:184
@@ -614,18 +614,6 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: bin/ui/hunter.glade:998 bin/ui/hunter.glade:1443
-msgid "page0"
-msgstr ""
-
-#: bin/ui/hunter.glade:1378
-msgid "page1"
-msgstr ""
-
 #: src/createitems.adb:80
 msgid "rename with new"
-msgstr ""
-
-#: bin/ui/hunter.glade:205
-msgid "©2019 Bartek thindil Jasicki"
 msgstr ""
