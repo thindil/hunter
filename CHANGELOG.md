@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Multilanguage support
+
 ### Changed
 - Updated interface
 - Updated code documentation
