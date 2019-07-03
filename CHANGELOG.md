@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated interface
 - Updated code documentation
+- Updated README.md
 
 ### Fixed
 - Typo in info about unknown error during deleting files and directories
