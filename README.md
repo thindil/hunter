@@ -63,7 +63,7 @@ and *xdg-mime*. In most Linux distributions they are in *xdg-utils* package.
 ### Starting parameter
 
 You can set directory to view when starting the program by adding it full path
-to the starting commmand. For example, to view root directory `/` run the
+to the starting command. For example, to view root directory `/` run the
 program with `hunter.sh /`
 
 ### Wrong theme used by the program
