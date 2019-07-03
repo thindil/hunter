@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Typo in info about unknown error during deleting files and directories
 - Typo in README.md
+- Double programs names on applications list
 
 ## [0.5] - 2019-06-23
 
