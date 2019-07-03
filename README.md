@@ -16,6 +16,7 @@ program. Some things may be different in released version of Hunter.
 - Standard file manager features: copy, delete, move files and directories,
   change their permissions, change application associated with them.
 - Written in GTK and Ada. Should nicely integrate with selected desktop theme.
+- Available in English and Polish language
 
 ## Build the program from sources
 
