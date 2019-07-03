@@ -340,6 +340,7 @@ package body MainWindow is
          FilesList: constant Gtk_List_Store :=
            Gtk_List_Store(Get_Object(Builder, "applicationslist"));
          FileIter: Gtk_Tree_Iter;
+         NamesList: UnboundedString_Container.Vector;
       begin
          Setting := True;
          for Path of ApplicationsPaths loop
@@ -358,12 +359,16 @@ package body MainWindow is
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
                      if Length(FileLine) > 5
-                       and then Slice(FileLine, 1, 5) = "Name=" then
+                       and then Slice(FileLine, 1, 5) = "Name="
+                       and then not NamesList.Contains
+                         (Unbounded_Slice(FileLine, 6, Length(FileLine))) then
                         Append(FilesList, FileIter);
                         Set
                           (FilesList, FileIter, 0,
                            Slice(FileLine, 6, Length(FileLine)));
                         Set(FilesList, FileIter, 1, SubFileName(1 .. SubLast));
+                        NamesList.Append
+                          (Unbounded_Slice(FileLine, 6, Length(FileLine)));
                         exit;
                      end if;
                   end loop;
