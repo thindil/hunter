@@ -803,12 +803,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                           <object class="GtkRadioToolButton" id="btnpreview">
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
-                            <property name="tooltip_text" translatable="yes">Preview file or directory [ALT-P]</property>
+                            <property name="tooltip_text" translatable="yes">Preview file or directory [ALT-V]</property>
                             <property name="label" translatable="yes">Preview</property>
                             <property name="use_underline">True</property>
                             <property name="icon_name">document-print-preview</property>
                             <signal name="clicked" handler="Preview_Item" swapped="no"/>
-                            <accelerator key="p" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                            <accelerator key="v" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
