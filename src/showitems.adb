@@ -403,7 +403,8 @@ package body ShowItems is
             end if;
          end;
       end if;
-      Set_Label(Gtk_Label(Get_Object(Builder, "lblframe")), "Preview");
+      Set_Label
+        (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Preview"));
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
       if Get_Active
