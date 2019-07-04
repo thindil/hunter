@@ -123,6 +123,9 @@ package body ShowItems is
          To_Unbounded_String("cbtngroupexecute"),
          To_Unbounded_String("cbtnothersexecute"));
    begin
+      if Setting then
+         return;
+      end if;
       Setting := True;
       Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
@@ -278,6 +281,11 @@ package body ShowItems is
         (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Information"));
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "infostack")), "info");
+      if not Get_Active
+          (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo"))) then
+         Set_Active
+           (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo")), True);
+      end if;
       Setting := False;
    end ShowItemInfo;
 
