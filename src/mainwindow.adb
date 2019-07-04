@@ -37,6 +37,7 @@ with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
+with Gtk.Window; use Gtk.Window;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
@@ -231,8 +232,29 @@ package body MainWindow is
       return False;
    end WindowKeyPressed;
 
+   -- ****if* MainWindow/GetWindowSize
+   -- FUNCTION
+   -- Get the main window size at quitting of the program
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- RESULT
+   -- This function always return False
+   -- SOURCE
+   function GetWindowSize
+     (Object: access Gtkada_Builder_Record'Class) return Boolean is
+   begin
+      Settings.WindowWidth :=
+        Positive
+          (Get_Allocated_Width(Gtk_Widget(Get_Object(Object, "mainwindow"))));
+      Settings.WindowHeight :=
+        Positive
+          (Get_Allocated_Height(Gtk_Widget(Get_Object(Object, "mainwindow"))));
+      return False;
+   end GetWindowSize;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
+      Setting := True;
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Show_Item", ShowItem'Access);
@@ -266,6 +288,7 @@ package body MainWindow is
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
       Register_Handler
         (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
+      Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
@@ -342,7 +365,6 @@ package body MainWindow is
          FileIter: Gtk_Tree_Iter;
          NamesList: UnboundedString_Container.Vector;
       begin
-         Setting := True;
          for Path of ApplicationsPaths loop
             if not Ada.Directories.Exists(To_String(Path)) then
                goto End_Of_Loop;
@@ -378,7 +400,6 @@ package body MainWindow is
             Close(SubDirectory);
             <<End_Of_Loop>>
          end loop;
-         Setting := False;
       end;
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
@@ -392,6 +413,9 @@ package body MainWindow is
       Set_Sort_Column_Id
         (Gtk_Tree_Model_Sort(Get_Object(Builder, "applicationssort")), 0,
          Sort_Ascending);
+      Set_Default_Size
+        (Gtk_Window(Get_Object(Builder, "mainwindow")),
+         Gint(Settings.WindowWidth), Gint(Settings.WindowHeight));
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
@@ -411,6 +435,7 @@ package body MainWindow is
                  (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
             0.3));
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+      Setting := False;
    end CreateMainWindow;
 
 end MainWindow;
