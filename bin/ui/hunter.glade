@@ -245,6 +245,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <accel-groups>
       <group name="accelerators"/>
     </accel-groups>
+    <signal name="delete-event" handler="Get_Window_Size" swapped="no"/>
     <signal name="destroy" handler="Main_Quit" swapped="no"/>
     <child>
       <placeholder/>

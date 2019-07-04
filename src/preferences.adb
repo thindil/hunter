@@ -54,7 +54,7 @@ package body Preferences is
    begin
       Settings :=
         (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
-         AutoCloseMessagesTime => 10);
+         AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -92,6 +92,10 @@ package body Preferences is
                Set_Value
                  (Gtk_Adjustment(Get_Object(Builder, "adjseconds")),
                   Gdouble(Settings.AutoCloseMessagesTime));
+            elsif FieldName = To_Unbounded_String("WindowWidth") then
+               Settings.WindowWidth := Positive'Value(To_String(Value));
+            elsif FieldName = To_Unbounded_String("WindowHeight") then
+               Settings.WindowHeight := Positive'Value(To_String(Value));
             end if;
          end if;
       end loop;
@@ -168,6 +172,10 @@ package body Preferences is
         (ConfigFile,
          "AutoCloseMessagesTime =" &
          Natural'Image(Settings.AutoCloseMessagesTime));
+      Put_Line
+        (ConfigFile, "WindowWidth =" & Positive'Image(Settings.WindowWidth));
+      Put_Line
+        (ConfigFile, "WindowHeight =" & Positive'Image(Settings.WindowHeight));
       Close(ConfigFile);
    end SavePreferences;
 

@@ -30,12 +30,16 @@ package Preferences is
    -- ShowLastModified      - If true, show column with last modification time on files list
    -- ScaleImages           - If true, scale images in preview
    -- AutoCloseMessagesTime - Amount of seconds after which current message will be auto hidden
+   -- WindowWidth           - Width of the main window in pixels
+   -- WindowHeight          - Height of the main window in pixels
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
       ShowLastModified: Boolean;
       ScaleImages: Boolean;
       AutoCloseMessagesTime: Natural;
+      WindowWidth: Positive;
+      WindowHeight: Positive;
    end record;
    -- ****
    -- ****v* Preferences/Settings
