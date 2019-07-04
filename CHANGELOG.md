@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Typo in README.md
 - Double programs names on applications list
 - Keyboard shortcut for preview file or directory
+- Info about preview or info of file or directory
 
 ## [0.5] - 2019-06-23
 
