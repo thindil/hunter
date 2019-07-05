@@ -168,14 +168,14 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkMenuItem" id="newmenudirectory">
+      <object class="GtkMenuItem" id="newmenufile">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="tooltip_text" translatable="yes">Add new directory.</property>
-        <property name="label" translatable="yes">New _Directory</property>
+        <property name="tooltip_text" translatable="yes">Add new empty file.</property>
+        <property name="label" translatable="yes">New _File</property>
         <property name="use_underline">True</property>
-        <signal name="activate" handler="Add_New" object="newmenudirectory" swapped="no"/>
-        <accelerator key="d" signal="activate" modifiers="GDK_MOD1_MASK"/>
+        <signal name="activate" handler="Add_New" object="newmenufile" swapped="no"/>
+        <accelerator key="f" signal="activate" modifiers="GDK_MOD1_MASK"/>
       </object>
     </child>
     <child>
@@ -312,7 +312,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkMenuToolButton" id="btnnew">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Add new file [ALT+N] or press arrow to see more options.</property>
+                    <property name="tooltip_text" translatable="yes">Add new directory [ALT+N] or press arrow to see more options.</property>
                     <property name="label" translatable="yes">New</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">document-new</property>
