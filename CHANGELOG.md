@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Multilingual support
+- Polish translation of the program
 
 ### Changed
 - Updated interface
