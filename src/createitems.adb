@@ -158,11 +158,11 @@ package body CreateItems is
    procedure AddNew(User_Data: access GObject_Record'Class) is
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
-      if User_Data = Get_Object(Builder, "newmenudirectory") then
-         NewAction := CREATEDIRECTORY;
+      if User_Data = Get_Object(Builder, "newmenufile") then
+         NewAction := CREATEFILE;
          Set_Icon_Tooltip_Text
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
-            Gettext("Create new directory."));
+            Gettext("Create new empty file."));
       elsif User_Data = Get_Object(Builder, "newmenulink") then
          NewAction := CREATELINK;
          LinkTarget := CurrentSelected;
@@ -177,10 +177,10 @@ package body CreateItems is
          Set_Visible_Child_Name
            (Gtk_Stack(Get_Object(Builder, "infostack")), "destination");
       else
-         NewAction := CREATEFILE;
+         NewAction := CREATEDIRECTORY;
          Set_Icon_Tooltip_Text
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
-            Gettext("Create new file."));
+            Gettext("Create new directory."));
       end if;
       Show_All(GEntry);
       Grab_Focus(GEntry);
