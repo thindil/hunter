@@ -206,6 +206,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="comments" translatable="yes">Graphical File Manager for Linux</property>
     <property name="website">https://thindil.github.io/hunter/</property>
     <property name="authors">Bartek thindil Jasicki &lt;thindil@laeran.pl&gt;</property>
+    <property name="translator_credits" translatable="yes">Polski - Bartek thindil Jasicki &lt;thindil@laeran.pl&gt;</property>
     <property name="logo">hunter-icon.png</property>
     <property name="license_type">gpl-3-0</property>
     <child>
