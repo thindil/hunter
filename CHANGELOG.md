@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 ## [Unreleased]
 
 ### Added
-- Multilanguage support
+- Multilingual support
 
 ### Changed
 - Updated interface
@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Double programs names on applications list
 - Keyboard shortcut for preview file or directory
 - Info about preview or info of file or directory
+- Keyboard shortcut for stopping moving or copying files or directories
 
 ## [0.5] - 2019-06-23
 
