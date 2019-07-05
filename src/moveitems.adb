@@ -50,7 +50,7 @@ package body MoveItems is
          Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
          Set_Tooltip_Text
            (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
-            Gettext("Stop moving files and directories [ALT-C]"));
+            Gettext("Stop moving files and directories [Escape]"));
          Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblframe")),

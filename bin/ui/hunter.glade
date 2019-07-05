@@ -391,12 +391,12 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkToolButton" id="btntoolcancel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Discard all changes and back to files list [ALT-C]</property>
+                    <property name="tooltip_text" translatable="yes">Discard all changes and back to files list [Escape]</property>
                     <property name="label" translatable="yes">Cancel</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">dialog-cancel</property>
                     <signal name="clicked" handler="Show_Files" object="btntoolcancel" swapped="no"/>
-                    <accelerator key="c" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                    <accelerator key="Escape" signal="clicked"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

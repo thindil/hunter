@@ -47,7 +47,7 @@ package body CopyItems is
          Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
          Set_Tooltip_Text
            (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
-            Gettext("Stop copying files and directories [ALT-C]"));
+            Gettext("Stop copying files and directories [Escape]"));
          Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblframe")),
