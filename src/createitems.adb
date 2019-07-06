@@ -23,6 +23,7 @@ with ActivateItems; use ActivateItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Utils; use Utils;
 
 package body CreateItems is
 
@@ -147,6 +148,7 @@ package body CreateItems is
       <<Update_UI>>
       Set_Text(Self, "");
       Hide(Gtk_Widget(Self));
+      ToggleToolButtons(NewAction, True);
       if Get_Visible_Child_Name(Gtk_Stack(Get_Object(Builder, "infostack"))) =
         "destination" then
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
@@ -182,6 +184,7 @@ package body CreateItems is
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
             Gettext("Create new directory."));
       end if;
+      ToggleToolButtons(NewAction);
       Show_All(GEntry);
       Grab_Focus(GEntry);
    end AddNew;

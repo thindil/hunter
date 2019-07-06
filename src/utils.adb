@@ -14,8 +14,11 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Messages; use Messages;
 
@@ -83,7 +86,7 @@ package body Utils is
    end CountFileSize;
 
    function FindExecutable(Name: String) return String is
-      ExecutablePath: String_Access;
+      ExecutablePath: GNAT.OS_Lib.String_Access;
    begin
       if Exists(Containing_Directory(Command_Name) & "/" & Name) then
          return Containing_Directory(Command_Name) & "/" & Name;
@@ -95,5 +98,44 @@ package body Utils is
       end if;
       return ExecutablePath.all;
    end FindExecutable;
+
+   procedure ToggleToolButtons
+     (Action: ItemActions; Finished: Boolean := False) is
+      ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
+        (To_Unbounded_String("btnsearch"), To_Unbounded_String("btnnew"),
+         To_Unbounded_String("btnrename"), To_Unbounded_String("btncopy"),
+         To_Unbounded_String("btncut"), To_Unbounded_String("btndelete"),
+         To_Unbounded_String("btnpreferences"),
+         To_Unbounded_String("btnabout"));
+      CurrentButton: Unbounded_String;
+   begin
+      case Action is
+         when CREATEFILE | CREATEDIRECTORY | CREATELINK =>
+            Set_Visible
+              (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
+            CurrentButton := To_Unbounded_String("btnnew");
+         when RENAME =>
+            Set_Visible
+              (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
+            CurrentButton := To_Unbounded_String("btnrename");
+         when COPY =>
+            CurrentButton := To_Unbounded_String("btncopy");
+         when MOVE =>
+            CurrentButton := To_Unbounded_String("btncut");
+         when DELETE =>
+            Set_Visible
+              (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
+            CurrentButton := To_Unbounded_String("btndelete");
+         when others =>
+            return;
+      end case;
+      for ButtonName of ButtonsNames loop
+         if ButtonName /= CurrentButton then
+            Set_Visible
+              (Gtk_Widget(Get_Object(Builder, To_String(ButtonName))),
+               Finished);
+         end if;
+      end loop;
+   end ToggleToolButtons;
 
 end Utils;

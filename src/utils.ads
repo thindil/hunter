@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with MainWindow; use MainWindow;
 
 -- ****h* Hunter/Utils
 -- FUNCTION
@@ -63,6 +64,17 @@ package Utils is
    -- file could not be found.
    -- SOURCE
    function FindExecutable(Name: String) return String;
+   -- ****
+   -- ****f* Utils/ToggleToolButtons
+   -- FUNCTION
+   -- Show or hide other tool bar buttons when user starts any action with
+   -- files or directories
+   -- PARAMETERS
+   -- Action   - Action on files or directories started or finished.
+   -- Finished - If true, action was finished. Default is False
+   -- SOURCE
+   procedure ToggleToolButtons
+     (Action: ItemActions; Finished: Boolean := False);
    -- ****
 
 end Utils;

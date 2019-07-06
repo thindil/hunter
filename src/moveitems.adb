@@ -27,6 +27,7 @@ with CopyItems; use CopyItems;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with ShowItems; use ShowItems;
+with Utils; use Utils;
 
 package body MoveItems is
 
@@ -57,6 +58,7 @@ package body MoveItems is
             Gettext("Destination directory"));
          Set_Visible_Child_Name
            (Gtk_Stack(Get_Object(Object, "infostack")), "destination");
+         ToggleToolButtons(MOVE);
          return;
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
@@ -117,6 +119,7 @@ package body MoveItems is
          end if;
       end loop;
       MoveItemsList.Clear;
+      ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
       Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
       Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));

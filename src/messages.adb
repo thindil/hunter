@@ -24,6 +24,7 @@ with DeleteItems; use DeleteItems;
 with MainWindow; use MainWindow;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
+with Utils; use Utils;
 
 package body Messages is
 
@@ -123,10 +124,12 @@ package body Messages is
             end;
             Reload(Builder);
          end if;
+         ToggleToolButtons(NewAction, True);
          HideMessage(Builder);
       elsif NewAction = COPY then
          if Response_Id = Gint(Gtk_Response_Reject) then
             HideMessage(Builder);
+            ToggleToolButtons(NewAction, True);
             Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
             Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
             Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
@@ -140,6 +143,7 @@ package body Messages is
       elsif NewAction = MOVE then
          if Response_Id = Gint(Gtk_Response_Reject) then
             HideMessage(Builder);
+            ToggleToolButtons(NewAction, True);
             Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
             Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
             Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
