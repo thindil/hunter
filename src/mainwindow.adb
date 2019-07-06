@@ -55,6 +55,7 @@ with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
+with Utils; use Utils;
 
 package body MainWindow is
 
@@ -106,6 +107,7 @@ package body MainWindow is
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
             Gettext("Rename file."));
       end if;
+      ToggleToolButtons(NewAction);
       Set_Text(Gtk_GEntry(GEntry), Simple_Name(To_String(CurrentSelected)));
       Show_All(GEntry);
       Grab_Focus(GEntry);
@@ -172,6 +174,7 @@ package body MainWindow is
    -- ****
    begin
       if Event.Keyval = GDK_Escape then
+         ToggleToolButtons(NewAction, True);
          if Self = Gtk_Widget(Get_Object(Builder, "searchfile")) then
             Set_Active
               (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btnsearch")),

@@ -23,6 +23,7 @@ with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Utils; use Utils;
 
 package body DeleteItems is
 
@@ -77,6 +78,7 @@ package body DeleteItems is
          end if;
       end loop;
       NewAction := DELETE;
+      ToggleToolButtons(NewAction);
       ShowMessage(To_String(Message), Message_Question);
    end DeleteItem;
 

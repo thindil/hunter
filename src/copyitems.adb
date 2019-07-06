@@ -24,6 +24,7 @@ with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with ShowItems; use ShowItems;
+with Utils; use Utils;
 
 package body CopyItems is
 
@@ -54,6 +55,7 @@ package body CopyItems is
             Gettext("Destination directory"));
          Set_Visible_Child_Name
            (Gtk_Stack(Get_Object(Object, "infostack")), "destination");
+         ToggleToolButtons(COPY);
          return;
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
@@ -139,6 +141,7 @@ package body CopyItems is
          end if;
       end loop;
       CopyItemsList.Clear;
+      ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
       Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
       Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
