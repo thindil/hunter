@@ -325,22 +325,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="btndelete">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Delete selected file(s) or folder(s) [ALT-Delete].</property>
-                    <property name="label" translatable="yes">Delete</property>
-                    <property name="use_underline">True</property>
-                    <property name="icon_name">edit-delete</property>
-                    <signal name="clicked" handler="Delete_Item" swapped="no"/>
-                    <accelerator key="Delete" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkToolButton" id="btnrename">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -350,6 +334,22 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="icon_name">document-save-as</property>
                     <signal name="clicked" handler="Start_Rename" swapped="no"/>
                     <accelerator key="r" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleToolButton" id="btncopy">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Copy selected files [ALT-C]. Pressed button means start copying currently selected files or directories. Press again to copy them.</property>
+                    <property name="label" translatable="yes">Copy</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">edit-copy</property>
+                    <signal name="clicked" handler="Copy_Items" swapped="no"/>
+                    <accelerator key="c" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -373,15 +373,15 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToggleToolButton" id="btncopy">
+                  <object class="GtkToolButton" id="btndelete">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Copy selected files [ALT-C]. Pressed button means start copying currently selected files or directories. Press again to copy them.</property>
-                    <property name="label" translatable="yes">Copy</property>
+                    <property name="tooltip_text" translatable="yes">Delete selected file(s) or folder(s) [ALT-Delete].</property>
+                    <property name="label" translatable="yes">Delete</property>
                     <property name="use_underline">True</property>
-                    <property name="icon_name">edit-copy</property>
-                    <signal name="clicked" handler="Copy_Items" swapped="no"/>
-                    <accelerator key="c" signal="clicked" modifiers="GDK_MOD1_MASK"/>
+                    <property name="icon_name">edit-delete</property>
+                    <signal name="clicked" handler="Delete_Item" swapped="no"/>
+                    <accelerator key="Delete" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
