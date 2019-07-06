@@ -49,6 +49,7 @@ package body CreateItems is
       if Icon_Pos = Gtk_Entry_Icon_Primary then
          Set_Text(Self, "");
          Hide(Gtk_Widget(Self));
+         ToggleToolButtons(NewAction, True);
          return;
       end if;
       if Get_Text(Self) = "" then
