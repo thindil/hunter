@@ -182,6 +182,13 @@ package body MainWindow is
          else
             Hide(Self);
          end if;
+         if NewAction = CREATELINK then
+            Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+            Set_Visible_Child_Name
+               (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+            NewAction := CREATEFILE;
+         end if;
       end if;
       return False;
    end EntryKeyPressed;
