@@ -49,6 +49,13 @@ package body CreateItems is
       if Icon_Pos = Gtk_Entry_Icon_Primary then
          Set_Text(Self, "");
          Hide(Gtk_Widget(Self));
+         if NewAction = CREATELINK then
+            Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+            Set_Visible_Child_Name
+               (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+            NewAction := CREATEFILE;
+         end if;
          ToggleToolButtons(NewAction, True);
          return;
       end if;
