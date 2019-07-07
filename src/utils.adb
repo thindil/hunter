@@ -126,7 +126,7 @@ package body Utils is
          when DELETE =>
             Set_Visible
               (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
-            CurrentButton := To_Unbounded_String("btndelete");
+            CurrentButton := To_Unbounded_String("");
          when others =>
             return;
       end case;
