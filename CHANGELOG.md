@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Keyboard shortcut for preview file or directory
 - Info about preview or info of file or directory
 - Keyboard shortcut for stopping moving or copying files or directories
+- Hide destination list on cancel creating links
 
 ## [0.5] - 2019-06-23
 
