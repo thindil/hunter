@@ -191,7 +191,8 @@ package body ShowItems is
             end;
          end if;
       elsif Is_Directory(SelectedPath) then
-         Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Elements:");
+         Set_Label
+           (Gtk_Label(Get_Object(Object, "lblsize2")), Gettext("Elements:"));
          if Is_Read_Accessible_File(SelectedPath) then
             Open(Directory, SelectedPath);
             loop
