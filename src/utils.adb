@@ -17,6 +17,7 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -136,6 +137,42 @@ package body Utils is
                Finished);
          end if;
       end loop;
+      if Finished then
+         Set_Title(Gtk_Header_Bar(Get_Object(Builder, "header")), "");
+      else
+         case Action is
+            when CREATEFILE =>
+               Set_Title
+                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                  Gettext("Creating empty file"));
+            when CREATEDIRECTORY =>
+               Set_Title
+                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                  Gettext("Creating new directory"));
+            when CREATELINK =>
+               Set_Title
+                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                  Gettext("Creating new link"));
+            when RENAME =>
+               Set_Title
+                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                  Gettext("Renaming file or directory"));
+            when COPY =>
+               Set_Title
+                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                  Gettext("Copying files and directories"));
+            when MOVE =>
+               Set_Title
+                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                  Gettext("Moving files and directories"));
+            when DELETE =>
+               Set_Title
+                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                  Gettext("Deleting files and directories"));
+            when others =>
+               null;
+         end case;
+      end if;
    end ToggleToolButtons;
 
 end Utils;
