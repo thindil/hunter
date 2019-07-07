@@ -394,11 +394,9 @@ package body ShowItems is
                if not CanBeOpened(MimeType) then
                   Hide(Gtk_Widget(Get_Object(Object, "btnopen")));
                end if;
-               Setting := True;
                Set_Active
                  (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo")),
                   True);
-               Setting := False;
                return;
             end if;
          end;
