@@ -141,6 +141,7 @@ package body MainWindow is
       ShowItem(Builder);
       Set_Visible_Child_Name
         (Gtk_Stack(Get_Object(Builder, "filestack")), "files");
+      ToggleToolButtons(NewAction, True);
    end ShowFiles;
 
    -- ****if* MainWindow/ShowAbout
