@@ -111,22 +111,15 @@ package body Utils is
       CurrentButton: Unbounded_String := To_Unbounded_String("");
    begin
       case Action is
-         when CREATEFILE | CREATEDIRECTORY =>
+         when CREATEFILE | CREATEDIRECTORY | RENAME | DELETE =>
             Set_Visible
               (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
          when CREATELINK =>
             null;
-         when RENAME =>
-            Set_Visible
-              (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
-            CurrentButton := To_Unbounded_String("btnrename");
          when COPY =>
             CurrentButton := To_Unbounded_String("btncopy");
          when MOVE =>
             CurrentButton := To_Unbounded_String("btncut");
-         when DELETE =>
-            Set_Visible
-              (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
          when others =>
             return;
       end case;
