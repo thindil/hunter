@@ -18,6 +18,7 @@ with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Adjustment; use Gtk.Adjustment;
+with Gtk.Paned; use Gtk.Paned;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
@@ -54,7 +55,8 @@ package body Preferences is
    begin
       Settings :=
         (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
-         AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600);
+         AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
+         ShowPreview => True);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -96,6 +98,11 @@ package body Preferences is
                Settings.WindowWidth := Positive'Value(To_String(Value));
             elsif FieldName = To_Unbounded_String("WindowHeight") then
                Settings.WindowHeight := Positive'Value(To_String(Value));
+            elsif FieldName = To_Unbounded_String("ShowPreview") then
+               Settings.ShowPreview := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchshowpreview")),
+                  Settings.ShowPreview);
             end if;
          end if;
       end loop;
@@ -130,6 +137,31 @@ package body Preferences is
          Settings.ScaleImages :=
            Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages")));
          PreviewItem(Object);
+      end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchshowpreview"))) /=
+        Settings.ShowPreview then
+         Settings.ShowPreview :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchshowpreview")));
+         if NewAction /= COPY and NewAction /= MOVE and
+           NewAction /= CREATELINK then
+            Set_Visible
+              (Gtk_Widget(Get_Object(Object, "boxsecond")),
+               Settings.ShowPreview);
+            if Settings.ShowPreview then
+               Set_Position
+                 (Gtk_Paned(Get_Object(Object, "filespaned")),
+                  Gint
+                    (Float
+                       (Get_Allocated_Width
+                          (Gtk_Widget(Get_Object(Object, "mainwindow")))) *
+                     0.3));
+            else
+               Set_Position
+                 (Gtk_Paned(Get_Object(Object, "filespaned")),
+                  Get_Allocated_Width
+                    (Gtk_Widget(Get_Object(Object, "mainwindow"))));
+            end if;
+         end if;
       end if;
       return False;
    end SaveSettings;
@@ -176,6 +208,7 @@ package body Preferences is
         (ConfigFile, "WindowWidth =" & Positive'Image(Settings.WindowWidth));
       Put_Line
         (ConfigFile, "WindowHeight =" & Positive'Image(Settings.WindowHeight));
+      SaveBoolean(Settings.ShowPreview, "ShowPreview");
       Close(ConfigFile);
    end SavePreferences;
 
