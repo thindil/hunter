@@ -111,9 +111,11 @@ package body Utils is
       CurrentButton: Unbounded_String;
    begin
       case Action is
-         when CREATEFILE | CREATEDIRECTORY | CREATELINK =>
+         when CREATEFILE | CREATEDIRECTORY =>
             Set_Visible
               (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
+            CurrentButton := To_Unbounded_String("btnnew");
+         when CREATELINK =>
             CurrentButton := To_Unbounded_String("btnnew");
          when RENAME =>
             Set_Visible
