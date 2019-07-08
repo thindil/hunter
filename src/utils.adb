@@ -108,15 +108,14 @@ package body Utils is
          To_Unbounded_String("btncut"), To_Unbounded_String("btndelete"),
          To_Unbounded_String("btnpreferences"),
          To_Unbounded_String("btnabout"));
-      CurrentButton: Unbounded_String;
+      CurrentButton: Unbounded_String := To_Unbounded_String("");
    begin
       case Action is
          when CREATEFILE | CREATEDIRECTORY =>
             Set_Visible
               (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
-            CurrentButton := To_Unbounded_String("btnnew");
          when CREATELINK =>
-            CurrentButton := To_Unbounded_String("btnnew");
+            null;
          when RENAME =>
             Set_Visible
               (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
@@ -128,7 +127,6 @@ package body Utils is
          when DELETE =>
             Set_Visible
               (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
-            CurrentButton := To_Unbounded_String("");
          when others =>
             return;
       end case;
