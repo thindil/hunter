@@ -438,13 +438,21 @@ package body MainWindow is
       Set_Cursor
         (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
          Gtk_Tree_Path_New_From_String("0"), null, False);
-      Set_Position
-        (Gtk_Paned(Get_Object(Builder, "filespaned")),
-         Gint
-           (Float
-              (Get_Allocated_Width
-                 (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
-            0.3));
+      if Settings.ShowPreview then
+         Set_Position
+           (Gtk_Paned(Get_Object(Builder, "filespaned")),
+            Gint
+              (Float
+                 (Get_Allocated_Width
+                    (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
+               0.3));
+      else
+         Hide(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+         Set_Position
+           (Gtk_Paned(Get_Object(Builder, "filespaned")),
+            Get_Allocated_Width
+              (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
+      end if;
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
       Setting := False;
    end CreateMainWindow;

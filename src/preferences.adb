@@ -155,6 +155,7 @@ package body Preferences is
                        (Get_Allocated_Width
                           (Gtk_Widget(Get_Object(Object, "mainwindow")))) *
                      0.3));
+               PreviewItem(Object);
             else
                Set_Position
                  (Gtk_Paned(Get_Object(Object, "filespaned")),
