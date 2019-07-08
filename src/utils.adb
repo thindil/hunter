@@ -18,10 +18,13 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
+with Gtk.Paned; use Gtk.Paned;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
+with Glib; use Glib;
 with Messages; use Messages;
+with Preferences; use Preferences;
 
 package body Utils is
 
@@ -123,6 +126,17 @@ package body Utils is
          when others =>
             return;
       end case;
+      if (Action = CREATELINK or Action = COPY or Action = MOVE)
+        and then (not Settings.ShowPreview) and then (not Finished) then
+         Set_Position
+           (Gtk_Paned(Get_Object(Builder, "filespaned")),
+            Gint
+              (Float
+                 (Get_Allocated_Width
+                    (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
+               0.3));
+         Show_All(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+      end if;
       for ButtonName of ButtonsNames loop
          if ButtonName /= CurrentButton then
             Set_Visible
@@ -132,6 +146,13 @@ package body Utils is
       end loop;
       if Finished then
          Set_Title(Gtk_Header_Bar(Get_Object(Builder, "header")), "");
+         if not Settings.ShowPreview then
+            Set_Position
+              (Gtk_Paned(Get_Object(Builder, "filespaned")),
+               Get_Allocated_Width
+                 (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
+            Hide(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+         end if;
       else
          case Action is
             when CREATEFILE =>
