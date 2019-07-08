@@ -32,6 +32,7 @@ package Preferences is
    -- AutoCloseMessagesTime - Amount of seconds after which current message will be auto hidden
    -- WindowWidth           - Width of the main window in pixels
    -- WindowHeight          - Height of the main window in pixels
+   -- ShowPreview           - If true, show preview panel for files and directories
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -40,6 +41,7 @@ package Preferences is
       AutoCloseMessagesTime: Natural;
       WindowWidth: Positive;
       WindowHeight: Positive;
+      ShowPreview: Boolean;
    end record;
    -- ****
    -- ****v* Preferences/Settings
