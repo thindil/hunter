@@ -132,7 +132,6 @@ package body MainWindow is
          Set_Active
            (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut")), False);
       end if;
-      Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
@@ -448,6 +447,7 @@ package body MainWindow is
                0.3));
       else
          Hide(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Set_Position
            (Gtk_Paned(Get_Object(Builder, "filespaned")),
             Get_Allocated_Width

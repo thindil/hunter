@@ -39,7 +39,6 @@ package body MoveItems is
           To_String(CurrentDirectory) then
          MoveItemsList.Clear;
          ToggleToolButtons(NewAction, True);
-         Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
          Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
          CurrentSelected := Null_Unbounded_String;
@@ -122,7 +121,6 @@ package body MoveItems is
       MoveItemsList.Clear;
       ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
-      Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
       Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Reload(Builder);
