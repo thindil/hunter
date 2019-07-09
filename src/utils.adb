@@ -152,6 +152,8 @@ package body Utils is
                Get_Allocated_Width
                  (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
             Hide(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+         else
+            Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          end if;
       else
          case Action is

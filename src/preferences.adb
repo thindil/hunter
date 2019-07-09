@@ -147,6 +147,9 @@ package body Preferences is
             Set_Visible
               (Gtk_Widget(Get_Object(Object, "boxsecond")),
                Settings.ShowPreview);
+            Set_Visible
+              (Gtk_Widget(Get_Object(Object, "itemtoolbar")),
+               Settings.ShowPreview);
             if Settings.ShowPreview then
                Set_Position
                  (Gtk_Paned(Get_Object(Object, "filespaned")),
