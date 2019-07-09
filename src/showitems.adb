@@ -295,8 +295,7 @@ package body ShowItems is
       if Setting or (not Settings.ShowPreview) then
          return;
       end if;
-      Hide(Gtk_Widget(Get_Object(Object, "btnaddbookmark")));
-      Hide(Gtk_Widget(Get_Object(Object, "btnremovebookmark")));
+      SetBookmarkButton;
       if Is_Directory(To_String(CurrentSelected)) then
          Show_All(Gtk_Widget(Get_Object(Object, "scrolllist")));
          Show_All(Gtk_Widget(Get_Object(Object, "btnpreview")));
@@ -304,21 +303,6 @@ package body ShowItems is
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrollimage")));
          Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
-         declare
-            BookmarkExists: Boolean := False;
-         begin
-            for Bookmark of BookmarksList loop
-               if Bookmark.Path = CurrentSelected then
-                  Show_All
-                    (Gtk_Widget(Get_Object(Object, "btnremovebookmark")));
-                  BookmarkExists := True;
-                  exit;
-               end if;
-            end loop;
-            if not BookmarkExists then
-               Show_All(Gtk_Widget(Get_Object(Object, "btnaddbookmark")));
-            end if;
-         end;
          LoadDirectory(To_String(CurrentSelected), "fileslist1");
       else
          Show_All(Gtk_Widget(Get_Object(Object, "scrolltext")));
@@ -438,6 +422,7 @@ package body ShowItems is
       end if;
       CurrentSelected := SelectedItems(1);
       if Setting or (not Settings.ShowPreview) then
+         SetBookmarkButton;
          return;
       end if;
       if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncut"))) then
@@ -547,5 +532,21 @@ package body ShowItems is
             To_String(CurrentSelected));
       end if;
    end SetPermission;
+
+   procedure SetBookmarkButton is
+   begin
+      Hide(Gtk_Widget(Get_Object(Builder, "btnaddbookmark")));
+      Hide(Gtk_Widget(Get_Object(Builder, "btnremovebookmark")));
+      if not Is_Directory(To_String(CurrentSelected)) then
+         return;
+      end if;
+      for Bookmark of BookmarksList loop
+         if Bookmark.Path = CurrentSelected then
+            Show_All(Gtk_Widget(Get_Object(Builder, "btnremovebookmark")));
+            return;
+         end if;
+      end loop;
+      Show_All(Gtk_Widget(Get_Object(Builder, "btnaddbookmark")));
+   end SetBookmarkButton;
 
 end ShowItems;

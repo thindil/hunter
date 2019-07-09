@@ -25,6 +25,7 @@ with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with ShowItems; use ShowItems;
 
 package body Utils is
 
@@ -146,14 +147,14 @@ package body Utils is
       end loop;
       if Finished then
          Set_Title(Gtk_Header_Bar(Get_Object(Builder, "header")), "");
+         Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          if not Settings.ShowPreview then
             Set_Position
               (Gtk_Paned(Get_Object(Builder, "filespaned")),
                Get_Allocated_Width
                  (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
             Hide(Gtk_Widget(Get_Object(Builder, "boxsecond")));
-         else
-            Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+            SetBookmarkButton;
          end if;
       else
          case Action is
