@@ -65,4 +65,10 @@ package ShowItems is
    -- SOURCE
    procedure SetPermission(Object: access Gtkada_Builder_Record'Class);
    -- ****
+   -- ****f* ShowItems/SetBookmarkButton
+   -- FUNCTION
+   -- Show proper bookmark button for directories.
+   -- SOURCE
+   procedure SetBookmarkButton;
+   -- ****
 end ShowItems;

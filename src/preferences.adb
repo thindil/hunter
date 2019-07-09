@@ -148,7 +148,10 @@ package body Preferences is
               (Gtk_Widget(Get_Object(Object, "boxsecond")),
                Settings.ShowPreview);
             Set_Visible
-              (Gtk_Widget(Get_Object(Object, "itemtoolbar")),
+              (Gtk_Widget(Get_Object(Builder, "btnpreview")),
+               Settings.ShowPreview);
+            Set_Visible
+              (Gtk_Widget(Get_Object(Builder, "btnfileinfo")),
                Settings.ShowPreview);
             if Settings.ShowPreview then
                Set_Position

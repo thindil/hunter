@@ -447,7 +447,8 @@ package body MainWindow is
                0.3));
       else
          Hide(Gtk_Widget(Get_Object(Builder, "boxsecond")));
-         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+         Hide(Gtk_Widget(Get_Object(Builder, "btnpreview")));
+         Hide(Gtk_Widget(Get_Object(Builder, "btnfileinfo")));
          Set_Position
            (Gtk_Paned(Get_Object(Builder, "filespaned")),
             Get_Allocated_Width
