@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Multilingual support
 - Polish translation of the program
+- Option to show/hide preview of files and directories
 
 ### Changed
 - Updated interface
