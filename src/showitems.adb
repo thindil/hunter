@@ -292,7 +292,7 @@ package body ShowItems is
 
    procedure PreviewItem(Object: access Gtkada_Builder_Record'Class) is
    begin
-      if Setting then
+      if Setting or (not Settings.ShowPreview) then
          return;
       end if;
       Hide(Gtk_Widget(Get_Object(Object, "btnaddbookmark")));
@@ -419,7 +419,7 @@ package body ShowItems is
 
    procedure ShowItem(Object: access Gtkada_Builder_Record'Class) is
    begin
-      if Setting then
+      if Setting or (not Settings.ShowPreview) then
          return;
       end if;
       SelectedItems.Clear;
