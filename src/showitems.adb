@@ -419,9 +419,6 @@ package body ShowItems is
 
    procedure ShowItem(Object: access Gtkada_Builder_Record'Class) is
    begin
-      if Setting or (not Settings.ShowPreview) then
-         return;
-      end if;
       SelectedItems.Clear;
       Selected_Foreach
         (Gtk.Tree_View.Get_Selection
@@ -440,6 +437,9 @@ package body ShowItems is
          return;
       end if;
       CurrentSelected := SelectedItems(1);
+      if Setting or (not Settings.ShowPreview) then
+         return;
+      end if;
       if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncut"))) then
          MoveItemsList := SelectedItems;
          return;
