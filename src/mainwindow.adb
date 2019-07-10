@@ -27,6 +27,7 @@ with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
+with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
@@ -252,6 +253,7 @@ package body MainWindow is
    -- SOURCE
    function GetWindowSize
      (Object: access Gtkada_Builder_Record'Class) return Boolean is
+   -- ****
    begin
       Settings.WindowWidth :=
         Positive
@@ -261,6 +263,51 @@ package body MainWindow is
           (Get_Allocated_Height(Gtk_Widget(Get_Object(Object, "mainwindow"))));
       return False;
    end GetWindowSize;
+
+   -- ****if* MainWindow/ShowFilesMenu
+   -- FUNCTION
+   -- Show menu with available actions on right click on directory listing
+   -- PARAMETERS
+   -- Self  - Tree view to which menu is attached. Unused
+   -- Event - Detailed info about mouse press button event
+   -- RESULT
+   -- Return True if pressed button was right button, otherwise False
+   -- SOURCE
+   function ShowFilesMenu
+     (Self: access Gtk_Widget_Record'Class; Event: Gdk_Event_Button)
+      return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+      FilesMenu: constant Gtk_Menu :=
+        Gtk_Menu(Get_Object(Builder, "filesmenu"));
+   begin
+      if Event.Button /= 3 then
+         return False;
+      end if;
+      Show_All(Gtk_Widget(FilesMenu));
+      Set_Visible
+        (Gtk_Widget(Get_Object(Builder, "menuopen")),
+         Get_Visible(Gtk_Widget(Get_Object(Builder, "btnopen"))));
+      Set_Visible
+        (Gtk_Widget(Get_Object(Builder, "menurun")),
+         Get_Visible(Gtk_Widget(Get_Object(Builder, "btnrun"))));
+      Set_Visible
+        (Gtk_Widget(Get_Object(Builder, "menurunwith")),
+         Get_Visible(Gtk_Widget(Get_Object(Builder, "btnopenwith"))));
+      Set_Visible
+        (Gtk_Widget(Get_Object(Builder, "menurename")),
+         Get_Visible(Gtk_Widget(Get_Object(Builder, "btnopenwith"))));
+      if not Is_Visible(Gtk_Widget(Get_Object(Builder, "itemtoolbar"))) then
+         Hide(Gtk_Widget(Get_Object(Builder, "menuopen")));
+         Hide(Gtk_Widget(Get_Object(Builder, "menurun")));
+         Hide(Gtk_Widget(Get_Object(Builder, "menurunwith")));
+         Hide(Gtk_Widget(Get_Object(Builder, "menurename")));
+      end if;
+      Popup
+        (Menu => FilesMenu, Button => Event.Button,
+         Activate_Time => Event.Time);
+      return True;
+   end ShowFilesMenu;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
@@ -325,6 +372,8 @@ package body MainWindow is
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "mainwindow")),
          WindowKeyPressed'Access);
+      On_Button_Press_Event
+        (Gtk_Widget(Get_Object(Builder, "treefiles")), ShowFilesMenu'Access);
       Add_Entry("<mainwindow>/reload", GDK_LC_r, Mod1_Mask);
       Add_Entry("<mainwindow>/goup", GDK_LC_u, Mod1_Mask);
       Add_Entry("<mainwindow>/path1", GDK_1, Mod1_Mask);
@@ -426,6 +475,9 @@ package body MainWindow is
       Set_Default_Size
         (Gtk_Window(Get_Object(Builder, "mainwindow")),
          Gint(Settings.WindowWidth), Gint(Settings.WindowHeight));
+      Attach_To_Widget
+        (Gtk_Menu(Get_Object(Builder, "filesmenu")),
+         Gtk_Widget(Get_Object(Builder, "treefiles")), null);
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
