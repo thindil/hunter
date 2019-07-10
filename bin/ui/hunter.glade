@@ -171,7 +171,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <object class="GtkMenuItem" id="menuopen">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Open</property>
+        <property name="label" translatable="yes">Open</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="Activate_File" object="treefiles" swapped="no"/>
       </object>
@@ -180,7 +180,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <object class="GtkMenuItem" id="menurun">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Run</property>
+        <property name="label" translatable="yes">Run</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="Execute_File" swapped="no"/>
       </object>
@@ -189,7 +189,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <object class="GtkMenuItem" id="menurunwith">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">R_un with command</property>
+        <property name="label" translatable="yes">Open with...</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="Start_Open_With" swapped="no"/>
       </object>
@@ -198,7 +198,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <object class="GtkMenuItem" id="menurename">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Rename</property>
+        <property name="label" translatable="yes">Rename</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="Start_Rename" swapped="no"/>
       </object>
@@ -207,7 +207,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <object class="GtkMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Copy</property>
+        <property name="label" translatable="yes">Copy</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="Copy_Items" swapped="no"/>
       </object>
@@ -216,7 +216,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <object class="GtkMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Move</property>
+        <property name="label" translatable="yes">Move</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="Move_Items" swapped="no"/>
       </object>
@@ -225,7 +225,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <object class="GtkMenuItem">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="label" translatable="yes">_Delete</property>
+        <property name="label" translatable="yes">Delete</property>
         <property name="use_underline">True</property>
         <signal name="activate" handler="Delete_Item" swapped="no"/>
       </object>
