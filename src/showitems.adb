@@ -412,6 +412,10 @@ package body ShowItems is
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
          Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
+         Set_Label
+           (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Preview"));
+         Set_Visible_Child_Name
+           (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
          return;
       elsif SelectedItems.Length = 0 then
          PreviewItem(Object);
