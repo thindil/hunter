@@ -205,6 +205,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="copyright">©2019 Bartek thindil Jasicki</property>
     <property name="comments" translatable="yes">Graphical File Manager for Linux</property>
     <property name="website">https://thindil.github.io/hunter/</property>
+    <property name="website_label" translatable="yes">Website</property>
     <property name="authors">Bartek thindil Jasicki &lt;thindil@laeran.pl&gt;</property>
     <property name="translator_credits" translatable="yes">Polski - Bartek thindil Jasicki &lt;thindil@laeran.pl&gt;</property>
     <property name="logo">hunter-icon.png</property>
@@ -653,12 +654,11 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="layout_style">end</property>
                 <child>
                   <object class="GtkButton" id="btnno">
-                    <property name="label">gtk-no</property>
+                    <property name="label">No</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_underline">True</property>
-                    <property name="use_stock">True</property>
                     <signal name="clicked" handler="Set_Response" object="btnno" swapped="no"/>
                   </object>
                   <packing>
@@ -669,12 +669,11 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 </child>
                 <child>
                   <object class="GtkButton" id="btnyes">
-                    <property name="label">gtk-yes</property>
+                    <property name="label">Yes</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">True</property>
                     <property name="use_underline">True</property>
-                    <property name="use_stock">True</property>
                     <signal name="clicked" handler="Set_Response" object="btnyes" swapped="no"/>
                   </object>
                   <packing>
