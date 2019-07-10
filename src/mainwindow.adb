@@ -138,10 +138,8 @@ package body MainWindow is
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
       CurrentSelected := Null_Unbounded_String;
-      ShowItem(Builder);
-      Set_Visible_Child_Name
-        (Gtk_Stack(Get_Object(Builder, "filestack")), "files");
       ToggleToolButtons(NewAction, True);
+      ShowItem(Builder);
    end ShowFiles;
 
    -- ****if* MainWindow/ShowAbout
