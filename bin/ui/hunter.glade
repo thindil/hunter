@@ -164,6 +164,73 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <object class="GtkTreeModelSort" id="filessort2">
     <property name="model">filesfilter2</property>
   </object>
+  <object class="GtkMenu" id="filesmenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="menuopen">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Open</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Activate_File" object="treefiles" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="menurun">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Run</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Execute_File" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="menurunwith">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">R_un with command</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Start_Open_With" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem" id="menurename">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Rename</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Start_Rename" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Copy</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Copy_Items" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Move</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Move_Items" swapped="no"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">_Delete</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Delete_Item" swapped="no"/>
+      </object>
+    </child>
+  </object>
   <object class="GtkMenu" id="newmenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
