@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Multilingual support
 - Polish translation of the program
 - Option to show/hide preview of files and directories
+- Context menu with actions on right click on directory listing
 
 ### Changed
 - Updated interface
