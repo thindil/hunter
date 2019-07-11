@@ -114,7 +114,7 @@ package body ShowItems is
       Directory: Dir_Type;
       Last: Natural;
       FileName: String(1 .. 1024);
-      SelectedPath: constant String := Full_Name(To_String(CurrentSelected));
+      SelectedPath: Unbounded_String;
       ObjectsNames: constant array(Positive range <>) of Unbounded_String :=
         (To_Unbounded_String("lblfiletype"),
          To_Unbounded_String("lblfiletype2"),
@@ -123,11 +123,14 @@ package body ShowItems is
          To_Unbounded_String("cbtngroupexecute"),
          To_Unbounded_String("cbtnothersexecute"));
    begin
-      if Setting then
+      if Setting or CurrentSelected = Null_Unbounded_String then
          return;
       end if;
       Setting := True;
-      Set_Label(Gtk_Label(Get_Object(Object, "lblname")), SelectedPath);
+      SelectedPath :=
+        To_Unbounded_String(Full_Name(To_String(CurrentSelected)));
+      Set_Label
+        (Gtk_Label(Get_Object(Object, "lblname")), To_String(SelectedPath));
       Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
       if Is_Symbolic_Link(To_String(CurrentSelected)) then
          Set_Label
@@ -139,22 +142,22 @@ package body ShowItems is
       for Name of ObjectsNames loop
          Hide(Gtk_Widget(Get_Object(Object, To_String(Name))));
       end loop;
-      if Is_Regular_File(SelectedPath) then
+      if Is_Regular_File(To_String(SelectedPath)) then
          for Name of ObjectsNames loop
             Show_All(Gtk_Widget(Get_Object(Object, To_String(Name))));
          end loop;
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblsize")),
-            CountFileSize(Size(SelectedPath)));
+            CountFileSize(Size(To_String(SelectedPath))));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lbllastmodified")),
             Ada.Calendar.Formatting.Image
-              (Modification_Time(SelectedPath), False,
+              (Modification_Time(To_String(SelectedPath)), False,
                Ada.Calendar.Time_Zones.UTC_Time_Offset));
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblfiletype")),
-            GetMimeType(SelectedPath));
-         if not CanBeOpened(GetMimeType(SelectedPath)) then
+            GetMimeType(To_String(SelectedPath)));
+         if not CanBeOpened(GetMimeType(To_String(SelectedPath))) then
             Set_Label
               (Gtk_Button(Get_Object(Object, "btnprogram")), Gettext("none"));
          else
@@ -169,7 +172,8 @@ package body ShowItems is
                Non_Blocking_Spawn
                  (ProcessDesc, ExecutableName,
                   Argument_String_To_List
-                    ("query default " & GetMimeType(SelectedPath)).all);
+                    ("query default " &
+                     GetMimeType(To_String(SelectedPath))).all);
                Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
                if Result = 1 then
                   DesktopFile :=
@@ -190,11 +194,11 @@ package body ShowItems is
                Close(ProcessDesc);
             end;
          end if;
-      elsif Is_Directory(SelectedPath) then
+      elsif Is_Directory(To_String(SelectedPath)) then
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblsize2")), Gettext("Elements:"));
-         if Is_Read_Accessible_File(SelectedPath) then
-            Open(Directory, SelectedPath);
+         if Is_Read_Accessible_File(To_String(SelectedPath)) then
+            Open(Directory, To_String(SelectedPath));
             loop
                Read(Directory, FileName, Last);
                exit when Last = 0;
@@ -210,7 +214,8 @@ package body ShowItems is
          end if;
          Set_Label
            (Gtk_Label(Get_Object(Object, "lbllastmodified")),
-            Ada.Calendar.Formatting.Image(Modification_Time(SelectedPath)));
+            Ada.Calendar.Formatting.Image
+              (Modification_Time(To_String(SelectedPath))));
       else
          if SelectedPath = "" then
             Set_Label
