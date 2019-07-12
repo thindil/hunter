@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter code documentation</a>
+<a name="robo_top_of_doc">Hunter v0.6 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -27,10 +27,13 @@
 <h3>TABLE OF CONTENTS</h3>
 <ul>
 <li>1. <a href="#robo64">MainWindow/EntryKeyPressed</a></li>
-<li>2. <a href="#robo68">MainWindow/ShowAbout</a></li>
-<li>3. <a href="#robo69">MainWindow/ShowFiles</a></li>
-<li>4. <a href="#robo70">MainWindow/StartRename</a></li>
-<li>5. <a href="#robo71">MainWindow/UpdateImage</a></li>
+<li>2. <a href="#robo65">MainWindow/GetWindowSize</a></li>
+<li>3. <a href="#robo69">MainWindow/ShowAbout</a></li>
+<li>4. <a href="#robo70">MainWindow/ShowFiles</a></li>
+<li>5. <a href="#robo71">MainWindow/ShowFilesMenu</a></li>
+<li>6. <a href="#robo72">MainWindow/StartRename</a></li>
+<li>7. <a href="#robo73">MainWindow/UpdateImage</a></li>
+<li>8. <a href="#robo74">MainWindow/WindowKeyPressed</a></li>
 </ul>
 <hr />
 <a name="MainWindow2fEntryKeyPressed"></a>
@@ -55,8 +58,27 @@
 </pre>
 
 <hr />
+<a name="MainWindow2fGetWindowSize"></a>
+<a name="robo65"></a><h2>MainWindow/GetWindowSize [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Get the main window size at quitting of the program
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>GetWindowSize</strong>
+     <span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo23">Builder</a> used to create UI
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return False
+</pre>
+
+<hr />
 <a name="MainWindow2fShowAbout"></a>
-<a name="robo68"></a><h2>MainWindow/ShowAbout [ Subprograms ]</h2>
+<a name="robo69"></a><h2>MainWindow/ShowAbout [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -66,12 +88,12 @@
 <pre class="source">   <span class="keyword">procedure</span> <strong>ShowAbout</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
 </span></pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo23">Builder</a> used to create UI
 </pre>
 
 <hr />
 <a name="MainWindow2fShowFiles"></a>
-<a name="robo69"></a><h2>MainWindow/ShowFiles [ Subprograms ]</h2>
+<a name="robo70"></a><h2>MainWindow/ShowFiles [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -85,8 +107,30 @@
 </pre>
 
 <hr />
+<a name="MainWindow2fShowFilesMenu"></a>
+<a name="robo71"></a><h2>MainWindow/ShowFilesMenu [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show menu with available actions on right click on directory listing
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>ShowFilesMenu</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Widget_Record<span class="keyword">'Class</span><span class="sign">;</span> Event<span class="sign">:</span> Gdk_Event_Button<span class="sign">)</span>
+     <span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Tree view to which menu is attached. Unused
+ Event - Detailed info about mouse press button event
+</pre>
+<p class="item_name">RESULT</p>
+<pre> Return True if pressed button was right button, otherwise False
+</pre>
+
+<hr />
 <a name="MainWindow2fStartRename"></a>
-<a name="robo70"></a><h2>MainWindow/StartRename [ Subprograms ]</h2>
+<a name="robo72"></a><h2>MainWindow/StartRename [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -97,12 +141,12 @@
 <pre class="source">   <span class="keyword">procedure</span> <strong>StartRename</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
 </span></pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo23">Builder</a> used to create UI
 </pre>
 
 <hr />
 <a name="MainWindow2fUpdateImage"></a>
-<a name="robo71"></a><h2>MainWindow/UpdateImage [ Subprograms ]</h2>
+<a name="robo73"></a><h2>MainWindow/UpdateImage [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -113,7 +157,30 @@
      <span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
 </span></pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo23">Builder</a> used to create UI
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return False
+</pre>
+
+<hr />
+<a name="MainWindow2fWindowKeyPressed"></a>
+<a name="robo74"></a><h2>MainWindow/WindowKeyPressed [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Close the program with keyboard shortcut
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>WindowKeyPressed</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Widget_Record<span class="keyword">'Class</span><span class="sign">;</span> Event<span class="sign">:</span> Gdk.Event.Gdk_Event_Key<span class="sign">)</span>
+     <span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Main window of the program (not used)
+ Event - Detailed informations about key pressed event (key code,
+         modifiers, etc)
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return False
@@ -121,7 +188,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/mainwindow.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Jun 25 2019 09:23:29
+<p>Generated from ./src/mainwindow.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 12 2019 07:22:48
 </p>
 </div> <!-- footer -->
 </body>
