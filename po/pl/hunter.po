@@ -202,7 +202,7 @@ msgstr "Tworzenie pustego pliku."
 
 #: src/utils.adb:168
 msgid "Creating new directory"
-msgstr "Tworzenie nowy katalog."
+msgstr "Tworzenie nowego katalogu."
 
 #: src/utils.adb:172
 msgid "Creating new link"
