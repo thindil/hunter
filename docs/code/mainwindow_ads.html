@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter code documentation</a>
+<a name="robo_top_of_doc">Hunter v0.6 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -39,13 +39,16 @@
 <li>1.9. <a href="#robo29">MainWindow/Setting</a></li>
 <li>1.10. <a href="#robo63">MainWindow/CreateMainWindow</a></li>
 <li>1.11. <a href="./mainwindow_adb.html#robo64">MainWindow/EntryKeyPressed</a></li>
-<li>1.12. <a href="#robo65">MainWindow/Quit</a></li>
-<li>1.13. <a href="#robo66">MainWindow/Reload</a></li>
-<li>1.14. <a href="./showitems_ads.html#robo67">MainWindow/SetAssociated</a></li>
-<li>1.15. <a href="./mainwindow_adb.html#robo68">MainWindow/ShowAbout</a></li>
-<li>1.16. <a href="./mainwindow_adb.html#robo69">MainWindow/ShowFiles</a></li>
-<li>1.17. <a href="./mainwindow_adb.html#robo70">MainWindow/StartRename</a></li>
-<li>1.18. <a href="./mainwindow_adb.html#robo71">MainWindow/UpdateImage</a></li>
+<li>1.12. <a href="./mainwindow_adb.html#robo65">MainWindow/GetWindowSize</a></li>
+<li>1.13. <a href="#robo66">MainWindow/Quit</a></li>
+<li>1.14. <a href="#robo67">MainWindow/Reload</a></li>
+<li>1.15. <a href="./showitems_ads.html#robo68">MainWindow/SetAssociated</a></li>
+<li>1.16. <a href="./mainwindow_adb.html#robo69">MainWindow/ShowAbout</a></li>
+<li>1.17. <a href="./mainwindow_adb.html#robo70">MainWindow/ShowFiles</a></li>
+<li>1.18. <a href="./mainwindow_adb.html#robo71">MainWindow/ShowFilesMenu</a></li>
+<li>1.19. <a href="./mainwindow_adb.html#robo72">MainWindow/StartRename</a></li>
+<li>1.20. <a href="./mainwindow_adb.html#robo73">MainWindow/UpdateImage</a></li>
+<li>1.21. <a href="./mainwindow_adb.html#robo74">MainWindow/WindowKeyPressed</a></li>
 </ul>
 </ul>
 <hr />
@@ -195,14 +198,14 @@
 <pre class="source">   <span class="keyword">procedure</span> <strong>CreateMainWindow</strong><span class="sign">(</span>NewBuilder<span class="sign">:</span> Gtkada_Builder<span class="sign">;</span> Directory<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> NewBuilder - Gtk <a href="./errordialog_adb.html#robo22">Builder</a> with UI data read from .glade file
+<pre> NewBuilder - Gtk <a href="#robo23">Builder</a> with UI data read from .glade file
  Directory  - Full path to the directory which will be show at the
               program start
 </pre>
 
 <hr />
 <a name="MainWindow2fQuit"></a>
-<a name="robo65"></a><h2>MainWindow/Quit [ Subprograms ]</h2>
+<a name="robo66"></a><h2>MainWindow/Quit [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -212,12 +215,12 @@
 <pre class="source">   <span class="keyword">procedure</span> <strong>Quit</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="#robo23">Builder</a> used to create UI
 </pre>
 
 <hr />
 <a name="MainWindow2fReload"></a>
-<a name="robo66"></a><h2>MainWindow/Reload [ Subprograms ]</h2>
+<a name="robo67"></a><h2>MainWindow/Reload [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -227,12 +230,12 @@
 <pre class="source">   <span class="keyword">procedure</span> <strong>Reload</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo22">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="#robo23">Builder</a> used to create UI
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Jun 25 2019 09:23:29
+<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 12 2019 07:22:48
 </p>
 </div> <!-- footer -->
 </body>
