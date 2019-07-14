@@ -154,6 +154,7 @@ package body Utils is
                Get_Allocated_Width
                  (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
             Hide(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+         else
             SetBookmarkButton;
          end if;
       else
