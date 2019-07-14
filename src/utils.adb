@@ -157,6 +157,7 @@ package body Utils is
             SetBookmarkButton;
          end if;
       else
+         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          case Action is
             when CREATEFILE =>
                Set_Title
