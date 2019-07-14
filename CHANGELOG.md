@@ -6,6 +6,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Don't show file and directory actions icons during creating, renaming or
   deleting files or directories
+- Showing bookmarks button after creating, renaming or deleting files or
+  directories
 
 ## [0.6] - 2019-07-12
 
