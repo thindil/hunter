@@ -48,7 +48,6 @@ package body MoveItems is
       if MoveItemsList.Length = 0 then
          MoveItemsList := SelectedItems;
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
          Set_Tooltip_Text
            (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
             Gettext("Stop moving files and directories [Escape]"));

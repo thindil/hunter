@@ -45,7 +45,6 @@ package body CopyItems is
       if CopyItemsList.Length = 0 then
          CopyItemsList := SelectedItems;
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
          Set_Tooltip_Text
            (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
             Gettext("Stop copying files and directories [Escape]"));

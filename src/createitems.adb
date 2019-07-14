@@ -178,7 +178,6 @@ package body CreateItems is
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
             Gettext("Create new link to selected file or directory."));
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Set_Label
            (Gtk_Label(Get_Object(Builder, "lblframe")),
             Gettext("Destination directory"));
