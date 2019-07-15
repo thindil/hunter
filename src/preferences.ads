@@ -22,17 +22,29 @@ with Gtkada.Builder; use Gtkada.Builder;
 package Preferences is
 -- ****
 
+   -- ****t* Preferences/Toolbar_Size
+   -- FUNCTION
+   -- Available sizes of the program toolbars
+   -- SOURCE
+   type Toolbar_Size is (SMALL, MEDIUM, LARGE, VERY_LARGE);
+   for Toolbar_Size use (SMALL => 2, MEDIUM => 3, LARGE => 5, VERY_LARGE => 6);
+   -- ****
+
    -- ****t* Preferences/Settings_Data
    -- FUNCTION
    -- Data structure to the program settings
    -- OPTIONS
    -- ShowHidden            - If true, show hidden files
-   -- ShowLastModified      - If true, show column with last modification time on files list
+   -- ShowLastModified      - If true, show column with last modification time
+   --                         on files list
    -- ScaleImages           - If true, scale images in preview
-   -- AutoCloseMessagesTime - Amount of seconds after which current message will be auto hidden
+   -- AutoCloseMessagesTime - Amount of seconds after which current message
+   --                         will be auto hidden
    -- WindowWidth           - Width of the main window in pixels
    -- WindowHeight          - Height of the main window in pixels
-   -- ShowPreview           - If true, show preview panel for files and directories
+   -- ShowPreview           - If true, show preview panel for files and
+   --                         directories
+   -- ToolbarsSize          - Size of toolbars
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -42,6 +54,7 @@ package Preferences is
       WindowWidth: Positive;
       WindowHeight: Positive;
       ShowPreview: Boolean;
+      ToolbarsSize: Toolbar_Size;
    end record;
    -- ****
    -- ****v* Preferences/Settings

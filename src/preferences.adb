@@ -18,8 +18,11 @@ with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Adjustment; use Gtk.Adjustment;
+with Gtk.Combo_Box; use Gtk.Combo_Box;
+with Gtk.Enums; use Gtk.Enums;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Switch; use Gtk.Switch;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
@@ -56,7 +59,7 @@ package body Preferences is
       Settings :=
         (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
          AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
-         ShowPreview => True);
+         ShowPreview => True, ToolbarsSize => SMALL);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -103,6 +106,13 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchshowpreview")),
                   Settings.ShowPreview);
+            elsif FieldName = To_Unbounded_String("ToolbarsSize") then
+               if Set_Active_Id
+                   (Gtk_Combo_Box(Get_Object(Builder, "cmbtoolbarssize")),
+                    To_String(Value)) then
+                  Settings.ToolbarsSize :=
+                    Toolbar_Size'Value(To_String(Value));
+               end if;
             end if;
          end if;
       end loop;
@@ -182,6 +192,19 @@ package body Preferences is
            Natural
              (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds"))));
       end if;
+      if Get_Active_Id(Gtk_Combo_Box(Get_Object(Object, "cmbtoolbarssize"))) /=
+        Toolbar_Size'Image(Settings.ToolbarsSize) then
+         Settings.ToolbarsSize :=
+           Toolbar_Size'Value
+             (Get_Active_Id
+                (Gtk_Combo_Box(Get_Object(Object, "cmbtoolbarssize"))));
+         Set_Icon_Size
+           (Gtk_Toolbar(Get_Object(Object, "toolbar")),
+            Gtk_Icon_Size(Toolbar_Size'Pos(Settings.ToolbarsSize)));
+         Set_Icon_Size
+           (Gtk_Toolbar(Get_Object(Object, "itemtoolbar")),
+            Gtk_Icon_Size(Toolbar_Size'Pos(Settings.ToolbarsSize)));
+      end if;
    end SaveSettingsProc;
 
    procedure SavePreferences is
@@ -216,6 +239,9 @@ package body Preferences is
       Put_Line
         (ConfigFile, "WindowHeight =" & Positive'Image(Settings.WindowHeight));
       SaveBoolean(Settings.ShowPreview, "ShowPreview");
+      Put_Line
+        (ConfigFile,
+         "ToolbarsSize = " & Toolbar_Size'Image(Settings.ToolbarsSize));
       Close(ConfigFile);
    end SavePreferences;
 
