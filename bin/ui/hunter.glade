@@ -332,8 +332,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
             <child>
               <object class="GtkToolbar" id="toolbar">
                 <property name="can_focus">False</property>
-                <property name="toolbar_style">icons</property>
-                <property name="icon_size">2</property>
                 <child>
                   <object class="GtkMenuToolButton" id="btnbookmarks">
                     <property name="visible">True</property>
@@ -429,7 +427,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes">Move selected files [ALT-M]. Pressed button means start moving currently selected files or directories. Press again to move them.</property>
-                    <property name="label" translatable="yes">Cut</property>
+                    <property name="label" translatable="yes">Move</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">edit-cut</property>
                     <signal name="clicked" handler="Move_Items" swapped="no"/>
@@ -532,8 +530,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="can_focus">False</property>
                 <property name="halign">center</property>
                 <property name="valign">end</property>
-                <property name="toolbar_style">icons</property>
-                <property name="icon_size">2</property>
                 <child>
                   <object class="GtkToolButton" id="btnrun">
                     <property name="visible">True</property>
@@ -640,7 +636,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes">Add bookmark to this directory [ALT-B].</property>
-                    <property name="label" translatable="yes">Add</property>
+                    <property name="label" translatable="yes">Add bookmark</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">list-add</property>
                     <signal name="clicked" handler="Add_Bookmark" swapped="no"/>
@@ -656,7 +652,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes">Remove bookmark to this directory [ALT-B]</property>
-                    <property name="label" translatable="yes">Remove</property>
+                    <property name="label" translatable="yes">Remove bookmark</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">list-remove</property>
                     <signal name="clicked" handler="Remove_Bookmark" swapped="no"/>
@@ -1905,36 +1901,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="top_attach">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Size of toolbars:</property>
-                    <property name="xalign">0</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkComboBoxText" id="cmbtoolbarssize">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="active">0</property>
-                    <items>
-                      <item id="SMALL" translatable="yes">Small</item>
-                      <item id="MEDIUM" translatable="yes">Medium</item>
-                      <item id="LARGE" translatable="yes">Large</item>
-                      <item id="VERY_LARGE" translatable="yes">Very Large</item>
-                    </items>
-                    <signal name="changed" handler="Save_Preferences_Proc" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="top_attach">1</property>
                   </packing>
                 </child>
               </object>
