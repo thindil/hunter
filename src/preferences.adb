@@ -56,7 +56,7 @@ package body Preferences is
       Settings :=
         (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
          AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
-         ShowPreview => True);
+         ShowPreview => True, StayInOld => False);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -103,6 +103,11 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchshowpreview")),
                   Settings.ShowPreview);
+            elsif FieldName = To_Unbounded_String("StayInOld") then
+               Settings.StayInOld := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchstayinsource")),
+                  Settings.StayInOld);
             end if;
          end if;
       end loop;
@@ -170,6 +175,11 @@ package body Preferences is
             end if;
          end if;
       end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchstayinsource"))) /=
+        Settings.StayInOld then
+         Settings.StayInOld :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchstayinsource")));
+      end if;
       return False;
    end SaveSettings;
 
@@ -216,6 +226,7 @@ package body Preferences is
       Put_Line
         (ConfigFile, "WindowHeight =" & Positive'Image(Settings.WindowHeight));
       SaveBoolean(Settings.ShowPreview, "ShowPreview");
+      SaveBoolean(Settings.StayInOld, "StayInOld");
       Close(ConfigFile);
    end SavePreferences;
 

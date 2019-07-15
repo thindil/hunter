@@ -22,10 +22,18 @@ with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtkada.Intl; use Gtkada.Intl;
 with CopyItems; use CopyItems;
 with Messages; use Messages;
+with Preferences; use Preferences;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body MoveItems is
+
+   -- ****iv* CopyItems/SourceDirectory
+   -- FUNCTION
+   -- Full path to the source directory of moved files and directories
+   -- SOURCE
+   SourceDirectory: Unbounded_String;
+   -- ****
 
    procedure MoveData(Object: access Gtkada_Builder_Record'Class) is
       OverwriteItem: Boolean := False;
@@ -41,6 +49,7 @@ package body MoveItems is
       end if;
       if MoveItemsList.Length = 0 then
          MoveItemsList := SelectedItems;
+         SourceDirectory := CurrentDirectory;
          ToggleToolButtons(MOVE);
          return;
       end if;
@@ -104,6 +113,9 @@ package body MoveItems is
       MoveItemsList.Clear;
       ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
+      if Settings.StayInOld then
+         CurrentDirectory := SourceDirectory;
+      end if;
       Reload(Builder);
    end MoveSelected;
 

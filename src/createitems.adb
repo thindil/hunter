@@ -23,9 +23,17 @@ with ActivateItems; use ActivateItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Preferences; use Preferences;
 with Utils; use Utils;
 
 package body CreateItems is
+
+   -- ****iv* CopyItems/SourceDirectory
+   -- FUNCTION
+   -- Full path to the source directory of item to which link was created
+   -- SOURCE
+   SourceDirectory: Unbounded_String;
+   -- ****
 
    -- ****if* CreateItems/CreateItem
    -- FUNCTION
@@ -155,6 +163,9 @@ package body CreateItems is
       Set_Text(Self, "");
       Hide(Gtk_Widget(Self));
       ToggleToolButtons(NewAction, True);
+      if Settings.StayInOld then
+         CurrentDirectory := SourceDirectory;
+      end if;
       if Get_Visible_Child_Name(Gtk_Stack(Get_Object(Builder, "infostack"))) =
         "destination" then
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
@@ -173,6 +184,7 @@ package body CreateItems is
             Gettext("Create new empty file."));
       elsif User_Data = Get_Object(Builder, "newmenulink") then
          NewAction := CREATELINK;
+         SourceDirectory := CurrentDirectory;
          LinkTarget := CurrentSelected;
          Set_Icon_Tooltip_Text
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
