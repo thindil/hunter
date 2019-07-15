@@ -3,6 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Option to stay in old directory after copying or moving files and
+  directories or creating links
+
 ### Fixed
 - Don't show file and directory actions icons during creating, renaming or
   deleting files or directories
