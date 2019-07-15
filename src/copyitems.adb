@@ -19,10 +19,18 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtkada.Intl; use Gtkada.Intl;
 with Messages; use Messages;
+with Preferences; use Preferences;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body CopyItems is
+
+   -- ****iv* CopyItems/SourceDirectory
+   -- FUNCTION
+   -- Full path to the source directory of copied files and directories
+   -- SOURCE
+   SourceDirectory: Unbounded_String;
+   -- ****
 
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
       OverwriteItem: Boolean := False;
@@ -38,6 +46,7 @@ package body CopyItems is
       end if;
       if CopyItemsList.Length = 0 then
          CopyItemsList := SelectedItems;
+         SourceDirectory := CurrentDirectory;
          ToggleToolButtons(COPY);
          return;
       end if;
@@ -126,6 +135,9 @@ package body CopyItems is
       CopyItemsList.Clear;
       ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
+      if Settings.StayInOld then
+         CurrentDirectory := SourceDirectory;
+      end if;
       Reload(Builder);
    end CopySelected;
 

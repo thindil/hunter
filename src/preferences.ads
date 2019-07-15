@@ -36,6 +36,10 @@ package Preferences is
    -- WindowHeight          - Height of the main window in pixels
    -- ShowPreview           - If true, show preview panel for files and
    --                         directories
+   -- StayInOld             - If true, after copying, moving files and
+   --                         directories or creating new link, stay in old
+   --                         directory instead of going to the destination
+   --                         directory.
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -45,6 +49,7 @@ package Preferences is
       WindowWidth: Positive;
       WindowHeight: Positive;
       ShowPreview: Boolean;
+      StayInOld: Boolean;
    end record;
    -- ****
    -- ****v* Preferences/Settings
