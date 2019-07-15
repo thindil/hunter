@@ -18,13 +18,9 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Label; use Gtk.Label;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
-with Gtk.Stack; use Gtk.Stack;
-with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with CopyItems; use CopyItems;
-with LoadData; use LoadData;
 with Messages; use Messages;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
@@ -39,24 +35,12 @@ package body MoveItems is
           To_String(CurrentDirectory) then
          MoveItemsList.Clear;
          ToggleToolButtons(NewAction, True);
-         Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
-         Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
          CurrentSelected := Null_Unbounded_String;
          ShowItem(Object);
          return;
       end if;
       if MoveItemsList.Length = 0 then
          MoveItemsList := SelectedItems;
-         LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         Set_Tooltip_Text
-           (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
-            Gettext("Stop moving files and directories [Escape]"));
-         Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
-         Set_Label
-           (Gtk_Label(Get_Object(Object, "lblframe")),
-            Gettext("Destination directory"));
-         Set_Visible_Child_Name
-           (Gtk_Stack(Get_Object(Object, "infostack")), "destination");
          ToggleToolButtons(MOVE);
          return;
       end if;
@@ -120,8 +104,6 @@ package body MoveItems is
       MoveItemsList.Clear;
       ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
-      Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
-      Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Reload(Builder);
    end MoveSelected;
 

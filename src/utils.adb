@@ -18,11 +18,14 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
+with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
+with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
@@ -122,8 +125,14 @@ package body Utils is
             null;
          when COPY =>
             CurrentButton := To_Unbounded_String("btncopy");
+            Set_Tooltip_Text
+              (Gtk_Widget(Get_Object(Builder, "btntoolcancel")),
+               Gettext("Stop copying files and directories [Escape]"));
          when MOVE =>
             CurrentButton := To_Unbounded_String("btncut");
+            Set_Tooltip_Text
+              (Gtk_Widget(Get_Object(Builder, "btntoolcancel")),
+               Gettext("Stop moving files and directories [Escape]"));
          when others =>
             return;
       end case;
@@ -137,6 +146,20 @@ package body Utils is
                     (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
                0.3));
          Show_All(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+      end if;
+      if (Action = COPY or Action = MOVE) then
+         if not Finished then
+            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+            Set_Label
+              (Gtk_Label(Get_Object(Builder, "lblframe")),
+               Gettext("Destination directory"));
+            Set_Visible_Child_Name
+              (Gtk_Stack(Get_Object(Builder, "infostack")), "destination");
+         else
+            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+         end if;
+         Set_Visible
+           (Gtk_Widget(Get_Object(Builder, "btntoolcancel")), not Finished);
       end if;
       for ButtonName of ButtonsNames loop
          if ButtonName /= CurrentButton then

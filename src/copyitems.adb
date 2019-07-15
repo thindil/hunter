@@ -16,12 +16,8 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Label; use Gtk.Label;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
-with Gtk.Stack; use Gtk.Stack;
-with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
-with LoadData; use LoadData;
 with Messages; use Messages;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
@@ -36,24 +32,12 @@ package body CopyItems is
           To_String(CurrentDirectory) then
          CopyItemsList.Clear;
          ToggleToolButtons(NewAction, True);
-         Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
-         Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
          CurrentSelected := Null_Unbounded_String;
          ShowItem(Object);
          return;
       end if;
       if CopyItemsList.Length = 0 then
          CopyItemsList := SelectedItems;
-         LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         Set_Tooltip_Text
-           (Gtk_Widget(Get_Object(Object, "btntoolcancel")),
-            Gettext("Stop copying files and directories [Escape]"));
-         Show_All(Gtk_Widget(Get_Object(Object, "btntoolcancel")));
-         Set_Label
-           (Gtk_Label(Get_Object(Object, "lblframe")),
-            Gettext("Destination directory"));
-         Set_Visible_Child_Name
-           (Gtk_Stack(Get_Object(Object, "infostack")), "destination");
          ToggleToolButtons(COPY);
          return;
       end if;
@@ -142,8 +126,6 @@ package body CopyItems is
       CopyItemsList.Clear;
       ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
-      Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
-      Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Reload(Builder);
    end CopySelected;
 
