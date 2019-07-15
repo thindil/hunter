@@ -1925,10 +1925,10 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="can_focus">False</property>
                     <property name="active">0</property>
                     <items>
-                      <item id="small" translatable="yes">Small</item>
-                      <item id="medium" translatable="yes">Medium</item>
-                      <item id="large" translatable="yes">Large</item>
-                      <item id="very_large" translatable="yes">Very Large</item>
+                      <item id="SMALL" translatable="yes">Small</item>
+                      <item id="MEDIUM" translatable="yes">Medium</item>
+                      <item id="LARGE" translatable="yes">Large</item>
+                      <item id="VERY_LARGE" translatable="yes">Very Large</item>
                     </items>
                     <signal name="changed" handler="Save_Preferences_Proc" swapped="no"/>
                   </object>
