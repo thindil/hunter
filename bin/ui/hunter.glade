@@ -231,6 +231,25 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       </object>
     </child>
   </object>
+  <object class="GtkTextTagTable" id="filetexttags">
+    <child type="tag">
+      <object class="GtkTextTag" id="bold">
+        <property name="name">bold</property>
+        <property name="font">Normal</property>
+        <property name="weight">700</property>
+      </object>
+    </child>
+    <child type="tag">
+      <object class="GtkTextTag" id="italic">
+        <property name="name">italic</property>
+        <property name="font">Normal</property>
+        <property name="style">italic</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkTextBuffer" id="filetextbuffer">
+    <property name="tag_table">filetexttags</property>
+  </object>
   <object class="GtkMenu" id="newmenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -971,6 +990,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                         <property name="editable">False</property>
                                         <property name="wrap_mode">word</property>
                                         <property name="cursor_visible">False</property>
+                                        <property name="buffer">filetextbuffer</property>
                                       </object>
                                     </child>
                                   </object>

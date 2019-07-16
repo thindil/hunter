@@ -301,6 +301,9 @@ package body ShowItems is
 
    procedure RemoveTag(Tag: not null access Gtk_Text_Tag_Record'Class) is
    begin
+      if Get_Property(GObject(Tag), Gtk.Text_Tag.Name_Property) /= "" then
+         return;
+      end if;
       Remove
         (Get_Tag_Table
            (Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview")))),
@@ -344,9 +347,9 @@ package body ShowItems is
                     FindExecutable("highlight");
                   Success, FirstLine: Boolean;
                   File: File_Type;
-                  FileLine: Unbounded_String;
+                  FileLine, TagText: Unbounded_String;
                   Tag: Gtk_Text_Tag;
-                  StartIndex, EndIndex: Natural;
+                  StartIndex, EndIndex, StartColor: Natural;
                   procedure LoadFile is
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
@@ -389,18 +392,42 @@ package body ShowItems is
                         loop
                            StartIndex := Index(FileLine, "<span", StartIndex);
                            exit when StartIndex = 0;
+                           if StartIndex > 1 then
+                              Insert
+                                (Buffer, Iter,
+                                 Slice(FileLine, 1, StartIndex - 1));
+                           end if;
                            EndIndex := Index(FileLine, ">", StartIndex);
-                           Tag := Create_Tag(Buffer);
-                           -- Test code
-                           Set_Property
-                             (GObject(Tag), Gtk.Text_Tag.Foreground_Property,
-                              "#ffffff");
+                           TagText :=
+                             Unbounded_Slice(FileLine, StartIndex, EndIndex);
+                           if Index(TagText, "style=""italic""") > 0 then
+                              Tag := Lookup(Get_Tag_Table(Buffer), "italic");
+                           elsif Index(TagText, "weight=""bold""") > 0 then
+                              Tag := Lookup(Get_Tag_Table(Buffer), "bold");
+                           else
+                              Tag := Create_Tag(Buffer);
+                           end if;
+                           StartColor := Index(TagText, "foreground=");
+                           if Index(TagText, "foreground=") > 0 then
+                              Set_Property
+                                (GObject(Tag),
+                                 Gtk.Text_Tag.Foreground_Property,
+                                 Slice
+                                   (TagText, StartColor + 12,
+                                    StartColor + 18));
+                           end if;
+                           StartIndex := StartIndex + Length(TagText);
+                           EndIndex :=
+                             Index(FileLine, "</span>", StartIndex) - 1;
                            Insert_With_Tags
                              (Buffer, Iter,
                               Slice(FileLine, StartIndex, EndIndex), Tag);
-                           StartIndex := EndIndex;
+                           StartIndex := 1;
+                           FileLine :=
+                             Unbounded_Slice
+                               (FileLine, EndIndex + 8, Length(FileLine));
                         end loop;
-                        Insert(Buffer, Iter, "" & LF);
+                        Insert(Buffer, Iter, To_String(FileLine) & LF);
                      end loop;
                      Close(File);
                      Delete_File
