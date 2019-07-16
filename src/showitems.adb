@@ -349,14 +349,16 @@ package body ShowItems is
                   Spawn
                     (ExecutableName,
                      Argument_String_To_List
-                       ("--out-format=pango --output=highlight.tmp " &
+                       ("--out-format=pango --output=" & Value("HOME") &
+                        "/.cache/hunter/highlight.tmp " &
                         To_String(CurrentSelected)).all,
                      Success);
                   if not Success then
                      LoadFile;
                   else
-                     LoadFile("highlight.tmp");
-                     Delete_File("highlight.tmp");
+                     LoadFile(Value("HOME") & "/.cache/hunter/highlight.tmp");
+                     Delete_File
+                       (Value("HOME") & "/.cache/hunter/highlight.tmp");
                   end if;
                exception
                   when others =>
