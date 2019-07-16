@@ -320,7 +320,6 @@ package body ShowItems is
             Buffer: constant Gtk_Text_Buffer :=
               Get_Buffer(Gtk_Text_View(Get_Object(Object, "filetextview")));
             Iter: Gtk_Text_Iter;
-            File: File_Type;
          begin
             Set_Text(Buffer, "");
             Get_Start_Iter(Buffer, Iter);
@@ -328,11 +327,41 @@ package body ShowItems is
                Hide(Gtk_Widget(Get_Object(Builder, "btnrun")));
             end if;
             if MimeType(1 .. 4) = "text" then
-               Open(File, In_File, To_String(CurrentSelected));
-               while not End_Of_File(File) loop
-                  Insert(Buffer, Iter, Get_Line(File) & LF);
-               end loop;
-               Close(File);
+               declare
+                  ExecutableName: constant String :=
+                    FindExecutable("highlight");
+                  Success: Boolean;
+                  procedure LoadFile
+                    (FileName: String := To_String(CurrentSelected)) is
+                     File: File_Type;
+                  begin
+                     Open(File, In_File, FileName);
+                     while not End_Of_File(File) loop
+                        Insert(Buffer, Iter, Get_Line(File) & LF);
+                     end loop;
+                     Close(File);
+                  end LoadFile;
+               begin
+                  if ExecutableName = "" then
+                     LoadFile;
+                     goto Set_UI;
+                  end if;
+                  Spawn
+                    (ExecutableName,
+                     Argument_String_To_List
+                       ("--out-format=pango --output=highlight.tmp " &
+                        To_String(CurrentSelected)).all,
+                     Success);
+                  if not Success then
+                     LoadFile;
+                  else
+                     LoadFile("highlight.tmp");
+                     Delete_File("highlight.tmp");
+                  end if;
+               exception
+                  when others =>
+                     LoadFile;
+               end;
             elsif MimeType(1 .. 5) = "image" then
                declare
                   Pixbuf: Gdk_Pixbuf;
@@ -391,6 +420,7 @@ package body ShowItems is
             end if;
          end;
       end if;
+      <<Set_UI>>
       Set_Label
         (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Preview"));
       Set_Visible_Child_Name
