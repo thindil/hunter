@@ -36,6 +36,8 @@ with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_Iter; use Gtk.Text_Iter;
 with Gtk.Text_View; use Gtk.Text_View;
+with Gtk.Text_Tag; use Gtk.Text_Tag;
+with Gtk.Text_Tag_Table; use Gtk.Text_Tag_Table;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
@@ -46,6 +48,8 @@ with Gdk.Pixbuf; use Gdk.Pixbuf;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Error; use Glib.Error;
+with Glib.Object; use Glib.Object;
+with Glib.Properties; use Glib.Properties;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
@@ -295,6 +299,14 @@ package body ShowItems is
       Setting := False;
    end ShowItemInfo;
 
+   procedure RemoveTag(Tag: not null access Gtk_Text_Tag_Record'Class) is
+   begin
+      Remove
+        (Get_Tag_Table
+           (Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview")))),
+         Tag);
+   end RemoveTag;
+
    procedure PreviewItem(Object: access Gtkada_Builder_Record'Class) is
    begin
       if Setting or (not Settings.ShowPreview) then
@@ -333,6 +345,8 @@ package body ShowItems is
                   Success, FirstLine: Boolean;
                   File: File_Type;
                   FileLine: Unbounded_String;
+                  Tag: Gtk_Text_Tag;
+                  StartIndex, EndIndex: Natural;
                   procedure LoadFile is
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
@@ -356,6 +370,7 @@ package body ShowItems is
                   if not Success then
                      LoadFile;
                   else
+                     Foreach(Get_Tag_Table(Buffer), RemoveTag'Access);
                      Open
                        (File, In_File,
                         Value("HOME") & "/.cache/hunter/highlight.tmp");
@@ -370,15 +385,27 @@ package body ShowItems is
                            FirstLine := False;
                         end if;
                         exit when End_Of_File(File);
-                        Insert(Buffer, Iter, To_String(FileLine) & LF);
+                        StartIndex := 1;
+                        loop
+                           StartIndex := Index(FileLine, "<span", StartIndex);
+                           exit when StartIndex = 0;
+                           EndIndex := Index(FileLine, ">", StartIndex);
+                           Tag := Create_Tag(Buffer);
+                           -- Test code
+                           Set_Property
+                             (GObject(Tag), Gtk.Text_Tag.Foreground_Property,
+                              "#ffffff");
+                           Insert_With_Tags
+                             (Buffer, Iter,
+                              Slice(FileLine, StartIndex, EndIndex), Tag);
+                           StartIndex := EndIndex;
+                        end loop;
+                        Insert(Buffer, Iter, "" & LF);
                      end loop;
                      Close(File);
                      Delete_File
                        (Value("HOME") & "/.cache/hunter/highlight.tmp");
                   end if;
-               exception
-                  when others =>
-                     LoadFile;
                end;
             elsif MimeType(1 .. 5) = "image" then
                declare
