@@ -330,12 +330,12 @@ package body ShowItems is
                declare
                   ExecutableName: constant String :=
                     FindExecutable("highlight");
-                  Success: Boolean;
-                  procedure LoadFile
-                    (FileName: String := To_String(CurrentSelected)) is
-                     File: File_Type;
+                  Success, FirstLine: Boolean;
+                  File: File_Type;
+                  FileLine: Unbounded_String;
+                  procedure LoadFile is
                   begin
-                     Open(File, In_File, FileName);
+                     Open(File, In_File, To_String(CurrentSelected));
                      while not End_Of_File(File) loop
                         Insert(Buffer, Iter, Get_Line(File) & LF);
                      end loop;
@@ -349,14 +349,30 @@ package body ShowItems is
                   Spawn
                     (ExecutableName,
                      Argument_String_To_List
-                       ("--out-format=pango --output=" & Value("HOME") &
-                        "/.cache/hunter/highlight.tmp " &
+                       ("--out-format=pango --force --output=" &
+                        Value("HOME") & "/.cache/hunter/highlight.tmp " &
                         To_String(CurrentSelected)).all,
                      Success);
                   if not Success then
                      LoadFile;
                   else
-                     LoadFile(Value("HOME") & "/.cache/hunter/highlight.tmp");
+                     Open
+                       (File, In_File,
+                        Value("HOME") & "/.cache/hunter/highlight.tmp");
+                     FirstLine := True;
+                     while not End_Of_File(File) loop
+                        FileLine := To_Unbounded_String(Get_Line(File));
+                        if FirstLine then
+                           FileLine :=
+                             Unbounded_Slice
+                               (FileLine, Index(FileLine, ">") + 1,
+                                Length(FileLine));
+                           FirstLine := False;
+                        end if;
+                        exit when End_Of_File(File);
+                        Insert(Buffer, Iter, To_String(FileLine) & LF);
+                     end loop;
+                     Close(File);
                      Delete_File
                        (Value("HOME") & "/.cache/hunter/highlight.tmp");
                   end if;
