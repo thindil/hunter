@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Option to stay in old directory after copying or moving files and
   directories or creating links
+- Syntax color for text files in preview
 
 ### Fixed
 - Don't show file and directory actions icons during creating, renaming or
