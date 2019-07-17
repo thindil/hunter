@@ -19,9 +19,10 @@ options:
   --masterindex "Index,index"
   --sourceindex "Source files,sources"
 headertypes:
-  h Packages robo_packages 3
-  t Types robo_types 2
-  v Variables robo_variables 1
+  h Packages robo_packages 4
+  t Types robo_types 3
+  v Variables robo_variables 2
+  e Exceptions robo_exceptions 1
   f Subprograms robo_subprograms 0
 item order:
   FUNCTION
@@ -50,3 +51,4 @@ keywords:
   in
   constant
   private
+  exception
