@@ -40,6 +40,8 @@ package Preferences is
    --                         directories or creating new link, stay in old
    --                         directory instead of going to the destination
    --                         directory.
+   -- ColorText             - If true, try color syntax in text files in
+   --                         preview
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -50,6 +52,7 @@ package Preferences is
       WindowHeight: Positive;
       ShowPreview: Boolean;
       StayInOld: Boolean;
+      ColorText: Boolean;
    end record;
    -- ****
    -- ****v* Preferences/Settings

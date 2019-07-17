@@ -359,7 +359,7 @@ package body ShowItems is
                      Close(File);
                   end LoadFile;
                begin
-                  if ExecutableName = "" then
+                  if not Settings.ColorText or ExecutableName = "" then
                      LoadFile;
                      goto Set_UI;
                   end if;

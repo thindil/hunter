@@ -27,6 +27,7 @@ with Gtk.Widget; use Gtk.Widget;
 with Glib; use Glib;
 with MainWindow; use MainWindow;
 with ShowItems; use ShowItems;
+with Utils; use Utils;
 
 package body Preferences is
 
@@ -56,7 +57,7 @@ package body Preferences is
       Settings :=
         (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
          AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
-         ShowPreview => True, StayInOld => False);
+         ShowPreview => True, StayInOld => False, ColorText => True);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -108,9 +109,22 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchstayinsource")),
                   Settings.StayInOld);
+            elsif FieldName = To_Unbounded_String("ColorText") then
+               Settings.ColorText := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchcolortext")),
+                  Settings.ColorText);
             end if;
          end if;
       end loop;
+      if FindExecutable("highlight") = "" then
+         Settings.ColorText := False;
+         Set_Sensitive
+           (Gtk_Widget(Get_Object(Builder, "switchcolortext")), False);
+         Set_Active
+           (Gtk_Switch(Get_Object(Builder, "switchcolortext")),
+            Settings.ColorText);
+      end if;
       Setting := False;
       Close(ConfigFile);
    end LoadSettings;
@@ -180,6 +194,12 @@ package body Preferences is
          Settings.StayInOld :=
            Get_Active(Gtk_Switch(Get_Object(Object, "switchstayinsource")));
       end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchcolortext"))) /=
+        Settings.ColorText then
+         Settings.ColorText :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchcolortext")));
+         PreviewItem(Object);
+      end if;
       return False;
    end SaveSettings;
 
@@ -227,6 +247,7 @@ package body Preferences is
         (ConfigFile, "WindowHeight =" & Positive'Image(Settings.WindowHeight));
       SaveBoolean(Settings.ShowPreview, "ShowPreview");
       SaveBoolean(Settings.StayInOld, "StayInOld");
+      SaveBoolean(Settings.ColorText, "ColorText");
       Close(ConfigFile);
    end SavePreferences;
 
