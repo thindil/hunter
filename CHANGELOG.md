@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
   directories or creating links
 - Syntax color for text files in preview
 - Option to enable or disable coloring syntax for text files in preview
+- Option to select color theme for coloring syntax of text files in preview
 
 ### Fixed
 - Don't show file and directory actions icons during creating, renaming or
