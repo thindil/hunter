@@ -367,7 +367,9 @@ package body ShowItems is
                     (ExecutableName,
                      Argument_String_To_List
                        ("--out-format=pango --force --output=" &
-                        Value("HOME") & "/.cache/hunter/highlight.tmp " &
+                        Value("HOME") &
+                        "/.cache/hunter/highlight.tmp --base16 --style=" &
+                        To_String(Settings.ColorTheme) & " " &
                         To_String(CurrentSelected)).all,
                      Success);
                   if not Success then

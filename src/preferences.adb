@@ -13,11 +13,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories;
+with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Adjustment; use Gtk.Adjustment;
+with Gtk.Combo_Box_Text; use Gtk.Combo_Box_Text;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
@@ -57,7 +57,8 @@ package body Preferences is
       Settings :=
         (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
          AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
-         ShowPreview => True, StayInOld => False, ColorText => True);
+         ShowPreview => True, StayInOld => False, ColorText => True,
+         ColorTheme => To_Unbounded_String("gruvbox-light-soft"));
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -114,6 +115,8 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchcolortext")),
                   Settings.ColorText);
+            elsif FieldName = To_Unbounded_String("ColorTheme") then
+               Settings.ColorTheme := Value;
             end if;
          end if;
       end loop;
@@ -121,9 +124,40 @@ package body Preferences is
          Settings.ColorText := False;
          Set_Sensitive
            (Gtk_Widget(Get_Object(Builder, "switchcolortext")), False);
+         Set_Sensitive
+           (Gtk_Widget(Get_Object(Builder, "cmbcolortheme")), False);
          Set_Active
            (Gtk_Switch(Get_Object(Builder, "switchcolortext")),
             Settings.ColorText);
+      else
+         Ada.Environment_Variables.Set
+           ("HIGHLIGHT_DATADIR",
+            Ada.Environment_Variables.Value("APPDIR", "") &
+            "/usr/share/highlight");
+         declare
+            Search: Search_Type;
+            File: Directory_Entry_Type;
+            ComboBox: constant Gtk_Combo_Box_Text :=
+              Gtk_Combo_Box_Text(Get_Object(Builder, "cmbcolortheme"));
+            ThemeName: Unbounded_String;
+            Index: Gint := 0;
+         begin
+            Start_Search
+              (Search,
+               Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+               "/themes/base16",
+               "*.theme");
+            while More_Entries(Search) loop
+               Get_Next_Entry(Search, File);
+               ThemeName := To_Unbounded_String(Base_Name(Simple_Name(File)));
+               Append_Text(ComboBox, To_String(ThemeName));
+               if ThemeName = Settings.ColorTheme then
+                  Set_Active(ComboBox, Index);
+               end if;
+               Index := Index + 1;
+            end loop;
+            End_Search(Search);
+         end;
       end if;
       Setting := False;
       Close(ConfigFile);
@@ -212,6 +246,15 @@ package body Preferences is
            Natural
              (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds"))));
       end if;
+      if Get_Active_Text
+          (Gtk_Combo_Box_Text(Get_Object(Object, "cmbcolortheme"))) /=
+        To_String(Settings.ColorTheme) then
+         Settings.ColorTheme :=
+           To_Unbounded_String
+             (Get_Active_Text
+                (Gtk_Combo_Box_Text(Get_Object(Object, "cmbcolortheme"))));
+         PreviewItem(Object);
+      end if;
    end SaveSettingsProc;
 
    procedure SavePreferences is
@@ -227,7 +270,7 @@ package body Preferences is
    begin
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") & "/.config/hunter") then
-         Ada.Directories.Create_Path
+         Create_Path
            (Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
       end if;
       Create
@@ -248,6 +291,7 @@ package body Preferences is
       SaveBoolean(Settings.ShowPreview, "ShowPreview");
       SaveBoolean(Settings.StayInOld, "StayInOld");
       SaveBoolean(Settings.ColorText, "ColorText");
+      Put_Line(ConfigFile, "ColorTheme = " & To_String(Settings.ColorTheme));
       Close(ConfigFile);
    end SavePreferences;
 
