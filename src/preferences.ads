@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/Preferences
@@ -42,6 +43,8 @@ package Preferences is
    --                         directory.
    -- ColorText             - If true, try color syntax in text files in
    --                         preview
+   -- ColorTheme            - Selected by user color theme for coloring syntax
+   --                         in text files in preview
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -53,6 +56,7 @@ package Preferences is
       ShowPreview: Boolean;
       StayInOld: Boolean;
       ColorText: Boolean;
+      ColorTheme: Unbounded_String;
    end record;
    -- ****
    -- ****v* Preferences/Settings
