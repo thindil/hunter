@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-07-10 10:19+0200\n"
+"POT-Creation-Date: 2019-07-18 09:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,11 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/showitems.adb:191
+#: src/showitems.adb:195
 msgid " (not installed)"
 msgstr ""
 
-#: bin/ui/hunter.glade:1583
+#: bin/ui/hunter.glade:1598
 msgid " and attach (if possible) file 'error.log'"
 msgstr ""
 
@@ -29,27 +29,27 @@ msgstr ""
 msgid " does not exist."
 msgstr ""
 
-#: src/createitems.adb:67
+#: src/createitems.adb:75
 msgid " doesn't exists."
 msgstr ""
 
-#: src/copyitems.adb:132 src/moveitems.adb:93
+#: src/copyitems.adb:124 src/moveitems.adb:85
 msgid " exists. Do you want to overwrite it?"
 msgstr ""
 
-#: src/errordialog.adb:108
+#: src/errordialog.adb:94
 msgid " from '"
 msgstr ""
 
-#: src/createitems.adb:102
+#: src/createitems.adb:110
 msgid " name '"
 msgstr ""
 
-#: src/createitems.adb:103
+#: src/createitems.adb:111
 msgid " with that name."
 msgstr ""
 
-#: src/createitems.adb:102
+#: src/createitems.adb:110
 msgid "' because there exists "
 msgstr ""
 
@@ -57,57 +57,63 @@ msgstr ""
 msgid "(and its content)"
 msgstr ""
 
-#: src/errordialog.adb:109
+#: src/errordialog.adb:95
 msgid "/.cache/hunter' directory."
 msgstr ""
 
-#: bin/ui/hunter.glade:506
+#: bin/ui/hunter.glade:523
 msgid "About"
 msgstr ""
 
-#: bin/ui/hunter.glade:643
-msgid "Add"
+#: bin/ui/hunter.glade:658
+msgid "Add bookmark"
 msgstr ""
 
-#: bin/ui/hunter.glade:642
+#: bin/ui/hunter.glade:657
 msgid "Add bookmark to this directory [ALT-B]."
 msgstr ""
 
-#: bin/ui/hunter.glade:383
+#: bin/ui/hunter.glade:400
 msgid "Add new directory [ALT+N] or press arrow to see more options."
 msgstr ""
 
-#: bin/ui/hunter.glade:241
+#: bin/ui/hunter.glade:260
 msgid "Add new empty file."
 msgstr ""
 
-#: bin/ui/hunter.glade:252
+#: bin/ui/hunter.glade:271
 msgid "Add new link to selected file or directory."
 msgstr ""
 
-#: bin/ui/hunter.glade:1900
+#: bin/ui/hunter.glade:1992
+msgid ""
+"After copying, moving files and directories or creating new link, stay in "
+"old directory, don't automatically go to destination directory."
+msgstr ""
+
+#: bin/ui/hunter.glade:1966
 msgid ""
 "After that amount of seconds, all messages will be automatically closed by "
 "the program. If you set it to 0, this feature will be disabled."
 msgstr ""
 
-#: bin/ui/hunter.glade:1177
+#: bin/ui/hunter.glade:1192
 msgid "Associated program:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1249 bin/ui/hunter.glade:1333 bin/ui/hunter.glade:1405
+#: bin/ui/hunter.glade:1264 bin/ui/hunter.glade:1348 bin/ui/hunter.glade:1420
 msgid "Can execute"
 msgstr ""
 
-#: bin/ui/hunter.glade:1217 bin/ui/hunter.glade:1301 bin/ui/hunter.glade:1373
+#: bin/ui/hunter.glade:1232 bin/ui/hunter.glade:1316 bin/ui/hunter.glade:1388
 msgid "Can read"
 msgstr ""
 
-#: bin/ui/hunter.glade:1233 bin/ui/hunter.glade:1317 bin/ui/hunter.glade:1389
+#: bin/ui/hunter.glade:1248 bin/ui/hunter.glade:1332 bin/ui/hunter.glade:1404
 msgid "Can write"
 msgstr ""
 
-#: src/createitems.adb:132
+#: src/createitems.adb:140
 msgid "Can't create symbolic link."
 msgstr ""
 
@@ -115,11 +121,11 @@ msgstr ""
 msgid "Can't delete selected directory: "
 msgstr ""
 
-#: src/moveitems.adb:112
+#: src/moveitems.adb:104
 msgid "Can't move "
 msgstr ""
 
-#: src/createitems.adb:119
+#: src/createitems.adb:127
 msgid "Can't rename "
 msgstr ""
 
@@ -127,37 +133,44 @@ msgstr ""
 msgid "Can't start command: "
 msgstr ""
 
-#: bin/ui/hunter.glade:464
+#: bin/ui/hunter.glade:481
 msgid "Cancel"
 msgstr ""
 
-#: bin/ui/hunter.glade:1613
+#: bin/ui/hunter.glade:1628
 msgid "Click to show technical info"
 msgstr ""
 
-#: bin/ui/hunter.glade:689
+#: bin/ui/hunter.glade:703
 msgid "Close"
+msgstr ""
+
+#: bin/ui/hunter.glade:1887
+msgid ""
+"Color files syntax in files preview. Not all text (especially source code) "
+"files are supported. You may not be able to enable this option if you don't "
+"have installed the program \"highlight\"."
 msgstr ""
 
 #: src/activateitems.adb:147
 msgid "Command "
 msgstr ""
 
-#: bin/ui/hunter.glade:210 bin/ui/hunter.glade:416
+#: bin/ui/hunter.glade:210 bin/ui/hunter.glade:433
 msgid "Copy"
 msgstr ""
 
-#: bin/ui/hunter.glade:415
+#: bin/ui/hunter.glade:432
 msgid ""
 "Copy selected files [ALT-C]. Pressed button means start copying currently "
 "selected files or directories. Press again to copy them."
 msgstr ""
 
-#: src/utils.adb:180
+#: src/utils.adb:205
 msgid "Copying files and directories"
 msgstr ""
 
-#: src/showitems.adb:540
+#: src/showitems.adb:644
 msgid "Could not change permissions for "
 msgstr ""
 
@@ -165,55 +178,55 @@ msgstr ""
 msgid "Could not delete selected files or directories. Reason: "
 msgstr ""
 
-#: src/utils.adb:101
+#: src/utils.adb:104
 msgid "Could not found executable: "
 msgstr ""
 
-#: src/showitems.adb:355
+#: src/showitems.adb:458
 msgid "Could not load image file: "
 msgstr ""
 
-#: src/showitems.adb:476
+#: src/showitems.adb:580
 msgid "Could not set new associated file."
 msgstr ""
 
-#: src/createitems.adb:191
+#: src/createitems.adb:202
 msgid "Create new directory."
 msgstr ""
 
-#: src/createitems.adb:173
+#: src/createitems.adb:184
 msgid "Create new empty file."
 msgstr ""
 
-#: src/createitems.adb:179
+#: src/createitems.adb:191
 msgid "Create new link to selected file or directory."
 msgstr ""
 
-#: src/utils.adb:164
+#: src/utils.adb:189
 msgid "Creating empty file"
 msgstr ""
 
-#: src/utils.adb:168
+#: src/utils.adb:193
 msgid "Creating new directory"
 msgstr ""
 
-#: src/utils.adb:172
+#: src/utils.adb:197
 msgid "Creating new link"
 msgstr ""
 
-#: bin/ui/hunter.glade:432
-msgid "Cut"
-msgstr ""
-
-#: bin/ui/hunter.glade:228 bin/ui/hunter.glade:448
+#: bin/ui/hunter.glade:228 bin/ui/hunter.glade:465
 msgid "Delete"
 msgstr ""
 
-#: bin/ui/hunter.glade:447
+#: bin/ui/hunter.glade:464
 msgid "Delete selected file(s) or folder(s) [ALT-Delete]."
 msgstr ""
 
-#: src/utils.adb:188
+#: src/deleteitems.adb:69
+msgid "Delete?"
+msgstr ""
+
+#: src/utils.adb:213
 msgid "Deleting files and directories"
 msgstr ""
 
@@ -221,23 +234,23 @@ msgstr ""
 msgid "Desktop"
 msgstr ""
 
-#: src/copyitems.adb:55 src/createitems.adb:184 src/moveitems.adb:58
+#: src/createitems.adb:195 src/utils.adb:155
 msgid "Destination directory"
 msgstr ""
 
-#: src/copyitems.adb:125 src/moveitems.adb:86
+#: src/copyitems.adb:117 src/moveitems.adb:78
 msgid "Directory"
 msgstr ""
 
-#: src/createitems.adb:67
+#: src/createitems.adb:75
 msgid "Directory "
 msgstr ""
 
-#: bin/ui/hunter.glade:1783
+#: bin/ui/hunter.glade:1798
 msgid "Directory Listing"
 msgstr ""
 
-#: bin/ui/hunter.glade:463
+#: bin/ui/hunter.glade:480
 msgid "Discard all changes and back to files list [Escape]"
 msgstr ""
 
@@ -249,7 +262,7 @@ msgstr ""
 msgid "Download"
 msgstr ""
 
-#: src/showitems.adb:199
+#: src/showitems.adb:203
 msgid "Elements:"
 msgstr ""
 
@@ -261,27 +274,27 @@ msgstr ""
 msgid "Enter destination"
 msgstr ""
 
-#: bin/ui/hunter.glade:1656
+#: bin/ui/hunter.glade:1671
 msgid "Enter program name"
 msgstr ""
 
-#: bin/ui/hunter.glade:541
+#: bin/ui/hunter.glade:556
 msgid "Execute selected program [ALT-E]."
 msgstr ""
 
-#: src/copyitems.adb:127 src/moveitems.adb:88
+#: src/copyitems.adb:119 src/moveitems.adb:80
 msgid "File"
 msgstr ""
 
-#: bin/ui/hunter.glade:615
+#: bin/ui/hunter.glade:630
 msgid "File or directory informations [ALT-I]"
 msgstr ""
 
-#: bin/ui/hunter.glade:1152
+#: bin/ui/hunter.glade:1167
 msgid "File type:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1077 src/showitems.adb:140
+#: bin/ui/hunter.glade:1092 src/showitems.adb:144
 msgid "Full path:"
 msgstr ""
 
@@ -313,27 +326,27 @@ msgstr ""
 msgid "Go to upper directory [ALT+U]"
 msgstr ""
 
-#: bin/ui/hunter.glade:341
+#: bin/ui/hunter.glade:358
 msgid "Go to your home directory [ALT+H] or press arrow to see more bookmarks"
 msgstr ""
 
-#: bin/ui/hunter.glade:273
+#: bin/ui/hunter.glade:292
 msgid "Graphical File Manager for Linux"
 msgstr ""
 
-#: bin/ui/hunter.glade:1273
+#: bin/ui/hunter.glade:1288
 msgid "Group:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1889
+#: bin/ui/hunter.glade:1954
 msgid "Hide messages after:"
 msgstr ""
 
-#: bin/ui/hunter.glade:57 bin/ui/hunter.glade:342
+#: bin/ui/hunter.glade:57 bin/ui/hunter.glade:359
 msgid "Home"
 msgstr ""
 
-#: bin/ui/hunter.glade:307
+#: bin/ui/hunter.glade:326
 msgid "Hunter"
 msgstr ""
 
@@ -352,41 +365,41 @@ msgid ""
 "I can't open this file. No application associated with this type of files."
 msgstr ""
 
-#: bin/ui/hunter.glade:616
+#: bin/ui/hunter.glade:631
 msgid "Info"
 msgstr ""
 
-#: src/showitems.adb:287
+#: src/showitems.adb:291
 msgid "Information"
 msgstr ""
 
-#: bin/ui/hunter.glade:1916
+#: bin/ui/hunter.glade:2006
 msgid "Interface"
 msgstr ""
 
-#: bin/ui/hunter.glade:1101
+#: bin/ui/hunter.glade:1116
 msgid "Last Modified:"
 msgstr ""
 
-#: src/showitems.adb:137
+#: src/showitems.adb:141
 msgid "Links to:"
 msgstr ""
 
-#: bin/ui/hunter.glade:908
+#: bin/ui/hunter.glade:922
 msgid "Modified"
 msgstr ""
 
-#: bin/ui/hunter.glade:219
+#: bin/ui/hunter.glade:219 bin/ui/hunter.glade:449
 msgid "Move"
 msgstr ""
 
-#: bin/ui/hunter.glade:431
+#: bin/ui/hunter.glade:448
 msgid ""
 "Move selected files [ALT-M]. Pressed button means start moving currently "
 "selected files or directories. Press again to move them."
 msgstr ""
 
-#: src/utils.adb:184
+#: src/utils.adb:209
 msgid "Moving files and directories"
 msgstr ""
 
@@ -394,58 +407,58 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: bin/ui/hunter.glade:868 bin/ui/hunter.glade:1007 bin/ui/hunter.glade:1467
-#: bin/ui/hunter.glade:1685
+#: bin/ui/hunter.glade:882 bin/ui/hunter.glade:1022 bin/ui/hunter.glade:1482
+#: bin/ui/hunter.glade:1700
 msgid "Name"
 msgstr ""
 
-#: bin/ui/hunter.glade:384
+#: bin/ui/hunter.glade:401
 msgid "New"
 msgstr ""
 
-#: bin/ui/hunter.glade:242
+#: bin/ui/hunter.glade:261
 msgid "New _File"
 msgstr ""
 
-#: bin/ui/hunter.glade:253
+#: bin/ui/hunter.glade:272
 msgid "New _Link"
 msgstr ""
 
-#: bin/ui/hunter.glade:725
+#: bin/ui/hunter.glade:739
 msgid "No"
 msgstr ""
 
-#: bin/ui/hunter.glade:755
+#: bin/ui/hunter.glade:769
 msgid "No for all"
 msgstr ""
 
-#: bin/ui/hunter.glade:1553
+#: bin/ui/hunter.glade:1568
 msgid ""
 "Oops, something bad happens and progam crashed. Please, remember what you "
 "done before crash and report this problem at"
 msgstr ""
 
-#: bin/ui/hunter.glade:174 bin/ui/hunter.glade:558
+#: bin/ui/hunter.glade:174 bin/ui/hunter.glade:573
 msgid "Open"
 msgstr ""
 
-#: bin/ui/hunter.glade:557
+#: bin/ui/hunter.glade:572
 msgid "Open selected file or directory [ALT-O]"
 msgstr ""
 
-#: bin/ui/hunter.glade:573
+#: bin/ui/hunter.glade:588
 msgid "Open selected file or directory with command [ALT-W]"
 msgstr ""
 
-#: bin/ui/hunter.glade:192 bin/ui/hunter.glade:574
+#: bin/ui/hunter.glade:192 bin/ui/hunter.glade:589
 msgid "Open with..."
 msgstr ""
 
-#: bin/ui/hunter.glade:1357
+#: bin/ui/hunter.glade:1372
 msgid "Others:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1189
+#: bin/ui/hunter.glade:1204
 msgid "Owner:"
 msgstr ""
 
@@ -453,20 +466,20 @@ msgstr ""
 msgid "Pictures"
 msgstr ""
 
-#: bin/ui/hunter.glade:277
+#: bin/ui/hunter.glade:296
 msgid "Polski - Bartek thindil Jasicki <thindil@laeran.pl>"
 msgstr ""
 
-#: bin/ui/hunter.glade:490
+#: bin/ui/hunter.glade:507
 msgid "Preferences"
 msgstr ""
 
-#: bin/ui/hunter.glade:600 bin/ui/hunter.glade:1519 bin/ui/hunter.glade:1861
-#: src/showitems.adb:395 src/showitems.adb:421
+#: bin/ui/hunter.glade:615 bin/ui/hunter.glade:1534 bin/ui/hunter.glade:1926
+#: src/showitems.adb:499 src/showitems.adb:525
 msgid "Preview"
 msgstr ""
 
-#: bin/ui/hunter.glade:599
+#: bin/ui/hunter.glade:614
 msgid "Preview file or directory [ALT-V]"
 msgstr ""
 
@@ -482,15 +495,15 @@ msgstr ""
 msgid "Reload current directory [ALT+SHIFT+R]"
 msgstr ""
 
-#: bin/ui/hunter.glade:659
-msgid "Remove"
+#: bin/ui/hunter.glade:674
+msgid "Remove bookmark"
 msgstr ""
 
-#: bin/ui/hunter.glade:658
+#: bin/ui/hunter.glade:673
 msgid "Remove bookmark to this directory [ALT-B]"
 msgstr ""
 
-#: bin/ui/hunter.glade:201 bin/ui/hunter.glade:400
+#: bin/ui/hunter.glade:201 bin/ui/hunter.glade:417
 msgid "Rename"
 msgstr ""
 
@@ -502,91 +515,110 @@ msgstr ""
 msgid "Rename file."
 msgstr ""
 
-#: bin/ui/hunter.glade:399
+#: bin/ui/hunter.glade:416
 msgid "Rename selected file or directory [CTRL-R]"
 msgstr ""
 
-#: src/utils.adb:176
+#: src/utils.adb:201
 msgid "Renaming file or directory"
 msgstr ""
 
-#: bin/ui/hunter.glade:183 bin/ui/hunter.glade:542
+#: bin/ui/hunter.glade:183 bin/ui/hunter.glade:557
 msgid "Run"
 msgstr ""
 
-#: bin/ui/hunter.glade:1823
+#: bin/ui/hunter.glade:1838
 msgid ""
 "Scale images in preview. When disabled, images shows with natural size. When "
 "enabled, images are resized to the size of the preview window."
 msgstr ""
 
-#: bin/ui/hunter.glade:1811
+#: bin/ui/hunter.glade:1826
 msgid "Scale images:"
 msgstr ""
 
-#: bin/ui/hunter.glade:358
+#: bin/ui/hunter.glade:375
 msgid "Search"
 msgstr ""
 
-#: bin/ui/hunter.glade:357
+#: bin/ui/hunter.glade:374
 msgid "Search for the file or directory [ALT+F]"
 msgstr ""
 
-#: bin/ui/hunter.glade:1744
+#: bin/ui/hunter.glade:1912
+msgid ""
+"Select color theme for coloring syntax in text files in preview. You may not "
+"be able to enable this option if you don't have installed the program "
+"\"highlight\"."
+msgstr ""
+
+#: bin/ui/hunter.glade:1759
 msgid ""
 "Show hidden files and directories in directory listing and in directories "
 "preview."
 msgstr ""
 
-#: bin/ui/hunter.glade:1732
+#: bin/ui/hunter.glade:1747
 msgid "Show hidden files:"
 msgstr ""
 
-#: bin/ui/hunter.glade:505
+#: bin/ui/hunter.glade:522
 msgid "Show informations about the program [ALT-A]."
 msgstr ""
 
-#: bin/ui/hunter.glade:1757
+#: bin/ui/hunter.glade:1772
 msgid "Show modification time:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1835
+#: bin/ui/hunter.glade:1850
 msgid "Show preview:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1847
+#: bin/ui/hunter.glade:1862
 msgid ""
 "Show second panel with preview of files and directories. If you disable this "
 "option, second panel will be visible only during copying and moving files or "
 "directories and during creating new link."
 msgstr ""
 
-#: bin/ui/hunter.glade:1769
+#: bin/ui/hunter.glade:1784
 msgid "Show the column with last modification date for files and directories."
 msgstr ""
 
-#: bin/ui/hunter.glade:489
+#: bin/ui/hunter.glade:506
 msgid "Show the program preferences [ALT-P]"
 msgstr ""
 
-#: bin/ui/hunter.glade:893 bin/ui/hunter.glade:1492
+#: bin/ui/hunter.glade:907 bin/ui/hunter.glade:1507
 msgid "Size"
 msgstr ""
 
-#: bin/ui/hunter.glade:1089
+#: bin/ui/hunter.glade:1104
 msgid "Size:"
 msgstr ""
 
-#: src/copyitems.adb:51
+#: bin/ui/hunter.glade:1980
+msgid "Stay in source directory:"
+msgstr ""
+
+#: src/utils.adb:130
 msgid "Stop copying files and directories [Escape]"
 msgstr ""
 
-#: src/moveitems.adb:54
+#: src/utils.adb:135
 msgid "Stop moving files and directories [Escape]"
 msgstr ""
 
-#: src/showitems.adb:213 src/showitems.adb:222 src/showitems.adb:225
-#: src/showitems.adb:232
+#: bin/ui/hunter.glade:1900
+msgid "Syntax color theme:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1875
+msgid "Syntax highlightning:"
+msgstr ""
+
+#: src/showitems.adb:217 src/showitems.adb:226 src/showitems.adb:229
+#: src/showitems.adb:236
 msgid "Unknown"
 msgstr ""
 
@@ -598,19 +630,19 @@ msgstr ""
 msgid "Videos"
 msgstr ""
 
-#: bin/ui/hunter.glade:275
+#: bin/ui/hunter.glade:294
 msgid "Website"
 msgstr ""
 
-#: bin/ui/hunter.glade:740
+#: bin/ui/hunter.glade:754
 msgid "Yes"
 msgstr ""
 
-#: bin/ui/hunter.glade:769
+#: bin/ui/hunter.glade:783
 msgid "Yes for all"
 msgstr ""
 
-#: src/createitems.adb:101
+#: src/createitems.adb:109
 msgid "You can't "
 msgstr ""
 
@@ -618,15 +650,15 @@ msgstr ""
 msgid "You can't enter this directory."
 msgstr ""
 
-#: src/copyitems.adb:64
+#: src/copyitems.adb:56
 msgid "You don't have permissions to copy selected items here."
 msgstr ""
 
-#: src/createitems.adb:72
+#: src/createitems.adb:80
 msgid "You don't have permissions to enter directory "
 msgstr ""
 
-#: src/moveitems.adb:67
+#: src/moveitems.adb:59
 msgid "You don't have permissions to move selected items here."
 msgstr ""
 
@@ -634,50 +666,50 @@ msgstr ""
 msgid "You don't have permissions to preview this directory."
 msgstr ""
 
-#: src/createitems.adb:149
+#: src/createitems.adb:157
 msgid "You don't have permissions to rename "
 msgstr ""
 
-#: src/createitems.adb:145
+#: src/createitems.adb:153
 msgid "You don't have permissions to write to "
 msgstr ""
 
-#: src/createitems.adb:83
+#: src/createitems.adb:91
 msgid "create directory with"
 msgstr ""
 
-#: src/createitems.adb:86
+#: src/createitems.adb:94
 msgid "create file with"
 msgstr ""
 
-#: src/createitems.adb:91
+#: src/createitems.adb:99
 msgid "create link with"
 msgstr ""
 
-#: src/createitems.adb:96
+#: src/createitems.adb:104
 msgid "directory"
 msgstr ""
 
-#: bin/ui/hunter.glade:1626
+#: bin/ui/hunter.glade:1641
 msgid "error"
 msgstr ""
 
-#: src/createitems.adb:98
+#: src/createitems.adb:106
 msgid "file"
 msgstr ""
 
-#: bin/ui/hunter.glade:1541
+#: bin/ui/hunter.glade:1556
 msgid "files"
 msgstr ""
 
-#: bin/ui/hunter.glade:1565
+#: bin/ui/hunter.glade:1580
 msgid "https://github.com/thindil/hunter/issues"
 msgstr ""
 
-#: src/showitems.adb:162
+#: src/showitems.adb:166
 msgid "none"
 msgstr ""
 
-#: src/createitems.adb:88
+#: src/createitems.adb:96
 msgid "rename with new"
 msgstr ""
