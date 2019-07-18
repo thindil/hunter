@@ -21,14 +21,10 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
-with Gtk.Container; use Gtk.Container;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
-with Gtk.Toolbar; use Gtk.Toolbar;
-with Gtk.Tool_Item; use Gtk.Tool_Item;
 with Gtkada.Intl; use Gtkada.Intl;
-with Glib; use Glib;
 
 package body ErrorDialog is
 
@@ -38,16 +34,6 @@ package body ErrorDialog is
    -- SOURCE
    Builder: Gtkada_Builder;
    -- ****
-
-   procedure HideButton(Widget: not null access Gtk_Widget_Record'Class) is
-   begin
-      if Get_Item_Index
-          (Gtk_Toolbar(Get_Object(Builder, "toolbar")),
-           Gtk_Tool_Item(Widget)) >
-        1 then
-         Hide(Widget);
-      end if;
-   end HideButton;
 
    procedure SaveException
      (An_Exception: Exception_Occurrence; PrintToTerminal: Boolean) is
@@ -82,12 +68,12 @@ package body ErrorDialog is
          Set_Text
            (Gtk_Text_Buffer(Get_Object(Builder, "errorbuffer")),
             To_String(ErrorText));
-         Foreach
-           (Gtk_Container(Get_Object(Builder, "toolbar")), HideButton'Access);
          Hide(Gtk_Widget(Get_Object(Builder, "entry")));
          Hide(Gtk_Widget(Get_Object(Builder, "boxpath")));
          Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
          Hide(Gtk_Widget(Get_Object(Builder, "actioninfo")));
+         Hide(Gtk_Widget(Get_Object(Builder, "toolbar")));
+         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Set_Visible_Child_Name
            (Gtk_Stack(Get_Object(Builder, "filestack")), "error");
       end if;

@@ -24,13 +24,6 @@ with Gtk.Widget; use Gtk.Widget;
 package ErrorDialog is
 -- ****
 
-   -- ****f* ErrorDialog/HideButton
-   -- FUNCTION
-   -- Hide all toolbar buttons except Close button
-   -- PARAMETERS
-   -- Widget - Toolbar button to check
-   -- SOURCE
-   procedure HideButton(Widget: not null access Gtk_Widget_Record'Class);
    -- ****
    -- ****f* ErrorDialog/SaveException
    -- FUNCTION
