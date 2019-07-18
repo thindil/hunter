@@ -61,6 +61,10 @@ When you trying to run build by yourself version of the program, use script
 `hunter.sh`. The program will not works if you try to start it by binary file
 `hunter` from `bin` directory. To work the program needs scripts *xdg-open*
 and *xdg-mime*. In most Linux distributions they are in *xdg-utils* package.
+Additionally, to coloring syntax in text files preview, the program needs
+other program: *highlight* which should be available in most Linux
+distributions. If you don't have that program installed, coloring syntax
+option will be disabled.
 
 ### Starting parameter
 
@@ -122,6 +126,10 @@ https://github.com/AdaCore/gtkada
 Gtk library distributed with the program is under LGPLv2.1 license:
 
 https://www.gtk.org/
+
+Highlight program distributed with the program is under GPLv3 license.
+
+http://www.andre-simon.de/doku/highlight/en/highlight.php
 
 ----
 
