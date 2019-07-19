@@ -108,6 +108,26 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       </object>
     </child>
   </object>
+  <object class="GtkMenu" id="deletemenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Show Trash</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Empty Trash</property>
+        <property name="use_underline">True</property>
+      </object>
+    </child>
+  </object>
   <object class="GtkTextBuffer" id="errorbuffer"/>
   <object class="GtkListStore" id="fileslist">
     <columns>
@@ -458,7 +478,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="btndelete">
+                  <object class="GtkMenuToolButton" id="btndelete">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes">Delete selected file(s) or folder(s) [ALT-Delete].</property>
@@ -470,7 +490,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   </object>
                   <packing>
                     <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
+                    <property name="homogeneous">False</property>
                   </packing>
                 </child>
                 <child>
@@ -685,6 +705,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </object>
               <packing>
                 <property name="pack_type">end</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>
