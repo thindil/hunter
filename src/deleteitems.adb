@@ -23,6 +23,7 @@ with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Preferences; use Preferences;
 with Utils; use Utils;
 
 package body DeleteItems is
@@ -34,15 +35,19 @@ package body DeleteItems is
       for Item of SelectedItems loop
          if Is_Directory(To_String(Item)) then
             Arguments(2) := new String'(To_String(Item));
-            Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
-            if not Success then
-               raise Directory_Error with To_String(Item);
+            if Settings.DeleteFiles then
+               Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
+               if not Success then
+                  raise Directory_Error with To_String(Item);
+               end if;
             end if;
             if Item = CurrentDirectory then
                GoUp := True;
             end if;
          else
-            Delete_File(To_String(Item));
+            if Settings.DeleteFiles then
+               Delete_File(To_String(Item));
+            end if;
          end if;
       end loop;
       return GoUp;
@@ -66,9 +71,13 @@ package body DeleteItems is
 
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
-      Message: Unbounded_String :=
-        To_Unbounded_String(Gettext("Delete?") & LF);
+      Message: Unbounded_String;
    begin
+      if Settings.DeleteFiles then
+         Message := To_Unbounded_String(Gettext("Delete?") & LF);
+      else
+         Message := To_Unbounded_String(Gettext("Move to trash?") & LF);
+      end if;
       for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
          Append(Message, SelectedItems(I));
          if Is_Directory(To_String(SelectedItems(I))) then

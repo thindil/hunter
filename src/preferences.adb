@@ -24,6 +24,7 @@ with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with MainWindow; use MainWindow;
 with ShowItems; use ShowItems;
@@ -42,6 +43,21 @@ package body Preferences is
       end if;
    end TogglePreferences;
 
+   procedure SetDeleteTooltip is
+   begin
+      if Settings.DeleteFiles then
+         Set_Tooltip_Text
+           (Gtk_Widget(Get_Object(Builder, "btndelete")),
+            Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
+      else
+
+         Set_Tooltip_Text
+           (Gtk_Widget(Get_Object(Builder, "btndelete")),
+            Gettext
+              ("Move selected file(s) or folder(s) to trash [ALT-Delete]."));
+      end if;
+   end SetDeleteTooltip;
+
    procedure LoadSettings is
       ConfigFile: File_Type;
       RawData, FieldName, Value: Unbounded_String;
@@ -58,7 +74,8 @@ package body Preferences is
         (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
          AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
          ShowPreview => True, StayInOld => False, ColorText => True,
-         ColorTheme => To_Unbounded_String("gruvbox-light-soft"));
+         ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
+         DeleteFiles => True);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -117,6 +134,12 @@ package body Preferences is
                   Settings.ColorText);
             elsif FieldName = To_Unbounded_String("ColorTheme") then
                Settings.ColorTheme := Value;
+            elsif FieldName = To_Unbounded_String("DeleteFiles") then
+               Settings.DeleteFiles := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchdeletefiles")),
+                  Settings.DeleteFiles);
+               SetDeleteTooltip;
             end if;
          end if;
       end loop;
@@ -234,6 +257,12 @@ package body Preferences is
            Get_Active(Gtk_Switch(Get_Object(Object, "switchcolortext")));
          PreviewItem(Object);
       end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchdeletefiles"))) /=
+        Settings.DeleteFiles then
+         Settings.DeleteFiles :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchdeletefiles")));
+         SetDeleteTooltip;
+      end if;
       return False;
    end SaveSettings;
 
@@ -292,6 +321,7 @@ package body Preferences is
       SaveBoolean(Settings.StayInOld, "StayInOld");
       SaveBoolean(Settings.ColorText, "ColorText");
       Put_Line(ConfigFile, "ColorTheme = " & To_String(Settings.ColorTheme));
+      SaveBoolean(Settings.DeleteFiles, "DeleteFiles");
       Close(ConfigFile);
    end SavePreferences;
 

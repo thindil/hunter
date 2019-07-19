@@ -208,9 +208,15 @@ package body Utils is
                  (Gtk_Header_Bar(Get_Object(Builder, "header")),
                   Gettext("Moving files and directories"));
             when DELETE =>
-               Set_Title
-                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
-                  Gettext("Deleting files and directories"));
+               if Settings.DeleteFiles then
+                  Set_Title
+                    (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                     Gettext("Deleting files and directories"));
+               else
+                  Set_Title
+                    (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                     Gettext("Moving files and directories to trash"));
+               end if;
             when others =>
                null;
          end case;
