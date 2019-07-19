@@ -13,10 +13,16 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Calendar; use Ada.Calendar;
+with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables;
 with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded.Hash;
+with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
@@ -31,6 +37,30 @@ package body DeleteItems is
    function DeleteSelected return Boolean is
       GoUp, Success: Boolean := False;
       Arguments: Argument_List := (new String'("-rf"), new String'(""));
+      procedure MoveToTrash(Name: Unbounded_String) is
+         NewName: Unbounded_String;
+         TrashFile: File_Type;
+      begin
+         NewName :=
+            To_Unbounded_String
+               (Hash_Type'Image
+                  (Ada.Strings.Unbounded.Hash
+                     (Name & To_Unbounded_String(Image(Clock)))));
+            Create
+               (TrashFile, Out_File,
+               Ada.Environment_Variables.Value("HOME") &
+               "/.local/share/Trash/info/" & To_String(NewName) &
+               ".trashinfo");
+            Put_Line(TrashFile, "[Trash Info]");
+            Put_Line(TrashFile, "Path=" & To_String(Name));
+            Put_Line(TrashFile, "DeletionDate=" & Image(Clock));
+            Close(TrashFile);
+            Rename_File
+               (To_String(Name),
+            Ada.Environment_Variables.Value("HOME") &
+            "/.local/share/Trash/files/" & To_String(NewName),
+            Success);
+      end MoveToTrash;
    begin
       for Item of SelectedItems loop
          if Is_Directory(To_String(Item)) then
@@ -40,6 +70,8 @@ package body DeleteItems is
                if not Success then
                   raise Directory_Error with To_String(Item);
                end if;
+            else
+               MoveToTrash(Item);
             end if;
             if Item = CurrentDirectory then
                GoUp := True;
@@ -47,12 +79,14 @@ package body DeleteItems is
          else
             if Settings.DeleteFiles then
                Delete_File(To_String(Item));
+            else
+               MoveToTrash(Item);
             end if;
          end if;
       end loop;
       return GoUp;
    exception
-      when An_Exception : Use_Error =>
+      when An_Exception : Ada.Directories.Use_Error =>
          ShowMessage
            (Gettext
               ("Could not delete selected files or directories. Reason: ") &
