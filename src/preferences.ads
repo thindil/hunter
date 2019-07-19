@@ -45,6 +45,8 @@ package Preferences is
    --                         preview
    -- ColorTheme            - Selected by user color theme for coloring syntax
    --                         in text files in preview
+   -- DeleteFiles           - If true, delete file and directories instead of
+   --                         moving them to trash
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -57,6 +59,7 @@ package Preferences is
       StayInOld: Boolean;
       ColorText: Boolean;
       ColorTheme: Unbounded_String;
+      DeleteFiles: Boolean;
    end record;
    -- ****
    -- ****v* Preferences/Settings
