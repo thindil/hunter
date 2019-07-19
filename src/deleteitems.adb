@@ -66,7 +66,8 @@ package body DeleteItems is
 
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
-      Message: Unbounded_String := To_Unbounded_String(Gettext("Delete?") & LF);
+      Message: Unbounded_String :=
+        To_Unbounded_String(Gettext("Delete?") & LF);
    begin
       for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
          Append(Message, SelectedItems(I));
