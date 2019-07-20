@@ -30,15 +30,15 @@ procedure Hunter is
    Builder: Gtkada_Builder;
    Error: aliased GError;
 begin
-   -- Start Gettext internationalization
-   Setlocale;
-   Bind_Text_Domain("hunter", Value("LOCALESDIR"));
-   Text_Domain("hunter");
    if not Ada.Environment_Variables.Exists("RUNFROMSCRIPT") then
       Put_Line
         ("The program can be run only via 'hunter.sh' script. Please don't run binary directly.");
       return;
    end if;
+   -- Start Gettext internationalization
+   Setlocale;
+   Bind_Text_Domain("hunter", Value("LOCALESDIR"));
+   Text_Domain("hunter");
    if not Ada.Directories.Exists(Value("HOME") & "/" & ".cache/hunter") then
       Create_Path(Value("HOME") & "/" & ".cache/hunter");
    end if;
