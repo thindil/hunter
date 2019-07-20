@@ -37,31 +37,56 @@ package body DeleteItems is
    function DeleteSelected return Boolean is
       GoUp, Success: Boolean := False;
       Arguments: Argument_List := (new String'("-rf"), new String'(""));
+      OldSetting: Boolean;
       procedure MoveToTrash(Name: Unbounded_String) is
          NewName: Unbounded_String;
          TrashFile: File_Type;
       begin
          NewName :=
-            To_Unbounded_String
-               (Hash_Type'Image
-                  (Ada.Strings.Unbounded.Hash
-                     (Name & To_Unbounded_String(Image(Clock)))));
-            Create
-               (TrashFile, Out_File,
-               Ada.Environment_Variables.Value("HOME") &
-               "/.local/share/Trash/info/" & To_String(NewName) &
-               ".trashinfo");
-            Put_Line(TrashFile, "[Trash Info]");
-            Put_Line(TrashFile, "Path=" & To_String(Name));
-            Put_Line(TrashFile, "DeletionDate=" & Image(Clock));
-            Close(TrashFile);
-            Rename_File
-               (To_String(Name),
+           To_Unbounded_String
+             (Hash_Type'Image
+                (Ada.Strings.Unbounded.Hash
+                   (Name & To_Unbounded_String(Image(Clock)))));
+         Create
+           (TrashFile, Out_File,
+            Ada.Environment_Variables.Value("HOME") &
+            "/.local/share/Trash/info/" & To_String(NewName) & ".trashinfo");
+         Put_Line(TrashFile, "[Trash Info]");
+         Put_Line(TrashFile, "Path=" & To_String(Name));
+         Put_Line(TrashFile, "DeletionDate=" & Image(Clock));
+         Close(TrashFile);
+         Rename_File
+           (To_String(Name),
             Ada.Environment_Variables.Value("HOME") &
             "/.local/share/Trash/files/" & To_String(NewName),
             Success);
       end MoveToTrash;
+      procedure AddTrash(SubDirectory: String) is
+         Search: Search_Type;
+         Item: Directory_Entry_Type;
+      begin
+         Start_Search
+           (Search,
+            Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/" &
+            SubDirectory,
+            "*");
+         while More_Entries(Search) loop
+            Get_Next_Entry(Search, Item);
+            if Simple_Name(Item) /= "." and Simple_Name(Item) /= ".." then
+               SelectedItems.Append
+                 (New_Item => To_Unbounded_String(Full_Name(Item)));
+            end if;
+         end loop;
+         End_Search(Search);
+      end AddTrash;
    begin
+      if NewAction = CLEARTRASH then
+         OldSetting := Settings.DeleteFiles;
+         Settings.DeleteFiles := True;
+         SelectedItems.Clear;
+         AddTrash("info");
+         AddTrash("files");
+      end if;
       for Item of SelectedItems loop
          if Is_Directory(To_String(Item)) then
             Arguments(2) := new String'(To_String(Item));
@@ -84,6 +109,9 @@ package body DeleteItems is
             end if;
          end if;
       end loop;
+      if NewAction = CLEARTRASH then
+         Settings.DeleteFiles := OldSetting;
+      end if;
       return GoUp;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
@@ -125,5 +153,15 @@ package body DeleteItems is
       ToggleToolButtons(NewAction);
       ShowMessage(To_String(Message), Message_Question);
    end DeleteItem;
+
+   procedure ClearTrash(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+   begin
+      NewAction := CLEARTRASH;
+      ToggleToolButtons(NewAction);
+      ShowMessage
+        (Gettext("Remove all files and directories from Trash?"),
+         Message_Question);
+   end ClearTrash;
 
 end DeleteItems;

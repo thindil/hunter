@@ -55,10 +55,11 @@ package MainWindow is
    -- OPENWITH        - open selected file or directory with command
    -- GOTOPATH        - go to selected path
    -- CREATELINK      - create symbolic link to selected file or directory
+   -- CLEARTRASH      - remove all files and directories from trash
    -- SOURCE
    type ItemActions is
      (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
-      GOTOPATH, CREATELINK);
+      GOTOPATH, CREATELINK, CLEARTRASH);
    -- ****
    -- ****v* MainWindow/NewAction
    -- FUNCTION

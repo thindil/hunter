@@ -71,7 +71,7 @@ package body Messages is
       if MessageType /= Message_Question then
          Hide(Gtk_Widget(Get_Object(Builder, "actionbox")));
       end if;
-      if NewAction = DELETE then
+      if NewAction = DELETE or NewAction = CLEARTRASH then
          Hide(Gtk_Widget(Get_Object(Builder, "btnnoall")));
          Hide(Gtk_Widget(Get_Object(Builder, "btnyesall")));
       end if;
@@ -108,51 +108,54 @@ package body Messages is
       pragma Unreferenced(Self);
       OverwriteItem: Boolean := True;
    begin
-      if NewAction = DELETE then
-         if Response_Id = Gint(Gtk_Response_Yes) then
-            begin
-               if DeleteSelected then
-                  CurrentDirectory :=
-                    To_Unbounded_String
-                      (Normalize_Pathname
-                         (To_String(CurrentDirectory) & "/.."));
-               end if;
-            exception
-               when others =>
-                  Reload(Builder);
-                  return;
-            end;
-            Reload(Builder);
-         end if;
-         ToggleToolButtons(NewAction, True);
-         HideMessage(Builder);
-      elsif NewAction = COPY then
-         if Response_Id = Gint(Gtk_Response_Reject) then
-            HideMessage(Builder);
+      case NewAction is
+         when DELETE | CLEARTRASH =>
+            if Response_Id = Gint(Gtk_Response_Yes) then
+               begin
+                  if DeleteSelected then
+                     CurrentDirectory :=
+                       To_Unbounded_String
+                         (Normalize_Pathname
+                            (To_String(CurrentDirectory) & "/.."));
+                  end if;
+               exception
+                  when others =>
+                     Reload(Builder);
+                     return;
+               end;
+               Reload(Builder);
+            end if;
             ToggleToolButtons(NewAction, True);
-            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
-            Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
-            Reload(Builder);
-            return;
-         elsif Response_Id = Gint(Gtk_Response_No) then
-            SkipCopying;
-            return;
-         end if;
-         CopySelected(OverwriteItem);
-      elsif NewAction = MOVE then
-         if Response_Id = Gint(Gtk_Response_Reject) then
             HideMessage(Builder);
-            ToggleToolButtons(NewAction, True);
-            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
-            Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
-            Reload(Builder);
-            return;
-         elsif Response_Id = Gint(Gtk_Response_No) then
-            SkipMoving;
-            return;
-         end if;
-         MoveSelected(OverwriteItem);
-      end if;
+         when COPY =>
+            if Response_Id = Gint(Gtk_Response_Reject) then
+               HideMessage(Builder);
+               ToggleToolButtons(NewAction, True);
+               Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+               Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+               Reload(Builder);
+               return;
+            elsif Response_Id = Gint(Gtk_Response_No) then
+               SkipCopying;
+               return;
+            end if;
+            CopySelected(OverwriteItem);
+         when MOVE =>
+            if Response_Id = Gint(Gtk_Response_Reject) then
+               HideMessage(Builder);
+               ToggleToolButtons(NewAction, True);
+               Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+               Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+               Reload(Builder);
+               return;
+            elsif Response_Id = Gint(Gtk_Response_No) then
+               SkipMoving;
+               return;
+            end if;
+            MoveSelected(OverwriteItem);
+         when others =>
+            null;
+      end case;
       if Response_Id = Gint(Gtk_Response_Close) then
          HideMessage(Builder);
       end if;

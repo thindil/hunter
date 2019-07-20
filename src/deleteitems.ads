@@ -30,7 +30,6 @@ package DeleteItems is
    -- SOURCE
    function DeleteSelected return Boolean;
    -- ****
-
    -- ****f* DeleteItems/DeleteItem
    -- FUNCTION
    -- Show message to start deleting selected files and directories.
@@ -38,6 +37,14 @@ package DeleteItems is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class);
+   -- ****
+   -- ****f* DeleteItems/ClearTrash
+   -- FUNCTION
+   -- Show message to start clearing the trash.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure ClearTrash(Object: access Gtkada_Builder_Record'Class);
    -- ****
 
 end DeleteItems;
