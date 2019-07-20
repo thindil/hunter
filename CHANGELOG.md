@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Option to enable or disable coloring syntax for text files in preview
 - Option to select color theme for coloring syntax of text files in preview
 - Option to select delete files and directories or move them to trash
+- Option to clean trash
 
 ### Changed
 - Updated README.md
