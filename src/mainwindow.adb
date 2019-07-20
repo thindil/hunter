@@ -344,6 +344,7 @@ package body MainWindow is
       Register_Handler
         (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
       Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
+      Register_Handler(Builder, "Clear_Trash", ClearTrash'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
@@ -476,6 +477,9 @@ package body MainWindow is
       Attach_To_Widget
         (Gtk_Menu(Get_Object(Builder, "filesmenu")),
          Gtk_Widget(Get_Object(Builder, "treefiles")), null);
+      Set_Menu
+        (Gtk_Menu_Tool_Button(Get_Object(Builder, "btndelete")),
+         Gtk_Widget(Get_Object(Builder, "deletemenu")));
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
