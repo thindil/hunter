@@ -15,28 +15,27 @@
 
 with Gtkada.Builder; use Gtkada.Builder;
 
--- ****h* Hunter/DeleteItems
+-- ****h* Trash/Trash
 -- FUNCTION
--- Provide code to delete files and directories
+-- Provide code to manipulate system Trash
 -- SOURCE
-package DeleteItems is
--- ****
+package Trash is
 
-   -- ****f* DeleteItems/DeleteSelected
+   -- ****f* Trash/ClearTrash
    -- FUNCTION
-   -- Delete selected files and directories
-   -- RESULT
-   -- True if current directory was deleted too, otherwise false
-   -- SOURCE
-   function DeleteSelected return Boolean;
-   -- ****
-   -- ****f* DeleteItems/DeleteItem
-   -- FUNCTION
-   -- Show message to start deleting selected files and directories.
+   -- Show message to start clearing the trash.
    -- PARAMETERS
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
-   procedure DeleteItem(Object: access Gtkada_Builder_Record'Class);
+   procedure ClearTrash(Object: access Gtkada_Builder_Record'Class);
+   -- ****
+   -- ****f* Trash/ShowTrash
+   -- FUNCTION
+   -- Show content of the Trash
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure ShowTrash(Object: access Gtkada_Builder_Record'Class);
    -- ****
 
-end DeleteItems;
+end Trash;

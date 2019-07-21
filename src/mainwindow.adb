@@ -56,6 +56,7 @@ with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
+with Trash; use Trash;
 with Utils; use Utils;
 
 package body MainWindow is
@@ -351,6 +352,7 @@ package body MainWindow is
         (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
       Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
       Register_Handler(Builder, "Clear_Trash", ClearTrash'Access);
+      Register_Handler(Builder, "Show_Trash", ShowTrash'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),

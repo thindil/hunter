@@ -1,3 +1,4 @@
+-- /home/thindil/Projekty/hunter/hunter/src/trash.adb
 -- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
@@ -13,30 +14,27 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtkada.Builder; use Gtkada.Builder;
+with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtkada.Intl; use Gtkada.Intl;
+with MainWindow; use MainWindow;
+with Messages; use Messages;
+with Utils; use Utils;
 
--- ****h* Hunter/DeleteItems
--- FUNCTION
--- Provide code to delete files and directories
--- SOURCE
-package DeleteItems is
--- ****
+package body Trash is
 
-   -- ****f* DeleteItems/DeleteSelected
-   -- FUNCTION
-   -- Delete selected files and directories
-   -- RESULT
-   -- True if current directory was deleted too, otherwise false
-   -- SOURCE
-   function DeleteSelected return Boolean;
-   -- ****
-   -- ****f* DeleteItems/DeleteItem
-   -- FUNCTION
-   -- Show message to start deleting selected files and directories.
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure DeleteItem(Object: access Gtkada_Builder_Record'Class);
-   -- ****
+   procedure ClearTrash(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+   begin
+      NewAction := CLEARTRASH;
+      ToggleToolButtons(NewAction);
+      ShowMessage
+        (Gettext("Remove all files and directories from Trash?"),
+         Message_Question);
+   end ClearTrash;
 
-end DeleteItems;
+   procedure ShowTrash(Object: access Gtkada_Builder_Record'Class) is
+   begin
+      null;
+   end ShowTrash;
+
+end Trash;

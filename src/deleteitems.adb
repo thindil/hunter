@@ -157,14 +157,4 @@ package body DeleteItems is
       ShowMessage(To_String(Message), Message_Question);
    end DeleteItem;
 
-   procedure ClearTrash(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
-   begin
-      NewAction := CLEARTRASH;
-      ToggleToolButtons(NewAction);
-      ShowMessage
-        (Gettext("Remove all files and directories from Trash?"),
-         Message_Question);
-   end ClearTrash;
-
 end DeleteItems;
