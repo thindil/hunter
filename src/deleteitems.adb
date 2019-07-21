@@ -20,6 +20,7 @@ with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 with Ada.Text_IO; use Ada.Text_IO;
@@ -43,10 +44,12 @@ package body DeleteItems is
          TrashFile: File_Type;
       begin
          NewName :=
-           To_Unbounded_String
-             (Hash_Type'Image
-                (Ada.Strings.Unbounded.Hash
-                   (Name & To_Unbounded_String(Image(Clock)))));
+           Trim
+             (To_Unbounded_String
+                (Hash_Type'Image
+                   (Ada.Strings.Unbounded.Hash
+                      (Name & To_Unbounded_String(Image(Clock))))),
+              Both);
          Create
            (TrashFile, Out_File,
             Ada.Environment_Variables.Value("HOME") &
