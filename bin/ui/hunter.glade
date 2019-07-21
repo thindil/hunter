@@ -144,6 +144,8 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="guint"/>
       <!-- column-name lastmodified -->
       <column type="gchararray"/>
+      <!-- column-name fullpath -->
+      <column type="gchararray"/>
     </columns>
   </object>
   <object class="GtkTreeModelFilter" id="filesfilter">
