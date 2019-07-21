@@ -105,12 +105,7 @@ package body ShowItems is
       pragma Unreferenced(Path);
       -- ****
    begin
-      if CurrentDirectory = To_Unbounded_String("/") then
-         CurrentDirectory := Null_Unbounded_String;
-      end if;
-      SelectedItems.Append
-        (CurrentDirectory &
-         To_Unbounded_String("/" & Get_String(Model, Iter, 0)));
+      SelectedItems.Append(To_Unbounded_String(Get_String(Model, Iter, 6)));
    end GetSelectedItems;
 
    procedure ShowItemInfo(Object: access Gtkada_Builder_Record'Class) is

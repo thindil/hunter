@@ -217,6 +217,7 @@ package body LoadData is
                when others =>
                   Set(FilesList, FileIter, 5, "unknown");
             end;
+            Set(FilesList, FileIter, 6, Name & "/" & FileName(1 .. Last));
          end if;
          if Is_Directory(Name & "/" & FileName(1 .. Last)) then
             if FileName(1) = '.' then
