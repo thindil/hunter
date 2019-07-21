@@ -13,6 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Glib; use Glib;
+
 -- ****h* Hunter/LoadData
 -- FUNCTION
 -- Provide code to load directories information.
@@ -20,6 +23,37 @@
 package LoadData is
 -- ****
 
+   -- ****f* LoadData/SortFiles
+   -- FUNCTION
+   -- Sort files and directories in current directory view
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model with content (files and directories) of current
+   --         directory
+   -- A     - Gtk_Tree_Iter to first Model element to compare
+   -- B     - Gtk_Tree_Iter to second Model element to compare
+   -- RESULT
+   -- 1 if first element should be sort after second
+   -- 0 if first element should be sort with second (equal)
+   -- -1 if first element should be sort before second
+   -- SOURCE
+   function SortFiles
+     (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint;
+   -- ****
+   -- ****if* LoadData/EmptySortFiles
+   -- FUNCTION
+   -- Empty sort function used to speed up loading listing of current
+   -- directory.
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model with content (files and directories) of current
+   --         directory
+   -- A     - Gtk_Tree_Iter to first Model element to compare
+   -- B     - Gtk_Tree_Iter to second Model element to compare
+   -- RESULT
+   -- This function always return 0;
+   -- SOURCE
+   function EmptySortFiles
+     (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint;
+   -- ****
    -- ****f* LoadData/LoadDirectory
    -- FUNCTION
    -- Load selected directory with Name to Gtk_Store_List with ListName
