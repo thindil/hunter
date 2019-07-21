@@ -29,14 +29,12 @@ with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
-with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
-with Glib; use Glib;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
@@ -47,22 +45,8 @@ package body LoadData is
 
    Accelerators: Gtk_Accel_Group;
 
-   -- ****if* LoadData/SortFiles
-   -- FUNCTION
-   -- Sort files and directories in current directory view
-   -- PARAMETERS
-   -- Model - Gtk_Tree_Model with content (files and directories) of current
-   --         directory
-   -- A     - Gtk_Tree_Iter to first Model element to compare
-   -- B     - Gtk_Tree_Iter to second Model element to compare
-   -- RESULT
-   -- 1 if first element should be sort after second
-   -- 0 if first element should be sort with second (equal)
-   -- -1 if first element should be sort before second
-   -- SOURCE
    function SortFiles
      (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint is
-      -- ****
       FileTypeA: constant Gint := Get_Int(Model, A, 1);
       FileTypeB: constant Gint := Get_Int(Model, B, 1);
       FileNameA: constant String := Get_String(Model, A, 0);
@@ -83,24 +67,11 @@ package body LoadData is
       return 0;
    end SortFiles;
 
-   -- ****if* LoadData/EmptySortFiles
-   -- FUNCTION
-   -- Empty sort function used to speed up loading listing of current
-   -- directory.
-   -- PARAMETERS
-   -- Model - Gtk_Tree_Model with content (files and directories) of current
-   --         directory
-   -- A     - Gtk_Tree_Iter to first Model element to compare
-   -- B     - Gtk_Tree_Iter to second Model element to compare
-   -- RESULT
-   -- This function always return 0;
-   -- SOURCE
    function EmptySortFiles
      (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint is
       pragma Unreferenced(Model);
       pragma Unreferenced(A);
       pragma Unreferenced(B);
-      -- ****
    begin
       return 0;
    end EmptySortFiles;
