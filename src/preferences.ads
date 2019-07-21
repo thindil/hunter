@@ -47,6 +47,7 @@ package Preferences is
    --                         in text files in preview
    -- DeleteFiles           - If true, delete file and directories instead of
    --                         moving them to trash
+   -- ClearTrashOnExit      - Clear trash on quit from the program
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -60,6 +61,7 @@ package Preferences is
       ColorText: Boolean;
       ColorTheme: Unbounded_String;
       DeleteFiles: Boolean;
+      ClearTrashOnExit: Boolean;
    end record;
    -- ****
    -- ****v* Preferences/Settings
