@@ -81,7 +81,7 @@ package body Preferences is
          AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
          ShowPreview => True, StayInOld => False, ColorText => True,
          ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
-         DeleteFiles => True);
+         DeleteFiles => True, ClearTrashOnExit => False);
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
@@ -146,6 +146,11 @@ package body Preferences is
                  (Gtk_Switch(Get_Object(Builder, "switchdeletefiles")),
                   Settings.DeleteFiles);
                SetDeleteTooltip;
+            elsif FieldName = To_Unbounded_String("ClearTrashOnExit") then
+               Settings.ClearTrashOnExit := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchcleartrashonexit")),
+                  Settings.ClearTrashOnExit);
             end if;
          end if;
       end loop;
@@ -269,6 +274,13 @@ package body Preferences is
            Get_Active(Gtk_Switch(Get_Object(Object, "switchdeletefiles")));
          SetDeleteTooltip;
       end if;
+      if Get_Active
+          (Gtk_Switch(Get_Object(Object, "switchcleartrashonexit"))) /=
+        Settings.ClearTrashOnExit then
+         Settings.ClearTrashOnExit :=
+           Get_Active
+             (Gtk_Switch(Get_Object(Object, "switchcleartrashonexit")));
+      end if;
       return False;
    end SaveSettings;
 
@@ -328,6 +340,7 @@ package body Preferences is
       SaveBoolean(Settings.ColorText, "ColorText");
       Put_Line(ConfigFile, "ColorTheme = " & To_String(Settings.ColorTheme));
       SaveBoolean(Settings.DeleteFiles, "DeleteFiles");
+      SaveBoolean(Settings.ClearTrashOnExit, "ClearTrashOnExit");
       Close(ConfigFile);
    end SavePreferences;
 

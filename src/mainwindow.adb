@@ -63,6 +63,12 @@ package body MainWindow is
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
       SavePreferences;
+      if Settings.ClearTrashOnExit then
+         NewAction := CLEARTRASH;
+         if DeleteSelected then
+            Reload(Object);
+         end if;
+      end if;
       Unref(Object);
       Main_Quit;
    end Quit;
