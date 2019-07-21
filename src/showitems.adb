@@ -390,6 +390,18 @@ package body ShowItems is
                            FirstLine := False;
                         end if;
                         exit when End_Of_File(File);
+                        loop
+                           StartIndex := Index(FileLine, "&gt;");
+                           exit when StartIndex = 0;
+                           Replace_Slice
+                             (FileLine, StartIndex, StartIndex + 3, ">");
+                        end loop;
+                        loop
+                           StartIndex := Index(FileLine, "&lt;");
+                           exit when StartIndex = 0;
+                           Replace_Slice
+                             (FileLine, StartIndex, StartIndex + 3, "<");
+                        end loop;
                         StartIndex := 1;
                         loop
                            StartIndex := Index(FileLine, "<span", StartIndex);
