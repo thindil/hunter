@@ -94,7 +94,7 @@ package body Trash is
             FileName(1 .. Last));
          Open
            (FileInfo, In_File,
-            Value("HOME") & "/.local/share/Trash/info" & FileName(1 .. Last) &
+            Value("HOME") & "/.local/share/Trash/info/" & FileName(1 .. Last) &
             ".trashinfo");
          Skip_Line(FileInfo);
          for I in 1 .. 2 loop
