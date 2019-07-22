@@ -24,6 +24,8 @@ with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
+with Gdk.Cursor; use Gdk.Cursor;
+with Gdk.Window; use Gdk.Window;
 with Gtkada.Intl; use Gtkada.Intl;
 
 package body ErrorDialog is
@@ -76,6 +78,10 @@ package body ErrorDialog is
          Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Set_Visible_Child_Name
            (Gtk_Stack(Get_Object(Builder, "filestack")), "error");
+         Set_Cursor
+           (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
+            Gdk_Cursor_New(Arrow));
+         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
       end if;
    end SaveException;
 
