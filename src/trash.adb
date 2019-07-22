@@ -200,8 +200,8 @@ package body Trash is
       Setting := False;
       Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
       Set_Cursor
-         (Gtk_Tree_View(Get_Object(Object, "treefiles")), Gtk_Tree_Path_New_From_String("0"), null,
-         False);
+        (Gtk_Tree_View(Get_Object(Object, "treefiles")),
+         Gtk_Tree_Path_New_From_String("0"), null, False);
       Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
    end ShowTrash;
 
