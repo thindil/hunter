@@ -102,11 +102,11 @@ package body Trash is
             if Slice(FileLine, 1, 4) = "Path" then
                Set
                  (FilesList, FileIter, 0,
-                  Slice(FileLine, 5, Length(FileLine)));
+                  Simple_Name(Slice(FileLine, 6, Length(FileLine))));
             else
                Set
                  (FilesList, FileIter, 5,
-                  Slice(FileLine, 13, Length(FileLine)));
+                  Slice(FileLine, 14, Length(FileLine)));
             end if;
          end loop;
          Close(FileInfo);
