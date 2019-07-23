@@ -64,7 +64,7 @@ package body Trash is
         Gtk_Tree_Model_Sort(Get_Object(Object, "filessort"));
       FileInfo: File_Type;
       Size: File_Size;
-      FileLine: Unbounded_String;
+      FileLine, FullName: Unbounded_String;
    begin
       Setting := True;
       if MainWindow /= null then
@@ -88,14 +88,12 @@ package body Trash is
             goto End_Of_Loop;
          end if;
          Append(FilesList, FileIter);
-         Set
-           (FilesList, FileIter, 6,
-            Value("HOME") & "/.local/share/Trash/files/" &
-            FileName(1 .. Last));
-         Open
-           (FileInfo, In_File,
-            Value("HOME") & "/.local/share/Trash/info/" & FileName(1 .. Last) &
-            ".trashinfo");
+         FullName :=
+           To_Unbounded_String
+             (Value("HOME") & "/.local/share/Trash/files/" &
+              FileName(1 .. Last));
+         Set(FilesList, FileIter, 6, To_String(FullName));
+         Open(FileInfo, In_File, To_String(FullName) & ".trashinfo");
          Skip_Line(FileInfo);
          for I in 1 .. 2 loop
             FileLine := To_Unbounded_String(Get_Line(FileInfo));
@@ -110,29 +108,20 @@ package body Trash is
             end if;
          end loop;
          Close(FileInfo);
-         if Is_Directory
-             (Value("HOME") & "/.local/share/Trash/files/" &
-              FileName(1 .. Last)) then
+         if Is_Directory(To_String(FullName)) then
             if FileName(1) = '.' then
                Set(FilesList, FileIter, 1, 1);
             else
                Set(FilesList, FileIter, 1, 2);
             end if;
-            if Is_Symbolic_Link
-                (Value("HOME") & "/.local/share/Trash/files/" &
-                 FileName(1 .. Last)) then
+            if Is_Symbolic_Link(To_String(FullName)) then
                Set(FilesList, FileIter, 2, "emblem-symbolic-link");
             else
                Set(FilesList, FileIter, 2, "folder");
             end if;
             Set(FilesList, FileIter, 4, Gint'Last);
-            if Is_Read_Accessible_File
-                (Value("HOME") & "/.local/share/Trash/files/" &
-                 FileName(1 .. Last)) then
-               Open
-                 (SubDirectory,
-                  Value("HOME") & "/.local/share/Trash/files/" &
-                  FileName(1 .. Last));
+            if Is_Read_Accessible_File(To_String(FullName)) then
+               Open(SubDirectory, To_String(FullName));
                Size := 0;
                loop
                   Read(SubDirectory, SubFileName, SubLast);
@@ -150,32 +139,21 @@ package body Trash is
             else
                Set(FilesList, FileIter, 1, 4);
             end if;
-            if Is_Symbolic_Link
-                (Value("HOME") & "/.local/share/Trash/files/" & "/" &
-                 FileName(1 .. Last)) then
+            if Is_Symbolic_Link(To_String(FullName)) then
                Set(FilesList, FileIter, 2, "emblem-symbolic-link");
             else
                Set(FilesList, FileIter, 2, "text-x-generic-template");
             end if;
-            if not Is_Read_Accessible_File
-                (Value("HOME") & "/.local/share/Trash/files/" &
-                 FileName(1 .. Last)) then
+            if not Is_Read_Accessible_File(To_String(FullName)) then
                Set(FilesList, FileIter, 3, "?");
                Set(FilesList, FileIter, 4, 0);
                goto End_Of_Loop;
             end if;
-            if Is_Symbolic_Link
-                (Value("HOME") & "/.local/share/Trash/files/" &
-                 FileName(1 .. Last)) then
+            if Is_Symbolic_Link(To_String(FullName)) then
                Set(FilesList, FileIter, 3, "->");
                Set(FilesList, FileIter, 4, 0);
-            elsif Is_Regular_File
-                (Value("HOME") & "/.local/share/Trash/files/" &
-                 FileName(1 .. Last)) then
-               Size :=
-                 Ada.Directories.Size
-                   (Value("HOME") & "/.local/share/Trash/files/" &
-                    FileName(1 .. Last));
+            elsif Is_Regular_File(To_String(FullName)) then
+               Size := Ada.Directories.Size(To_String(FullName));
                Set(FilesList, FileIter, 3, CountFileSize(Size));
                if Size > File_Size(Gint'Last) then
                   Size := File_Size(Gint'Last);
