@@ -39,8 +39,8 @@ begin
    Setlocale;
    Bind_Text_Domain("hunter", Value("LOCALESDIR"));
    Text_Domain("hunter");
-   if not Ada.Directories.Exists(Value("HOME") & "/" & ".cache/hunter") then
-      Create_Path(Value("HOME") & "/" & ".cache/hunter");
+   if not Ada.Directories.Exists(Value("HOME") & "/.cache/hunter") then
+      Create_Path(Value("HOME") & "/.cache/hunter");
    end if;
    if not Ada.Directories.Exists(Value("HOME") & "/.local/share/Trash/files") then
       Create_Path(Value("HOME") & "/.local/share/Trash/files");
