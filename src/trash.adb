@@ -93,7 +93,8 @@ package body Trash is
              (Value("HOME") & "/.local/share/Trash/files/" &
               FileName(1 .. Last));
          Set(FilesList, FileIter, 6, To_String(FullName));
-         Open(FileInfo, In_File, To_String(FullName) & ".trashinfo");
+         Open(FileInfo, In_File, Value("HOME") & "/.local/share/Trash/info/" &
+              FileName(1 .. Last) & ".trashinfo");
          Skip_Line(FileInfo);
          for I in 1 .. 2 loop
             FileLine := To_Unbounded_String(Get_Line(FileInfo));
