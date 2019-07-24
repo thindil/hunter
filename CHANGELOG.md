@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - Don't show toolbars on crash info screen
 - Crash after starting the program via binary
 - Hang on error info screen
+- Show last modification time in local time
 
 ## [0.6] - 2019-07-12
 
