@@ -105,9 +105,9 @@ package body Trash is
                  (FilesList, FileIter, 0,
                   Simple_Name(Slice(FileLine, 6, Length(FileLine))));
             else
-               Set
-                 (FilesList, FileIter, 5,
-                  Slice(FileLine, 14, Length(FileLine)));
+               FileLine := Unbounded_Slice(FileLine, 14, Length(FileLine));
+               Replace_Slice(FileLine, 11, 11, " ");
+               Set(FilesList, FileIter, 5, To_String(FileLine));
             end if;
          end loop;
          Close(FileInfo);

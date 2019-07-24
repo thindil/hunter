@@ -40,6 +40,7 @@ package body DeleteItems is
       GoUp, Success: Boolean := False;
       Arguments: Argument_List := (new String'("-rf"), new String'(""));
       OldSetting: Boolean;
+      DeleteTime: String(1 .. 19);
       procedure MoveToTrash(Name: Unbounded_String) is
          NewName: Unbounded_String;
          TrashFile: File_Type;
@@ -57,10 +58,9 @@ package body DeleteItems is
             "/.local/share/Trash/info/" & To_String(NewName) & ".trashinfo");
          Put_Line(TrashFile, "[Trash Info]");
          Put_Line(TrashFile, "Path=" & To_String(Name));
-         Put_Line
-           (TrashFile,
-            "DeletionDate=" &
-            Image(Date => Clock, Time_Zone => UTC_Time_Offset));
+         DeleteTime := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
+         DeleteTime(11) := 'T';
+         Put_Line(TrashFile, "DeletionDate=" & DeleteTime);
          Close(TrashFile);
          Rename_File
            (To_String(Name),
