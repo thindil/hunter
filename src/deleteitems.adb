@@ -15,6 +15,7 @@
 
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
@@ -56,7 +57,10 @@ package body DeleteItems is
             "/.local/share/Trash/info/" & To_String(NewName) & ".trashinfo");
          Put_Line(TrashFile, "[Trash Info]");
          Put_Line(TrashFile, "Path=" & To_String(Name));
-         Put_Line(TrashFile, "DeletionDate=" & Image(Clock));
+         Put_Line
+           (TrashFile,
+            "DeletionDate=" &
+            Image(Date => Clock, Time_Zone => UTC_Time_Offset));
          Close(TrashFile);
          Rename_File
            (To_String(Name),
