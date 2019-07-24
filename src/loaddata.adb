@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -183,7 +184,9 @@ package body LoadData is
                Set
                  (FilesList, FileIter, 5,
                   Ada.Calendar.Formatting.Image
-                    (Modification_Time(Name & "/" & FileName(1 .. Last))));
+                    (Date =>
+                       Modification_Time(Name & "/" & FileName(1 .. Last)),
+                     Time_Zone => UTC_Time_Offset));
             exception
                when others =>
                   Set(FilesList, FileIter, 5, "unknown");
