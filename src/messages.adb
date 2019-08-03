@@ -19,6 +19,7 @@ with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Main; use Glib.Main;
+with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
 with MainWindow; use MainWindow;
@@ -123,7 +124,12 @@ package body Messages is
                      Reload(Builder);
                      return;
                end;
-               Reload(Builder);
+               if Is_Visible
+                   (Gtk_Widget(Get_Object(Builder, "btntoolemptytrash"))) then
+                  GoHome(Builder);
+               else
+                  Reload(Builder);
+               end if;
             end if;
             ToggleToolButtons(NewAction, True);
             HideMessage(Builder);

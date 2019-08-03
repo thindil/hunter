@@ -520,6 +520,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="label" translatable="yes">Empty Trash</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">user-trash</property>
+                    <signal name="clicked" handler="Clear_Trash" swapped="no"/>
                     <accelerator key="Delete" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                   </object>
                   <packing>
