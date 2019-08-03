@@ -36,7 +36,6 @@ with Gdk.Window; use Gdk.Window;
 with Glib; use Glib;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
-with MoveItems; use MoveItems;
 with Messages; use Messages;
 with Utils; use Utils;
 
@@ -189,10 +188,9 @@ package body Trash is
    end ShowTrash;
 
    procedure RestoreItem(Object: access Gtkada_Builder_Record'Class) is
-      RestoreInfo, FileLine: Unbounded_String;
+      RestoreInfo, FileLine, Destination, ItemType: Unbounded_String;
       StartIndex: Positive;
       FileInfo: File_Type;
-      OverwriteItem: Boolean;
    begin
       for Item of SelectedItems loop
          StartIndex := Index(Item, "files");
@@ -205,14 +203,22 @@ package body Trash is
          for I in 1 .. 2 loop
             FileLine := To_Unbounded_String(Get_Line(FileInfo));
             if Slice(FileLine, 1, 4) = "Path" then
-               OverwriteItem := False;
-               MoveItemsList.Append(Item);
-               DestinationPath :=
-                 To_Unbounded_String
-                   (Containing_Directory
-                      (Slice(FileLine, 6, Length(FileLine))));
-               Ada.Text_IO.Put_Line(To_String(DestinationPath));
-               MoveSelected(OverwriteItem);
+               Destination := Unbounded_Slice(FileLine, 6, Length(FileLine));
+               if Ada.Directories.Exists(To_String(Destination)) then
+                  if Is_Directory(To_String(Destination)) then
+                     ItemType := To_Unbounded_String(Gettext("Directory"));
+                  else
+                     ItemType := To_Unbounded_String(Gettext("File"));
+                  end if;
+                  ShowMessage
+                    (Gettext("Can't restore ") & To_String(Destination) & " " &
+                     To_String(ItemType) & " " &
+                     Gettext("with that name exists."));
+                  Close(FileInfo);
+                  ShowTrash(Object);
+                  return;
+               end if;
+               Rename(To_String(Item), Slice(FileLine, 6, Length(FileLine)));
             end if;
          end loop;
          Close(FileInfo);
