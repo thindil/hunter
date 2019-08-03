@@ -133,6 +133,13 @@ package body Utils is
             Set_Tooltip_Text
               (Gtk_Widget(Get_Object(Builder, "btntoolcancel")),
                Gettext("Stop moving files and directories [Escape]"));
+         when SHOWTRASH =>
+            Set_Visible
+              (Gtk_Widget(Get_Object(Builder, "btntoolemptytrash")),
+               not Finished);
+            Set_Visible
+              (Gtk_Widget(Get_Object(Builder, "btntoolrestore")),
+               not Finished);
          when others =>
             return;
       end case;
@@ -160,6 +167,10 @@ package body Utils is
          end if;
          Set_Visible
            (Gtk_Widget(Get_Object(Builder, "btntoolcancel")), not Finished);
+      end if;
+      if Action /= SHOWTRASH then
+         Hide(Gtk_Widget(Get_Object(Builder, "btntoolemptytrash")));
+         Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
       end if;
       for ButtonName of ButtonsNames loop
          if ButtonName /= CurrentButton then

@@ -76,6 +76,7 @@ package body Trash is
             end if;
          end loop;
       end if;
+      ToggleToolButtons(SHOWTRASH);
       FilesList.Clear;
       Set_Sort_Func
         (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
