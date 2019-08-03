@@ -353,6 +353,7 @@ package body MainWindow is
       Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
       Register_Handler(Builder, "Clear_Trash", ClearTrash'Access);
       Register_Handler(Builder, "Show_Trash", ShowTrash'Access);
+      Register_Handler(Builder, "Restore_Item", RestoreItem'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
