@@ -536,6 +536,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="label" translatable="yes">Restore</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">document-revert</property>
+                    <signal name="clicked" handler="Restore_Item" swapped="no"/>
                     <accelerator key="r" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                   </object>
                   <packing>

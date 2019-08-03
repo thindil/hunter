@@ -37,5 +37,13 @@ package Trash is
    -- SOURCE
    procedure ShowTrash(Object: access Gtkada_Builder_Record'Class);
    -- ****
+   -- ****f* Trash/RestoreItem
+   -- FUNCTION
+   -- Restore selected file or directory from the trash
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure RestoreItem(Object: access Gtkada_Builder_Record'Class);
+   -- ****
 
 end Trash;

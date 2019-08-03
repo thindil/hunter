@@ -34,8 +34,9 @@ with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
 with Glib; use Glib;
-with MainWindow; use MainWindow;
 with LoadData; use LoadData;
+with MainWindow; use MainWindow;
+with MoveItems; use MoveItems;
 with Messages; use Messages;
 with Utils; use Utils;
 
@@ -186,5 +187,38 @@ package body Trash is
          Gtk_Tree_Path_New_From_String("0"), null, False);
       Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
    end ShowTrash;
+
+   procedure RestoreItem(Object: access Gtkada_Builder_Record'Class) is
+      RestoreInfo, FileLine: Unbounded_String;
+      StartIndex: Positive;
+      FileInfo: File_Type;
+      OverwriteItem: Boolean;
+   begin
+      for Item of SelectedItems loop
+         StartIndex := Index(Item, "files");
+         RestoreInfo :=
+           Unbounded_Slice(Item, 1, StartIndex - 1) & "info" &
+           Unbounded_Slice(Item, StartIndex + 5, Length(Item)) &
+           To_Unbounded_String(".trashinfo");
+         Open(FileInfo, In_File, To_String(RestoreInfo));
+         Skip_Line(FileInfo);
+         for I in 1 .. 2 loop
+            FileLine := To_Unbounded_String(Get_Line(FileInfo));
+            if Slice(FileLine, 1, 4) = "Path" then
+               OverwriteItem := False;
+               MoveItemsList.Append(Item);
+               DestinationPath :=
+                 To_Unbounded_String
+                   (Containing_Directory
+                      (Slice(FileLine, 6, Length(FileLine))));
+               Ada.Text_IO.Put_Line(To_String(DestinationPath));
+               MoveSelected(OverwriteItem);
+            end if;
+         end loop;
+         Close(FileInfo);
+         Delete_File(To_String(RestoreInfo));
+      end loop;
+      ShowTrash(Object);
+   end RestoreItem;
 
 end Trash;
