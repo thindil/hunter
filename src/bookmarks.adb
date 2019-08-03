@@ -26,6 +26,7 @@ with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with Utils; use Utils;
 
 package body Bookmarks is
 
@@ -66,6 +67,7 @@ package body Bookmarks is
             Reload(Builder);
          end if;
       end if;
+      ToggleToolButtons(COPY, True);
    end GoToBookmark;
 
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
@@ -80,6 +82,7 @@ package body Bookmarks is
             Reload(Object);
          end if;
       end if;
+      ToggleToolButtons(COPY, True);
    end GoHome;
 
    -- ****if* Bookmarks/RemoveMenu
