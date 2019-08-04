@@ -19,6 +19,7 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
@@ -272,6 +273,8 @@ package body LoadData is
             Tokens: Slice_Set;
             Button: Gtk_Button;
             ButtonBox: Gtk_Flow_Box;
+            FileInfo: File_Type;
+            TmpPath, FileLine: Unbounded_String;
          begin
             if ListName = "fileslist" then
                FilesSort :=
@@ -303,6 +306,26 @@ package body LoadData is
                      Ada.Environment_Variables.Value("HOME")'Length + 26,
                      Length(CurrentDirectory)),
                   "/");
+               Open
+                 (FileInfo, In_File,
+                  Ada.Environment_Variables.Value("HOME") &
+                  "/.local/share/Trash/info/" & Slice(Tokens, 2) &
+                  ".trashinfo");
+               Skip_Line(FileInfo);
+               for I in 1 .. 2 loop
+                  FileLine := To_Unbounded_String(Get_Line(FileInfo));
+                  if Slice(FileLine, 1, 4) = "Path" then
+                     TmpPath :=
+                       To_Unbounded_String
+                         ("/" &
+                          Simple_Name(Slice(FileLine, 6, Length(FileLine))));
+                     for I in 3 .. Slice_Count(Tokens) loop
+                        Append(TmpPath, "/" & Slice(Tokens, I));
+                     end loop;
+                  end if;
+                  Create(Tokens, To_String(TmpPath), "/");
+               end loop;
+               Close(FileInfo);
             end if;
             if CurrentDirectory = To_Unbounded_String("/") then
                if ListName = "fileslist" then
