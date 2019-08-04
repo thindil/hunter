@@ -22,6 +22,7 @@ with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Shell; use Gtk.Menu_Shell;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
@@ -67,6 +68,9 @@ package body Bookmarks is
             Reload(Builder);
          end if;
       end if;
+      Set_Title
+        (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
+         Gettext("Modified"));
       ToggleToolButtons(COPY, True);
    end GoToBookmark;
 
@@ -82,6 +86,9 @@ package body Bookmarks is
             Reload(Object);
          end if;
       end if;
+      Set_Title
+        (Gtk_Tree_View_Column(Get_Object(Object, "modifiedcolumn")),
+         Gettext("Modified"));
       ToggleToolButtons(COPY, True);
    end GoHome;
 
