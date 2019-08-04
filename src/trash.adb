@@ -20,7 +20,11 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.String_Split; use GNAT.String_Split;
+with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Enums; use Gtk.Enums;
+with Gtk.Flow_Box; use Gtk.Flow_Box;
+with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
@@ -42,6 +46,13 @@ with Utils; use Utils;
 
 package body Trash is
 
+   -- ****iv* Trash/Accelerators
+   -- FUNCTION
+   -- Keyboard shortcuts for path buttons
+   -- SOURCE
+   Accelerators: Gtk_Accel_Group;
+   -- ****
+
    procedure ClearTrash(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
    begin
@@ -51,6 +62,36 @@ package body Trash is
         (Gettext("Remove all files and directories from Trash?"),
          Message_Question);
    end ClearTrash;
+
+   -- ****if* Trash/RemovePathButtons
+   -- FUNCTION
+   -- Remove selected button from path buttons
+   -- PARAMETERS
+   -- Widget - Button to remove
+   -- SOURCE
+   procedure RemovePathButtons
+     (Widget: not null access Gtk_Widget_Record'Class) is
+   -- ****
+   begin
+      Set_Accel_Path(Widget, "", Accelerators);
+      Destroy(Widget);
+   end RemovePathButtons;
+
+   procedure PathClicked(Self: access Gtk_Button_Record'Class) is
+      Tokens: Slice_Set;
+      Index: constant Gint := Get_Index(Gtk_Flow_Box_Child(Get_Parent(Self)));
+   begin
+      if Index = 0 then
+         ShowTrash(Builder);
+         return;
+      end if;
+      Create(Tokens, To_String(CurrentDirectory), "/");
+      CurrentDirectory :=
+        To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
+      for I in 2 .. (Index + 1) loop
+         Append(CurrentDirectory, "/" & Slice(Tokens, Slice_Number(I)));
+      end loop;
+   end PathClicked;
 
    procedure ShowTrash(Object: access Gtkada_Builder_Record'Class) is
       FilesList: constant Gtk_List_Store :=
@@ -66,8 +107,14 @@ package body Trash is
       FileInfo: File_Type;
       Size: File_Size;
       FileLine, FullName: Unbounded_String;
+      Button: Gtk_Button;
+      ButtonBox: constant Gtk_Flow_Box :=
+        Gtk_Flow_Box(Get_Object(Object, "boxpath"));
    begin
       Setting := True;
+      if Accelerators = null then
+         Accelerators := Gtk_Accel_Group(Get_Object(Object, "accelerators"));
+      end if;
       if MainWindow /= null then
          Set_Cursor(MainWindow, Gdk_Cursor_New(Watch));
          Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), False);
@@ -175,6 +222,14 @@ package body Trash is
          <<End_Of_Loop>>
       end loop;
       Close(Directory);
+      Foreach(ButtonBox, RemovePathButtons'Access);
+      Gtk_New(Button, "Trash");
+      Insert(ButtonBox, Button, -1);
+      On_Clicked(Button, PathClicked'Access);
+      Set_Tooltip_Text
+        (Gtk_Widget(Button), Gettext("Reload current directory [ALT+R]"));
+      Set_Accel_Path(Gtk_Widget(Button), "<mainwindow>/reload", Accelerators);
+      Show_All(ButtonBox);
       Set_Sort_Func(FilesSort, 0, SortFiles'Access);
       Set_Sort_Column_Id(FilesSort, 0, Sort_Ascending);
       if MainWindow /= null then

@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.Button; use Gtk.Button;
 with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Trash/Trash
@@ -44,6 +45,14 @@ package Trash is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure RestoreItem(Object: access Gtkada_Builder_Record'Class);
+   -- ****
+   -- ****f* Trash/PathClicked
+   -- FUNCTION
+   -- Go to selected location and show it in current directory view.
+   -- PARAMETERS
+   -- Self - Button which was clicked by user
+   -- SOURCE
+   procedure PathClicked(Self: access Gtk_Button_Record'Class);
    -- ****
 
 end Trash;

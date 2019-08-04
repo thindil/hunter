@@ -17,6 +17,7 @@ with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -41,6 +42,7 @@ with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
 with MainWindow; use MainWindow;
 with Utils; use Utils;
+with Trash;
 
 package body LoadData is
 
@@ -284,10 +286,24 @@ package body LoadData is
             CurrentDirectory :=
               To_Unbounded_String
                 (Normalize_Pathname(To_String(CurrentDirectory)));
-            Gtk_New(Button, "/");
-            Insert(ButtonBox, Button, -1);
-            On_Clicked(Button, PathClicked'Access);
-            Create(Tokens, To_String(CurrentDirectory), "/");
+            if not Is_Visible
+                (Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+               Gtk_New(Button, "/");
+               Insert(ButtonBox, Button, -1);
+               On_Clicked(Button, PathClicked'Access);
+               Create(Tokens, To_String(CurrentDirectory), "/");
+            else
+               Gtk_New(Button, "Trash");
+               Insert(ButtonBox, Button, -1);
+               On_Clicked(Button, Trash.PathClicked'Access);
+               Create
+                 (Tokens,
+                  Slice
+                    (CurrentDirectory,
+                     Ada.Environment_Variables.Value("HOME")'Length + 26,
+                     Length(CurrentDirectory)),
+                  "/");
+            end if;
             if CurrentDirectory = To_Unbounded_String("/") then
                if ListName = "fileslist" then
                   Set_Tooltip_Text
@@ -335,7 +351,12 @@ package body LoadData is
                if Slice(Tokens, I) /= "" then
                   Gtk_New(Button, Slice(Tokens, I));
                   Insert(ButtonBox, Button, -1);
-                  On_Clicked(Button, PathClicked'Access);
+                  if not Is_Visible
+                      (Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+                     On_Clicked(Button, PathClicked'Access);
+                  else
+                     On_Clicked(Button, Trash.PathClicked'Access);
+                  end if;
                   if I = Slice_Count(Tokens) - 1 then
                      if ListName = "fileslist" then
                         Set_Tooltip_Text
