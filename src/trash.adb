@@ -28,6 +28,7 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
+with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with Gdk; use Gdk;
@@ -76,6 +77,9 @@ package body Trash is
             end if;
          end loop;
       end if;
+      Set_Title
+        (Gtk_Tree_View_Column(Get_Object(Object, "modifiedcolumn")),
+         Gettext("Deleted"));
       ToggleToolButtons(SHOWTRASH);
       FilesList.Clear;
       Set_Sort_Func
