@@ -125,7 +125,7 @@ package body Messages is
                      return;
                end;
                if Is_Visible
-                   (Gtk_Widget(Get_Object(Builder, "btntoolemptytrash"))) then
+                   (Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
                   GoHome(Builder);
                else
                   Reload(Builder);

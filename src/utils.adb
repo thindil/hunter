@@ -134,9 +134,7 @@ package body Utils is
               (Gtk_Widget(Get_Object(Builder, "btntoolcancel")),
                Gettext("Stop moving files and directories [Escape]"));
          when SHOWTRASH =>
-            Set_Visible
-              (Gtk_Widget(Get_Object(Builder, "btntoolemptytrash")),
-               not Finished);
+            CurrentButton := To_Unbounded_String("btndelete");
             Set_Visible
               (Gtk_Widget(Get_Object(Builder, "btntoolrestore")),
                not Finished);
@@ -169,7 +167,6 @@ package body Utils is
            (Gtk_Widget(Get_Object(Builder, "btntoolcancel")), not Finished);
       end if;
       if Action /= SHOWTRASH then
-         Hide(Gtk_Widget(Get_Object(Builder, "btntoolemptytrash")));
          Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
       end if;
       for ButtonName of ButtonsNames loop
