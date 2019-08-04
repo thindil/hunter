@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Option to select delete files and directories or move them to trash
 - Option to clean trash
 - Option to clean trash on exit from the program
+- Option to restore files and directories from trash
 
 ### Changed
 - Updated README.md
