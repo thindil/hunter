@@ -44,7 +44,12 @@ with Utils; use Utils;
 
 package body LoadData is
 
+   -- ****iv* LoadData/Accelerators
+   -- FUNCTION
+   -- Keyboard shortcuts for path buttons
+   -- SOURCE
    Accelerators: Gtk_Accel_Group;
+   -- ****
 
    function SortFiles
      (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint is
