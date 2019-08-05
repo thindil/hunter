@@ -129,6 +129,9 @@ package body Trash is
         (Gtk_Tree_View_Column(Get_Object(Object, "modifiedcolumn")),
          Gettext("Deleted"));
       ToggleToolButtons(SHOWTRASH);
+      Set_Tooltip_Text
+        (Gtk_Widget(Get_Object(Builder, "btndelete")),
+         Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
       FilesList.Clear;
       Set_Sort_Func
         (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,

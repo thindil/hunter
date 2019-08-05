@@ -79,6 +79,13 @@ package Preferences is
    -- SOURCE
    procedure TogglePreferences(Object: access Gtkada_Builder_Record'Class);
    -- ****
+   -- ****f* Preferences/SetDeleteTooltip
+   -- FUNCTION
+   -- Set tooltip for delete button, depends did delete action delete files or
+   -- move them to trash
+   -- SOURCE
+   procedure SetDeleteTooltip;
+   -- ****
    -- ****f* Preferences/LoadSettings
    -- FUNCTION
    -- Load the program settings from file. If file not exists, load default

@@ -57,10 +57,11 @@ package MainWindow is
    -- CREATELINK      - create symbolic link to selected file or directory
    -- CLEARTRASH      - remove all files and directories from trash
    -- SHOWTRASH       - show content of the trash
+   -- DELETETRASH     - delete file or directory from trash
    -- SOURCE
    type ItemActions is
      (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
-      GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH);
+      GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
    -- ****v* MainWindow/NewAction
    -- FUNCTION

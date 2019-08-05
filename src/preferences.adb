@@ -43,13 +43,7 @@ package body Preferences is
       end if;
    end TogglePreferences;
 
-   -- ****if* Preferences/SetDeleteTooltip
-   -- FUNCTION
-   -- Set tooltip for delete button, depends did delete action delete files or
-   -- move them to trash
-   -- SOURCE
    procedure SetDeleteTooltip is
-   -- ****
    begin
       if Settings.DeleteFiles then
          Set_Tooltip_Text
