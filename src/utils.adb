@@ -189,7 +189,9 @@ package body Utils is
             SetBookmarkButton;
          end if;
       else
-         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+         if Action /= SHOWTRASH then
+            Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+         end if;
          case Action is
             when CREATEFILE =>
                Set_Title
