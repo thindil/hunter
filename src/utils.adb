@@ -166,16 +166,21 @@ package body Utils is
          Set_Visible
            (Gtk_Widget(Get_Object(Builder, "btntoolcancel")), not Finished);
       end if;
-      if Action /= SHOWTRASH and Action /= DELETETRASH then
-         Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
-      end if;
-      for ButtonName of ButtonsNames loop
-         if ButtonName /= CurrentButton then
-            Set_Visible
-              (Gtk_Widget(Get_Object(Builder, To_String(ButtonName))),
-               Finished);
+      if Action = DELETETRASH and then Finished then
+         Show_All(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
+         Show_All(Gtk_Widget(Get_Object(Builder, "btndelete")));
+      else
+         if Action /= SHOWTRASH then
+            Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
          end if;
-      end loop;
+         for ButtonName of ButtonsNames loop
+            if ButtonName /= CurrentButton then
+               Set_Visible
+                 (Gtk_Widget(Get_Object(Builder, To_String(ButtonName))),
+                  Finished);
+            end if;
+         end loop;
+      end if;
       if Finished then
          Set_Title(Gtk_Header_Bar(Get_Object(Builder, "header")), "");
          Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
@@ -218,7 +223,7 @@ package body Utils is
                  (Gtk_Header_Bar(Get_Object(Builder, "header")),
                   Gettext("Moving files and directories"));
             when DELETE | DELETETRASH =>
-               if Settings.DeleteFiles then
+               if Settings.DeleteFiles or Action = DELETETRASH then
                   Set_Title
                     (Gtk_Header_Bar(Get_Object(Builder, "header")),
                      Gettext("Deleting files and directories"));
