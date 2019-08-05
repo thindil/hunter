@@ -26,6 +26,7 @@ with MainWindow; use MainWindow;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with Utils; use Utils;
+with Trash; use Trash;
 
 package body Messages is
 
@@ -125,9 +126,10 @@ package body Messages is
                      Reload(Builder);
                      return;
                end;
-               if Is_Visible
-                   (Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+               if NewAction = CLEARTRASH then
                   GoHome(Builder);
+               elsif NewAction = DELETETRASH then
+                  ShowTrash(Builder);
                else
                   Reload(Builder);
                end if;
