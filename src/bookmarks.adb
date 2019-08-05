@@ -43,7 +43,12 @@ package body Bookmarks is
         To_Unbounded_String(Get_Label(Self));
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
-      ToggleToolButtons(COPY, True);
+      if Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+         ToggleToolButtons(COPY, True);
+         Set_Title
+           (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
+            Gettext("Modified"));
+      end if;
       for I in BookmarksList.Iterate loop
          if MenuLabel = BookmarksList(I).MenuName then
             if BookmarksList(I).Path /= Null_Unbounded_String then
@@ -69,14 +74,16 @@ package body Bookmarks is
             Reload(Builder);
          end if;
       end if;
-      Set_Title
-        (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
-         Gettext("Modified"));
    end GoToBookmark;
 
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
    begin
-      ToggleToolButtons(COPY, True);
+      if Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+         ToggleToolButtons(COPY, True);
+         Set_Title
+           (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
+            Gettext("Modified"));
+      end if;
       CurrentDirectory := To_Unbounded_String(Value("HOME"));
       if Ada.Directories.Exists(To_String(CurrentDirectory)) then
          if Get_Visible_Child_Name
@@ -87,9 +94,6 @@ package body Bookmarks is
             Reload(Object);
          end if;
       end if;
-      Set_Title
-        (Gtk_Tree_View_Column(Get_Object(Object, "modifiedcolumn")),
-         Gettext("Modified"));
    end GoHome;
 
    -- ****if* Bookmarks/RemoveMenu
