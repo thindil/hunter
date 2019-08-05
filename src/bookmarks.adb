@@ -27,6 +27,7 @@ with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with Preferences; use Preferences;
 with Utils; use Utils;
 
 package body Bookmarks is
@@ -48,6 +49,7 @@ package body Bookmarks is
          Set_Title
            (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
             Gettext("Modified"));
+         SetDeleteTooltip;
       end if;
       for I in BookmarksList.Iterate loop
          if MenuLabel = BookmarksList(I).MenuName then
@@ -83,6 +85,7 @@ package body Bookmarks is
          Set_Title
            (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
             Gettext("Modified"));
+         SetDeleteTooltip;
       end if;
       CurrentDirectory := To_Unbounded_String(Value("HOME"));
       if Ada.Directories.Exists(To_String(CurrentDirectory)) then

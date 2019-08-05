@@ -118,7 +118,7 @@ package body Utils is
       CurrentButton: Unbounded_String := To_Unbounded_String("");
    begin
       case Action is
-         when CREATEFILE | CREATEDIRECTORY | RENAME | DELETE =>
+         when CREATEFILE | CREATEDIRECTORY | RENAME | DELETE | DELETETRASH =>
             Set_Visible
               (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
          when CREATELINK =>
@@ -166,7 +166,7 @@ package body Utils is
          Set_Visible
            (Gtk_Widget(Get_Object(Builder, "btntoolcancel")), not Finished);
       end if;
-      if Action /= SHOWTRASH then
+      if Action /= SHOWTRASH and Action /= DELETETRASH then
          Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
       end if;
       for ButtonName of ButtonsNames loop
@@ -215,7 +215,7 @@ package body Utils is
                Set_Title
                  (Gtk_Header_Bar(Get_Object(Builder, "header")),
                   Gettext("Moving files and directories"));
-            when DELETE =>
+            when DELETE | DELETETRASH =>
                if Settings.DeleteFiles then
                   Set_Title
                     (Gtk_Header_Bar(Get_Object(Builder, "header")),

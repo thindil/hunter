@@ -28,6 +28,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -97,7 +98,7 @@ package body DeleteItems is
       for Item of SelectedItems loop
          if Is_Directory(To_String(Item)) then
             Arguments(2) := new String'(To_String(Item));
-            if Settings.DeleteFiles then
+            if Settings.DeleteFiles or NewAction = DELETETRASH then
                Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
                if not Success then
                   raise Directory_Error with To_String(Item);
@@ -109,11 +110,17 @@ package body DeleteItems is
                GoUp := True;
             end if;
          else
-            if Settings.DeleteFiles then
+            if Settings.DeleteFiles or NewAction = DELETETRASH then
                Delete_File(To_String(Item));
             else
                MoveToTrash(Item);
             end if;
+         end if;
+         if NewAction = DELETETRASH then
+            Delete_File
+              (Ada.Environment_Variables.Value("HOME") &
+               "/.local/share/Trash/info/" & Simple_Name(To_String(Item)) &
+               ".trashinfo");
          end if;
       end loop;
       if NewAction = CLEARTRASH then
@@ -140,15 +147,39 @@ package body DeleteItems is
 
    procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
-      Message: Unbounded_String;
+      Message, FileLine: Unbounded_String;
+      FileInfo: File_Type;
    begin
-      if Settings.DeleteFiles then
+      if not Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+         NewAction := DELETE;
+      else
+         NewAction := DELETETRASH;
+      end if;
+      if Settings.DeleteFiles or NewAction = DELETETRASH then
          Message := To_Unbounded_String(Gettext("Delete?") & LF);
       else
          Message := To_Unbounded_String(Gettext("Move to trash?") & LF);
       end if;
       for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
-         Append(Message, SelectedItems(I));
+         if NewAction = DELETE then
+            Append(Message, SelectedItems(I));
+         else
+            Open
+              (FileInfo, In_File,
+               Ada.Environment_Variables.Value("HOME") &
+               "/.local/share/Trash/info/" &
+               Simple_Name(To_String(SelectedItems(I))) & ".trashinfo");
+            Skip_Line(FileInfo);
+            for I in 1 .. 2 loop
+               FileLine := To_Unbounded_String(Get_Line(FileInfo));
+               if Slice(FileLine, 1, 4) = "Path" then
+                  Append
+                    (Message,
+                     Simple_Name(Slice(FileLine, 6, Length(FileLine))));
+               end if;
+            end loop;
+            Close(FileInfo);
+         end if;
          if Is_Directory(To_String(SelectedItems(I))) then
             Append(Message, Gettext("(and its content)"));
          end if;
@@ -156,7 +187,6 @@ package body DeleteItems is
             Append(Message, LF);
          end if;
       end loop;
-      NewAction := DELETE;
       ToggleToolButtons(NewAction);
       ShowMessage(To_String(Message), Message_Question);
    end DeleteItem;

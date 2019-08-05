@@ -72,7 +72,8 @@ package body Messages is
       if MessageType /= Message_Question then
          Hide(Gtk_Widget(Get_Object(Builder, "actionbox")));
       end if;
-      if NewAction = DELETE or NewAction = CLEARTRASH then
+      if NewAction = DELETE or NewAction = CLEARTRASH or
+        NewAction = DELETETRASH then
          Hide(Gtk_Widget(Get_Object(Builder, "btnnoall")));
          Hide(Gtk_Widget(Get_Object(Builder, "btnyesall")));
       end if;
@@ -110,7 +111,7 @@ package body Messages is
       OverwriteItem: Boolean := True;
    begin
       case NewAction is
-         when DELETE | CLEARTRASH =>
+         when DELETE | CLEARTRASH | DELETETRASH =>
             if Response_Id = Gint(Gtk_Response_Yes) then
                begin
                   if DeleteSelected then
