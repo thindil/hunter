@@ -44,8 +44,9 @@ package body Bookmarks is
         To_Unbounded_String(Get_Label(Self));
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
+      NewAction := COPY;
       if Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
-         ToggleToolButtons(COPY, True);
+         ToggleToolButtons(NewAction, True);
          Set_Title
            (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
             Gettext("Modified"));
@@ -80,8 +81,9 @@ package body Bookmarks is
 
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
    begin
+      NewAction := COPY;
       if Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
-         ToggleToolButtons(COPY, True);
+         ToggleToolButtons(NewAction, True);
          Set_Title
            (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
             Gettext("Modified"));
