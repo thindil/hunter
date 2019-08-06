@@ -76,5 +76,11 @@ package Utils is
    procedure ToggleToolButtons
      (Action: ItemActions; Finished: Boolean := False);
    -- ****
+   -- ****f* Utils/ToggleActionButtons
+   -- FUNCTION
+   -- Show or hide files and directories actions buttons
+   -- SOURCE
+   procedure ToggleActionButtons;
+   -- ****
 
 end Utils;

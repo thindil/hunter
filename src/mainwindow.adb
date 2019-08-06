@@ -80,6 +80,7 @@ package body MainWindow is
          CurrentDirectory := To_Unbounded_String("/");
       end if;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
+      ToggleActionButtons;
       if N_Children
           (Get_Model(Gtk_Tree_View(Get_Object(Object, "treefiles"))),
            Null_Iter) =
@@ -473,6 +474,7 @@ package body MainWindow is
          Gtk_Widget(Get_Object(Builder, "newmenu")));
       LoadSettings;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
+      ToggleActionButtons;
       CreateBookmarkMenu(Builder);
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),

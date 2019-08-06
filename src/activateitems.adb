@@ -54,6 +54,7 @@ package body ActivateItems is
          CurrentDirectory := CurrentSelected;
          if User_Data = Get_Object(Builder, "treefiles") then
             LoadDirectory(To_String(CurrentDirectory), "fileslist");
+            ToggleActionButtons;
          else
             LoadDirectory(To_String(CurrentDirectory), "fileslist2");
          end if;
