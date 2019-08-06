@@ -21,6 +21,8 @@ with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -237,5 +239,32 @@ package body Utils is
          end case;
       end if;
    end ToggleToolButtons;
+
+   procedure ToggleActionButtons is
+      ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
+        (To_Unbounded_String("btnrename"), To_Unbounded_String("btncopy"),
+         To_Unbounded_String("btncut"), To_Unbounded_String("btndelete"));
+      Visible: Boolean;
+   begin
+      if N_Children
+          (Get_Model(Gtk_Tree_View(Get_Object(Builder, "treefiles"))),
+           Null_Iter) =
+        0 then
+         Visible := False;
+      else
+         Visible := True;
+      end if;
+      if NewAction /= SHOWTRASH then
+         for ButtonName of ButtonsNames loop
+            Set_Visible
+              (Gtk_Widget(Get_Object(Builder, To_String(ButtonName))),
+               Visible);
+         end loop;
+      else
+         Set_Visible(Gtk_Widget(Get_Object(Builder, "btndelete")), Visible);
+         Set_Visible
+           (Gtk_Widget(Get_Object(Builder, "btntoolrestore")), Visible);
+      end if;
+   end ToggleActionButtons;
 
 end Utils;

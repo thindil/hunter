@@ -258,6 +258,8 @@ package body Trash is
          Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
       end if;
       ShowItem(Object);
+      NewAction := SHOWTRASH;
+      ToggleActionButtons;
    end ShowTrash;
 
    procedure RestoreItem(Object: access Gtkada_Builder_Record'Class) is
