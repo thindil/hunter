@@ -473,8 +473,6 @@ package body MainWindow is
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
          Gtk_Widget(Get_Object(Builder, "newmenu")));
       LoadSettings;
-      LoadDirectory(To_String(CurrentDirectory), "fileslist");
-      ToggleActionButtons;
       CreateBookmarkMenu(Builder);
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),
@@ -500,9 +498,7 @@ package body MainWindow is
       Set_Visible
         (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 2),
          Settings.ShowLastModified);
-      Set_Cursor
-        (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
-         Gtk_Tree_Path_New_From_String("0"), null, False);
+      Reload(Builder);
       if Settings.ShowPreview then
          Set_Position
            (Gtk_Paned(Get_Object(Builder, "filespaned")),
