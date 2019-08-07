@@ -567,7 +567,7 @@ msgstr "Usunąć wszystkie pliki i katalogi z Kosza?"
 
 #: bin/ui/hunter.glade:713
 msgid "Remove bookmark"
-msgstr ""
+msgstr "Usuń zakładkę"
 
 #: bin/ui/hunter.glade:712
 msgid "Remove bookmark to this directory [ALT-B]"
@@ -595,12 +595,11 @@ msgstr "Zmiana nazwy pliku lub katalogu."
 
 #: bin/ui/hunter.glade:520
 msgid "Restore"
-msgstr ""
+msgstr "Przywróć"
 
 #: bin/ui/hunter.glade:519
-#, fuzzy
 msgid "Restore selected file or directory from the trash [ALT+R]"
-msgstr "Otwórz wybrany plik lub katalog przy pomocy komendy [ALT-W]"
+msgstr "Przywróć wybrany plik bądź katalog z Kosza [ALT+R]"
 
 #: bin/ui/hunter.glade:207 bin/ui/hunter.glade:596
 msgid "Run"
@@ -632,11 +631,13 @@ msgid ""
 "Select color theme for coloring syntax in text files in preview. You may not "
 "be able to enable this option if you don't have installed the program "
 "\"highlight\"."
-msgstr ""
+msgstr "Wybierz motyw kolorów dla kolorowania składni w podglądzie tekstowych "
+"plików. Możesz nie móc włączyć tej opcji jeżeli nie masz zainstalowanego "
+"programu \"highlight\""
 
 #: bin/ui/hunter.glade:118
 msgid "Show Trash"
-msgstr ""
+msgstr "Pokaż Kosz"
 
 #: bin/ui/hunter.glade:1798
 msgid ""
@@ -688,9 +689,8 @@ msgid "Size:"
 msgstr "Rozmiar:"
 
 #: bin/ui/hunter.glade:2019
-#, fuzzy
 msgid "Stay in source directory:"
-msgstr "Tworzenie nowego katalogu."
+msgstr "Zostań w katalogu źródłowym:"
 
 #: src/utils.adb:132
 msgid "Stop copying files and directories [Escape]"
@@ -702,11 +702,11 @@ msgstr "Przestań przenosić pliki i katalogi [Escape]"
 
 #: bin/ui/hunter.glade:1939
 msgid "Syntax color theme:"
-msgstr ""
+msgstr "Motyw kolorowania składni:"
 
 #: bin/ui/hunter.glade:1914
 msgid "Syntax highlightning:"
-msgstr ""
+msgstr "Kolorowanie składni:"
 
 #: src/showitems.adb:212 src/showitems.adb:221 src/showitems.adb:224
 #: src/showitems.adb:231
@@ -806,18 +806,5 @@ msgid "rename with new"
 msgstr "zmienić nazwę na nową"
 
 #: src/trash.adb:293
-#, fuzzy
 msgid "with that name exists."
-msgstr " z taką nazwą."
-
-#~ msgid "Add"
-#~ msgstr "Dodaj"
-
-#~ msgid "Cut"
-#~ msgstr "Wytnij"
-
-#~ msgid "Remove"
-#~ msgstr "Usuń"
-
-#~ msgid "New _Directory"
-#~ msgstr "Nowy _Katalog"
+msgstr " z taką nazwą już istnieje."
