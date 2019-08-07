@@ -53,15 +53,14 @@ package body ActivateItems is
          end if;
          CurrentDirectory := CurrentSelected;
          if User_Data = Get_Object(Builder, "treefiles") then
-            LoadDirectory(To_String(CurrentDirectory), "fileslist");
-            ToggleActionButtons;
+            Reload(Builder);
          else
             LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+            Set_Cursor
+              (Gtk_Tree_View(User_Data), Gtk_Tree_Path_New_From_String("0"),
+               null, False);
+            Grab_Focus(Gtk_Widget(User_Data));
          end if;
-         Set_Cursor
-           (Gtk_Tree_View(User_Data), Gtk_Tree_Path_New_From_String("0"), null,
-            False);
-         Grab_Focus(Gtk_Widget(User_Data));
       else
          if User_Data = Get_Object(Builder, "treedestination") then
             return;
