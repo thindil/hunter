@@ -130,6 +130,8 @@ package body Trash is
         (Gtk_Tree_View_Column(Get_Object(Object, "modifiedcolumn")),
          Gettext("Deleted"));
       ToggleToolButtons(SHOWTRASH);
+      Show_All(Gtk_Widget(Get_Object(Object, "btnpreferences")));
+      Show_All(Gtk_Widget(Get_Object(Object, "btnabout")));
       Set_Tooltip_Text
         (Gtk_Widget(Get_Object(Builder, "btndelete")),
          Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
