@@ -29,6 +29,7 @@ All notable changes to this project will be documented in this file.
 - Hang on error info screen
 - Show last modification time in local time
 - Showing preview when start the program with empty directory
+- Preview on entering empty directory
 
 ## [0.6] - 2019-07-12
 
