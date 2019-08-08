@@ -31,6 +31,7 @@ All notable changes to this project will be documented in this file.
 - Show last modification time in local time
 - Showing preview when start the program with empty directory
 - Preview on entering empty directory
+- Showing files sizes
 
 ## [0.6] - 2019-07-12
 
