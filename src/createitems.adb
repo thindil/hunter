@@ -28,7 +28,7 @@ with Utils; use Utils;
 
 package body CreateItems is
 
-   -- ****iv* CopyItems/SourceDirectory
+   -- ****iv* CreateItems/SourceDirectory
    -- FUNCTION
    -- Full path to the source directory of item to which link was created
    -- SOURCE
