@@ -28,7 +28,7 @@ with Utils; use Utils;
 
 package body MoveItems is
 
-   -- ****iv* CopyItems/SourceDirectory
+   -- ****iv* MoveItems/SourceDirectory
    -- FUNCTION
    -- Full path to the source directory of moved files and directories
    -- SOURCE

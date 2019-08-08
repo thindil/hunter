@@ -21,6 +21,7 @@ with Gtkada.Builder; use Gtkada.Builder;
 -- Provide code to manipulate system Trash
 -- SOURCE
 package Trash is
+-- ****
 
    -- ****f* Trash/ClearTrash
    -- FUNCTION
