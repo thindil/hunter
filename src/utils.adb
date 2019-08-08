@@ -84,7 +84,7 @@ package body Utils is
       Multiplier: Natural;
       NewSize: File_Size;
       SizeShortcuts: constant array(Natural range <>) of String(1 .. 3) :=
-        ("B  ", "KiB", "MiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
+        ("B  ", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
    begin
       NewSize := Size;
       Multiplier := 0;
