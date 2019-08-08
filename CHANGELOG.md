@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated README.md
 - Hide files and directories actions buttons in empty directories
+- Updated Polish translation of the program
 
 ### Fixed
 - Don't show file and directory actions icons during creating, renaming or
