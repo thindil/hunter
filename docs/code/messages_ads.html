@@ -28,12 +28,12 @@
 <ul>
 <li>1. <a href="#robo8">Hunter/Messages</a></li>
 <ul>
-<li>1.1. <a href="#robo30">Messages/YesToAll</a></li>
-<li>1.2. <a href="./messages_adb.html#robo75">Messages/AutoHideMessage</a></li>
-<li>1.3. <a href="#robo76">Messages/HideMessage</a></li>
-<li>1.4. <a href="#robo77">Messages/MessageResponse</a></li>
-<li>1.5. <a href="#robo78">Messages/SetResponse</a></li>
-<li>1.6. <a href="#robo79">Messages/ShowMessage</a></li>
+<li>1.1. <a href="#robo34">Messages/YesToAll</a></li>
+<li>1.2. <a href="./messages_adb.html#robo80">Messages/AutoHideMessage</a></li>
+<li>1.3. <a href="#robo81">Messages/HideMessage</a></li>
+<li>1.4. <a href="#robo82">Messages/MessageResponse</a></li>
+<li>1.5. <a href="#robo83">Messages/SetResponse</a></li>
+<li>1.6. <a href="#robo84">Messages/ShowMessage</a></li>
 </ul>
 </ul>
 <hr />
@@ -50,7 +50,7 @@
 
 <hr />
 <a name="Messages2fYesToAll"></a>
-<a name="robo30"></a><h2>Messages/YesToAll [ Variables ]</h2>
+<a name="robo34"></a><h2>Messages/YesToAll [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -63,22 +63,22 @@
 
 <hr />
 <a name="Messages2fHideMessage"></a>
-<a name="robo76"></a><h2>Messages/HideMessage [ Subprograms ]</h2>
+<a name="robo81"></a><h2>Messages/HideMessage [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Hide message
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>HideMessage</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>HideMessage</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="squote">'Class);
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo23">Builder</a> used to create UI
+<pre> Object - GtkAda <a href="./mainwindow_ads.html#robo27">Builder</a> used to create UI
 </pre>
 
 <hr />
 <a name="Messages2fMessageResponse"></a>
-<a name="robo77"></a><h2>Messages/MessageResponse [ Subprograms ]</h2>
+<a name="robo82"></a><h2>Messages/MessageResponse [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -86,7 +86,7 @@
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>MessageResponse</strong>
-     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Info_Bar_Record<span class="keyword">'Class</span><span class="sign">;</span> Response_Id<span class="sign">:</span> Gint<span class="sign"><span class="sign">)</span>;</span>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Info_Bar_Record<span class="squote">'Class; Response_Id: Gint);
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Self        - Gtk_Info_Bar which contains the message
@@ -95,14 +95,14 @@
 
 <hr />
 <a name="Messages2fSetResponse"></a>
-<a name="robo78"></a><h2>Messages/SetResponse [ Subprograms ]</h2>
+<a name="robo83"></a><h2>Messages/SetResponse [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set proper GTK Response for info bar buttons
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SetResponse</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetResponse</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="squote">'Class);
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> User_Data - Which button to set
@@ -110,7 +110,7 @@
 
 <hr />
 <a name="Messages2fShowMessage"></a>
-<a name="robo79"></a><h2>Messages/ShowMessage [ Subprograms ]</h2>
+<a name="robo84"></a><h2>Messages/ShowMessage [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -128,7 +128,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 12 2019 07:22:48
+<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 07 2019 09:25:49
 </p>
 </div> <!-- footer -->
 </body>
