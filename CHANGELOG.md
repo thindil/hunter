@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.7] - 2019-08-09
 
 ### Added
 - Option to stay in old directory after copying or moving files and
