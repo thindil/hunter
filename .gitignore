@@ -1,5 +1,4 @@
 bin/hunter
 obj
 tests/driver/test_runner
-robofix.py
 LC_MESSAGES
