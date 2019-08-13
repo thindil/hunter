@@ -84,10 +84,10 @@ For example: `GTK_THEME=Adwaita ./hunter-x86-64.AppImage`.
 ## Generating code documentation
 
 To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsber.home.xs4all.nl/Robo/)
-and script **robofix.py** from [RoboAda](https://github.com/thindil/roboada)
-(to fix syntax colors of source code). If you have both, in main program
-directory (where this file is) enter terminal commands: `robodoc --rc
-others/robodocada.rc` and after it `./robofix.py docs`.
+If you have it, in main program directory (where this file is) enter terminal
+command: `./generatedocs.py`. For more information about this script, please
+look [here](https://github.com/thindil/roboada#generatedocspy). This version
+of script have set all default settings for Hunter code.
 
 ## Translating the program
 
