@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v0.6 code documentation</a>
+<a name="robo_top_of_doc">Hunter v0.7 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -70,7 +70,7 @@
 <pre> Hide message
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>HideMessage</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="squote">'Class);
+<pre class="source">   <span class="keyword">procedure</span> <strong>HideMessage</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Object - GtkAda <a href="./mainwindow_ads.html#robo27">Builder</a> used to create UI
@@ -86,7 +86,7 @@
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>MessageResponse</strong>
-     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Info_Bar_Record<span class="squote">'Class; Response_Id: Gint);
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Info_Bar_Record<span class="keyword">'Class</span><span class="sign">;</span> Response_Id<span class="sign">:</span> Gint<span class="sign"><span class="sign">)</span>;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Self        - Gtk_Info_Bar which contains the message
@@ -102,7 +102,7 @@
 <pre> Set proper GTK Response for info bar buttons
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SetResponse</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="squote">'Class);
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetResponse</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> User_Data - Which button to set
@@ -128,7 +128,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 07 2019 09:25:49
+<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Aug 13 2019 09:44:00
 </p>
 </div> <!-- footer -->
 </body>
