@@ -2,5 +2,5 @@
 Type=Application
 Name=hunter
 Icon=hunter-icon
-Comment=Graphical file manager, heavy inspired by Ranger
+Comment=Graphical file manager with integrated preview of files
 Categories=System;FileTools;FileManager;
