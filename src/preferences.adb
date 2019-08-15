@@ -73,29 +73,29 @@ package body Preferences is
          Search: Search_Type;
          File: Directory_Entry_Type;
          ComboBox: constant Gtk_Combo_Box_Text :=
-            Gtk_Combo_Box_Text(Get_Object(Builder, "cmbcolortheme"));
-            ThemeName: Unbounded_String;
+           Gtk_Combo_Box_Text(Get_Object(Builder, "cmbcolortheme"));
+         ThemeName: Unbounded_String;
          Index: Gint := 0;
       begin
          Ada.Environment_Variables.Set
            ("HIGHLIGHT_DATADIR",
             Ada.Environment_Variables.Value("APPDIR", "") &
             "/usr/share/highlight");
-            Start_Search
-              (Search,
-               Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
-               "/themes/base16",
-               "*.theme");
-            while More_Entries(Search) loop
-               Get_Next_Entry(Search, File);
-               ThemeName := To_Unbounded_String(Base_Name(Simple_Name(File)));
-               Append_Text(ComboBox, To_String(ThemeName));
-               if ThemeName = Settings.ColorTheme then
-                  Set_Active(ComboBox, Index);
-               end if;
-               Index := Index + 1;
-            end loop;
-            End_Search(Search);
+         Start_Search
+           (Search,
+            Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+            "/themes/base16",
+            "*.theme");
+         while More_Entries(Search) loop
+            Get_Next_Entry(Search, File);
+            ThemeName := To_Unbounded_String(Base_Name(Simple_Name(File)));
+            Append_Text(ComboBox, To_String(ThemeName));
+            if ThemeName = Settings.ColorTheme then
+               Set_Active(ComboBox, Index);
+            end if;
+            Index := Index + 1;
+         end loop;
+         End_Search(Search);
       end LoadColorsList;
    begin
       Settings :=
@@ -117,9 +117,9 @@ package body Preferences is
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") &
            "/.config/hunter/hunter.cfg") then
-           Setting := True;
-           LoadColorsList;
-           Setting := False;
+         Setting := True;
+         LoadColorsList;
+         Setting := False;
          return;
       end if;
       Open
