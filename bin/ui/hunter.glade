@@ -724,7 +724,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </object>
               <packing>
                 <property name="pack_type">end</property>
-                <property name="position">1</property>
               </packing>
             </child>
           </object>
