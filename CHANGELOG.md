@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated README.md
 
+### Fixed
+- Loading syntax highlighting setting when no config file
+
 ## [0.7] - 2019-08-09
 
 ### Added
