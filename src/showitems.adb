@@ -397,6 +397,12 @@ package body ShowItems is
                            Replace_Slice
                              (FileLine, StartIndex, StartIndex + 3, "<");
                         end loop;
+                        loop
+                           StartIndex := Index(FileLine, "&amp;");
+                           exit when StartIndex = 0;
+                           Replace_Slice
+                             (FileLine, StartIndex, StartIndex + 4, "&");
+                        end loop;
                         StartIndex := 1;
                         loop
                            StartIndex := Index(FileLine, "<span", StartIndex);
