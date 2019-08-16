@@ -28,6 +28,7 @@ with Gtk.Button; use Gtk.Button;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
+with Gtk.Image; use Gtk.Image;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
@@ -296,6 +297,11 @@ package body LoadData is
             if not Is_Visible
                 (Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
                Gtk_New(Button, "/");
+               Set_Image
+                 (Button,
+                  Gtk_Widget
+                    (Gtk_Image_New_From_Stock
+                       ("gtk-harddisk", Icon_Size_Button)));
                Insert(ButtonBox, Button, -1);
                On_Clicked(Button, PathClicked'Access);
                Create(Tokens, To_String(CurrentDirectory), "/");
@@ -377,6 +383,14 @@ package body LoadData is
             for I in 2 .. Slice_Count(Tokens) loop
                if Slice(Tokens, I) /= "" then
                   Gtk_New(Button, Slice(Tokens, I));
+                  if Slice(Tokens, I) =
+                    Ada.Environment_Variables.Value("USER") then
+                     Set_Image
+                       (Button,
+                        Gtk_Widget
+                          (Gtk_Image_New_From_Stock
+                             ("gtk-home", Icon_Size_Button)));
+                  end if;
                   Insert(ButtonBox, Button, -1);
                   if not Is_Visible
                       (Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
