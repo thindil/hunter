@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Loading syntax highlighting setting when no config file
 - Showing '&' symbol in syntax highlighting
+- Showing items actions buttons after closing creating items entry
 
 ## [0.7] - 2019-08-09
 
