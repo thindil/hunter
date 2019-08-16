@@ -145,7 +145,11 @@ package body LoadData is
       end if;
       if MainWindow /= null then
          Set_Cursor(MainWindow, Gdk_Cursor_New(Watch));
-         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), False);
+         if not Is_Visible
+             (Gtk_Widget(Get_Object(Builder, "poppreferences"))) then
+            Set_Sensitive
+              (Gtk_Widget(Get_Object(Builder, "mainwindow")), False);
+         end if;
          while Events_Pending loop
             if Main_Iteration_Do(False) then
                exit;
