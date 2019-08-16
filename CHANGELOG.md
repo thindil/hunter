@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Updated README.md
+- Updated interface
 
 ### Fixed
 - Loading syntax highlighting setting when no config file
