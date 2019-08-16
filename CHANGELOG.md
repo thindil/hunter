@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Loading syntax highlighting setting when no config file
 - Showing '&' symbol in syntax highlighting
 - Showing items actions buttons after closing creating items entry
+- GTK warning on changing syntax colors scheme
 
 ## [0.7] - 2019-08-09
 
