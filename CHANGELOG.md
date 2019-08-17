@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Showing '&' symbol in syntax highlighting
 - Showing items actions buttons after closing creating items entry
 - GTK warning on changing syntax colors scheme
+- Crash on previewing files
 
 ## [0.7] - 2019-08-09
 
