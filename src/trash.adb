@@ -108,7 +108,7 @@ package body Trash is
         Gtk_Tree_Model_Sort(Get_Object(Object, "filessort"));
       FileInfo: File_Type;
       Size: File_Size;
-      FileLine, FullName: Unbounded_String;
+      FileLine, FullName, MimeType: Unbounded_String;
       Button: Gtk_Button;
       ButtonBox: constant Gtk_Flow_Box :=
         Gtk_Flow_Box(Get_Object(Object, "boxpath"));
@@ -203,8 +203,31 @@ package body Trash is
             end if;
             if Is_Symbolic_Link(To_String(FullName)) then
                Set(FilesList, FileIter, 2, "emblem-symbolic-link");
+            elsif Is_Executable_File(To_String(FullName)) then
+               Set(FilesList, FileIter, 2, "application-x-executable");
             else
-               Set(FilesList, FileIter, 2, "text-x-generic-template");
+               MimeType :=
+                 To_Unbounded_String(GetMimeType(To_String(FullName)));
+               if Index(MimeType, "audio") > 0 then
+                  Set(FilesList, FileIter, 2, "audio-x-generic");
+               elsif Index(MimeType, "font") > 0 then
+                  Set(FilesList, FileIter, 2, "font-x-generic");
+               elsif Index(MimeType, "image") > 0 then
+                  Set(FilesList, FileIter, 2, "image-x-generic");
+               elsif Index(MimeType, "video") > 0 then
+                  Set(FilesList, FileIter, 2, "video-x-generic");
+               elsif Index(MimeType, "text/x-script") > 0 then
+                  Set(FilesList, FileIter, 2, "text-x-script");
+               elsif MimeType = To_Unbounded_String("text/html") then
+                  Set(FilesList, FileIter, 2, "text-html");
+               elsif Index(MimeType, "zip") > 0 or
+                 Index(MimeType, "x-xz") > 0 then
+                  Set(FilesList, FileIter, 2, "package-x-generic");
+               elsif Index(MimeType, "text") > 0 then
+                  Set(FilesList, FileIter, 2, "text-x-generic");
+               else
+                  Set(FilesList, FileIter, 2, "text-x-generic-template");
+               end if;
             end if;
             if not Is_Read_Accessible_File(To_String(FullName)) then
                Set(FilesList, FileIter, 3, "?");
