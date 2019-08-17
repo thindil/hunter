@@ -139,6 +139,7 @@ package body LoadData is
       FileName, SubFileName: String(1 .. 1024);
       MainWindow: constant Gdk_Window :=
         Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow")));
+      MimeType: Unbounded_String;
    begin
       Setting := True;
       if Accelerators = null then
@@ -242,8 +243,32 @@ package body LoadData is
             end if;
             if Is_Symbolic_Link(Name & "/" & FileName(1 .. Last)) then
                Set(FilesList, FileIter, 2, "emblem-symbolic-link");
+            elsif Is_Executable_File(Name & "/" & FileName(1 .. Last)) then
+               Set(FilesList, FileIter, 2, "application-x-executable");
             else
-               Set(FilesList, FileIter, 2, "text-x-generic-template");
+               MimeType :=
+                 To_Unbounded_String
+                   (GetMimeType(Name & "/" & FileName(1 .. Last)));
+               if Index(MimeType, "audio") > 0 then
+                  Set(FilesList, FileIter, 2, "audio-x-generic");
+               elsif Index(MimeType, "font") > 0 then
+                  Set(FilesList, FileIter, 2, "font-x-generic");
+               elsif Index(MimeType, "image") > 0 then
+                  Set(FilesList, FileIter, 2, "image-x-generic");
+               elsif Index(MimeType, "video") > 0 then
+                  Set(FilesList, FileIter, 2, "video-x-generic");
+               elsif Index(MimeType, "text/x-script") > 0 then
+                  Set(FilesList, FileIter, 2, "text-x-script");
+               elsif MimeType = To_Unbounded_String("text/html") then
+                  Set(FilesList, FileIter, 2, "text-html");
+               elsif Index(MimeType, "zip") > 0 or
+                 Index(MimeType, "x-xz") > 0 then
+                  Set(FilesList, FileIter, 2, "package-x-generic");
+               elsif Index(MimeType, "text") > 0 then
+                  Set(FilesList, FileIter, 2, "text-x-generic");
+               else
+                  Set(FilesList, FileIter, 2, "text-x-generic-template");
+               end if;
             end if;
             if ListName = "fileslist1" then
                goto End_Of_Loop;
