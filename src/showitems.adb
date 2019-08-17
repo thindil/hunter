@@ -434,9 +434,16 @@ package body ShowItems is
                            StartIndex := StartIndex + Length(TagText);
                            EndIndex :=
                              Index(FileLine, "</span>", StartIndex) - 1;
-                           Insert_With_Tags
-                             (Buffer, Iter,
-                              Slice(FileLine, StartIndex, EndIndex), Tag);
+                           if EndIndex > 0 then
+                              Insert_With_Tags
+                                (Buffer, Iter,
+                                 Slice(FileLine, StartIndex, EndIndex), Tag);
+                           else
+                              Insert
+                                (Buffer, Iter,
+                                 Slice
+                                   (FileLine, StartIndex, Length(FileLine)));
+                           end if;
                            StartIndex := 1;
                            FileLine :=
                              Unbounded_Slice
