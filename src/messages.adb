@@ -19,6 +19,7 @@ with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Main; use Glib.Main;
+with Gtkada.Intl; use Gtkada.Intl;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
@@ -135,7 +136,24 @@ package body Messages is
                end if;
             end if;
             ToggleToolButtons(NewAction, True);
-            HideMessage(Builder);
+            if Settings.ShowFinishedInfo then
+               if NewAction = DELETE and not Settings.DeleteFiles then
+                  ShowMessage
+                    (Gettext
+                       ("All selected files and directories have been moved to Trash."),
+                     Message_Info);
+               elsif NewAction = CLEARTRASH then
+                  ShowMessage
+                    (Gettext("Trash have been cleared."), Message_Info);
+               else
+                  ShowMessage
+                    (Gettext
+                       ("All selected files and directories have been deleted."),
+                     Message_Info);
+               end if;
+            else
+               HideMessage(Builder);
+            end if;
          when COPY =>
             if Response_Id = Gint(Gtk_Response_Reject) then
                HideMessage(Builder);

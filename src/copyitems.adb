@@ -134,7 +134,13 @@ package body CopyItems is
       end loop;
       CopyItemsList.Clear;
       ToggleToolButtons(NewAction, True);
-      HideMessage(Builder);
+      if Settings.ShowFinishedInfo then
+         ShowMessage
+           (Gettext("All selected files and directories have been copied."),
+            Message_Info);
+      else
+         HideMessage(Builder);
+      end if;
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;
       end if;
