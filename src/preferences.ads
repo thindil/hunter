@@ -48,6 +48,8 @@ package Preferences is
    -- DeleteFiles           - If true, delete file and directories instead of
    --                         moving them to trash
    -- ClearTrashOnExit      - Clear trash on quit from the program
+   -- ShowFinishedInfo      - If true, show info about finished copying, moving
+   --                         deleting files and directories
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -62,6 +64,7 @@ package Preferences is
       ColorTheme: Unbounded_String;
       DeleteFiles: Boolean;
       ClearTrashOnExit: Boolean;
+      ShowFinishedInfo: Boolean;
    end record;
    -- ****
    -- ****v* Preferences/Settings

@@ -103,7 +103,8 @@ package body Preferences is
          AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
          ShowPreview => True, StayInOld => False, ColorText => True,
          ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
-         DeleteFiles => True, ClearTrashOnExit => False);
+         DeleteFiles => True, ClearTrashOnExit => False,
+         ShowFinishedInfo => False);
       if FindExecutable("highlight") = "" then
          Settings.ColorText := False;
          Set_Sensitive
@@ -186,6 +187,11 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchcleartrashonexit")),
                   Settings.ClearTrashOnExit);
+            elsif FieldName = To_Unbounded_String("ShowFinishedInfo") then
+               Settings.ShowFinishedInfo := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchshowfinishedinfo")),
+                  Settings.ShowFinishedInfo);
             end if;
          end if;
       end loop;
@@ -278,6 +284,13 @@ package body Preferences is
            Get_Active
              (Gtk_Switch(Get_Object(Object, "switchcleartrashonexit")));
       end if;
+      if Get_Active
+          (Gtk_Switch(Get_Object(Object, "switchshowfinishedinfo"))) /=
+        Settings.ShowFinishedInfo then
+         Settings.ShowFinishedInfo :=
+           Get_Active
+             (Gtk_Switch(Get_Object(Object, "switchshowfinishedinfo")));
+      end if;
       return False;
    end SaveSettings;
 
@@ -338,6 +351,7 @@ package body Preferences is
       Put_Line(ConfigFile, "ColorTheme = " & To_String(Settings.ColorTheme));
       SaveBoolean(Settings.DeleteFiles, "DeleteFiles");
       SaveBoolean(Settings.ClearTrashOnExit, "ClearTrashOnExit");
+      SaveBoolean(Settings.ShowFinishedInfo, "ShowFinishedInfo");
       Close(ConfigFile);
    end SavePreferences;
 
