@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Showing items actions buttons after closing creating items entry
 - GTK warning on changing syntax colors scheme
 - Crash on previewing files
+- Showing proper buttons after delete files or directories from trash
 
 ## [0.7] - 2019-08-09
 
