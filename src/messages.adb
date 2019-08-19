@@ -131,6 +131,7 @@ package body Messages is
                   GoHome(Builder);
                elsif NewAction = DELETETRASH then
                   ShowTrash(Builder);
+                  NewAction := DELETETRASH;
                else
                   Reload(Builder);
                end if;
