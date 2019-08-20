@@ -2,8 +2,8 @@
 
 case $1 in
    release)
-      gprclean
-      gprbuild -XMode=release
+      gprclean -P hunter.gpr
+      gprbuild -P hunter.gpr -XMode=release
       mkdir -p others/Output/release/bin
       mkdir -p others/Output/release/share/docs
       mkdir -p others/Output/release/share/locale
@@ -16,20 +16,20 @@ case $1 in
          cp -r $directory others/Output/release/share/locale/
          rm others/Output/release/share/locale/${directory:3}/hunter.po
       done
-      gprclean
+      gprclean -P hunter.gpr
       ;;
    debug)
-      grpclean
-      gprbuild
+      gprclean -P hunter.gpr
+      gprbuild -P hunter.gpr
       ;;
-   createtest)
-      gnattest -P steamsky.gpr
+   createtests)
+      gnattest -P hunter.gpr
       ;;
    tests)
       gprbuild -P tests/driver/test_driver.gpr
       ;;
    docs)
-      ./generatedocs
+      ./generatedocs.py
       ;;
    help)
       echo "release       - Build the game in release mode"
