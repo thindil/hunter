@@ -33,6 +33,7 @@ package Utils is
    -- SOURCE
    function GetMimeType(FileName: String) return String;
    -- ****
+
    -- ****f* Utils/CanBeOpened
    -- FUNCTION
    -- Check if there is application associated to open selected MIME Type
@@ -43,6 +44,7 @@ package Utils is
    -- SOURCE
    function CanBeOpened(MimeType: String) return Boolean;
    -- ****
+
    -- ****f* Utils/CountFileSize
    -- FUNCTION
    -- Convert file size to human readable format
@@ -53,6 +55,7 @@ package Utils is
    -- SOURCE
    function CountFileSize(Size: File_Size) return String;
    -- ****
+
    -- ****f* Utils/FindExecutable
    -- FUNCTION
    -- Find executable file with selected name in this same directory where
@@ -65,6 +68,7 @@ package Utils is
    -- SOURCE
    function FindExecutable(Name: String) return String;
    -- ****
+
    -- ****f* Utils/ToggleToolButtons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with
@@ -76,11 +80,28 @@ package Utils is
    procedure ToggleToolButtons
      (Action: ItemActions; Finished: Boolean := False);
    -- ****
+
    -- ****f* Utils/ToggleActionButtons
    -- FUNCTION
    -- Show or hide files and directories actions buttons
    -- SOURCE
    procedure ToggleActionButtons;
+   -- ****
+
+   -- ****f* Utils/SetProgressBar
+   -- FUNCTION
+   -- Set values for progress bar and show it to the user
+   -- PARAMETERS
+   -- Amount - Max amount of items - will be used to count progress
+   -- SOURCE
+   procedure SetProgressBar(Amount: Positive);
+   -- ****
+
+   -- ****f* Utils/UpdateProgressBar
+   -- FUNCTION
+   -- Update fraction of the progress bar
+   -- SOURCE
+   procedure UpdateProgressBar;
    -- ****
 
 end Utils;
