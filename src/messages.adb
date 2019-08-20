@@ -114,6 +114,9 @@ package body Messages is
    begin
       case NewAction is
          when DELETE | CLEARTRASH | DELETETRASH =>
+            if NewAction /= CLEARTRASH then
+               SetProgressBar(Positive(SelectedItems.Length));
+            end if;
             if Response_Id = Gint(Gtk_Response_Yes) then
                begin
                   if DeleteSelected then
@@ -137,6 +140,7 @@ package body Messages is
                end if;
             end if;
             ToggleToolButtons(NewAction, True);
+            Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
             if Settings.ShowFinishedInfo then
                if NewAction = DELETE and not Settings.DeleteFiles then
                   ShowMessage

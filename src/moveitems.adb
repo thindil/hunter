@@ -133,6 +133,7 @@ package body MoveItems is
       OverwriteItem: Boolean := False;
    begin
       MoveItemsList.Delete(Index => 1);
+      UpdateProgressBar;
       MoveSelected(OverwriteItem);
    end SkipMoving;
 

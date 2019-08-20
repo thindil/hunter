@@ -155,6 +155,7 @@ package body CopyItems is
       OverwriteItem: Boolean := False;
    begin
       CopyItemsList.Delete(Index => 1);
+      UpdateProgressBar;
       CopySelected(OverwriteItem);
    end SkipCopying;
 
