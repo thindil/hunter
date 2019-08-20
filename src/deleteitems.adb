@@ -126,6 +126,7 @@ package body DeleteItems is
       if NewAction = CLEARTRASH then
          Settings.DeleteFiles := OldSetting;
       end if;
+      UpdateProgressBar;
       return GoUp;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
