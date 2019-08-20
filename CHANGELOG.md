@@ -3,9 +3,10 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
-###
+### Added
 - Option to show information about finished copying, moving and deleting files
   and directories
+- Info about progress of copying, moving or deleting files and directories
 
 ### Changed
 - Updated README.md
