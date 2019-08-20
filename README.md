@@ -47,7 +47,11 @@ this file is) to compile:
   option `Build All`.
 
 * If you prefer using console: in main source code directory type `gprbuild`
-  for debug mode build or for release mode: `gprbuild -XMode=release`
+  for debug mode build or for release mode: `gprbuild -XMode=release`. You
+  can also use build script `build.sh`. Command: `./build.sh debug` will build
+  the program in debug mode. Command: `.build.sh release` will build the
+  program in release mode and put all needed files in *others/Output/release*
+  directory.
 
 ## Running Hunter
 
@@ -87,7 +91,8 @@ To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsbe
 If you have it, in main program directory (where this file is) enter terminal
 command: `./generatedocs.py`. For more information about this script, please
 look [here](https://github.com/thindil/roboada#generatedocspy). This version
-of script have set all default settings for Hunter code.
+of script have set all default settings for Hunter code. You can also use
+build script `build.sh` for this. Enter command: `./build.sh docs`.
 
 ## Translating the program
 
