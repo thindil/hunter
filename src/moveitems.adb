@@ -19,6 +19,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with CopyItems; use CopyItems;
 with Messages; use Messages;
@@ -60,6 +61,7 @@ package body MoveItems is
          return;
       end if;
       NewAction := MOVE;
+      SetProgressBar(Positive(MoveItemsList.Length));
       MoveSelected(OverwriteItem);
    end MoveData;
 
@@ -109,8 +111,10 @@ package body MoveItems is
          if not YesForAll then
             Overwrite := False;
          end if;
+         UpdateProgressBar;
       end loop;
       MoveItemsList.Clear;
+      Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
       ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage
