@@ -17,6 +17,7 @@ with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with Messages; use Messages;
 with Preferences; use Preferences;
@@ -57,6 +58,7 @@ package body CopyItems is
          return;
       end if;
       NewAction := COPY;
+      SetProgressBar(Positive(CopyItemsList.Length));
       CopySelected(OverwriteItem);
    end CopyData;
 
@@ -99,6 +101,7 @@ package body CopyItems is
            (Name, To_String(Path) & "/" & Simple_Name(Name), Success, Copy,
             Full);
       end if;
+      UpdateProgressBar;
    end CopyItem;
 
    procedure CopySelected(Overwrite: in out Boolean) is
@@ -133,6 +136,7 @@ package body CopyItems is
          end if;
       end loop;
       CopyItemsList.Clear;
+      Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
       ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage

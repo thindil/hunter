@@ -20,6 +20,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
+with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_View; use Gtk.Tree_View;
@@ -33,6 +34,20 @@ with Preferences; use Preferences;
 with ShowItems; use ShowItems;
 
 package body Utils is
+
+   -- ****iv* Utils/Positive
+   -- FUNCTION
+   -- Max amount of items to count progress of action
+   -- SOURCE
+   ProgressAmount: Positive;
+   -- ****
+
+   -- ****iv* Utils/ProgressIndex
+   -- FUNCTION
+   -- Currrent index of item
+   -- SOURCE
+   ProgressIndex: Positive;
+   -- ****
 
    function GetMimeType(FileName: String) return String is
       ProcessDesc: Process_Descriptor;
@@ -266,5 +281,23 @@ package body Utils is
            (Gtk_Widget(Get_Object(Builder, "btntoolrestore")), Visible);
       end if;
    end ToggleActionButtons;
+
+   procedure SetProgressBar(Amount: Positive) is
+      ProgressBar: constant Gtk_Widget :=
+        Gtk_Widget(Get_Object(Builder, "progressbar"));
+   begin
+      Show_All(ProgressBar);
+      Set_Fraction(Gtk_Progress_Bar(ProgressBar), 0.0);
+      ProgressAmount := Amount;
+      ProgressIndex := 1;
+   end SetProgressBar;
+
+   procedure UpdateProgressBar is
+      ProgressBar: constant Gtk_Progress_Bar :=
+        Gtk_Progress_Bar(Get_Object(Builder, "progressbar"));
+   begin
+      Set_Fraction
+        (ProgressBar, Gdouble(ProgressIndex) / Gdouble(ProgressAmount));
+   end UpdateProgressBar;
 
 end Utils;
