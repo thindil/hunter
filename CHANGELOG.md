@@ -7,8 +7,8 @@ All notable changes to this project will be documented in this file.
 - Option to show information about finished copying, moving and deleting files
   and directories
 - Info about progress of copying, moving or deleting files and directories
-- Option to rename instead of overwritting copied file or directory when
-  in destination directory exists something with that same name.
+- Option to rename instead of overwritting copied or moved file or directory
+  when in destination directory exists something with that same name.
 
 ### Changed
 - Updated README.md
