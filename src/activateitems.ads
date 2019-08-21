@@ -35,6 +35,7 @@ package ActivateItems is
    -- SOURCE
    procedure ActivateFile(User_Data: access GObject_Record'Class);
    -- ****
+
    -- ****f* ActivateItems/StartOpenWith
    -- FUNCTION
    -- Show text entry to start opening selected file or directory with custom
@@ -44,6 +45,7 @@ package ActivateItems is
    -- SOURCE
    procedure StartOpenWith(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* ActivateItems/OpenItemWith
    -- FUNCTION
    -- Open selected item or directory with entered by user command. That
@@ -56,6 +58,7 @@ package ActivateItems is
    procedure OpenItemWith
      (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position);
    -- ****
+
    -- ****f* ActivateItems/ExecuteFile
    -- FUNCTION
    -- Execute selected file. That file must be graphical application or
