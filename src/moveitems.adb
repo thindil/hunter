@@ -68,33 +68,39 @@ package body MoveItems is
    procedure MoveSelected(Overwrite: in out Boolean) is
       ItemType: Unbounded_String;
       Success: Boolean := True;
+      NewName: Unbounded_String :=
+        DestinationPath & To_Unbounded_String("/") &
+        Simple_Name(To_String(MoveItemsList(1)));
    begin
       while MoveItemsList.Length > 0 loop
-         if Exists
-             (To_String(DestinationPath) & "/" &
-              Simple_Name(To_String(MoveItemsList(1)))) and
-           not Overwrite then
-            if Is_Directory
-                (To_String(DestinationPath) & "/" &
-                 Simple_Name(To_String(MoveItemsList(1)))) then
-               ItemType := To_Unbounded_String(Gettext("Directory"));
+         if Exists(To_String(NewName)) then
+            if not Overwrite and Settings.OverwriteOnExist then
+               if Is_Directory(To_String(NewName)) then
+                  ItemType := To_Unbounded_String(Gettext("Directory"));
+               else
+                  ItemType := To_Unbounded_String(Gettext("File"));
+               end if;
+               ShowMessage
+                 (To_String(ItemType) & " " &
+                  Simple_Name(To_String(MoveItemsList(1))) &
+                  Gettext(" exists. Do you want to overwrite it?"),
+                  Message_Question);
+               return;
             else
-               ItemType := To_Unbounded_String(Gettext("File"));
+               loop
+                  NewName :=
+                    DestinationPath &
+                    To_Unbounded_String
+                      ("/" & Ada.Directories.Base_Name(To_String(NewName)) &
+                       "_." & Extension(To_String(NewName)));
+                  exit when not Exists(To_String(NewName));
+               end loop;
             end if;
-            ShowMessage
-              (To_String(ItemType) & " " &
-               Simple_Name(To_String(MoveItemsList(1))) &
-               Gettext(" exists. Do you want to overwrite it?"),
-               Message_Question);
-            return;
          end if;
-         Rename_File
-           (To_String(MoveItemsList(1)),
-            To_String(DestinationPath) & "/" &
-            Simple_Name(To_String(MoveItemsList(1))),
-            Success);
+         Rename_File(To_String(MoveItemsList(1)), To_String(NewName), Success);
          if not Success then
-            CopyItem(To_String(MoveItemsList(1)), DestinationPath, Success);
+            CopyItem
+              (Simple_Name(To_String(NewName)), DestinationPath, Success);
             if Success then
                if Is_Directory(To_String(MoveItemsList(1))) then
                   Remove_Dir(To_String(MoveItemsList(1)), True);
