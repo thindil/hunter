@@ -104,7 +104,7 @@ package body Preferences is
          ShowPreview => True, StayInOld => False, ColorText => True,
          ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
          DeleteFiles => True, ClearTrashOnExit => False,
-         ShowFinishedInfo => False);
+         ShowFinishedInfo => False, OverwriteOnExist => True);
       if FindExecutable("highlight") = "" then
          Settings.ColorText := False;
          Set_Sensitive
@@ -192,6 +192,11 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchshowfinishedinfo")),
                   Settings.ShowFinishedInfo);
+            elsif FieldName = To_Unbounded_String("OverwriteOnExist") then
+               Settings.OverwriteOnExist := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchoverwriteonexist")),
+                  Settings.OverwriteOnExist);
             end if;
          end if;
       end loop;
@@ -291,6 +296,13 @@ package body Preferences is
            Get_Active
              (Gtk_Switch(Get_Object(Object, "switchshowfinishedinfo")));
       end if;
+      if Get_Active
+          (Gtk_Switch(Get_Object(Object, "switchoverwriteonexist"))) /=
+        Settings.OverwriteOnExist then
+         Settings.OverwriteOnExist :=
+           Get_Active
+             (Gtk_Switch(Get_Object(Object, "switchoverwriteonexist")));
+      end if;
       return False;
    end SaveSettings;
 
@@ -352,6 +364,7 @@ package body Preferences is
       SaveBoolean(Settings.DeleteFiles, "DeleteFiles");
       SaveBoolean(Settings.ClearTrashOnExit, "ClearTrashOnExit");
       SaveBoolean(Settings.ShowFinishedInfo, "ShowFinishedInfo");
+      SaveBoolean(Settings.OverwriteOnExist, "OverwriteOnExist");
       Close(ConfigFile);
    end SavePreferences;
 

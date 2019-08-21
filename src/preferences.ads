@@ -50,6 +50,8 @@ package Preferences is
    -- ClearTrashOnExit      - Clear trash on quit from the program
    -- ShowFinishedInfo      - If true, show info about finished copying, moving
    --                         deleting files and directories
+-- OverwriteOnExist      - If true, copied or moved file or directory will be
+   --                         overwritting existing with that same name.
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -65,8 +67,10 @@ package Preferences is
       DeleteFiles: Boolean;
       ClearTrashOnExit: Boolean;
       ShowFinishedInfo: Boolean;
+      OverwriteOnExist: Boolean;
    end record;
    -- ****
+
    -- ****v* Preferences/Settings
    -- FUNCTION
    -- The program settings
@@ -82,6 +86,7 @@ package Preferences is
    -- SOURCE
    procedure TogglePreferences(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* Preferences/SetDeleteTooltip
    -- FUNCTION
    -- Set tooltip for delete button, depends did delete action delete files or
@@ -89,6 +94,7 @@ package Preferences is
    -- SOURCE
    procedure SetDeleteTooltip;
    -- ****
+
    -- ****f* Preferences/LoadSettings
    -- FUNCTION
    -- Load the program settings from file. If file not exists, load default
@@ -96,6 +102,7 @@ package Preferences is
    -- SOURCE
    procedure LoadSettings;
    -- ****
+
    -- ****f* Preferences/SaveSettings
    -- FUNCTION
    -- Save the program settings to file and update program to the new
@@ -110,6 +117,7 @@ package Preferences is
    function SaveSettings
      (Object: access Gtkada_Builder_Record'Class) return Boolean;
    -- ****
+
    -- ****f* Preferences/SaveSettingsProc
    -- FUNCTION
    -- Save the program settings to file and update program to the new
@@ -122,6 +130,7 @@ package Preferences is
    -- SOURCE
    procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* Preferences/SavePreferences
    -- FUNCTION
    -- Save the program preferences to the file.
