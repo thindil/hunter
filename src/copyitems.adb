@@ -65,14 +65,30 @@ package body CopyItems is
    procedure CopyItem
      (Name: String; Path: Unbounded_String; Success: in out Boolean) is
       NewPath: Unbounded_String := Path;
-      procedure ProcessFile(Item: Directory_Entry_Type) is
+      procedure CopyFile(FileName: String) is
+         NewName: Unbounded_String :=
+           NewPath & To_Unbounded_String("/" & Simple_Name(FileName));
       begin
-         if Exists(To_String(NewPath) & "/" & Simple_Name(Item)) then
-            Delete_File(To_String(NewPath) & "/" & Simple_Name(Item));
+         if Exists(To_String(NewName)) then
+            if Settings.OverwriteOnExist then
+               Delete_File(To_String(NewName));
+            else
+               loop
+                  NewName :=
+                    NewPath &
+                    To_Unbounded_String
+                      ("/" & Base_Name(To_String(NewName)) & "_." &
+                       Extension(To_String(NewName)));
+                  exit when not Exists(To_String(NewName));
+               end loop;
+            end if;
          end if;
          GNAT.OS_Lib.Copy_File
-           (Full_Name(Item), To_String(NewPath) & "/" & Simple_Name(Item),
-            Success, Copy, Full);
+           (FileName, To_String(NewName), Success, Copy, Full);
+      end CopyFile;
+      procedure ProcessFile(Item: Directory_Entry_Type) is
+      begin
+         CopyFile(Full_Name(Item));
       end ProcessFile;
       procedure ProcessDirectory(Item: Directory_Entry_Type) is
       begin
@@ -94,12 +110,7 @@ package body CopyItems is
            (Name, "", (Directory => True, others => False),
             ProcessDirectory'Access);
       else
-         if Exists(To_String(Path) & "/" & Simple_Name(Name)) then
-            Delete_File(To_String(Path) & "/" & Simple_Name(Name));
-         end if;
-         GNAT.OS_Lib.Copy_File
-           (Name, To_String(Path) & "/" & Simple_Name(Name), Success, Copy,
-            Full);
+         CopyFile(Name);
       end if;
       UpdateProgressBar;
    end CopyItem;
@@ -113,7 +124,7 @@ package body CopyItems is
          if Exists
              (To_String(Path) & "/" &
               Simple_Name(To_String(CopyItemsList(1)))) and
-           not Overwrite then
+           not Overwrite and Settings.OverwriteOnExist then
             if Is_Directory
                 (To_String(Path) & "/" &
                  Simple_Name(To_String(CopyItemsList(1)))) then
