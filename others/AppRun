@@ -16,4 +16,9 @@ export XDG_DATA_DIRS=$XDG_DATA_DIRS:$APPDIR/usr/share
 export GSETTINGS_BACKEND=memory
 export LOCALESDIR=$APPDIR/usr/share/locale
 export RUNFROMSCRIPT=1
-./hunter "$directory/$@"
+if [ "$#" -ne 0 ]
+then
+   ./hunter "$directory/$@"
+else
+   ./hunter
+fi
