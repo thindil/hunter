@@ -68,11 +68,12 @@ package body MoveItems is
    procedure MoveSelected(Overwrite: in out Boolean) is
       ItemType: Unbounded_String;
       Success: Boolean := True;
-      NewName: Unbounded_String :=
-        DestinationPath & To_Unbounded_String("/") &
-        Simple_Name(To_String(MoveItemsList(1)));
+      NewName: Unbounded_String;
    begin
       while MoveItemsList.Length > 0 loop
+         NewName :=
+           DestinationPath & To_Unbounded_String("/") &
+           Simple_Name(To_String(MoveItemsList(1)));
          if Exists(To_String(NewName)) then
             if not Overwrite and Settings.OverwriteOnExist then
                if Is_Directory(To_String(NewName)) then
@@ -86,7 +87,8 @@ package body MoveItems is
                   Gettext(" exists. Do you want to overwrite it?"),
                   Message_Question);
                return;
-            else
+            end if;
+            if not Settings.OverwriteOnExist then
                loop
                   NewName :=
                     DestinationPath &
