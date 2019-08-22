@@ -39,6 +39,9 @@ package body MoveItems is
    procedure MoveData(Object: access Gtkada_Builder_Record'Class) is
       OverwriteItem: Boolean := False;
    begin
+      if Setting then
+         return;
+      end if;
       if MoveItemsList.Length > 0
         and then Containing_Directory(To_String(MoveItemsList(1))) =
           To_String(CurrentDirectory) then

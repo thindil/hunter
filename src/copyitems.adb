@@ -36,6 +36,9 @@ package body CopyItems is
    procedure CopyData(Object: access Gtkada_Builder_Record'Class) is
       OverwriteItem: Boolean := False;
    begin
+      if Setting then
+         return;
+      end if;
       if CopyItemsList.Length > 0
         and then Containing_Directory(To_String(CopyItemsList(1))) =
           To_String(CurrentDirectory) then

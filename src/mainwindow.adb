@@ -132,8 +132,10 @@ package body MainWindow is
       -- ****
       pragma Unreferenced(User_Data);
    begin
+      Setting := True;
       if Get_Active
           (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
+         CopyItemsList.Clear;
          Set_Active
            (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy")), False);
       end if;
@@ -141,6 +143,10 @@ package body MainWindow is
          Set_Active
            (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut")), False);
       end if;
+      Setting := False;
+      Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
+      ToggleToolButtons(NewAction, True);
+      HideMessage(Builder);
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
