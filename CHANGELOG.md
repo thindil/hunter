@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Crash on previewing files
 - Showing proper buttons after delete files or directories from trash
 - Showing directory with relative path at start of the program
+- Cancelling copying or moving files or directories
 
 ## [0.7] - 2019-08-09
 
