@@ -1,10 +1,11 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
+directory=$(pwd)
 if [ -z ${XDG_DATA_DIRS+x} ]; then
    export XDG_DATA_DIRS=/usr/share:/usr/local/share
 fi
 if [ -z ${APPDIR+x} ]; then
-   export APPDIR=$(pwd)
+   export APPDIR="$directory"
 fi
 cd $APPDIR/usr/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$APPDIR/usr/lib
@@ -15,4 +16,4 @@ export XDG_DATA_DIRS=$XDG_DATA_DIRS:$APPDIR/usr/share
 export GSETTINGS_BACKEND=memory
 export LOCALESDIR=$APPDIR/usr/share/locale
 export RUNFROMSCRIPT=1
-./hunter "$@"
+./hunter "$directory/$@"
