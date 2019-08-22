@@ -4,7 +4,8 @@ prefix=$(dirname "$0")
 cd "$prefix" || exit
 prefix=$(pwd)
 
-if [ -d lib ]; then
+if [ -d lib ]
+then
    # distributed
    export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$prefix/lib
    export GDK_PIXBUF_MODULE_FILE=$prefix/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
@@ -22,4 +23,9 @@ fi
 cd bin || exit
 export RUNFROMSCRIPT=1
 
-./hunter "$prefix/$@"
+if [ "$#" -ne 0 ]
+then
+   ./hunter "$prefix/$@"
+else
+   ./hunter
+fi
