@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 prefix=$(dirname "$0")
 cd "$prefix" || exit
@@ -22,4 +22,4 @@ fi
 cd bin || exit
 export RUNFROMSCRIPT=1
 
-./hunter "$@"
+./hunter "$prefix/$@"
