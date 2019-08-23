@@ -28,6 +28,7 @@ with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
+with LibMagic; use LibMagic;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
@@ -50,30 +51,8 @@ package body Utils is
    -- ****
 
    function GetMimeType(FileName: String) return String is
-      ProcessDesc: Process_Descriptor;
-      Result: Expect_Match;
-      Arguments: constant Argument_List :=
-        (new String'("-b"), new String'("--mime-type"), new String'(FileName));
-      ExecutableName: constant String := FindExecutable("file");
    begin
-      if ExecutableName = "" then
-         return "";
-      end if;
-      Non_Blocking_Spawn(ProcessDesc, ExecutableName, Arguments);
-      Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
-      case Result is
-         when 1 =>
-            declare
-               MimeType: constant String := Expect_Out(ProcessDesc);
-            begin
-               Close(ProcessDesc);
-               return MimeType;
-            end;
-         when others =>
-            null;
-      end case;
-      Close(ProcessDesc);
-      return "";
+      return MagicFile(FileName);
    end GetMimeType;
 
    function CanBeOpened(MimeType: String) return Boolean is
