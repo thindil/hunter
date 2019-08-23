@@ -105,6 +105,12 @@ package body CopyItems is
    begin
       if Is_Directory(Name) then
          Append(NewPath, "/" & Simple_Name(Name));
+         if Exists(To_String(NewPath)) and not Settings.OverwriteOnExist then
+            loop
+               NewPath := NewPath & "_";
+               exit when not Exists(To_String(NewPath));
+            end loop;
+         end if;
          Create_Path(To_String(NewPath));
          Search
            (Name, "", (Directory => False, others => True),
