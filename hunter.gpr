@@ -48,11 +48,11 @@ project hunter is
     package Linker is
         case Mode is
             when "debug" =>
-              for Default_Switches ("ada") use ("-no-pie");
+              for Default_Switches ("ada") use ("-no-pie", "-lmagic");
             when "release" =>
-                for Default_Switches ("ada") use ("-Wl,--gc-sections");
+                for Default_Switches ("ada") use ("-Wl,--gc-sections", "-lmagic");
             when "analyze" =>
-              for Default_Switches ("ada") use ("-no-pie", "-pg", "-fprofile-arcs");
+              for Default_Switches ("ada") use ("-no-pie", "-pg", "-fprofile-arcs", "-lmagic");
         end case;
     end Linker;
 
