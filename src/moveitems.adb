@@ -110,8 +110,7 @@ package body MoveItems is
          end if;
          Rename_File(To_String(MoveItemsList(1)), To_String(NewName), Success);
          if not Success then
-            CopyItem
-              (To_String(MoveItemsList(1)), DestinationPath, Success);
+            CopyItem(To_String(MoveItemsList(1)), DestinationPath, Success);
             if Success then
                if Is_Directory(To_String(MoveItemsList(1))) then
                   Remove_Dir(To_String(MoveItemsList(1)), True);

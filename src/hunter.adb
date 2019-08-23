@@ -24,6 +24,7 @@ with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Error; use Glib.Error;
 with ErrorDialog; use ErrorDialog;
+with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;
 
 procedure Hunter is
@@ -50,6 +51,8 @@ begin
        (Value("HOME") & "/.local/share/Trash/info") then
       Create_Path(Value("HOME") & "/.local/share/Trash/info");
    end if;
+   -- Start libmagic data
+   MagicOpen;
    -- Start GTK
    Init;
    Set_On_Exception(On_Exception'Access);
@@ -71,6 +74,7 @@ begin
    Clear("RUNFROMSCRIPT");
    Clear("GSETTINGS_BACKEND");
    Main;
+   MagicClose;
 exception
    when An_Exception : others =>
       SaveException(An_Exception, True);
