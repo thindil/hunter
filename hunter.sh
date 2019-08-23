@@ -25,7 +25,12 @@ export RUNFROMSCRIPT=1
 
 if [ "$#" -ne 0 ]
 then
-   ./hunter "$prefix/$@"
+   if [ "${1%${1#?}}"x = "/x" ]
+   then
+      ./hunter "$1"
+   else
+      ./hunter "$prefix/$1"
+   fi
 else
    ./hunter
 fi
