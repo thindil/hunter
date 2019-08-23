@@ -71,7 +71,7 @@ package body MoveItems is
    procedure MoveSelected(Overwrite: in out Boolean) is
       ItemType: Unbounded_String;
       Success: Boolean := True;
-      NewName: Unbounded_String;
+      NewName, FileExtension: Unbounded_String;
    begin
       while MoveItemsList.Length > 0 loop
          NewName :=
@@ -92,12 +92,18 @@ package body MoveItems is
                return;
             end if;
             if not Settings.OverwriteOnExist then
+               FileExtension :=
+                 To_Unbounded_String(Extension(To_String(MoveItemsList(1))));
                loop
                   NewName :=
                     DestinationPath &
                     To_Unbounded_String
                       ("/" & Ada.Directories.Base_Name(To_String(NewName)) &
-                       "_." & Extension(To_String(NewName)));
+                       "_");
+                  if Length(FileExtension) > 0 then
+                     NewName :=
+                       NewName & To_Unbounded_String(".") & FileExtension;
+                  end if;
                   exit when not Exists(To_String(NewName));
                end loop;
             end if;
