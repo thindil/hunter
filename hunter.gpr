@@ -1,4 +1,5 @@
 with "gtkada";
+with "libmagic";
 
 project hunter is
 
@@ -48,11 +49,11 @@ project hunter is
     package Linker is
         case Mode is
             when "debug" =>
-              for Default_Switches ("ada") use ("-no-pie", "-lmagic");
+              for Default_Switches ("ada") use ("-no-pie");
             when "release" =>
-                for Default_Switches ("ada") use ("-Wl,--gc-sections", "-lmagic");
+                for Default_Switches ("ada") use ("-Wl,--gc-sections");
             when "analyze" =>
-              for Default_Switches ("ada") use ("-no-pie", "-pg", "-fprofile-arcs", "-lmagic");
+              for Default_Switches ("ada") use ("-no-pie", "-pg", "-fprofile-arcs");
         end case;
     end Linker;
 
