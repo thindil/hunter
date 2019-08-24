@@ -50,12 +50,12 @@ this file is) to compile:
   in GNAT. Just run GPS, select *hunter.gpr* as a project file and select
   option `Build All`.
 
-* If you prefer using console: in main source code directory type `gprbuild`
-  for debug mode build or for release mode: `gprbuild -XMode=release`. You
-  can also use build script `build.sh`. Command: `./build.sh debug` will build
-  the program in debug mode. Command: `.build.sh release` will build the
-  program in release mode and put all needed files in *others/Output/release*
-  directory.
+* If you prefer using console: in main source code directory type
+  `gprbuild -P hunter.gpr` for debug mode build or for release mode:
+  `gprbuild -P hunter.gpr -XMode=release`. You can also use build script
+  `build.sh`. Command: `./build.sh debug` will build the program in debug
+  mode. Command: `.build.sh release` will build the program in release mode
+  and put all needed files in *others/Output/release* directory.
 
 ## Running Hunter
 
