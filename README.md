@@ -39,6 +39,10 @@ To build you need:
   At this moment tested version of GtkAda is 2019 and the program require GTK
   library in version 3.14 (may not works with other versions).
 
+* File command (libmagic) development files. It can have different names in
+  every Linux distribution: in Fedora it is *file-devel* on Debian/Ubuntu/Mint
+  *file-dev*.
+
 If you have all the required packages, navigate to the main directory(where
 this file is) to compile:
 
