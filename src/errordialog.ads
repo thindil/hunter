@@ -36,6 +36,7 @@ package ErrorDialog is
    procedure SaveException
      (An_Exception: Exception_Occurrence; PrintToTerminal: Boolean);
    -- ****
+
    -- ****f* ErrorDialog/On_Exception
    -- FUNCTION
    -- Handle GUI exceptions
@@ -44,6 +45,7 @@ package ErrorDialog is
    -- SOURCE
    procedure On_Exception(An_Exception: Exception_Occurrence);
    -- ****
+
    -- ****f* ErrorDialog/CreateErrorDialog
    -- FUNCTION
    -- Create error dialog UI

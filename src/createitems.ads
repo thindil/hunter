@@ -41,6 +41,7 @@ package CreateItems is
    -- SOURCE
    procedure AddNew(User_Data: access GObject_Record'Class);
    -- ****
+
    -- ****f* CreateItems/IconPressed
    -- FUNCTION
    -- Create new file or directory when user press icon or hide text entry
@@ -52,6 +53,7 @@ package CreateItems is
      (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position;
       Event: Gdk_Event_Button);
    -- ****
+
    -- ****f* CreateItems/CreateNew
    -- FUNCTION
    -- Create new file or directory when user press enter in text entry

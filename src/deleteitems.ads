@@ -30,6 +30,7 @@ package DeleteItems is
    -- SOURCE
    function DeleteSelected return Boolean;
    -- ****
+
    -- ****f* DeleteItems/DeleteItem
    -- FUNCTION
    -- Show message to start deleting selected files and directories.
