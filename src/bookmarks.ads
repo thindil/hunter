@@ -36,12 +36,14 @@ package Bookmarks is
       Path: Unbounded_String;
    end record;
    -- ****
+
    -- ****t* Bookmarks/Bookmarks_Container
    -- FUNCTION
    -- Used to store all bookmarks
    -- SOURCE
    package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
    -- ****
+
    -- ****v* Bookmarks/BookmarksList
    -- FUNCTION
    -- List of all bookmarked locations
@@ -57,6 +59,7 @@ package Bookmarks is
    -- SOURCE
    procedure GoHome(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* Bookmarks/CreateBookmarkMenu
    -- FUNCTION
    -- Create bookmarks menu - show only existing bookmarks
@@ -65,6 +68,7 @@ package Bookmarks is
    -- SOURCE
    procedure CreateBookmarkMenu(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* Bookmarks/AddBookmark
    -- FUNCTION
    -- Add bookmark to currently selected directory
@@ -73,6 +77,7 @@ package Bookmarks is
    -- SOURCE
    procedure AddBookmark(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* Bookmarks/RemoveBookmark
    -- FUNCTION
    -- Remove bookmark for currently selected directory

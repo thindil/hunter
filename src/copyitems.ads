@@ -39,6 +39,7 @@ package CopyItems is
    -- SOURCE
    procedure CopyData(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* CopyItems/CopyItem
    -- FUNCTION
    -- Copy selected file or directory to new location
@@ -50,6 +51,7 @@ package CopyItems is
    procedure CopyItem
      (Name: String; Path: Unbounded_String; Success: in out Boolean);
    -- ****
+
    -- ****f* CopyItems/CopySelected
    -- FUNCTION
    -- Copy selected files and directories
@@ -60,6 +62,7 @@ package CopyItems is
    -- SOURCE
    procedure CopySelected(Overwrite: in out Boolean);
    -- ****
+
    -- ****f* CopyItems/SkipCopying
    -- FUNCTION
    -- Skip copying current file and move to next

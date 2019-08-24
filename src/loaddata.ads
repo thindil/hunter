@@ -39,6 +39,7 @@ package LoadData is
    function SortFiles
      (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint;
    -- ****
+
    -- ****if* LoadData/EmptySortFiles
    -- FUNCTION
    -- Empty sort function used to speed up loading listing of current
@@ -54,6 +55,7 @@ package LoadData is
    function EmptySortFiles
      (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint;
    -- ****
+
    -- ****f* LoadData/LoadDirectory
    -- FUNCTION
    -- Load selected directory with Name to Gtk_Store_List with ListName
