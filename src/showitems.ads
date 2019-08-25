@@ -32,6 +32,7 @@ package ShowItems is
    -- SOURCE
    procedure ShowItemInfo(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* ShowItems/PreviewItem
    -- FUNCTION
    -- Preview selected file or directory. If preview is not available, show
@@ -41,6 +42,7 @@ package ShowItems is
    -- SOURCE
    procedure PreviewItem(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* ShowItems/ShowItem
    -- FUNCTION
    -- Show info about selected item or preview it.
@@ -49,6 +51,7 @@ package ShowItems is
    -- SOURCE
    procedure ShowItem(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* MainWindow/SetAssociated
    -- FUNCTION
    -- Set associated program with selected file MIME type
@@ -57,6 +60,7 @@ package ShowItems is
    -- SOURCE
    procedure SetAssociated(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* ShowItems/SetPermission
    -- FUNCTION
    -- Set selected permissions to selected file or directory
@@ -65,6 +69,7 @@ package ShowItems is
    -- SOURCE
    procedure SetPermission(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* ShowItems/SetBookmarkButton
    -- FUNCTION
    -- Show proper bookmark button for directories.

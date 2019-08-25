@@ -30,18 +30,21 @@ package MainWindow is
    -- SOURCE
    Builder: Gtkada_Builder;
    -- ****
+
    -- ****v* MainWindow/Setting
    -- FUNCTION
    -- If true, the program is in the setting mode
    -- SOURCE
    Setting: Boolean;
    -- ****
+
    -- ****v* MainWindow/CurrentDirectory
    -- FUNCTION
    -- Currently selected directory to show
    -- SOURCE
    CurrentDirectory: Unbounded_String;
    -- ****
+
    -- ****t* MainWindow/ItemActions
    -- FUNCTION
    -- Types of action on files and directories
@@ -63,12 +66,14 @@ package MainWindow is
      (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
       GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
+
    -- ****v* MainWindow/NewAction
    -- FUNCTION
    -- Current performed action on files or directories
    -- SOURCE
    NewAction: ItemActions;
    -- ****
+
    -- ****t* MainWindow/UnboundedString_Container
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
@@ -76,18 +81,21 @@ package MainWindow is
    package UnboundedString_Container is new Vectors(Positive,
       Unbounded_String);
    -- ****
+
    -- ****v* MainWindow/SelectedItems
    -- FUNCTION
    -- List of currently selected files and directories by user
    -- SOURCE
    SelectedItems: UnboundedString_Container.Vector;
    -- ****
+
    -- ****v* MainWindow/CurrentSelected
    -- FUNCTION
    -- Full path to currently selected file or directory
    -- SOURCE
    CurrentSelected: Unbounded_String;
    -- ****
+
    -- ****v* MainWindow/DestinationPath
    -- FUNCTION
    -- Full path to directory where selected files and directories will be
@@ -104,6 +112,7 @@ package MainWindow is
    -- SOURCE
    procedure Quit(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* MainWindow/CreateMainWindow
    -- FUNCTION
    -- Create main window and show content of selected directory
@@ -114,6 +123,7 @@ package MainWindow is
    -- SOURCE
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String);
    -- ****
+
    -- ****f* MainWindow/Reload
    -- FUNCTION
    -- Reload directory listing and preview of selected item
