@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<title>./src/libmagic.ads</title>
+<!-- Source: ./src/libmagic.ads -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">Hunter v0.8 code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./sources.html#top">Source files</a>
+<a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_types.html#top">Types</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo6">Hunter/LibMagic</a></li>
+<ul>
+<li>1.1. <a href="./libmagic_adb.html#robo18">LibMagic/magic_set</a></li>
+<li>1.2. <a href="./libmagic_adb.html#robo19">LibMagic/magic_t</a></li>
+<li>1.3. <a href="./libmagic_adb.html#robo29">LibMagic/MagicData</a></li>
+<li>1.4. <a href="./libmagic_adb.html#robo69">LibMagic/magic_close</a></li>
+<li>1.5. <a href="./libmagic_adb.html#robo70">LibMagic/magic_compile</a></li>
+<li>1.6. <a href="./libmagic_adb.html#robo71">LibMagic/magic_file</a></li>
+<li>1.7. <a href="./libmagic_adb.html#robo72">LibMagic/magic_load</a></li>
+<li>1.8. <a href="./libmagic_adb.html#robo73">LibMagic/magic_open</a></li>
+<li>1.9. <a href="#robo74">LibMagic/MagicClose</a></li>
+<li>1.10. <a href="#robo75">LibMagic/MagicFile</a></li>
+<li>1.11. <a href="#robo76">LibMagic/MagicOpen</a></li>
+</ul>
+</ul>
+<hr />
+<a name="Hunter2fLibMagic"></a>
+<a name="robo6"></a><h2>Hunter/LibMagic [ Packages ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Small Ada binding to the libmagic library
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="keyword">package</span> <strong>LibMagic</strong> <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="LibMagic2fMagicClose"></a>
+<a name="robo74"></a><h2>LibMagic/MagicClose [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">LibMagic</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Close and release all magic data
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>MagicClose</strong><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="LibMagic2fMagicFile"></a>
+<a name="robo75"></a><h2>LibMagic/MagicFile [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">LibMagic</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Get mime type of selected file
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>MagicFile</strong><span class="sign">(</span>Name<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">return</span> String<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Name - Full path to the file which mime type will be check
+</pre>
+<p class="item_name">RESULT</p>
+<pre> MIME type of selected file
+</pre>
+
+<hr />
+<a name="LibMagic2fMagicOpen"></a>
+<a name="robo76"></a><h2>LibMagic/MagicOpen [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">LibMagic</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Initialize magic data
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>MagicOpen</strong><span class="sign">;</span>
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/libmagic.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 25 2019 07:29:46
+</p>
+</div> <!-- footer -->
+</body>
+</html>
