@@ -33,6 +33,7 @@ package Messages is
    -- SOURCE
    YesForAll: Boolean;
    -- ****
+
    -- ****f* Messages/ShowMessage
    -- FUNCTION
    -- Show message with selected type to the user
@@ -44,6 +45,7 @@ package Messages is
    procedure ShowMessage
      (Message: String; MessageType: Gtk_Message_Type := Message_Error);
    -- ****
+
    -- ****f* Messages/HideMessage
    -- FUNCTION
    -- Hide message
@@ -52,6 +54,7 @@ package Messages is
    -- SOURCE
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* Messages/SetResponse
    -- FUNCTION
    -- Set proper GTK Response for info bar buttons
@@ -60,6 +63,7 @@ package Messages is
    -- SOURCE
    procedure SetResponse(User_Data: access GObject_Record'Class);
    -- ****
+
    -- ****f* Messages/MessageResponse
    -- FUNCTION
    -- Hide message or do action, depends on the user response

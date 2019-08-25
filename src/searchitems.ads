@@ -32,6 +32,7 @@ package SearchItems is
    -- SOURCE
    procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* SearchItems/VisibleItems
    -- FUNCTION
    -- Check if selected file, directory or application should be visible,
@@ -48,6 +49,7 @@ package SearchItems is
    function VisibleItems
      (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean;
    -- ****
+
    -- ****f* SearchItems/SearchItem
    -- FUNCTION
    -- Search for files and directories or applications (depends on what user

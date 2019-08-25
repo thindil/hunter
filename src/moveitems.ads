@@ -38,6 +38,7 @@ package MoveItems is
    -- SOURCE
    procedure MoveData(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* MoveItems/MoveSelected
    -- FUNCTION
    -- Move selected files and directories
@@ -48,6 +49,7 @@ package MoveItems is
    -- SOURCE
    procedure MoveSelected(Overwrite: in out Boolean);
    -- ****
+
    -- ****f* MoveItems/SkipMoving
    -- FUNCTION
    -- Skip moving current file and move to next

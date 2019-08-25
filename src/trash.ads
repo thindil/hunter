@@ -31,6 +31,7 @@ package Trash is
    -- SOURCE
    procedure ClearTrash(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* Trash/ShowTrash
    -- FUNCTION
    -- Show content of the Trash
@@ -39,6 +40,7 @@ package Trash is
    -- SOURCE
    procedure ShowTrash(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* Trash/RestoreItem
    -- FUNCTION
    -- Restore selected file or directory from the trash
@@ -47,6 +49,7 @@ package Trash is
    -- SOURCE
    procedure RestoreItem(Object: access Gtkada_Builder_Record'Class);
    -- ****
+
    -- ****f* Trash/PathClicked
    -- FUNCTION
    -- Go to selected location and show it in current directory view.
