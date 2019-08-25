@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v0.7 code documentation</a>
+<a name="robo_top_of_doc">Hunter v0.8 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -26,19 +26,23 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo12">Hunter/Utils</a></li>
+<li>1. <a href="#robo13">Hunter/Utils</a></li>
 <ul>
-<li>1.1. <a href="#robo109">Utils/CanBeOpened</a></li>
-<li>1.2. <a href="#robo110">Utils/CountFileSize</a></li>
-<li>1.3. <a href="#robo111">Utils/FindExecutable</a></li>
-<li>1.4. <a href="#robo112">Utils/GetMimeType</a></li>
-<li>1.5. <a href="#robo113">Utils/ToggleActionButtons</a></li>
-<li>1.6. <a href="#robo114">Utils/ToggleToolButtons</a></li>
+<li>1.1. <a href="./utils_adb.html#robo44">Utils/Positive</a></li>
+<li>1.2. <a href="./utils_adb.html#robo45">Utils/ProgressIndex</a></li>
+<li>1.3. <a href="#robo123">Utils/CanBeOpened</a></li>
+<li>1.4. <a href="#robo124">Utils/CountFileSize</a></li>
+<li>1.5. <a href="#robo125">Utils/FindExecutable</a></li>
+<li>1.6. <a href="#robo126">Utils/GetMimeType</a></li>
+<li>1.7. <a href="#robo127">Utils/SetProgressBar</a></li>
+<li>1.8. <a href="#robo128">Utils/ToggleActionButtons</a></li>
+<li>1.9. <a href="#robo129">Utils/ToggleToolButtons</a></li>
+<li>1.10. <a href="#robo130">Utils/UpdateProgressBar</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Hunter2fUtils"></a>
-<a name="robo12"></a><h2>Hunter/Utils [ Packages ]</h2>
+<a name="robo13"></a><h2>Hunter/Utils [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -50,9 +54,9 @@
 
 <hr />
 <a name="Utils2fCanBeOpened"></a>
-<a name="robo109"></a><h2>Utils/CanBeOpened [ Subprograms ]</h2>
+<a name="robo123"></a><h2>Utils/CanBeOpened [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Check if there is application associated to open selected MIME Type
 </pre>
@@ -68,9 +72,9 @@
 
 <hr />
 <a name="Utils2fCountFileSize"></a>
-<a name="robo110"></a><h2>Utils/CountFileSize [ Subprograms ]</h2>
+<a name="robo124"></a><h2>Utils/CountFileSize [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Convert file size to human readable format
 </pre>
@@ -86,9 +90,9 @@
 
 <hr />
 <a name="Utils2fFindExecutable"></a>
-<a name="robo111"></a><h2>Utils/FindExecutable [ Subprograms ]</h2>
+<a name="robo125"></a><h2>Utils/FindExecutable [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Find executable file with selected name in this same directory where
  the program is or in PATH variable
@@ -106,9 +110,9 @@
 
 <hr />
 <a name="Utils2fGetMimeType"></a>
-<a name="robo112"></a><h2>Utils/GetMimeType [ Subprograms ]</h2>
+<a name="robo126"></a><h2>Utils/GetMimeType [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Check MIME Type of selected file
 </pre>
@@ -123,10 +127,25 @@
 </pre>
 
 <hr />
-<a name="Utils2fToggleActionButtons"></a>
-<a name="robo113"></a><h2>Utils/ToggleActionButtons [ Subprograms ]</h2>
+<a name="Utils2fSetProgressBar"></a>
+<a name="robo127"></a><h2>Utils/SetProgressBar [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set values for progress bar and show it to the user
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetProgressBar</strong><span class="sign">(</span>Amount<span class="sign">:</span> <a href="./utils_adb.html#robo44">Positive</a><span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Amount - Max amount of items - will be used to count progress
+</pre>
+
+<hr />
+<a name="Utils2fToggleActionButtons"></a>
+<a name="robo128"></a><h2>Utils/ToggleActionButtons [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show or hide files and directories actions buttons
 </pre>
@@ -136,25 +155,37 @@
 
 <hr />
 <a name="Utils2fToggleToolButtons"></a>
-<a name="robo114"></a><h2>Utils/ToggleToolButtons [ Subprograms ]</h2>
+<a name="robo129"></a><h2>Utils/ToggleToolButtons [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show or hide other tool bar buttons when user starts any action with
  files or directories
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>ToggleToolButtons</strong>
-     <span class="sign">(</span>Action<span class="sign">:</span> <a href="./mainwindow_ads.html#robo17">ItemActions</a><span class="sign">;</span> Finished<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">)</span><span class="sign">;</span>
+     <span class="sign">(</span>Action<span class="sign">:</span> <a href="./mainwindow_ads.html#robo20">ItemActions</a><span class="sign">;</span> Finished<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Action   - Action on files or directories started or finished.
  Finished - If true, action was finished. Default is False
 </pre>
 
+<hr />
+<a name="Utils2fUpdateProgressBar"></a>
+<a name="robo130"></a><h2>Utils/UpdateProgressBar [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Update fraction of the progress bar
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>UpdateProgressBar</strong><span class="sign">;</span>
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utils.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Aug 13 2019 09:44:00
+<p>Generated from ./src/utils.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 25 2019 07:29:46
 </p>
 </div> <!-- footer -->
 </body>
