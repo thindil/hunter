@@ -724,6 +724,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </object>
               <packing>
                 <property name="pack_type">end</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>
@@ -2117,7 +2118,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkSwitch" id="switchdeletefiles">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Delete selected files and directories instead moving them to Trash.</property>
+                    <property name="tooltip_text" translatable="yes">Delete selected files and directories instead of moving them to Trash.</property>
                     <property name="active">True</property>
                     <signal name="state-set" handler="Save_Preferences" swapped="no"/>
                   </object>
@@ -2196,7 +2197,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkSwitch" id="switchoverwriteonexist">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">If enabled, during copying or moving files and directories, if in destination directory exists file or directory, the program will ask did overwrite it. If disabled, the program will quietly give new name to the moved or copied file or directory.</property>
+                    <property name="tooltip_text" translatable="yes">If enabled, during copying or moving files and directories, if in destination directory exists file or directory with that same name, the program will ask if overwrite it. If disabled, the program will quietly give add underscore to the name of moved or copied file or directory.</property>
                     <property name="active">True</property>
                     <signal name="state-set" handler="Save_Preferences" swapped="no"/>
                   </object>
