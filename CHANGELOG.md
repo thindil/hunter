@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Updated README.md
 - Updated interface
 - Updated Polish translation of the program
+- Updated code documentation
 
 ### Fixed
 - Loading syntax highlighting setting when no config file
