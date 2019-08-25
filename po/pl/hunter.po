@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-08-07 07:46+0200\n"
+"POT-Creation-Date: 2019-08-25 07:18+0200\n"
 "PO-Revision-Date: 2019-06-30 07:10+0200\n"
 "Last-Translator:  <thindil@laeran.pl>\n"
 "Language-Team: Polish\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid " (not installed)"
 msgstr " (nie zainstalowany)"
 
-#: bin/ui/hunter.glade:1637
+#: bin/ui/hunter.glade:1648
 msgid " and attach (if possible) file 'error.log'"
 msgstr " i dołącz (jeżeli dostępny) plik 'error.log'"
 
@@ -34,7 +34,7 @@ msgstr " nie istnieje."
 msgid " doesn't exists."
 msgstr " nie istnieje."
 
-#: src/copyitems.adb:124 src/moveitems.adb:85
+#: src/copyitems.adb:147 src/moveitems.adb:90
 msgid " exists. Do you want to overwrite it?"
 msgstr " istnieje. Czy chcesz go nadpisać?"
 
@@ -54,7 +54,7 @@ msgstr " z taką nazwą."
 msgid "' because there exists "
 msgstr "' ponieważ istnieje "
 
-#: src/deleteitems.adb:184
+#: src/deleteitems.adb:185
 msgid "(and its content)"
 msgstr "(i jego zawartość)"
 
@@ -87,15 +87,16 @@ msgstr "Dodaj nowy pusty plik."
 msgid "Add new link to selected file or directory."
 msgstr "Dodaj nowy link do wybranego pliku lub katalogu."
 
-#: bin/ui/hunter.glade:2031
+#: bin/ui/hunter.glade:2042
 msgid ""
 "After copying, moving files and directories or creating new link, stay in "
 "old directory, don't automatically go to destination directory."
-msgstr "Po skopiowaniu, przeniesieniu plików i katalogów lub stworzeniu "
-"nowego linku, zostań w starym katalogu, nie idź automatycznie do katalogu "
+msgstr ""
+"Po skopiowaniu, przeniesieniu plików i katalogów lub stworzeniu nowego "
+"linku, zostań w starym katalogu, nie idź automatycznie do katalogu "
 "docelowego."
 
-#: bin/ui/hunter.glade:2005
+#: bin/ui/hunter.glade:2016
 msgid ""
 "After that amount of seconds, all messages will be automatically closed by "
 "the program. If you set it to 0, this feature will be disabled."
@@ -103,23 +104,39 @@ msgstr ""
 "Po tej ilości sekund, wszystkie powiadomienia będą automatycznie zamknięte "
 "przez program. Jeżeli ustawisz tę wartość na 0, ta opcja będzie wyłączona."
 
-#: bin/ui/hunter.glade:1231
+#: src/copyitems.adb:163
+msgid "All selected files and directories have been copied."
+msgstr "Wszystkie wybrane pliki i katalogi zostały skopiowane."
+
+#: src/messages.adb:156
+msgid "All selected files and directories have been deleted."
+msgstr "Wszystkie wybrane pliki i katalogi zostały skasowane."
+
+#: src/messages.adb:148
+msgid "All selected files and directories have been moved to Trash."
+msgstr "Wszystkie wybrane pliki i katalogi zostały przeniesione do Kosza."
+
+#: src/moveitems.adb:137
+msgid "All selected files and directories have been moved."
+msgstr "Wszystkie wybrane pliki i katalogi zostały przeniesione."
+
+#: bin/ui/hunter.glade:1242
 msgid "Associated program:"
 msgstr "Przypisany program:"
 
-#: bin/ui/hunter.glade:2110
+#: bin/ui/hunter.glade:2145
 msgid "Automatically clear Trash on exit from the program."
 msgstr "Automatycznie czyść Kosz przy wyjściu z programu."
 
-#: bin/ui/hunter.glade:1303 bin/ui/hunter.glade:1387 bin/ui/hunter.glade:1459
+#: bin/ui/hunter.glade:1314 bin/ui/hunter.glade:1398 bin/ui/hunter.glade:1470
 msgid "Can execute"
 msgstr "Może uruchamiać"
 
-#: bin/ui/hunter.glade:1271 bin/ui/hunter.glade:1355 bin/ui/hunter.glade:1427
+#: bin/ui/hunter.glade:1282 bin/ui/hunter.glade:1366 bin/ui/hunter.glade:1438
 msgid "Can read"
 msgstr "Może czytać"
 
-#: bin/ui/hunter.glade:1287 bin/ui/hunter.glade:1371 bin/ui/hunter.glade:1443
+#: bin/ui/hunter.glade:1298 bin/ui/hunter.glade:1382 bin/ui/hunter.glade:1454
 msgid "Can write"
 msgstr "Może zapisywać do"
 
@@ -127,11 +144,11 @@ msgstr "Może zapisywać do"
 msgid "Can't create symbolic link."
 msgstr "Nie można utworzyć linku symbolicznego."
 
-#: src/deleteitems.adb:139
+#: src/deleteitems.adb:140
 msgid "Can't delete selected directory: "
 msgstr "Nie można utworzyć wybranego katalogu: "
 
-#: src/moveitems.adb:104
+#: src/moveitems.adb:122
 msgid "Can't move "
 msgstr "Nie można przenieść "
 
@@ -139,7 +156,7 @@ msgstr "Nie można przenieść "
 msgid "Can't rename "
 msgstr "Nie można zmienić nazwy "
 
-#: src/trash.adb:291
+#: src/trash.adb:314
 msgid "Can't restore "
 msgstr "Nie można przywrócić "
 
@@ -151,11 +168,11 @@ msgstr "Nie można wykonać komendy: "
 msgid "Cancel"
 msgstr "Przerwij"
 
-#: bin/ui/hunter.glade:2098
+#: bin/ui/hunter.glade:2133
 msgid "Clear Trash on exit:"
 msgstr "Wyczyść Kosz przy wyjściu:"
 
-#: bin/ui/hunter.glade:1667
+#: bin/ui/hunter.glade:1678
 msgid "Click to show technical info"
 msgstr "Kliknij aby pokazać informacje techniczne"
 
@@ -163,15 +180,15 @@ msgstr "Kliknij aby pokazać informacje techniczne"
 msgid "Close"
 msgstr "Zamknij"
 
-#: bin/ui/hunter.glade:1926
+#: bin/ui/hunter.glade:1937
 msgid ""
 "Color files syntax in files preview. Not all text (especially source code) "
 "files are supported. You may not be able to enable this option if you don't "
 "have installed the program \"highlight\"."
-msgstr "Koloruj składnię plików w podglądzie plików. Nie wszystkie pliki "
-"tekstowe (szczególnie z kodem źródłowym) są wspierane. Możesz nie mieć "
-"możliwości włączenia tej opcji jeżeli nie masz zainstalowanego programu "
-"\"highlight\"."
+msgstr ""
+"Koloruj składnię plików w podglądzie plików. Nie wszystkie pliki tekstowe "
+"(szczególnie z kodem źródłowym) są wspierane. Możesz nie mieć możliwości "
+"włączenia tej opcji jeżeli nie masz zainstalowanego programu \"highlight\"."
 
 #: src/activateitems.adb:147
 msgid "Command "
@@ -190,27 +207,31 @@ msgstr ""
 "kopiowania obecnie wybranych plików i katalogów. Naciśnij go ponownie aby "
 "skopiować je."
 
-#: src/utils.adb:222
+#: src/utils.adb:216
 msgid "Copying files and directories"
 msgstr "Kopiowianie plików i katalogów"
 
-#: src/showitems.adb:651
+#: bin/ui/hunter.glade:2214
+msgid "Copying or Moving"
+msgstr "Kopiowanie bądź Przenoszenie"
+
+#: src/showitems.adb:664
 msgid "Could not change permissions for "
 msgstr "Nie można zmienić uprawnień dla "
 
-#: src/deleteitems.adb:134
+#: src/deleteitems.adb:135
 msgid "Could not delete selected files or directories. Reason: "
 msgstr "Nie można skasować wybranych plików lub katalogów. Przyczyna: "
 
-#: src/utils.adb:106
+#: src/utils.adb:100
 msgid "Could not found executable: "
 msgstr "Nie można znaleźć pliku uruchomieniowego: "
 
-#: src/showitems.adb:465
+#: src/showitems.adb:478
 msgid "Could not load image file: "
 msgstr "Nie można załadować pliku obrazkowego: "
 
-#: src/showitems.adb:587
+#: src/showitems.adb:600
 msgid "Could not set new associated file."
 msgstr "Nie można ustawić nowego przypisanego programu."
 
@@ -226,15 +247,15 @@ msgstr "Stwórz nowy pusty plik."
 msgid "Create new link to selected file or directory."
 msgstr "Stwórz nowy link do wybranego pliku lub katalogu."
 
-#: src/utils.adb:206
+#: src/utils.adb:200
 msgid "Creating empty file"
 msgstr "Tworzenie pustego pliku."
 
-#: src/utils.adb:210
+#: src/utils.adb:204
 msgid "Creating new directory"
 msgstr "Tworzenie nowego katalogu."
 
-#: src/utils.adb:214
+#: src/utils.adb:208
 msgid "Creating new link"
 msgstr "Tworzenie nowego linku."
 
@@ -242,7 +263,7 @@ msgstr "Tworzenie nowego linku."
 msgid "Delete"
 msgstr "Skasuj"
 
-#: bin/ui/hunter.glade:2073
+#: bin/ui/hunter.glade:2108
 msgid "Delete files:"
 msgstr "Skasuj pliki:"
 
@@ -250,11 +271,11 @@ msgstr "Skasuj pliki:"
 msgid "Delete selected file(s) or folder(s) [ALT-Delete]."
 msgstr "Skasuj wybran(e) plik(i) lub katalog(i [ALT-Delete])"
 
-#: bin/ui/hunter.glade:2085
+#: bin/ui/hunter.glade:2120
 msgid "Delete selected files and directories instead moving them to Trash."
 msgstr "Skasuj wybrane pliki i katalogi zamiast przenosić je do Kosza."
 
-#: src/deleteitems.adb:159
+#: src/deleteitems.adb:160
 msgid "Delete?"
 msgstr "Skasować?"
 
@@ -262,11 +283,11 @@ msgstr "Skasować?"
 msgid "Deleted"
 msgstr "Skasowane"
 
-#: bin/ui/hunter.glade:2124
+#: bin/ui/hunter.glade:2159
 msgid "Deleting"
 msgstr "Kasowanie"
 
-#: src/utils.adb:231
+#: src/utils.adb:225
 msgid "Deleting files and directories"
 msgstr "Kasowanie plików i katalogów"
 
@@ -274,11 +295,11 @@ msgstr "Kasowanie plików i katalogów"
 msgid "Desktop"
 msgstr "Pulpit"
 
-#: src/createitems.adb:195 src/utils.adb:162
+#: src/createitems.adb:195 src/utils.adb:156
 msgid "Destination directory"
 msgstr "Katalog docelowy"
 
-#: src/copyitems.adb:117 src/moveitems.adb:78 src/trash.adb:286
+#: src/copyitems.adb:140 src/moveitems.adb:83 src/trash.adb:309
 msgid "Directory"
 msgstr "Katalog"
 
@@ -286,7 +307,7 @@ msgstr "Katalog"
 msgid "Directory "
 msgstr "Katalog "
 
-#: bin/ui/hunter.glade:1837
+#: bin/ui/hunter.glade:1848
 msgid "Directory Listing"
 msgstr "Zawartość Katalogu"
 
@@ -318,7 +339,7 @@ msgstr "Wprowadź komendę użytą do otwarcia wybranej rzeczy."
 msgid "Enter destination"
 msgstr "Wprowadź katalog docelowy"
 
-#: bin/ui/hunter.glade:1710
+#: bin/ui/hunter.glade:1721
 msgid "Enter program name"
 msgstr "Wprowadź nazwę programu"
 
@@ -326,7 +347,7 @@ msgstr "Wprowadź nazwę programu"
 msgid "Execute selected program [ALT-E]."
 msgstr "Uruchom wybrany program [ALT-E]"
 
-#: src/copyitems.adb:119 src/moveitems.adb:80 src/trash.adb:288
+#: src/copyitems.adb:142 src/moveitems.adb:85 src/trash.adb:311
 msgid "File"
 msgstr "Plik"
 
@@ -334,11 +355,11 @@ msgstr "Plik"
 msgid "File or directory informations [ALT-I]"
 msgstr "Informacje o pliku lub katalogu [ALT-I]"
 
-#: bin/ui/hunter.glade:1206
+#: bin/ui/hunter.glade:1217
 msgid "File type:"
 msgstr "Typ pliku:"
 
-#: bin/ui/hunter.glade:1131 src/showitems.adb:139
+#: bin/ui/hunter.glade:1142 src/showitems.adb:139
 msgid "Full path:"
 msgstr "Pełna ścieżka:"
 
@@ -346,27 +367,27 @@ msgstr "Pełna ścieżka:"
 msgid "Go to selected destination."
 msgstr "Idź do wybranej lokacji."
 
-#: src/loaddata.adb:423
+#: src/loaddata.adb:466
 msgid "Go to this directory [ALT+"
 msgstr "Idź do tego katalogu [ALT+"
 
-#: src/loaddata.adb:364
+#: src/loaddata.adb:399
 msgid "Go to this directory [ALT+1]"
 msgstr "Idź do tego katalogu [ALT+1]"
 
-#: src/loaddata.adb:433
+#: src/loaddata.adb:476
 msgid "Go to this directory [ALT+SHIFT+"
 msgstr "Idź do tego katalogu [ALT+SHIFT+"
 
-#: src/loaddata.adb:370
+#: src/loaddata.adb:405
 msgid "Go to this directory [ALT+SHIFT+1]"
 msgstr "Idź do tego katalogu [ALT+SHIFT+1]"
 
-#: src/loaddata.adb:354 src/loaddata.adb:394
+#: src/loaddata.adb:389 src/loaddata.adb:437
 msgid "Go to upper directory [ALT+SHIFT+U]"
 msgstr "Idź do nadrzędnego katalogu [ALT+SHIFT+U]"
 
-#: src/loaddata.adb:348 src/loaddata.adb:387
+#: src/loaddata.adb:383 src/loaddata.adb:430
 msgid "Go to upper directory [ALT+U]"
 msgstr "Idź do nadrzędnego katalogu [ALT+U]"
 
@@ -380,11 +401,11 @@ msgstr ""
 msgid "Graphical File Manager for Linux"
 msgstr "Graficzny Menadżer Plików dla Linuxa"
 
-#: bin/ui/hunter.glade:1327
+#: bin/ui/hunter.glade:1338
 msgid "Group:"
 msgstr "Grupa:"
 
-#: bin/ui/hunter.glade:1993
+#: bin/ui/hunter.glade:2004
 msgid "Hide messages after:"
 msgstr "Ukryj powiadomienia po:"
 
@@ -414,6 +435,18 @@ msgid ""
 msgstr ""
 "Nie mogę otworzyć tego pliku. Nie ma aplikacji powiązanej z tym typem plików."
 
+#: bin/ui/hunter.glade:2199
+msgid ""
+"If enabled, during copying or moving files and directories, if in "
+"destination directory exists file or directory, the program will ask did "
+"overwrite it. If disabled, the program will quietly give new name to the "
+"moved or copied file or directory."
+msgstr ""
+"Jeżeli jest włączone, podczas kopiowania lub przenoszenia plików i "
+"katalogów, jeżeli w katalogu docelowym istnieje plik bądź katalog o takiej "
+"samej nazwie, program zapyta czy nadpisać go. Jeżeli jest wyłączone, program "
+"po cichu da nową nazwę przenoszonemu albo kopiowanemu plikowi bądź katalogowi."
+
 #: bin/ui/hunter.glade:670
 msgid "Info"
 msgstr "Informacja"
@@ -422,11 +455,11 @@ msgstr "Informacja"
 msgid "Information"
 msgstr "Informacja"
 
-#: bin/ui/hunter.glade:2045
+#: bin/ui/hunter.glade:2080
 msgid "Interface"
 msgstr "Interfejs"
 
-#: bin/ui/hunter.glade:1155
+#: bin/ui/hunter.glade:1166
 msgid "Last Modified:"
 msgstr "Ostatnio Zmodyfikowany:"
 
@@ -434,7 +467,7 @@ msgstr "Ostatnio Zmodyfikowany:"
 msgid "Links to:"
 msgstr "Linkuje do:"
 
-#: bin/ui/hunter.glade:961 src/bookmarks.adb:52 src/bookmarks.adb:89
+#: bin/ui/hunter.glade:972 src/bookmarks.adb:52 src/bookmarks.adb:89
 msgid "Modified"
 msgstr "Zmodyfikowany"
 
@@ -455,15 +488,15 @@ msgstr ""
 "przenoszenia obecnie wybranych plików lub katalogów. Naciśnij go ponownie "
 "aby przenieść je."
 
-#: src/deleteitems.adb:161
+#: src/deleteitems.adb:162
 msgid "Move to trash?"
 msgstr "Przenieść do Kosza?"
 
-#: src/utils.adb:226
+#: src/utils.adb:220
 msgid "Moving files and directories"
 msgstr "Przenoszenie plików i katalogów"
 
-#: src/utils.adb:235
+#: src/utils.adb:229
 msgid "Moving files and directories to trash"
 msgstr "Przenoszenie plików i katalogów do kosza"
 
@@ -471,8 +504,8 @@ msgstr "Przenoszenie plików i katalogów do kosza"
 msgid "Music"
 msgstr "Muzyka"
 
-#: bin/ui/hunter.glade:921 bin/ui/hunter.glade:1061 bin/ui/hunter.glade:1521
-#: bin/ui/hunter.glade:1739
+#: bin/ui/hunter.glade:932 bin/ui/hunter.glade:1072 bin/ui/hunter.glade:1532
+#: bin/ui/hunter.glade:1750
 msgid "Name"
 msgstr "Nazwa"
 
@@ -496,7 +529,7 @@ msgstr "Nie"
 msgid "No for all"
 msgstr "Nie dla wszystkich"
 
-#: bin/ui/hunter.glade:1607
+#: bin/ui/hunter.glade:1618
 msgid ""
 "Oops, something bad happens and progam crashed. Please, remember what you "
 "done before crash and report this problem at"
@@ -520,11 +553,15 @@ msgstr "Otwórz wybrany plik lub katalog przy pomocy komendy [ALT-W]"
 msgid "Open with..."
 msgstr "Otwórz z..."
 
-#: bin/ui/hunter.glade:1411
+#: bin/ui/hunter.glade:1422
 msgid "Others:"
 msgstr "Inne:"
 
-#: bin/ui/hunter.glade:1243
+#: bin/ui/hunter.glade:2187
+msgid "Overwrite existing:"
+msgstr "Nadpisywać istniejące:"
+
+#: bin/ui/hunter.glade:1254
 msgid "Owner:"
 msgstr "Właściciel:"
 
@@ -540,8 +577,8 @@ msgstr "Polski - Bartek thindil Jasicki <thindil@laeran.pl>"
 msgid "Preferences"
 msgstr "Preferencje"
 
-#: bin/ui/hunter.glade:654 bin/ui/hunter.glade:1573 bin/ui/hunter.glade:1965
-#: src/showitems.adb:506 src/showitems.adb:532
+#: bin/ui/hunter.glade:654 bin/ui/hunter.glade:1584 bin/ui/hunter.glade:1976
+#: src/showitems.adb:519 src/showitems.adb:545
 msgid "Preview"
 msgstr "Podgląd"
 
@@ -553,11 +590,11 @@ msgstr "Podgląd pliku lub katalogu [ALT-V]"
 msgid "Public"
 msgstr "Publiczny"
 
-#: src/loaddata.adb:334 src/loaddata.adb:403 src/trash.adb:237
+#: src/loaddata.adb:369 src/loaddata.adb:446 src/trash.adb:260
 msgid "Reload current directory [ALT+R]"
 msgstr "Przeładuj obecny katalog [ALT+R]"
 
-#: src/loaddata.adb:340 src/loaddata.adb:410
+#: src/loaddata.adb:375 src/loaddata.adb:453
 msgid "Reload current directory [ALT+SHIFT+R]"
 msgstr "Przeładuj obecny katalog [ALT+SHIFT+R]"
 
@@ -589,7 +626,7 @@ msgstr "Zmień nazwę pliku."
 msgid "Rename selected file or directory [CTRL-R]"
 msgstr "Zmień nazwę wybranego pliku lub katalogu [CTRL-R]"
 
-#: src/utils.adb:218
+#: src/utils.adb:212
 msgid "Renaming file or directory"
 msgstr "Zmiana nazwy pliku lub katalogu."
 
@@ -605,7 +642,7 @@ msgstr "Przywróć wybrany plik bądź katalog z Kosza [ALT+R]"
 msgid "Run"
 msgstr "Uruchom"
 
-#: bin/ui/hunter.glade:1877
+#: bin/ui/hunter.glade:1888
 msgid ""
 "Scale images in preview. When disabled, images shows with natural size. When "
 "enabled, images are resized to the size of the preview window."
@@ -614,7 +651,7 @@ msgstr ""
 "naturalnym rozmiarze. Kiedy włączone, obrazki są skalowane do rozmiaru okna "
 "podglądu."
 
-#: bin/ui/hunter.glade:1865
+#: bin/ui/hunter.glade:1876
 msgid "Scale images:"
 msgstr "Skaluj obrazki:"
 
@@ -626,12 +663,13 @@ msgstr "Szukaj"
 msgid "Search for the file or directory [ALT+F]"
 msgstr "Szukaj pliku lub katalogu [ALT+F]"
 
-#: bin/ui/hunter.glade:1951
+#: bin/ui/hunter.glade:1962
 msgid ""
 "Select color theme for coloring syntax in text files in preview. You may not "
 "be able to enable this option if you don't have installed the program "
 "\"highlight\"."
-msgstr "Wybierz motyw kolorów dla kolorowania składni w podglądzie tekstowych "
+msgstr ""
+"Wybierz motyw kolorów dla kolorowania składni w podglądzie tekstowych "
 "plików. Możesz nie móc włączyć tej opcji jeżeli nie masz zainstalowanego "
 "programu \"highlight\""
 
@@ -639,30 +677,42 @@ msgstr "Wybierz motyw kolorów dla kolorowania składni w podglądzie tekstowych
 msgid "Show Trash"
 msgstr "Pokaż Kosz"
 
-#: bin/ui/hunter.glade:1798
+#: bin/ui/hunter.glade:1809
 msgid ""
 "Show hidden files and directories in directory listing and in directories "
 "preview."
 msgstr ""
 "Pokaż ukryte pliki i katalogi na liście plików oraz w podglądzie katalogów."
 
-#: bin/ui/hunter.glade:1786
+#: bin/ui/hunter.glade:1797
 msgid "Show hidden files:"
 msgstr "Pokaż ukryte pliki:"
+
+#: bin/ui/hunter.glade:2054
+msgid "Show info about finished action:"
+msgstr "Pokaż informację o ukończeniu akcji:"
+
+#: bin/ui/hunter.glade:2066
+msgid ""
+"Show information about finished copying, moving and deleting files or "
+"directories."
+msgstr ""
+"Pokaż informację o ukończeniu kopiowania, przenoszenia i kasowania "
+"plików lub katalogów."
 
 #: bin/ui/hunter.glade:561
 msgid "Show informations about the program [ALT-A]."
 msgstr "Pokaż informacje o programie [ALT-A]"
 
-#: bin/ui/hunter.glade:1811
+#: bin/ui/hunter.glade:1822
 msgid "Show modification time:"
 msgstr "Pokaż czas modyfikacji:"
 
-#: bin/ui/hunter.glade:1889
+#: bin/ui/hunter.glade:1900
 msgid "Show preview:"
 msgstr "Pokaż podgląd:"
 
-#: bin/ui/hunter.glade:1901
+#: bin/ui/hunter.glade:1912
 msgid ""
 "Show second panel with preview of files and directories. If you disable this "
 "option, second panel will be visible only during copying and moving files or "
@@ -672,7 +722,7 @@ msgstr ""
 "drugi panel będzie widoczny tylko podczas kopiowania i przenoszenia plików "
 "lub lub katalogów oraz podczas tworzenia nowych linków."
 
-#: bin/ui/hunter.glade:1823
+#: bin/ui/hunter.glade:1834
 msgid "Show the column with last modification date for files and directories."
 msgstr "Pokaż kolumnę z datą ostaniej modyfikacji dla plików i katalogów."
 
@@ -680,40 +730,44 @@ msgstr "Pokaż kolumnę z datą ostaniej modyfikacji dla plików i katalogów."
 msgid "Show the program preferences [ALT-P]"
 msgstr "Pokaż preferencje programu [ALT-P]"
 
-#: bin/ui/hunter.glade:946 bin/ui/hunter.glade:1546
+#: bin/ui/hunter.glade:957 bin/ui/hunter.glade:1557
 msgid "Size"
 msgstr "Rozmiar"
 
-#: bin/ui/hunter.glade:1143
+#: bin/ui/hunter.glade:1154
 msgid "Size:"
 msgstr "Rozmiar:"
 
-#: bin/ui/hunter.glade:2019
+#: bin/ui/hunter.glade:2030
 msgid "Stay in source directory:"
 msgstr "Zostań w katalogu źródłowym:"
 
-#: src/utils.adb:132
+#: src/utils.adb:126
 msgid "Stop copying files and directories [Escape]"
 msgstr "Przestań kopiować pliki i katalogi [Escape]"
 
-#: src/utils.adb:137
+#: src/utils.adb:131
 msgid "Stop moving files and directories [Escape]"
 msgstr "Przestań przenosić pliki i katalogi [Escape]"
 
-#: bin/ui/hunter.glade:1939
+#: bin/ui/hunter.glade:1950
 msgid "Syntax color theme:"
 msgstr "Motyw kolorowania składni:"
 
-#: bin/ui/hunter.glade:1914
+#: bin/ui/hunter.glade:1925
 msgid "Syntax highlightning:"
 msgstr "Kolorowanie składni:"
+
+#: src/messages.adb:152
+msgid "Trash have been cleared."
+msgstr "Kosz został opróżniony."
 
 #: src/showitems.adb:212 src/showitems.adb:221 src/showitems.adb:224
 #: src/showitems.adb:231
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: src/deleteitems.adb:144
+#: src/deleteitems.adb:145
 msgid "Unknown error during deleting files or directories."
 msgstr "Nieznany błąd podczas kasowania plików lub katalogów"
 
@@ -741,7 +795,7 @@ msgstr "Nie możesz "
 msgid "You can't enter this directory."
 msgstr "Nie możesz wejść do tego katalogu."
 
-#: src/copyitems.adb:56
+#: src/copyitems.adb:60
 msgid "You don't have permissions to copy selected items here."
 msgstr "Nie masz uprawnień aby skopiować wybrane rzeczy tutaj."
 
@@ -749,11 +803,11 @@ msgstr "Nie masz uprawnień aby skopiować wybrane rzeczy tutaj."
 msgid "You don't have permissions to enter directory "
 msgstr "Nie masz uprawnień aby wejść do katalogu "
 
-#: src/moveitems.adb:59
+#: src/moveitems.adb:63
 msgid "You don't have permissions to move selected items here."
 msgstr "Nie masz uprawnień aby przenieść wybrane rzeczy tutaj."
 
-#: src/loaddata.adb:159
+#: src/loaddata.adb:165
 msgid "You don't have permissions to preview this directory."
 msgstr "Nie masz uprawnień aby zobaczyć zawartość tego katalogu."
 
@@ -781,7 +835,7 @@ msgstr "stworzyć link z"
 msgid "directory"
 msgstr "katalog"
 
-#: bin/ui/hunter.glade:1680
+#: bin/ui/hunter.glade:1691
 msgid "error"
 msgstr "błąd"
 
@@ -789,11 +843,11 @@ msgstr "błąd"
 msgid "file"
 msgstr "plik"
 
-#: bin/ui/hunter.glade:1595
+#: bin/ui/hunter.glade:1606
 msgid "files"
 msgstr "pliki"
 
-#: bin/ui/hunter.glade:1619
+#: bin/ui/hunter.glade:1630
 msgid "https://github.com/thindil/hunter/issues"
 msgstr "https://github.com/thindil/hunter/issues"
 
@@ -805,6 +859,6 @@ msgstr "brak"
 msgid "rename with new"
 msgstr "zmienić nazwę na nową"
 
-#: src/trash.adb:293
+#: src/trash.adb:316
 msgid "with that name exists."
 msgstr " z taką nazwą już istnieje."
