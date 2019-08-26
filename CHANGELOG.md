@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [0.8] - 2019-08-25
+## [0.8] - 2019-08-26
 
 ### Added
 - Option to show information about finished copying, moving and deleting files
