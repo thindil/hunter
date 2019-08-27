@@ -11,7 +11,7 @@ options:
   --multidoc
   --index
   --internal
-  --documenttitle "Hunter v0.8 code documentation"
+  --documenttitle "Hunter v0.9 code documentation"
   --syntaxcolors
   --css others/robodoc.css
   --sections

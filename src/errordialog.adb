@@ -51,7 +51,7 @@ package body ErrorDialog is
       end if;
       Append(ErrorText, Ada.Calendar.Formatting.Image(Clock));
       Append(ErrorText, LF);
-      Append(ErrorText, "0.8");
+      Append(ErrorText, "0.9");
       Append(ErrorText, LF);
       Append(ErrorText, "Exception: " & Exception_Name(An_Exception));
       Append(ErrorText, LF);
