@@ -228,10 +228,13 @@ package body LoadData is
                loop
                   Read(SubDirectory, SubFileName, SubLast);
                   exit when SubLast = 0;
-                  Size := Size + 1;
+                  if SubFileName(1 .. SubLast) /= "." and
+                    SubFileName(1 .. SubLast) /= ".." then
+                     Size := Size + 1;
+                  end if;
                end loop;
                Close(SubDirectory);
-               Set(FilesList, FileIter, 3, File_Size'Image(Size - 2));
+               Set(FilesList, FileIter, 3, File_Size'Image(Size));
             else
                Set(FilesList, FileIter, 3, "?");
             end if;
