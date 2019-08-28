@@ -24,6 +24,19 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <!-- interface-license-type gplv3 -->
   <!-- interface-name hunter -->
   <!-- interface-copyright 2019 Bartek thindil Jasicki -->
+  <object class="GtkMenu" id="aboutmenu">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <child>
+      <object class="GtkMenuItem" id="aboutreadme">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Show README</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Show_File" object="aboutreadme" swapped="no"/>
+      </object>
+    </child>
+  </object>
   <object class="GtkAccelGroup" id="accelerators"/>
   <object class="GtkAdjustment" id="adjseconds">
     <property name="upper">60</property>
@@ -555,7 +568,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkToolButton" id="btnabout">
+                  <object class="GtkMenuToolButton" id="btnabout">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <property name="tooltip_text" translatable="yes">Show informations about the program [ALT-A].</property>

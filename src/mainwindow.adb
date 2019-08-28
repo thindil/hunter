@@ -321,6 +321,23 @@ package body MainWindow is
       return True;
    end ShowFilesMenu;
 
+   -- ****if* MainWindow/ShowFile
+   -- FUNCTION
+   -- Show README.md or CHANGELOG.md file
+   -- PARAMETERS
+   -- User_Data - Which menu item was selected
+   -- SOURCE
+   procedure ShowFile(User_Data: access GObject_Record'Class) is
+   -- ****
+   begin
+      CurrentDirectory := To_Unbounded_String(Current_Directory);
+      if Ada.Environment_Variables.Exists("APPDIR") then
+         CurrentDirectory :=
+           To_Unbounded_String(Value("APPDIR") & "/usr/share/docs");
+      end if;
+      Reload(Builder);
+   end ShowFile;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Setting := True;
@@ -361,6 +378,7 @@ package body MainWindow is
       Register_Handler(Builder, "Clear_Trash", ClearTrash'Access);
       Register_Handler(Builder, "Show_Trash", ShowTrash'Access);
       Register_Handler(Builder, "Restore_Item", RestoreItem'Access);
+      Register_Handler(Builder, "Show_File", ShowFile'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
@@ -495,6 +513,9 @@ package body MainWindow is
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btndelete")),
          Gtk_Widget(Get_Object(Builder, "deletemenu")));
+      Set_Menu
+        (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnabout")),
+         Gtk_Widget(Get_Object(Builder, "aboutmenu")));
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
