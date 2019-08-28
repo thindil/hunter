@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- Counting amount of files and directories in directories info
+
 ## [0.8] - 2019-08-26
 
 ### Added
