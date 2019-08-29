@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Option to show README.md file
+
 ### Fixed
 - Counting amount of files and directories in directories info
 
