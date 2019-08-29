@@ -328,13 +328,15 @@ package body MainWindow is
    -- User_Data - Which menu item was selected
    -- SOURCE
    procedure ShowFile(User_Data: access GObject_Record'Class) is
-   -- ****
+      -- ****
       pragma Unreferenced(User_Data);
       FileName: constant Unbounded_String := To_Unbounded_String("README.md");
-      FilesList: constant Gtk_List_Store := Gtk_List_Store(Get_Object(Builder, "fileslist"));
+      FilesList: constant Gtk_Tree_Model_Sort :=
+        Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
       FilesIter: Gtk_Tree_Iter;
    begin
-      CurrentDirectory := To_Unbounded_String(Containing_Directory(Current_Directory));
+      CurrentDirectory :=
+        To_Unbounded_String(Containing_Directory(Current_Directory));
       if Ada.Environment_Variables.Exists("APPDIR") then
          CurrentDirectory :=
            To_Unbounded_String(Value("APPDIR") & "/usr/share/docs");
@@ -343,6 +345,9 @@ package body MainWindow is
       FilesIter := Get_Iter_First(FilesList);
       loop
          if Get_String(FilesList, FilesIter, 0) = To_String(FileName) then
+            Set_Cursor
+              (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
+               Get_Path(FilesList, FilesIter), null, False);
             exit;
          end if;
          Next(FilesList, FilesIter);
