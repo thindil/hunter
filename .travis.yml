@@ -1,0 +1,12 @@
+language: minimal
+
+services:
+   - docker
+
+before_script:
+   - docker pull thindil/gnat-gtkada
+
+script:
+   - docker run -v $(pwd):/app thindil/gnat-gtkada /bin/sh -c "apt-get update && apt-get install -y libmagic-dev && cd /app && chmod +x build.sh && ./build.sh release"
+   - tar -czf hunter-development.tar.gz others/Output/release
+   - curl -T hunter-development.tar.gz -uthindil:$KEY https://api.bintray.com/content/thindil/Hunter/hunter/development/hunter-development.tar.gz
