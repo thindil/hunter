@@ -329,13 +329,25 @@ package body MainWindow is
    -- SOURCE
    procedure ShowFile(User_Data: access GObject_Record'Class) is
    -- ****
+      pragma Unreferenced(User_Data);
+      FileName: constant Unbounded_String := To_Unbounded_String("README.md");
+      FilesList: constant Gtk_List_Store := Gtk_List_Store(Get_Object(Builder, "fileslist"));
+      FilesIter: Gtk_Tree_Iter;
    begin
-      CurrentDirectory := To_Unbounded_String(Current_Directory);
+      CurrentDirectory := To_Unbounded_String(Containing_Directory(Current_Directory));
       if Ada.Environment_Variables.Exists("APPDIR") then
          CurrentDirectory :=
            To_Unbounded_String(Value("APPDIR") & "/usr/share/docs");
       end if;
       Reload(Builder);
+      FilesIter := Get_Iter_First(FilesList);
+      loop
+         if Get_String(FilesList, FilesIter, 0) = To_String(FileName) then
+            exit;
+         end if;
+         Next(FilesList, FilesIter);
+         exit when not Iter_Is_Valid(FilesList, FilesIter);
+      end loop;
    end ShowFile;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
