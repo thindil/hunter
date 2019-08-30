@@ -4,17 +4,16 @@ case $1 in
    release)
       gprclean -P hunter.gpr
       gprbuild -P hunter.gpr -XMode=release
-      mkdir -p others/Output/release/bin
-      mkdir -p others/Output/release/share/docs
-      mkdir -p others/Output/release/share/locale
-      cp -r bin others/Output/release
-      cp CHANGELOG.md others/Output/release/share/docs/
-      cp COPYING others/Output/release/share/docs/
-      cp README.md others/Output/release/share/docs
+      mkdir -p usr/share/docs
+      mkdir -p usr/share/locale
+      cp -r bin usr/
+      cp CHANGELOG.md usr/share/docs/
+      cp COPYING usr/share/docs/
+      cp README.md usr/share/docs
       for directory in $(find po/* -maxdepth 0 -type d)
       do
-         cp -r $directory others/Output/release/share/locale/
-         rm others/Output/release/share/locale/${directory:3}/hunter.po
+         cp -r $directory usr/share/locale/
+         rm usr/share/locale/${directory:3}/hunter.po
       done
       gprclean -P hunter.gpr
       ;;
