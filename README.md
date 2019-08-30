@@ -89,6 +89,16 @@ recompile it. If your theme completely don't support GTK in version 3.14 you
 can still use default GTK theme by adding environment variable `GTK_THEME`.
 For example: `GTK_THEME=Adwaita ./hunter-x86-64.AppImage`.
 
+### Testing versions
+
+Here are available also testing versions of the program. You can find them
+in [Bintray](https://bintray.com/thindil/Hunter/hunter). To use them, first
+you must download normal release. Then, inside directory where the program
+is, type `./hunter-x86_64.AppImage --appimage-extract` to extract whole
+program to directory *squashfs-root*. And then just move files from Bintray
+to proper locations. To run that version, just enter *squashfs-root* directory
+and type in console `./AppRun`.
+
 ## Generating code documentation
 
 To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsber.home.xs4all.nl/Robo/)
