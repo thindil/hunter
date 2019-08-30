@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 case $1 in
    release)
