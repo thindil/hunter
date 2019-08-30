@@ -3,7 +3,7 @@ language: minimal
 services:
    - docker
 
-before_script:
+install:
    - docker pull thindil/gnat-gtkada
 
 script:
