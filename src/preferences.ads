@@ -50,8 +50,12 @@ package Preferences is
    -- ClearTrashOnExit      - Clear trash on quit from the program
    -- ShowFinishedInfo      - If true, show info about finished copying, moving
    --                         deleting files and directories
--- OverwriteOnExist      - If true, copied or moved file or directory will be
-   --                         overwritting existing with that same name.
+   -- OverwriteOnExist      - If true, copied or moved file or directory will
+   --                         be overwritting existing with that same name
+   -- ToolbarsOnTop         - If true, toolbars for actions and information
+   --                         will be show on the top of the window. Otherwise
+   --                         toolbar action will be on the left and toolbar
+   --                         with information will be on the right
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -68,6 +72,7 @@ package Preferences is
       ClearTrashOnExit: Boolean;
       ShowFinishedInfo: Boolean;
       OverwriteOnExist: Boolean;
+      ToolbarsOnTop: Boolean;
    end record;
    -- ****
 

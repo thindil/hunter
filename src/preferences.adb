@@ -17,15 +17,21 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Adjustment; use Gtk.Adjustment;
+with Gtk.Box; use Gtk.Box;
+with Gtk.Container; use Gtk.Container;
 with Gtk.Combo_Box_Text; use Gtk.Combo_Box_Text;
+with Gtk.Enums; use Gtk.Enums;
+with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Switch; use Gtk.Switch;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
+with Glib.Object; use Glib.Object;
 with MainWindow; use MainWindow;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
@@ -104,7 +110,8 @@ package body Preferences is
          ShowPreview => True, StayInOld => False, ColorText => True,
          ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
          DeleteFiles => True, ClearTrashOnExit => False,
-         ShowFinishedInfo => False, OverwriteOnExist => True);
+         ShowFinishedInfo => False, OverwriteOnExist => True,
+         ToolbarsOnTop => True);
       if FindExecutable("highlight") = "" then
          Settings.ColorText := False;
          Set_Sensitive
@@ -197,6 +204,11 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchoverwriteonexist")),
                   Settings.OverwriteOnExist);
+            elsif FieldName = To_Unbounded_String("ToolbarsOnTop") then
+               Settings.ToolbarsOnTop := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchtoolbarsontop")),
+                  Settings.ToolbarsOnTop);
             end if;
          end if;
       end loop;
@@ -303,6 +315,36 @@ package body Preferences is
            Get_Active
              (Gtk_Switch(Get_Object(Object, "switchoverwriteonexist")));
       end if;
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchtoolbarsontop"))) /=
+        Settings.ToolbarsOnTop then
+         Settings.ToolbarsOnTop :=
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchtoolbarsontop")));
+         declare
+            Header: constant GObject := Get_Object(Object, "header");
+            FilesBox: constant GObject := Get_Object(Object, "filesbox");
+            Toolbar: constant GObject := Get_Object(Object, "toolbar");
+            ItemToolbar: constant GObject := Get_Object(Object, "itemtoolbar");
+         begin
+            if Settings.ToolbarsOnTop then
+               Remove(Gtk_Container(FilesBox), Gtk_Widget(Toolbar));
+               Remove(Gtk_Container(FilesBox), Gtk_Widget(ItemToolbar));
+               Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
+               Pack_End(Gtk_Header_Bar(Header), Gtk_Widget(ItemToolbar));
+               Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
+               Set_Orientation
+                 (Gtk_Toolbar(ItemToolbar), Orientation_Horizontal);
+            else
+               Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
+               Remove(Gtk_Container(Header), Gtk_Widget(ItemToolbar));
+               Add(Gtk_Container(FilesBox), Gtk_Widget(Toolbar));
+               Reorder_Child(Gtk_Box(FilesBox), Gtk_Widget(Toolbar), 0);
+               Add(Gtk_Container(FilesBox), Gtk_Widget(ItemToolbar));
+               Reorder_Child(Gtk_Box(FilesBox), Gtk_Widget(ItemToolbar), 2);
+               Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
+               Set_Orientation(Gtk_Toolbar(ItemToolbar), Orientation_Vertical);
+            end if;
+         end;
+      end if;
       return False;
    end SaveSettings;
 
@@ -365,6 +407,7 @@ package body Preferences is
       SaveBoolean(Settings.ClearTrashOnExit, "ClearTrashOnExit");
       SaveBoolean(Settings.ShowFinishedInfo, "ShowFinishedInfo");
       SaveBoolean(Settings.OverwriteOnExist, "OverwriteOnExist");
+      SaveBoolean(Settings.ToolbarsOnTop, "ToolbarsOnTop");
       Close(ConfigFile);
    end SavePreferences;
 
