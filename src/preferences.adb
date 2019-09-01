@@ -321,13 +321,13 @@ package body Preferences is
            Get_Active(Gtk_Switch(Get_Object(Object, "switchtoolbarsontop")));
          declare
             Header: constant GObject := Get_Object(Object, "header");
-            FilesBox: constant GObject := Get_Object(Object, "filesbox");
+            LeftBox: constant GObject := Get_Object(Object, "leftbox");
             Toolbar: constant GObject := Get_Object(Object, "toolbar");
             ItemToolbar: constant GObject := Get_Object(Object, "itemtoolbar");
          begin
             if Settings.ToolbarsOnTop then
-               Remove(Gtk_Container(FilesBox), Gtk_Widget(Toolbar));
-               Remove(Gtk_Container(FilesBox), Gtk_Widget(ItemToolbar));
+               Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
+               Remove(Gtk_Container(LeftBox), Gtk_Widget(ItemToolbar));
                Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
                Pack_End(Gtk_Header_Bar(Header), Gtk_Widget(ItemToolbar));
                Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
@@ -336,10 +336,8 @@ package body Preferences is
             else
                Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
                Remove(Gtk_Container(Header), Gtk_Widget(ItemToolbar));
-               Add(Gtk_Container(FilesBox), Gtk_Widget(Toolbar));
-               Reorder_Child(Gtk_Box(FilesBox), Gtk_Widget(Toolbar), 0);
-               Add(Gtk_Container(FilesBox), Gtk_Widget(ItemToolbar));
-               Reorder_Child(Gtk_Box(FilesBox), Gtk_Widget(ItemToolbar), 2);
+               Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(Toolbar));
+               Pack_End(Gtk_Box(LeftBox), Gtk_Widget(ItemToolbar));
                Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
                Set_Orientation(Gtk_Toolbar(ItemToolbar), Orientation_Vertical);
             end if;
