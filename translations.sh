@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 case $1 in
    createpot)
@@ -21,7 +21,7 @@ case $1 in
    generate)
       for directory in $(find po/* -maxdepth 0 -type d)
       do
-         msgfmt -o $directory/LC_MESSAGES/hunter.mo $directory/hunter.po
+         /usr/bin/msgfmt -o $directory/LC_MESSAGES/hunter.mo $directory/hunter.po
          echo "Locale ${directory:3} was generated."
       done
       ;;
