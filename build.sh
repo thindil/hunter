@@ -10,6 +10,7 @@ case $1 in
       cp CHANGELOG.md usr/share/docs/
       cp COPYING usr/share/docs/
       cp README.md usr/share/docs
+      ./translations.sh generate
       for directory in $(find po/* -maxdepth 0 -type d)
       do
          cp -r $directory usr/share/locale/
