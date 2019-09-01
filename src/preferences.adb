@@ -64,6 +64,38 @@ package body Preferences is
       end if;
    end SetDeleteTooltip;
 
+   -- ****if* Preferences/SetToolbars
+   -- FUNCTION
+   -- Set position of toolbars - on the top or the left of the main window.
+   -- SOURCE
+   procedure SetToolbars is
+      -- ****
+      Header: constant GObject := Get_Object(Builder, "header");
+      LeftBox: constant GObject := Get_Object(Builder, "leftbox");
+      Toolbar: constant GObject := Get_Object(Builder, "toolbar");
+      ItemToolbar: constant GObject := Get_Object(Builder, "itemtoolbar");
+   begin
+      if Settings.ToolbarsOnTop then
+         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(LeftBox) then
+            Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
+            Remove(Gtk_Container(LeftBox), Gtk_Widget(ItemToolbar));
+         end if;
+         Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
+         Pack_End(Gtk_Header_Bar(Header), Gtk_Widget(ItemToolbar));
+         Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
+         Set_Orientation(Gtk_Toolbar(ItemToolbar), Orientation_Horizontal);
+      else
+         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(Header) then
+            Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
+            Remove(Gtk_Container(Header), Gtk_Widget(ItemToolbar));
+         end if;
+         Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(Toolbar));
+         Pack_End(Gtk_Box(LeftBox), Gtk_Widget(ItemToolbar));
+         Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
+         Set_Orientation(Gtk_Toolbar(ItemToolbar), Orientation_Vertical);
+      end if;
+   end SetToolbars;
+
    procedure LoadSettings is
       ConfigFile: File_Type;
       RawData, FieldName, Value: Unbounded_String;
@@ -209,6 +241,7 @@ package body Preferences is
                Set_Active
                  (Gtk_Switch(Get_Object(Builder, "switchtoolbarsontop")),
                   Settings.ToolbarsOnTop);
+               SetToolbars;
             end if;
          end if;
       end loop;
@@ -319,29 +352,7 @@ package body Preferences is
         Settings.ToolbarsOnTop then
          Settings.ToolbarsOnTop :=
            Get_Active(Gtk_Switch(Get_Object(Object, "switchtoolbarsontop")));
-         declare
-            Header: constant GObject := Get_Object(Object, "header");
-            LeftBox: constant GObject := Get_Object(Object, "leftbox");
-            Toolbar: constant GObject := Get_Object(Object, "toolbar");
-            ItemToolbar: constant GObject := Get_Object(Object, "itemtoolbar");
-         begin
-            if Settings.ToolbarsOnTop then
-               Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
-               Remove(Gtk_Container(LeftBox), Gtk_Widget(ItemToolbar));
-               Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
-               Pack_End(Gtk_Header_Bar(Header), Gtk_Widget(ItemToolbar));
-               Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
-               Set_Orientation
-                 (Gtk_Toolbar(ItemToolbar), Orientation_Horizontal);
-            else
-               Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
-               Remove(Gtk_Container(Header), Gtk_Widget(ItemToolbar));
-               Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(Toolbar));
-               Pack_End(Gtk_Box(LeftBox), Gtk_Widget(ItemToolbar));
-               Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
-               Set_Orientation(Gtk_Toolbar(ItemToolbar), Orientation_Vertical);
-            end if;
-         end;
+         SetToolbars;
       end if;
       return False;
    end SaveSettings;
