@@ -431,6 +431,22 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   </packing>
                 </child>
                 <child>
+                  <object class="GtkToolButton" id="btnselectall">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="tooltip_text" translatable="yes">Select or unselect all files and directories in currently selected directory. [CTRL+A]</property>
+                    <property name="label" translatable="yes">Select All</property>
+                    <property name="use_underline">True</property>
+                    <property name="icon_name">edit-select-all</property>
+                    <signal name="clicked" handler="Select_All" swapped="no"/>
+                    <accelerator key="a" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="homogeneous">True</property>
+                  </packing>
+                </child>
+                <child>
                   <object class="GtkSeparatorToolItem">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>

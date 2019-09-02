@@ -110,7 +110,7 @@ package body Utils is
          To_Unbounded_String("btnrename"), To_Unbounded_String("btncopy"),
          To_Unbounded_String("btncut"), To_Unbounded_String("btndelete"),
          To_Unbounded_String("btnpreferences"),
-         To_Unbounded_String("btnabout"));
+         To_Unbounded_String("btnabout"), To_Unbounded_String("btnselectall"));
       CurrentButton: Unbounded_String := To_Unbounded_String("");
    begin
       case Action is
