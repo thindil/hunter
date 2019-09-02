@@ -276,6 +276,15 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
         <signal name="activate" handler="Delete_Item" swapped="no"/>
       </object>
     </child>
+    <child>
+      <object class="GtkMenuItem">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Select All</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Select_All" swapped="no"/>
+      </object>
+    </child>
   </object>
   <object class="GtkTextTagTable" id="filetexttags">
     <child type="tag">
