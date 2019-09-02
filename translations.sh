@@ -21,6 +21,7 @@ case $1 in
    generate)
       for directory in $(find po/* -maxdepth 0 -type d)
       do
+         mkdir -p $directory/LC_MESSAGES
          /usr/bin/msgfmt -o $directory/LC_MESSAGES/hunter.mo $directory/hunter.po
          echo "Locale ${directory:3} was generated."
       done
