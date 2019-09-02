@@ -76,19 +76,21 @@ package body Preferences is
       ItemToolbar: constant GObject := Get_Object(Builder, "itemtoolbar");
    begin
       if Settings.ToolbarsOnTop then
-         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(LeftBox) then
-            Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
-            Remove(Gtk_Container(LeftBox), Gtk_Widget(ItemToolbar));
+         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(Header) then
+            return;
          end if;
+         Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
+         Remove(Gtk_Container(LeftBox), Gtk_Widget(ItemToolbar));
          Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
          Pack_End(Gtk_Header_Bar(Header), Gtk_Widget(ItemToolbar));
          Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
          Set_Orientation(Gtk_Toolbar(ItemToolbar), Orientation_Horizontal);
       else
-         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(Header) then
-            Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
-            Remove(Gtk_Container(Header), Gtk_Widget(ItemToolbar));
+         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(LeftBox) then
+            return;
          end if;
+         Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
+         Remove(Gtk_Container(Header), Gtk_Widget(ItemToolbar));
          Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(Toolbar));
          Pack_End(Gtk_Box(LeftBox), Gtk_Widget(ItemToolbar));
          Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
