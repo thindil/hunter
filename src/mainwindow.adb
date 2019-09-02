@@ -35,6 +35,7 @@ with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
+with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
@@ -357,6 +358,21 @@ package body MainWindow is
       end loop;
    end ShowFile;
 
+   procedure SelectAll(Object: access Gtkada_Builder_Record'Class) is
+      FilesTree: constant Gtk_Tree_View :=
+        Gtk_Tree_View(Get_Object(Object, "treefiles"));
+      Selection: constant Gtk_Tree_Selection := Get_Selection(FilesTree);
+   begin
+      if Count_Selected_Rows(Selection) = N_Children(Get_Model(FilesTree)) then
+         Unselect_All(Selection);
+         Set_Cursor
+           (FilesTree, Gtk_Tree_Path_New_From_String("0"), null, False);
+         Grab_Focus(Gtk_Widget(FilesTree));
+      else
+         Select_All(Selection);
+      end if;
+   end SelectAll;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
    begin
       Setting := True;
@@ -398,6 +414,7 @@ package body MainWindow is
       Register_Handler(Builder, "Show_Trash", ShowTrash'Access);
       Register_Handler(Builder, "Restore_Item", RestoreItem'Access);
       Register_Handler(Builder, "Show_File", ShowFile'Access);
+      Register_Handler(Builder, "Select_All", SelectAll'Access);
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
