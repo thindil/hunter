@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Option to show README.md and CHANGELOG.md files
+- Option to set position of toolbars to the top or the left of the main window
 
 ### Changed
 - Updated README.md
