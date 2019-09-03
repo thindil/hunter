@@ -14,6 +14,8 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Counting amount of files and directories in directories info
 - Missing translations of bookmarks
+- Showing destination directory when changed selected files and directories
+  for copying or moving
 
 ## [0.8] - 2019-08-26
 
