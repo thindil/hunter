@@ -116,18 +116,19 @@ package body Bookmarks is
 
    procedure CreateBookmarkMenu(Object: access Gtkada_Builder_Record'Class) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
-        ((To_Unbounded_String("Desktop"),
+        ((To_Unbounded_String(Gettext("Desktop")),
           To_Unbounded_String("XDG_DESKTOP_DIR")),
-         (To_Unbounded_String("Download"),
+         (To_Unbounded_String(Gettext("Download")),
           To_Unbounded_String("XDG_DOWNLOAD_DIR")),
-         (To_Unbounded_String("Public"),
+         (To_Unbounded_String(Gettext("Public")),
           To_Unbounded_String("XDG_PUBLICSHARE_DIR")),
-         (To_Unbounded_String("Documents"),
+         (To_Unbounded_String(Gettext("Documents")),
           To_Unbounded_String("XDG_DOCUMENTS_DIR")),
-         (To_Unbounded_String("Music"), To_Unbounded_String("XDG_MUSIC_DIR")),
-         (To_Unbounded_String("Pictures"),
+         (To_Unbounded_String(Gettext("Music")),
+          To_Unbounded_String("XDG_MUSIC_DIR")),
+         (To_Unbounded_String(Gettext("Pictures")),
           To_Unbounded_String("XDG_PICTURES_DIR")),
-         (To_Unbounded_String("Videos"),
+         (To_Unbounded_String(Gettext("Videos")),
           To_Unbounded_String("XDG_VIDEOS_DIR")));
       function GetXDGDirectory(Name: String) return Unbounded_String is
          File: File_Type;
