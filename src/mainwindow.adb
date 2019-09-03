@@ -28,6 +28,7 @@ with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
+with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
@@ -293,9 +294,21 @@ package body MainWindow is
       -- ****
       FilesMenu: constant Gtk_Menu :=
         Gtk_Menu(Get_Object(Builder, "filesmenu"));
+      FilesTree: constant Gtk_Tree_View :=
+        Gtk_Tree_View(Get_Object(Builder, "treefiles"));
    begin
       if Event.Button /= 3 then
          return False;
+      end if;
+      if Count_Selected_Rows(Get_Selection(FilesTree)) =
+        N_Children(Get_Model(FilesTree)) then
+         Set_Label
+           (Gtk_Menu_Item(Get_Object(Builder, "menuselectall")),
+            Gettext("Unselect all"));
+      else
+         Set_Label
+           (Gtk_Menu_Item(Get_Object(Builder, "menuselectall")),
+            Gettext("Select all"));
       end if;
       Show_All(Gtk_Widget(FilesMenu));
       Set_Visible
