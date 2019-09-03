@@ -537,6 +537,14 @@ package body ShowItems is
         (Gtk.Tree_View.Get_Selection
            (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
          GetSelectedItems'Access);
+      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncut"))) then
+         MoveItemsList := SelectedItems;
+         return;
+      end if;
+      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncopy"))) then
+         CopyItemsList := SelectedItems;
+         return;
+      end if;
       if SelectedItems.Length > 1 then
          Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
          Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
@@ -556,14 +564,6 @@ package body ShowItems is
       CurrentSelected := SelectedItems(1);
       if Setting or (not Settings.ShowPreview) then
          SetBookmarkButton;
-         return;
-      end if;
-      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncut"))) then
-         MoveItemsList := SelectedItems;
-         return;
-      end if;
-      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncopy"))) then
-         CopyItemsList := SelectedItems;
          return;
       end if;
       if NewAction = CREATELINK then
