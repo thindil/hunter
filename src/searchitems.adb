@@ -18,6 +18,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.List_Store; use Gtk.List_Store;
+with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
@@ -58,7 +59,7 @@ package body SearchItems is
       if Model = +(Gtk_List_Store(Get_Object(Builder, "fileslist"))) then
          SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchfile"));
       elsif Model = +(Gtk_List_Store(Get_Object(Builder, "fileslist2"))) then
-         return True;
+         SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchfile"));
       else
          SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchapplication"));
       end if;
@@ -75,29 +76,36 @@ package body SearchItems is
    end VisibleItems;
 
    procedure SearchItem(User_Data: access GObject_Record'Class) is
-      Name: Unbounded_String;
+      FilterName, TreeName, ListName: Unbounded_String;
    begin
       if User_Data = Get_Object(Builder, "searchfile") then
-         Name := To_Unbounded_String("file");
+         FilterName := To_Unbounded_String("filesfilter");
+         TreeName := To_Unbounded_String("treefiles");
+         ListName := To_Unbounded_String("fileslist");
+         if Get_Active
+             (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) or
+           Get_Active
+             (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
+            FilterName := To_Unbounded_String("filesfilter2");
+            TreeName := To_Unbounded_String("treefiles2");
+            ListName := To_Unbounded_String("fileslist2");
+         end if;
       else
-         Name := To_Unbounded_String("application");
+         FilterName := To_Unbounded_String("applicationsfilter");
+         TreeName := To_Unbounded_String("treeapplications");
+         ListName := To_Unbounded_String("applicationslist");
       end if;
       Refilter
-        (Gtk_Tree_Model_Filter
-           (Get_Object(Builder, To_String(Name) & "sfilter")));
+        (Gtk_Tree_Model_Filter(Get_Object(Builder, To_String(FilterName))));
       if N_Children
-          (Gtk_List_Store(Get_Object(Builder, To_String(Name) & "slist")),
+          (Gtk_List_Store(Get_Object(Builder, To_String(ListName))),
            Null_Iter) >
         0 then
          Set_Cursor
-           (Gtk_Tree_View(Get_Object(Builder, "tree" & To_String(Name) & "s")),
+           (Gtk_Tree_View(Get_Object(Builder, To_String(TreeName))),
             Gtk_Tree_Path_New_From_String("0"), null, False);
       end if;
-      if Is_Visible
-          (Gtk_Widget(Get_Object(Builder, "search" & To_String(Name)))) then
-         Grab_Focus
-           (Gtk_Widget(Get_Object(Builder, "search" & To_String(Name))));
-      end if;
+      Grab_Focus(Gtk_Widget(User_Data));
    end SearchItem;
 
 end SearchItems;

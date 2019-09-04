@@ -1126,7 +1126,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                         <property name="can_focus">True</property>
                                         <property name="shadow_type">in</property>
                                         <child>
-                                          <object class="GtkTreeView">
+                                          <object class="GtkTreeView" id="treefiles2">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="model">filesfilter1</property>
