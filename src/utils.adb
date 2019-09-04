@@ -215,11 +215,13 @@ package body Utils is
                  (Gtk_Header_Bar(Get_Object(Builder, "header")),
                   Gettext("Copying files and directories"));
                Show_All(Gtk_Widget(Get_Object(Builder, "btnselectall")));
+               Show_All(Gtk_Widget(Get_Object(Builder, "btnsearch")));
             when MOVE =>
                Set_Title
                  (Gtk_Header_Bar(Get_Object(Builder, "header")),
                   Gettext("Moving files and directories"));
                Show_All(Gtk_Widget(Get_Object(Builder, "btnselectall")));
+               Show_All(Gtk_Widget(Get_Object(Builder, "btnsearch")));
             when DELETE | DELETETRASH =>
                if Settings.DeleteFiles or Action = DELETETRASH then
                   Set_Title
