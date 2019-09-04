@@ -14,29 +14,74 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar; use Ada.Calendar;
+with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.List_Store; use Gtk.List_Store;
+with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
+with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
+with Gtkada.Builder; use Gtkada.Builder;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
-with ada.text_io;
+with Utils; use Utils;
 
 package body RefreshData is
 
+   function CheckItem
+     (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
+      return Boolean is
+      pragma Unreferenced(Path);
+      FileName: constant String :=
+        To_String(CurrentDirectory) & "/" & Get_String(Model, Iter, 0);
+      ModificationTime: constant String := Get_String(Model, Iter, 5);
+      TempIter: Gtk_Tree_Iter;
+   begin
+      if not Is_Symbolic_Link(FileName) and not Exists(FileName) then
+         TempIter := Iter;
+         Set_Sort_Func
+           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
+            EmptySortFiles'Access);
+         Remove(-(Model), TempIter);
+         Set_Sort_Func
+           (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
+            SortFiles'Access);
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+         return False;
+      end if;
+      if ModificationTime /= "unknown"
+        and then Value(ModificationTime, UTC_Time_Offset) /=
+          Modification_Time(FileName) then
+         Set_Sort_Func
+           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
+            EmptySortFiles'Access);
+         Set
+           (-(Model), Iter, 5,
+            Ada.Calendar.Formatting.Image
+              (Date => Modification_Time(FileName),
+               Time_Zone => UTC_Time_Offset));
+         if Is_Regular_File(FileName) then
+            Set(-(Model), Iter, 3, CountFileSize(Size(FileName)));
+         end if;
+         Set_Sort_Func
+           (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
+            SortFiles'Access);
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+      end if;
+      return False;
+   end CheckItem;
+
    task body RefreshTask is
-      LastRun: Time := Clock;
-      Directory: Search_Type;
-      Item: Directory_Entry_Type;
    begin
       accept Start;
       loop
-         Start_Search(Directory, To_String(CurrentDirectory), "");
-         while More_Entries(Directory) loop
-            Get_Next_Entry(Directory, Item);
-            Ada.Text_IO.Put_Line(Simple_Name(Item));
-         end loop;
-         End_Search(Directory);
-         LastRun := Clock;
          delay 10.0;
+         Foreach
+           (Gtk_List_Store(Get_Object(Builder, "fileslist")),
+            CheckItem'Access);
       end loop;
-   end ;
+   end RefreshTask;
 
 end RefreshData;

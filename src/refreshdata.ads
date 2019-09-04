@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 package RefreshData is
-   
+
    task RefreshTask is
       entry Start;
    end RefreshTask;
