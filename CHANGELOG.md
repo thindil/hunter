@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Option to show README.md and CHANGELOG.md files
 - Option to set position of toolbars to the top or the left of the main window
 - Option to select or unselect all files and directories in current directory
+- Option to search for files and directories during copying or moving
 
 ### Changed
 - Updated README.md
