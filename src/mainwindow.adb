@@ -56,6 +56,7 @@ with LoadData; use LoadData;
 with Messages; use Messages;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
+with RefreshData; use RefreshData;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 with Trash; use Trash;
@@ -72,6 +73,7 @@ package body MainWindow is
             Reload(Object);
          end if;
       end if;
+      abort RefreshTask;
       Unref(Object);
       Main_Quit;
    end Quit;
@@ -594,6 +596,7 @@ package body MainWindow is
               (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
       end if;
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+      RefreshTask.Start;
       Setting := False;
    end CreateMainWindow;
 
