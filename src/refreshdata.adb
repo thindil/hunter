@@ -21,14 +21,19 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
-with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
-with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtkada.Builder; use Gtkada.Builder;
-with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Utils; use Utils;
 
 package body RefreshData is
+
+   -- ****iv* RefreshData/LastCheck
+   -- FUNCTION
+   -- Time when the program last check for modification time of files and
+   -- directories
+   -- SOURCE
+   LastCheck: Time;
+   -- ****
 
    function CheckItem
      (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
@@ -57,17 +62,15 @@ package body RefreshData is
    begin
       accept Start;
       loop
+         LastCheck := Clock;
          delay 10.0;
-         Set_Sort_Func
-           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
-            EmptySortFiles'Access);
-         Foreach
-           (Gtk_List_Store(Get_Object(Builder, "fileslist")),
-            CheckItem'Access);
-         Set_Sort_Func
-           (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
-            SortFiles'Access);
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+         if Modification_Time(To_String(CurrentDirectory)) > LastCheck then
+            Reload(Builder);
+         else
+            Foreach
+              (Gtk_List_Store(Get_Object(Builder, "fileslist")),
+               CheckItem'Access);
+         end if;
       end loop;
    end RefreshTask;
 
