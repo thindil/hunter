@@ -56,6 +56,10 @@ package Preferences is
    --                         will be show on the top of the window. Otherwise
    --                         toolbar action will be on the left and toolbar
    --                         with information will be on the right
+   -- AutoRefresh           - If true, auto refresh directory listing on changed
+   --                         files or directories inside
+   -- AutoRefreshInterval   - How often, in seconds, auto refresh should be
+   --                         triggered
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -73,6 +77,8 @@ package Preferences is
       ShowFinishedInfo: Boolean;
       OverwriteOnExist: Boolean;
       ToolbarsOnTop: Boolean;
+      AutoRefresh: Boolean;
+      AutoRefreshInterval: Positive;
    end record;
    -- ****
 
