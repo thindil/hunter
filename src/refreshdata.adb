@@ -18,12 +18,10 @@ with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtkada.Builder; use Gtkada.Builder;
 with MainWindow; use MainWindow;
-with Utils; use Utils;
 
 package body RefreshData is
 
@@ -46,14 +44,8 @@ package body RefreshData is
       if ModificationTime /= "unknown"
         and then Value(ModificationTime, UTC_Time_Offset) /=
           Modification_Time(FileName) then
-         Set
-           (-(Model), Iter, 5,
-            Ada.Calendar.Formatting.Image
-              (Date => Modification_Time(FileName),
-               Time_Zone => UTC_Time_Offset));
-         if Is_Regular_File(FileName) then
-            Set(-(Model), Iter, 3, CountFileSize(Size(FileName)));
-         end if;
+          Reload(Builder);
+          return True;
       end if;
       return False;
    end CheckItem;
