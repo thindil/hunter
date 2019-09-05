@@ -22,6 +22,7 @@ with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtkada.Builder; use Gtkada.Builder;
 with MainWindow; use MainWindow;
+with Preferences; use Preferences;
 
 package body RefreshData is
 
@@ -55,13 +56,15 @@ package body RefreshData is
       accept Start;
       loop
          LastCheck := Clock;
-         delay 10.0;
-         if Modification_Time(To_String(CurrentDirectory)) > LastCheck then
-            Reload(Builder);
-         else
-            Foreach
-              (Gtk_List_Store(Get_Object(Builder, "fileslist")),
+         delay Duration(Settings.AutoRefreshInterval);
+         if Settings.AutoRefresh then
+            if Modification_Time(To_String(CurrentDirectory)) > LastCheck then
+               Reload(Builder);
+            else
+               Foreach
+                  (Gtk_List_Store(Get_Object(Builder, "fileslist")),
                CheckItem'Access);
+            end if;
          end if;
       end loop;
    end RefreshTask;

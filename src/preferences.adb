@@ -145,7 +145,7 @@ package body Preferences is
          ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
          DeleteFiles => True, ClearTrashOnExit => False,
          ShowFinishedInfo => False, OverwriteOnExist => True,
-         ToolbarsOnTop => True);
+         ToolbarsOnTop => True, AutoRefresh => True, AutoRefreshInterval => 5);
       if FindExecutable("highlight") = "" then
          Settings.ColorText := False;
          Set_Sensitive
@@ -244,6 +244,17 @@ package body Preferences is
                  (Gtk_Switch(Get_Object(Builder, "switchtoolbarsontop")),
                   Settings.ToolbarsOnTop);
                SetToolbars;
+            elsif FieldName = To_Unbounded_String("AutoRefresh") then
+               Settings.AutoRefresh := LoadBoolean;
+               Set_Active
+                 (Gtk_Switch(Get_Object(Builder, "switchautorefresh")),
+                  Settings.AutoRefresh);
+            elsif FieldName = To_Unbounded_String("AutoRefreshInterval") then
+               Settings.AutoRefreshInterval :=
+                 Positive'Value(To_String(Value));
+               Set_Value
+                 (Gtk_Adjustment(Get_Object(Builder, "adjrefresh")),
+                  Gdouble(Settings.AutoRefreshInterval));
             end if;
          end if;
       end loop;
@@ -356,6 +367,14 @@ package body Preferences is
            Get_Active(Gtk_Switch(Get_Object(Object, "switchtoolbarsontop")));
          SetToolbars;
       end if;
+      if Get_Active
+          (Gtk_Switch(Get_Object(Object, "switchautorefresh"))) /=
+        Settings.AutoRefresh then
+         Settings.AutoRefresh :=
+           Get_Active
+             (Gtk_Switch(Get_Object(Object, "switchautorefresh")));
+         Set_Sensitive(Gtk_Widget(Get_Object(Object, "scalerefresh")), Settings.AutoRefresh);
+      end if;
       return False;
    end SaveSettings;
 
@@ -376,6 +395,13 @@ package body Preferences is
              (Get_Active_Text
                 (Gtk_Combo_Box_Text(Get_Object(Object, "cmbcolortheme"))));
          PreviewItem(Object);
+      end if;
+      if Natural
+          (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjrefresh")))) /=
+        Settings.AutoRefreshInterval then
+         Settings.AutoRefreshInterval :=
+           Positive
+             (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjrefresh"))));
       end if;
    end SaveSettingsProc;
 
@@ -419,6 +445,11 @@ package body Preferences is
       SaveBoolean(Settings.ShowFinishedInfo, "ShowFinishedInfo");
       SaveBoolean(Settings.OverwriteOnExist, "OverwriteOnExist");
       SaveBoolean(Settings.ToolbarsOnTop, "ToolbarsOnTop");
+      SaveBoolean(Settings.AutoRefresh, "AutoRefresh");
+      Put_Line
+        (ConfigFile,
+         "AutoRefreshInterval =" &
+         Positive'Image(Settings.AutoRefreshInterval));
       Close(ConfigFile);
    end SavePreferences;
 
