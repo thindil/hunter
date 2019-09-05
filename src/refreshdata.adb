@@ -37,26 +37,10 @@ package body RefreshData is
       FileName: constant String :=
         To_String(CurrentDirectory) & "/" & Get_String(Model, Iter, 0);
       ModificationTime: constant String := Get_String(Model, Iter, 5);
-      TempIter: Gtk_Tree_Iter;
    begin
-      if not Is_Symbolic_Link(FileName) and not Exists(FileName) then
-         TempIter := Iter;
-         Set_Sort_Func
-           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
-            EmptySortFiles'Access);
-         Remove(-(Model), TempIter);
-         Set_Sort_Func
-           (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
-            SortFiles'Access);
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
-         return False;
-      end if;
       if ModificationTime /= "unknown"
         and then Value(ModificationTime, UTC_Time_Offset) /=
           Modification_Time(FileName) then
-         Set_Sort_Func
-           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
-            EmptySortFiles'Access);
          Set
            (-(Model), Iter, 5,
             Ada.Calendar.Formatting.Image
@@ -65,10 +49,6 @@ package body RefreshData is
          if Is_Regular_File(FileName) then
             Set(-(Model), Iter, 3, CountFileSize(Size(FileName)));
          end if;
-         Set_Sort_Func
-           (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
-            SortFiles'Access);
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
       end if;
       return False;
    end CheckItem;
@@ -78,9 +58,16 @@ package body RefreshData is
       accept Start;
       loop
          delay 10.0;
+         Set_Sort_Func
+           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
+            EmptySortFiles'Access);
          Foreach
            (Gtk_List_Store(Get_Object(Builder, "fileslist")),
             CheckItem'Access);
+         Set_Sort_Func
+           (Gtk_List_Store(Get_Object(Builder, "fileslist")), 0,
+            SortFiles'Access);
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
       end loop;
    end RefreshTask;
 
