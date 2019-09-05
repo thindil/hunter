@@ -44,8 +44,8 @@ package body RefreshData is
       if ModificationTime /= "unknown"
         and then Value(ModificationTime, UTC_Time_Offset) /=
           Modification_Time(FileName) then
-          Reload(Builder);
-          return True;
+         Reload(Builder);
+         return True;
       end if;
       return False;
    end CheckItem;

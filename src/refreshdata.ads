@@ -13,10 +13,21 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+-- ****h* Hunter/RefreshData
+-- FUNCTION
+-- Provide code to automatically refresh directory listing on changed files
+-- or directories inside
+-- SOURCE
 package RefreshData is
+-- ****
 
+   -- ****a* RefreshData/RefreshTask
+   -- FUNCTION
+   -- Task to autorefresh directory listing
+   -- SOURCE
    task RefreshTask is
       entry Start;
    end RefreshTask;
+   -- ****
 
 end RefreshData;
