@@ -382,6 +382,9 @@ package body Preferences is
 
    procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class) is
    begin
+      if Setting then
+         return;
+      end if;
       if Natural
           (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds")))) /=
         Settings.AutoCloseMessagesTime then
