@@ -73,7 +73,6 @@ package body MainWindow is
             Reload(Object);
          end if;
       end if;
-      abort RefreshTask;
       Unref(Object);
       Main_Quit;
    end Quit;
@@ -596,7 +595,7 @@ package body MainWindow is
               (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
       end if;
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
-      RefreshTask.Start;
+      StartTimer;
       Setting := False;
    end CreateMainWindow;
 

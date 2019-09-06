@@ -33,6 +33,7 @@ with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
 with MainWindow; use MainWindow;
+with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 
@@ -367,13 +368,14 @@ package body Preferences is
            Get_Active(Gtk_Switch(Get_Object(Object, "switchtoolbarsontop")));
          SetToolbars;
       end if;
-      if Get_Active
-          (Gtk_Switch(Get_Object(Object, "switchautorefresh"))) /=
+      if Get_Active(Gtk_Switch(Get_Object(Object, "switchautorefresh"))) /=
         Settings.AutoRefresh then
          Settings.AutoRefresh :=
-           Get_Active
-             (Gtk_Switch(Get_Object(Object, "switchautorefresh")));
-         Set_Sensitive(Gtk_Widget(Get_Object(Object, "scalerefresh")), Settings.AutoRefresh);
+           Get_Active(Gtk_Switch(Get_Object(Object, "switchautorefresh")));
+         Set_Sensitive
+           (Gtk_Widget(Get_Object(Object, "scalerefresh")),
+            Settings.AutoRefresh);
+         StartTimer;
       end if;
       return False;
    end SaveSettings;
@@ -402,6 +404,7 @@ package body Preferences is
          Settings.AutoRefreshInterval :=
            Positive
              (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjrefresh"))));
+         StartTimer;
       end if;
    end SaveSettingsProc;
 
