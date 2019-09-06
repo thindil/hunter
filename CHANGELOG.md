@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 - Missing translations of bookmarks
 - Showing destination directory when changed selected files and directories
   for copying or moving
+- Loading setting for the syntax highlighting theme
 
 ## [0.8] - 2019-08-26
 
