@@ -21,6 +21,11 @@
 package RefreshData is
 -- ****
 
+   -- ****f* RefreshData/StartTimer
+   -- FUNCTION
+   -- Start timer for refreshing current directory listing
+   -- SOURCE
    procedure StartTimer;
+   -- ****
 
 end RefreshData;

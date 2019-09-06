@@ -46,9 +46,21 @@ package body RefreshData is
    Source_Id: G_Source_Id := No_Source_Id;
    -- ****
 
+   -- ****if* RefreshData/CheckItem
+   -- FUNCTION
+   -- Check if selected file or directory was modified and upgrade information
+   -- if was
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model with content of the current directory
+   -- Path  - Gtk_Tree_Path to selected file or directory (Unused)
+   -- Iter  - Gtk_Tree_Iter to selected file or directory
+   -- RESULT
+   -- Always return false to check each file or directory in current directory
+   -- SOURCE
    function CheckItem
      (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
       return Boolean is
+      -- ****
       pragma Unreferenced(Path);
       FileName: constant String :=
         To_String(CurrentDirectory) & "/" & Get_String(Model, Iter, 0);
@@ -69,7 +81,7 @@ package body RefreshData is
          if not Is_Read_Accessible_File(FileName) then
             Set(-(Model), Iter, 3, "?");
             Set(-(Model), Iter, 4, 0);
-            return True;
+            return False;
          end if;
          if Is_Directory(FileName) then
             Open(Directory, FileName);
@@ -92,12 +104,18 @@ package body RefreshData is
             end if;
             Set(-(Model), Iter, 4, Gint(Size));
          end if;
-         return True;
       end if;
       return False;
    end CheckItem;
 
+   -- ****if* RefreshData/CheckItems
+   -- FUNCTION
+   -- Timer function - check periodically for changes in current directory
+   -- RESULT
+   -- Always true to keep timer alive
+   -- SOURCE
    function CheckItems return Boolean is
+      -- ****
    begin
       if Settings.AutoRefresh then
          if Modification_Time(To_String(CurrentDirectory)) > LastCheck then
