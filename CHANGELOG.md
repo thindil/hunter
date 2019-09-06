@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Option to select or unselect all files and directories in current directory
 - Option to search for files and directories during copying or moving
 - Autorefreshing directory listing on any change to it files or directories
+- Option to enable or disable autorefresh and ability to set interval for it
 
 ### Changed
 - Updated README.md
