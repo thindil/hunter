@@ -31,7 +31,12 @@ with Trash; use Trash;
 
 package body Messages is
 
+   -- ****iv* Messages/Source_Id
+   -- FUNCTION
+   -- ID of timer to hide messages
+   -- SOURCE
    Source_Id: G_Source_Id := No_Source_Id;
+   -- ****
 
    -- ****if* Messages/AutoHideMessage
    -- FUNCTION
