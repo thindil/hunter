@@ -21,13 +21,6 @@
 package RefreshData is
 -- ****
 
-   -- ****a* RefreshData/RefreshTask
-   -- FUNCTION
-   -- Task to autorefresh directory listing
-   -- SOURCE
-   task RefreshTask is
-      entry Start;
-   end RefreshTask;
-   -- ****
+   procedure StartTimer;
 
 end RefreshData;
