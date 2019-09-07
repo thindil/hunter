@@ -28,6 +28,7 @@ with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
+with RefreshData; use RefreshData;
 with Utils; use Utils;
 
 package body Bookmarks is
@@ -86,6 +87,7 @@ package body Bookmarks is
          Show_All(Gtk_Widget(Get_Object(Builder, "btnselectall")));
          Show_All(Gtk_Widget(Get_Object(Builder, "btnsearch")));
          Show_All(Gtk_Widget(Get_Object(Builder, "btnnew")));
+         TemporaryStop := False;
       end if;
       if Is_Visible(Gtk_Widget(Get_Object(Object, "btntoolrestore"))) then
          ToggleToolButtons(NewAction, True);

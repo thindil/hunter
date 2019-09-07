@@ -42,6 +42,7 @@ with Glib; use Glib;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 
@@ -114,6 +115,7 @@ package body Trash is
         Gtk_Flow_Box(Get_Object(Object, "boxpath"));
    begin
       Setting := True;
+      TemporaryStop := True;
       if Accelerators = null then
          Accelerators := Gtk_Accel_Group(Get_Object(Object, "accelerators"));
       end if;
