@@ -115,7 +115,7 @@ package body RefreshData is
    -- Always true to keep timer alive
    -- SOURCE
    function CheckItems return Boolean is
-      -- ****
+   -- ****
    begin
       if Settings.AutoRefresh then
          if Modification_Time(To_String(CurrentDirectory)) > LastCheck then
