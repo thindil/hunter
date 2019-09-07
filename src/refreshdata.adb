@@ -117,7 +117,7 @@ package body RefreshData is
    function CheckItems return Boolean is
    -- ****
    begin
-      if Settings.AutoRefresh then
+      if Settings.AutoRefresh and not TemporaryStop then
          if Modification_Time(To_String(CurrentDirectory)) > LastCheck then
             Reload(Builder);
          else
