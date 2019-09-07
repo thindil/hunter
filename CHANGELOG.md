@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Showing destination directory when changed selected files and directories
   for copying or moving
 - Loading setting for the syntax highlighting theme
+- Showing some buttons after quit from Trash directory
 
 ## [0.8] - 2019-08-26
 
