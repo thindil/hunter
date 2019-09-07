@@ -82,10 +82,15 @@ package body Bookmarks is
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
    begin
       NewAction := COPY;
-      if Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+      if not Is_Visible(Gtk_Widget(Get_Object(Object, "btnnew"))) then
+         Show_All(Gtk_Widget(Get_Object(Builder, "btnselectall")));
+         Show_All(Gtk_Widget(Get_Object(Builder, "btnsearch")));
+         Show_All(Gtk_Widget(Get_Object(Builder, "btnnew")));
+      end if;
+      if Is_Visible(Gtk_Widget(Get_Object(Object, "btntoolrestore"))) then
          ToggleToolButtons(NewAction, True);
          Set_Title
-           (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
+           (Gtk_Tree_View_Column(Get_Object(Object, "modifiedcolumn")),
             Gettext("Modified"));
          SetDeleteTooltip;
       end if;
