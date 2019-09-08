@@ -83,7 +83,7 @@ package body Bookmarks is
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
    begin
       NewAction := COPY;
-      if not Is_Visible(Gtk_Widget(Get_Object(Object, "btnnew"))) then
+      if not Is_Visible(Gtk_Widget(Get_Object(Object, "btnsearch"))) then
          Show_All(Gtk_Widget(Get_Object(Builder, "btnselectall")));
          Show_All(Gtk_Widget(Get_Object(Builder, "btnsearch")));
          Show_All(Gtk_Widget(Get_Object(Builder, "btnnew")));
