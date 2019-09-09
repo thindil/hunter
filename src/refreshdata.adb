@@ -70,9 +70,8 @@ package body RefreshData is
       Last: Natural;
       SubFileName: String(1 .. 1024);
    begin
-      if ModificationTime /= "unknown"
-        and then Value(ModificationTime, UTC_Time_Offset) /=
-          Modification_Time(FileName) then
+      if Value(ModificationTime, UTC_Time_Offset) /=
+        Modification_Time(FileName) then
          Set
            (-(Model), Iter, 5,
             Image
@@ -106,6 +105,9 @@ package body RefreshData is
          end if;
       end if;
       return False;
+   exception
+      when Constraint_Error =>
+         return False;
    end CheckItem;
 
    -- ****if* RefreshData/CheckItems
