@@ -21,10 +21,12 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.List_Store; use Gtk.List_Store;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with Glib.Main; use Glib.Main;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with Utils; use Utils;
@@ -121,11 +123,21 @@ package body RefreshData is
    begin
       if Settings.AutoRefresh and not TemporaryStop then
          if Modification_Time(To_String(CurrentDirectory)) > LastCheck then
-            Reload(Builder);
+            if Get_Visible_Child_Name
+                (Gtk_Stack(Get_Object(Builder, "infostack"))) =
+              "destination" then
+               LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+            else
+               Reload(Builder);
+            end if;
          else
-            Foreach
-              (Gtk_List_Store(Get_Object(Builder, "fileslist")),
-               CheckItem'Access);
+            if Get_Visible_Child_Name
+                (Gtk_Stack(Get_Object(Builder, "infostack"))) /=
+              "destination" then
+               Foreach
+                 (Gtk_List_Store(Get_Object(Builder, "fileslist")),
+                  CheckItem'Access);
+            end if;
          end if;
       end if;
       LastCheck := Clock;
