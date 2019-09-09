@@ -92,7 +92,7 @@ For example: `GTK_THEME=Adwaita ./hunter-x86-64.AppImage`.
 ### Testing versions
 
 Here are available also testing versions of the program. You can find them
-in [Releases](https://github.com/thindil/hunter/releases/tag/travis-dev-build<Paste>).
+in [Releases](https://github.com/thindil/hunter/releases/tag/travis-dev-build).
 To use them, first you must download normal release. Then, inside directory
 where the program is, type `./hunter-x86_64.AppImage --appimage-extract` to
 extract whole program to directory *squashfs-root*. And then just move files
