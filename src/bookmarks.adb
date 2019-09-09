@@ -46,6 +46,12 @@ package body Bookmarks is
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
       NewAction := COPY;
+      if not Is_Visible(Gtk_Widget(Get_Object(Builder, "btnsearch"))) then
+         Show_All(Gtk_Widget(Get_Object(Builder, "btnselectall")));
+         Show_All(Gtk_Widget(Get_Object(Builder, "btnsearch")));
+         Show_All(Gtk_Widget(Get_Object(Builder, "btnnew")));
+         TemporaryStop := False;
+      end if;
       if Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
          ToggleToolButtons(NewAction, True);
          Set_Title
@@ -84,9 +90,9 @@ package body Bookmarks is
    begin
       NewAction := COPY;
       if not Is_Visible(Gtk_Widget(Get_Object(Object, "btnsearch"))) then
-         Show_All(Gtk_Widget(Get_Object(Builder, "btnselectall")));
-         Show_All(Gtk_Widget(Get_Object(Builder, "btnsearch")));
-         Show_All(Gtk_Widget(Get_Object(Builder, "btnnew")));
+         Show_All(Gtk_Widget(Get_Object(Object, "btnselectall")));
+         Show_All(Gtk_Widget(Get_Object(Object, "btnsearch")));
+         Show_All(Gtk_Widget(Get_Object(Object, "btnnew")));
          TemporaryStop := False;
       end if;
       if Is_Visible(Gtk_Widget(Get_Object(Object, "btntoolrestore"))) then
