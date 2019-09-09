@@ -19,6 +19,7 @@ with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Label; use Gtk.Label;
+with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Stack; use Gtk.Stack;
@@ -163,8 +164,14 @@ package body Utils is
            (Gtk_Widget(Get_Object(Builder, "btntoolcancel")), not Finished);
       end if;
       if Action = DELETETRASH and then Finished then
-         Show_All(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
-         Show_All(Gtk_Widget(Get_Object(Builder, "btndelete")));
+         if N_Children(Gtk_List_Store(Get_Object(Builder, "fileslist"))) =
+           0 then
+            Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
+            Hide(Gtk_Widget(Get_Object(Builder, "btndelete")));
+         else
+            Show_All(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
+            Show_All(Gtk_Widget(Get_Object(Builder, "btndelete")));
+         end if;
       else
          if Action /= SHOWTRASH then
             Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
