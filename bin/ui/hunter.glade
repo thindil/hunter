@@ -781,6 +781,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
               </object>
               <packing>
                 <property name="pack_type">end</property>
+                <property name="position">1</property>
               </packing>
             </child>
           </object>
@@ -2224,7 +2225,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkSwitch" id="switchtoolbarsontop">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">If enabled, show toolbars for actions and information on top of the window. Otherwise, actions toolbar will be at left and information toolbar will be at right of the window.</property>
+                    <property name="tooltip_text" translatable="yes">If enabled, show toolbars for actions and information on top of the window. Otherwise, they will be at left side of the window.</property>
                     <property name="active">True</property>
                     <signal name="state-set" handler="Save_Preferences" swapped="no"/>
                   </object>
