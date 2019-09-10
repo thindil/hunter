@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-09-10 09:19+0200\n"
+"POT-Creation-Date: 2019-09-10 09:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid " (not installed)"
 msgstr ""
 
-#: bin/ui/hunter.glade:1734
+#: bin/ui/hunter.glade:1735
 msgid " and attach (if possible) file 'error.log'"
 msgstr ""
 
@@ -85,13 +85,13 @@ msgstr ""
 msgid "Add new link to selected file or directory."
 msgstr ""
 
-#: bin/ui/hunter.glade:2179
+#: bin/ui/hunter.glade:2180
 msgid ""
 "After copying, moving files and directories or creating new link, stay in "
 "old directory, don't automatically go to destination directory."
 msgstr ""
 
-#: bin/ui/hunter.glade:2153
+#: bin/ui/hunter.glade:2154
 msgid ""
 "After that amount of seconds, all messages will be automatically closed by "
 "the program. If you set it to 0, this feature will be disabled."
@@ -113,31 +113,31 @@ msgstr ""
 msgid "All selected files and directories have been moved."
 msgstr ""
 
-#: bin/ui/hunter.glade:1321
+#: bin/ui/hunter.glade:1322
 msgid "Associated program:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1944
+#: bin/ui/hunter.glade:1945
 msgid "Auto refresh interval:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1932
+#: bin/ui/hunter.glade:1933
 msgid "Auto refresh:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2307
+#: bin/ui/hunter.glade:2308
 msgid "Automatically clear Trash on exit from the program."
 msgstr ""
 
-#: bin/ui/hunter.glade:1393 bin/ui/hunter.glade:1477 bin/ui/hunter.glade:1549
+#: bin/ui/hunter.glade:1394 bin/ui/hunter.glade:1478 bin/ui/hunter.glade:1550
 msgid "Can execute"
 msgstr ""
 
-#: bin/ui/hunter.glade:1361 bin/ui/hunter.glade:1445 bin/ui/hunter.glade:1517
+#: bin/ui/hunter.glade:1362 bin/ui/hunter.glade:1446 bin/ui/hunter.glade:1518
 msgid "Can read"
 msgstr ""
 
-#: bin/ui/hunter.glade:1377 bin/ui/hunter.glade:1461 bin/ui/hunter.glade:1533
+#: bin/ui/hunter.glade:1378 bin/ui/hunter.glade:1462 bin/ui/hunter.glade:1534
 msgid "Can write"
 msgstr ""
 
@@ -169,25 +169,25 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: bin/ui/hunter.glade:1956
+#: bin/ui/hunter.glade:1957
 msgid ""
 "Check for changes in current directory and refresh it if any file or "
 "directory inside was changed."
 msgstr ""
 
-#: bin/ui/hunter.glade:2295
+#: bin/ui/hunter.glade:2296
 msgid "Clear Trash on exit:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1764
+#: bin/ui/hunter.glade:1765
 msgid "Click to show technical info"
 msgstr ""
 
-#: bin/ui/hunter.glade:799
+#: bin/ui/hunter.glade:800
 msgid "Close"
 msgstr ""
 
-#: bin/ui/hunter.glade:2074
+#: bin/ui/hunter.glade:2075
 msgid ""
 "Color files syntax in files preview. Not all text (especially source code) "
 "files are supported. You may not be able to enable this option if you don't "
@@ -212,7 +212,7 @@ msgstr ""
 msgid "Copying files and directories"
 msgstr ""
 
-#: bin/ui/hunter.glade:2376
+#: bin/ui/hunter.glade:2377
 msgid "Copying or Moving"
 msgstr ""
 
@@ -264,7 +264,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: bin/ui/hunter.glade:2270
+#: bin/ui/hunter.glade:2271
 msgid "Delete files:"
 msgstr ""
 
@@ -272,7 +272,7 @@ msgstr ""
 msgid "Delete selected file(s) or folder(s) [ALT-Delete]."
 msgstr ""
 
-#: bin/ui/hunter.glade:2282
+#: bin/ui/hunter.glade:2283
 msgid "Delete selected files and directories instead of moving them to Trash."
 msgstr ""
 
@@ -284,7 +284,7 @@ msgstr ""
 msgid "Deleted"
 msgstr ""
 
-#: bin/ui/hunter.glade:2321
+#: bin/ui/hunter.glade:2322
 msgid "Deleting"
 msgstr ""
 
@@ -308,7 +308,7 @@ msgstr ""
 msgid "Directory "
 msgstr ""
 
-#: bin/ui/hunter.glade:1985
+#: bin/ui/hunter.glade:1986
 msgid "Directory Listing"
 msgstr ""
 
@@ -340,7 +340,7 @@ msgstr ""
 msgid "Enter destination"
 msgstr ""
 
-#: bin/ui/hunter.glade:1807
+#: bin/ui/hunter.glade:1808
 msgid "Enter program name"
 msgstr ""
 
@@ -356,11 +356,11 @@ msgstr ""
 msgid "File or directory informations [ALT-I]"
 msgstr ""
 
-#: bin/ui/hunter.glade:1296
+#: bin/ui/hunter.glade:1297
 msgid "File type:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1221 src/showitems.adb:139
+#: bin/ui/hunter.glade:1222 src/showitems.adb:139
 msgid "Full path:"
 msgstr ""
 
@@ -400,11 +400,11 @@ msgstr ""
 msgid "Graphical File Manager for Linux"
 msgstr ""
 
-#: bin/ui/hunter.glade:1417
+#: bin/ui/hunter.glade:1418
 msgid "Group:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2141
+#: bin/ui/hunter.glade:2142
 msgid "Hide messages after:"
 msgstr ""
 
@@ -412,7 +412,7 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
-#: bin/ui/hunter.glade:1969
+#: bin/ui/hunter.glade:1970
 msgid ""
 "How often (in seconds) the program should check for changes in current "
 "directory."
@@ -437,7 +437,7 @@ msgid ""
 "I can't open this file. No application associated with this type of files."
 msgstr ""
 
-#: bin/ui/hunter.glade:2361
+#: bin/ui/hunter.glade:2362
 msgid ""
 "If enabled, during copying or moving files and directories, if in "
 "destination directory exists file or directory with that same name, the "
@@ -445,11 +445,10 @@ msgid ""
 "add underscore to the name of moved or copied file or directory."
 msgstr ""
 
-#: bin/ui/hunter.glade:2227
+#: bin/ui/hunter.glade:2228
 msgid ""
 "If enabled, show toolbars for actions and information on top of the window. "
-"Otherwise, actions toolbar will be at left and information toolbar will be "
-"at right of the window."
+"Otherwise, they will be at left side of the window."
 msgstr ""
 
 #: bin/ui/hunter.glade:727
@@ -460,11 +459,11 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-#: bin/ui/hunter.glade:2242
+#: bin/ui/hunter.glade:2243
 msgid "Interface"
 msgstr ""
 
-#: bin/ui/hunter.glade:1245
+#: bin/ui/hunter.glade:1246
 msgid "Last Modified:"
 msgstr ""
 
@@ -472,7 +471,7 @@ msgstr ""
 msgid "Links to:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1050 src/bookmarks.adb:59 src/bookmarks.adb:102
+#: bin/ui/hunter.glade:1051 src/bookmarks.adb:59 src/bookmarks.adb:102
 msgid "Modified"
 msgstr ""
 
@@ -506,8 +505,8 @@ msgstr ""
 msgid "Music"
 msgstr ""
 
-#: bin/ui/hunter.glade:1010 bin/ui/hunter.glade:1151 bin/ui/hunter.glade:1611
-#: bin/ui/hunter.glade:1836
+#: bin/ui/hunter.glade:1011 bin/ui/hunter.glade:1152 bin/ui/hunter.glade:1612
+#: bin/ui/hunter.glade:1837
 msgid "Name"
 msgstr ""
 
@@ -523,15 +522,15 @@ msgstr ""
 msgid "New _Link"
 msgstr ""
 
-#: bin/ui/hunter.glade:835
+#: bin/ui/hunter.glade:836
 msgid "No"
 msgstr ""
 
-#: bin/ui/hunter.glade:865
+#: bin/ui/hunter.glade:866
 msgid "No for all"
 msgstr ""
 
-#: bin/ui/hunter.glade:1704
+#: bin/ui/hunter.glade:1705
 msgid ""
 "Oops, something bad happens and progam crashed. Please, remember what you "
 "done before crash and report this problem at"
@@ -553,15 +552,15 @@ msgstr ""
 msgid "Open with..."
 msgstr ""
 
-#: bin/ui/hunter.glade:1501
+#: bin/ui/hunter.glade:1502
 msgid "Others:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2349
+#: bin/ui/hunter.glade:2350
 msgid "Overwrite existing:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1333
+#: bin/ui/hunter.glade:1334
 msgid "Owner:"
 msgstr ""
 
@@ -577,7 +576,7 @@ msgstr ""
 msgid "Preferences"
 msgstr ""
 
-#: bin/ui/hunter.glade:711 bin/ui/hunter.glade:1663 bin/ui/hunter.glade:2113
+#: bin/ui/hunter.glade:711 bin/ui/hunter.glade:1664 bin/ui/hunter.glade:2114
 #: src/showitems.adb:519 src/showitems.adb:553
 msgid "Preview"
 msgstr ""
@@ -642,13 +641,13 @@ msgstr ""
 msgid "Run"
 msgstr ""
 
-#: bin/ui/hunter.glade:2025
+#: bin/ui/hunter.glade:2026
 msgid ""
 "Scale images in preview. When disabled, images shows with natural size. When "
 "enabled, images are resized to the size of the preview window."
 msgstr ""
 
-#: bin/ui/hunter.glade:2013
+#: bin/ui/hunter.glade:2014
 msgid "Scale images:"
 msgstr ""
 
@@ -668,7 +667,7 @@ msgstr ""
 msgid "Select all"
 msgstr ""
 
-#: bin/ui/hunter.glade:2099
+#: bin/ui/hunter.glade:2100
 msgid ""
 "Select color theme for coloring syntax in text files in preview. You may not "
 "be able to enable this option if you don't have installed the program "
@@ -689,21 +688,21 @@ msgstr ""
 msgid "Show Trash"
 msgstr ""
 
-#: bin/ui/hunter.glade:1895
+#: bin/ui/hunter.glade:1896
 msgid ""
 "Show hidden files and directories in directory listing and in directories "
 "preview."
 msgstr ""
 
-#: bin/ui/hunter.glade:1883
+#: bin/ui/hunter.glade:1884
 msgid "Show hidden files:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2191
+#: bin/ui/hunter.glade:2192
 msgid "Show info about finished action:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2203
+#: bin/ui/hunter.glade:2204
 msgid ""
 "Show information about finished copying, moving and deleting files or "
 "directories."
@@ -717,22 +716,22 @@ msgstr ""
 msgid "Show list of changes"
 msgstr ""
 
-#: bin/ui/hunter.glade:1908
+#: bin/ui/hunter.glade:1909
 msgid "Show modification time:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2037
+#: bin/ui/hunter.glade:2038
 msgid "Show preview:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2049
+#: bin/ui/hunter.glade:2050
 msgid ""
 "Show second panel with preview of files and directories. If you disable this "
 "option, second panel will be visible only during copying and moving files or "
 "directories and during creating new link."
 msgstr ""
 
-#: bin/ui/hunter.glade:1920
+#: bin/ui/hunter.glade:1921
 msgid "Show the column with last modification date for files and directories."
 msgstr ""
 
@@ -740,15 +739,15 @@ msgstr ""
 msgid "Show the program preferences [ALT-P]"
 msgstr ""
 
-#: bin/ui/hunter.glade:1035 bin/ui/hunter.glade:1636
+#: bin/ui/hunter.glade:1036 bin/ui/hunter.glade:1637
 msgid "Size"
 msgstr ""
 
-#: bin/ui/hunter.glade:1233
+#: bin/ui/hunter.glade:1234
 msgid "Size:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2167
+#: bin/ui/hunter.glade:2168
 msgid "Stay in source directory:"
 msgstr ""
 
@@ -760,15 +759,15 @@ msgstr ""
 msgid "Stop moving files and directories [Escape]"
 msgstr ""
 
-#: bin/ui/hunter.glade:2087
+#: bin/ui/hunter.glade:2088
 msgid "Syntax color theme:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2062
+#: bin/ui/hunter.glade:2063
 msgid "Syntax highlightning:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2215
+#: bin/ui/hunter.glade:2216
 msgid "Toolbars on top:"
 msgstr ""
 
@@ -797,11 +796,11 @@ msgstr ""
 msgid "Website"
 msgstr ""
 
-#: bin/ui/hunter.glade:850
+#: bin/ui/hunter.glade:851
 msgid "Yes"
 msgstr ""
 
-#: bin/ui/hunter.glade:879
+#: bin/ui/hunter.glade:880
 msgid "Yes for all"
 msgstr ""
 
@@ -853,7 +852,7 @@ msgstr ""
 msgid "directory"
 msgstr ""
 
-#: bin/ui/hunter.glade:1777
+#: bin/ui/hunter.glade:1778
 msgid "error"
 msgstr ""
 
@@ -861,11 +860,11 @@ msgstr ""
 msgid "file"
 msgstr ""
 
-#: bin/ui/hunter.glade:1692
+#: bin/ui/hunter.glade:1693
 msgid "files"
 msgstr ""
 
-#: bin/ui/hunter.glade:1716
+#: bin/ui/hunter.glade:1717
 msgid "https://github.com/thindil/hunter/issues"
 msgstr ""
 
@@ -873,11 +872,11 @@ msgstr ""
 msgid "none"
 msgstr ""
 
-#: bin/ui/hunter.glade:1208 bin/ui/hunter.glade:1653
+#: bin/ui/hunter.glade:1209 bin/ui/hunter.glade:1654
 msgid "page0"
 msgstr ""
 
-#: bin/ui/hunter.glade:1588
+#: bin/ui/hunter.glade:1589
 msgid "page1"
 msgstr ""
 
