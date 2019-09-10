@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-08-25 07:38+0200\n"
+"POT-Creation-Date: 2019-09-10 09:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid " (not installed)"
 msgstr ""
 
-#: bin/ui/hunter.glade:1649
+#: bin/ui/hunter.glade:1734
 msgid " and attach (if possible) file 'error.log'"
 msgstr ""
 
@@ -61,37 +61,37 @@ msgstr ""
 msgid "/.cache/hunter' directory."
 msgstr ""
 
-#: bin/ui/hunter.glade:562
+#: bin/ui/hunter.glade:618
 msgid "About"
 msgstr ""
 
-#: bin/ui/hunter.glade:697
+#: bin/ui/hunter.glade:754
 msgid "Add bookmark"
 msgstr ""
 
-#: bin/ui/hunter.glade:696
+#: bin/ui/hunter.glade:753
 msgid "Add bookmark to this directory [ALT-B]."
 msgstr ""
 
-#: bin/ui/hunter.glade:424
+#: bin/ui/hunter.glade:480
 msgid "Add new directory [ALT+N] or press arrow to see more options."
 msgstr ""
 
-#: bin/ui/hunter.glade:284
+#: bin/ui/hunter.glade:323
 msgid "Add new empty file."
 msgstr ""
 
-#: bin/ui/hunter.glade:295
+#: bin/ui/hunter.glade:334
 msgid "Add new link to selected file or directory."
 msgstr ""
 
-#: bin/ui/hunter.glade:2043
+#: bin/ui/hunter.glade:2179
 msgid ""
 "After copying, moving files and directories or creating new link, stay in "
 "old directory, don't automatically go to destination directory."
 msgstr ""
 
-#: bin/ui/hunter.glade:2017
+#: bin/ui/hunter.glade:2153
 msgid ""
 "After that amount of seconds, all messages will be automatically closed by "
 "the program. If you set it to 0, this feature will be disabled."
@@ -101,11 +101,11 @@ msgstr ""
 msgid "All selected files and directories have been copied."
 msgstr ""
 
-#: src/messages.adb:156
+#: src/messages.adb:161
 msgid "All selected files and directories have been deleted."
 msgstr ""
 
-#: src/messages.adb:148
+#: src/messages.adb:153
 msgid "All selected files and directories have been moved to Trash."
 msgstr ""
 
@@ -113,23 +113,31 @@ msgstr ""
 msgid "All selected files and directories have been moved."
 msgstr ""
 
-#: bin/ui/hunter.glade:1243
+#: bin/ui/hunter.glade:1321
 msgid "Associated program:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2146
+#: bin/ui/hunter.glade:1944
+msgid "Auto refresh interval:"
+msgstr ""
+
+#: bin/ui/hunter.glade:1932
+msgid "Auto refresh:"
+msgstr ""
+
+#: bin/ui/hunter.glade:2307
 msgid "Automatically clear Trash on exit from the program."
 msgstr ""
 
-#: bin/ui/hunter.glade:1315 bin/ui/hunter.glade:1399 bin/ui/hunter.glade:1471
+#: bin/ui/hunter.glade:1393 bin/ui/hunter.glade:1477 bin/ui/hunter.glade:1549
 msgid "Can execute"
 msgstr ""
 
-#: bin/ui/hunter.glade:1283 bin/ui/hunter.glade:1367 bin/ui/hunter.glade:1439
+#: bin/ui/hunter.glade:1361 bin/ui/hunter.glade:1445 bin/ui/hunter.glade:1517
 msgid "Can read"
 msgstr ""
 
-#: bin/ui/hunter.glade:1299 bin/ui/hunter.glade:1383 bin/ui/hunter.glade:1455
+#: bin/ui/hunter.glade:1377 bin/ui/hunter.glade:1461 bin/ui/hunter.glade:1533
 msgid "Can write"
 msgstr ""
 
@@ -149,7 +157,7 @@ msgstr ""
 msgid "Can't rename "
 msgstr ""
 
-#: src/trash.adb:314
+#: src/trash.adb:316
 msgid "Can't restore "
 msgstr ""
 
@@ -157,23 +165,29 @@ msgstr ""
 msgid "Can't start command: "
 msgstr ""
 
-#: bin/ui/hunter.glade:504
+#: bin/ui/hunter.glade:560
 msgid "Cancel"
 msgstr ""
 
-#: bin/ui/hunter.glade:2134
+#: bin/ui/hunter.glade:1956
+msgid ""
+"Check for changes in current directory and refresh it if any file or "
+"directory inside was changed."
+msgstr ""
+
+#: bin/ui/hunter.glade:2295
 msgid "Clear Trash on exit:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1679
+#: bin/ui/hunter.glade:1764
 msgid "Click to show technical info"
 msgstr ""
 
-#: bin/ui/hunter.glade:743
+#: bin/ui/hunter.glade:799
 msgid "Close"
 msgstr ""
 
-#: bin/ui/hunter.glade:1938
+#: bin/ui/hunter.glade:2074
 msgid ""
 "Color files syntax in files preview. Not all text (especially source code) "
 "files are supported. You may not be able to enable this option if you don't "
@@ -184,21 +198,21 @@ msgstr ""
 msgid "Command "
 msgstr ""
 
-#: bin/ui/hunter.glade:234 bin/ui/hunter.glade:457
+#: bin/ui/hunter.glade:264 bin/ui/hunter.glade:513
 msgid "Copy"
 msgstr ""
 
-#: bin/ui/hunter.glade:456
+#: bin/ui/hunter.glade:512
 msgid ""
 "Copy selected files [ALT-C]. Pressed button means start copying currently "
 "selected files or directories. Press again to copy them."
 msgstr ""
 
-#: src/utils.adb:216
+#: src/utils.adb:223
 msgid "Copying files and directories"
 msgstr ""
 
-#: bin/ui/hunter.glade:2215
+#: bin/ui/hunter.glade:2376
 msgid "Copying or Moving"
 msgstr ""
 
@@ -210,7 +224,7 @@ msgstr ""
 msgid "Could not delete selected files or directories. Reason: "
 msgstr ""
 
-#: src/utils.adb:100
+#: src/utils.adb:101
 msgid "Could not found executable: "
 msgstr ""
 
@@ -234,31 +248,31 @@ msgstr ""
 msgid "Create new link to selected file or directory."
 msgstr ""
 
-#: src/utils.adb:200
+#: src/utils.adb:207
 msgid "Creating empty file"
 msgstr ""
 
-#: src/utils.adb:204
+#: src/utils.adb:211
 msgid "Creating new directory"
 msgstr ""
 
-#: src/utils.adb:208
+#: src/utils.adb:215
 msgid "Creating new link"
 msgstr ""
 
-#: bin/ui/hunter.glade:252 bin/ui/hunter.glade:488
+#: bin/ui/hunter.glade:282 bin/ui/hunter.glade:544
 msgid "Delete"
 msgstr ""
 
-#: bin/ui/hunter.glade:2109
+#: bin/ui/hunter.glade:2270
 msgid "Delete files:"
 msgstr ""
 
-#: src/preferences.adb:51 src/trash.adb:137
+#: src/preferences.adb:58 src/trash.adb:139
 msgid "Delete selected file(s) or folder(s) [ALT-Delete]."
 msgstr ""
 
-#: bin/ui/hunter.glade:2121
+#: bin/ui/hunter.glade:2282
 msgid "Delete selected files and directories instead of moving them to Trash."
 msgstr ""
 
@@ -266,27 +280,27 @@ msgstr ""
 msgid "Delete?"
 msgstr ""
 
-#: src/trash.adb:131
+#: src/trash.adb:133
 msgid "Deleted"
 msgstr ""
 
-#: bin/ui/hunter.glade:2160
+#: bin/ui/hunter.glade:2321
 msgid "Deleting"
 msgstr ""
 
-#: src/utils.adb:225
+#: src/utils.adb:236
 msgid "Deleting files and directories"
 msgstr ""
 
-#: bin/ui/hunter.glade:65
+#: bin/ui/hunter.glade:95 src/bookmarks.adb:132
 msgid "Desktop"
 msgstr ""
 
-#: src/createitems.adb:195 src/utils.adb:156
+#: src/createitems.adb:195 src/utils.adb:157
 msgid "Destination directory"
 msgstr ""
 
-#: src/copyitems.adb:140 src/moveitems.adb:83 src/trash.adb:309
+#: src/copyitems.adb:140 src/moveitems.adb:83 src/trash.adb:311
 msgid "Directory"
 msgstr ""
 
@@ -294,19 +308,19 @@ msgstr ""
 msgid "Directory "
 msgstr ""
 
-#: bin/ui/hunter.glade:1849
+#: bin/ui/hunter.glade:1985
 msgid "Directory Listing"
 msgstr ""
 
-#: bin/ui/hunter.glade:503
+#: bin/ui/hunter.glade:559
 msgid "Discard all changes and back to files list [Escape]"
 msgstr ""
 
-#: bin/ui/hunter.glade:86
+#: bin/ui/hunter.glade:116 src/bookmarks.adb:138
 msgid "Documents"
 msgstr ""
 
-#: bin/ui/hunter.glade:72
+#: bin/ui/hunter.glade:102 src/bookmarks.adb:134
 msgid "Download"
 msgstr ""
 
@@ -314,7 +328,7 @@ msgstr ""
 msgid "Elements:"
 msgstr ""
 
-#: bin/ui/hunter.glade:127
+#: bin/ui/hunter.glade:157
 msgid "Empty Trash"
 msgstr ""
 
@@ -322,83 +336,89 @@ msgstr ""
 msgid "Enter command to use to open selected item."
 msgstr ""
 
-#: src/bookmarks.adb:214
+#: src/bookmarks.adb:228
 msgid "Enter destination"
 msgstr ""
 
-#: bin/ui/hunter.glade:1722
+#: bin/ui/hunter.glade:1807
 msgid "Enter program name"
 msgstr ""
 
-#: bin/ui/hunter.glade:595
+#: bin/ui/hunter.glade:652
 msgid "Execute selected program [ALT-E]."
 msgstr ""
 
-#: src/copyitems.adb:142 src/moveitems.adb:85 src/trash.adb:311
+#: src/copyitems.adb:142 src/moveitems.adb:85 src/trash.adb:313
 msgid "File"
 msgstr ""
 
-#: bin/ui/hunter.glade:669
+#: bin/ui/hunter.glade:726
 msgid "File or directory informations [ALT-I]"
 msgstr ""
 
-#: bin/ui/hunter.glade:1218
+#: bin/ui/hunter.glade:1296
 msgid "File type:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1143 src/showitems.adb:139
+#: bin/ui/hunter.glade:1221 src/showitems.adb:139
 msgid "Full path:"
 msgstr ""
 
-#: src/bookmarks.adb:63
+#: src/bookmarks.adb:70
 msgid "Go to selected destination."
 msgstr ""
 
-#: src/loaddata.adb:466
+#: src/loaddata.adb:469
 msgid "Go to this directory [ALT+"
 msgstr ""
 
-#: src/loaddata.adb:399
+#: src/loaddata.adb:402
 msgid "Go to this directory [ALT+1]"
 msgstr ""
 
-#: src/loaddata.adb:476
+#: src/loaddata.adb:479
 msgid "Go to this directory [ALT+SHIFT+"
 msgstr ""
 
-#: src/loaddata.adb:405
+#: src/loaddata.adb:408
 msgid "Go to this directory [ALT+SHIFT+1]"
 msgstr ""
 
-#: src/loaddata.adb:389 src/loaddata.adb:437
+#: src/loaddata.adb:392 src/loaddata.adb:440
 msgid "Go to upper directory [ALT+SHIFT+U]"
 msgstr ""
 
-#: src/loaddata.adb:383 src/loaddata.adb:430
+#: src/loaddata.adb:386 src/loaddata.adb:433
 msgid "Go to upper directory [ALT+U]"
 msgstr ""
 
-#: bin/ui/hunter.glade:382
+#: bin/ui/hunter.glade:422
 msgid "Go to your home directory [ALT+H] or press arrow to see more bookmarks"
 msgstr ""
 
-#: bin/ui/hunter.glade:316
+#: bin/ui/hunter.glade:355
 msgid "Graphical File Manager for Linux"
 msgstr ""
 
-#: bin/ui/hunter.glade:1339
+#: bin/ui/hunter.glade:1417
 msgid "Group:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2005
+#: bin/ui/hunter.glade:2141
 msgid "Hide messages after:"
 msgstr ""
 
-#: bin/ui/hunter.glade:57 bin/ui/hunter.glade:383
+#: bin/ui/hunter.glade:87 bin/ui/hunter.glade:423
 msgid "Home"
 msgstr ""
 
-#: bin/ui/hunter.glade:350
+#: bin/ui/hunter.glade:1969
+msgid ""
+"How often (in seconds) the program should check for changes in current "
+"directory."
+msgstr ""
+
+#: bin/ui/hunter.glade:389
 msgid "Hunter"
 msgstr ""
 
@@ -417,7 +437,7 @@ msgid ""
 "I can't open this file. No application associated with this type of files."
 msgstr ""
 
-#: bin/ui/hunter.glade:2200
+#: bin/ui/hunter.glade:2361
 msgid ""
 "If enabled, during copying or moving files and directories, if in "
 "destination directory exists file or directory with that same name, the "
@@ -425,7 +445,14 @@ msgid ""
 "add underscore to the name of moved or copied file or directory."
 msgstr ""
 
-#: bin/ui/hunter.glade:670
+#: bin/ui/hunter.glade:2227
+msgid ""
+"If enabled, show toolbars for actions and information on top of the window. "
+"Otherwise, actions toolbar will be at left and information toolbar will be "
+"at right of the window."
+msgstr ""
+
+#: bin/ui/hunter.glade:727
 msgid "Info"
 msgstr ""
 
@@ -433,11 +460,11 @@ msgstr ""
 msgid "Information"
 msgstr ""
 
-#: bin/ui/hunter.glade:2081
+#: bin/ui/hunter.glade:2242
 msgid "Interface"
 msgstr ""
 
-#: bin/ui/hunter.glade:1167
+#: bin/ui/hunter.glade:1245
 msgid "Last Modified:"
 msgstr ""
 
@@ -445,19 +472,19 @@ msgstr ""
 msgid "Links to:"
 msgstr ""
 
-#: bin/ui/hunter.glade:973 src/bookmarks.adb:52 src/bookmarks.adb:89
+#: bin/ui/hunter.glade:1050 src/bookmarks.adb:59 src/bookmarks.adb:102
 msgid "Modified"
 msgstr ""
 
-#: bin/ui/hunter.glade:243 bin/ui/hunter.glade:473
+#: bin/ui/hunter.glade:273 bin/ui/hunter.glade:529
 msgid "Move"
 msgstr ""
 
-#: src/preferences.adb:57
+#: src/preferences.adb:64
 msgid "Move selected file(s) or folder(s) to trash [ALT-Delete]."
 msgstr ""
 
-#: bin/ui/hunter.glade:472
+#: bin/ui/hunter.glade:528
 msgid ""
 "Move selected files [ALT-M]. Pressed button means start moving currently "
 "selected files or directories. Press again to move them."
@@ -467,259 +494,285 @@ msgstr ""
 msgid "Move to trash?"
 msgstr ""
 
-#: src/utils.adb:220
+#: src/utils.adb:229
 msgid "Moving files and directories"
 msgstr ""
 
-#: src/utils.adb:229
+#: src/utils.adb:240
 msgid "Moving files and directories to trash"
 msgstr ""
 
-#: bin/ui/hunter.glade:93
+#: bin/ui/hunter.glade:123 src/bookmarks.adb:140
 msgid "Music"
 msgstr ""
 
-#: bin/ui/hunter.glade:933 bin/ui/hunter.glade:1073 bin/ui/hunter.glade:1533
-#: bin/ui/hunter.glade:1751
+#: bin/ui/hunter.glade:1010 bin/ui/hunter.glade:1151 bin/ui/hunter.glade:1611
+#: bin/ui/hunter.glade:1836
 msgid "Name"
 msgstr ""
 
-#: bin/ui/hunter.glade:425
+#: bin/ui/hunter.glade:481
 msgid "New"
 msgstr ""
 
-#: bin/ui/hunter.glade:285
+#: bin/ui/hunter.glade:324
 msgid "New _File"
 msgstr ""
 
-#: bin/ui/hunter.glade:296
+#: bin/ui/hunter.glade:335
 msgid "New _Link"
 msgstr ""
 
-#: bin/ui/hunter.glade:779
+#: bin/ui/hunter.glade:835
 msgid "No"
 msgstr ""
 
-#: bin/ui/hunter.glade:809
+#: bin/ui/hunter.glade:865
 msgid "No for all"
 msgstr ""
 
-#: bin/ui/hunter.glade:1619
+#: bin/ui/hunter.glade:1704
 msgid ""
 "Oops, something bad happens and progam crashed. Please, remember what you "
 "done before crash and report this problem at"
 msgstr ""
 
-#: bin/ui/hunter.glade:198 bin/ui/hunter.glade:612
+#: bin/ui/hunter.glade:228 bin/ui/hunter.glade:669
 msgid "Open"
 msgstr ""
 
-#: bin/ui/hunter.glade:611
+#: bin/ui/hunter.glade:668
 msgid "Open selected file or directory [ALT-O]"
 msgstr ""
 
-#: bin/ui/hunter.glade:627
+#: bin/ui/hunter.glade:684
 msgid "Open selected file or directory with command [ALT-W]"
 msgstr ""
 
-#: bin/ui/hunter.glade:216 bin/ui/hunter.glade:628
+#: bin/ui/hunter.glade:246 bin/ui/hunter.glade:685
 msgid "Open with..."
 msgstr ""
 
-#: bin/ui/hunter.glade:1423
+#: bin/ui/hunter.glade:1501
 msgid "Others:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2188
+#: bin/ui/hunter.glade:2349
 msgid "Overwrite existing:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1255
+#: bin/ui/hunter.glade:1333
 msgid "Owner:"
 msgstr ""
 
-#: bin/ui/hunter.glade:100
+#: bin/ui/hunter.glade:130 src/bookmarks.adb:142
 msgid "Pictures"
 msgstr ""
 
-#: bin/ui/hunter.glade:320
+#: bin/ui/hunter.glade:359
 msgid "Polski - Bartek thindil Jasicki <thindil@laeran.pl>"
 msgstr ""
 
-#: bin/ui/hunter.glade:546
+#: bin/ui/hunter.glade:602
 msgid "Preferences"
 msgstr ""
 
-#: bin/ui/hunter.glade:654 bin/ui/hunter.glade:1585 bin/ui/hunter.glade:1977
-#: src/showitems.adb:519 src/showitems.adb:545
+#: bin/ui/hunter.glade:711 bin/ui/hunter.glade:1663 bin/ui/hunter.glade:2113
+#: src/showitems.adb:519 src/showitems.adb:553
 msgid "Preview"
 msgstr ""
 
-#: bin/ui/hunter.glade:653
+#: bin/ui/hunter.glade:710
 msgid "Preview file or directory [ALT-V]"
 msgstr ""
 
-#: bin/ui/hunter.glade:79
+#: bin/ui/hunter.glade:109 src/bookmarks.adb:136
 msgid "Public"
 msgstr ""
 
-#: src/loaddata.adb:369 src/loaddata.adb:446 src/trash.adb:260
+#: src/loaddata.adb:372 src/loaddata.adb:449 src/trash.adb:262
 msgid "Reload current directory [ALT+R]"
 msgstr ""
 
-#: src/loaddata.adb:375 src/loaddata.adb:453
+#: src/loaddata.adb:378 src/loaddata.adb:456
 msgid "Reload current directory [ALT+SHIFT+R]"
 msgstr ""
 
-#: src/trash.adb:63
+#: src/trash.adb:64
 msgid "Remove all files and directories from Trash?"
 msgstr ""
 
-#: bin/ui/hunter.glade:713
+#: bin/ui/hunter.glade:770
 msgid "Remove bookmark"
 msgstr ""
 
-#: bin/ui/hunter.glade:712
+#: bin/ui/hunter.glade:769
 msgid "Remove bookmark to this directory [ALT-B]"
 msgstr ""
 
-#: bin/ui/hunter.glade:225 bin/ui/hunter.glade:441
+#: bin/ui/hunter.glade:255 bin/ui/hunter.glade:497
 msgid "Rename"
 msgstr ""
 
-#: src/mainwindow.adb:113
+#: src/mainwindow.adb:116
 msgid "Rename directory."
 msgstr ""
 
-#: src/mainwindow.adb:117
+#: src/mainwindow.adb:120
 msgid "Rename file."
 msgstr ""
 
-#: bin/ui/hunter.glade:440
+#: bin/ui/hunter.glade:496
 msgid "Rename selected file or directory [CTRL-R]"
 msgstr ""
 
-#: src/utils.adb:212
+#: src/utils.adb:219
 msgid "Renaming file or directory"
 msgstr ""
 
-#: bin/ui/hunter.glade:520
+#: bin/ui/hunter.glade:576
 msgid "Restore"
 msgstr ""
 
-#: bin/ui/hunter.glade:519
+#: bin/ui/hunter.glade:575
 msgid "Restore selected file or directory from the trash [ALT+R]"
 msgstr ""
 
-#: bin/ui/hunter.glade:207 bin/ui/hunter.glade:596
+#: bin/ui/hunter.glade:237 bin/ui/hunter.glade:653
 msgid "Run"
 msgstr ""
 
-#: bin/ui/hunter.glade:1889
+#: bin/ui/hunter.glade:2025
 msgid ""
 "Scale images in preview. When disabled, images shows with natural size. When "
 "enabled, images are resized to the size of the preview window."
 msgstr ""
 
-#: bin/ui/hunter.glade:1877
+#: bin/ui/hunter.glade:2013
 msgid "Scale images:"
 msgstr ""
 
-#: bin/ui/hunter.glade:399
+#: bin/ui/hunter.glade:439
 msgid "Search"
 msgstr ""
 
-#: bin/ui/hunter.glade:398
+#: bin/ui/hunter.glade:438
 msgid "Search for the file or directory [ALT+F]"
 msgstr ""
 
-#: bin/ui/hunter.glade:1963
+#: bin/ui/hunter.glade:291 bin/ui/hunter.glade:455
+msgid "Select All"
+msgstr ""
+
+#: src/mainwindow.adb:312
+msgid "Select all"
+msgstr ""
+
+#: bin/ui/hunter.glade:2099
 msgid ""
 "Select color theme for coloring syntax in text files in preview. You may not "
 "be able to enable this option if you don't have installed the program "
 "\"highlight\"."
 msgstr ""
 
-#: bin/ui/hunter.glade:118
+#: bin/ui/hunter.glade:454
+msgid ""
+"Select or unselect all files and directories in currently selected "
+"directory. [CTRL+A]"
+msgstr ""
+
+#: bin/ui/hunter.glade:34
+msgid "Show README"
+msgstr ""
+
+#: bin/ui/hunter.glade:148
 msgid "Show Trash"
 msgstr ""
 
-#: bin/ui/hunter.glade:1810
+#: bin/ui/hunter.glade:1895
 msgid ""
 "Show hidden files and directories in directory listing and in directories "
 "preview."
 msgstr ""
 
-#: bin/ui/hunter.glade:1798
+#: bin/ui/hunter.glade:1883
 msgid "Show hidden files:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2055
+#: bin/ui/hunter.glade:2191
 msgid "Show info about finished action:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2067
+#: bin/ui/hunter.glade:2203
 msgid ""
 "Show information about finished copying, moving and deleting files or "
 "directories."
 msgstr ""
 
-#: bin/ui/hunter.glade:561
+#: bin/ui/hunter.glade:617
 msgid "Show informations about the program [ALT-A]."
 msgstr ""
 
-#: bin/ui/hunter.glade:1823
+#: bin/ui/hunter.glade:43
+msgid "Show list of changes"
+msgstr ""
+
+#: bin/ui/hunter.glade:1908
 msgid "Show modification time:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1901
+#: bin/ui/hunter.glade:2037
 msgid "Show preview:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1913
+#: bin/ui/hunter.glade:2049
 msgid ""
 "Show second panel with preview of files and directories. If you disable this "
 "option, second panel will be visible only during copying and moving files or "
 "directories and during creating new link."
 msgstr ""
 
-#: bin/ui/hunter.glade:1835
+#: bin/ui/hunter.glade:1920
 msgid "Show the column with last modification date for files and directories."
 msgstr ""
 
-#: bin/ui/hunter.glade:545
+#: bin/ui/hunter.glade:601
 msgid "Show the program preferences [ALT-P]"
 msgstr ""
 
-#: bin/ui/hunter.glade:958 bin/ui/hunter.glade:1558
+#: bin/ui/hunter.glade:1035 bin/ui/hunter.glade:1636
 msgid "Size"
 msgstr ""
 
-#: bin/ui/hunter.glade:1155
+#: bin/ui/hunter.glade:1233
 msgid "Size:"
 msgstr ""
 
-#: bin/ui/hunter.glade:2031
+#: bin/ui/hunter.glade:2167
 msgid "Stay in source directory:"
 msgstr ""
 
-#: src/utils.adb:126
+#: src/utils.adb:127
 msgid "Stop copying files and directories [Escape]"
 msgstr ""
 
-#: src/utils.adb:131
+#: src/utils.adb:132
 msgid "Stop moving files and directories [Escape]"
 msgstr ""
 
-#: bin/ui/hunter.glade:1951
+#: bin/ui/hunter.glade:2087
 msgid "Syntax color theme:"
 msgstr ""
 
-#: bin/ui/hunter.glade:1926
+#: bin/ui/hunter.glade:2062
 msgid "Syntax highlightning:"
 msgstr ""
 
-#: src/messages.adb:152
+#: bin/ui/hunter.glade:2215
+msgid "Toolbars on top:"
+msgstr ""
+
+#: src/messages.adb:157
 msgid "Trash have been cleared."
 msgstr ""
 
@@ -732,19 +785,23 @@ msgstr ""
 msgid "Unknown error during deleting files or directories."
 msgstr ""
 
-#: bin/ui/hunter.glade:107
+#: src/mainwindow.adb:308
+msgid "Unselect all"
+msgstr ""
+
+#: bin/ui/hunter.glade:137 src/bookmarks.adb:144
 msgid "Videos"
 msgstr ""
 
-#: bin/ui/hunter.glade:318
+#: bin/ui/hunter.glade:357
 msgid "Website"
 msgstr ""
 
-#: bin/ui/hunter.glade:794
+#: bin/ui/hunter.glade:850
 msgid "Yes"
 msgstr ""
 
-#: bin/ui/hunter.glade:823
+#: bin/ui/hunter.glade:879
 msgid "Yes for all"
 msgstr ""
 
@@ -796,7 +853,7 @@ msgstr ""
 msgid "directory"
 msgstr ""
 
-#: bin/ui/hunter.glade:1692
+#: bin/ui/hunter.glade:1777
 msgid "error"
 msgstr ""
 
@@ -804,11 +861,11 @@ msgstr ""
 msgid "file"
 msgstr ""
 
-#: bin/ui/hunter.glade:1607
+#: bin/ui/hunter.glade:1692
 msgid "files"
 msgstr ""
 
-#: bin/ui/hunter.glade:1631
+#: bin/ui/hunter.glade:1716
 msgid "https://github.com/thindil/hunter/issues"
 msgstr ""
 
@@ -816,10 +873,18 @@ msgstr ""
 msgid "none"
 msgstr ""
 
+#: bin/ui/hunter.glade:1208 bin/ui/hunter.glade:1653
+msgid "page0"
+msgstr ""
+
+#: bin/ui/hunter.glade:1588
+msgid "page1"
+msgstr ""
+
 #: src/createitems.adb:96
 msgid "rename with new"
 msgstr ""
 
-#: src/trash.adb:316
+#: src/trash.adb:318
 msgid "with that name exists."
 msgstr ""
