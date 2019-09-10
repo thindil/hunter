@@ -108,7 +108,7 @@ package body RefreshData is
       end if;
       return False;
    exception
-      when Constraint_Error =>
+      when Constraint_Error | Name_Error =>
          return False;
    end CheckItem;
 
