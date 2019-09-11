@@ -16,7 +16,7 @@
 with Gtk.Button; use Gtk.Button;
 with Gtkada.Builder; use Gtkada.Builder;
 
--- ****h* Trash/Trash
+-- ****h* Hunter/Trash
 -- FUNCTION
 -- Provide code to manipulate system Trash
 -- SOURCE

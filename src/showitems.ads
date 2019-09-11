@@ -15,7 +15,7 @@
 
 with Gtkada.Builder; use Gtkada.Builder;
 
--- ****h* ShowItems/ShowItems
+-- ****h* Hunter/ShowItems
 -- FUNCTION
 -- Provide code to show informations and set some settings for selected files
 -- or directories.
