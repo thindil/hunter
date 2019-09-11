@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Updated README.md
+- Updated Polish translation of the program
 
 ### Fixed
 - Counting amount of files and directories in directories info
