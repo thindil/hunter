@@ -41,7 +41,7 @@ package body RefreshData is
    LastCheck: Time;
    -- ****
 
-   -- ****iv* Messages/Source_Id
+   -- ****iv* RefreshData/Source_Id
    -- FUNCTION
    -- ID of timer to hide messages
    -- SOURCE
