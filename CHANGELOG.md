@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [0.9] - 2019-09-12
 
 ### Added
 - Option to show README.md and CHANGELOG.md files
