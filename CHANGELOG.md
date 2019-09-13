@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- Detecting files types
+
 ## [0.9] - 2019-09-12
 
 ### Added
