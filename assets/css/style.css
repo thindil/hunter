@@ -73,9 +73,3 @@ summary {
 li p {
    margin-bottom: 10px;
 }
-
-img.center {
-	display: block;
-	text-align: center;
-	margin: 0 auto 1em auto;
-}
