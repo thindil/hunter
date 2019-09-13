@@ -96,6 +96,7 @@ package body MainWindow is
          Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
       end if;
       ShowItem(Object);
+      UpdateTimestamp;
    end Reload;
 
    -- ****if* MainWindow/StartRename

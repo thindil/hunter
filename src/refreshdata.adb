@@ -140,7 +140,7 @@ package body RefreshData is
             end if;
          end if;
       end if;
-      LastCheck := Clock;
+      UpdateTimestamp;
       return True;
    end CheckItems;
 
@@ -149,10 +149,15 @@ package body RefreshData is
       if Source_Id /= No_Source_Id then
          Remove(Source_Id);
       end if;
-      LastCheck := Clock;
+      UpdateTimestamp;
       Source_Id :=
         Timeout_Add
           (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems'Access);
    end StartTimer;
+
+   procedure UpdateTimestamp is
+   begin
+      LastCheck := Clock;
+   end UpdateTimestamp;
 
 end RefreshData;
