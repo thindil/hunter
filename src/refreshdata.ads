@@ -36,4 +36,11 @@ package RefreshData is
    procedure StartTimer;
    -- ****
 
+   -- ****f* RefreshData/UpdateTimestamp
+   -- FUNCTION
+   -- Update last check timestamp to current time
+   -- SOURCE
+   procedure UpdateTimestamp;
+   -- ****
+
 end RefreshData;
