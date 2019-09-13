@@ -13,8 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
-with Ada.Environment_Variables;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 
@@ -70,21 +69,6 @@ package body LibMagic is
       External_Name => "magic_load";
       -- ****
 
-      -- ****if* LibMagic/magic_compile
-      -- FUNCTION
-      -- Binding to the C function
-      -- PARAMETERS
-      -- arg1 - Pointer to the Magic data
-      -- arg2 - unused, set to Null_Ptr
-      -- RESULT
-      -- 0 if data was compiled
-      -- SOURCE
-   function magic_compile(arg1: magic_t; arg2: chars_ptr) return int with
-      Import => True,
-      Convention => C,
-      External_Name => "magic_compile";
-      -- ****
-
       -- ****if* LibMagic/magic_close
       -- FUNCTION
       -- Binding to the C function
@@ -113,18 +97,14 @@ package body LibMagic is
       -- ****
 
    procedure MagicOpen is
-      OldDirectory: constant String := Current_Directory;
    begin
-      Set_Directory
-        (Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
       MagicData := magic_open(16#0000010#);
-      if magic_load(MagicData, Null_Ptr) = -1 then
+      if magic_load
+          (MagicData,
+           New_String(Value("APPDIR", "") & "/usr/share/file/magic")) =
+        -1 then
          return;
       end if;
-      if magic_compile(MagicData, Null_Ptr) = -1 then
-         return;
-      end if;
-      Set_Directory(OldDirectory);
    end MagicOpen;
 
    function MagicFile(Name: String) return String is
