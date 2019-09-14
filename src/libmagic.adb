@@ -14,8 +14,12 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.Expect; use GNAT.Expect;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Utils; use Utils;
 
 package body LibMagic is
 
@@ -38,6 +42,13 @@ package body LibMagic is
    -- Pointer to the Magic data
    -- SOURCE
    MagicData: magic_t;
+   -- ****
+
+   -- ****iv* LibMagic/Initialized
+   -- FUNCTION
+   -- If true, libmagic was succesfully initialized. Default is false.
+   -- SOURCE
+   Initialized: Boolean := False;
    -- ****
 
    -- ****if* LibMagic/magic_open
@@ -101,20 +112,49 @@ package body LibMagic is
       MagicData := magic_open(16#0000010#);
       if magic_load
           (MagicData,
-           New_String(Value("APPDIR", "") & "/usr/share/file/magic")) =
+           New_String(Value("APPDIR", "") & "/usr/share/file/magic")) /=
         -1 then
-         return;
+         Initialized := True;
       end if;
    end MagicOpen;
 
    function MagicFile(Name: String) return String is
    begin
-      return Value(magic_file(MagicData, New_String(Name)));
+      if Initialized then
+         return Value(magic_file(MagicData, New_String(Name)));
+      else
+         declare
+            ProcessDesc: Process_Descriptor;
+            Result: Expect_Match;
+            ExecutableName: constant String := FindExecutable("xdg-mime");
+            MimeType: Unbounded_String;
+         begin
+            if ExecutableName = "" then
+               return "unknown";
+            end if;
+            Non_Blocking_Spawn
+              (ProcessDesc, ExecutableName,
+               Argument_String_To_List("query filetype " & Name).all);
+            Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+            if Result = 1 then
+               MimeType := To_Unbounded_String(Expect_Out_Match(ProcessDesc));
+            else
+               MimeType := To_Unbounded_String("unknown");
+            end if;
+            Close(ProcessDesc);
+            return To_String(MimeType);
+         exception
+            when Process_Died =>
+               return "unknown";
+         end;
+      end if;
    end MagicFile;
 
    procedure MagicClose is
    begin
-      magic_close(MagicData);
+      if Initialized then
+         magic_close(MagicData);
+      end if;
    end MagicClose;
 
 end LibMagic;
