@@ -77,7 +77,22 @@ package body MainWindow is
       Main_Quit;
    end Quit;
 
+   function SetSelected
+     (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
+      return Boolean is
+   begin
+      if Get_String(Model, Iter, 0) =
+        Simple_Name(To_String(CurrentSelected)) then
+         Set_Cursor
+           (Gtk_Tree_View(Get_Object(Builder, "treefiles")), Path, null,
+            False);
+         return True;
+      end if;
+      return False;
+   end SetSelected;
+
    procedure Reload(Object: access Gtkada_Builder_Record'Class) is
+      OldSelected: constant Unbounded_String := CurrentSelected;
    begin
       if CurrentDirectory = Null_Unbounded_String then
          CurrentDirectory := To_Unbounded_String("/");
@@ -90,9 +105,18 @@ package body MainWindow is
         0 then
          CurrentSelected := CurrentDirectory;
       else
-         Set_Cursor
-           (Gtk_Tree_View(Get_Object(Object, "treefiles")),
-            Gtk_Tree_Path_New_From_String("0"), null, False);
+         -- FIXME: when changing directory, selection should be reseted
+         if OldSelected = Null_Unbounded_String
+           or else not Ada.Directories.Exists(To_String(OldSelected)) then
+            Set_Cursor
+              (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
+               Gtk_Tree_Path_New_From_String("0"), null, False);
+         else
+            CurrentSelected := OldSelected;
+            Foreach
+              (Get_Model(Gtk_Tree_View(Get_Object(Object, "treefiles"))),
+               SetSelected'Access);
+         end if;
          Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
       end if;
       ShowItem(Object);
