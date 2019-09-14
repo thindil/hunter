@@ -29,11 +29,13 @@ package LibMagic is
 
    -- ****f* LibMagic/MagicFile
    -- FUNCTION
-   -- Get mime type of selected file
+   -- Get mime type of selected file if libmagic is not initialized, it
+   -- fallback to the xdg-mime program.
    -- PARAMETERS
    -- Name - Full path to the file which mime type will be check
    -- RESULT
-   -- MIME type of selected file
+   -- MIME type of selected file or "unknown" if libmagic is not initialized
+   -- and xdg-mime program don't exists.
    -- SOURCE
    function MagicFile(Name: String) return String;
    -- ****
