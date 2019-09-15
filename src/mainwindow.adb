@@ -92,10 +92,15 @@ package body MainWindow is
    end SetSelected;
 
    procedure Reload(Object: access Gtkada_Builder_Record'Class) is
-      OldSelected: constant Unbounded_String := CurrentSelected;
+      OldSelected: Unbounded_String;
    begin
       if CurrentDirectory = Null_Unbounded_String then
          CurrentDirectory := To_Unbounded_String("/");
+      end if;
+      if CurrentSelected /= Null_Unbounded_String then
+         OldSelected := CurrentSelected;
+      else
+         OldSelected := To_Unbounded_String(".");
       end if;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       ToggleActionButtons;
@@ -105,7 +110,10 @@ package body MainWindow is
         0 then
          CurrentSelected := CurrentDirectory;
       else
-         -- FIXME: when changing directory, selection should be reseted
+         if Containing_Directory(To_String(OldSelected)) /=
+           To_String(CurrentDirectory) then
+            OldSelected := Null_Unbounded_String;
+         end if;
          if OldSelected = Null_Unbounded_String
            or else not Ada.Directories.Exists(To_String(OldSelected)) then
             Set_Cursor
