@@ -666,20 +666,4 @@ package body ShowItems is
       end if;
    end SetPermission;
 
-   procedure SetBookmarkButton is
-   begin
-      Hide(Gtk_Widget(Get_Object(Builder, "btnaddbookmark")));
-      Hide(Gtk_Widget(Get_Object(Builder, "btnremovebookmark")));
-      if not Is_Directory(To_String(CurrentSelected)) then
-         return;
-      end if;
-      for Bookmark of BookmarksList loop
-         if Bookmark.Path = CurrentSelected then
-            Show_All(Gtk_Widget(Get_Object(Builder, "btnremovebookmark")));
-            return;
-         end if;
-      end loop;
-      Show_All(Gtk_Widget(Get_Object(Builder, "btnaddbookmark")));
-   end SetBookmarkButton;
-
 end ShowItems;

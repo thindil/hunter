@@ -85,4 +85,11 @@ package Bookmarks is
    procedure RemoveBookmark(Object: access Gtkada_Builder_Record'Class);
    -- ****
 
+   -- ****f* Bookmarks/SetBookmarkButton
+   -- FUNCTION
+   -- Show proper bookmark button for directories
+   -- SOURCE
+   procedure SetBookmarkButton;
+   -- ****
+
 end Bookmarks;
