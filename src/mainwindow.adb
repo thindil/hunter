@@ -427,7 +427,6 @@ package body MainWindow is
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Show_Item", ShowItem'Access);
-      Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
       Register_Handler(Builder, "Add_New", AddNew'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
@@ -438,8 +437,6 @@ package body MainWindow is
       Register_Handler(Builder, "Go_Home", GoHome'Access);
       Register_Handler(Builder, "Hide_Message", HideMessage'Access);
       Register_Handler(Builder, "Set_Response", SetResponse'Access);
-      Register_Handler(Builder, "Start_Open_With", StartOpenWith'Access);
-      Register_Handler(Builder, "Execute_File", ExecuteFile'Access);
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler(Builder, "Show_Files", ShowFiles'Access);
@@ -463,6 +460,7 @@ package body MainWindow is
       Register_Handler(Builder, "Restore_Item", RestoreItem'Access);
       Register_Handler(Builder, "Show_File", ShowFile'Access);
       Register_Handler(Builder, "Select_All", SelectAll'Access);
+      CreateActivateUI;
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
