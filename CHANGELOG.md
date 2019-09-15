@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Detecting files types
 - Crash when libmagic database file can't be found
+- Canceling moving items with Cancel button
 
 ## [0.9] - 2019-09-12
 
