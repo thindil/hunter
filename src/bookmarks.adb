@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
@@ -34,17 +35,39 @@ with Utils; use Utils;
 
 package body Bookmarks is
 
-   -- ****if* Bookmarks/GoToBookmark
+   -- ****it* Bookmarks/Bookmark_Record
    -- FUNCTION
-   -- Go to selected bookmark location
+   -- Data structure for bookmarks
    -- PARAMETERS
-   -- Self - Selected entry in bookmarks menu
+   -- MenuName - Text visible to user in menu for this bookmark
+   -- Path     - Full path to this bookmark location
    -- SOURCE
-   procedure GoToBookmark(Self: access Gtk_Menu_Item_Record'Class) is
--- ****
-      MenuLabel: constant Unbounded_String :=
-        To_Unbounded_String(Get_Label(Self));
-      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
+   type Bookmark_Record is record
+      MenuName: Unbounded_String;
+      Path: Unbounded_String;
+   end record;
+   -- ****
+
+   -- ****it* Bookmarks/Bookmarks_Container
+   -- FUNCTION
+   -- Used to store all bookmarks
+   -- SOURCE
+   package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
+   -- ****
+
+   -- ****iv* Bookmarks/BookmarksList
+   -- FUNCTION
+   -- List of all bookmarked locations
+   -- SOURCE
+   BookmarksList: Bookmarks_Container.Vector;
+   -- ****
+
+   -- ****if* Bookmarks/UpdateView
+   -- FUNCTION
+   -- Updated current directory listing after move to bookmark
+   -- SOURCE
+   procedure UpdateView is
+   -- ****
    begin
       NewAction := COPY;
       if not Is_Visible(Gtk_Widget(Get_Object(Builder, "btnsearch"))) then
@@ -60,6 +83,29 @@ package body Bookmarks is
             Gettext("Modified"));
          SetDeleteTooltip;
       end if;
+      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
+         if Get_Visible_Child_Name
+             (Gtk_Stack(Get_Object(Builder, "infostack"))) =
+           "destination" then
+            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+         else
+            Reload(Builder);
+         end if;
+      end if;
+   end UpdateView;
+
+   -- ****if* Bookmarks/GoToBookmark
+   -- FUNCTION
+   -- Go to selected bookmark location
+   -- PARAMETERS
+   -- Self - Selected entry in bookmarks menu
+   -- SOURCE
+   procedure GoToBookmark(Self: access Gtk_Menu_Item_Record'Class) is
+-- ****
+      MenuLabel: constant Unbounded_String :=
+        To_Unbounded_String(Get_Label(Self));
+      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
+   begin
       for I in BookmarksList.Iterate loop
          if MenuLabel = BookmarksList(I).MenuName then
             if BookmarksList(I).Path /= Null_Unbounded_String then
@@ -76,43 +122,14 @@ package body Bookmarks is
             exit;
          end if;
       end loop;
-      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
-         if Get_Visible_Child_Name
-             (Gtk_Stack(Get_Object(Builder, "infostack"))) =
-           "destination" then
-            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         else
-            Reload(Builder);
-         end if;
-      end if;
+      UpdateView;
    end GoToBookmark;
 
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
    begin
-      NewAction := COPY;
-      if not Is_Visible(Gtk_Widget(Get_Object(Object, "btnsearch"))) then
-         Show_All(Gtk_Widget(Get_Object(Object, "btnselectall")));
-         Show_All(Gtk_Widget(Get_Object(Object, "btnsearch")));
-         Show_All(Gtk_Widget(Get_Object(Object, "btnnew")));
-         TemporaryStop := False;
-      end if;
-      if Is_Visible(Gtk_Widget(Get_Object(Object, "btntoolrestore"))) then
-         ToggleToolButtons(NewAction, True);
-         Set_Title
-           (Gtk_Tree_View_Column(Get_Object(Object, "modifiedcolumn")),
-            Gettext("Modified"));
-         SetDeleteTooltip;
-      end if;
       CurrentDirectory := To_Unbounded_String(Value("HOME"));
-      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
-         if Get_Visible_Child_Name
-             (Gtk_Stack(Get_Object(Object, "infostack"))) =
-           "destination" then
-            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         else
-            Reload(Object);
-         end if;
-      end if;
+      UpdateView;
    end GoHome;
 
    -- ****if* Bookmarks/RemoveMenu
@@ -231,7 +248,14 @@ package body Bookmarks is
       AddMenuItem;
    end CreateBookmarkMenu;
 
+   -- ****if* Bookmarks/AddBookmark
+   -- FUNCTION
+   -- Add bookmark to currently selected directory
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure AddBookmark(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
       File: File_Type;
    begin
       Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
@@ -241,7 +265,12 @@ package body Bookmarks is
       Reload(Object);
    end AddBookmark;
 
+   -- ****if* Bookmarks/RemoveBookmark
+   -- FUNCTION
+   -- Remove bookmark for currently selected directory
+   -- SOURCE
    procedure RemoveBookmark(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
       NewFile, OldFile: File_Type;
       Line, Path: Unbounded_String;
    begin
@@ -281,5 +310,12 @@ package body Bookmarks is
       end loop;
       Show_All(Gtk_Widget(Get_Object(Builder, "btnaddbookmark")));
    end SetBookmarkButton;
+
+   procedure CreateBookmarksUI is
+   begin
+      Register_Handler(Builder, "Go_Home", GoHome'Access);
+      Register_Handler(Builder, "Add_Bookmark", AddBookmark'Access);
+      Register_Handler(Builder, "Remove_Bookmark", RemoveBookmark'Access);
+   end CreateBookmarksUI;
 
 end Bookmarks;
