@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
 
@@ -23,33 +22,6 @@ with Gtkada.Builder; use Gtkada.Builder;
 -- SOURCE
 package Bookmarks is
 -- ****
-
-   -- ****t* Bookmarks/Bookmark_Record
-   -- FUNCTION
-   -- Data structure for bookmarks
-   -- PARAMETERS
-   -- MenuName - Text visible to user in menu for this bookmark
-   -- Path     - Full path to this bookmark location
-   -- SOURCE
-   type Bookmark_Record is record
-      MenuName: Unbounded_String;
-      Path: Unbounded_String;
-   end record;
-   -- ****
-
-   -- ****t* Bookmarks/Bookmarks_Container
-   -- FUNCTION
-   -- Used to store all bookmarks
-   -- SOURCE
-   package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
-   -- ****
-
-   -- ****v* Bookmarks/BookmarksList
-   -- FUNCTION
-   -- List of all bookmarked locations
-   -- SOURCE
-   BookmarksList: Bookmarks_Container.Vector;
-   -- ****
 
    -- ****f* Bookmarks/GoHome
    -- FUNCTION
@@ -69,27 +41,19 @@ package Bookmarks is
    procedure CreateBookmarkMenu(Object: access Gtkada_Builder_Record'Class);
    -- ****
 
-   -- ****f* Bookmarks/AddBookmark
-   -- FUNCTION
-   -- Add bookmark to currently selected directory
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure AddBookmark(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
-   -- ****f* Bookmarks/RemoveBookmark
-   -- FUNCTION
-   -- Remove bookmark for currently selected directory
-   -- SOURCE
-   procedure RemoveBookmark(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
    -- ****f* Bookmarks/SetBookmarkButton
    -- FUNCTION
    -- Show proper bookmark button for directories
    -- SOURCE
    procedure SetBookmarkButton;
+   -- ****
+
+   -- ****f* Bookmarks/CreateBookmarksUI
+   -- FUNCTION
+   -- Create bookmarks UI - mostly register proper procedures and functions
+   -- for use in GTKAda Builder
+   -- SOURCE
+   procedure CreateBookmarksUI;
    -- ****
 
 end Bookmarks;
