@@ -29,11 +29,11 @@ with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
+with Bookmarks; use Bookmarks;
 with LibMagic; use LibMagic;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
-with ShowItems; use ShowItems;
 
 package body Utils is
 

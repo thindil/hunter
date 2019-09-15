@@ -17,6 +17,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Container; use Gtk.Container;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
@@ -264,5 +265,21 @@ package body Bookmarks is
       CreateBookmarkMenu(Object);
       Reload(Object);
    end RemoveBookmark;
+
+   procedure SetBookmarkButton is
+   begin
+      Hide(Gtk_Widget(Get_Object(Builder, "btnaddbookmark")));
+      Hide(Gtk_Widget(Get_Object(Builder, "btnremovebookmark")));
+      if not Is_Directory(To_String(CurrentSelected)) then
+         return;
+      end if;
+      for Bookmark of BookmarksList loop
+         if Bookmark.Path = CurrentSelected then
+            Show_All(Gtk_Widget(Get_Object(Builder, "btnremovebookmark")));
+            return;
+         end if;
+      end loop;
+      Show_All(Gtk_Widget(Get_Object(Builder, "btnaddbookmark")));
+   end SetBookmarkButton;
 
 end Bookmarks;
