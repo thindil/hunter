@@ -21,6 +21,7 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -29,19 +30,32 @@ with Utils; use Utils;
 
 package body ActivateItems is
 
+   -- ****if* ActivateItems/ActivateFile
+   -- FUNCTION
+   -- "Activate" selected file or directory. Action depends on what selected
+   -- item is. For example: it go to selected directory, opens text files in
+   -- editor and so on.
+   -- PARAMETERS
+   -- User_Data - Which Gtk Tree View is active: main or destination for
+   --             copy or move files and directories.
+   -- SOURCE
    procedure ActivateFile(User_Data: access GObject_Record'Class) is
-      DestinationIter: Gtk_Tree_Iter;
-      DestinationModel: Gtk_Tree_Model;
+   -- ****
    begin
       if User_Data = Get_Object(Builder, "treedestination") then
-         Get_Selected
-           (Gtk.Tree_View.Get_Selection(Gtk_Tree_View(User_Data)),
-            DestinationModel, DestinationIter);
-         CurrentSelected :=
-           CurrentDirectory &
-           To_Unbounded_String
-             ("/" & Get_String(DestinationModel, DestinationIter, 0));
-         DestinationPath := CurrentSelected;
+         declare
+            DestinationIter: Gtk_Tree_Iter;
+            DestinationModel: Gtk_Tree_Model;
+         begin
+            Get_Selected
+              (Get_Selection(Gtk_Tree_View(User_Data)), DestinationModel,
+               DestinationIter);
+            CurrentSelected :=
+              CurrentDirectory &
+              To_Unbounded_String
+                ("/" & Get_String(DestinationModel, DestinationIter, 0));
+            DestinationPath := CurrentSelected;
+         end;
       end if;
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
@@ -100,7 +114,15 @@ package body ActivateItems is
       end if;
    end ActivateFile;
 
+   -- ****if* ActivateItems/StartOpenWith
+   -- FUNCTION
+   -- Show text entry to start opening selected file or directory with custom
+   -- command.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure StartOpenWith(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Object, "entry"));
    begin
       NewAction := OPENWITH;
@@ -172,7 +194,15 @@ package body ActivateItems is
       Free(Command);
    end OpenItemWith;
 
+   -- ****if* ActivateItems/ExecuteFile
+   -- FUNCTION
+   -- Execute selected file. That file must be graphical application or
+   -- all output will be redirected to terminal (invisible to user).
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI (unused)
+   -- SOURCE
    procedure ExecuteFile(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
       pragma Unreferenced(Object);
       Pid: GNAT.OS_Lib.Process_Id;
    begin
@@ -184,5 +214,12 @@ package body ActivateItems is
          ShowMessage(Gettext("I can't execute this file."));
       end if;
    end ExecuteFile;
+
+   procedure CreateActivateUI is
+   begin
+      Register_Handler(Builder, "Activate_File", ActivateFile'Access);
+      Register_Handler(Builder, "Start_Open_With", StartOpenWith'Access);
+      Register_Handler(Builder, "Execute_File", ExecuteFile'Access);
+   end CreateActivateUI;
 
 end ActivateItems;
