@@ -176,6 +176,7 @@ package body MainWindow is
            (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy")), False);
       end if;
       if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) then
+         MoveItemsList.Clear;
          Set_Active
            (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut")), False);
       end if;
