@@ -435,8 +435,6 @@ package body MainWindow is
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler(Builder, "Show_Files", ShowFiles'Access);
       Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
-      Register_Handler
-        (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
       Register_Handler(Builder, "Search_Items", SearchItem'Access);
       Register_Handler(Builder, "Set_Permission", SetPermission'Access);
       Register_Handler(Builder, "Show_About", ShowAbout'Access);

@@ -317,6 +317,8 @@ package body Bookmarks is
       Register_Handler(Builder, "Go_Home", GoHome'Access);
       Register_Handler(Builder, "Add_Bookmark", AddBookmark'Access);
       Register_Handler(Builder, "Remove_Bookmark", RemoveBookmark'Access);
+      Register_Handler
+        (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
    end CreateBookmarksUI;
 
 end Bookmarks;
