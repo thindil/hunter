@@ -29,6 +29,7 @@ with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
@@ -39,7 +40,14 @@ with Utils; use Utils;
 
 package body Preferences is
 
+   -- ****if* Preferences/TogglePreferences
+   -- FUNCTION
+   -- Show or hide the program preferences window
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure TogglePreferences(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
       Popup: constant Gtk_Widget :=
         Gtk_Widget(Get_Object(Object, "poppreferences"));
    begin
@@ -264,8 +272,20 @@ package body Preferences is
       Close(ConfigFile);
    end LoadSettings;
 
+   -- ****if* Preferences/SaveSettings
+   -- FUNCTION
+   -- Save the program settings to file and update program to the new
+   -- configuration if needed.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- RESULT
+   -- Always False so default handler will be running too.
+   -- SEE ALSO
+   -- SaveSettingsProc
+   -- SOURCE
    function SaveSettings
      (Object: access Gtkada_Builder_Record'Class) return Boolean is
+   -- ****
    begin
       if Setting then
          return False;
@@ -380,7 +400,18 @@ package body Preferences is
       return False;
    end SaveSettings;
 
+   -- ****if* Preferences/SaveSettingsProc
+   -- FUNCTION
+   -- Save the program settings to file and update program to the new
+   -- configuration if needed. Some GTK elements need procedures instead
+   -- of function.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SEE ALSO
+   -- SaveSettings
+   -- SOURCE
    procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class) is
+   -- ****
    begin
       if Setting then
          return;
@@ -458,5 +489,14 @@ package body Preferences is
          Positive'Image(Settings.AutoRefreshInterval));
       Close(ConfigFile);
    end SavePreferences;
+
+   procedure CreatePreferencesUI is
+   begin
+      Register_Handler
+        (Builder, "Toggle_Preferences", TogglePreferences'Access);
+      Register_Handler(Builder, "Save_Preferences", SaveSettings'Access);
+      Register_Handler
+        (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
+   end CreatePreferencesUI;
 
 end Preferences;

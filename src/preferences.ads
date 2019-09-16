@@ -14,7 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/Preferences
 -- FUNCTION
@@ -89,15 +88,6 @@ package Preferences is
    Settings: Settings_Data;
    -- ****
 
-   -- ****f* Preferences/TogglePreferences
-   -- FUNCTION
-   -- Show or hide the program preferences window
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure TogglePreferences(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
    -- ****f* Preferences/SetDeleteTooltip
    -- FUNCTION
    -- Set tooltip for delete button, depends did delete action delete files or
@@ -114,39 +104,19 @@ package Preferences is
    procedure LoadSettings;
    -- ****
 
-   -- ****f* Preferences/SaveSettings
-   -- FUNCTION
-   -- Save the program settings to file and update program to the new
-   -- configuration if needed.
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- RESULT
-   -- Always False so default handler will be running too.
-   -- SEE ALSO
-   -- SaveSettingsProc
-   -- SOURCE
-   function SaveSettings
-     (Object: access Gtkada_Builder_Record'Class) return Boolean;
-   -- ****
-
-   -- ****f* Preferences/SaveSettingsProc
-   -- FUNCTION
-   -- Save the program settings to file and update program to the new
-   -- configuration if needed. Some GTK elements need procedures instead
-   -- of function.
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SEE ALSO
-   -- SaveSettings
-   -- SOURCE
-   procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
    -- ****f* Preferences/SavePreferences
    -- FUNCTION
    -- Save the program preferences to the file.
    -- SOURCE
    procedure SavePreferences;
+   -- ****
+
+   -- ****f* Preferences/CreatePreferencesUI
+   -- FUNCTION
+   -- Create preferences UI - mostly register proper procedures and functions
+   -- for use in GTKAda Builder
+   -- SOURCE
+   procedure CreatePreferencesUI;
    -- ****
 
 end Preferences;
