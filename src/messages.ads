@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
@@ -55,24 +54,12 @@ package Messages is
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class);
    -- ****
 
-   -- ****f* Messages/SetResponse
+   -- ****f* Messages/CreateMessagesUI
    -- FUNCTION
-   -- Set proper GTK Response for info bar buttons
-   -- PARAMETERS
-   -- User_Data - Which button to set
+   -- Create messages UI - mostly register proper procedures and functions
+   -- for use in GTKAda Builder
    -- SOURCE
-   procedure SetResponse(User_Data: access GObject_Record'Class);
-   -- ****
-
-   -- ****f* Messages/MessageResponse
-   -- FUNCTION
-   -- Hide message or do action, depends on the user response
-   -- PARAMETERS
-   -- Self        - Gtk_Info_Bar which contains the message
-   -- Response_Id - Gtk_Response depends on which button user clicked
-   -- SOURCE
-   procedure MessageResponse
-     (Self: access Gtk_Info_Bar_Record'Class; Response_Id: Gint);
+   procedure CreateMessagesUI;
    -- ****
 
 end Messages;

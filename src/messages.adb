@@ -16,6 +16,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Dialog; use Gtk.Dialog;
+with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Main; use Glib.Main;
@@ -86,7 +87,14 @@ package body Messages is
       end if;
    end ShowMessage;
 
+   -- ****if* Messages/HideMessage
+   -- FUNCTION
+   -- Hide message
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class) is
+   -- ****
    begin
       Hide(Gtk_Widget(Get_Object(Object, "actioninfo")));
       if Source_Id /= No_Source_Id then
@@ -95,7 +103,14 @@ package body Messages is
       end if;
    end HideMessage;
 
+   -- ****if* Messages/SetResponse
+   -- FUNCTION
+   -- Set proper GTK Response for info bar buttons
+   -- PARAMETERS
+   -- User_Data - Which button to set
+   -- SOURCE
    procedure SetResponse(User_Data: access GObject_Record'Class) is
+      -- ****
       ResponseValue: Gint;
    begin
       YesForAll := False;
@@ -112,9 +127,17 @@ package body Messages is
       Response(Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), ResponseValue);
    end SetResponse;
 
+   -- ****if* Messages/MessageResponse
+   -- FUNCTION
+   -- Hide message or do action, depends on the user response
+   -- PARAMETERS
+   -- Self        - Gtk_Info_Bar which contains the message. Unused
+   -- Response_Id - Gtk_Response depends on which button user clicked
+   -- SOURCE
    procedure MessageResponse
      (Self: access Gtk_Info_Bar_Record'Class; Response_Id: Gint) is
       pragma Unreferenced(Self);
+      -- ****
       OverwriteItem: Boolean := True;
    begin
       case NewAction is
@@ -197,5 +220,14 @@ package body Messages is
          HideMessage(Builder);
       end if;
    end MessageResponse;
+
+   procedure CreateMessagesUI is
+   begin
+      Register_Handler(Builder, "Hide_Message", HideMessage'Access);
+      Register_Handler(Builder, "Set_Response", SetResponse'Access);
+      On_Response
+        (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")),
+         MessageResponse'Access);
+   end CreateMessagesUI;
 
 end Messages;
