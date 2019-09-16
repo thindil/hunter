@@ -14,10 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Gtk.GEntry; use Gtk.GEntry;
-with Gdk.Event; use Gdk.Event;
-with Glib.Object; use Glib.Object;
-with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/CreateItems
 -- FUNCTION
@@ -33,34 +29,12 @@ package CreateItems is
    LinkTarget: Unbounded_String;
    -- ****
 
-   -- ****f* CreateItems/AddNew
+   -- ****f* CreateItems/CreateCreateUI
    -- FUNCTION
-   -- Show text entry for enter new file/directory name
-   -- PARAMETERS
-   -- User_Data - Which menu option was selected (create file or directory)
+   -- Create creating new items UI - mostly register proper procedures and
+   -- functions for use in GTKAda Builder
    -- SOURCE
-   procedure AddNew(User_Data: access GObject_Record'Class);
-   -- ****
-
-   -- ****f* CreateItems/IconPressed
-   -- FUNCTION
-   -- Create new file or directory when user press icon or hide text entry
-   -- PARAMETERS
-   -- Self     - Text entry with name for new file/directory
-   -- Icon_Pos - Position of text entry icon which was pressed
-   -- SOURCE
-   procedure IconPressed
-     (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position;
-      Event: Gdk_Event_Button);
-   -- ****
-
-   -- ****f* CreateItems/CreateNew
-   -- FUNCTION
-   -- Create new file or directory when user press enter in text entry
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure CreateNew(Object: access Gtkada_Builder_Record'Class);
+   procedure CreateCreateUI;
    -- ****
 
 end CreateItems;

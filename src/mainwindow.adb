@@ -428,9 +428,7 @@ package body MainWindow is
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Show_Item", ShowItem'Access);
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
-      Register_Handler(Builder, "Add_New", AddNew'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
-      Register_Handler(Builder, "Create_New", CreateNew'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
       Register_Handler(Builder, "Move_Items", MoveData'Access);
       Register_Handler(Builder, "Copy_Items", CopyData'Access);
@@ -459,6 +457,7 @@ package body MainWindow is
       Register_Handler(Builder, "Select_All", SelectAll'Access);
       CreateActivateUI;
       CreateBookmarksUI;
+      CreateCreateUI;
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
@@ -472,8 +471,6 @@ package body MainWindow is
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "applicationsfilter")),
          VisibleItems'Access);
-      On_Icon_Press
-        (Gtk_GEntry(Get_Object(Builder, "entry")), IconPressed'Access);
       On_Response
         (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")),
          MessageResponse'Access);
