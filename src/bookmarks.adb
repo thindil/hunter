@@ -69,7 +69,6 @@ package body Bookmarks is
    procedure UpdateView is
    -- ****
    begin
-      NewAction := COPY;
       if not Is_Visible(Gtk_Widget(Get_Object(Builder, "btnsearch"))) then
          Show_All(Gtk_Widget(Get_Object(Builder, "btnselectall")));
          Show_All(Gtk_Widget(Get_Object(Builder, "btnsearch")));
@@ -106,6 +105,7 @@ package body Bookmarks is
         To_Unbounded_String(Get_Label(Self));
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
+      NewAction := COPY;
       for I in BookmarksList.Iterate loop
          if MenuLabel = BookmarksList(I).MenuName then
             if BookmarksList(I).Path /= Null_Unbounded_String then
@@ -128,6 +128,7 @@ package body Bookmarks is
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
    begin
+      NewAction := COPY;
       CurrentDirectory := To_Unbounded_String(Value("HOME"));
       UpdateView;
    end GoHome;
