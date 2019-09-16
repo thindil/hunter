@@ -22,13 +22,21 @@ with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 
 package body SearchItems is
 
+   -- ****if* SearchItems/ToggleSearch
+   -- FUNCTION
+   -- Show or hide search text entry
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
       SearchEntry: constant Gtk_Widget :=
         Gtk_Widget(Get_Object(Object, "searchfile"));
    begin
@@ -42,8 +50,22 @@ package body SearchItems is
       end if;
    end ToggleSearch;
 
+   -- ****if* SearchItems/VisibleItems
+   -- FUNCTION
+   -- Check if selected file, directory or application should be visible,
+   -- when user search for selected names.
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model which contains all files and directories in
+   --         current directory or all available applications
+   -- Iter  - Gtk_Tree_Iter to currently checked file or directory or
+   --         application
+   -- RESULT
+   -- True if selected file, directory or application should be visible,
+   -- otherwise false.
+   -- SOURCE
    function VisibleItems
      (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean is
+      -- ****
       SearchEntry: Gtk_GEntry;
    begin
       if Setting then
@@ -75,7 +97,15 @@ package body SearchItems is
       return False;
    end VisibleItems;
 
+   -- ****if* SearchItems/SearchItem
+   -- FUNCTION
+   -- Search for files and directories or applications (depends on what user
+   -- search) as user enter text in search entry
+   -- PARAMETERS
+   -- User_Data - Which search entry was used (for files or applications)
+   -- SOURCE
    procedure SearchItem(User_Data: access GObject_Record'Class) is
+      -- ****
       FilterName, TreeName, ListName: Unbounded_String;
    begin
       if User_Data = Get_Object(Builder, "searchfile") then
@@ -107,5 +137,23 @@ package body SearchItems is
       end if;
       Grab_Focus(Gtk_Widget(User_Data));
    end SearchItem;
+
+   procedure CreateSearchUI is
+   begin
+      Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
+      Register_Handler(Builder, "Search_Items", SearchItem'Access);
+      Set_Visible_Func
+        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
+         VisibleItems'Access);
+      Set_Visible_Func
+        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")),
+         VisibleItems'Access);
+      Set_Visible_Func
+        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")),
+         VisibleItems'Access);
+      Set_Visible_Func
+        (Gtk_Tree_Model_Filter(Get_Object(Builder, "applicationsfilter")),
+         VisibleItems'Access);
+   end CreateSearchUI;
 
 end SearchItems;
