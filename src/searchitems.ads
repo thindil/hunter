@@ -14,7 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Gtk.Tree_Model; use Gtk.Tree_Model;
-with Gtkada.Builder; use Gtkada.Builder;
 with Glib.Object; use Glib.Object;
 
 -- ****h* Hunter/SearchItems
@@ -24,40 +23,12 @@ with Glib.Object; use Glib.Object;
 package SearchItems is
 -- ****
 
-   -- ****f* SearchItems/ToggleSearch
+   -- ****f* SearchItems/CreateSearchUI
    -- FUNCTION
-   -- Show or hide search text entry
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Create search UI - mostly register proper procedures and functions
+   -- for use in GTKAda Builder
    -- SOURCE
-   procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
-   -- ****f* SearchItems/VisibleItems
-   -- FUNCTION
-   -- Check if selected file, directory or application should be visible,
-   -- when user search for selected names.
-   -- PARAMETERS
-   -- Model - Gtk_Tree_Model which contains all files and directories in
-   --         current directory or all available applications
-   -- Iter  - Gtk_Tree_Iter to currently checked file or directory or
-   --         application
-   -- RESULT
-   -- True if selected file, directory or application should be visible,
-   -- otherwise false.
-   -- SOURCE
-   function VisibleItems
-     (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean;
-   -- ****
-
-   -- ****f* SearchItems/SearchItem
-   -- FUNCTION
-   -- Search for files and directories or applications (depends on what user
-   -- search) as user enter text in search entry
-   -- PARAMETERS
-   -- User_Data - Which search entry was used (for files or applications)
-   -- SOURCE
-   procedure SearchItem(User_Data: access GObject_Record'Class);
+   procedure CreateSearchUI;
    -- ****
 
 end SearchItems;

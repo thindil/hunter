@@ -33,7 +33,6 @@ with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
-with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
@@ -426,7 +425,6 @@ package body MainWindow is
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Show_Item", ShowItem'Access);
-      Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
       Register_Handler(Builder, "Move_Items", MoveData'Access);
@@ -435,7 +433,6 @@ package body MainWindow is
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler(Builder, "Show_Files", ShowFiles'Access);
       Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
-      Register_Handler(Builder, "Search_Items", SearchItem'Access);
       Register_Handler(Builder, "Set_Permission", SetPermission'Access);
       Register_Handler(Builder, "Show_About", ShowAbout'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
@@ -450,19 +447,8 @@ package body MainWindow is
       CreateCreateUI;
       CreateMessagesUI;
       CreatePreferencesUI;
+      CreateSearchUI;
       Do_Connect(Builder);
-      Set_Visible_Func
-        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
-         VisibleItems'Access);
-      Set_Visible_Func
-        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")),
-         VisibleItems'Access);
-      Set_Visible_Func
-        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")),
-         VisibleItems'Access);
-      Set_Visible_Func
-        (Gtk_Tree_Model_Filter(Get_Object(Builder, "applicationsfilter")),
-         VisibleItems'Access);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);
       On_Key_Press_Event
