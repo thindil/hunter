@@ -24,7 +24,6 @@ with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.GEntry; use Gtk.GEntry;
-with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
@@ -432,8 +431,6 @@ package body MainWindow is
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
       Register_Handler(Builder, "Move_Items", MoveData'Access);
       Register_Handler(Builder, "Copy_Items", CopyData'Access);
-      Register_Handler(Builder, "Hide_Message", HideMessage'Access);
-      Register_Handler(Builder, "Set_Response", SetResponse'Access);
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler(Builder, "Show_Files", ShowFiles'Access);
@@ -458,6 +455,7 @@ package body MainWindow is
       CreateActivateUI;
       CreateBookmarksUI;
       CreateCreateUI;
+      CreateMessagesUI;
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
@@ -471,9 +469,6 @@ package body MainWindow is
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "applicationsfilter")),
          VisibleItems'Access);
-      On_Response
-        (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")),
-         MessageResponse'Access);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);
       On_Key_Press_Event
