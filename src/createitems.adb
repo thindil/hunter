@@ -15,9 +15,13 @@
 
 with Ada.Directories; use Ada.Directories;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
+with Gdk.Event; use Gdk.Event;
+with Glib.Object; use Glib.Object;
+with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with ActivateItems; use ActivateItems;
 with LoadData; use LoadData;
@@ -174,7 +178,14 @@ package body CreateItems is
       end if;
    end CreateItem;
 
+   -- ****if* CreateItems/AddNew
+   -- FUNCTION
+   -- Show text entry for enter new file/directory name
+   -- PARAMETERS
+   -- User_Data - Which menu option was selected (create file or directory)
+   -- SOURCE
    procedure AddNew(User_Data: access GObject_Record'Class) is
+      -- ****
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
       if User_Data = Get_Object(Builder, "newmenufile") then
@@ -206,10 +217,18 @@ package body CreateItems is
       Grab_Focus(GEntry);
    end AddNew;
 
+   -- ****if* CreateItems/IconPressed
+   -- FUNCTION
+   -- Create new file or directory when user press icon or hide text entry
+   -- PARAMETERS
+   -- Self     - Text entry with name for new file/directory
+   -- Icon_Pos - Position of text entry icon which was pressed
+   -- SOURCE
    procedure IconPressed
      (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position;
       Event: Gdk_Event_Button) is
       pragma Unreferenced(Event);
+      -- ****
    begin
       if NewAction /= OPENWITH then
          CreateItem(Self, Icon_Pos);
@@ -218,7 +237,14 @@ package body CreateItems is
       end if;
    end IconPressed;
 
+   -- ****if* CreateItems/CreateNew
+   -- FUNCTION
+   -- Create new file or directory when user press enter in text entry
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure CreateNew(Object: access Gtkada_Builder_Record'Class) is
+   -- ****
    begin
       if NewAction /= OPENWITH then
          CreateItem
@@ -228,5 +254,13 @@ package body CreateItems is
            (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);
       end if;
    end CreateNew;
+
+   procedure CreateCreateUI is
+   begin
+      Register_Handler(Builder, "Add_New", AddNew'Access);
+      Register_Handler(Builder, "Create_New", CreateNew'Access);
+      On_Icon_Press
+        (Gtk_GEntry(Get_Object(Builder, "entry")), IconPressed'Access);
+   end CreateCreateUI;
 
 end CreateItems;
