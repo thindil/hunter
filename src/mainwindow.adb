@@ -438,12 +438,7 @@ package body MainWindow is
       Register_Handler(Builder, "Search_Items", SearchItem'Access);
       Register_Handler(Builder, "Set_Permission", SetPermission'Access);
       Register_Handler(Builder, "Show_About", ShowAbout'Access);
-      Register_Handler
-        (Builder, "Toggle_Preferences", TogglePreferences'Access);
-      Register_Handler(Builder, "Save_Preferences", SaveSettings'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
-      Register_Handler
-        (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
       Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
       Register_Handler(Builder, "Clear_Trash", ClearTrash'Access);
       Register_Handler(Builder, "Show_Trash", ShowTrash'Access);
@@ -454,6 +449,7 @@ package body MainWindow is
       CreateBookmarksUI;
       CreateCreateUI;
       CreateMessagesUI;
+      CreatePreferencesUI;
       Do_Connect(Builder);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
