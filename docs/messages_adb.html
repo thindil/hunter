@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v0.9 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.0 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -26,12 +26,14 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo39">Messages/Source_Id</a></li>
-<li>2. <a href="#robo100">Messages/AutoHideMessage</a></li>
+<li>1. <a href="#robo40">Messages/Source_Id</a></li>
+<li>2. <a href="#robo105">Messages/AutoHideMessage</a></li>
+<li>3. <a href="#robo108">Messages/MessageResponse</a></li>
+<li>4. <a href="#robo109">Messages/SetResponse</a></li>
 </ul>
 <hr />
 <a name="Messages2fSource5fId"></a>
-<a name="robo39"></a><h2>Messages/Source_Id [ Variables ]</h2>
+<a name="robo40"></a><h2>Messages/Source_Id [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo9">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -43,7 +45,7 @@
 
 <hr />
 <a name="Messages2fAutoHideMessage"></a>
-<a name="robo100"></a><h2>Messages/AutoHideMessage [ Subprograms ]</h2>
+<a name="robo105"></a><h2>Messages/AutoHideMessage [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo9">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -56,9 +58,42 @@
 <pre> Returns always False to stop timer
 </pre>
 
+<hr />
+<a name="Messages2fMessageResponse"></a>
+<a name="robo108"></a><h2>Messages/MessageResponse [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo9">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Hide message or do action, depends on the user response
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>MessageResponse</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Info_Bar_Record<span class="keyword">'Class</span><span class="sign">;</span> Response_Id<span class="sign">:</span> Gint<span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self        - Gtk_Info_Bar which contains the message. Unused
+ Response_Id - Gtk_Response depends on which button user clicked
+</pre>
+
+<hr />
+<a name="Messages2fSetResponse"></a>
+<a name="robo109"></a><h2>Messages/SetResponse [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo9">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set proper GTK Response for info bar buttons
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetResponse</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> User_Data - Which button to set
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/messages.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Sep 11 2019 07:04:36
+<p>Generated from ./src/messages.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Sep 17 2019 09:29:58
 </p>
 </div> <!-- footer -->
 </body>

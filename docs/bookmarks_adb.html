@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v0.9 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.0 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -26,12 +26,76 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo58">Bookmarks/GoToBookmark</a></li>
-<li>2. <a href="#robo60">Bookmarks/RemoveMenu</a></li>
+<li>1. <a href="#robo17">Bookmarks/Bookmark_Record</a></li>
+<li>2. <a href="#robo18">Bookmarks/Bookmarks_Container</a></li>
+<li>3. <a href="#robo24">Bookmarks/BookmarksList</a></li>
+<li>4. <a href="#robo57">Bookmarks/AddBookmark</a></li>
+<li>5. <a href="#robo61">Bookmarks/GoToBookmark</a></li>
+<li>6. <a href="#robo62">Bookmarks/RemoveBookmark</a></li>
+<li>7. <a href="#robo63">Bookmarks/RemoveMenu</a></li>
+<li>8. <a href="#robo65">Bookmarks/UpdateView</a></li>
 </ul>
 <hr />
+<a name="Bookmarks2fBookmark5fRecord"></a>
+<a name="robo17"></a><h2>Bookmarks/Bookmark_Record [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks_ads.html#robo1">Bookmarks</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Data structure for bookmarks
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">type</span> <strong>Bookmark_Record</strong> <span class="keyword">is</span> <span class="keyword">record</span>
+      MenuName<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+      Path<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+   <span class="keyword">end</span> <span class="keyword">record</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> MenuName - Text visible to user in menu for this bookmark
+ Path     - Full path to this bookmark location
+</pre>
+
+<hr />
+<a name="Bookmarks2fBookmarks5fContainer"></a>
+<a name="robo18"></a><h2>Bookmarks/Bookmarks_Container [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks_ads.html#robo1">Bookmarks</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Used to store all bookmarks
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">package</span> <strong>Bookmarks_Container</strong> <span class="keyword">is</span> <span class="keyword">new</span> Vectors<span class="sign">(</span><a href="./utils_adb.html#robo50">Positive</a><span class="sign">,</span> <a href="#robo17">Bookmark_Record</a><span class="sign">)</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Bookmarks2fBookmarksList"></a>
+<a name="robo24"></a><h2>Bookmarks/BookmarksList [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks_ads.html#robo1">Bookmarks</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> List of all bookmarked locations
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>BookmarksList</strong><span class="sign">:</span> <a href="#robo18">Bookmarks_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Bookmarks2fAddBookmark"></a>
+<a name="robo57"></a><h2>Bookmarks/AddBookmark [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks_ads.html#robo1">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Add bookmark to currently selected directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>AddBookmark</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+</pre>
+
+<hr />
 <a name="Bookmarks2fGoToBookmark"></a>
-<a name="robo58"></a><h2>Bookmarks/GoToBookmark [ Subprograms ]</h2>
+<a name="robo61"></a><h2>Bookmarks/GoToBookmark [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks_ads.html#robo1">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -45,8 +109,20 @@
 </pre>
 
 <hr />
+<a name="Bookmarks2fRemoveBookmark"></a>
+<a name="robo62"></a><h2>Bookmarks/RemoveBookmark [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks_ads.html#robo1">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Remove bookmark for currently selected directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>RemoveBookmark</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+
+<hr />
 <a name="Bookmarks2fRemoveMenu"></a>
-<a name="robo60"></a><h2>Bookmarks/RemoveMenu [ Subprograms ]</h2>
+<a name="robo63"></a><h2>Bookmarks/RemoveMenu [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks_ads.html#robo1">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -60,9 +136,21 @@
 <pre> Widget - GTK Widget to remove
 </pre>
 
+<hr />
+<a name="Bookmarks2fUpdateView"></a>
+<a name="robo65"></a><h2>Bookmarks/UpdateView [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks_ads.html#robo1">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Updated current directory listing after move to bookmark
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>UpdateView</strong> <span class="keyword">is</span>
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/bookmarks.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Sep 11 2019 07:04:36
+<p>Generated from ./src/bookmarks.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Sep 17 2019 09:29:58
 </p>
 </div> <!-- footer -->
 </body>

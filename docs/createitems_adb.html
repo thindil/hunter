@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v0.9 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.0 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -27,7 +27,10 @@
 <h3>TABLE OF CONTENTS</h3>
 <ul>
 <li>1. <a href="#robo28">CreateItems/SourceDirectory</a></li>
-<li>2. <a href="#robo66">CreateItems/CreateItem</a></li>
+<li>2. <a href="#robo70">CreateItems/AddNew</a></li>
+<li>3. <a href="#robo72">CreateItems/CreateItem</a></li>
+<li>4. <a href="#robo73">CreateItems/CreateNew</a></li>
+<li>5. <a href="#robo74">CreateItems/IconPressed</a></li>
 </ul>
 <hr />
 <a name="CreateItems2fSourceDirectory"></a>
@@ -42,8 +45,23 @@
 </pre>
 
 <hr />
+<a name="CreateItems2fAddNew"></a>
+<a name="robo70"></a><h2>CreateItems/AddNew [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo3">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show text entry for enter new file/directory name
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>AddNew</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> User_Data - Which menu option was selected (create file or directory)
+</pre>
+
+<hr />
 <a name="CreateItems2fCreateItem"></a>
-<a name="robo66"></a><h2>CreateItems/CreateItem [ Subprograms ]</h2>
+<a name="robo72"></a><h2>CreateItems/CreateItem [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo3">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -61,9 +79,43 @@
             Enter was pressed, simulate pressing proper icon
 </pre>
 
+<hr />
+<a name="CreateItems2fCreateNew"></a>
+<a name="robo73"></a><h2>CreateItems/CreateNew [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo3">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Create new file or directory when user press enter in text entry
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CreateNew</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+</pre>
+
+<hr />
+<a name="CreateItems2fIconPressed"></a>
+<a name="robo74"></a><h2>CreateItems/IconPressed [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo3">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Create new file or directory when user press icon or hide text entry
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>IconPressed</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Entry_Record<span class="keyword">'Class</span><span class="sign">;</span> Icon_Pos<span class="sign">:</span> Gtk_Entry_Icon_Position<span class="sign">;</span>
+      Event<span class="sign">:</span> Gdk_Event_Button<span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Event<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self     - Text entry with name for new file/directory
+ Icon_Pos - Position of text entry icon which was pressed
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/createitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Sep 11 2019 07:04:36
+<p>Generated from ./src/createitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Tue Sep 17 2019 09:29:58
 </p>
 </div> <!-- footer -->
 </body>
