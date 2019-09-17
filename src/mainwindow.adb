@@ -432,9 +432,6 @@ package body MainWindow is
       Register_Handler(Builder, "Show_About", ShowAbout'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
       Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
-      Register_Handler(Builder, "Clear_Trash", ClearTrash'Access);
-      Register_Handler(Builder, "Show_Trash", ShowTrash'Access);
-      Register_Handler(Builder, "Restore_Item", RestoreItem'Access);
       Register_Handler(Builder, "Show_File", ShowFile'Access);
       Register_Handler(Builder, "Select_All", SelectAll'Access);
       CreateActivateUI;
@@ -444,6 +441,7 @@ package body MainWindow is
       CreatePreferencesUI;
       CreateSearchUI;
       CreateShowItemsUI;
+      CreateTrashUI;
       Do_Connect(Builder);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);
