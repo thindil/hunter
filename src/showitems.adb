@@ -302,7 +302,14 @@ package body ShowItems is
       Setting := False;
    end ShowItemInfo;
 
+   -- ****if* ShowItems/RemoveTag
+   -- FUNCTION
+   -- Remove selected text tag from preview window.
+   -- PARAMETERS
+   -- Tag - Gtk_Text_Tag to remove
+   -- SOURCE
    procedure RemoveTag(Tag: not null access Gtk_Text_Tag_Record'Class) is
+   -- ****
    begin
       if Get_Property(GObject(Tag), Gtk.Text_Tag.Name_Property) /= "" then
          return;
