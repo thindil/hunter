@@ -424,16 +424,11 @@ package body MainWindow is
       Setting := True;
       Builder := NewBuilder;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
-      Register_Handler(Builder, "Show_Item", ShowItem'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
       Register_Handler(Builder, "Move_Items", MoveData'Access);
       Register_Handler(Builder, "Copy_Items", CopyData'Access);
-      Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
-      Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler(Builder, "Show_Files", ShowFiles'Access);
-      Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
-      Register_Handler(Builder, "Set_Permission", SetPermission'Access);
       Register_Handler(Builder, "Show_About", ShowAbout'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
       Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
@@ -448,6 +443,7 @@ package body MainWindow is
       CreateMessagesUI;
       CreatePreferencesUI;
       CreateSearchUI;
+      CreateShowItemsUI;
       Do_Connect(Builder);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);

@@ -23,16 +23,6 @@ with Gtkada.Builder; use Gtkada.Builder;
 package ShowItems is
 -- ****
 
-   -- ****f* ShowItems/ShowItemInfo
-   -- FUNCTION
-   -- Show detailed information (name, size, modification date, etc) about
-   -- selected file or directory.
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure ShowItemInfo(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
    -- ****f* ShowItems/PreviewItem
    -- FUNCTION
    -- Preview selected file or directory. If preview is not available, show
@@ -52,22 +42,12 @@ package ShowItems is
    procedure ShowItem(Object: access Gtkada_Builder_Record'Class);
    -- ****
 
-   -- ****f* MainWindow/SetAssociated
+   -- ****f* ShowItems/CreateShowItemsUI
    -- FUNCTION
-   -- Set associated program with selected file MIME type
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Create showitems UI - mostly register proper procedures and functions
+   -- for use in GTKAda Builder
    -- SOURCE
-   procedure SetAssociated(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
-   -- ****f* ShowItems/SetPermission
-   -- FUNCTION
-   -- Set selected permissions to selected file or directory
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure SetPermission(Object: access Gtkada_Builder_Record'Class);
+   procedure CreateShowItemsUI;
    -- ****
 
 end ShowItems;

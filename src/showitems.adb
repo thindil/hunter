@@ -108,7 +108,15 @@ package body ShowItems is
       SelectedItems.Append(To_Unbounded_String(Get_String(Model, Iter, 6)));
    end GetSelectedItems;
 
+   -- ****if* ShowItems/ShowItemInfo
+   -- FUNCTION
+   -- Show detailed information (name, size, modification date, etc) about
+   -- selected file or directory.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure ShowItemInfo(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
       Amount: Natural := 0;
       Directory: Dir_Type;
       Last: Natural;
@@ -576,7 +584,14 @@ package body ShowItems is
       PreviewItem(Object);
    end ShowItem;
 
+   -- ****if* MainWindow/SetAssociated
+   -- FUNCTION
+   -- Set associated program with selected file MIME type
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure SetAssociated(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
       Pid: GNAT.OS_Lib.Process_Id;
       ProgramIter: Gtk_Tree_Iter;
       ProgramModel: Gtk_Tree_Model;
@@ -608,7 +623,14 @@ package body ShowItems is
       end if;
    end SetAssociated;
 
+   -- ****if* ShowItems/SetPermission
+   -- FUNCTION
+   -- Set selected permissions to selected file or directory
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
    procedure SetPermission(Object: access Gtkada_Builder_Record'Class) is
+      -- ****
       ButtonNames: constant array(2 .. 10) of Unbounded_String :=
         (To_Unbounded_String("cbtnownerread"),
          To_Unbounded_String("cbtnownerwrite"),
@@ -665,5 +687,14 @@ package body ShowItems is
             To_String(CurrentSelected));
       end if;
    end SetPermission;
+
+   procedure CreateShowItemsUI is
+   begin
+      Register_Handler(Builder, "Show_Item", ShowItem'Access);
+      Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
+      Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
+      Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
+      Register_Handler(Builder, "Set_Permission", SetPermission'Access);
+   end CreateShowItemsUI;
 
 end ShowItems;
