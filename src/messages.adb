@@ -87,14 +87,7 @@ package body Messages is
       end if;
    end ShowMessage;
 
-   -- ****if* Messages/HideMessage
-   -- FUNCTION
-   -- Hide message
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
    procedure HideMessage(Object: access Gtkada_Builder_Record'Class) is
-   -- ****
    begin
       Hide(Gtk_Widget(Get_Object(Object, "actioninfo")));
       if Source_Id /= No_Source_Id then
