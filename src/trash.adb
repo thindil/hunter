@@ -55,8 +55,15 @@ package body Trash is
    Accelerators: Gtk_Accel_Group;
    -- ****
 
+   -- ****if* Trash/ClearTrash
+   -- FUNCTION
+   -- Show message to start clearing the trash.
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI. Unused.
+   -- SOURCE
    procedure ClearTrash(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
+      -- ****
    begin
       NewAction := CLEARTRASH;
       ToggleToolButtons(NewAction);
@@ -328,5 +335,12 @@ package body Trash is
       end loop;
       ShowTrash(Object);
    end RestoreItem;
+
+   procedure CreateTrashUI is
+   begin
+      Register_Handler(Builder, "Clear_Trash", ClearTrash'Access);
+      Register_Handler(Builder, "Show_Trash", ShowTrash'Access);
+      Register_Handler(Builder, "Restore_Item", RestoreItem'Access);
+   end CreateTrashUI;
 
 end Trash;

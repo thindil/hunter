@@ -23,24 +23,6 @@ with Gtkada.Builder; use Gtkada.Builder;
 package Trash is
 -- ****
 
-   -- ****f* Trash/ClearTrash
-   -- FUNCTION
-   -- Show message to start clearing the trash.
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure ClearTrash(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
-   -- ****f* Trash/ShowTrash
-   -- FUNCTION
-   -- Show content of the Trash
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure ShowTrash(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
    -- ****f* Trash/RestoreItem
    -- FUNCTION
    -- Restore selected file or directory from the trash
@@ -57,6 +39,23 @@ package Trash is
    -- Self - Button which was clicked by user
    -- SOURCE
    procedure PathClicked(Self: access Gtk_Button_Record'Class);
+   -- ****
+
+   -- ****f* Trash/ShowTrash
+   -- FUNCTION
+   -- Show content of the Trash
+   -- PARAMETERS
+   -- Object - GtkAda Builder used to create UI
+   -- SOURCE
+   procedure ShowTrash(Object: access Gtkada_Builder_Record'Class);
+   -- ****
+
+   -- ****f* Trash/CreateTrashUI
+   -- FUNCTION
+   -- Create trash UI - mostly register proper procedures and functions
+   -- for use in GTKAda Builder
+   -- SOURCE
+   procedure CreateTrashUI;
    -- ****
 
 end Trash;
