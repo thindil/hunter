@@ -4,3 +4,4 @@ tests/driver/test_runner
 LC_MESSAGES
 bin/gmon.out
 gcov
+gprofreport.txt
