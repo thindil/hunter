@@ -36,10 +36,13 @@ case $1 in
       ./generatedocs.py
       ;;
    gcov)
-      mkdir gcov
+      mkdir -p gcov
       cd gcov
       ~/gnat/bin/gcov -f ../obj/*.o
       cd ..
+      ;;
+   gprof)
+      gprof bin/hunter bin/gmon.out > gprofreport.txt
       ;;
    help)
       echo "release       - Build the program in release mode"
@@ -49,9 +52,10 @@ case $1 in
       echo "tests         - Build unit tests"
       echo "docs          - Generate code documentation"
       echo "gcov          - Generate gcov reports for each file in gcov directory. You may need to change gcov path in this script to work"
+      echo "gprof         - Generate gprof report in main directory"
       echo "help          - This screen"
       ;;
    *)
-      echo "Unknown command, possible options are: release, debug, analyze, createtests, tests, docs, gcov, help"
+      echo "Unknown command, possible options are: release, debug, analyze, createtests, tests, docs, gcov, gprof, help"
       ;;
 esac
