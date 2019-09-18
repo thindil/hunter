@@ -22,6 +22,10 @@ case $1 in
       gprclean -P hunter.gpr
       gprbuild -P hunter.gpr
       ;;
+   analyze)
+      gprclean -P hunter.gpr
+      gprbuild -P hunter.gpr -XMode=analyze
+      ;;
    createtests)
       gnattest -P hunter.gpr
       ;;
@@ -32,14 +36,15 @@ case $1 in
       ./generatedocs.py
       ;;
    help)
-      echo "release       - Build the game in release mode"
-      echo "debug         - Build the game in debug mode"
+      echo "release       - Build the program in release mode"
+      echo "debug         - Build the program in debug mode"
+      echo "analyze       - Build the program in analyze mode"
       echo "createtests   - Regenerate unit tests"
       echo "tests         - Build unit tests"
       echo "docs          - Generate code documentation"
       echo "help          - This screen"
       ;;
    *)
-      echo "Unknown command, possible options are: release, debug, createtests, tests, docs, help"
+      echo "Unknown command, possible options are: release, debug, analyze, createtests, tests, docs, help"
       ;;
 esac
