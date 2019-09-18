@@ -325,14 +325,14 @@ package body MainWindow is
       return Boolean is
       pragma Unreferenced(Self);
       -- ****
-      FilesMenu: constant Gtk_Menu :=
-        Gtk_Menu(Get_Object(Builder, "filesmenu"));
-      FilesTree: constant Gtk_Tree_View :=
-        Gtk_Tree_View(Get_Object(Builder, "treefiles"));
+      FilesMenu: Gtk_Menu;
+      FilesTree: Gtk_Tree_View;
    begin
       if Event.Button /= 3 then
          return False;
       end if;
+      FilesMenu := Gtk_Menu(Get_Object(Builder, "filesmenu"));
+      FilesTree := Gtk_Tree_View(Get_Object(Builder, "treefiles"));
       if Count_Selected_Rows(Get_Selection(FilesTree)) =
         N_Children(Get_Model(FilesTree)) then
          Set_Label
