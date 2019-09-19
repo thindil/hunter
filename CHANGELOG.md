@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Contributing guide
+
 ### Fixed
 - Detecting files types
 - Crash when libmagic database file can't be found
