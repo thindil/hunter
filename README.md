@@ -108,27 +108,9 @@ look [here](https://github.com/thindil/roboada#generatedocspy). This version
 of script have set all default settings for Hunter code. You can also use
 build script `build.sh` for this. Enter command: `./build.sh docs`.
 
-## Translating the program
-
-Hunter uses [GetText](https://www.gnu.org/software/gettext/) for a translation
-system. To create new or update existing translations, uses *translations.sh*
-script located in the main directory(where this file is). You can see all the
-options available for this script by entering terminal command:
-`./translations.sh help`
-
-### Adding new translation
-
-To add new translation to the program, enter terminal command:
-`./translations.sh createlocale [localename]` where *localename* is standard
-language code (for example `de` or `en_US`). It will create a new empty
-translation file with proper directories structure.
-
-### Editing existing translation
-
-To edit existing translation, just open proper *.po* file in text editor or,
-if you prefer, you can use [Poedit](https://poedit.net/). After finishing
-edition, you should regenerate the program translations with terminal command:
-`./translations.sh generate`
+## Contributing to the project
+For detailed informations about contributing to the project (bugs reporting,
+ideas propositions, code conduct, etc), see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Licenses
 Hunter is available under [GPLv3](COPYING) license.
