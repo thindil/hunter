@@ -105,7 +105,9 @@ package body Bookmarks is
         To_Unbounded_String(Get_Label(Self));
       GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
-      NewAction := COPY;
+      if NewAction /= MOVE then
+         NewAction := COPY;
+      end if;
       for I in BookmarksList.Iterate loop
          if MenuLabel = BookmarksList(I).MenuName then
             if BookmarksList(I).Path /= Null_Unbounded_String then
@@ -128,7 +130,9 @@ package body Bookmarks is
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
    begin
-      NewAction := COPY;
+      if NewAction /= MOVE then
+         NewAction := COPY;
+      end if;
       CurrentDirectory := To_Unbounded_String(Value("HOME"));
       UpdateView;
    end GoHome;
