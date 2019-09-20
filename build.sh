@@ -4,13 +4,13 @@ case $1 in
    release)
       gprclean -P hunter.gpr
       gprbuild -P hunter.gpr -XMode=release
-      mkdir -p usr/share/docs
+      mkdir -p usr/share/doc/hunter
       mkdir -p usr/share/locale
       cp -r bin usr/
-      cp CHANGELOG.md usr/share/docs/
-      cp COPYING usr/share/docs/
-      cp README.md usr/share/docs
-      cp CONTRIBUTING.md usr/share/docs
+      cp CHANGELOG.md usr/share/doc/hunter/
+      cp COPYING usr/share/doc/hunter/
+      cp README.md usr/share/doc/hunter/
+      cp CONTRIBUTING.md usr/share/doc/hunter/
       ./translations.sh generate
       for directory in $(find po/* -maxdepth 0 -type d)
       do
