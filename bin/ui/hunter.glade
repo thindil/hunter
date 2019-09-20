@@ -45,6 +45,15 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
         <signal name="activate" handler="Show_File" object="aboutchangelog" swapped="no"/>
       </object>
     </child>
+    <child>
+      <object class="GtkMenuItem" id="aboutgetinvolved">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="label" translatable="yes">Get involved</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="Show_File" object="aboutgetinvolved" swapped="no"/>
+      </object>
+    </child>
   </object>
   <object class="GtkAccelGroup" id="accelerators"/>
   <object class="GtkAdjustment" id="adjrefresh">
