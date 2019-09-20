@@ -383,12 +383,15 @@ package body MainWindow is
    begin
       CurrentDirectory :=
         To_Unbounded_String(Containing_Directory(Current_Directory));
-      if Ada.Directories.Exists(Value("APPDIR", "") & "/usr/share/doc/hunter") then
+      if Ada.Directories.Exists
+          (Value("APPDIR", "") & "/usr/share/doc/hunter") then
          CurrentDirectory :=
            To_Unbounded_String(Value("APPDIR", "") & "/usr/share/doc/hunter");
       end if;
       if User_Data = Get_Object(Builder, "aboutchangelog") then
          FileName := To_Unbounded_String("CHANGELOG.md");
+      elsif User_Data = Get_Object(Builder, "aboutgetinvolved") then
+         FileName := To_Unbounded_String("CONTRIBUTING.md");
       end if;
       Reload(Builder);
       FilesIter := Get_Iter_First(FilesList);
