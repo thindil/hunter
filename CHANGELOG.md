@@ -5,6 +5,9 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Contributing guide
+- Option to show contributing guide file
+
+### Changed
 - Updated README.md
 
 ### Fixed
