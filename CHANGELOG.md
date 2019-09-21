@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated README.md
 - Updated Polish translation of the program
+- Updated code documentation
 
 ### Fixed
 - Detecting files types
