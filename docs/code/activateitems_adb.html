@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<title>./src/activateitems.adb</title>
+<!-- Source: ./src/activateitems.adb -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">Hunter v1.0 code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./sources.html#top">Source files</a>
+<a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_types.html#top">Types</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo52">ActivateItems/ActivateFile</a></li>
+<li>2. <a href="#robo54">ActivateItems/ExecuteFile</a></li>
+<li>3. <a href="#robo56">ActivateItems/StartOpenWith</a></li>
+</ul>
+<hr />
+<a name="ActivateItems2fActivateFile"></a>
+<a name="robo52"></a><h2>ActivateItems/ActivateFile [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo0">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> "Activate" selected file or directory. Action depends on what selected
+ item is. For example: it go to selected directory, opens text files in
+ editor and so on.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ActivateFile</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> User_Data - Which Gtk Tree View is active: main or destination for
+             copy or move files and directories.
+</pre>
+
+<hr />
+<a name="ActivateItems2fExecuteFile"></a>
+<a name="robo54"></a><h2>ActivateItems/ExecuteFile [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo0">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Execute selected file. That file must be graphical application or
+ all output will be redirected to terminal (invisible to user).
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ExecuteFile</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI (unused)
+</pre>
+
+<hr />
+<a name="ActivateItems2fStartOpenWith"></a>
+<a name="robo56"></a><h2>ActivateItems/StartOpenWith [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo0">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show text entry to start opening selected file or directory with custom
+ command.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>StartOpenWith</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/activateitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Sep 21 2019 06:50:54
+</p>
+</div> <!-- footer -->
+</body>
+</html>
