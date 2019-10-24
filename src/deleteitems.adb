@@ -150,6 +150,7 @@ package body DeleteItems is
       pragma Unreferenced(Object);
       Message, FileLine: Unbounded_String;
       FileInfo: File_Type;
+      I: Positive := SelectedItems.First_Index;
    begin
       if not Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
          NewAction := DELETE;
@@ -161,7 +162,7 @@ package body DeleteItems is
       else
          Message := To_Unbounded_String(Gettext("Move to trash?") & LF);
       end if;
-      for I in SelectedItems.First_Index .. SelectedItems.Last_Index loop
+      while I <= SelectedItems.Last_Index loop
          if NewAction = DELETE then
             Append(Message, SelectedItems(I));
          else
@@ -186,6 +187,11 @@ package body DeleteItems is
          end if;
          if I /= SelectedItems.Last_Index then
             Append(Message, LF);
+         end if;
+         I := I + 1;
+         if I = 11 then
+            Append(Message, Gettext("(and more)"));
+            exit;
          end if;
       end loop;
       ToggleToolButtons(NewAction);
