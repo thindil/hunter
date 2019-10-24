@@ -246,18 +246,13 @@ package body MainWindow is
    -- If scaling images in preview is enabled, scale it on resize preview of it
    -- PARAMETERS
    -- Object - GtkAda Builder used to create UI
-   -- RESULT
-   -- This function always return False
    -- SOURCE
-   function UpdateImage
-     (Object: access Gtkada_Builder_Record'Class) return Boolean is
+   procedure UpdateImage(Object: access Gtkada_Builder_Record'Class) is
    -- ****
    begin
-      if not Settings.ScaleImages then
-         return False;
+      if Settings.ScaleImages then
+         PreviewItem(Object);
       end if;
-      PreviewItem(Object);
-      return False;
    end UpdateImage;
 
    -- ****if* MainWindow/WindowKeyPressed
