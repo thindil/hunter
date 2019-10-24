@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- Memory leaks on auto-scaling images
+
 ## [1.0] - 2019-09-22
 
 ### Added
