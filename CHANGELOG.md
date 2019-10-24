@@ -151,7 +151,7 @@ All notable changes to this project will be documented in this file.
 - Detecting files and directories name with space inside
 - Memory leaks when previewin images
 - Shortcut for one of buttons in current directory path
-- Showing path buttons for very long paths
+- Showing path buttons for long paths
 - Showing modification time for invalid links
 - Showing owner group name
 - Running the program after extracting AppImage
