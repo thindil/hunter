@@ -46,3 +46,27 @@
    execute:
       - gprof bin/hunter gmon.out
    description: Generate gprof report
+- command:
+   name: createpot
+   execute:
+      - xgettext --keyword=translatable -s -o po/hunter.pot bin/ui/hunter.glade
+      - xgettext --package-name=Hunter --package-version=0.6 --msgid-bugs-address=thindil@laeran.pl --copyright-holder="Bartek thindil Jasicki" --keyword=Gettext -sj -o po/hunter.pot src/*.*
+      - echo "Translation template was regenerated."
+   description: (Re)generate translations template
+- command:
+   name: createlocale
+   execute:
+      - mkdir -p po/$1/LC_MESSAGES
+      - msginit -i po/hunter.pot -l $1 -o po/$1/hunter.po
+      - echo "Empty locale $1 was created."
+   description: Create new localization file for selected language
+- command:
+   name: updatetranslations
+   execute:
+      - others/translations.sh update
+   description: Updated existing localization files with new strings from template file
+- command:
+   name: generatetranslations
+   execute:
+      - others/translations.sh generate
+   description: Generate localizations files for the program
