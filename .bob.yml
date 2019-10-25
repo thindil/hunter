@@ -1,0 +1,48 @@
+- command:
+   name: runtests
+   execute:
+      - cd tests/driver
+      - ./test_runner
+   description: Run Hunter unit tests
+- command:
+   name: debug
+   execute:
+      - gprbuild -P hunter.gpr
+   description: Build Hunter in debug mode
+- command:
+   name: release
+   execute:
+      - gprclean -P hunter.gpr
+      - others/build.sh
+      - gprclean -P hunter.gpr
+   description: Build Hunter in release mode
+- command:
+   name: analyze
+   execute:
+      - gprbuild -P hunter.gpr -XMode=analyze
+   description: Build Hunter in analyze mode
+- command:
+   name: clean
+   execute:
+      - gprclean -P hunter.gpr
+   description: Clean all compilation files
+- command:
+   name: createtests
+   execute:
+      - gnattest -P hunter.gpr
+   description: Regenerate unit tests
+- command:
+   name: tests
+   execute:
+      - gprbuild -P tests/driver/test_driver.gpr
+   description: Build Hunter unit tests
+- command:
+   name: docs
+   execute:
+      - others/generatedocs.py
+   description: Generate code documentation
+- command:
+   name: gprof
+   execute:
+      - gprof bin/hunter gmon.out
+   description: Generate gprof report
