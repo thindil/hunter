@@ -7,7 +7,7 @@ find any bug in the program, please report it at
 
 ### Some general hints about reporting bugs
 
-- In "Title" field try write very short but not too general description of
+- In "Title" field try write short but not too general description of
   problem. Good example: "The program crash when opening directory". Bad
   example: "The program crashes often."
 - In body/comment field try write that much informations about problem as
@@ -113,9 +113,9 @@ file is):
 
 `gprbuild -P hunter.gpr -XMode=analyze`
 
-or, if you prefer use `build.sh` command:
+or, if you prefer (and you have installed), use `Bob`:
 
-`./build.sh analyze`
+`bob analyze`
 
 More informations about code coverage and profiling, you can find in proper
 documentation for both programs.
@@ -124,23 +124,36 @@ documentation for both programs.
 
 Hunter uses [GetText](https://www.gnu.org/software/gettext/) for a translation
 system. To create new or update existing translations, use *translations.sh*
-script located in the main directory(where this file is). You can see all the
-options available for this script by entering terminal command:
-`./translations.sh help`
+script located in the *others* directory. You can see all the
+options available for this script by entering terminal command in main the
+project directory:
+`others/translations.sh help`
+
+**Important:** always run this script from the main directory of the project.
+
+If you have `Bob` installed, you can also use it to manage translations.
 
 ### Adding new translation
 
 To add new translation to the program, enter terminal command:
-`./translations.sh createlocale [localename]` where *localename* is standard
-language code (for example `de` or `en_US`). It will create a new empty
-translation file with proper directories structure. For example, creating
-German translation of the program will looks that:
+`others/translations.sh createlocale [localename]` where *localename* is
+standard language code (for example `de` or `en_US`). It will create a new
+empty translation file with proper directories structure. For example,
+creating German translation of the program will looks that:
 
-`./translations.sh createlocale de`
+`others/translations.sh createlocale de`
+
+If you have `Bob` installed, you can also use it to create new translation:
+
+`bob createlocale de`
 
 ### Editing existing translation
 
 To edit existing translation, just open proper *.po* file in text editor or,
 if you prefer, you can use [Poedit](https://poedit.net/). After finishing
 edition, you should regenerate the program translations with terminal command:
-`./translations.sh generate`
+`others/translations.sh generate`
+
+If you have `Bob` installed, you can also use it to update translations:
+
+`bob updatetranslations`
