@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-09-20 07:15+0200\n"
+"POT-Creation-Date: 2019-10-27 06:58+0100\n"
 "PO-Revision-Date: 2019-06-30 07:10+0200\n"
 "Last-Translator:  <thindil@laeran.pl>\n"
 "Language-Team: Polish\n"
@@ -54,9 +54,13 @@ msgstr " z taką nazwą."
 msgid "' because there exists "
 msgstr "' ponieważ istnieje "
 
-#: src/deleteitems.adb:185
+#: src/deleteitems.adb:186
 msgid "(and its content)"
 msgstr "(i jego zawartość)"
+
+#: src/deleteitems.adb:193
+msgid "(and more)"
+msgstr "(i więcej)"
 
 #: src/errordialog.adb:101
 msgid "/.cache/hunter' directory."
@@ -291,7 +295,7 @@ msgstr "Skasuj wybran(e) plik(i) lub katalog(i [ALT-Delete])"
 msgid "Delete selected files and directories instead of moving them to Trash."
 msgstr "Skasuj wybrane pliki i katalogi zamiast przenosić je do Kosza."
 
-#: src/deleteitems.adb:160
+#: src/deleteitems.adb:161
 msgid "Delete?"
 msgstr "Skasować?"
 
@@ -524,7 +528,7 @@ msgstr ""
 "przenoszenia obecnie wybranych plików lub katalogów. Naciśnij go ponownie "
 "aby przenieść je."
 
-#: src/deleteitems.adb:162
+#: src/deleteitems.adb:163
 msgid "Move to trash?"
 msgstr "Przenieść do Kosza?"
 
@@ -703,7 +707,7 @@ msgstr "Szukaj pliku lub katalogu [ALT+F]"
 msgid "Select All"
 msgstr "Zaznacz Wszystko"
 
-#: src/mainwindow.adb:344
+#: src/mainwindow.adb:339
 msgid "Select all"
 msgstr "Zaznacz wszystko"
 
@@ -835,7 +839,7 @@ msgstr "Nieznany"
 msgid "Unknown error during deleting files or directories."
 msgstr "Nieznany błąd podczas kasowania plików lub katalogów"
 
-#: src/mainwindow.adb:340
+#: src/mainwindow.adb:335
 msgid "Unselect all"
 msgstr "Odznacz wszystko"
 
