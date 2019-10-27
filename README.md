@@ -52,10 +52,10 @@ this file is) to compile:
 
 * If you prefer using console: in main source code directory type
   `gprbuild -P hunter.gpr` for debug mode build or for release mode:
-  `gprbuild -P hunter.gpr -XMode=release`. You can also use build script
-  `build.sh`. Command: `./build.sh debug` will build the program in debug
-  mode. Command: `.build.sh release` will build the program in release mode
-  and put all needed files in *others/Output/release* directory.
+  `gprbuild -P hunter.gpr -XMode=release`. If you have installed *Bob* you can
+  type `bob debug` for build in debug mode or `bob release` to prepare release
+  for the program.
+
 
 ## Running Hunter
 
@@ -103,10 +103,10 @@ from the archive to proper locations. To run that version, just enter
 
 To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsber.home.xs4all.nl/Robo/)
 If you have it, in main program directory (where this file is) enter terminal
-command: `./generatedocs.py`. For more information about this script, please
-look [here](https://github.com/thindil/roboada#generatedocspy). This version
-of script have set all default settings for Hunter code. You can also use
-build script `build.sh` for this. Enter command: `./build.sh docs`.
+command: `others/generatedocs.py`. For more information about this script,
+please look [here](https://github.com/thindil/roboada#generatedocspy). This
+version of script have set all default settings for Hunter code. If you have
+*Bob* installed, you can type `bob docs`.
 
 ## Contributing to the project
 For detailed informations about contributing to the project (bugs reporting,
