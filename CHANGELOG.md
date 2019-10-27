@@ -6,6 +6,9 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Limit amount of items to delete in message to 10
 
+### Changed
+- Updated contributing guide
+
 ### Fixed
 - Memory leaks on auto-scaling images
 
