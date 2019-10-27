@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Hunter 0.6\n"
 "Report-Msgid-Bugs-To: thindil@laeran.pl\n"
-"POT-Creation-Date: 2019-09-20 07:15+0200\n"
+"POT-Creation-Date: 2019-10-27 06:58+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -53,8 +53,12 @@ msgstr ""
 msgid "' because there exists "
 msgstr ""
 
-#: src/deleteitems.adb:185
+#: src/deleteitems.adb:186
 msgid "(and its content)"
+msgstr ""
+
+#: src/deleteitems.adb:193
+msgid "(and more)"
 msgstr ""
 
 #: src/errordialog.adb:101
@@ -276,7 +280,7 @@ msgstr ""
 msgid "Delete selected files and directories instead of moving them to Trash."
 msgstr ""
 
-#: src/deleteitems.adb:160
+#: src/deleteitems.adb:161
 msgid "Delete?"
 msgstr ""
 
@@ -493,7 +497,7 @@ msgid ""
 "selected files or directories. Press again to move them."
 msgstr ""
 
-#: src/deleteitems.adb:162
+#: src/deleteitems.adb:163
 msgid "Move to trash?"
 msgstr ""
 
@@ -667,7 +671,7 @@ msgstr ""
 msgid "Select All"
 msgstr ""
 
-#: src/mainwindow.adb:344
+#: src/mainwindow.adb:339
 msgid "Select all"
 msgstr ""
 
@@ -788,7 +792,7 @@ msgstr ""
 msgid "Unknown error during deleting files or directories."
 msgstr ""
 
-#: src/mainwindow.adb:340
+#: src/mainwindow.adb:335
 msgid "Unselect all"
 msgstr ""
 
