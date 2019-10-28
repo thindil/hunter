@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.1] - 2019-10-28
 
 ### Added
 - Limit amount of items to delete in message to 10
