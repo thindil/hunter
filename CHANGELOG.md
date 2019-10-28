@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated contributing guide
 - Updated README.md
+- Updated Polish translation of the program
 
 ### Fixed
 - Memory leaks on auto-scaling images
