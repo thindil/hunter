@@ -14,7 +14,7 @@ case $1 in
    update)
       for directory in $(find po/* -maxdepth 0 -type d)
       do
-         msgmerge -U $directory/hunter.po po/hunter.pot
+         msgmerge --backup=off -U $directory/hunter.po po/hunter.pot
          echo "Locale ${directory:3} was updated."
       done
       ;;
