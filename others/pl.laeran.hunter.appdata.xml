@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop">
+  <id>pl.laeran.hunter</id>
+  <metadata_license>CC-0</metadata_license>
+  <project_license>GPL-3</project_license>
+  <name>hunter</name>
+  <summary>Hunter</summary>
+  <description>
+     <p>
+      Hunter is a graphical file manager for Linux, inspired by Ranger.
+      To open files, the program uses default applications from XDG MIME
+      Application Specification.
+    </p>
+  </description>
+  <url type="homepage">https://thindil.github.io/hunter/</url>
+  <provides>
+    <binary>hunter</binary>
+  </provides>
+</component>
