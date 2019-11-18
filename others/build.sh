@@ -9,7 +9,7 @@ cp CHANGELOG.md usr/share/doc/hunter/
 cp COPYING usr/share/doc/hunter/
 cp README.md usr/share/doc/hunter/
 cp CONTRIBUTING.md usr/share/doc/hunter/
-./translations.sh generate
+others/translations.sh generate
 for directory in $(find po/* -maxdepth 0 -type d)
 do
    cp -r $directory usr/share/locale/
