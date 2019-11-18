@@ -359,7 +359,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     <property name="deletable">False</property>
     <property name="transient_for">mainwindow</property>
     <property name="program_name">Hunter</property>
-    <property name="version">1.1</property>
+    <property name="version">1.2</property>
     <property name="copyright">©2019 Bartek thindil Jasicki</property>
     <property name="comments" translatable="yes">Graphical File Manager for Linux</property>
     <property name="website">https://thindil.github.io/hunter/</property>
