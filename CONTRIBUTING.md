@@ -113,7 +113,7 @@ file is):
 
 `gprbuild -P hunter.gpr -XMode=analyze`
 
-or, if you prefer (and you have installed), use `Bob`:
+or, if you prefer (and you have installed), use [Bob](https://github.com/thindil/bob):
 
 `bob analyze`
 
@@ -131,7 +131,8 @@ project directory:
 
 **Important:** always run this script from the main directory of the project.
 
-If you have `Bob` installed, you can also use it to manage translations.
+If you have [Bob](https://github.com/thindil/bob) installed, you can also
+use it to manage translations.
 
 ### Adding new translation
 
@@ -143,7 +144,8 @@ creating German translation of the program will looks that:
 
 `others/translations.sh createlocale de`
 
-If you have `Bob` installed, you can also use it to create new translation:
+If you have [Bob](https://github.com/thindil/bob) installed, you can also
+use it to create new translation:
 
 `bob createlocale de`
 
@@ -154,6 +156,7 @@ if you prefer, you can use [Poedit](https://poedit.net/). After finishing
 edition, you should regenerate the program translations with terminal command:
 `others/translations.sh generate`
 
-If you have `Bob` installed, you can also use it to update translations:
+If you have [Bob](https://github.com/thindil/bob) installed, you can also use
+it to update translations:
 
 `bob updatetranslations`
