@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Updated README.md
+- Updated contributing guide
 
 ### Fixed
 - Typos in contributing guide
