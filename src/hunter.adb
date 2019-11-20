@@ -26,6 +26,7 @@ with Glib.Error; use Glib.Error;
 with ErrorDialog; use ErrorDialog;
 with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;
+with RefreshData; use RefreshData;
 
 procedure Hunter is
    Builder: Gtkada_Builder;
@@ -74,6 +75,7 @@ begin
    Clear("RUNFROMSCRIPT");
    Clear("GSETTINGS_BACKEND");
    Main;
+   abort InotifyTask;
    MagicClose;
 exception
    when An_Exception : others =>

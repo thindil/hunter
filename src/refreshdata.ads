@@ -21,6 +21,10 @@
 package RefreshData is
 -- ****
 
+   task InotifyTask is
+      entry Start;
+   end InotifyTask;
+
    -- ****v* RefreshData/TemporaryStop
    -- FUNCTION
    -- If true, temporary stop refreshing directory listing (mainly in trash).
@@ -33,14 +37,9 @@ package RefreshData is
    -- FUNCTION
    -- Start timer for refreshing current directory listing
    -- SOURCE
-   procedure StartTimer;
+   procedure StartTimer(Path: String := "");
    -- ****
 
-   -- ****f* RefreshData/UpdateTimestamp
-   -- FUNCTION
-   -- Update last check timestamp to current time
-   -- SOURCE
-   procedure UpdateTimestamp;
-   -- ****
+   procedure UpdateWatch(Path: String);
 
 end RefreshData;
