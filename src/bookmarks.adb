@@ -89,6 +89,7 @@ package body Bookmarks is
             LoadDirectory(To_String(CurrentDirectory), "fileslist2");
          else
             Reload(Builder);
+            UpdateWatch(To_String(CurrentDirectory));
          end if;
       end if;
    end UpdateView;

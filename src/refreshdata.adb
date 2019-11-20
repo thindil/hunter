@@ -13,33 +13,15 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar; use Ada.Calendar;
-with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
-with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
-with Ada.Directories; use Ada.Directories;
+with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.List_Store; use Gtk.List_Store;
-with Gtk.Stack; use Gtk.Stack;
-with Gtk.Tree_Model; use Gtk.Tree_Model;
-with Gtkada.Builder; use Gtkada.Builder;
+with Inotify; use Inotify;
 with Glib; use Glib;
 with Glib.Main; use Glib.Main;
-with LoadData; use LoadData;
-with MainWindow; use MainWindow;
 with Preferences; use Preferences;
-with Utils; use Utils;
+with Ada.Text_IO;
 
 package body RefreshData is
-
-   -- ****iv* RefreshData/LastCheck
-   -- FUNCTION
-   -- Time when the program last check for modification time of files and
-   -- directories
-   -- SOURCE
-   LastCheck: Time;
-   -- ****
 
    -- ****iv* RefreshData/Source_Id
    -- FUNCTION
@@ -48,116 +30,62 @@ package body RefreshData is
    Source_Id: G_Source_Id := No_Source_Id;
    -- ****
 
-   -- ****if* RefreshData/CheckItem
-   -- FUNCTION
-   -- Check if selected file or directory was modified and upgrade information
-   -- if was
-   -- PARAMETERS
-   -- Model - Gtk_Tree_Model with content of the current directory
-   -- Path  - Gtk_Tree_Path to selected file or directory (Unused)
-   -- Iter  - Gtk_Tree_Iter to selected file or directory
-   -- RESULT
-   -- Always return false to check each file or directory in current directory
-   -- SOURCE
-   function CheckItem
-     (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
-      return Boolean is
-      -- ****
-      pragma Unreferenced(Path);
-      FileName: constant String :=
-        To_String(CurrentDirectory) & "/" & Get_String(Model, Iter, 0);
-      ModificationTime: constant String := Get_String(Model, Iter, 5);
-      Size: File_Size;
-      Directory: Dir_Type;
-      Last: Natural;
-      SubFileName: String(1 .. 1024);
-   begin
-      if Value(ModificationTime, UTC_Time_Offset) /=
-        Modification_Time(FileName) then
-         Set
-           (-(Model), Iter, 5,
-            Image
-              (Date => Modification_Time(FileName),
-               Time_Zone => UTC_Time_Offset));
-         if not Is_Read_Accessible_File(FileName) then
-            Set(-(Model), Iter, 3, "?");
-            Set(-(Model), Iter, 4, 0);
-            return False;
-         end if;
-         if Is_Directory(FileName) then
-            Open(Directory, FileName);
-            Size := 0;
-            loop
-               Read(Directory, SubFileName, Last);
-               exit when Last = 0;
-               if SubFileName(1 .. Last) /= "." and
-                 SubFileName(1 .. Last) /= ".." then
-                  Size := Size + 1;
-               end if;
-            end loop;
-            Close(Directory);
-            Set(-(Model), Iter, 3, File_Size'Image(Size));
-         elsif Is_Regular_File(FileName) then
-            Size := Ada.Directories.Size(FileName);
-            Set(-(Model), Iter, 3, CountFileSize(Size));
-            if Size > File_Size(Gint'Last) then
-               Size := File_Size(Gint'Last);
-            end if;
-            Set(-(Model), Iter, 4, Gint(Size));
-         end if;
-      end if;
-      return False;
-   exception
-      when Constraint_Error | Name_Error =>
-         return False;
-   end CheckItem;
+   InotifyInstance: Instance;
+   NotifyWatch: Watch;
+   type Item_Data is record
+      Path: Unbounded_String;
+      EType: Event_Kind;
+   end record;
+   package Items_Container is new Vectors(Positive, Item_Data);
+   ItemsList: Items_Container.Vector;
 
-   -- ****if* RefreshData/CheckItems
-   -- FUNCTION
-   -- Timer function - check periodically for changes in current directory
-   -- RESULT
-   -- Always true to keep timer alive
-   -- SOURCE
    function CheckItems return Boolean is
-   -- ****
    begin
-      if Settings.AutoRefresh and not TemporaryStop then
-         if Modification_Time(To_String(CurrentDirectory)) > LastCheck then
-            if Get_Visible_Child_Name
-                (Gtk_Stack(Get_Object(Builder, "infostack"))) =
-              "destination" then
-               LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-            else
-               Reload(Builder);
-            end if;
-         else
-            if Get_Visible_Child_Name
-                (Gtk_Stack(Get_Object(Builder, "infostack"))) /=
-              "destination" then
-               Foreach
-                 (Gtk_List_Store(Get_Object(Builder, "fileslist")),
-                  CheckItem'Access);
-            end if;
-         end if;
+      if not TemporaryStop then
+         for Item of ItemsList loop
+            Ada.Text_IO.Put_Line
+              (To_String(Item.Path) & " " & Event_Kind'Image(Item.EType));
+         end loop;
       end if;
-      UpdateTimestamp;
+      ItemsList.Clear;
       return True;
    end CheckItems;
 
-   procedure StartTimer is
+   task body InotifyTask is
+      procedure Handle_Event
+        (Subject: Watch; Event: Event_Kind; Is_Directory: Boolean;
+         Name: String) is
+         pragma Unreferenced(Subject, Is_Directory);
+      begin
+         ItemsList.Append((To_Unbounded_String(Name), Event));
+      end Handle_Event;
+   begin
+      accept Start;
+      InotifyInstance.Process_Events(Handle_Event'Access);
+   end InotifyTask;
+
+   procedure StartTimer(Path: String := "") is
    begin
       if Source_Id /= No_Source_Id then
          Remove(Source_Id);
       end if;
-      UpdateTimestamp;
+      if Path /= "" then
+         ItemsList.Clear;
+         NotifyWatch := InotifyInstance.Add_Watch(Path);
+         InotifyTask.Start;
+      end if;
       Source_Id :=
         Timeout_Add
           (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems'Access);
    end StartTimer;
 
-   procedure UpdateTimestamp is
+   procedure UpdateWatch(Path: String) is
    begin
-      LastCheck := Clock;
-   end UpdateTimestamp;
+      -- FIXME: problems with remove watch
+      Ada.Text_IO.Put_Line("new path:" & Path);
+      ItemsList.Clear;
+      InotifyInstance.Remove_Watch(NotifyWatch);
+      NotifyWatch := InotifyInstance.Add_Watch(Path);
+   end UpdateWatch;
 
 end RefreshData;

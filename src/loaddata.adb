@@ -43,6 +43,7 @@ with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
 with MainWindow; use MainWindow;
+with RefreshData; use RefreshData;
 with Utils; use Utils;
 with Trash;
 
@@ -123,6 +124,7 @@ package body LoadData is
       if Get_Parent(Get_Parent(Self)) =
         Gtk_Widget(Get_Object(Builder, "boxpath")) then
          Reload(Builder);
+         UpdateWatch(To_String(CurrentDirectory));
       else
          DestinationPath := CurrentDirectory;
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");

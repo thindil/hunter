@@ -126,7 +126,6 @@ package body MainWindow is
          Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
       end if;
       ShowItem(Object);
-      UpdateTimestamp;
    end Reload;
 
    -- ****if* MainWindow/StartRename
@@ -589,7 +588,7 @@ package body MainWindow is
               (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
       end if;
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
-      StartTimer;
+      StartTimer(To_String(CurrentDirectory));
       Setting := False;
    end CreateMainWindow;
 

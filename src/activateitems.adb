@@ -26,6 +26,7 @@ with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with RefreshData; use RefreshData;
 with Utils; use Utils;
 
 package body ActivateItems is
@@ -68,6 +69,7 @@ package body ActivateItems is
          CurrentDirectory := CurrentSelected;
          if User_Data = Get_Object(Builder, "treefiles") then
             Reload(Builder);
+            UpdateWatch(To_String(CurrentDirectory));
          else
             LoadDirectory(To_String(CurrentDirectory), "fileslist2");
             Set_Cursor
