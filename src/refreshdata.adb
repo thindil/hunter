@@ -13,8 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Vectors; use Ada.Containers;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
+with Ada.Strings.Hash;
 with Inotify; use Inotify;
 with Glib; use Glib;
 with Glib.Main; use Glib.Main;
@@ -31,19 +31,16 @@ package body RefreshData is
    -- ****
 
    InotifyInstance: Instance;
-   type Item_Data is record
-      Path: Unbounded_String;
-      EType: Event_Kind;
-   end record;
-   package Items_Container is new Vectors(Positive, Item_Data);
-   ItemsList: Items_Container.Vector;
+   package Items_Container is new Indefinite_Hashed_Maps(String, Event_Kind,
+      Ada.Strings.Hash, "=");
+   ItemsList: Items_Container.Map;
 
    function CheckItems return Boolean is
    begin
       if not TemporaryStop then
-         for Item of ItemsList loop
+         for I in ItemsList.Iterate loop
             Ada.Text_IO.Put_Line
-              (To_String(Item.Path) & " " & Event_Kind'Image(Item.EType));
+              (Items_Container.Key(I) & " " & Event_Kind'Image(ItemsList(I)));
          end loop;
       end if;
       ItemsList.Clear;
@@ -56,13 +53,7 @@ package body RefreshData is
          Name: String) is
          pragma Unreferenced(Subject, Is_Directory);
       begin
-         case Event is
-            when Created | Metadata | Closed_Write | Moved_From | Moved_To |
-              Deleted =>
-               ItemsList.Append((To_Unbounded_String(Name), Event));
-            when others =>
-               null;
-         end case;
+         ItemsList.Include(Name, Event);
       end Handle_Event;
    begin
       accept Start;
@@ -76,7 +67,12 @@ package body RefreshData is
       end if;
       if Path /= "" then
          ItemsList.Clear;
-         InotifyInstance.Add_Watch(Path);
+         InotifyInstance.Add_Watch
+           (Path,
+            (Created | Metadata | Closed_Write | Moved_From | Moved_To |
+             Deleted =>
+               True,
+             others => False));
          InotifyTask.Start;
       end if;
       Source_Id :=
@@ -87,7 +83,12 @@ package body RefreshData is
    procedure UpdateWatch(Path: String) is
    begin
       ItemsList.Clear;
-      InotifyInstance.Add_Watch(Path);
+      InotifyInstance.Add_Watch
+        (Path,
+         (Created | Metadata | Closed_Write | Moved_From | Moved_To |
+          Deleted =>
+            True,
+          others => False));
    end UpdateWatch;
 
 end RefreshData;
