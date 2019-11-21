@@ -31,7 +31,6 @@ package body RefreshData is
    -- ****
 
    InotifyInstance: Instance;
-   NotifyWatch: Watch;
    type Item_Data is record
       Path: Unbounded_String;
       EType: Event_Kind;
@@ -71,7 +70,7 @@ package body RefreshData is
       end if;
       if Path /= "" then
          ItemsList.Clear;
-         NotifyWatch := InotifyInstance.Add_Watch(Path);
+         InotifyInstance.Add_Watch(Path);
          InotifyTask.Start;
       end if;
       Source_Id :=
@@ -81,11 +80,8 @@ package body RefreshData is
 
    procedure UpdateWatch(Path: String) is
    begin
-      -- FIXME: problems with remove watch
-      Ada.Text_IO.Put_Line("new path:" & Path);
       ItemsList.Clear;
-      InotifyInstance.Remove_Watch(NotifyWatch);
-      NotifyWatch := InotifyInstance.Add_Watch(Path);
+      InotifyInstance.Add_Watch(Path);
    end UpdateWatch;
 
 end RefreshData;
