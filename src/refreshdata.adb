@@ -66,13 +66,7 @@ package body RefreshData is
          Remove(Source_Id);
       end if;
       if Path /= "" then
-         ItemsList.Clear;
-         InotifyInstance.Add_Watch
-           (Path,
-            (Created | Metadata | Closed_Write | Moved_From | Moved_To |
-             Deleted =>
-               True,
-             others => False));
+         UpdateWatch(Path);
          InotifyTask.Start;
       end if;
       Source_Id :=
