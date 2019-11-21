@@ -25,6 +25,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Inotify; use Inotify;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
@@ -134,6 +135,7 @@ package body RefreshData is
          if ItemsList.Length = 0 then
             return True;
          end if;
+         -- Fixme: not adding new files
          Set_Sort_Func
            (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
             EmptySortFiles'Access);
@@ -240,6 +242,7 @@ package body RefreshData is
          Set_Sort_Func
            (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
             SortFiles'Access);
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
       end if;
       ItemsList.Clear;
       return True;
