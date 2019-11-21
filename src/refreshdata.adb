@@ -56,7 +56,13 @@ package body RefreshData is
          Name: String) is
          pragma Unreferenced(Subject, Is_Directory);
       begin
-         ItemsList.Append((To_Unbounded_String(Name), Event));
+         case Event is
+            when Created | Metadata | Closed_Write | Moved_From | Moved_To |
+              Deleted =>
+               ItemsList.Append((To_Unbounded_String(Name), Event));
+            when others =>
+               null;
+         end case;
       end Handle_Event;
    begin
       accept Start;
