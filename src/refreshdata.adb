@@ -135,15 +135,15 @@ package body RefreshData is
          if ItemsList.Length = 0 then
             return True;
          end if;
-         -- Fixme: not adding new files
          Set_Sort_Func
            (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
             EmptySortFiles'Access);
          for I in ItemsList.Iterate loop
-            if ItemsList(I) /= Created and ItemsList(I) /= Moved_To then
+            if ItemsList(I) /= Closed_Write and ItemsList(I) /= Moved_To then
                goto End_Of_Loop;
             end if;
             Append(FilesList, FileIter);
+            Set(FilesList, FileIter, 0, Simple_Name(Items_Container.Key(I)));
             begin
                Set
                  (FilesList, FileIter, 5,
