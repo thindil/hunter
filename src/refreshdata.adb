@@ -44,10 +44,27 @@ package body RefreshData is
    Source_Id: G_Source_Id := No_Source_Id;
    -- ****
 
+   -- ****iv* RefreshData/InotifyInstance
+   -- FUNCTION
+   -- inotify instance
+   -- SOURCE
    InotifyInstance: Instance;
+   -- ****
+
+   -- ****it* RefreshData/Items_Container
+   -- FUNCTION
+   -- Used to store inotify events data.
+   -- SOURCE
    package Items_Container is new Indefinite_Hashed_Maps(String, Event_Kind,
       Ada.Strings.Hash, "=");
+   -- ****
+
+   -- ****iv* RefreshData/ItemsList
+   -- FUNCTION
+   -- Stores all information about pending inotify events.
+   -- SOURCE
    ItemsList: Items_Container.Map;
+   -- ****
 
    -- ****if* RefreshData/UpdateItem
    -- FUNCTION
@@ -118,9 +135,17 @@ package body RefreshData is
       return False;
    end UpdateItem;
 
+   -- ****if* RefreshData/CheckItems
+   -- FUNCTION
+   -- Check if any events are pending and update directory listing with new
+   -- information.
+   -- RESULT
+   -- This function always return True to not stop timer from triggering.
+   -- SOURCE
    function CheckItems return Boolean is
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, "fileslist"));
+      -- ****
       FileIter: Gtk_Tree_Iter := Get_Iter_First(FilesList);
    begin
       if TemporaryStop or not Settings.AutoRefresh or ItemsList.Length = 0 then

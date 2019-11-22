@@ -21,9 +21,14 @@
 package RefreshData is
 -- ****
 
+   -- ****a* RefreshData/InotifyTask
+   -- FUNCTION
+   -- Task to monitor changes on disk
+   -- SOURCE
    task InotifyTask is
       entry Start;
    end InotifyTask;
+   -- ****
 
    -- ****v* RefreshData/TemporaryStop
    -- FUNCTION
@@ -40,6 +45,13 @@ package RefreshData is
    procedure StartTimer(Path: String := "");
    -- ****
 
+   -- ****f* RefreshData/UpdateWatch
+   -- FUNCTION
+   -- Update inotify watch with new path to watch.
+   -- PARAMETERS
+   -- Path - Full path to the directory which will be watched for changes.
+   -- SOURCE
    procedure UpdateWatch(Path: String);
+   -- ****
 
 end RefreshData;
