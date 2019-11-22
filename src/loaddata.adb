@@ -29,7 +29,6 @@ with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
 with Gtk.Image; use Gtk.Image;
-with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
@@ -135,13 +134,11 @@ package body LoadData is
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, ListName));
       FileIter: Gtk_Tree_Iter;
-      Size: File_Size;
-      Directory, SubDirectory: Dir_Type;
-      Last, SubLast: Natural;
-      FileName, SubFileName: String(1 .. 1024);
+      Directory: Dir_Type;
+      Last: Natural;
+      FileName: String(1 .. 1024);
       MainWindow: constant Gdk_Window :=
         Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow")));
-      MimeType: Unbounded_String;
    begin
       Setting := True;
       if Accelerators = null then
@@ -190,116 +187,9 @@ package body LoadData is
       loop
          Read(Directory, FileName, Last);
          exit when Last = 0;
-         if FileName(1 .. Last) = "." or FileName(1 .. Last) = ".." then
-            goto End_Of_Loop;
+         if FileName(1 .. Last) /= "." and FileName(1 .. Last) /= ".." then
+            AddItem(FilesList, FileIter, Name & "/" & FileName(1 .. Last));
          end if;
-         Append(FilesList, FileIter);
-         Set(FilesList, FileIter, 0, FileName(1 .. Last));
-         if ListName = "fileslist" then
-            begin
-               Set
-                 (FilesList, FileIter, 5,
-                  Ada.Calendar.Formatting.Image
-                    (Date =>
-                       Modification_Time(Name & "/" & FileName(1 .. Last)),
-                     Time_Zone => UTC_Time_Offset));
-            exception
-               when others =>
-                  Set(FilesList, FileIter, 5, "unknown");
-            end;
-            Set(FilesList, FileIter, 6, Name & "/" & FileName(1 .. Last));
-         end if;
-         if Is_Directory(Name & "/" & FileName(1 .. Last)) then
-            if FileName(1) = '.' then
-               Set(FilesList, FileIter, 1, 1);
-            else
-               Set(FilesList, FileIter, 1, 2);
-            end if;
-            if Is_Symbolic_Link(Name & "/" & FileName(1 .. Last)) then
-               Set(FilesList, FileIter, 2, "emblem-symbolic-link");
-            else
-               Set(FilesList, FileIter, 2, "folder");
-            end if;
-            if ListName = "fileslist1" then
-               goto End_Of_Loop;
-            end if;
-            Set(FilesList, FileIter, 4, Gint'Last);
-            if Is_Read_Accessible_File(Name & "/" & FileName(1 .. Last)) then
-               Open(SubDirectory, Name & "/" & FileName(1 .. Last));
-               Size := 0;
-               loop
-                  Read(SubDirectory, SubFileName, SubLast);
-                  exit when SubLast = 0;
-                  if SubFileName(1 .. SubLast) /= "." and
-                    SubFileName(1 .. SubLast) /= ".." then
-                     Size := Size + 1;
-                  end if;
-               end loop;
-               Close(SubDirectory);
-               Set(FilesList, FileIter, 3, File_Size'Image(Size));
-            else
-               Set(FilesList, FileIter, 3, "?");
-            end if;
-         else
-            if FileName(1) = '.' then
-               Set(FilesList, FileIter, 1, 3);
-            else
-               Set(FilesList, FileIter, 1, 4);
-            end if;
-            if Is_Symbolic_Link(Name & "/" & FileName(1 .. Last)) then
-               Set(FilesList, FileIter, 2, "emblem-symbolic-link");
-            elsif Is_Executable_File(Name & "/" & FileName(1 .. Last)) then
-               Set(FilesList, FileIter, 2, "application-x-executable");
-            else
-               MimeType :=
-                 To_Unbounded_String
-                   (GetMimeType(Name & "/" & FileName(1 .. Last)));
-               if Index(MimeType, "audio") > 0 then
-                  Set(FilesList, FileIter, 2, "audio-x-generic");
-               elsif Index(MimeType, "font") > 0 then
-                  Set(FilesList, FileIter, 2, "font-x-generic");
-               elsif Index(MimeType, "image") > 0 then
-                  Set(FilesList, FileIter, 2, "image-x-generic");
-               elsif Index(MimeType, "video") > 0 then
-                  Set(FilesList, FileIter, 2, "video-x-generic");
-               elsif Index(MimeType, "text/x-script") > 0 then
-                  Set(FilesList, FileIter, 2, "text-x-script");
-               elsif MimeType = To_Unbounded_String("text/html") then
-                  Set(FilesList, FileIter, 2, "text-html");
-               elsif Index(MimeType, "zip") > 0 or
-                 Index(MimeType, "x-xz") > 0 then
-                  Set(FilesList, FileIter, 2, "package-x-generic");
-               elsif Index(MimeType, "text") > 0 then
-                  Set(FilesList, FileIter, 2, "text-x-generic");
-               else
-                  Set(FilesList, FileIter, 2, "text-x-generic-template");
-               end if;
-            end if;
-            if ListName = "fileslist1" then
-               goto End_Of_Loop;
-            end if;
-            if not Is_Read_Accessible_File
-                (Name & "/" & FileName(1 .. Last)) then
-               Set(FilesList, FileIter, 3, "?");
-               Set(FilesList, FileIter, 4, 0);
-               goto End_Of_Loop;
-            end if;
-            if Is_Symbolic_Link(Name & "/" & FileName(1 .. Last)) then
-               Set(FilesList, FileIter, 3, "->");
-               Set(FilesList, FileIter, 4, 0);
-            elsif Is_Regular_File(Name & "/" & FileName(1 .. Last)) then
-               Size := Ada.Directories.Size(Name & "/" & FileName(1 .. Last));
-               Set(FilesList, FileIter, 3, CountFileSize(Size));
-               if Size > File_Size(Gint'Last) then
-                  Size := File_Size(Gint'Last);
-               end if;
-               Set(FilesList, FileIter, 4, Gint(Size));
-            else
-               Set(FilesList, FileIter, 3, "0");
-               Set(FilesList, FileIter, 4, 0);
-            end if;
-         end if;
-         <<End_Of_Loop>>
       end loop;
       Close(Directory);
       if ListName /= "fileslist1" then
@@ -514,5 +404,118 @@ package body LoadData is
          Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")));
       end if;
    end LoadDirectory;
+
+   procedure AddItem
+     (FilesList: Gtk_List_Store; FileIter: out Gtk_Tree_Iter; Path: String) is
+      FileName: constant String := Simple_Name(Path);
+      Size: File_Size;
+      SubDirectory: Dir_Type;
+      SubLast: Natural;
+      SubFileName: String(1 .. 1024);
+      MimeType: Unbounded_String;
+   begin
+      Append(FilesList, FileIter);
+      Set(FilesList, FileIter, 0, Simple_Name(Path));
+      if Get_N_Columns(FilesList) = 7 then
+         begin
+            Set
+              (FilesList, FileIter, 5,
+               Ada.Calendar.Formatting.Image
+                 (Date => Modification_Time(Path),
+                  Time_Zone => UTC_Time_Offset));
+         exception
+            when others =>
+               Set(FilesList, FileIter, 5, "unknown");
+         end;
+         Set(FilesList, FileIter, 6, Path);
+      end if;
+      if Is_Directory(Path) then
+         if FileName(1) = '.' then
+            Set(FilesList, FileIter, 1, 1);
+         else
+            Set(FilesList, FileIter, 1, 2);
+         end if;
+         if Is_Symbolic_Link(Path) then
+            Set(FilesList, FileIter, 2, "emblem-symbolic-link");
+         else
+            Set(FilesList, FileIter, 2, "folder");
+         end if;
+         if Get_N_Columns(FilesList) = 3 then
+            return;
+         end if;
+         Set(FilesList, FileIter, 4, Gint'Last);
+         if Is_Read_Accessible_File(Path) then
+            Open(SubDirectory, Path);
+            Size := 0;
+            loop
+               Read(SubDirectory, SubFileName, SubLast);
+               exit when SubLast = 0;
+               if SubFileName(1 .. SubLast) /= "." and
+                 SubFileName(1 .. SubLast) /= ".." then
+                  Size := Size + 1;
+               end if;
+            end loop;
+            Close(SubDirectory);
+            Set(FilesList, FileIter, 3, File_Size'Image(Size));
+         else
+            Set(FilesList, FileIter, 3, "?");
+         end if;
+      else
+         if FileName(1) = '.' then
+            Set(FilesList, FileIter, 1, 3);
+         else
+            Set(FilesList, FileIter, 1, 4);
+         end if;
+         if Is_Symbolic_Link(Path) then
+            Set(FilesList, FileIter, 2, "emblem-symbolic-link");
+         elsif Is_Executable_File(Path) then
+            Set(FilesList, FileIter, 2, "application-x-executable");
+         else
+            MimeType := To_Unbounded_String(GetMimeType(Path));
+            if Index(MimeType, "audio") > 0 then
+               Set(FilesList, FileIter, 2, "audio-x-generic");
+            elsif Index(MimeType, "font") > 0 then
+               Set(FilesList, FileIter, 2, "font-x-generic");
+            elsif Index(MimeType, "image") > 0 then
+               Set(FilesList, FileIter, 2, "image-x-generic");
+            elsif Index(MimeType, "video") > 0 then
+               Set(FilesList, FileIter, 2, "video-x-generic");
+            elsif Index(MimeType, "text/x-script") > 0 then
+               Set(FilesList, FileIter, 2, "text-x-script");
+            elsif MimeType = To_Unbounded_String("text/html") then
+               Set(FilesList, FileIter, 2, "text-html");
+            elsif Index(MimeType, "zip") > 0 or
+              Index(MimeType, "x-xz") > 0 then
+               Set(FilesList, FileIter, 2, "package-x-generic");
+            elsif Index(MimeType, "text") > 0 then
+               Set(FilesList, FileIter, 2, "text-x-generic");
+            else
+               Set(FilesList, FileIter, 2, "text-x-generic-template");
+            end if;
+         end if;
+         if Get_N_Columns(FilesList) = 3 then
+            return;
+         end if;
+         if not Is_Read_Accessible_File(Path) then
+            Set(FilesList, FileIter, 3, "?");
+            Set(FilesList, FileIter, 4, 0);
+            return;
+         end if;
+         if Is_Symbolic_Link(Path) then
+            Set(FilesList, FileIter, 3, "->");
+            Set(FilesList, FileIter, 4, 0);
+         elsif Is_Regular_File(Path) then
+            Size := Ada.Directories.Size(Path);
+            Set(FilesList, FileIter, 3, CountFileSize(Size));
+            if Size > File_Size(Gint'Last) then
+               Size := File_Size(Gint'Last);
+            end if;
+            Set(FilesList, FileIter, 4, Gint(Size));
+         else
+            Set(FilesList, FileIter, 3, "0");
+            Set(FilesList, FileIter, 4, 0);
+         end if;
+      end if;
+   end AddItem;
 
 end LoadData;

@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Glib; use Glib;
 
@@ -66,6 +67,22 @@ package LoadData is
    --            directory preview
    -- SOURCE
    procedure LoadDirectory(Name, ListName: String);
+   -- ****
+
+   -- ****f* LoadData/AddItem
+   -- FUNCTION
+   -- Add file or directory to the directory listing list
+   -- PARAMETERS
+   -- FilesList - Gtk_List_Store with list of files and directories to which
+   --             item will be added
+   -- FileIter  - Gtk_Tree_Iter of added item in FilesList
+   -- Path      - Full path to the file or directory which will be added to
+   --             the FilesList.
+   -- RETURNS
+   -- Parameter FileIter
+   -- SOURCE
+   procedure AddItem
+     (FilesList: Gtk_List_Store; FileIter: out Gtk_Tree_Iter; Path: String);
    -- ****
 
 end LoadData;

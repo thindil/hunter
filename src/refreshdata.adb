@@ -122,11 +122,6 @@ package body RefreshData is
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, "fileslist"));
       FileIter: Gtk_Tree_Iter := Get_Iter_First(FilesList);
-      Size: File_Size;
-      SubDirectory: Dir_Type;
-      SubLast: Natural;
-      SubFileName: String(1 .. 1024);
-      MimeType: Unbounded_String;
    begin
       if TemporaryStop or not Settings.AutoRefresh or ItemsList.Length = 0 then
          ItemsList.Clear;
@@ -141,105 +136,9 @@ package body RefreshData is
         (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
          EmptySortFiles'Access);
       for I in ItemsList.Iterate loop
-         if ItemsList(I) /= Closed_Write and ItemsList(I) /= Moved_To then
-            goto End_Of_Loop;
+         if ItemsList(I) = Closed_Write or ItemsList(I) = Moved_To then
+            AddItem(FilesList, FileIter, Items_Container.Key(I));
          end if;
-         Append(FilesList, FileIter);
-         Set(FilesList, FileIter, 0, Simple_Name(Items_Container.Key(I)));
-         begin
-            Set
-              (FilesList, FileIter, 5,
-               Ada.Calendar.Formatting.Image
-                 (Date => Modification_Time(Items_Container.Key(I)),
-                  Time_Zone => UTC_Time_Offset));
-         exception
-            when others =>
-               Set(FilesList, FileIter, 5, "unknown");
-         end;
-         Set(FilesList, FileIter, 6, Items_Container.Key(I));
-         if Is_Directory(Items_Container.Key(I)) then
-            if Simple_Name(Items_Container.Key(I))(1) = '.' then
-               Set(FilesList, FileIter, 1, 1);
-            else
-               Set(FilesList, FileIter, 1, 2);
-            end if;
-            if Is_Symbolic_Link(Items_Container.Key(I)) then
-               Set(FilesList, FileIter, 2, "emblem-symbolic-link");
-            else
-               Set(FilesList, FileIter, 2, "folder");
-            end if;
-            Set(FilesList, FileIter, 4, Gint'Last);
-            if Is_Read_Accessible_File(Items_Container.Key(I)) then
-               Open(SubDirectory, Items_Container.Key(I));
-               Size := 0;
-               loop
-                  Read(SubDirectory, SubFileName, SubLast);
-                  exit when SubLast = 0;
-                  if SubFileName(1 .. SubLast) /= "." and
-                    SubFileName(1 .. SubLast) /= ".." then
-                     Size := Size + 1;
-                  end if;
-               end loop;
-               Close(SubDirectory);
-               Set(FilesList, FileIter, 3, File_Size'Image(Size));
-            else
-               Set(FilesList, FileIter, 3, "?");
-            end if;
-         else
-            if Simple_Name(Items_Container.Key(I))(1) = '.' then
-               Set(FilesList, FileIter, 1, 3);
-            else
-               Set(FilesList, FileIter, 1, 4);
-            end if;
-            if Is_Symbolic_Link(Items_Container.Key(I)) then
-               Set(FilesList, FileIter, 2, "emblem-symbolic-link");
-            elsif Is_Executable_File(Items_Container.Key(I)) then
-               Set(FilesList, FileIter, 2, "application-x-executable");
-            else
-               MimeType :=
-                 To_Unbounded_String(GetMimeType(Items_Container.Key(I)));
-               if Index(MimeType, "audio") > 0 then
-                  Set(FilesList, FileIter, 2, "audio-x-generic");
-               elsif Index(MimeType, "font") > 0 then
-                  Set(FilesList, FileIter, 2, "font-x-generic");
-               elsif Index(MimeType, "image") > 0 then
-                  Set(FilesList, FileIter, 2, "image-x-generic");
-               elsif Index(MimeType, "video") > 0 then
-                  Set(FilesList, FileIter, 2, "video-x-generic");
-               elsif Index(MimeType, "text/x-script") > 0 then
-                  Set(FilesList, FileIter, 2, "text-x-script");
-               elsif MimeType = To_Unbounded_String("text/html") then
-                  Set(FilesList, FileIter, 2, "text-html");
-               elsif Index(MimeType, "zip") > 0 or
-                 Index(MimeType, "x-xz") > 0 then
-                  Set(FilesList, FileIter, 2, "package-x-generic");
-               elsif Index(MimeType, "text") > 0 then
-                  Set(FilesList, FileIter, 2, "text-x-generic");
-               else
-                  Set(FilesList, FileIter, 2, "text-x-generic-template");
-               end if;
-            end if;
-            if not Is_Read_Accessible_File(Items_Container.Key(I)) then
-               Set(FilesList, FileIter, 3, "?");
-               Set(FilesList, FileIter, 4, 0);
-               goto End_Of_Loop;
-            end if;
-            if Is_Symbolic_Link(Items_Container.Key(I)) then
-               Set(FilesList, FileIter, 3, "->");
-               Set(FilesList, FileIter, 4, 0);
-            elsif Is_Regular_File(Items_Container.Key(I)) then
-               Size := Ada.Directories.Size(Items_Container.Key(I));
-               Set(FilesList, FileIter, 3, CountFileSize(Size));
-               if Size > File_Size(Gint'Last) then
-                  Size := File_Size(Gint'Last);
-               end if;
-               Set(FilesList, FileIter, 4, Gint(Size));
-            else
-               Set(FilesList, FileIter, 3, "0");
-               Set(FilesList, FileIter, 4, 0);
-            end if;
-         end if;
-         <<End_Of_Loop>>
       end loop;
       Set_Sort_Func
         (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
