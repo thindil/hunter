@@ -128,7 +128,7 @@ package body RefreshData is
       SubFileName: String(1 .. 1024);
       MimeType: Unbounded_String;
    begin
-      if TemporaryStop then
+      if TemporaryStop or not Settings.AutoRefresh then
          ItemsList.Clear;
          return True;
       end if;
