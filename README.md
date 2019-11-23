@@ -43,6 +43,10 @@ To build you need:
   every Linux distribution: in Fedora it is *file-devel* on Debian/Ubuntu/Mint
   *file-dev*.
 
+* Inotify-ada library available at:
+
+  https://github.com/onox/inotify-ada
+
 If you have all the required packages, navigate to the main directory(where
 this file is) to compile:
 
