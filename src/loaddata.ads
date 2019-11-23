@@ -78,7 +78,7 @@ package LoadData is
    -- FileIter  - Gtk_Tree_Iter of added item in FilesList
    -- Path      - Full path to the file or directory which will be added to
    --             the FilesList.
-   -- RETURNS
+   -- RESULT
    -- Parameter FileIter
    -- SOURCE
    procedure AddItem
