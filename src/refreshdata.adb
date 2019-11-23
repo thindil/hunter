@@ -205,9 +205,7 @@ package body RefreshData is
       ItemsList.Clear;
       InotifyInstance.Add_Watch
         (Path,
-         (Created | Metadata | Closed_Write | Moved_From | Moved_To |
-          Deleted =>
-            True,
+         (Metadata | Closed_Write | Moved_From | Moved_To | Deleted => True,
           others => False));
    end UpdateWatch;
 
