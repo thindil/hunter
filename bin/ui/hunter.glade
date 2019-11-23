@@ -57,7 +57,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   </object>
   <object class="GtkAccelGroup" id="accelerators"/>
   <object class="GtkAdjustment" id="adjrefresh">
-    <property name="lower">5</property>
     <property name="upper">30</property>
     <property name="value">10</property>
     <property name="step_increment">1</property>
@@ -1938,36 +1937,11 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkLabel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Auto refresh:</property>
-                    <property name="xalign">0</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
                     <property name="label" translatable="yes">Auto refresh interval:</property>
                     <property name="xalign">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSwitch" id="switchautorefresh">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">Check for changes in current directory and refresh it if any file or directory inside was changed.</property>
-                    <property name="active">True</property>
-                    <signal name="state-set" handler="Save_Preferences" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="left_attach">1</property>
                     <property name="top_attach">2</property>
                   </packing>
                 </child>
@@ -1975,14 +1949,14 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                   <object class="GtkScale" id="scalerefresh">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
-                    <property name="tooltip_text" translatable="yes">How often (in seconds) the program should check for changes in current directory.</property>
+                    <property name="tooltip_text" translatable="yes">How often (in seconds) the program should check for changes in current directory. If set to zero, autorefresh will be disabled.</property>
                     <property name="adjustment">adjrefresh</property>
                     <property name="round_digits">0</property>
                     <property name="digits">0</property>
                   </object>
                   <packing>
                     <property name="left_attach">1</property>
-                    <property name="top_attach">3</property>
+                    <property name="top_attach">2</property>
                   </packing>
                 </child>
               </object>

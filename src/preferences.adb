@@ -154,7 +154,7 @@ package body Preferences is
          ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
          DeleteFiles => True, ClearTrashOnExit => False,
          ShowFinishedInfo => False, OverwriteOnExist => True,
-         ToolbarsOnTop => True, AutoRefresh => True, AutoRefreshInterval => 5);
+         ToolbarsOnTop => True, AutoRefreshInterval => 10);
       if FindExecutable("highlight") = "" then
          Settings.ColorText := False;
          Set_Sensitive
@@ -253,11 +253,6 @@ package body Preferences is
                  (Gtk_Switch(Get_Object(Builder, "switchtoolbarsontop")),
                   Settings.ToolbarsOnTop);
                SetToolbars;
-            elsif FieldName = To_Unbounded_String("AutoRefresh") then
-               Settings.AutoRefresh := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchautorefresh")),
-                  Settings.AutoRefresh);
             elsif FieldName = To_Unbounded_String("AutoRefreshInterval") then
                Settings.AutoRefreshInterval :=
                  Positive'Value(To_String(Value));
@@ -388,15 +383,6 @@ package body Preferences is
            Get_Active(Gtk_Switch(Get_Object(Object, "switchtoolbarsontop")));
          SetToolbars;
       end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchautorefresh"))) /=
-        Settings.AutoRefresh then
-         Settings.AutoRefresh :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchautorefresh")));
-         Set_Sensitive
-           (Gtk_Widget(Get_Object(Object, "scalerefresh")),
-            Settings.AutoRefresh);
-         StartTimer;
-      end if;
       return False;
    end SaveSettings;
 
@@ -436,7 +422,7 @@ package body Preferences is
           (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjrefresh")))) /=
         Settings.AutoRefreshInterval then
          Settings.AutoRefreshInterval :=
-           Positive
+           Natural
              (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjrefresh"))));
          StartTimer;
       end if;
@@ -482,7 +468,6 @@ package body Preferences is
       SaveBoolean(Settings.ShowFinishedInfo, "ShowFinishedInfo");
       SaveBoolean(Settings.OverwriteOnExist, "OverwriteOnExist");
       SaveBoolean(Settings.ToolbarsOnTop, "ToolbarsOnTop");
-      SaveBoolean(Settings.AutoRefresh, "AutoRefresh");
       Put_Line
         (ConfigFile,
          "AutoRefreshInterval =" &

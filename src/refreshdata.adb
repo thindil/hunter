@@ -157,7 +157,8 @@ package body RefreshData is
       -- ****
       FileIter: Gtk_Tree_Iter := Get_Iter_First(FilesList);
    begin
-      if TemporaryStop or not Settings.AutoRefresh or ItemsList.Length = 0 then
+      if TemporaryStop or Settings.AutoRefreshInterval = 0 or
+        ItemsList.Length = 0 then
          ItemsList.Clear;
          return True;
       end if;
@@ -204,9 +205,11 @@ package body RefreshData is
          UpdateWatch(Path);
          InotifyTask.Start;
       end if;
-      Source_Id :=
-        Timeout_Add
-          (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems'Access);
+      if Settings.AutoRefreshInterval > 0 then
+         Source_Id :=
+           Timeout_Add
+             (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems'Access);
+      end if;
    end StartTimer;
 
    procedure UpdateWatch(Path: String) is
