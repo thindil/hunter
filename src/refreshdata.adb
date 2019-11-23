@@ -33,6 +33,7 @@ with Glib.Main; use Glib.Main;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body RefreshData is
@@ -75,7 +76,8 @@ package body RefreshData is
    -- Path  - Gtk_Tree_Path to selected file or directory (Unused)
    -- Iter  - Gtk_Tree_Iter to selected file or directory
    -- RESULT
-   -- Always return false to check each file or directory in current directory
+   -- Return false to check each file or directory in current directory. If
+   -- file or directory was deleted, restart checking and return true.
    -- SOURCE
    function UpdateItem
      (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
@@ -94,6 +96,13 @@ package body RefreshData is
          case ItemsList(FileName) is
             when Moved_From | Deleted =>
                Remove(-(Model), NewIter);
+               ItemsList.Delete(FileName);
+               if NewIter = Null_Iter then
+                  CurrentSelected := CurrentDirectory;
+                  PreviewItem(Builder);
+               end if;
+               Foreach(Model, UpdateItem'Access);
+               return True;
             when Metadata | Closed_Write =>
                Set
                  (-(Model), Iter, 5,
