@@ -138,6 +138,9 @@ package body RefreshData is
                   end if;
                   Set(-(Model), Iter, 4, Gint(Size));
                end if;
+               if FileName = To_String(CurrentSelected) then
+                  PreviewItem(Builder);
+               end if;
             when others =>
                null;
          end case;
