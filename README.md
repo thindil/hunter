@@ -136,6 +136,10 @@ Highlight program distributed with the program is under GPLv3 license.
 
 http://www.andre-simon.de/doku/highlight/en/highlight.php
 
+inotify-ada library distributed with the program is under Apache 2.0 license.
+
+https://github.com/onox/inotify-ada
+
 ----
 
 That's all for now, and again, probably I forgot about something important ;)
