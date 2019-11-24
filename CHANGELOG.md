@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Updated README.md
 - Updated contributing guide
 - Autorefresh directory listing on any change now should be a lot faster
+- Simplified autorefresh directory listing setting
 
 ### Fixed
 - Typos in contributing guide
