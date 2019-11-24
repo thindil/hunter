@@ -21,7 +21,6 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
-with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.List_Store; use Gtk.List_Store;
@@ -45,6 +44,7 @@ with Glib.Object; use Glib.Object;
 with Gdk.Event; use Gdk.Event;
 with Gdk.Types; use Gdk.Types;
 with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
+with AboutDialog; use AboutDialog;
 with ActivateItems; use ActivateItems;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
@@ -198,11 +198,8 @@ package body MainWindow is
    -- SOURCE
    procedure ShowAbout(Object: access Gtkada_Builder_Record'Class) is
       -- ****
-      AboutDialog: constant GObject := Get_Object(Object, "aboutdialog");
    begin
-      if Run(Gtk_Dialog(AboutDialog)) = Gtk_Response_Delete_Event then
-         Hide(Gtk_Widget(AboutDialog));
-      end if;
+      ShowAboutDialog(Gtk_Window(Get_Object(Object, "mainwindow")));
    end ShowAbout;
 
    -- ****if* MainWindow/EntryKeyPressed
