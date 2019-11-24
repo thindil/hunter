@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Refresh preview of files and directories if they are changed on disk
+
 ### Changed
 - Updated README.md
 - Updated contributing guide
