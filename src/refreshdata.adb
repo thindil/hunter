@@ -98,7 +98,9 @@ package body RefreshData is
                Remove(-(Model), NewIter);
                ItemsList.Delete(FileName);
                if NewIter = Null_Iter then
-                  CurrentSelected := CurrentDirectory;
+                  if N_Children(Model) = 0 then
+                     CurrentSelected := CurrentDirectory;
+                  end if;
                   PreviewItem(Builder);
                end if;
                Foreach(Model, UpdateItem'Access);
