@@ -43,10 +43,6 @@ To build you need:
   every Linux distribution: in Fedora it is *file-devel* on Debian/Ubuntu/Mint
   *file-dev*.
 
-* Inotify-ada library available at:
-
-  https://github.com/onox/inotify-ada
-
 If you have all the required packages, navigate to the main directory(where
 this file is) to compile:
 
@@ -136,7 +132,7 @@ Highlight program distributed with the program is under GPLv3 license.
 
 http://www.andre-simon.de/doku/highlight/en/highlight.php
 
-inotify-ada library distributed with the program is under Apache 2.0 license.
+inotify-ada code included in the program is under Apache 2.0 license.
 
 https://github.com/onox/inotify-ada
 
