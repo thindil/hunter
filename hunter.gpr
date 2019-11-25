@@ -1,6 +1,5 @@
 with "gtkada";
 with "libmagic";
-with "inotify_ada";
 
 project hunter is
 
