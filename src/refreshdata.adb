@@ -19,10 +19,12 @@ with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Hash;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Inotify; use Inotify;
+with Inotify.Recursive; use Inotify.Recursive;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
@@ -49,7 +51,7 @@ package body RefreshData is
    -- FUNCTION
    -- inotify instance
    -- SOURCE
-   InotifyInstance: Instance;
+   InotifyInstance: Recursive_Instance;
    -- ****
 
    -- ****it* RefreshData/Items_Container
@@ -192,9 +194,13 @@ package body RefreshData is
       procedure Handle_Event
         (Subject: Watch; Event: Event_Kind; Is_Directory: Boolean;
          Name: String) is
-         pragma Unreferenced(Subject, Is_Directory);
+         pragma Unreferenced(Is_Directory);
       begin
-         ItemsList.Include(Name, Event);
+         if InotifyInstance.Name(Subject) = To_String(CurrentDirectory) then
+            ItemsList.Include(Name, Event);
+         else
+            ItemsList.Include(InotifyInstance.Name(Subject), Closed_Write);
+         end if;
       end Handle_Event;
    begin
       accept Start;
@@ -220,6 +226,7 @@ package body RefreshData is
    procedure UpdateWatch(Path: String) is
    begin
       ItemsList.Clear;
+      Inotify.Recursive.Depth := Count(Path, "/");
       InotifyInstance.Add_Watch
         (Path,
          (Metadata | Closed_Write | Moved_From | Moved_To | Deleted => True,
