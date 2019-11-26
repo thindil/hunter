@@ -21,6 +21,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
+with Gtk.Enums; use Gtk.Enums;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Search_Entry; use Gtk.Search_Entry;
@@ -109,17 +110,18 @@ package body ProgramsMenu is
       end;
       Set_Placeholder_Text(SearchEntry, Gettext("Search for the program"));
       On_Search_Changed(SearchEntry, SearchProgram'Access);
-      Pack_Start(MenuBox, SearchEntry);
+      Pack_Start(MenuBox, SearchEntry, False);
       Gtk.Cell_Renderer_Text.Gtk_New(Renderer);
       Area := Gtk_Cell_Area_Box_New;
       Column := Gtk_Tree_View_Column_New_With_Area(Area);
       Set_Sort_Column_Id(Column, 0);
-      Set_Title(Column, "Name");
+      Set_Title(Column, Gettext("Name"));
       if Append_Column(ProgramsView, Column) < 0 then
          Put_Line("Error in adding columns.");
       end if;
       Pack_Start(Area, Renderer, True);
       Add_Attribute(Area, Renderer, "text", 0);
+      Set_Policy(Scroll, Policy_Never, Policy_Automatic);
       Add(Scroll, ProgramsView);
       Pack_Start(MenuBox, Scroll);
       Show_All(MenuBox);
