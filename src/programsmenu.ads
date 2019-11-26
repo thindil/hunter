@@ -16,8 +16,22 @@
 with Gtk.Popover; use Gtk.Popover;
 with Gtk.Widget; use Gtk.Widget;
 
+-- ****h* Hunter/ProgramsMenu
+-- FUNCTION
+-- Provides code for manipulate associated programs with files.
+-- SOURCE
 package ProgramsMenu is
+-- ****
 
+   -- ****f* ProgramsMenu/CreateProgramsMenu
+   -- FUNCTION
+   -- Create associated programs menu popover
+   -- PARAMETERS
+   -- Parent - Gtk_Widget button which will be parent for that menu
+   -- RESULT
+   -- Created popover menu
+   -- SOURCE
    function CreateProgramsMenu(Parent: Gtk_Widget) return Gtk_Popover;
+   -- ****
 
 end ProgramsMenu;
