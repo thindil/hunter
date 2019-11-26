@@ -41,14 +41,42 @@ with Utils; use Utils;
 
 package body ProgramsMenu is
 
+   -- ****iv* ProgramsMenu/ProgramsFilter
+   -- FUNCTION
+   -- Filter and list which contains all applications
+   -- SOURCE
    ProgramsFilter: constant Gtk_Tree_Model_Filter :=
      Gtk_Tree_Model_Filter_Filter_New
        (+(Gtk_List_Store_Newv((GType_String, GType_String))));
-   SearchFor: Unbounded_String;
-   MenuButton: Gtk_Toggle_Button;
+   -- ****
 
+   -- ****iv* ProgramsMenu/SearchFor
+   -- FUNCTION
+   -- String which the program will be looking for in applications list
+   -- SOURCE
+   SearchFor: Unbounded_String;
+   -- ****
+
+   -- ****iv* ProgramsMenu/MenuButton
+   -- FUNCTION
+   -- Button which is parent for the programs menu
+   -- SOURCE
+   MenuButton: Gtk_Toggle_Button;
+   -- ****
+
+   -- ****if* ProgramsMenu/VisiblePrograms
+   -- FUNCTION
+   -- Check if selected application should be visible when the user is looking
+   -- for selected name
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model which contains all applications names
+   -- Iter  - Gtk_Tree_Iter to selected application name
+   -- RESULT
+   -- True if application should be visible, otherwise false
+   -- SOURCE
    function VisiblePrograms
      (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean is
+   -- ****
    begin
       if Setting or SearchFor = Null_Unbounded_String then
          return True;
@@ -62,16 +90,33 @@ package body ProgramsMenu is
       return False;
    end VisiblePrograms;
 
+   -- ****if* ProgramsMenu/SearchProgram
+   -- FUNCTION
+   -- Start searching for the selected name in the applications list
+   -- PARAMETERS
+   -- Self - Gtk_Search_Entry from which searched text will be taken
+   -- SOURCE
    procedure SearchProgram(Self: access Gtk_Search_Entry_Record'Class) is
+   -- ****
    begin
       SearchFor := To_Unbounded_String(Get_Text(Self));
       Refilter(ProgramsFilter);
    end SearchProgram;
 
+   -- ****if* ProgramsMenu/SetProgram
+   -- FUNCTION
+   -- Set selected application as a associated application with selected
+   -- MIME type
+   -- PARAMETERS
+   -- Self   - Gtk_Tree_View with list of applications. Ununsed.
+   -- Path   - Gtk_Tree_Path to selected application
+   -- Column - Gtk_Tree_View_Column clicked. Ununsed.
+   -- SOURCE
    procedure SetProgram
      (Self: access Gtk_Tree_View_Record'Class; Path: Gtk_Tree_Path;
       Column: not null access Gtk_Tree_View_Column_Record'Class) is
       pragma Unreferenced(Self, Column);
+      -- ****
       Pid: GNAT.OS_Lib.Process_Id;
       ExecutableName: constant String := FindExecutable("xdg-mime");
       ProgramIter: constant Gtk_Tree_Iter := Get_Iter(ProgramsFilter, Path);
