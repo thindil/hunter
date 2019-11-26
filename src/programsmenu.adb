@@ -20,6 +20,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
@@ -27,6 +28,7 @@ with Gtk.Enums; use Gtk.Enums;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Search_Entry; use Gtk.Search_Entry;
+with Gtk.Toggle_Button; use Gtk.Toggle_Button;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
@@ -34,6 +36,8 @@ with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with MainWindow; use MainWindow;
+with Messages; use Messages;
+with Utils; use Utils;
 
 package body ProgramsMenu is
 
@@ -41,6 +45,7 @@ package body ProgramsMenu is
      Gtk_Tree_Model_Filter_Filter_New
        (+(Gtk_List_Store_Newv((GType_String, GType_String))));
    SearchFor: Unbounded_String;
+   MenuButton: Gtk_Toggle_Button;
 
    function VisiblePrograms
      (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean is
@@ -63,6 +68,31 @@ package body ProgramsMenu is
       Refilter(ProgramsFilter);
    end SearchProgram;
 
+   procedure SetProgram
+     (Self: access Gtk_Tree_View_Record'Class; Path: Gtk_Tree_Path;
+      Column: not null access Gtk_Tree_View_Column_Record'Class) is
+      pragma Unreferenced(Self, Column);
+      Pid: GNAT.OS_Lib.Process_Id;
+      ExecutableName: constant String := FindExecutable("xdg-mime");
+      ProgramIter: constant Gtk_Tree_Iter := Get_Iter(ProgramsFilter, Path);
+   begin
+      if ExecutableName = "" then
+         return;
+      end if;
+      Pid :=
+        Non_Blocking_Spawn
+          (ExecutableName,
+           Argument_String_To_List
+             ("default " & Get_String(ProgramsFilter, ProgramIter, 1) & " " &
+              GetMimeType(To_String(CurrentSelected))).all);
+      if Pid = GNAT.OS_Lib.Invalid_Pid then
+         ShowMessage(Gettext("Could not set new associated program."));
+      else
+         Set_Label(MenuButton, Get_String(ProgramsFilter, ProgramIter, 0));
+      end if;
+      Set_Active(MenuButton, False);
+   end SetProgram;
+
    function CreateProgramsMenu(Parent: Gtk_Widget) return Gtk_Popover is
       Menu: constant Gtk_Popover := Gtk_Popover_New(Parent);
       MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
@@ -75,6 +105,7 @@ package body ProgramsMenu is
       Column: Gtk_Tree_View_Column;
       ProgramsList: constant Gtk_List_Store := -(Get_Model(ProgramsFilter));
    begin
+      MenuButton := Gtk_Toggle_Button(Parent);
       declare
          ApplicationsPaths: constant array
            (Positive range <>) of Unbounded_String :=
@@ -145,6 +176,8 @@ package body ProgramsMenu is
       end if;
       Pack_Start(Area, Renderer, True);
       Add_Attribute(Area, Renderer, "text", 0);
+      Set_Activate_On_Single_Click(ProgramsView, True);
+      On_Row_Activated(ProgramsView, SetProgram'Access);
       Set_Policy(Scroll, Policy_Never, Policy_Automatic);
       Add(Scroll, ProgramsView);
       Pack_Start(MenuBox, Scroll);
