@@ -13,8 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
@@ -26,6 +28,7 @@ with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Search_Entry; use Gtk.Search_Entry;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -34,12 +37,30 @@ with MainWindow; use MainWindow;
 
 package body ProgramsMenu is
 
-   ProgramsList: constant Gtk_List_Store :=
-     Gtk_List_Store_Newv((GType_String, GType_String));
+   ProgramsFilter: constant Gtk_Tree_Model_Filter :=
+     Gtk_Tree_Model_Filter_Filter_New
+       (+(Gtk_List_Store_Newv((GType_String, GType_String))));
+   SearchFor: Unbounded_String;
+
+   function VisiblePrograms
+     (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean is
+   begin
+      if Setting or SearchFor = Null_Unbounded_String then
+         return True;
+      end if;
+      if Index
+          (To_Lower(Get_String(Model, Iter, 0)),
+           To_Lower(To_String(SearchFor)), 1) >
+        0 then
+         return True;
+      end if;
+      return False;
+   end VisiblePrograms;
 
    procedure SearchProgram(Self: access Gtk_Search_Entry_Record'Class) is
    begin
-      null;
+      SearchFor := To_Unbounded_String(Get_Text(Self));
+      Refilter(ProgramsFilter);
    end SearchProgram;
 
    function CreateProgramsMenu(Parent: Gtk_Widget) return Gtk_Popover is
@@ -48,10 +69,11 @@ package body ProgramsMenu is
       SearchEntry: constant Gtk_Search_Entry := Gtk_Search_Entry_New;
       Scroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
       ProgramsView: constant Gtk_Tree_View :=
-        Gtk_Tree_View_New_With_Model(+(ProgramsList));
+        Gtk_Tree_View_New_With_Model(+(ProgramsFilter));
       Renderer: Gtk_Cell_Renderer_Text;
       Area: Gtk_Cell_Area_Box;
       Column: Gtk_Tree_View_Column;
+      ProgramsList: constant Gtk_List_Store := -(Get_Model(ProgramsFilter));
    begin
       declare
          ApplicationsPaths: constant array
@@ -108,6 +130,8 @@ package body ProgramsMenu is
             <<End_Of_Loop>>
          end loop;
       end;
+      Set_Sort_Column_Id(ProgramsList, 0, Sort_Ascending);
+      Set_Visible_Func(ProgramsFilter, VisiblePrograms'Access);
       Set_Placeholder_Text(SearchEntry, Gettext("Search for the program"));
       On_Search_Changed(SearchEntry, SearchProgram'Access);
       Pack_Start(MenuBox, SearchEntry, False);
