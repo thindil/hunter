@@ -27,6 +27,7 @@ with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Popover; use Gtk.Popover;
+with Gtk.Scale; use Gtk.Scale;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
@@ -490,19 +491,57 @@ package body Preferences is
 
    procedure CreatePreferences(Parent: Gtk_Widget) is
       MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
-      Frame: Gtk_Frame;
       Label: Gtk_Label;
       Grid: Gtk_Grid;
+      Switch: Gtk_Switch;
+      procedure AddFrame(Text: String) is
+         Frame: constant Gtk_Frame := Gtk_Frame_New;
+         FrameLabel: constant Gtk_Label := Gtk_Label_New;
+      begin
+         Set_Markup(FrameLabel, "<b>" & Text & "</b>");
+         Set_Label_Widget(Frame, FrameLabel);
+         Set_Label_Align(Frame, 0.5, 0.5);
+         Set_Shadow_Type(Frame, Shadow_Out);
+         Add(Frame, Grid);
+         Pack_Start(MenuBox, Frame);
+      end AddFrame;
+      procedure NewGrid is
+      begin
+         Grid := Gtk_Grid_New;
+         Set_Column_Homogeneous(Grid, True);
+         Set_Column_Spacing(Grid, 10);
+      end NewGrid;
+      procedure NewLabel(Text: String; Row: Gint) is
+      begin
+         Label := Gtk_Label_New(Text);
+         Set_Halign(Label, Align_Start);
+         Attach(Grid, Label, 0, Row);
+      end NewLabel;
+      procedure NewScale(Value: Integer; Min, Max, Step: Gdouble; Row: Gint) is
+         Adjustment: constant Gtk_Adjustment := Gtk_Adjustment_New(Gdouble(Value), Min, Max, Step, Step * 10.0);
+         Scale: Gtk_Scale;
+      begin
+         Scale := Gtk_Hscale_New(Adjustment);
+         Set_Digits(Scale, 0);
+         Attach(Grid, Scale, 1, Row);
+      end NewScale;
    begin
       LoadSettings;
       Popup := Gtk_Popover_New(Parent);
-      Label := Gtk_Label_New;
-      Set_Markup(Label, "<b>" & Gettext("Directory Listing") & "</b>");
-      Frame := Gtk_Frame_New;
-      Set_Label_Widget(Frame, Label);
-      Grid := Gtk_Grid_New;
-      Add(Frame, Grid);
-      Pack_Start(MenuBox, Frame);
+      NewGrid;
+      NewLabel(Gettext("Show hidden files:"), 0);
+      Switch := Gtk_Switch_New;
+      Set_Active(Switch, Settings.ShowHidden);
+      Attach(Grid, Switch, 1, 0);
+      NewLabel(Gettext("Show modification time:"), 1);
+      Switch := Gtk_Switch_New;
+      Set_Active(Switch, Settings.ShowLastModified);
+      Attach(Grid, Switch, 1, 1);
+      NewLabel(Gettext("Auto refresh interval:"), 2);
+      NewScale(Settings.AutoRefreshInterval, 0.0, 30.0, 1.0, 2);
+      AddFrame(Gettext("Directory Listing"));
+      NewGrid;
+      AddFrame(Gettext("Preview"));
       Show_All(MenuBox);
       Add(Popup, MenuBox);
       Set_Modal(Popup, True);
