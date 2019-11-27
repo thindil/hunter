@@ -437,6 +437,7 @@ package body MainWindow is
       Set_Popover
         (Gtk_Menu_Button(Get_Object(Builder, "btnprogram")),
          CreateProgramsMenu(Gtk_Widget(Get_Object(Builder, "btnprogram"))));
+      CreatePreferences(Gtk_Widget(Get_Object(Builder, "btnpreferences")));
       Do_Connect(Builder);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);
@@ -482,7 +483,6 @@ package body MainWindow is
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
          Gtk_Widget(Get_Object(Builder, "newmenu")));
-      LoadSettings;
       CreateBookmarkMenu(Builder);
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),

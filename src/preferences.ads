@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Gtk.Widget; use Gtk.Widget;
 
 -- ****h* Hunter/Preferences
 -- FUNCTION
@@ -115,5 +116,7 @@ package Preferences is
    -- SOURCE
    procedure CreatePreferencesUI;
    -- ****
+
+   procedure CreatePreferences(Parent: Gtk_Widget);
 
 end Preferences;
