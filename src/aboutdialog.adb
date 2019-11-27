@@ -34,8 +34,7 @@ package body AboutDialog is
       Set_Copyright(AboutDialog, "(c) 2019 Bartek thindil Jasicki");
       Set_Authors
         (AboutDialog,
-         (new String'
-            ("Bartek thindil Jasicki <thindil@laeran.pl>"),
+         (new String'("Bartek thindil Jasicki <thindil@laeran.pl>"),
           new String'("")));
       Set_Translator_Credits(AboutDialog, Gettext("translator-credits"));
       Gdk_New_From_File(LogoBuf, "ui/hunter-icon.png", Error);

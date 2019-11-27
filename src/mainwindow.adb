@@ -199,7 +199,7 @@ package body MainWindow is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure ShowAbout(Object: access Gtkada_Builder_Record'Class) is
-      -- ****
+   -- ****
    begin
       ShowAboutDialog(Gtk_Window(Get_Object(Object, "mainwindow")));
    end ShowAbout;
@@ -587,7 +587,9 @@ package body MainWindow is
               (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
       end if;
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
-      Set_Popover(Gtk_Menu_Button(Get_Object(Builder, "btnprogram")), CreateProgramsMenu(Gtk_Widget(Get_Object(Builder, "btnprogram"))));
+      Set_Popover
+        (Gtk_Menu_Button(Get_Object(Builder, "btnprogram")),
+         CreateProgramsMenu(Gtk_Widget(Get_Object(Builder, "btnprogram"))));
       StartTimer(To_String(CurrentDirectory));
       Setting := False;
    end CreateMainWindow;
