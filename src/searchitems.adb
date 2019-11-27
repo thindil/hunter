@@ -66,24 +66,15 @@ package body SearchItems is
    function VisibleItems
      (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean is
       -- ****
-      SearchEntry: Gtk_GEntry;
+      SearchEntry: constant Gtk_GEntry :=
+        Gtk_GEntry(Get_Object(Builder, "searchfile"));
    begin
       if Setting then
          return True;
       end if;
-      if Model /=
-        +(Gtk_List_Store(Get_Object(Builder, "applicationslist"))) then
-         if (Get_Int(Model, Iter, 1) = 1 or Get_Int(Model, Iter, 1) = 3) and
-           not Settings.ShowHidden then
-            return False;
-         end if;
-      end if;
-      if Model = +(Gtk_List_Store(Get_Object(Builder, "fileslist"))) then
-         SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchfile"));
-      elsif Model = +(Gtk_List_Store(Get_Object(Builder, "fileslist2"))) then
-         SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchfile"));
-      else
-         SearchEntry := Gtk_GEntry(Get_Object(Builder, "searchapplication"));
+      if (Get_Int(Model, Iter, 1) = 1 or Get_Int(Model, Iter, 1) = 3) and
+        not Settings.ShowHidden then
+         return False;
       end if;
       if Get_Text(SearchEntry) = "" then
          return True;
@@ -108,22 +99,14 @@ package body SearchItems is
       -- ****
       FilterName, TreeName, ListName: Unbounded_String;
    begin
-      if User_Data = Get_Object(Builder, "searchfile") then
-         FilterName := To_Unbounded_String("filesfilter");
-         TreeName := To_Unbounded_String("treefiles");
-         ListName := To_Unbounded_String("fileslist");
-         if Get_Active
-             (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) or
-           Get_Active
-             (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
-            FilterName := To_Unbounded_String("filesfilter2");
-            TreeName := To_Unbounded_String("treefiles2");
-            ListName := To_Unbounded_String("fileslist2");
-         end if;
-      else
-         FilterName := To_Unbounded_String("applicationsfilter");
-         TreeName := To_Unbounded_String("treeapplications");
-         ListName := To_Unbounded_String("applicationslist");
+      FilterName := To_Unbounded_String("filesfilter");
+      TreeName := To_Unbounded_String("treefiles");
+      ListName := To_Unbounded_String("fileslist");
+      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) or
+        Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
+         FilterName := To_Unbounded_String("filesfilter2");
+         TreeName := To_Unbounded_String("treefiles2");
+         ListName := To_Unbounded_String("fileslist2");
       end if;
       Refilter
         (Gtk_Tree_Model_Filter(Get_Object(Builder, To_String(FilterName))));
@@ -150,9 +133,6 @@ package body SearchItems is
          VisibleItems'Access);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")),
-         VisibleItems'Access);
-      Set_Visible_Func
-        (Gtk_Tree_Model_Filter(Get_Object(Builder, "applicationsfilter")),
          VisibleItems'Access);
    end CreateSearchUI;
 
