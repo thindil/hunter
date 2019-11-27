@@ -32,4 +32,4 @@ package AboutDialog is
    procedure ShowAboutDialog(Parent: Gtk_Window);
    -- ****
 
-end AboutDialog ;
+end AboutDialog;

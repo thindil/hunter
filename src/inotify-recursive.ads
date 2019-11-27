@@ -20,53 +20,41 @@ package Inotify.Recursive is
 
    Depth: Positive;
 
-   overriding
-   function Add_Watch
-     (Object   : in out Recursive_Instance;
-      Path     :        String;
-      Mask     :        Watch_Bits := All_Events) return Watch;
+   overriding function Add_Watch
+     (Object: in out Recursive_Instance; Path: String;
+      Mask: Watch_Bits := All_Events) return Watch;
    --  Watch the given path and any subdirectories
    --
    --  If the user has no permission to read the folder at the given path,
    --  then a Use_Error is raised. Any subdirectory, however, is ignored
    --  if it is not readable.
 
-   overriding
-   procedure Remove_Watch (Object : in out Recursive_Instance; Subject : Watch);
+   overriding procedure Remove_Watch
+     (Object: in out Recursive_Instance; Subject: Watch);
    --  Remove the given watch and the watches of any subdirectory
 
-   overriding
-   procedure Process_Events
-     (Object : in out Recursive_Instance;
-      Handle :        not null access procedure
-        (Subject      : Watch;
-         Event        : Event_Kind;
-         Is_Directory : Boolean;
-         Name         : String));
+   overriding procedure Process_Events
+     (Object: in out Recursive_Instance;
+      Handle: not null access procedure
+        (Subject: Watch; Event: Event_Kind; Is_Directory: Boolean;
+         Name: String));
 
-   overriding
-   procedure Process_Events
-     (Object : in out Recursive_Instance;
-      Handle :        not null access procedure
-        (Subject      : Watch;
-         Event        : Event_Kind;
-         Is_Directory : Boolean;
-         Name         : String);
-      Move_Handle : not null access procedure
-        (Subject      : Watch;
-         Is_Directory : Boolean;
-         From, To     : String));
+   overriding procedure Process_Events
+     (Object: in out Recursive_Instance;
+      Handle: not null access procedure
+        (Subject: Watch; Event: Event_Kind; Is_Directory: Boolean;
+         Name: String);
+      Move_Handle: not null access procedure
+        (Subject: Watch; Is_Directory: Boolean; From, To: String));
 
 private
 
    package Mask_Maps is new Ada.Containers.Indefinite_Hashed_Maps
-     (Key_Type        => Interfaces.C.int,
-      Element_Type    => Watch_Bits,
-      Hash            => Hash,
+     (Key_Type => Interfaces.C.int, Element_Type => Watch_Bits, Hash => Hash,
       Equivalent_Keys => Interfaces.C."=");
 
    type Recursive_Instance is limited new Instance with record
-      Masks : Mask_Maps.Map;
+      Masks: Mask_Maps.Map;
    end record;
 
 end Inotify.Recursive;
