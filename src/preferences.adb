@@ -493,7 +493,6 @@ package body Preferences is
       MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
       Label: Gtk_Label;
       Grid: Gtk_Grid;
-      Switch: Gtk_Switch;
       procedure AddFrame(Text: String) is
          Frame: constant Gtk_Frame := Gtk_Frame_New;
          FrameLabel: constant Gtk_Label := Gtk_Label_New;
@@ -517,12 +516,23 @@ package body Preferences is
          Set_Halign(Label, Align_Start);
          Attach(Grid, Label, 0, Row);
       end NewLabel;
-      procedure NewScale(Value: Integer; Min, Max, Step: Gdouble; Row: Gint) is
-         Adjustment: constant Gtk_Adjustment := Gtk_Adjustment_New(Gdouble(Value), Min, Max, Step, Step * 10.0);
+      procedure NewSwitch(Active: Boolean; Row: Gint; Tooltip: String) is
+         Switch: constant Gtk_Switch := Gtk_Switch_New;
+      begin
+         Set_Active(Switch, Active);
+         Set_Tooltip_Text(Switch, Tooltip);
+         Attach(Grid, Switch, 1, Row);
+      end NewSwitch;
+      procedure NewScale
+        (Value: Integer; Min, Max, Step: Gdouble; Row: Gint;
+         Tooltip: String) is
+         Adjustment: constant Gtk_Adjustment :=
+           Gtk_Adjustment_New(Gdouble(Value), Min, Max, Step, Step * 10.0);
          Scale: Gtk_Scale;
       begin
          Scale := Gtk_Hscale_New(Adjustment);
          Set_Digits(Scale, 0);
+         Set_Tooltip_Text(Scale, Tooltip);
          Attach(Grid, Scale, 1, Row);
       end NewScale;
    begin
@@ -530,15 +540,20 @@ package body Preferences is
       Popup := Gtk_Popover_New(Parent);
       NewGrid;
       NewLabel(Gettext("Show hidden files:"), 0);
-      Switch := Gtk_Switch_New;
-      Set_Active(Switch, Settings.ShowHidden);
-      Attach(Grid, Switch, 1, 0);
+      NewSwitch
+        (Settings.ShowHidden, 0,
+         Gettext
+           ("Show hidden files and directories in directory listing and in directories preview."));
       NewLabel(Gettext("Show modification time:"), 1);
-      Switch := Gtk_Switch_New;
-      Set_Active(Switch, Settings.ShowLastModified);
-      Attach(Grid, Switch, 1, 1);
+      NewSwitch
+        (Settings.ShowLastModified, 1,
+         Gettext
+           ("Show the column with last modification date for files and directories."));
       NewLabel(Gettext("Auto refresh interval:"), 2);
-      NewScale(Settings.AutoRefreshInterval, 0.0, 30.0, 1.0, 2);
+      NewScale
+        (Settings.AutoRefreshInterval, 0.0, 30.0, 1.0, 2,
+         Gettext
+           ("How often (in seconds) the program should check for changes in current directory. If set to zero, autorefresh will be disabled."));
       AddFrame(Gettext("Directory Listing"));
       NewGrid;
       AddFrame(Gettext("Preview"));
