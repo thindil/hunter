@@ -16,14 +16,10 @@
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
-with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
-with Gtk.Enums; use Gtk.Enums;
 with Gtk.GEntry; use Gtk.GEntry;
-with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Button; use Gtk.Menu_Button;
@@ -438,6 +434,9 @@ package body MainWindow is
       CreateSearchUI;
       CreateShowItemsUI;
       CreateTrashUI;
+      Set_Popover
+        (Gtk_Menu_Button(Get_Object(Builder, "btnprogram")),
+         CreateProgramsMenu(Gtk_Widget(Get_Object(Builder, "btnprogram"))));
       Do_Connect(Builder);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);
@@ -480,61 +479,6 @@ package body MainWindow is
             CurrentDirectory := To_Unbounded_String("/");
          end if;
       end if;
-      declare
-         ApplicationsPaths: constant array
-           (Positive range <>) of Unbounded_String :=
-           (To_Unbounded_String("/usr/share/applications"),
-            To_Unbounded_String("/usr/share/applnk"),
-            To_Unbounded_String("/usr/local/share/applications"),
-            To_Unbounded_String("/usr/local/share/applnk"),
-            To_Unbounded_String(Value("HOME") & "/.local/share/applications"),
-            To_Unbounded_String(Value("HOME") & "/.local/share/applnk"));
-         SubDirectory: Dir_Type;
-         SubLast: Natural;
-         SubFileName: String(1 .. 1024);
-         File: File_Type;
-         FileLine: Unbounded_String;
-         FilesList: constant Gtk_List_Store :=
-           Gtk_List_Store(Get_Object(Builder, "applicationslist"));
-         FileIter: Gtk_Tree_Iter;
-         NamesList: UnboundedString_Container.Vector;
-      begin
-         for Path of ApplicationsPaths loop
-            if not Ada.Directories.Exists(To_String(Path)) then
-               goto End_Of_Loop;
-            end if;
-            Open(SubDirectory, To_String(Path));
-            loop
-               Read(SubDirectory, SubFileName, SubLast);
-               exit when SubLast = 0;
-               if Extension(SubFileName(1 .. SubLast)) = "desktop" then
-                  Open
-                    (File, In_File,
-                     To_String(Path) & "/" &
-                     Simple_Name(SubFileName(1 .. SubLast)));
-                  while not End_Of_File(File) loop
-                     FileLine := To_Unbounded_String(Get_Line(File));
-                     if Length(FileLine) > 5
-                       and then Slice(FileLine, 1, 5) = "Name="
-                       and then not NamesList.Contains
-                         (Unbounded_Slice(FileLine, 6, Length(FileLine))) then
-                        Append(FilesList, FileIter);
-                        Set
-                          (FilesList, FileIter, 0,
-                           Slice(FileLine, 6, Length(FileLine)));
-                        Set(FilesList, FileIter, 1, SubFileName(1 .. SubLast));
-                        NamesList.Append
-                          (Unbounded_Slice(FileLine, 6, Length(FileLine)));
-                        exit;
-                     end if;
-                  end loop;
-                  Close(File);
-               end if;
-            end loop;
-            Close(SubDirectory);
-            <<End_Of_Loop>>
-         end loop;
-      end;
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
          Gtk_Widget(Get_Object(Builder, "newmenu")));
@@ -543,9 +487,6 @@ package body MainWindow is
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),
          Gtk_Widget(Get_Object(Builder, "bookmarksmenu")));
-      Set_Sort_Column_Id
-        (Gtk_Tree_Model_Sort(Get_Object(Builder, "applicationssort")), 0,
-         Sort_Ascending);
       Set_Default_Size
         (Gtk_Window(Get_Object(Builder, "mainwindow")),
          Gint(Settings.WindowWidth), Gint(Settings.WindowHeight));
@@ -587,9 +528,6 @@ package body MainWindow is
               (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
       end if;
       Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
-      Set_Popover
-        (Gtk_Menu_Button(Get_Object(Builder, "btnprogram")),
-         CreateProgramsMenu(Gtk_Widget(Get_Object(Builder, "btnprogram"))));
       StartTimer(To_String(CurrentDirectory));
       Setting := False;
    end CreateMainWindow;
