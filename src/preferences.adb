@@ -21,14 +21,17 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Container; use Gtk.Container;
 with Gtk.Combo_Box_Text; use Gtk.Combo_Box_Text;
 with Gtk.Enums; use Gtk.Enums;
+with Gtk.Frame; use Gtk.Frame;
+with Gtk.Grid; use Gtk.Grid;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
+with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
+with Gtk.Popover; use Gtk.Popover;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
-with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
@@ -40,6 +43,8 @@ with Utils; use Utils;
 
 package body Preferences is
 
+   Popup: Gtk_Popover;
+
    -- ****if* Preferences/TogglePreferences
    -- FUNCTION
    -- Show or hide the program preferences window
@@ -47,14 +52,13 @@ package body Preferences is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure TogglePreferences(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
       -- ****
-      Popup: constant Gtk_Widget :=
-        Gtk_Widget(Get_Object(Object, "poppreferences"));
    begin
-      if Is_Visible(Popup) then
-         Hide(Popup);
+      if Is_Visible(Gtk_Widget(Popup)) then
+         Hide(Gtk_Widget(Popup));
       else
-         Show_All(Popup);
+         Show_All(Gtk_Widget(Popup));
       end if;
    end TogglePreferences;
 
@@ -483,5 +487,26 @@ package body Preferences is
       Register_Handler
         (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
    end CreatePreferencesUI;
+
+   procedure CreatePreferences(Parent: Gtk_Widget) is
+      MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
+      Frame: Gtk_Frame;
+      Label: Gtk_Label;
+      Grid: Gtk_Grid;
+   begin
+      LoadSettings;
+      Popup := Gtk_Popover_New(Parent);
+      Label := Gtk_Label_New;
+      Set_Markup(Label, "<b>" & Gettext("Directory Listing") & "</b>");
+      Frame := Gtk_Frame_New;
+      Set_Label_Widget(Frame, Label);
+      Grid := Gtk_Grid_New;
+      Add(Frame, Grid);
+      Pack_Start(MenuBox, Frame);
+      Show_All(MenuBox);
+      Add(Popup, MenuBox);
+      Set_Modal(Popup, True);
+      Set_Position(Popup, Pos_Bottom);
+   end CreatePreferences;
 
 end Preferences;
