@@ -15,9 +15,10 @@
 --  limitations under the License.
 
 with Ada.Containers.Bounded_Vectors;
-with Ada.Directories;
-with Ada.IO_Exceptions;
+with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 
 package body Inotify.Recursive is
 
@@ -34,19 +35,9 @@ package body Inotify.Recursive is
      (Object: in out Recursive_Instance; Path: String;
       Mask: Watch_Bits := All_Events) return Watch is
       Recursive_Mask: Watch_Bits := Mask;
-
-      procedure Add_Entry(Next_Entry: Ada.Directories.Directory_Entry_Type) is
-         Name: constant String := Ada.Directories.Simple_Name(Next_Entry);
-      begin
-         if Name not in "." | ".." then
-            Object.Add_Watch
-              (Ada.Directories.Compose(Path, Name), Recursive_Mask);
-         end if;
-      exception
-         --  Ignore the folder if the user has no permission to scan it
-         when Ada.IO_Exceptions.Use_Error =>
-            null;
-      end Add_Entry;
+     Directory: Dir_Type;
+     Last: Natural;
+     FileName: String(1 .. 1024);
    begin
       if Depth = Count(Path, "/") - 2 then
          return Result: constant Watch := (Watch => Interfaces.C.int(-1));
@@ -56,10 +47,21 @@ package body Inotify.Recursive is
       Recursive_Mask.Moved_From := True;
       Recursive_Mask.Moved_To := True;
       Recursive_Mask.Moved_Self := True;
-
-      Ada.Directories.Search
-        (Path, "", (Ada.Directories.Directory => True, others => False),
-         Add_Entry'Access);
+      Open(Directory, Path);
+      loop
+         Read(Directory, FileName, Last);
+         exit when Last = 0;
+         if FileName(1 .. Last) in "." | ".." then
+            goto End_Of_Loop;
+         end if;
+         if Is_Directory
+            (Path & Directory_Separator & FileName(1 .. Last)) then
+            Object.Add_Watch
+               (Ada.Directories.Compose(Path, FileName(1 .. Last)), Recursive_Mask);
+         end if;
+         <<End_Of_Loop>>
+      end loop;
+      Close(Directory);
       return
         Result: constant Watch :=
           Instance(Object).Add_Watch(Path, Recursive_Mask) do
