@@ -627,6 +627,24 @@ package body Preferences is
          Gettext
            ("If enabled, show toolbars for actions and information on top of the window. Otherwise, they will be at left side of the window."));
       AddFrame(Gettext("Interface"));
+      NewGrid;
+      NewLabel(Gettext("Delete files:"), 0);
+      NewSwitch
+        (Settings.DeleteFiles, 0,
+         Gettext
+           ("Delete selected files and directories instead of moving them to Trash."));
+      NewLabel(Gettext("Clear Trash on exit:"), 1);
+      NewSwitch
+        (Settings.ClearTrashOnExit, 1,
+         Gettext("Automatically clear Trash on exit from the program."));
+      AddFrame(Gettext("Deleting"));
+      NewGrid;
+      NewLabel(Gettext("Overwrite existing:"), 0);
+      NewSwitch
+        (Settings.OverwriteOnExist, 0,
+         Gettext
+           ("If enabled, during copying or moving files and directories, if in destination directory exists file or directory with that same name, the program will ask if overwrite it. If disabled, the program will quietly give add underscore to the name of moved or copied file or directory."));
+      AddFrame(Gettext("Copying or moving"));
       Show_All(MenuBox);
       Add(Popup, MenuBox);
       Set_Modal(Popup, True);
