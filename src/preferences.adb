@@ -556,6 +556,53 @@ package body Preferences is
            ("How often (in seconds) the program should check for changes in current directory. If set to zero, autorefresh will be disabled."));
       AddFrame(Gettext("Directory Listing"));
       NewGrid;
+      NewLabel(Gettext("Show preview:"), 0);
+      NewSwitch
+        (Settings.ShowPreview, 0,
+         Gettext
+           ("Show second panel with preview of files and directories. If you disable this option, second panel will be visible only during copying and moving files or directories and during creating new link."));
+      NewLabel(Gettext("Scale images:"), 1);
+      NewSwitch
+        (Settings.ScaleImages, 1,
+         Gettext
+           ("Scale images in preview. When disabled, images shows with natural size. When enabled, images are resized to the size of the preview window."));
+      NewLabel(Gettext("Syntax highlightning:"), 2);
+      NewSwitch
+        (Settings.ColorText, 2,
+         Gettext
+           ("Color files syntax in files preview. Not all text (especially source code) files are supported. You may not be able to enable this option if you don't have installed the program ""highlight""."));
+      NewLabel(Gettext("Syntax color theme:"), 3);
+      declare
+         Search: Search_Type;
+         File: Directory_Entry_Type;
+         ComboBox: constant Gtk_Combo_Box_Text := Gtk_Combo_Box_Text_New;
+         ThemeName: Unbounded_String;
+         Index: Gint := 0;
+      begin
+         Ada.Environment_Variables.Set
+           ("HIGHLIGHT_DATADIR",
+            Ada.Environment_Variables.Value("APPDIR", "") &
+            "/usr/share/highlight");
+         Start_Search
+           (Search,
+            Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+            "/themes/base16",
+            "*.theme");
+         while More_Entries(Search) loop
+            Get_Next_Entry(Search, File);
+            ThemeName := To_Unbounded_String(Base_Name(Simple_Name(File)));
+            Append_Text(ComboBox, To_String(ThemeName));
+            if ThemeName = Settings.ColorTheme then
+               Set_Active(ComboBox, Index);
+            end if;
+            Index := Index + 1;
+         end loop;
+         End_Search(Search);
+         Set_Tooltip_Text
+           (ComboBox,
+            "Select color theme for coloring syntax in text files in preview. You may not be able to enable this option if you don't have installed the program ""highlight"".");
+         Attach(Grid, ComboBox, 1, 3);
+      end;
       AddFrame(Gettext("Preview"));
       Show_All(MenuBox);
       Add(Popup, MenuBox);
