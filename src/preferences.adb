@@ -112,7 +112,13 @@ package body Preferences is
       end if;
    end SetToolbars;
 
+   -- ****if* Preferences/LoadSettings
+   -- FUNCTION
+   -- Load the program settings from file. If file not exists, load default
+   -- settings.
+   -- SOURCE
    procedure LoadSettings is
+      -- ****
       ConfigFile: File_Type;
       RawData, FieldName, Value: Unbounded_String;
       EqualIndex: Natural;
@@ -123,34 +129,6 @@ package body Preferences is
          end if;
          return False;
       end LoadBoolean;
-      procedure LoadColorsList is
-         Search: Search_Type;
-         File: Directory_Entry_Type;
-         ComboBox: constant Gtk_Combo_Box_Text :=
-           Gtk_Combo_Box_Text(Get_Object(Builder, "cmbcolortheme"));
-         ThemeName: Unbounded_String;
-         Index: Gint := 0;
-      begin
-         Ada.Environment_Variables.Set
-           ("HIGHLIGHT_DATADIR",
-            Ada.Environment_Variables.Value("APPDIR", "") &
-            "/usr/share/highlight");
-         Start_Search
-           (Search,
-            Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
-            "/themes/base16",
-            "*.theme");
-         while More_Entries(Search) loop
-            Get_Next_Entry(Search, File);
-            ThemeName := To_Unbounded_String(Base_Name(Simple_Name(File)));
-            Append_Text(ComboBox, To_String(ThemeName));
-            if ThemeName = Settings.ColorTheme then
-               Set_Active(ComboBox, Index);
-            end if;
-            Index := Index + 1;
-         end loop;
-         End_Search(Search);
-      end LoadColorsList;
    begin
       Settings :=
         (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
@@ -170,19 +148,10 @@ package body Preferences is
            (Gtk_Switch(Get_Object(Builder, "switchcolortext")),
             Settings.ColorText);
       end if;
-      if not Ada.Directories.Exists
-          (Ada.Environment_Variables.Value("HOME") &
-           "/.config/hunter/hunter.cfg") then
-         Setting := True;
-         LoadColorsList;
-         Setting := False;
-         return;
-      end if;
       Open
         (ConfigFile, In_File,
          Ada.Environment_Variables.Value("HOME") &
          "/.config/hunter/hunter.cfg");
-      Setting := True;
       while not End_Of_File(ConfigFile) loop
          RawData := To_Unbounded_String(Get_Line(ConfigFile));
          if Length(RawData) > 0 then
@@ -191,84 +160,43 @@ package body Preferences is
             Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
             if FieldName = To_Unbounded_String("ShowHidden") then
                Settings.ShowHidden := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchhidden")),
-                  Settings.ShowHidden);
             elsif FieldName = To_Unbounded_String("ShowLastModified") then
                Settings.ShowLastModified := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchlastmodified")),
-                  Settings.ShowLastModified);
             elsif FieldName = To_Unbounded_String("ScaleImages") then
                Settings.ScaleImages := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchscaleimages")),
-                  Settings.ScaleImages);
             elsif FieldName = To_Unbounded_String("AutoCloseMessagesTime") then
                Settings.AutoCloseMessagesTime :=
                  Natural'Value(To_String(Value));
-               Set_Value
-                 (Gtk_Adjustment(Get_Object(Builder, "adjseconds")),
-                  Gdouble(Settings.AutoCloseMessagesTime));
             elsif FieldName = To_Unbounded_String("WindowWidth") then
                Settings.WindowWidth := Positive'Value(To_String(Value));
             elsif FieldName = To_Unbounded_String("WindowHeight") then
                Settings.WindowHeight := Positive'Value(To_String(Value));
             elsif FieldName = To_Unbounded_String("ShowPreview") then
                Settings.ShowPreview := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchshowpreview")),
-                  Settings.ShowPreview);
             elsif FieldName = To_Unbounded_String("StayInOld") then
                Settings.StayInOld := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchstayinsource")),
-                  Settings.StayInOld);
             elsif FieldName = To_Unbounded_String("ColorText") then
                Settings.ColorText := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchcolortext")),
-                  Settings.ColorText);
             elsif FieldName = To_Unbounded_String("ColorTheme") then
                Settings.ColorTheme := Value;
             elsif FieldName = To_Unbounded_String("DeleteFiles") then
                Settings.DeleteFiles := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchdeletefiles")),
-                  Settings.DeleteFiles);
                SetDeleteTooltip;
             elsif FieldName = To_Unbounded_String("ClearTrashOnExit") then
                Settings.ClearTrashOnExit := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchcleartrashonexit")),
-                  Settings.ClearTrashOnExit);
             elsif FieldName = To_Unbounded_String("ShowFinishedInfo") then
                Settings.ShowFinishedInfo := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchshowfinishedinfo")),
-                  Settings.ShowFinishedInfo);
             elsif FieldName = To_Unbounded_String("OverwriteOnExist") then
                Settings.OverwriteOnExist := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchoverwriteonexist")),
-                  Settings.OverwriteOnExist);
             elsif FieldName = To_Unbounded_String("ToolbarsOnTop") then
                Settings.ToolbarsOnTop := LoadBoolean;
-               Set_Active
-                 (Gtk_Switch(Get_Object(Builder, "switchtoolbarsontop")),
-                  Settings.ToolbarsOnTop);
                SetToolbars;
             elsif FieldName = To_Unbounded_String("AutoRefreshInterval") then
                Settings.AutoRefreshInterval :=
                  Positive'Value(To_String(Value));
-               Set_Value
-                 (Gtk_Adjustment(Get_Object(Builder, "adjrefresh")),
-                  Gdouble(Settings.AutoRefreshInterval));
             end if;
          end if;
       end loop;
-      LoadColorsList;
-      Setting := False;
       Close(ConfigFile);
    end LoadSettings;
 

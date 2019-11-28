@@ -94,14 +94,6 @@ package Preferences is
    procedure SetDeleteTooltip;
    -- ****
 
-   -- ****f* Preferences/LoadSettings
-   -- FUNCTION
-   -- Load the program settings from file. If file not exists, load default
-   -- settings.
-   -- SOURCE
-   procedure LoadSettings;
-   -- ****
-
    -- ****f* Preferences/SavePreferences
    -- FUNCTION
    -- Save the program preferences to the file.
