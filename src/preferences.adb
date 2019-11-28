@@ -493,6 +493,7 @@ package body Preferences is
       MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
       Label: Gtk_Label;
       Grid: Gtk_Grid;
+      ColorsEnabled: Boolean := True;
       procedure AddFrame(Text: String) is
          Frame: constant Gtk_Frame := Gtk_Frame_New;
          FrameLabel: constant Gtk_Label := Gtk_Label_New;
@@ -517,11 +518,16 @@ package body Preferences is
          Set_Line_Wrap(Label, Wrap);
          Attach(Grid, Label, 0, Row);
       end NewLabel;
-      procedure NewSwitch(Active: Boolean; Row: Gint; Tooltip: String) is
+      procedure NewSwitch
+        (Active: Boolean; Row: Gint; Tooltip: String;
+         Enabled: Boolean := True) is
          Switch: constant Gtk_Switch := Gtk_Switch_New;
       begin
          Set_Active(Switch, Active);
          Set_Tooltip_Text(Switch, Tooltip);
+         if not Enabled then
+            Set_Sensitive(Switch, False);
+         end if;
          Attach(Grid, Switch, 1, Row);
       end NewSwitch;
       procedure NewScale
@@ -538,6 +544,9 @@ package body Preferences is
       end NewScale;
    begin
       LoadSettings;
+      if FindExecutable("highlight") = "" then
+         ColorsEnabled := False;
+      end if;
       Popup := Gtk_Popover_New(Parent);
       NewGrid;
       NewLabel(Gettext("Show hidden files:"), 0);
@@ -571,7 +580,8 @@ package body Preferences is
       NewSwitch
         (Settings.ColorText, 2,
          Gettext
-           ("Color files syntax in files preview. Not all text (especially source code) files are supported. You may not be able to enable this option if you don't have installed the program ""highlight""."));
+           ("Color files syntax in files preview. Not all text (especially source code) files are supported. You may not be able to enable this option if you don't have installed the program ""highlight""."),
+         ColorsEnabled);
       NewLabel(Gettext("Syntax color theme:"), 3);
       declare
          Search: Search_Type;
@@ -602,6 +612,7 @@ package body Preferences is
          Set_Tooltip_Text
            (ComboBox,
             "Select color theme for coloring syntax in text files in preview. You may not be able to enable this option if you don't have installed the program ""highlight"".");
+         Set_Sensitive(ComboBox, ColorsEnabled);
          Attach(Grid, ComboBox, 1, 3);
       end;
       AddFrame(Gettext("Preview"));
