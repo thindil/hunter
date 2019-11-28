@@ -35,9 +35,9 @@ package body Inotify.Recursive is
      (Object: in out Recursive_Instance; Path: String;
       Mask: Watch_Bits := All_Events) return Watch is
       Recursive_Mask: Watch_Bits := Mask;
-     Directory: Dir_Type;
-     Last: Natural;
-     FileName: String(1 .. 1024);
+      Directory: Dir_Type;
+      Last: Natural;
+      FileName: String(1 .. 1024);
    begin
       if Depth = Count(Path, "/") - 2 then
          return Result: constant Watch := (Watch => Interfaces.C.int(-1));
@@ -54,10 +54,10 @@ package body Inotify.Recursive is
          if FileName(1 .. Last) in "." | ".." then
             goto End_Of_Loop;
          end if;
-         if Is_Directory
-            (Path & Directory_Separator & FileName(1 .. Last)) then
+         if Is_Directory(Path & Directory_Separator & FileName(1 .. Last)) then
             Object.Add_Watch
-               (Ada.Directories.Compose(Path, FileName(1 .. Last)), Recursive_Mask);
+              (Ada.Directories.Compose(Path, FileName(1 .. Last)),
+               Recursive_Mask);
          end if;
          <<End_Of_Loop>>
       end loop;
