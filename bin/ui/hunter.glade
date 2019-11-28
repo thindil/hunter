@@ -525,7 +525,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="label" translatable="yes">Preferences</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">preferences-desktop</property>
-                    <signal name="clicked" handler="Toggle_Preferences" swapped="no"/>
                     <accelerator key="p" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                   </object>
                   <packing>
