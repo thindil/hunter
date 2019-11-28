@@ -510,10 +510,11 @@ package body Preferences is
          Set_Column_Homogeneous(Grid, True);
          Set_Column_Spacing(Grid, 10);
       end NewGrid;
-      procedure NewLabel(Text: String; Row: Gint) is
+      procedure NewLabel(Text: String; Row: Gint; Wrap: Boolean := False) is
       begin
          Label := Gtk_Label_New(Text);
          Set_Halign(Label, Align_Start);
+         Set_Line_Wrap(Label, Wrap);
          Attach(Grid, Label, 0, Row);
       end NewLabel;
       procedure NewSwitch(Active: Boolean; Row: Gint; Tooltip: String) is
@@ -604,6 +605,28 @@ package body Preferences is
          Attach(Grid, ComboBox, 1, 3);
       end;
       AddFrame(Gettext("Preview"));
+      NewGrid;
+      NewLabel(Gettext("Hide messages after:"), 0);
+      NewScale
+        (Settings.AutoCloseMessagesTime, 0.0, 60.0, 1.0, 0,
+         Gettext
+           ("After that amount of seconds, all messages will be automatically closed by the program. If you set it to 0, this feature will be disabled."));
+      NewLabel(Gettext("Stay in source directory:"), 1);
+      NewSwitch
+        (Settings.StayInOld, 1,
+         Gettext
+           ("After copying, moving files and directories or creating new link, stay in old directory, don't automatically go to destination directory."));
+      NewLabel(Gettext("Show info about finished action:"), 2, True);
+      NewSwitch
+        (Settings.ShowFinishedInfo, 2,
+         Gettext
+           ("Show information about finished copying, moving and deleting files or directories."));
+      NewLabel(Gettext("Toolbars on top:"), 3);
+      NewSwitch
+        (Settings.ToolbarsOnTop, 3,
+         Gettext
+           ("If enabled, show toolbars for actions and information on top of the window. Otherwise, they will be at left side of the window."));
+      AddFrame(Gettext("Interface"));
       Show_All(MenuBox);
       Add(Popup, MenuBox);
       Set_Modal(Popup, True);
