@@ -30,6 +30,7 @@ with Gtk.Popover; use Gtk.Popover;
 with Gtk.Scale; use Gtk.Scale;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Toolbar; use Gtk.Toolbar;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
@@ -50,10 +51,10 @@ package body Preferences is
    -- FUNCTION
    -- Show or hide the program preferences window
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button which was clicked. Unused.
    -- SOURCE
-   procedure TogglePreferences(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure TogglePreferences(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
    begin
       if Is_Visible(Gtk_Widget(Popup)) then
@@ -410,8 +411,6 @@ package body Preferences is
 
    procedure CreatePreferencesUI is
    begin
-      Register_Handler
-        (Builder, "Toggle_Preferences", TogglePreferences'Access);
       Register_Handler(Builder, "Save_Preferences", SaveSettings'Access);
       Register_Handler
         (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
@@ -588,6 +587,7 @@ package body Preferences is
       Add(Popup, MenuBox);
       Set_Modal(Popup, True);
       Set_Position(Popup, Pos_Bottom);
+      On_Clicked(Gtk_Tool_Button(Parent), TogglePreferences'Access);
    end CreatePreferences;
 
 end Preferences;
