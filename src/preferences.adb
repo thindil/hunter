@@ -435,11 +435,95 @@ package body Preferences is
    -- Self - Gtk_Combo_Box with new value for setting
    -- SOURCE
    procedure SetColorTheme(Self: access Gtk_Combo_Box_Record'Class) is
-      -- ****
+   -- ****
    begin
       Settings.ColorTheme := To_Unbounded_String(Get_Active_Text(Self));
       PreviewItem(Builder);
    end SetColorTheme;
+
+   -- ****if* Preferences/SetShowHidden
+   -- FUNCTION
+   -- Set setting for show hidden files and directories
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetShowHidden
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      Settings.ShowHidden := State;
+      Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+      Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")));
+      Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
+      return True;
+   end SetShowHidden;
+
+   -- ****if* Preferences/SetLastModified
+   -- FUNCTION
+   -- Set setting for visibility of last modified column
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetLastModified
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      Settings.ShowLastModified := State;
+      Set_Visible
+        (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 2),
+         Settings.ShowLastModified);
+      return True;
+   end SetLastModified;
+
+   function SetShowPreview
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+   begin
+      Settings.ShowPreview := State;
+      if NewAction /= COPY and NewAction /= MOVE and
+        NewAction /= CREATELINK then
+         Set_Visible
+           (Gtk_Widget(Get_Object(Builder, "boxsecond")),
+            Settings.ShowPreview);
+         Set_Visible
+           (Gtk_Widget(Get_Object(Builder, "btnpreview")),
+            Settings.ShowPreview);
+         Set_Visible
+           (Gtk_Widget(Get_Object(Builder, "btnfileinfo")),
+            Settings.ShowPreview);
+         if Settings.ShowPreview then
+            Set_Position
+              (Gtk_Paned(Get_Object(Builder, "filespaned")),
+               Gint
+                 (Float
+                    (Get_Allocated_Width
+                       (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
+                  0.3));
+            PreviewItem(Builder);
+         else
+            Set_Position
+              (Gtk_Paned(Get_Object(Builder, "filespaned")),
+               Get_Allocated_Width
+                 (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
+         end if;
+      end if;
+      return True;
+   end SetShowPreview;
+
+   function SetDummySwitch
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+   begin
+      return True;
+   end SetDummySwitch;
 
    procedure CreatePreferences(Parent: Gtk_Widget) is
       MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
@@ -471,8 +555,8 @@ package body Preferences is
          Attach(Grid, Label, 0, Row);
       end NewLabel;
       procedure NewSwitch
-        (Active: Boolean; Row: Gint; Tooltip: String;
-         Enabled: Boolean := True) is
+        (Active: Boolean; Row: Gint; Tooltip: String; Enabled: Boolean;
+         Subprogram: Cb_Gtk_Switch_Boolean_Boolean) is
          Switch: constant Gtk_Switch := Gtk_Switch_New;
       begin
          Set_Active(Switch, Active);
@@ -480,6 +564,7 @@ package body Preferences is
          if not Enabled then
             Set_Sensitive(Switch, False);
          end if;
+         On_State_Set(Switch, Subprogram);
          Attach(Grid, Switch, 1, Row);
       end NewSwitch;
       procedure NewScale
@@ -506,12 +591,14 @@ package body Preferences is
       NewSwitch
         (Settings.ShowHidden, 0,
          Gettext
-           ("Show hidden files and directories in directory listing and in directories preview."));
+           ("Show hidden files and directories in directory listing and in directories preview."),
+         True, SetShowHidden'Access);
       NewLabel(Gettext("Show modification time:"), 1);
       NewSwitch
         (Settings.ShowLastModified, 1,
          Gettext
-           ("Show the column with last modification date for files and directories."));
+           ("Show the column with last modification date for files and directories."),
+         True, SetLastModified'Access);
       NewLabel(Gettext("Auto refresh interval:"), 2);
       NewScale
         (Settings.AutoRefreshInterval, 0.0, 30.0, 1.0, 2,
@@ -524,18 +611,20 @@ package body Preferences is
       NewSwitch
         (Settings.ShowPreview, 0,
          Gettext
-           ("Show second panel with preview of files and directories. If you disable this option, second panel will be visible only during copying and moving files or directories and during creating new link."));
+           ("Show second panel with preview of files and directories. If you disable this option, second panel will be visible only during copying and moving files or directories and during creating new link."),
+         True, SetShowPreview'Access);
       NewLabel(Gettext("Scale images:"), 1);
       NewSwitch
         (Settings.ScaleImages, 1,
          Gettext
-           ("Scale images in preview. When disabled, images shows with natural size. When enabled, images are resized to the size of the preview window."));
+           ("Scale images in preview. When disabled, images shows with natural size. When enabled, images are resized to the size of the preview window."),
+         True, SetDummySwitch'Access);
       NewLabel(Gettext("Syntax highlightning:"), 2);
       NewSwitch
         (Settings.ColorText, 2,
          Gettext
            ("Color files syntax in files preview. Not all text (especially source code) files are supported. You may not be able to enable this option if you don't have installed the program ""highlight""."),
-         ColorsEnabled);
+         ColorsEnabled, SetDummySwitch'Access);
       NewLabel(Gettext("Syntax color theme:"), 3);
       declare
          Search: Search_Type;
@@ -582,35 +671,41 @@ package body Preferences is
       NewSwitch
         (Settings.StayInOld, 1,
          Gettext
-           ("After copying, moving files and directories or creating new link, stay in old directory, don't automatically go to destination directory."));
+           ("After copying, moving files and directories or creating new link, stay in old directory, don't automatically go to destination directory."),
+         True, SetDummySwitch'Access);
       NewLabel(Gettext("Show info about finished action:"), 2, True);
       NewSwitch
         (Settings.ShowFinishedInfo, 2,
          Gettext
-           ("Show information about finished copying, moving and deleting files or directories."));
+           ("Show information about finished copying, moving and deleting files or directories."),
+         True, SetDummySwitch'Access);
       NewLabel(Gettext("Toolbars on top:"), 3);
       NewSwitch
         (Settings.ToolbarsOnTop, 3,
          Gettext
-           ("If enabled, show toolbars for actions and information on top of the window. Otherwise, they will be at left side of the window."));
+           ("If enabled, show toolbars for actions and information on top of the window. Otherwise, they will be at left side of the window."),
+         True, SetDummySwitch'Access);
       AddFrame(Gettext("Interface"));
       NewGrid;
       NewLabel(Gettext("Delete files:"), 0);
       NewSwitch
         (Settings.DeleteFiles, 0,
          Gettext
-           ("Delete selected files and directories instead of moving them to Trash."));
+           ("Delete selected files and directories instead of moving them to Trash."),
+         True, SetDummySwitch'Access);
       NewLabel(Gettext("Clear Trash on exit:"), 1);
       NewSwitch
         (Settings.ClearTrashOnExit, 1,
-         Gettext("Automatically clear Trash on exit from the program."));
+         Gettext("Automatically clear Trash on exit from the program."), True,
+         SetDummySwitch'Access);
       AddFrame(Gettext("Deleting"));
       NewGrid;
       NewLabel(Gettext("Overwrite existing:"), 0);
       NewSwitch
         (Settings.OverwriteOnExist, 0,
          Gettext
-           ("If enabled, during copying or moving files and directories, if in destination directory exists file or directory with that same name, the program will ask if overwrite it. If disabled, the program will quietly give add underscore to the name of moved or copied file or directory."));
+           ("If enabled, during copying or moving files and directories, if in destination directory exists file or directory with that same name, the program will ask if overwrite it. If disabled, the program will quietly give add underscore to the name of moved or copied file or directory."),
+         True, SetDummySwitch'Access);
       AddFrame(Gettext("Copying or moving"));
       Show_All(MenuBox);
       Add(Popup, MenuBox);
