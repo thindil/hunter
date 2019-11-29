@@ -19,6 +19,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Adjustment; use Gtk.Adjustment;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Container; use Gtk.Container;
+with Gtk.Combo_Box; use Gtk.Combo_Box;
 with Gtk.Combo_Box_Text; use Gtk.Combo_Box_Text;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Frame; use Gtk.Frame;
@@ -426,6 +427,20 @@ package body Preferences is
       Settings.AutoCloseMessagesTime := Natural(Get_Value(Self));
    end SetAutoClose;
 
+   -- ****if* Preferences/SetColorTheme
+   -- FUNCTION
+   -- Set new color theme for syntax highlightning base on value set by the
+   -- user
+   -- PARAMETERS
+   -- Self - Gtk_Combo_Box with new value for setting
+   -- SOURCE
+   procedure SetColorTheme(Self: access Gtk_Combo_Box_Record'Class) is
+      -- ****
+   begin
+      Settings.ColorTheme := To_Unbounded_String(Get_Active_Text(Self));
+      PreviewItem(Builder);
+   end SetColorTheme;
+
    procedure CreatePreferences(Parent: Gtk_Widget) is
       MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
       Label: Gtk_Label;
@@ -552,6 +567,7 @@ package body Preferences is
            (ComboBox,
             "Select color theme for coloring syntax in text files in preview. You may not be able to enable this option if you don't have installed the program ""highlight"".");
          Set_Sensitive(ComboBox, ColorsEnabled);
+         On_Changed(ComboBox, SetColorTheme'Access);
          Attach(Grid, ComboBox, 1, 3);
       end;
       AddFrame(Gettext("Preview"));
