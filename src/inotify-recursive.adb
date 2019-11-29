@@ -40,7 +40,7 @@ package body Inotify.Recursive is
       FileName: String(1 .. 1024);
    begin
       if Depth = Count(Path, "/") - 2 then
-         return Result: constant Watch := (Watch => Interfaces.C.int(-1));
+         return (Watch => Interfaces.C.int(-1));
       end if;
       Recursive_Mask.Created := True;
       Recursive_Mask.Deleted_Self := True;
@@ -54,7 +54,9 @@ package body Inotify.Recursive is
          if FileName(1 .. Last) in "." | ".." then
             goto End_Of_Loop;
          end if;
-         if Is_Directory(Path & Directory_Separator & FileName(1 .. Last)) then
+         if Is_Directory(Path & Directory_Separator & FileName(1 .. Last))
+           and then Is_Read_Accessible_File
+             (Path & Directory_Separator & FileName(1 .. Last)) then
             Object.Add_Watch
               (Ada.Directories.Compose(Path, FileName(1 .. Last)),
                Recursive_Mask);
@@ -67,8 +69,6 @@ package body Inotify.Recursive is
           Instance(Object).Add_Watch(Path, Recursive_Mask) do
          if not Object.Masks.Contains(Result.Watch) then
             Object.Masks.Insert(Result.Watch, Mask);
-         else
-            Object.Masks(Result.Watch) := Mask;
          end if;
       end return;
    end Add_Watch;
