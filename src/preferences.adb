@@ -336,13 +336,6 @@ package body Preferences is
       if Setting then
          return;
       end if;
-      if Natural
-          (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds")))) /=
-        Settings.AutoCloseMessagesTime then
-         Settings.AutoCloseMessagesTime :=
-           Natural
-             (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjseconds"))));
-      end if;
       if Get_Active_Text
           (Gtk_Combo_Box_Text(Get_Object(Object, "cmbcolortheme"))) /=
         To_String(Settings.ColorTheme) then
@@ -351,14 +344,6 @@ package body Preferences is
              (Get_Active_Text
                 (Gtk_Combo_Box_Text(Get_Object(Object, "cmbcolortheme"))));
          PreviewItem(Object);
-      end if;
-      if Natural
-          (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjrefresh")))) /=
-        Settings.AutoRefreshInterval then
-         Settings.AutoRefreshInterval :=
-           Natural
-             (Get_Value(Gtk_Adjustment(Get_Object(Object, "adjrefresh"))));
-         StartTimer;
       end if;
    end SaveSettingsProc;
 
@@ -416,6 +401,31 @@ package body Preferences is
         (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
    end CreatePreferencesUI;
 
+   -- ****if* Preferences/SetAutoRefresh
+   -- FUNCTION
+   -- Set new value of AutoRefreshInterval based on value set by the user
+   -- PARAMETERS
+   -- Self - Gtk_Adjustment with new value for setting
+   -- SOURCE
+   procedure SetAutoRefresh(Self: access Gtk_Adjustment_Record'Class) is
+   -- ****
+   begin
+      Settings.AutoRefreshInterval := Natural(Get_Value(Self));
+      StartTimer;
+   end SetAutoRefresh;
+
+   -- ****if* Preferences/SetAutoClose
+   -- FUNCTION
+   -- Set new value of AutoCloseMessagesTime based on value set by the user
+   -- PARAMETERS
+   -- Self - Gtk_Adjustment with new value for setting
+   -- SOURCE
+   procedure SetAutoClose(Self: access Gtk_Adjustment_Record'Class) is
+   -- ****
+   begin
+      Settings.AutoCloseMessagesTime := Natural(Get_Value(Self));
+   end SetAutoClose;
+
    procedure CreatePreferences(Parent: Gtk_Widget) is
       MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
       Label: Gtk_Label;
@@ -458,12 +468,13 @@ package body Preferences is
          Attach(Grid, Switch, 1, Row);
       end NewSwitch;
       procedure NewScale
-        (Value: Integer; Min, Max, Step: Gdouble; Row: Gint;
-         Tooltip: String) is
+        (Value: Integer; Min, Max, Step: Gdouble; Row: Gint; Tooltip: String;
+         Subprogram: Cb_Gtk_Adjustment_Void) is
          Adjustment: constant Gtk_Adjustment :=
            Gtk_Adjustment_New(Gdouble(Value), Min, Max, Step, Step * 10.0);
          Scale: Gtk_Scale;
       begin
+         On_Value_Changed(Adjustment, Subprogram);
          Scale := Gtk_Hscale_New(Adjustment);
          Set_Digits(Scale, 0);
          Set_Tooltip_Text(Scale, Tooltip);
@@ -490,7 +501,8 @@ package body Preferences is
       NewScale
         (Settings.AutoRefreshInterval, 0.0, 30.0, 1.0, 2,
          Gettext
-           ("How often (in seconds) the program should check for changes in current directory. If set to zero, autorefresh will be disabled."));
+           ("How often (in seconds) the program should check for changes in current directory. If set to zero, autorefresh will be disabled."),
+         SetAutoRefresh'Access);
       AddFrame(Gettext("Directory Listing"));
       NewGrid;
       NewLabel(Gettext("Show preview:"), 0);
@@ -548,7 +560,8 @@ package body Preferences is
       NewScale
         (Settings.AutoCloseMessagesTime, 0.0, 60.0, 1.0, 0,
          Gettext
-           ("After that amount of seconds, all messages will be automatically closed by the program. If you set it to 0, this feature will be disabled."));
+           ("After that amount of seconds, all messages will be automatically closed by the program. If you set it to 0, this feature will be disabled."),
+         SetAutoClose'Access);
       NewLabel(Gettext("Stay in source directory:"), 1);
       NewSwitch
         (Settings.StayInOld, 1,
