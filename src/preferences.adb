@@ -517,12 +517,98 @@ package body Preferences is
       return True;
    end SetShowFinished;
 
-   function SetDummySwitch
+   -- ****if* Preferences/SetScaleImages
+   -- FUNCTION
+   -- Set setting for scale images
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetScaleImages
      (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
       pragma Unreferenced(Self);
+      -- ****
    begin
+      Settings.ScaleImages := State;
+      PreviewItem(Builder);
       return True;
-   end SetDummySwitch;
+   end SetScaleImages;
+
+   -- ****if* Preferences/SetToolbarsOnTop
+   -- FUNCTION
+   -- Set setting for show toolbar on top or side of the program
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetToolbarsOnTop
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      Settings.ToolbarsOnTop := State;
+      SetToolbars;
+      return True;
+   end SetToolbarsOnTop;
+
+   -- ****if* Preferences/SetDeleteFiles
+   -- FUNCTION
+   -- Set if files should be deleted or moved to trash
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetDeleteFiles
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      Settings.DeleteFiles := State;
+      SetDeleteTooltip;
+      return True;
+   end SetDeleteFiles;
+
+   -- ****if* Preferences/SetClearTrash
+   -- FUNCTION
+   -- Set if Trash should be cleared on exit from the program
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetClearTrash
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      Settings.ClearTrashOnExit := State;
+      return True;
+   end SetClearTrash;
+
+   -- ****if* Preferences/SetOverwrite
+   -- FUNCTION
+   -- Set if files should be overwrited on copy/move or saved with new name
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetOverwrite
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      Settings.OverwriteOnExist := State;
+      return True;
+   end SetOverwrite;
 
    procedure CreatePreferences(Parent: Gtk_Widget) is
       MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
@@ -617,7 +703,7 @@ package body Preferences is
         (Settings.ScaleImages, 1,
          Gettext
            ("Scale images in preview. When disabled, images shows with natural size. When enabled, images are resized to the size of the preview window."),
-         True, SetDummySwitch'Access);
+         True, SetScaleImages'Access);
       NewLabel(Gettext("Syntax highlightning:"), 2);
       NewSwitch
         (Settings.ColorText, 2,
@@ -683,7 +769,7 @@ package body Preferences is
         (Settings.ToolbarsOnTop, 3,
          Gettext
            ("If enabled, show toolbars for actions and information on top of the window. Otherwise, they will be at left side of the window."),
-         True, SetDummySwitch'Access);
+         True, SetToolbarsOnTop'Access);
       AddFrame(Gettext("Interface"));
       NewGrid;
       NewLabel(Gettext("Delete files:"), 0);
@@ -691,12 +777,12 @@ package body Preferences is
         (Settings.DeleteFiles, 0,
          Gettext
            ("Delete selected files and directories instead of moving them to Trash."),
-         True, SetDummySwitch'Access);
+         True, SetDeleteFiles'Access);
       NewLabel(Gettext("Clear Trash on exit:"), 1);
       NewSwitch
         (Settings.ClearTrashOnExit, 1,
          Gettext("Automatically clear Trash on exit from the program."), True,
-         SetDummySwitch'Access);
+         SetClearTrash'Access);
       AddFrame(Gettext("Deleting"));
       NewGrid;
       NewLabel(Gettext("Overwrite existing:"), 0);
@@ -704,7 +790,7 @@ package body Preferences is
         (Settings.OverwriteOnExist, 0,
          Gettext
            ("If enabled, during copying or moving files and directories, if in destination directory exists file or directory with that same name, the program will ask if overwrite it. If disabled, the program will quietly give add underscore to the name of moved or copied file or directory."),
-         True, SetDummySwitch'Access);
+         True, SetOverwrite'Access);
       AddFrame(Gettext("Copying or moving"));
       Show_All(MenuBox);
       Add(Popup, MenuBox);
