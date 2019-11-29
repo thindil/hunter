@@ -220,69 +220,10 @@ package body Preferences is
       if Setting then
          return False;
       end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchhidden"))) /=
-        Settings.ShowHidden then
-         Settings.ShowHidden :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchhidden")));
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter1")));
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter2")));
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchlastmodified"))) /=
-        Settings.ShowLastModified then
-         Settings.ShowLastModified :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchlastmodified")));
-         Set_Visible
-           (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 2),
-            Settings.ShowLastModified);
-      end if;
       if Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages"))) /=
         Settings.ScaleImages then
          Settings.ScaleImages :=
            Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages")));
-         PreviewItem(Object);
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchshowpreview"))) /=
-        Settings.ShowPreview then
-         Settings.ShowPreview :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchshowpreview")));
-         if NewAction /= COPY and NewAction /= MOVE and
-           NewAction /= CREATELINK then
-            Set_Visible
-              (Gtk_Widget(Get_Object(Object, "boxsecond")),
-               Settings.ShowPreview);
-            Set_Visible
-              (Gtk_Widget(Get_Object(Builder, "btnpreview")),
-               Settings.ShowPreview);
-            Set_Visible
-              (Gtk_Widget(Get_Object(Builder, "btnfileinfo")),
-               Settings.ShowPreview);
-            if Settings.ShowPreview then
-               Set_Position
-                 (Gtk_Paned(Get_Object(Object, "filespaned")),
-                  Gint
-                    (Float
-                       (Get_Allocated_Width
-                          (Gtk_Widget(Get_Object(Object, "mainwindow")))) *
-                     0.3));
-               PreviewItem(Object);
-            else
-               Set_Position
-                 (Gtk_Paned(Get_Object(Object, "filespaned")),
-                  Get_Allocated_Width
-                    (Gtk_Widget(Get_Object(Object, "mainwindow"))));
-            end if;
-         end if;
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchstayinsource"))) /=
-        Settings.StayInOld then
-         Settings.StayInOld :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchstayinsource")));
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchcolortext"))) /=
-        Settings.ColorText then
-         Settings.ColorText :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchcolortext")));
          PreviewItem(Object);
       end if;
       if Get_Active(Gtk_Switch(Get_Object(Object, "switchdeletefiles"))) /=
@@ -297,13 +238,6 @@ package body Preferences is
          Settings.ClearTrashOnExit :=
            Get_Active
              (Gtk_Switch(Get_Object(Object, "switchcleartrashonexit")));
-      end if;
-      if Get_Active
-          (Gtk_Switch(Get_Object(Object, "switchshowfinishedinfo"))) /=
-        Settings.ShowFinishedInfo then
-         Settings.ShowFinishedInfo :=
-           Get_Active
-             (Gtk_Switch(Get_Object(Object, "switchshowfinishedinfo")));
       end if;
       if Get_Active
           (Gtk_Switch(Get_Object(Object, "switchoverwriteonexist"))) /=
@@ -483,9 +417,19 @@ package body Preferences is
       return True;
    end SetLastModified;
 
+   -- ****if* Preferences/SetShowPreview
+   -- FUNCTION
+   -- Set setting to show preview of items
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
    function SetShowPreview
      (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
       pragma Unreferenced(Self);
+      -- ****
    begin
       Settings.ShowPreview := State;
       if NewAction /= COPY and NewAction /= MOVE and
@@ -517,6 +461,61 @@ package body Preferences is
       end if;
       return True;
    end SetShowPreview;
+
+   -- ****if* Preferences/SetColorText
+   -- FUNCTION
+   -- Set setting to enable syntax highlightning of files
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetColorText
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      Settings.ColorText := State;
+      PreviewItem(Builder);
+      return True;
+   end SetColorText;
+
+   -- ****if* Preferences/SetStayInOld
+   -- FUNCTION
+   -- Set setting to stay in old directory after copy/move
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetStayInOld
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      Settings.StayInOld := State;
+      return True;
+   end SetStayInOld;
+
+   -- ****if* Preferences/SetShowFinished
+   -- FUNCTION
+   -- Set setting for show information about finished actions
+   -- PARAMETERS
+   -- Self  - Gtk_Switch which was changed. Ununsed.
+   -- State - New state of Gtk_Switch. Used as new value for setting.
+   -- RESULT
+   -- This function always return True to stop signal emission
+   -- SOURCE
+   function SetShowFinished
+     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      Settings.ShowFinishedInfo := State;
+      return True;
+   end SetShowFinished;
 
    function SetDummySwitch
      (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
@@ -624,7 +623,7 @@ package body Preferences is
         (Settings.ColorText, 2,
          Gettext
            ("Color files syntax in files preview. Not all text (especially source code) files are supported. You may not be able to enable this option if you don't have installed the program ""highlight""."),
-         ColorsEnabled, SetDummySwitch'Access);
+         ColorsEnabled, SetColorText'Access);
       NewLabel(Gettext("Syntax color theme:"), 3);
       declare
          Search: Search_Type;
@@ -672,13 +671,13 @@ package body Preferences is
         (Settings.StayInOld, 1,
          Gettext
            ("After copying, moving files and directories or creating new link, stay in old directory, don't automatically go to destination directory."),
-         True, SetDummySwitch'Access);
+         True, SetStayInOld'Access);
       NewLabel(Gettext("Show info about finished action:"), 2, True);
       NewSwitch
         (Settings.ShowFinishedInfo, 2,
          Gettext
            ("Show information about finished copying, moving and deleting files or directories."),
-         True, SetDummySwitch'Access);
+         True, SetShowFinished'Access);
       NewLabel(Gettext("Toolbars on top:"), 3);
       NewSwitch
         (Settings.ToolbarsOnTop, 3,
