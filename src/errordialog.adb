@@ -21,7 +21,10 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with Gtk.Box; use Gtk.Box;
+with Gtk.Enums; use Gtk.Enums;
 with Gtk.Label; use Gtk.Label;
+with Gtk.Link_Button; use Gtk.Link_Button;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gdk.Cursor; use Gdk.Cursor;
@@ -86,15 +89,29 @@ package body ErrorDialog is
       SaveException(An_Exception, False);
    end On_Exception;
 
-   procedure CreateErrorDialog(NewBuilder: Gtkada_Builder) is
-      Label: constant Gtk_Label :=
-        Gtk_Label(Get_Object(NewBuilder, "lblerror"));
+   procedure CreateErrorUI(NewBuilder: Gtkada_Builder) is
+      Box: constant Gtk_Vbox := Gtk_Vbox_New;
+      Label: Gtk_Label;
+      Button: constant Gtk_Link_Button :=
+        Gtk_Link_Button_New("https://github.com/thindil/hunter/issues");
    begin
       Builder := NewBuilder;
-      Set_Label
-        (Label,
-         Get_Label(Label) & Gettext(" from '") & Value("HOME") &
-         Gettext("/.cache/hunter' directory."));
-   end CreateErrorDialog;
+      Label :=
+        Gtk_Label_New
+          (Gettext
+             ("Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at"));
+      Set_Max_Width_Chars(Label, 80);
+      Set_Line_Wrap(Label, True);
+      Pack_Start(Box, Label, False);
+      Set_Relief(Button, Relief_None);
+      Pack_Start(Box, Button, False);
+      Label :=
+        Gtk_Label_New
+          (Gettext(" and attach (if possible) file 'error.log' from '") &
+           Value("HOME") & Gettext("/.cache/hunter' directory."));
+      Set_Line_Wrap(Label, True);
+      Pack_Start(Box, Label, False);
+      Add_Named(Gtk_Stack(Get_Object(Builder, "filestack")), Box, "errorbox");
+   end CreateErrorUI;
 
 end ErrorDialog;
