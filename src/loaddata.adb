@@ -42,6 +42,7 @@ with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
 with MainWindow; use MainWindow;
+with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with Utils; use Utils;
 with Trash;
@@ -146,8 +147,7 @@ package body LoadData is
       end if;
       if MainWindow /= null then
          Set_Cursor(MainWindow, Gdk_Cursor_New(Watch));
-         if not Is_Visible
-             (Gtk_Widget(Get_Object(Builder, "poppreferences"))) then
+         if not Is_Visible(Gtk_Widget(PreferencesPopup)) then
             Set_Sensitive
               (Gtk_Widget(Get_Object(Builder, "mainwindow")), False);
          end if;
