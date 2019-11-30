@@ -430,7 +430,6 @@ package body MainWindow is
       CreateBookmarksUI;
       CreateCreateUI;
       CreateMessagesUI;
-      CreatePreferencesUI;
       CreateSearchUI;
       CreateShowItemsUI;
       CreateTrashUI;

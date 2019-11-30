@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Gtk.Popover; use Gtk.Popover;
 with Gtk.Widget; use Gtk.Widget;
 
 -- ****h* Hunter/Preferences
@@ -86,6 +87,8 @@ package Preferences is
    Settings: Settings_Data;
    -- ****
 
+   PreferencesPopup: Gtk_Popover;
+
    -- ****f* Preferences/SetDeleteTooltip
    -- FUNCTION
    -- Set tooltip for delete button, depends did delete action delete files or
@@ -99,14 +102,6 @@ package Preferences is
    -- Save the program preferences to the file.
    -- SOURCE
    procedure SavePreferences;
-   -- ****
-
-   -- ****f* Preferences/CreatePreferencesUI
-   -- FUNCTION
-   -- Create preferences UI - mostly register proper procedures and functions
-   -- for use in GTKAda Builder
-   -- SOURCE
-   procedure CreatePreferencesUI;
    -- ****
 
    procedure CreatePreferences(Parent: Gtk_Widget);

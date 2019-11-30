@@ -27,7 +27,6 @@ with Gtk.Grid; use Gtk.Grid;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
-with Gtk.Popover; use Gtk.Popover;
 with Gtk.Scale; use Gtk.Scale;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Toolbar; use Gtk.Toolbar;
@@ -46,8 +45,6 @@ with Utils; use Utils;
 
 package body Preferences is
 
-   Popup: Gtk_Popover;
-
    -- ****if* Preferences/TogglePreferences
    -- FUNCTION
    -- Show or hide the program preferences window
@@ -58,10 +55,10 @@ package body Preferences is
       pragma Unreferenced(Self);
       -- ****
    begin
-      if Is_Visible(Gtk_Widget(Popup)) then
-         Hide(Gtk_Widget(Popup));
+      if Is_Visible(Gtk_Widget(PreferencesPopup)) then
+         Hide(Gtk_Widget(PreferencesPopup));
       else
-         Show_All(Gtk_Widget(Popup));
+         Show_All(Gtk_Widget(PreferencesPopup));
       end if;
    end TogglePreferences;
 
@@ -202,86 +199,6 @@ package body Preferences is
       Close(ConfigFile);
    end LoadSettings;
 
-   -- ****if* Preferences/SaveSettings
-   -- FUNCTION
-   -- Save the program settings to file and update program to the new
-   -- configuration if needed.
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- RESULT
-   -- Always False so default handler will be running too.
-   -- SEE ALSO
-   -- SaveSettingsProc
-   -- SOURCE
-   function SaveSettings
-     (Object: access Gtkada_Builder_Record'Class) return Boolean is
-   -- ****
-   begin
-      if Setting then
-         return False;
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages"))) /=
-        Settings.ScaleImages then
-         Settings.ScaleImages :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchscaleimages")));
-         PreviewItem(Object);
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchdeletefiles"))) /=
-        Settings.DeleteFiles then
-         Settings.DeleteFiles :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchdeletefiles")));
-         SetDeleteTooltip;
-      end if;
-      if Get_Active
-          (Gtk_Switch(Get_Object(Object, "switchcleartrashonexit"))) /=
-        Settings.ClearTrashOnExit then
-         Settings.ClearTrashOnExit :=
-           Get_Active
-             (Gtk_Switch(Get_Object(Object, "switchcleartrashonexit")));
-      end if;
-      if Get_Active
-          (Gtk_Switch(Get_Object(Object, "switchoverwriteonexist"))) /=
-        Settings.OverwriteOnExist then
-         Settings.OverwriteOnExist :=
-           Get_Active
-             (Gtk_Switch(Get_Object(Object, "switchoverwriteonexist")));
-      end if;
-      if Get_Active(Gtk_Switch(Get_Object(Object, "switchtoolbarsontop"))) /=
-        Settings.ToolbarsOnTop then
-         Settings.ToolbarsOnTop :=
-           Get_Active(Gtk_Switch(Get_Object(Object, "switchtoolbarsontop")));
-         SetToolbars;
-      end if;
-      return False;
-   end SaveSettings;
-
-   -- ****if* Preferences/SaveSettingsProc
-   -- FUNCTION
-   -- Save the program settings to file and update program to the new
-   -- configuration if needed. Some GTK elements need procedures instead
-   -- of function.
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SEE ALSO
-   -- SaveSettings
-   -- SOURCE
-   procedure SaveSettingsProc(Object: access Gtkada_Builder_Record'Class) is
-   -- ****
-   begin
-      if Setting then
-         return;
-      end if;
-      if Get_Active_Text
-          (Gtk_Combo_Box_Text(Get_Object(Object, "cmbcolortheme"))) /=
-        To_String(Settings.ColorTheme) then
-         Settings.ColorTheme :=
-           To_Unbounded_String
-             (Get_Active_Text
-                (Gtk_Combo_Box_Text(Get_Object(Object, "cmbcolortheme"))));
-         PreviewItem(Object);
-      end if;
-   end SaveSettingsProc;
-
    procedure SavePreferences is
       ConfigFile: File_Type;
       procedure SaveBoolean(Value: Boolean; Name: String) is
@@ -328,13 +245,6 @@ package body Preferences is
          Positive'Image(Settings.AutoRefreshInterval));
       Close(ConfigFile);
    end SavePreferences;
-
-   procedure CreatePreferencesUI is
-   begin
-      Register_Handler(Builder, "Save_Preferences", SaveSettings'Access);
-      Register_Handler
-        (Builder, "Save_Preferences_Proc", SaveSettingsProc'Access);
-   end CreatePreferencesUI;
 
    -- ****if* Preferences/SetAutoRefresh
    -- FUNCTION
@@ -670,7 +580,7 @@ package body Preferences is
       if FindExecutable("highlight") = "" then
          ColorsEnabled := False;
       end if;
-      Popup := Gtk_Popover_New(Parent);
+      PreferencesPopup := Gtk_Popover_New(Parent);
       NewGrid;
       NewLabel(Gettext("Show hidden files:"), 0);
       NewSwitch
@@ -793,9 +703,9 @@ package body Preferences is
          True, SetOverwrite'Access);
       AddFrame(Gettext("Copying or moving"));
       Show_All(MenuBox);
-      Add(Popup, MenuBox);
-      Set_Modal(Popup, True);
-      Set_Position(Popup, Pos_Bottom);
+      Add(PreferencesPopup, MenuBox);
+      Set_Modal(PreferencesPopup, True);
+      Set_Position(PreferencesPopup, Pos_Bottom);
       On_Clicked(Gtk_Tool_Button(Parent), TogglePreferences'Access);
    end CreatePreferences;
 
