@@ -23,10 +23,13 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Enums; use Gtk.Enums;
+with Gtk.Expander; use Gtk.Expander;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Link_Button; use Gtk.Link_Button;
+with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
+with Gtk.Text_View; use Gtk.Text_View;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -39,6 +42,8 @@ package body ErrorDialog is
    -- SOURCE
    Builder: Gtkada_Builder;
    -- ****
+
+   ErrorBuffer: Gtk_Text_Buffer;
 
    procedure SaveException
      (An_Exception: Exception_Occurrence; PrintToTerminal: Boolean) is
@@ -70,9 +75,7 @@ package body ErrorDialog is
       if PrintToTerminal then
          Put_Line(To_String(ErrorText));
       else
-         Set_Text
-           (Gtk_Text_Buffer(Get_Object(Builder, "errorbuffer")),
-            To_String(ErrorText));
+         Set_Text(ErrorBuffer, To_String(ErrorText));
          Hide(Gtk_Widget(Get_Object(Builder, "toolbar")));
          Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Set_Visible_Child_Name
@@ -94,8 +97,13 @@ package body ErrorDialog is
       Label: Gtk_Label;
       Button: constant Gtk_Link_Button :=
         Gtk_Link_Button_New("https://github.com/thindil/hunter/issues");
+      View: constant Gtk_Text_View := Gtk_Text_View_New;
+      Scroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
+      Expander: constant Gtk_Expander :=
+        Gtk_Expander_New(Gettext("Click to show technical info"));
    begin
       Builder := NewBuilder;
+      ErrorBuffer := Gtk_Text_Buffer_New;
       Label :=
         Gtk_Label_New
           (Gettext
@@ -111,7 +119,13 @@ package body ErrorDialog is
            Value("HOME") & Gettext("/.cache/hunter' directory."));
       Set_Line_Wrap(Label, True);
       Pack_Start(Box, Label, False);
-      Add_Named(Gtk_Stack(Get_Object(Builder, "filestack")), Box, "errorbox");
+      Set_Buffer(View, ErrorBuffer);
+      Set_Editable(View, False);
+      Set_Cursor_Visible(View, False);
+      Add(Scroll, View);
+      Add(Expander, Scroll);
+      Pack_Start(Box, Expander);
+      Add_Named(Gtk_Stack(Get_Object(Builder, "filestack")), Box, "error");
    end CreateErrorUI;
 
 end ErrorDialog;
