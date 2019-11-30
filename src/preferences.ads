@@ -87,7 +87,12 @@ package Preferences is
    Settings: Settings_Data;
    -- ****
 
+   -- ****v* Preferences/PreferencesPopup
+   -- FUNCTION
+   -- The preferences Gtk_Popover "window"
+   -- SOURCE
    PreferencesPopup: Gtk_Popover;
+   -- ****
 
    -- ****f* Preferences/SetDeleteTooltip
    -- FUNCTION
@@ -104,6 +109,14 @@ package Preferences is
    procedure SavePreferences;
    -- ****
 
+   -- ****f* Preferences/CreatePreferences
+   -- FUNCTION
+   -- Create preferences UI and fill it with data from the program settings
+   -- PARAMETERS
+   -- Parent - Gtk_Widget which will be parent for the preferences window.
+   --          Should be always button for preferences.
+   -- SOURCE
    procedure CreatePreferences(Parent: Gtk_Widget);
+   -- ****
 
 end Preferences;
