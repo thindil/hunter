@@ -70,10 +70,6 @@ package body ErrorDialog is
          Set_Text
            (Gtk_Text_Buffer(Get_Object(Builder, "errorbuffer")),
             To_String(ErrorText));
-         Hide(Gtk_Widget(Get_Object(Builder, "entry")));
-         Hide(Gtk_Widget(Get_Object(Builder, "boxpath")));
-         Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
-         Hide(Gtk_Widget(Get_Object(Builder, "actioninfo")));
          Hide(Gtk_Widget(Get_Object(Builder, "toolbar")));
          Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Set_Visible_Child_Name
