@@ -62,7 +62,7 @@ begin
       Put_Line("Error : " & Get_Message(Error));
       return;
    end if;
-   CreateErrorDialog(Builder);
+   CreateErrorUI(Builder);
    if Argument_Count < 1 then
       CreateMainWindow(Builder, Value("HOME"));
    else

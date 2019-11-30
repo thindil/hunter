@@ -46,13 +46,6 @@ package ErrorDialog is
    procedure On_Exception(An_Exception: Exception_Occurrence);
    -- ****
 
-   -- ****f* ErrorDialog/CreateErrorDialog
-   -- FUNCTION
-   -- Create error dialog UI
-   -- PARAMETERS
-   -- NewBuilder - Gtk Builder with UI data read from .glade file
-   -- SOURCE
-   procedure CreateErrorDialog(NewBuilder: Gtkada_Builder);
-   -- ****
+   procedure CreateErrorUI(NewBuilder: Gtkada_Builder);
 
 end ErrorDialog;
