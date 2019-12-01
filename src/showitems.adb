@@ -30,7 +30,6 @@ with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
-with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
@@ -58,39 +57,10 @@ with MainWindow; use MainWindow;
 with MoveItems; use MoveItems;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with ProgramsMenu; use ProgramsMenu;
 with Utils; use Utils;
 
 package body ShowItems is
-
-   -- ****iv* ShowItems/DesktopFile
-   -- FUNCTION
-   -- Name of .desktop file or name of application associated with selected
-   -- file.
-   -- SOURCE
-   DesktopFile: Unbounded_String;
-   -- ****
-
-   -- ****if* ShowItems/FindFileName
-   -- FUNCTION
-   -- Find name of associated program with selected file. If found, replace
-   -- .desktop file name with name of application.
-   -- PARAMETERS
-   -- Model - Gtk_Tree_Model with content of currently selected directory
-   -- Path  - Gtk_Tree_Path to selected element in Model
-   -- Iter  - Gtk_Tree_Iter to selected element in Model
-   -- SOURCE
-   function FindFileName
-     (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
-      return Boolean is
-      pragma Unreferenced(Path);
-      -- ****
-   begin
-      if Get_String(Model, Iter, 1) = To_String(DesktopFile) then
-         DesktopFile := To_Unbounded_String(Get_String(Model, Iter, 0));
-         return True;
-      end if;
-      return False;
-   end FindFileName;
 
    -- ****if* ShowItems/GetSelectedItems
    -- FUNCTION
@@ -172,6 +142,7 @@ package body ShowItems is
                ProcessDesc: Process_Descriptor;
                Result: Expect_Match;
                ExecutableName: constant String := FindExecutable("xdg-mime");
+               DesktopFile: Unbounded_String;
             begin
                if ExecutableName = "" then
                   return;
@@ -185,9 +156,7 @@ package body ShowItems is
                if Result = 1 then
                   DesktopFile :=
                     To_Unbounded_String(Expect_Out_Match(ProcessDesc));
-                  Foreach
-                    (Gtk_List_Store(Get_Object(Object, "applicationslist")),
-                     FindFileName'Access);
+                  GetProgramName(DesktopFile);
                   if Index(DesktopFile, ".desktop") = 0 then
                      Set_Label
                        (Gtk_Button(Get_Object(Object, "btnprogram")),

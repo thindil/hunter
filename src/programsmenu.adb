@@ -17,7 +17,6 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -232,5 +231,42 @@ package body ProgramsMenu is
       Set_Size_Request(Menu, -1, 400);
       return Menu;
    end CreateProgramsMenu;
+
+   -- ****iv* ProgramsMenu/FileName
+   -- FUNCTION
+   -- Name of application which was found, or desktop file when nothing found.
+   -- SOURCE
+   FileName: Unbounded_String;
+   -- ****
+
+   -- ****if* ProgramsMenu/FindProgramName
+   -- FUNCTION
+   -- Search for selected desktop file and return program name if found
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model with list of know applications
+   -- Path  - Gtk_Tree_Path to selected element in Model
+   -- Iter  - Gtk_Tree_Iter to selected element in Model
+   -- RESULT
+   -- True if application found, otherwise False
+   -- SOURCE
+   function FindProgramName
+     (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
+      return Boolean is
+      pragma Unreferenced(Path);
+      -- ****
+   begin
+      if Get_String(Model, Iter, 1) = To_String(FileName) then
+         FileName := To_Unbounded_String(Get_String(Model, Iter, 0));
+         return True;
+      end if;
+      return False;
+   end FindProgramName;
+
+   procedure GetProgramName(DesktopFile: in out Unbounded_String) is
+   begin
+      FileName := DesktopFile;
+      Foreach(Get_Model(ProgramsFilter), FindProgramName'Access);
+      DesktopFile := FileName;
+   end GetProgramName;
 
 end ProgramsMenu;
