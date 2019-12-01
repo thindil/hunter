@@ -46,6 +46,13 @@ package ErrorDialog is
    procedure On_Exception(An_Exception: Exception_Occurrence);
    -- ****
 
+   -- ****f* ErrorDialog/CreateErrorUI
+   -- FUNCTION
+   -- Create UI to show information about crash
+   -- PARAMETERS
+   -- NewBuilder -  Gtkada_Builder used to create UI
+   -- SOURCE
    procedure CreateErrorUI(NewBuilder: Gtkada_Builder);
+   -- ****
 
 end ErrorDialog;
