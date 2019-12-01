@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.Popover; use Gtk.Popover;
 with Gtk.Widget; use Gtk.Widget;
 
@@ -32,6 +33,17 @@ package ProgramsMenu is
    -- Created popover menu
    -- SOURCE
    function CreateProgramsMenu(Parent: Gtk_Widget) return Gtk_Popover;
+   -- ****
+
+   -- ****f* ProgramsMenu/GetProgramName
+   -- FUNCTION
+   -- Search for name of application associated with selected desktop file
+   -- PARAMETERS
+   -- DesktopFile - File name of .desktop file to search
+   -- RESULT
+   -- Parameter DesktopFile with name of program or unchanged if nothing found
+   -- SOURCE
+   procedure GetProgramName(DesktopFile: in out Unbounded_String);
    -- ****
 
 end ProgramsMenu;
