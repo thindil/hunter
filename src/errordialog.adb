@@ -43,7 +43,12 @@ package body ErrorDialog is
    Builder: Gtkada_Builder;
    -- ****
 
+   -- ****iv* ErrorDialog/ErrorBuffer
+   -- FUNCTION
+   -- Gtk_Text_Buffer with detailed information about crash
+   -- SOURCE
    ErrorBuffer: Gtk_Text_Buffer;
+   -- ****
 
    procedure SaveException
      (An_Exception: Exception_Occurrence; PrintToTerminal: Boolean) is
