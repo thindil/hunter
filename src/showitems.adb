@@ -29,6 +29,9 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;
+with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
+with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
+with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
@@ -41,8 +44,10 @@ with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Text_Tag; use Gtk.Text_Tag;
 with Gtk.Text_Tag_Table; use Gtk.Text_Tag_Table;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
+with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Toggle_Button; use Gtk.Toggle_Button;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Widget; use Gtk.Widget;
@@ -308,10 +313,37 @@ package body ShowItems is
       SetBookmarkButton;
       Foreach(Scroll, RemoveChild'Access);
       if Is_Directory(To_String(CurrentSelected)) then
-         Show_All(Gtk_Widget(Get_Object(Object, "btnpreview")));
-         Show_All(Gtk_Widget(Get_Object(Object, "btnopen")));
-         Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
-         LoadDirectory(To_String(CurrentSelected), "fileslist1");
+         declare
+            DirectoryView: constant Gtk_Tree_View :=
+              Gtk_Tree_View_New_With_Model
+                (+(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter1"))));
+            Area: Gtk_Cell_Area_Box;
+            Renderer: constant Gtk_Cell_Renderer_Text :=
+              Gtk_Cell_Renderer_Text_New;
+            Renderer2: constant Gtk_Cell_Renderer_Pixbuf :=
+              Gtk_Cell_Renderer_Pixbuf_New;
+            Column: Gtk_Tree_View_Column;
+         begin
+            Set_Enable_Search(DirectoryView, False);
+            Set_Headers_Clickable(DirectoryView, True);
+            Area := Gtk_Cell_Area_Box_New;
+            Pack_Start(Area, Renderer2, False);
+            Add_Attribute(Area, Renderer2, "icon-name", 2);
+            Pack_Start(Area, Renderer, True);
+            Add_Attribute(Area, Renderer, "text", 0);
+            Column := Gtk_Tree_View_Column_New_With_Area(Area);
+            Set_Sort_Column_Id(Column, 0);
+            Set_Title(Column, Gettext("Name"));
+            if Append_Column(DirectoryView, Column) /= 1 then
+               return;
+            end if;
+            Show_All(Gtk_Widget(Get_Object(Object, "btnpreview")));
+            Show_All(Gtk_Widget(Get_Object(Object, "btnopen")));
+            Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
+            LoadDirectory(To_String(CurrentSelected), "fileslist1");
+            Add(Scroll, DirectoryView);
+            Show_All(Scroll);
+         end;
       else
          declare
             MimeType: constant String :=
@@ -415,9 +447,13 @@ package body ShowItems is
                               Slice
                                 (TagText, StartColor + 12, StartColor + 18));
                         elsif Index(TagText, "style=""italic""") > 0 then
-                           Set_Property(GObject(Tag), Gtk.Text_Tag.Style_Property, Pango_Style_Italic);
+                           Set_Property
+                             (GObject(Tag), Gtk.Text_Tag.Style_Property,
+                              Pango_Style_Italic);
                         elsif Index(TagText, "weight=""bold""") > 0 then
-                           Set_Property(GObject(Tag), Gtk.Text_Tag.Weight_Property, Pango_Weight_Bold);
+                           Set_Property
+                             (GObject(Tag), Gtk.Text_Tag.Weight_Property,
+                              Pango_Weight_Bold);
                         end if;
                         StartIndex := StartIndex + Length(TagText);
                         EndIndex := Index(FileLine, "</span>", StartIndex) - 1;
