@@ -71,7 +71,12 @@ with Utils; use Utils;
 
 package body ShowItems is
 
+   -- ****iv* ShowItems/Scroll
+   -- FUNCTION
+   -- Gtk_Scrolled_Window with preview of item
+   -- SOURCE
    Scroll: Gtk_Scrolled_Window;
+   -- ****
 
    -- ****if* ShowItems/GetSelectedItems
    -- FUNCTION
@@ -300,7 +305,13 @@ package body ShowItems is
          Tag);
    end RemoveTag;
 
+   -- ****if* ShowItems/RemoveChild
+   -- FUNCTION
+   -- Remove all children from preview window
+   -- Widget - Gtk_Widget to remove
+   -- SOURCE
    procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class) is
+      -- ****
    begin
       Destroy(Widget);
    end RemoveChild;
