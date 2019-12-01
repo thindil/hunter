@@ -972,30 +972,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkScrolledWindow" id="scrollimage">
-                                            <property name="visible">True</property>
-                                            <property name="can_focus">True</property>
-                                            <property name="shadow_type">in</property>
-                                            <child>
-                                              <object class="GtkViewport">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">False</property>
-                                                <child>
-                                                  <object class="GtkImage" id="imgpreview">
-                                                    <property name="visible">True</property>
-                                                    <property name="can_focus">False</property>
-                                                    <property name="stock">gtk-missing-image</property>
-                                                    <signal name="size-allocate" handler="Update_Image" swapped="no"/>
-                                                  </object>
-                                                </child>
-                                              </object>
-                                            </child>
-                                          </object>
-                                          <packing>
-                                            <property name="expand">True</property>
-                                            <property name="fill">True</property>
-                                            <property name="position">1</property>
-                                          </packing>
+                                          <placeholder/>
                                         </child>
                                       </object>
                                       <packing>

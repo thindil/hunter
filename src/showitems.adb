@@ -446,8 +446,7 @@ package body ShowItems is
                declare
                   Pixbuf: Gdk_Pixbuf;
                   Error: GError;
-                  Image: constant Gtk_Image :=
-                    Gtk_Image(Get_Object(Object, "imgpreview"));
+                  Image: constant Gtk_Image := Gtk_Image_New;
                   ScaleFactor: Float;
                   MaxHeight: constant Gint :=
                     Get_Allocated_Height
@@ -485,7 +484,8 @@ package body ShowItems is
                                (Float(Get_Height(Pixbuf)) * ScaleFactor)));
                   end if;
                   Set(Image, Pixbuf);
-                  Show_All(Gtk_Widget(Get_Object(Object, "scrollimage")));
+                  Add(Scroll, Image);
+                  Show_All(Scroll);
                end;
             else
                Hide(Gtk_Widget(Get_Object(Object, "btnpreview")));
