@@ -104,7 +104,7 @@ package body SearchItems is
       if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) or
         Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
          FilterName := To_Unbounded_String("filesfilter2");
-         TreeName := To_Unbounded_String("treefiles2");
+         TreeName := To_Unbounded_String("treedestination");
          ListName := To_Unbounded_String("fileslist2");
       end if;
       Refilter
