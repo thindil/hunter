@@ -71,11 +71,11 @@ with Utils; use Utils;
 
 package body ShowItems is
 
-   -- ****iv* ShowItems/Scroll
+   -- ****iv* ShowItems/PreviewScroll
    -- FUNCTION
    -- Gtk_Scrolled_Window with preview of item
    -- SOURCE
-   Scroll: Gtk_Scrolled_Window;
+   PreviewScroll: Gtk_Scrolled_Window;
    -- ****
 
    -- ****if* ShowItems/GetSelectedItems
@@ -322,7 +322,7 @@ package body ShowItems is
          return;
       end if;
       SetBookmarkButton;
-      Foreach(Scroll, RemoveChild'Access);
+      Foreach(PreviewScroll, RemoveChild'Access);
       if Is_Directory(To_String(CurrentSelected)) then
          declare
             DirectoryView: constant Gtk_Tree_View :=
@@ -352,8 +352,8 @@ package body ShowItems is
             Show_All(Gtk_Widget(Get_Object(Object, "btnopen")));
             Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
             LoadDirectory(To_String(CurrentSelected), "fileslist1");
-            Add(Scroll, DirectoryView);
-            Show_All(Scroll);
+            Add(PreviewScroll, DirectoryView);
+            Show_All(PreviewScroll);
          end;
       else
          declare
@@ -486,8 +486,8 @@ package body ShowItems is
                   end loop;
                   Close(File);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
-                  Add(Scroll, TextView);
-                  Show_All(Scroll);
+                  Add(PreviewScroll, TextView);
+                  Show_All(PreviewScroll);
                end;
             elsif MimeType(1 .. 5) = "image" then
                declare
@@ -531,8 +531,8 @@ package body ShowItems is
                                (Float(Get_Height(Pixbuf)) * ScaleFactor)));
                   end if;
                   Set(Image, Pixbuf);
-                  Add(Scroll, Image);
-                  Show_All(Scroll);
+                  Add(PreviewScroll, Image);
+                  Show_All(PreviewScroll);
                end;
             else
                Hide(Gtk_Widget(Get_Object(Object, "btnpreview")));
@@ -719,8 +719,8 @@ package body ShowItems is
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
       Register_Handler(Builder, "Set_Permission", SetPermission'Access);
-      Scroll := Gtk_Scrolled_Window_New;
-      Pack_Start(Gtk_Box(Get_Object(Builder, "boxpreview")), Scroll);
+      PreviewScroll := Gtk_Scrolled_Window_New;
+      Pack_Start(Gtk_Box(Get_Object(Builder, "boxpreview")), PreviewScroll);
    end CreateShowItemsUI;
 
 end ShowItems;
