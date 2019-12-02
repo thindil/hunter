@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Typos in contributing guide
+- Searching for files or directories during copying or moving
 
 ## [1.1] - 2019-10-28
 
