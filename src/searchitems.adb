@@ -90,10 +90,9 @@ package body SearchItems is
 
    -- ****if* SearchItems/SearchItem
    -- FUNCTION
-   -- Search for files and directories or applications (depends on what user
-   -- search) as user enter text in search entry
+   -- Search for files and directories as user enter text in search entry
    -- PARAMETERS
-   -- User_Data - Which search entry was used (for files or applications)
+   -- User_Data - Which search entry was used for search
    -- SOURCE
    procedure SearchItem(User_Data: access GObject_Record'Class) is
       -- ****
