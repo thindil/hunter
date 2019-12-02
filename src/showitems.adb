@@ -27,7 +27,6 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
-with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
 with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
@@ -720,7 +719,7 @@ package body ShowItems is
       Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
       Register_Handler(Builder, "Set_Permission", SetPermission'Access);
       PreviewScroll := Gtk_Scrolled_Window_New;
-      Pack_Start(Gtk_Box(Get_Object(Builder, "boxpreview")), PreviewScroll);
+      Add_Named(Gtk_Stack(Get_Object(Builder, "infostack")), PreviewScroll, "preview");
    end CreateShowItemsUI;
 
 end ShowItems;
