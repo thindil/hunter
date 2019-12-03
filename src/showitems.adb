@@ -113,13 +113,12 @@ package body ShowItems is
       Last: Natural;
       FileName: String(1 .. 1024);
       SelectedPath: Unbounded_String;
-      ObjectsNames: constant array(Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String("lblfiletype"),
-         To_Unbounded_String("lblfiletype2"),
-         To_Unbounded_String("btnprogram"), To_Unbounded_String("lblprogram2"),
-         To_Unbounded_String("cbtnownerexecute"),
-         To_Unbounded_String("cbtngroupexecute"),
-         To_Unbounded_String("cbtnothersexecute"));
+      Widgets: constant array(1 .. 7) of Gtk_Widget :=
+        (Get_Child_At(InfoGrid, 0, 3), Get_Child_At(InfoGrid, 1, 3),
+         Get_Child_At(InfoGrid, 0, 4), Get_Child_At(InfoGrid, 1, 4),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 3),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 6)), 3),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 7)), 3));
    begin
       if Setting or CurrentSelected = Null_Unbounded_String then
          return;
@@ -128,21 +127,21 @@ package body ShowItems is
       SelectedPath :=
         To_Unbounded_String(Full_Name(To_String(CurrentSelected)));
       Set_Label
-        (Gtk_Label(Get_Object(Object, "lblname")), To_String(SelectedPath));
-      Set_Label(Gtk_Label(Get_Object(Object, "lblsize2")), "Size:");
+        (Gtk_Label(Get_Child_At(InfoGrid, 1, 0)), To_String(SelectedPath));
+      Set_Label(Gtk_Label(Get_Child_At(InfoGrid, 0, 1)), Gettext("Size:"));
       if Is_Symbolic_Link(To_String(CurrentSelected)) then
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lblname2")), Gettext("Links to:"));
+           (Gtk_Label(Get_Child_At(InfoGrid, 0, 0)), Gettext("Links to:"));
       else
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lblname2")), Gettext("Full path:"));
+           (Gtk_Label(Get_Child_At(InfoGrid, 0, 0)), Gettext("Full path:"));
       end if;
-      for Name of ObjectsNames loop
-         Hide(Gtk_Widget(Get_Object(Object, To_String(Name))));
+      for Widget of Widgets loop
+         Hide(Widget);
       end loop;
       if Is_Regular_File(To_String(SelectedPath)) then
-         for Name of ObjectsNames loop
-            Show_All(Gtk_Widget(Get_Object(Object, To_String(Name))));
+         for Widget of Widgets loop
+            Show_All(Widget);
          end loop;
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblsize")),
@@ -184,7 +183,7 @@ package body ShowItems is
                         To_String(DesktopFile));
                   else
                      Set_Label
-                       (Gtk_Label(Get_Object(Object, "lblprogram")),
+                       (Gtk_Label(Get_Object(Object, "btnprogram")),
                         To_String(DesktopFile) & Gettext(" (not installed)"));
                   end if;
                end if;
@@ -221,8 +220,7 @@ package body ShowItems is
          Set_Label
            (Gtk_Label(Get_Object(Object, "lblsize")), Gettext("Unknown"));
          for I in 5 .. 7 loop
-            Show_All
-              (Gtk_Widget(Get_Object(Object, To_String(ObjectsNames(I)))));
+            Show_All(Widgets(I));
          end loop;
          Set_Label
            (Gtk_Label(Get_Object(Object, "lbllastmodified")),
