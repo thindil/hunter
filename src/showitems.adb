@@ -27,14 +27,17 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
+with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
 with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
+with Gtk.Check_Button; use Gtk.Check_Button;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Grid; use Gtk.Grid;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
+with Gtk.Menu_Button; use Gtk.Menu_Button;
 with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
@@ -313,7 +316,7 @@ package body ShowItems is
    -- Widget - Gtk_Widget to remove
    -- SOURCE
    procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class) is
-      -- ****
+   -- ****
    begin
       Destroy(Widget);
    end RemoveChild;
@@ -715,12 +718,29 @@ package body ShowItems is
    end SetPermission;
 
    procedure CreateShowItemsUI is
+      ProgramsButton: constant Gtk_Menu_Button := Gtk_Menu_Button_New;
       procedure AddLabel(Text: String; Left, Top: Gint) is
          Label: constant Gtk_Label := Gtk_Label_New(Text);
       begin
          Set_Halign(Label, Align_Start);
          Attach(InfoGrid, Label, Left, Top);
       end AddLabel;
+      procedure AddBox(Top: Gint) is
+         Box: constant Gtk_Vbox := Gtk_Vbox_New;
+         Label: constant Gtk_Label := Gtk_Label_New("");
+         procedure AddButton(Text: String) is
+            CheckButton: constant Gtk_Check_Button :=
+              Gtk_Check_Button_New_With_Label(Text);
+         begin
+            Pack_Start(Box, CheckButton, False);
+         end AddButton;
+      begin
+         Pack_Start(Box, Label, False);
+         AddButton(Gettext("Can read"));
+         AddButton(Gettext("Can write"));
+         AddButton(Gettext("Can execute"));
+         Attach(InfoGrid, Box, 1, Top);
+      end AddBox;
    begin
       Register_Handler(Builder, "Show_Item", ShowItem'Access);
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
@@ -728,20 +748,30 @@ package body ShowItems is
       Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
       Register_Handler(Builder, "Set_Permission", SetPermission'Access);
       PreviewScroll := Gtk_Scrolled_Window_New;
-      Add_Named(Gtk_Stack(Get_Object(Builder, "infostack")), PreviewScroll, "preview");
+      Add_Named
+        (Gtk_Stack(Get_Object(Builder, "infostack")), PreviewScroll,
+         "preview");
       InfoGrid := Gtk_Grid_New;
+      Set_Halign(InfoGrid, Align_Center);
       AddLabel(Gettext("Full path:"), 0, 0);
       AddLabel("", 1, 0);
-      AddLabel("Size:", 0, 1);
+      AddLabel(Gettext("Size:"), 0, 1);
       AddLabel("", 1, 1);
-      AddLabel("Last Modified:", 0, 2);
+      AddLabel(Gettext("Last Modified:"), 0, 2);
       AddLabel("", 1, 2);
-      AddLabel("File type:", 0, 3);
+      AddLabel(Gettext("File type:"), 0, 3);
       AddLabel("", 1, 3);
-      AddLabel("Associated program:", 0, 4);
-      AddLabel("Owner:", 0, 5);
-      AddLabel("Group:", 0, 6);
-      AddLabel("Others:", 0, 7);
+      AddLabel(Gettext("Associated program:"), 0, 4);
+      Set_Popover
+        (ProgramsButton, CreateProgramsMenu(Gtk_Widget(ProgramsButton)));
+      Attach(InfoGrid, ProgramsButton, 1, 4);
+      AddLabel(Gettext("Owner:"), 0, 5);
+      AddBox(5);
+      AddLabel(Gettext("Group:"), 0, 6);
+      AddBox(6);
+      AddLabel(Gettext("Others:"), 0, 7);
+      AddBox(7);
+      Add_Named(Gtk_Stack(Get_Object(Builder, "infostack")), InfoGrid, "info");
    end CreateShowItemsUI;
 
 end ShowItems;

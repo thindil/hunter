@@ -22,7 +22,6 @@ with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
-with Gtk.Menu_Button; use Gtk.Menu_Button;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Paned; use Gtk.Paned;
@@ -51,7 +50,6 @@ with LoadData; use LoadData;
 with Messages; use Messages;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
-with ProgramsMenu; use ProgramsMenu;
 with RefreshData; use RefreshData;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
@@ -433,9 +431,6 @@ package body MainWindow is
       CreateSearchUI;
       CreateShowItemsUI;
       CreateTrashUI;
-      Set_Popover
-        (Gtk_Menu_Button(Get_Object(Builder, "btnprogram")),
-         CreateProgramsMenu(Gtk_Widget(Get_Object(Builder, "btnprogram"))));
       CreatePreferences(Gtk_Widget(Get_Object(Builder, "btnpreferences")));
       Do_Connect(Builder);
       On_Key_Press_Event
