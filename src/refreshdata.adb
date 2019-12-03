@@ -186,7 +186,9 @@ package body RefreshData is
          return True;
       end if;
       for I in ItemsList.Iterate loop
-         if ItemsList(I) = Closed_Write or ItemsList(I) = Moved_To then
+         if Containing_Directory(Items_Container.Key(I)) =
+           To_String(CurrentDirectory)
+           and then ItemsList(I) in Closed_Write | Moved_To then
             AddItem(FilesList, FileIter, Items_Container.Key(I));
          end if;
       end loop;
