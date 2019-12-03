@@ -163,29 +163,34 @@ package body RefreshData is
         Gtk_List_Store(Get_Object(Builder, "fileslist"));
       -- ****
       FileIter: Gtk_Tree_Iter := Get_Iter_First(FilesList);
+      procedure RefilterList is
+      begin
+         Set_Sort_Func
+           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
+            SortFiles'Access);
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+      end RefilterList;
    begin
       if TemporaryStop or Settings.AutoRefreshInterval = 0 or
         ItemsList.Length = 0 then
          ItemsList.Clear;
          return True;
       end if;
-      Foreach
-        (Gtk_List_Store(Get_Object(Builder, "fileslist")), UpdateItem'Access);
-      if ItemsList.Length = 0 then
-         return True;
-      end if;
       Set_Sort_Func
         (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
          EmptySortFiles'Access);
+      Foreach
+        (Gtk_List_Store(Get_Object(Builder, "fileslist")), UpdateItem'Access);
+      if ItemsList.Length = 0 then
+         RefilterList;
+         return True;
+      end if;
       for I in ItemsList.Iterate loop
          if ItemsList(I) = Closed_Write or ItemsList(I) = Moved_To then
             AddItem(FilesList, FileIter, Items_Container.Key(I));
          end if;
       end loop;
-      Set_Sort_Func
-        (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
-         SortFiles'Access);
-      Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+      RefilterList;
       ItemsList.Clear;
       return True;
    end CheckItems;
