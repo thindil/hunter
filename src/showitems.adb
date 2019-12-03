@@ -32,6 +32,7 @@ with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
 with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
 with Gtk.Enums; use Gtk.Enums;
+with Gtk.Grid; use Gtk.Grid;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
@@ -76,6 +77,8 @@ package body ShowItems is
    -- SOURCE
    PreviewScroll: Gtk_Scrolled_Window;
    -- ****
+
+   InfoGrid: Gtk_Grid;
 
    -- ****if* ShowItems/GetSelectedItems
    -- FUNCTION
@@ -712,6 +715,12 @@ package body ShowItems is
    end SetPermission;
 
    procedure CreateShowItemsUI is
+      procedure AddLabel(Text: String; Left, Top: Gint) is
+         Label: constant Gtk_Label := Gtk_Label_New(Text);
+      begin
+         Set_Halign(Label, Align_Start);
+         Attach(InfoGrid, Label, Left, Top);
+      end AddLabel;
    begin
       Register_Handler(Builder, "Show_Item", ShowItem'Access);
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
@@ -720,6 +729,19 @@ package body ShowItems is
       Register_Handler(Builder, "Set_Permission", SetPermission'Access);
       PreviewScroll := Gtk_Scrolled_Window_New;
       Add_Named(Gtk_Stack(Get_Object(Builder, "infostack")), PreviewScroll, "preview");
+      InfoGrid := Gtk_Grid_New;
+      AddLabel(Gettext("Full path:"), 0, 0);
+      AddLabel("", 1, 0);
+      AddLabel("Size:", 0, 1);
+      AddLabel("", 1, 1);
+      AddLabel("Last Modified:", 0, 2);
+      AddLabel("", 1, 2);
+      AddLabel("File type:", 0, 3);
+      AddLabel("", 1, 3);
+      AddLabel("Associated program:", 0, 4);
+      AddLabel("Owner:", 0, 5);
+      AddLabel("Group:", 0, 6);
+      AddLabel("Others:", 0, 7);
    end CreateShowItemsUI;
 
 end ShowItems;
