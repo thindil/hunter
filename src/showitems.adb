@@ -144,19 +144,19 @@ package body ShowItems is
             Show_All(Widget);
          end loop;
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lblsize")),
+           (Gtk_Label(Get_Child_At(InfoGrid, 1, 1)),
             CountFileSize(Size(To_String(SelectedPath))));
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lbllastmodified")),
+           (Gtk_Label(Get_Child_At(InfoGrid, 1, 2)),
             Ada.Calendar.Formatting.Image
               (Modification_Time(To_String(SelectedPath)), False,
                Ada.Calendar.Time_Zones.UTC_Time_Offset));
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lblfiletype")),
+           (Gtk_Label(Get_Child_At(InfoGrid, 1, 3)),
             GetMimeType(To_String(SelectedPath)));
          if not CanBeOpened(GetMimeType(To_String(SelectedPath))) then
             Set_Label
-              (Gtk_Button(Get_Object(Object, "btnprogram")), Gettext("none"));
+              (Gtk_Button(Get_Child_At(InfoGrid, 1, 4)), Gettext("none"));
          else
             declare
                ProcessDesc: Process_Descriptor;
@@ -179,11 +179,11 @@ package body ShowItems is
                   GetProgramName(DesktopFile);
                   if Index(DesktopFile, ".desktop") = 0 then
                      Set_Label
-                       (Gtk_Button(Get_Object(Object, "btnprogram")),
+                       (Gtk_Button(Get_Child_At(InfoGrid, 1, 4)),
                         To_String(DesktopFile));
                   else
                      Set_Label
-                       (Gtk_Label(Get_Object(Object, "btnprogram")),
+                       (Gtk_Label(Get_Child_At(InfoGrid, 1, 4)),
                         To_String(DesktopFile) & Gettext(" (not installed)"));
                   end if;
                end if;
@@ -192,7 +192,7 @@ package body ShowItems is
          end if;
       elsif Is_Directory(To_String(SelectedPath)) then
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lblsize2")), Gettext("Elements:"));
+           (Gtk_Label(Get_Child_At(InfoGrid, 0, 1)), Gettext("Elements:"));
          if Is_Read_Accessible_File(To_String(SelectedPath)) then
             Open(Directory, To_String(SelectedPath));
             loop
@@ -202,45 +202,44 @@ package body ShowItems is
             end loop;
             Close(Directory);
             Set_Label
-              (Gtk_Label(Get_Object(Object, "lblsize")),
+              (Gtk_Label(Get_Child_At(InfoGrid, 1, 1)),
                Natural'Image(Amount - 2));
          else
             Set_Label
-              (Gtk_Label(Get_Object(Object, "lblsize")), Gettext("Unknown"));
+              (Gtk_Label(Get_Child_At(InfoGrid, 1, 1)), Gettext("Unknown"));
          end if;
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lbllastmodified")),
+           (Gtk_Label(Get_Child_At(InfoGrid, 1, 2)),
             Ada.Calendar.Formatting.Image
               (Modification_Time(To_String(SelectedPath))));
       else
          if SelectedPath = "" then
             Set_Label
-              (Gtk_Label(Get_Object(Object, "lblname")), Gettext("Unknown"));
+              (Gtk_Label(Get_Child_At(InfoGrid, 1, 0)), Gettext("Unknown"));
          end if;
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lblsize")), Gettext("Unknown"));
+           (Gtk_Label(Get_Child_At(InfoGrid, 1, 1)), Gettext("Unknown"));
          for I in 5 .. 7 loop
             Show_All(Widgets(I));
          end loop;
          Set_Label
-           (Gtk_Label(Get_Object(Object, "lbllastmodified")),
-            Gettext("Unknown"));
+           (Gtk_Label(Get_Child_At(InfoGrid, 1, 2)), Gettext("Unknown"));
       end if;
       declare
          ProcessDesc: Process_Descriptor;
          Result: Expect_Match;
          FileStats: Unbounded_String;
          Tokens: Slice_Set;
-         ButtonNames: constant array(3 .. 11) of Unbounded_String :=
-           (To_Unbounded_String("cbtnownerread"),
-            To_Unbounded_String("cbtnownerwrite"),
-            To_Unbounded_String("cbtnownerexecute"),
-            To_Unbounded_String("cbtngroupread"),
-            To_Unbounded_String("cbtngroupwrite"),
-            To_Unbounded_String("cbtngroupexecute"),
-            To_Unbounded_String("cbtnothersread"),
-            To_Unbounded_String("cbtnotherswrite"),
-            To_Unbounded_String("cbtnothersexecute"));
+         Buttons: constant array(3 .. 11) of Gtk_Widget :=
+           (Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 1),
+            Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 2),
+            Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 3),
+            Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 6)), 1),
+            Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 6)), 2),
+            Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 6)), 3),
+            Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 7)), 1),
+            Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 7)), 2),
+            Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 7)), 3));
          CanChange: Boolean := False;
          Button: Gtk_Toggle_Button;
          Arguments: constant Argument_List :=
@@ -253,18 +252,17 @@ package body ShowItems is
             FileStats := To_Unbounded_String(Expect_Out_Match(ProcessDesc));
             Create(Tokens, To_String(FileStats), " ");
             Set_Label
-              (Gtk_Label(Get_Object(Object, "lblowner")), Slice(Tokens, 2));
+              (Gtk_Label(Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 0)),
+               Slice(Tokens, 2));
             Set_Label
-              (Gtk_Label(Get_Object(Object, "lblgroup")),
+              (Gtk_Label(Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 6)), 0)),
                Slice(Tokens, 3)
                  (Slice(Tokens, 3)'First .. Slice(Tokens, 3)'Last));
             if Value("USER") = Slice(Tokens, 2) then
                CanChange := True;
             end if;
-            for I in ButtonNames'Range loop
-               Button :=
-                 Gtk_Toggle_Button
-                   (Get_Object(Object, To_String(ButtonNames(I))));
+            for I in Buttons'Range loop
+               Button := Gtk_Toggle_Button(Buttons(I));
                if Slice(Tokens, 1)(I) = '-' then
                   Set_Active(Button, False);
                else
@@ -654,20 +652,21 @@ package body ShowItems is
    -- FUNCTION
    -- Set selected permissions to selected file or directory
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Check_Button which was (un)checked. Unused. Can be null.
    -- SOURCE
-   procedure SetPermission(Object: access Gtkada_Builder_Record'Class) is
+   procedure SetPermission(Self: access Gtk_Toggle_Button_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
-      ButtonNames: constant array(2 .. 10) of Unbounded_String :=
-        (To_Unbounded_String("cbtnownerread"),
-         To_Unbounded_String("cbtnownerwrite"),
-         To_Unbounded_String("cbtnownerexecute"),
-         To_Unbounded_String("cbtngroupread"),
-         To_Unbounded_String("cbtngroupwrite"),
-         To_Unbounded_String("cbtngroupexecute"),
-         To_Unbounded_String("cbtnothersread"),
-         To_Unbounded_String("cbtnotherswrite"),
-         To_Unbounded_String("cbtnothersexecute"));
+      Buttons: constant array(2 .. 10) of Gtk_Widget :=
+        (Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 1),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 2),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 3),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 6)), 1),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 6)), 2),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 6)), 3),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 7)), 1),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 7)), 2),
+         Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 7)), 3));
       UserPermission, GroupPermission, OthersPermission: Natural := 0;
       Success: Boolean;
       Arguments: Argument_List(1 .. 2);
@@ -675,10 +674,8 @@ package body ShowItems is
       if Setting then
          return;
       end if;
-      for I in ButtonNames'Range loop
-         if Get_Active
-             (Gtk_Toggle_Button
-                (Get_Object(Object, To_String(ButtonNames(I))))) then
+      for I in Buttons'Range loop
+         if Get_Active(Gtk_Toggle_Button(Buttons(I))) then
             case I is
                when 2 =>
                   UserPermission := UserPermission + 4;
@@ -721,6 +718,7 @@ package body ShowItems is
          Label: constant Gtk_Label := Gtk_Label_New(Text);
       begin
          Set_Halign(Label, Align_Start);
+         Set_Valign(Label, Align_Start);
          Attach(InfoGrid, Label, Left, Top);
       end AddLabel;
       procedure AddBox(Top: Gint) is
@@ -730,6 +728,7 @@ package body ShowItems is
             CheckButton: constant Gtk_Check_Button :=
               Gtk_Check_Button_New_With_Label(Text);
          begin
+            On_Toggled(Gtk_Toggle_Button(CheckButton), SetPermission'Access);
             Pack_Start(Box, CheckButton, False);
          end AddButton;
       begin
@@ -744,7 +743,6 @@ package body ShowItems is
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
-      Register_Handler(Builder, "Set_Permission", SetPermission'Access);
       PreviewScroll := Gtk_Scrolled_Window_New;
       Add_Named
         (Gtk_Stack(Get_Object(Builder, "infostack")), PreviewScroll,
