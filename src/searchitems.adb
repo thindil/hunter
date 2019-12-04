@@ -18,7 +18,8 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.List_Store; use Gtk.List_Store;
-with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
+with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
@@ -96,15 +97,15 @@ package body SearchItems is
    -- SOURCE
    procedure SearchItem(User_Data: access GObject_Record'Class) is
       -- ****
-      FilterName, TreeName, ListName: Unbounded_String;
+      FilterName, ListName: Unbounded_String;
+      TreeView: Gtk_Tree_View := Gtk_Tree_View(Get_Object(Builder, "treefiles"));
+      Stack: constant Gtk_Stack := Gtk_Stack(Get_Object(Builder, "infostack"));
    begin
       FilterName := To_Unbounded_String("filesfilter");
-      TreeName := To_Unbounded_String("treefiles");
       ListName := To_Unbounded_String("fileslist");
-      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) or
-        Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
+      if Get_Visible_Child_Name(Stack) = "destination" then
          FilterName := To_Unbounded_String("filesfilter2");
-         TreeName := To_Unbounded_String("treedestination");
+         TreeView := Gtk_Tree_View(Get_Child(Gtk_Scrolled_Window(Get_Visible_Child(Stack))));
          ListName := To_Unbounded_String("fileslist2");
       end if;
       Refilter
@@ -114,7 +115,7 @@ package body SearchItems is
            Null_Iter) >
         0 then
          Set_Cursor
-           (Gtk_Tree_View(Get_Object(Builder, To_String(TreeName))),
+           (TreeView,
             Gtk_Tree_Path_New_From_String("0"), null, False);
       end if;
       Grab_Focus(Gtk_Widget(User_Data));

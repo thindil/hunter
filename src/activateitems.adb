@@ -17,13 +17,9 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Tree_Model; use Gtk.Tree_Model;
-with Gtk.Tree_Selection; use Gtk.Tree_Selection;
-with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
-with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with RefreshData; use RefreshData;
@@ -41,23 +37,9 @@ package body ActivateItems is
    --             copy or move files and directories.
    -- SOURCE
    procedure ActivateFile(User_Data: access GObject_Record'Class) is
-   -- ****
+      pragma Unreferenced(User_Data);
+      -- ****
    begin
-      if User_Data = Get_Object(Builder, "treedestination") then
-         declare
-            DestinationIter: Gtk_Tree_Iter;
-            DestinationModel: Gtk_Tree_Model;
-         begin
-            Get_Selected
-              (Get_Selection(Gtk_Tree_View(User_Data)), DestinationModel,
-               DestinationIter);
-            CurrentSelected :=
-              CurrentDirectory &
-              To_Unbounded_String
-                ("/" & Get_String(DestinationModel, DestinationIter, 0));
-            DestinationPath := CurrentSelected;
-         end;
-      end if;
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage(Gettext("You can't enter this directory."));
@@ -67,20 +49,9 @@ package body ActivateItems is
             CurrentDirectory := Null_Unbounded_String;
          end if;
          CurrentDirectory := CurrentSelected;
-         if User_Data = Get_Object(Builder, "treefiles") then
-            Reload(Builder);
-            UpdateWatch(To_String(CurrentDirectory));
-         else
-            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-            Set_Cursor
-              (Gtk_Tree_View(User_Data), Gtk_Tree_Path_New_From_String("0"),
-               null, False);
-            Grab_Focus(Gtk_Widget(User_Data));
-         end if;
+         Reload(Builder);
+         UpdateWatch(To_String(CurrentDirectory));
       else
-         if User_Data = Get_Object(Builder, "treedestination") then
-            return;
-         end if;
          declare
             MimeType: constant String :=
               GetMimeType(To_String(CurrentSelected));
