@@ -74,13 +74,6 @@ with Utils; use Utils;
 
 package body ShowItems is
 
-   -- ****iv* ShowItems/PreviewScroll
-   -- FUNCTION
-   -- Gtk_Scrolled_Window with preview of selected item
-   -- SOURCE
-   PreviewScroll: Gtk_Scrolled_Window;
-   -- ****
-
    -- ****if* ShowItems/GetSelectedItems
    -- FUNCTION
    -- Add selected file or directory to SelectedItems list.
@@ -320,6 +313,10 @@ package body ShowItems is
    end RemoveChild;
 
    procedure PreviewItem(Object: access Gtkada_Builder_Record'Class) is
+      PreviewScroll: constant Gtk_Scrolled_Window :=
+        Gtk_Scrolled_Window
+          (Get_Child_By_Name
+             (Gtk_Stack(Get_Object(Object, "infostack")), "preview"));
    begin
       if Setting or (not Settings.ShowPreview) then
          return;
@@ -721,6 +718,7 @@ package body ShowItems is
    procedure CreateShowItemsUI is
       ProgramsButton: constant Gtk_Menu_Button := Gtk_Menu_Button_New;
       InfoGrid: constant Gtk_Grid := Gtk_Grid_New;
+      PreviewScroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
       procedure AddLabel(Text: String; Left, Top: Gint) is
          Label: constant Gtk_Label := Gtk_Label_New(Text);
       begin
@@ -750,7 +748,6 @@ package body ShowItems is
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
-      PreviewScroll := Gtk_Scrolled_Window_New;
       Add_Named
         (Gtk_Stack(Get_Object(Builder, "infostack")), PreviewScroll,
          "preview");
