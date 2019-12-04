@@ -48,6 +48,7 @@ with Gtk.Text_Tag; use Gtk.Text_Tag;
 with Gtk.Text_Tag_Table; use Gtk.Text_Tag_Table;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
+with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
@@ -718,7 +719,7 @@ package body ShowItems is
    procedure CreateShowItemsUI is
       ProgramsButton: constant Gtk_Menu_Button := Gtk_Menu_Button_New;
       InfoGrid: constant Gtk_Grid := Gtk_Grid_New;
-      PreviewScroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
+      Scroll: Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
       procedure AddLabel(Text: String; Left, Top: Gint) is
          Label: constant Gtk_Label := Gtk_Label_New(Text);
       begin
@@ -749,8 +750,7 @@ package body ShowItems is
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
       Add_Named
-        (Gtk_Stack(Get_Object(Builder, "infostack")), PreviewScroll,
-         "preview");
+        (Gtk_Stack(Get_Object(Builder, "infostack")), Scroll, "preview");
       Set_Halign(InfoGrid, Align_Center);
       AddLabel(Gettext("Full path:"), 0, 0);
       AddLabel("", 1, 0);
@@ -771,6 +771,45 @@ package body ShowItems is
       AddLabel(Gettext("Others:"), 0, 7);
       AddBox(7);
       Add_Named(Gtk_Stack(Get_Object(Builder, "infostack")), InfoGrid, "info");
+      declare
+         DirectoryView: constant Gtk_Tree_View :=
+           Gtk_Tree_View_New_With_Model
+             (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2"))));
+         Area: Gtk_Cell_Area_Box;
+         Renderer: constant Gtk_Cell_Renderer_Text :=
+           Gtk_Cell_Renderer_Text_New;
+         Renderer2: constant Gtk_Cell_Renderer_Pixbuf :=
+           Gtk_Cell_Renderer_Pixbuf_New;
+         Column: Gtk_Tree_View_Column;
+      begin
+         Set_Enable_Search(DirectoryView, False);
+         Set_Headers_Clickable(DirectoryView, True);
+         Area := Gtk_Cell_Area_Box_New;
+         Pack_Start(Area, Renderer2, False);
+         Add_Attribute(Area, Renderer2, "icon-name", 2);
+         Pack_Start(Area, Renderer, True);
+         Add_Attribute(Area, Renderer, "text", 0);
+         Column := Gtk_Tree_View_Column_New_With_Area(Area);
+         Set_Sort_Column_Id(Column, 0);
+         Set_Title(Column, Gettext("Name"));
+         if Append_Column(DirectoryView, Column) /= 1 then
+            return;
+         end if;
+         Area := Gtk_Cell_Area_Box_New;
+         Pack_Start(Area, Renderer, True);
+         Add_Attribute(Area, Renderer, "text", 3);
+         Column := Gtk_Tree_View_Column_New_With_Area(Area);
+         Set_Sort_Column_Id(Column, 4);
+         Set_Title(Column, Gettext("Size"));
+         if Append_Column(DirectoryView, Column) /= 2 then
+            return;
+         end if;
+         Scroll := Gtk_Scrolled_Window_New;
+         Add(Scroll, DirectoryView);
+         Add_Named
+           (Gtk_Stack(Get_Object(Builder, "infostack")), Scroll,
+            "destination");
+      end;
    end CreateShowItemsUI;
 
 end ShowItems;
