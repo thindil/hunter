@@ -76,12 +76,17 @@ package body ShowItems is
 
    -- ****iv* ShowItems/PreviewScroll
    -- FUNCTION
-   -- Gtk_Scrolled_Window with preview of item
+   -- Gtk_Scrolled_Window with preview of selected item
    -- SOURCE
    PreviewScroll: Gtk_Scrolled_Window;
    -- ****
 
+   -- ****iv* ShowItems/InfoGrid
+   -- FUNCTION
+   -- Gtk_Grid with information about selected item
+   -- SOURCE
    InfoGrid: Gtk_Grid;
+   -- ****
 
    -- ****if* ShowItems/GetSelectedItems
    -- FUNCTION
