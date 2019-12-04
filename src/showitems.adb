@@ -81,13 +81,6 @@ package body ShowItems is
    PreviewScroll: Gtk_Scrolled_Window;
    -- ****
 
-   -- ****iv* ShowItems/InfoGrid
-   -- FUNCTION
-   -- Gtk_Grid with information about selected item
-   -- SOURCE
-   InfoGrid: Gtk_Grid;
-   -- ****
-
    -- ****if* ShowItems/GetSelectedItems
    -- FUNCTION
    -- Add selected file or directory to SelectedItems list.
@@ -118,6 +111,10 @@ package body ShowItems is
       Last: Natural;
       FileName: String(1 .. 1024);
       SelectedPath: Unbounded_String;
+      InfoGrid: constant Gtk_Grid :=
+        Gtk_Grid
+          (Get_Child_By_Name
+             (Gtk_Stack(Get_Object(Object, "infostack")), "info"));
       Widgets: constant array(1 .. 7) of Gtk_Widget :=
         (Get_Child_At(InfoGrid, 0, 3), Get_Child_At(InfoGrid, 1, 3),
          Get_Child_At(InfoGrid, 0, 4), Get_Child_At(InfoGrid, 1, 4),
@@ -662,6 +659,10 @@ package body ShowItems is
    procedure SetPermission(Self: access Gtk_Toggle_Button_Record'Class) is
       pragma Unreferenced(Self);
       -- ****
+      InfoGrid: constant Gtk_Grid :=
+        Gtk_Grid
+          (Get_Child_By_Name
+             (Gtk_Stack(Get_Object(Builder, "infostack")), "info"));
       Buttons: constant array(2 .. 10) of Gtk_Widget :=
         (Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 1),
          Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 2),
@@ -719,6 +720,7 @@ package body ShowItems is
 
    procedure CreateShowItemsUI is
       ProgramsButton: constant Gtk_Menu_Button := Gtk_Menu_Button_New;
+      InfoGrid: constant Gtk_Grid := Gtk_Grid_New;
       procedure AddLabel(Text: String; Left, Top: Gint) is
          Label: constant Gtk_Label := Gtk_Label_New(Text);
       begin
@@ -752,7 +754,6 @@ package body ShowItems is
       Add_Named
         (Gtk_Stack(Get_Object(Builder, "infostack")), PreviewScroll,
          "preview");
-      InfoGrid := Gtk_Grid_New;
       Set_Halign(InfoGrid, Align_Center);
       AddLabel(Gettext("Full path:"), 0, 0);
       AddLabel("", 1, 0);
