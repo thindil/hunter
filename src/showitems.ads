@@ -44,8 +44,8 @@ package ShowItems is
 
    -- ****f* ShowItems/CreateShowItemsUI
    -- FUNCTION
-   -- Create showitems UI - mostly register proper procedures and functions
-   -- for use in GTKAda Builder
+   -- Create UI related to show items and destination for moving/copying
+   -- items.
    -- SOURCE
    procedure CreateShowItemsUI;
    -- ****
