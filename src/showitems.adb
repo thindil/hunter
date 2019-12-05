@@ -61,6 +61,7 @@ with Glib; use Glib;
 with Glib.Error; use Glib.Error;
 with Glib.Object; use Glib.Object;
 with Glib.Properties; use Glib.Properties;
+with Glib.Values; use Glib.Values;
 with Pango.Enums; use Pango.Enums;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
@@ -716,6 +717,34 @@ package body ShowItems is
       end if;
    end SetPermission;
 
+   procedure SetDestination
+     (Self: access Gtk_Tree_View_Record'Class;
+      Path: Gtk.Tree_Model.Gtk_Tree_Path;
+      Column: not null access Gtk.Tree_View_Column.Gtk_Tree_View_Column_Record'
+        Class) is
+      pragma Unreferenced(Column);
+   begin
+      CurrentSelected :=
+        CurrentDirectory &
+        To_Unbounded_String
+          ("/" &
+           Get_String(Get_Model(Self), Get_Iter(Get_Model(Self), Path), 0));
+      DestinationPath := CurrentSelected;
+      if Is_Directory(To_String(CurrentSelected)) then
+         if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
+            ShowMessage(Gettext("You can't enter this directory."));
+            return;
+         end if;
+         if CurrentDirectory = To_Unbounded_String("/") then
+            CurrentDirectory := Null_Unbounded_String;
+         end if;
+         CurrentDirectory := CurrentSelected;
+         LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+         Set_Cursor(Self, Gtk_Tree_Path_New_From_String("0"), null, False);
+         Grab_Focus(Gtk_Widget(Self));
+      end if;
+   end SetDestination;
+
    procedure CreateShowItemsUI is
       ProgramsButton: constant Gtk_Menu_Button := Gtk_Menu_Button_New;
       InfoGrid: constant Gtk_Grid := Gtk_Grid_New;
@@ -776,11 +805,11 @@ package body ShowItems is
            Gtk_Tree_View_New_With_Model
              (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2"))));
          Area: Gtk_Cell_Area_Box;
-         Renderer: constant Gtk_Cell_Renderer_Text :=
-           Gtk_Cell_Renderer_Text_New;
+         Renderer: Gtk_Cell_Renderer_Text := Gtk_Cell_Renderer_Text_New;
          Renderer2: constant Gtk_Cell_Renderer_Pixbuf :=
            Gtk_Cell_Renderer_Pixbuf_New;
          Column: Gtk_Tree_View_Column;
+         Value: GValue;
       begin
          Set_Enable_Search(DirectoryView, False);
          Set_Headers_Clickable(DirectoryView, True);
@@ -789,21 +818,35 @@ package body ShowItems is
          Add_Attribute(Area, Renderer2, "icon-name", 2);
          Pack_Start(Area, Renderer, True);
          Add_Attribute(Area, Renderer, "text", 0);
+         Init_Set_Int(Value, 80);
+         Set_Property(Renderer, "max-width-chars", Value);
+         Unset(Value);
+         Init_Set_Boolean(Value, True);
+         Set_Property(Renderer, "ellipsize-set", Value);
+         Unset(Value);
+         Init_Set_Int(Value, 1);
+         Set_Property(Renderer, "ellipsize", Value);
+         Unset(Value);
          Column := Gtk_Tree_View_Column_New_With_Area(Area);
          Set_Sort_Column_Id(Column, 0);
          Set_Title(Column, Gettext("Name"));
+         Set_Resizable(Column, True);
+         Set_Expand(Column, True);
          if Append_Column(DirectoryView, Column) /= 1 then
             return;
          end if;
          Area := Gtk_Cell_Area_Box_New;
+         Renderer := Gtk_Cell_Renderer_Text_New;
          Pack_Start(Area, Renderer, True);
          Add_Attribute(Area, Renderer, "text", 3);
          Column := Gtk_Tree_View_Column_New_With_Area(Area);
          Set_Sort_Column_Id(Column, 4);
          Set_Title(Column, Gettext("Size"));
+         Set_Resizable(Column, True);
          if Append_Column(DirectoryView, Column) /= 2 then
             return;
          end if;
+         On_Row_Activated(DirectoryView, SetDestination'Access);
          Scroll := Gtk_Scrolled_Window_New;
          Add(Scroll, DirectoryView);
          Add_Named
