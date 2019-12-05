@@ -94,10 +94,9 @@ package body Inotify is
          External_Name => "inotify_rm_watch";
    begin
       if Inotify_Remove_Watch(Object.Instance, Subject.Watch) = -1 then
-         raise Program_Error;
+         return;
       end if;
 
-      Object.Watches.Delete(Subject.Watch);
    end Remove_Watch;
 
    function Name(Object: Instance; Subject: Watch) return String is
