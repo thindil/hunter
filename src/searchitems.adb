@@ -98,14 +98,17 @@ package body SearchItems is
    procedure SearchItem(User_Data: access GObject_Record'Class) is
       -- ****
       FilterName, ListName: Unbounded_String;
-      TreeView: Gtk_Tree_View := Gtk_Tree_View(Get_Object(Builder, "treefiles"));
+      TreeView: Gtk_Tree_View :=
+        Gtk_Tree_View(Get_Object(Builder, "treefiles"));
       Stack: constant Gtk_Stack := Gtk_Stack(Get_Object(Builder, "infostack"));
    begin
       FilterName := To_Unbounded_String("filesfilter");
       ListName := To_Unbounded_String("fileslist");
       if Get_Visible_Child_Name(Stack) = "destination" then
          FilterName := To_Unbounded_String("filesfilter2");
-         TreeView := Gtk_Tree_View(Get_Child(Gtk_Scrolled_Window(Get_Visible_Child(Stack))));
+         TreeView :=
+           Gtk_Tree_View
+             (Get_Child(Gtk_Scrolled_Window(Get_Visible_Child(Stack))));
          ListName := To_Unbounded_String("fileslist2");
       end if;
       Refilter
@@ -114,9 +117,7 @@ package body SearchItems is
           (Gtk_List_Store(Get_Object(Builder, To_String(ListName))),
            Null_Iter) >
         0 then
-         Set_Cursor
-           (TreeView,
-            Gtk_Tree_Path_New_From_String("0"), null, False);
+         Set_Cursor(TreeView, Gtk_Tree_Path_New_From_String("0"), null, False);
       end if;
       Grab_Focus(Gtk_Widget(User_Data));
    end SearchItem;
