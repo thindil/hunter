@@ -717,12 +717,19 @@ package body ShowItems is
       end if;
    end SetPermission;
 
+   -- ****if* ShowItems/SetDestination
+   -- FUNCTION
+   -- Enter subdirectory in preview for destination directory
+   -- PARAMETERS
+   -- Self   - Gtk_Tree_View which triggered this code
+   -- Path   - Gtk_Tree_Path to item which was activated
+   -- Column - Gtk_Tree_View_Column which was activated. Unused.
+   -- SOURCE
    procedure SetDestination
-     (Self: access Gtk_Tree_View_Record'Class;
-      Path: Gtk.Tree_Model.Gtk_Tree_Path;
-      Column: not null access Gtk.Tree_View_Column.Gtk_Tree_View_Column_Record'
-        Class) is
+     (Self: access Gtk_Tree_View_Record'Class; Path: Gtk_Tree_Path;
+      Column: not null access Gtk_Tree_View_Column_Record'Class) is
       pragma Unreferenced(Column);
+      -- ****
    begin
       CurrentSelected :=
         CurrentDirectory &
