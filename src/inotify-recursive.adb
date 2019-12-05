@@ -27,8 +27,6 @@ package body Inotify.Recursive is
 
    function "+"(Value: SU.Unbounded_String) return String renames SU.To_String;
 
-   package Watch_Vectors is new Ada.Containers.Bounded_Vectors(Positive,
-      Watch);
    package Move_Vectors is new Ada.Containers.Bounded_Vectors(Positive, Move);
 
    overriding function Add_Watch
@@ -73,34 +71,17 @@ package body Inotify.Recursive is
       end return;
    end Add_Watch;
 
-   procedure Remove_Children
-     (Object: in out Recursive_Instance; Subject: Watch) is
-      Path: constant String := Object.Watches.Element(Subject.Watch);
-
-      Watches: Watch_Vectors.Vector (Capacity => Object.Watches.Length);
-
-      procedure Iterate(Position: Watch_Maps.Cursor) is
-         Other_Path: constant String := Watch_Maps.Element(Position);
-      begin
-         if Other_Path'Length > Path'Length
-           and then Path & '/' = Other_Path(1 .. Path'Length + 1) then
-            Watches.Append((Watch => Watch_Maps.Key(Position)));
-         end if;
-      end Iterate;
-   begin
-      Object.Watches.Iterate(Iterate'Access);
-      for Element of Watches loop
-         Instance(Object).Remove_Watch(Element);
-         Object.Masks.Delete(Element.Watch);
-      end loop;
-   end Remove_Children;
-
    overriding procedure Remove_Watch
      (Object: in out Recursive_Instance; Subject: Watch) is
    begin
-      Object.Remove_Children(Subject);
-      Instance(Object).Remove_Watch(Subject);
-      Object.Masks.Delete(Subject.Watch);
+      if not Object.Masks.Contains(Subject.Watch) then
+         return;
+      end if;
+      for I in Object.Watches.Iterate loop
+         Instance(Object).Remove_Watch((Watch => Watch_Maps.Key(I)));
+      end loop;
+      Object.Masks.Clear;
+      Object.Watches.Clear;
    end Remove_Watch;
 
    overriding procedure Process_Events
