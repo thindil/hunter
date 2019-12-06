@@ -565,6 +565,10 @@ package body ShowItems is
    end PreviewItem;
 
    procedure ShowItem(Object: access Gtkada_Builder_Record'Class) is
+      PreviewScroll: constant Gtk_Scrolled_Window :=
+        Gtk_Scrolled_Window
+          (Get_Child_By_Name
+             (Gtk_Stack(Get_Object(Object, "infostack")), "preview"));
    begin
       SelectedItems.Clear;
       Selected_Foreach
@@ -580,8 +584,7 @@ package body ShowItems is
          return;
       end if;
       if SelectedItems.Length > 1 then
-         Hide(Gtk_Widget(Get_Object(Object, "scrolltext")));
-         Hide(Gtk_Widget(Get_Object(Object, "scrolllist")));
+         Hide(Get_Child(PreviewScroll));
          Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
          Set_Label
            (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Preview"));
