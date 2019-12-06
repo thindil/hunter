@@ -69,8 +69,6 @@ package body RefreshData is
    ItemsList: Items_Container.Map;
    -- ****
 
-   IWatch: Watch;
-
    -- ****if* RefreshData/UpdateItem
    -- FUNCTION
    -- Check if selected file or directory was modified and upgrade information
@@ -235,13 +233,11 @@ package body RefreshData is
    procedure UpdateWatch(Path: String) is
    begin
       ItemsList.Clear;
-      InotifyInstance.Remove_Watch(IWatch);
       Inotify.Recursive.Depth := Count(Path, "/");
-      IWatch :=
-        InotifyInstance.Add_Watch
-          (Path,
-           (Metadata | Closed_Write | Moved_From | Moved_To | Deleted => True,
-            others => False));
+      InotifyInstance.Add_Watch
+        (Path,
+         (Metadata | Closed_Write | Moved_From | Moved_To | Deleted => True,
+          others => False));
    end UpdateWatch;
 
 end RefreshData;
