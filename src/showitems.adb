@@ -613,45 +613,6 @@ package body ShowItems is
       PreviewItem(Object);
    end ShowItem;
 
-   -- ****if* MainWindow/SetAssociated
-   -- FUNCTION
-   -- Set associated program with selected file MIME type
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure SetAssociated(Object: access Gtkada_Builder_Record'Class) is
-      -- ****
-      Pid: GNAT.OS_Lib.Process_Id;
-      ProgramIter: Gtk_Tree_Iter;
-      ProgramModel: Gtk_Tree_Model;
-      ExecutableName: constant String := FindExecutable("xdg-mime");
-   begin
-      Get_Selected
-        (Gtk.Tree_View.Get_Selection
-           (Gtk_Tree_View(Get_Object(Object, "treeapplications"))),
-         ProgramModel, ProgramIter);
-      if ProgramIter /= Null_Iter then
-         if ExecutableName = "" then
-            return;
-         end if;
-         Pid :=
-           Non_Blocking_Spawn
-             (ExecutableName,
-              Argument_String_To_List
-                ("default " & Get_String(ProgramModel, ProgramIter, 1) & " " &
-                 GetMimeType(To_String(CurrentSelected))).all);
-         if Pid = GNAT.OS_Lib.Invalid_Pid then
-            ShowMessage(Gettext("Could not set new associated file."));
-         else
-            Set_Label
-              (Gtk_Button(Get_Object(Object, "btnprogram")),
-               Get_String(ProgramModel, ProgramIter, 0));
-         end if;
-         Set_Active
-           (Gtk_Toggle_Button(Get_Object(Object, "btnprogram")), False);
-      end if;
-   end SetAssociated;
-
    -- ****if* ShowItems/SetPermission
    -- FUNCTION
    -- Set selected permissions to selected file or directory
@@ -787,7 +748,6 @@ package body ShowItems is
       Register_Handler(Builder, "Show_Item", ShowItem'Access);
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
-      Register_Handler(Builder, "Set_Associated", SetAssociated'Access);
       Add_Named
         (Gtk_Stack(Get_Object(Builder, "infostack")), Scroll, "preview");
       Set_Halign(InfoGrid, Align_Center);
