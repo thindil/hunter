@@ -31,6 +31,7 @@ with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body Bookmarks is
@@ -83,9 +84,7 @@ package body Bookmarks is
          SetDeleteTooltip;
       end if;
       if Ada.Directories.Exists(To_String(CurrentDirectory)) then
-         if Get_Visible_Child_Name
-             (Gtk_Stack(Get_Object(Builder, "infostack"))) =
-           "destination" then
+         if Get_Visible_Child_Name(InfoStack) = "destination" then
             LoadDirectory(To_String(CurrentDirectory), "fileslist2");
          else
             Reload(Builder);

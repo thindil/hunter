@@ -34,13 +34,13 @@ with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
 with Gtk.Check_Button; use Gtk.Check_Button;
 with Gtk.Enums; use Gtk.Enums;
+with Gtk.Frame; use Gtk.Frame;
 with Gtk.Grid; use Gtk.Grid;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Menu_Button; use Gtk.Menu_Button;
 with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
-with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_Iter; use Gtk.Text_Iter;
 with Gtk.Text_View; use Gtk.Text_View;
@@ -107,9 +107,7 @@ package body ShowItems is
       FileName: String(1 .. 1024);
       SelectedPath: Unbounded_String;
       InfoGrid: constant Gtk_Grid :=
-        Gtk_Grid
-          (Get_Child_By_Name
-             (Gtk_Stack(Get_Object(Object, "infostack")), "info"));
+        Gtk_Grid(Get_Child_By_Name(InfoStack, "info"));
       Widgets: constant array(1 .. 7) of Gtk_Widget :=
         (Get_Child_At(InfoGrid, 0, 3), Get_Child_At(InfoGrid, 1, 3),
          Get_Child_At(InfoGrid, 0, 4), Get_Child_At(InfoGrid, 1, 4),
@@ -275,8 +273,7 @@ package body ShowItems is
       end;
       Set_Label
         (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Information"));
-      Set_Visible_Child_Name
-        (Gtk_Stack(Get_Object(Builder, "infostack")), "info");
+      Set_Visible_Child_Name(InfoStack, "info");
       if not Get_Active
           (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo"))) then
          Set_Active
@@ -316,9 +313,7 @@ package body ShowItems is
 
    procedure PreviewItem(Object: access Gtkada_Builder_Record'Class) is
       PreviewScroll: constant Gtk_Scrolled_Window :=
-        Gtk_Scrolled_Window
-          (Get_Child_By_Name
-             (Gtk_Stack(Get_Object(Object, "infostack")), "preview"));
+        Gtk_Scrolled_Window(Get_Child_By_Name(InfoStack, "preview"));
    begin
       if Setting or (not Settings.ShowPreview) then
          return;
@@ -498,13 +493,9 @@ package body ShowItems is
                   Image: constant Gtk_Image := Gtk_Image_New;
                   ScaleFactor: Float;
                   MaxHeight: constant Gint :=
-                    Get_Allocated_Height
-                      (Gtk_Widget(Get_Object(Object, "infostack"))) -
-                    5;
+                    Get_Allocated_Height(Gtk_Widget(InfoStack)) - 5;
                   MaxWidth: constant Gint :=
-                    Get_Allocated_Width
-                      (Gtk_Widget(Get_Object(Object, "infostack"))) -
-                    5;
+                    Get_Allocated_Width(Gtk_Widget(InfoStack)) - 5;
                begin
                   Gdk_New_From_File(Pixbuf, To_String(CurrentSelected), Error);
                   if Error /= null then
@@ -551,24 +542,20 @@ package body ShowItems is
       <<Set_UI>>
       Set_Label
         (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Preview"));
-      Set_Visible_Child_Name
-        (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+      Set_Visible_Child_Name(InfoStack, "preview");
       if Get_Active
           (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo"))) then
          Setting := True;
          Set_Active
            (Gtk_Radio_Tool_Button(Get_Object(Object, "btnpreview")), True);
-         Set_Visible_Child_Name
-           (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+         Set_Visible_Child_Name(InfoStack, "preview");
          Setting := False;
       end if;
    end PreviewItem;
 
    procedure ShowItem(Object: access Gtkada_Builder_Record'Class) is
       PreviewScroll: constant Gtk_Scrolled_Window :=
-        Gtk_Scrolled_Window
-          (Get_Child_By_Name
-             (Gtk_Stack(Get_Object(Object, "infostack")), "preview"));
+        Gtk_Scrolled_Window(Get_Child_By_Name(InfoStack, "preview"));
    begin
       SelectedItems.Clear;
       Selected_Foreach
@@ -588,8 +575,7 @@ package body ShowItems is
          Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
          Set_Label
            (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Preview"));
-         Set_Visible_Child_Name
-           (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+         Set_Visible_Child_Name(InfoStack, "preview");
          return;
       elsif SelectedItems.Length = 0 then
          PreviewItem(Object);
@@ -623,9 +609,7 @@ package body ShowItems is
       pragma Unreferenced(Self);
       -- ****
       InfoGrid: constant Gtk_Grid :=
-        Gtk_Grid
-          (Get_Child_By_Name
-             (Gtk_Stack(Get_Object(Builder, "infostack")), "info"));
+        Gtk_Grid(Get_Child_By_Name(InfoStack, "info"));
       Buttons: constant array(2 .. 10) of Gtk_Widget :=
         (Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 1),
          Get_Child(Gtk_Box(Get_Child_At(InfoGrid, 1, 5)), 2),
@@ -748,8 +732,8 @@ package body ShowItems is
       Register_Handler(Builder, "Show_Item", ShowItem'Access);
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
-      Add_Named
-        (Gtk_Stack(Get_Object(Builder, "infostack")), Scroll, "preview");
+      InfoStack := Gtk_Stack_New;
+      Add_Named(InfoStack, Scroll, "preview");
       Set_Halign(InfoGrid, Align_Center);
       AddLabel(Gettext("Full path:"), 0, 0);
       AddLabel("", 1, 0);
@@ -769,7 +753,7 @@ package body ShowItems is
       AddBox(6);
       AddLabel(Gettext("Others:"), 0, 7);
       AddBox(7);
-      Add_Named(Gtk_Stack(Get_Object(Builder, "infostack")), InfoGrid, "info");
+      Add_Named(InfoStack, InfoGrid, "info");
       declare
          DirectoryView: constant Gtk_Tree_View :=
            Gtk_Tree_View_New_With_Model
@@ -819,9 +803,10 @@ package body ShowItems is
          On_Row_Activated(DirectoryView, SetDestination'Access);
          Scroll := Gtk_Scrolled_Window_New;
          Add(Scroll, DirectoryView);
-         Add_Named
-           (Gtk_Stack(Get_Object(Builder, "infostack")), Scroll,
-            "destination");
+         Add_Named(InfoStack, Scroll, "destination");
+         Add
+           (Gtk_Frame(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 1)),
+            InfoStack);
       end;
    end CreateShowItemsUI;
 

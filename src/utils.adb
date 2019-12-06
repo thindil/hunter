@@ -34,6 +34,7 @@ with LibMagic; use LibMagic;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with ShowItems; use ShowItems;
 
 package body Utils is
 
@@ -155,8 +156,7 @@ package body Utils is
             Set_Label
               (Gtk_Label(Get_Object(Builder, "lblframe")),
                Gettext("Destination directory"));
-            Set_Visible_Child_Name
-              (Gtk_Stack(Get_Object(Builder, "infostack")), "destination");
+            Set_Visible_Child_Name(InfoStack, "destination");
          else
             Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
          end if;

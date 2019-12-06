@@ -27,6 +27,7 @@ with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
+with ShowItems; use ShowItems;
 
 package body SearchItems is
 
@@ -100,15 +101,14 @@ package body SearchItems is
       FilterName, ListName: Unbounded_String;
       TreeView: Gtk_Tree_View :=
         Gtk_Tree_View(Get_Object(Builder, "treefiles"));
-      Stack: constant Gtk_Stack := Gtk_Stack(Get_Object(Builder, "infostack"));
    begin
       FilterName := To_Unbounded_String("filesfilter");
       ListName := To_Unbounded_String("fileslist");
-      if Get_Visible_Child_Name(Stack) = "destination" then
+      if Get_Visible_Child_Name(InfoStack) = "destination" then
          FilterName := To_Unbounded_String("filesfilter2");
          TreeView :=
            Gtk_Tree_View
-             (Get_Child(Gtk_Scrolled_Window(Get_Visible_Child(Stack))));
+             (Get_Child(Gtk_Scrolled_Window(Get_Visible_Child(InfoStack))));
          ListName := To_Unbounded_String("fileslist2");
       end if;
       Refilter
