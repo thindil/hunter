@@ -81,7 +81,7 @@ package body Inotify.Recursive is
          Instance(Object).Remove_Watch((Watch => Watch_Maps.Key(I)));
       end loop;
       Object.Masks.Clear;
-      Object.Watches.Clear;
+      Instance(Object).Watches.Clear;
    end Remove_Watch;
 
    overriding procedure Process_Events
