@@ -24,7 +24,12 @@ with Gtkada.Builder; use Gtkada.Builder;
 package ShowItems is
 -- ****
 
+   -- ****v* ShowItems/InfoStack
+   -- FUNCTION
+   -- Gtk_Stack which will show information about selected item
+   -- SOURCE
    InfoStack: Gtk_Stack;
+   -- ****
 
    -- ****f* ShowItems/PreviewItem
    -- FUNCTION
