@@ -224,8 +224,7 @@ package body MainWindow is
          end if;
          if NewAction = CREATELINK then
             Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
-            Set_Visible_Child_Name
-              (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+            Set_Visible_Child_Name(InfoStack, "preview");
             NewAction := CREATEFILE;
          end if;
          PreviewItem(Builder);

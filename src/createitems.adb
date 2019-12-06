@@ -28,6 +28,7 @@ with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body CreateItems is
@@ -63,8 +64,7 @@ package body CreateItems is
          Hide(Gtk_Widget(Self));
          if NewAction = CREATELINK then
             Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
-            Set_Visible_Child_Name
-              (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+            Set_Visible_Child_Name(InfoStack, "preview");
             NewAction := CREATEFILE;
          end if;
          ToggleToolButtons(NewAction, True);
@@ -144,8 +144,7 @@ package body CreateItems is
                      ShowMessage(Gettext("Can't create symbolic link."));
                   end if;
                   Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
-                  Set_Visible_Child_Name
-                    (Gtk_Stack(Get_Object(Builder, "infostack")), "preview");
+                  Set_Visible_Child_Name(InfoStack, "preview");
                   NewAction := CREATEFILE;
                end;
             when others =>
@@ -170,8 +169,7 @@ package body CreateItems is
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;
       end if;
-      if Get_Visible_Child_Name(Gtk_Stack(Get_Object(Builder, "infostack"))) =
-        "destination" then
+      if Get_Visible_Child_Name(InfoStack) = "destination" then
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
       else
          Reload(Builder);
@@ -204,8 +202,7 @@ package body CreateItems is
          Set_Label
            (Gtk_Label(Get_Object(Builder, "lblframe")),
             Gettext("Destination directory"));
-         Set_Visible_Child_Name
-           (Gtk_Stack(Get_Object(Builder, "infostack")), "destination");
+         Set_Visible_Child_Name(InfoStack, "destination");
       else
          NewAction := CREATEDIRECTORY;
          Set_Icon_Tooltip_Text

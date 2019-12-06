@@ -881,14 +881,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                                 <property name="label_xalign">0.5</property>
                                 <property name="shadow_type">none</property>
                                 <child>
-                                  <object class="GtkStack" id="infostack">
-                                    <property name="visible">True</property>
-                                    <property name="can_focus">False</property>
-                                    <property name="transition_type">crossfade</property>
-                                    <child>
-                                      <placeholder/>
-                                    </child>
-                                  </object>
+                                  <placeholder/>
                                 </child>
                                 <child type="label">
                                   <object class="GtkLabel" id="lblframe">

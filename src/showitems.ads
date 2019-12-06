@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.Stack; use Gtk.Stack;
 with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/ShowItems
@@ -22,6 +23,8 @@ with Gtkada.Builder; use Gtkada.Builder;
 -- SOURCE
 package ShowItems is
 -- ****
+
+   InfoStack: Gtk_Stack;
 
    -- ****f* ShowItems/PreviewItem
    -- FUNCTION
