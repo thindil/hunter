@@ -25,14 +25,11 @@ package body Inotify.Recursive is
    function "+"(Value: String) return SU.Unbounded_String renames
      SU.To_Unbounded_String;
 
-   function "+"(Value: SU.Unbounded_String) return String renames SU.To_String;
-
    package Move_Vectors is new Ada.Containers.Bounded_Vectors(Positive, Move);
 
    overriding function Add_Watch
      (Object: in out Recursive_Instance; Path: String;
       Mask: Watch_Bits := All_Events) return Watch is
-      Recursive_Mask: Watch_Bits := Mask;
       Directory: Dir_Type;
       Last: Natural;
       FileName: String(1 .. 1024);
@@ -40,11 +37,6 @@ package body Inotify.Recursive is
       if Depth = Count(Path, "/") - 2 then
          return (Watch => Interfaces.C.int(-1));
       end if;
-      Recursive_Mask.Created := True;
-      Recursive_Mask.Deleted_Self := True;
-      Recursive_Mask.Moved_From := True;
-      Recursive_Mask.Moved_To := True;
-      Recursive_Mask.Moved_Self := True;
       Open(Directory, Path);
       loop
          Read(Directory, FileName, Last);
@@ -57,14 +49,14 @@ package body Inotify.Recursive is
              (Path & Directory_Separator & FileName(1 .. Last)) then
             Object.Add_Watch
               (Ada.Directories.Compose(Path, FileName(1 .. Last)),
-               Recursive_Mask);
+               Mask);
          end if;
          <<End_Of_Loop>>
       end loop;
       Close(Directory);
       return
         Result: constant Watch :=
-          Instance(Object).Add_Watch(Path, Recursive_Mask) do
+          Instance(Object).Add_Watch(Path, Mask) do
          if not Object.Masks.Contains(Result.Watch) then
             Object.Masks.Insert(Result.Watch, Mask);
          end if;
@@ -73,10 +65,8 @@ package body Inotify.Recursive is
 
    overriding procedure Remove_Watch
      (Object: in out Recursive_Instance; Subject: Watch) is
+     pragma Unreferenced(Subject);
    begin
-      if not Object.Masks.Contains(Subject.Watch) then
-         return;
-      end if;
       for I in Object.Watches.Iterate loop
          Instance(Object).Remove_Watch((Watch => Watch_Maps.Key(I)));
       end loop;
@@ -96,67 +86,8 @@ package body Inotify.Recursive is
       procedure Handle_Event
         (Subject: Inotify.Watch; Event: Inotify.Event_Kind;
          Is_Directory: Boolean; Name: String) is
-         Mask: constant Watch_Bits := Object.Masks(Subject.Watch);
       begin
-         case Event is
-            when Created =>
-               if Mask.Created then
-                  Handle(Subject, Event, Is_Directory, Name);
-               end if;
-
-               if Is_Directory then
-                  Object.Add_Watch(Name, Mask);
-               end if;
-            when Deleted_Self =>
-               if Mask.Deleted_Self then
-                  Handle(Subject, Event, Is_Directory, Name);
-            --  TODO Is_Directory is always False even if inode is a directory
-               end if;
-
-               --  The OS will already have deleted the watch and generated
-               --  an Ignored event, which caused the watch to be deleted from
-               --  Object.Watches in Instance.Process_Events
-               Object.Masks.Delete(Subject.Watch);
-            when Moved_From =>
-               if Mask.Moved_From then
-                  Handle(Subject, Event, Is_Directory, Name);
-               end if;
-            when Moved_To =>
-               if Mask.Moved_To then
-                  Handle(Subject, Event, Is_Directory, Name);
-               end if;
-            when Moved_Self =>
-               if Mask.Moved_Self then
-                  Handle(Subject, Event, Is_Directory, Name);
-            --  TODO Is_Directory is always False even if inode is a directory
-               end if;
-
-               declare
-                  Cursor: Move_Vectors.Cursor := Move_Vectors.No_Element;
-
-                  procedure Process_Move(Position: Move_Vectors.Cursor) is
-                     Element: constant Move := Moves(Position);
-                  begin
-                     if +Element.From = Name then
-                        Object.Remove_Watch(Subject);
-                        Object.Add_Watch(+Element.To, Mask);
-                        Cursor := Position;
-                     end if;
-                  end Process_Move;
-
-                  use type Move_Vectors.Cursor;
-               begin
-                  Moves.Iterate(Process_Move'Access);
-                  if Cursor /= Move_Vectors.No_Element then
-                     Moves.Delete(Cursor);
-                  else
-                     Object.Remove_Watch(Subject);
-                     --  TODO Delete cookie as well
-                  end if;
-               end;
-            when others =>
-               Handle(Subject, Event, Is_Directory, Name);
-         end case;
+         Handle(Subject, Event, Is_Directory, Name);
       end Handle_Event;
 
       procedure Handle_Move_Event
