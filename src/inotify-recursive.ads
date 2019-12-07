@@ -52,8 +52,6 @@ private
      (Key_Type => Interfaces.C.int, Element_Type => Watch_Bits, Hash => Hash,
       Equivalent_Keys => Interfaces.C."=");
 
-   type Recursive_Instance is limited new Instance with record
-      Masks: Mask_Maps.Map;
-   end record;
+   type Recursive_Instance is limited new Instance with null record;
 
 end Inotify.Recursive;
