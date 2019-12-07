@@ -25,6 +25,7 @@ with Glib; use Glib;
 with Glib.Error; use Glib.Error;
 with ErrorDialog; use ErrorDialog;
 with LibMagic; use LibMagic;
+with Notify; use Notify;
 with MainWindow; use MainWindow;
 with RefreshData; use RefreshData;
 
@@ -54,6 +55,8 @@ begin
    end if;
    -- Start libmagic data
    MagicOpen;
+   -- Start inotify
+   InotifyInit;
    -- Start GTK
    Init;
    Set_On_Exception(On_Exception'Access);
@@ -76,6 +79,7 @@ begin
    Clear("GSETTINGS_BACKEND");
    Main;
    abort InotifyTask;
+   InotifyClose;
    MagicClose;
 exception
    when An_Exception : others =>
