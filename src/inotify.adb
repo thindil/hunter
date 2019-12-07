@@ -97,6 +97,9 @@ package body Inotify is
          return;
       end if;
 
+      if Object.Watches.Contains(Subject.Watch) then
+         Object.Watches.Delete(Subject.Watch);
+      end if;
    end Remove_Watch;
 
    function Name(Object: Instance; Subject: Watch) return String is

@@ -30,7 +30,7 @@ package Inotify.Recursive is
    --  if it is not readable.
 
    procedure Remove_Watches
-     (Object: in out Recursive_Instance);
+     (Object: in out Recursive_Instance; Path: String);
 
    overriding procedure Process_Events
      (Object: in out Recursive_Instance;

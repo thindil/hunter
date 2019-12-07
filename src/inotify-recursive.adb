@@ -48,29 +48,36 @@ package body Inotify.Recursive is
            and then Is_Read_Accessible_File
              (Path & Directory_Separator & FileName(1 .. Last)) then
             Object.Add_Watch
-              (Ada.Directories.Compose(Path, FileName(1 .. Last)),
-               Mask);
+              (Ada.Directories.Compose(Path, FileName(1 .. Last)), Mask);
          end if;
          <<End_Of_Loop>>
       end loop;
       Close(Directory);
       return
-        Result: constant Watch :=
-          Instance(Object).Add_Watch(Path, Mask) do
+        Result: constant Watch := Instance(Object).Add_Watch(Path, Mask) do
          if not Object.Masks.Contains(Result.Watch) then
             Object.Masks.Insert(Result.Watch, Mask);
          end if;
       end return;
    end Add_Watch;
 
-   procedure Remove_Watches
-     (Object: in out Recursive_Instance) is
+   procedure Remove_Watches(Object: in out Recursive_Instance; Path: String) is
+      Cursor: Watch_Maps.Cursor;
    begin
-      for I in Object.Watches.Iterate loop
-         Instance(Object).Remove_Watch((Watch => Watch_Maps.Key(I)));
+      if Natural(Instance(Object).Watches.Length) < 2 then
+         return;
+      end if;
+      Cursor := Instance(Object).Watches.First;
+      loop
+         if Instance(Object).Watches(Cursor) /= Path then
+            Instance(Object).Remove_Watch((Watch => Watch_Maps.Key(Cursor)));
+            Cursor := Instance(Object).Watches.First;
+         else
+            Watch_Maps.Next(Cursor);
+         end if;
+         exit when Natural(Instance(Object).Watches.Length) = 1;
       end loop;
       Object.Masks.Clear;
-      Instance(Object).Watches.Clear;
    end Remove_Watches;
 
    overriding procedure Process_Events
