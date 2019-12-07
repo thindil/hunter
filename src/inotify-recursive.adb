@@ -53,12 +53,7 @@ package body Inotify.Recursive is
          <<End_Of_Loop>>
       end loop;
       Close(Directory);
-      return
-        Result: constant Watch := Instance(Object).Add_Watch(Path, Mask) do
-         if not Object.Masks.Contains(Result.Watch) then
-            Object.Masks.Insert(Result.Watch, Mask);
-         end if;
-      end return;
+      return Instance(Object).Add_Watch(Path, Mask);
    end Add_Watch;
 
    procedure Remove_Watches(Object: in out Recursive_Instance; Path: String) is
@@ -77,7 +72,6 @@ package body Inotify.Recursive is
          end if;
          exit when Natural(Instance(Object).Watches.Length) = 1;
       end loop;
-      Object.Masks.Clear;
    end Remove_Watches;
 
    overriding procedure Process_Events
@@ -104,8 +98,6 @@ package body Inotify.Recursive is
          if Is_Directory then
             if From /= "" then
                Moves.Append((+From, +To));
-            else
-               Object.Add_Watch(To, Object.Masks.Element(Subject.Watch));
             end if;
          end if;
       end Handle_Move_Event;
