@@ -29,9 +29,8 @@ package Inotify.Recursive is
    --  then a Use_Error is raised. Any subdirectory, however, is ignored
    --  if it is not readable.
 
-   overriding procedure Remove_Watch
-     (Object: in out Recursive_Instance; Subject: Watch);
-   --  Remove the given watch and the watches of any subdirectory
+   procedure Remove_Watches
+     (Object: in out Recursive_Instance);
 
    overriding procedure Process_Events
      (Object: in out Recursive_Instance;

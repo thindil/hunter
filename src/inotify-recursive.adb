@@ -63,16 +63,15 @@ package body Inotify.Recursive is
       end return;
    end Add_Watch;
 
-   overriding procedure Remove_Watch
-     (Object: in out Recursive_Instance; Subject: Watch) is
-     pragma Unreferenced(Subject);
+   procedure Remove_Watches
+     (Object: in out Recursive_Instance) is
    begin
       for I in Object.Watches.Iterate loop
          Instance(Object).Remove_Watch((Watch => Watch_Maps.Key(I)));
       end loop;
       Object.Masks.Clear;
       Instance(Object).Watches.Clear;
-   end Remove_Watch;
+   end Remove_Watches;
 
    overriding procedure Process_Events
      (Object: in out Recursive_Instance;
