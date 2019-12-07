@@ -34,6 +34,7 @@ with Glib; use Glib;
 with Glib.Main; use Glib.Main;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with Notify; use Notify;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
@@ -238,6 +239,7 @@ package body RefreshData is
         (Path,
          (Metadata | Closed_Write | Moved_From | Moved_To | Deleted => True,
           others => False));
+      AddWatch(Path);
    end UpdateWatch;
 
 end RefreshData;

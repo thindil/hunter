@@ -16,14 +16,15 @@
 with Ada.Containers.Vectors; use Ada.Containers;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Ada.Text_IO;
 
 package body Notify is
 
    Instance: File_Descriptor;
 
-   package Positive_Container is new Vectors(Positive,
-      Positive);
+   package Positive_Container is new Vectors(Positive, Positive);
 
    Watches: Positive_Container.Vector;
 
@@ -32,7 +33,8 @@ package body Notify is
       Convention => C,
       External_Name => "inotify_init";
 
-   function inotify_add_watch(fd: int; pathname: chars_ptr; mask: int) return int with
+   function inotify_add_watch
+     (fd: int; pathname: chars_ptr; mask: int) return int with
       Import => True,
       Convention => C,
       External_Name => "inotify_add_watch";
@@ -48,11 +50,38 @@ package body Notify is
    end InotifyClose;
 
    procedure AddWatch(Path: String) is
-      Watch: constant Integer := Integer(inotify_add_watch(int(Instance), New_String(Path), 0));
+      Watch: Integer;
+      Directory: Dir_Type;
+      Last: Natural;
+      FileName: String(1 .. 1024);
    begin
+      Watch := Integer(inotify_add_watch(int(Instance), New_String(Path), 1));
       if Watch > 0 then
          Watches.Append(Watch);
       end if;
+      Open(Directory, Path);
+      loop
+         Read(Directory, FileName, Last);
+         exit when Last = 0;
+         if FileName(1 .. Last) in "." | ".." then
+            goto End_Of_Loop;
+         end if;
+         if Is_Directory(Path & Directory_Separator & FileName(1 .. Last))
+           and then Is_Read_Accessible_File
+             (Path & Directory_Separator & FileName(1 .. Last)) then
+            Watch :=
+              Integer
+                (inotify_add_watch
+                   (int(Instance),
+                    New_String(Path & "/" & FileName(1 .. Last)), 1));
+            if Watch > 0 then
+               Watches.Append(Watch);
+            end if;
+         end if;
+         <<End_Of_Loop>>
+      end loop;
+      Close(Directory);
+      Ada.Text_IO.Put_Line(Integer'ImagE(Integer(Watches.Length)));
    end AddWatch;
 
 end Notify;
