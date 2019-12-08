@@ -13,18 +13,23 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Vectors; use Ada.Containers;
+with Ada.Containers.Vectors;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Ada.Text_IO;
+with ada.text_io;
 
 package body Notify is
 
    Instance: File_Descriptor;
 
-   package Int_Container is new Vectors(Positive, int);
+   type Watch_Data is record
+      Id: int;
+      Path: Unbounded_String;
+   end record;
+
+   package Int_Container is new Vectors(Positive, Watch_Data);
 
    Watches: Int_Container.Vector;
 
@@ -76,7 +81,7 @@ package body Notify is
    begin
       Watch := inotify_add_watch(int(Instance), New_String(Path), Mask);
       if Watch > 0 then
-         Watches.Append(Watch);
+         Watches.Append((Watch, To_Unbounded_String(Path)));
       end if;
       Open(Directory, Path);
       loop
@@ -93,23 +98,45 @@ package body Notify is
                 (int(Instance), New_String(Path & "/" & FileName(1 .. Last)),
                  Mask);
             if Watch > 0 then
-               Watches.Append(Watch);
+               Watches.Append((Watch, To_Unbounded_String(Path & "/" & FileName(1 .. Last))));
             end if;
          end if;
          <<End_Of_Loop>>
       end loop;
       Close(Directory);
-      Ada.Text_IO.Put_Line(Integer'Image(Integer(Watches.Length)));
    end AddWatch;
 
    procedure RemoveWatches is
    begin
       for Watch of Watches loop
-         if inotify_rm_watch(int(Instance), Watch) = -1 then
+         if inotify_rm_watch(int(Instance), Watch.Id) = -1 then
             null;
          end if;
       end loop;
       Watches.Clear;
    end RemoveWatches;
+
+   procedure InotifyRead is
+      Buffer: array(1 .. 4096) of Character;
+      Length: Integer;
+      Path: Unbounded_String;
+   begin
+      Ada.Text_IO.Put_Line("Start");
+      Length := Read(Instance, Buffer'Address, 4096);
+      if Length = -1 then
+         return;
+      end if;
+      for Watch of Watches loop
+         if int(Character'Pos(Buffer(1))) = Watch.Id then
+            Path := Watch.Path;
+            exit;
+         end if;
+      end loop;
+      Ada.Text_IO.Put_Line(To_String(Path));
+      for I in 5 .. Length loop
+         Ada.Text_IO.Put_Line("Pos: " & Integer'Image(Character'Pos(Buffer(I))) & " Val: " & Buffer(I));
+      end loop;
+      Ada.Text_IO.Put_Line("End");
+   end InotifyRead;
 
 end Notify;

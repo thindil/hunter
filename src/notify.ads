@@ -13,6 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Containers.Hashed_Maps; use Ada.Containers;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded.Hash;
+
 package Notify is
 
    type Inotify_Events is
@@ -27,9 +31,15 @@ package Notify is
       Deleted_Self => 16#0400#, Moved_Self => 16#0800#,
       Unmounted_Filesystem => 16#2000#);
 
+   package Events_Container is new Hashed_Maps(Unbounded_String, Inotify_Events,
+      Ada.Strings.Unbounded.Hash, "=");
+
+   Events: Events_Container.Map;
+
    procedure InotifyInit;
    procedure InotifyClose;
    procedure AddWatch(Path: String);
    procedure RemoveWatches;
+   procedure InotifyRead;
 
 end Notify;

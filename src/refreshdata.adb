@@ -215,6 +215,12 @@ package body RefreshData is
       InotifyInstance.Process_Events(Handle_Event'Access);
    end InotifyTask;
 
+   function CheckItems2 return Boolean is
+   begin
+      InotifyRead;
+      return True;
+   end CheckItems2;
+
    procedure StartTimer(Path: String := "") is
    begin
       if Source_Id /= No_Source_Id then
@@ -227,7 +233,7 @@ package body RefreshData is
       if Settings.AutoRefreshInterval > 0 then
          Source_Id :=
            Timeout_Add
-             (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems'Access);
+             (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems2'Access);
       end if;
    end StartTimer;
 
