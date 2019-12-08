@@ -18,7 +18,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with ada.text_io;
+with Ada.Text_IO;
 
 package body Notify is
 
@@ -63,7 +63,8 @@ package body Notify is
 
    function CreateMask(Events: Mask_Array) return int is
       type Unsigned_Integer is mod 2**Integer'Size;
-      Mask: Unsigned_Integer := Unsigned_Integer(Inotify_Events'Enum_Rep(Events(1)));
+      Mask: Unsigned_Integer :=
+        Unsigned_Integer(Inotify_Events'Enum_Rep(Events(1)));
    begin
       for I in 2 .. Events'Last loop
          Mask := Mask or Unsigned_Integer(Inotify_Events'Enum_Rep(Events(I)));
@@ -98,7 +99,9 @@ package body Notify is
                 (int(Instance), New_String(Path & "/" & FileName(1 .. Last)),
                  Mask);
             if Watch > 0 then
-               Watches.Append((Watch, To_Unbounded_String(Path & "/" & FileName(1 .. Last))));
+               Watches.Append
+                 ((Watch,
+                   To_Unbounded_String(Path & "/" & FileName(1 .. Last))));
             end if;
          end if;
          <<End_Of_Loop>>
@@ -118,25 +121,31 @@ package body Notify is
 
    procedure InotifyRead is
       Buffer: array(1 .. 4096) of Character;
-      Length: Integer;
+      Length, NameLength: Integer;
       Path: Unbounded_String;
+      Event: Inotify_Events;
    begin
-      Ada.Text_IO.Put_Line("Start");
       Length := Read(Instance, Buffer'Address, 4096);
       if Length = -1 then
          return;
       end if;
       for Watch of Watches loop
          if int(Character'Pos(Buffer(1))) = Watch.Id then
-            Path := Watch.Path;
+            Path := Watch.Path & "/";
+            NameLength := Character'Pos(Buffer(13)) + 17;
+            for I in 17 .. NameLength loop
+               exit when Character'Pos(Buffer(I)) = 0;
+               Append(Path, Buffer(I));
+            end loop;
             exit;
          end if;
       end loop;
       Ada.Text_IO.Put_Line(To_String(Path));
-      for I in 5 .. Length loop
-         Ada.Text_IO.Put_Line("Pos: " & Integer'Image(Character'Pos(Buffer(I))) & " Val: " & Buffer(I));
-      end loop;
-      Ada.Text_IO.Put_Line("End");
+      if Character'Pos(Buffer(5)) > 0 then
+         Event := Inotify_Events'Enum_val(Character'Pos(Buffer(5)));
+      else
+         Event := Inotify_Events'Enum_val(Character'Pos(Buffer(6)));
+      end if;
    end InotifyRead;
 
 end Notify;
