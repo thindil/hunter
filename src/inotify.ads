@@ -17,7 +17,7 @@ with Ada.Containers.Hashed_Maps; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 
-package Notify is
+package Inotify is
 
    type Inotify_Events is
      (Accessed, Modified, Metadata, Closed_Write, Closed_No_Write, Opened,
@@ -42,4 +42,4 @@ package Notify is
    procedure RemoveWatches;
    procedure InotifyRead;
 
-end Notify;
+end Inotify;

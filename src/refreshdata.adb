@@ -31,7 +31,7 @@ with Glib; use Glib;
 with Glib.Main; use Glib.Main;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
-with Notify; use Notify;
+with Inotify; use Inotify;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
