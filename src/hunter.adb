@@ -25,7 +25,7 @@ with Glib; use Glib;
 with Glib.Error; use Glib.Error;
 with ErrorDialog; use ErrorDialog;
 with LibMagic; use LibMagic;
-with Notify; use Notify;
+with Inotify; use Inotify;
 with MainWindow; use MainWindow;
 with RefreshData; use RefreshData;
 

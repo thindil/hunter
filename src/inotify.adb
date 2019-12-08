@@ -20,7 +20,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Ada.Text_IO;
 
-package body Notify is
+package body Inotify is
 
    Instance: File_Descriptor;
 
@@ -152,4 +152,4 @@ package body Notify is
       end loop;
    end InotifyRead;
 
-end Notify;
+end Inotify;
