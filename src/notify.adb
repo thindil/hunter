@@ -24,9 +24,11 @@ package body Notify is
 
    Instance: File_Descriptor;
 
-   package Positive_Container is new Vectors(Positive, Positive);
+   package Int_Container is new Vectors(Positive, int);
 
-   Watches: Positive_Container.Vector;
+   Watches: Int_Container.Vector;
+
+   type Mask_Array is array(Positive range <>) of Inotify_Events;
 
    function inotify_init return int with
       Import => True,
@@ -39,6 +41,11 @@ package body Notify is
       Convention => C,
       External_Name => "inotify_add_watch";
 
+   function inotify_rm_watch(fd, wd: int) return int with
+      Import => True,
+      Convention => C,
+      External_Name => "inotify_rm_watch";
+
    procedure InotifyInit is
    begin
       Instance := File_Descriptor(inotify_init);
@@ -49,13 +56,25 @@ package body Notify is
       Close(Instance);
    end InotifyClose;
 
+   function CreateMask(Events: Mask_Array) return int is
+      type Unsigned_Integer is mod 2**Integer'Size;
+      Mask: Unsigned_Integer := Unsigned_Integer(Inotify_Events'Enum_Rep(Events(1)));
+   begin
+      for I in 2 .. Events'Last loop
+         Mask := Mask or Unsigned_Integer(Inotify_Events'Enum_Rep(Events(I)));
+      end loop;
+      return int(Mask);
+   end CreateMask;
+
    procedure AddWatch(Path: String) is
-      Watch: Integer;
+      Watch: int;
       Directory: Dir_Type;
       Last: Natural;
       FileName: String(1 .. 1024);
+      Mask: constant int :=
+        CreateMask((Metadata, Closed_Write, Moved_From, Moved_To, Deleted));
    begin
-      Watch := Integer(inotify_add_watch(int(Instance), New_String(Path), 1));
+      Watch := inotify_add_watch(int(Instance), New_String(Path), Mask);
       if Watch > 0 then
          Watches.Append(Watch);
       end if;
@@ -70,10 +89,9 @@ package body Notify is
            and then Is_Read_Accessible_File
              (Path & Directory_Separator & FileName(1 .. Last)) then
             Watch :=
-              Integer
-                (inotify_add_watch
-                   (int(Instance),
-                    New_String(Path & "/" & FileName(1 .. Last)), 1));
+              inotify_add_watch
+                (int(Instance), New_String(Path & "/" & FileName(1 .. Last)),
+                 Mask);
             if Watch > 0 then
                Watches.Append(Watch);
             end if;
@@ -81,7 +99,17 @@ package body Notify is
          <<End_Of_Loop>>
       end loop;
       Close(Directory);
-      Ada.Text_IO.Put_Line(Integer'ImagE(Integer(Watches.Length)));
+      Ada.Text_IO.Put_Line(Integer'Image(Integer(Watches.Length)));
    end AddWatch;
+
+   procedure RemoveWatches is
+   begin
+      for Watch of Watches loop
+         if inotify_rm_watch(int(Instance), Watch) = -1 then
+            null;
+         end if;
+      end loop;
+      Watches.Clear;
+   end RemoveWatches;
 
 end Notify;
