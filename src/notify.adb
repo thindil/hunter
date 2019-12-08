@@ -125,27 +125,31 @@ package body Notify is
       Path: Unbounded_String;
       Event: Inotify_Events;
    begin
-      Length := Read(Instance, Buffer'Address, 4096);
-      if Length = -1 then
-         return;
-      end if;
-      for Watch of Watches loop
-         if int(Character'Pos(Buffer(1))) = Watch.Id then
-            Path := Watch.Path & "/";
-            NameLength := Character'Pos(Buffer(13)) + 17;
-            for I in 17 .. NameLength loop
-               exit when Character'Pos(Buffer(I)) = 0;
-               Append(Path, Buffer(I));
-            end loop;
-            exit;
+      loop
+         Length := Read(Instance, Buffer'Address, 4096);
+         if Length = -1 then
+            goto End_Of_Loop;
          end if;
+         for Watch of Watches loop
+            if int(Character'Pos(Buffer(1))) = Watch.Id then
+               Path := Watch.Path & "/";
+               NameLength := Character'Pos(Buffer(13)) + 17;
+               for I in 17 .. NameLength loop
+                  exit when Character'Pos(Buffer(I)) = 0;
+                  Append(Path, Buffer(I));
+               end loop;
+               exit;
+            end if;
+         end loop;
+         Ada.Text_IO.Put_Line(To_String(Path));
+         if Character'Pos(Buffer(5)) > 0 then
+            Event := Inotify_Events'Enum_val(Character'Pos(Buffer(5)));
+         else
+            Event := Inotify_Events'Enum_val(Character'Pos(Buffer(6)));
+         end if;
+         Ada.Text_IO.Put_Line(Inotify_Events'Image(Event));
+         <<End_Of_Loop>>
       end loop;
-      Ada.Text_IO.Put_Line(To_String(Path));
-      if Character'Pos(Buffer(5)) > 0 then
-         Event := Inotify_Events'Enum_val(Character'Pos(Buffer(5)));
-      else
-         Event := Inotify_Events'Enum_val(Character'Pos(Buffer(6)));
-      end if;
    end InotifyRead;
 
 end Notify;
