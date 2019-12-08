@@ -234,6 +234,7 @@ package body RefreshData is
    procedure UpdateWatch(Path: String) is
    begin
       ItemsList.Clear;
+      RemoveWatches;
       Inotify.Recursive.Depth := Count(Path, "/");
       InotifyInstance.Add_Watch
         (Path,

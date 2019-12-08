@@ -15,8 +15,21 @@
 
 package Notify is
 
+   type Inotify_Events is
+     (Accessed, Modified, Metadata, Closed_Write, Closed_No_Write, Opened,
+      Moved_From, Moved_To, Created, Deleted, Deleted_Self, Moved_Self,
+      Unmounted_Filesystem);
+
+   for Inotify_Events use (Accessed => 16#0001#, Modified => 16#0002#,
+      Metadata => 16#0004#, Closed_Write => 16#0008#,
+      Closed_No_Write => 16#0010#, Opened => 16#0020#, Moved_From => 16#0040#,
+      Moved_To => 16#0080#, Created => 16#0100#, Deleted => 16#0200#,
+      Deleted_Self => 16#0400#, Moved_Self => 16#0800#,
+      Unmounted_Filesystem => 16#2000#);
+
    procedure InotifyInit;
    procedure InotifyClose;
    procedure AddWatch(Path: String);
+   procedure RemoveWatches;
 
 end Notify;
