@@ -19,12 +19,9 @@ with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Hash;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Inotify; use Inotify;
-with Inotify.Recursive; use Inotify.Recursive;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
@@ -48,18 +45,11 @@ package body RefreshData is
    Source_Id: G_Source_Id := No_Source_Id;
    -- ****
 
-   -- ****iv* RefreshData/InotifyInstance
-   -- FUNCTION
-   -- inotify instance
-   -- SOURCE
-   InotifyInstance: Recursive_Instance;
-   -- ****
-
    -- ****it* RefreshData/Items_Container
    -- FUNCTION
    -- Used to store inotify events data.
    -- SOURCE
-   package Items_Container is new Indefinite_Hashed_Maps(String, Event_Kind,
+   package Items_Container is new Indefinite_Hashed_Maps(String, Inotify_Events,
       Ada.Strings.Hash, "=");
    -- ****
 
@@ -199,27 +189,10 @@ package body RefreshData is
    end CheckItems;
 
    task body InotifyTask is
-      procedure Handle_Event
-        (Subject: Watch; Event: Event_Kind; Is_Directory: Boolean;
-         Name: String) is
-         pragma Unreferenced(Is_Directory);
-      begin
-         if InotifyInstance.Name(Subject) = To_String(CurrentDirectory) then
-            ItemsList.Include(Name, Event);
-         else
-            ItemsList.Include(InotifyInstance.Name(Subject), Closed_Write);
-         end if;
-      end Handle_Event;
    begin
       accept Start;
-      InotifyInstance.Process_Events(Handle_Event'Access);
-   end InotifyTask;
-
-   function CheckItems2 return Boolean is
-   begin
       InotifyRead;
-      return True;
-   end CheckItems2;
+   end InotifyTask;
 
    procedure StartTimer(Path: String := "") is
    begin
@@ -227,13 +200,13 @@ package body RefreshData is
          Remove(Source_Id);
       end if;
       if Path /= "" then
-         UpdateWatch(Path);
+         AddWatch(Path);
          InotifyTask.Start;
       end if;
       if Settings.AutoRefreshInterval > 0 then
          Source_Id :=
            Timeout_Add
-             (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems2'Access);
+             (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems'Access);
       end if;
    end StartTimer;
 
@@ -241,11 +214,6 @@ package body RefreshData is
    begin
       ItemsList.Clear;
       RemoveWatches;
-      Inotify.Recursive.Depth := Count(Path, "/");
-      InotifyInstance.Add_Watch
-        (Path,
-         (Metadata | Closed_Write | Moved_From | Moved_To | Deleted => True,
-          others => False));
       AddWatch(Path);
    end UpdateWatch;
 
