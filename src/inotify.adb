@@ -72,7 +72,7 @@ package body Inotify is
       return int(Mask);
    end CreateMask;
 
-   procedure AddWatch(Path: String) is
+   procedure AddWatches(Path: String) is
       Watch: int;
       Directory: Dir_Type;
       Last: Natural;
@@ -107,7 +107,7 @@ package body Inotify is
          <<End_Of_Loop>>
       end loop;
       Close(Directory);
-   end AddWatch;
+   end AddWatches;
 
    procedure RemoveWatches is
    begin
