@@ -17,6 +17,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with ada.text_io;
 
 package body Inotify is
 
@@ -129,6 +130,7 @@ package body Inotify is
             if int(Character'Pos(Buffer(1))) = Watch.Id then
                Path := Watch.Path;
                NameLength := Character'Pos(Buffer(13)) + 17;
+               Target := Null_Unbounded_String;
                for I in 17 .. NameLength loop
                   exit when Character'Pos(Buffer(I)) = 0;
                   Append(Target, Buffer(I));
@@ -142,6 +144,7 @@ package body Inotify is
             Event := Inotify_Events'Enum_val(Character'Pos(Buffer(6)));
          end if;
          EventsList.Append((Event, Target, Path));
+         Ada.Text_IO.Put_Line("Event:" & Inotify_Events'Image(Event) & " Target: " & To_String(Target) & " Path: " & To_String(Path));
       end loop;
    end InotifyRead;
 
