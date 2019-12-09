@@ -42,7 +42,7 @@ package Inotify is
 
    procedure InotifyInit;
    procedure InotifyClose;
-   procedure AddWatch(Path: String);
+   procedure AddWatches(Path: String);
    procedure RemoveWatches;
    procedure InotifyRead;
 

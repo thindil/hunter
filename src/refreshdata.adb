@@ -200,7 +200,7 @@ package body RefreshData is
          Remove(Source_Id);
       end if;
       if Path /= "" then
-         AddWatch(Path);
+         AddWatches(Path);
          InotifyTask.Start;
       end if;
       if Settings.AutoRefreshInterval > 0 then
@@ -214,7 +214,7 @@ package body RefreshData is
    begin
       ItemsList.Clear;
       RemoveWatches;
-      AddWatch(Path);
+      AddWatches(Path);
    end UpdateWatch;
 
 end RefreshData;
