@@ -13,12 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Vectors;
+with Ada.Directories; use Ada.Directories;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Ada.Text_IO;
+with MainWindow; use MainWindow;
 
 package body Inotify is
 
@@ -122,7 +122,7 @@ package body Inotify is
    procedure InotifyRead is
       Buffer: array(1 .. 4096) of Character;
       Length, NameLength: Integer;
-      Path: Unbounded_String;
+      Path, Target: Unbounded_String;
       Event: Inotify_Events;
    begin
       loop
@@ -132,22 +132,25 @@ package body Inotify is
          end if;
          for Watch of Watches loop
             if int(Character'Pos(Buffer(1))) = Watch.Id then
-               Path := Watch.Path & "/";
+               if Watch.Path /= CurrentDirectory then
+                  Path := To_Unbounded_String(Simple_Name(To_String(Watch.Path)));
+               else
+                  Path := Watch.Path;
+               end if;
                NameLength := Character'Pos(Buffer(13)) + 17;
                for I in 17 .. NameLength loop
                   exit when Character'Pos(Buffer(I)) = 0;
-                  Append(Path, Buffer(I));
+                  Append(Target, Buffer(I));
                end loop;
                exit;
             end if;
          end loop;
-         Ada.Text_IO.Put_Line(To_String(Path));
          if Character'Pos(Buffer(5)) > 0 then
             Event := Inotify_Events'Enum_val(Character'Pos(Buffer(5)));
          else
             Event := Inotify_Events'Enum_val(Character'Pos(Buffer(6)));
          end if;
-         Ada.Text_IO.Put_Line(Inotify_Events'Image(Event));
+         Events.Append((Event, Target, Path));
          <<End_Of_Loop>>
       end loop;
    end InotifyRead;
