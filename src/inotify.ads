@@ -38,7 +38,7 @@ package Inotify is
 
    package Events_Container is new Vectors(Positive, Event_Data);
 
-   Events: Events_Container.Vector;
+   EventsList: Events_Container.Vector;
 
    procedure InotifyInit;
    procedure InotifyClose;
