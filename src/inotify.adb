@@ -17,7 +17,6 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with ada.text_io;
 
 package body Inotify is
 
@@ -74,7 +73,7 @@ package body Inotify is
    procedure AddWatch(Path: String) is
       Watch: int;
       Mask: constant int :=
-        CreateMask((Metadata, Closed_Write, Moved_From, Moved_To, Deleted));
+        CreateMask((Metadata, Moved_From, Moved_To, Deleted));
    begin
       Watch := inotify_add_watch(int(Instance), New_String(Path), Mask);
       if Watch > 0 then
@@ -117,7 +116,7 @@ package body Inotify is
 
    procedure InotifyRead is
       Buffer: array(1 .. 4096) of Character;
-      Length, NameLength: Integer;
+      Length, NameLength, Start: Integer;
       Path, Target: Unbounded_String;
       Event: Inotify_Events;
    begin
@@ -126,25 +125,29 @@ package body Inotify is
          if Length = -1 then
             exit;
          end if;
-         for Watch of Watches loop
-            if int(Character'Pos(Buffer(1))) = Watch.Id then
-               Path := Watch.Path;
-               NameLength := Character'Pos(Buffer(13)) + 17;
-               Target := Null_Unbounded_String;
-               for I in 17 .. NameLength loop
-                  exit when Character'Pos(Buffer(I)) = 0;
-                  Append(Target, Buffer(I));
-               end loop;
-               exit;
+         Start := 1;
+         loop
+            for Watch of Watches loop
+               if int(Character'Pos(Buffer(Start))) = Watch.Id then
+                  Path := Watch.Path;
+                  NameLength := Character'Pos(Buffer(Start + 12)) + 15 + Start;
+                  Target := Null_Unbounded_String;
+                  for I in Start + 16 .. NameLength loop
+                     exit when Character'Pos(Buffer(I)) = 0;
+                     Append(Target, Buffer(I));
+                  end loop;
+                  exit;
+               end if;
+            end loop;
+            if Character'Pos(Buffer(Start + 4)) > 0 then
+               Event := Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 4)));
+            else
+               Event := Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5)));
             end if;
+            EventsList.Append((Event, Target, Path));
+            exit when NameLength >= Length;
+            Start := NameLength + 1;
          end loop;
-         if Character'Pos(Buffer(5)) > 0 then
-            Event := Inotify_Events'Enum_val(Character'Pos(Buffer(5)));
-         else
-            Event := Inotify_Events'Enum_val(Character'Pos(Buffer(6)));
-         end if;
-         EventsList.Append((Event, Target, Path));
-         Ada.Text_IO.Put_Line("Event:" & Inotify_Events'Image(Event) & " Target: " & To_String(Target) & " Path: " & To_String(Path));
       end loop;
    end InotifyRead;
 
