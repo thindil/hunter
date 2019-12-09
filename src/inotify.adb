@@ -13,12 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with MainWindow; use MainWindow;
 
 package body Inotify is
 
@@ -125,16 +123,11 @@ package body Inotify is
       loop
          Length := Read(Instance, Buffer'Address, 4096);
          if Length = -1 then
-            goto End_Of_Loop;
+            exit;
          end if;
          for Watch of Watches loop
             if int(Character'Pos(Buffer(1))) = Watch.Id then
-               if Watch.Path /= CurrentDirectory then
-                  Path :=
-                    To_Unbounded_String(Simple_Name(To_String(Watch.Path)));
-               else
-                  Path := Watch.Path;
-               end if;
+               Path := Watch.Path;
                NameLength := Character'Pos(Buffer(13)) + 17;
                for I in 17 .. NameLength loop
                   exit when Character'Pos(Buffer(I)) = 0;
@@ -148,8 +141,7 @@ package body Inotify is
          else
             Event := Inotify_Events'Enum_val(Character'Pos(Buffer(6)));
          end if;
-         Events.Append((Event, Target, Path));
-         <<End_Of_Loop>>
+         EventsList.Append((Event, Target, Path));
       end loop;
    end InotifyRead;
 

@@ -16,9 +16,8 @@
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
-with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
+with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
-with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -45,21 +44,6 @@ package body RefreshData is
    Source_Id: G_Source_Id := No_Source_Id;
    -- ****
 
-   -- ****it* RefreshData/Items_Container
-   -- FUNCTION
-   -- Used to store inotify events data.
-   -- SOURCE
-   package Items_Container is new Indefinite_Hashed_Maps(String, Inotify_Events,
-      Ada.Strings.Hash, "=");
-   -- ****
-
-   -- ****iv* RefreshData/ItemsList
-   -- FUNCTION
-   -- Stores all information about pending inotify events.
-   -- SOURCE
-   ItemsList: Items_Container.Map;
-   -- ****
-
    -- ****if* RefreshData/UpdateItem
    -- FUNCTION
    -- Check if selected file or directory was modified and upgrade information
@@ -84,61 +68,71 @@ package body RefreshData is
       Directory: Dir_Type;
       Last: Natural;
       SubFileName: String(1 .. 1024);
+      Index: Natural := 0;
    begin
-      if ItemsList.Contains(FileName) then
-         case ItemsList(FileName) is
-            when Moved_From | Deleted =>
-               Remove(-(Model), NewIter);
-               ItemsList.Delete(FileName);
-               if NewIter = Null_Iter then
-                  if N_Children(Model) = 0 then
-                     CurrentSelected := CurrentDirectory;
-                  end if;
-                  PreviewItem(Builder);
-               end if;
-               Foreach(Model, UpdateItem'Access);
-               return True;
-            when Metadata | Closed_Write =>
-               Set
-                 (-(Model), Iter, 5,
-                  Image
-                    (Date => Modification_Time(FileName),
-                     Time_Zone => UTC_Time_Offset));
-               if not Is_Read_Accessible_File(FileName) then
-                  Set(-(Model), Iter, 3, "?");
-                  Set(-(Model), Iter, 4, 0);
-                  ItemsList.Delete(FileName);
-                  return False;
-               end if;
-               if Is_Directory(FileName) then
-                  Open(Directory, FileName);
-                  Size := 0;
-                  loop
-                     Read(Directory, SubFileName, Last);
-                     exit when Last = 0;
-                     if SubFileName(1 .. Last) /= "." and
-                       SubFileName(1 .. Last) /= ".." then
-                        Size := Size + 1;
-                     end if;
-                  end loop;
-                  Close(Directory);
-                  Set(-(Model), Iter, 3, File_Size'Image(Size));
-               elsif Is_Regular_File(FileName) then
-                  Size := Ada.Directories.Size(FileName);
-                  Set(-(Model), Iter, 3, CountFileSize(Size));
-                  if Size > File_Size(Gint'Last) then
-                     Size := File_Size(Gint'Last);
-                  end if;
-                  Set(-(Model), Iter, 4, Gint(Size));
-               end if;
-               if FileName = To_String(CurrentSelected) then
-                  PreviewItem(Builder);
-               end if;
-            when others =>
-               null;
-         end case;
-         ItemsList.Delete(FileName);
+      for I in EventsList.Iterate loop
+         if EventsList(I).Path = To_Unbounded_String(FileName) or
+           (EventsList(I).Path & "/" & EventsList(I).Target) =
+             To_Unbounded_String(FileName) then
+            Index := Events_Container.To_Index(I);
+            exit;
+         end if;
+      end loop;
+      if Index = 0 then
+         return False;
       end if;
+      case EventsList(Index).Event is
+         when Moved_From | Deleted =>
+            Remove(-(Model), NewIter);
+            EventsList.Delete(Index);
+            if NewIter = Null_Iter then
+               if N_Children(Model) = 0 then
+                  CurrentSelected := CurrentDirectory;
+               end if;
+               PreviewItem(Builder);
+            end if;
+            Foreach(Model, UpdateItem'Access);
+            return True;
+         when Metadata | Closed_Write =>
+            Set
+              (-(Model), Iter, 5,
+               Image
+                 (Date => Modification_Time(FileName),
+                  Time_Zone => UTC_Time_Offset));
+            if not Is_Read_Accessible_File(FileName) then
+               Set(-(Model), Iter, 3, "?");
+               Set(-(Model), Iter, 4, 0);
+               EventsList.Delete(Index);
+               return False;
+            end if;
+            if Is_Directory(FileName) then
+               Open(Directory, FileName);
+               Size := 0;
+               loop
+                  Read(Directory, SubFileName, Last);
+                  exit when Last = 0;
+                  if SubFileName(1 .. Last) /= "." and
+                    SubFileName(1 .. Last) /= ".." then
+                     Size := Size + 1;
+                  end if;
+               end loop;
+               Close(Directory);
+               Set(-(Model), Iter, 3, File_Size'Image(Size));
+            elsif Is_Regular_File(FileName) then
+               Size := Ada.Directories.Size(FileName);
+               Set(-(Model), Iter, 3, CountFileSize(Size));
+               if Size > File_Size(Gint'Last) then
+                  Size := File_Size(Gint'Last);
+               end if;
+               Set(-(Model), Iter, 4, Gint(Size));
+            end if;
+            if FileName = To_String(CurrentSelected) then
+               PreviewItem(Builder);
+            end if;
+         when others =>
+            null;
+      end case;
+      EventsList.Delete(Index);
       return False;
    end UpdateItem;
 
@@ -163,8 +157,8 @@ package body RefreshData is
       end RefilterList;
    begin
       if TemporaryStop or Settings.AutoRefreshInterval = 0 or
-        ItemsList.Length = 0 then
-         ItemsList.Clear;
+        EventsList.Length = 0 then
+         EventsList.Clear;
          return True;
       end if;
       Set_Sort_Func
@@ -172,19 +166,20 @@ package body RefreshData is
          EmptySortFiles'Access);
       Foreach
         (Gtk_List_Store(Get_Object(Builder, "fileslist")), UpdateItem'Access);
-      if ItemsList.Length = 0 then
+      if EventsList.Length = 0 then
          RefilterList;
          return True;
       end if;
-      for I in ItemsList.Iterate loop
-         if Containing_Directory(Items_Container.Key(I)) =
-           To_String(CurrentDirectory)
-           and then ItemsList(I) in Closed_Write | Moved_To then
-            AddItem(FilesList, FileIter, Items_Container.Key(I));
+      for Event of EventsList loop
+         if Event.Path = CurrentDirectory
+           and then Event.Event in Closed_Write | Moved_To then
+            AddItem
+              (FilesList, FileIter,
+               To_String(Event.Path & "/" & Event.Target));
          end if;
       end loop;
       RefilterList;
-      ItemsList.Clear;
+      EventsList.Clear;
       return True;
    end CheckItems;
 
@@ -212,7 +207,7 @@ package body RefreshData is
 
    procedure UpdateWatch(Path: String) is
    begin
-      ItemsList.Clear;
+      EventsList.Clear;
       RemoveWatches;
       AddWatches(Path);
    end UpdateWatch;
