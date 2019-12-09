@@ -72,11 +72,8 @@ package body Inotify is
       return int(Mask);
    end CreateMask;
 
-   procedure AddWatches(Path: String) is
+   procedure AddWatch(Path: String) is
       Watch: int;
-      Directory: Dir_Type;
-      Last: Natural;
-      FileName: String(1 .. 1024);
       Mask: constant int :=
         CreateMask((Metadata, Closed_Write, Moved_From, Moved_To, Deleted));
    begin
@@ -84,6 +81,14 @@ package body Inotify is
       if Watch > 0 then
          Watches.Append((Watch, To_Unbounded_String(Path)));
       end if;
+   end AddWatch;
+
+   procedure AddWatches(Path: String) is
+      Directory: Dir_Type;
+      Last: Natural;
+      FileName: String(1 .. 1024);
+   begin
+      AddWatch(Path);
       Open(Directory, Path);
       loop
          Read(Directory, FileName, Last);
@@ -94,15 +99,7 @@ package body Inotify is
          if Is_Directory(Path & Directory_Separator & FileName(1 .. Last))
            and then Is_Read_Accessible_File
              (Path & Directory_Separator & FileName(1 .. Last)) then
-            Watch :=
-              inotify_add_watch
-                (int(Instance), New_String(Path & "/" & FileName(1 .. Last)),
-                 Mask);
-            if Watch > 0 then
-               Watches.Append
-                 ((Watch,
-                   To_Unbounded_String(Path & "/" & FileName(1 .. Last))));
-            end if;
+            AddWatch(Path & "/" & FileName(1 .. Last));
          end if;
          <<End_Of_Loop>>
       end loop;
@@ -133,7 +130,8 @@ package body Inotify is
          for Watch of Watches loop
             if int(Character'Pos(Buffer(1))) = Watch.Id then
                if Watch.Path /= CurrentDirectory then
-                  Path := To_Unbounded_String(Simple_Name(To_String(Watch.Path)));
+                  Path :=
+                    To_Unbounded_String(Simple_Name(To_String(Watch.Path)));
                else
                   Path := Watch.Path;
                end if;
