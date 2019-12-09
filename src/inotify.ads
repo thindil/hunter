@@ -13,9 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Hashed_Maps; use Ada.Containers;
+with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Strings.Unbounded.Hash;
 
 package Inotify is
 
@@ -31,10 +30,15 @@ package Inotify is
       Deleted_Self => 16#0400#, Moved_Self => 16#0800#,
       Unmounted_Filesystem => 16#2000#);
 
-   package Events_Container is new Hashed_Maps(Unbounded_String, Inotify_Events,
-      Ada.Strings.Unbounded.Hash, "=");
+   type Event_Data is record
+      Event: Inotify_Events;
+      Target: Unbounded_String;
+      Path: Unbounded_String;
+   end record;
 
-   Events: Events_Container.Map;
+   package Events_Container is new Vectors(Positive, Event_Data);
+
+   Events: Events_Container.Vector;
 
    procedure InotifyInit;
    procedure InotifyClose;
