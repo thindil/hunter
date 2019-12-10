@@ -74,7 +74,7 @@ package body Inotify is
    procedure AddWatch(Path: String) is
       Watch: int;
       Mask: constant int :=
-        CreateMask((Metadata, Moved_From, Moved_To, Deleted));
+        CreateMask((Metadata, Moved_From, Moved_To, Deleted, Created));
    begin
       Watch := inotify_add_watch(int(Instance), New_String(Path), Mask);
       if Watch > 0 then
@@ -120,6 +120,7 @@ package body Inotify is
       Length, NameLength, Start: Integer;
       Path, Target: Unbounded_String;
       Event: Inotify_Events;
+      Added: Boolean;
    begin
       loop
          Length := Read(Instance, Buffer'Address, 4096);
@@ -150,7 +151,17 @@ package body Inotify is
                Event :=
                  Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5)));
             end if;
-            EventsList.Append((Event, Target, Path));
+            Added := False;
+            for Event2 of EventsList loop
+               if Event2.Path = Path and Event2.Target = Target then
+                  Event2.Event := Event;
+                  Added := True;
+                  exit;
+               end if;
+            end loop;
+            if not Added then
+               EventsList.Append((Event, Target, Path));
+            end if;
             exit when NameLength >= Length;
             Start := NameLength + 1;
          end loop;
