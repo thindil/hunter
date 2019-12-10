@@ -180,7 +180,9 @@ package body RefreshData is
       end if;
       for Event of EventsList loop
          if Event.Path = CurrentDirectory
-           and then Event.Event in Moved_To | Metadata then
+           and then
+           ((Event.Event in Moved_To | Metadata) and
+            Exists(To_String(Event.Path & "/" & Event.Target))) then
             AddItem
               (FilesList, FileIter,
                To_String(Event.Path & "/" & Event.Target));
