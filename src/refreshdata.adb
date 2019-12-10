@@ -97,7 +97,7 @@ package body RefreshData is
          when Moved_From | Deleted =>
             RemoveItem;
             return True;
-         when Metadata | Modified =>
+         when Metadata | Modified | Moved_To =>
             if not Exists(FileName) then
                RemoveItem;
                return True;
