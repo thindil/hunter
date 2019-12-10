@@ -217,9 +217,11 @@ package body RefreshData is
 
    procedure UpdateWatch(Path: String) is
    begin
+      TemporaryStop := True;
       EventsList.Clear;
       RemoveWatches;
       AddWatches(Path);
+      TemporaryStop := False;
    end UpdateWatch;
 
 end RefreshData;

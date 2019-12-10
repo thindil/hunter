@@ -17,6 +17,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with RefreshData; use RefreshData;
 
 package body Inotify is
 
@@ -125,6 +126,9 @@ package body Inotify is
          if Length = -1 then
             exit;
          end if;
+         if TemporaryStop then
+            goto End_Of_Loop;
+         end if;
          Start := 1;
          loop
             for Watch of Watches loop
@@ -140,14 +144,17 @@ package body Inotify is
                end if;
             end loop;
             if Character'Pos(Buffer(Start + 4)) > 0 then
-               Event := Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 4)));
+               Event :=
+                 Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 4)));
             else
-               Event := Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5)));
+               Event :=
+                 Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5)));
             end if;
             EventsList.Append((Event, Target, Path));
             exit when NameLength >= Length;
             Start := NameLength + 1;
          end loop;
+         <<End_Of_Loop>>
       end loop;
    end InotifyRead;
 
