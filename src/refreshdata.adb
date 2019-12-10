@@ -69,6 +69,18 @@ package body RefreshData is
       Last: Natural;
       SubFileName: String(1 .. 1024);
       Index: Natural := 0;
+      procedure RemoveItem is
+      begin
+         Remove(-(Model), NewIter);
+         EventsList.Delete(Index);
+         if NewIter = Null_Iter then
+            if N_Children(Model) = 0 then
+               CurrentSelected := CurrentDirectory;
+            end if;
+            PreviewItem(Builder);
+         end if;
+         Foreach(Model, UpdateItem'Access);
+      end RemoveItem;
    begin
       for I in EventsList.Iterate loop
          if EventsList(I).Path = To_Unbounded_String(FileName) or
@@ -83,17 +95,13 @@ package body RefreshData is
       end if;
       case EventsList(Index).Event is
          when Moved_From | Deleted =>
-            Remove(-(Model), NewIter);
-            EventsList.Delete(Index);
-            if NewIter = Null_Iter then
-               if N_Children(Model) = 0 then
-                  CurrentSelected := CurrentDirectory;
-               end if;
-               PreviewItem(Builder);
-            end if;
-            Foreach(Model, UpdateItem'Access);
+            RemoveItem;
             return True;
-         when Metadata | Closed_Write =>
+         when Metadata | Modified =>
+            if not Exists(FileName) then
+               RemoveItem;
+               return True;
+            end if;
             Set
               (-(Model), Iter, 5,
                Image
@@ -172,7 +180,7 @@ package body RefreshData is
       end if;
       for Event of EventsList loop
          if Event.Path = CurrentDirectory
-           and then Event.Event in Closed_Write | Moved_To then
+           and then Event.Event in Moved_To | Metadata then
             AddItem
               (FilesList, FileIter,
                To_String(Event.Path & "/" & Event.Target));
