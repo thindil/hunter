@@ -22,12 +22,25 @@ with RefreshData; use RefreshData;
 
 package body Inotify is
 
+   -- ****iv* Inotify/Instance
+   -- FUNCTION
+   -- inotify instance to read
+   -- SOURCE
    Instance: File_Descriptor;
+   -- ****
 
+   -- ****it* Inotify/Watch_Data
+   -- FUNCTION
+   -- Data structure for inotify watches
+   -- OPTIONS
+   -- Id   - Id of the inotify watch
+   -- Path - Full path which the inotify watch is watching
+   -- SOURCE
    type Watch_Data is record
       Id: int;
       Path: Unbounded_String;
    end record;
+   -- ****
 
    package Int_Container is new Vectors(Positive, Watch_Data);
 
