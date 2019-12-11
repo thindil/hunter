@@ -18,6 +18,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with RefreshData; use RefreshData;
+with Ada.Text_IO;
 
 package body Inotify is
 
@@ -151,6 +152,9 @@ package body Inotify is
                Event :=
                  Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5)));
             end if;
+            Ada.Text_IO.Put_Line
+              ("Event:" & Inotify_Events'Image(Event) & " Target: " &
+               To_String(Target) & " Path: " & To_String(Path));
             Added := False;
             for Event2 of EventsList loop
                if Event2.Path = Path and Event2.Target = Target then
@@ -161,6 +165,11 @@ package body Inotify is
             end loop;
             if not Added then
                EventsList.Append((Event, Target, Path));
+            end if;
+            if Event = Accessed
+              and then Is_Directory
+                (To_String(Path & Directory_Separator & Target)) then
+               AddWatch(To_String(Path & Directory_Separator & Target));
             end if;
             exit when NameLength >= Length;
             Start := NameLength + 1;
