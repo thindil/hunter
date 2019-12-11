@@ -42,9 +42,9 @@ package body Inotify is
    end record;
    -- ****
 
-   package Int_Container is new Vectors(Positive, Watch_Data);
+   package Watches_Container is new Vectors(Positive, Watch_Data);
 
-   Watches: Int_Container.Vector;
+   Watches: Watches_Container.Vector;
 
    type Mask_Array is array(Positive range <>) of Inotify_Events;
 
