@@ -13,12 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with RefreshData; use RefreshData;
-with Ada.Text_IO;
 
 package body Inotify is
 
@@ -116,6 +116,18 @@ package body Inotify is
       Watches.Clear;
    end RemoveWatches;
 
+   procedure RemoveWatch(Path: String) is
+   begin
+      for Watch of Watches loop
+         if To_String(Watch.Path) = Path then
+            if inotify_rm_watch(int(Instance), Watch.Id) = -1 then
+               null;
+            end if;
+            exit;
+         end if;
+      end loop;
+   end RemoveWatch;
+
    procedure InotifyRead is
       Buffer: array(1 .. 4096) of Character;
       Length, NameLength, Start: Integer;
@@ -152,9 +164,6 @@ package body Inotify is
                Event :=
                  Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5)));
             end if;
-            Ada.Text_IO.Put_Line
-              ("Event:" & Inotify_Events'Image(Event) & " Target: " &
-               To_String(Target) & " Path: " & To_String(Path));
             Added := False;
             for Event2 of EventsList loop
                if Event2.Path = Path and Event2.Target = Target then
@@ -166,10 +175,17 @@ package body Inotify is
             if not Added then
                EventsList.Append((Event, Target, Path));
             end if;
-            if Event = Accessed
+            if Event in Accessed | Moved_To
               and then Is_Directory
                 (To_String(Path & Directory_Separator & Target)) then
                AddWatch(To_String(Path & Directory_Separator & Target));
+            end if;
+            if Event in Modified | Moved_From
+              and then Is_Directory
+                (To_String(Path & Directory_Separator & Target))
+              and then not Exists
+                (To_String(Path & Directory_Separator & Target)) then
+               RemoveWatch(To_String(Path & Directory_Separator & Target));
             end if;
             exit when NameLength >= Length;
             Start := NameLength + 1;
