@@ -271,8 +271,12 @@ package body ShowItems is
          when Process_Died =>
             return;
       end;
-      Set_Label
-        (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Information"));
+      Set_Markup
+        (Gtk_Label
+           (Get_Label_Widget
+              (Gtk_Frame
+                 (Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 1)))),
+         "<b>" & Gettext("Information") & "</b>");
       Set_Visible_Child_Name(InfoStack, "info");
       if not Get_Active
           (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo"))) then
@@ -540,8 +544,12 @@ package body ShowItems is
          end;
       end if;
       <<Set_UI>>
-      Set_Label
-        (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Preview"));
+      Set_Markup
+        (Gtk_Label
+           (Get_Label_Widget
+              (Gtk_Frame
+                 (Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 1)))),
+         "<b>" & Gettext("Preview") & "</b>");
       Set_Visible_Child_Name(InfoStack, "preview");
       if Get_Active
           (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo"))) then
@@ -573,8 +581,13 @@ package body ShowItems is
       if SelectedItems.Length > 1 then
          Hide(Get_Child(PreviewScroll));
          Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
-         Set_Label
-           (Gtk_Label(Get_Object(Builder, "lblframe")), Gettext("Preview"));
+         Set_Markup
+           (Gtk_Label
+              (Get_Label_Widget
+                 (Gtk_Frame
+                    (Get_Child
+                       (Gtk_Box(Get_Object(Builder, "boxsecond")), 1)))),
+            "<b>" & Gettext("Preview") & "</b>");
          Set_Visible_Child_Name(InfoStack, "preview");
          return;
       elsif SelectedItems.Length = 0 then
@@ -764,6 +777,8 @@ package body ShowItems is
            Gtk_Cell_Renderer_Pixbuf_New;
          Column: Gtk_Tree_View_Column;
          Value: GValue;
+         PreviewFrame: constant Gtk_Frame := Gtk_Frame_New;
+         PreviewLabel: constant Gtk_Label := Gtk_Label_New;
       begin
          Set_Enable_Search(DirectoryView, False);
          Set_Headers_Clickable(DirectoryView, True);
@@ -804,9 +819,12 @@ package body ShowItems is
          Scroll := Gtk_Scrolled_Window_New;
          Add(Scroll, DirectoryView);
          Add_Named(InfoStack, Scroll, "destination");
-         Add
-           (Gtk_Frame(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 1)),
-            InfoStack);
+         Set_Shadow_Type(PreviewFrame, Shadow_None);
+         Set_Label_Align(PreviewFrame, 0.5, 0.5);
+         Set_Markup(PreviewLabel, "<b>" & Gettext("Preview") & "</b>");
+         Set_Label_Widget(PreviewFrame, PreviewLabel);
+         Add(PreviewFrame, InfoStack);
+         Pack_Start(Gtk_Box(Get_Object(Builder, "boxsecond")), PreviewFrame);
       end;
    end CreateShowItemsUI;
 

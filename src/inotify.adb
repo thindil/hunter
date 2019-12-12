@@ -196,7 +196,7 @@ package body Inotify is
    -- Path - Full path from which inotify watch will be removed
    -- SOURCE
    procedure RemoveWatch(Path: String) is
-      -- ****
+   -- ****
    begin
       for Watch of Watches loop
          if To_String(Watch.Path) = Path then
