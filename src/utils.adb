@@ -164,7 +164,7 @@ package body Utils is
                "<b>" & Gettext("Destination directory") & "</b>");
             Set_Visible_Child_Name(InfoStack, "destination");
          else
-            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+            Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
          end if;
          Set_Visible
            (Gtk_Widget(Get_Object(Builder, "btntoolcancel")), not Finished);

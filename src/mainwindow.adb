@@ -19,6 +19,7 @@ with Ada.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
+with Gtk.Box; use Gtk.Box;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
@@ -180,7 +181,7 @@ package body MainWindow is
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
-      Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+      Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
       CurrentSelected := Null_Unbounded_String;
       ToggleToolButtons(NewAction, True);
       ShowItem(Builder);
@@ -223,7 +224,7 @@ package body MainWindow is
             Hide(Self);
          end if;
          if NewAction = CREATELINK then
-            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+            Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
             Set_Visible_Child_Name(InfoStack, "preview");
             NewAction := CREATEFILE;
          end if;

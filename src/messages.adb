@@ -15,6 +15,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Box; use Gtk.Box;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Label; use Gtk.Label;
@@ -184,7 +185,7 @@ package body Messages is
             if Response_Id = Gint(Gtk_Response_Reject) then
                HideMessage(Builder);
                ToggleToolButtons(NewAction, True);
-               Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+               Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
                Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
                Reload(Builder);
                return;
@@ -197,7 +198,7 @@ package body Messages is
             if Response_Id = Gint(Gtk_Response_Reject) then
                HideMessage(Builder);
                ToggleToolButtons(NewAction, True);
-               Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+               Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
                Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
                Reload(Builder);
                return;
