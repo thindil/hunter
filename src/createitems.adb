@@ -15,6 +15,8 @@
 
 with Ada.Directories; use Ada.Directories;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Box; use Gtk.Box;
+with Gtk.Frame; use Gtk.Frame;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Stack; use Gtk.Stack;
@@ -199,9 +201,13 @@ package body CreateItems is
            (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
             Gettext("Create new link to selected file or directory."));
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         Set_Label
-           (Gtk_Label(Get_Object(Builder, "lblframe")),
-            Gettext("Destination directory"));
+         Set_Markup
+           (Gtk_Label
+              (Get_Label_Widget
+                 (Gtk_Frame
+                    (Get_Child
+                       (Gtk_Box(Get_Object(Builder, "boxsecond")), 1)))),
+            "<b>" & Gettext("Destination directory") & "</b>");
          Set_Visible_Child_Name(InfoStack, "destination");
       else
          NewAction := CREATEDIRECTORY;

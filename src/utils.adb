@@ -17,6 +17,8 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Box; use Gtk.Box;
+with Gtk.Frame; use Gtk.Frame;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.List_Store; use Gtk.List_Store;
@@ -153,9 +155,13 @@ package body Utils is
       if (Action = COPY or Action = MOVE) then
          if not Finished then
             LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-            Set_Label
-              (Gtk_Label(Get_Object(Builder, "lblframe")),
-               Gettext("Destination directory"));
+            Set_Markup
+              (Gtk_Label
+                 (Get_Label_Widget
+                    (Gtk_Frame
+                       (Get_Child
+                          (Gtk_Box(Get_Object(Builder, "boxsecond")), 1)))),
+               "<b>" & Gettext("Destination directory") & "</b>");
             Set_Visible_Child_Name(InfoStack, "destination");
          else
             Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
