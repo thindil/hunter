@@ -34,6 +34,7 @@ with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
 with Gtk.Check_Button; use Gtk.Check_Button;
 with Gtk.Enums; use Gtk.Enums;
+with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.Frame; use Gtk.Frame;
 with Gtk.Grid; use Gtk.Grid;
 with Gtk.Image; use Gtk.Image;
@@ -824,6 +825,9 @@ package body ShowItems is
          Set_Markup(PreviewLabel, "<b>" & Gettext("Preview") & "</b>");
          Set_Label_Widget(PreviewFrame, PreviewLabel);
          Add(PreviewFrame, InfoStack);
+         Pack_Start
+           (Gtk_Box(Get_Object(Builder, "boxsecond")), Gtk_Flow_Box_New,
+            False);
          Pack_Start(Gtk_Box(Get_Object(Builder, "boxsecond")), PreviewFrame);
       end;
    end CreateShowItemsUI;

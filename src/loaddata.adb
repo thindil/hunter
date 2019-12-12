@@ -24,6 +24,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
+with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
@@ -208,7 +209,9 @@ package body LoadData is
             else
                FilesSort :=
                  Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2"));
-               ButtonBox := Gtk_Flow_Box(Get_Object(Builder, "boxpath2"));
+               ButtonBox :=
+                 Gtk_Flow_Box
+                   (Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
             end if;
             Foreach(ButtonBox, RemovePathButtons'Access);
             CurrentDirectory :=

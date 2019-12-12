@@ -65,7 +65,7 @@ package body CreateItems is
          Set_Text(Self, "");
          Hide(Gtk_Widget(Self));
          if NewAction = CREATELINK then
-            Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+            Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
             Set_Visible_Child_Name(InfoStack, "preview");
             NewAction := CREATEFILE;
          end if;
@@ -145,7 +145,8 @@ package body CreateItems is
                   if not Success then
                      ShowMessage(Gettext("Can't create symbolic link."));
                   end if;
-                  Hide(Gtk_Widget(Get_Object(Builder, "boxpath2")));
+                  Hide
+                    (Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
                   Set_Visible_Child_Name(InfoStack, "preview");
                   NewAction := CREATEFILE;
                end;
