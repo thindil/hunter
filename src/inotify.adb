@@ -42,27 +42,71 @@ package body Inotify is
    end record;
    -- ****
 
+   -- ****it* Inotify/Watches_Container
+   -- FUNCTION
+   -- Used to store information about inotify watches
+   -- SOURCE
    package Watches_Container is new Vectors(Positive, Watch_Data);
+   -- ****
 
+   -- ****iv* Inotify/Watches
+   -- FUNCTION
+   -- Stores information about all active inotify watches
+   -- SOURCE
    Watches: Watches_Container.Vector;
+   -- ****
 
+   -- ****it* Inotify/Mask_Array
+   -- FUNCTION
+   -- Array of inotify events to catch
+   -- SOURCE
    type Mask_Array is array(Positive range <>) of Inotify_Events;
+   -- ****
 
+   -- ****if* Inotify/inotify_init
+   -- FUNCTION
+   -- Binding to the C function
+   -- RESULT
+   -- File descriptor used for a newly created inotify instance
+   -- SOURCE
    function inotify_init return int with
       Import => True,
       Convention => C,
       External_Name => "inotify_init";
+      -- ****
 
+      -- ****if* Inotify/inotify_add_watch
+      -- FUNCTION
+      -- Binding to the C function
+      -- PARAMETERS
+      -- fd       - inotify instance to which add a new watch
+      -- pathname - full path to which a new inotify watch will be added
+      -- mask     - list of inotify events to listen
+      -- RESULT
+      -- -1 if inotify watch cannot be added, 0 if exists, otherwise index of
+      -- newly created watch
+      -- SOURCE
    function inotify_add_watch
      (fd: int; pathname: chars_ptr; mask: int) return int with
       Import => True,
       Convention => C,
       External_Name => "inotify_add_watch";
+      -- ****
 
+      -- ****if* Inotify/inotify_rm_watch
+      -- FUNCTION
+      -- Binding to the C function
+      -- PARAMETERS
+      -- fd - inotify instance from which selected watch will be removed
+      -- wd - inotify watch index to remove
+      -- RESULT
+      -- 0 if inotify watch was succesfully removed, -1 when error occurs
+      -- SOURCE
    function inotify_rm_watch(fd, wd: int) return int with
       Import => True,
       Convention => C,
       External_Name => "inotify_rm_watch";
+      -- ****
 
    procedure InotifyInit is
    begin
@@ -74,7 +118,16 @@ package body Inotify is
       Close(Instance);
    end InotifyClose;
 
+   -- ****if* Inotify/CreateMask
+   -- FUNCTION
+   -- Convert list of inotify events to mask value for C
+   -- PARAMETERS
+   -- Events - list of inotify events to convert
+   -- RESULT
+   -- Mask value for C
+   -- SOURCE
    function CreateMask(Events: Mask_Array) return int is
+      -- ****
       type Unsigned_Integer is mod 2**Integer'Size;
       Mask: Unsigned_Integer :=
         Unsigned_Integer(Inotify_Events'Enum_Rep(Events(1)));
@@ -85,7 +138,14 @@ package body Inotify is
       return int(Mask);
    end CreateMask;
 
+   -- ****if* Inotify/AddWatch
+   -- FUNCTION
+   -- Add inotify watch to selected path
+   -- PARAMETERS
+   -- Path - Full path to which new inotify watch will be added
+   -- SOURCE
    procedure AddWatch(Path: String) is
+      -- ****
       Watch: int;
       Mask: constant int :=
         CreateMask((Metadata, Moved_From, Moved_To, Deleted, Created));
@@ -129,7 +189,14 @@ package body Inotify is
       Watches.Clear;
    end RemoveWatches;
 
+   -- ****if* Inotify/RemoveWatch
+   -- FUNCTION
+   -- Remove selected watch
+   -- PARAMETERS
+   -- Path - Full path from which inotify watch will be removed
+   -- SOURCE
    procedure RemoveWatch(Path: String) is
+      -- ****
    begin
       for Watch of Watches loop
          if To_String(Watch.Path) = Path then
