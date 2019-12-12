@@ -75,7 +75,7 @@ All notable changes to this project will be documented in this file.
 - Option to show information about finished copying, moving and deleting files
   and directories
 - Info about progress of copying, moving or deleting files and directories
-- Option to rename instead of overwritting copied or moved file or directory
+- Option to rename instead of overwriting copied or moved file or directory
   when in destination directory exists something with that same name.
 
 ### Changed
@@ -164,7 +164,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Updated RoboDOC configuration file
-- Updated code documenation
+- Updated code documentation
 - Updated interface
 - Updated README.md
 - Program icon
@@ -172,7 +172,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Typo in code documentation
 - Detecting files and directories name with space inside
-- Memory leaks when previewin images
+- Memory leaks when previewing images
 - Shortcut for one of buttons in current directory path
 - Showing path buttons for long paths
 - Showing modification time for invalid links
