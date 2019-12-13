@@ -14,6 +14,9 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Gtk.GEntry; use Gtk.GEntry;
+with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_View; use Gtk.Tree_View;
+with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Glib.Object; use Glib.Object;
 
 -- ****h* Hunter/ActivateItems
@@ -22,6 +25,18 @@ with Glib.Object; use Glib.Object;
 -- SOURCE
 package ActivateItems is
 -- ****
+
+   -- ****if* ActivateItems/ActivateFile
+   -- FUNCTION
+   -- "Activate" selected file or directory. Action depends on what selected
+   -- item is. For example: it go to selected directory, opens text files in
+   -- editor and so on.
+   -- PARAMETERS
+   -- SOURCE
+   procedure ActivateFile
+     (Self: access Gtk_Tree_View_Record'Class; Path: Gtk_Tree_Path;
+      Column: not null access Gtk_Tree_View_Column_Record'Class);
+      -- ****
 
    -- ****f* ActivateItems/OpenItemWith
    -- FUNCTION

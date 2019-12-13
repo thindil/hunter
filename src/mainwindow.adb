@@ -65,6 +65,8 @@ with Utils; use Utils;
 
 package body MainWindow is
 
+   DirectoryView: Gtk_Tree_View;
+
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin
       SavePreferences;
@@ -85,7 +87,7 @@ package body MainWindow is
       if Get_String(Model, Iter, 0) =
         Simple_Name(To_String(CurrentSelected)) then
          Set_Cursor
-           (Gtk_Tree_View(Get_Object(Builder, "treefiles")), Path, null,
+           (DirectoryView, Path, null,
             False);
          return True;
       end if;
@@ -106,7 +108,7 @@ package body MainWindow is
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       ToggleActionButtons;
       if N_Children
-          (Get_Model(Gtk_Tree_View(Get_Object(Object, "treefiles"))),
+          (Get_Model(DirectoryView),
            Null_Iter) =
         0 then
          CurrentSelected := CurrentDirectory;
@@ -118,15 +120,15 @@ package body MainWindow is
          if OldSelected = Null_Unbounded_String
            or else not Ada.Directories.Exists(To_String(OldSelected)) then
             Set_Cursor
-              (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
+              (DirectoryView,
                Gtk_Tree_Path_New_From_String("0"), null, False);
          else
             CurrentSelected := OldSelected;
             Foreach
-              (Get_Model(Gtk_Tree_View(Get_Object(Object, "treefiles"))),
+              (Get_Model(DirectoryView),
                SetSelected'Access);
          end if;
-         Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
+         Grab_Focus(DirectoryView);
       end if;
       ShowItem(Object);
    end Reload;
@@ -326,15 +328,13 @@ package body MainWindow is
       pragma Unreferenced(Self);
       -- ****
       FilesMenu: Gtk_Menu;
-      FilesTree: Gtk_Tree_View;
    begin
       if Event.Button /= 3 then
          return False;
       end if;
       FilesMenu := Gtk_Menu(Get_Object(Builder, "filesmenu"));
-      FilesTree := Gtk_Tree_View(Get_Object(Builder, "treefiles"));
-      if Count_Selected_Rows(Get_Selection(FilesTree)) =
-        N_Children(Get_Model(FilesTree)) then
+      if Count_Selected_Rows(Get_Selection(DirectoryView)) =
+        N_Children(Get_Model(DirectoryView)) then
          Set_Label
            (Gtk_Menu_Item(Get_Object(Builder, "menuselectall")),
             Gettext("Unselect all"));
@@ -398,7 +398,7 @@ package body MainWindow is
       loop
          if Get_String(FilesList, FilesIter, 0) = To_String(FileName) then
             Set_Cursor
-              (Gtk_Tree_View(Get_Object(Builder, "treefiles")),
+              (DirectoryView,
                Get_Path(FilesList, FilesIter), null, False);
             exit;
          end if;
@@ -408,15 +408,14 @@ package body MainWindow is
    end ShowFile;
 
    procedure SelectAll(Object: access Gtkada_Builder_Record'Class) is
-      FilesTree: constant Gtk_Tree_View :=
-        Gtk_Tree_View(Get_Object(Object, "treefiles"));
-      Selection: constant Gtk_Tree_Selection := Get_Selection(FilesTree);
+      pragma Unreferenced(Object);
+      Selection: constant Gtk_Tree_Selection := Get_Selection(DirectoryView);
    begin
-      if Count_Selected_Rows(Selection) = N_Children(Get_Model(FilesTree)) then
+      if Count_Selected_Rows(Selection) = N_Children(Get_Model(DirectoryView)) then
          Unselect_All(Selection);
          Set_Cursor
-           (FilesTree, Gtk_Tree_Path_New_From_String("0"), null, False);
-         Grab_Focus(Gtk_Widget(FilesTree));
+           (DirectoryView, Gtk_Tree_Path_New_From_String("0"), null, False);
+         Grab_Focus(DirectoryView);
       else
          Select_All(Selection);
       end if;
@@ -454,8 +453,6 @@ package body MainWindow is
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "mainwindow")),
          WindowKeyPressed'Access);
-      On_Button_Press_Event
-        (Gtk_Widget(Get_Object(Builder, "treefiles")), ShowFilesMenu'Access);
       Add_Entry("<mainwindow>/reload", GDK_LC_r, Mod1_Mask);
       Add_Entry("<mainwindow>/goup", GDK_LC_u, Mod1_Mask);
       Add_Entry("<mainwindow>/path1", GDK_1, Mod1_Mask);
@@ -497,9 +494,6 @@ package body MainWindow is
       Set_Default_Size
         (Gtk_Window(Get_Object(Builder, "mainwindow")),
          Gint(Settings.WindowWidth), Gint(Settings.WindowHeight));
-      Attach_To_Widget
-        (Gtk_Menu(Get_Object(Builder, "filesmenu")),
-         Gtk_Widget(Get_Object(Builder, "treefiles")), null);
       Set_Menu
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btndelete")),
          Gtk_Widget(Get_Object(Builder, "deletemenu")));
@@ -513,10 +507,10 @@ package body MainWindow is
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
       Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
+      DirectoryView :=
+         Gtk_Tree_View_New_With_Model
+            (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
       declare
-         DirectoryView: constant Gtk_Tree_View :=
-           Gtk_Tree_View_New_With_Model
-             (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
          FilesScroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
          Area: Gtk_Cell_Area_Box;
          Renderer: Gtk_Cell_Renderer_Text := Gtk_Cell_Renderer_Text_New;
@@ -572,7 +566,12 @@ package body MainWindow is
             return;
          end if;
          Set_Visible(Get_Column(DirectoryView, 2), Settings.ShowLastModified);
-         --On_Row_Activated(DirectoryView, SetDestination'Access);
+         On_Row_Activated(DirectoryView, ActivateFile'Access);
+         On_Button_Press_Event
+            (DirectoryView, ShowFilesMenu'Access);
+         Attach_To_Widget
+            (Gtk_Menu(Get_Object(Builder, "filesmenu")),
+         DirectoryView, null);
          Add(FilesScroll, DirectoryView);
          Pack_Start
            (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
@@ -596,7 +595,7 @@ package body MainWindow is
             Get_Allocated_Width
               (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
       end if;
-      Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+      Grab_Focus(DirectoryView);
       StartTimer(To_String(CurrentDirectory));
       Setting := False;
    end CreateMainWindow;

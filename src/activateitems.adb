@@ -33,11 +33,11 @@ package body ActivateItems is
    -- item is. For example: it go to selected directory, opens text files in
    -- editor and so on.
    -- PARAMETERS
-   -- User_Data - Which Gtk Tree View is active: main or destination for
-   --             copy or move files and directories.
    -- SOURCE
-   procedure ActivateFile(User_Data: access GObject_Record'Class) is
-      pragma Unreferenced(User_Data);
+   procedure ActivateFile
+     (Self: access Gtk_Tree_View_Record'Class; Path: Gtk_Tree_Path;
+      Column: not null access Gtk_Tree_View_Column_Record'Class) is
+      pragma Unreferenced(Self, Path, Column);
       -- ****
    begin
       if Is_Directory(To_String(CurrentSelected)) then
@@ -190,7 +190,6 @@ package body ActivateItems is
 
    procedure CreateActivateUI is
    begin
-      Register_Handler(Builder, "Activate_File", ActivateFile'Access);
       Register_Handler(Builder, "Start_Open_With", StartOpenWith'Access);
       Register_Handler(Builder, "Execute_File", ExecuteFile'Access);
    end CreateActivateUI;
