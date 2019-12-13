@@ -31,6 +31,7 @@ with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Main; use Gtk.Main;
+with Gtk.Paned; use Gtk.Paned;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
@@ -211,7 +212,11 @@ package body LoadData is
                  Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2"));
                ButtonBox :=
                  Gtk_Flow_Box
-                   (Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
+                   (Get_Child
+                      (Gtk_Box
+                         (Get_Child2
+                            (Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                       0));
             end if;
             Foreach(ButtonBox, RemovePathButtons'Access);
             CurrentDirectory :=

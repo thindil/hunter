@@ -19,6 +19,7 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Label; use Gtk.Label;
+with Gtk.Paned; use Gtk.Paned;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Main; use Glib.Main;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -185,7 +186,12 @@ package body Messages is
             if Response_Id = Gint(Gtk_Response_Reject) then
                HideMessage(Builder);
                ToggleToolButtons(NewAction, True);
-               Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
+               Hide
+                 (Get_Child
+                    (Gtk_Box
+                       (Get_Child2
+                          (Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                     0));
                Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
                Reload(Builder);
                return;
@@ -198,7 +204,12 @@ package body Messages is
             if Response_Id = Gint(Gtk_Response_Reject) then
                HideMessage(Builder);
                ToggleToolButtons(NewAction, True);
-               Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
+               Hide
+                 (Get_Child
+                    (Gtk_Box
+                       (Get_Child2
+                          (Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                     0));
                Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
                Reload(Builder);
                return;

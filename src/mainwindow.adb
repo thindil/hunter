@@ -181,7 +181,10 @@ package body MainWindow is
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
-      Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
+      Hide
+        (Get_Child
+           (Gtk_Box(Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned")))),
+            0));
       CurrentSelected := Null_Unbounded_String;
       ToggleToolButtons(NewAction, True);
       ShowItem(Builder);
@@ -224,7 +227,11 @@ package body MainWindow is
             Hide(Self);
          end if;
          if NewAction = CREATELINK then
-            Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
+            Hide
+              (Get_Child
+                 (Gtk_Box
+                    (Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                  0));
             Set_Visible_Child_Name(InfoStack, "preview");
             NewAction := CREATEFILE;
          end if;
@@ -513,7 +520,7 @@ package body MainWindow is
                     (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
                0.3));
       else
-         Hide(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+         Hide(Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned"))));
          Hide(Gtk_Widget(Get_Object(Builder, "btnpreview")));
          Hide(Gtk_Widget(Get_Object(Builder, "btnfileinfo")));
          Set_Position

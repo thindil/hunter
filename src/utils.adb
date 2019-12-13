@@ -150,7 +150,7 @@ package body Utils is
                  (Get_Allocated_Width
                     (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
                0.3));
-         Show_All(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+         Show_All(Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned"))));
       end if;
       if (Action = COPY or Action = MOVE) then
          if not Finished then
@@ -160,11 +160,19 @@ package body Utils is
                  (Get_Label_Widget
                     (Gtk_Frame
                        (Get_Child
-                          (Gtk_Box(Get_Object(Builder, "boxsecond")), 1)))),
+                          (Gtk_Box
+                             (Get_Child2
+                                (Gtk_Paned
+                                   (Get_Object(Builder, "filespaned")))),
+                           1)))),
                "<b>" & Gettext("Destination directory") & "</b>");
             Set_Visible_Child_Name(InfoStack, "destination");
          else
-            Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
+            Hide
+              (Get_Child
+                 (Gtk_Box
+                    (Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                  0));
          end if;
          Set_Visible
            (Gtk_Widget(Get_Object(Builder, "btntoolcancel")), not Finished);
@@ -198,7 +206,7 @@ package body Utils is
               (Gtk_Paned(Get_Object(Builder, "filespaned")),
                Get_Allocated_Width
                  (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
-            Hide(Gtk_Widget(Get_Object(Builder, "boxsecond")));
+            Hide(Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned"))));
          else
             SetBookmarkButton;
          end if;
