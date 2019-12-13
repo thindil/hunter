@@ -19,11 +19,15 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Box; use Gtk.Box;
 with Gtk.Container; use Gtk.Container;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Shell; use Gtk.Menu_Shell;
+with Gtk.Paned; use Gtk.Paned;
+with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -79,7 +83,17 @@ package body Bookmarks is
       if Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
          ToggleToolButtons(NewAction, True);
          Set_Title
-           (Gtk_Tree_View_Column(Get_Object(Builder, "modifiedcolumn")),
+           (Get_Column
+              (Gtk_Tree_View
+                 (Get_Child
+                    (Gtk_Scrolled_Window
+                       (Get_Child
+                          (Gtk_Box
+                             (Get_Child1
+                                (Gtk_Paned
+                                   (Get_Object(Builder, "filespaned")))),
+                           2)))),
+               2),
             Gettext("Modified"));
          SetDeleteTooltip;
       end if;

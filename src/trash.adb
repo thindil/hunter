@@ -22,12 +22,15 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
+with Gtk.Box; use Gtk.Box;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Paned; use Gtk.Paned;
+with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
@@ -136,7 +139,16 @@ package body Trash is
          end loop;
       end if;
       Set_Title
-        (Gtk_Tree_View_Column(Get_Object(Object, "modifiedcolumn")),
+        (Get_Column
+           (Gtk_Tree_View
+              (Get_Child
+                 (Gtk_Scrolled_Window
+                    (Get_Child
+                       (Gtk_Box
+                          (Get_Child1
+                             (Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                        2)))),
+            2),
          Gettext("Deleted"));
       ToggleToolButtons(SHOWTRASH);
       Show_All(Gtk_Widget(Get_Object(Object, "btnpreferences")));
