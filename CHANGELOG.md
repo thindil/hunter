@@ -13,7 +13,7 @@ All notable changes to this project will be documented in this file.
 - Simplified autorefresh directory listing setting
 
 ### Fixed
-- Typos in contributing guide
+- Typos in contributing guide and changelog
 - Searching for files or directories during copying or moving
 
 ## [1.1] - 2019-10-28
