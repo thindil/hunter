@@ -345,7 +345,7 @@ package body Preferences is
       if NewAction /= COPY and NewAction /= MOVE and
         NewAction /= CREATELINK then
          Set_Visible
-           (Gtk_Widget(Get_Object(Builder, "boxsecond")),
+           (Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned"))),
             Settings.ShowPreview);
          Set_Visible
            (Gtk_Widget(Get_Object(Builder, "btnpreview")),

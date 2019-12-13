@@ -19,6 +19,7 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Frame; use Gtk.Frame;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Label; use Gtk.Label;
+with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
 with Gdk.Event; use Gdk.Event;
@@ -65,7 +66,11 @@ package body CreateItems is
          Set_Text(Self, "");
          Hide(Gtk_Widget(Self));
          if NewAction = CREATELINK then
-            Hide(Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
+            Hide
+              (Get_Child
+                 (Gtk_Box
+                    (Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                  0));
             Set_Visible_Child_Name(InfoStack, "preview");
             NewAction := CREATEFILE;
          end if;
@@ -146,7 +151,11 @@ package body CreateItems is
                      ShowMessage(Gettext("Can't create symbolic link."));
                   end if;
                   Hide
-                    (Get_Child(Gtk_Box(Get_Object(Builder, "boxsecond")), 0));
+                    (Get_Child
+                       (Gtk_Box
+                          (Get_Child2
+                             (Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                        0));
                   Set_Visible_Child_Name(InfoStack, "preview");
                   NewAction := CREATEFILE;
                end;
@@ -207,7 +216,10 @@ package body CreateItems is
               (Get_Label_Widget
                  (Gtk_Frame
                     (Get_Child
-                       (Gtk_Box(Get_Object(Builder, "boxsecond")), 1)))),
+                       (Gtk_Box
+                          (Get_Child2
+                             (Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                        1)))),
             "<b>" & Gettext("Destination directory") & "</b>");
          Set_Visible_Child_Name(InfoStack, "destination");
       else
