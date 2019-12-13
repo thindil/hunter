@@ -35,7 +35,6 @@ with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
-with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
@@ -64,8 +63,6 @@ with Trash; use Trash;
 with Utils; use Utils;
 
 package body MainWindow is
-
-   DirectoryView: Gtk_Tree_View;
 
    procedure Quit(Object: access Gtkada_Builder_Record'Class) is
    begin

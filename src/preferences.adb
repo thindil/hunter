@@ -322,7 +322,7 @@ package body Preferences is
    begin
       Settings.ShowLastModified := State;
       Set_Visible
-        (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 2),
+        (Get_Column(DirectoryView, 2),
          Settings.ShowLastModified);
       return True;
    end SetLastModified;
