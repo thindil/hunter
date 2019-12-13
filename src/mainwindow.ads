@@ -15,6 +15,7 @@
 
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/MainWindow
@@ -103,6 +104,8 @@ package MainWindow is
    -- SOURCE
    DestinationPath: Unbounded_String;
    -- ****
+
+   DirectoryView: Gtk_Tree_View;
 
    -- ****f* MainWindow/Quit
    -- FUNCTION

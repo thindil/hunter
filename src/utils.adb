@@ -266,7 +266,7 @@ package body Utils is
       Visible: Boolean;
    begin
       if N_Children
-          (Get_Model(Gtk_Tree_View(Get_Object(Builder, "treefiles"))),
+          (Get_Model(DirectoryView),
            Null_Iter) =
         0 then
          Visible := False;

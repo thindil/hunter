@@ -578,7 +578,7 @@ package body ShowItems is
       SelectedItems.Clear;
       Selected_Foreach
         (Gtk.Tree_View.Get_Selection
-           (Gtk_Tree_View(Get_Object(Object, "treefiles"))),
+           (DirectoryView),
          GetSelectedItems'Access);
       if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncut"))) then
          MoveItemsList := SelectedItems;

@@ -292,16 +292,16 @@ package body Trash is
       Setting := False;
       Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
       if N_Children
-          (Get_Model(Gtk_Tree_View(Get_Object(Object, "treefiles"))),
+          (Get_Model(DirectoryView),
            Null_Iter) =
         0 then
          CurrentSelected :=
            To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files/");
       else
          Set_Cursor
-           (Gtk_Tree_View(Get_Object(Object, "treefiles")),
+           (DirectoryView,
             Gtk_Tree_Path_New_From_String("0"), null, False);
-         Grab_Focus(Gtk_Widget(Get_Object(Object, "treefiles")));
+         Grab_Focus(DirectoryView);
       end if;
       ShowItem(Object);
       NewAction := SHOWTRASH;

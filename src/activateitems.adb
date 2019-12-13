@@ -27,18 +27,10 @@ with Utils; use Utils;
 
 package body ActivateItems is
 
-   -- ****if* ActivateItems/ActivateFile
-   -- FUNCTION
-   -- "Activate" selected file or directory. Action depends on what selected
-   -- item is. For example: it go to selected directory, opens text files in
-   -- editor and so on.
-   -- PARAMETERS
-   -- SOURCE
    procedure ActivateFile
      (Self: access Gtk_Tree_View_Record'Class; Path: Gtk_Tree_Path;
       Column: not null access Gtk_Tree_View_Column_Record'Class) is
       pragma Unreferenced(Self, Path, Column);
-      -- ****
    begin
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
@@ -86,6 +78,12 @@ package body ActivateItems is
          end;
       end if;
    end ActivateFile;
+
+   procedure ActivateFileTemp(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+   begin
+      ActivateFile(DirectoryView, Gtk_Tree_Path_New, Get_Column(DirectoryView, 0));
+   end ActivateFileTemp;
 
    -- ****if* ActivateItems/StartOpenWith
    -- FUNCTION
@@ -190,6 +188,7 @@ package body ActivateItems is
 
    procedure CreateActivateUI is
    begin
+      Register_Handler(Builder, "Activate_File", ActivateFileTemp'Access);
       Register_Handler(Builder, "Start_Open_With", StartOpenWith'Access);
       Register_Handler(Builder, "Execute_File", ExecuteFile'Access);
    end CreateActivateUI;

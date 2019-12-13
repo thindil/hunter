@@ -48,7 +48,7 @@ package body SearchItems is
       else
          Set_Text(Gtk_GEntry(SearchEntry), "");
          Hide(SearchEntry);
-         Grab_Focus(Gtk_Widget(Get_Object(Builder, "treefiles")));
+         Grab_Focus(DirectoryView);
       end if;
    end ToggleSearch;
 
@@ -100,7 +100,7 @@ package body SearchItems is
       -- ****
       FilterName, ListName: Unbounded_String;
       TreeView: Gtk_Tree_View :=
-        Gtk_Tree_View(Get_Object(Builder, "treefiles"));
+        DirectoryView;
    begin
       FilterName := To_Unbounded_String("filesfilter");
       ListName := To_Unbounded_String("fileslist");
