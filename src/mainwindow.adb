@@ -20,12 +20,16 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Box; use Gtk.Box;
+with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
+with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
+with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Paned; use Gtk.Paned;
+with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
@@ -38,6 +42,8 @@ with Gtk.Window; use Gtk.Window;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
+with Glib.Properties; use Glib.Properties;
+with Glib.Values; use Glib.Values;
 with Gdk.Event; use Gdk.Event;
 with Gdk.Types; use Gdk.Types;
 with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
@@ -507,9 +513,71 @@ package body MainWindow is
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
       Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
-      Set_Visible
-        (Get_Column(Gtk_Tree_View(Get_Object(Builder, "treefiles")), 2),
-         Settings.ShowLastModified);
+      declare
+         DirectoryView: constant Gtk_Tree_View :=
+           Gtk_Tree_View_New_With_Model
+             (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
+         FilesScroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
+         Area: Gtk_Cell_Area_Box;
+         Renderer: Gtk_Cell_Renderer_Text := Gtk_Cell_Renderer_Text_New;
+         Renderer2: constant Gtk_Cell_Renderer_Pixbuf :=
+           Gtk_Cell_Renderer_Pixbuf_New;
+         Column: Gtk_Tree_View_Column;
+         Value: GValue;
+      begin
+         Set_Enable_Search(DirectoryView, False);
+         Set_Headers_Clickable(DirectoryView, True);
+         Area := Gtk_Cell_Area_Box_New;
+         Pack_Start(Area, Renderer2, False);
+         Add_Attribute(Area, Renderer2, "icon-name", 2);
+         Pack_Start(Area, Renderer, True);
+         Add_Attribute(Area, Renderer, "text", 0);
+         Init_Set_Int(Value, 80);
+         Set_Property(Renderer, "max-width-chars", Value);
+         Unset(Value);
+         Init_Set_Boolean(Value, True);
+         Set_Property(Renderer, "ellipsize-set", Value);
+         Unset(Value);
+         Init_Set_Int(Value, 1);
+         Set_Property(Renderer, "ellipsize", Value);
+         Unset(Value);
+         Column := Gtk_Tree_View_Column_New_With_Area(Area);
+         Set_Sort_Column_Id(Column, 0);
+         Set_Title(Column, Gettext("Name"));
+         Set_Resizable(Column, True);
+         Set_Expand(Column, True);
+         if Append_Column(DirectoryView, Column) /= 1 then
+            return;
+         end if;
+         Area := Gtk_Cell_Area_Box_New;
+         Renderer := Gtk_Cell_Renderer_Text_New;
+         Pack_Start(Area, Renderer, True);
+         Add_Attribute(Area, Renderer, "text", 3);
+         Column := Gtk_Tree_View_Column_New_With_Area(Area);
+         Set_Sort_Column_Id(Column, 4);
+         Set_Title(Column, Gettext("Size"));
+         Set_Resizable(Column, True);
+         if Append_Column(DirectoryView, Column) /= 2 then
+            return;
+         end if;
+         Area := Gtk_Cell_Area_Box_New;
+         Renderer := Gtk_Cell_Renderer_Text_New;
+         Pack_Start(Area, Renderer, True);
+         Add_Attribute(Area, Renderer, "text", 5);
+         Column := Gtk_Tree_View_Column_New_With_Area(Area);
+         Set_Sort_Column_Id(Column, 5);
+         Set_Title(Column, Gettext("Modified"));
+         Set_Resizable(Column, True);
+         if Append_Column(DirectoryView, Column) /= 2 then
+            return;
+         end if;
+         Set_Visible(Get_Column(DirectoryView, 2), Settings.ShowLastModified);
+         --On_Row_Activated(DirectoryView, SetDestination'Access);
+         Add(FilesScroll, DirectoryView);
+         Pack_Start
+           (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
+            FilesScroll);
+      end;
       Reload(Builder);
       if Settings.ShowPreview then
          Set_Position
