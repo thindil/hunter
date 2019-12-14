@@ -559,7 +559,7 @@ package body MainWindow is
          Set_Sort_Column_Id(Column, 5);
          Set_Title(Column, Gettext("Modified"));
          Set_Resizable(Column, True);
-         if Append_Column(DirectoryView, Column) /= 2 then
+         if Append_Column(DirectoryView, Column) /= 3 then
             return;
          end if;
          Set_Visible(Get_Column(DirectoryView, 2), Settings.ShowLastModified);
@@ -569,12 +569,14 @@ package body MainWindow is
          Attach_To_Widget
             (Gtk_Menu(Get_Object(Builder, "filesmenu")),
          DirectoryView, null);
+         -- FIXME: tree selection select item
          Add(FilesScroll, DirectoryView);
          Pack_Start
            (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
             FilesScroll);
+         Reload(Builder);
+         Show_All(FilesScroll);
       end;
-      Reload(Builder);
       if Settings.ShowPreview then
          Set_Position
            (Gtk_Paned(Get_Object(Builder, "filespaned")),
