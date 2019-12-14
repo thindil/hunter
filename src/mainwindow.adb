@@ -23,6 +23,7 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
 with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
+with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
@@ -177,7 +178,10 @@ package body MainWindow is
       ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
-      Show_All(Gtk_Widget(Get_Object(Builder, "boxpath")));
+      Show_All
+        (Get_Child
+           (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
+            0));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide
         (Get_Child
@@ -562,6 +566,9 @@ package body MainWindow is
            (Gtk_Menu(Get_Object(Builder, "filesmenu")), DirectoryView, null);
          On_Changed(Get_Selection(DirectoryView), ShowItem'Access);
          Add(FilesScroll, DirectoryView);
+         Pack_Start
+           (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
+            Gtk_Flow_Box_New, False);
          Pack_Start
            (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
             FilesScroll);
