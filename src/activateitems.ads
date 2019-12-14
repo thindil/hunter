@@ -36,7 +36,7 @@ package ActivateItems is
    procedure ActivateFile
      (Self: access Gtk_Tree_View_Record'Class; Path: Gtk_Tree_Path;
       Column: not null access Gtk_Tree_View_Column_Record'Class);
-      -- ****
+   -- ****
 
    -- ****f* ActivateItems/OpenItemWith
    -- FUNCTION

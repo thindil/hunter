@@ -19,6 +19,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with CopyItems; use CopyItems;
@@ -37,6 +38,7 @@ package body MoveItems is
    -- ****
 
    procedure MoveData(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
       OverwriteItem: Boolean := False;
    begin
       if Setting then
@@ -48,7 +50,7 @@ package body MoveItems is
          MoveItemsList.Clear;
          ToggleToolButtons(NewAction, True);
          CurrentSelected := Null_Unbounded_String;
-         ShowItem(Object);
+         ShowItem(Get_Selection(DirectoryView));
          return;
       end if;
       if MoveItemsList.Length = 0 then

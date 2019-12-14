@@ -82,7 +82,8 @@ package body ActivateItems is
    procedure ActivateFileTemp(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
    begin
-      ActivateFile(DirectoryView, Gtk_Tree_Path_New, Get_Column(DirectoryView, 0));
+      ActivateFile
+        (DirectoryView, Gtk_Tree_Path_New, Get_Column(DirectoryView, 0));
    end ActivateFileTemp;
 
    -- ****if* ActivateItems/StartOpenWith

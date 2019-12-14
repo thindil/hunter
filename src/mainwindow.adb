@@ -83,15 +83,14 @@ package body MainWindow is
    begin
       if Get_String(Model, Iter, 0) =
         Simple_Name(To_String(CurrentSelected)) then
-         Set_Cursor
-           (DirectoryView, Path, null,
-            False);
+         Set_Cursor(DirectoryView, Path, null, False);
          return True;
       end if;
       return False;
    end SetSelected;
 
    procedure Reload(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
       OldSelected: Unbounded_String;
    begin
       if CurrentDirectory = Null_Unbounded_String then
@@ -104,10 +103,7 @@ package body MainWindow is
       end if;
       LoadDirectory(To_String(CurrentDirectory), "fileslist");
       ToggleActionButtons;
-      if N_Children
-          (Get_Model(DirectoryView),
-           Null_Iter) =
-        0 then
+      if N_Children(Get_Model(DirectoryView), Null_Iter) = 0 then
          CurrentSelected := CurrentDirectory;
       else
          if Containing_Directory(To_String(OldSelected)) /=
@@ -117,17 +113,14 @@ package body MainWindow is
          if OldSelected = Null_Unbounded_String
            or else not Ada.Directories.Exists(To_String(OldSelected)) then
             Set_Cursor
-              (DirectoryView,
-               Gtk_Tree_Path_New_From_String("0"), null, False);
+              (DirectoryView, Gtk_Tree_Path_New_From_String("0"), null, False);
          else
             CurrentSelected := OldSelected;
-            Foreach
-              (Get_Model(DirectoryView),
-               SetSelected'Access);
+            Foreach(Get_Model(DirectoryView), SetSelected'Access);
          end if;
          Grab_Focus(DirectoryView);
       end if;
-      ShowItem(Object);
+      ShowItem(Get_Selection(DirectoryView));
    end Reload;
 
    -- ****if* MainWindow/StartRename
@@ -192,7 +185,7 @@ package body MainWindow is
             0));
       CurrentSelected := Null_Unbounded_String;
       ToggleToolButtons(NewAction, True);
-      ShowItem(Builder);
+      ShowItem(Get_Selection(DirectoryView));
    end ShowFiles;
 
    -- ****if* MainWindow/ShowAbout
@@ -395,8 +388,7 @@ package body MainWindow is
       loop
          if Get_String(FilesList, FilesIter, 0) = To_String(FileName) then
             Set_Cursor
-              (DirectoryView,
-               Get_Path(FilesList, FilesIter), null, False);
+              (DirectoryView, Get_Path(FilesList, FilesIter), null, False);
             exit;
          end if;
          Next(FilesList, FilesIter);
@@ -408,7 +400,8 @@ package body MainWindow is
       pragma Unreferenced(Object);
       Selection: constant Gtk_Tree_Selection := Get_Selection(DirectoryView);
    begin
-      if Count_Selected_Rows(Selection) = N_Children(Get_Model(DirectoryView)) then
+      if Count_Selected_Rows(Selection) =
+        N_Children(Get_Model(DirectoryView)) then
          Unselect_All(Selection);
          Set_Cursor
            (DirectoryView, Gtk_Tree_Path_New_From_String("0"), null, False);
@@ -505,8 +498,8 @@ package body MainWindow is
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
       Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
       DirectoryView :=
-         Gtk_Tree_View_New_With_Model
-            (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
+        Gtk_Tree_View_New_With_Model
+          (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
       declare
          FilesScroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
          Area: Gtk_Cell_Area_Box;
@@ -564,12 +557,10 @@ package body MainWindow is
          end if;
          Set_Visible(Get_Column(DirectoryView, 2), Settings.ShowLastModified);
          On_Row_Activated(DirectoryView, ActivateFile'Access);
-         On_Button_Press_Event
-            (DirectoryView, ShowFilesMenu'Access);
+         On_Button_Press_Event(DirectoryView, ShowFilesMenu'Access);
          Attach_To_Widget
-            (Gtk_Menu(Get_Object(Builder, "filesmenu")),
-         DirectoryView, null);
-         -- FIXME: tree selection select item
+           (Gtk_Menu(Get_Object(Builder, "filesmenu")), DirectoryView, null);
+         On_Changed(Get_Selection(DirectoryView), ShowItem'Access);
          Add(FilesScroll, DirectoryView);
          Pack_Start
            (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),

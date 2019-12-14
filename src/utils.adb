@@ -265,10 +265,7 @@ package body Utils is
          To_Unbounded_String("btncut"), To_Unbounded_String("btndelete"));
       Visible: Boolean;
    begin
-      if N_Children
-          (Get_Model(DirectoryView),
-           Null_Iter) =
-        0 then
+      if N_Children(Get_Model(DirectoryView), Null_Iter) = 0 then
          Visible := False;
       else
          Visible := True;
