@@ -122,7 +122,11 @@ package body Trash is
       FileLine, FullName, MimeType: Unbounded_String;
       Button: Gtk_Button;
       ButtonBox: constant Gtk_Flow_Box :=
-        Gtk_Flow_Box(Get_Object(Object, "boxpath"));
+        Gtk_Flow_Box
+          (Get_Child
+             (Gtk_Box
+                (Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
+              0));
    begin
       Setting := True;
       TemporaryStop := True;

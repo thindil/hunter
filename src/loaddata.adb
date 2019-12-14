@@ -124,7 +124,9 @@ package body LoadData is
          CurrentDirectory := To_Unbounded_String("/");
       end if;
       if Get_Parent(Get_Parent(Self)) =
-        Gtk_Widget(Get_Object(Builder, "boxpath")) then
+        Get_Child
+          (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
+           0) then
          Reload(Builder);
          UpdateWatch(To_String(CurrentDirectory));
       else
@@ -206,7 +208,13 @@ package body LoadData is
             if ListName = "fileslist" then
                FilesSort :=
                  Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
-               ButtonBox := Gtk_Flow_Box(Get_Object(Builder, "boxpath"));
+               ButtonBox :=
+                 Gtk_Flow_Box
+                   (Get_Child
+                      (Gtk_Box
+                         (Get_Child1
+                            (Gtk_Paned(Get_Object(Builder, "filespaned")))),
+                       0));
             else
                FilesSort :=
                  Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2"));
