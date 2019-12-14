@@ -512,6 +512,7 @@ package body MainWindow is
            Gtk_Cell_Renderer_Pixbuf_New;
          Column: Gtk_Tree_View_Column;
          Value: GValue;
+         Box: constant Gtk_Vbox := Gtk_Vbox_New;
       begin
          Set_Enable_Search(DirectoryView, False);
          Set_Headers_Clickable(DirectoryView, True);
@@ -566,14 +567,11 @@ package body MainWindow is
            (Gtk_Menu(Get_Object(Builder, "filesmenu")), DirectoryView, null);
          On_Changed(Get_Selection(DirectoryView), ShowItem'Access);
          Add(FilesScroll, DirectoryView);
-         Pack_Start
-           (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
-            Gtk_Flow_Box_New, False);
-         Pack_Start
-           (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
-            FilesScroll);
+         Pack_Start(Box, Gtk_Flow_Box_New, False);
+         Pack_Start(Box, FilesScroll);
+         Add1(Gtk_Paned(Get_Object(Builder, "filespaned")), Box);
          Reload(Builder);
-         Show_All(FilesScroll);
+         Show_All(Box);
       end;
       if Settings.ShowPreview then
          Set_Position
