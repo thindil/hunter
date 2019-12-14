@@ -291,19 +291,15 @@ package body Trash is
       end if;
       Setting := False;
       Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
-      if N_Children
-          (Get_Model(DirectoryView),
-           Null_Iter) =
-        0 then
+      if N_Children(Get_Model(DirectoryView), Null_Iter) = 0 then
          CurrentSelected :=
            To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files/");
       else
          Set_Cursor
-           (DirectoryView,
-            Gtk_Tree_Path_New_From_String("0"), null, False);
+           (DirectoryView, Gtk_Tree_Path_New_From_String("0"), null, False);
          Grab_Focus(DirectoryView);
       end if;
-      ShowItem(Object);
+      ShowItem(Get_Selection(DirectoryView));
       NewAction := SHOWTRASH;
       ToggleActionButtons;
    end ShowTrash;

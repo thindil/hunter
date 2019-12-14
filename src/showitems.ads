@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/ShowItems
@@ -45,9 +46,9 @@ package ShowItems is
    -- FUNCTION
    -- Show info about selected item or preview it.
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tree_Selection which contains selected file or directory
    -- SOURCE
-   procedure ShowItem(Object: access Gtkada_Builder_Record'Class);
+   procedure ShowItem(Self: access Gtk_Tree_Selection_Record'Class);
    -- ****
 
    -- ****f* ShowItems/CreateShowItemsUI

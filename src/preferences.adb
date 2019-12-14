@@ -321,9 +321,7 @@ package body Preferences is
       -- ****
    begin
       Settings.ShowLastModified := State;
-      Set_Visible
-        (Get_Column(DirectoryView, 2),
-         Settings.ShowLastModified);
+      Set_Visible(Get_Column(DirectoryView, 2), Settings.ShowLastModified);
       return True;
    end SetLastModified;
 

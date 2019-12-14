@@ -99,8 +99,7 @@ package body SearchItems is
    procedure SearchItem(User_Data: access GObject_Record'Class) is
       -- ****
       FilterName, ListName: Unbounded_String;
-      TreeView: Gtk_Tree_View :=
-        DirectoryView;
+      TreeView: Gtk_Tree_View := DirectoryView;
    begin
       FilterName := To_Unbounded_String("filesfilter");
       ListName := To_Unbounded_String("fileslist");

@@ -51,7 +51,6 @@ with Gtk.Text_Tag_Table; use Gtk.Text_Tag_Table;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
-with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Toggle_Button; use Gtk.Toggle_Button;
@@ -571,26 +570,24 @@ package body ShowItems is
       end if;
    end PreviewItem;
 
-   procedure ShowItem(Object: access Gtkada_Builder_Record'Class) is
+   procedure ShowItem(Self: access Gtk_Tree_Selection_Record'Class) is
       PreviewScroll: constant Gtk_Scrolled_Window :=
         Gtk_Scrolled_Window(Get_Child_By_Name(InfoStack, "preview"));
    begin
       SelectedItems.Clear;
-      Selected_Foreach
-        (Gtk.Tree_View.Get_Selection
-           (DirectoryView),
-         GetSelectedItems'Access);
-      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncut"))) then
+      Selected_Foreach(Self, GetSelectedItems'Access);
+      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) then
          MoveItemsList := SelectedItems;
          return;
       end if;
-      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Object, "btncopy"))) then
+      if Get_Active
+          (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
          CopyItemsList := SelectedItems;
          return;
       end if;
       if SelectedItems.Length > 1 then
          Hide(Get_Child(PreviewScroll));
-         Hide(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
+         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          Set_Markup
            (Gtk_Label
               (Get_Label_Widget
@@ -604,7 +601,7 @@ package body ShowItems is
          Set_Visible_Child_Name(InfoStack, "preview");
          return;
       elsif SelectedItems.Length = 0 then
-         PreviewItem(Object);
+         PreviewItem(Builder);
          return;
       end if;
       if CurrentSelected = SelectedItems(1) then
@@ -619,10 +616,10 @@ package body ShowItems is
          LinkTarget := CurrentSelected;
          return;
       end if;
-      Show_All(Gtk_Widget(Get_Object(Object, "itemtoolbar")));
+      Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
       Set_Active
-        (Gtk_Radio_Tool_Button(Get_Object(Object, "btnpreview")), True);
-      PreviewItem(Object);
+        (Gtk_Radio_Tool_Button(Get_Object(Builder, "btnpreview")), True);
+      PreviewItem(Builder);
    end ShowItem;
 
    -- ****if* ShowItems/SetPermission
@@ -755,7 +752,6 @@ package body ShowItems is
          Attach(InfoGrid, Box, 1, Top);
       end AddBox;
    begin
-      Register_Handler(Builder, "Show_Item", ShowItem'Access);
       Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
       Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
       InfoStack := Gtk_Stack_New;
