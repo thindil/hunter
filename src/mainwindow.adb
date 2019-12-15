@@ -405,6 +405,7 @@ package body MainWindow is
    end SelectAll;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
+      FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
       ToolbarBox: constant Gtk_Vbox := Gtk_Vbox_New;
    begin
       Setting := True;
@@ -413,7 +414,12 @@ package body MainWindow is
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
           (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
-      Pack_Start(Gtk_Box(Get_Object(Builder, "filesbox")), ToolbarBox, False);
+      Pack_Start(FilesBox, ToolbarBox, False);
+      Pack_End
+        (Gtk_Box
+           (Get_Child_By_Name
+              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+         FilesBox);
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
@@ -564,7 +570,7 @@ package body MainWindow is
          Add1(FilesPaned, Box);
          Reload(Builder);
       end;
-      Pack_Start(Gtk_Box(Get_Object(Builder, "filesbox")), FilesPaned);
+      Pack_Start(FilesBox, FilesPaned);
       Show_All(FilesPaned);
       if Settings.ShowPreview then
          Set_Position

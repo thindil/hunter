@@ -28,6 +28,7 @@ with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scale; use Gtk.Scale;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
@@ -85,7 +86,14 @@ package body Preferences is
       -- ****
       Header: constant GObject := Get_Object(Builder, "header");
       LeftBox: constant Gtk_Widget :=
-        Get_Child(Gtk_Box(Get_Object(Builder, "filesbox")), 0);
+        Get_Child
+          (Gtk_Box
+             (Get_Child
+                (Gtk_Box
+                   (Get_Child_By_Name
+                      (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+                 4)),
+           0);
       Toolbar: constant GObject := Get_Object(Builder, "toolbar");
       ItemToolbar: constant GObject := Get_Object(Builder, "itemtoolbar");
    begin
