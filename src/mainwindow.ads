@@ -15,6 +15,7 @@
 
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Gtk.Paned; use Gtk.Paned;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtkada.Builder; use Gtkada.Builder;
 
@@ -106,6 +107,8 @@ package MainWindow is
    -- ****
 
    DirectoryView: Gtk_Tree_View;
+
+   FilesPaned: Gtk_Paned;
 
    -- ****f* MainWindow/Quit
    -- FUNCTION

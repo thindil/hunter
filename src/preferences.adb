@@ -342,9 +342,7 @@ package body Preferences is
       Settings.ShowPreview := State;
       if NewAction /= COPY and NewAction /= MOVE and
         NewAction /= CREATELINK then
-         Set_Visible
-           (Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned"))),
-            Settings.ShowPreview);
+         Set_Visible(Get_Child2(FilesPaned), Settings.ShowPreview);
          Set_Visible
            (Gtk_Widget(Get_Object(Builder, "btnpreview")),
             Settings.ShowPreview);
@@ -353,7 +351,7 @@ package body Preferences is
             Settings.ShowPreview);
          if Settings.ShowPreview then
             Set_Position
-              (Gtk_Paned(Get_Object(Builder, "filespaned")),
+              (FilesPaned,
                Gint
                  (Float
                     (Get_Allocated_Width
@@ -362,7 +360,7 @@ package body Preferences is
             PreviewItem(Builder);
          else
             Set_Position
-              (Gtk_Paned(Get_Object(Builder, "filespaned")),
+              (FilesPaned,
                Get_Allocated_Width
                  (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
          end if;

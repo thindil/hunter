@@ -122,11 +122,7 @@ package body Trash is
       FileLine, FullName, MimeType: Unbounded_String;
       Button: Gtk_Button;
       ButtonBox: constant Gtk_Flow_Box :=
-        Gtk_Flow_Box
-          (Get_Child
-             (Gtk_Box
-                (Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
-              0));
+        Gtk_Flow_Box(Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0));
    begin
       Setting := True;
       TemporaryStop := True;
@@ -147,11 +143,7 @@ package body Trash is
            (Gtk_Tree_View
               (Get_Child
                  (Gtk_Scrolled_Window
-                    (Get_Child
-                       (Gtk_Box
-                          (Get_Child1
-                             (Gtk_Paned(Get_Object(Builder, "filespaned")))),
-                        2)))),
+                    (Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 2)))),
             2),
          Gettext("Deleted"));
       ToggleToolButtons(SHOWTRASH);
