@@ -106,9 +106,19 @@ package MainWindow is
    DestinationPath: Unbounded_String;
    -- ****
 
+   -- ****v* MainWindow/DirectoryView
+   -- FUNCTION
+   -- Gtk_Tree_View with current directory listing
+   -- SOURCE
    DirectoryView: Gtk_Tree_View;
+   -- ****
 
+   -- ****v* MainWindow/FilesPaned
+   -- FUNCTION
+   -- Gtk_Paned with current directory listing and preview UI
+   -- SOURCE
    FilesPaned: Gtk_Paned;
+   -- ****
 
    -- ****f* MainWindow/Quit
    -- FUNCTION
