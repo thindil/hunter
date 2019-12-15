@@ -144,13 +144,13 @@ package body Utils is
       if (Action = CREATELINK or Action = COPY or Action = MOVE)
         and then (not Settings.ShowPreview) and then (not Finished) then
          Set_Position
-           (Gtk_Paned(Get_Object(Builder, "filespaned")),
+           (FilesPaned,
             Gint
               (Float
                  (Get_Allocated_Width
                     (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
                0.3));
-         Show_All(Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned"))));
+         Show_All(Get_Child2(FilesPaned));
       end if;
       if (Action = COPY or Action = MOVE) then
          if not Finished then
@@ -159,20 +159,11 @@ package body Utils is
               (Gtk_Label
                  (Get_Label_Widget
                     (Gtk_Frame
-                       (Get_Child
-                          (Gtk_Box
-                             (Get_Child2
-                                (Gtk_Paned
-                                   (Get_Object(Builder, "filespaned")))),
-                           1)))),
+                       (Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 1)))),
                "<b>" & Gettext("Destination directory") & "</b>");
             Set_Visible_Child_Name(InfoStack, "destination");
          else
-            Hide
-              (Get_Child
-                 (Gtk_Box
-                    (Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned")))),
-                  0));
+            Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
          end if;
          Set_Visible
            (Gtk_Widget(Get_Object(Builder, "btntoolcancel")), not Finished);
@@ -203,10 +194,10 @@ package body Utils is
          Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
          if not Settings.ShowPreview then
             Set_Position
-              (Gtk_Paned(Get_Object(Builder, "filespaned")),
+              (FilesPaned,
                Get_Allocated_Width
                  (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
-            Hide(Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned"))));
+            Hide(Get_Child2(FilesPaned));
          else
             SetBookmarkButton;
          end if;

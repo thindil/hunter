@@ -29,7 +29,6 @@ with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
-with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
@@ -178,15 +177,9 @@ package body MainWindow is
       ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
-      Show_All
-        (Get_Child
-           (Gtk_Box(Get_Child1(Gtk_Paned(Get_Object(Builder, "filespaned")))),
-            0));
+      Show_All(Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
-      Hide
-        (Get_Child
-           (Gtk_Box(Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned")))),
-            0));
+      Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
       CurrentSelected := Null_Unbounded_String;
       ToggleToolButtons(NewAction, True);
       ShowItem(Get_Selection(DirectoryView));
@@ -229,11 +222,7 @@ package body MainWindow is
             Hide(Self);
          end if;
          if NewAction = CREATELINK then
-            Hide
-              (Get_Child
-                 (Gtk_Box
-                    (Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned")))),
-                  0));
+            Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
             Set_Visible_Child_Name(InfoStack, "preview");
             NewAction := CREATEFILE;
          end if;
@@ -419,6 +408,10 @@ package body MainWindow is
    begin
       Setting := True;
       Builder := NewBuilder;
+      FilesPaned := Gtk_Hpaned_New;
+      DirectoryView :=
+        Gtk_Tree_View_New_With_Model
+          (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
@@ -501,9 +494,6 @@ package body MainWindow is
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
       Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
-      DirectoryView :=
-        Gtk_Tree_View_New_With_Model
-          (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
       declare
          FilesScroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
          Area: Gtk_Cell_Area_Box;
@@ -569,24 +559,25 @@ package body MainWindow is
          Add(FilesScroll, DirectoryView);
          Pack_Start(Box, Gtk_Flow_Box_New, False);
          Pack_Start(Box, FilesScroll);
-         Add1(Gtk_Paned(Get_Object(Builder, "filespaned")), Box);
+         Add1(FilesPaned, Box);
          Reload(Builder);
-         Show_All(Box);
       end;
+      Pack_Start(Gtk_Box(Get_Object(Builder, "filesbox")), FilesPaned);
+      Show_All(FilesPaned);
       if Settings.ShowPreview then
          Set_Position
-           (Gtk_Paned(Get_Object(Builder, "filespaned")),
+           (FilesPaned,
             Gint
               (Float
                  (Get_Allocated_Width
                     (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
                0.3));
       else
-         Hide(Get_Child2(Gtk_Paned(Get_Object(Builder, "filespaned"))));
+         Hide(Get_Child2(FilesPaned));
          Hide(Gtk_Widget(Get_Object(Builder, "btnpreview")));
          Hide(Gtk_Widget(Get_Object(Builder, "btnfileinfo")));
          Set_Position
-           (Gtk_Paned(Get_Object(Builder, "filespaned")),
+           (FilesPaned,
             Get_Allocated_Width
               (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
       end if;

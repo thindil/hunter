@@ -275,12 +275,7 @@ package body ShowItems is
       Set_Markup
         (Gtk_Label
            (Get_Label_Widget
-              (Gtk_Frame
-                 (Get_Child
-                    (Gtk_Box
-                       (Get_Child2
-                          (Gtk_Paned(Get_Object(Builder, "filespaned")))),
-                     1)))),
+              (Gtk_Frame(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 1)))),
          "<b>" & Gettext("Information") & "</b>");
       Set_Visible_Child_Name(InfoStack, "info");
       if not Get_Active
@@ -552,12 +547,7 @@ package body ShowItems is
       Set_Markup
         (Gtk_Label
            (Get_Label_Widget
-              (Gtk_Frame
-                 (Get_Child
-                    (Gtk_Box
-                       (Get_Child2
-                          (Gtk_Paned(Get_Object(Builder, "filespaned")))),
-                     1)))),
+              (Gtk_Frame(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 1)))),
          "<b>" & Gettext("Preview") & "</b>");
       Set_Visible_Child_Name(InfoStack, "preview");
       if Get_Active
@@ -591,12 +581,7 @@ package body ShowItems is
          Set_Markup
            (Gtk_Label
               (Get_Label_Widget
-                 (Gtk_Frame
-                    (Get_Child
-                       (Gtk_Box
-                          (Get_Child2
-                             (Gtk_Paned(Get_Object(Builder, "filespaned")))),
-                        1)))),
+                 (Gtk_Frame(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 1)))),
             "<b>" & Gettext("Preview") & "</b>");
          Set_Visible_Child_Name(InfoStack, "preview");
          return;
@@ -836,7 +821,7 @@ package body ShowItems is
          Add(PreviewFrame, InfoStack);
          Pack_Start(PreviewBox, Gtk_Flow_Box_New, False);
          Pack_Start(PreviewBox, PreviewFrame);
-         Add2(Gtk_Paned(Get_Object(Builder, "filespaned")), PreviewBox);
+         Add2(FilesPaned, PreviewBox);
       end;
    end CreateShowItemsUI;
 

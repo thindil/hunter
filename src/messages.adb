@@ -186,12 +186,7 @@ package body Messages is
             if Response_Id = Gint(Gtk_Response_Reject) then
                HideMessage(Builder);
                ToggleToolButtons(NewAction, True);
-               Hide
-                 (Get_Child
-                    (Gtk_Box
-                       (Get_Child2
-                          (Gtk_Paned(Get_Object(Builder, "filespaned")))),
-                     0));
+               Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
                Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
                Reload(Builder);
                return;
@@ -204,12 +199,7 @@ package body Messages is
             if Response_Id = Gint(Gtk_Response_Reject) then
                HideMessage(Builder);
                ToggleToolButtons(NewAction, True);
-               Hide
-                 (Get_Child
-                    (Gtk_Box
-                       (Get_Child2
-                          (Gtk_Paned(Get_Object(Builder, "filespaned")))),
-                     0));
+               Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
                Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
                Reload(Builder);
                return;

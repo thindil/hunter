@@ -87,12 +87,7 @@ package body Bookmarks is
               (Gtk_Tree_View
                  (Get_Child
                     (Gtk_Scrolled_Window
-                       (Get_Child
-                          (Gtk_Box
-                             (Get_Child1
-                                (Gtk_Paned
-                                   (Get_Object(Builder, "filespaned")))),
-                           2)))),
+                       (Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 2)))),
                2),
             Gettext("Modified"));
          SetDeleteTooltip;
