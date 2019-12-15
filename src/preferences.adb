@@ -84,7 +84,8 @@ package body Preferences is
    procedure SetToolbars is
       -- ****
       Header: constant GObject := Get_Object(Builder, "header");
-      LeftBox: constant GObject := Get_Object(Builder, "leftbox");
+      LeftBox: constant Gtk_Widget :=
+        Get_Child(Gtk_Box(Get_Object(Builder, "filesbox")), 0);
       Toolbar: constant GObject := Get_Object(Builder, "toolbar");
       ItemToolbar: constant GObject := Get_Object(Builder, "itemtoolbar");
    begin
@@ -99,7 +100,7 @@ package body Preferences is
          Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
          Set_Orientation(Gtk_Toolbar(ItemToolbar), Orientation_Horizontal);
       else
-         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(LeftBox) then
+         if Get_Parent(Gtk_Widget(Toolbar)) = LeftBox then
             return;
          end if;
          Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
