@@ -16,6 +16,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Box; use Gtk.Box;
+with Gtk.Container; use Gtk.Container;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Label; use Gtk.Label;
@@ -59,6 +60,7 @@ package body Messages is
    procedure ShowMessage
      (Message: String; MessageType: Gtk_Message_Type := Message_Error) is
       InfoBar: constant GObject := Get_Object(Builder, "actioninfo");
+      Label: constant Gtk_Label := Gtk_Label_New(Message);
    begin
       if MessageType /= Message_Question then
          Set_Show_Close_Button
@@ -78,7 +80,8 @@ package body Messages is
            (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), False);
       end if;
       Set_Message_Type(Gtk_Info_Bar(InfoBar), MessageType);
-      Set_Text(Gtk_Label(Get_Object(Builder, "lblactioninfo")), Message);
+      Set_Line_Wrap(Label, True);
+      Add(Gtk_Container(Get_Content_Area(Gtk_Info_Bar(InfoBar))), Label);
       Show_All(Gtk_Widget(InfoBar));
       if MessageType /= Message_Question then
          Hide(Gtk_Widget(Get_Object(Builder, "actionbox")));
