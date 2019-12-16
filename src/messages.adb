@@ -20,6 +20,7 @@ with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Main; use Glib.Main;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -163,7 +164,12 @@ package body Messages is
                end if;
             end if;
             ToggleToolButtons(NewAction, True);
-            Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
+            Hide
+              (Get_Child
+                 (Gtk_Box
+                    (Get_Child_By_Name
+                       (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+                  3));
             if Settings.ShowFinishedInfo then
                if NewAction = DELETE and not Settings.DeleteFiles then
                   ShowMessage

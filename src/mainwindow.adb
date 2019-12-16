@@ -29,6 +29,7 @@ with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
+with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
@@ -173,7 +174,12 @@ package body MainWindow is
            (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut")), False);
       end if;
       Setting := False;
-      Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
+      Hide
+        (Get_Child
+           (Gtk_Box
+              (Get_Child_By_Name
+                 (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+            3));
       ToggleToolButtons(NewAction, True);
       HideMessage(Builder);
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
@@ -406,6 +412,7 @@ package body MainWindow is
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
+      ProgressBar: constant Gtk_Progress_Bar := Gtk_Progress_Bar_New;
    begin
       Setting := True;
       Builder := NewBuilder;
@@ -419,6 +426,11 @@ package body MainWindow is
            (Get_Child_By_Name
               (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
          FilesBox);
+      Pack_End
+        (Gtk_Box
+           (Get_Child_By_Name
+              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+         ProgressBar, False);
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
@@ -500,7 +512,7 @@ package body MainWindow is
       Hide(Gtk_Widget(Get_Object(Builder, "entry")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
-      Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
+      Hide(ProgressBar);
       declare
          FilesScroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
          Area: Gtk_Cell_Area_Box;
