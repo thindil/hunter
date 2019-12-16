@@ -580,16 +580,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                         <property name="can_focus">False</property>
                         <property name="spacing">16</property>
                         <child>
-                          <object class="GtkLabel" id="lblactioninfo">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="wrap">True</property>
-                          </object>
-                          <packing>
-                            <property name="expand">False</property>
-                            <property name="fill">True</property>
-                            <property name="position">0</property>
-                          </packing>
+                          <placeholder/>
                         </child>
                       </object>
                       <packing>
