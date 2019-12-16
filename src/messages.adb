@@ -84,7 +84,7 @@ package body Messages is
       Add(Gtk_Container(Get_Content_Area(Gtk_Info_Bar(InfoBar))), Label);
       Show_All(Gtk_Widget(InfoBar));
       if MessageType /= Message_Question then
-         Hide(Gtk_Widget(Get_Object(Builder, "actionbox")));
+         Hide(Get_Action_Area(Gtk_Info_Bar(InfoBar)));
       end if;
       if NewAction = DELETE or NewAction = CLEARTRASH or
         NewAction = DELETETRASH then
