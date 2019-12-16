@@ -16,7 +16,9 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Box; use Gtk.Box;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -158,7 +160,12 @@ package body CopyItems is
          end if;
       end loop;
       CopyItemsList.Clear;
-      Hide(Gtk_Widget(Get_Object(Builder, "progressbar")));
+      Hide
+        (Get_Child
+           (Gtk_Box
+              (Get_Child_By_Name
+                 (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+            3));
       ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage
