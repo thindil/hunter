@@ -406,7 +406,6 @@ package body MainWindow is
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
-      ToolbarBox: constant Gtk_Vbox := Gtk_Vbox_New;
    begin
       Setting := True;
       Builder := NewBuilder;
@@ -414,7 +413,7 @@ package body MainWindow is
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
           (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
-      Pack_Start(FilesBox, ToolbarBox, False);
+      Pack_Start(FilesBox, Gtk_Vbox_New, False);
       Pack_End
         (Gtk_Box
            (Get_Child_By_Name
