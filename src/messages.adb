@@ -16,6 +16,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Box; use Gtk.Box;
+with Gtk.Button; use Gtk.Button;
 with Gtk.Container; use Gtk.Container;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
@@ -57,10 +58,43 @@ package body Messages is
       return False;
    end AutoHideMessage;
 
+   -- ****if* Messages/SetResponse
+   -- FUNCTION
+   -- Set proper GTK Response for info bar buttons
+   -- PARAMETERS
+   -- Self - Gtk_Button which was pressed
+   -- SOURCE
+   procedure SetResponse(Self: access Gtk_Button_Record'Class) is
+      -- ****
+      ResponseValue: Gint;
+   begin
+      YesForAll := False;
+      if Get_Label(Self) = Gettext("Yes") then
+         ResponseValue := Gint(Gtk_Response_Yes);
+      elsif Get_Label(Self) = Gettext("No") then
+         ResponseValue := Gint(Gtk_Response_No);
+      elsif Get_Label(Self) = Gettext("Yes for all") then
+         YesForAll := True;
+         ResponseValue := Gint(Gtk_Response_Accept);
+      elsif Get_Label(Self) = Gettext("No for all") then
+         ResponseValue := Gint(Gtk_Response_Reject);
+      end if;
+      Response(Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), ResponseValue);
+   end SetResponse;
+
    procedure ShowMessage
      (Message: String; MessageType: Gtk_Message_Type := Message_Error) is
       InfoBar: constant GObject := Get_Object(Builder, "actioninfo");
       Label: constant Gtk_Label := Gtk_Label_New(Message);
+      Button: Gtk_Button;
+      ButtonsLabels: constant array(1 .. 4) of Unbounded_String :=
+        (To_Unbounded_String(Gettext("No")),
+         To_Unbounded_String(Gettext("Yes")),
+         To_Unbounded_String(Gettext("No for all")),
+         To_Unbounded_String(Gettext("Yes for all")));
+      ButtonBox: constant Gtk_Container :=
+        Gtk_Container(Get_Action_Area(Gtk_Info_Bar(InfoBar)));
+      ButtonsAmount: Positive := 4;
    begin
       if MessageType /= Message_Question then
          Set_Show_Close_Button
@@ -82,14 +116,18 @@ package body Messages is
       Set_Message_Type(Gtk_Info_Bar(InfoBar), MessageType);
       Set_Line_Wrap(Label, True);
       Add(Gtk_Container(Get_Content_Area(Gtk_Info_Bar(InfoBar))), Label);
+      if NewAction = DELETE or NewAction = CLEARTRASH or
+        NewAction = DELETETRASH then
+         ButtonsAmount := 2;
+      end if;
+      for I in 1 .. ButtonsAmount loop
+         Button := Gtk_Button_New_With_Label(To_String(ButtonsLabels(I)));
+         On_Clicked(Button, SetResponse'Access);
+         Add(ButtonBox, Button);
+      end loop;
       Show_All(Gtk_Widget(InfoBar));
       if MessageType /= Message_Question then
          Hide(Get_Action_Area(Gtk_Info_Bar(InfoBar)));
-      end if;
-      if NewAction = DELETE or NewAction = CLEARTRASH or
-        NewAction = DELETETRASH then
-         Hide(Gtk_Widget(Get_Object(Builder, "btnnoall")));
-         Hide(Gtk_Widget(Get_Object(Builder, "btnyesall")));
       end if;
    end ShowMessage;
 
@@ -101,30 +139,6 @@ package body Messages is
          Source_Id := No_Source_Id;
       end if;
    end HideMessage;
-
-   -- ****if* Messages/SetResponse
-   -- FUNCTION
-   -- Set proper GTK Response for info bar buttons
-   -- PARAMETERS
-   -- User_Data - Which button to set
-   -- SOURCE
-   procedure SetResponse(User_Data: access GObject_Record'Class) is
-      -- ****
-      ResponseValue: Gint;
-   begin
-      YesForAll := False;
-      if User_Data = Get_Object(Builder, "btnyes") then
-         ResponseValue := Gint(Gtk_Response_Yes);
-      elsif User_Data = Get_Object(Builder, "btnno") then
-         ResponseValue := Gint(Gtk_Response_No);
-      elsif User_Data = Get_Object(Builder, "btnyesall") then
-         YesForAll := True;
-         ResponseValue := Gint(Gtk_Response_Accept);
-      elsif User_Data = Get_Object(Builder, "btnnoall") then
-         ResponseValue := Gint(Gtk_Response_Reject);
-      end if;
-      Response(Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), ResponseValue);
-   end SetResponse;
 
    -- ****if* Messages/MessageResponse
    -- FUNCTION
@@ -228,7 +242,6 @@ package body Messages is
    procedure CreateMessagesUI is
    begin
       Register_Handler(Builder, "Hide_Message", HideMessage'Access);
-      Register_Handler(Builder, "Set_Response", SetResponse'Access);
       On_Response
         (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")),
          MessageResponse'Access);
