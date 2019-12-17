@@ -19,12 +19,12 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Container; use Gtk.Container;
 with Gtk.Dialog; use Gtk.Dialog;
-with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Main; use Glib.Main;
+with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
@@ -53,7 +53,7 @@ package body Messages is
    function AutoHideMessage return Boolean is
    -- ****
    begin
-      Hide(Gtk_Widget(Get_Object(Builder, "actioninfo")));
+      Hide(InfoBar);
       Source_Id := No_Source_Id;
       return False;
    end AutoHideMessage;
@@ -79,66 +79,18 @@ package body Messages is
       elsif Get_Label(Self) = Gettext("No for all") then
          ResponseValue := Gint(Gtk_Response_Reject);
       end if;
-      Response(Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), ResponseValue);
+      Response(InfoBar, ResponseValue);
    end SetResponse;
 
-   procedure ShowMessage
-     (Message: String; MessageType: Gtk_Message_Type := Message_Error) is
-      InfoBar: constant GObject := Get_Object(Builder, "actioninfo");
-      Label: constant Gtk_Label := Gtk_Label_New(Message);
-      Button: Gtk_Button;
-      ButtonsLabels: constant array(1 .. 4) of Unbounded_String :=
-        (To_Unbounded_String(Gettext("No")),
-         To_Unbounded_String(Gettext("Yes")),
-         To_Unbounded_String(Gettext("No for all")),
-         To_Unbounded_String(Gettext("Yes for all")));
-      ButtonBox: constant Gtk_Container :=
-        Gtk_Container(Get_Action_Area(Gtk_Info_Bar(InfoBar)));
-      ButtonsAmount: Positive := 4;
+   procedure CloseMessage(Self: access Gtk_Info_Bar_Record'Class) is
+      pragma Unreferenced(Self);
    begin
-      if MessageType /= Message_Question then
-         Set_Show_Close_Button
-           (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), True);
-         if Source_Id /= No_Source_Id then
-            Remove(Source_Id);
-            Source_Id := No_Source_Id;
-         end if;
-         if Settings.AutoCloseMessagesTime > 0 then
-            Source_Id :=
-              Timeout_Add
-                (Guint(Settings.AutoCloseMessagesTime) * 1000,
-                 AutoHideMessage'Access);
-         end if;
-      else
-         Set_Show_Close_Button
-           (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")), False);
-      end if;
-      Set_Message_Type(Gtk_Info_Bar(InfoBar), MessageType);
-      Set_Line_Wrap(Label, True);
-      Add(Gtk_Container(Get_Content_Area(Gtk_Info_Bar(InfoBar))), Label);
-      if NewAction = DELETE or NewAction = CLEARTRASH or
-        NewAction = DELETETRASH then
-         ButtonsAmount := 2;
-      end if;
-      for I in 1 .. ButtonsAmount loop
-         Button := Gtk_Button_New_With_Label(To_String(ButtonsLabels(I)));
-         On_Clicked(Button, SetResponse'Access);
-         Add(ButtonBox, Button);
-      end loop;
-      Show_All(Gtk_Widget(InfoBar));
-      if MessageType /= Message_Question then
-         Hide(Get_Action_Area(Gtk_Info_Bar(InfoBar)));
-      end if;
-   end ShowMessage;
-
-   procedure HideMessage(Object: access Gtkada_Builder_Record'Class) is
-   begin
-      Hide(Gtk_Widget(Get_Object(Object, "actioninfo")));
       if Source_Id /= No_Source_Id then
          Remove(Source_Id);
          Source_Id := No_Source_Id;
       end if;
-   end HideMessage;
+      Hide(InfoBar);
+   end CloseMessage;
 
    -- ****if* Messages/MessageResponse
    -- FUNCTION
@@ -203,11 +155,11 @@ package body Messages is
                      Message_Info);
                end if;
             else
-               HideMessage(Builder);
+               CloseMessage(null);
             end if;
          when COPY =>
             if Response_Id = Gint(Gtk_Response_Reject) then
-               HideMessage(Builder);
+               CloseMessage(null);
                ToggleToolButtons(NewAction, True);
                Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
                Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
@@ -220,7 +172,7 @@ package body Messages is
             CopySelected(OverwriteItem);
          when MOVE =>
             if Response_Id = Gint(Gtk_Response_Reject) then
-               HideMessage(Builder);
+               CloseMessage(null);
                ToggleToolButtons(NewAction, True);
                Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
                Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
@@ -235,16 +187,56 @@ package body Messages is
             null;
       end case;
       if Response_Id = Gint(Gtk_Response_Close) then
-         HideMessage(Builder);
+         CloseMessage(null);
       end if;
    end MessageResponse;
 
-   procedure CreateMessagesUI is
+   procedure ShowMessage
+     (Message: String; MessageType: Gtk_Message_Type := Message_Error) is
+      Label: constant Gtk_Label := Gtk_Label_New(Message);
+      Button: Gtk_Button;
+      ButtonsLabels: constant array(1 .. 4) of Unbounded_String :=
+        (To_Unbounded_String(Gettext("No")),
+         To_Unbounded_String(Gettext("Yes")),
+         To_Unbounded_String(Gettext("No for all")),
+         To_Unbounded_String(Gettext("Yes for all")));
+      ButtonBox: constant Gtk_Container :=
+        Gtk_Container(Get_Action_Area(InfoBar));
+      ButtonsAmount: Positive := 4;
    begin
-      Register_Handler(Builder, "Hide_Message", HideMessage'Access);
-      On_Response
-        (Gtk_Info_Bar(Get_Object(Builder, "actioninfo")),
-         MessageResponse'Access);
-   end CreateMessagesUI;
+      if MessageType /= Message_Question then
+         Set_Show_Close_Button(InfoBar, True);
+         if Source_Id /= No_Source_Id then
+            Remove(Source_Id);
+            Source_Id := No_Source_Id;
+         end if;
+         if Settings.AutoCloseMessagesTime > 0 then
+            Source_Id :=
+              Timeout_Add
+                (Guint(Settings.AutoCloseMessagesTime) * 1000,
+                 AutoHideMessage'Access);
+         end if;
+      else
+         Set_Show_Close_Button(InfoBar, False);
+      end if;
+      Set_Message_Type(InfoBar, MessageType);
+      Set_Line_Wrap(Label, True);
+      Add(Gtk_Container(Get_Content_Area(InfoBar)), Label);
+      if NewAction = DELETE or NewAction = CLEARTRASH or
+        NewAction = DELETETRASH then
+         ButtonsAmount := 2;
+      end if;
+      for I in 1 .. ButtonsAmount loop
+         Button := Gtk_Button_New_With_Label(To_String(ButtonsLabels(I)));
+         On_Clicked(Button, SetResponse'Access);
+         Add(ButtonBox, Button);
+      end loop;
+      On_Close(InfoBar, CloseMessage'Access);
+      On_Response(InfoBar, MessageResponse'Access);
+      Show_All(Gtk_Widget(InfoBar));
+      if MessageType /= Message_Question then
+         Hide(Get_Action_Area(InfoBar));
+      end if;
+   end ShowMessage;
 
 end Messages;

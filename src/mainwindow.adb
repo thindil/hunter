@@ -25,6 +25,7 @@ with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.GEntry; use Gtk.GEntry;
+with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
@@ -181,7 +182,7 @@ package body MainWindow is
                  (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
             3));
       ToggleToolButtons(NewAction, True);
-      HideMessage(Builder);
+      CloseMessage(null);
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
@@ -431,6 +432,12 @@ package body MainWindow is
            (Get_Child_By_Name
               (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
          ProgressBar, False);
+      InfoBar := Gtk_Info_Bar_New;
+      Pack_End
+        (Gtk_Box
+           (Get_Child_By_Name
+              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+         InfoBar, False);
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
@@ -445,7 +452,6 @@ package body MainWindow is
       CreateActivateUI;
       CreateBookmarksUI;
       CreateCreateUI;
-      CreateMessagesUI;
       CreateSearchUI;
       CreateShowItemsUI;
       CreateTrashUI;
@@ -507,12 +513,12 @@ package body MainWindow is
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnabout")),
          Gtk_Widget(Get_Object(Builder, "aboutmenu")));
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
-      HideMessage(Builder);
       Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
       Hide(Gtk_Widget(Get_Object(Builder, "entry")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
       Hide(ProgressBar);
+      Hide(InfoBar);
       declare
          FilesScroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
          Area: Gtk_Cell_Area_Box;
