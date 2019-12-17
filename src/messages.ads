@@ -13,8 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
-with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
 
@@ -33,6 +33,22 @@ package Messages is
    YesForAll: Boolean;
    -- ****
 
+   -- ****v* Messages/InfoBar
+   -- FUNCTION
+   -- Gtk_Info_Bar which will be showing all messages
+   -- SOURCE
+   InfoBar: Gtk_Info_Bar;
+   -- ****
+
+   -- ****f* Messages/CloseMessage
+   -- FUNCTION
+   -- Close message and stop timer
+   -- PARAMETERS
+   -- Self - Gtk_Info_Bar with message to close. Unused. Can be null
+   -- SOURCE
+   procedure CloseMessage(Self: access Gtk_Info_Bar_Record'Class);
+   -- ****
+
    -- ****f* Messages/ShowMessage
    -- FUNCTION
    -- Show message with selected type to the user
@@ -43,23 +59,6 @@ package Messages is
    -- SOURCE
    procedure ShowMessage
      (Message: String; MessageType: Gtk_Message_Type := Message_Error);
-   -- ****
-
-   -- ****f* Messages/HideMessage
-   -- FUNCTION
-   -- Hide message
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure HideMessage(Object: access Gtkada_Builder_Record'Class);
-   -- ****
-
-   -- ****f* Messages/CreateMessagesUI
-   -- FUNCTION
-   -- Create messages UI - mostly register proper procedures and functions
-   -- for use in GTKAda Builder
-   -- SOURCE
-   procedure CreateMessagesUI;
    -- ****
 
 end Messages;

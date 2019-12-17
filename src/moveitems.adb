@@ -146,7 +146,7 @@ package body MoveItems is
            (Gettext("All selected files and directories have been moved."),
             Message_Info);
       else
-         HideMessage(Builder);
+         CloseMessage(null);
       end if;
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;
