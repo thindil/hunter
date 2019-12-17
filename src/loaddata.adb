@@ -32,6 +32,8 @@ with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Paned; use Gtk.Paned;
+with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
@@ -46,8 +48,9 @@ with Gdk.Window; use Gdk.Window;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
-with Utils; use Utils;
+with ShowItems; use ShowItems;
 with Trash;
+with Utils; use Utils;
 
 package body LoadData is
 
@@ -161,18 +164,32 @@ package body LoadData is
       end if;
       FilesList.Clear;
       if not Is_Read_Accessible_File(Name) then
-         Set_Text
-           (Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview"))),
-            Gettext("You don't have permissions to preview this directory."));
-         Show_All(Gtk_Widget(Get_Object(Builder, "scrolltext")));
-         Hide(Gtk_Widget(Get_Object(Builder, "scrolllist")));
-         if MainWindow /= null then
-            Set_Cursor
-              (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
-               Gdk_Cursor_New(Arrow));
-            Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
-            Set_Sensitive(Gtk_Widget(Get_Object(Builder, "btnopen")), False);
-         end if;
+         declare
+            PreviewScroll: constant Gtk_Scrolled_Window :=
+              Gtk_Scrolled_Window(Get_Child_By_Name(InfoStack, "preview"));
+            TextView: constant Gtk_Text_View := Gtk_Text_View_New;
+            Buffer: constant Gtk_Text_Buffer := Get_Buffer(TextView);
+         begin
+            Foreach(PreviewScroll, RemoveChild'Access);
+            Set_Wrap_Mode(TextView, Wrap_Word);
+            Set_Editable(TextView, False);
+            Set_Cursor_Visible(TextView, False);
+            Set_Text
+              (Buffer,
+               Gettext
+                 ("You don't have permissions to preview this directory."));
+            Add(PreviewScroll, TextView);
+            Show_All(PreviewScroll);
+            if MainWindow /= null then
+               Set_Cursor
+                 (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
+                  Gdk_Cursor_New(Arrow));
+               Set_Sensitive
+                 (Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
+               Set_Sensitive
+                 (Gtk_Widget(Get_Object(Builder, "btnopen")), False);
+            end if;
+         end;
          Setting := False;
          return;
       end if;
