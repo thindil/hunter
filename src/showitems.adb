@@ -304,17 +304,6 @@ package body ShowItems is
          Tag);
    end RemoveTag;
 
-   -- ****if* ShowItems/RemoveChild
-   -- FUNCTION
-   -- Remove all children from preview window
-   -- Widget - Gtk_Widget to remove
-   -- SOURCE
-   procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class) is
-   -- ****
-   begin
-      Destroy(Widget);
-   end RemoveChild;
-
    procedure PreviewItem(Object: access Gtkada_Builder_Record'Class) is
       PreviewScroll: constant Gtk_Scrolled_Window :=
         Gtk_Scrolled_Window(Get_Child_By_Name(InfoStack, "preview"));
@@ -325,6 +314,11 @@ package body ShowItems is
       SetBookmarkButton;
       Foreach(PreviewScroll, RemoveChild'Access);
       if Is_Directory(To_String(CurrentSelected)) then
+         Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
+         LoadDirectory(To_String(CurrentSelected), "fileslist1");
+         if Get_Child(PreviewScroll) /= null then
+            goto Set_UI;
+         end if;
          declare
             DirectoryView: constant Gtk_Tree_View :=
               Gtk_Tree_View_New_With_Model
@@ -351,8 +345,6 @@ package body ShowItems is
             end if;
             Show_All(Gtk_Widget(Get_Object(Object, "btnpreview")));
             Show_All(Gtk_Widget(Get_Object(Object, "btnopen")));
-            Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
-            LoadDirectory(To_String(CurrentSelected), "fileslist1");
             Add(PreviewScroll, DirectoryView);
             Show_All(PreviewScroll);
          end;

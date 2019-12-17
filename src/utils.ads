@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Gtk.Widget; use Gtk.Widget;
 with MainWindow; use MainWindow;
 
 -- ****h* Hunter/Utils
@@ -102,6 +103,14 @@ package Utils is
    -- Update fraction of the progress bar
    -- SOURCE
    procedure UpdateProgressBar;
+   -- ****
+
+   -- ****f* Utils/RemoveChild
+   -- FUNCTION
+   -- Remove all children from preview window
+   -- Widget - Gtk_Widget to remove
+   -- SOURCE
+   procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class);
    -- ****
 
 end Utils;

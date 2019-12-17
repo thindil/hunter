@@ -27,7 +27,6 @@ with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_View; use Gtk.Tree_View;
-with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
@@ -300,5 +299,10 @@ package body Utils is
       Set_Fraction
         (ProgressBar, Gdouble(ProgressIndex) / Gdouble(ProgressAmount));
    end UpdateProgressBar;
+
+   procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class) is
+   begin
+      Destroy(Widget);
+   end RemoveChild;
 
 end Utils;
