@@ -17,10 +17,10 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.GEntry; use Gtk.GEntry;
-with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
+with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
@@ -66,7 +66,7 @@ package body SearchItems is
    -- SOURCE
    function VisibleItems
      (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean is
-      -- ****
+   -- ****
    begin
       if Setting then
          return True;
@@ -91,31 +91,29 @@ package body SearchItems is
    -- FUNCTION
    -- Search for files and directories as user enter text in search entry
    -- PARAMETERS
-   -- Self - Which search entry was used for search. Unused.
+   -- Self - Which search entry was used for search.
    -- SOURCE
-   procedure SearchItem(Self : access Gtk_Search_Entry_Record'Class) is
-      pragma Unreferenced(Self);
+   procedure SearchItem(Self: access Gtk_Search_Entry_Record'Class) is
       -- ****
-      FilterName, ListName: Unbounded_String;
+      FilterName: Unbounded_String;
       TreeView: Gtk_Tree_View := DirectoryView;
    begin
       FilterName := To_Unbounded_String("filesfilter");
-      ListName := To_Unbounded_String("fileslist");
       if Get_Visible_Child_Name(InfoStack) = "destination" then
          FilterName := To_Unbounded_String("filesfilter2");
          TreeView :=
            Gtk_Tree_View
              (Get_Child(Gtk_Scrolled_Window(Get_Visible_Child(InfoStack))));
-         ListName := To_Unbounded_String("fileslist2");
       end if;
       Refilter
         (Gtk_Tree_Model_Filter(Get_Object(Builder, To_String(FilterName))));
-      if N_Children
-          (Gtk_List_Store(Get_Object(Builder, To_String(ListName))),
-           Null_Iter) >
+      if Gtk.Tree_Model_Sort.N_Children(-(Get_Model(TreeView)), Null_Iter) >
         0 then
          Set_Cursor(TreeView, Gtk_Tree_Path_New_From_String("0"), null, False);
       end if;
+      Grab_Focus(Self);
+      Select_Region(Self, 0, 0);
+      Set_Position(Self, Get_Text(Self)'Length);
    end SearchItem;
 
    procedure CreateSearchUI is
