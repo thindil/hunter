@@ -421,23 +421,23 @@ package body MainWindow is
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
           (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
-      Pack_Start(FilesBox, Gtk_Vbox_New, False);
-      Pack_End
-        (Gtk_Box
-           (Get_Child_By_Name
-              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-         FilesBox);
-      Pack_End
-        (Gtk_Box
-           (Get_Child_By_Name
-              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-         ProgressBar, False);
       InfoBar := Gtk_Info_Bar_New;
-      Pack_End
+      Pack_Start
         (Gtk_Box
            (Get_Child_By_Name
               (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
          InfoBar, False);
+      Pack_Start
+        (Gtk_Box
+           (Get_Child_By_Name
+              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+         ProgressBar, False);
+      Pack_Start(FilesBox, Gtk_Vbox_New, False);
+      Pack_Start
+        (Gtk_Box
+           (Get_Child_By_Name
+              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+         FilesBox);
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
