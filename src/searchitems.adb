@@ -110,6 +110,9 @@ package body SearchItems is
       if Gtk.Tree_Model_Sort.N_Children(-(Get_Model(TreeView)), Null_Iter) >
         0 then
          Set_Cursor(TreeView, Gtk_Tree_Path_New_From_String("0"), null, False);
+      else
+         CurrentSelected := CurrentDirectory;
+         PreviewItem(Builder);
       end if;
       Grab_Focus(Self);
       Select_Region(Self, 0, 0);
