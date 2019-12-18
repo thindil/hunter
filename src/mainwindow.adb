@@ -32,6 +32,7 @@ with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
+with Gtk.Search_Entry; use Gtk.Search_Entry;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
@@ -421,6 +422,12 @@ package body MainWindow is
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
           (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
+      SearchEntry := Gtk_Search_Entry_New;
+      Pack_Start
+        (Gtk_Box
+           (Get_Child_By_Name
+              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+         SearchEntry, False);
       InfoBar := Gtk_Info_Bar_New;
       Pack_Start
         (Gtk_Box
@@ -460,7 +467,7 @@ package body MainWindow is
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);
       On_Key_Press_Event
-        (Gtk_Widget(Get_Object(Builder, "searchfile")),
+        (SearchEntry,
          EntryKeyPressed'Access);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "mainwindow")),
@@ -513,7 +520,7 @@ package body MainWindow is
         (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnabout")),
          Gtk_Widget(Get_Object(Builder, "aboutmenu")));
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
-      Hide(Gtk_Widget(Get_Object(Builder, "searchfile")));
+      Hide(SearchEntry);
       Hide(Gtk_Widget(Get_Object(Builder, "entry")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
