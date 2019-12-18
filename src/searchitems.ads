@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.Search_Entry; use Gtk.Search_Entry;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Glib.Object; use Glib.Object;
 
@@ -22,6 +23,8 @@ with Glib.Object; use Glib.Object;
 -- SOURCE
 package SearchItems is
 -- ****
+
+   SearchEntry: Gtk_Search_Entry;
 
    -- ****f* SearchItems/CreateSearchUI
    -- FUNCTION

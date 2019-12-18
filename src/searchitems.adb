@@ -38,9 +38,8 @@ package body SearchItems is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
       -- ****
-      SearchEntry: constant Gtk_Widget :=
-        Gtk_Widget(Get_Object(Object, "searchfile"));
    begin
       if not Is_Visible(SearchEntry) then
          Show_All(SearchEntry);
@@ -68,8 +67,6 @@ package body SearchItems is
    function VisibleItems
      (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean is
       -- ****
-      SearchEntry: constant Gtk_GEntry :=
-        Gtk_GEntry(Get_Object(Builder, "searchfile"));
    begin
       if Setting then
          return True;
@@ -94,9 +91,10 @@ package body SearchItems is
    -- FUNCTION
    -- Search for files and directories as user enter text in search entry
    -- PARAMETERS
-   -- User_Data - Which search entry was used for search
+   -- Self - Which search entry was used for search. Unused.
    -- SOURCE
-   procedure SearchItem(User_Data: access GObject_Record'Class) is
+   procedure SearchItem(Self : access Gtk_Search_Entry_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
       FilterName, ListName: Unbounded_String;
       TreeView: Gtk_Tree_View := DirectoryView;
@@ -118,13 +116,12 @@ package body SearchItems is
         0 then
          Set_Cursor(TreeView, Gtk_Tree_Path_New_From_String("0"), null, False);
       end if;
-      Grab_Focus(Gtk_Widget(User_Data));
    end SearchItem;
 
    procedure CreateSearchUI is
    begin
+      On_Search_Changed(SearchEntry, SearchItem'Access);
       Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
-      Register_Handler(Builder, "Search_Items", SearchItem'Access);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
          VisibleItems'Access);
