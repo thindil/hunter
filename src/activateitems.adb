@@ -94,16 +94,16 @@ package body ActivateItems is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure StartOpenWith(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
       -- ****
-      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Object, "entry"));
    begin
       NewAction := OPENWITH;
       Set_Icon_Tooltip_Text
-        (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+        (TextEntry, Gtk_Entry_Icon_Secondary,
          Gettext("Enter command to use to open selected item."));
-      Set_Text(Gtk_GEntry(GEntry), "");
-      Show_All(GEntry);
-      Grab_Focus(GEntry);
+      Set_Text(TextEntry, "");
+      Show_All(TextEntry);
+      Grab_Focus(TextEntry);
    end StartOpenWith;
 
    procedure OpenItemWith

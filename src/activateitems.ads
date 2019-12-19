@@ -17,7 +17,6 @@ with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
-with Glib.Object; use Glib.Object;
 
 -- ****h* Hunter/ActivateItems
 -- FUNCTION

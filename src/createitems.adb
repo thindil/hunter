@@ -186,20 +186,19 @@ package body CreateItems is
    -- User_Data - Which menu option was selected (create file or directory)
    -- SOURCE
    procedure AddNew(User_Data: access GObject_Record'Class) is
-      -- ****
-      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
+   -- ****
    begin
       if User_Data = Get_Object(Builder, "newmenufile") then
          NewAction := CREATEFILE;
          Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+           (TextEntry, Gtk_Entry_Icon_Secondary,
             Gettext("Create new empty file."));
       elsif User_Data = Get_Object(Builder, "newmenulink") then
          NewAction := CREATELINK;
          SourceDirectory := CurrentDirectory;
          LinkTarget := CurrentSelected;
          Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+           (TextEntry, Gtk_Entry_Icon_Secondary,
             Gettext("Create new link to selected file or directory."));
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
          Set_Markup
@@ -211,12 +210,12 @@ package body CreateItems is
       else
          NewAction := CREATEDIRECTORY;
          Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+           (TextEntry, Gtk_Entry_Icon_Secondary,
             Gettext("Create new directory."));
       end if;
       ToggleToolButtons(NewAction);
-      Show_All(GEntry);
-      Grab_Focus(GEntry);
+      Show_All(TextEntry);
+      Grab_Focus(TextEntry);
    end AddNew;
 
    -- ****if* CreateItems/IconPressed
@@ -243,26 +242,28 @@ package body CreateItems is
    -- FUNCTION
    -- Create new file or directory when user press enter in text entry
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_GEntry in which Enter was pressed.
    -- SOURCE
-   procedure CreateNew(Object: access Gtkada_Builder_Record'Class) is
+   procedure CreateNew(Self: access Gtk_Entry_Record'Class) is
    -- ****
    begin
       if NewAction /= OPENWITH then
-         CreateItem
-           (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);
+         CreateItem(Self, Gtk_Entry_Icon_Secondary);
       else
-         OpenItemWith
-           (Gtk_GEntry(Get_Object(Object, "entry")), Gtk_Entry_Icon_Secondary);
+         OpenItemWith(Self, Gtk_Entry_Icon_Secondary);
       end if;
    end CreateNew;
 
    procedure CreateCreateUI is
    begin
       Register_Handler(Builder, "Add_New", AddNew'Access);
-      Register_Handler(Builder, "Create_New", CreateNew'Access);
-      On_Icon_Press
-        (Gtk_GEntry(Get_Object(Builder, "entry")), IconPressed'Access);
+      Set_Icon_From_Icon_Name
+        (TextEntry, Gtk_Entry_Icon_Primary, "window-close");
+      Set_Icon_Tooltip_Text(TextEntry, Gtk_Entry_Icon_Primary, "Close");
+      Set_Icon_From_Icon_Name
+        (TextEntry, Gtk_Entry_Icon_Secondary, "mail-send");
+      On_Activate(TextEntry, CreateNew'Access);
+      On_Icon_Press(TextEntry, IconPressed'Access);
    end CreateCreateUI;
 
 end CreateItems;
