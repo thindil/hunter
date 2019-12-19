@@ -121,7 +121,12 @@ package MainWindow is
    FilesPaned: Gtk_Paned;
    -- ****
 
+   -- ****v* MainWindow/TextEntry
+   -- FUNCTION
+   -- Gtk_GEntry used to create new files or directories or rename them
+   -- SOURCE
    TextEntry: Gtk_GEntry;
+   -- ****
 
    -- ****f* MainWindow/Quit
    -- FUNCTION
