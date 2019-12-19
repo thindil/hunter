@@ -471,19 +471,7 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="can_focus">False</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkEntry" id="entry">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="primary_icon_name">window-close</property>
-                    <property name="secondary_icon_name">mail-send</property>
-                    <property name="primary_icon_tooltip_text" translatable="yes">Close</property>
-                    <signal name="activate" handler="Create_New" swapped="no"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
+                  <placeholder/>
                 </child>
                 <child>
                   <placeholder/>
