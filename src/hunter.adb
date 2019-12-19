@@ -65,12 +65,12 @@ begin
       Put_Line("Error : " & Get_Message(Error));
       return;
    end if;
-   CreateErrorUI(Builder);
    if Argument_Count < 1 then
       CreateMainWindow(Builder, Value("HOME"));
    else
       CreateMainWindow(Builder, Full_Name(Argument(1)));
    end if;
+   CreateErrorUI(Builder);
    Clear("LD_LIBRARY_PATH");
    Clear("GDK_PIXBUF_MODULE_FILE");
    Clear("GDK_PIXBUF_MODULEDIR");

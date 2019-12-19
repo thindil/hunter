@@ -412,6 +412,7 @@ package body MainWindow is
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
       ProgressBar: constant Gtk_Progress_Bar := Gtk_Progress_Bar_New;
+      StackBox: constant Gtk_Vbox := Gtk_Vbox_New;
    begin
       Setting := True;
       Builder := NewBuilder;
@@ -419,35 +420,17 @@ package body MainWindow is
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
           (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
+      Add_Named
+        (Gtk_Stack(Get_Object(Builder, "filestack")), StackBox, "page0");
       TextEntry := Gtk_Entry_New;
-      Pack_Start
-        (Gtk_Box
-           (Get_Child_By_Name
-              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-         TextEntry, False);
+      Pack_Start(StackBox, TextEntry, False);
       SearchEntry := Gtk_Search_Entry_New;
-      Pack_Start
-        (Gtk_Box
-           (Get_Child_By_Name
-              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-         SearchEntry, False);
+      Pack_Start(StackBox, SearchEntry, False);
       InfoBar := Gtk_Info_Bar_New;
-      Pack_Start
-        (Gtk_Box
-           (Get_Child_By_Name
-              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-         InfoBar, False);
-      Pack_Start
-        (Gtk_Box
-           (Get_Child_By_Name
-              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-         ProgressBar, False);
+      Pack_Start(StackBox, InfoBar, False);
+      Pack_Start(StackBox, ProgressBar, False);
       Pack_Start(FilesBox, Gtk_Vbox_New, False);
-      Pack_Start
-        (Gtk_Box
-           (Get_Child_By_Name
-              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-         FilesBox);
+      Pack_Start(StackBox, FilesBox);
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);
