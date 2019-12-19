@@ -112,7 +112,6 @@ package body Bookmarks is
 -- ****
       MenuLabel: constant Unbounded_String :=
         To_Unbounded_String(Get_Label(Self));
-      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Builder, "entry"));
    begin
       if NewAction /= MOVE then
          NewAction := COPY;
@@ -124,11 +123,11 @@ package body Bookmarks is
             else
                NewAction := GOTOPATH;
                Set_Icon_Tooltip_Text
-                 (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
+                 (TextEntry, Gtk_Entry_Icon_Secondary,
                   Gettext("Go to selected destination."));
-               Set_Text(Gtk_GEntry(GEntry), To_String(CurrentDirectory));
-               Show_All(GEntry);
-               Grab_Focus(GEntry);
+               Set_Text(TextEntry, To_String(CurrentDirectory));
+               Show_All(TextEntry);
+               Grab_Focus(TextEntry);
             end if;
             exit;
          end if;

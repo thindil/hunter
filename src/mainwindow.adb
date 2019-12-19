@@ -24,7 +24,6 @@ with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
 with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
-with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
@@ -134,23 +133,21 @@ package body MainWindow is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure StartRename(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
       -- ****
-      GEntry: constant Gtk_Widget := Gtk_Widget(Get_Object(Object, "entry"));
    begin
       NewAction := RENAME;
       if Is_Directory(To_String(CurrentSelected)) then
          Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
-            Gettext("Rename directory."));
+           (TextEntry, Gtk_Entry_Icon_Secondary, Gettext("Rename directory."));
       else
          Set_Icon_Tooltip_Text
-           (Gtk_GEntry(GEntry), Gtk_Entry_Icon_Secondary,
-            Gettext("Rename file."));
+           (TextEntry, Gtk_Entry_Icon_Secondary, Gettext("Rename file."));
       end if;
       ToggleToolButtons(NewAction);
-      Set_Text(Gtk_GEntry(GEntry), Simple_Name(To_String(CurrentSelected)));
-      Show_All(GEntry);
-      Grab_Focus(GEntry);
+      Set_Text(TextEntry, Simple_Name(To_String(CurrentSelected)));
+      Show_All(TextEntry);
+      Grab_Focus(TextEntry);
    end StartRename;
 
    -- ****if* MainWindow/ShowFiles
@@ -422,6 +419,12 @@ package body MainWindow is
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
           (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
+      TextEntry := Gtk_Entry_New;
+      Pack_Start
+        (Gtk_Box
+           (Get_Child_By_Name
+              (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+         TextEntry, False);
       SearchEntry := Gtk_Search_Entry_New;
       Pack_Start
         (Gtk_Box
@@ -464,8 +467,7 @@ package body MainWindow is
       CreateTrashUI;
       CreatePreferences(Gtk_Widget(Get_Object(Builder, "btnpreferences")));
       Do_Connect(Builder);
-      On_Key_Press_Event
-        (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);
+      On_Key_Press_Event(TextEntry, EntryKeyPressed'Access);
       On_Key_Press_Event(SearchEntry, EntryKeyPressed'Access);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "mainwindow")),
@@ -519,7 +521,7 @@ package body MainWindow is
          Gtk_Widget(Get_Object(Builder, "aboutmenu")));
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       Hide(SearchEntry);
-      Hide(Gtk_Widget(Get_Object(Builder, "entry")));
+      Hide(TextEntry);
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
       Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
       Hide(ProgressBar);
