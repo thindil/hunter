@@ -222,7 +222,7 @@ package body MainWindow is
    begin
       if Event.Keyval = GDK_Escape then
          ToggleToolButtons(NewAction, True);
-         if Self = Gtk_Widget(Get_Object(Builder, "searchfile")) then
+         if Self = Gtk_Widget(SearchEntry) then
             Set_Active
               (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btnsearch")),
                False);
@@ -466,9 +466,7 @@ package body MainWindow is
       Do_Connect(Builder);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "entry")), EntryKeyPressed'Access);
-      On_Key_Press_Event
-        (SearchEntry,
-         EntryKeyPressed'Access);
+      On_Key_Press_Event(SearchEntry, EntryKeyPressed'Access);
       On_Key_Press_Event
         (Gtk_Widget(Get_Object(Builder, "mainwindow")),
          WindowKeyPressed'Access);
