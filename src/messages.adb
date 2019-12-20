@@ -133,12 +133,7 @@ package body Messages is
                end if;
             end if;
             ToggleToolButtons(NewAction, True);
-            Hide
-              (Get_Child
-                 (Gtk_Box
-                    (Get_Child_By_Name
-                       (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-                  3));
+            Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
             if Settings.ShowFinishedInfo then
                if NewAction = DELETE and not Settings.DeleteFiles then
                   ShowMessage

@@ -17,6 +17,7 @@ with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Paned; use Gtk.Paned;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtkada.Builder; use Gtkada.Builder;
 
@@ -126,6 +127,13 @@ package MainWindow is
    -- Gtk_GEntry used to create new files or directories or rename them
    -- SOURCE
    TextEntry: Gtk_GEntry;
+   -- ****
+
+   -- ****v* MainWindow/FileStack
+   -- FUNCTION
+   -- Gtk_Stack with almost all the program UI
+   -- SOURCE
+   FileStack: Gtk_Stack;
    -- ****
 
    -- ****f* MainWindow/Quit

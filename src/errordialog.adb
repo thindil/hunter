@@ -33,6 +33,7 @@ with Gtk.Text_View; use Gtk.Text_View;
 with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
 with Gtkada.Intl; use Gtkada.Intl;
+with MainWindow; use MainWindow;
 
 package body ErrorDialog is
 
@@ -83,8 +84,7 @@ package body ErrorDialog is
          Set_Text(ErrorBuffer, To_String(ErrorText));
          Hide(Gtk_Widget(Get_Object(Builder, "toolbar")));
          Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
-         Set_Visible_Child_Name
-           (Gtk_Stack(Get_Object(Builder, "filestack")), "error");
+         Set_Visible_Child_Name(FileStack, "error");
          Set_Cursor
            (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
             Gdk_Cursor_New(Arrow));
@@ -130,7 +130,7 @@ package body ErrorDialog is
       Add(Scroll, View);
       Add(Expander, Scroll);
       Pack_Start(Box, Expander);
-      Add_Named(Gtk_Stack(Get_Object(Builder, "filestack")), Box, "error");
+      Add_Named(FileStack, Box, "error");
    end CreateErrorUI;
 
 end ErrorDialog;

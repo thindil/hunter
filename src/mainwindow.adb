@@ -19,6 +19,7 @@ with Ada.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
+with Gtk.Bin; use Gtk.Bin;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
 with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
@@ -32,7 +33,6 @@ with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Search_Entry; use Gtk.Search_Entry;
-with Gtk.Stack; use Gtk.Stack;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
@@ -173,12 +173,7 @@ package body MainWindow is
            (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut")), False);
       end if;
       Setting := False;
-      Hide
-        (Get_Child
-           (Gtk_Box
-              (Get_Child_By_Name
-                 (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-            3));
+      Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
       ToggleToolButtons(NewAction, True);
       CloseMessage(null);
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
@@ -416,12 +411,13 @@ package body MainWindow is
    begin
       Setting := True;
       Builder := NewBuilder;
+      FileStack := Gtk_Stack_New;
+      Pack_End(Gtk_Box(Get_Child(Gtk_Bin(Get_Object(Builder, "mainwindow")))), FileStack);
       FilesPaned := Gtk_Hpaned_New;
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
           (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
-      Add_Named
-        (Gtk_Stack(Get_Object(Builder, "filestack")), StackBox, "page0");
+      Add_Named(FileStack, StackBox, "page0");
       TextEntry := Gtk_Entry_New;
       Pack_Start(StackBox, TextEntry, False);
       SearchEntry := Gtk_Search_Entry_New;

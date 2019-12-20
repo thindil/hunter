@@ -134,12 +134,7 @@ package body MoveItems is
          UpdateProgressBar;
       end loop;
       MoveItemsList.Clear;
-      Hide
-        (Get_Child
-           (Gtk_Box
-              (Get_Child_By_Name
-                 (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-            3));
+      Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
       ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage
