@@ -15,10 +15,10 @@
 
 with Gtk.Toolbar; use Gtk.Toolbar;
 
-package Header is
+package Toolbars is
 
    ItemToolBar: Gtk_Toolbar;
 
-   procedure CreateHeaderUI;
+   procedure CreateItemToolbarUI;
 
-end Header;
+end Toolbars;

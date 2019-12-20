@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.Enums; use Gtk.Enums;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Separator_Tool_Item; use Gtk.Separator_Tool_Item;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
@@ -20,32 +21,33 @@ with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
 
-package body Header is
+package body Toolbars is
 
-   procedure CreateHeaderUI is
-      procedure AddButton(Toolbar: Gtk_Toolbar; Text, IconName: String) is
+   procedure CreateItemToolbarUI is
+      procedure AddButton(Text, IconName: String) is
          Button: constant Gtk_Tool_Button := Gtk_Tool_Button_New(Label => Text);
       begin
          Set_Icon_Name(Button, IconName);
-         Insert(Toolbar, Button);
+         Insert(ItemToolBar, Button);
       end AddButton;
-      procedure AddSeparator(Toolbar: Gtk_Toolbar) is
+      procedure AddSeparator is
          Separator: constant Gtk_Separator_Tool_Item := Gtk_Separator_Tool_Item_New;
       begin
-         Insert(Toolbar, Separator);
+         Insert(ItemToolBar, Separator);
       end AddSeparator;
    begin
       ItemToolBar := Gtk_Toolbar_New;
-      AddButton(ItemToolBar, Gettext("Run"), "media-playback-start");
-      AddButton(ItemToolBar, Gettext("Open"), "document-open");
-      AddButton(ItemToolBar, Gettext("Open with..."), "system-run");
-      AddSeparator(ItemToolBar);
-      AddButton(ItemToolBar, Gettext("Preview"), "document-print-preview");
-      AddButton(ItemToolBar, Gettext("Info"), "document-properties");
-      AddSeparator(ItemToolBar);
-      AddButton(ItemToolBar, Gettext("Add bookmark"), "list-add");
-      AddButton(ItemToolBar, Gettext("Remove bookmark"), "list-remove");
+      Set_Style(ItemToolBar, Toolbar_Icons);
+      AddButton(Gettext("Run"), "media-playback-start");
+      AddButton(Gettext("Open"), "document-open");
+      AddButton(Gettext("Open with..."), "system-run");
+      AddSeparator;
+      AddButton(Gettext("Preview"), "document-print-preview");
+      AddButton(Gettext("Info"), "document-properties");
+      AddSeparator;
+      AddButton(Gettext("Add bookmark"), "list-add");
+      AddButton(Gettext("Remove bookmark"), "list-remove");
       Pack_End(Gtk_Header_Bar(Get_Object(Builder, "header")), ItemToolBar);
-   end CreateHeaderUI;
+   end CreateItemToolbarUI;
 
-end Header;
+end Toolbars;
