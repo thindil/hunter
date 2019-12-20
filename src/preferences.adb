@@ -91,7 +91,7 @@ package body Preferences is
              (Get_Child
                 (Gtk_Box
                    (Get_Child_By_Name
-                      (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
+                      (FileStack, "page0")),
                  4)),
            0);
       Toolbar: constant GObject := Get_Object(Builder, "toolbar");

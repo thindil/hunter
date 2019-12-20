@@ -275,11 +275,7 @@ package body Utils is
 
    procedure SetProgressBar(Amount: Positive) is
       ProgressBar: constant Gtk_Widget :=
-        Get_Child
-          (Gtk_Box
-             (Get_Child_By_Name
-                (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-           3);
+        Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3);
    begin
       Show_All(ProgressBar);
       Set_Fraction(Gtk_Progress_Bar(ProgressBar), 0.0);
@@ -290,11 +286,7 @@ package body Utils is
    procedure UpdateProgressBar is
       ProgressBar: constant Gtk_Progress_Bar :=
         Gtk_Progress_Bar
-          (Get_Child
-             (Gtk_Box
-                (Get_Child_By_Name
-                   (Gtk_Stack(Get_Object(Builder, "filestack")), "page0")),
-              3));
+          (Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
    begin
       Set_Fraction
         (ProgressBar, Gdouble(ProgressIndex) / Gdouble(ProgressAmount));
