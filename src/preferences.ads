@@ -102,13 +102,6 @@ package Preferences is
    procedure SetDeleteTooltip;
    -- ****
 
-   -- ****f* Preferences/SetToolbars
-   -- FUNCTION
-   -- Set position of toolbars - on the top or the left of the main window.
-   -- SOURCE
-   procedure SetToolbars;
-   -- ****
-
    -- ****f* Preferences/SavePreferences
    -- FUNCTION
    -- Save the program preferences to the file.
