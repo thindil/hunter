@@ -54,6 +54,7 @@ with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
+with Header; use Header;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with MoveItems; use MoveItems;
@@ -411,6 +412,7 @@ package body MainWindow is
    begin
       Setting := True;
       Builder := NewBuilder;
+      CreateHeaderUI;
       FileStack := Gtk_Stack_New;
       Pack_End(Gtk_Box(Get_Child(Gtk_Bin(Get_Object(Builder, "mainwindow")))), FileStack);
       FilesPaned := Gtk_Hpaned_New;
