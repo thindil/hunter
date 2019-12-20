@@ -17,6 +17,7 @@ with Gtk.Enums; use Gtk.Enums;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Separator_Tool_Item; use Gtk.Separator_Tool_Item;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
+with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
@@ -38,6 +39,8 @@ package body Toolbars is
    begin
       ItemToolBar := Gtk_Toolbar_New;
       Set_Style(ItemToolBar, Toolbar_Icons);
+      Set_Halign(ItemToolBar, Align_Center);
+      Set_Valign(ItemToolBar, Align_End);
       AddButton(Gettext("Run"), "media-playback-start");
       AddButton(Gettext("Open"), "document-open");
       AddButton(Gettext("Open with..."), "system-run");
