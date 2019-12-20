@@ -54,7 +54,6 @@ with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
-with Header; use Header;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with MoveItems; use MoveItems;
@@ -62,6 +61,7 @@ with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
+with Toolbars; use Toolbars;
 with Trash; use Trash;
 with Utils; use Utils;
 
@@ -412,7 +412,7 @@ package body MainWindow is
    begin
       Setting := True;
       Builder := NewBuilder;
-      CreateHeaderUI;
+      CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
       Pack_End(Gtk_Box(Get_Child(Gtk_Bin(Get_Object(Builder, "mainwindow")))), FileStack);
       FilesPaned := Gtk_Hpaned_New;
@@ -429,6 +429,7 @@ package body MainWindow is
       Pack_Start(StackBox, ProgressBar, False);
       Pack_Start(FilesBox, Gtk_Vbox_New, False);
       Pack_Start(StackBox, FilesBox);
+      SetToolbars;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRename'Access);

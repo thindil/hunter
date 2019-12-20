@@ -42,6 +42,7 @@ with Glib.Object; use Glib.Object;
 with MainWindow; use MainWindow;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
+with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body Preferences is
@@ -95,28 +96,29 @@ package body Preferences is
                  4)),
            0);
       Toolbar: constant GObject := Get_Object(Builder, "toolbar");
-      ItemToolbar: constant GObject := Get_Object(Builder, "itemtoolbar");
    begin
       if Settings.ToolbarsOnTop then
          if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(Header) then
             return;
          end if;
          Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
-         Remove(Gtk_Container(LeftBox), Gtk_Widget(ItemToolbar));
+         Ref(ItemToolbar);
+         Remove(Gtk_Container(LeftBox), ItemToolbar);
          Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
-         Pack_End(Gtk_Header_Bar(Header), Gtk_Widget(ItemToolbar));
+         Pack_End(Gtk_Header_Bar(Header), ItemToolbar);
          Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
-         Set_Orientation(Gtk_Toolbar(ItemToolbar), Orientation_Horizontal);
+         Set_Orientation(ItemToolbar, Orientation_Horizontal);
       else
          if Get_Parent(Gtk_Widget(Toolbar)) = LeftBox then
             return;
          end if;
          Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
-         Remove(Gtk_Container(Header), Gtk_Widget(ItemToolbar));
+         Ref(ItemToolbar);
+         Remove(Gtk_Container(Header), ItemToolbar);
          Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(Toolbar));
-         Pack_End(Gtk_Box(LeftBox), Gtk_Widget(ItemToolbar));
+         Pack_End(Gtk_Box(LeftBox), ItemToolbar);
          Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
-         Set_Orientation(Gtk_Toolbar(ItemToolbar), Orientation_Vertical);
+         Set_Orientation(ItemToolbar, Orientation_Vertical);
       end if;
    end SetToolbars;
 
@@ -198,7 +200,6 @@ package body Preferences is
                Settings.OverwriteOnExist := LoadBoolean;
             elsif FieldName = To_Unbounded_String("ToolbarsOnTop") then
                Settings.ToolbarsOnTop := LoadBoolean;
-               SetToolbars;
             elsif FieldName = To_Unbounded_String("AutoRefreshInterval") then
                Settings.AutoRefreshInterval :=
                  Positive'Value(To_String(Value));
