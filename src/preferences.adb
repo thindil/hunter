@@ -18,19 +18,15 @@ with Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Adjustment; use Gtk.Adjustment;
 with Gtk.Box; use Gtk.Box;
-with Gtk.Container; use Gtk.Container;
 with Gtk.Combo_Box; use Gtk.Combo_Box;
 with Gtk.Combo_Box_Text; use Gtk.Combo_Box_Text;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Frame; use Gtk.Frame;
 with Gtk.Grid; use Gtk.Grid;
-with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scale; use Gtk.Scale;
-with Gtk.Stack; use Gtk.Stack;
 with Gtk.Switch; use Gtk.Switch;
-with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
@@ -78,49 +74,6 @@ package body Preferences is
               ("Move selected file(s) or folder(s) to trash [ALT-Delete]."));
       end if;
    end SetDeleteTooltip;
-
-   -- ****if* Preferences/SetToolbars
-   -- FUNCTION
-   -- Set position of toolbars - on the top or the left of the main window.
-   -- SOURCE
-   procedure SetToolbars is
-      -- ****
-      Header: constant GObject := Get_Object(Builder, "header");
-      LeftBox: constant Gtk_Widget :=
-        Get_Child
-          (Gtk_Box
-             (Get_Child
-                (Gtk_Box
-                   (Get_Child_By_Name
-                      (FileStack, "page0")),
-                 4)),
-           0);
-      Toolbar: constant GObject := Get_Object(Builder, "toolbar");
-   begin
-      if Settings.ToolbarsOnTop then
-         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(Header) then
-            return;
-         end if;
-         Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
-         Ref(ItemToolbar);
-         Remove(Gtk_Container(LeftBox), ItemToolbar);
-         Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
-         Pack_End(Gtk_Header_Bar(Header), ItemToolbar);
-         Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
-         Set_Orientation(ItemToolbar, Orientation_Horizontal);
-      else
-         if Get_Parent(Gtk_Widget(Toolbar)) = LeftBox then
-            return;
-         end if;
-         Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
-         Ref(ItemToolbar);
-         Remove(Gtk_Container(Header), ItemToolbar);
-         Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(Toolbar));
-         Pack_End(Gtk_Box(LeftBox), ItemToolbar);
-         Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
-         Set_Orientation(ItemToolbar, Orientation_Vertical);
-      end if;
-   end SetToolbars;
 
    -- ****if* Preferences/LoadSettings
    -- FUNCTION

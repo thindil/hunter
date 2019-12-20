@@ -21,4 +21,11 @@ package Toolbars is
 
    procedure CreateItemToolbarUI;
 
+   -- ****f* Toolbars/SetToolbars
+   -- FUNCTION
+   -- Set position of toolbars - on the top or the left of the main window.
+   -- SOURCE
+   procedure SetToolbars;
+   -- ****
+
 end Toolbars;

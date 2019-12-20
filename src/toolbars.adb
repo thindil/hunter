@@ -13,14 +13,19 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.Box; use Gtk.Box;
+with Gtk.Container; use Gtk.Container;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Separator_Tool_Item; use Gtk.Separator_Tool_Item;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Widget; use Gtk.Widget;
+with Glib.Object; use Glib.Object;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
+with Preferences; use Preferences;
 
 package body Toolbars is
 
@@ -52,5 +57,43 @@ package body Toolbars is
       AddButton(Gettext("Remove bookmark"), "list-remove");
       Pack_End(Gtk_Header_Bar(Get_Object(Builder, "header")), ItemToolBar);
    end CreateItemToolbarUI;
+
+   procedure SetToolbars is
+      Header: constant GObject := Get_Object(Builder, "header");
+      LeftBox: constant Gtk_Widget :=
+        Get_Child
+          (Gtk_Box
+             (Get_Child
+                (Gtk_Box
+                   (Get_Child_By_Name
+                      (FileStack, "page0")),
+                 4)),
+           0);
+      Toolbar: constant GObject := Get_Object(Builder, "toolbar");
+   begin
+      if Settings.ToolbarsOnTop then
+         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(Header) then
+            return;
+         end if;
+         Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
+         Ref(ItemToolbar);
+         Remove(Gtk_Container(LeftBox), ItemToolbar);
+         Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
+         Pack_End(Gtk_Header_Bar(Header), ItemToolbar);
+         Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
+         Set_Orientation(ItemToolbar, Orientation_Horizontal);
+      else
+         if Get_Parent(Gtk_Widget(Toolbar)) = LeftBox then
+            return;
+         end if;
+         Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
+         Ref(ItemToolbar);
+         Remove(Gtk_Container(Header), ItemToolbar);
+         Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(Toolbar));
+         Pack_End(Gtk_Box(LeftBox), ItemToolbar);
+         Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
+         Set_Orientation(ItemToolbar, Orientation_Vertical);
+      end if;
+   end SetToolbars;
 
 end Toolbars;
