@@ -55,6 +55,7 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Toggle_Button; use Gtk.Toggle_Button;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Widget; use Gtk.Widget;
 with Gdk.Pixbuf; use Gdk.Pixbuf;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -73,6 +74,7 @@ with MoveItems; use MoveItems;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
+with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body ShowItems is
@@ -313,8 +315,9 @@ package body ShowItems is
       end if;
       SetBookmarkButton;
       Foreach(PreviewScroll, RemoveChild'Access);
+      Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 1)));
       if Is_Directory(To_String(CurrentSelected)) then
-         Hide(Gtk_Widget(Get_Object(Object, "btnrun")));
+         Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 0)));
          LoadDirectory(To_String(CurrentSelected), "fileslist1");
          if Get_Child(PreviewScroll) /= null then
             goto Set_UI;
@@ -344,7 +347,6 @@ package body ShowItems is
                return;
             end if;
             Show_All(Gtk_Widget(Get_Object(Object, "btnpreview")));
-            Show_All(Gtk_Widget(Get_Object(Object, "btnopen")));
             Add(PreviewScroll, DirectoryView);
             Show_All(PreviewScroll);
          end;
@@ -354,7 +356,7 @@ package body ShowItems is
               GetMimeType(To_String(CurrentSelected));
          begin
             if not Is_Executable_File(To_String(CurrentSelected)) then
-               Hide(Gtk_Widget(Get_Object(Builder, "btnrun")));
+               Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 0)));
             end if;
             if MimeType(1 .. 4) = "text" then
                declare
@@ -526,7 +528,7 @@ package body ShowItems is
             else
                Hide(Gtk_Widget(Get_Object(Object, "btnpreview")));
                if not CanBeOpened(MimeType) then
-                  Hide(Gtk_Widget(Get_Object(Object, "btnopen")));
+                  Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 1)));
                end if;
                Set_Active
                  (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo")),
