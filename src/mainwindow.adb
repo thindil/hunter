@@ -34,6 +34,7 @@ with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Search_Entry; use Gtk.Search_Entry;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
@@ -330,16 +331,16 @@ package body MainWindow is
       Show_All(Gtk_Widget(FilesMenu));
       Set_Visible
         (Gtk_Widget(Get_Object(Builder, "menuopen")),
-         Get_Visible(Gtk_Widget(Get_Object(Builder, "btnopen"))));
+         Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 1))));
       Set_Visible
         (Gtk_Widget(Get_Object(Builder, "menurun")),
-         Get_Visible(Gtk_Widget(Get_Object(Builder, "btnrun"))));
+         Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 0))));
       Set_Visible
         (Gtk_Widget(Get_Object(Builder, "menurunwith")),
-         Get_Visible(Gtk_Widget(Get_Object(Builder, "btnopenwith"))));
+         Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 2))));
       Set_Visible
         (Gtk_Widget(Get_Object(Builder, "menurename")),
-         Get_Visible(Gtk_Widget(Get_Object(Builder, "btnopenwith"))));
+         Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 2))));
       if not Is_Visible(Gtk_Widget(Get_Object(Builder, "itemtoolbar"))) then
          Hide(Gtk_Widget(Get_Object(Builder, "menuopen")));
          Hide(Gtk_Widget(Get_Object(Builder, "menurun")));

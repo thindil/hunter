@@ -36,6 +36,7 @@ with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Text_Buffer; use Gtk.Text_Buffer;
 with Gtk.Text_View; use Gtk.Text_View;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Widget; use Gtk.Widget;
@@ -49,6 +50,7 @@ with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
+with Toolbars; use Toolbars;
 with Trash;
 with Utils; use Utils;
 
@@ -187,7 +189,7 @@ package body LoadData is
                Set_Sensitive
                  (Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
                Set_Sensitive
-                 (Gtk_Widget(Get_Object(Builder, "btnopen")), False);
+                 (Gtk_Widget(Get_Nth_Item(ItemToolBar, 1)), False);
             end if;
          end;
          Setting := False;
