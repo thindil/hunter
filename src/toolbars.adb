@@ -17,6 +17,7 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Container; use Gtk.Container;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
+with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
 with Gtk.Separator_Tool_Item; use Gtk.Separator_Tool_Item;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
@@ -43,7 +44,20 @@ package body Toolbars is
       Insert(Toolbar, Separator);
    end AddSeparator;
 
+   procedure AddRadioButton
+     (Text, IconName: String; RadioGroup: in out Widget_SList.GSlist;
+      Toolbar: Gtk_Toolbar) is
+      Button: constant Gtk_Radio_Tool_Button :=
+        Gtk_Radio_Tool_Button_New(RadioGroup);
+   begin
+      RadioGroup := Get_Group(Button);
+      Set_Label(Button, Text);
+      Set_Icon_Name(Button, IconName);
+      Insert(Toolbar, Button);
+   end AddRadioButton;
+
    procedure CreateItemToolbarUI is
+      RadioGroup: Widget_SList.GSlist;
    begin
       ItemToolBar := Gtk_Toolbar_New;
       Set_Style(ItemToolBar, Toolbar_Icons);
@@ -53,8 +67,11 @@ package body Toolbars is
       AddButton(Gettext("Open"), "document-open", ItemToolBar);
       AddButton(Gettext("Open with..."), "system-run", ItemToolBar);
       AddSeparator(ItemToolBar);
-      AddButton(Gettext("Preview"), "document-print-preview", ItemToolBar);
-      AddButton(Gettext("Info"), "document-properties", ItemToolBar);
+      AddRadioButton
+        (Gettext("Preview"), "document-print-preview", RadioGroup,
+         ItemToolBar);
+      AddRadioButton
+        (Gettext("Info"), "document-properties", RadioGroup, ItemToolBar);
       AddSeparator(ItemToolBar);
       AddButton(Gettext("Add bookmark"), "list-add", ItemToolBar);
       AddButton(Gettext("Remove bookmark"), "list-remove", ItemToolBar);
