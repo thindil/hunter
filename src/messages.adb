@@ -199,6 +199,8 @@ package body Messages is
         Gtk_Container(Get_Action_Area(InfoBar));
       ButtonsAmount: Positive := 4;
    begin
+      Foreach(ButtonBox, RemoveChild'Access);
+      Foreach(Gtk_Container(Get_Content_Area(InfoBar)), RemoveChild'Access);
       if MessageType /= Message_Question then
          Set_Show_Close_Button(InfoBar, True);
          if Source_Id /= No_Source_Id then
