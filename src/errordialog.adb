@@ -34,6 +34,7 @@ with Gdk.Cursor; use Gdk.Cursor;
 with Gdk.Window; use Gdk.Window;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
+with Toolbars; use Toolbars;
 
 package body ErrorDialog is
 
@@ -83,7 +84,7 @@ package body ErrorDialog is
       else
          Set_Text(ErrorBuffer, To_String(ErrorText));
          Hide(Gtk_Widget(Get_Object(Builder, "toolbar")));
-         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+         Hide(Gtk_Widget(ItemToolBar));
          Set_Visible_Child_Name(FileStack, "error");
          Set_Cursor
            (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),

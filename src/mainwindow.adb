@@ -342,7 +342,7 @@ package body MainWindow is
       Set_Visible
         (Gtk_Widget(Get_Object(Builder, "menurename")),
          Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 2))));
-      if not Is_Visible(Gtk_Widget(Get_Object(Builder, "itemtoolbar"))) then
+      if not Is_Visible(ItemToolBar) then
          Hide(Gtk_Widget(Get_Object(Builder, "menuopen")));
          Hide(Gtk_Widget(Get_Object(Builder, "menurun")));
          Hide(Gtk_Widget(Get_Object(Builder, "menurunwith")));
@@ -416,7 +416,9 @@ package body MainWindow is
       Builder := NewBuilder;
       CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
-      Pack_End(Gtk_Box(Get_Child(Gtk_Bin(Get_Object(Builder, "mainwindow")))), FileStack);
+      Pack_End
+        (Gtk_Box(Get_Child(Gtk_Bin(Get_Object(Builder, "mainwindow")))),
+         FileStack);
       FilesPaned := Gtk_Hpaned_New;
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
