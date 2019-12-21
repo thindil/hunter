@@ -29,32 +29,35 @@ with Preferences; use Preferences;
 
 package body Toolbars is
 
+   procedure AddButton(Text, IconName: String; Toolbar: Gtk_Toolbar) is
+      Button: constant Gtk_Tool_Button := Gtk_Tool_Button_New(Label => Text);
+   begin
+      Set_Icon_Name(Button, IconName);
+      Insert(Toolbar, Button);
+   end AddButton;
+
+   procedure AddSeparator(Toolbar: Gtk_Toolbar) is
+      Separator: constant Gtk_Separator_Tool_Item :=
+        Gtk_Separator_Tool_Item_New;
+   begin
+      Insert(Toolbar, Separator);
+   end AddSeparator;
+
    procedure CreateItemToolbarUI is
-      procedure AddButton(Text, IconName: String) is
-         Button: constant Gtk_Tool_Button := Gtk_Tool_Button_New(Label => Text);
-      begin
-         Set_Icon_Name(Button, IconName);
-         Insert(ItemToolBar, Button);
-      end AddButton;
-      procedure AddSeparator is
-         Separator: constant Gtk_Separator_Tool_Item := Gtk_Separator_Tool_Item_New;
-      begin
-         Insert(ItemToolBar, Separator);
-      end AddSeparator;
    begin
       ItemToolBar := Gtk_Toolbar_New;
       Set_Style(ItemToolBar, Toolbar_Icons);
       Set_Halign(ItemToolBar, Align_Center);
       Set_Valign(ItemToolBar, Align_End);
-      AddButton(Gettext("Run"), "media-playback-start");
-      AddButton(Gettext("Open"), "document-open");
-      AddButton(Gettext("Open with..."), "system-run");
-      AddSeparator;
-      AddButton(Gettext("Preview"), "document-print-preview");
-      AddButton(Gettext("Info"), "document-properties");
-      AddSeparator;
-      AddButton(Gettext("Add bookmark"), "list-add");
-      AddButton(Gettext("Remove bookmark"), "list-remove");
+      AddButton(Gettext("Run"), "media-playback-start", ItemToolBar);
+      AddButton(Gettext("Open"), "document-open", ItemToolBar);
+      AddButton(Gettext("Open with..."), "system-run", ItemToolBar);
+      AddSeparator(ItemToolBar);
+      AddButton(Gettext("Preview"), "document-print-preview", ItemToolBar);
+      AddButton(Gettext("Info"), "document-properties", ItemToolBar);
+      AddSeparator(ItemToolBar);
+      AddButton(Gettext("Add bookmark"), "list-add", ItemToolBar);
+      AddButton(Gettext("Remove bookmark"), "list-remove", ItemToolBar);
       Pack_End(Gtk_Header_Bar(Get_Object(Builder, "header")), ItemToolBar);
    end CreateItemToolbarUI;
 
@@ -63,11 +66,7 @@ package body Toolbars is
       LeftBox: constant Gtk_Widget :=
         Get_Child
           (Gtk_Box
-             (Get_Child
-                (Gtk_Box
-                   (Get_Child_By_Name
-                      (FileStack, "page0")),
-                 4)),
+             (Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 4)),
            0);
       Toolbar: constant GObject := Get_Object(Builder, "toolbar");
    begin
@@ -76,23 +75,23 @@ package body Toolbars is
             return;
          end if;
          Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
-         Ref(ItemToolbar);
-         Remove(Gtk_Container(LeftBox), ItemToolbar);
+         Ref(ItemToolBar);
+         Remove(Gtk_Container(LeftBox), ItemToolBar);
          Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
-         Pack_End(Gtk_Header_Bar(Header), ItemToolbar);
+         Pack_End(Gtk_Header_Bar(Header), ItemToolBar);
          Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
-         Set_Orientation(ItemToolbar, Orientation_Horizontal);
+         Set_Orientation(ItemToolBar, Orientation_Horizontal);
       else
          if Get_Parent(Gtk_Widget(Toolbar)) = LeftBox then
             return;
          end if;
          Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
-         Ref(ItemToolbar);
-         Remove(Gtk_Container(Header), ItemToolbar);
+         Ref(ItemToolBar);
+         Remove(Gtk_Container(Header), ItemToolBar);
          Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(Toolbar));
-         Pack_End(Gtk_Box(LeftBox), ItemToolbar);
+         Pack_End(Gtk_Box(LeftBox), ItemToolBar);
          Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
-         Set_Orientation(ItemToolbar, Orientation_Vertical);
+         Set_Orientation(ItemToolBar, Orientation_Vertical);
       end if;
    end SetToolbars;
 
