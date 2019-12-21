@@ -36,6 +36,7 @@ with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
+with Toolbars; use Toolbars;
 
 package body Utils is
 
@@ -190,7 +191,7 @@ package body Utils is
       end if;
       if Finished then
          Set_Title(Gtk_Header_Bar(Get_Object(Builder, "header")), "");
-         Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+         Show_All(Gtk_Widget(ItemToolBar));
          if not Settings.ShowPreview then
             Set_Position
               (FilesPaned,
@@ -202,7 +203,7 @@ package body Utils is
          end if;
       else
          if Action /= SHOWTRASH then
-            Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+            Hide(Gtk_Widget(ItemToolBar));
          end if;
          case Action is
             when CREATEFILE =>

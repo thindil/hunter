@@ -188,8 +188,7 @@ package body LoadData is
                   Gdk_Cursor_New(Arrow));
                Set_Sensitive
                  (Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
-               Set_Sensitive
-                 (Gtk_Widget(Get_Nth_Item(ItemToolBar, 1)), False);
+               Set_Sensitive(Gtk_Widget(Get_Nth_Item(ItemToolBar, 1)), False);
             end if;
          end;
          Setting := False;

@@ -571,7 +571,7 @@ package body ShowItems is
       end if;
       if SelectedItems.Length > 1 then
          Hide(Get_Child(PreviewScroll));
-         Hide(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+         Hide(ItemToolBar);
          Set_Markup
            (Gtk_Label
               (Get_Label_Widget
@@ -595,7 +595,7 @@ package body ShowItems is
          LinkTarget := CurrentSelected;
          return;
       end if;
-      Show_All(Gtk_Widget(Get_Object(Builder, "itemtoolbar")));
+      Show_All(ItemToolBar);
       Set_Active
         (Gtk_Radio_Tool_Button(Get_Object(Builder, "btnpreview")), True);
       PreviewItem(Builder);
