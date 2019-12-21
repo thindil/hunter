@@ -24,6 +24,7 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
 with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
+with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Main; use Gtk.Main;
@@ -521,6 +522,7 @@ package body MainWindow is
       begin
          Set_Enable_Search(DirectoryView, False);
          Set_Headers_Clickable(DirectoryView, True);
+         Set_Mode(Get_Selection(DirectoryView), Selection_Multiple);
          Area := Gtk_Cell_Area_Box_New;
          Pack_Start(Area, Renderer2, False);
          Add_Attribute(Area, Renderer2, "icon-name", 2);
