@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Container; use Gtk.Container;
 with Gtk.Enums; use Gtk.Enums;
@@ -23,6 +24,8 @@ with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Object; use Glib.Object;
+with Gdk.Types; use Gdk.Types;
+with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
@@ -30,12 +33,17 @@ with Preferences; use Preferences;
 
 package body Toolbars is
 
+   Accelerators: Gtk_Accel_Group;
+
    procedure AddButton
-     (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String) is
+     (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
+      Key: Gdk_Key_Type) is
       Button: constant Gtk_Tool_Button := Gtk_Tool_Button_New(Label => Text);
    begin
       Set_Tooltip_Text(Button, Tooltip);
       Set_Icon_Name(Button, IconName);
+      Add_Accelerator
+        (Button, "clicked", Accelerators, Key, Mod1_Mask, Accel_Visible);
       Insert(Toolbar, Button);
    end AddButton;
 
@@ -48,7 +56,7 @@ package body Toolbars is
 
    procedure AddRadioButton
      (Text, IconName: String; RadioGroup: in out Widget_SList.GSlist;
-      Toolbar: Gtk_Toolbar; Tooltip: String) is
+      Toolbar: Gtk_Toolbar; Tooltip: String; Key: Gdk_Key_Type) is
       Button: constant Gtk_Radio_Tool_Button :=
         Gtk_Radio_Tool_Button_New(RadioGroup);
    begin
@@ -56,39 +64,45 @@ package body Toolbars is
       Set_Label(Button, Text);
       Set_Tooltip_Text(Button, Tooltip);
       Set_Icon_Name(Button, IconName);
+      Add_Accelerator
+        (Button, "clicked", Accelerators, Key, Mod1_Mask, Accel_Visible);
       Insert(Toolbar, Button);
    end AddRadioButton;
 
    procedure CreateItemToolbarUI is
       RadioGroup: Widget_SList.GSlist;
    begin
+      if Accelerators = null then
+         Accelerators := Gtk_Accel_Group(Get_Object(Builder, "accelerators"));
+      end if;
       ItemToolBar := Gtk_Toolbar_New;
       Set_Style(ItemToolBar, Toolbar_Icons);
       Set_Halign(ItemToolBar, Align_Center);
       Set_Valign(ItemToolBar, Align_End);
       AddButton
         (Gettext("Run"), "media-playback-start", ItemToolBar,
-         Gettext("Execute selected program [ALT-E]."));
+         Gettext("Execute selected program [ALT-E]."), GDK_E);
       AddButton
         (Gettext("Open"), "document-open", ItemToolBar,
-         Gettext("Open selected file or directory [ALT-O]"));
+         Gettext("Open selected file or directory [ALT-O]"), GDK_O);
       AddButton
         (Gettext("Open with..."), "system-run", ItemToolBar,
-         Gettext("Open selected file or directory with command [ALT-W]"));
+         Gettext("Open selected file or directory with command [ALT-W]"),
+         GDK_W);
       AddSeparator(ItemToolBar);
       AddRadioButton
         (Gettext("Preview"), "document-print-preview", RadioGroup, ItemToolBar,
-         Gettext("Preview file or directory [ALT-V]"));
+         Gettext("Preview file or directory [ALT-V]"), GDK_V);
       AddRadioButton
         (Gettext("Info"), "document-properties", RadioGroup, ItemToolBar,
-         Gettext("File or directory informations [ALT-I]"));
+         Gettext("File or directory informations [ALT-I]"), GDK_I);
       AddSeparator(ItemToolBar);
       AddButton
         (Gettext("Add bookmark"), "list-add", ItemToolBar,
-         Gettext("Add bookmark to this directory [ALT-B]."));
+         Gettext("Add bookmark to this directory [ALT-B]."), GDK_B);
       AddButton
         (Gettext("Remove bookmark"), "list-remove", ItemToolBar,
-         Gettext("Remove bookmark to this directory [ALT-B]"));
+         Gettext("Remove bookmark to this directory [ALT-B]"), GDK_B);
       Pack_End(Gtk_Header_Bar(Get_Object(Builder, "header")), ItemToolBar);
    end CreateItemToolbarUI;
 
