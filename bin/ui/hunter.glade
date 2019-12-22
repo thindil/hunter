@@ -382,7 +382,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="label" translatable="yes">Preview</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">document-print-preview</property>
-                    <signal name="clicked" handler="Preview_Item" swapped="no"/>
                     <accelerator key="v" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                   </object>
                   <packing>
@@ -399,7 +398,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="use_underline">True</property>
                     <property name="icon_name">document-properties</property>
                     <property name="group">btnpreview</property>
-                    <signal name="clicked" handler="Show_Item_Info" swapped="no"/>
                     <accelerator key="i" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                   </object>
                   <packing>

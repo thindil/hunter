@@ -246,7 +246,7 @@ package body Preferences is
    -- ****
    begin
       Settings.ColorTheme := To_Unbounded_String(Get_Active_Text(Self));
-      PreviewItem(Builder);
+      PreviewItem(null);
    end SetColorTheme;
 
    -- ****if* Preferences/SetShowHidden
@@ -319,7 +319,7 @@ package body Preferences is
                     (Get_Allocated_Width
                        (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
                   0.3));
-            PreviewItem(Builder);
+            PreviewItem(null);
          else
             Set_Position
               (FilesPaned,
@@ -345,7 +345,7 @@ package body Preferences is
       -- ****
    begin
       Settings.ColorText := State;
-      PreviewItem(Builder);
+      PreviewItem(null);
       return True;
    end SetColorText;
 
@@ -400,7 +400,7 @@ package body Preferences is
       -- ****
    begin
       Settings.ScaleImages := State;
-      PreviewItem(Builder);
+      PreviewItem(null);
       return True;
    end SetScaleImages;
 

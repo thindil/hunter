@@ -77,7 +77,7 @@ package body RefreshData is
             if N_Children(Model) = 0 then
                CurrentSelected := CurrentDirectory;
             end if;
-            PreviewItem(Builder);
+            PreviewItem(null);
          end if;
          Foreach(Model, UpdateItem'Access);
       end RemoveItem;
@@ -135,7 +135,7 @@ package body RefreshData is
                Set(-(Model), Iter, 4, Gint(Size));
             end if;
             if FileName = To_String(CurrentSelected) then
-               PreviewItem(Builder);
+               PreviewItem(null);
             end if;
          when others =>
             null;
