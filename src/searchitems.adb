@@ -112,7 +112,7 @@ package body SearchItems is
          Set_Cursor(TreeView, Gtk_Tree_Path_New_From_String("0"), null, False);
       else
          CurrentSelected := CurrentDirectory;
-         PreviewItem(Builder);
+         PreviewItem(null);
       end if;
       Grab_Focus(Self);
       Select_Region(Self, 0, 0);

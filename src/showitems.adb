@@ -58,6 +58,7 @@ with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Widget; use Gtk.Widget;
 with Gdk.Pixbuf; use Gdk.Pixbuf;
+with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Error; use Glib.Error;
@@ -100,10 +101,10 @@ package body ShowItems is
    -- Show detailed information (name, size, modification date, etc) about
    -- selected file or directory.
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
    -- SOURCE
-   procedure ShowItemInfo(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure ShowItemInfo(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
       Amount: Natural := 0;
       Directory: Dir_Type;
@@ -306,7 +307,8 @@ package body ShowItems is
          Tag);
    end RemoveTag;
 
-   procedure PreviewItem(Object: access Gtkada_Builder_Record'Class) is
+   procedure PreviewItem(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       PreviewScroll: constant Gtk_Scrolled_Window :=
         Gtk_Scrolled_Window(Get_Child_By_Name(InfoStack, "preview"));
    begin
@@ -325,7 +327,7 @@ package body ShowItems is
          declare
             DirectoryView: constant Gtk_Tree_View :=
               Gtk_Tree_View_New_With_Model
-                (+(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter1"))));
+                (+(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1"))));
             Area: Gtk_Cell_Area_Box;
             Renderer: constant Gtk_Cell_Renderer_Text :=
               Gtk_Cell_Renderer_Text_New;
@@ -577,7 +579,7 @@ package body ShowItems is
          Set_Visible_Child_Name(InfoStack, "preview");
          return;
       elsif SelectedItems.Length = 0 then
-         PreviewItem(Builder);
+         PreviewItem(null);
          return;
       end if;
       if CurrentSelected = SelectedItems(1) then
@@ -594,7 +596,7 @@ package body ShowItems is
       end if;
       Show_All(ItemToolBar);
       Set_Active(Gtk_Radio_Tool_Button(Get_Nth_Item(ItemToolBar, 4)), True);
-      PreviewItem(Builder);
+      PreviewItem(null);
    end ShowItem;
 
    -- ****if* ShowItems/SetPermission
@@ -727,8 +729,10 @@ package body ShowItems is
          Attach(InfoGrid, Box, 1, Top);
       end AddBox;
    begin
-      Register_Handler(Builder, "Preview_Item", PreviewItem'Access);
-      Register_Handler(Builder, "Show_Item_Info", ShowItemInfo'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 4)), PreviewItem'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 4)), ShowItemInfo'Access);
       InfoStack := Gtk_Stack_New;
       Add_Named(InfoStack, Scroll, "preview");
       Set_Halign(InfoGrid, Align_Center);

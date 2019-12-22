@@ -229,7 +229,7 @@ package body MainWindow is
             Set_Visible_Child_Name(InfoStack, "preview");
             NewAction := CREATEFILE;
          end if;
-         PreviewItem(Builder);
+         PreviewItem(null);
       end if;
       return False;
    end EntryKeyPressed;
@@ -241,10 +241,11 @@ package body MainWindow is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure UpdateImage(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
    -- ****
    begin
       if Settings.ScaleImages then
-         PreviewItem(Object);
+         PreviewItem(null);
       end if;
    end UpdateImage;
 
