@@ -82,6 +82,13 @@ package body ActivateItems is
       end if;
    end ActivateFile;
 
+   procedure ActivateFileButton(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
+   begin
+      ActivateFile
+        (DirectoryView, Gtk_Tree_Path_New, Get_Column(DirectoryView, 0));
+   end ActivateFileButton;
+
    procedure ActivateFileTemp(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
    begin
@@ -94,10 +101,10 @@ package body ActivateItems is
    -- Show text entry to start opening selected file or directory with custom
    -- command.
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
    -- SOURCE
-   procedure StartOpenWith(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure StartOpenWith(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
    begin
       NewAction := OPENWITH;
@@ -108,6 +115,12 @@ package body ActivateItems is
       Show_All(TextEntry);
       Grab_Focus(TextEntry);
    end StartOpenWith;
+
+   procedure StartOpenWithTemp(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+   begin
+      StartOpenWith(null);
+   end StartOpenWithTemp;
 
    procedure OpenItemWith
      (Self: access Gtk_Entry_Record'Class;
@@ -174,7 +187,7 @@ package body ActivateItems is
    -- Execute selected file. That file must be graphical application or
    -- all output will be redirected to terminal (invisible to user).
    -- PARAMETERS
-   -- Self - Gtk_Tool_Button clicked. Unused. Can be null;
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
    -- SOURCE
    procedure ExecuteFile(Self: access Gtk_Tool_Button_Record'Class) is
       -- ****
@@ -200,8 +213,13 @@ package body ActivateItems is
    begin
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 0)), ExecuteFile'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 1)),
+         ActivateFileButton'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 2)), StartOpenWith'Access);
       Register_Handler(Builder, "Activate_File", ActivateFileTemp'Access);
-      Register_Handler(Builder, "Start_Open_With", StartOpenWith'Access);
+      Register_Handler(Builder, "Start_Open_With", StartOpenWithTemp'Access);
       Register_Handler(Builder, "Execute_File", ExecuteFileTemp'Access);
    end CreateActivateUI;
 
