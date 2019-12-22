@@ -28,6 +28,7 @@ with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scale; use Gtk.Scale;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
@@ -307,11 +308,9 @@ package body Preferences is
         NewAction /= CREATELINK then
          Set_Visible(Get_Child2(FilesPaned), Settings.ShowPreview);
          Set_Visible
-           (Gtk_Widget(Get_Object(Builder, "btnpreview")),
-            Settings.ShowPreview);
+           (Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)), Settings.ShowPreview);
          Set_Visible
-           (Gtk_Widget(Get_Object(Builder, "btnfileinfo")),
-            Settings.ShowPreview);
+           (Gtk_Widget(Get_Nth_Item(ItemToolBar, 5)), Settings.ShowPreview);
          if Settings.ShowPreview then
             Set_Position
               (FilesPaned,
