@@ -30,9 +30,11 @@ with Preferences; use Preferences;
 
 package body Toolbars is
 
-   procedure AddButton(Text, IconName: String; Toolbar: Gtk_Toolbar) is
+   procedure AddButton
+     (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String) is
       Button: constant Gtk_Tool_Button := Gtk_Tool_Button_New(Label => Text);
    begin
+      Set_Tooltip_Text(Button, Tooltip);
       Set_Icon_Name(Button, IconName);
       Insert(Toolbar, Button);
    end AddButton;
@@ -46,12 +48,13 @@ package body Toolbars is
 
    procedure AddRadioButton
      (Text, IconName: String; RadioGroup: in out Widget_SList.GSlist;
-      Toolbar: Gtk_Toolbar) is
+      Toolbar: Gtk_Toolbar; Tooltip: String) is
       Button: constant Gtk_Radio_Tool_Button :=
         Gtk_Radio_Tool_Button_New(RadioGroup);
    begin
       RadioGroup := Get_Group(Button);
       Set_Label(Button, Text);
+      Set_Tooltip_Text(Button, Tooltip);
       Set_Icon_Name(Button, IconName);
       Insert(Toolbar, Button);
    end AddRadioButton;
@@ -63,18 +66,29 @@ package body Toolbars is
       Set_Style(ItemToolBar, Toolbar_Icons);
       Set_Halign(ItemToolBar, Align_Center);
       Set_Valign(ItemToolBar, Align_End);
-      AddButton(Gettext("Run"), "media-playback-start", ItemToolBar);
-      AddButton(Gettext("Open"), "document-open", ItemToolBar);
-      AddButton(Gettext("Open with..."), "system-run", ItemToolBar);
+      AddButton
+        (Gettext("Run"), "media-playback-start", ItemToolBar,
+         Gettext("Execute selected program [ALT-E]."));
+      AddButton
+        (Gettext("Open"), "document-open", ItemToolBar,
+         Gettext("Open selected file or directory [ALT-O]"));
+      AddButton
+        (Gettext("Open with..."), "system-run", ItemToolBar,
+         Gettext("Open selected file or directory with command [ALT-W]"));
       AddSeparator(ItemToolBar);
       AddRadioButton
-        (Gettext("Preview"), "document-print-preview", RadioGroup,
-         ItemToolBar);
+        (Gettext("Preview"), "document-print-preview", RadioGroup, ItemToolBar,
+         Gettext("Preview file or directory [ALT-V]"));
       AddRadioButton
-        (Gettext("Info"), "document-properties", RadioGroup, ItemToolBar);
+        (Gettext("Info"), "document-properties", RadioGroup, ItemToolBar,
+         Gettext("File or directory informations [ALT-I]"));
       AddSeparator(ItemToolBar);
-      AddButton(Gettext("Add bookmark"), "list-add", ItemToolBar);
-      AddButton(Gettext("Remove bookmark"), "list-remove", ItemToolBar);
+      AddButton
+        (Gettext("Add bookmark"), "list-add", ItemToolBar,
+         Gettext("Add bookmark to this directory [ALT-B]."));
+      AddButton
+        (Gettext("Remove bookmark"), "list-remove", ItemToolBar,
+         Gettext("Remove bookmark to this directory [ALT-B]"));
       Pack_End(Gtk_Header_Bar(Get_Object(Builder, "header")), ItemToolBar);
    end CreateItemToolbarUI;
 
