@@ -17,12 +17,15 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with RefreshData; use RefreshData;
+with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body ActivateItems is
@@ -171,11 +174,11 @@ package body ActivateItems is
    -- Execute selected file. That file must be graphical application or
    -- all output will be redirected to terminal (invisible to user).
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI (unused)
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null;
    -- SOURCE
-   procedure ExecuteFile(Object: access Gtkada_Builder_Record'Class) is
+   procedure ExecuteFile(Self: access Gtk_Tool_Button_Record'Class) is
       -- ****
-      pragma Unreferenced(Object);
+      pragma Unreferenced(Self);
       Pid: GNAT.OS_Lib.Process_Id;
    begin
       Pid :=
@@ -187,11 +190,19 @@ package body ActivateItems is
       end if;
    end ExecuteFile;
 
+   procedure ExecuteFileTemp(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+   begin
+      ExecuteFile(null);
+   end ExecuteFileTemp;
+
    procedure CreateActivateUI is
    begin
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 0)), ExecuteFile'Access);
       Register_Handler(Builder, "Activate_File", ActivateFileTemp'Access);
       Register_Handler(Builder, "Start_Open_With", StartOpenWith'Access);
-      Register_Handler(Builder, "Execute_File", ExecuteFile'Access);
+      Register_Handler(Builder, "Execute_File", ExecuteFileTemp'Access);
    end CreateActivateUI;
 
 end ActivateItems;
