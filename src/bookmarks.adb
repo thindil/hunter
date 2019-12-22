@@ -27,6 +27,7 @@ with Gtk.Menu_Shell; use Gtk.Menu_Shell;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
@@ -267,24 +268,28 @@ package body Bookmarks is
    -- FUNCTION
    -- Add bookmark to currently selected directory
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
    -- SOURCE
-   procedure AddBookmark(Object: access Gtkada_Builder_Record'Class) is
+   procedure AddBookmark(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
       File: File_Type;
    begin
       Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
       Put_Line(File, "file://" & To_String(CurrentSelected));
       Close(File);
-      CreateBookmarkMenu(Object);
-      Reload(Object);
+      CreateBookmarkMenu(Builder);
+      Reload(Builder);
    end AddBookmark;
 
    -- ****if* Bookmarks/RemoveBookmark
    -- FUNCTION
    -- Remove bookmark for currently selected directory
+   -- PARAMETERS
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
    -- SOURCE
-   procedure RemoveBookmark(Object: access Gtkada_Builder_Record'Class) is
+   procedure RemoveBookmark(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
       NewFile, OldFile: File_Type;
       Line, Path: Unbounded_String;
@@ -306,8 +311,8 @@ package body Bookmarks is
       Close(NewFile);
       Close(OldFile);
       Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
-      CreateBookmarkMenu(Object);
-      Reload(Object);
+      CreateBookmarkMenu(Builder);
+      Reload(Builder);
    end RemoveBookmark;
 
    procedure SetBookmarkButton is
@@ -328,9 +333,11 @@ package body Bookmarks is
 
    procedure CreateBookmarksUI is
    begin
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 7)), AddBookmark'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 8)), RemoveBookmark'Access);
       Register_Handler(Builder, "Go_Home", GoHome'Access);
-      Register_Handler(Builder, "Add_Bookmark", AddBookmark'Access);
-      Register_Handler(Builder, "Remove_Bookmark", RemoveBookmark'Access);
       Register_Handler
         (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
    end CreateBookmarksUI;

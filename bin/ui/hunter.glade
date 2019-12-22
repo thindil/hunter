@@ -423,7 +423,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="label" translatable="yes">Add bookmark</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">list-add</property>
-                    <signal name="clicked" handler="Add_Bookmark" swapped="no"/>
                     <accelerator key="b" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                   </object>
                   <packing>
@@ -439,7 +438,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                     <property name="label" translatable="yes">Remove bookmark</property>
                     <property name="use_underline">True</property>
                     <property name="icon_name">list-remove</property>
-                    <signal name="clicked" handler="Remove_Bookmark" swapped="no"/>
                     <accelerator key="b" signal="clicked" modifiers="GDK_MOD1_MASK"/>
                   </object>
                   <packing>
