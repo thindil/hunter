@@ -593,8 +593,8 @@ package body MainWindow is
                0.3));
       else
          Hide(Get_Child2(FilesPaned));
-         Hide(Gtk_Widget(Get_Object(Builder, "btnpreview")));
-         Hide(Gtk_Widget(Get_Object(Builder, "btnfileinfo")));
+         Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)));
+         Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 5)));
          Set_Position
            (FilesPaned,
             Get_Allocated_Width

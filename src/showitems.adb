@@ -103,6 +103,7 @@ package body ShowItems is
    -- Object - GtkAda Builder used to create UI
    -- SOURCE
    procedure ShowItemInfo(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
       -- ****
       Amount: Natural := 0;
       Directory: Dir_Type;
@@ -281,9 +282,8 @@ package body ShowItems is
          "<b>" & Gettext("Information") & "</b>");
       Set_Visible_Child_Name(InfoStack, "info");
       if not Get_Active
-          (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo"))) then
-         Set_Active
-           (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo")), True);
+          (Gtk_Radio_Tool_Button(Get_Nth_Item(ItemToolBar, 5))) then
+         Set_Active(Gtk_Radio_Tool_Button(Get_Nth_Item(ItemToolBar, 5)), True);
       end if;
       Setting := False;
    end ShowItemInfo;
@@ -346,7 +346,7 @@ package body ShowItems is
             if Append_Column(DirectoryView, Column) /= 1 then
                return;
             end if;
-            Show_All(Gtk_Widget(Get_Object(Object, "btnpreview")));
+            Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)));
             Add(PreviewScroll, DirectoryView);
             Show_All(PreviewScroll);
          end;
@@ -526,13 +526,12 @@ package body ShowItems is
                   Show_All(PreviewScroll);
                end;
             else
-               Hide(Gtk_Widget(Get_Object(Object, "btnpreview")));
+               Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)));
                if not CanBeOpened(MimeType) then
                   Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 1)));
                end if;
                Set_Active
-                 (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo")),
-                  True);
+                 (Gtk_Radio_Tool_Button(Get_Nth_Item(ItemToolBar, 5)), True);
                return;
             end if;
          end;
@@ -544,11 +543,9 @@ package body ShowItems is
               (Gtk_Frame(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 1)))),
          "<b>" & Gettext("Preview") & "</b>");
       Set_Visible_Child_Name(InfoStack, "preview");
-      if Get_Active
-          (Gtk_Radio_Tool_Button(Get_Object(Object, "btnfileinfo"))) then
+      if Get_Active(Gtk_Radio_Tool_Button(Get_Nth_Item(ItemToolBar, 5))) then
          Setting := True;
-         Set_Active
-           (Gtk_Radio_Tool_Button(Get_Object(Object, "btnpreview")), True);
+         Set_Active(Gtk_Radio_Tool_Button(Get_Nth_Item(ItemToolBar, 4)), True);
          Set_Visible_Child_Name(InfoStack, "preview");
          Setting := False;
       end if;
@@ -596,8 +593,7 @@ package body ShowItems is
          return;
       end if;
       Show_All(ItemToolBar);
-      Set_Active
-        (Gtk_Radio_Tool_Button(Get_Object(Builder, "btnpreview")), True);
+      Set_Active(Gtk_Radio_Tool_Button(Get_Nth_Item(ItemToolBar, 4)), True);
       PreviewItem(Builder);
    end ShowItem;
 

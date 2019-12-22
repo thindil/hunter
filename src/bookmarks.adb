@@ -27,6 +27,7 @@ with Gtk.Menu_Shell; use Gtk.Menu_Shell;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
@@ -36,6 +37,7 @@ with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
+with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body Bookmarks is
@@ -310,18 +312,18 @@ package body Bookmarks is
 
    procedure SetBookmarkButton is
    begin
-      Hide(Gtk_Widget(Get_Object(Builder, "btnaddbookmark")));
-      Hide(Gtk_Widget(Get_Object(Builder, "btnremovebookmark")));
+      Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 7)));
+      Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 8)));
       if not Is_Directory(To_String(CurrentSelected)) then
          return;
       end if;
       for Bookmark of BookmarksList loop
          if Bookmark.Path = CurrentSelected then
-            Show_All(Gtk_Widget(Get_Object(Builder, "btnremovebookmark")));
+            Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 8)));
             return;
          end if;
       end loop;
-      Show_All(Gtk_Widget(Get_Object(Builder, "btnaddbookmark")));
+      Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 7)));
    end SetBookmarkButton;
 
    procedure CreateBookmarksUI is
