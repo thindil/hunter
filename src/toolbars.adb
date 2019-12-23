@@ -18,9 +18,11 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Container; use Gtk.Container;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
+with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
 with Gtk.Separator_Tool_Item; use Gtk.Separator_Tool_Item;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Widget; use Gtk.Widget;
 with Glib.Object; use Glib.Object;
@@ -107,8 +109,55 @@ package body Toolbars is
    end CreateItemToolbarUI;
 
    procedure CreateActionToolbarUI is
+      procedure AddMenuButton
+        (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
+         Key: Gdk_Key_Type) is
+         Button: constant Gtk_Menu_Tool_Button :=
+           Gtk_Menu_Tool_Button_New(Label => Text);
+      begin
+         Set_Tooltip_Text(Button, Tooltip);
+         Set_Icon_Name(Button, IconName);
+         Add_Accelerator
+           (Button, "clicked", Accelerators, Key, Mod1_Mask, Accel_Visible);
+         Insert(Toolbar, Button);
+      end AddMenuButton;
+      procedure AddToggleButton
+        (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
+         Key: Gdk_Key_Type; Mask: Gdk_Modifier_Type := Mod1_Mask) is
+         Button: constant Gtk_Toggle_Tool_Button := Gtk_Toggle_Tool_Button_New;
+      begin
+         Set_Label(Button, Text);
+         Set_Tooltip_Text(Button, Tooltip);
+         Set_Icon_Name(Button, IconName);
+         Add_Accelerator
+           (Button, "clicked", Accelerators, Key, Mask, Accel_Visible);
+         Insert(Toolbar, Button);
+      end AddToggleButton;
    begin
+      if Accelerators = null then
+         Accelerators := Gtk_Accel_Group(Get_Object(Builder, "accelerators"));
+      end if;
       ActionToolBar := Gtk_Toolbar_New;
+      Set_Style(ActionToolBar, Toolbar_Icons);
+      AddMenuButton
+        (Gettext("Home"), "user-home", ActionToolBar,
+         Gettext
+           ("Go to your home directory [ALT+H] or press arrow to see more bookmarks"),
+         GDK_H);
+      AddToggleButton
+        (Gettext("Search"), "edit-find", ActionToolBar,
+         Gettext("Search for the file or directory [ALT+F]"), GDK_F);
+      AddToggleButton
+        (Gettext("Select All"), "edit-select-all", ActionToolBar,
+         Gettext
+           ("Select or unselect all files and directories in currently selected directory. [CTRL+A]"),
+         GDK_A, Control_Mask);
+      AddSeparator(ActionToolBar);
+      AddMenuButton
+        (Gettext("new"), "document-new", ActionToolBar,
+         Gettext
+           ("Add new directory [ALT+N] or press arrow to see more options."),
+         GDK_N);
       Pack_Start(Gtk_Header_Bar(Get_Object(Builder, "header")), ActionToolBar);
    end CreateActionToolbarUI;
 
