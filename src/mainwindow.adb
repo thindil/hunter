@@ -415,6 +415,7 @@ package body MainWindow is
    begin
       Setting := True;
       Builder := NewBuilder;
+      CreateActionToolbarUI;
       CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
       Pack_End

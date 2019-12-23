@@ -106,6 +106,12 @@ package body Toolbars is
       Pack_End(Gtk_Header_Bar(Get_Object(Builder, "header")), ItemToolBar);
    end CreateItemToolbarUI;
 
+   procedure CreateActionToolbarUI is
+   begin
+      ActionToolBar := Gtk_Toolbar_New;
+      Pack_Start(Gtk_Header_Bar(Get_Object(Builder, "header")), ActionToolBar);
+   end CreateActionToolbarUI;
+
    procedure SetToolbars is
       Header: constant GObject := Get_Object(Builder, "header");
       LeftBox: constant Gtk_Widget :=
@@ -113,29 +119,30 @@ package body Toolbars is
           (Gtk_Box
              (Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 4)),
            0);
-      Toolbar: constant GObject := Get_Object(Builder, "toolbar");
    begin
       if Settings.ToolbarsOnTop then
-         if Get_Parent(Gtk_Widget(Toolbar)) = Gtk_Widget(Header) then
+         if Get_Parent(Gtk_Widget(ActionToolBar)) = Gtk_Widget(Header) then
             return;
          end if;
-         Remove(Gtk_Container(LeftBox), Gtk_Widget(Toolbar));
+         Ref(ActionToolBar);
+         Remove(Gtk_Container(LeftBox), Gtk_Widget(ActionToolBar));
          Ref(ItemToolBar);
          Remove(Gtk_Container(LeftBox), ItemToolBar);
-         Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(Toolbar));
+         Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(ActionToolBar));
          Pack_End(Gtk_Header_Bar(Header), ItemToolBar);
-         Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Horizontal);
+         Set_Orientation(ActionToolBar, Orientation_Horizontal);
          Set_Orientation(ItemToolBar, Orientation_Horizontal);
       else
-         if Get_Parent(Gtk_Widget(Toolbar)) = LeftBox then
+         if Get_Parent(Gtk_Widget(ActionToolBar)) = LeftBox then
             return;
          end if;
-         Remove(Gtk_Container(Header), Gtk_Widget(Toolbar));
+         Ref(ActionToolBar);
+         Remove(Gtk_Container(Header), Gtk_Widget(ActionToolBar));
          Ref(ItemToolBar);
          Remove(Gtk_Container(Header), ItemToolBar);
-         Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(Toolbar));
+         Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(ActionToolBar));
          Pack_End(Gtk_Box(LeftBox), ItemToolBar);
-         Set_Orientation(Gtk_Toolbar(Toolbar), Orientation_Vertical);
+         Set_Orientation(ActionToolBar, Orientation_Vertical);
          Set_Orientation(ItemToolBar, Orientation_Vertical);
       end if;
    end SetToolbars;
