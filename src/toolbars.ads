@@ -17,7 +17,10 @@ with Gtk.Toolbar; use Gtk.Toolbar;
 
 package Toolbars is
 
+   ActionToolBar: Gtk_Toolbar;
    ItemToolBar: Gtk_Toolbar;
+
+   procedure CreateActionToolbarUI;
 
    procedure CreateItemToolbarUI;
 
