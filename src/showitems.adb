@@ -732,7 +732,7 @@ package body ShowItems is
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 4)), PreviewItem'Access);
       On_Clicked
-        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 4)), ShowItemInfo'Access);
+        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 5)), ShowItemInfo'Access);
       InfoStack := Gtk_Stack_New;
       Add_Named(InfoStack, Scroll, "preview");
       Set_Halign(InfoGrid, Align_Center);
