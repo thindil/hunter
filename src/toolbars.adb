@@ -39,13 +39,13 @@ package body Toolbars is
 
    procedure AddButton
      (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
-      Key: Gdk_Key_Type) is
+      Key: Gdk_Key_Type; Mask: Gdk_Modifier_Type := Mod1_Mask) is
       Button: constant Gtk_Tool_Button := Gtk_Tool_Button_New(Label => Text);
    begin
       Set_Tooltip_Text(Button, Tooltip);
       Set_Icon_Name(Button, IconName);
       Add_Accelerator
-        (Button, "clicked", Accelerators, Key, Mod1_Mask, Accel_Visible);
+        (Button, "clicked", Accelerators, Key, Mask, Accel_Visible);
       Insert(Toolbar, Button);
    end AddButton;
 
@@ -147,7 +147,7 @@ package body Toolbars is
       AddToggleButton
         (Gettext("Search"), "edit-find", ActionToolBar,
          Gettext("Search for the file or directory [ALT+F]"), GDK_F);
-      AddToggleButton
+      AddButton
         (Gettext("Select All"), "edit-select-all", ActionToolBar,
          Gettext
            ("Select or unselect all files and directories in currently selected directory. [CTRL+A]"),
@@ -158,6 +158,22 @@ package body Toolbars is
          Gettext
            ("Add new directory [ALT+N] or press arrow to see more options."),
          GDK_N);
+      AddButton
+        (Gettext("Rename"), "document-save-as", ActionToolBar,
+         Gettext("Rename selected file or directory [CTRL-R]"), GDK_R,
+         Control_Mask);
+      AddToggleButton
+        (Gettext("Copy"), "edit-copy", ActionToolBar,
+         Gettext
+           ("Copy selected files [ALT-C]. Pressed button means start copying currently selected files or directories. Press again to copy them."),
+         GDK_C);
+      AddToggleButton
+        (Gettext("Move"), "edit-cut", ActionToolBar,
+         Gettext
+           ("Move selected files [ALT-M]. Pressed button means start moving currently selected files or directories. Press again to move them."),
+         GDK_M);
+      AddMenuButton
+        (Gettext("Delete"), "edit-delete", ActionToolBar, "", GDK_Delete);
       Pack_Start(Gtk_Header_Bar(Get_Object(Builder, "header")), ActionToolBar);
    end CreateActionToolbarUI;
 
