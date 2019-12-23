@@ -279,7 +279,7 @@ package body Bookmarks is
       Put_Line(File, "file://" & To_String(CurrentSelected));
       Close(File);
       CreateBookmarkMenu(Builder);
-      Reload(Builder);
+      SetBookmarkButton;
    end AddBookmark;
 
    -- ****if* Bookmarks/RemoveBookmark
@@ -312,7 +312,7 @@ package body Bookmarks is
       Close(OldFile);
       Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
       CreateBookmarkMenu(Builder);
-      Reload(Builder);
+      SetBookmarkButton;
    end RemoveBookmark;
 
    procedure SetBookmarkButton is
