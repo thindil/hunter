@@ -325,68 +325,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       </object>
     </child>
   </object>
-  <object class="GtkMenu" id="bookmarksmenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <signal name="show" handler="Create_Bookmark_Menu" swapped="no"/>
-    <child>
-      <object class="GtkMenuItem" id="bookmarkhome">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Home</property>
-        <accelerator key="h" signal="activate" modifiers="GDK_MOD1_MASK"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="bookmarkdesktop">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Desktop</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="bookmarkdownload">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Download</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="bookmarkpublic">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Public</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="bookmarkdocuments">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Documents</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="bookmarkmusic">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Music</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="bookmarkpictures">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Pictures</property>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="bookmarkvideos">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Videos</property>
-      </object>
-    </child>
-  </object>
   <object class="GtkMenu" id="deletemenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
