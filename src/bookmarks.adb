@@ -23,10 +23,8 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Container; use Gtk.Container;
 with Gtk.GEntry; use Gtk.GEntry;
-with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Shell; use Gtk.Menu_Shell;
-with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
@@ -180,7 +178,6 @@ package body Bookmarks is
           To_Unbounded_String("XDG_PICTURES_DIR")),
          (To_Unbounded_String(Gettext("Videos")),
           To_Unbounded_String("XDG_VIDEOS_DIR")));
-      BookmarksMenu: Gtk_Menu;
       function GetXDGDirectory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String;
@@ -217,10 +214,7 @@ package body Bookmarks is
       if CreateNew then
          BookmarksMenu := Gtk_Menu_New;
       else
-         BookmarksMenu := Get_Menu(Gtk_Menu_Tool_Button(Get_Nth_Item(ActionToolbar, 0)));
-         Foreach
-            (Gtk_Container(BookmarksMenu),
-         RemoveMenu'Access);
+         Foreach(Gtk_Container(BookmarksMenu), RemoveMenu'Access);
       end if;
       BookmarksList.Clear;
       for I in XDGBookmarks'Range loop
@@ -340,7 +334,8 @@ package body Bookmarks is
       Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 7)));
    end SetBookmarkButton;
 
-   procedure CreateBookmarkMenuTemp(Object: access Gtkada_Builder_Record'Class) is
+   procedure CreateBookmarkMenuTemp
+     (Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
    begin
       CreateBookmarkMenu;

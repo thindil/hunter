@@ -241,7 +241,7 @@ package body MainWindow is
    -- SOURCE
    procedure UpdateImage(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
-   -- ****
+      -- ****
    begin
       if Settings.ScaleImages then
          PreviewItem(null);

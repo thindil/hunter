@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Gtk.Menu; use Gtk.Menu;
 with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/Bookmarks
@@ -21,6 +22,13 @@ with Gtkada.Builder; use Gtkada.Builder;
 -- SOURCE
 package Bookmarks is
 -- ****
+
+   -- ****v* Bookmarks/BookmarksMenu
+   -- FUNCTION
+   -- Gtk_Menu with the user bookmarks
+   -- SOURCE
+   BookmarksMenu: Gtk_Menu;
+   -- ****
 
    -- ****f* Bookmarks/GoHome
    -- FUNCTION
