@@ -131,12 +131,14 @@ package body Bookmarks is
                   Gettext("Go to selected destination."));
                Set_Text(TextEntry, To_String(CurrentDirectory));
                Show_All(TextEntry);
-               Grab_Focus(TextEntry);
             end if;
             exit;
          end if;
       end loop;
       UpdateView;
+      if Is_Visible(TextEntry) then
+         Grab_Focus(TextEntry);
+      end if;
    end GoToBookmark;
 
    procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
