@@ -30,7 +30,6 @@ with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
-with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Search_Entry; use Gtk.Search_Entry;
@@ -491,22 +490,9 @@ package body MainWindow is
             CurrentDirectory := To_Unbounded_String("/");
          end if;
       end if;
-      Set_Menu
-        (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnnew")),
-         Gtk_Widget(Get_Object(Builder, "newmenu")));
-      CreateBookmarkMenu(Builder);
-      Set_Menu
-        (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnbookmarks")),
-         Gtk_Widget(Get_Object(Builder, "bookmarksmenu")));
       Set_Default_Size
         (Gtk_Window(Get_Object(Builder, "mainwindow")),
          Gint(Settings.WindowWidth), Gint(Settings.WindowHeight));
-      Set_Menu
-        (Gtk_Menu_Tool_Button(Get_Object(Builder, "btndelete")),
-         Gtk_Widget(Get_Object(Builder, "deletemenu")));
-      Set_Menu
-        (Gtk_Menu_Tool_Button(Get_Object(Builder, "btnabout")),
-         Gtk_Widget(Get_Object(Builder, "aboutmenu")));
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       Hide(SearchEntry);
       Hide(TextEntry);
