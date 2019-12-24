@@ -174,6 +174,22 @@ package body Toolbars is
          GDK_M);
       AddMenuButton
         (Gettext("Delete"), "edit-delete", ActionToolBar, "", GDK_Delete);
+      AddButton
+        (Gettext("Cancel"), "dialog-cancel", ActionToolBar,
+         Gettext("Discard all changes and back to files list [Escape]"),
+         GDK_Escape, 0);
+      AddButton
+        (Gettext("Restore"), "document-revert", ActionToolBar,
+         Gettext("Restore selected file or directory from the trash [ALT+R]"),
+         GDK_R);
+      AddSeparator(ActionToolBar);
+      AddButton
+        (Gettext("Preferences"), "preferences-desktop", ActionToolBar,
+         Gettext("Show the program preferences [ALT-P]"), GDK_P);
+      AddMenuButton
+        (Gettext("About"), "help-about", ActionToolBar,
+         Gettext("Show informations about the program [ALT-A]."), GDK_A);
+      AddSeparator(ActionToolBar);
       Pack_Start(Gtk_Header_Bar(Get_Object(Builder, "header")), ActionToolBar);
    end CreateActionToolbarUI;
 
