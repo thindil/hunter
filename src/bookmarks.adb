@@ -16,14 +16,17 @@
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Container; use Gtk.Container;
 with Gtk.GEntry; use Gtk.GEntry;
+with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Menu_Shell; use Gtk.Menu_Shell;
+with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
@@ -161,7 +164,7 @@ package body Bookmarks is
       Destroy(Widget);
    end RemoveMenu;
 
-   procedure CreateBookmarkMenu(Object: access Gtkada_Builder_Record'Class) is
+   procedure CreateBookmarkMenu(CreateNew: Boolean := False) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
         ((To_Unbounded_String(Gettext("Desktop")),
           To_Unbounded_String("XDG_DESKTOP_DIR")),
@@ -177,6 +180,7 @@ package body Bookmarks is
           To_Unbounded_String("XDG_PICTURES_DIR")),
          (To_Unbounded_String(Gettext("Videos")),
           To_Unbounded_String("XDG_VIDEOS_DIR")));
+      BookmarksMenu: Gtk_Menu;
       function GetXDGDirectory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String;
@@ -206,13 +210,18 @@ package body Bookmarks is
            Gtk_Menu_Item_New_With_Label
              (To_String(BookmarksList(BookmarksList.Last_Index).MenuName));
          On_Activate(MenuItem, GoToBookmark'Access);
-         Append(Gtk_Menu_Shell(Get_Object(Object, "bookmarksmenu")), MenuItem);
+         Append(Gtk_Menu_Shell(BookmarksMenu), MenuItem);
          Show_All(Gtk_Widget(MenuItem));
       end AddMenuItem;
    begin
-      Foreach
-        (Gtk_Container(Get_Object(Object, "bookmarksmenu")),
+      if CreateNew then
+         BookmarksMenu := Gtk_Menu_New;
+      else
+         BookmarksMenu := Get_Menu(Gtk_Menu_Tool_Button(Get_Nth_Item(ActionToolbar, 0)));
+         Foreach
+            (Gtk_Container(BookmarksMenu),
          RemoveMenu'Access);
+      end if;
       BookmarksList.Clear;
       for I in XDGBookmarks'Range loop
          if Ada.Directories.Exists
@@ -278,7 +287,7 @@ package body Bookmarks is
       Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
       Put_Line(File, "file://" & To_String(CurrentSelected));
       Close(File);
-      CreateBookmarkMenu(Builder);
+      CreateBookmarkMenu;
       SetBookmarkButton;
    end AddBookmark;
 
@@ -311,7 +320,7 @@ package body Bookmarks is
       Close(NewFile);
       Close(OldFile);
       Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
-      CreateBookmarkMenu(Builder);
+      CreateBookmarkMenu;
       SetBookmarkButton;
    end RemoveBookmark;
 
@@ -331,6 +340,12 @@ package body Bookmarks is
       Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 7)));
    end SetBookmarkButton;
 
+   procedure CreateBookmarkMenuTemp(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+   begin
+      CreateBookmarkMenu;
+   end CreateBookmarkMenuTemp;
+
    procedure CreateBookmarksUI is
    begin
       On_Clicked
@@ -339,7 +354,7 @@ package body Bookmarks is
         (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 8)), RemoveBookmark'Access);
       Register_Handler(Builder, "Go_Home", GoHome'Access);
       Register_Handler
-        (Builder, "Create_Bookmark_Menu", CreateBookmarkMenu'Access);
+        (Builder, "Create_Bookmark_Menu", CreateBookmarkMenuTemp'Access);
    end CreateBookmarksUI;
 
 end Bookmarks;
