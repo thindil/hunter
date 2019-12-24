@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/Bookmarks
@@ -36,9 +35,9 @@ package Bookmarks is
    -- FUNCTION
    -- Create bookmarks menu - show only existing bookmarks
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- CreateNew - If True, create new menu, otherwise use existing menu
    -- SOURCE
-   procedure CreateBookmarkMenu(Object: access Gtkada_Builder_Record'Class);
+   procedure CreateBookmarkMenu(CreateNew: Boolean := False);
    -- ****
 
    -- ****f* Bookmarks/SetBookmarkButton

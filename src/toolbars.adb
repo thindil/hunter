@@ -141,7 +141,7 @@ package body Toolbars is
       end if;
       ActionToolBar := Gtk_Toolbar_New;
       Set_Style(ActionToolBar, Toolbar_Icons);
-      CreateBookmarkMenu(Builder);
+      CreateBookmarkMenu(True);
       AddMenuButton
         (Gettext("Home"), "user-home", ActionToolBar,
          Gettext
