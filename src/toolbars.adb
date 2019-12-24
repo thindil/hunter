@@ -30,6 +30,7 @@ with Gdk.Types; use Gdk.Types;
 with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
+with Bookmarks; use Bookmarks;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 
@@ -111,7 +112,7 @@ package body Toolbars is
    procedure CreateActionToolbarUI is
       procedure AddMenuButton
         (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
-         Key: Gdk_Key_Type) is
+         Key: Gdk_Key_Type; Menu: Gtk_Widget) is
          Button: constant Gtk_Menu_Tool_Button :=
            Gtk_Menu_Tool_Button_New(Label => Text);
       begin
@@ -119,6 +120,7 @@ package body Toolbars is
          Set_Icon_Name(Button, IconName);
          Add_Accelerator
            (Button, "clicked", Accelerators, Key, Mod1_Mask, Accel_Visible);
+         Set_Menu(Button, Menu);
          Insert(Toolbar, Button);
       end AddMenuButton;
       procedure AddToggleButton
@@ -139,11 +141,12 @@ package body Toolbars is
       end if;
       ActionToolBar := Gtk_Toolbar_New;
       Set_Style(ActionToolBar, Toolbar_Icons);
+      CreateBookmarkMenu(Builder);
       AddMenuButton
         (Gettext("Home"), "user-home", ActionToolBar,
          Gettext
            ("Go to your home directory [ALT+H] or press arrow to see more bookmarks"),
-         GDK_H);
+         GDK_H, Gtk_Widget(Get_Object(Builder, "bookmarksmenu")));
       AddToggleButton
         (Gettext("Search"), "edit-find", ActionToolBar,
          Gettext("Search for the file or directory [ALT+F]"), GDK_F);
@@ -157,7 +160,7 @@ package body Toolbars is
         (Gettext("new"), "document-new", ActionToolBar,
          Gettext
            ("Add new directory [ALT+N] or press arrow to see more options."),
-         GDK_N);
+         GDK_N, Gtk_Widget(Get_Object(Builder, "newmenu")));
       AddButton
         (Gettext("Rename"), "document-save-as", ActionToolBar,
          Gettext("Rename selected file or directory [CTRL-R]"), GDK_R,
@@ -173,7 +176,7 @@ package body Toolbars is
            ("Move selected files [ALT-M]. Pressed button means start moving currently selected files or directories. Press again to move them."),
          GDK_M);
       AddMenuButton
-        (Gettext("Delete"), "edit-delete", ActionToolBar, "", GDK_Delete);
+        (Gettext("Delete"), "edit-delete", ActionToolBar, "", GDK_Delete, Gtk_Widget(Get_Object(Builder, "deletemenu")));
       AddButton
         (Gettext("Cancel"), "dialog-cancel", ActionToolBar,
          Gettext("Discard all changes and back to files list [Escape]"),
@@ -188,7 +191,7 @@ package body Toolbars is
          Gettext("Show the program preferences [ALT-P]"), GDK_P);
       AddMenuButton
         (Gettext("About"), "help-about", ActionToolBar,
-         Gettext("Show informations about the program [ALT-A]."), GDK_A);
+         Gettext("Show informations about the program [ALT-A]."), GDK_A, Gtk_Widget(Get_Object(Builder, "aboutmenu")));
       AddSeparator(ActionToolBar);
       Pack_Start(Gtk_Header_Bar(Get_Object(Builder, "header")), ActionToolBar);
    end CreateActionToolbarUI;
