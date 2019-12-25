@@ -17,6 +17,7 @@ All notable changes to this project will be documented in this file.
 - Searching for files or directories during copying or moving
 - Not clearing preview on empty search result
 - Refreshing bookmarks buttons after adding/deleting bookmark
+- Set focus on text entry when entering custom location to go
 
 ## [1.1] - 2019-10-28
 
