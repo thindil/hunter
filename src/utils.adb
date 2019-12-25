@@ -25,6 +25,7 @@ with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtkada.Builder; use Gtkada.Builder;
@@ -119,8 +120,7 @@ package body Utils is
    begin
       case Action is
          when CREATEFILE | CREATEDIRECTORY | RENAME | DELETE | DELETETRASH =>
-            Set_Visible
-              (Gtk_Widget(Get_Object(Builder, "btnbookmarks")), Finished);
+            Set_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 0)), Finished);
          when CREATELINK =>
             null;
          when COPY =>

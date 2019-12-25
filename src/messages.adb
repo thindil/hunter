@@ -124,7 +124,7 @@ package body Messages is
                      return;
                end;
                if NewAction = CLEARTRASH then
-                  GoHome(Builder);
+                  GoHome(null);
                elsif NewAction = DELETETRASH then
                   ShowTrash(Builder);
                   NewAction := DELETETRASH;
