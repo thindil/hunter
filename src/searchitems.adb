@@ -19,6 +19,8 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
@@ -28,6 +30,7 @@ with Glib; use Glib;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
+with Toolbars; use Toolbars;
 
 package body SearchItems is
 
@@ -35,10 +38,10 @@ package body SearchItems is
    -- FUNCTION
    -- Show or hide search text entry
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Toggle_Button which was clicked. Unused.
    -- SOURCE
-   procedure ToggleSearch(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure ToggleSearch(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
    begin
       if not Is_Visible(SearchEntry) then
@@ -122,7 +125,8 @@ package body SearchItems is
    procedure CreateSearchUI is
    begin
       On_Search_Changed(SearchEntry, SearchItem'Access);
-      Register_Handler(Builder, "Toggle_Search", ToggleSearch'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 1)), ToggleSearch'Access);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
          VisibleItems'Access);
