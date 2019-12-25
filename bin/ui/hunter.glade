@@ -88,22 +88,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="can_focus">False</property>
                 <property name="toolbar_style">icons</property>
                 <child>
-                  <object class="GtkToggleToolButton" id="btnsearch">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Search for the file or directory [ALT+F]</property>
-                    <property name="label" translatable="yes">Search</property>
-                    <property name="use_underline">True</property>
-                    <property name="icon_name">edit-find</property>
-                    <signal name="clicked" handler="Toggle_Search" swapped="no"/>
-                    <accelerator key="f" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkToolButton" id="btnselectall">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
