@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Gtk.Menu; use Gtk.Menu;
-with Gtkada.Builder; use Gtkada.Builder;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
 
 -- ****h* Hunter/Bookmarks
 -- FUNCTION
@@ -34,9 +34,9 @@ package Bookmarks is
    -- FUNCTION
    -- Go to user home directory
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null.
    -- SOURCE
-   procedure GoHome(Object: access Gtkada_Builder_Record'Class);
+   procedure GoHome(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
    -- ****f* Bookmarks/CreateBookmarkMenu

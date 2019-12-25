@@ -33,6 +33,7 @@ with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
+with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -141,8 +142,8 @@ package body Bookmarks is
       end if;
    end GoToBookmark;
 
-   procedure GoHome(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure GoHome(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
    begin
       if NewAction /= MOVE then
          NewAction := COPY;
@@ -349,9 +350,8 @@ package body Bookmarks is
         (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 7)), AddBookmark'Access);
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 8)), RemoveBookmark'Access);
-      Register_Handler(Builder, "Go_Home", GoHome'Access);
-      Register_Handler
-        (Builder, "Create_Bookmark_Menu", CreateBookmarkMenuTemp'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 0)), GoHome'Access);
    end CreateBookmarksUI;
 
 end Bookmarks;
