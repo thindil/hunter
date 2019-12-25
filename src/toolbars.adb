@@ -120,9 +120,7 @@ package body Toolbars is
          Set_Icon_Name(Button, IconName);
          Add_Accelerator
            (Button, "clicked", Accelerators, Key, Mod1_Mask, Accel_Visible);
-         if Menu /= null then
-            Set_Menu(Button, Menu);
-         end if;
+         Set_Menu(Button, Menu);
          Insert(Toolbar, Button);
       end AddMenuButton;
       procedure AddToggleButton
