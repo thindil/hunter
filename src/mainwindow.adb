@@ -34,6 +34,7 @@ with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Search_Entry; use Gtk.Search_Entry;
 with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
@@ -392,8 +393,8 @@ package body MainWindow is
       end loop;
    end ShowFile;
 
-   procedure SelectAll(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure SelectAll(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       Selection: constant Gtk_Tree_Selection := Get_Selection(DirectoryView);
    begin
       if Count_Selected_Rows(Selection) =
@@ -407,6 +408,12 @@ package body MainWindow is
       end if;
    end SelectAll;
 
+   procedure SelectAllTemp(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+   begin
+      SelectAll(null);
+   end SelectAllTemp;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
       ProgressBar: constant Gtk_Progress_Bar := Gtk_Progress_Bar_New;
@@ -415,6 +422,8 @@ package body MainWindow is
       Setting := True;
       Builder := NewBuilder;
       CreateActionToolbarUI;
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 2)), SelectAll'Access);
       CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
       Pack_End
@@ -445,7 +454,7 @@ package body MainWindow is
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
       Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
       Register_Handler(Builder, "Show_File", ShowFile'Access);
-      Register_Handler(Builder, "Select_All", SelectAll'Access);
+      Register_Handler(Builder, "Select_All", SelectAllTemp'Access);
       CreateActivateUI;
       CreateBookmarksUI;
       CreateCreateUI;
