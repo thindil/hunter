@@ -110,13 +110,9 @@ package body Utils is
 
    procedure ToggleToolButtons
      (Action: ItemActions; Finished: Boolean := False) is
-      ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String("btnsearch"), To_Unbounded_String("btnnew"),
-         To_Unbounded_String("btnrename"), To_Unbounded_String("btncopy"),
-         To_Unbounded_String("btncut"), To_Unbounded_String("btndelete"),
-         To_Unbounded_String("btnpreferences"),
-         To_Unbounded_String("btnabout"), To_Unbounded_String("btnselectall"));
-      CurrentButton: Unbounded_String := To_Unbounded_String("");
+      ButtonsIndexes: constant array(Positive range <>) of Positive :=
+        (1, 2, 4, 5, 6, 7, 8, 12, 13);
+      CurrentButtonIndex: Natural := 0;
    begin
       case Action is
          when CREATEFILE | CREATEDIRECTORY | RENAME | DELETE | DELETETRASH =>
@@ -124,17 +120,17 @@ package body Utils is
          when CREATELINK =>
             null;
          when COPY =>
-            CurrentButton := To_Unbounded_String("btncopy");
+            CurrentButtonIndex := 6;
             Set_Tooltip_Text
               (Gtk_Widget(Get_Object(Builder, "btntoolcancel")),
                Gettext("Stop copying files and directories [Escape]"));
          when MOVE =>
-            CurrentButton := To_Unbounded_String("btncut");
+            CurrentButtonIndex := 7;
             Set_Tooltip_Text
               (Gtk_Widget(Get_Object(Builder, "btntoolcancel")),
                Gettext("Stop moving files and directories [Escape]"));
          when SHOWTRASH =>
-            CurrentButton := To_Unbounded_String("btndelete");
+            CurrentButtonIndex := 8;
             Set_Visible
               (Gtk_Widget(Get_Object(Builder, "btntoolrestore")),
                not Finished);
@@ -181,10 +177,10 @@ package body Utils is
          if Action /= SHOWTRASH then
             Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
          end if;
-         for ButtonName of ButtonsNames loop
-            if ButtonName /= CurrentButton then
+         for Index of ButtonsIndexes loop
+            if Index /= CurrentButtonIndex then
                Set_Visible
-                 (Gtk_Widget(Get_Object(Builder, To_String(ButtonName))),
+                 (Gtk_Widget(Get_Nth_Item(ActionToolBar, Gint(Index))),
                   Finished);
             end if;
          end loop;
