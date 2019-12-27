@@ -28,7 +28,6 @@ with Gtk.Menu_Shell; use Gtk.Menu_Shell;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
-with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
@@ -79,10 +78,10 @@ package body Bookmarks is
    procedure UpdateView is
    -- ****
    begin
-      if not Is_Visible(Gtk_Widget(Get_Object(Builder, "btnsearch"))) then
-         Show_All(Gtk_Widget(Get_Object(Builder, "btnselectall")));
-         Show_All(Gtk_Widget(Get_Object(Builder, "btnsearch")));
-         Show_All(Gtk_Widget(Get_Object(Builder, "btnnew")));
+      if not Is_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1))) then
+         Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 2)));
+         Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1)));
+         Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 4)));
          TemporaryStop := False;
       end if;
       if Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
@@ -336,13 +335,6 @@ package body Bookmarks is
       end loop;
       Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 7)));
    end SetBookmarkButton;
-
-   procedure CreateBookmarkMenuTemp
-     (Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
-   begin
-      CreateBookmarkMenu;
-   end CreateBookmarkMenuTemp;
 
    procedure CreateBookmarksUI is
    begin
