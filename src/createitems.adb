@@ -21,6 +21,8 @@ with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Widget; use Gtk.Widget;
 with Gdk.Event; use Gdk.Event;
 with Glib.Object; use Glib.Object;
@@ -32,6 +34,7 @@ with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
+with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body CreateItems is
@@ -254,6 +257,19 @@ package body CreateItems is
       end if;
    end CreateNew;
 
+   -- ****if* CreateItems/AddNewButton
+   -- FUNCTION
+   -- Show text entry for enter new file/directory name after click button Add New
+   -- PARAMETERS
+   -- Self - Gtk_Tool_Button which was clicked. Unused. Can be null.
+   -- SOURCE
+   procedure AddNewButton(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      AddNew(null);
+   end AddNewButton;
+
    procedure CreateCreateUI is
    begin
       Register_Handler(Builder, "Add_New", AddNew'Access);
@@ -264,6 +280,8 @@ package body CreateItems is
         (TextEntry, Gtk_Entry_Icon_Secondary, "mail-send");
       On_Activate(TextEntry, CreateNew'Access);
       On_Icon_Press(TextEntry, IconPressed'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 4)), AddNewButton'Access);
    end CreateCreateUI;
 
 end CreateItems;
