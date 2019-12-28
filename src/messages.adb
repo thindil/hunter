@@ -22,9 +22,10 @@ with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Widget; use Gtk.Widget;
+with Glib; use Glib;
 with Glib.Main; use Glib.Main;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
@@ -33,6 +34,7 @@ with MainWindow; use MainWindow;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with Utils; use Utils;
+with Toolbars; use Toolbars;
 with Trash; use Trash;
 
 package body Messages is
@@ -157,7 +159,7 @@ package body Messages is
                CloseMessage(null);
                ToggleToolButtons(NewAction, True);
                Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
-               Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+               Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
                Reload(Builder);
                return;
             elsif Response_Id = Gint(Gtk_Response_No) then
@@ -170,7 +172,7 @@ package body Messages is
                CloseMessage(null);
                ToggleToolButtons(NewAction, True);
                Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
-               Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+               Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
                Reload(Builder);
                return;
             elsif Response_Id = Gint(Gtk_Response_No) then

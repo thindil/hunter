@@ -28,11 +28,13 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Widget; use Gtk.Widget;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body DeleteItems is
@@ -152,7 +154,7 @@ package body DeleteItems is
       FileInfo: File_Type;
       I: Positive := SelectedItems.First_Index;
    begin
-      if not Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+      if not Is_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10))) then
          NewAction := DELETE;
       else
          NewAction := DELETETRASH;

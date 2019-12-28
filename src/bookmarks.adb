@@ -32,7 +32,6 @@ with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -84,7 +83,7 @@ package body Bookmarks is
          Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 4)));
          TemporaryStop := False;
       end if;
-      if Is_Visible(Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+      if Is_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10))) then
          ToggleToolButtons(NewAction, True);
          Set_Title
            (Get_Column

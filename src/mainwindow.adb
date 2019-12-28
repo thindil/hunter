@@ -165,15 +165,16 @@ package body MainWindow is
    begin
       Setting := True;
       if Get_Active
-          (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
+          (Gtk_Toggle_Tool_Button(Get_Nth_Item(ActionToolBar, 6))) then
          CopyItemsList.Clear;
          Set_Active
-           (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy")), False);
+           (Gtk_Toggle_Tool_Button(Get_Nth_Item(ActionToolBar, 6)), False);
       end if;
-      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) then
+      if Get_Active
+          (Gtk_Toggle_Tool_Button(Get_Nth_Item(ActionToolBar, 7))) then
          MoveItemsList.Clear;
          Set_Active
-           (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut")), False);
+           (Gtk_Toggle_Tool_Button(Get_Nth_Item(ActionToolBar, 7)), False);
       end if;
       Setting := False;
       Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
@@ -181,7 +182,7 @@ package body MainWindow is
       CloseMessage(null);
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0));
-      Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
+      Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
       Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
       CurrentSelected := Null_Unbounded_String;
       ToggleToolButtons(NewAction, True);
@@ -219,8 +220,7 @@ package body MainWindow is
          ToggleToolButtons(NewAction, True);
          if Self = Gtk_Widget(SearchEntry) then
             Set_Active
-              (Gtk_Toggle_Tool_Button(Get_Nth_Item(ActionToolBar, 1)),
-               False);
+              (Gtk_Toggle_Tool_Button(Get_Nth_Item(ActionToolBar, 1)), False);
          else
             Hide(Self);
          end if;
@@ -505,8 +505,8 @@ package body MainWindow is
       Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
       Hide(SearchEntry);
       Hide(TextEntry);
-      Hide(Gtk_Widget(Get_Object(Builder, "btntoolcancel")));
-      Hide(Gtk_Widget(Get_Object(Builder, "btntoolrestore")));
+      Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
+      Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)));
       Hide(ProgressBar);
       Hide(InfoBar);
       declare

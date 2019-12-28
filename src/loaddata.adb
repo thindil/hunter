@@ -236,8 +236,7 @@ package body LoadData is
             CurrentDirectory :=
               To_Unbounded_String
                 (Normalize_Pathname(To_String(CurrentDirectory)));
-            if not Is_Visible
-                (Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+            if not Is_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10))) then
                Gtk_New(Button, "/");
                Set_Image
                  (Button,
@@ -335,7 +334,7 @@ package body LoadData is
                   end if;
                   Insert(ButtonBox, Button, -1);
                   if not Is_Visible
-                      (Gtk_Widget(Get_Object(Builder, "btntoolrestore"))) then
+                      (Gtk_Widget(Get_Nth_Item(ActionToolBar, 10))) then
                      On_Clicked(Button, PathClicked'Access);
                   else
                      On_Clicked(Button, Trash.PathClicked'Access);

@@ -15,8 +15,6 @@
 
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
-with Glib; use Glib;
-with Glib.Object; use Glib.Object;
 
 -- ****h* Hunter/Messages
 -- FUNCTION
