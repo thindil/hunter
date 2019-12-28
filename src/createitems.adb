@@ -19,6 +19,9 @@ with Gtk.Box; use Gtk.Box;
 with Gtk.Frame; use Gtk.Frame;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Label; use Gtk.Label;
+with Gtk.Menu; use Gtk.Menu;
+with Gtk.Menu_Item; use Gtk.Menu_Item;
+with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
@@ -264,7 +267,7 @@ package body CreateItems is
    begin
       NewAction := CREATEDIRECTORY;
       Set_Icon_Tooltip_Text
-         (TextEntry, Gtk_Entry_Icon_Secondary,
+        (TextEntry, Gtk_Entry_Icon_Secondary,
          Gettext("Create new directory."));
       ToggleToolButtons(NewAction);
       Show_All(TextEntry);
@@ -272,6 +275,8 @@ package body CreateItems is
    end AddNewButton;
 
    procedure CreateCreateUI is
+      CreateNewMenu: constant Gtk_Menu := Gtk_Menu_New;
+      MenuItem: Gtk_Menu_Item;
    begin
       Register_Handler(Builder, "Add_New", AddNew'Access);
       Set_Icon_From_Icon_Name
@@ -283,6 +288,13 @@ package body CreateItems is
       On_Icon_Press(TextEntry, IconPressed'Access);
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 4)), AddNewButton'Access);
+      MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("New _File"));
+      Append(CreateNewMenu, MenuItem);
+      MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("New _Link"));
+      Append(CreateNewMenu, MenuItem);
+      Show_All(CreateNewMenu);
+      Set_Menu
+        (Gtk_Menu_Tool_Button(Get_Nth_Item(ActionToolBar, 4)), CreateNewMenu);
    end CreateCreateUI;
 
 end CreateItems;
