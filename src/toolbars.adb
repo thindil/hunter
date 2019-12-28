@@ -120,7 +120,9 @@ package body Toolbars is
          Set_Icon_Name(Button, IconName);
          Add_Accelerator
            (Button, "clicked", Accelerators, Key, Mod1_Mask, Accel_Visible);
-         Set_Menu(Button, Menu);
+         if Menu /= null then
+            Set_Menu(Button, Menu);
+         end if;
          Insert(Toolbar, Button);
       end AddMenuButton;
       procedure AddToggleButton
@@ -160,7 +162,7 @@ package body Toolbars is
         (Gettext("new"), "document-new", ActionToolBar,
          Gettext
            ("Add new directory [ALT+N] or press arrow to see more options."),
-         GDK_N, Gtk_Widget(Get_Object(Builder, "newmenu")));
+         GDK_N, null);
       AddButton
         (Gettext("Rename"), "document-save-as", ActionToolBar,
          Gettext("Rename selected file or directory [CTRL-R]"), GDK_R,
