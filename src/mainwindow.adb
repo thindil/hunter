@@ -219,7 +219,7 @@ package body MainWindow is
          ToggleToolButtons(NewAction, True);
          if Self = Gtk_Widget(SearchEntry) then
             Set_Active
-              (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btnsearch")),
+              (Gtk_Toggle_Tool_Button(Get_Nth_Item(ActionToolBar, 1)),
                False);
          else
             Hide(Self);
