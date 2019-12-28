@@ -210,11 +210,6 @@ package body CreateItems is
                  (Gtk_Frame(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 1)))),
             "<b>" & Gettext("Destination directory") & "</b>");
          Set_Visible_Child_Name(InfoStack, "destination");
-      else
-         NewAction := CREATEDIRECTORY;
-         Set_Icon_Tooltip_Text
-           (TextEntry, Gtk_Entry_Icon_Secondary,
-            Gettext("Create new directory."));
       end if;
       ToggleToolButtons(NewAction);
       Show_All(TextEntry);
@@ -267,7 +262,13 @@ package body CreateItems is
       pragma Unreferenced(Self);
       -- ****
    begin
-      AddNew(null);
+      NewAction := CREATEDIRECTORY;
+      Set_Icon_Tooltip_Text
+         (TextEntry, Gtk_Entry_Icon_Secondary,
+         Gettext("Create new directory."));
+      ToggleToolButtons(NewAction);
+      Show_All(TextEntry);
+      Grab_Focus(TextEntry);
    end AddNewButton;
 
    procedure CreateCreateUI is
