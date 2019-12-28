@@ -560,12 +560,13 @@ package body ShowItems is
    begin
       SelectedItems.Clear;
       Selected_Foreach(Self, GetSelectedItems'Access);
-      if Get_Active(Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncut"))) then
+      if Get_Active
+          (Gtk_Toggle_Tool_Button(Get_Nth_Item(ActionToolBar, 7))) then
          MoveItemsList := SelectedItems;
          return;
       end if;
       if Get_Active
-          (Gtk_Toggle_Tool_Button(Get_Object(Builder, "btncopy"))) then
+          (Gtk_Toggle_Tool_Button(Get_Nth_Item(ActionToolBar, 6))) then
          CopyItemsList := SelectedItems;
          return;
       end if;

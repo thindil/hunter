@@ -31,6 +31,7 @@ with Gtk.Main; use Gtk.Main;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
+with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
@@ -47,6 +48,7 @@ with MainWindow; use MainWindow;
 with Messages; use Messages;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
+with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body Trash is
@@ -150,7 +152,7 @@ package body Trash is
       Show_All(Gtk_Widget(Get_Object(Object, "btnpreferences")));
       Show_All(Gtk_Widget(Get_Object(Object, "btnabout")));
       Set_Tooltip_Text
-        (Gtk_Widget(Get_Object(Builder, "btndelete")),
+        (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
          Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
       FilesList.Clear;
       Set_Sort_Func

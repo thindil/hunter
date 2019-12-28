@@ -65,12 +65,12 @@ package body Preferences is
    begin
       if Settings.DeleteFiles then
          Set_Tooltip_Text
-           (Gtk_Widget(Get_Object(Builder, "btndelete")),
+           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
             Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
       else
 
          Set_Tooltip_Text
-           (Gtk_Widget(Get_Object(Builder, "btndelete")),
+           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
             Gettext
               ("Move selected file(s) or folder(s) to trash [ALT-Delete]."));
       end if;
