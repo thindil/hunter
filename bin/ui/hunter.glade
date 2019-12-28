@@ -88,22 +88,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="can_focus">False</property>
                 <property name="toolbar_style">icons</property>
                 <child>
-                  <object class="GtkMenuToolButton" id="btnnew">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Add new directory [ALT+N] or press arrow to see more options.</property>
-                    <property name="label" translatable="yes">New</property>
-                    <property name="use_underline">True</property>
-                    <property name="icon_name">document-new</property>
-                    <signal name="clicked" handler="Add_New" object="btnnew" swapped="no"/>
-                    <accelerator key="n" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">False</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkToolButton" id="btnrename">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
@@ -424,30 +408,4 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
     </child>
   </object>
   <object class="GtkTextBuffer" id="filetextbuffer"/>
-  <object class="GtkMenu" id="newmenu">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <child>
-      <object class="GtkMenuItem" id="newmenufile">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="tooltip_text" translatable="yes">Add new empty file.</property>
-        <property name="label" translatable="yes">New _File</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="Add_New" object="newmenufile" swapped="no"/>
-        <accelerator key="f" signal="activate" modifiers="GDK_MOD1_MASK"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkMenuItem" id="newmenulink">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="tooltip_text" translatable="yes">Add new link to selected file or directory.</property>
-        <property name="label" translatable="yes">New _Link</property>
-        <property name="use_underline">True</property>
-        <signal name="activate" handler="Add_New" object="newmenulink" swapped="no"/>
-        <accelerator key="l" signal="activate" modifiers="GDK_MOD1_MASK"/>
-      </object>
-    </child>
-  </object>
 </interface>
