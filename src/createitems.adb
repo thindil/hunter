@@ -28,8 +28,6 @@ with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Widget; use Gtk.Widget;
 with Gdk.Event; use Gdk.Event;
-with Glib.Object; use Glib.Object;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with ActivateItems; use ActivateItems;
 with LoadData; use LoadData;
@@ -185,40 +183,6 @@ package body CreateItems is
       end if;
    end CreateItem;
 
-   -- ****if* CreateItems/AddNew
-   -- FUNCTION
-   -- Show text entry for enter new file/directory name
-   -- PARAMETERS
-   -- User_Data - Which menu option was selected (create file or directory)
-   -- SOURCE
-   procedure AddNew(User_Data: access GObject_Record'Class) is
-   -- ****
-   begin
-      if User_Data = Get_Object(Builder, "newmenufile") then
-         NewAction := CREATEFILE;
-         Set_Icon_Tooltip_Text
-           (TextEntry, Gtk_Entry_Icon_Secondary,
-            Gettext("Create new empty file."));
-      elsif User_Data = Get_Object(Builder, "newmenulink") then
-         NewAction := CREATELINK;
-         SourceDirectory := CurrentDirectory;
-         LinkTarget := CurrentSelected;
-         Set_Icon_Tooltip_Text
-           (TextEntry, Gtk_Entry_Icon_Secondary,
-            Gettext("Create new link to selected file or directory."));
-         LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         Set_Markup
-           (Gtk_Label
-              (Get_Label_Widget
-                 (Gtk_Frame(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 1)))),
-            "<b>" & Gettext("Destination directory") & "</b>");
-         Set_Visible_Child_Name(InfoStack, "destination");
-      end if;
-      ToggleToolButtons(NewAction);
-      Show_All(TextEntry);
-      Grab_Focus(TextEntry);
-   end AddNew;
-
    -- ****if* CreateItems/IconPressed
    -- FUNCTION
    -- Create new file or directory when user press icon or hide text entry
@@ -257,7 +221,7 @@ package body CreateItems is
 
    -- ****if* CreateItems/AddNewButton
    -- FUNCTION
-   -- Show text entry for enter new file/directory name after click button Add New
+   -- Show text entry for enter new directory name after click button Add New
    -- PARAMETERS
    -- Self - Gtk_Tool_Button which was clicked. Unused. Can be null.
    -- SOURCE
@@ -274,11 +238,58 @@ package body CreateItems is
       Grab_Focus(TextEntry);
    end AddNewButton;
 
+   -- ****if* CreateItems/AddNewFile
+   -- FUNCTION
+   -- Show text entry for enter new file name after selecting menu New File
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item which was selected. Unused.
+   -- SOURCE
+   procedure AddNewFile(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      NewAction := CREATEFILE;
+      Set_Icon_Tooltip_Text
+        (TextEntry, Gtk_Entry_Icon_Secondary,
+         Gettext("Create new empty file."));
+      ToggleToolButtons(NewAction);
+      Show_All(TextEntry);
+      Grab_Focus(TextEntry);
+   end AddNewFile;
+
+   -- ****if* CreateItems/AddNewLink
+   -- FUNCTION
+   -- Show text entry and destination for create new link after selecting menu
+   -- New Link
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item which was selected. Unused.
+   -- SOURCE
+   procedure AddNewLink(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      NewAction := CREATELINK;
+      SourceDirectory := CurrentDirectory;
+      LinkTarget := CurrentSelected;
+      Set_Icon_Tooltip_Text
+        (TextEntry, Gtk_Entry_Icon_Secondary,
+         Gettext("Create new link to selected file or directory."));
+      LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+      Set_Markup
+        (Gtk_Label
+           (Get_Label_Widget
+              (Gtk_Frame(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 1)))),
+         "<b>" & Gettext("Destination directory") & "</b>");
+      Set_Visible_Child_Name(InfoStack, "destination");
+      ToggleToolButtons(NewAction);
+      Show_All(TextEntry);
+      Grab_Focus(TextEntry);
+   end AddNewLink;
+
    procedure CreateCreateUI is
       CreateNewMenu: constant Gtk_Menu := Gtk_Menu_New;
       MenuItem: Gtk_Menu_Item;
    begin
-      Register_Handler(Builder, "Add_New", AddNew'Access);
       Set_Icon_From_Icon_Name
         (TextEntry, Gtk_Entry_Icon_Primary, "window-close");
       Set_Icon_Tooltip_Text(TextEntry, Gtk_Entry_Icon_Primary, "Close");
@@ -289,8 +300,10 @@ package body CreateItems is
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 4)), AddNewButton'Access);
       MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("New _File"));
+      On_Activate(MenuItem, AddNewFile'Access);
       Append(CreateNewMenu, MenuItem);
       MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("New _Link"));
+      On_Activate(MenuItem, AddNewLink'Access);
       Append(CreateNewMenu, MenuItem);
       Show_All(CreateNewMenu);
       Set_Menu
