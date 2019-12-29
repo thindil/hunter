@@ -426,6 +426,12 @@ package body MainWindow is
       CopyData(null);
    end CopyItemTemp;
 
+   procedure MoveItemTemp(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+   begin
+      CopyData(null);
+   end MoveItemTemp;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
       ProgressBar: constant Gtk_Progress_Bar := Gtk_Progress_Bar_New;
@@ -440,6 +446,8 @@ package body MainWindow is
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 5)), StartRename'Access);
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 6)), CopyData'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 7)), MoveData'Access);
       CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
       Pack_End
@@ -463,7 +471,7 @@ package body MainWindow is
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
       Register_Handler(Builder, "Start_Rename", StartRenameTemp'Access);
-      Register_Handler(Builder, "Move_Items", MoveData'Access);
+      Register_Handler(Builder, "Move_Items", MoveItemTemp'Access);
       Register_Handler(Builder, "Copy_Items", CopyItemTemp'Access);
       Register_Handler(Builder, "Show_Files", ShowFiles'Access);
       Register_Handler(Builder, "Show_About", ShowAbout'Access);
