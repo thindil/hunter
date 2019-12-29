@@ -461,7 +461,7 @@ package body MainWindow is
       CreateSearchUI;
       CreateShowItemsUI;
       CreateTrashUI;
-      CreatePreferences(Gtk_Widget(Get_Object(Builder, "btnpreferences")));
+      CreatePreferences(Gtk_Widget(Get_Nth_Item(ActionToolBar, 12)));
       Do_Connect(Builder);
       On_Key_Press_Event(TextEntry, EntryKeyPressed'Access);
       On_Key_Press_Event(SearchEntry, EntryKeyPressed'Access);
