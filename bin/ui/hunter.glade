@@ -88,21 +88,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="can_focus">False</property>
                 <property name="toolbar_style">icons</property>
                 <child>
-                  <object class="GtkMenuToolButton" id="btndelete">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">Delete</property>
-                    <property name="use_underline">True</property>
-                    <property name="icon_name">edit-delete</property>
-                    <signal name="clicked" handler="Delete_Item" swapped="no"/>
-                    <accelerator key="Delete" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">False</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkToolButton" id="btntoolcancel">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
