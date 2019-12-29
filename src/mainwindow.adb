@@ -157,11 +157,10 @@ package body MainWindow is
    -- FUNCTION
    -- Back to files listing and preview/info
    -- PARAMETERS
-   -- User_Data - Which button was clicked
+   -- Self - Gtk_Tool_Button which was clicked.
    -- SOURCE
-   procedure ShowFiles(User_Data: access GObject_Record'Class) is
+   procedure ShowFiles(Self: access Gtk_Tool_Button_Record'Class) is
       -- ****
-      pragma Unreferenced(User_Data);
    begin
       Setting := True;
       if Get_Active
@@ -182,7 +181,7 @@ package body MainWindow is
       CloseMessage(null);
       Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
       Show_All(Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0));
-      Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
+      Hide(Self);
       Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
       CurrentSelected := Null_Unbounded_String;
       ToggleToolButtons(NewAction, True);
@@ -456,6 +455,8 @@ package body MainWindow is
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 7)), MoveData'Access);
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 8)), DeleteItem'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 9)), ShowFiles'Access);
       CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
       Pack_End
@@ -481,7 +482,6 @@ package body MainWindow is
       Register_Handler(Builder, "Start_Rename", StartRenameTemp'Access);
       Register_Handler(Builder, "Move_Items", MoveItemTemp'Access);
       Register_Handler(Builder, "Copy_Items", CopyItemTemp'Access);
-      Register_Handler(Builder, "Show_Files", ShowFiles'Access);
       Register_Handler(Builder, "Show_About", ShowAbout'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
       Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
