@@ -148,8 +148,8 @@ package body DeleteItems is
          raise;
    end DeleteSelected;
 
-   procedure DeleteItem(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure DeleteItem(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       Message, FileLine: Unbounded_String;
       FileInfo: File_Type;
       I: Positive := SelectedItems.First_Index;

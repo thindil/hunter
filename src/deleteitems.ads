@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtkada.Builder; use Gtkada.Builder;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
 
 -- ****h* Hunter/DeleteItems
 -- FUNCTION
@@ -35,9 +35,9 @@ package DeleteItems is
    -- FUNCTION
    -- Show message to start deleting selected files and directories.
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button which was clicked. Unused.
    -- SOURCE
-   procedure DeleteItem(Object: access Gtkada_Builder_Record'Class);
+   procedure DeleteItem(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
 end DeleteItems;
