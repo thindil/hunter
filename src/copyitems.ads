@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Gtkada.Builder; use Gtkada.Builder;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
 with MainWindow; use MainWindow;
 
 -- ****h* Hunter/CopyItems
@@ -35,9 +35,9 @@ package CopyItems is
    -- FUNCTION
    -- Copy selected files/directories to new location
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button which was clicked. Unused.
    -- SOURCE
-   procedure CopyData(Object: access Gtkada_Builder_Record'Class);
+   procedure CopyData(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
    -- ****f* CopyItems/CopyItem
