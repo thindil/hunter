@@ -149,8 +149,8 @@ package body Trash is
             2),
          Gettext("Deleted"));
       ToggleToolButtons(SHOWTRASH);
-      Show_All(Gtk_Widget(Get_Object(Object, "btnpreferences")));
-      Show_All(Gtk_Widget(Get_Object(Object, "btnabout")));
+      Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 12)));
+      Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 13)));
       Set_Tooltip_Text
         (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
          Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
