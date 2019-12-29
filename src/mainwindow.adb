@@ -133,10 +133,10 @@ package body MainWindow is
    -- Show text entry to start renaming selected file or directory and fill it
    -- with current element name.
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button which was clicked
    -- SOURCE
-   procedure StartRename(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure StartRename(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
    begin
       NewAction := RENAME;
@@ -414,6 +414,12 @@ package body MainWindow is
       SelectAll(null);
    end SelectAllTemp;
 
+   procedure StartRenameTemp(Object: access Gtkada_Builder_Record'Class) is
+      pragma Unreferenced(Object);
+   begin
+      StartRename(null);
+   end StartRenameTemp;
+
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
       ProgressBar: constant Gtk_Progress_Bar := Gtk_Progress_Bar_New;
@@ -424,6 +430,8 @@ package body MainWindow is
       CreateActionToolbarUI;
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 2)), SelectAll'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 5)), StartRename'Access);
       CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
       Pack_End
@@ -446,7 +454,7 @@ package body MainWindow is
       SetToolbars;
       Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItem'Access);
-      Register_Handler(Builder, "Start_Rename", StartRename'Access);
+      Register_Handler(Builder, "Start_Rename", StartRenameTemp'Access);
       Register_Handler(Builder, "Move_Items", MoveData'Access);
       Register_Handler(Builder, "Copy_Items", CopyData'Access);
       Register_Handler(Builder, "Show_Files", ShowFiles'Access);
