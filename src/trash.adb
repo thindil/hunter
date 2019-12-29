@@ -302,7 +302,8 @@ package body Trash is
       ToggleActionButtons;
    end ShowTrash;
 
-   procedure RestoreItem(Object: access Gtkada_Builder_Record'Class) is
+   procedure RestoreItem(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       RestoreInfo, FileLine, Destination, ItemType: Unbounded_String;
       StartIndex: Positive;
       FileInfo: File_Type;
@@ -330,7 +331,7 @@ package body Trash is
                      To_String(ItemType) & " " &
                      Gettext("with that name exists."));
                   Close(FileInfo);
-                  ShowTrash(Object);
+                  ShowTrash(Builder);
                   return;
                end if;
                Rename(To_String(Item), Slice(FileLine, 6, Length(FileLine)));
@@ -339,14 +340,15 @@ package body Trash is
          Close(FileInfo);
          Delete_File(To_String(RestoreInfo));
       end loop;
-      ShowTrash(Object);
+      ShowTrash(Builder);
    end RestoreItem;
 
    procedure CreateTrashUI is
    begin
       Register_Handler(Builder, "Clear_Trash", ClearTrash'Access);
       Register_Handler(Builder, "Show_Trash", ShowTrash'Access);
-      Register_Handler(Builder, "Restore_Item", RestoreItem'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 10)), RestoreItem'Access);
    end CreateTrashUI;
 
 end Trash;

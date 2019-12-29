@@ -160,7 +160,7 @@ package body MainWindow is
    -- Self - Gtk_Tool_Button which was clicked.
    -- SOURCE
    procedure ShowFiles(Self: access Gtk_Tool_Button_Record'Class) is
-      -- ****
+   -- ****
    begin
       Setting := True;
       if Get_Active

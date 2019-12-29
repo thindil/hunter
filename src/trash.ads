@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Gtk.Button; use Gtk.Button;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/Trash
@@ -27,9 +28,9 @@ package Trash is
    -- FUNCTION
    -- Restore selected file or directory from the trash
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button which was clicked. Unused.
    -- SOURCE
-   procedure RestoreItem(Object: access Gtkada_Builder_Record'Class);
+   procedure RestoreItem(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
    -- ****f* Trash/PathClicked
