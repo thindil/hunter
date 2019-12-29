@@ -39,8 +39,8 @@ package body MoveItems is
    SourceDirectory: Unbounded_String;
    -- ****
 
-   procedure MoveData(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure MoveData(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
       OverwriteItem: Boolean := False;
    begin
       if Setting then

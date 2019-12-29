@@ -88,22 +88,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
                 <property name="can_focus">False</property>
                 <property name="toolbar_style">icons</property>
                 <child>
-                  <object class="GtkToggleToolButton" id="btncut">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="tooltip_text" translatable="yes">Move selected files [ALT-M]. Pressed button means start moving currently selected files or directories. Press again to move them.</property>
-                    <property name="label" translatable="yes">Move</property>
-                    <property name="use_underline">True</property>
-                    <property name="icon_name">edit-cut</property>
-                    <signal name="clicked" handler="Move_Items" swapped="no"/>
-                    <accelerator key="m" signal="clicked" modifiers="GDK_MOD1_MASK"/>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="homogeneous">True</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkMenuToolButton" id="btndelete">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>

@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtkada.Builder; use Gtkada.Builder;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
 with MainWindow; use MainWindow;
 
 -- ****h* Hunter/MoveItems
@@ -34,9 +34,9 @@ package MoveItems is
    -- FUNCTION
    -- Move selected files/directories to new place
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button which was clicked. Unused.
    -- SOURCE
-   procedure MoveData(Object: access Gtkada_Builder_Record'Class);
+   procedure MoveData(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
    -- ****f* MoveItems/MoveSelected
