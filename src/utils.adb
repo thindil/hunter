@@ -17,6 +17,7 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Gtk.Bin; use Gtk.Bin;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Frame; use Gtk.Frame;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
@@ -140,11 +141,7 @@ package body Utils is
         and then (not Settings.ShowPreview) and then (not Finished) then
          Set_Position
            (FilesPaned,
-            Gint
-              (Float
-                 (Get_Allocated_Width
-                    (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
-               0.3));
+            Gint(Float(Get_Allocated_Width(Gtk_Widget(Window))) * 0.3));
          Show_All(Get_Child2(FilesPaned));
       end if;
       if (Action = COPY or Action = MOVE) then
@@ -184,13 +181,12 @@ package body Utils is
          end loop;
       end if;
       if Finished then
-         Set_Title(Gtk_Header_Bar(Get_Object(Builder, "header")), "");
+         Set_Title
+           (Gtk_Header_Bar(Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
+            "");
          Show_All(Gtk_Widget(ItemToolBar));
          if not Settings.ShowPreview then
-            Set_Position
-              (FilesPaned,
-               Get_Allocated_Width
-                 (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
+            Set_Position(FilesPaned, Get_Allocated_Width(Gtk_Widget(Window)));
             Hide(Get_Child2(FilesPaned));
          else
             SetBookmarkButton;
@@ -202,40 +198,48 @@ package body Utils is
          case Action is
             when CREATEFILE =>
                Set_Title
-                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                 (Gtk_Header_Bar
+                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
                   Gettext("Creating empty file"));
             when CREATEDIRECTORY =>
                Set_Title
-                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                 (Gtk_Header_Bar
+                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
                   Gettext("Creating new directory"));
             when CREATELINK =>
                Set_Title
-                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                 (Gtk_Header_Bar
+                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
                   Gettext("Creating new link"));
             when RENAME =>
                Set_Title
-                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                 (Gtk_Header_Bar
+                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
                   Gettext("Renaming file or directory"));
             when COPY =>
                Set_Title
-                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                 (Gtk_Header_Bar
+                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
                   Gettext("Copying files and directories"));
                Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 2)));
                Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1)));
             when MOVE =>
                Set_Title
-                 (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                 (Gtk_Header_Bar
+                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
                   Gettext("Moving files and directories"));
                Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 2)));
                Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1)));
             when DELETE | DELETETRASH =>
                if Settings.DeleteFiles or Action = DELETETRASH then
                   Set_Title
-                    (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                    (Gtk_Header_Bar
+                       (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
                      Gettext("Deleting files and directories"));
                else
                   Set_Title
-                    (Gtk_Header_Bar(Get_Object(Builder, "header")),
+                    (Gtk_Header_Bar
+                       (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
                      Gettext("Moving files and directories to trash"));
                end if;
             when others =>

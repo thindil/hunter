@@ -14,7 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Exceptions; use Ada.Exceptions;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtk.Widget; use Gtk.Widget;
 
 -- ****h* Hunter/ErrorDialog
@@ -49,10 +48,8 @@ package ErrorDialog is
    -- ****f* ErrorDialog/CreateErrorUI
    -- FUNCTION
    -- Create UI to show information about crash
-   -- PARAMETERS
-   -- NewBuilder -  Gtkada_Builder used to create UI
    -- SOURCE
-   procedure CreateErrorUI(NewBuilder: Gtkada_Builder);
+   procedure CreateErrorUI;
    -- ****
 
 end ErrorDialog;

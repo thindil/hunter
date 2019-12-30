@@ -19,6 +19,8 @@ with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_View; use Gtk.Tree_View;
+with Gtk.Widget; use Gtk.Widget;
+with Gtk.Window; use Gtk.Window;
 with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/MainWindow
@@ -136,13 +138,20 @@ package MainWindow is
    FileStack: Gtk_Stack;
    -- ****
 
+   -- ****v* MainWindow/MainWindow
+   -- FUNCTION
+   -- Main window of the program
+   -- SOURCE
+   Window: Gtk_Window;
+   -- ****
+
    -- ****f* MainWindow/Quit
    -- FUNCTION
    -- Quit from program
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Main window of the program which triggered this code
    -- SOURCE
-   procedure Quit(Object: access Gtkada_Builder_Record'Class);
+   procedure Quit(Self: access Gtk_Widget_Record'Class);
    -- ****
 
    -- ****f* MainWindow/CreateMainWindow

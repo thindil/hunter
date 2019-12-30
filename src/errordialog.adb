@@ -38,13 +38,6 @@ with Toolbars; use Toolbars;
 
 package body ErrorDialog is
 
-   -- ****iv* ErrorDialog/Builder
-   -- FUNCTION
-   -- Gtk Builder with UI data from .glade file
-   -- SOURCE
-   Builder: Gtkada_Builder;
-   -- ****
-
    -- ****iv* ErrorDialog/ErrorBuffer
    -- FUNCTION
    -- Gtk_Text_Buffer with detailed information about crash
@@ -86,10 +79,8 @@ package body ErrorDialog is
          Hide(Gtk_Widget(ActionToolBar));
          Hide(Gtk_Widget(ItemToolBar));
          Set_Visible_Child_Name(FileStack, "error");
-         Set_Cursor
-           (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
-            Gdk_Cursor_New(Arrow));
-         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
+         Set_Cursor(Get_Window(Gtk_Widget(Window)), Gdk_Cursor_New(Arrow));
+         Set_Sensitive(Gtk_Widget(Window), True);
       end if;
    end SaveException;
 
@@ -98,7 +89,7 @@ package body ErrorDialog is
       SaveException(An_Exception, False);
    end On_Exception;
 
-   procedure CreateErrorUI(NewBuilder: Gtkada_Builder) is
+   procedure CreateErrorUI is
       Box: constant Gtk_Vbox := Gtk_Vbox_New;
       Label: Gtk_Label;
       Button: constant Gtk_Link_Button :=
@@ -108,7 +99,6 @@ package body ErrorDialog is
       Expander: constant Gtk_Expander :=
         Gtk_Expander_New(Gettext("Click to show technical info"));
    begin
-      Builder := NewBuilder;
       ErrorBuffer := Gtk_Text_Buffer_New;
       Label :=
         Gtk_Label_New

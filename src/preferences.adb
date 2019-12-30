@@ -314,17 +314,10 @@ package body Preferences is
          if Settings.ShowPreview then
             Set_Position
               (FilesPaned,
-               Gint
-                 (Float
-                    (Get_Allocated_Width
-                       (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
-                  0.3));
+               Gint(Float(Get_Allocated_Width(Gtk_Widget(Window))) * 0.3));
             PreviewItem(null);
          else
-            Set_Position
-              (FilesPaned,
-               Get_Allocated_Width
-                 (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
+            Set_Position(FilesPaned, Get_Allocated_Width(Gtk_Widget(Window)));
          end if;
       end if;
       return True;
