@@ -26,6 +26,7 @@ with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
 with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
+with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
@@ -40,8 +41,6 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
-with Gtk.Widget; use Gtk.Widget;
-with Gtk.Window; use Gtk.Window;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
@@ -69,16 +68,17 @@ with Utils; use Utils;
 
 package body MainWindow is
 
-   procedure Quit(Object: access Gtkada_Builder_Record'Class) is
+   procedure Quit(Self: access Gtk_Widget_Record'Class) is
+      pragma Unreferenced(Self);
    begin
       SavePreferences;
       if Settings.ClearTrashOnExit then
          NewAction := CLEARTRASH;
          if DeleteSelected then
-            Reload(Object);
+            Reload(Builder);
          end if;
       end if;
-      Unref(Object);
+      Unref(Builder);
       Main_Quit;
    end Quit;
 
@@ -198,7 +198,7 @@ package body MainWindow is
       pragma Unreferenced(Self);
       -- ****
    begin
-      ShowAboutDialog(Gtk_Window(Get_Object(Builder, "mainwindow")));
+      ShowAboutDialog(Window);
    end ShowAbout;
 
    -- ****if* MainWindow/EntryKeyPressed
@@ -274,7 +274,7 @@ package body MainWindow is
          return False;
       end if;
       if Key.Accel_Key = Event.Keyval and Key.Accel_Mods = KeyMods then
-         Quit(Builder);
+         Quit(Window);
       end if;
       return False;
    end WindowKeyPressed;
@@ -283,20 +283,18 @@ package body MainWindow is
    -- FUNCTION
    -- Get the main window size at quitting of the program
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self  - Main window of the program which triggered this event
+   -- Event - Gdk_Event which was triggered. Unused
    -- RESULT
    -- This function always return False
    -- SOURCE
    function GetWindowSize
-     (Object: access Gtkada_Builder_Record'Class) return Boolean is
-   -- ****
+     (Self: access Gtk_Widget_Record'Class; Event: Gdk_Event) return Boolean is
+      pragma Unreferenced(Event);
+      -- ****
    begin
-      Settings.WindowWidth :=
-        Positive
-          (Get_Allocated_Width(Gtk_Widget(Get_Object(Object, "mainwindow"))));
-      Settings.WindowHeight :=
-        Positive
-          (Get_Allocated_Height(Gtk_Widget(Get_Object(Object, "mainwindow"))));
+      Settings.WindowWidth := Positive(Get_Allocated_Width(Self));
+      Settings.WindowHeight := Positive(Get_Allocated_Height(Self));
       return False;
    end GetWindowSize;
 
@@ -442,9 +440,26 @@ package body MainWindow is
       FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
       ProgressBar: constant Gtk_Progress_Bar := Gtk_Progress_Bar_New;
       StackBox: constant Gtk_Vbox := Gtk_Vbox_New;
+      Header: constant Gtk_Header_Bar := Gtk_Header_Bar_New;
    begin
       Setting := True;
       Builder := NewBuilder;
+      Window := Gtk_Window_New;
+      On_Key_Press_Event(Window, WindowKeyPressed'Access);
+      On_Delete_Event(Window, GetWindowSize'Access);
+      On_Destroy(Window, Quit'Access);
+      Set_Default_Size(Window, 800, 600);
+      Set_Position(Window, Win_Pos_Center);
+      Add_Accel_Group
+        (Window, Gtk_Accel_Group(Get_Object(Builder, "accelerators")));
+      Set_Title(Window, Gettext("Hunter"));
+      if not Set_Icon_From_File(Window, "ui/hunter-icon.png") then
+         raise Program_Error;
+      end if;
+      Add(Window, Gtk_Vbox_New);
+      Set_Show_Close_Button(Header, True);
+      Set_Has_Subtitle(Header, True);
+      Pack_Start(Gtk_Box(Get_Child(Window)), Header, False);
       CreateActionToolbarUI;
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 2)), SelectAll'Access);
@@ -462,9 +477,7 @@ package body MainWindow is
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 13)), ShowAbout'Access);
       CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
-      Pack_End
-        (Gtk_Box(Get_Child(Gtk_Bin(Get_Object(Builder, "mainwindow")))),
-         FileStack);
+      Pack_End(Gtk_Box(Get_Child(Gtk_Bin(Window))), FileStack);
       FilesPaned := Gtk_Hpaned_New;
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
@@ -480,13 +493,11 @@ package body MainWindow is
       Pack_Start(FilesBox, Gtk_Vbox_New, False);
       Pack_Start(StackBox, FilesBox);
       SetToolbars;
-      Register_Handler(Builder, "Main_Quit", Quit'Access);
       Register_Handler(Builder, "Delete_Item", DeleteItemTemp'Access);
       Register_Handler(Builder, "Start_Rename", StartRenameTemp'Access);
       Register_Handler(Builder, "Move_Items", MoveItemTemp'Access);
       Register_Handler(Builder, "Copy_Items", CopyItemTemp'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
-      Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
       Register_Handler(Builder, "Show_File", ShowFile'Access);
       Register_Handler(Builder, "Select_All", SelectAllTemp'Access);
       CreateActivateUI;
@@ -499,9 +510,6 @@ package body MainWindow is
       Do_Connect(Builder);
       On_Key_Press_Event(TextEntry, EntryKeyPressed'Access);
       On_Key_Press_Event(SearchEntry, EntryKeyPressed'Access);
-      On_Key_Press_Event
-        (Gtk_Widget(Get_Object(Builder, "mainwindow")),
-         WindowKeyPressed'Access);
       Add_Entry("<mainwindow>/reload", GDK_LC_r, Mod1_Mask);
       Add_Entry("<mainwindow>/goup", GDK_LC_u, Mod1_Mask);
       Add_Entry("<mainwindow>/path1", GDK_1, Mod1_Mask);
@@ -534,9 +542,8 @@ package body MainWindow is
          end if;
       end if;
       Set_Default_Size
-        (Gtk_Window(Get_Object(Builder, "mainwindow")),
-         Gint(Settings.WindowWidth), Gint(Settings.WindowHeight));
-      Show_All(Gtk_Widget(Get_Object(Builder, "mainwindow")));
+        (Window, Gint(Settings.WindowWidth), Gint(Settings.WindowHeight));
+      Show_All(Window);
       Hide(SearchEntry);
       Hide(TextEntry);
       Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
@@ -616,20 +623,12 @@ package body MainWindow is
       Show_All(FilesPaned);
       if Settings.ShowPreview then
          Set_Position
-           (FilesPaned,
-            Gint
-              (Float
-                 (Get_Allocated_Width
-                    (Gtk_Widget(Get_Object(Builder, "mainwindow")))) *
-               0.3));
+           (FilesPaned, Gint(Float(Get_Allocated_Width(Window)) * 0.3));
       else
          Hide(Get_Child2(FilesPaned));
          Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)));
          Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 5)));
-         Set_Position
-           (FilesPaned,
-            Get_Allocated_Width
-              (Gtk_Widget(Get_Object(Builder, "mainwindow"))));
+         Set_Position(FilesPaned, Get_Allocated_Width(Window));
       end if;
       Grab_Focus(DirectoryView);
       StartTimer(To_String(CurrentDirectory));

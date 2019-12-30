@@ -38,6 +38,7 @@ with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
+with Gtk.Window; use Gtk.Window;
 with Gtkada.Intl; use Gtkada.Intl;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
@@ -112,8 +113,6 @@ package body Trash is
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, "fileslist"));
       FileIter: Gtk_Tree_Iter;
-      MainWindow: constant Gdk_Window :=
-        Get_Window(Gtk_Widget(Get_Object(Object, "mainwindow")));
       Directory, SubDirectory: Dir_Type;
       Last, SubLast: Natural;
       FileName, SubFileName: String(1 .. 1024);
@@ -131,9 +130,10 @@ package body Trash is
       if Accelerators = null then
          Accelerators := Gtk_Accel_Group(Get_Object(Object, "accelerators"));
       end if;
-      if MainWindow /= null then
-         Set_Cursor(MainWindow, Gdk_Cursor_New(Watch));
-         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), False);
+      if MainWindow.Window /= null then
+         Set_Cursor
+           (Get_Window(Gtk_Widget(MainWindow.Window)), Gdk_Cursor_New(Watch));
+         Set_Sensitive(MainWindow.Window, False);
          while Events_Pending loop
             if Main_Iteration_Do(False) then
                exit;
@@ -281,11 +281,9 @@ package body Trash is
       Show_All(ButtonBox);
       Set_Sort_Func(FilesSort, 0, SortFiles'Access);
       Set_Sort_Column_Id(FilesSort, 0, Sort_Ascending);
-      if MainWindow /= null then
-         Set_Cursor
-           (Get_Window(Gtk_Widget(Get_Object(Object, "mainwindow"))),
-            Gdk_Cursor_New(Arrow));
-         Set_Sensitive(Gtk_Widget(Get_Object(Object, "mainwindow")), True);
+      if MainWindow.Window /= null then
+         Set_Cursor(Get_Window(MainWindow.Window), Gdk_Cursor_New(Arrow));
+         Set_Sensitive(MainWindow.Window, True);
       end if;
       Setting := False;
       Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));

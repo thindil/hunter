@@ -145,18 +145,16 @@ package body LoadData is
       Directory: Dir_Type;
       Last: Natural;
       FileName: String(1 .. 1024);
-      MainWindow: constant Gdk_Window :=
-        Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow")));
    begin
       Setting := True;
       if Accelerators = null then
          Accelerators := Gtk_Accel_Group(Get_Object(Builder, "accelerators"));
       end if;
-      if MainWindow /= null then
-         Set_Cursor(MainWindow, Gdk_Cursor_New(Watch));
+      if MainWindow.Window /= null then
+         Set_Cursor
+           (Get_Window(Gtk_Widget(MainWindow.Window)), Gdk_Cursor_New(Watch));
          if not Is_Visible(Gtk_Widget(PreferencesPopup)) then
-            Set_Sensitive
-              (Gtk_Widget(Get_Object(Builder, "mainwindow")), False);
+            Set_Sensitive(MainWindow.Window, False);
          end if;
          while Events_Pending loop
             if Main_Iteration_Do(False) then
@@ -182,12 +180,10 @@ package body LoadData is
                  ("You don't have permissions to preview this directory."));
             Add(PreviewScroll, TextView);
             Show_All(PreviewScroll);
-            if MainWindow /= null then
+            if MainWindow.Window /= null then
                Set_Cursor
-                 (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
-                  Gdk_Cursor_New(Arrow));
-               Set_Sensitive
-                 (Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
+                 (Get_Window(MainWindow.Window), Gdk_Cursor_New(Arrow));
+               Set_Sensitive(Gtk_Widget(MainWindow.Window), True);
                Set_Sensitive(Gtk_Widget(Get_Nth_Item(ItemToolBar, 1)), False);
             end if;
          end;
@@ -405,16 +401,13 @@ package body LoadData is
             SortFiles'Access);
          Set_Sort_Column_Id(FilesList, 0, Sort_Ascending);
       end if;
-      if MainWindow /= null then
-         Set_Cursor
-           (Get_Window(Gtk_Widget(Get_Object(Builder, "mainwindow"))),
-            Gdk_Cursor_New(Arrow));
-         Set_Sensitive(Gtk_Widget(Get_Object(Builder, "mainwindow")), True);
+      if MainWindow.Window /= null then
+         Set_Cursor(Get_Window(MainWindow.Window), Gdk_Cursor_New(Arrow));
+         Set_Sensitive(MainWindow.Window, True);
       end if;
       if ListName = "fileslist" then
          Set_Title
-           (Gtk_Window(Get_Object(Builder, "mainwindow")),
-            "Hunter - " & To_String(CurrentDirectory));
+           (MainWindow.Window, "Hunter - " & To_String(CurrentDirectory));
       end if;
       Setting := False;
       if ListName = "fileslist" then

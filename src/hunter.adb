@@ -70,7 +70,7 @@ begin
    else
       CreateMainWindow(Builder, Full_Name(Argument(1)));
    end if;
-   CreateErrorUI(Builder);
+   CreateErrorUI;
    Clear("LD_LIBRARY_PATH");
    Clear("GDK_PIXBUF_MODULE_FILE");
    Clear("GDK_PIXBUF_MODULEDIR");

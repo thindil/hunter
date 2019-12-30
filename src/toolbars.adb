@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Gtk.Accel_Group; use Gtk.Accel_Group;
+with Gtk.Bin; use Gtk.Bin;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Container; use Gtk.Container;
 with Gtk.Enums; use Gtk.Enums;
@@ -106,7 +107,9 @@ package body Toolbars is
       AddButton
         (Gettext("Remove bookmark"), "list-remove", ItemToolBar,
          Gettext("Remove bookmark to this directory [ALT-B]"), GDK_B);
-      Pack_End(Gtk_Header_Bar(Get_Object(Builder, "header")), ItemToolBar);
+      Pack_End
+        (Gtk_Header_Bar(Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
+         ItemToolBar);
    end CreateItemToolbarUI;
 
    procedure CreateActionToolbarUI is
@@ -197,11 +200,14 @@ package body Toolbars is
          Gettext("Show informations about the program [ALT-A]."), GDK_A,
          Gtk_Widget(Get_Object(Builder, "aboutmenu")));
       AddSeparator(ActionToolBar);
-      Pack_Start(Gtk_Header_Bar(Get_Object(Builder, "header")), ActionToolBar);
+      Pack_Start
+        (Gtk_Header_Bar(Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
+         ActionToolBar);
    end CreateActionToolbarUI;
 
    procedure SetToolbars is
-      Header: constant GObject := Get_Object(Builder, "header");
+      Header: constant GObject :=
+        GObject(Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0));
       LeftBox: constant Gtk_Widget :=
         Get_Child
           (Gtk_Box
