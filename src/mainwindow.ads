@@ -15,6 +15,7 @@
 
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Stack; use Gtk.Stack;
@@ -143,6 +144,13 @@ package MainWindow is
    -- Main window of the program
    -- SOURCE
    Window: Gtk_Window;
+   -- ****
+
+   -- ****v* MainWindow/Accelerators
+   -- FUNCTION
+   -- Keyboard accelerators associated with the main program window
+   -- SOURCE
+   Accelerators: Gtk_Accel_Group;
    -- ****
 
    -- ****f* MainWindow/Quit

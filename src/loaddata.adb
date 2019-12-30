@@ -23,7 +23,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
-with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Enums; use Gtk.Enums;
@@ -55,13 +54,6 @@ with Trash;
 with Utils; use Utils;
 
 package body LoadData is
-
-   -- ****iv* LoadData/Accelerators
-   -- FUNCTION
-   -- Keyboard shortcuts for path buttons
-   -- SOURCE
-   Accelerators: Gtk_Accel_Group;
-   -- ****
 
    function SortFiles
      (Model: Gtk_Tree_Model; A: Gtk_Tree_Iter; B: Gtk_Tree_Iter) return Gint is
@@ -147,9 +139,6 @@ package body LoadData is
       FileName: String(1 .. 1024);
    begin
       Setting := True;
-      if Accelerators = null then
-         Accelerators := Gtk_Accel_Group(Get_Object(Builder, "accelerators"));
-      end if;
       if MainWindow.Window /= null then
          Set_Cursor
            (Get_Window(Gtk_Widget(MainWindow.Window)), Gdk_Cursor_New(Watch));

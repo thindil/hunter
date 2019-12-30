@@ -37,8 +37,6 @@ with Preferences; use Preferences;
 
 package body Toolbars is
 
-   Accelerators: Gtk_Accel_Group;
-
    procedure AddButton
      (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
       Key: Gdk_Key_Type; Mask: Gdk_Modifier_Type := Mod1_Mask) is
@@ -76,9 +74,6 @@ package body Toolbars is
    procedure CreateItemToolbarUI is
       RadioGroup: Widget_SList.GSlist;
    begin
-      if Accelerators = null then
-         Accelerators := Gtk_Accel_Group(Get_Object(Builder, "accelerators"));
-      end if;
       ItemToolBar := Gtk_Toolbar_New;
       Set_Style(ItemToolBar, Toolbar_Icons);
       Set_Halign(ItemToolBar, Align_Center);
@@ -141,9 +136,6 @@ package body Toolbars is
          Insert(Toolbar, Button);
       end AddToggleButton;
    begin
-      if Accelerators = null then
-         Accelerators := Gtk_Accel_Group(Get_Object(Builder, "accelerators"));
-      end if;
       ActionToolBar := Gtk_Toolbar_New;
       Set_Style(ActionToolBar, Toolbar_Icons);
       CreateBookmarkMenu(True);
