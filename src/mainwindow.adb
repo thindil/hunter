@@ -31,6 +31,7 @@ with Gtk.Info_Bar; use Gtk.Info_Bar;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
+with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Search_Entry; use Gtk.Search_Entry;
@@ -355,13 +356,12 @@ package body MainWindow is
 
    -- ****if* MainWindow/ShowFile
    -- FUNCTION
-   -- Show README.md or CHANGELOG.md file
+   -- Show selected file to user
    -- PARAMETERS
-   -- User_Data - Which menu item was selected
+   -- FileName - Name of file to show
    -- SOURCE
-   procedure ShowFile(User_Data: access GObject_Record'Class) is
+   procedure ShowFile(FileName: String) is
       -- ****
-      FileName: Unbounded_String := To_Unbounded_String("README.md");
       FilesList: constant Gtk_Tree_Model_Sort :=
         Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
       FilesIter: Gtk_Tree_Iter;
@@ -373,15 +373,10 @@ package body MainWindow is
          CurrentDirectory :=
            To_Unbounded_String(Value("APPDIR", "") & "/usr/share/doc/hunter");
       end if;
-      if User_Data = Get_Object(Builder, "aboutchangelog") then
-         FileName := To_Unbounded_String("CHANGELOG.md");
-      elsif User_Data = Get_Object(Builder, "aboutgetinvolved") then
-         FileName := To_Unbounded_String("CONTRIBUTING.md");
-      end if;
       Reload(Builder);
       FilesIter := Get_Iter_First(FilesList);
       loop
-         if Get_String(FilesList, FilesIter, 0) = To_String(FileName) then
+         if Get_String(FilesList, FilesIter, 0) = FileName then
             Set_Cursor
               (DirectoryView, Get_Path(FilesList, FilesIter), null, False);
             exit;
@@ -405,6 +400,45 @@ package body MainWindow is
          Select_All(Selection);
       end if;
    end SelectAll;
+
+   -- ****if* MainWindow/ShowReadme
+   -- FUNCTION
+   -- Show README.md file when the user select it from menu
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused
+   -- SOURCE
+   procedure ShowReadme(Self : access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      ShowFile("README.md");
+   end ShowReadme;
+
+   -- ****if* MainWindow/ShowChangelog
+   -- FUNCTION
+   -- Show CHANGELOG.md file when the user select it from menu
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused
+   -- SOURCE
+   procedure ShowChangelog(Self : access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      ShowFile("CHANGELOG.md");
+   end ShowChangelog;
+
+   -- ****if* MainWindow/ShowContributing
+   -- FUNCTION
+   -- Show CONTRIBUTING.md file when the user select it from menu
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused
+   -- SOURCE
+   procedure ShowContributing(Self : access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      ShowFile("CONTRIBUTING.md");
+   end ShowContributing;
 
    procedure SelectAllTemp(Object: access Gtkada_Builder_Record'Class) is
       pragma Unreferenced(Object);
@@ -473,8 +507,24 @@ package body MainWindow is
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 8)), DeleteItem'Access);
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 9)), ShowFiles'Access);
-      On_Clicked
-        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 13)), ShowAbout'Access);
+      declare
+         AboutButton: constant Gtk_Menu_Tool_Button := Gtk_Menu_Tool_Button(Get_Nth_Item(ActionToolBar, 13));
+         AboutMenu: constant Gtk_Menu := Gtk_Menu_New;
+         MenuItem: Gtk_Menu_Item;
+      begin
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Show README"));
+         On_Activate(MenuItem, ShowReadme'Access);
+         Append(AboutMenu, MenuItem);
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Show list of changes"));
+         On_Activate(MenuItem, ShowChangelog'Access);
+         Append(AboutMenu, MenuItem);
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Get involved"));
+         On_Activate(MenuItem, ShowContributing'Access);
+         Append(AboutMenu, MenuItem);
+         Show_All(AboutMenu);
+         Set_Menu(AboutButton, AboutMenu);
+         On_Clicked(AboutButton, ShowAbout'Access);
+      end;
       CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
       Pack_End(Gtk_Box(Get_Child(Gtk_Bin(Window))), FileStack);
@@ -498,7 +548,6 @@ package body MainWindow is
       Register_Handler(Builder, "Move_Items", MoveItemTemp'Access);
       Register_Handler(Builder, "Copy_Items", CopyItemTemp'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
-      Register_Handler(Builder, "Show_File", ShowFile'Access);
       Register_Handler(Builder, "Select_All", SelectAllTemp'Access);
       CreateActivateUI;
       CreateBookmarksUI;
