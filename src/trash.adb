@@ -21,7 +21,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
-with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Box; use Gtk.Box;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
@@ -53,13 +52,6 @@ with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body Trash is
-
-   -- ****iv* Trash/Accelerators
-   -- FUNCTION
-   -- Keyboard shortcuts for path buttons
-   -- SOURCE
-   Accelerators: Gtk_Accel_Group;
-   -- ****
 
    -- ****if* Trash/ClearTrash
    -- FUNCTION
@@ -127,9 +119,6 @@ package body Trash is
    begin
       Setting := True;
       TemporaryStop := True;
-      if Accelerators = null then
-         Accelerators := Gtk_Accel_Group(Get_Object(Object, "accelerators"));
-      end if;
       if MainWindow.Window /= null then
          Set_Cursor
            (Get_Window(Gtk_Widget(MainWindow.Window)), Gdk_Cursor_New(Watch));

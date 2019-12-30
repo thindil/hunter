@@ -17,7 +17,6 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Accel_Group; use Gtk.Accel_Group;
 with Gtk.Accel_Map; use Gtk.Accel_Map;
 with Gtk.Bin; use Gtk.Bin;
 with Gtk.Box; use Gtk.Box;
@@ -484,8 +483,9 @@ package body MainWindow is
       On_Destroy(Window, Quit'Access);
       Set_Default_Size(Window, 800, 600);
       Set_Position(Window, Win_Pos_Center);
+      Accelerators := Gtk_Accel_Group_New;
       Add_Accel_Group
-        (Window, Gtk_Accel_Group(Get_Object(Builder, "accelerators")));
+        (Window, Accelerators);
       Set_Title(Window, Gettext("Hunter"));
       if not Set_Icon_From_File(Window, "ui/hunter-icon.png") then
          raise Program_Error;
