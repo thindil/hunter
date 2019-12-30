@@ -83,7 +83,7 @@ package body ErrorDialog is
          Put_Line(To_String(ErrorText));
       else
          Set_Text(ErrorBuffer, To_String(ErrorText));
-         Hide(Gtk_Widget(Get_Object(Builder, "toolbar")));
+         Hide(Gtk_Widget(ActionToolBar));
          Hide(Gtk_Widget(ItemToolBar));
          Set_Visible_Child_Name(FileStack, "error");
          Set_Cursor

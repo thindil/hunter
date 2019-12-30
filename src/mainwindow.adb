@@ -179,7 +179,7 @@ package body MainWindow is
       Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
       ToggleToolButtons(NewAction, True);
       CloseMessage(null);
-      Show_All(Gtk_Widget(Get_Object(Builder, "toolbar")));
+      Show_All(ActionToolBar);
       Show_All(Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0));
       Hide(Self);
       Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
@@ -192,12 +192,13 @@ package body MainWindow is
    -- FUNCTION
    -- Show dialog with informations about the program
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Tool_Button which was clicked. Unused
    -- SOURCE
-   procedure ShowAbout(Object: access Gtkada_Builder_Record'Class) is
-   -- ****
+   procedure ShowAbout(Self: access Gtk_Tool_Button_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
    begin
-      ShowAboutDialog(Gtk_Window(Get_Object(Object, "mainwindow")));
+      ShowAboutDialog(Gtk_Window(Get_Object(Builder, "mainwindow")));
    end ShowAbout;
 
    -- ****if* MainWindow/EntryKeyPressed
@@ -457,6 +458,8 @@ package body MainWindow is
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 8)), DeleteItem'Access);
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 9)), ShowFiles'Access);
+      On_Clicked
+        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 13)), ShowAbout'Access);
       CreateItemToolbarUI;
       FileStack := Gtk_Stack_New;
       Pack_End
@@ -482,7 +485,6 @@ package body MainWindow is
       Register_Handler(Builder, "Start_Rename", StartRenameTemp'Access);
       Register_Handler(Builder, "Move_Items", MoveItemTemp'Access);
       Register_Handler(Builder, "Copy_Items", CopyItemTemp'Access);
-      Register_Handler(Builder, "Show_About", ShowAbout'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
       Register_Handler(Builder, "Get_Window_Size", GetWindowSize'Access);
       Register_Handler(Builder, "Show_File", ShowFile'Access);
