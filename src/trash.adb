@@ -27,6 +27,8 @@ with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
 with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
+with Gtk.Menu; use Gtk.Menu;
+with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
@@ -38,6 +40,7 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
+with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
@@ -57,10 +60,10 @@ package body Trash is
    -- FUNCTION
    -- Show message to start clearing the trash.
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI. Unused.
+   -- Self - Gtk_Menu_Item which was clicked. Unused.
    -- SOURCE
-   procedure ClearTrash(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure ClearTrash(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
       -- ****
    begin
       NewAction := CLEARTRASH;
@@ -89,7 +92,7 @@ package body Trash is
       Index: constant Gint := Get_Index(Gtk_Flow_Box_Child(Get_Parent(Self)));
    begin
       if Index = 0 then
-         ShowTrash(Builder);
+         ShowTrash(null);
          return;
       end if;
       Create(Tokens, To_String(CurrentDirectory), "/");
@@ -101,7 +104,8 @@ package body Trash is
       Reload(Builder);
    end PathClicked;
 
-   procedure ShowTrash(Object: access Gtkada_Builder_Record'Class) is
+   procedure ShowTrash(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
       FilesList: constant Gtk_List_Store :=
         Gtk_List_Store(Get_Object(Builder, "fileslist"));
       FileIter: Gtk_Tree_Iter;
@@ -109,7 +113,7 @@ package body Trash is
       Last, SubLast: Natural;
       FileName, SubFileName: String(1 .. 1024);
       FilesSort: constant Gtk_Tree_Model_Sort :=
-        Gtk_Tree_Model_Sort(Get_Object(Object, "filessort"));
+        Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
       FileInfo: File_Type;
       Size: File_Size;
       FileLine, FullName, MimeType: Unbounded_String;
@@ -275,7 +279,7 @@ package body Trash is
          Set_Sensitive(MainWindow.Window, True);
       end if;
       Setting := False;
-      Refilter(Gtk_Tree_Model_Filter(Get_Object(Object, "filesfilter")));
+      Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
       if N_Children(Get_Model(DirectoryView), Null_Iter) = 0 then
          CurrentSelected :=
            To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files/");
@@ -318,7 +322,7 @@ package body Trash is
                      To_String(ItemType) & " " &
                      Gettext("with that name exists."));
                   Close(FileInfo);
-                  ShowTrash(Builder);
+                  ShowTrash(null);
                   return;
                end if;
                Rename(To_String(Item), Slice(FileLine, 6, Length(FileLine)));
@@ -327,13 +331,22 @@ package body Trash is
          Close(FileInfo);
          Delete_File(To_String(RestoreInfo));
       end loop;
-      ShowTrash(Builder);
+      ShowTrash(null);
    end RestoreItem;
 
    procedure CreateTrashUI is
+      DeleteMenu: constant Gtk_Menu := Gtk_Menu_New;
+      MenuItem: Gtk_Menu_Item;
    begin
-      Register_Handler(Builder, "Clear_Trash", ClearTrash'Access);
-      Register_Handler(Builder, "Show_Trash", ShowTrash'Access);
+      MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Show Trash"));
+      On_Activate(MenuItem, ShowTrash'Access);
+      Append(DeleteMenu, MenuItem);
+      MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Empty Trash"));
+      On_Activate(MenuItem, ClearTrash'Access);
+      Append(DeleteMenu, MenuItem);
+      Show_All(DeleteMenu);
+      Set_Menu
+        (Gtk_Menu_Tool_Button(Get_Nth_Item(ActionToolBar, 8)), DeleteMenu);
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 10)), RestoreItem'Access);
    end CreateTrashUI;

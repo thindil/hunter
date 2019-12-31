@@ -406,7 +406,7 @@ package body MainWindow is
    -- PARAMETERS
    -- Self - Gtk_Menu_Item clicked. Unused
    -- SOURCE
-   procedure ShowReadme(Self : access Gtk_Menu_Item_Record'Class) is
+   procedure ShowReadme(Self: access Gtk_Menu_Item_Record'Class) is
       pragma Unreferenced(Self);
       -- ****
    begin
@@ -419,7 +419,7 @@ package body MainWindow is
    -- PARAMETERS
    -- Self - Gtk_Menu_Item clicked. Unused
    -- SOURCE
-   procedure ShowChangelog(Self : access Gtk_Menu_Item_Record'Class) is
+   procedure ShowChangelog(Self: access Gtk_Menu_Item_Record'Class) is
       pragma Unreferenced(Self);
       -- ****
    begin
@@ -432,7 +432,7 @@ package body MainWindow is
    -- PARAMETERS
    -- Self - Gtk_Menu_Item clicked. Unused
    -- SOURCE
-   procedure ShowContributing(Self : access Gtk_Menu_Item_Record'Class) is
+   procedure ShowContributing(Self: access Gtk_Menu_Item_Record'Class) is
       pragma Unreferenced(Self);
       -- ****
    begin
@@ -484,8 +484,7 @@ package body MainWindow is
       Set_Default_Size(Window, 800, 600);
       Set_Position(Window, Win_Pos_Center);
       Accelerators := Gtk_Accel_Group_New;
-      Add_Accel_Group
-        (Window, Accelerators);
+      Add_Accel_Group(Window, Accelerators);
       Set_Title(Window, Gettext("Hunter"));
       if not Set_Icon_From_File(Window, "ui/hunter-icon.png") then
          raise Program_Error;
@@ -508,14 +507,16 @@ package body MainWindow is
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 9)), ShowFiles'Access);
       declare
-         AboutButton: constant Gtk_Menu_Tool_Button := Gtk_Menu_Tool_Button(Get_Nth_Item(ActionToolBar, 13));
+         AboutButton: constant Gtk_Menu_Tool_Button :=
+           Gtk_Menu_Tool_Button(Get_Nth_Item(ActionToolBar, 13));
          AboutMenu: constant Gtk_Menu := Gtk_Menu_New;
          MenuItem: Gtk_Menu_Item;
       begin
          MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Show README"));
          On_Activate(MenuItem, ShowReadme'Access);
          Append(AboutMenu, MenuItem);
-         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Show list of changes"));
+         MenuItem :=
+           Gtk_Menu_Item_New_With_Mnemonic(Gettext("Show list of changes"));
          On_Activate(MenuItem, ShowChangelog'Access);
          Append(AboutMenu, MenuItem);
          MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Get involved"));
