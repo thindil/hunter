@@ -46,7 +46,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       </object>
     </child>
   </object>
-  <object class="GtkTextBuffer" id="errorbuffer"/>
   <object class="GtkListStore" id="fileslist">
     <columns>
       <!-- column-name name -->
