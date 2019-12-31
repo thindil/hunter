@@ -24,7 +24,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <!-- interface-license-type gplv3 -->
   <!-- interface-name hunter -->
   <!-- interface-copyright 2019 Bartek thindil Jasicki -->
-  <object class="GtkAccelGroup" id="accelerators"/>
   <object class="GtkMenu" id="deletemenu">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
