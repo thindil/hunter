@@ -174,7 +174,7 @@ package body Toolbars is
          GDK_M);
       AddMenuButton
         (Gettext("Delete"), "edit-delete", ActionToolBar, "", GDK_Delete,
-         Gtk_Widget(Get_Object(Builder, "deletemenu")));
+         null);
       AddButton
         (Gettext("Cancel"), "dialog-cancel", ActionToolBar,
          Gettext("Discard all changes and back to files list [Escape]"),

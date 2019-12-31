@@ -14,8 +14,8 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Gtk.Button; use Gtk.Button;
+with Gtk.Menu_Item; use Gtk.Menu_Item;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
-with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/Trash
 -- FUNCTION
@@ -46,9 +46,9 @@ package Trash is
    -- FUNCTION
    -- Show content of the Trash
    -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
+   -- Self - Gtk_Menu_Item which was clicked. Unused.
    -- SOURCE
-   procedure ShowTrash(Object: access Gtkada_Builder_Record'Class);
+   procedure ShowTrash(Self: access Gtk_Menu_Item_Record'Class);
    -- ****
 
    -- ****f* Trash/CreateTrashUI
