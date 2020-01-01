@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Gtk.GEntry; use Gtk.GEntry;
+with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
@@ -56,6 +57,26 @@ package ActivateItems is
    -- for use in GTKAda Builder
    -- SOURCE
    procedure CreateActivateUI;
+   -- ****
+
+   -- ****f* ActivateItems/StartOpenWith
+   -- FUNCTION
+   -- Show text entry to start opening selected file or directory with custom
+   -- command.
+   -- PARAMETERS
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
+   -- SOURCE
+   procedure StartOpenWith(Self: access Gtk_Tool_Button_Record'Class);
+   -- ****
+
+   -- ****f* ActivateItems/ExecuteFile
+   -- FUNCTION
+   -- Execute selected file. That file must be graphical application or
+   -- all output will be redirected to terminal (invisible to user).
+   -- PARAMETERS
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
+   -- SOURCE
+   procedure ExecuteFile(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
 end ActivateItems;

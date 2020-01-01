@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -17,10 +17,8 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Widget; use Gtk.Widget;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -89,23 +87,8 @@ package body ActivateItems is
         (DirectoryView, Gtk_Tree_Path_New, Get_Column(DirectoryView, 0));
    end ActivateFileButton;
 
-   procedure ActivateFileTemp(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
-   begin
-      ActivateFile
-        (DirectoryView, Gtk_Tree_Path_New, Get_Column(DirectoryView, 0));
-   end ActivateFileTemp;
-
-   -- ****if* ActivateItems/StartOpenWith
-   -- FUNCTION
-   -- Show text entry to start opening selected file or directory with custom
-   -- command.
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
-   -- SOURCE
    procedure StartOpenWith(Self: access Gtk_Tool_Button_Record'Class) is
       pragma Unreferenced(Self);
-      -- ****
    begin
       NewAction := OPENWITH;
       Set_Icon_Tooltip_Text
@@ -115,12 +98,6 @@ package body ActivateItems is
       Show_All(TextEntry);
       Grab_Focus(TextEntry);
    end StartOpenWith;
-
-   procedure StartOpenWithTemp(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
-   begin
-      StartOpenWith(null);
-   end StartOpenWithTemp;
 
    procedure OpenItemWith
      (Self: access Gtk_Entry_Record'Class;
@@ -182,15 +159,7 @@ package body ActivateItems is
       Free(Command);
    end OpenItemWith;
 
-   -- ****if* ActivateItems/ExecuteFile
-   -- FUNCTION
-   -- Execute selected file. That file must be graphical application or
-   -- all output will be redirected to terminal (invisible to user).
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
-   -- SOURCE
    procedure ExecuteFile(Self: access Gtk_Tool_Button_Record'Class) is
-      -- ****
       pragma Unreferenced(Self);
       Pid: GNAT.OS_Lib.Process_Id;
    begin
@@ -203,12 +172,6 @@ package body ActivateItems is
       end if;
    end ExecuteFile;
 
-   procedure ExecuteFileTemp(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
-   begin
-      ExecuteFile(null);
-   end ExecuteFileTemp;
-
    procedure CreateActivateUI is
    begin
       On_Clicked
@@ -218,9 +181,6 @@ package body ActivateItems is
          ActivateFileButton'Access);
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 2)), StartOpenWith'Access);
-      Register_Handler(Builder, "Activate_File", ActivateFileTemp'Access);
-      Register_Handler(Builder, "Start_Open_With", StartOpenWithTemp'Access);
-      Register_Handler(Builder, "Execute_File", ExecuteFileTemp'Access);
    end CreateActivateUI;
 
 end ActivateItems;
