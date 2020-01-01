@@ -1,5 +1,5 @@
 -- /home/thindil/Projekty/hunter/hunter/src/trash.adb
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -107,7 +107,8 @@ package body Trash is
    procedure ShowTrash(Self: access Gtk_Menu_Item_Record'Class) is
       pragma Unreferenced(Self);
       FilesList: constant Gtk_List_Store :=
-        Gtk_List_Store(Get_Object(Builder, "fileslist"));
+        -(Gtk.Tree_Model_Filter.Get_Model
+           (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter"))));
       FileIter: Gtk_Tree_Iter;
       Directory, SubDirectory: Dir_Type;
       Last, SubLast: Natural;
