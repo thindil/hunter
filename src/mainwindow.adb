@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -67,6 +67,8 @@ with Trash; use Trash;
 with Utils; use Utils;
 
 package body MainWindow is
+
+   FilesMenu: Gtk_Menu;
 
    procedure Quit(Self: access Gtk_Widget_Record'Class) is
       pragma Unreferenced(Self);
@@ -298,6 +300,56 @@ package body MainWindow is
       return False;
    end GetWindowSize;
 
+   MenuIndex: Positive;
+
+   -- ****if* MainWindow/SetFilesMenu
+   -- FUNCTION
+   -- Set visibility of selected file or directory popup menu elements
+   -- PARAMETERS
+   -- Widget - Menu item which will be check
+   -- SOURCE
+   procedure SetFilesMenu
+     (Widget: not null access Gtk.Widget.Gtk_Widget_Record'Class) is
+   -- ****
+   begin
+      case MenuIndex is
+         when 1 =>
+            Set_Visible
+              (Widget, Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 1))));
+            if not Is_Visible(ItemToolBar) then
+               Hide(Widget);
+            end if;
+         when 2 =>
+            Set_Visible
+              (Widget, Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 0))));
+            if not Is_Visible(ItemToolBar) then
+               Hide(Widget);
+            end if;
+         when 3 =>
+            Set_Visible
+              (Widget, Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 2))));
+            if not Is_Visible(ItemToolBar) then
+               Hide(Widget);
+            end if;
+         when 4 =>
+            Set_Visible
+              (Widget, Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 2))));
+            if not Is_Visible(ItemToolBar) then
+               Hide(Widget);
+            end if;
+         when 8 =>
+            if Count_Selected_Rows(Get_Selection(DirectoryView)) =
+              N_Children(Get_Model(DirectoryView)) then
+               Set_Label(Gtk_Menu_Item(Widget), Gettext("Unselect all"));
+            else
+               Set_Label(Gtk_Menu_Item(Widget), Gettext("Select all"));
+            end if;
+         when others =>
+            null;
+      end case;
+      MenuIndex := MenuIndex + 1;
+   end SetFilesMenu;
+
    -- ****if* MainWindow/ShowFilesMenu
    -- FUNCTION
    -- Show menu with available actions on right click on directory listing
@@ -312,41 +364,12 @@ package body MainWindow is
       return Boolean is
       pragma Unreferenced(Self);
       -- ****
-      FilesMenu: Gtk_Menu;
    begin
       if Event.Button /= 3 then
          return False;
       end if;
-      FilesMenu := Gtk_Menu(Get_Object(Builder, "filesmenu"));
-      if Count_Selected_Rows(Get_Selection(DirectoryView)) =
-        N_Children(Get_Model(DirectoryView)) then
-         Set_Label
-           (Gtk_Menu_Item(Get_Object(Builder, "menuselectall")),
-            Gettext("Unselect all"));
-      else
-         Set_Label
-           (Gtk_Menu_Item(Get_Object(Builder, "menuselectall")),
-            Gettext("Select all"));
-      end if;
-      Show_All(Gtk_Widget(FilesMenu));
-      Set_Visible
-        (Gtk_Widget(Get_Object(Builder, "menuopen")),
-         Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 1))));
-      Set_Visible
-        (Gtk_Widget(Get_Object(Builder, "menurun")),
-         Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 0))));
-      Set_Visible
-        (Gtk_Widget(Get_Object(Builder, "menurunwith")),
-         Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 2))));
-      Set_Visible
-        (Gtk_Widget(Get_Object(Builder, "menurename")),
-         Get_Visible(Gtk_Widget(Get_Nth_Item(ItemToolBar, 2))));
-      if not Is_Visible(ItemToolBar) then
-         Hide(Gtk_Widget(Get_Object(Builder, "menuopen")));
-         Hide(Gtk_Widget(Get_Object(Builder, "menurun")));
-         Hide(Gtk_Widget(Get_Object(Builder, "menurunwith")));
-         Hide(Gtk_Widget(Get_Object(Builder, "menurename")));
-      end if;
+      MenuIndex := 1;
+      Foreach(FilesMenu, SetFilesMenu'Access);
       Popup
         (Menu => FilesMenu, Button => Event.Button,
          Activate_Time => Event.Time);
@@ -439,35 +462,107 @@ package body MainWindow is
       ShowFile("CONTRIBUTING.md");
    end ShowContributing;
 
-   procedure SelectAllTemp(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   -- ****if* MainWindow/SelectAllMenu
+   -- FUNCTION
+   -- Select or unselect all files and directories in current directory
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused.
+   -- SOURCE
+   procedure SelectAllMenu(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
    begin
       SelectAll(null);
-   end SelectAllTemp;
+   end SelectAllMenu;
 
-   procedure StartRenameTemp(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   -- ****if* MainWindow/StartRenameMenu
+   -- FUNCTION
+   -- Start renaming selected file or directory
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused.
+   -- SOURCE
+   procedure StartRenameMenu(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
    begin
       StartRename(null);
-   end StartRenameTemp;
+   end StartRenameMenu;
 
-   procedure CopyItemTemp(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   -- ****if* MainWindow/CopyItemMenu
+   -- FUNCTION
+   -- Start copying selected file or directory
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused.
+   -- SOURCE
+   procedure CopyItemMenu(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
    begin
       CopyData(null);
-   end CopyItemTemp;
+   end CopyItemMenu;
 
-   procedure MoveItemTemp(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   -- ****if* MainWindow/MoveItemMenu
+   -- FUNCTION
+   -- Start moving selected file or directory
+   -- SOURCE
+   procedure MoveItemMenu(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
    begin
-      CopyData(null);
-   end MoveItemTemp;
+      MoveData(null);
+   end MoveItemMenu;
 
-   procedure DeleteItemTemp(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   -- ****if* MainWindow/DeleteItemMenu
+   -- FUNCTION
+   -- Delete selected file or directory
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused.
+   -- SOURCE
+   procedure DeleteItemMenu(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
    begin
       DeleteItem(null);
-   end DeleteItemTemp;
+   end DeleteItemMenu;
+
+   -- ****if* MainWindow/ActivateFileMenu
+   -- FUNCTION
+   -- Activate selected file or directory.
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused.
+   -- SOURCE
+   procedure ActivateFileMenu(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      ActivateFile
+        (DirectoryView, Gtk_Tree_Path_New, Get_Column(DirectoryView, 0));
+   end ActivateFileMenu;
+
+   -- ****if* MainWindow/StartOpenWithMenu
+   -- FUNCTION
+   -- Start opening selected file or directory with user defined command.
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused.
+   -- SOURCE
+   procedure StartOpenWithMenu(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      StartOpenWith(null);
+   end StartOpenWithMenu;
+
+   -- ****if* MainWindow/ExecuteFileMenu
+   -- FUNCTION
+   -- Execute selected file
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item clicked. Unused.
+   -- SOURCE
+   procedure ExecuteFileMenu(Self: access Gtk_Menu_Item_Record'Class) is
+      pragma Unreferenced(Self);
+      -- ****
+   begin
+      ExecuteFile(null);
+   end ExecuteFileMenu;
 
    procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
       FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
@@ -544,12 +639,7 @@ package body MainWindow is
       Pack_Start(FilesBox, Gtk_Vbox_New, False);
       Pack_Start(StackBox, FilesBox);
       SetToolbars;
-      Register_Handler(Builder, "Delete_Item", DeleteItemTemp'Access);
-      Register_Handler(Builder, "Start_Rename", StartRenameTemp'Access);
-      Register_Handler(Builder, "Move_Items", MoveItemTemp'Access);
-      Register_Handler(Builder, "Copy_Items", CopyItemTemp'Access);
       Register_Handler(Builder, "Update_Image", UpdateImage'Access);
-      Register_Handler(Builder, "Select_All", SelectAllTemp'Access);
       CreateActivateUI;
       CreateBookmarksUI;
       CreateCreateUI;
@@ -609,6 +699,7 @@ package body MainWindow is
          Column: Gtk_Tree_View_Column;
          Value: GValue;
          Box: constant Gtk_Vbox := Gtk_Vbox_New;
+         MenuItem: Gtk_Menu_Item;
       begin
          Set_Enable_Search(DirectoryView, False);
          Set_Headers_Clickable(DirectoryView, True);
@@ -660,8 +751,33 @@ package body MainWindow is
          Set_Visible(Get_Column(DirectoryView, 2), Settings.ShowLastModified);
          On_Row_Activated(DirectoryView, ActivateFile'Access);
          On_Button_Press_Event(DirectoryView, ShowFilesMenu'Access);
-         Attach_To_Widget
-           (Gtk_Menu(Get_Object(Builder, "filesmenu")), DirectoryView, null);
+         FilesMenu := Gtk_Menu_New;
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Open"));
+         On_Activate(MenuItem, ActivateFileMenu'Access);
+         Append(FilesMenu, MenuItem);
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Run"));
+         On_Activate(MenuItem, ExecuteFileMenu'Access);
+         Append(FilesMenu, MenuItem);
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Open with..."));
+         On_Activate(MenuItem, StartOpenWithMenu'Access);
+         Append(FilesMenu, MenuItem);
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Rename"));
+         On_Activate(MenuItem, StartRenameMenu'Access);
+         Append(FilesMenu, MenuItem);
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Copy"));
+         On_Activate(MenuItem, CopyItemMenu'Access);
+         Append(FilesMenu, MenuItem);
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Move"));
+         On_Activate(MenuItem, MoveItemMenu'Access);
+         Append(FilesMenu, MenuItem);
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Delete"));
+         On_Activate(MenuItem, DeleteItemMenu'Access);
+         Append(FilesMenu, MenuItem);
+         MenuItem := Gtk_Menu_Item_New_With_Mnemonic(Gettext("Select All"));
+         On_Activate(MenuItem, SelectAllMenu'Access);
+         Append(FilesMenu, MenuItem);
+         Show_All(FilesMenu);
+         Attach_To_Widget(FilesMenu, DirectoryView, null);
          On_Changed(Get_Selection(DirectoryView), ShowItem'Access);
          Add(FilesScroll, DirectoryView);
          Pack_Start(Box, Gtk_Flow_Box_New, False);
