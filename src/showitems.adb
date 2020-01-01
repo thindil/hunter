@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -307,6 +307,49 @@ package body ShowItems is
          Tag);
    end RemoveTag;
 
+   -- ****if* ShowItems/UpdateImage
+   -- FUNCTION
+   -- If scaling images in preview is enabled, scale it on resize preview of it
+   -- PARAMETERS
+   -- Self       - Gtk_Image which was resized. Unused.
+   -- Allocation - Gtk_Allocation for size. Unused.
+   -- SOURCE
+   procedure UpdateImage
+     (Self: access Gtk_Widget_Record'Class; Allocation: Gtk_Allocation) is
+      pragma Unreferenced(Allocation);
+      -- ****
+      Pixbuf: Gdk_Pixbuf;
+      ScaleFactor: Float;
+      MaxHeight: Gint;
+      MaxWidth: Gint;
+      Error: GError;
+   begin
+      if not Settings.ScaleImages then
+         return;
+      end if;
+      Clear(Gtk_Image(Self));
+      Gdk_New_From_File(Pixbuf, To_String(CurrentSelected), Error);
+      if Error /= null then
+         ShowMessage
+            (Gettext("Could not load image file: ") &
+            To_String(CurrentSelected));
+         return;
+      end if;
+      MaxHeight := Get_Allocated_Height(Gtk_Widget(InfoStack)) - 5;
+      MaxWidth := Get_Allocated_Width(Gtk_Widget(InfoStack)) - 5;
+      if (Get_Width(Pixbuf) - MaxWidth) > (Get_Height(Pixbuf) - MaxHeight) then
+         ScaleFactor := Float(MaxWidth) / Float(Get_Width(Pixbuf));
+      else
+         ScaleFactor := Float(MaxHeight) / Float(Get_Height(Pixbuf));
+      end if;
+      Pixbuf :=
+        Scale_Simple
+          (Pixbuf, Gint(Float'Floor(Float(Get_Width(Pixbuf)) * ScaleFactor)),
+           Gint(Float'Floor(Float(Get_Height(Pixbuf)) * ScaleFactor)));
+      Set(Gtk_Image(Self), Pixbuf);
+      Unref(Pixbuf);
+   end UpdateImage;
+
    procedure PreviewItem(Self: access Gtk_Tool_Button_Record'Class) is
       pragma Unreferenced(Self);
       PreviewScroll: constant Gtk_Scrolled_Window :=
@@ -527,6 +570,7 @@ package body ShowItems is
                   Set(Image, Pixbuf);
                   Add(PreviewScroll, Image);
                   Show_All(PreviewScroll);
+                  On_Size_Allocate(Image, UpdateImage'Access);
                end;
             else
                Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)));
