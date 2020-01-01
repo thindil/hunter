@@ -236,21 +236,6 @@ package body MainWindow is
       return False;
    end EntryKeyPressed;
 
-   -- ****if* MainWindow/UpdateImage
-   -- FUNCTION
-   -- If scaling images in preview is enabled, scale it on resize preview of it
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
-   -- SOURCE
-   procedure UpdateImage(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
-      -- ****
-   begin
-      if Settings.ScaleImages then
-         PreviewItem(null);
-      end if;
-   end UpdateImage;
-
    -- ****if* MainWindow/WindowKeyPressed
    -- FUNCTION
    -- Close the program with keyboard shortcut
@@ -639,7 +624,6 @@ package body MainWindow is
       Pack_Start(FilesBox, Gtk_Vbox_New, False);
       Pack_Start(StackBox, FilesBox);
       SetToolbars;
-      Register_Handler(Builder, "Update_Image", UpdateImage'Access);
       CreateActivateUI;
       CreateBookmarksUI;
       CreateCreateUI;
