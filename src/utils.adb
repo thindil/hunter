@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ with Gtk.Progress_Bar; use Gtk.Progress_Bar;
 with Gtk.Stack; use Gtk.Stack;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
@@ -160,7 +161,10 @@ package body Utils is
          Set_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)), not Finished);
       end if;
       if Action = DELETETRASH and then Finished then
-         if N_Children(Gtk_List_Store(Get_Object(Builder, "fileslist"))) =
+         if Gtk.List_Store.N_Children
+             (-(Gtk.Tree_Model_Filter.Get_Model
+                 (Gtk_Tree_Model_Filter
+                    (Get_Object(Builder, "filesfilter"))))) =
            0 then
             Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)));
             Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)));

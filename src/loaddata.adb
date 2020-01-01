@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -131,14 +131,20 @@ package body LoadData is
    end PathClicked;
 
    procedure LoadDirectory(Name, ListName: String) is
-      FilesList: constant Gtk_List_Store :=
-        Gtk_List_Store(Get_Object(Builder, ListName));
+      FilesList: Gtk_List_Store;
       FileIter: Gtk_Tree_Iter;
       Directory: Dir_Type;
       Last: Natural;
       FileName: String(1 .. 1024);
    begin
       Setting := True;
+      if ListName /= "fileslist" then
+         FilesList := Gtk_List_Store(Get_Object(Builder, ListName));
+      else
+         FilesList :=
+           -(Gtk.Tree_Model_Filter.Get_Model
+              (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter"))));
+      end if;
       if MainWindow.Window /= null then
          Set_Cursor
            (Get_Window(Gtk_Widget(MainWindow.Window)), Gdk_Cursor_New(Watch));

@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -153,7 +153,8 @@ package body RefreshData is
    -- SOURCE
    function CheckItems return Boolean is
       FilesList: constant Gtk_List_Store :=
-        Gtk_List_Store(Get_Object(Builder, "fileslist"));
+        -(Gtk.Tree_Model_Filter.Get_Model
+           (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter"))));
       -- ****
       FileIter: Gtk_Tree_Iter := Get_Iter_First(FilesList);
       procedure RefilterList is
@@ -172,8 +173,7 @@ package body RefreshData is
       Set_Sort_Func
         (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
          EmptySortFiles'Access);
-      Foreach
-        (Gtk_List_Store(Get_Object(Builder, "fileslist")), UpdateItem'Access);
+      Foreach(FilesList, UpdateItem'Access);
       if EventsList.Length = 0 then
          RefilterList;
          return True;
