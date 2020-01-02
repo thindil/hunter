@@ -45,9 +45,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <object class="GtkTreeModelFilter" id="filesfilter">
     <property name="child_model">fileslist</property>
   </object>
-  <object class="GtkTreeModelSort" id="filessort">
-    <property name="model">filesfilter</property>
-  </object>
   <object class="GtkListStore" id="fileslist1">
     <columns>
       <!-- column-name name -->
