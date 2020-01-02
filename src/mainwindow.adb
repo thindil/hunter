@@ -38,12 +38,12 @@ with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
+with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_Selection; use Gtk.Tree_Selection;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
-with Glib.Object; use Glib.Object;
 with Glib.Properties; use Glib.Properties;
 with Glib.Values; use Glib.Values;
 with Gdk.Event; use Gdk.Event;
@@ -370,7 +370,7 @@ package body MainWindow is
    procedure ShowFile(FileName: String) is
       -- ****
       FilesList: constant Gtk_Tree_Model_Sort :=
-        Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
+        -(Gtk.Tree_View.Get_Model(DirectoryView));
       FilesIter: Gtk_Tree_Iter;
    begin
       CurrentDirectory :=
@@ -612,7 +612,8 @@ package body MainWindow is
       FilesPaned := Gtk_Hpaned_New;
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
-          (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"))));
+          (+(Gtk_Tree_Model_Sort_Sort_New_With_Model
+              (+(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter"))))));
       Add_Named(FileStack, StackBox, "page0");
       TextEntry := Gtk_Entry_New;
       Pack_Start(StackBox, TextEntry, False);
