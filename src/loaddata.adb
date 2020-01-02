@@ -38,6 +38,7 @@ with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
+with Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
 with Gtkada.Builder; use Gtkada.Builder;
@@ -186,8 +187,8 @@ package body LoadData is
          return;
       end if;
       if ListName /= "fileslist1" then
-         Set_Sort_Func
-           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
+         Gtk.Tree_Model_Sort.Set_Sort_Func
+           (-(Gtk.Tree_View.Get_Model(DirectoryView)), 0,
             EmptySortFiles'Access);
       else
          Set_Sort_Func
@@ -213,8 +214,7 @@ package body LoadData is
             TmpPath, FileLine: Unbounded_String;
          begin
             if ListName = "fileslist" then
-               FilesSort :=
-                 Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
+               FilesSort := -(Gtk.Tree_View.Get_Model(DirectoryView));
                ButtonBox :=
                  Gtk_Flow_Box(Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0));
             else

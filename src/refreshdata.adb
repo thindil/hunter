@@ -25,6 +25,7 @@ with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
+with Gtk.Tree_View;
 with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with Glib.Main; use Glib.Main;
@@ -159,9 +160,8 @@ package body RefreshData is
       FileIter: Gtk_Tree_Iter := Get_Iter_First(FilesList);
       procedure RefilterList is
       begin
-         Set_Sort_Func
-           (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
-            SortFiles'Access);
+         Gtk.Tree_Model_Sort.Set_Sort_Func
+           (-(Gtk.Tree_View.Get_Model(DirectoryView)), 0, SortFiles'Access);
          Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
       end RefilterList;
    begin
@@ -170,9 +170,8 @@ package body RefreshData is
          EventsList.Clear;
          return True;
       end if;
-      Set_Sort_Func
-        (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
-         EmptySortFiles'Access);
+      Gtk.Tree_Model_Sort.Set_Sort_Func
+        (-(Gtk.Tree_View.Get_Model(DirectoryView)), 0, EmptySortFiles'Access);
       Foreach(FilesList, UpdateItem'Access);
       if EventsList.Length = 0 then
          RefilterList;

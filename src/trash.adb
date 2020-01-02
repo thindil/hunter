@@ -114,7 +114,7 @@ package body Trash is
       Last, SubLast: Natural;
       FileName, SubFileName: String(1 .. 1024);
       FilesSort: constant Gtk_Tree_Model_Sort :=
-        Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort"));
+        -(Gtk.Tree_View.Get_Model(DirectoryView));
       FileInfo: File_Type;
       Size: File_Size;
       FileLine, FullName, MimeType: Unbounded_String;
@@ -149,9 +149,8 @@ package body Trash is
         (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
          Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
       FilesList.Clear;
-      Set_Sort_Func
-        (Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort")), 0,
-         EmptySortFiles'Access);
+      Gtk.Tree_Model_Sort.Set_Sort_Func
+        (-(Gtk.Tree_View.Get_Model(DirectoryView)), 0, EmptySortFiles'Access);
       Open(Directory, Value("HOME") & "/.local/share/Trash/files");
       loop
          Read(Directory, FileName, Last);

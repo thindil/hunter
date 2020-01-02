@@ -331,7 +331,7 @@ package body ShowItems is
       Gdk_New_From_File(Pixbuf, To_String(CurrentSelected), Error);
       if Error /= null then
          ShowMessage
-            (Gettext("Could not load image file: ") &
+           (Gettext("Could not load image file: ") &
             To_String(CurrentSelected));
          return;
       end if;
