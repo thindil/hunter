@@ -40,7 +40,6 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
@@ -108,7 +107,8 @@ package body Trash is
       pragma Unreferenced(Self);
       FilesList: constant Gtk_List_Store :=
         -(Gtk.Tree_Model_Filter.Get_Model
-           (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter"))));
+           (-(Gtk.Tree_Model_Sort.Get_Model
+               (-(Gtk.Tree_View.Get_Model(DirectoryView))))));
       FileIter: Gtk_Tree_Iter;
       Directory, SubDirectory: Dir_Type;
       Last, SubLast: Natural;
@@ -279,7 +279,9 @@ package body Trash is
          Set_Sensitive(MainWindow.Window, True);
       end if;
       Setting := False;
-      Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+      Refilter
+        (-(Gtk.Tree_Model_Sort.Get_Model
+            (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
       if N_Children(Get_Model(DirectoryView), Null_Iter) = 0 then
          CurrentSelected :=
            To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files/");

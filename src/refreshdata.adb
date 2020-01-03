@@ -26,7 +26,6 @@ with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View;
-with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with Glib.Main; use Glib.Main;
 with LoadData; use LoadData;
@@ -155,14 +154,17 @@ package body RefreshData is
    function CheckItems return Boolean is
       FilesList: constant Gtk_List_Store :=
         -(Gtk.Tree_Model_Filter.Get_Model
-           (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter"))));
+           (-(Gtk.Tree_Model_Sort.Get_Model
+               (-(Gtk.Tree_View.Get_Model(DirectoryView))))));
       -- ****
       FileIter: Gtk_Tree_Iter := Get_Iter_First(FilesList);
       procedure RefilterList is
       begin
          Gtk.Tree_Model_Sort.Set_Sort_Func
            (-(Gtk.Tree_View.Get_Model(DirectoryView)), 0, SortFiles'Access);
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+         Refilter
+           (-(Gtk.Tree_Model_Sort.Get_Model
+               (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
       end RefilterList;
    begin
       if TemporaryStop or Settings.AutoRefreshInterval = 0 or

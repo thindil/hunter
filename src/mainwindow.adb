@@ -27,6 +27,7 @@ with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
 with Gtk.Header_Bar; use Gtk.Header_Bar;
 with Gtk.Info_Bar; use Gtk.Info_Bar;
+with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Main; use Gtk.Main;
 with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Item; use Gtk.Menu_Item;
@@ -613,7 +614,8 @@ package body MainWindow is
       DirectoryView :=
         Gtk_Tree_View_New_With_Model
           (+(Gtk_Tree_Model_Sort_Sort_New_With_Model
-              (+(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter"))))));
+              (+(Gtk_Tree_Model_Filter_Filter_New
+                  (+(Gtk_List_Store(Get_Object(Builder, "fileslist"))))))));
       Add_Named(FileStack, StackBox, "page0");
       TextEntry := Gtk_Entry_New;
       Pack_Start(StackBox, TextEntry, False);

@@ -15,7 +15,6 @@
 
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.GEntry; use Gtk.GEntry;
 with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Stack; use Gtk.Stack;
@@ -98,18 +97,18 @@ package body SearchItems is
    -- SOURCE
    procedure SearchItem(Self: access Gtk_Search_Entry_Record'Class) is
       -- ****
-      FilterName: Unbounded_String;
       TreeView: Gtk_Tree_View := DirectoryView;
    begin
-      FilterName := To_Unbounded_String("filesfilter");
       if Get_Visible_Child_Name(InfoStack) = "destination" then
-         FilterName := To_Unbounded_String("filesfilter2");
          TreeView :=
            Gtk_Tree_View
              (Get_Child(Gtk_Scrolled_Window(Get_Visible_Child(InfoStack))));
+         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
+      else
+         Refilter
+           (-(Gtk.Tree_Model_Sort.Get_Model
+               (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
       end if;
-      Refilter
-        (Gtk_Tree_Model_Filter(Get_Object(Builder, To_String(FilterName))));
       if Gtk.Tree_Model_Sort.N_Children(-(Get_Model(TreeView)), Null_Iter) >
         0 then
          Set_Cursor(TreeView, Gtk_Tree_Path_New_From_String("0"), null, False);
@@ -128,7 +127,8 @@ package body SearchItems is
       On_Clicked
         (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 1)), ToggleSearch'Access);
       Set_Visible_Func
-        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")),
+        (-(Gtk.Tree_Model_Sort.Get_Model
+            (-(Gtk.Tree_View.Get_Model(DirectoryView)))),
          VisibleItems'Access);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")),
