@@ -42,9 +42,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkTreeModelFilter" id="filesfilter">
-    <property name="child_model">fileslist</property>
-  </object>
   <object class="GtkListStore" id="fileslist1">
     <columns>
       <!-- column-name name -->
