@@ -179,7 +179,7 @@ package body CreateItems is
       if Get_Visible_Child_Name(InfoStack) = "destination" then
          LoadDirectory(To_String(CurrentDirectory), "fileslist2");
       else
-         Reload(Builder);
+         Reload;
       end if;
    end CreateItem;
 

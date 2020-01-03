@@ -123,7 +123,7 @@ package body LoadData is
       end if;
       if Get_Parent(Get_Parent(Self)) =
         Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0) then
-         Reload(Builder);
+         Reload;
          UpdateWatch(To_String(CurrentDirectory));
       else
          DestinationPath := CurrentDirectory;

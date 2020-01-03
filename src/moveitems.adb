@@ -146,7 +146,7 @@ package body MoveItems is
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;
       end if;
-      Reload(Builder);
+      Reload;
    end MoveSelected;
 
    procedure SkipMoving is

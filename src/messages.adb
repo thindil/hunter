@@ -122,7 +122,7 @@ package body Messages is
                   end if;
                exception
                   when others =>
-                     Reload(Builder);
+                     Reload;
                      return;
                end;
                if NewAction = CLEARTRASH then
@@ -131,7 +131,7 @@ package body Messages is
                   ShowTrash(null);
                   NewAction := DELETETRASH;
                else
-                  Reload(Builder);
+                  Reload;
                end if;
             end if;
             ToggleToolButtons(NewAction, True);
@@ -160,7 +160,7 @@ package body Messages is
                ToggleToolButtons(NewAction, True);
                Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
                Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
-               Reload(Builder);
+               Reload;
                return;
             elsif Response_Id = Gint(Gtk_Response_No) then
                SkipCopying;
@@ -173,7 +173,7 @@ package body Messages is
                ToggleToolButtons(NewAction, True);
                Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
                Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
-               Reload(Builder);
+               Reload;
                return;
             elsif Response_Id = Gint(Gtk_Response_No) then
                SkipMoving;

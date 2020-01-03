@@ -99,7 +99,7 @@ package body Bookmarks is
          if Get_Visible_Child_Name(InfoStack) = "destination" then
             LoadDirectory(To_String(CurrentDirectory), "fileslist2");
          else
-            Reload(Builder);
+            Reload;
             UpdateWatch(To_String(CurrentDirectory));
          end if;
       end if;

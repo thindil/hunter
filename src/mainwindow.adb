@@ -78,7 +78,7 @@ package body MainWindow is
       if Settings.ClearTrashOnExit then
          NewAction := CLEARTRASH;
          if DeleteSelected then
-            Reload(Builder);
+            Reload;
          end if;
       end if;
       Unref(Builder);
@@ -97,8 +97,7 @@ package body MainWindow is
       return False;
    end SetSelected;
 
-   procedure Reload(Object: access Gtkada_Builder_Record'Class) is
-      pragma Unreferenced(Object);
+   procedure Reload is
       OldSelected: Unbounded_String;
    begin
       if CurrentDirectory = Null_Unbounded_String then
@@ -381,7 +380,7 @@ package body MainWindow is
          CurrentDirectory :=
            To_Unbounded_String(Value("APPDIR", "") & "/usr/share/doc/hunter");
       end if;
-      Reload(Builder);
+      Reload;
       FilesIter := Get_Iter_First(FilesList);
       loop
          if Get_String(FilesList, FilesIter, 0) = FileName then
@@ -770,7 +769,7 @@ package body MainWindow is
          Pack_Start(Box, Gtk_Flow_Box_New, False);
          Pack_Start(Box, FilesScroll);
          Add1(FilesPaned, Box);
-         Reload(Builder);
+         Reload;
       end;
       Pack_Start(FilesBox, FilesPaned);
       Show_All(FilesPaned);
