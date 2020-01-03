@@ -30,6 +30,7 @@ with Gtk.Switch; use Gtk.Switch;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
+with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtkada.Builder; use Gtkada.Builder;
@@ -264,7 +265,9 @@ package body Preferences is
       -- ****
    begin
       Settings.ShowHidden := State;
-      Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+      Refilter
+        (-(Gtk.Tree_Model_Sort.Get_Model
+            (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
       Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")));
       Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
       return True;

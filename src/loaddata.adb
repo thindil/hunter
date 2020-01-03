@@ -144,7 +144,8 @@ package body LoadData is
       else
          FilesList :=
            -(Gtk.Tree_Model_Filter.Get_Model
-              (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter"))));
+              (-(Gtk.Tree_Model_Sort.Get_Model
+                  (-(Gtk.Tree_View.Get_Model(DirectoryView))))));
       end if;
       if MainWindow.Window /= null then
          Set_Cursor
@@ -406,7 +407,9 @@ package body LoadData is
       end if;
       Setting := False;
       if ListName = "fileslist" then
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter")));
+         Refilter
+           (-(Gtk.Tree_Model_Sort.Get_Model
+               (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
       elsif ListName = "fileslist2" then
          Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
       else

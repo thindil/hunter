@@ -29,8 +29,8 @@ with Gtk.Stack; use Gtk.Stack;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
+with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Bookmarks; use Bookmarks;
@@ -163,8 +163,8 @@ package body Utils is
       if Action = DELETETRASH and then Finished then
          if Gtk.List_Store.N_Children
              (-(Gtk.Tree_Model_Filter.Get_Model
-                 (Gtk_Tree_Model_Filter
-                    (Get_Object(Builder, "filesfilter"))))) =
+                 (-(Gtk.Tree_Model_Sort.Get_Model
+                     (-(Gtk.Tree_View.Get_Model(DirectoryView))))))) =
            0 then
             Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)));
             Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)));
