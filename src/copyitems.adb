@@ -172,7 +172,7 @@ package body CopyItems is
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;
       end if;
-      Reload(Builder);
+      Reload;
    end CopySelected;
 
    procedure SkipCopying is

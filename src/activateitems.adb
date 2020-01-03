@@ -42,7 +42,7 @@ package body ActivateItems is
             CurrentDirectory := Null_Unbounded_String;
          end if;
          CurrentDirectory := CurrentSelected;
-         Reload(Builder);
+         Reload;
          UpdateWatch(To_String(CurrentDirectory));
       else
          declare

@@ -176,10 +176,8 @@ package MainWindow is
    -- ****f* MainWindow/Reload
    -- FUNCTION
    -- Reload directory listing and preview of selected item
-   -- PARAMETERS
-   -- Object - GtkAda Builder used to create UI
    -- SOURCE
-   procedure Reload(Object: access Gtkada_Builder_Record'Class);
+   procedure Reload;
    -- ****
 
 end MainWindow;

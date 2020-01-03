@@ -100,7 +100,7 @@ package body Trash is
       for I in 2 .. (Index + 1) loop
          Append(CurrentDirectory, "/" & Slice(Tokens, Slice_Number(I)));
       end loop;
-      Reload(Builder);
+      Reload;
    end PathClicked;
 
    procedure ShowTrash(Self: access Gtk_Menu_Item_Record'Class) is
