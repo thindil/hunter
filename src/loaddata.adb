@@ -24,6 +24,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Gtk.Box; use Gtk.Box;
+with Gtk.Bin; use Gtk.Bin;
 with Gtk.Button; use Gtk.Button;
 with Gtk.Enums; use Gtk.Enums;
 with Gtk.Flow_Box; use Gtk.Flow_Box;
@@ -38,7 +39,7 @@ with Gtk.Text_View; use Gtk.Text_View;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
-with Gtk.Tree_View;
+with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
 with Gtkada.Builder; use Gtkada.Builder;
@@ -220,7 +221,11 @@ package body LoadData is
                  Gtk_Flow_Box(Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0));
             else
                FilesSort :=
-                 Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2"));
+                 -(Gtk.Tree_View.Get_Model
+                    (Gtk_Tree_View
+                       (Get_Child
+                          (Gtk_Bin
+                             (Get_Child_By_Name(InfoStack, "destination"))))));
                ButtonBox :=
                  Gtk_Flow_Box(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
             end if;
