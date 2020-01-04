@@ -804,7 +804,9 @@ package body ShowItems is
       declare
          DirectoryView: constant Gtk_Tree_View :=
            Gtk_Tree_View_New_With_Model
-             (+(Gtk_Tree_Model_Sort(Get_Object(Builder, "filessort2"))));
+             (+(Gtk_Tree_Model_Sort_Sort_New_With_Model
+                 (+(Gtk_Tree_Model_Filter
+                     (Get_Object(Builder, "filesfilter2"))))));
          Area: Gtk_Cell_Area_Box;
          Renderer: Gtk_Cell_Renderer_Text := Gtk_Cell_Renderer_Text_New;
          Renderer2: constant Gtk_Cell_Renderer_Pixbuf :=
