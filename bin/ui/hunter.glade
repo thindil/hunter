@@ -72,7 +72,4 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <object class="GtkTreeModelFilter" id="filesfilter2">
     <property name="child_model">fileslist2</property>
   </object>
-  <object class="GtkTreeModelSort" id="filessort2">
-    <property name="model">filesfilter2</property>
-  </object>
 </interface>
