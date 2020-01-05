@@ -53,22 +53,8 @@ package body SearchItems is
       end if;
    end ToggleSearch;
 
-   -- ****if* SearchItems/VisibleItems
-   -- FUNCTION
-   -- Check if selected file, directory or application should be visible,
-   -- when user search for selected names.
-   -- PARAMETERS
-   -- Model - Gtk_Tree_Model which contains all files and directories in
-   --         current directory or all available applications
-   -- Iter  - Gtk_Tree_Iter to currently checked file or directory or
-   --         application
-   -- RESULT
-   -- True if selected file, directory or application should be visible,
-   -- otherwise false.
-   -- SOURCE
    function VisibleItems
      (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean is
-   -- ****
    begin
       if Setting then
          return True;
@@ -129,9 +115,6 @@ package body SearchItems is
       Set_Visible_Func
         (-(Gtk.Tree_Model_Sort.Get_Model
             (-(Gtk.Tree_View.Get_Model(DirectoryView)))),
-         VisibleItems'Access);
-      Set_Visible_Func
-        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")),
          VisibleItems'Access);
       Set_Visible_Func
         (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")),

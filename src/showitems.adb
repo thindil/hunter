@@ -39,6 +39,7 @@ with Gtk.Frame; use Gtk.Frame;
 with Gtk.Grid; use Gtk.Grid;
 with Gtk.Image; use Gtk.Image;
 with Gtk.Label; use Gtk.Label;
+with Gtk.List_Store; use Gtk.List_Store;
 with Gtk.Menu_Button; use Gtk.Menu_Button;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
@@ -75,6 +76,7 @@ with MoveItems; use MoveItems;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
+with SearchItems; use SearchItems;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
 
@@ -370,8 +372,8 @@ package body ShowItems is
          declare
             DirectoryView: constant Gtk_Tree_View :=
               Gtk_Tree_View_New_With_Model
-                (+(Gtk_Tree_Model_Filter
-                    (Get_Object(Builder, "filesfilter1"))));
+                (+(Gtk_Tree_Model_Filter_Filter_New
+                    (+(Gtk_List_Store(Get_Object(Builder, "fileslist1"))))));
             Area: Gtk_Cell_Area_Box;
             Renderer: constant Gtk_Cell_Renderer_Text :=
               Gtk_Cell_Renderer_Text_New;
@@ -392,6 +394,10 @@ package body ShowItems is
             if Append_Column(DirectoryView, Column) /= 1 then
                return;
             end if;
+            Set_Visible_Func
+               (-(Get_Model
+                  (DirectoryView)),
+            VisibleItems'Access);
             Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)));
             Add(PreviewScroll, DirectoryView);
             Show_All(PreviewScroll);

@@ -417,8 +417,12 @@ package body LoadData is
                (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
       elsif ListName = "fileslist2" then
          Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
-      else
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")));
+      elsif NewAction in COPY | MOVE | CREATELINK then
+         Refilter
+           (-(Get_Model
+               (Gtk_Tree_View
+                  (Get_Child
+                     (Gtk_Bin(Get_Child_By_Name(InfoStack, "preview")))))));
       end if;
    end LoadDirectory;
 
