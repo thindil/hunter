@@ -268,7 +268,6 @@ package body Preferences is
       Refilter
         (-(Gtk.Tree_Model_Sort.Get_Model
             (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
-      Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter1")));
       Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
       return True;
    end SetShowHidden;
