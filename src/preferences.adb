@@ -26,6 +26,8 @@ with Gtk.Grid; use Gtk.Grid;
 with Gtk.Label; use Gtk.Label;
 with Gtk.Paned; use Gtk.Paned;
 with Gtk.Scale; use Gtk.Scale;
+with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
+with Gtk.Stack; use Gtk.Stack;
 with Gtk.Switch; use Gtk.Switch;
 with Gtk.Tool_Button; use Gtk.Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
@@ -268,7 +270,13 @@ package body Preferences is
       Refilter
         (-(Gtk.Tree_Model_Sort.Get_Model
             (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
-      Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
+      Refilter
+        (-(Gtk.Tree_Model_Sort.Get_Model
+            (-(Gtk.Tree_View.Get_Model
+                (Gtk_Tree_View
+                   (Get_Child
+                      (Gtk_Scrolled_Window
+                         (Get_Child_By_Name(InfoStack, "destination")))))))));
       return True;
    end SetShowHidden;
 

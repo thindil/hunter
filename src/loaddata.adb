@@ -416,7 +416,14 @@ package body LoadData is
            (-(Gtk.Tree_Model_Sort.Get_Model
                (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
       elsif ListName = "fileslist2" then
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
+         Refilter
+           (-(Gtk.Tree_Model_Sort.Get_Model
+               (-(Gtk.Tree_View.Get_Model
+                   (Gtk_Tree_View
+                      (Get_Child
+                         (Gtk_Scrolled_Window
+                            (Get_Child_By_Name
+                               (InfoStack, "destination")))))))));
       elsif NewAction in COPY | MOVE | CREATELINK then
          Refilter
            (-(Get_Model

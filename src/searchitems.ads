@@ -15,7 +15,6 @@
 
 with Gtk.Search_Entry; use Gtk.Search_Entry;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
-with Glib.Object; use Glib.Object;
 
 -- ****h* Hunter/SearchItems
 -- FUNCTION

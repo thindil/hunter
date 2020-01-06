@@ -394,10 +394,7 @@ package body ShowItems is
             if Append_Column(DirectoryView, Column) /= 1 then
                return;
             end if;
-            Set_Visible_Func
-               (-(Get_Model
-                  (DirectoryView)),
-            VisibleItems'Access);
+            Set_Visible_Func(-(Get_Model(DirectoryView)), VisibleItems'Access);
             Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)));
             Add(PreviewScroll, DirectoryView);
             Show_All(PreviewScroll);
@@ -811,8 +808,9 @@ package body ShowItems is
          DirectoryView: constant Gtk_Tree_View :=
            Gtk_Tree_View_New_With_Model
              (+(Gtk_Tree_Model_Sort_Sort_New_With_Model
-                 (+(Gtk_Tree_Model_Filter
-                     (Get_Object(Builder, "filesfilter2"))))));
+                 (+(Gtk_Tree_Model_Filter_Filter_New
+                     (+(Gtk_List_Store
+                         (Get_Object(Builder, "fileslist2"))))))));
          Area: Gtk_Cell_Area_Box;
          Renderer: Gtk_Cell_Renderer_Text := Gtk_Cell_Renderer_Text_New;
          Renderer2: constant Gtk_Cell_Renderer_Pixbuf :=
