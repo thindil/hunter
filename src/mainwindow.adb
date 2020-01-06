@@ -629,8 +629,8 @@ package body MainWindow is
       CreateActivateUI;
       CreateBookmarksUI;
       CreateCreateUI;
-      CreateSearchUI;
       CreateShowItemsUI;
+      CreateSearchUI;
       CreateTrashUI;
       CreatePreferences(Gtk_Widget(Get_Nth_Item(ActionToolBar, 12)));
       Do_Connect(Builder);

@@ -24,7 +24,6 @@ with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
-with Gtkada.Builder; use Gtkada.Builder;
 with Glib; use Glib;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
@@ -89,7 +88,9 @@ package body SearchItems is
          TreeView :=
            Gtk_Tree_View
              (Get_Child(Gtk_Scrolled_Window(Get_Visible_Child(InfoStack))));
-         Refilter(Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")));
+         Refilter
+           (-(Gtk.Tree_Model_Sort.Get_Model
+               (-(Gtk.Tree_View.Get_Model(TreeView)))));
       else
          Refilter
            (-(Gtk.Tree_Model_Sort.Get_Model
@@ -117,7 +118,12 @@ package body SearchItems is
             (-(Gtk.Tree_View.Get_Model(DirectoryView)))),
          VisibleItems'Access);
       Set_Visible_Func
-        (Gtk_Tree_Model_Filter(Get_Object(Builder, "filesfilter2")),
+        (-(Gtk.Tree_Model_Sort.Get_Model
+            (-(Gtk.Tree_View.Get_Model
+                (Gtk_Tree_View
+                   (Get_Child
+                      (Gtk_Scrolled_Window
+                         (Get_Child_By_Name(InfoStack, "destination")))))))),
          VisibleItems'Access);
    end CreateSearchUI;
 
