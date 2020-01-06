@@ -66,7 +66,4 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="guint"/>
     </columns>
   </object>
-  <object class="GtkTreeModelFilter" id="filesfilter2">
-    <property name="child_model">fileslist2</property>
-  </object>
 </interface>
