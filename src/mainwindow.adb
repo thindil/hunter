@@ -614,7 +614,9 @@ package body MainWindow is
         Gtk_Tree_View_New_With_Model
           (+(Gtk_Tree_Model_Sort_Sort_New_With_Model
               (+(Gtk_Tree_Model_Filter_Filter_New
-                  (+(Gtk_List_Store(Get_Object(Builder, "fileslist"))))))));
+                  (+(Gtk_List_Store_Newv
+                      ((GType_String, GType_Uint, GType_String, GType_String,
+                        GType_Uint, GType_String, GType_String))))))));
       Add_Named(FileStack, StackBox, "page0");
       TextEntry := Gtk_Entry_New;
       Pack_Start(StackBox, TextEntry, False);
