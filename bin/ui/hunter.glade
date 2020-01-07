@@ -24,24 +24,6 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
   <!-- interface-license-type gplv3 -->
   <!-- interface-name hunter -->
   <!-- interface-copyright 2019 Bartek thindil Jasicki -->
-  <object class="GtkListStore" id="fileslist">
-    <columns>
-      <!-- column-name name -->
-      <column type="gchararray"/>
-      <!-- column-name type -->
-      <column type="guint"/>
-      <!-- column-name icon -->
-      <column type="gchararray"/>
-      <!-- column-name size -->
-      <column type="gchararray"/>
-      <!-- column-name numericsize -->
-      <column type="guint"/>
-      <!-- column-name lastmodified -->
-      <column type="gchararray"/>
-      <!-- column-name fullpath -->
-      <column type="gchararray"/>
-    </columns>
-  </object>
   <object class="GtkListStore" id="fileslist1">
     <columns>
       <!-- column-name name -->
