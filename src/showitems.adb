@@ -809,8 +809,9 @@ package body ShowItems is
            Gtk_Tree_View_New_With_Model
              (+(Gtk_Tree_Model_Sort_Sort_New_With_Model
                  (+(Gtk_Tree_Model_Filter_Filter_New
-                     (+(Gtk_List_Store
-                         (Get_Object(Builder, "fileslist2"))))))));
+                     (+(Gtk_List_Store_Newv
+                         ((GType_String, GType_Uint, GType_String,
+                           GType_String, GType_Uint))))))));
          Area: Gtk_Cell_Area_Box;
          Renderer: Gtk_Cell_Renderer_Text := Gtk_Cell_Renderer_Text_New;
          Renderer2: constant Gtk_Cell_Renderer_Pixbuf :=
