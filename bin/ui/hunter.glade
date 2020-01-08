@@ -34,18 +34,4 @@ along with hunter.  If not, see <http://www.gnu.org/licenses/>.
       <column type="gchararray"/>
     </columns>
   </object>
-  <object class="GtkListStore" id="fileslist2">
-    <columns>
-      <!-- column-name name -->
-      <column type="gchararray"/>
-      <!-- column-name type -->
-      <column type="guint"/>
-      <!-- column-name icon -->
-      <column type="gchararray"/>
-      <!-- column-name size -->
-      <column type="gchararray"/>
-      <!-- column-name numericsize -->
-      <column type="guint"/>
-    </columns>
-  </object>
 </interface>
