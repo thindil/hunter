@@ -140,13 +140,23 @@ package body LoadData is
       FileName: String(1 .. 1024);
    begin
       Setting := True;
-      if ListName /= "fileslist" then
-         FilesList := Gtk_List_Store(Get_Object(Builder, ListName));
-      else
+      if ListName = "fileslist2" then
+         FilesList :=
+           -(Gtk.Tree_Model_Filter.Get_Model
+              (-(Gtk.Tree_Model_Sort.Get_Model
+                  (-(Gtk.Tree_View.Get_Model
+                      (Gtk_Tree_View
+                         (Get_Child
+                            (Gtk_Scrolled_Window
+                               (Get_Child_By_Name
+                                  (InfoStack, "destination"))))))))));
+      elsif ListName = "fileslist" then
          FilesList :=
            -(Gtk.Tree_Model_Filter.Get_Model
               (-(Gtk.Tree_Model_Sort.Get_Model
                   (-(Gtk.Tree_View.Get_Model(DirectoryView))))));
+      else
+         FilesList := Gtk_List_Store(Get_Object(Builder, ListName));
       end if;
       if MainWindow.Window /= null then
          Set_Cursor
