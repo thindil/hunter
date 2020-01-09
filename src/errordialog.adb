@@ -42,7 +42,7 @@ package body ErrorDialog is
    -- FUNCTION
    -- Gtk_Text_Buffer with detailed information about crash
    -- SOURCE
-   ErrorBuffer: Gtk_Text_Buffer;
+   ErrorBuffer: constant Gtk_Text_Buffer := Gtk_Text_Buffer_New;
    -- ****
 
    procedure SaveException
@@ -94,12 +94,12 @@ package body ErrorDialog is
       Label: Gtk_Label;
       Button: constant Gtk_Link_Button :=
         Gtk_Link_Button_New("https://github.com/thindil/hunter/issues");
-      View: constant Gtk_Text_View := Gtk_Text_View_New;
+      View: constant Gtk_Text_View :=
+        Gtk_Text_View_New_With_Buffer(ErrorBuffer);
       Scroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
       Expander: constant Gtk_Expander :=
         Gtk_Expander_New(Gettext("Click to show technical info"));
    begin
-      ErrorBuffer := Gtk_Text_Buffer_New;
       Label :=
         Gtk_Label_New
           (Gettext
@@ -115,7 +115,6 @@ package body ErrorDialog is
            Value("HOME") & Gettext("/.cache/hunter' directory."));
       Set_Line_Wrap(Label, True);
       Pack_Start(Box, Label, False);
-      Set_Buffer(View, ErrorBuffer);
       Set_Editable(View, False);
       Set_Cursor_Visible(View, False);
       Add(Scroll, View);
