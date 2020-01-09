@@ -35,7 +35,6 @@ with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
 with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Object; use Glib.Object;
@@ -107,13 +106,6 @@ package body Preferences is
          ToolbarsOnTop => True, AutoRefreshInterval => 10);
       if FindExecutable("highlight") = "" then
          Settings.ColorText := False;
-         Set_Sensitive
-           (Gtk_Widget(Get_Object(Builder, "switchcolortext")), False);
-         Set_Sensitive
-           (Gtk_Widget(Get_Object(Builder, "cmbcolortheme")), False);
-         Set_Active
-           (Gtk_Switch(Get_Object(Builder, "switchcolortext")),
-            Settings.ColorText);
       end if;
       Open
         (ConfigFile, In_File,

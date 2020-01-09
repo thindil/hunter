@@ -44,8 +44,7 @@ package SearchItems is
 
    -- ****f* SearchItems/CreateSearchUI
    -- FUNCTION
-   -- Create search UI - mostly register proper procedures and functions
-   -- for use in GTKAda Builder
+   -- Create search UI
    -- SOURCE
    procedure CreateSearchUI;
    -- ****

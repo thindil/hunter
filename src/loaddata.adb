@@ -42,7 +42,6 @@ with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Gdk; use Gdk;
 with Gdk.Cursor; use Gdk.Cursor;
@@ -156,7 +155,13 @@ package body LoadData is
               (-(Gtk.Tree_Model_Sort.Get_Model
                   (-(Gtk.Tree_View.Get_Model(DirectoryView))))));
       else
-         FilesList := Gtk_List_Store(Get_Object(Builder, ListName));
+         FilesList :=
+           -(Gtk.Tree_Model_Filter.Get_Model
+              (-(Get_Model
+                  (Gtk_Tree_View
+                     (Get_Child
+                        (Gtk_Scrolled_Window
+                           (Get_Child_By_Name(InfoStack, "preview"))))))));
       end if;
       if MainWindow.Window /= null then
          Set_Cursor
@@ -198,13 +203,11 @@ package body LoadData is
          Setting := False;
          return;
       end if;
-      if ListName /= "fileslist1" then
+      if ListName = "fileslist1" then
+         Set_Sort_Func(FilesList, 0, EmptySortFiles'Access);
+      else
          Gtk.Tree_Model_Sort.Set_Sort_Func
            (-(Gtk.Tree_View.Get_Model(DirectoryView)), 0,
-            EmptySortFiles'Access);
-      else
-         Set_Sort_Func
-           (Gtk_List_Store(Get_Object(Builder, ListName)), 0,
             EmptySortFiles'Access);
       end if;
       Open(Directory, Name);
@@ -407,9 +410,7 @@ package body LoadData is
             Set_Sort_Column_Id(FilesSort, 0, Sort_Ascending);
          end;
       else
-         Set_Sort_Func
-           (Gtk_List_Store(Get_Object(Builder, ListName)), 0,
-            SortFiles'Access);
+         Set_Sort_Func(FilesList, 0, SortFiles'Access);
          Set_Sort_Column_Id(FilesList, 0, Sort_Ascending);
       end if;
       if MainWindow.Window /= null then

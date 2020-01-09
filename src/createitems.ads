@@ -31,8 +31,7 @@ package CreateItems is
 
    -- ****f* CreateItems/CreateCreateUI
    -- FUNCTION
-   -- Create creating new items UI - mostly register proper procedures and
-   -- functions for use in GTKAda Builder
+   -- Create creating new items UI
    -- SOURCE
    procedure CreateCreateUI;
    -- ****

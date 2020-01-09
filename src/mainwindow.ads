@@ -22,7 +22,6 @@ with Gtk.Stack; use Gtk.Stack;
 with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Widget; use Gtk.Widget;
 with Gtk.Window; use Gtk.Window;
-with Gtkada.Builder; use Gtkada.Builder;
 
 -- ****h* Hunter/MainWindow
 -- FUNCTION
@@ -30,13 +29,6 @@ with Gtkada.Builder; use Gtkada.Builder;
 -- SOURCE
 package MainWindow is
 -- ****
-
-   -- ****v* MainWindow/Builder
-   -- FUNCTION
-   -- Gtk Builder used to read data from glade file
-   -- SOURCE
-   Builder: Gtkada_Builder;
-   -- ****
 
    -- ****v* MainWindow/Setting
    -- FUNCTION
@@ -166,11 +158,10 @@ package MainWindow is
    -- FUNCTION
    -- Create main window and show content of selected directory
    -- PARAMETERS
-   -- NewBuilder - Gtk Builder with UI data read from .glade file
    -- Directory  - Full path to the directory which will be show at the
    --              program start
    -- SOURCE
-   procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String);
+   procedure CreateMainWindow(Directory: String);
    -- ****
 
    -- ****f* MainWindow/Reload

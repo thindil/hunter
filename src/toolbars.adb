@@ -29,7 +29,6 @@ with Gtk.Widget; use Gtk.Widget;
 with Glib.Object; use Glib.Object;
 with Gdk.Types; use Gdk.Types;
 with Gdk.Types.Keysyms; use Gdk.Types.Keysyms;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Bookmarks; use Bookmarks;
 with MainWindow; use MainWindow;
@@ -189,8 +188,7 @@ package body Toolbars is
          Gettext("Show the program preferences [ALT-P]"), GDK_P);
       AddMenuButton
         (Gettext("About"), "help-about", ActionToolBar,
-         Gettext("Show informations about the program [ALT-A]."), GDK_A,
-         Gtk_Widget(Get_Object(Builder, "aboutmenu")));
+         Gettext("Show informations about the program [ALT-A]."), GDK_A, null);
       AddSeparator(ActionToolBar);
       Pack_Start
         (Gtk_Header_Bar(Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),

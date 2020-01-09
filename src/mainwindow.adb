@@ -81,7 +81,6 @@ package body MainWindow is
             Reload;
          end if;
       end if;
-      Unref(Builder);
       Main_Quit;
    end Quit;
 
@@ -549,14 +548,13 @@ package body MainWindow is
       ExecuteFile(null);
    end ExecuteFileMenu;
 
-   procedure CreateMainWindow(NewBuilder: Gtkada_Builder; Directory: String) is
+   procedure CreateMainWindow(Directory: String) is
       FilesBox: constant Gtk_Hbox := Gtk_Hbox_New;
       ProgressBar: constant Gtk_Progress_Bar := Gtk_Progress_Bar_New;
       StackBox: constant Gtk_Vbox := Gtk_Vbox_New;
       Header: constant Gtk_Header_Bar := Gtk_Header_Bar_New;
    begin
       Setting := True;
-      Builder := NewBuilder;
       Window := Gtk_Window_New;
       On_Key_Press_Event(Window, WindowKeyPressed'Access);
       On_Delete_Event(Window, GetWindowSize'Access);
@@ -635,7 +633,6 @@ package body MainWindow is
       CreateSearchUI;
       CreateTrashUI;
       CreatePreferences(Gtk_Widget(Get_Nth_Item(ActionToolBar, 12)));
-      Do_Connect(Builder);
       On_Key_Press_Event(TextEntry, EntryKeyPressed'Access);
       On_Key_Press_Event(SearchEntry, EntryKeyPressed'Access);
       Add_Entry("<mainwindow>/reload", GDK_LC_r, Mod1_Mask);
