@@ -59,7 +59,6 @@ with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Widget; use Gtk.Widget;
 with Gdk.Pixbuf; use Gdk.Pixbuf;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
 with Glib.Error; use Glib.Error;
@@ -305,7 +304,11 @@ package body ShowItems is
       end if;
       Remove
         (Get_Tag_Table
-           (Get_Buffer(Gtk_Text_View(Get_Object(Builder, "filetextview")))),
+           (Get_Buffer
+              (Gtk_Text_View
+                 (Get_Child
+                    (Gtk_Scrolled_Window
+                       (Get_Child_By_Name(InfoStack, "preview")))))),
          Tag);
    end RemoveTag;
 
@@ -365,15 +368,15 @@ package body ShowItems is
       Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 1)));
       if Is_Directory(To_String(CurrentSelected)) then
          Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 0)));
-         LoadDirectory(To_String(CurrentSelected), "fileslist1");
          if Get_Child(PreviewScroll) /= null then
             goto Set_UI;
          end if;
          declare
-            DirectoryView: constant Gtk_Tree_View :=
+            PreviewView: constant Gtk_Tree_View :=
               Gtk_Tree_View_New_With_Model
                 (+(Gtk_Tree_Model_Filter_Filter_New
-                    (+(Gtk_List_Store(Get_Object(Builder, "fileslist1"))))));
+                    (+(Gtk_List_Store_Newv
+                        ((GType_String, GType_Uint, GType_String))))));
             Area: Gtk_Cell_Area_Box;
             Renderer: constant Gtk_Cell_Renderer_Text :=
               Gtk_Cell_Renderer_Text_New;
@@ -381,8 +384,8 @@ package body ShowItems is
               Gtk_Cell_Renderer_Pixbuf_New;
             Column: Gtk_Tree_View_Column;
          begin
-            Set_Enable_Search(DirectoryView, False);
-            Set_Headers_Clickable(DirectoryView, True);
+            Set_Enable_Search(PreviewView, False);
+            Set_Headers_Clickable(PreviewView, True);
             Area := Gtk_Cell_Area_Box_New;
             Pack_Start(Area, Renderer2, False);
             Add_Attribute(Area, Renderer2, "icon-name", 2);
@@ -391,12 +394,13 @@ package body ShowItems is
             Column := Gtk_Tree_View_Column_New_With_Area(Area);
             Set_Sort_Column_Id(Column, 0);
             Set_Title(Column, Gettext("Name"));
-            if Append_Column(DirectoryView, Column) /= 1 then
+            if Append_Column(PreviewView, Column) /= 1 then
                return;
             end if;
-            Set_Visible_Func(-(Get_Model(DirectoryView)), VisibleItems'Access);
+            Set_Visible_Func(-(Get_Model(PreviewView)), VisibleItems'Access);
             Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)));
-            Add(PreviewScroll, DirectoryView);
+            Add(PreviewScroll, PreviewView);
+            LoadDirectory(To_String(CurrentSelected), "fileslist1");
             Show_All(PreviewScroll);
          end;
       else

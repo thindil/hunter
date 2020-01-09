@@ -53,8 +53,7 @@ package ActivateItems is
 
    -- ****f* ActivateItems/CreateActivateUI
    -- FUNCTION
-   -- Create activation UI - mostly register proper procedures and functions
-   -- for use in GTKAda Builder
+   -- Create activation UI
    -- SOURCE
    procedure CreateActivateUI;
    -- ****

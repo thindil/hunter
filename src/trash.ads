@@ -53,8 +53,7 @@ package Trash is
 
    -- ****f* Trash/CreateTrashUI
    -- FUNCTION
-   -- Create trash UI - mostly register proper procedures and functions
-   -- for use in GTKAda Builder
+   -- Create trash UI
    -- SOURCE
    procedure CreateTrashUI;
    -- ****

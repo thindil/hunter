@@ -57,8 +57,7 @@ package Bookmarks is
 
    -- ****f* Bookmarks/CreateBookmarksUI
    -- FUNCTION
-   -- Create bookmarks UI - mostly register proper procedures and functions
-   -- for use in GTKAda Builder
+   -- Create bookmarks UI
    -- SOURCE
    procedure CreateBookmarksUI;
    -- ****

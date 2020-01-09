@@ -18,11 +18,8 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Main; use Gtk.Main;
-with Gtkada.Builder; use Gtkada.Builder;
 with Gtkada.Bindings; use Gtkada.Bindings;
 with Gtkada.Intl; use Gtkada.Intl;
-with Glib; use Glib;
-with Glib.Error; use Glib.Error;
 with ErrorDialog; use ErrorDialog;
 with LibMagic; use LibMagic;
 with Inotify; use Inotify;
@@ -30,8 +27,6 @@ with MainWindow; use MainWindow;
 with RefreshData; use RefreshData;
 
 procedure Hunter is
-   Builder: Gtkada_Builder;
-   Error: aliased GError;
 begin
    if not Ada.Environment_Variables.Exists("RUNFROMSCRIPT") then
       Put_Line
@@ -60,15 +55,10 @@ begin
    -- Start GTK
    Init;
    Set_On_Exception(On_Exception'Access);
-   Gtk_New(Builder);
-   if Add_From_File(Builder, "ui/hunter.glade", Error'Access) = Guint(0) then
-      Put_Line("Error : " & Get_Message(Error));
-      return;
-   end if;
    if Argument_Count < 1 then
-      CreateMainWindow(Builder, Value("HOME"));
+      CreateMainWindow(Value("HOME"));
    else
-      CreateMainWindow(Builder, Full_Name(Argument(1)));
+      CreateMainWindow(Full_Name(Argument(1)));
    end if;
    CreateErrorUI;
    Clear("LD_LIBRARY_PATH");
