@@ -565,7 +565,7 @@ package body MainWindow is
       Add_Accel_Group(Window, Accelerators);
       Set_Title(Window, Gettext("Hunter"));
       if not Set_Icon_From_File(Window, "ui/hunter-icon.png") then
-         raise Program_Error;
+         raise Program_Error with "Can't set the program icon";
       end if;
       Add(Window, Gtk_Vbox_New);
       Set_Show_Close_Button(Header, True);
