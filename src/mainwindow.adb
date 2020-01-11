@@ -632,6 +632,7 @@ package body MainWindow is
       CreateShowItemsUI;
       CreateSearchUI;
       CreateTrashUI;
+      CreateMessagesUI;
       CreatePreferences(Gtk_Widget(Get_Nth_Item(ActionToolBar, 12)));
       On_Key_Press_Event(TextEntry, EntryKeyPressed'Access);
       On_Key_Press_Event(SearchEntry, EntryKeyPressed'Access);
