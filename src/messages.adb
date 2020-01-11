@@ -190,19 +190,10 @@ package body Messages is
 
    procedure ShowMessage
      (Message: String; MessageType: Gtk_Message_Type := Message_Error) is
-      Label: constant Gtk_Label := Gtk_Label_New(Message);
-      Button: Gtk_Button;
-      ButtonsLabels: constant array(1 .. 4) of Unbounded_String :=
-        (To_Unbounded_String(Gettext("No")),
-         To_Unbounded_String(Gettext("Yes")),
-         To_Unbounded_String(Gettext("No for all")),
-         To_Unbounded_String(Gettext("Yes for all")));
-      ButtonBox: constant Gtk_Container :=
-        Gtk_Container(Get_Action_Area(InfoBar));
-      ButtonsAmount: Positive := 4;
+      Label: constant Gtk_Label :=
+        Gtk_Label(Get_Child(Gtk_Box(Get_Content_Area(InfoBar)), 0));
+      ButtonBox: constant Gtk_Box := Gtk_Box(Get_Action_Area(InfoBar));
    begin
-      Foreach(ButtonBox, RemoveChild'Access);
-      Foreach(Gtk_Container(Get_Content_Area(InfoBar)), RemoveChild'Access);
       if MessageType /= Message_Question then
          Set_Show_Close_Button(InfoBar, True);
          if Source_Id /= No_Source_Id then
@@ -218,24 +209,39 @@ package body Messages is
       else
          Set_Show_Close_Button(InfoBar, False);
       end if;
+      Set_Text(Label, Message);
       Set_Message_Type(InfoBar, MessageType);
-      Set_Line_Wrap(Label, True);
-      Add(Gtk_Container(Get_Content_Area(InfoBar)), Label);
+      Show_All(Gtk_Widget(InfoBar));
       if NewAction = DELETE or NewAction = CLEARTRASH or
         NewAction = DELETETRASH then
-         ButtonsAmount := 2;
+         Hide(Get_Child(ButtonBox, 2));
+         Hide(Get_Child(ButtonBox, 3));
       end if;
-      for I in 1 .. ButtonsAmount loop
-         Button := Gtk_Button_New_With_Label(To_String(ButtonsLabels(I)));
+      if MessageType /= Message_Question then
+         Hide(Get_Action_Area(InfoBar));
+      end if;
+   end ShowMessage;
+
+   procedure CreateMessagesUI is
+      Label: constant Gtk_Label := Gtk_Label_New;
+      ButtonBox: constant Gtk_Container :=
+        Gtk_Container(Get_Action_Area(InfoBar));
+      Button: Gtk_Button;
+      ButtonsLabels: constant array(1 .. 4) of Unbounded_String :=
+        (To_Unbounded_String(Gettext("No")),
+         To_Unbounded_String(Gettext("Yes")),
+         To_Unbounded_String(Gettext("No for all")),
+         To_Unbounded_String(Gettext("Yes for all")));
+   begin
+      Set_Line_Wrap(Label, True);
+      Add(Gtk_Container(Get_Content_Area(InfoBar)), Label);
+      for ButtonLabel of ButtonsLabels loop
+         Button := Gtk_Button_New_With_Label(To_String(ButtonLabel));
          On_Clicked(Button, SetResponse'Access);
          Add(ButtonBox, Button);
       end loop;
       On_Close(InfoBar, CloseMessage'Access);
       On_Response(InfoBar, MessageResponse'Access);
-      Show_All(Gtk_Widget(InfoBar));
-      if MessageType /= Message_Question then
-         Hide(Get_Action_Area(InfoBar));
-      end if;
-   end ShowMessage;
+   end CreateMessagesUI;
 
 end Messages;

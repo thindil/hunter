@@ -59,4 +59,11 @@ package Messages is
      (Message: String; MessageType: Gtk_Message_Type := Message_Error);
    -- ****
 
+   -- ****f* Messages/CreateMessagesUI
+   -- FUNCTION
+   -- Create UI related to the program messages
+   -- SOURCE
+   procedure CreateMessagesUI;
+   -- ****
+
 end Messages;
