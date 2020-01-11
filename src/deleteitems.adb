@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -129,6 +129,7 @@ package body DeleteItems is
       if NewAction = CLEARTRASH then
          Settings.DeleteFiles := OldSetting;
       end if;
+      SelectedItems.Clear;
       return GoUp;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
