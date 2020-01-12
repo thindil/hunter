@@ -564,9 +564,24 @@ package body MainWindow is
       Accelerators := Gtk_Accel_Group_New;
       Add_Accel_Group(Window, Accelerators);
       Set_Title(Window, Gettext("Hunter"));
-      if not Set_Icon_From_File(Window, "ui/hunter-icon.png") then
-         raise Program_Error with "Can't set the program icon";
-      end if;
+      declare
+         IconName: Unbounded_String;
+      begin
+         if Ada.Directories.Exists
+             (Value("APPDIR", "") & "/usr/share/doc/hunter") then
+            IconName :=
+              To_Unbounded_String(Value("APPDIR", "") & "/hunter-icon.png");
+         else
+            IconName :=
+              To_Unbounded_String
+                (Containing_Directory(Current_Directory) &
+                 "/others/hunter-icon.png");
+         end if;
+         if not Set_Icon_From_File(Window, To_String(IconName)) then
+            raise Program_Error
+              with "Can't set the program icon: " & To_String(IconName);
+         end if;
+      end;
       Add(Window, Gtk_Vbox_New);
       Set_Show_Close_Button(Header, True);
       Set_Has_Subtitle(Header, True);
