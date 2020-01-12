@@ -37,7 +37,6 @@ with Gtk.Tree_View; use Gtk.Tree_View;
 with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 with Gtkada.Intl; use Gtkada.Intl;
 with Glib; use Glib;
-with Glib.Object; use Glib.Object;
 with MainWindow; use MainWindow;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
