@@ -286,6 +286,7 @@ package body Utils is
         Gtk_Progress_Bar
           (Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
    begin
+      ProgressIndex := ProgressIndex + 1;
       Set_Fraction
         (ProgressBar, Gdouble(ProgressIndex) / Gdouble(ProgressAmount));
    end UpdateProgressBar;
