@@ -19,7 +19,7 @@ All notable changes to this project will be documented in this file.
 - Not clearing preview on empty search result
 - Refreshing bookmarks buttons after adding/deleting bookmark
 - Set focus on text entry when entering custom location to go
-- Showing deletion progress
+- Showing deletion, moving, copying progress
 
 ## [1.1] - 2019-10-28
 
