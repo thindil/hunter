@@ -606,8 +606,6 @@ package body ShowItems is
    end PreviewItem;
 
    procedure ShowItem(Self: access Gtk_Tree_Selection_Record'Class) is
-      PreviewScroll: constant Gtk_Scrolled_Window :=
-        Gtk_Scrolled_Window(Get_Child_By_Name(InfoStack, "preview"));
    begin
       SelectedItems.Clear;
       Selected_Foreach(Self, GetSelectedItems'Access);
@@ -622,7 +620,6 @@ package body ShowItems is
          return;
       end if;
       if SelectedItems.Length > 1 then
-         Hide(Get_Child(PreviewScroll));
          Hide(ItemToolBar);
          Set_Markup
            (Gtk_Label
