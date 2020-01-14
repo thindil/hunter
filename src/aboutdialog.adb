@@ -13,6 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Gtk.About_Dialog; use Gtk.About_Dialog;
 with Gtk.Dialog; use Gtk.Dialog;
 with Gtk.Widget; use Gtk.Widget;
@@ -26,6 +29,7 @@ package body AboutDialog is
       AboutDialog: constant Gtk_About_Dialog := Gtk_About_Dialog_New;
       Error: GError;
       LogoBuf: Gdk_Pixbuf;
+      IconName: Unbounded_String;
    begin
       Set_Transient_For(Gtk_Window(AboutDialog), Parent);
       Set_Program_Name(AboutDialog, "Hunter");
@@ -37,7 +41,17 @@ package body AboutDialog is
          (new String'("Bartek thindil Jasicki <thindil@laeran.pl>"),
           new String'("")));
       Set_Translator_Credits(AboutDialog, Gettext("translator-credits"));
-      Gdk_New_From_File(LogoBuf, "ui/hunter-icon.png", Error);
+      if Ada.Directories.Exists
+          (Value("APPDIR", "") & "/usr/share/doc/hunter") then
+         IconName :=
+           To_Unbounded_String(Value("APPDIR", "") & "/hunter-icon.png");
+      else
+         IconName :=
+           To_Unbounded_String
+             (Containing_Directory(Current_Directory) &
+              "/others/hunter-icon.png");
+      end if;
+      Gdk_New_From_File(LogoBuf, To_String(IconName), Error);
       Set_Logo(AboutDialog, LogoBuf);
       Set_Version(AboutDialog, "1.2");
       Set_Website(AboutDialog, "https://thindil.github.io/hunter/");
