@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Autorefresh directory listing on any change now should be a lot faster
 - Simplified autorefresh directory listing setting
 - Moved whole UI to code
+- Updated Polish translation of the program
 
 ### Fixed
 - Typos in contributing guide and changelog
