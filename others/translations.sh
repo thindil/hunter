@@ -2,8 +2,7 @@
 
 case $1 in
    createpot)
-      xgettext --keyword=translatable -s -o po/hunter.pot bin/ui/hunter.glade
-      xgettext --package-name=Hunter --package-version=0.6 --msgid-bugs-address=thindil@laeran.pl --copyright-holder="Bartek thindil Jasicki" --keyword=Gettext -sj -o po/hunter.pot src/*.*
+      xgettext --package-name=Hunter --package-version=1.2 --msgid-bugs-address=thindil@laeran.pl --copyright-holder="Bartek thindil Jasicki" --keyword=Gettext -sj -o po/hunter.pot src/*.*
       echo "Translation template was regenerated."
       ;;
    createlocale)
