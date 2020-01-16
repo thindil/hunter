@@ -80,8 +80,17 @@ package body ActivateItems is
       end if;
    end ActivateFile;
 
+   -- ****if* ActivateItems/ActivateFileButton
+   -- FUNCTION
+   -- "Activate" selected file or directory. Action depends on what selected
+   -- item is. For example: it go to selected directory, opens text files in
+   -- editor and so on.
+   -- PARAMETERS
+   -- Self   - Gtk_Button which was pressed. Unused
+   -- SOURCE
    procedure ActivateFileButton(Self: access Gtk_Tool_Button_Record'Class) is
       pragma Unreferenced(Self);
+      -- ****
    begin
       ActivateFile
         (DirectoryView, Gtk_Tree_Path_New, Get_Column(DirectoryView, 0));
