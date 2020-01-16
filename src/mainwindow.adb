@@ -491,6 +491,7 @@ package body MainWindow is
    -- SOURCE
    procedure MoveItemMenu(Self: access Gtk_Menu_Item_Record'Class) is
       pragma Unreferenced(Self);
+      -- ****
    begin
       MoveData(null);
    end MoveItemMenu;
