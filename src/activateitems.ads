@@ -26,16 +26,29 @@ with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 package ActivateItems is
 -- ****
 
-   -- ****if* ActivateItems/ActivateFile
+   -- ****f* ActivateItems/ActivateFile
    -- FUNCTION
    -- "Activate" selected file or directory. Action depends on what selected
    -- item is. For example: it go to selected directory, opens text files in
    -- editor and so on.
    -- PARAMETERS
+   -- Self   - Gtk_Tree_View with list of current directory. Unused
+   -- Path   - Gtk_Tree_Path to the selected file or directory. Unused
+   -- Column - Gtk_Tree_Column which was clicked. Unused
    -- SOURCE
    procedure ActivateFile
      (Self: access Gtk_Tree_View_Record'Class; Path: Gtk_Tree_Path;
       Column: not null access Gtk_Tree_View_Column_Record'Class);
+   -- ****
+
+   -- ****f* ActivateItems/StartOpenWith
+   -- FUNCTION
+   -- Show text entry to start opening selected file or directory with custom
+   -- command.
+   -- PARAMETERS
+   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
+   -- SOURCE
+   procedure StartOpenWith(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
    -- ****f* ActivateItems/OpenItemWith
@@ -51,23 +64,6 @@ package ActivateItems is
      (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position);
    -- ****
 
-   -- ****f* ActivateItems/CreateActivateUI
-   -- FUNCTION
-   -- Create activation UI
-   -- SOURCE
-   procedure CreateActivateUI;
-   -- ****
-
-   -- ****f* ActivateItems/StartOpenWith
-   -- FUNCTION
-   -- Show text entry to start opening selected file or directory with custom
-   -- command.
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
-   -- SOURCE
-   procedure StartOpenWith(Self: access Gtk_Tool_Button_Record'Class);
-   -- ****
-
    -- ****f* ActivateItems/ExecuteFile
    -- FUNCTION
    -- Execute selected file. That file must be graphical application or
@@ -76,6 +72,13 @@ package ActivateItems is
    -- Self - Gtk_Tool_Button clicked. Unused. Can be null
    -- SOURCE
    procedure ExecuteFile(Self: access Gtk_Tool_Button_Record'Class);
+   -- ****
+
+   -- ****f* ActivateItems/CreateActivateUI
+   -- FUNCTION
+   -- Create activation UI
+   -- SOURCE
+   procedure CreateActivateUI;
    -- ****
 
 end ActivateItems;
