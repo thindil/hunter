@@ -17,12 +17,34 @@ with Gtk.Toolbar; use Gtk.Toolbar;
 
 package Toolbars is
 
+   -- ****v* Toolbars/ActionToolBar
+   -- FUNCTION
+   -- Gtk_Toolbar with actions buttons (copy, move, delete, new, etc)
+   -- SOURCE
    ActionToolBar: Gtk_Toolbar;
+   -- ****
+
+   -- ****v* Toolbars/ItemToolBar
+   -- FUNCTION
+   -- Gtk_Toolbar with acions related to selected file or directory (preview,
+   -- show info, open, etc)
+   -- SOURCE
    ItemToolBar: Gtk_Toolbar;
+   -- ****
 
+   -- ****f* Toolbars/CreateActionToolbarUI
+   -- FUNCTION
+   -- Create ActionToolBar UI - add buttons and separators
+   -- SOURCE
    procedure CreateActionToolbarUI;
+   -- ****
 
+   -- ****f* Toolbars/CreateItemToolbarUI
+   -- FUNCTION
+   -- Crete ItemToolBar UI - add buttons and separators
+   -- SOURCE
    procedure CreateItemToolbarUI;
+   -- ****
 
    -- ****f* Toolbars/SetToolbars
    -- FUNCTION
