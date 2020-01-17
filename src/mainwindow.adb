@@ -84,9 +84,20 @@ package body MainWindow is
       Main_Quit;
    end Quit;
 
+   -- ****if* MainWindow/SetSelected
+   -- FUNCTION
+   -- Set selection to the selected file or directory
+   -- PARAMETERS
+   -- Model - Gtk_Tree_Model with current directory listing
+   -- Path  - Gtk_Tree_Path to the currently element
+   -- Iter  - Gtk_Tree_Iter to the currently check element
+   -- RESULT
+   -- True if selection was set, otherwise False to continue search
+   -- SOURCE
    function SetSelected
      (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter)
       return Boolean is
+   -- ****
    begin
       if Get_String(Model, Iter, 0) =
         Simple_Name(To_String(CurrentSelected)) then
@@ -284,7 +295,12 @@ package body MainWindow is
       return False;
    end GetWindowSize;
 
+   -- ****iv* MainWindow/MenuIndex
+   -- FUNCTION
+   -- Menu index for menu item to set visibility
+   -- SOURCE
    MenuIndex: Positive;
+   -- ****
 
    -- ****if* MainWindow/SetFilesMenu
    -- FUNCTION
@@ -392,8 +408,15 @@ package body MainWindow is
       end loop;
    end ShowFile;
 
+   -- ****if* MainWindow/SelectAll
+   -- FUNCTION
+   -- Select all files and directories in current folder
+   -- PARAMETERS
+   -- Self - Gtk_Button which was clicked. Unused
+   -- SOURCE
    procedure SelectAll(Self: access Gtk_Tool_Button_Record'Class) is
       pragma Unreferenced(Self);
+      -- ****
       Selection: constant Gtk_Tree_Selection := Get_Selection(DirectoryView);
    begin
       if Count_Selected_Rows(Selection) =
