@@ -8,16 +8,17 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/activateitems.ads</title>
 <!-- Source: ./src/activateitems.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.1 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -26,18 +27,19 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo0">Hunter/ActivateItems</a></li>
+<li>1. <a href="#robo1">Hunter/ActivateItems</a></li>
 <ul>
-<li>1.1. <a href="./activateitems_adb.html#robo52">ActivateItems/ActivateFile</a></li>
-<li>1.2. <a href="#robo53">ActivateItems/CreateActivateUI</a></li>
-<li>1.3. <a href="./activateitems_adb.html#robo54">ActivateItems/ExecuteFile</a></li>
-<li>1.4. <a href="#robo55">ActivateItems/OpenItemWith</a></li>
-<li>1.5. <a href="./activateitems_adb.html#robo56">ActivateItems/StartOpenWith</a></li>
+<li>1.1. <a href="#robo78">ActivateItems/ActivateFile</a></li>
+<li>1.2. <a href="./activateitems_adb.html#robo79">ActivateItems/ActivateFileButton</a></li>
+<li>1.3. <a href="#robo80">ActivateItems/CreateActivateUI</a></li>
+<li>1.4. <a href="#robo81">ActivateItems/ExecuteFile</a></li>
+<li>1.5. <a href="#robo82">ActivateItems/OpenItemWith</a></li>
+<li>1.6. <a href="#robo83">ActivateItems/StartOpenWith</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Hunter2fActivateItems"></a>
-<a name="robo0"></a><h2>Hunter/ActivateItems [ Packages ]</h2>
+<a name="robo1"></a><h2>Hunter/ActivateItems [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -48,23 +50,59 @@
 </pre>
 
 <hr />
-<a name="ActivateItems2fCreateActivateUI"></a>
-<a name="robo53"></a><h2>ActivateItems/CreateActivateUI [ Subprograms ]</h2>
+<a name="ActivateItems2fActivateFile"></a>
+<a name="robo78"></a><h2>ActivateItems/ActivateFile [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Create activation UI - mostly register proper procedures and functions
- for use in GTKAda <a href="./errordialog_adb.html#robo29">Builder</a>
+<pre> "Activate" selected file or directory. Action depends on what selected
+ item is. For example: it go to selected directory, opens text files in
+ editor and so on.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ActivateFile</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tree_View_Record<span class="keyword">'Class</span><span class="sign">;</span> Path<span class="sign">:</span> Gtk_Tree_Path<span class="sign">;</span>
+      Column<span class="sign">:</span> not null access Gtk_Tree_View_Column_Record'</span>Class<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self   - Gtk_Tree_View with list of current directory. Unused
+ Path   - Gtk_Tree_Path to the selected file or directory. Unused
+ Column - Gtk_Tree_Column which was clicked. Unused
+</pre>
+
+<hr />
+<a name="ActivateItems2fCreateActivateUI"></a>
+<a name="robo80"></a><h2>ActivateItems/CreateActivateUI [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Create activation UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>CreateActivateUI</strong><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ActivateItems2fOpenItemWith"></a>
-<a name="robo55"></a><h2>ActivateItems/OpenItemWith [ Subprograms ]</h2>
+<a name="ActivateItems2fExecuteFile"></a>
+<a name="robo81"></a><h2>ActivateItems/ExecuteFile [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Execute selected file. That file must be graphical application or
+ all output will be redirected to terminal (invisible to user).
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ExecuteFile</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Tool_Button clicked. Unused. Can be null
+</pre>
+
+<hr />
+<a name="ActivateItems2fOpenItemWith"></a>
+<a name="robo82"></a><h2>ActivateItems/OpenItemWith [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Open selected item or directory with entered by user command. That
  command can have argumets either.
@@ -79,9 +117,25 @@
             Enter was pressed, simulate pressing proper icon
 </pre>
 
+<hr />
+<a name="ActivateItems2fStartOpenWith"></a>
+<a name="robo83"></a><h2>ActivateItems/StartOpenWith [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show text entry to start opening selected file or directory with custom
+ command.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>StartOpenWith</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Tool_Button clicked. Unused. Can be null
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/activateitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Oct 28 2019 06:58:59
+<p>Generated from ./src/activateitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
 </p>
 </div> <!-- footer -->
 </body>
