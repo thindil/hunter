@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.2] - 2020-01-18
 
 ### Added
 - Refresh preview of files and directories if they are changed on disk
