@@ -2,167 +2,199 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
  <url>
   <loc>https://thindil.github.io/hunter/index.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/index.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/trash_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/showitems_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/searchitems_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/errordialog_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/createitems_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/messages_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/searchitems_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
+ </url>
+ <url>
+  <loc>https://thindil.github.io/hunter/docs/code/robo_tasks.html</loc>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/moveitems_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
+ </url>
+ <url>
+  <loc>https://thindil.github.io/hunter/docs/code/inotify_ads.html</loc>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/robo_subprograms.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/createitems_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/loaddata_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/robo_packages.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/moveitems_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/refreshdata_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/loaddata_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/trash_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/utils_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/mainwindow_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/libmagic_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
+ </url>
+ <url>
+  <loc>https://thindil.github.io/hunter/docs/code/toolbars_adb.html</loc>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/copyitems_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
+ </url>
+ <url>
+  <loc>https://thindil.github.io/hunter/docs/code/programsmenu_adb.html</loc>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/sources.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
+ </url>
+ <url>
+  <loc>https://thindil.github.io/hunter/docs/code/aboutdialog_ads.html</loc>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/activateitems_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/refreshdata_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/deleteitems_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/utils_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/mainwindow_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/preferences_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/copyitems_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/libmagic_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/bookmarks_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/preferences_adb.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/showitems_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/robo_variables.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/errordialog_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/activateitems_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/robo_types.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/toc_index.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/bookmarks_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
+ </url>
+ <url>
+  <loc>https://thindil.github.io/hunter/docs/code/programsmenu_ads.html</loc>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
+ </url>
+ <url>
+  <loc>https://thindil.github.io/hunter/docs/code/toolbars_ads.html</loc>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
+ </url>
+ <url>
+  <loc>https://thindil.github.io/hunter/docs/code/inotify_adb.html</loc>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
  <url>
   <loc>https://thindil.github.io/hunter/docs/code/messages_ads.html</loc>
-  <lastmod>2019-10-28T06:10:18Z</lastmod>
+  <lastmod>2020-01-18T06:24:04Z</lastmod>
  </url>
 </urlset>
 
