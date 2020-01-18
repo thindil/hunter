@@ -8,16 +8,17 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/refreshdata.adb</title>
 <!-- Source: ./src/refreshdata.adb -->
-<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.1 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -26,29 +27,15 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo45">RefreshData/LastCheck</a></li>
-<li>2. <a href="#robo46">RefreshData/Source_Id</a></li>
-<li>3. <a href="#robo122">RefreshData/CheckItem</a></li>
-<li>4. <a href="#robo123">RefreshData/CheckItems</a></li>
+<li>1. <a href="#robo70">RefreshData/Source_Id</a></li>
+<li>2. <a href="#robo192">RefreshData/CheckItems</a></li>
+<li>3. <a href="#robo194">RefreshData/UpdateItem</a></li>
 </ul>
 <hr />
-<a name="RefreshData2fLastCheck"></a>
-<a name="robo45"></a><h2>RefreshData/LastCheck [ Variables ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo12">RefreshData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Time when the program last check for modification time of files and
- directories
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <strong>LastCheck</strong><span class="sign">:</span> Time<span class="sign">;</span>
-</pre>
-
-<hr />
 <a name="RefreshData2fSource5fId"></a>
-<a name="robo46"></a><h2>RefreshData/Source_Id [ Variables ]</h2>
+<a name="robo70"></a><h2>RefreshData/Source_Id [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo12">RefreshData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo15">RefreshData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> ID of timer to hide messages
 </pre>
@@ -57,16 +44,36 @@
 </pre>
 
 <hr />
-<a name="RefreshData2fCheckItem"></a>
-<a name="robo122"></a><h2>RefreshData/CheckItem [ Subprograms ]</h2>
+<a name="RefreshData2fCheckItems"></a>
+<a name="robo192"></a><h2>RefreshData/CheckItems [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo12">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo15">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Check if any events are pending and update directory listing with new
+ information.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>CheckItems</strong> <span class="keyword">return</span> Boolean <span class="keyword">is</span>
+      FilesList<span class="sign">:</span> <span class="keyword">constant</span> Gtk_List_Store <span class="sign">:</span><span class="sign">=</span>
+        <span class="sign">-</span><span class="sign">(</span>Gtk<span class="sign">.</span>Tree_Model_Filter<span class="sign">.</span>Get_Model
+           <span class="sign">(</span><span class="sign">-</span><span class="sign">(</span>Gtk<span class="sign">.</span>Tree_Model_Sort<span class="sign">.</span>Get_Model
+               <span class="sign">(</span><span class="sign">-</span><span class="sign">(</span>Gtk<span class="sign">.</span>Tree_View<span class="sign">.</span>Get_Model<span class="sign">(</span><a href="./mainwindow_ads.html#robo50">DirectoryView</a><span class="sign">)</span><span class="sign">)</span><span class="sign">)</span><span class="sign">)</span><span class="sign">)</span><span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to not stop timer from triggering.
+</pre>
+
+<hr />
+<a name="RefreshData2fUpdateItem"></a>
+<a name="robo194"></a><h2>RefreshData/UpdateItem [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo15">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Check if selected file or directory was modified and upgrade information
  if was
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>CheckItem</strong>
+<pre class="source">   <span class="keyword">function</span> <strong>UpdateItem</strong>
      <span class="sign">(</span>Model<span class="sign">:</span> Gtk_Tree_Model<span class="sign">;</span> Path<span class="sign">:</span> Gtk_Tree_Path<span class="sign">;</span> Iter<span class="sign">:</span> Gtk_Tree_Iter<span class="sign">)</span>
       <span class="keyword">return</span> Boolean <span class="keyword">is</span>
 </pre>
@@ -76,27 +83,13 @@
  Iter  - Gtk_Tree_Iter to selected file or directory
 </pre>
 <p class="item_name">RESULT</p>
-<pre> Always return false to check each file or directory in current directory
-</pre>
-
-<hr />
-<a name="RefreshData2fCheckItems"></a>
-<a name="robo123"></a><h2>RefreshData/CheckItems [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo12">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Timer function - check periodically for changes in current directory
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>CheckItems</strong> <span class="keyword">return</span> Boolean <span class="keyword">is</span>
-</pre>
-<p class="item_name">RESULT</p>
-<pre> Always true to keep timer alive
+<pre> Return false to check each file or directory in current directory. If
+ file or directory was deleted, restart checking and return true.
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/refreshdata.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Oct 28 2019 06:58:59
+<p>Generated from ./src/refreshdata.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
 </p>
 </div> <!-- footer -->
 </body>

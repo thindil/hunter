@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
-<title>./src/utils.adb</title>
-<!-- Source: ./src/utils.adb -->
+<title>./src/aboutdialog.ads</title>
+<!-- Source: ./src/aboutdialog.ads -->
 <!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
 </head>
 <body>
@@ -27,36 +27,42 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo75">Utils/Positive</a></li>
-<li>2. <a href="#robo76">Utils/ProgressIndex</a></li>
+<li>1. <a href="#robo0">Hunter/AboutDialog</a></li>
+<ul>
+<li>1.1. <a href="#robo77">AboutDialog/ShowAboutDialog</a></li>
+</ul>
 </ul>
 <hr />
-<a name="Utils2fPositive"></a>
-<a name="robo75"></a><h2>Utils/Positive [ Variables ]</h2>
+<a name="Hunter2fAboutDialog"></a>
+<a name="robo0"></a><h2>Hunter/AboutDialog [ Packages ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./utils_ads.html#robo19">Utils</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Max amount of items to count progress of action
+<pre> Provides code for showing About the program dialog
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   ProgressAmount<span class="sign">:</span> <strong>Positive</strong><span class="sign">;</span>
+<pre class="source"><span class="keyword">package</span> <strong>AboutDialog</strong> <span class="keyword">is</span>
 </pre>
 
 <hr />
-<a name="Utils2fProgressIndex"></a>
-<a name="robo76"></a><h2>Utils/ProgressIndex [ Variables ]</h2>
+<a name="AboutDialog2fShowAboutDialog"></a>
+<a name="robo77"></a><h2>AboutDialog/ShowAboutDialog [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./utils_ads.html#robo19">Utils</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo0">AboutDialog</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Currrent index of item
+<pre> Create and show About Dialog to the user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>ProgressIndex</strong><span class="sign">:</span> <a href="#robo75">Positive</a><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowAboutDialog</strong><span class="sign">(</span>Parent<span class="sign">:</span> Gtk_Window<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Parent - Gtk_Window which will be parent for the dialog. Should be always
+          main window.
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utils.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
+<p>Generated from ./src/aboutdialog.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
 </p>
 </div> <!-- footer -->
 </body>

@@ -8,16 +8,17 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/bookmarks.ads</title>
 <!-- Source: ./src/bookmarks.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.1 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -26,25 +27,26 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo1">Hunter/Bookmarks</a></li>
+<li>1. <a href="#robo2">Hunter/Bookmarks</a></li>
 <ul>
-<li>1.1. <a href="./bookmarks_adb.html#robo17">Bookmarks/Bookmark_Record</a></li>
-<li>1.2. <a href="./bookmarks_adb.html#robo18">Bookmarks/Bookmarks_Container</a></li>
-<li>1.3. <a href="./bookmarks_adb.html#robo24">Bookmarks/BookmarksList</a></li>
-<li>1.4. <a href="./bookmarks_adb.html#robo57">Bookmarks/AddBookmark</a></li>
-<li>1.5. <a href="#robo58">Bookmarks/CreateBookmarkMenu</a></li>
-<li>1.6. <a href="#robo59">Bookmarks/CreateBookmarksUI</a></li>
-<li>1.7. <a href="#robo60">Bookmarks/GoHome</a></li>
-<li>1.8. <a href="./bookmarks_adb.html#robo61">Bookmarks/GoToBookmark</a></li>
-<li>1.9. <a href="./bookmarks_adb.html#robo62">Bookmarks/RemoveBookmark</a></li>
-<li>1.10. <a href="./bookmarks_adb.html#robo63">Bookmarks/RemoveMenu</a></li>
-<li>1.11. <a href="#robo64">Bookmarks/SetBookmarkButton</a></li>
-<li>1.12. <a href="./bookmarks_adb.html#robo65">Bookmarks/UpdateView</a></li>
+<li>1.1. <a href="./bookmarks_adb.html#robo21">Bookmarks/Bookmark_Record</a></li>
+<li>1.2. <a href="./bookmarks_adb.html#robo22">Bookmarks/Bookmarks_Container</a></li>
+<li>1.3. <a href="./bookmarks_adb.html#robo34">Bookmarks/BookmarksList</a></li>
+<li>1.4. <a href="#robo35">Bookmarks/BookmarksMenu</a></li>
+<li>1.5. <a href="./bookmarks_adb.html#robo84">Bookmarks/AddBookmark</a></li>
+<li>1.6. <a href="#robo85">Bookmarks/CreateBookmarkMenu</a></li>
+<li>1.7. <a href="#robo86">Bookmarks/CreateBookmarksUI</a></li>
+<li>1.8. <a href="#robo87">Bookmarks/GoHome</a></li>
+<li>1.9. <a href="./bookmarks_adb.html#robo88">Bookmarks/GoToBookmark</a></li>
+<li>1.10. <a href="./bookmarks_adb.html#robo89">Bookmarks/RemoveBookmark</a></li>
+<li>1.11. <a href="./bookmarks_adb.html#robo90">Bookmarks/RemoveMenu</a></li>
+<li>1.12. <a href="#robo91">Bookmarks/SetBookmarkButton</a></li>
+<li>1.13. <a href="./bookmarks_adb.html#robo92">Bookmarks/UpdateView</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Hunter2fBookmarks"></a>
-<a name="robo1"></a><h2>Hunter/Bookmarks [ Packages ]</h2>
+<a name="robo2"></a><h2>Hunter/Bookmarks [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -55,28 +57,39 @@
 </pre>
 
 <hr />
-<a name="Bookmarks2fCreateBookmarkMenu"></a>
-<a name="robo58"></a><h2>Bookmarks/CreateBookmarkMenu [ Subprograms ]</h2>
+<a name="Bookmarks2fBookmarksMenu"></a>
+<a name="robo35"></a><h2>Bookmarks/BookmarksMenu [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">Bookmarks</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Gtk_Menu with the user bookmarks
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>BookmarksMenu</strong><span class="sign">:</span> Gtk_Menu<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Bookmarks2fCreateBookmarkMenu"></a>
+<a name="robo85"></a><h2>Bookmarks/CreateBookmarkMenu [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create bookmarks menu - show only existing bookmarks
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateBookmarkMenu</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CreateBookmarkMenu</strong><span class="sign">(</span><a href="./createitems_adb.html#robo102">CreateNew</a><span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+<pre> <a href="./createitems_adb.html#robo102">CreateNew</a> - If True, create new menu, otherwise use existing menu
 </pre>
 
 <hr />
 <a name="Bookmarks2fCreateBookmarksUI"></a>
-<a name="robo59"></a><h2>Bookmarks/CreateBookmarksUI [ Subprograms ]</h2>
+<a name="robo86"></a><h2>Bookmarks/CreateBookmarksUI [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Create bookmarks UI - mostly register proper procedures and functions
- for use in GTKAda <a href="./errordialog_adb.html#robo29">Builder</a>
+<pre> Create bookmarks UI
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">procedure</span> <strong>CreateBookmarksUI</strong><span class="sign">;</span>
@@ -84,24 +97,24 @@
 
 <hr />
 <a name="Bookmarks2fGoHome"></a>
-<a name="robo60"></a><h2>Bookmarks/GoHome [ Subprograms ]</h2>
+<a name="robo87"></a><h2>Bookmarks/GoHome [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Go to user home directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>GoHome</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>GoHome</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+<pre> Self - Gtk_Tool_Button clicked. Unused. Can be null.
 </pre>
 
 <hr />
 <a name="Bookmarks2fSetBookmarkButton"></a>
-<a name="robo64"></a><h2>Bookmarks/SetBookmarkButton [ Subprograms ]</h2>
+<a name="robo91"></a><h2>Bookmarks/SetBookmarkButton [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo1">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo2">Bookmarks</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show proper bookmark button for directories
 </pre>
@@ -111,7 +124,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/bookmarks.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Oct 28 2019 06:58:59
+<p>Generated from ./src/bookmarks.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
 </p>
 </div> <!-- footer -->
 </body>
