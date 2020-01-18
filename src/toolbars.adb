@@ -36,9 +36,22 @@ with Preferences; use Preferences;
 
 package body Toolbars is
 
+   -- ****if* Toolbars/AddButton
+   -- FUNCTION
+   -- Add button to the toolbar
+   -- PARAMETERS
+   -- Text     - Label of the button to add
+   -- IconName - Name of icon which will be showed on the button
+   -- Toolbar  - Toolbar to which the button will be added
+   -- Tooltip  - Tooltip text for the button
+   -- Key      - Keyboard shortcut for the button
+   -- Mask     - Special key (Control, Alt, Shift, etc) which
+   --            will be needed for trigger the button
+   -- SOURCE
    procedure AddButton
      (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
       Key: Gdk_Key_Type; Mask: Gdk_Modifier_Type := Mod1_Mask) is
+      -- ****
       Button: constant Gtk_Tool_Button := Gtk_Tool_Button_New(Label => Text);
    begin
       Set_Tooltip_Text(Button, Tooltip);
@@ -48,16 +61,35 @@ package body Toolbars is
       Insert(Toolbar, Button);
    end AddButton;
 
+   -- ****if* Toolbars/AddSeparator
+   -- FUNCTION
+   -- Add separator to toolbar
+   -- PARAMETERS
+   -- Toolbar - Toolbar to which the separator will be added
+   -- SOURCE
    procedure AddSeparator(Toolbar: Gtk_Toolbar) is
+      -- ****
       Separator: constant Gtk_Separator_Tool_Item :=
         Gtk_Separator_Tool_Item_New;
    begin
       Insert(Toolbar, Separator);
    end AddSeparator;
 
+   -- ****if* Toolbars/AddRadioButton
+   -- FUNCTION
+   -- Add radiobutton to the toolbar
+   -- PARAMETERS
+   -- Text       - Label of the radiobutton to add
+   -- IconName   - Name of icon which will be showed on the radiobutton
+   -- RadioGroup - The group to which the radiobutton will be belong
+   -- Toolbar    - The toolbar to which the button will be added
+   -- Tooltip    - Tooltip text for the radiobutton
+   -- Key        - Keyboard shortcut for the radiobutton
+   -- SOURCE
    procedure AddRadioButton
      (Text, IconName: String; RadioGroup: in out Widget_SList.GSlist;
       Toolbar: Gtk_Toolbar; Tooltip: String; Key: Gdk_Key_Type) is
+      -- ****
       Button: constant Gtk_Radio_Tool_Button :=
         Gtk_Radio_Tool_Button_New(RadioGroup);
    begin
