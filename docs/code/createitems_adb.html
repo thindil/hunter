@@ -8,16 +8,17 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/createitems.adb</title>
 <!-- Source: ./src/createitems.adb -->
-<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.1 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -26,17 +27,19 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo28">CreateItems/SourceDirectory</a></li>
-<li>2. <a href="#robo70">CreateItems/AddNew</a></li>
-<li>3. <a href="#robo72">CreateItems/CreateItem</a></li>
-<li>4. <a href="#robo73">CreateItems/CreateNew</a></li>
-<li>5. <a href="#robo74">CreateItems/IconPressed</a></li>
+<li>1. <a href="#robo39">CreateItems/SourceDirectory</a></li>
+<li>2. <a href="#robo97">CreateItems/AddNewButton</a></li>
+<li>3. <a href="#robo98">CreateItems/AddNewFile</a></li>
+<li>4. <a href="#robo99">CreateItems/AddNewLink</a></li>
+<li>5. <a href="#robo101">CreateItems/CreateItem</a></li>
+<li>6. <a href="#robo102">CreateItems/CreateNew</a></li>
+<li>7. <a href="#robo103">CreateItems/IconPressed</a></li>
 </ul>
 <hr />
 <a name="CreateItems2fSourceDirectory"></a>
-<a name="robo28"></a><h2>CreateItems/SourceDirectory [ Variables ]</h2>
+<a name="robo39"></a><h2>CreateItems/SourceDirectory [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo3">CreateItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo4">CreateItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Full path to the source directory of item to which link was created
 </pre>
@@ -45,25 +48,59 @@
 </pre>
 
 <hr />
-<a name="CreateItems2fAddNew"></a>
-<a name="robo70"></a><h2>CreateItems/AddNew [ Subprograms ]</h2>
+<a name="CreateItems2fAddNewButton"></a>
+<a name="robo97"></a><h2>CreateItems/AddNewButton [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo3">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo4">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Show text entry for enter new file/directory name
+<pre> Show text entry for enter new directory name after click button Add New
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>AddNew</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
-</span></pre>
+<pre class="source">   <span class="keyword">procedure</span> <strong>AddNewButton</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
-<pre> User_Data - Which menu option was selected (create file or directory)
+<pre> Self - Gtk_Tool_Button which was clicked. Unused. Can be null.
+</pre>
+
+<hr />
+<a name="CreateItems2fAddNewFile"></a>
+<a name="robo98"></a><h2>CreateItems/AddNewFile [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo4">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show text entry for enter new file name after selecting menu New File
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>AddNewFile</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item which was selected. Unused.
+</pre>
+
+<hr />
+<a name="CreateItems2fAddNewLink"></a>
+<a name="robo99"></a><h2>CreateItems/AddNewLink [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo4">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show text entry and destination for create new link after selecting menu
+ New Link
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>AddNewLink</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item which was selected. Unused.
 </pre>
 
 <hr />
 <a name="CreateItems2fCreateItem"></a>
-<a name="robo72"></a><h2>CreateItems/CreateItem [ Subprograms ]</h2>
+<a name="robo101"></a><h2>CreateItems/CreateItem [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo3">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo4">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create new or rename existing file, directory or symbolic link or hide
  text entry
@@ -81,24 +118,24 @@
 
 <hr />
 <a name="CreateItems2fCreateNew"></a>
-<a name="robo73"></a><h2>CreateItems/CreateNew [ Subprograms ]</h2>
+<a name="robo102"></a><h2>CreateItems/CreateNew [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo3">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo4">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create new file or directory when user press enter in text entry
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateNew</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+<pre class="source">   <span class="keyword">procedure</span> <strong>CreateNew</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Entry_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
 </span></pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+<pre> Self - Gtk_GEntry in which Enter was pressed.
 </pre>
 
 <hr />
 <a name="CreateItems2fIconPressed"></a>
-<a name="robo74"></a><h2>CreateItems/IconPressed [ Subprograms ]</h2>
+<a name="robo103"></a><h2>CreateItems/IconPressed [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo3">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./createitems_ads.html#robo4">CreateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create new file or directory when user press icon or hide text entry
 </pre>
@@ -115,7 +152,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/createitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Oct 28 2019 06:58:59
+<p>Generated from ./src/createitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
 </p>
 </div> <!-- footer -->
 </body>

@@ -8,16 +8,17 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/loaddata.ads</title>
 <!-- Source: ./src/loaddata.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.1 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -26,19 +27,19 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo7">Hunter/LoadData</a></li>
+<li>1. <a href="#robo9">Hunter/LoadData</a></li>
 <ul>
-<li>1.1. <a href="./loaddata_adb.html#robo32">LoadData/Accelerators</a></li>
-<li>1.2. <a href="#robo87">LoadData/EmptySortFiles</a></li>
-<li>1.3. <a href="#robo88">LoadData/LoadDirectory</a></li>
-<li>1.4. <a href="./loaddata_adb.html#robo89">LoadData/PathClicked</a></li>
-<li>1.5. <a href="./loaddata_adb.html#robo90">LoadData/RemovePathButtons</a></li>
-<li>1.6. <a href="#robo91">LoadData/SortFiles</a></li>
+<li>1.1. <a href="#robo127">LoadData/AddItem</a></li>
+<li>1.2. <a href="#robo128">LoadData/EmptySortFiles</a></li>
+<li>1.3. <a href="#robo129">LoadData/LoadDirectory</a></li>
+<li>1.4. <a href="./loaddata_adb.html#robo130">LoadData/PathClicked</a></li>
+<li>1.5. <a href="./loaddata_adb.html#robo131">LoadData/RemovePathButtons</a></li>
+<li>1.6. <a href="#robo132">LoadData/SortFiles</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Hunter2fLoadData"></a>
-<a name="robo7"></a><h2>Hunter/LoadData [ Packages ]</h2>
+<a name="robo9"></a><h2>Hunter/LoadData [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -49,10 +50,33 @@
 </pre>
 
 <hr />
-<a name="LoadData2fEmptySortFiles"></a>
-<a name="robo87"></a><h2>LoadData/EmptySortFiles [ Subprograms ]</h2>
+<a name="LoadData2fAddItem"></a>
+<a name="robo127"></a><h2>LoadData/AddItem [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo9">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Add file or directory to the directory listing list
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>AddItem</strong>
+     <span class="sign">(</span>FilesList<span class="sign">:</span> Gtk_List_Store<span class="sign">;</span> FileIter<span class="sign">:</span> <span class="keyword">out</span> Gtk_Tree_Iter<span class="sign">;</span> Path<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> FilesList - Gtk_List_Store with list of files and directories to which
+             item will be added
+ FileIter  - Gtk_Tree_Iter of added item in FilesList
+ Path      - Full path to the file or directory which will be added to
+             the FilesList.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> Parameter FileIter
+</pre>
+
+<hr />
+<a name="LoadData2fEmptySortFiles"></a>
+<a name="robo128"></a><h2>LoadData/EmptySortFiles [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo9">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Empty sort function used to speed up loading listing of current
  directory.
@@ -73,9 +97,9 @@
 
 <hr />
 <a name="LoadData2fLoadDirectory"></a>
-<a name="robo88"></a><h2>LoadData/LoadDirectory [ Subprograms ]</h2>
+<a name="robo129"></a><h2>LoadData/LoadDirectory [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo9">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Load selected directory with Name to Gtk_Store_List with ListName
 </pre>
@@ -91,9 +115,9 @@
 
 <hr />
 <a name="LoadData2fSortFiles"></a>
-<a name="robo91"></a><h2>LoadData/SortFiles [ Subprograms ]</h2>
+<a name="robo132"></a><h2>LoadData/SortFiles [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo9">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Sort files and directories in current directory view
 </pre>
@@ -115,7 +139,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/loaddata.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Oct 28 2019 06:58:59
+<p>Generated from ./src/loaddata.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
 </p>
 </div> <!-- footer -->
 </body>

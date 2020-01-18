@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<title>./src/programsmenu.adb</title>
+<!-- Source: ./src/programsmenu.adb -->
+<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./sources.html#top">Source files</a>
+<a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_types.html#top">Types</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo66">ProgramsMenu/FileName</a></li>
+<li>2. <a href="#robo67">ProgramsMenu/MenuButton</a></li>
+<li>3. <a href="#robo68">ProgramsMenu/ProgramsFilter</a></li>
+<li>4. <a href="#robo69">ProgramsMenu/SearchFor</a></li>
+<li>5. <a href="#robo187">ProgramsMenu/FindProgramName</a></li>
+<li>6. <a href="#robo189">ProgramsMenu/SearchProgram</a></li>
+<li>7. <a href="#robo190">ProgramsMenu/SetProgram</a></li>
+<li>8. <a href="#robo191">ProgramsMenu/VisiblePrograms</a></li>
+</ul>
+<hr />
+<a name="ProgramsMenu2fFileName"></a>
+<a name="robo66"></a><h2>ProgramsMenu/FileName [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo14">ProgramsMenu</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Name of application which was found, or desktop file when nothing found.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>FileName</strong><span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fMenuButton"></a>
+<a name="robo67"></a><h2>ProgramsMenu/MenuButton [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo14">ProgramsMenu</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Button which is parent for the programs menu
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>MenuButton</strong><span class="sign">:</span> Gtk_Toggle_Button<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fProgramsFilter"></a>
+<a name="robo68"></a><h2>ProgramsMenu/ProgramsFilter [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo14">ProgramsMenu</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Filter and list which contains all applications
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>ProgramsFilter</strong><span class="sign">:</span> <span class="keyword">constant</span> Gtk_Tree_Model_Filter <span class="sign">:</span><span class="sign">=</span>
+     Gtk_Tree_Model_Filter_Filter_New
+       <span class="sign">(</span><span class="sign">+</span><span class="sign">(</span>Gtk_List_Store_Newv<span class="sign">(</span><span class="sign">(</span>GType_String<span class="sign">,</span> GType_String<span class="sign">)</span><span class="sign">)</span><span class="sign">)</span><span class="sign">)</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fSearchFor"></a>
+<a name="robo69"></a><h2>ProgramsMenu/SearchFor [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo14">ProgramsMenu</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> String which the program will be looking for in applications list
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>SearchFor</strong><span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fFindProgramName"></a>
+<a name="robo187"></a><h2>ProgramsMenu/FindProgramName [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo14">ProgramsMenu</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Search for selected desktop file and return program name if found
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>FindProgramName</strong>
+     <span class="sign">(</span>Model<span class="sign">:</span> Gtk_Tree_Model<span class="sign">;</span> Path<span class="sign">:</span> Gtk_Tree_Path<span class="sign">;</span> Iter<span class="sign">:</span> Gtk_Tree_Iter<span class="sign">)</span>
+      <span class="keyword">return</span> Boolean <span class="keyword">is</span>
+      <span class="keyword">pragma</span> Unreferenced<span class="sign">(</span>Path<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Model - Gtk_Tree_Model with list of know applications
+ Path  - Gtk_Tree_Path to selected element in Model
+ Iter  - Gtk_Tree_Iter to selected element in Model
+</pre>
+<p class="item_name">RESULT</p>
+<pre> True if application found, otherwise False
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fSearchProgram"></a>
+<a name="robo189"></a><h2>ProgramsMenu/SearchProgram [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo14">ProgramsMenu</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Start searching for the selected name in the applications list
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SearchProgram</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Search_Entry_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Search_Entry from which searched text will be taken
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fSetProgram"></a>
+<a name="robo190"></a><h2>ProgramsMenu/SetProgram [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo14">ProgramsMenu</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set selected application as a associated application with selected
+ MIME type
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetProgram</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tree_View_Record<span class="keyword">'Class</span><span class="sign">;</span> Path<span class="sign">:</span> Gtk_Tree_Path<span class="sign">;</span>
+      Column<span class="sign">:</span> not null access Gtk_Tree_View_Column_Record'</span>Class<span class="sign">)</span> <span class="keyword">is</span>
+      <span class="keyword">pragma</span> Unreferenced<span class="sign">(</span>Self<span class="sign">,</span> Column<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self   - Gtk_Tree_View with list of applications. Ununsed.
+ Path   - Gtk_Tree_Path to selected application
+ Column - Gtk_Tree_View_Column clicked. Ununsed.
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fVisiblePrograms"></a>
+<a name="robo191"></a><h2>ProgramsMenu/VisiblePrograms [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo14">ProgramsMenu</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Check if selected application should be visible when the user is looking
+ for selected name
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>VisiblePrograms</strong>
+     <span class="sign">(</span>Model<span class="sign">:</span> Gtk_Tree_Model<span class="sign">;</span> Iter<span class="sign">:</span> Gtk_Tree_Iter<span class="sign">)</span> <span class="keyword">return</span> Boolean <span class="keyword">is</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Model - Gtk_Tree_Model which contains all applications names
+ Iter  - Gtk_Tree_Iter to selected application name
+</pre>
+<p class="item_name">RESULT</p>
+<pre> True if application should be visible, otherwise false
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/programsmenu.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
+</p>
+</div> <!-- footer -->
+</body>
+</html>

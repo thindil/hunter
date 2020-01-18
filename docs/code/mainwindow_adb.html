@@ -8,16 +8,17 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/mainwindow.adb</title>
 <!-- Source: ./src/mainwindow.adb -->
-<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.1 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -26,21 +27,95 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo93">MainWindow/EntryKeyPressed</a></li>
-<li>2. <a href="#robo94">MainWindow/GetWindowSize</a></li>
-<li>3. <a href="#robo98">MainWindow/ShowAbout</a></li>
-<li>4. <a href="#robo99">MainWindow/ShowFile</a></li>
-<li>5. <a href="#robo100">MainWindow/ShowFiles</a></li>
-<li>6. <a href="#robo101">MainWindow/ShowFilesMenu</a></li>
-<li>7. <a href="#robo102">MainWindow/StartRename</a></li>
-<li>8. <a href="#robo103">MainWindow/UpdateImage</a></li>
-<li>9. <a href="#robo104">MainWindow/WindowKeyPressed</a></li>
+<li>1. <a href="#robo54">MainWindow/MenuIndex</a></li>
+<li>2. <a href="#robo133">MainWindow/ActivateFileMenu</a></li>
+<li>3. <a href="#robo134">MainWindow/CopyItemMenu</a></li>
+<li>4. <a href="#robo136">MainWindow/DeleteItemMenu</a></li>
+<li>5. <a href="#robo137">MainWindow/EntryKeyPressed</a></li>
+<li>6. <a href="#robo138">MainWindow/ExecuteFileMenu</a></li>
+<li>7. <a href="#robo139">MainWindow/GetWindowSize</a></li>
+<li>8. <a href="#robo140">MainWindow/MoveItemMenu</a></li>
+<li>9. <a href="#robo143">MainWindow/SelectAll</a></li>
+<li>10. <a href="#robo144">MainWindow/SelectAllMenu</a></li>
+<li>11. <a href="#robo145">MainWindow/SetFilesMenu</a></li>
+<li>12. <a href="#robo146">MainWindow/SetSelected</a></li>
+<li>13. <a href="#robo147">MainWindow/ShowAbout</a></li>
+<li>14. <a href="#robo148">MainWindow/ShowChangelog</a></li>
+<li>15. <a href="#robo149">MainWindow/ShowContributing</a></li>
+<li>16. <a href="#robo150">MainWindow/ShowFile</a></li>
+<li>17. <a href="#robo151">MainWindow/ShowFiles</a></li>
+<li>18. <a href="#robo152">MainWindow/ShowFilesMenu</a></li>
+<li>19. <a href="#robo153">MainWindow/ShowReadme</a></li>
+<li>20. <a href="#robo154">MainWindow/StartOpenWithMenu</a></li>
+<li>21. <a href="#robo155">MainWindow/StartRename</a></li>
+<li>22. <a href="#robo156">MainWindow/StartRenameMenu</a></li>
+<li>23. <a href="#robo157">MainWindow/WindowKeyPressed</a></li>
 </ul>
 <hr />
-<a name="MainWindow2fEntryKeyPressed"></a>
-<a name="robo93"></a><h2>MainWindow/EntryKeyPressed [ Subprograms ]</h2>
+<a name="MainWindow2fMenuIndex"></a>
+<a name="robo54"></a><h2>MainWindow/MenuIndex [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo8">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Menu index for menu item to set visibility
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>MenuIndex</strong><span class="sign">:</span> <a href="./utils_adb.html#robo75">Positive</a><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindow2fActivateFileMenu"></a>
+<a name="robo133"></a><h2>MainWindow/ActivateFileMenu [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Activate selected file or directory.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ActivateFileMenu</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item clicked. Unused.
+</pre>
+
+<hr />
+<a name="MainWindow2fCopyItemMenu"></a>
+<a name="robo134"></a><h2>MainWindow/CopyItemMenu [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Start copying selected file or directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CopyItemMenu</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item clicked. Unused.
+</pre>
+
+<hr />
+<a name="MainWindow2fDeleteItemMenu"></a>
+<a name="robo136"></a><h2>MainWindow/DeleteItemMenu [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Delete selected file or directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>DeleteItemMenu</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item clicked. Unused.
+</pre>
+
+<hr />
+<a name="MainWindow2fEntryKeyPressed"></a>
+<a name="robo137"></a><h2>MainWindow/EntryKeyPressed [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Close text entry on press Escape key
 </pre>
@@ -59,74 +134,208 @@
 </pre>
 
 <hr />
-<a name="MainWindow2fGetWindowSize"></a>
-<a name="robo94"></a><h2>MainWindow/GetWindowSize [ Subprograms ]</h2>
+<a name="MainWindow2fExecuteFileMenu"></a>
+<a name="robo138"></a><h2>MainWindow/ExecuteFileMenu [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo8">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Execute selected file
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ExecuteFileMenu</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item clicked. Unused.
+</pre>
+
+<hr />
+<a name="MainWindow2fGetWindowSize"></a>
+<a name="robo139"></a><h2>MainWindow/GetWindowSize [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Get the main window size at quitting of the program
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">function</span> <strong>GetWindowSize</strong>
-     <span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
-</span></pre>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Widget_Record<span class="keyword">'Class</span><span class="sign">;</span> Event<span class="sign">:</span> Gdk_Event<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Event<span class="sign"><span class="sign">)</span>;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+<pre> Self  - Main window of the program which triggered this event
+ Event - Gdk_Event which was triggered. Unused
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return False
 </pre>
 
 <hr />
-<a name="MainWindow2fShowAbout"></a>
-<a name="robo98"></a><h2>MainWindow/ShowAbout [ Subprograms ]</h2>
+<a name="MainWindow2fMoveItemMenu"></a>
+<a name="robo140"></a><h2>MainWindow/MoveItemMenu [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo8">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Start moving selected file or directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>MoveItemMenu</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+
+<hr />
+<a name="MainWindow2fSelectAll"></a>
+<a name="robo143"></a><h2>MainWindow/SelectAll [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Select all files and directories in current folder
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SelectAll</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Button which was clicked. Unused
+</pre>
+
+<hr />
+<a name="MainWindow2fSelectAllMenu"></a>
+<a name="robo144"></a><h2>MainWindow/SelectAllMenu [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Select or unselect all files and directories in current directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SelectAllMenu</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item clicked. Unused.
+</pre>
+
+<hr />
+<a name="MainWindow2fSetFilesMenu"></a>
+<a name="robo145"></a><h2>MainWindow/SetFilesMenu [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set visibility of selected file or directory popup menu elements
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetFilesMenu</strong>
+     <span class="sign">(</span>Widget<span class="sign">:</span> <span class="keyword">not</span> <span class="keyword">null</span> <span class="keyword">access</span> Gtk<span class="sign">.</span>Widget<span class="sign">.</span>Gtk_Widget_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Widget - Menu item which will be check
+</pre>
+
+<hr />
+<a name="MainWindow2fSetSelected"></a>
+<a name="robo146"></a><h2>MainWindow/SetSelected [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set selection to the selected file or directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetSelected</strong>
+     <span class="sign">(</span>Model<span class="sign">:</span> Gtk_Tree_Model<span class="sign">;</span> Path<span class="sign">:</span> Gtk_Tree_Path<span class="sign">;</span> Iter<span class="sign">:</span> Gtk_Tree_Iter<span class="sign">)</span>
+      <span class="keyword">return</span> Boolean <span class="keyword">is</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Model - Gtk_Tree_Model with current directory listing
+ Path  - Gtk_Tree_Path to the currently element
+ Iter  - Gtk_Tree_Iter to the currently check element
+</pre>
+<p class="item_name">RESULT</p>
+<pre> True if selection was set, otherwise False to continue search
+</pre>
+
+<hr />
+<a name="MainWindow2fShowAbout"></a>
+<a name="robo147"></a><h2>MainWindow/ShowAbout [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show dialog with informations about the program
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowAbout</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
-</span></pre>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowAbout</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+<pre> Self - Gtk_Tool_Button which was clicked. Unused
+</pre>
+
+<hr />
+<a name="MainWindow2fShowChangelog"></a>
+<a name="robo148"></a><h2>MainWindow/ShowChangelog [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show CHANGELOG.md file when the user select it from menu
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowChangelog</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item clicked. Unused
+</pre>
+
+<hr />
+<a name="MainWindow2fShowContributing"></a>
+<a name="robo149"></a><h2>MainWindow/ShowContributing [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show CONTRIBUTING.md file when the user select it from menu
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowContributing</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item clicked. Unused
 </pre>
 
 <hr />
 <a name="MainWindow2fShowFile"></a>
-<a name="robo99"></a><h2>MainWindow/ShowFile [ Subprograms ]</h2>
+<a name="robo150"></a><h2>MainWindow/ShowFile [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo8">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Show README.md or CHANGELOG.md file
+<pre> Show selected file to user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowFile</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
-</span></pre>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowFile</strong><span class="sign">(</span><a href="./programsmenu_adb.html#robo66">FileName</a><span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">is</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
-<pre> User_Data - Which menu item was selected
+<pre> <a href="./programsmenu_adb.html#robo66">FileName</a> - Name of file to show
 </pre>
 
 <hr />
 <a name="MainWindow2fShowFiles"></a>
-<a name="robo100"></a><h2>MainWindow/ShowFiles [ Subprograms ]</h2>
+<a name="robo151"></a><h2>MainWindow/ShowFiles [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo8">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Back to files listing and preview/info
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowFiles</strong><span class="sign">(</span>User_Data<span class="sign">:</span> <span class="keyword">access</span> GObject_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowFiles</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
 </span></pre>
 <p class="item_name">PARAMETERS</p>
-<pre> User_Data - Which button was clicked
+<pre> Self - Gtk_Tool_Button which was clicked.
 </pre>
 
 <hr />
 <a name="MainWindow2fShowFilesMenu"></a>
-<a name="robo101"></a><h2>MainWindow/ShowFilesMenu [ Subprograms ]</h2>
+<a name="robo152"></a><h2>MainWindow/ShowFilesMenu [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo8">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show menu with available actions on right click on directory listing
 </pre>
@@ -145,41 +354,75 @@
 </pre>
 
 <hr />
-<a name="MainWindow2fStartRename"></a>
-<a name="robo102"></a><h2>MainWindow/StartRename [ Subprograms ]</h2>
+<a name="MainWindow2fShowReadme"></a>
+<a name="robo153"></a><h2>MainWindow/ShowReadme [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo8">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show README.md file when the user select it from menu
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowReadme</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item clicked. Unused
+</pre>
+
+<hr />
+<a name="MainWindow2fStartOpenWithMenu"></a>
+<a name="robo154"></a><h2>MainWindow/StartOpenWithMenu [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Start opening selected file or directory with user defined command.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>StartOpenWithMenu</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Menu_Item clicked. Unused.
+</pre>
+
+<hr />
+<a name="MainWindow2fStartRename"></a>
+<a name="robo155"></a><h2>MainWindow/StartRename [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show text entry to start renaming selected file or directory and fill it
  with current element name.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>StartRename</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
-</span></pre>
+<pre class="source">   <span class="keyword">procedure</span> <strong>StartRename</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+<pre> Self - Gtk_Tool_Button which was clicked
 </pre>
 
 <hr />
-<a name="MainWindow2fUpdateImage"></a>
-<a name="robo103"></a><h2>MainWindow/UpdateImage [ Subprograms ]</h2>
+<a name="MainWindow2fStartRenameMenu"></a>
+<a name="robo156"></a><h2>MainWindow/StartRenameMenu [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo8">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> If scaling images in preview is enabled, scale it on resize preview of it
+<pre> Start renaming selected file or directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>UpdateImage</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
-</span></pre>
+<pre class="source">   <span class="keyword">procedure</span> <strong>StartRenameMenu</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Menu_Item_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+<pre> Self - Gtk_Menu_Item clicked. Unused.
 </pre>
 
 <hr />
 <a name="MainWindow2fWindowKeyPressed"></a>
-<a name="robo104"></a><h2>MainWindow/WindowKeyPressed [ Subprograms ]</h2>
+<a name="robo157"></a><h2>MainWindow/WindowKeyPressed [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo8">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow_ads.html#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Close the program with keyboard shortcut
 </pre>
@@ -200,7 +443,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/mainwindow.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Oct 28 2019 06:58:59
+<p>Generated from ./src/mainwindow.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
 </p>
 </div> <!-- footer -->
 </body>

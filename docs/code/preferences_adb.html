@@ -8,16 +8,17 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/preferences.adb</title>
 <!-- Source: ./src/preferences.adb -->
-<!-- Generated with ROBODoc Version 4.99.43 (Feb  2 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.1 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -26,84 +27,332 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo117">Preferences/SaveSettings</a></li>
-<li>2. <a href="#robo118">Preferences/SaveSettingsProc</a></li>
-<li>3. <a href="#robo120">Preferences/SetToolbars</a></li>
-<li>4. <a href="#robo121">Preferences/TogglePreferences</a></li>
+<li>1. <a href="#robo168">Preferences/LoadSettings</a></li>
+<li>2. <a href="#robo170">Preferences/SetAutoClose</a></li>
+<li>3. <a href="#robo171">Preferences/SetAutoRefresh</a></li>
+<li>4. <a href="#robo172">Preferences/SetClearTrash</a></li>
+<li>5. <a href="#robo173">Preferences/SetColorText</a></li>
+<li>6. <a href="#robo174">Preferences/SetColorTheme</a></li>
+<li>7. <a href="#robo175">Preferences/SetDeleteFiles</a></li>
+<li>8. <a href="#robo177">Preferences/SetLastModified</a></li>
+<li>9. <a href="#robo178">Preferences/SetOverwrite</a></li>
+<li>10. <a href="#robo179">Preferences/SetScaleImages</a></li>
+<li>11. <a href="#robo180">Preferences/SetShowFinished</a></li>
+<li>12. <a href="#robo181">Preferences/SetShowHidden</a></li>
+<li>13. <a href="#robo182">Preferences/SetShowPreview</a></li>
+<li>14. <a href="#robo183">Preferences/SetStayInOld</a></li>
+<li>15. <a href="#robo184">Preferences/SetToolbarsOnTop</a></li>
+<li>16. <a href="#robo185">Preferences/TogglePreferences</a></li>
 </ul>
 <hr />
-<a name="Preferences2fSaveSettings"></a>
-<a name="robo117"></a><h2>Preferences/SaveSettings [ Subprograms ]</h2>
+<a name="Preferences2fLoadSettings"></a>
+<a name="robo168"></a><h2>Preferences/LoadSettings [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo11">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Save the program settings to file and update program to the new
- configuration if needed.
+<pre> Load the program settings from file. If file not exists, load default
+ settings.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>SaveSettings</strong>
-     <span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+<pre class="source">   <span class="keyword">procedure</span> <strong>LoadSettings</strong> <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="Preferences2fSetAutoClose"></a>
+<a name="robo170"></a><h2>Preferences/SetAutoClose [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set new value of AutoCloseMessagesTime based on value set by the user
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetAutoClose</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Adjustment_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
 </span></pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+<pre> Self - Gtk_Adjustment with new value for setting
+</pre>
+
+<hr />
+<a name="Preferences2fSetAutoRefresh"></a>
+<a name="robo171"></a><h2>Preferences/SetAutoRefresh [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set new value of AutoRefreshInterval based on value set by the user
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetAutoRefresh</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Adjustment_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span></pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self - Gtk_Adjustment with new value for setting
+</pre>
+
+<hr />
+<a name="Preferences2fSetClearTrash"></a>
+<a name="robo172"></a><h2>Preferences/SetClearTrash [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set if <a href="./trash_ads.html#robo18">Trash</a> should be cleared on exit from the program
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetClearTrash</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
 </pre>
 <p class="item_name">RESULT</p>
-<pre> Always False so default handler will be running too.
-</pre>
-<p class="item_name">SEE ALSO</p>
-<pre> <a href="#robo118">SaveSettingsProc</a>
+<pre> This function always return True to stop signal emission
 </pre>
 
 <hr />
-<a name="Preferences2fSaveSettingsProc"></a>
-<a name="robo118"></a><h2>Preferences/SaveSettingsProc [ Subprograms ]</h2>
+<a name="Preferences2fSetColorText"></a>
+<a name="robo173"></a><h2>Preferences/SetColorText [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo11">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Save the program settings to file and update program to the new
- configuration if needed. Some GTK elements need procedures instead
- of function.
+<pre> Set setting to enable syntax highlightning of files
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SaveSettingsProc</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+<pre class="source">   <span class="keyword">function</span> <strong>SetColorText</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
+</pre>
+
+<hr />
+<a name="Preferences2fSetColorTheme"></a>
+<a name="robo174"></a><h2>Preferences/SetColorTheme [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set new color theme for syntax highlightning base on value set by the
+ user
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetColorTheme</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Combo_Box_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
 </span></pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
-</pre>
-<p class="item_name">SEE ALSO</p>
-<pre> <a href="#robo117">SaveSettings</a>
+<pre> Self - Gtk_Combo_Box with new value for setting
 </pre>
 
 <hr />
-<a name="Preferences2fSetToolbars"></a>
-<a name="robo120"></a><h2>Preferences/SetToolbars [ Subprograms ]</h2>
+<a name="Preferences2fSetDeleteFiles"></a>
+<a name="robo175"></a><h2>Preferences/SetDeleteFiles [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo11">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Set position of toolbars - on the top or the left of the main window.
+<pre> Set if files should be deleted or moved to trash
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SetToolbars</strong> <span class="keyword">is</span>
+<pre class="source">   <span class="keyword">function</span> <strong>SetDeleteFiles</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
+</pre>
+
+<hr />
+<a name="Preferences2fSetLastModified"></a>
+<a name="robo177"></a><h2>Preferences/SetLastModified [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set setting for visibility of last modified column
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetLastModified</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
+</pre>
+
+<hr />
+<a name="Preferences2fSetOverwrite"></a>
+<a name="robo178"></a><h2>Preferences/SetOverwrite [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set if files should be overwrited on copy/move or saved with new name
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetOverwrite</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
+</pre>
+
+<hr />
+<a name="Preferences2fSetScaleImages"></a>
+<a name="robo179"></a><h2>Preferences/SetScaleImages [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set setting for scale images
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetScaleImages</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
+</pre>
+
+<hr />
+<a name="Preferences2fSetShowFinished"></a>
+<a name="robo180"></a><h2>Preferences/SetShowFinished [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set setting for show information about finished actions
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetShowFinished</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
+</pre>
+
+<hr />
+<a name="Preferences2fSetShowHidden"></a>
+<a name="robo181"></a><h2>Preferences/SetShowHidden [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set setting for show hidden files and directories
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetShowHidden</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
+</pre>
+
+<hr />
+<a name="Preferences2fSetShowPreview"></a>
+<a name="robo182"></a><h2>Preferences/SetShowPreview [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set setting to show preview of items
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetShowPreview</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
+</pre>
+
+<hr />
+<a name="Preferences2fSetStayInOld"></a>
+<a name="robo183"></a><h2>Preferences/SetStayInOld [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set setting to stay in old directory after copy/move
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetStayInOld</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
+</pre>
+
+<hr />
+<a name="Preferences2fSetToolbarsOnTop"></a>
+<a name="robo184"></a><h2>Preferences/SetToolbarsOnTop [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set setting for show toolbar on top or side of the program
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetToolbarsOnTop</strong>
+     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Switch_Record<span class="keyword">'Class</span><span class="sign">;</span> State<span class="sign">:</span> Boolean<span class="sign">)</span><span class="keyword"> return </span>Boolean<span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Self  - Gtk_Switch which was changed. Ununsed.
+ State - New state of Gtk_Switch. Used as new value for setting.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return True to stop signal emission
 </pre>
 
 <hr />
 <a name="Preferences2fTogglePreferences"></a>
-<a name="robo121"></a><h2>Preferences/TogglePreferences [ Subprograms ]</h2>
+<a name="robo185"></a><h2>Preferences/TogglePreferences [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo11">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo13">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show or hide the program preferences window
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>TogglePreferences</strong><span class="sign">(</span>Object<span class="sign">:</span> <span class="keyword">access</span> Gtkada_Builder_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
-</span></pre>
+<pre class="source">   <span class="keyword">procedure</span> <strong>TogglePreferences</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
+</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+</pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Object - GtkAda <a href="./errordialog_adb.html#robo29">Builder</a> used to create UI
+<pre> Self - Gtk_Tool_Button which was clicked. Unused.
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/preferences.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Mon Oct 28 2019 06:58:59
+<p>Generated from ./src/preferences.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
 </p>
 </div> <!-- footer -->
 </body>
