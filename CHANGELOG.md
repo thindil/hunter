@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- Crash when associated with file program is not installed
+
 ## [1.2] - 2020-01-18
 
 ### Added
