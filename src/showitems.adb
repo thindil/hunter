@@ -184,7 +184,7 @@ package body ShowItems is
                         To_String(DesktopFile));
                   else
                      Set_Label
-                       (Gtk_Label(Get_Child_At(InfoGrid, 1, 4)),
+                       (Gtk_Button(Get_Child_At(InfoGrid, 1, 4)),
                         To_String(DesktopFile) & Gettext(" (not installed)"));
                   end if;
                end if;
