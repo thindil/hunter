@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ package body ErrorDialog is
       end if;
       Append(ErrorText, Ada.Calendar.Formatting.Image(Clock));
       Append(ErrorText, LF);
-      Append(ErrorText, "1.2");
+      Append(ErrorText, "1.2.1");
       Append(ErrorText, LF);
       Append(ErrorText, "Exception: " & Exception_Name(An_Exception));
       Append(ErrorText, LF);
