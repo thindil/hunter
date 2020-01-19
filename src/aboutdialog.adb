@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -53,7 +53,7 @@ package body AboutDialog is
       end if;
       Gdk_New_From_File(LogoBuf, To_String(IconName), Error);
       Set_Logo(AboutDialog, LogoBuf);
-      Set_Version(AboutDialog, "1.2");
+      Set_Version(AboutDialog, "1.2.1");
       Set_Website(AboutDialog, "https://thindil.github.io/hunter/");
       Set_Website_Label(AboutDialog, "Website");
       if Run(Gtk_Dialog(AboutDialog)) = Gtk_Response_Delete_Event then
