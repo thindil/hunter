@@ -14,4 +14,4 @@ Various files which are not necessary needed for development:
 - translations.sh - script to manage translations of the progam. **Important:**
                     run this script from the main project directory, not from
                     this.
-- pl.laeran.hunter.appdata.xml - AppStream meta data for AppImage.
+- hunter.appdata.xml - AppStream meta data for AppImage.
