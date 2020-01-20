@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Crash when associated with file program is not installed
 - Showing error info when crash occurs
+- Showing info about file on start the program
 
 ## [1.2] - 2020-01-18
 
