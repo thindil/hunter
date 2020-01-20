@@ -804,6 +804,7 @@ package body ShowItems is
       AddBox(6);
       AddLabel(Gettext("Others:"), 0, 7);
       AddBox(7);
+      Show_All(InfoGrid);
       Add_Named(InfoStack, InfoGrid, "info");
       declare
          DirectoryView: constant Gtk_Tree_View :=
