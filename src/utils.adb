@@ -15,7 +15,6 @@
 
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Gtk.Bin; use Gtk.Bin;
 with Gtk.Box; use Gtk.Box;
@@ -63,22 +62,19 @@ package body Utils is
    end GetMimeType;
 
    function CanBeOpened(MimeType: String) return Boolean is
-      ProcessDesc: Process_Descriptor;
-      Result: Expect_Match;
       ExecutableName: constant String := FindExecutable("xdg-mime");
+      Success: Boolean;
    begin
       if ExecutableName = "" then
          return False;
       end if;
-      Non_Blocking_Spawn
-        (ProcessDesc, ExecutableName,
-         Argument_String_To_List("query default " & MimeType).all);
-      Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
-      Close(ProcessDesc);
-      return True;
-   exception
-      when Process_Died =>
+      Spawn
+        (ExecutableName,
+         Argument_String_To_List("query default " & MimeType).all, Success);
+      if not Success then
          return False;
+      end if;
+      return True;
    end CanBeOpened;
 
    function CountFileSize(Size: File_Size) return String is
