@@ -120,6 +120,7 @@ package body ErrorDialog is
       Add(Scroll, View);
       Add(Expander, Scroll);
       Pack_Start(Box, Expander);
+      Show_All(Box);
       Add_Named(FileStack, Box, "error");
    end CreateErrorUI;
 
