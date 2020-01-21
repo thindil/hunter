@@ -12,7 +12,7 @@ cp CHANGELOG.md $releasedir/share/doc/hunter/
 cp COPYING $releasedir/share/doc/hunter/
 cp README.md $releasedir/share/doc/hunter/
 cp CONTRIBUTING.md $releasedir/share/doc/hunter/
-cp others/pl.laeran.hunter.appdata.xml $releasedir/share/metainfo
+cp others/hunter.appdata.xml $releasedir/share/metainfo
 others/translations.sh generate
 for directory in $(find po/* -maxdepth 0 -type d)
 do
