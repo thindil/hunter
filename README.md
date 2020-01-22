@@ -16,8 +16,8 @@ program. Some things may be different in released version of Hunter.
 - Preview of text files (with syntax highlighting) and images.
 - Standard file manager features: copy, delete, move files and directories,
   change their permissions, change application associated with them.
-- Written in GTK and Ada. Should nicely integrate with selected desktop theme.
-- Available in English and Polish language
+- Written in TK and Ada.
+- Available in English and Polish language.
 
 ## Build the program from sources
 
@@ -31,13 +31,15 @@ To build you need:
   The program does not work with old compilers (like GCC 4.9) since it
   lacks full support for Ada 2012.
 
-* GtkAda library which should be available in most Linux distributions. Best
-  option is to use (with GNAT GPL) AdaCore version of GtkAda from:
+* Tcl/Tk library. Should be available in any Linux distribution
 
-  https://www.adacore.com/download/more
+* TASHY library. You can get it from:
 
-  At this moment tested version of GtkAda is 2019 and the program require GTK
-  library in version 3.14 (may not works with other versions).
+   https://github.com/thindil/tashy
+
+   **Important:** To build this version of Hunter you will need a repository
+   version of the library, not release (probably soon or later it will
+   be better synchronized).
 
 * File command (libmagic) development files. It can have different names in
   every Linux distribution: in Fedora it is *file-devel* on Debian/Ubuntu/Mint
@@ -65,8 +67,7 @@ files usage, you can find at:
 
 https://docs.appimage.org/user-guide/run-appimages.html
 
-When you trying to run build by yourself version of the program, use script
-`hunter.sh`. The program will not works if you try to start it by binary file
+When you trying to run build by yourself version of the program, run
 `hunter` from `bin` directory. To work the program needs scripts *xdg-open*
 and *xdg-mime*. In most Linux distributions they are in *xdg-utils* package.
 Additionally, to coloring syntax in text files preview, the program needs
@@ -78,16 +79,7 @@ option will be disabled.
 
 You can set directory to view when starting the program by adding it full path
 to the starting command. For example, to view root directory `/` run the
-program with `hunter.sh /`
-
-### Wrong theme used by the program
-
-Hunter uses GTK library in version 3.14. Your selected theme probably don't
-support this version of GTK or don't have compiled support for it. In this
-second situation, please check documentation of selected theme to find how to
-recompile it. If your theme completely don't support GTK in version 3.14 you
-can still use default GTK theme by adding environment variable `GTK_THEME`.
-For example: `GTK_THEME=Adwaita ./hunter-x86-64.AppImage`.
+program with `hunter /`
 
 ### Testing versions
 
@@ -120,17 +112,17 @@ xdg-utils project and released under MIT license:
 
 https://github.com/freedesktop/xdg-utils
 
-GtkAda library distributed with the program are under GPLv3 license.
-
-https://github.com/AdaCore/gtkada
-
-Gtk library distributed with the program is under LGPLv2.1 license:
-
-https://www.gtk.org/
-
 Highlight program distributed with the program is under GPLv3 license.
 
 http://www.andre-simon.de/doku/highlight/en/highlight.php
+
+Tcl/Tk libraries are available under BSD-like license
+
+https://www.tcl.tk/
+
+TASHY is distributed under GPLv2 with runtime exception license
+
+https://www.tcl.tk/
 
 ----
 
