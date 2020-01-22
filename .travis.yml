@@ -3,6 +3,7 @@ language: minimal
 branches:
    except:
       - travis-dev-build
+      - experimental
 
 services:
    - docker
