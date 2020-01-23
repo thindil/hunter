@@ -9,13 +9,7 @@ if [ -z ${APPDIR+x} ]; then
 fi
 cd $APPDIR/usr/bin
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$APPDIR/usr/lib
-export GDK_PIXBUF_MODULE_FILE=$APPDIR/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
-export GDK_PIXBUF_MODULEDIR=$APPDIR/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders/
-export FONTCONFIG_FILE=$APPDIR/usr/etc/fonts/fonts.conf
 export XDG_DATA_DIRS=$XDG_DATA_DIRS:$APPDIR/usr/share
-export GSETTINGS_BACKEND=memory
-export LOCALESDIR=$APPDIR/usr/share/locale
-export RUNFROMSCRIPT=1
 if [ "$#" -ne 0 ]
 then
    if [ "${1%${1#?}}"x = "/x" ]
