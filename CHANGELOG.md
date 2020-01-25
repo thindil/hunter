@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+- Updated contributing guide
+- Updated README.md
+
 ## [1.2.1] - 2020-01-21
 
 ### Fixed
