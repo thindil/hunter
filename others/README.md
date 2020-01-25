@@ -12,7 +12,4 @@ Various files which are not necessary needed for development:
                      in release mode and copy all files to proper location.
                      **Important:** run this script from the main project
                      directory, not from this.
-- translations.sh  - script to manage translations of the progam. **Important:**
-                     run this script from the main project directory, not from
-                     this.
 - hunter.appdata.xml - AppStream meta data for AppImage.
