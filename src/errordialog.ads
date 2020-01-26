@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Exceptions; use Ada.Exceptions;
-with Gtk.Widget; use Gtk.Widget;
 
 -- ****h* Hunter/ErrorDialog
 -- FUNCTION
@@ -34,22 +33,6 @@ package ErrorDialog is
    -- SOURCE
    procedure SaveException
      (An_Exception: Exception_Occurrence; PrintToTerminal: Boolean);
-   -- ****
-
-   -- ****f* ErrorDialog/On_Exception
-   -- FUNCTION
-   -- Handle GUI exceptions
-   -- PARAMETERS
-   -- An_Exception - Exception's data which occured
-   -- SOURCE
-   procedure On_Exception(An_Exception: Exception_Occurrence);
-   -- ****
-
-   -- ****f* ErrorDialog/CreateErrorUI
-   -- FUNCTION
-   -- Create UI to show information about crash
-   -- SOURCE
-   procedure CreateErrorUI;
    -- ****
 
 end ErrorDialog;
