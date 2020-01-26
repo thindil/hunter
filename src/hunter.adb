@@ -13,23 +13,28 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Ada.Calendar; use Ada.Calendar;
---with Ada.Calendar.Formatting;
+with Ada.Calendar; use Ada.Calendar;
+with Ada.Calendar.Formatting;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
---with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Text_IO;
+with Ada.Exceptions; use Ada.Exceptions;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
---with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
@@ -123,7 +128,7 @@ begin
    -- Create UI
    MainWindow := Get_Main_Window(Interp);
    Wm_Set(MainWindow, "title", "Hunter");
-   Bind_To_Main_Window(Interp, "<Ctrl+q>", "{exit}");
+   Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
 
    --  Loop inside Tk, waiting for commands to execute.
    --  When there are no windows left, Tcl.Tk.Tk_MainLoop returns and we exit.
@@ -135,4 +140,51 @@ begin
    InotifyClose;
    MagicClose;
 
+exception
+   when An_Exception : others =>
+      declare
+         ErrorFile: File_Type;
+         ErrorText: Unbounded_String;
+         ErrorFilePath: constant String :=
+           Value("HOME") & "/.cache/hunter/error.log";
+         ErrorLabel: constant Ttk_Label :=
+           Create
+             (".errorlabel",
+              "-text ""Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at:"" -wraplength 500");
+         ErrorButton: constant Ttk_Button :=
+           Create
+             (".errorbutton",
+              "-text ""https://github.com/thindil/hunter/issues"" -command {exec xdg-open ""https://github.com/thindil/hunter/issues""}");
+         ErrorLabel2: constant Ttk_Label :=
+           Create
+             (".errorlabel2",
+              "-text ""and attach (if possible) file 'error.log' from" &
+              Value("HOME") & "/.cache/hunter' directory."" -wraplength 500");
+      begin
+         if Ada.Directories.Exists(ErrorFilePath) then
+            Open(ErrorFile, Append_File, ErrorFilePath);
+         else
+            Create(ErrorFile, Append_File, ErrorFilePath);
+         end if;
+         Append(ErrorText, Ada.Calendar.Formatting.Image(Clock));
+         Append(ErrorText, LF);
+         Append(ErrorText, "1.3");
+         Append(ErrorText, LF);
+         Append(ErrorText, "Exception: " & Exception_Name(An_Exception));
+         Append(ErrorText, LF);
+         Append(ErrorText, "Message: " & Exception_Message(An_Exception));
+         Append(ErrorText, LF);
+         Append
+           (ErrorText, "-------------------------------------------------");
+         Append(ErrorText, LF);
+         Append(ErrorText, Symbolic_Traceback(An_Exception));
+         Append(ErrorText, LF);
+         Append
+           (ErrorText, "-------------------------------------------------");
+         Put_Line(ErrorFile, To_String(ErrorText));
+         Close(ErrorFile);
+         Tcl.Tk.Ada.Pack.Pack(ErrorLabel);
+         Tcl.Tk.Ada.Pack.Pack(ErrorButton);
+         Tcl.Tk.Ada.Pack.Pack(ErrorLabel2);
+      end;
 end Hunter;
