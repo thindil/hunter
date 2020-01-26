@@ -13,30 +13,38 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Command_Line; use Ada.Command_Line;
+--with Ada.Calendar; use Ada.Calendar;
+--with Ada.Calendar.Formatting;
 with Ada.Directories; use Ada.Directories;
+--with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Text_IO; use Ada.Text_IO;
-with Gtk.Main; use Gtk.Main;
-with Gtkada.Bindings; use Gtkada.Bindings;
-with Gtkada.Intl; use Gtkada.Intl;
-with ErrorDialog; use ErrorDialog;
-with LibMagic; use LibMagic;
+with Ada.Text_IO;
+with Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
+--with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with CArgv;
+with Tcl; use Tcl;
+with Tcl.Ada;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
+with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Inotify; use Inotify;
-with MainWindow; use MainWindow;
+with LibMagic; use LibMagic;
 with RefreshData; use RefreshData;
 
 procedure Hunter is
+   use type Interfaces.C.int;
+
+   package GetPackages is new Tcl.Ada.Generic_PkgRequire(Integer);
+
+   Argc: CArgv.CNatural;
+   Argv: CArgv.Chars_Ptr_Ptr;
+   Interp: Tcl.Tcl_Interp;
+   MainWindow: Tk_Toplevel;
 begin
-   if not Ada.Environment_Variables.Exists("RUNFROMSCRIPT") then
-      Put_Line
-        ("The program can be run only via 'hunter.sh' script. Please don't run binary directly.");
-      return;
-   end if;
-   -- Start Gettext internationalization
-   Setlocale;
-   Bind_Text_Domain("hunter", Value("LOCALESDIR"));
-   Text_Domain("hunter");
    if not Ada.Directories.Exists(Value("HOME") & "/.cache/hunter") then
       Create_Path(Value("HOME") & "/.cache/hunter");
    end if;
@@ -52,26 +60,79 @@ begin
    MagicOpen;
    -- Start inotify
    InotifyInit;
-   -- Start GTK
-   Init;
-   Set_On_Exception(On_Exception'Access);
-   if Argument_Count < 1 then
-      CreateMainWindow(Value("HOME"));
-   else
-      CreateMainWindow(Full_Name(Argument(1)));
+   -- Start Tk
+
+   --  Get command-line arguments and put them into C-style "argv"
+   --------------------------------------------------------------
+   CArgv.Create(Argc, Argv);
+
+   --  Tcl needs to know the path name of the executable
+   --  otherwise Tcl.Tcl_Init below will fail.
+   ----------------------------------------------------
+   Tcl.Tcl_FindExecutable(Argv.all);
+
+   --  Create one Tcl interpreter
+   -----------------------------
+   Interp := Tcl.Tcl_CreateInterp;
+
+   --  Initialize Tcl
+   -----------------
+   if Tcl.Tcl_Init(Interp) = Tcl.TCL_ERROR then
+      Ada.Text_IO.Put_Line
+        ("AzipTk: Tcl.Tcl_Init failed: " &
+         Tcl.Ada.Tcl_GetStringResult(Interp));
+      return;
    end if;
-   CreateErrorUI;
-   Clear("LD_LIBRARY_PATH");
-   Clear("GDK_PIXBUF_MODULE_FILE");
-   Clear("GDK_PIXBUF_MODULEDIR");
-   Clear("FONTCONFIG_FILE");
-   Clear("RUNFROMSCRIPT");
-   Clear("GSETTINGS_BACKEND");
-   Main;
+
+   --  Initialize Tk
+   ----------------
+   if Tcl.Tk.Tk_Init(Interp) = Tcl.TCL_ERROR then
+      Ada.Text_IO.Put_Line
+        ("AZipTk: Tcl.Tk.Tk_Init failed: " &
+         Tcl.Ada.Tcl_GetStringResult(Interp));
+      return;
+   end if;
+
+   --  Set the Tk context so that we may use shortcut Tk
+   --  calls that require reference to the interpreter.
+   ----------------------------------------------------
+   Set_Context(Interp);
+
+   -- Load required Tcl packages
+   if GetPackages.Tcl_PkgRequireEx(Interp, "tooltip", "1.4.6", 0, null)'
+       Length =
+     0 then
+      Ada.Text_IO.Put_Line
+        ("Failed to load tooltip package: " &
+         Tcl.Ada.Tcl_GetStringResult(Interp));
+      return;
+   end if;
+
+   -- Set default type of view for archives
+   if Tcl_Eval(Interp, New_String("set viewtype tree")) = TCL_ERROR then
+      Ada.Text_IO.Put_Line("Can't set type of view for archives.");
+      return;
+   end if;
+
+   -- Set default type of tiling for archives
+   if Tcl_Eval(Interp, New_String("set tiletype horizontal")) = TCL_ERROR then
+      Ada.Text_IO.Put_Line("Can't set type of tiling for archives.");
+      return;
+   end if;
+
+   -- Create UI
+   MainWindow := Get_Main_Window(Interp);
+   Wm_Set(MainWindow, "title", "Hunter");
+   Bind_To_Main_Window(Interp, "<Ctrl+q>", "{exit}");
+
+   --  Loop inside Tk, waiting for commands to execute.
+   --  When there are no windows left, Tcl.Tk.Tk_MainLoop returns and we exit.
+   --------------------------------------------------------------------------
+   Tcl.Tk.Tk_MainLoop;
+
+   -- Close everything and quit
    abort InotifyTask;
    InotifyClose;
    MagicClose;
-exception
-   when An_Exception : others =>
-      SaveException(An_Exception, True);
+
 end Hunter;

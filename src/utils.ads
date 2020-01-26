@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -14,8 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
-with Gtk.Widget; use Gtk.Widget;
-with MainWindow; use MainWindow;
 
 -- ****h* Hunter/Utils
 -- FUNCTION
@@ -78,15 +76,15 @@ package Utils is
    -- Action   - Action on files or directories started or finished.
    -- Finished - If true, action was finished. Default is False
    -- SOURCE
-   procedure ToggleToolButtons
-     (Action: ItemActions; Finished: Boolean := False);
+--   procedure ToggleToolButtons
+--     (Action: ItemActions; Finished: Boolean := False);
    -- ****
 
    -- ****f* Utils/ToggleActionButtons
    -- FUNCTION
    -- Show or hide files and directories actions buttons
    -- SOURCE
-   procedure ToggleActionButtons;
+ --  procedure ToggleActionButtons;
    -- ****
 
    -- ****f* Utils/SetProgressBar
@@ -95,14 +93,14 @@ package Utils is
    -- PARAMETERS
    -- Amount - Max amount of items - will be used to count progress
    -- SOURCE
-   procedure SetProgressBar(Amount: Positive);
+--   procedure SetProgressBar(Amount: Positive);
    -- ****
 
    -- ****f* Utils/UpdateProgressBar
    -- FUNCTION
    -- Update fraction of the progress bar
    -- SOURCE
-   procedure UpdateProgressBar;
+--   procedure UpdateProgressBar;
    -- ****
 
    -- ****f* Utils/RemoveChild
@@ -110,7 +108,7 @@ package Utils is
    -- Remove all children from preview window
    -- Widget - Gtk_Widget to remove
    -- SOURCE
-   procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class);
+--   procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class);
    -- ****
 
 end Utils;
