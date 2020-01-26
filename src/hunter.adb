@@ -22,7 +22,6 @@ with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with CArgv;
 with Tcl; use Tcl;
@@ -113,18 +112,6 @@ begin
       return;
    end if;
 
-   -- Set default type of view for archives
-   if Tcl_Eval(Interp, New_String("set viewtype tree")) = TCL_ERROR then
-      Ada.Text_IO.Put_Line("Can't set type of view for archives.");
-      return;
-   end if;
-
-   -- Set default type of tiling for archives
-   if Tcl_Eval(Interp, New_String("set tiletype horizontal")) = TCL_ERROR then
-      Ada.Text_IO.Put_Line("Can't set type of tiling for archives.");
-      return;
-   end if;
-
    -- Create UI
    MainWindow := Get_Main_Window(Interp);
    Wm_Set(MainWindow, "title", "Hunter");
@@ -150,7 +137,7 @@ exception
          ErrorLabel: constant Ttk_Label :=
            Create
              (".errorlabel",
-              "-text ""Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at:"" -wraplength 500");
+              "-text ""Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at:"" -wraplength 600");
          ErrorButton: constant Ttk_Button :=
            Create
              (".errorbutton",
@@ -159,7 +146,7 @@ exception
            Create
              (".errorlabel2",
               "-text ""and attach (if possible) file 'error.log' from" &
-              Value("HOME") & "/.cache/hunter' directory."" -wraplength 500");
+              Value("HOME") & "/.cache/hunter' directory."" -wraplength 600");
       begin
          if Ada.Directories.Exists(ErrorFilePath) then
             Open(ErrorFile, Append_File, ErrorFilePath);
