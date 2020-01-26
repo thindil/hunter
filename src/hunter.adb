@@ -147,6 +147,8 @@ exception
              (".errorlabel2",
               "-text ""and attach (if possible) file 'error.log' from" &
               Value("HOME") & "/.cache/hunter' directory."" -wraplength 600");
+         CloseButton: constant Ttk_Button :=
+           Create(".closebutton", "-text Close -command exit");
       begin
          if Ada.Directories.Exists(ErrorFilePath) then
             Open(ErrorFile, Append_File, ErrorFilePath);
@@ -173,5 +175,6 @@ exception
          Tcl.Tk.Ada.Pack.Pack(ErrorLabel);
          Tcl.Tk.Ada.Pack.Pack(ErrorButton);
          Tcl.Tk.Ada.Pack.Pack(ErrorLabel2);
+         Tcl.Tk.Ada.Pack.Pack(CloseButton);
       end;
 end Hunter;
