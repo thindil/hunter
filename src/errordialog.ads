@@ -28,11 +28,9 @@ package ErrorDialog is
    -- Save exception data to file and show error dialog
    -- PARAMETERS
    -- An_Exception    - Exception's data which occured
-   -- PrintToTerminal - If true, information about exception will be printed
-   --                   in terminal
    -- SOURCE
    procedure SaveException
-     (An_Exception: Exception_Occurrence; PrintToTerminal: Boolean);
+     (An_Exception: Exception_Occurrence);
    -- ****
 
 end ErrorDialog;
