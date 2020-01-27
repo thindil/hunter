@@ -21,15 +21,53 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with Tcl.Tk.Ada.Pack;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Text; use Tcl.Tk.Ada.Widgets.Text;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
+with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
+with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+with Utils; use Utils;
 
 package body ErrorDialog is
 
-   procedure SaveException
-     (An_Exception: Exception_Occurrence; PrintToTerminal: Boolean) is
+   procedure SaveException(An_Exception: Exception_Occurrence) is
       ErrorFile: File_Type;
       ErrorText: Unbounded_String;
       ErrorFilePath: constant String :=
         Value("HOME") & "/.cache/hunter/error.log";
+      ErrorLabel: constant Ttk_Label :=
+        Create
+          (".errorlabel",
+           "-text ""Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at:"" -wraplength 600");
+      ErrorButton: constant Ttk_Button :=
+        Create
+          (".errorbutton",
+           "-text ""https://github.com/thindil/hunter/issues"" -command {exec " &
+           FindExecutable("xdg-open") &
+           " ""https://github.com/thindil/hunter/issues""}");
+      ErrorLabel2: constant Ttk_Label :=
+        Create
+          (".errorlabel2",
+           "-text ""and attach (if possible) file 'error.log' from" &
+           Value("HOME") & "/.cache/hunter' directory."" -wraplength 600");
+      CloseButton: constant Ttk_Button :=
+        Create(".closebutton", "-text Close -command exit");
+      ErrorFrame: constant Ttk_LabelFrame :=
+        Create(".errorframe", "-text ""Technical information""");
+      ErrorInfo: constant Tk_Text :=
+        Create
+          (".errorframe.errorinfo",
+           "-xscrollcommand "".errorframe.scrollx set"" -yscrollcommand "".errorframe.scrolly set""");
+      ErrorXScroll: constant Ttk_Scrollbar :=
+        Create
+          (".errorframe.scrollx",
+           "-orient horizontal -command [list .errorframe.erroinfo xview]");
+      ErrorYScroll: constant Ttk_Scrollbar :=
+        Create
+          (".errorframe.scrolly",
+           "-orient vertical -command [list .errorframe.errorinfo yview]");
    begin
       if Ada.Directories.Exists(ErrorFilePath) then
          Open(ErrorFile, Append_File, ErrorFilePath);
@@ -51,51 +89,17 @@ package body ErrorDialog is
       Append(ErrorText, "-------------------------------------------------");
       Put_Line(ErrorFile, To_String(ErrorText));
       Close(ErrorFile);
-      if PrintToTerminal then
-         Put_Line(To_String(ErrorText));
---      else
---         Set_Text(ErrorBuffer, To_String(ErrorText));
---         Hide(Gtk_Widget(ActionToolBar));
---         Hide(Gtk_Widget(ItemToolBar));
---         Set_Visible_Child_Name(FileStack, "error");
---         Set_Cursor(Get_Window(Gtk_Widget(Window)), Gdk_Cursor_New(Arrow));
---         Set_Sensitive(Gtk_Widget(Window), True);
-      end if;
+      Put_Line(To_String(ErrorText));
+      Tcl.Tk.Ada.Pack.Pack(ErrorLabel);
+      Tcl.Tk.Ada.Pack.Pack(ErrorButton);
+      Tcl.Tk.Ada.Pack.Pack(ErrorLabel2);
+      Tcl.Tk.Ada.Pack.Pack(CloseButton);
+      Tcl.Tk.Ada.Pack.Pack(ErrorFrame, "-fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack(ErrorXScroll, "-side bottom -fill x");
+      Tcl.Tk.Ada.Pack.Pack(ErrorYScroll, "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack(ErrorInfo, "-side top -fill both -expand true");
+      Insert(ErrorInfo, "1.0", To_String(ErrorText));
+      configure(ErrorInfo, "-state disabled");
    end SaveException;
-
-  -- procedure CreateErrorUI is
-  --    Box: constant Gtk_Vbox := Gtk_Vbox_New;
-  --    Label: Gtk_Label;
-  --    Button: constant Gtk_Link_Button :=
-  --      Gtk_Link_Button_New("https://github.com/thindil/hunter/issues");
-  --    View: constant Gtk_Text_View :=
-  --      Gtk_Text_View_New_With_Buffer(ErrorBuffer);
-  --    Scroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
-  --    Expander: constant Gtk_Expander :=
-  --      Gtk_Expander_New(Gettext("Click to show technical info"));
-  -- begin
-  --    Label :=
-  --      Gtk_Label_New
-  --        (Gettext
-  --           ("Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at"));
-  --    Set_Max_Width_Chars(Label, 80);
-  --    Set_Line_Wrap(Label, True);
-  --    Pack_Start(Box, Label, False);
-  --    Set_Relief(Button, Relief_None);
-  --    Pack_Start(Box, Button, False);
-  --    Label :=
-  --      Gtk_Label_New
-  --        (Gettext(" and attach (if possible) file 'error.log' from '") &
-  --         Value("HOME") & Gettext("/.cache/hunter' directory."));
-  --    Set_Line_Wrap(Label, True);
-  --    Pack_Start(Box, Label, False);
-  --    Set_Editable(View, False);
-  --    Set_Cursor_Visible(View, False);
-  --    Add(Scroll, View);
-  --    Add(Expander, Scroll);
-  --    Pack_Start(Box, Expander);
-  --    Show_All(Box);
-  --    Add_Named(FileStack, Box, "error");
-  -- end CreateErrorUI;
 
 end ErrorDialog;
