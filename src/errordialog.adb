@@ -98,7 +98,7 @@ package body ErrorDialog is
       Tcl.Tk.Ada.Pack.Pack(ErrorXScroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(ErrorYScroll, "-side right -fill y");
       Tcl.Tk.Ada.Pack.Pack(ErrorInfo, "-side top -fill both -expand true");
-      Insert(ErrorInfo, "1.0", To_String(ErrorText));
+      Insert(ErrorInfo, "1.0", """" & To_String(ErrorText) & """");
       configure(ErrorInfo, "-state disabled");
    end SaveException;
 
