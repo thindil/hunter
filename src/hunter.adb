@@ -29,7 +29,9 @@ with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with ErrorDialog; use ErrorDialog;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
+with Preferences; use Preferences;
 with RefreshData; use RefreshData;
+with Toolbars; use Toolbars;
 
 procedure Hunter is
    use type Interfaces.C.int;
@@ -105,9 +107,11 @@ begin
    end if;
 
    -- Create UI
+   LoadSettings;
    MainWindow := Get_Main_Window(Interp);
    Wm_Set(MainWindow, "title", "Hunter");
    Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
+   CreateActionToolbar;
 
    --  Loop inside Tk, waiting for commands to execute.
    --  When there are no windows left, Tcl.Tk.Tk_MainLoop returns and we exit.

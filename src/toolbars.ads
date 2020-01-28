@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -13,44 +13,27 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtk.Toolbar; use Gtk.Toolbar;
-
 package Toolbars is
 
-   -- ****v* Toolbars/ActionToolBar
+   -- ****f* Toolbars/CreateActionToolbar
    -- FUNCTION
-   -- Gtk_Toolbar with actions buttons (copy, move, delete, new, etc)
+   -- Create ActionToolBar
    -- SOURCE
-   ActionToolBar: Gtk_Toolbar;
+   procedure CreateActionToolbar;
    -- ****
 
-   -- ****v* Toolbars/ItemToolBar
+   -- ****f* Toolbars/CreateItemToolbar
    -- FUNCTION
-   -- Gtk_Toolbar with acions related to selected file or directory (preview,
-   -- show info, open, etc)
+   -- Crete ItemToolBar
    -- SOURCE
-   ItemToolBar: Gtk_Toolbar;
-   -- ****
-
-   -- ****f* Toolbars/CreateActionToolbarUI
-   -- FUNCTION
-   -- Create ActionToolBar UI - add buttons and separators
-   -- SOURCE
-   procedure CreateActionToolbarUI;
-   -- ****
-
-   -- ****f* Toolbars/CreateItemToolbarUI
-   -- FUNCTION
-   -- Crete ItemToolBar UI - add buttons and separators
-   -- SOURCE
-   procedure CreateItemToolbarUI;
+--   procedure CreateItemToolbar;
    -- ****
 
    -- ****f* Toolbars/SetToolbars
    -- FUNCTION
    -- Set position of toolbars - on the top or the left of the main window.
    -- SOURCE
-   procedure SetToolbars;
+--   procedure SetToolbars;
    -- ****
 
 end Toolbars;

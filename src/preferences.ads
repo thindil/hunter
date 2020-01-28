@@ -14,8 +14,8 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Gtk.Popover; use Gtk.Popover;
-with Gtk.Widget; use Gtk.Widget;
+--with Gtk.Popover; use Gtk.Popover;
+--with Gtk.Widget; use Gtk.Widget;
 
 -- ****h* Hunter/Preferences
 -- FUNCTION
@@ -87,36 +87,44 @@ package Preferences is
    Settings: Settings_Data;
    -- ****
 
+   -- ****f* Preferences/LoadSettings
+   -- FUNCTION
+   -- Load the program settings from file. If file not exists, load default
+   -- settings.
+   -- SOURCE
+   procedure LoadSettings;
+   -- ****
+
    -- ****v* Preferences/PreferencesPopup
    -- FUNCTION
    -- The preferences Gtk_Popover "window"
    -- SOURCE
-   PreferencesPopup: Gtk_Popover;
-   -- ****
-
-   -- ****f* Preferences/SetDeleteTooltip
-   -- FUNCTION
-   -- Set tooltip for delete button, depends did delete action delete files or
-   -- move them to trash
-   -- SOURCE
-   procedure SetDeleteTooltip;
-   -- ****
-
+--   PreferencesPopup: Gtk_Popover;
+--   -- ****
+--
+--   -- ****f* Preferences/SetDeleteTooltip
+--   -- FUNCTION
+--   -- Set tooltip for delete button, depends did delete action delete files or
+--   -- move them to trash
+--   -- SOURCE
+--   procedure SetDeleteTooltip;
+--   -- ****
+--
    -- ****f* Preferences/SavePreferences
    -- FUNCTION
    -- Save the program preferences to the file.
    -- SOURCE
    procedure SavePreferences;
    -- ****
-
-   -- ****f* Preferences/CreatePreferences
-   -- FUNCTION
-   -- Create preferences UI and fill it with data from the program settings
-   -- PARAMETERS
-   -- Parent - Gtk_Widget which will be parent for the preferences window.
-   --          Should be always button for preferences.
-   -- SOURCE
-   procedure CreatePreferences(Parent: Gtk_Widget);
+--
+--   -- ****f* Preferences/CreatePreferences
+--   -- FUNCTION
+--   -- Create preferences UI and fill it with data from the program settings
+--   -- PARAMETERS
+--   -- Parent - Gtk_Widget which will be parent for the preferences window.
+--   --          Should be always button for preferences.
+--   -- SOURCE
+--   procedure CreatePreferences(Parent: Gtk_Widget);
    -- ****
 
 end Preferences;
