@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -16,31 +16,31 @@
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
-with Gtk.Adjustment; use Gtk.Adjustment;
-with Gtk.Box; use Gtk.Box;
-with Gtk.Combo_Box; use Gtk.Combo_Box;
-with Gtk.Combo_Box_Text; use Gtk.Combo_Box_Text;
-with Gtk.Enums; use Gtk.Enums;
-with Gtk.Frame; use Gtk.Frame;
-with Gtk.Grid; use Gtk.Grid;
-with Gtk.Label; use Gtk.Label;
-with Gtk.Paned; use Gtk.Paned;
-with Gtk.Scale; use Gtk.Scale;
-with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
-with Gtk.Stack; use Gtk.Stack;
-with Gtk.Switch; use Gtk.Switch;
-with Gtk.Tool_Button; use Gtk.Tool_Button;
-with Gtk.Toolbar; use Gtk.Toolbar;
-with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
-with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
-with Gtk.Tree_View; use Gtk.Tree_View;
-with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
-with Gtkada.Intl; use Gtkada.Intl;
-with Glib; use Glib;
-with MainWindow; use MainWindow;
-with RefreshData; use RefreshData;
-with ShowItems; use ShowItems;
-with Toolbars; use Toolbars;
+--with Gtk.Adjustment; use Gtk.Adjustment;
+--with Gtk.Box; use Gtk.Box;
+--with Gtk.Combo_Box; use Gtk.Combo_Box;
+--with Gtk.Combo_Box_Text; use Gtk.Combo_Box_Text;
+--with Gtk.Enums; use Gtk.Enums;
+--with Gtk.Frame; use Gtk.Frame;
+--with Gtk.Grid; use Gtk.Grid;
+--with Gtk.Label; use Gtk.Label;
+--with Gtk.Paned; use Gtk.Paned;
+--with Gtk.Scale; use Gtk.Scale;
+--with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
+--with Gtk.Stack; use Gtk.Stack;
+--with Gtk.Switch; use Gtk.Switch;
+--with Gtk.Tool_Button; use Gtk.Tool_Button;
+--with Gtk.Toolbar; use Gtk.Toolbar;
+--with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
+--with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
+--with Gtk.Tree_View; use Gtk.Tree_View;
+--with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
+--with Gtkada.Intl; use Gtkada.Intl;
+--with Glib; use Glib;
+--with MainWindow; use MainWindow;
+--with RefreshData; use RefreshData;
+--with ShowItems; use ShowItems;
+--with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body Preferences is
@@ -51,31 +51,31 @@ package body Preferences is
    -- PARAMETERS
    -- Self - Gtk_Tool_Button which was clicked. Unused.
    -- SOURCE
-   procedure TogglePreferences(Self: access Gtk_Tool_Button_Record'Class) is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      if Is_Visible(Gtk_Widget(PreferencesPopup)) then
-         Hide(Gtk_Widget(PreferencesPopup));
-      else
-         Show_All(Gtk_Widget(PreferencesPopup));
-      end if;
-   end TogglePreferences;
-
-   procedure SetDeleteTooltip is
-   begin
-      if Settings.DeleteFiles then
-         Set_Tooltip_Text
-           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
-            Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
-      else
-
-         Set_Tooltip_Text
-           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
-            Gettext
-              ("Move selected file(s) or folder(s) to trash [ALT-Delete]."));
-      end if;
-   end SetDeleteTooltip;
+--   procedure TogglePreferences(Self: access Gtk_Tool_Button_Record'Class) is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      if Is_Visible(Gtk_Widget(PreferencesPopup)) then
+--         Hide(Gtk_Widget(PreferencesPopup));
+--      else
+--         Show_All(Gtk_Widget(PreferencesPopup));
+--      end if;
+--   end TogglePreferences;
+--
+--   procedure SetDeleteTooltip is
+--   begin
+--      if Settings.DeleteFiles then
+--         Set_Tooltip_Text
+--           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
+--            Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
+--      else
+--
+--         Set_Tooltip_Text
+--           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
+--            Gettext
+--              ("Move selected file(s) or folder(s) to trash [ALT-Delete]."));
+--      end if;
+--   end SetDeleteTooltip;
 
    -- ****if* Preferences/LoadSettings
    -- FUNCTION
@@ -139,7 +139,7 @@ package body Preferences is
                Settings.ColorTheme := Value;
             elsif FieldName = To_Unbounded_String("DeleteFiles") then
                Settings.DeleteFiles := LoadBoolean;
-               SetDeleteTooltip;
+               --SetDeleteTooltip;
             elsif FieldName = To_Unbounded_String("ClearTrashOnExit") then
                Settings.ClearTrashOnExit := LoadBoolean;
             elsif FieldName = To_Unbounded_String("ShowFinishedInfo") then
@@ -210,455 +210,454 @@ package body Preferences is
    -- PARAMETERS
    -- Self - Gtk_Adjustment with new value for setting
    -- SOURCE
-   procedure SetAutoRefresh(Self: access Gtk_Adjustment_Record'Class) is
-   -- ****
-   begin
-      Settings.AutoRefreshInterval := Natural(Get_Value(Self));
-      StartTimer;
-   end SetAutoRefresh;
-
-   -- ****if* Preferences/SetAutoClose
-   -- FUNCTION
-   -- Set new value of AutoCloseMessagesTime based on value set by the user
-   -- PARAMETERS
-   -- Self - Gtk_Adjustment with new value for setting
-   -- SOURCE
-   procedure SetAutoClose(Self: access Gtk_Adjustment_Record'Class) is
-   -- ****
-   begin
-      Settings.AutoCloseMessagesTime := Natural(Get_Value(Self));
-   end SetAutoClose;
-
-   -- ****if* Preferences/SetColorTheme
-   -- FUNCTION
-   -- Set new color theme for syntax highlightning base on value set by the
-   -- user
-   -- PARAMETERS
-   -- Self - Gtk_Combo_Box with new value for setting
-   -- SOURCE
-   procedure SetColorTheme(Self: access Gtk_Combo_Box_Record'Class) is
-   -- ****
-   begin
-      Settings.ColorTheme := To_Unbounded_String(Get_Active_Text(Self));
-      PreviewItem(null);
-   end SetColorTheme;
-
-   -- ****if* Preferences/SetShowHidden
-   -- FUNCTION
-   -- Set setting for show hidden files and directories
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetShowHidden
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.ShowHidden := State;
-      Refilter
-        (-(Gtk.Tree_Model_Sort.Get_Model
-            (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
-      Refilter
-        (-(Gtk.Tree_Model_Sort.Get_Model
-            (-(Gtk.Tree_View.Get_Model
-                (Gtk_Tree_View
-                   (Get_Child
-                      (Gtk_Scrolled_Window
-                         (Get_Child_By_Name(InfoStack, "destination")))))))));
-      return True;
-   end SetShowHidden;
-
-   -- ****if* Preferences/SetLastModified
-   -- FUNCTION
-   -- Set setting for visibility of last modified column
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetLastModified
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.ShowLastModified := State;
-      Set_Visible(Get_Column(DirectoryView, 2), Settings.ShowLastModified);
-      return True;
-   end SetLastModified;
-
-   -- ****if* Preferences/SetShowPreview
-   -- FUNCTION
-   -- Set setting to show preview of items
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetShowPreview
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.ShowPreview := State;
-      if NewAction /= COPY and NewAction /= MOVE and
-        NewAction /= CREATELINK then
-         Set_Visible(Get_Child2(FilesPaned), Settings.ShowPreview);
-         Set_Visible
-           (Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)), Settings.ShowPreview);
-         Set_Visible
-           (Gtk_Widget(Get_Nth_Item(ItemToolBar, 5)), Settings.ShowPreview);
-         if Settings.ShowPreview then
-            Set_Position
-              (FilesPaned,
-               Gint(Float(Get_Allocated_Width(Gtk_Widget(Window))) * 0.3));
-            PreviewItem(null);
-         else
-            Set_Position(FilesPaned, Get_Allocated_Width(Gtk_Widget(Window)));
-         end if;
-      end if;
-      return True;
-   end SetShowPreview;
-
-   -- ****if* Preferences/SetColorText
-   -- FUNCTION
-   -- Set setting to enable syntax highlightning of files
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetColorText
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.ColorText := State;
-      PreviewItem(null);
-      return True;
-   end SetColorText;
-
-   -- ****if* Preferences/SetStayInOld
-   -- FUNCTION
-   -- Set setting to stay in old directory after copy/move
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetStayInOld
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.StayInOld := State;
-      return True;
-   end SetStayInOld;
-
-   -- ****if* Preferences/SetShowFinished
-   -- FUNCTION
-   -- Set setting for show information about finished actions
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetShowFinished
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.ShowFinishedInfo := State;
-      return True;
-   end SetShowFinished;
-
-   -- ****if* Preferences/SetScaleImages
-   -- FUNCTION
-   -- Set setting for scale images
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetScaleImages
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.ScaleImages := State;
-      PreviewItem(null);
-      return True;
-   end SetScaleImages;
-
-   -- ****if* Preferences/SetToolbarsOnTop
-   -- FUNCTION
-   -- Set setting for show toolbar on top or side of the program
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetToolbarsOnTop
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.ToolbarsOnTop := State;
-      SetToolbars;
-      return True;
-   end SetToolbarsOnTop;
-
-   -- ****if* Preferences/SetDeleteFiles
-   -- FUNCTION
-   -- Set if files should be deleted or moved to trash
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetDeleteFiles
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.DeleteFiles := State;
-      SetDeleteTooltip;
-      return True;
-   end SetDeleteFiles;
-
-   -- ****if* Preferences/SetClearTrash
-   -- FUNCTION
-   -- Set if Trash should be cleared on exit from the program
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetClearTrash
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.ClearTrashOnExit := State;
-      return True;
-   end SetClearTrash;
-
-   -- ****if* Preferences/SetOverwrite
-   -- FUNCTION
-   -- Set if files should be overwrited on copy/move or saved with new name
-   -- PARAMETERS
-   -- Self  - Gtk_Switch which was changed. Ununsed.
-   -- State - New state of Gtk_Switch. Used as new value for setting.
-   -- RESULT
-   -- This function always return True to stop signal emission
-   -- SOURCE
-   function SetOverwrite
-     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
-      pragma Unreferenced(Self);
-      -- ****
-   begin
-      Settings.OverwriteOnExist := State;
-      return True;
-   end SetOverwrite;
-
-   procedure CreatePreferences(Parent: Gtk_Widget) is
-      MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
-      Label: Gtk_Label;
-      Grid: Gtk_Grid;
-      ColorsEnabled: Boolean := True;
-      procedure AddFrame(Text: String) is
-         Frame: constant Gtk_Frame := Gtk_Frame_New;
-         FrameLabel: constant Gtk_Label := Gtk_Label_New;
-      begin
-         Set_Markup(FrameLabel, "<b>" & Text & "</b>");
-         Set_Label_Widget(Frame, FrameLabel);
-         Set_Label_Align(Frame, 0.5, 0.5);
-         Set_Shadow_Type(Frame, Shadow_Out);
-         Add(Frame, Grid);
-         Pack_Start(MenuBox, Frame);
-      end AddFrame;
-      procedure NewGrid is
-      begin
-         Grid := Gtk_Grid_New;
-         Set_Column_Homogeneous(Grid, True);
-         Set_Column_Spacing(Grid, 10);
-      end NewGrid;
-      procedure NewLabel(Text: String; Row: Gint; Wrap: Boolean := False) is
-      begin
-         Label := Gtk_Label_New(Text);
-         Set_Halign(Label, Align_Start);
-         Set_Line_Wrap(Label, Wrap);
-         Attach(Grid, Label, 0, Row);
-      end NewLabel;
-      procedure NewSwitch
-        (Active: Boolean; Row: Gint; Tooltip: String; Enabled: Boolean;
-         Subprogram: Cb_Gtk_Switch_Boolean_Boolean) is
-         Switch: constant Gtk_Switch := Gtk_Switch_New;
-      begin
-         Set_Active(Switch, Active);
-         Set_Tooltip_Text(Switch, Tooltip);
-         if not Enabled then
-            Set_Sensitive(Switch, False);
-         end if;
-         On_State_Set(Switch, Subprogram);
-         Attach(Grid, Switch, 1, Row);
-      end NewSwitch;
-      procedure NewScale
-        (Value: Integer; Min, Max, Step: Gdouble; Row: Gint; Tooltip: String;
-         Subprogram: Cb_Gtk_Adjustment_Void) is
-         Adjustment: constant Gtk_Adjustment :=
-           Gtk_Adjustment_New(Gdouble(Value), Min, Max, Step, Step * 10.0);
-         Scale: Gtk_Scale;
-      begin
-         On_Value_Changed(Adjustment, Subprogram);
-         Scale := Gtk_Hscale_New(Adjustment);
-         Set_Digits(Scale, 0);
-         Set_Tooltip_Text(Scale, Tooltip);
-         Attach(Grid, Scale, 1, Row);
-      end NewScale;
-   begin
-      LoadSettings;
-      if FindExecutable("highlight") = "" then
-         ColorsEnabled := False;
-      end if;
-      PreferencesPopup := Gtk_Popover_New(Parent);
-      NewGrid;
-      NewLabel(Gettext("Show hidden files:"), 0);
-      NewSwitch
-        (Settings.ShowHidden, 0,
-         Gettext
-           ("Show hidden files and directories in directory listing and in directories preview."),
-         True, SetShowHidden'Access);
-      NewLabel(Gettext("Show modification time:"), 1);
-      NewSwitch
-        (Settings.ShowLastModified, 1,
-         Gettext
-           ("Show the column with last modification date for files and directories."),
-         True, SetLastModified'Access);
-      NewLabel(Gettext("Auto refresh interval:"), 2);
-      NewScale
-        (Settings.AutoRefreshInterval, 0.0, 30.0, 1.0, 2,
-         Gettext
-           ("How often (in seconds) the program should check for changes in current directory. If set to zero, autorefresh will be disabled."),
-         SetAutoRefresh'Access);
-      AddFrame(Gettext("Directory Listing"));
-      NewGrid;
-      NewLabel(Gettext("Show preview:"), 0);
-      NewSwitch
-        (Settings.ShowPreview, 0,
-         Gettext
-           ("Show second panel with preview of files and directories. If you disable this option, second panel will be visible only during copying and moving files or directories and during creating new link."),
-         True, SetShowPreview'Access);
-      NewLabel(Gettext("Scale images:"), 1);
-      NewSwitch
-        (Settings.ScaleImages, 1,
-         Gettext
-           ("Scale images in preview. When disabled, images shows with natural size. When enabled, images are resized to the size of the preview window."),
-         True, SetScaleImages'Access);
-      NewLabel(Gettext("Syntax highlightning:"), 2);
-      NewSwitch
-        (Settings.ColorText, 2,
-         Gettext
-           ("Color files syntax in files preview. Not all text (especially source code) files are supported. You may not be able to enable this option if you don't have installed the program ""highlight""."),
-         ColorsEnabled, SetColorText'Access);
-      NewLabel(Gettext("Syntax color theme:"), 3);
-      declare
-         Search: Search_Type;
-         File: Directory_Entry_Type;
-         ComboBox: constant Gtk_Combo_Box_Text := Gtk_Combo_Box_Text_New;
-         ThemeName: Unbounded_String;
-         Index: Gint := 0;
-      begin
-         Ada.Environment_Variables.Set
-           ("HIGHLIGHT_DATADIR",
-            Ada.Environment_Variables.Value("APPDIR", "") &
-            "/usr/share/highlight");
-         Start_Search
-           (Search,
-            Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
-            "/themes/base16",
-            "*.theme");
-         while More_Entries(Search) loop
-            Get_Next_Entry(Search, File);
-            ThemeName := To_Unbounded_String(Base_Name(Simple_Name(File)));
-            Append_Text(ComboBox, To_String(ThemeName));
-            if ThemeName = Settings.ColorTheme then
-               Set_Active(ComboBox, Index);
-            end if;
-            Index := Index + 1;
-         end loop;
-         End_Search(Search);
-         Set_Tooltip_Text
-           (ComboBox,
-            "Select color theme for coloring syntax in text files in preview. You may not be able to enable this option if you don't have installed the program ""highlight"".");
-         Set_Sensitive(ComboBox, ColorsEnabled);
-         On_Changed(ComboBox, SetColorTheme'Access);
-         Attach(Grid, ComboBox, 1, 3);
-      end;
-      AddFrame(Gettext("Preview"));
-      NewGrid;
-      NewLabel(Gettext("Hide messages after:"), 0);
-      NewScale
-        (Settings.AutoCloseMessagesTime, 0.0, 60.0, 1.0, 0,
-         Gettext
-           ("After that amount of seconds, all messages will be automatically closed by the program. If you set it to 0, this feature will be disabled."),
-         SetAutoClose'Access);
-      NewLabel(Gettext("Stay in source directory:"), 1);
-      NewSwitch
-        (Settings.StayInOld, 1,
-         Gettext
-           ("After copying, moving files and directories or creating new link, stay in old directory, don't automatically go to destination directory."),
-         True, SetStayInOld'Access);
-      NewLabel(Gettext("Show info about finished action:"), 2, True);
-      NewSwitch
-        (Settings.ShowFinishedInfo, 2,
-         Gettext
-           ("Show information about finished copying, moving and deleting files or directories."),
-         True, SetShowFinished'Access);
-      NewLabel(Gettext("Toolbars on top:"), 3);
-      NewSwitch
-        (Settings.ToolbarsOnTop, 3,
-         Gettext
-           ("If enabled, show toolbars for actions and information on top of the window. Otherwise, they will be at left side of the window."),
-         True, SetToolbarsOnTop'Access);
-      AddFrame(Gettext("Interface"));
-      NewGrid;
-      NewLabel(Gettext("Delete files:"), 0);
-      NewSwitch
-        (Settings.DeleteFiles, 0,
-         Gettext
-           ("Delete selected files and directories instead of moving them to Trash."),
-         True, SetDeleteFiles'Access);
-      NewLabel(Gettext("Clear Trash on exit:"), 1);
-      NewSwitch
-        (Settings.ClearTrashOnExit, 1,
-         Gettext("Automatically clear Trash on exit from the program."), True,
-         SetClearTrash'Access);
-      AddFrame(Gettext("Deleting"));
-      NewGrid;
-      NewLabel(Gettext("Overwrite existing:"), 0);
-      NewSwitch
-        (Settings.OverwriteOnExist, 0,
-         Gettext
-           ("If enabled, during copying or moving files and directories, if in destination directory exists file or directory with that same name, the program will ask if overwrite it. If disabled, the program will quietly give add underscore to the name of moved or copied file or directory."),
-         True, SetOverwrite'Access);
-      AddFrame(Gettext("Copying or moving"));
-      Show_All(MenuBox);
-      Add(PreferencesPopup, MenuBox);
-      Set_Modal(PreferencesPopup, True);
-      Set_Position(PreferencesPopup, Pos_Bottom);
-      On_Clicked(Gtk_Tool_Button(Parent), TogglePreferences'Access);
-   end CreatePreferences;
+--   procedure SetAutoRefresh(Self: access Gtk_Adjustment_Record'Class) is
+--   -- ****
+--   begin
+--      Settings.AutoRefreshInterval := Natural(Get_Value(Self));
+--      StartTimer;
+--   end SetAutoRefresh;
+--
+--   -- ****if* Preferences/SetAutoClose
+--   -- FUNCTION
+--   -- Set new value of AutoCloseMessagesTime based on value set by the user
+--   -- PARAMETERS
+--   -- Self - Gtk_Adjustment with new value for setting
+--   -- SOURCE
+--   procedure SetAutoClose(Self: access Gtk_Adjustment_Record'Class) is
+--   -- ****
+--   begin
+--      Settings.AutoCloseMessagesTime := Natural(Get_Value(Self));
+--   end SetAutoClose;
+--
+--   -- ****if* Preferences/SetColorTheme
+--   -- FUNCTION
+--   -- Set new color theme for syntax highlightning base on value set by the
+--   -- user
+--   -- PARAMETERS
+--   -- Self - Gtk_Combo_Box with new value for setting
+--   -- SOURCE
+--   procedure SetColorTheme(Self: access Gtk_Combo_Box_Record'Class) is
+--   -- ****
+--   begin
+--      Settings.ColorTheme := To_Unbounded_String(Get_Active_Text(Self));
+--      PreviewItem(null);
+--   end SetColorTheme;
+--
+--   -- ****if* Preferences/SetShowHidden
+--   -- FUNCTION
+--   -- Set setting for show hidden files and directories
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetShowHidden
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.ShowHidden := State;
+--      Refilter
+--        (-(Gtk.Tree_Model_Sort.Get_Model
+--            (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
+--      Refilter
+--        (-(Gtk.Tree_Model_Sort.Get_Model
+--            (-(Gtk.Tree_View.Get_Model
+--                (Gtk_Tree_View
+--                   (Get_Child
+--                      (Gtk_Scrolled_Window
+--                         (Get_Child_By_Name(InfoStack, "destination")))))))));
+--      return True;
+--   end SetShowHidden;
+--
+--   -- ****if* Preferences/SetLastModified
+--   -- FUNCTION
+--   -- Set setting for visibility of last modified column
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetLastModified
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.ShowLastModified := State;
+--      Set_Visible(Get_Column(DirectoryView, 2), Settings.ShowLastModified);
+--      return True;
+--   end SetLastModified;
+--
+--   -- ****if* Preferences/SetShowPreview
+--   -- FUNCTION
+--   -- Set setting to show preview of items
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetShowPreview
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.ShowPreview := State;
+--      if NewAction /= COPY and NewAction /= MOVE and
+--        NewAction /= CREATELINK then
+--         Set_Visible(Get_Child2(FilesPaned), Settings.ShowPreview);
+--         Set_Visible
+--           (Gtk_Widget(Get_Nth_Item(ItemToolBar, 4)), Settings.ShowPreview);
+--         Set_Visible
+--           (Gtk_Widget(Get_Nth_Item(ItemToolBar, 5)), Settings.ShowPreview);
+--         if Settings.ShowPreview then
+--            Set_Position
+--              (FilesPaned,
+--               Gint(Float(Get_Allocated_Width(Gtk_Widget(Window))) * 0.3));
+--            PreviewItem(null);
+--         else
+--            Set_Position(FilesPaned, Get_Allocated_Width(Gtk_Widget(Window)));
+--         end if;
+--      end if;
+--      return True;
+--   end SetShowPreview;
+--
+--   -- ****if* Preferences/SetColorText
+--   -- FUNCTION
+--   -- Set setting to enable syntax highlightning of files
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetColorText
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.ColorText := State;
+--      PreviewItem(null);
+--      return True;
+--   end SetColorText;
+--
+--   -- ****if* Preferences/SetStayInOld
+--   -- FUNCTION
+--   -- Set setting to stay in old directory after copy/move
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetStayInOld
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.StayInOld := State;
+--      return True;
+--   end SetStayInOld;
+--
+--   -- ****if* Preferences/SetShowFinished
+--   -- FUNCTION
+--   -- Set setting for show information about finished actions
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetShowFinished
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.ShowFinishedInfo := State;
+--      return True;
+--   end SetShowFinished;
+--
+--   -- ****if* Preferences/SetScaleImages
+--   -- FUNCTION
+--   -- Set setting for scale images
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetScaleImages
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.ScaleImages := State;
+--      PreviewItem(null);
+--      return True;
+--   end SetScaleImages;
+--
+--   -- ****if* Preferences/SetToolbarsOnTop
+--   -- FUNCTION
+--   -- Set setting for show toolbar on top or side of the program
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetToolbarsOnTop
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.ToolbarsOnTop := State;
+--      SetToolbars;
+--      return True;
+--   end SetToolbarsOnTop;
+--
+--   -- ****if* Preferences/SetDeleteFiles
+--   -- FUNCTION
+--   -- Set if files should be deleted or moved to trash
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetDeleteFiles
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.DeleteFiles := State;
+--      SetDeleteTooltip;
+--      return True;
+--   end SetDeleteFiles;
+--
+--   -- ****if* Preferences/SetClearTrash
+--   -- FUNCTION
+--   -- Set if Trash should be cleared on exit from the program
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetClearTrash
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.ClearTrashOnExit := State;
+--      return True;
+--   end SetClearTrash;
+--
+--   -- ****if* Preferences/SetOverwrite
+--   -- FUNCTION
+--   -- Set if files should be overwrited on copy/move or saved with new name
+--   -- PARAMETERS
+--   -- Self  - Gtk_Switch which was changed. Ununsed.
+--   -- State - New state of Gtk_Switch. Used as new value for setting.
+--   -- RESULT
+--   -- This function always return True to stop signal emission
+--   -- SOURCE
+--   function SetOverwrite
+--     (Self: access Gtk_Switch_Record'Class; State: Boolean) return Boolean is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      Settings.OverwriteOnExist := State;
+--      return True;
+--   end SetOverwrite;
+--
+--   procedure CreatePreferences(Parent: Gtk_Widget) is
+--      MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
+--      Label: Gtk_Label;
+--      Grid: Gtk_Grid;
+--      ColorsEnabled: Boolean := True;
+--      procedure AddFrame(Text: String) is
+--         Frame: constant Gtk_Frame := Gtk_Frame_New;
+--         FrameLabel: constant Gtk_Label := Gtk_Label_New;
+--      begin
+--         Set_Markup(FrameLabel, "<b>" & Text & "</b>");
+--         Set_Label_Widget(Frame, FrameLabel);
+--         Set_Label_Align(Frame, 0.5, 0.5);
+--         Set_Shadow_Type(Frame, Shadow_Out);
+--         Add(Frame, Grid);
+--         Pack_Start(MenuBox, Frame);
+--      end AddFrame;
+--      procedure NewGrid is
+--      begin
+--         Grid := Gtk_Grid_New;
+--         Set_Column_Homogeneous(Grid, True);
+--         Set_Column_Spacing(Grid, 10);
+--      end NewGrid;
+--      procedure NewLabel(Text: String; Row: Gint; Wrap: Boolean := False) is
+--      begin
+--         Label := Gtk_Label_New(Text);
+--         Set_Halign(Label, Align_Start);
+--         Set_Line_Wrap(Label, Wrap);
+--         Attach(Grid, Label, 0, Row);
+--      end NewLabel;
+--      procedure NewSwitch
+--        (Active: Boolean; Row: Gint; Tooltip: String; Enabled: Boolean;
+--         Subprogram: Cb_Gtk_Switch_Boolean_Boolean) is
+--         Switch: constant Gtk_Switch := Gtk_Switch_New;
+--      begin
+--         Set_Active(Switch, Active);
+--         Set_Tooltip_Text(Switch, Tooltip);
+--         if not Enabled then
+--            Set_Sensitive(Switch, False);
+--         end if;
+--         On_State_Set(Switch, Subprogram);
+--         Attach(Grid, Switch, 1, Row);
+--      end NewSwitch;
+--      procedure NewScale
+--        (Value: Integer; Min, Max, Step: Gdouble; Row: Gint; Tooltip: String;
+--         Subprogram: Cb_Gtk_Adjustment_Void) is
+--         Adjustment: constant Gtk_Adjustment :=
+--           Gtk_Adjustment_New(Gdouble(Value), Min, Max, Step, Step * 10.0);
+--         Scale: Gtk_Scale;
+--      begin
+--         On_Value_Changed(Adjustment, Subprogram);
+--         Scale := Gtk_Hscale_New(Adjustment);
+--         Set_Digits(Scale, 0);
+--         Set_Tooltip_Text(Scale, Tooltip);
+--         Attach(Grid, Scale, 1, Row);
+--      end NewScale;
+--   begin
+--      if FindExecutable("highlight") = "" then
+--         ColorsEnabled := False;
+--      end if;
+--      PreferencesPopup := Gtk_Popover_New(Parent);
+--      NewGrid;
+--      NewLabel(Gettext("Show hidden files:"), 0);
+--      NewSwitch
+--        (Settings.ShowHidden, 0,
+--         Gettext
+--           ("Show hidden files and directories in directory listing and in directories preview."),
+--         True, SetShowHidden'Access);
+--      NewLabel(Gettext("Show modification time:"), 1);
+--      NewSwitch
+--        (Settings.ShowLastModified, 1,
+--         Gettext
+--           ("Show the column with last modification date for files and directories."),
+--         True, SetLastModified'Access);
+--      NewLabel(Gettext("Auto refresh interval:"), 2);
+--      NewScale
+--        (Settings.AutoRefreshInterval, 0.0, 30.0, 1.0, 2,
+--         Gettext
+--           ("How often (in seconds) the program should check for changes in current directory. If set to zero, autorefresh will be disabled."),
+--         SetAutoRefresh'Access);
+--      AddFrame(Gettext("Directory Listing"));
+--      NewGrid;
+--      NewLabel(Gettext("Show preview:"), 0);
+--      NewSwitch
+--        (Settings.ShowPreview, 0,
+--         Gettext
+--           ("Show second panel with preview of files and directories. If you disable this option, second panel will be visible only during copying and moving files or directories and during creating new link."),
+--         True, SetShowPreview'Access);
+--      NewLabel(Gettext("Scale images:"), 1);
+--      NewSwitch
+--        (Settings.ScaleImages, 1,
+--         Gettext
+--           ("Scale images in preview. When disabled, images shows with natural size. When enabled, images are resized to the size of the preview window."),
+--         True, SetScaleImages'Access);
+--      NewLabel(Gettext("Syntax highlightning:"), 2);
+--      NewSwitch
+--        (Settings.ColorText, 2,
+--         Gettext
+--           ("Color files syntax in files preview. Not all text (especially source code) files are supported. You may not be able to enable this option if you don't have installed the program ""highlight""."),
+--         ColorsEnabled, SetColorText'Access);
+--      NewLabel(Gettext("Syntax color theme:"), 3);
+--      declare
+--         Search: Search_Type;
+--         File: Directory_Entry_Type;
+--         ComboBox: constant Gtk_Combo_Box_Text := Gtk_Combo_Box_Text_New;
+--         ThemeName: Unbounded_String;
+--         Index: Gint := 0;
+--      begin
+--         Ada.Environment_Variables.Set
+--           ("HIGHLIGHT_DATADIR",
+--            Ada.Environment_Variables.Value("APPDIR", "") &
+--            "/usr/share/highlight");
+--         Start_Search
+--           (Search,
+--            Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+--            "/themes/base16",
+--            "*.theme");
+--         while More_Entries(Search) loop
+--            Get_Next_Entry(Search, File);
+--            ThemeName := To_Unbounded_String(Base_Name(Simple_Name(File)));
+--            Append_Text(ComboBox, To_String(ThemeName));
+--            if ThemeName = Settings.ColorTheme then
+--               Set_Active(ComboBox, Index);
+--            end if;
+--            Index := Index + 1;
+--         end loop;
+--         End_Search(Search);
+--         Set_Tooltip_Text
+--           (ComboBox,
+--            "Select color theme for coloring syntax in text files in preview. You may not be able to enable this option if you don't have installed the program ""highlight"".");
+--         Set_Sensitive(ComboBox, ColorsEnabled);
+--         On_Changed(ComboBox, SetColorTheme'Access);
+--         Attach(Grid, ComboBox, 1, 3);
+--      end;
+--      AddFrame(Gettext("Preview"));
+--      NewGrid;
+--      NewLabel(Gettext("Hide messages after:"), 0);
+--      NewScale
+--        (Settings.AutoCloseMessagesTime, 0.0, 60.0, 1.0, 0,
+--         Gettext
+--           ("After that amount of seconds, all messages will be automatically closed by the program. If you set it to 0, this feature will be disabled."),
+--         SetAutoClose'Access);
+--      NewLabel(Gettext("Stay in source directory:"), 1);
+--      NewSwitch
+--        (Settings.StayInOld, 1,
+--         Gettext
+--           ("After copying, moving files and directories or creating new link, stay in old directory, don't automatically go to destination directory."),
+--         True, SetStayInOld'Access);
+--      NewLabel(Gettext("Show info about finished action:"), 2, True);
+--      NewSwitch
+--        (Settings.ShowFinishedInfo, 2,
+--         Gettext
+--           ("Show information about finished copying, moving and deleting files or directories."),
+--         True, SetShowFinished'Access);
+--      NewLabel(Gettext("Toolbars on top:"), 3);
+--      NewSwitch
+--        (Settings.ToolbarsOnTop, 3,
+--         Gettext
+--           ("If enabled, show toolbars for actions and information on top of the window. Otherwise, they will be at left side of the window."),
+--         True, SetToolbarsOnTop'Access);
+--      AddFrame(Gettext("Interface"));
+--      NewGrid;
+--      NewLabel(Gettext("Delete files:"), 0);
+--      NewSwitch
+--        (Settings.DeleteFiles, 0,
+--         Gettext
+--           ("Delete selected files and directories instead of moving them to Trash."),
+--         True, SetDeleteFiles'Access);
+--      NewLabel(Gettext("Clear Trash on exit:"), 1);
+--      NewSwitch
+--        (Settings.ClearTrashOnExit, 1,
+--         Gettext("Automatically clear Trash on exit from the program."), True,
+--         SetClearTrash'Access);
+--      AddFrame(Gettext("Deleting"));
+--      NewGrid;
+--      NewLabel(Gettext("Overwrite existing:"), 0);
+--      NewSwitch
+--        (Settings.OverwriteOnExist, 0,
+--         Gettext
+--           ("If enabled, during copying or moving files and directories, if in destination directory exists file or directory with that same name, the program will ask if overwrite it. If disabled, the program will quietly give add underscore to the name of moved or copied file or directory."),
+--         True, SetOverwrite'Access);
+--      AddFrame(Gettext("Copying or moving"));
+--      Show_All(MenuBox);
+--      Add(PreferencesPopup, MenuBox);
+--      Set_Modal(PreferencesPopup, True);
+--      Set_Position(PreferencesPopup, Pos_Bottom);
+--      On_Clicked(Gtk_Tool_Button(Parent), TogglePreferences'Access);
+--   end CreatePreferences;
 
 end Preferences;
