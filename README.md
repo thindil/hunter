@@ -33,7 +33,7 @@ To build you need:
 
 * Tcl/Tk library. Should be available in any Linux distribution
 
-* TASHY library. You can get it from:
+* TASHY library with included binding to Tk and TkLib. You can get it from:
 
    https://github.com/thindil/tashy
 
