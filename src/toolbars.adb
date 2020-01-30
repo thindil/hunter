@@ -18,12 +18,14 @@
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Tcl; use Tcl;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Image; use Tcl.Tk.Ada.Image;
 with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
@@ -31,26 +33,11 @@ with Preferences; use Preferences;
 
 package body Toolbars is
 
-   procedure CreateActionToolbar is
+   procedure SetToolbars is
       Side, Direction: Unbounded_String;
       Fill: String(1 .. 1);
-      ToolMenuButton: Ttk_MenuButton;
-      Toolbar: constant Ttk_Frame := Create(".actiontoolbar");
-      CurrentDir: constant String := Current_Directory;
-      procedure SetButton
-        (Button: Tk_Widget'Class; TooltipText, ImageName: String) is
-         Image: constant Tk_Photo :=
-           Create
-             (ImageName & "icon",
-              "-file ""../share/hunter/images/" & ImageName & ".png""");
-         pragma Unreferenced(Image);
-      begin
-         Add(Button, TooltipText);
-         configure
-           (Button,
-            "-style Toolbutton -direction " & To_String(Direction) &
-            " -image " & ImageName & "icon");
-      end SetButton;
+      Toolbar: Ttk_Frame;
+      Button: Ttk_Button;
    begin
       if Settings.ToolbarsOnTop then
          Side := To_Unbounded_String("top");
@@ -61,12 +48,38 @@ package body Toolbars is
          Fill := "x";
          Direction := To_Unbounded_String("right");
       end if;
+      Button.Interp := Get_Context;
+      Button.Name := New_String(".actiontoolbar.bookmarksbutton");
+      configure(Button, "-direction " & To_String(Direction));
+      Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
+      Toolbar.Interp := Get_Context;
+      Toolbar.Name := New_String(".actiontoolbar");
+      Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill " & Fill);
+   end SetToolbars;
+
+   procedure CreateActionToolbar is
+      ToolMenuButton: Ttk_MenuButton;
+      Toolbar: Ttk_Frame;
+      CurrentDir: constant String := Current_Directory;
+      procedure SetButton
+        (Button: Tk_Widget'Class; TooltipText, ImageName: String) is
+         Image: constant Tk_Photo :=
+           Create
+             (ImageName & "icon",
+              "-file ""../share/hunter/images/" & ImageName & ".png""");
+         pragma Unreferenced(Image);
+      begin
+         Add(Button, TooltipText);
+         configure(Button, "-style Toolbutton -image " & ImageName & "icon");
+      end SetButton;
+   begin
+      Create(Toolbar, ".actiontoolbar");
       Set_Directory(Containing_Directory(Command_Name));
       ToolMenuButton := Create(".actiontoolbar.bookmarksbutton");
       SetButton(ToolMenuButton, "Show bookmarks menu \[ALT+H\]", "bookmarks");
+      Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       Set_Directory(CurrentDir);
-      Tcl.Tk.Ada.Pack.Pack(ToolMenuButton, "-side " & To_String(Side));
-      Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill " & Fill);
+      SetToolbars;
    end CreateActionToolbar;
 
    -- ****if* Toolbars/AddButton
