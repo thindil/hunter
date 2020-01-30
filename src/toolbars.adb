@@ -42,15 +42,19 @@ package body Toolbars is
       Toolbar: Ttk_Frame;
       Button: Ttk_Button;
       ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String(".actiontoolbar.searchbutton"),
+        (To_Unbounded_String(".actiontoolbar.quitbutton"),
+         To_Unbounded_String(".actiontoolbar.searchbutton"),
+         To_Unbounded_String(".actiontoolbar.selectbutton"),
          To_Unbounded_String(".actiontoolbar.renamebutton"),
          To_Unbounded_String(".actiontoolbar.copybutton"),
-         To_Unbounded_String(".actiontoolbar.movebutton"));
+         To_Unbounded_String(".actiontoolbar.movebutton"),
+         To_Unbounded_String(".actiontoolbar.optionsbutton"));
       MenuButtonsNames: constant array
         (Positive range <>) of Unbounded_String :=
         (To_Unbounded_String(".actiontoolbar.bookmarksbutton"),
          To_Unbounded_String(".actiontoolbar.newbutton"),
-         To_Unbounded_String(".actiontoolbar.deletebutton"));
+         To_Unbounded_String(".actiontoolbar.deletebutton"),
+         To_Unbounded_String(".actiontoolbar.aboutbutton"));
    begin
       if not Settings.ToolbarsOnTop then
          Side := To_Unbounded_String("top");
@@ -73,7 +77,7 @@ package body Toolbars is
          Button.Name := New_String(To_String(Name));
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
       end loop;
-      for I in 1 .. 2 loop
+      for I in 1 .. 3 loop
          Button.Name :=
            New_String
              (".actiontoolbar.separator" & Trim(Positive'Image(I), Both));
@@ -107,6 +111,11 @@ package body Toolbars is
    begin
       Create(Toolbar, ".actiontoolbar");
       Set_Directory(Containing_Directory(Command_Name));
+      ToolButton := Create(".actiontoolbar.quitbutton");
+      SetButton(ToolButton, "Quit from the program. \[CTRL+Q\]", "quit");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Separator := Create(".actiontoolbar.separator1");
+      Tcl.Tk.Ada.Pack.Pack(Separator);
       ToolMenuButton := Create(".actiontoolbar.bookmarksbutton");
       SetButton(ToolMenuButton, "Show bookmarks menu \[ALT+H\]", "bookmarks");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
@@ -121,7 +130,7 @@ package body Toolbars is
          "Select or unselect all files and directories in currently selected directory. \[CTRL+A\]",
          "edit-select-all");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      Separator := Create(".actiontoolbar.separator1");
+      Separator := Create(".actiontoolbar.separator2");
       Tcl.Tk.Ada.Pack.Pack(Separator);
       ToolMenuButton := Create(".actiontoolbar.newbutton");
       SetButton
@@ -156,8 +165,18 @@ package body Toolbars is
         (ToolButton,
          "Restore selected file or directory from the trash \[ALT+R\]",
          "document-revert");
-      Separator := Create(".actiontoolbar.separator2");
+      Separator := Create(".actiontoolbar.separator3");
       Tcl.Tk.Ada.Pack.Pack(Separator);
+      ToolButton := Create(".actiontoolbar.optionsbutton");
+      SetButton
+        (ToolButton, "Show the program preferences \[ALT+P\]", "configure");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      ToolMenuButton := Create(".actiontoolbar.aboutbutton");
+      SetButton
+        (ToolMenuButton,
+         "Show menu with information about the program \[ALT+A\]",
+         "help-about");
+      Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       Set_Directory(CurrentDir);
       SetToolbars;
    end CreateActionToolbar;
@@ -296,11 +315,6 @@ package body Toolbars is
 --      ActionToolBar := Gtk_Toolbar_New;
 --      Set_Style(ActionToolBar, Toolbar_Icons);
 --      CreateBookmarkMenu(True);
---      AddButton
---        (Gettext("Restore"), "document-revert", ActionToolBar,
---         Gettext("Restore selected file or directory from the trash [ALT+R]"),
---         GDK_R);
---      AddSeparator(ActionToolBar);
 --      AddButton
 --        (Gettext("Preferences"), "preferences-desktop", ActionToolBar,
 --         Gettext("Show the program preferences [ALT-P]"), GDK_P);
