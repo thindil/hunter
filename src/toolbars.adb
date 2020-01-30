@@ -43,11 +43,14 @@ package body Toolbars is
       Button: Ttk_Button;
       ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
         (To_Unbounded_String(".actiontoolbar.searchbutton"),
-         To_Unbounded_String(".actiontoolbar.renamebutton"));
+         To_Unbounded_String(".actiontoolbar.renamebutton"),
+         To_Unbounded_String(".actiontoolbar.copybutton"),
+         To_Unbounded_String(".actiontoolbar.movebutton"));
       MenuButtonsNames: constant array
         (Positive range <>) of Unbounded_String :=
         (To_Unbounded_String(".actiontoolbar.bookmarksbutton"),
-         To_Unbounded_String(".actiontoolbar.newbutton"));
+         To_Unbounded_String(".actiontoolbar.newbutton"),
+         To_Unbounded_String(".actiontoolbar.deletebutton"));
    begin
       if not Settings.ToolbarsOnTop then
          Side := To_Unbounded_String("top");
@@ -70,7 +73,7 @@ package body Toolbars is
          Button.Name := New_String(To_String(Name));
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
       end loop;
-      for I in 1 .. 1 loop
+      for I in 1 .. 2 loop
          Button.Name :=
            New_String
              (".actiontoolbar.separator" & Trim(Positive'Image(I), Both));
@@ -129,6 +132,32 @@ package body Toolbars is
         (ToolButton, "Rename selected file or directory \[CTRL+R\]",
          "document-save-as");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      ToolButton := Create(".actiontoolbar.copybutton");
+      SetButton
+        (ToolButton,
+         "Copy selected files \[ALT+C\]. Pressed button means start copying currently selected files or directories. Press again to copy them.",
+         "edit-copy");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      ToolButton := Create(".actiontoolbar.movebutton");
+      SetButton
+        (ToolButton,
+         "Move selected files \[ALT+M\]. Pressed button means start moving currently selected files or directories. Press again to move them.",
+         "edit-cut");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      ToolMenuButton := Create(".actiontoolbar.deletebutton");
+      SetButton(ToolMenuButton, "Show delete menu \[Delete\]", "edit-delete");
+      Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
+      ToolButton := Create(".actiontoolbar.cancelbutton");
+      SetButton
+        (ToolButton, "Discard all changes and back to files list \[Escape\]",
+         "dialog-cancel");
+      ToolButton := Create(".actiontoolbar.restorebutton");
+      SetButton
+        (ToolButton,
+         "Restore selected file or directory from the trash \[ALT+R\]",
+         "document-revert");
+      Separator := Create(".actiontoolbar.separator2");
+      Tcl.Tk.Ada.Pack.Pack(Separator);
       Set_Directory(CurrentDir);
       SetToolbars;
    end CreateActionToolbar;
@@ -267,23 +296,6 @@ package body Toolbars is
 --      ActionToolBar := Gtk_Toolbar_New;
 --      Set_Style(ActionToolBar, Toolbar_Icons);
 --      CreateBookmarkMenu(True);
---      AddToggleButton
---        (Gettext("Copy"), "edit-copy", ActionToolBar,
---         Gettext
---           ("Copy selected files [ALT-C]. Pressed button means start copying currently selected files or directories. Press again to copy them."),
---         GDK_C);
---      AddToggleButton
---        (Gettext("Move"), "edit-cut", ActionToolBar,
---         Gettext
---           ("Move selected files [ALT-M]. Pressed button means start moving currently selected files or directories. Press again to move them."),
---         GDK_M);
---      AddMenuButton
---        (Gettext("Delete"), "edit-delete", ActionToolBar, "", GDK_Delete,
---         null);
---      AddButton
---        (Gettext("Cancel"), "dialog-cancel", ActionToolBar,
---         Gettext("Discard all changes and back to files list [Escape]"),
---         GDK_Escape, 0);
 --      AddButton
 --        (Gettext("Restore"), "document-revert", ActionToolBar,
 --         Gettext("Restore selected file or directory from the trash [ALT+R]"),
