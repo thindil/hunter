@@ -42,8 +42,12 @@ package body Toolbars is
       Toolbar: Ttk_Frame;
       Button: Ttk_Button;
       ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
+        (To_Unbounded_String(".actiontoolbar.searchbutton"),
+         To_Unbounded_String(".actiontoolbar.renamebutton"));
+      MenuButtonsNames: constant array
+        (Positive range <>) of Unbounded_String :=
         (To_Unbounded_String(".actiontoolbar.bookmarksbutton"),
-         To_Unbounded_String(".actiontoolbar.searchbutton"));
+         To_Unbounded_String(".actiontoolbar.newbutton"));
    begin
       if not Settings.ToolbarsOnTop then
          Side := To_Unbounded_String("top");
@@ -57,11 +61,13 @@ package body Toolbars is
          Orientation := To_Unbounded_String("vertical");
       end if;
       Button.Interp := Get_Context;
+      for Name of MenuButtonsNames loop
+         Button.Name := New_String(To_String(Name));
+         configure(Button, "-direction " & To_String(Direction));
+         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
+      end loop;
       for Name of ButtonsNames loop
          Button.Name := New_String(To_String(Name));
-         if Name = To_Unbounded_String(".actiontoolbar.bookmarksbutton") then
-            configure(Button, "-direction " & To_String(Direction));
-         end if;
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
       end loop;
       for I in 1 .. 1 loop
@@ -69,7 +75,7 @@ package body Toolbars is
            New_String
              (".actiontoolbar.separator" & Trim(Positive'Image(I), Both));
          configure(Button, "-orient " & To_String(Orientation));
-         Tcl.Tk.Ada.Pack.Pack
+         Tcl.Tk.Ada.Pack.Pack_Configure
            (Button,
             "-side " & To_String(Side) & " -pad" & Fill & " 5 -fill " & Fill);
       end loop;
@@ -84,7 +90,6 @@ package body Toolbars is
       CurrentDir: constant String := Current_Directory;
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
-      pragma Unreferenced(Separator);
       procedure SetButton
         (Button: Tk_Widget'Class; TooltipText, ImageName: String) is
          Image: constant Tk_Photo :=
@@ -114,6 +119,16 @@ package body Toolbars is
          "edit-select-all");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".actiontoolbar.separator1");
+      Tcl.Tk.Ada.Pack.Pack(Separator);
+      ToolMenuButton := Create(".actiontoolbar.newbutton");
+      SetButton
+        (ToolMenuButton, "Show add new item menu \[ALT+N\].", "document-new");
+      Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
+      ToolButton := Create(".actiontoolbar.renamebutton");
+      SetButton
+        (ToolButton, "Rename selected file or directory \[CTRL+R\]",
+         "document-save-as");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Set_Directory(CurrentDir);
       SetToolbars;
    end CreateActionToolbar;
@@ -252,16 +267,6 @@ package body Toolbars is
 --      ActionToolBar := Gtk_Toolbar_New;
 --      Set_Style(ActionToolBar, Toolbar_Icons);
 --      CreateBookmarkMenu(True);
---      AddSeparator(ActionToolBar);
---      AddMenuButton
---        (Gettext("new"), "document-new", ActionToolBar,
---         Gettext
---           ("Add new directory [ALT+N] or press arrow to see more options."),
---         GDK_N, null);
---      AddButton
---        (Gettext("Rename"), "document-save-as", ActionToolBar,
---         Gettext("Rename selected file or directory [CTRL-R]"), GDK_R,
---         Control_Mask);
 --      AddToggleButton
 --        (Gettext("Copy"), "edit-copy", ActionToolBar,
 --         Gettext
