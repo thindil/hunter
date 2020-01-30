@@ -17,6 +17,8 @@
 --with MainWindow; use MainWindow;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Tcl; use Tcl;
@@ -28,36 +30,48 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
+with Tcl.Tk.Ada.Widgets.TtkSeparator; use Tcl.Tk.Ada.Widgets.TtkSeparator;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Preferences; use Preferences;
 
 package body Toolbars is
 
    procedure SetToolbars is
-      Side, Direction: Unbounded_String;
+      Side, Direction, Orientation: Unbounded_String;
       Fill: String(1 .. 1);
       Toolbar: Ttk_Frame;
       Button: Ttk_Button;
-      ButtonNames: constant array(Positive range <>) of Unbounded_String :=
+      ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
         (To_Unbounded_String(".actiontoolbar.bookmarksbutton"),
          To_Unbounded_String(".actiontoolbar.searchbutton"));
    begin
       if not Settings.ToolbarsOnTop then
          Side := To_Unbounded_String("top");
-         Fill := "y";
+         Fill := "x";
          Direction := To_Unbounded_String("right");
+         Orientation := To_Unbounded_String("horizontal");
       else
          Side := To_Unbounded_String("left");
-         Fill := "x";
+         Fill := "y";
          Direction := To_Unbounded_String("below");
+         Orientation := To_Unbounded_String("vertical");
       end if;
       Button.Interp := Get_Context;
-      for Name of ButtonNames loop
+      for Name of ButtonsNames loop
          Button.Name := New_String(To_String(Name));
          if Name = To_Unbounded_String(".actiontoolbar.bookmarksbutton") then
             configure(Button, "-direction " & To_String(Direction));
          end if;
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
+      end loop;
+      for I in 1 .. 1 loop
+         Button.Name :=
+           New_String
+             (".actiontoolbar.separator" & Trim(Positive'Image(I), Both));
+         configure(Button, "-orient " & To_String(Orientation));
+         Tcl.Tk.Ada.Pack.Pack
+           (Button,
+            "-side " & To_String(Side) & " -pad" & Fill & " 5 -fill " & Fill);
       end loop;
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(".actiontoolbar");
@@ -69,6 +83,8 @@ package body Toolbars is
       Toolbar: Ttk_Frame;
       CurrentDir: constant String := Current_Directory;
       ToolButton: Ttk_Button;
+      Separator: Ttk_Separator;
+      pragma Unreferenced(Separator);
       procedure SetButton
         (Button: Tk_Widget'Class; TooltipText, ImageName: String) is
          Image: constant Tk_Photo :=
@@ -91,6 +107,13 @@ package body Toolbars is
         (ToolButton, "Search for the file or directory \[ALT+F\]",
          "edit-find");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      ToolButton := Create(".actiontoolbar.selectbutton");
+      SetButton
+        (ToolButton,
+         "Select or unselect all files and directories in currently selected directory. \[CTRL+A\]",
+         "edit-select-all");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Separator := Create(".actiontoolbar.separator1");
       Set_Directory(CurrentDir);
       SetToolbars;
    end CreateActionToolbar;
@@ -229,19 +252,6 @@ package body Toolbars is
 --      ActionToolBar := Gtk_Toolbar_New;
 --      Set_Style(ActionToolBar, Toolbar_Icons);
 --      CreateBookmarkMenu(True);
---      AddMenuButton
---        (Gettext("Home"), "user-home", ActionToolBar,
---         Gettext
---           ("Go to your home directory [ALT+H] or press arrow to see more bookmarks"),
---         GDK_H, Gtk_Widget(BookmarksMenu));
---      AddToggleButton
---        (Gettext("Search"), "edit-find", ActionToolBar,
---         Gettext("Search for the file or directory [ALT+F]"), GDK_F);
---      AddButton
---        (Gettext("Select All"), "edit-select-all", ActionToolBar,
---         Gettext
---           ("Select or unselect all files and directories in currently selected directory. [CTRL+A]"),
---         GDK_A, Control_Mask);
 --      AddSeparator(ActionToolBar);
 --      AddMenuButton
 --        (Gettext("new"), "document-new", ActionToolBar,
