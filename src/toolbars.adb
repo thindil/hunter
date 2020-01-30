@@ -38,20 +38,27 @@ package body Toolbars is
       Fill: String(1 .. 1);
       Toolbar: Ttk_Frame;
       Button: Ttk_Button;
+      ButtonNames: constant array(Positive range <>) of Unbounded_String :=
+        (To_Unbounded_String(".actiontoolbar.bookmarksbutton"),
+         To_Unbounded_String(".actiontoolbar.searchbutton"));
    begin
-      if Settings.ToolbarsOnTop then
+      if not Settings.ToolbarsOnTop then
          Side := To_Unbounded_String("top");
          Fill := "y";
-         Direction := To_Unbounded_String("bottom");
+         Direction := To_Unbounded_String("right");
       else
          Side := To_Unbounded_String("left");
          Fill := "x";
-         Direction := To_Unbounded_String("right");
+         Direction := To_Unbounded_String("below");
       end if;
       Button.Interp := Get_Context;
-      Button.Name := New_String(".actiontoolbar.bookmarksbutton");
-      configure(Button, "-direction " & To_String(Direction));
-      Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
+      for Name of ButtonNames loop
+         Button.Name := New_String(To_String(Name));
+         if Name = To_Unbounded_String(".actiontoolbar.bookmarksbutton") then
+            configure(Button, "-direction " & To_String(Direction));
+         end if;
+         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
+      end loop;
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(".actiontoolbar");
       Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill " & Fill);
@@ -61,6 +68,7 @@ package body Toolbars is
       ToolMenuButton: Ttk_MenuButton;
       Toolbar: Ttk_Frame;
       CurrentDir: constant String := Current_Directory;
+      ToolButton: Ttk_Button;
       procedure SetButton
         (Button: Tk_Widget'Class; TooltipText, ImageName: String) is
          Image: constant Tk_Photo :=
@@ -78,6 +86,11 @@ package body Toolbars is
       ToolMenuButton := Create(".actiontoolbar.bookmarksbutton");
       SetButton(ToolMenuButton, "Show bookmarks menu \[ALT+H\]", "bookmarks");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
+      ToolButton := Create(".actiontoolbar.searchbutton");
+      SetButton
+        (ToolButton, "Search for the file or directory \[ALT+F\]",
+         "edit-find");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Set_Directory(CurrentDir);
       SetToolbars;
    end CreateActionToolbar;
