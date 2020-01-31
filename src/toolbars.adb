@@ -37,8 +37,8 @@ with Preferences; use Preferences;
 package body Toolbars is
 
    procedure SetToolbars is
-      Side, Direction, Orientation: Unbounded_String;
-      Fill: String(1 .. 1);
+      Side, Direction, Orientation, PanelSide: Unbounded_String;
+      Fill, Anchor: String(1 .. 1);
       Toolbar: Ttk_Frame;
       Button: Ttk_Button;
       ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
@@ -61,11 +61,15 @@ package body Toolbars is
          Fill := "x";
          Direction := To_Unbounded_String("right");
          Orientation := To_Unbounded_String("horizontal");
+         PanelSide := To_Unbounded_String("left");
+         Anchor := "n";
       else
          Side := To_Unbounded_String("left");
          Fill := "y";
          Direction := To_Unbounded_String("below");
          Orientation := To_Unbounded_String("vertical");
+         PanelSide := To_Unbounded_String("top");
+         Anchor := "w";
       end if;
       Button.Interp := Get_Context;
       for Name of MenuButtonsNames loop
@@ -88,7 +92,8 @@ package body Toolbars is
       end loop;
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(".actiontoolbar");
-      Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill " & Fill);
+      Tcl.Tk.Ada.Pack.Pack_Configure
+        (Toolbar, "-side " & To_String(PanelSide) & " -anchor " & Anchor);
    end SetToolbars;
 
    procedure CreateActionToolbar is
@@ -177,8 +182,8 @@ package body Toolbars is
          "Show menu with information about the program \[ALT+A\]",
          "help-about");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
+      Tcl.Tk.Ada.Pack.Pack(Toolbar);
       Set_Directory(CurrentDir);
-      SetToolbars;
    end CreateActionToolbar;
 
    -- ****if* Toolbars/AddButton
