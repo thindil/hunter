@@ -38,14 +38,7 @@ package Toolbars is
    -- FUNCTION
    -- Crete ItemToolBar
    -- SOURCE
---   procedure CreateItemToolbar;
-   -- ****
-
-   -- ****f* Toolbars/SetToolbars
-   -- FUNCTION
-   -- Set position of toolbars - on the top or the left of the main window.
-   -- SOURCE
---   procedure SetToolbars;
+   procedure CreateItemToolbar;
    -- ****
 
 end Toolbars;

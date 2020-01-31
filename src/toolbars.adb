@@ -48,7 +48,14 @@ package body Toolbars is
          To_Unbounded_String(".actiontoolbar.renamebutton"),
          To_Unbounded_String(".actiontoolbar.copybutton"),
          To_Unbounded_String(".actiontoolbar.movebutton"),
-         To_Unbounded_String(".actiontoolbar.optionsbutton"));
+         To_Unbounded_String(".actiontoolbar.optionsbutton"),
+         To_Unbounded_String(".itemtoolbar.runbutton"),
+         To_Unbounded_String(".itemtoolbar.openbutton"),
+         To_Unbounded_String(".itemtoolbar.openwithbutton"),
+         To_Unbounded_String(".itemtoolbar.previewbutton"),
+         To_Unbounded_String(".itemtoolbar.infobutton"),
+         To_Unbounded_String(".itemtoolbar.addbutton"),
+         To_Unbounded_String(".itemtoolbar.deletebutton"));
       MenuButtonsNames: constant array
         (Positive range <>) of Unbounded_String :=
         (To_Unbounded_String(".actiontoolbar.bookmarksbutton"),
@@ -90,11 +97,48 @@ package body Toolbars is
            (Button,
             "-side " & To_String(Side) & " -pad" & Fill & " 5 -fill " & Fill);
       end loop;
+      for I in 1 .. 2 loop
+         Button.Name :=
+           New_String
+             (".itemtoolbar.separator" & Trim(Positive'Image(I), Both));
+         configure(Button, "-orient " & To_String(Orientation));
+         Tcl.Tk.Ada.Pack.Pack_Configure
+           (Button,
+            "-side " & To_String(Side) & " -pad" & Fill & " 5 -fill " & Fill);
+      end loop;
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(".actiontoolbar");
       Tcl.Tk.Ada.Pack.Pack_Configure
         (Toolbar, "-side " & To_String(PanelSide) & " -anchor " & Anchor);
+      Toolbar.Name := New_String(".itemtoolbar");
+      if not Settings.ToolbarsOnTop then
+         Anchor := "s";
+      else
+         Anchor := "e";
+      end if;
+      Tcl.Tk.Ada.Pack.Pack_Configure
+        (Toolbar, "-side " & To_String(PanelSide) & " -anchor " & Anchor);
    end SetToolbars;
+
+   -- ****if* Toolbars/SetButton
+   -- FUNCTION
+   -- Configure selected button on toolbars
+   -- PARAMETERS
+   -- Button      - Button to configure
+   -- TooltipText - Text which will be displayed as tooltip
+   -- ImageName   - Name of image which will be used as icon for button
+   -- SOURCE
+   procedure SetButton
+     (Button: Tk_Widget'Class; TooltipText, ImageName: String) is
+      Image: constant Tk_Photo :=
+        Create
+          (ImageName & "icon",
+           "-file ""../share/hunter/images/" & ImageName & ".png""");
+      pragma Unreferenced(Image);
+   begin
+      Add(Button, TooltipText);
+      configure(Button, "-style Toolbutton -image " & ImageName & "icon");
+   end SetButton;
 
    procedure CreateActionToolbar is
       ToolMenuButton: Ttk_MenuButton;
@@ -102,17 +146,6 @@ package body Toolbars is
       CurrentDir: constant String := Current_Directory;
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
-      procedure SetButton
-        (Button: Tk_Widget'Class; TooltipText, ImageName: String) is
-         Image: constant Tk_Photo :=
-           Create
-             (ImageName & "icon",
-              "-file ""../share/hunter/images/" & ImageName & ".png""");
-         pragma Unreferenced(Image);
-      begin
-         Add(Button, TooltipText);
-         configure(Button, "-style Toolbutton -image " & ImageName & "icon");
-      end SetButton;
    begin
       Create(Toolbar, ".actiontoolbar");
       Set_Directory(Containing_Directory(Command_Name));
@@ -186,186 +219,54 @@ package body Toolbars is
       Set_Directory(CurrentDir);
    end CreateActionToolbar;
 
-   -- ****if* Toolbars/AddButton
-   -- FUNCTION
-   -- Add button to the toolbar
-   -- PARAMETERS
-   -- Text     - Label of the button to add
-   -- IconName - Name of icon which will be showed on the button
-   -- Toolbar  - Toolbar to which the button will be added
-   -- Tooltip  - Tooltip text for the button
-   -- Key      - Keyboard shortcut for the button
-   -- Mask     - Special key (Control, Alt, Shift, etc) which
-   --            will be needed for trigger the button
-   -- SOURCE
---   procedure AddButton
---     (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
---      Key: Gdk_Key_Type; Mask: Gdk_Modifier_Type := Mod1_Mask) is
---      -- ****
---      Button: constant Gtk_Tool_Button := Gtk_Tool_Button_New(Label => Text);
---   begin
---      Set_Tooltip_Text(Button, Tooltip);
---      Set_Icon_Name(Button, IconName);
---      Add_Accelerator
---        (Button, "clicked", Accelerators, Key, Mask, Accel_Visible);
---      Insert(Toolbar, Button);
---   end AddButton;
---
---   -- ****if* Toolbars/AddSeparator
---   -- FUNCTION
---   -- Add separator to toolbar
---   -- PARAMETERS
---   -- Toolbar - Toolbar to which the separator will be added
---   -- SOURCE
---   procedure AddSeparator(Toolbar: Gtk_Toolbar) is
---      -- ****
---      Separator: constant Gtk_Separator_Tool_Item :=
---        Gtk_Separator_Tool_Item_New;
---   begin
---      Insert(Toolbar, Separator);
---   end AddSeparator;
---
---   -- ****if* Toolbars/AddRadioButton
---   -- FUNCTION
---   -- Add radiobutton to the toolbar
---   -- PARAMETERS
---   -- Text       - Label of the radiobutton to add
---   -- IconName   - Name of icon which will be showed on the radiobutton
---   -- RadioGroup - The group to which the radiobutton will be belong
---   -- Toolbar    - The toolbar to which the button will be added
---   -- Tooltip    - Tooltip text for the radiobutton
---   -- Key        - Keyboard shortcut for the radiobutton
---   -- SOURCE
---   procedure AddRadioButton
---     (Text, IconName: String; RadioGroup: in out Widget_SList.GSlist;
---      Toolbar: Gtk_Toolbar; Tooltip: String; Key: Gdk_Key_Type) is
---      -- ****
---      Button: constant Gtk_Radio_Tool_Button :=
---        Gtk_Radio_Tool_Button_New(RadioGroup);
---   begin
---      RadioGroup := Get_Group(Button);
---      Set_Label(Button, Text);
---      Set_Tooltip_Text(Button, Tooltip);
---      Set_Icon_Name(Button, IconName);
---      Add_Accelerator
---        (Button, "clicked", Accelerators, Key, Mod1_Mask, Accel_Visible);
---      Insert(Toolbar, Button);
---   end AddRadioButton;
---
---   procedure CreateItemToolbarUI is
---      RadioGroup: Widget_SList.GSlist;
---   begin
---      ItemToolBar := Gtk_Toolbar_New;
---      Set_Style(ItemToolBar, Toolbar_Icons);
---      Set_Halign(ItemToolBar, Align_Center);
---      Set_Valign(ItemToolBar, Align_End);
---      AddButton
---        (Gettext("Run"), "media-playback-start", ItemToolBar,
---         Gettext("Execute selected program [ALT-E]."), GDK_E);
---      AddButton
---        (Gettext("Open"), "document-open", ItemToolBar,
---         Gettext("Open selected file or directory [ALT-O]"), GDK_O);
---      AddButton
---        (Gettext("Open with..."), "system-run", ItemToolBar,
---         Gettext("Open selected file or directory with command [ALT-W]"),
---         GDK_W);
---      AddSeparator(ItemToolBar);
---      AddRadioButton
---        (Gettext("Preview"), "document-print-preview", RadioGroup, ItemToolBar,
---         Gettext("Preview file or directory [ALT-V]"), GDK_V);
---      AddRadioButton
---        (Gettext("Info"), "document-properties", RadioGroup, ItemToolBar,
---         Gettext("File or directory informations [ALT-I]"), GDK_I);
---      AddSeparator(ItemToolBar);
---      AddButton
---        (Gettext("Add bookmark"), "list-add", ItemToolBar,
---         Gettext("Add bookmark to this directory [ALT-B]."), GDK_B);
---      AddButton
---        (Gettext("Remove bookmark"), "list-remove", ItemToolBar,
---         Gettext("Remove bookmark to this directory [ALT-B]"), GDK_B);
---      Pack_End
---        (Gtk_Header_Bar(Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---         ItemToolBar);
---   end CreateItemToolbarUI;
---
---   procedure CreateActionToolbarUI is
---      procedure AddMenuButton
---        (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
---         Key: Gdk_Key_Type; Menu: Gtk_Widget) is
---         Button: constant Gtk_Menu_Tool_Button :=
---           Gtk_Menu_Tool_Button_New(Label => Text);
---      begin
---         Set_Tooltip_Text(Button, Tooltip);
---         Set_Icon_Name(Button, IconName);
---         Add_Accelerator
---           (Button, "clicked", Accelerators, Key, Mod1_Mask, Accel_Visible);
---         if Menu /= null then
---            Set_Menu(Button, Menu);
---         end if;
---         Insert(Toolbar, Button);
---      end AddMenuButton;
---      procedure AddToggleButton
---        (Text, IconName: String; Toolbar: Gtk_Toolbar; Tooltip: String;
---         Key: Gdk_Key_Type; Mask: Gdk_Modifier_Type := Mod1_Mask) is
---         Button: constant Gtk_Toggle_Tool_Button := Gtk_Toggle_Tool_Button_New;
---      begin
---         Set_Label(Button, Text);
---         Set_Tooltip_Text(Button, Tooltip);
---         Set_Icon_Name(Button, IconName);
---         Add_Accelerator
---           (Button, "clicked", Accelerators, Key, Mask, Accel_Visible);
---         Insert(Toolbar, Button);
---      end AddToggleButton;
---   begin
---      ActionToolBar := Gtk_Toolbar_New;
---      Set_Style(ActionToolBar, Toolbar_Icons);
---      CreateBookmarkMenu(True);
---      AddButton
---        (Gettext("Preferences"), "preferences-desktop", ActionToolBar,
---         Gettext("Show the program preferences [ALT-P]"), GDK_P);
---      AddMenuButton
---        (Gettext("About"), "help-about", ActionToolBar,
---         Gettext("Show informations about the program [ALT-A]."), GDK_A, null);
---      AddSeparator(ActionToolBar);
---      Pack_Start
---        (Gtk_Header_Bar(Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---         ActionToolBar);
---   end CreateActionToolbarUI;
---
---   procedure SetToolbars is
---      Header: constant GObject :=
---        GObject(Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0));
---      LeftBox: constant Gtk_Widget :=
---        Get_Child
---          (Gtk_Box
---             (Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 4)),
---           0);
---   begin
---      if Settings.ToolbarsOnTop then
---         if Get_Parent(Gtk_Widget(ActionToolBar)) = Gtk_Widget(Header) then
---            return;
---         end if;
---         Ref(ActionToolBar);
---         Remove(Gtk_Container(LeftBox), Gtk_Widget(ActionToolBar));
---         Ref(ItemToolBar);
---         Remove(Gtk_Container(LeftBox), ItemToolBar);
---         Pack_Start(Gtk_Header_Bar(Header), Gtk_Widget(ActionToolBar));
---         Pack_End(Gtk_Header_Bar(Header), ItemToolBar);
---         Set_Orientation(ActionToolBar, Orientation_Horizontal);
---         Set_Orientation(ItemToolBar, Orientation_Horizontal);
---      else
---         if Get_Parent(Gtk_Widget(ActionToolBar)) = LeftBox then
---            return;
---         end if;
---         Ref(ActionToolBar);
---         Remove(Gtk_Container(Header), Gtk_Widget(ActionToolBar));
---         Ref(ItemToolBar);
---         Remove(Gtk_Container(Header), ItemToolBar);
---         Pack_Start(Gtk_Box(LeftBox), Gtk_Widget(ActionToolBar));
---         Pack_End(Gtk_Box(LeftBox), ItemToolBar);
---         Set_Orientation(ActionToolBar, Orientation_Vertical);
---         Set_Orientation(ItemToolBar, Orientation_Vertical);
---      end if;
---   end SetToolbars;
+   procedure CreateItemToolbar is
+      Toolbar: Ttk_Frame;
+      CurrentDir: constant String := Current_Directory;
+      ToolButton: Ttk_Button;
+      Separator: Ttk_Separator;
+   begin
+      Create(Toolbar, ".itemtoolbar");
+      Set_Directory(Containing_Directory(Command_Name));
+      ToolButton := Create(".itemtoolbar.runbutton");
+      SetButton
+        (ToolButton, "Execute selected program \[ALT+E\].",
+         "media-playback-start");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      ToolButton := Create(".itemtoolbar.openbutton");
+      SetButton
+        (ToolButton, "Open selected file or directory \[ALT+O\]",
+         "document-open");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      ToolButton := Create(".itemtoolbar.openwithbutton");
+      SetButton
+        (ToolButton, "Open selected file or directory with command \[ALT+W\]",
+         "system-run");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Separator := Create(".itemtoolbar.separator1");
+      Tcl.Tk.Ada.Pack.Pack(Separator);
+      ToolButton := Create(".itemtoolbar.previewbutton");
+      SetButton
+        (ToolButton, "Preview file or directory \[ALT+V\]",
+         "document-preview");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      ToolButton := Create(".itemtoolbar.infobutton");
+      SetButton
+        (ToolButton, "File or directory informations \[ALT+I\]",
+         "document-properties");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Separator := Create(".itemtoolbar.separator2");
+      Tcl.Tk.Ada.Pack.Pack(Separator);
+      ToolButton := Create(".itemtoolbar.addbutton");
+      SetButton
+        (ToolButton, "Add bookmark to this directory \[ALT+B\].", "list-add");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      ToolButton := Create(".itemtoolbar.deletebutton");
+      SetButton
+        (ToolButton, "Remove bookmark to this directory \[ALT+B\]",
+         "list-remove");
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Tcl.Tk.Ada.Pack.Pack(Toolbar);
+      Set_Directory(CurrentDir);
+   end CreateItemToolbar;
 
 end Toolbars;
