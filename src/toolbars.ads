@@ -13,7 +13,19 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+-- ****h* Hunter/Toolbars
+-- FUNCTION
+-- Provide code for manipulate the program toolbars
+-- SOURCE
 package Toolbars is
+-- ****
+
+   -- ****f* Toolbars/SetToolbars
+   -- FUNCTION
+   -- Set proper orientation for the toolbars;
+   -- SOURCE
+   procedure SetToolbars;
+   -- ****
 
    -- ****f* Toolbars/CreateActionToolbar
    -- FUNCTION
