@@ -104,6 +104,7 @@ begin
    Wm_Set(MainWindow, "title", "Hunter");
    Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
    CreateActionToolbar;
+   CreateItemToolbar;
    SetToolbars;
 
    --  Loop inside Tk, waiting for commands to execute.
