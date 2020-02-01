@@ -26,10 +26,11 @@ with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Image; use Tcl.Tk.Ada.Image;
 with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
-with Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Tcl.Tk.Ada.Widgets.TtkSeparator; use Tcl.Tk.Ada.Widgets.TtkSeparator;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
@@ -42,6 +43,7 @@ package body Toolbars is
       Fill: String(1 .. 1);
       Toolbar: Ttk_Frame;
       Button: Ttk_Button;
+      Label: Ttk_Label;
       ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
         (To_Unbounded_String(".toolbars.actiontoolbar.quitbutton"),
          To_Unbounded_String(".toolbars.actiontoolbar.searchbutton"),
@@ -108,15 +110,24 @@ package body Toolbars is
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(".toolbars.itemtoolbar");
       if not Settings.ToolbarsOnTop then
-         Tcl.Tk.Ada.Grid.Grid_Configure(Toolbar, "-column 0 -row 2 -sticky s");
+         Grid_Configure(Toolbar, "-column 0 -row 2 -sticky s");
       else
-         Tcl.Tk.Ada.Grid.Grid_Configure(Toolbar, "-column 2 -row 0 -sticky e");
+         Grid_Configure(Toolbar, "-column 2 -row 0 -sticky e");
       end if;
       Toolbar.Name := New_String(".toolbars");
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Pack.Pack(Toolbar, "-anchor w -fill y");
       else
          Tcl.Tk.Ada.Pack.Pack(Toolbar, "-anchor nw -fill x");
+      end if;
+      Label.Interp := Get_Context;
+      Label.Name := New_String(".toolbars.label");
+      if not Settings.ToolbarsOnTop then
+         Column_Configure(Toolbar, Label, "-weight 0");
+         Row_Configure(Toolbar, Label, "-weight 1");
+      else
+         Column_Configure(Toolbar, Label, "-weight 1");
+         Row_Configure(Toolbar, Label, "-weight 0");
       end if;
    end SetToolbars;
 
@@ -147,6 +158,7 @@ package body Toolbars is
       CurrentDir: constant String := Current_Directory;
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
+      Label: constant Ttk_Label := Create(".toolbars.label");
    begin
       Set_Directory(Containing_Directory(Command_Name));
       ToolButton := Create(".toolbars.actiontoolbar.quitbutton");
@@ -215,7 +227,8 @@ package body Toolbars is
          "Show menu with information about the program \[ALT+A\]",
          "help-about");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
-      Tcl.Tk.Ada.Grid.Grid(Toolbar);
+      Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
+      Tcl.Tk.Ada.Grid.Grid(Label);
       Tcl.Tk.Ada.Pack.Pack(ToolbarsFrame, "-expand true");
       Set_Directory(CurrentDir);
    end CreateActionToolbar;
