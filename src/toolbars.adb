@@ -161,7 +161,7 @@ package body Toolbars is
       Label: constant Ttk_Label := Create(".toolbars.label");
    begin
       Set_Directory(Containing_Directory(Command_Name));
-      ToolButton := Create(".toolbars.actiontoolbar.quitbutton");
+      ToolButton := Create(".toolbars.actiontoolbar.quitbutton", "-command exit");
       SetButton(ToolButton, "Quit from the program. \[CTRL+Q\]", "quit");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".toolbars.actiontoolbar.separator1");
