@@ -214,6 +214,7 @@ package body Bookmarks is
       else
          BookmarksMenu.Interp := Get_Context;
          BookmarksMenu.Name := New_String(".bookmarksmenu");
+         Delete(BookmarksMenu, "0", "end");
       end if;
       BookmarksList.Clear;
       for I in XDGBookmarks'Range loop
