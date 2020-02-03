@@ -104,6 +104,7 @@ begin
    MainWindow := Get_Main_Window(Interp);
    Wm_Set(MainWindow, "title", "Hunter");
    Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
+   Bind_To_Main_Window(Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
    CreateActionToolbar;
    CreateBookmarkMenu(True);
    CreateItemToolbar;
