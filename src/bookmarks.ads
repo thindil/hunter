@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -13,8 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtk.Menu; use Gtk.Menu;
-with Gtk.Tool_Button; use Gtk.Tool_Button;
+--with Gtk.Menu; use Gtk.Menu;
+--with Gtk.Tool_Button; use Gtk.Tool_Button;
 
 -- ****h* Hunter/Bookmarks
 -- FUNCTION
@@ -27,16 +27,16 @@ package Bookmarks is
    -- FUNCTION
    -- Gtk_Menu with the user bookmarks
    -- SOURCE
-   BookmarksMenu: Gtk_Menu;
-   -- ****
-
-   -- ****f* Bookmarks/GoHome
-   -- FUNCTION
-   -- Go to user home directory
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button clicked. Unused. Can be null.
-   -- SOURCE
-   procedure GoHome(Self: access Gtk_Tool_Button_Record'Class);
+--   BookmarksMenu: Gtk_Menu;
+--   -- ****
+--
+--   -- ****f* Bookmarks/GoHome
+--   -- FUNCTION
+--   -- Go to user home directory
+--   -- PARAMETERS
+--   -- Self - Gtk_Tool_Button clicked. Unused. Can be null.
+--   -- SOURCE
+--   procedure GoHome(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
    -- ****f* Bookmarks/CreateBookmarkMenu
@@ -52,14 +52,14 @@ package Bookmarks is
    -- FUNCTION
    -- Show proper bookmark button for directories
    -- SOURCE
-   procedure SetBookmarkButton;
-   -- ****
-
-   -- ****f* Bookmarks/CreateBookmarksUI
-   -- FUNCTION
-   -- Create bookmarks UI
-   -- SOURCE
-   procedure CreateBookmarksUI;
-   -- ****
+--   procedure SetBookmarkButton;
+--   -- ****
+--
+--   -- ****f* Bookmarks/CreateBookmarksUI
+--   -- FUNCTION
+--   -- Create bookmarks UI
+--   -- SOURCE
+--   procedure CreateBookmarksUI;
+--   -- ****
 
 end Bookmarks;

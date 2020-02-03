@@ -27,6 +27,7 @@ with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Bookmarks; use Bookmarks;
 with ErrorDialog; use ErrorDialog;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
@@ -104,6 +105,7 @@ begin
    Wm_Set(MainWindow, "title", "Hunter");
    Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
    CreateActionToolbar;
+   CreateBookmarkMenu(True);
    CreateItemToolbar;
    SetToolbars;
 

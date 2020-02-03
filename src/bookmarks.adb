@@ -18,28 +18,33 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Box; use Gtk.Box;
-with Gtk.Container; use Gtk.Container;
-with Gtk.GEntry; use Gtk.GEntry;
-with Gtk.Menu_Item; use Gtk.Menu_Item;
-with Gtk.Menu_Shell; use Gtk.Menu_Shell;
-with Gtk.Paned; use Gtk.Paned;
-with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
-with Gtk.Stack; use Gtk.Stack;
-with Gtk.Toolbar; use Gtk.Toolbar;
-with Gtk.Tree_View; use Gtk.Tree_View;
-with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
-with Gtk.Widget; use Gtk.Widget;
-with Gtkada.Intl; use Gtkada.Intl;
-with LoadData; use LoadData;
-with MainWindow; use MainWindow;
-with Preferences; use Preferences;
-with RefreshData; use RefreshData;
-with ShowItems; use ShowItems;
-with Toolbars; use Toolbars;
-with Utils; use Utils;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
+with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
+--with GNAT.OS_Lib; use GNAT.OS_Lib;
+--with Gtk.Box; use Gtk.Box;
+--with Gtk.Container; use Gtk.Container;
+--with Gtk.GEntry; use Gtk.GEntry;
+--with Gtk.Menu_Item; use Gtk.Menu_Item;
+--with Gtk.Menu_Shell; use Gtk.Menu_Shell;
+--with Gtk.Paned; use Gtk.Paned;
+--with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
+--with Gtk.Stack; use Gtk.Stack;
+--with Gtk.Toolbar; use Gtk.Toolbar;
+--with Gtk.Tree_View; use Gtk.Tree_View;
+--with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
+--with Gtk.Widget; use Gtk.Widget;
+--with Gtkada.Intl; use Gtkada.Intl;
+--with LoadData; use LoadData;
+--with MainWindow; use MainWindow;
+--with Preferences; use Preferences;
+--with RefreshData; use RefreshData;
+--with ShowItems; use ShowItems;
+--with Toolbars; use Toolbars;
+--with Utils; use Utils;
 
 package body Bookmarks is
 
@@ -74,36 +79,36 @@ package body Bookmarks is
    -- FUNCTION
    -- Updated current directory listing after move to bookmark
    -- SOURCE
-   procedure UpdateView is
-   -- ****
-   begin
-      if not Is_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1))) then
-         Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 2)));
-         Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1)));
-         Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 4)));
-         TemporaryStop := False;
-      end if;
-      if Is_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10))) then
-         ToggleToolButtons(NewAction, True);
-         Set_Title
-           (Get_Column
-              (Gtk_Tree_View
-                 (Get_Child
-                    (Gtk_Scrolled_Window
-                       (Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 2)))),
-               2),
-            Gettext("Modified"));
-         SetDeleteTooltip;
-      end if;
-      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
-         if Get_Visible_Child_Name(InfoStack) = "destination" then
-            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
-         else
-            Reload;
-            UpdateWatch(To_String(CurrentDirectory));
-         end if;
-      end if;
-   end UpdateView;
+--   procedure UpdateView is
+--   -- ****
+--   begin
+--      if not Is_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1))) then
+--         Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 2)));
+--         Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1)));
+--         Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 4)));
+--         TemporaryStop := False;
+--      end if;
+--      if Is_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10))) then
+--         ToggleToolButtons(NewAction, True);
+--         Set_Title
+--           (Get_Column
+--              (Gtk_Tree_View
+--                 (Get_Child
+--                    (Gtk_Scrolled_Window
+--                       (Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 2)))),
+--               2),
+--            Gettext("Modified"));
+--         SetDeleteTooltip;
+--      end if;
+--      if Ada.Directories.Exists(To_String(CurrentDirectory)) then
+--         if Get_Visible_Child_Name(InfoStack) = "destination" then
+--            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
+--         else
+--            Reload;
+--            UpdateWatch(To_String(CurrentDirectory));
+--         end if;
+--      end if;
+--   end UpdateView;
 
    -- ****if* Bookmarks/GoToBookmark
    -- FUNCTION
@@ -111,74 +116,76 @@ package body Bookmarks is
    -- PARAMETERS
    -- Self - Selected entry in bookmarks menu
    -- SOURCE
-   procedure GoToBookmark(Self: access Gtk_Menu_Item_Record'Class) is
--- ****
-      MenuLabel: constant Unbounded_String :=
-        To_Unbounded_String(Get_Label(Self));
-   begin
-      if NewAction /= MOVE then
-         NewAction := COPY;
-      end if;
-      for I in BookmarksList.Iterate loop
-         if MenuLabel = BookmarksList(I).MenuName then
-            if BookmarksList(I).Path /= Null_Unbounded_String then
-               CurrentDirectory := BookmarksList(I).Path;
-            else
-               NewAction := GOTOPATH;
-               Set_Icon_Tooltip_Text
-                 (TextEntry, Gtk_Entry_Icon_Secondary,
-                  Gettext("Go to selected destination."));
-               Set_Text(TextEntry, To_String(CurrentDirectory));
-               Show_All(TextEntry);
-            end if;
-            exit;
-         end if;
-      end loop;
-      UpdateView;
-      if Is_Visible(TextEntry) then
-         Grab_Focus(TextEntry);
-      end if;
-   end GoToBookmark;
+--   procedure GoToBookmark(Self: access Gtk_Menu_Item_Record'Class) is
+---- ****
+--      MenuLabel: constant Unbounded_String :=
+--        To_Unbounded_String(Get_Label(Self));
+--   begin
+--      if NewAction /= MOVE then
+--         NewAction := COPY;
+--      end if;
+--      for I in BookmarksList.Iterate loop
+--         if MenuLabel = BookmarksList(I).MenuName then
+--            if BookmarksList(I).Path /= Null_Unbounded_String then
+--               CurrentDirectory := BookmarksList(I).Path;
+--            else
+--               NewAction := GOTOPATH;
+--               Set_Icon_Tooltip_Text
+--                 (TextEntry, Gtk_Entry_Icon_Secondary,
+--                  Gettext("Go to selected destination."));
+--               Set_Text(TextEntry, To_String(CurrentDirectory));
+--               Show_All(TextEntry);
+--            end if;
+--            exit;
+--         end if;
+--      end loop;
+--      UpdateView;
+--      if Is_Visible(TextEntry) then
+--         Grab_Focus(TextEntry);
+--      end if;
+--   end GoToBookmark;
 
-   procedure GoHome(Self: access Gtk_Tool_Button_Record'Class) is
-      pragma Unreferenced(Self);
-   begin
-      if NewAction /= MOVE then
-         NewAction := COPY;
-      end if;
-      CurrentDirectory := To_Unbounded_String(Value("HOME"));
-      UpdateView;
-   end GoHome;
-
-   -- ****if* Bookmarks/RemoveMenu
-   -- FUNCTION
-   -- Remove selected menu item from menu
-   -- PARAMETERS
-   -- Widget - GTK Widget to remove
-   -- SOURCE
-   procedure RemoveMenu
-     (Widget: not null access Gtk.Widget.Gtk_Widget_Record'Class) is
--- ****
-   begin
-      Destroy(Widget);
-   end RemoveMenu;
+--   procedure GoHome(Self: access Gtk_Tool_Button_Record'Class) is
+--      pragma Unreferenced(Self);
+--   begin
+--      if NewAction /= MOVE then
+--         NewAction := COPY;
+--      end if;
+--      CurrentDirectory := To_Unbounded_String(Value("HOME"));
+--      UpdateView;
+--   end GoHome;
+--
+--   -- ****if* Bookmarks/RemoveMenu
+--   -- FUNCTION
+--   -- Remove selected menu item from menu
+--   -- PARAMETERS
+--   -- Widget - GTK Widget to remove
+--   -- SOURCE
+--   procedure RemoveMenu
+--     (Widget: not null access Gtk.Widget.Gtk_Widget_Record'Class) is
+---- ****
+--   begin
+--      Destroy(Widget);
+--   end RemoveMenu;
 
    procedure CreateBookmarkMenu(CreateNew: Boolean := False) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
-        ((To_Unbounded_String(Gettext("Desktop")),
+        ((To_Unbounded_String("Desktop"),
           To_Unbounded_String("XDG_DESKTOP_DIR")),
-         (To_Unbounded_String(Gettext("Download")),
+         (To_Unbounded_String("Download"),
           To_Unbounded_String("XDG_DOWNLOAD_DIR")),
-         (To_Unbounded_String(Gettext("Public")),
+         (To_Unbounded_String("Public"),
           To_Unbounded_String("XDG_PUBLICSHARE_DIR")),
-         (To_Unbounded_String(Gettext("Documents")),
+         (To_Unbounded_String("Documents"),
           To_Unbounded_String("XDG_DOCUMENTS_DIR")),
-         (To_Unbounded_String(Gettext("Music")),
+         (To_Unbounded_String("Music"),
           To_Unbounded_String("XDG_MUSIC_DIR")),
-         (To_Unbounded_String(Gettext("Pictures")),
+         (To_Unbounded_String("Pictures"),
           To_Unbounded_String("XDG_PICTURES_DIR")),
-         (To_Unbounded_String(Gettext("Videos")),
+         (To_Unbounded_String("Videos"),
           To_Unbounded_String("XDG_VIDEOS_DIR")));
+      BookmarksMenu: Tk_Menu;
+      MenuButton: Ttk_MenuButton;
       function GetXDGDirectory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String;
@@ -201,21 +208,12 @@ package body Bookmarks is
          end if;
          return To_Unbounded_String(Expand_Path(Value(Name)));
       end GetXDGDirectory;
-      procedure AddMenuItem is
-         MenuItem: Gtk_Menu_Item;
-      begin
-         MenuItem :=
-           Gtk_Menu_Item_New_With_Label
-             (To_String(BookmarksList(BookmarksList.Last_Index).MenuName));
-         On_Activate(MenuItem, GoToBookmark'Access);
-         Append(Gtk_Menu_Shell(BookmarksMenu), MenuItem);
-         Show_All(Gtk_Widget(MenuItem));
-      end AddMenuItem;
    begin
       if CreateNew then
-         BookmarksMenu := Gtk_Menu_New;
+         BookmarksMenu := Create(".bookmarksmenu", "-tearoff false");
       else
-         Foreach(Gtk_Container(BookmarksMenu), RemoveMenu'Access);
+         BookmarksMenu.Interp := Get_Context;
+         BookmarksMenu.Name := New_String(".bookmarksmenu");
       end if;
       BookmarksList.Clear;
       for I in XDGBookmarks'Range loop
@@ -225,7 +223,7 @@ package body Bookmarks is
               (New_Item =>
                  (MenuName => XDGBookmarks(I).MenuName,
                   Path => GetXDGDirectory(To_String(XDGBookmarks(I).Path))));
-            AddMenuItem;
+            Add(BookmarksMenu, "command", "-label """ & To_String(XDGBookmarks(I).MenuName) & """");
          end if;
       end loop;
       if Ada.Directories.Exists
@@ -254,7 +252,7 @@ package body Bookmarks is
                           (MenuName =>
                              To_Unbounded_String(Simple_Name(To_String(Path))),
                            Path => Path));
-                     AddMenuItem;
+                     Add(BookmarksMenu, "command", "-label """ & Simple_Name(To_String(Path)) & """");
                   end if;
                end if;
             end loop;
@@ -263,9 +261,12 @@ package body Bookmarks is
       end if;
       BookmarksList.Append
         (New_Item =>
-           (MenuName => To_Unbounded_String(Gettext("Enter destination")),
+           (MenuName => To_Unbounded_String("Enter destination"),
             Path => Null_Unbounded_String));
-      AddMenuItem;
+      Add(BookmarksMenu, "command", "-label ""Enter destination""");
+      MenuButton.Interp := BookmarksMenu.Interp;
+      MenuButton.Name := New_String(".toolbars.actiontoolbar.bookmarksbutton");
+      configure(MenuButton, "-menu .bookmarksmenu");
    end CreateBookmarkMenu;
 
    -- ****if* Bookmarks/AddBookmark
@@ -274,75 +275,75 @@ package body Bookmarks is
    -- PARAMETERS
    -- Self - Gtk_Tool_Button clicked. Unused. Can be null
    -- SOURCE
-   procedure AddBookmark(Self: access Gtk_Tool_Button_Record'Class) is
-      pragma Unreferenced(Self);
-      -- ****
-      File: File_Type;
-   begin
-      Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
-      Put_Line(File, "file://" & To_String(CurrentSelected));
-      Close(File);
-      CreateBookmarkMenu;
-      SetBookmarkButton;
-   end AddBookmark;
-
-   -- ****if* Bookmarks/RemoveBookmark
-   -- FUNCTION
-   -- Remove bookmark for currently selected directory
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
-   -- SOURCE
-   procedure RemoveBookmark(Self: access Gtk_Tool_Button_Record'Class) is
-      pragma Unreferenced(Self);
-      -- ****
-      NewFile, OldFile: File_Type;
-      Line, Path: Unbounded_String;
-   begin
-      Rename
-        (Value("HOME") & "/.config/gtk-3.0/bookmarks",
-         Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
-      Open(OldFile, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
-      Create(NewFile, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
-      while not End_Of_File(OldFile) loop
-         Line := To_Unbounded_String(Get_Line(OldFile));
-         if Slice(Line, 1, 7) = "file://" then
-            Path := Unbounded_Slice(Line, 8, Length(Line));
-            if Path /= CurrentSelected then
-               Put_Line(NewFile, To_String(Line));
-            end if;
-         end if;
-      end loop;
-      Close(NewFile);
-      Close(OldFile);
-      Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
-      CreateBookmarkMenu;
-      SetBookmarkButton;
-   end RemoveBookmark;
-
-   procedure SetBookmarkButton is
-   begin
-      Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 7)));
-      Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 8)));
-      if not Is_Directory(To_String(CurrentSelected)) then
-         return;
-      end if;
-      for Bookmark of BookmarksList loop
-         if Bookmark.Path = CurrentSelected then
-            Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 8)));
-            return;
-         end if;
-      end loop;
-      Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 7)));
-   end SetBookmarkButton;
-
-   procedure CreateBookmarksUI is
-   begin
-      On_Clicked
-        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 7)), AddBookmark'Access);
-      On_Clicked
-        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 8)), RemoveBookmark'Access);
-      On_Clicked
-        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 0)), GoHome'Access);
-   end CreateBookmarksUI;
+--   procedure AddBookmark(Self: access Gtk_Tool_Button_Record'Class) is
+--      pragma Unreferenced(Self);
+--      -- ****
+--      File: File_Type;
+--   begin
+--      Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+--      Put_Line(File, "file://" & To_String(CurrentSelected));
+--      Close(File);
+--      CreateBookmarkMenu;
+--      SetBookmarkButton;
+--   end AddBookmark;
+--
+--   -- ****if* Bookmarks/RemoveBookmark
+--   -- FUNCTION
+--   -- Remove bookmark for currently selected directory
+--   -- PARAMETERS
+--   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
+--   -- SOURCE
+--   procedure RemoveBookmark(Self: access Gtk_Tool_Button_Record'Class) is
+--      pragma Unreferenced(Self);
+--      -- ****
+--      NewFile, OldFile: File_Type;
+--      Line, Path: Unbounded_String;
+--   begin
+--      Rename
+--        (Value("HOME") & "/.config/gtk-3.0/bookmarks",
+--         Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+--      Open(OldFile, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+--      Create(NewFile, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+--      while not End_Of_File(OldFile) loop
+--         Line := To_Unbounded_String(Get_Line(OldFile));
+--         if Slice(Line, 1, 7) = "file://" then
+--            Path := Unbounded_Slice(Line, 8, Length(Line));
+--            if Path /= CurrentSelected then
+--               Put_Line(NewFile, To_String(Line));
+--            end if;
+--         end if;
+--      end loop;
+--      Close(NewFile);
+--      Close(OldFile);
+--      Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+--      CreateBookmarkMenu;
+--      SetBookmarkButton;
+--   end RemoveBookmark;
+--
+--   procedure SetBookmarkButton is
+--   begin
+--      Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 7)));
+--      Hide(Gtk_Widget(Get_Nth_Item(ItemToolBar, 8)));
+--      if not Is_Directory(To_String(CurrentSelected)) then
+--         return;
+--      end if;
+--      for Bookmark of BookmarksList loop
+--         if Bookmark.Path = CurrentSelected then
+--            Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 8)));
+--            return;
+--         end if;
+--      end loop;
+--      Show_All(Gtk_Widget(Get_Nth_Item(ItemToolBar, 7)));
+--   end SetBookmarkButton;
+--
+--   procedure CreateBookmarksUI is
+--   begin
+--      On_Clicked
+--        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 7)), AddBookmark'Access);
+--      On_Clicked
+--        (Gtk_Tool_Button(Get_Nth_Item(ItemToolBar, 8)), RemoveBookmark'Access);
+--      On_Clicked
+--        (Gtk_Tool_Button(Get_Nth_Item(ActionToolBar, 0)), GoHome'Access);
+--   end CreateBookmarksUI;
 
 end Bookmarks;
