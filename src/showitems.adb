@@ -440,6 +440,7 @@ package body ShowItems is
                      LoadFile;
                      goto Set_UI;
                   end if;
+                  Set("LD_LIBRARY_PATH", To_String(Ld_Library_Path));
                   Spawn
                     (ExecutableName,
                      Argument_String_To_List
@@ -449,6 +450,7 @@ package body ShowItems is
                         To_String(Settings.ColorTheme) & " " &
                         To_String(CurrentSelected)).all,
                      Success);
+                  Clear("LD_LIBRARY_PATH");
                   if not Success then
                      LoadFile;
                      goto Set_UI;

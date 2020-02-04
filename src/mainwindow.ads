@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -143,6 +143,13 @@ package MainWindow is
    -- Keyboard accelerators associated with the main program window
    -- SOURCE
    Accelerators: Gtk_Accel_Group;
+   -- ****
+
+   -- ****v* MainWindow/Ld_Library_Path
+   -- FUNCTION
+   -- Stores LD_LIBRARY_PATH for "highlight" program
+   -- SOURCE
+   Ld_Library_Path: Unbounded_String;
    -- ****
 
    -- ****f* MainWindow/Quit
