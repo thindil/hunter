@@ -16,6 +16,7 @@
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Gtk.Main; use Gtk.Main;
 with Gtkada.Bindings; use Gtkada.Bindings;
@@ -61,6 +62,7 @@ begin
       CreateMainWindow(Full_Name(Argument(1)));
    end if;
    CreateErrorUI;
+   Ld_Library_Path := To_Unbounded_String(Value("LD_LIBRARY_PATH"));
    Clear("LD_LIBRARY_PATH");
    Clear("GDK_PIXBUF_MODULE_FILE");
    Clear("GDK_PIXBUF_MODULEDIR");
