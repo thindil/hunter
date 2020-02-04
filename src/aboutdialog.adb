@@ -53,7 +53,7 @@ package body AboutDialog is
       end if;
       Gdk_New_From_File(LogoBuf, To_String(IconName), Error);
       Set_Logo(AboutDialog, LogoBuf);
-      Set_Version(AboutDialog, "1.2.1");
+      Set_Version(AboutDialog, "1.2.2");
       Set_Website(AboutDialog, "https://thindil.github.io/hunter/");
       Set_Website_Label(AboutDialog, "Website");
       if Run(Gtk_Dialog(AboutDialog)) = Gtk_Response_Delete_Event then
