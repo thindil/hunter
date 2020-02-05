@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Showing preview of text files
+- Crash on showing Trash
 
 ## [1.2.1] - 2020-01-21
 
