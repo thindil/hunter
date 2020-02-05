@@ -1,4 +1,3 @@
--- /home/thindil/Projekty/hunter/hunter/src/trash.adb
 -- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
@@ -31,7 +30,6 @@ with Gtk.Menu; use Gtk.Menu;
 with Gtk.Menu_Tool_Button; use Gtk.Menu_Tool_Button;
 with Gtk.Message_Dialog; use Gtk.Message_Dialog;
 with Gtk.Paned; use Gtk.Paned;
-with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
 with Gtk.Toolbar; use Gtk.Toolbar;
 with Gtk.Tree_Model; use Gtk.Tree_Model;
 with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
@@ -134,14 +132,7 @@ package body Trash is
             end if;
          end loop;
       end if;
-      Set_Title
-        (Get_Column
-           (Gtk_Tree_View
-              (Get_Child
-                 (Gtk_Scrolled_Window
-                    (Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 2)))),
-            2),
-         Gettext("Deleted"));
+      Set_Title(Get_Column(DirectoryView, 2), Gettext("Deleted"));
       ToggleToolButtons(SHOWTRASH);
       Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 12)));
       Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 13)));
