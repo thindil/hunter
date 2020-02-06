@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Showing preview of text files
 - Crash on showing Trash
+- Crash when highlight is not installed
 
 ## [1.2.1] - 2020-01-21
 
