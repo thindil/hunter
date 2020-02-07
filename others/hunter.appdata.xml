@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <component type="desktop">
-  <id>pl.laeran.hunter</id>
-  <metadata_license>CC-0</metadata_license>
+  <id>hunter.desktop</id>
+  <metadata_license>FSFAP</metadata_license>
   <project_license>GPL-3</project_license>
   <name>hunter</name>
   <summary>Hunter</summary>
