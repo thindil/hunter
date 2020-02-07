@@ -583,21 +583,25 @@ package body Preferences is
 --           ("HIGHLIGHT_DATADIR",
 --            Ada.Environment_Variables.Value("APPDIR", "") &
 --            "/usr/share/highlight");
---         Start_Search
---           (Search,
---            Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
---            "/themes/base16",
---            "*.theme");
---         while More_Entries(Search) loop
---            Get_Next_Entry(Search, File);
---            ThemeName := To_Unbounded_String(Base_Name(Simple_Name(File)));
---            Append_Text(ComboBox, To_String(ThemeName));
---            if ThemeName = Settings.ColorTheme then
---               Set_Active(ComboBox, Index);
---            end if;
---            Index := Index + 1;
---         end loop;
---         End_Search(Search);
+--         if Exists
+--             (Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+--              "/themes/base16") then
+--            Start_Search
+--              (Search,
+--               Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+--               "/themes/base16",
+--               "*.theme");
+--            while More_Entries(Search) loop
+--               Get_Next_Entry(Search, File);
+--               ThemeName := To_Unbounded_String(Base_Name(Simple_Name(File)));
+--               Append_Text(ComboBox, To_String(ThemeName));
+--               if ThemeName = Settings.ColorTheme then
+--                  Set_Active(ComboBox, Index);
+--               end if;
+--               Index := Index + 1;
+--            end loop;
+--            End_Search(Search);
+--         end if;
 --         Set_Tooltip_Text
 --           (ComboBox,
 --            "Select color theme for coloring syntax in text files in preview. You may not be able to enable this option if you don't have installed the program ""highlight"".");
