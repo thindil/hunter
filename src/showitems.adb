@@ -413,8 +413,6 @@ package body ShowItems is
             end if;
             if MimeType(1 .. 4) = "text" then
                declare
-                  ExecutableName: constant String :=
-                    FindExecutable("highlight");
                   Success, FirstLine: Boolean;
                   File: File_Type;
                   FileLine, TagText: Unbounded_String;
@@ -430,28 +428,39 @@ package body ShowItems is
                         Insert(Buffer, Iter, Get_Line(File) & LF);
                      end loop;
                      Close(File);
+                     Add(PreviewScroll, TextView);
+                     Show_All(PreviewScroll);
                   end LoadFile;
                begin
                   Set_Wrap_Mode(TextView, Wrap_Word);
                   Set_Editable(TextView, False);
                   Set_Cursor_Visible(TextView, False);
                   Get_Start_Iter(Buffer, Iter);
-                  if not Settings.ColorText or ExecutableName = "" then
+                  if not Settings.ColorText then
                      LoadFile;
                      goto Set_UI;
                   end if;
-                  Set("LD_LIBRARY_PATH", To_String(Ld_Library_Path));
-                  Spawn
-                    (ExecutableName,
-                     Argument_String_To_List
-                       ("-D " & Value("APPDIR") &
-                        "/usr/share/highlight --out-format=pango --force --output=" &
-                        Value("HOME") &
-                        "/.cache/hunter/highlight.tmp --base16 --style=" &
-                        To_String(Settings.ColorTheme) & " " &
-                        To_String(CurrentSelected)).all,
-                     Success);
-                  Clear("LD_LIBRARY_PATH");
+                  declare
+                     ExecutableName: constant String :=
+                       FindExecutable("highlight");
+                  begin
+                     if ExecutableName = "" then
+                        LoadFile;
+                        goto Set_UI;
+                     end if;
+                     Set("LD_LIBRARY_PATH", To_String(Ld_Library_Path));
+                     Spawn
+                       (ExecutableName,
+                        Argument_String_To_List
+                          ("-D " & Value("APPDIR") &
+                           "/usr/share/highlight --out-format=pango --force --output=" &
+                           Value("HOME") &
+                           "/.cache/hunter/highlight.tmp --base16 --style=" &
+                           To_String(Settings.ColorTheme) & " " &
+                           To_String(CurrentSelected)).all,
+                        Success);
+                     Clear("LD_LIBRARY_PATH");
+                  end;
                   if not Success then
                      LoadFile;
                      goto Set_UI;

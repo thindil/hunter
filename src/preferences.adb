@@ -103,9 +103,6 @@ package body Preferences is
          DeleteFiles => True, ClearTrashOnExit => False,
          ShowFinishedInfo => False, OverwriteOnExist => True,
          ToolbarsOnTop => True, AutoRefreshInterval => 10);
-      if FindExecutable("highlight") = "" then
-         Settings.ColorText := False;
-      end if;
       Open
         (ConfigFile, In_File,
          Ada.Environment_Variables.Value("HOME") &
@@ -155,6 +152,9 @@ package body Preferences is
          end if;
       end loop;
       Close(ConfigFile);
+      if FindExecutable("highlight") = "" then
+         Settings.ColorText := False;
+      end if;
    end LoadSettings;
 
    procedure SavePreferences is
