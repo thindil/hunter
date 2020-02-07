@@ -28,6 +28,7 @@ with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
@@ -159,9 +160,11 @@ package body Toolbars is
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
       Label: constant Ttk_Label := Create(".toolbars.label");
+      ButtonMenu: Tk_Menu;
    begin
       Set_Directory(Containing_Directory(Command_Name));
-      ToolButton := Create(".toolbars.actiontoolbar.quitbutton", "-command exit");
+      ToolButton :=
+        Create(".toolbars.actiontoolbar.quitbutton", "-command exit");
       SetButton(ToolButton, "Quit from the program. \[CTRL+Q\]", "quit");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".toolbars.actiontoolbar.separator1");
@@ -186,6 +189,11 @@ package body Toolbars is
       SetButton
         (ToolMenuButton, "Show add new item menu \[ALT+N\].", "document-new");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
+      ButtonMenu := Create(".newmenu", "-tearoff false");
+      Menu.Add(ButtonMenu, "command", "-label ""New directory""");
+      Menu.Add(ButtonMenu, "command", "-label ""New file""");
+      Menu.Add(ButtonMenu, "command", "-label ""New link""");
+      configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       ToolButton := Create(".toolbars.actiontoolbar.renamebutton");
       SetButton
         (ToolButton, "Rename selected file or directory \[CTRL+R\]",
