@@ -8,11 +8,11 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/mainwindow.ads</title>
 <!-- Source: ./src/mainwindow.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.2.2 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -29,7 +29,7 @@
 <ul>
 <li>1. <a href="#robo10">Hunter/MainWindow</a></li>
 <ul>
-<li>1.1. <a href="#robo53">MainWindow/MainWindow</a></li>
+<li>1.1. <a href="#robo54">MainWindow/MainWindow</a></li>
 <ul>
 <li>1.1.1. <a href="#robo31">MainWindow/ItemActions</a></li>
 <li>1.1.2. <a href="#robo32">MainWindow/UnboundedString_Container</a></li>
@@ -40,36 +40,37 @@
 <li>1.1.7. <a href="#robo50">MainWindow/DirectoryView</a></li>
 <li>1.1.8. <a href="#robo51">MainWindow/FilesPaned</a></li>
 <li>1.1.9. <a href="#robo52">MainWindow/FileStack</a></li>
-<li>1.1.10. <a href="./mainwindow_adb.html#robo54">MainWindow/MenuIndex</a></li>
-<li>1.1.11. <a href="#robo55">MainWindow/NewAction</a></li>
-<li>1.1.12. <a href="#robo56">MainWindow/SelectedItems</a></li>
-<li>1.1.13. <a href="#robo57">MainWindow/Setting</a></li>
-<li>1.1.14. <a href="#robo58">MainWindow/TextEntry</a></li>
-<li>1.1.15. <a href="./mainwindow_adb.html#robo133">MainWindow/ActivateFileMenu</a></li>
-<li>1.1.16. <a href="./mainwindow_adb.html#robo134">MainWindow/CopyItemMenu</a></li>
-<li>1.1.17. <a href="#robo135">MainWindow/CreateMainWindow</a></li>
-<li>1.1.18. <a href="./mainwindow_adb.html#robo136">MainWindow/DeleteItemMenu</a></li>
-<li>1.1.19. <a href="./mainwindow_adb.html#robo137">MainWindow/EntryKeyPressed</a></li>
-<li>1.1.20. <a href="./mainwindow_adb.html#robo138">MainWindow/ExecuteFileMenu</a></li>
-<li>1.1.21. <a href="./mainwindow_adb.html#robo139">MainWindow/GetWindowSize</a></li>
-<li>1.1.22. <a href="./mainwindow_adb.html#robo140">MainWindow/MoveItemMenu</a></li>
-<li>1.1.23. <a href="#robo141">MainWindow/Quit</a></li>
-<li>1.1.24. <a href="#robo142">MainWindow/Reload</a></li>
-<li>1.1.25. <a href="./mainwindow_adb.html#robo143">MainWindow/SelectAll</a></li>
-<li>1.1.26. <a href="./mainwindow_adb.html#robo144">MainWindow/SelectAllMenu</a></li>
-<li>1.1.27. <a href="./mainwindow_adb.html#robo145">MainWindow/SetFilesMenu</a></li>
-<li>1.1.28. <a href="./mainwindow_adb.html#robo146">MainWindow/SetSelected</a></li>
-<li>1.1.29. <a href="./mainwindow_adb.html#robo147">MainWindow/ShowAbout</a></li>
-<li>1.1.30. <a href="./mainwindow_adb.html#robo148">MainWindow/ShowChangelog</a></li>
-<li>1.1.31. <a href="./mainwindow_adb.html#robo149">MainWindow/ShowContributing</a></li>
-<li>1.1.32. <a href="./mainwindow_adb.html#robo150">MainWindow/ShowFile</a></li>
-<li>1.1.33. <a href="./mainwindow_adb.html#robo151">MainWindow/ShowFiles</a></li>
-<li>1.1.34. <a href="./mainwindow_adb.html#robo152">MainWindow/ShowFilesMenu</a></li>
-<li>1.1.35. <a href="./mainwindow_adb.html#robo153">MainWindow/ShowReadme</a></li>
-<li>1.1.36. <a href="./mainwindow_adb.html#robo154">MainWindow/StartOpenWithMenu</a></li>
-<li>1.1.37. <a href="./mainwindow_adb.html#robo155">MainWindow/StartRename</a></li>
-<li>1.1.38. <a href="./mainwindow_adb.html#robo156">MainWindow/StartRenameMenu</a></li>
-<li>1.1.39. <a href="./mainwindow_adb.html#robo157">MainWindow/WindowKeyPressed</a></li>
+<li>1.1.10. <a href="#robo53">MainWindow/Ld_Library_Path</a></li>
+<li>1.1.11. <a href="./mainwindow_adb.html#robo55">MainWindow/MenuIndex</a></li>
+<li>1.1.12. <a href="#robo56">MainWindow/NewAction</a></li>
+<li>1.1.13. <a href="#robo57">MainWindow/SelectedItems</a></li>
+<li>1.1.14. <a href="#robo58">MainWindow/Setting</a></li>
+<li>1.1.15. <a href="#robo59">MainWindow/TextEntry</a></li>
+<li>1.1.16. <a href="./mainwindow_adb.html#robo134">MainWindow/ActivateFileMenu</a></li>
+<li>1.1.17. <a href="./mainwindow_adb.html#robo135">MainWindow/CopyItemMenu</a></li>
+<li>1.1.18. <a href="#robo136">MainWindow/CreateMainWindow</a></li>
+<li>1.1.19. <a href="./mainwindow_adb.html#robo137">MainWindow/DeleteItemMenu</a></li>
+<li>1.1.20. <a href="./mainwindow_adb.html#robo138">MainWindow/EntryKeyPressed</a></li>
+<li>1.1.21. <a href="./mainwindow_adb.html#robo139">MainWindow/ExecuteFileMenu</a></li>
+<li>1.1.22. <a href="./mainwindow_adb.html#robo140">MainWindow/GetWindowSize</a></li>
+<li>1.1.23. <a href="./mainwindow_adb.html#robo141">MainWindow/MoveItemMenu</a></li>
+<li>1.1.24. <a href="#robo142">MainWindow/Quit</a></li>
+<li>1.1.25. <a href="#robo143">MainWindow/Reload</a></li>
+<li>1.1.26. <a href="./mainwindow_adb.html#robo144">MainWindow/SelectAll</a></li>
+<li>1.1.27. <a href="./mainwindow_adb.html#robo145">MainWindow/SelectAllMenu</a></li>
+<li>1.1.28. <a href="./mainwindow_adb.html#robo146">MainWindow/SetFilesMenu</a></li>
+<li>1.1.29. <a href="./mainwindow_adb.html#robo147">MainWindow/SetSelected</a></li>
+<li>1.1.30. <a href="./mainwindow_adb.html#robo148">MainWindow/ShowAbout</a></li>
+<li>1.1.31. <a href="./mainwindow_adb.html#robo149">MainWindow/ShowChangelog</a></li>
+<li>1.1.32. <a href="./mainwindow_adb.html#robo150">MainWindow/ShowContributing</a></li>
+<li>1.1.33. <a href="./mainwindow_adb.html#robo151">MainWindow/ShowFile</a></li>
+<li>1.1.34. <a href="./mainwindow_adb.html#robo152">MainWindow/ShowFiles</a></li>
+<li>1.1.35. <a href="./mainwindow_adb.html#robo153">MainWindow/ShowFilesMenu</a></li>
+<li>1.1.36. <a href="./mainwindow_adb.html#robo154">MainWindow/ShowReadme</a></li>
+<li>1.1.37. <a href="./mainwindow_adb.html#robo155">MainWindow/StartOpenWithMenu</a></li>
+<li>1.1.38. <a href="./mainwindow_adb.html#robo156">MainWindow/StartRename</a></li>
+<li>1.1.39. <a href="./mainwindow_adb.html#robo157">MainWindow/StartRenameMenu</a></li>
+<li>1.1.40. <a href="./mainwindow_adb.html#robo158">MainWindow/WindowKeyPressed</a></li>
 </ul>
 </ul>
 </ul>
@@ -89,7 +90,7 @@
 <a name="MainWindow2fItemActions"></a>
 <a name="robo31"></a><h2>MainWindow/ItemActions [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Types of action on files and directories
 </pre>
@@ -117,12 +118,12 @@
 <a name="MainWindow2fUnboundedString5fContainer"></a>
 <a name="robo32"></a><h2>MainWindow/UnboundedString_Container [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store various Unbounded_String data in list.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>UnboundedString_Container</strong> <span class="keyword">is</span> <span class="keyword">new</span> Vectors<span class="sign">(</span><a href="./utils_adb.html#robo75">Positive</a><span class="sign">,</span>
+<pre class="source">   <span class="keyword">package</span> <strong>UnboundedString_Container</strong> <span class="keyword">is</span> <span class="keyword">new</span> Vectors<span class="sign">(</span><a href="./utils_adb.html#robo76">Positive</a><span class="sign">,</span>
       Unbounded_String<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
@@ -130,7 +131,7 @@
 <a name="MainWindow2fAccelerators"></a>
 <a name="robo46"></a><h2>MainWindow/Accelerators [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Keyboard accelerators associated with the main program window
 </pre>
@@ -142,7 +143,7 @@
 <a name="MainWindow2fCurrentDirectory"></a>
 <a name="robo47"></a><h2>MainWindow/CurrentDirectory [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Currently selected directory to show
 </pre>
@@ -154,7 +155,7 @@
 <a name="MainWindow2fCurrentSelected"></a>
 <a name="robo48"></a><h2>MainWindow/CurrentSelected [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Full path to currently selected file or directory
 </pre>
@@ -166,7 +167,7 @@
 <a name="MainWindow2fDestinationPath"></a>
 <a name="robo49"></a><h2>MainWindow/DestinationPath [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Full path to directory where selected files and directories will be
  copied or moved.
@@ -179,7 +180,7 @@
 <a name="MainWindow2fDirectoryView"></a>
 <a name="robo50"></a><h2>MainWindow/DirectoryView [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Gtk_Tree_View with current directory listing
 </pre>
@@ -191,7 +192,7 @@
 <a name="MainWindow2fFilesPaned"></a>
 <a name="robo51"></a><h2>MainWindow/FilesPaned [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Gtk_Paned with current directory listing and preview UI
 </pre>
@@ -203,7 +204,7 @@
 <a name="MainWindow2fFileStack"></a>
 <a name="robo52"></a><h2>MainWindow/FileStack [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Gtk_Stack with almost all the program UI
 </pre>
@@ -212,8 +213,20 @@
 </pre>
 
 <hr />
+<a name="MainWindow2fLd5fLibrary5fPath"></a>
+<a name="robo53"></a><h2>MainWindow/Ld_Library_Path [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Stores LD_LIBRARY_PATH for "highlight" program
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>Ld_Library_Path</strong><span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+</pre>
+
+<hr />
 <a name="MainWindow2fMainWindow"></a>
-<a name="robo53"></a><h2>MainWindow/MainWindow [ Variables ]</h2>
+<a name="robo54"></a><h2>MainWindow/MainWindow [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -225,9 +238,9 @@
 
 <hr />
 <a name="MainWindow2fNewAction"></a>
-<a name="robo55"></a><h2>MainWindow/NewAction [ Variables ]</h2>
+<a name="robo56"></a><h2>MainWindow/NewAction [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Current performed action on files or directories
 </pre>
@@ -237,9 +250,9 @@
 
 <hr />
 <a name="MainWindow2fSelectedItems"></a>
-<a name="robo56"></a><h2>MainWindow/SelectedItems [ Variables ]</h2>
+<a name="robo57"></a><h2>MainWindow/SelectedItems [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> List of currently selected files and directories by user
 </pre>
@@ -249,9 +262,9 @@
 
 <hr />
 <a name="MainWindow2fSetting"></a>
-<a name="robo57"></a><h2>MainWindow/Setting [ Variables ]</h2>
+<a name="robo58"></a><h2>MainWindow/Setting [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> If true, the program is in the setting mode
 </pre>
@@ -261,9 +274,9 @@
 
 <hr />
 <a name="MainWindow2fTextEntry"></a>
-<a name="robo58"></a><h2>MainWindow/TextEntry [ Variables ]</h2>
+<a name="robo59"></a><h2>MainWindow/TextEntry [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Gtk_GEntry used to create new files or directories or rename them
 </pre>
@@ -273,9 +286,9 @@
 
 <hr />
 <a name="MainWindow2fCreateMainWindow"></a>
-<a name="robo135"></a><h2>MainWindow/CreateMainWindow [ Subprograms ]</h2>
+<a name="robo136"></a><h2>MainWindow/CreateMainWindow [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create main window and show content of selected directory
 </pre>
@@ -289,9 +302,9 @@
 
 <hr />
 <a name="MainWindow2fQuit"></a>
-<a name="robo141"></a><h2>MainWindow/Quit [ Subprograms ]</h2>
+<a name="robo142"></a><h2>MainWindow/Quit [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> <strong>Quit</strong> from program
 </pre>
@@ -304,9 +317,9 @@
 
 <hr />
 <a name="MainWindow2fReload"></a>
-<a name="robo142"></a><h2>MainWindow/Reload [ Subprograms ]</h2>
+<a name="robo143"></a><h2>MainWindow/Reload [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo53">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo54">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> <strong>Reload</strong> directory listing and preview of selected item
 </pre>
@@ -316,7 +329,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
+<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Feb 08 2020 09:44:38
 </p>
 </div> <!-- footer -->
 </body>
