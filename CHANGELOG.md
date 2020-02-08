@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.2.2] - 2020-02-08
 
 ### Fixed
 - Showing preview of text files
