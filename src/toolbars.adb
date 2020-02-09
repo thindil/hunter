@@ -244,6 +244,12 @@ package body Toolbars is
          "Show menu with information about the program \[ALT+A\]",
          "help-about");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
+      ButtonMenu := Create(".aboutmenu", "-tearoff false");
+      Menu.Add(ButtonMenu, "command", "-label ""About the program""");
+      Menu.Add(ButtonMenu, "command", "-label ""Show README""");
+      Menu.Add(ButtonMenu, "command", "-label ""Show list of changes""");
+      Menu.Add(ButtonMenu, "command", "-label ""Get involved""");
+      configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Tcl.Tk.Ada.Pack.Pack(ToolbarsFrame, "-expand true");
