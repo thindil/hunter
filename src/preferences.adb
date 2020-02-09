@@ -136,7 +136,6 @@ package body Preferences is
                Settings.ColorTheme := Value;
             elsif FieldName = To_Unbounded_String("DeleteFiles") then
                Settings.DeleteFiles := LoadBoolean;
-               --SetDeleteTooltip;
             elsif FieldName = To_Unbounded_String("ClearTrashOnExit") then
                Settings.ClearTrashOnExit := LoadBoolean;
             elsif FieldName = To_Unbounded_String("ShowFinishedInfo") then
