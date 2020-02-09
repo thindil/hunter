@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Text_IO;
@@ -21,19 +22,13 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
-with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
-with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Bookmarks; use Bookmarks;
 with ErrorDialog; use ErrorDialog;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
+with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
-with Toolbars; use Toolbars;
 
 procedure Hunter is
    use type Interfaces.C.int;
@@ -41,7 +36,6 @@ procedure Hunter is
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
    Interp: Tcl.Tcl_Interp;
-   MainWindow: Tk_Toplevel;
 begin
    if not Ada.Directories.Exists(Value("HOME") & "/.cache/hunter") then
       Create_Path(Value("HOME") & "/.cache/hunter");
@@ -99,19 +93,15 @@ begin
    -- Load required Tcl packages
    Tooltip_Init(Interp);
 
-   -- Create UI
+   -- Load the program setting
    LoadSettings;
-   MainWindow := Get_Main_Window(Interp);
-   Wm_Set(MainWindow, "title", "Hunter");
-   Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
-   Bind_To_Main_Window(Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
-   Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
-   Bind_To_Main_Window(Interp, "<Delete>", "{tk_popup .deletemenu %X %Y}");
-   Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
-   CreateActionToolbar;
-   CreateBookmarkMenu(True);
-   CreateItemToolbar;
-   SetToolbars;
+
+   -- Create the program main window
+   if Argument_Count < 1 then
+      CreateMainWindow(Value("HOME"));
+   else
+      CreateMainWindow(Full_Name(Argument(1)));
+   end if;
 
    --  Loop inside Tk, waiting for commands to execute.
    --  When there are no windows left, Tcl.Tk.Tk_MainLoop returns and we exit.

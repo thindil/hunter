@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -13,15 +13,15 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Vectors; use Ada.Containers;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Gtk.Accel_Group; use Gtk.Accel_Group;
-with Gtk.GEntry; use Gtk.GEntry;
-with Gtk.Paned; use Gtk.Paned;
-with Gtk.Stack; use Gtk.Stack;
-with Gtk.Tree_View; use Gtk.Tree_View;
-with Gtk.Widget; use Gtk.Widget;
-with Gtk.Window; use Gtk.Window;
+--with Ada.Containers.Vectors; use Ada.Containers;
+--with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+--with Gtk.Accel_Group; use Gtk.Accel_Group;
+--with Gtk.GEntry; use Gtk.GEntry;
+--with Gtk.Paned; use Gtk.Paned;
+--with Gtk.Stack; use Gtk.Stack;
+--with Gtk.Tree_View; use Gtk.Tree_View;
+--with Gtk.Widget; use Gtk.Widget;
+--with Gtk.Window; use Gtk.Window;
 
 -- ****h* Hunter/MainWindow
 -- FUNCTION
@@ -34,14 +34,14 @@ package MainWindow is
    -- FUNCTION
    -- If true, the program is in the setting mode
    -- SOURCE
-   Setting: Boolean;
+--   Setting: Boolean;
    -- ****
 
    -- ****v* MainWindow/CurrentDirectory
    -- FUNCTION
    -- Currently selected directory to show
    -- SOURCE
-   CurrentDirectory: Unbounded_String;
+--   CurrentDirectory: Unbounded_String;
    -- ****
 
    -- ****t* MainWindow/ItemActions
@@ -61,38 +61,38 @@ package MainWindow is
    -- SHOWTRASH       - show content of the trash
    -- DELETETRASH     - delete file or directory from trash
    -- SOURCE
-   type ItemActions is
-     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
-      GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
+--   type ItemActions is
+--     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
+--      GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
 
    -- ****v* MainWindow/NewAction
    -- FUNCTION
    -- Current performed action on files or directories
    -- SOURCE
-   NewAction: ItemActions;
+--   NewAction: ItemActions;
    -- ****
 
    -- ****t* MainWindow/UnboundedString_Container
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
    -- SOURCE
-   package UnboundedString_Container is new Vectors(Positive,
-      Unbounded_String);
+--   package UnboundedString_Container is new Vectors(Positive,
+--      Unbounded_String);
    -- ****
 
    -- ****v* MainWindow/SelectedItems
    -- FUNCTION
    -- List of currently selected files and directories by user
    -- SOURCE
-   SelectedItems: UnboundedString_Container.Vector;
+--   SelectedItems: UnboundedString_Container.Vector;
    -- ****
 
    -- ****v* MainWindow/CurrentSelected
    -- FUNCTION
    -- Full path to currently selected file or directory
    -- SOURCE
-   CurrentSelected: Unbounded_String;
+--   CurrentSelected: Unbounded_String;
    -- ****
 
    -- ****v* MainWindow/DestinationPath
@@ -100,49 +100,49 @@ package MainWindow is
    -- Full path to directory where selected files and directories will be
    -- copied or moved.
    -- SOURCE
-   DestinationPath: Unbounded_String;
+--   DestinationPath: Unbounded_String;
    -- ****
 
    -- ****v* MainWindow/DirectoryView
    -- FUNCTION
    -- Gtk_Tree_View with current directory listing
    -- SOURCE
-   DirectoryView: Gtk_Tree_View;
+--   DirectoryView: Gtk_Tree_View;
    -- ****
 
    -- ****v* MainWindow/FilesPaned
    -- FUNCTION
    -- Gtk_Paned with current directory listing and preview UI
    -- SOURCE
-   FilesPaned: Gtk_Paned;
+--   FilesPaned: Gtk_Paned;
    -- ****
 
    -- ****v* MainWindow/TextEntry
    -- FUNCTION
    -- Gtk_GEntry used to create new files or directories or rename them
    -- SOURCE
-   TextEntry: Gtk_GEntry;
+--   TextEntry: Gtk_GEntry;
    -- ****
 
    -- ****v* MainWindow/FileStack
    -- FUNCTION
    -- Gtk_Stack with almost all the program UI
    -- SOURCE
-   FileStack: Gtk_Stack;
+--   FileStack: Gtk_Stack;
    -- ****
 
    -- ****v* MainWindow/MainWindow
    -- FUNCTION
    -- Main window of the program
    -- SOURCE
-   Window: Gtk_Window;
+--   Window: Gtk_Window;
    -- ****
 
    -- ****v* MainWindow/Accelerators
    -- FUNCTION
    -- Keyboard accelerators associated with the main program window
    -- SOURCE
-   Accelerators: Gtk_Accel_Group;
+--   Accelerators: Gtk_Accel_Group;
    -- ****
 
    -- ****f* MainWindow/Quit
@@ -151,7 +151,7 @@ package MainWindow is
    -- PARAMETERS
    -- Self - Main window of the program which triggered this code
    -- SOURCE
-   procedure Quit(Self: access Gtk_Widget_Record'Class);
+--   procedure Quit(Self: access Gtk_Widget_Record'Class);
    -- ****
 
    -- ****f* MainWindow/CreateMainWindow
@@ -168,7 +168,7 @@ package MainWindow is
    -- FUNCTION
    -- Reload directory listing and preview of selected item
    -- SOURCE
-   procedure Reload;
+--   procedure Reload;
    -- ****
 
 end MainWindow;
