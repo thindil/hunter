@@ -214,6 +214,15 @@ package body Toolbars is
       ToolMenuButton := Create(".toolbars.actiontoolbar.deletebutton");
       SetButton(ToolMenuButton, "Show delete menu \[Delete\]", "edit-delete");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
+      ButtonMenu := Create(".deletemenu", "-tearoff false");
+      if Settings.DeleteFiles then
+         Menu.Add(ButtonMenu, "command", "-label ""Delete selected""");
+      else
+         Menu.Add(ButtonMenu, "command", "-label ""Move selected to Trash""");
+      end if;
+      Menu.Add(ButtonMenu, "command", "-label ""Show Trash""");
+      Menu.Add(ButtonMenu, "command", "-label ""Empty Trash""");
+      configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       ToolButton := Create(".toolbars.actiontoolbar.cancelbutton");
       SetButton
         (ToolButton, "Discard all changes and back to files list \[Escape\]",
