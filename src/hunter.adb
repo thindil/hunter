@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -105,6 +105,8 @@ begin
    Wm_Set(MainWindow, "title", "Hunter");
    Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
    Bind_To_Main_Window(Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
+   Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
+   Bind_To_Main_Window(Interp, "<Delete>", "{tk_popup .deletemenu %X %Y}");
    CreateActionToolbar;
    CreateBookmarkMenu(True);
    CreateItemToolbar;
