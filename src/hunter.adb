@@ -122,6 +122,7 @@ begin
    abort InotifyTask;
    InotifyClose;
    MagicClose;
+   SavePreferences;
 
 exception
    when An_Exception : others =>
