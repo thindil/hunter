@@ -113,9 +113,9 @@ package body Toolbars is
       end if;
       Toolbar.Name := New_String(".toolbars");
       if not Settings.ToolbarsOnTop then
-         Tcl.Tk.Ada.Pack.Pack(Toolbar, "-anchor w -fill y");
+         Grid_Configure(Toolbar, "-sticky ns");
       else
-         Tcl.Tk.Ada.Pack.Pack(Toolbar, "-anchor nw -fill x");
+         Grid_Configure(Toolbar, "-sticky we");
       end if;
       Label.Interp := Get_Context;
       Label.Name := New_String(".toolbars.label");
@@ -246,7 +246,7 @@ package body Toolbars is
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
       Tcl.Tk.Ada.Grid.Grid(Label);
-      Tcl.Tk.Ada.Pack.Pack(ToolbarsFrame, "-expand true");
+      Tcl.Tk.Ada.Grid.Grid(ToolbarsFrame);
    end CreateActionToolbar;
 
    procedure CreateItemToolbar is

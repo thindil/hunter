@@ -16,12 +16,19 @@
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
+with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Bookmarks; use Bookmarks;
+with Preferences; use Preferences;
 with Toolbars; use Toolbars;
 
 package body MainWindow is
@@ -30,11 +37,31 @@ package body MainWindow is
       MainWindow: Tk_Toplevel;
       Interp: constant Tcl.Tcl_Interp := Get_Context;
       CurrentDir: constant String := Current_Directory;
+      Paned: constant Ttk_PanedWindow :=
+        Create(".paned", "-orient horizontal");
+      DirectoryFrame: constant Ttk_Frame := Create(".paned.directoryframe");
+      DirectoryXScroll: constant Ttk_Scrollbar :=
+        Create
+          (Widget_Image(DirectoryFrame) & ".scrollx",
+           "-orient horizontal -command [list " &
+           Widget_Image(DirectoryFrame) & ".directorytree xview]");
+      DirectoryYScroll: constant Ttk_Scrollbar :=
+        Create
+          (Widget_Image(DirectoryFrame) & ".scrolly",
+           "-orient vertical -command [list " & Widget_Image(DirectoryFrame) &
+           ".directorytree yview]");
+      DirectoryTree: constant Ttk_Tree_View :=
+        Create
+          (Widget_Image(DirectoryFrame) & ".directorytree",
+           "-show headings -xscrollcommand """ &
+           Widget_Image(DirectoryXScroll) & " set"" -yscrollcommand """ &
+           Widget_Image(DirectoryYScroll) & " set""");
    begin
       MainWindow := Get_Main_Window(Interp);
       Wm_Set(MainWindow, "title", "Hunter");
       Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
-      Bind_To_Main_Window(Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Delete>", "{tk_popup .deletemenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
@@ -44,6 +71,15 @@ package body MainWindow is
       CreateItemToolbar;
       Set_Directory(CurrentDir);
       SetToolbars;
+      Add(Paned, DirectoryFrame);
+      Tcl.Tk.Ada.Pack.Pack(DirectoryXScroll, "-side bottom -fill x");
+      Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
+      if not Settings.ToolbarsOnTop then
+         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 0 -sticky nwse");
+      else
+         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 0 -row 1 -sticky nwse");
+      end if;
    end CreateMainWindow;
 
 --   FilesMenu: Gtk_Menu;
