@@ -13,10 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Bookmarks; use Bookmarks;
---with MainWindow; use MainWindow;
-with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Directories; use Ada.Directories;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -156,13 +152,11 @@ package body Toolbars is
       ToolMenuButton: Ttk_MenuButton;
       ToolbarsFrame: constant Ttk_Frame := Create(".toolbars");
       Toolbar: constant Ttk_Frame := Create(".toolbars.actiontoolbar");
-      CurrentDir: constant String := Current_Directory;
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
       Label: constant Ttk_Label := Create(".toolbars.label");
       ButtonMenu: Tk_Menu;
    begin
-      Set_Directory(Containing_Directory(Command_Name));
       ToolButton :=
         Create(".toolbars.actiontoolbar.quitbutton", "-command exit");
       SetButton(ToolButton, "Quit from the program. \[CTRL+Q\]", "quit");
@@ -253,16 +247,13 @@ package body Toolbars is
       Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Tcl.Tk.Ada.Pack.Pack(ToolbarsFrame, "-expand true");
-      Set_Directory(CurrentDir);
    end CreateActionToolbar;
 
    procedure CreateItemToolbar is
       Toolbar: constant Ttk_Frame := Create(".toolbars.itemtoolbar");
-      CurrentDir: constant String := Current_Directory;
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
    begin
-      Set_Directory(Containing_Directory(Command_Name));
       ToolButton := Create(".toolbars.itemtoolbar.runbutton");
       SetButton
         (ToolButton, "Execute selected program \[ALT+E\].",
@@ -302,7 +293,6 @@ package body Toolbars is
          "list-remove");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Tcl.Tk.Ada.Grid.Grid(Toolbar);
-      Set_Directory(CurrentDir);
    end CreateItemToolbar;
 
 end Toolbars;
