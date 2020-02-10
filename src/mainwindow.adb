@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Directories; use Ada.Directories;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
@@ -27,6 +29,7 @@ package body MainWindow is
    procedure CreateMainWindow(Directory: String) is
       MainWindow: Tk_Toplevel;
       Interp: constant Tcl.Tcl_Interp := Get_Context;
+      CurrentDir: constant String := Current_Directory;
    begin
       MainWindow := Get_Main_Window(Interp);
       Wm_Set(MainWindow, "title", "Hunter");
@@ -35,9 +38,11 @@ package body MainWindow is
       Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Delete>", "{tk_popup .deletemenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
+      Set_Directory(Containing_Directory(Command_Name));
       CreateActionToolbar;
       CreateBookmarkMenu(True);
       CreateItemToolbar;
+      Set_Directory(CurrentDir);
       SetToolbars;
    end CreateMainWindow;
 
