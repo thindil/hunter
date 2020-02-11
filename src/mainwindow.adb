@@ -15,8 +15,12 @@
 
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with CHelper; use CHelper;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
@@ -58,16 +62,34 @@ package body MainWindow is
            Widget_Image(DirectoryXScroll) & " set"" -yscrollcommand """ &
            Widget_Image(DirectoryYScroll) & " set""");
       HeaderLabel: constant Ttk_Label := Create(".headerlaber");
+      IconName: Unbounded_String;
+      Icon: Tk_Photo;
    begin
+      Set_Directory(Containing_Directory(Command_Name));
+      if Ada.Directories.Exists
+          (Value("APPDIR", "") & "/usr/share/doc/hunter") then
+         IconName :=
+           To_Unbounded_String(Value("APPDIR", "") & "/hunter-icon.png");
+      else
+         IconName :=
+           To_Unbounded_String
+             (Containing_Directory(Current_Directory) &
+              "/others/hunter-icon.png");
+      end if;
       MainWindow := Get_Main_Window(Interp);
       Wm_Set(MainWindow, "title", "Hunter");
+      Wm_Set
+        (MainWindow, "maxsize",
+         Positive'Image(Settings.WindowWidth) &
+         Positive'Image(Settings.WindowHeight));
+      Icon := Create("logo", "-file """ & To_String(IconName) & """");
+      Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
       Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
       Bind_To_Main_Window
         (Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Delete>", "{tk_popup .deletemenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
-      Set_Directory(Containing_Directory(Command_Name));
       CreateActionToolbar;
       CreateBookmarkMenu(True);
       CreateItemToolbar;
