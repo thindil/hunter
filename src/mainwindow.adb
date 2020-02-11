@@ -16,13 +16,14 @@
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
-with Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
@@ -53,9 +54,10 @@ package body MainWindow is
       DirectoryTree: constant Ttk_Tree_View :=
         Create
           (Widget_Image(DirectoryFrame) & ".directorytree",
-           "-show headings -xscrollcommand """ &
+           "-show headings -columns [list name modified size] -xscrollcommand """ &
            Widget_Image(DirectoryXScroll) & " set"" -yscrollcommand """ &
            Widget_Image(DirectoryYScroll) & " set""");
+      HeaderLabel: constant Ttk_Label := Create(".headerlaber");
    begin
       MainWindow := Get_Main_Window(Interp);
       Wm_Set(MainWindow, "title", "Hunter");
@@ -74,12 +76,19 @@ package body MainWindow is
       Add(Paned, DirectoryFrame);
       Tcl.Tk.Ada.Pack.Pack(DirectoryXScroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
+      Heading(DirectoryTree, "name", "-text ""Name""");
+      Heading(DirectoryTree, "modified", "-text ""Modified""");
+      Heading(DirectoryTree, "size", "-text ""Size""");
       Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
-         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 0 -sticky nwse");
+         Tcl.Tk.Ada.Grid.Grid
+           (HeaderLabel, "-column 0 -row 0 -sticky we -columnspan 2");
+         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 1 -sticky nswe");
       else
-         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 0 -row 1 -sticky nwse");
+         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 0 -row 1 -sticky nswe");
       end if;
+      Row_Configure(MainWindow, Paned, "-weight 1");
+      Column_Configure(MainWindow, Paned, "-weight 1");
    end CreateMainWindow;
 
 --   FilesMenu: Gtk_Menu;
