@@ -75,8 +75,22 @@ package body LoadData is
       if not Left.IsHidden and Right.IsHidden then
          return False;
       end if;
-      return Translate(Left.Name, Lower_Case_Map) <
-        Translate(Right.Name, Lower_Case_Map);
+      case SortOrder is
+         when NameAsc =>
+            return Translate(Left.Name, Lower_Case_Map) <
+              Translate(Right.Name, Lower_Case_Map);
+         when NameDesc =>
+            return Translate(Left.Name, Lower_Case_Map) >
+              Translate(Right.Name, Lower_Case_Map);
+         when ModifiedAsc =>
+            return Left.Modified < Right.Modified;
+         when ModifiedDesc =>
+            return Left.Modified > Right.Modified;
+         when SizeAsc =>
+            return Left.Size < Right.Size;
+         when SizeDesc =>
+            return Left.Size > Right.Size;
+      end case;
    end "<";
 
    procedure AddItem(Path: String) is
@@ -119,9 +133,9 @@ package body LoadData is
                end if;
             end loop;
             Close(SubDirectory);
-            Item.Size := To_Unbounded_String(File_Size'Image(Size));
+            Item.Size := Integer(Size);
          else
-            Item.Size := To_Unbounded_String("unknown");
+            Item.Size := -1;
          end if;
       else
          Item.IsDirectory := False;
@@ -153,20 +167,19 @@ package body LoadData is
             end if;
          end if;
          if not Is_Read_Accessible_File(Path) then
-            Item.Size := To_Unbounded_String("unknown");
-            ItemsList.Insert(Item);
+            Item.Size := -1;
+            ItemsList.Append(Item);
             return;
          end if;
          if Is_Symbolic_Link(Path) then
-            Item.Size := To_Unbounded_String("->");
+            Item.Size := -2;
          elsif Is_Regular_File(Path) then
-            Item.Size :=
-              To_Unbounded_String(CountFileSize(Ada.Directories.Size(Path)));
+            Item.Size := Integer(Ada.Directories.Size(Path));
          else
-            Item.Size := To_Unbounded_String("0");
+            Item.Size := 0;
          end if;
       end if;
-      ItemsList.Insert(Item);
+      ItemsList.Append(Item);
    end AddItem;
 
    procedure LoadDirectory(DirectoryName: String) is
@@ -187,6 +200,7 @@ package body LoadData is
          end if;
       end loop;
       Close(Directory);
+      Items_Sorting.Sort(ItemsList);
    end LoadDirectory;
 
 --   function SortFiles

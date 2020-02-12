@@ -36,6 +36,7 @@ with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
 with Toolbars; use Toolbars;
+with Utils; use Utils;
 
 package body MainWindow is
 
@@ -124,13 +125,33 @@ package body MainWindow is
          end if;
       end if;
       LoadDirectory(To_String(CurrentDirectory));
-      for Item of ItemsList loop
-         Insert
-           (DirectoryTree,
-            "{} end -text """ & To_String(Item.Name) & """ -values [list """ &
-            Ada.Calendar.Formatting.Image(Item.Modified) & """ """ &
-            To_String(Item.Size) & """]");
-      end loop;
+      declare
+         SizeString: Unbounded_String;
+      begin
+         for Item of ItemsList loop
+            case Item.Size is
+               when -2 =>
+                  SizeString := To_Unbounded_String("->");
+               when -1 =>
+                  SizeString := To_Unbounded_String("unknown");
+               when others =>
+                  if not Item.IsDirectory then
+                     SizeString :=
+                       To_Unbounded_String
+                         (CountFileSize(File_Size(Item.Size)));
+                  else
+                     SizeString :=
+                       To_Unbounded_String(Integer'Image(Item.Size));
+                  end if;
+            end case;
+            Insert
+              (DirectoryTree,
+               "{} end -text """ & To_String(Item.Name) &
+               """ -values [list """ &
+               Ada.Calendar.Formatting.Image(Item.Modified) & """ """ &
+               To_String(SizeString) & """]");
+         end loop;
+      end;
    end CreateMainWindow;
 
 --   FilesMenu: Gtk_Menu;
