@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 --with Ada.Containers.Vectors; use Ada.Containers;
---with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --with Gtk.Accel_Group; use Gtk.Accel_Group;
 --with Gtk.GEntry; use Gtk.GEntry;
 --with Gtk.Paned; use Gtk.Paned;
@@ -30,18 +30,18 @@
 package MainWindow is
 -- ****
 
+   -- ****v* MainWindow/CurrentDirectory
+   -- FUNCTION
+   -- Currently selected directory to show
+   -- SOURCE
+   CurrentDirectory: Unbounded_String;
+   -- ****
+
    -- ****v* MainWindow/Setting
    -- FUNCTION
    -- If true, the program is in the setting mode
    -- SOURCE
 --   Setting: Boolean;
-   -- ****
-
-   -- ****v* MainWindow/CurrentDirectory
-   -- FUNCTION
-   -- Currently selected directory to show
-   -- SOURCE
---   CurrentDirectory: Unbounded_String;
    -- ****
 
    -- ****t* MainWindow/ItemActions

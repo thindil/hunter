@@ -13,10 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Calendar.Formatting;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with CHelper; use CHelper;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
@@ -33,6 +33,7 @@ with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Bookmarks; use Bookmarks;
+with LoadData; use LoadData;
 with Preferences; use Preferences;
 with Toolbars; use Toolbars;
 
@@ -58,7 +59,7 @@ package body MainWindow is
       DirectoryTree: constant Ttk_Tree_View :=
         Create
           (Widget_Image(DirectoryFrame) & ".directorytree",
-           "-show headings -columns [list name modified size] -xscrollcommand """ &
+           "-columns [list modified size] -xscrollcommand """ &
            Widget_Image(DirectoryXScroll) & " set"" -yscrollcommand """ &
            Widget_Image(DirectoryYScroll) & " set""");
       HeaderLabel: constant Ttk_Label := Create(".headerlaber");
@@ -98,11 +99,11 @@ package body MainWindow is
       Add(Paned, DirectoryFrame);
       Tcl.Tk.Ada.Pack.Pack(DirectoryXScroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
-      Heading(DirectoryTree, "name", "-text ""Name""");
+      Heading(DirectoryTree, "#0", "-text ""Name""");
       Heading(DirectoryTree, "modified", "-text ""Modified""");
       Heading(DirectoryTree, "size", "-text ""Size""");
       if not Settings.ShowLastModified then
-         configure(DirectoryTree, "-displaycolumns [list name size]");
+         configure(DirectoryTree, "-displaycolumns [list size]");
       end if;
       Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
@@ -114,6 +115,22 @@ package body MainWindow is
       end if;
       Row_Configure(MainWindow, Paned, "-weight 1");
       Column_Configure(MainWindow, Paned, "-weight 1");
+      if Ada.Directories.Exists(Directory) then
+         CurrentDirectory := To_Unbounded_String(Directory);
+      else
+         CurrentDirectory := To_Unbounded_String(Value("HOME"));
+         if not Ada.Directories.Exists(To_String(CurrentDirectory)) then
+            CurrentDirectory := To_Unbounded_String("/");
+         end if;
+      end if;
+      LoadDirectory(To_String(CurrentDirectory));
+      for Item of ItemsList loop
+         Insert
+           (DirectoryTree,
+            "{} end -text """ & To_String(Item.Name) & """ -values [list """ &
+            Ada.Calendar.Formatting.Image(Item.Modified) & """ """ &
+            To_String(Item.Size) & """]");
+      end loop;
    end CreateMainWindow;
 
 --   FilesMenu: Gtk_Menu;
