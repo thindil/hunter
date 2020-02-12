@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Ada.Strings.Maps.Constants; use Ada.Strings.Maps.Constants;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Utils; use Utils;
@@ -55,9 +56,27 @@ with Utils; use Utils;
 
 package body LoadData is
 
-   function "<"(L, R: Item_Record) return Boolean is
+   function "="(Left, Right: Item_Record) return Boolean is
    begin
-      return L.Name < R.Name;
+      return Left.Name = Right.Name;
+   end "=";
+
+   function "<"(Left, Right: Item_Record) return Boolean is
+   begin
+      if Left.IsDirectory and not Right.IsDirectory then
+         return True;
+      end if;
+      if not Left.IsDirectory and Right.IsDirectory then
+         return False;
+      end if;
+      if Left.IsHidden and not Right.IsHidden then
+         return True;
+      end if;
+      if not Left.IsHidden and Right.IsHidden then
+         return False;
+      end if;
+      return Translate(Left.Name, Lower_Case_Map) <
+        Translate(Right.Name, Lower_Case_Map);
    end "<";
 
    procedure AddItem(Path: String) is
@@ -76,12 +95,13 @@ package body LoadData is
          when others =>
             Item.Modified := Time_Of(1901, 1, 1);
       end;
+      if FileName(1) = '.' then
+         Item.IsHidden := True;
+      else
+         Item.IsHidden := False;
+      end if;
       if Is_Directory(Path) then
-         if FileName(1) = '.' then
-            Item.IType := HiddenDirectory;
-         else
-            Item.IType := Directory;
-         end if;
+         Item.IsDirectory := True;
          if Is_Symbolic_Link(Path) then
             Item.Image := To_Unbounded_String("emblem-symbolic-link");
          else
@@ -104,11 +124,7 @@ package body LoadData is
             Item.Size := To_Unbounded_String("unknown");
          end if;
       else
-         if FileName(1) = '.' then
-            Item.IType := HiddenFile;
-         else
-            Item.IType := File;
-         end if;
+         Item.IsDirectory := False;
          if Is_Symbolic_Link(Path) then
             Item.Image := To_Unbounded_String("emblem-symbolic-link");
          elsif Is_Executable_File(Path) then
