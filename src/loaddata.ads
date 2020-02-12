@@ -17,7 +17,7 @@
 --with Gtk.Tree_Model; use Gtk.Tree_Model;
 --with Glib; use Glib;
 with Ada.Calendar; use Ada.Calendar;
-with Ada.Containers.Ordered_Sets; use Ada.Containers;
+with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 -- ****h* Hunter/LoadData
@@ -90,19 +90,24 @@ package LoadData is
 
    type Item_Record is record
       Name: Unbounded_String;
-      Size: Unbounded_String;
+      Size: Integer;
       IsDirectory: Boolean;
       IsHidden: Boolean;
       Modified: Time;
       Image: Unbounded_String;
    end record;
 
+   type SortingOrder is (NameAsc, NameDesc, ModifiedAsc, ModifiedDesc, SizeAsc, SizeDesc);
+
+   SortOrder: SortingOrder := NameAsc;
+
    function "<" (Left, Right : Item_Record) return Boolean;
    function "=" (Left, Right : Item_Record) return Boolean;
 
-   package Items_Container is new Ordered_Sets(Item_Record);
+   package Items_Container is new Vectors(Positive, Item_Record);
+   package Items_Sorting is new Items_Container.Generic_Sorting;
 
-   ItemsList: Items_Container.Set;
+   ItemsList: Items_Container.Vector;
 
    procedure LoadDirectory(DirectoryName: String);
 
