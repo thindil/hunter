@@ -55,6 +55,11 @@ with Utils; use Utils;
 
 package body LoadData is
 
+   function "<"(L, R: Item_Record) return Boolean is
+   begin
+      return L.Name < R.Name;
+   end "<";
+
    procedure AddItem(Path: String) is
       FileName: constant String := Simple_Name(Path);
       Size: File_Size;
@@ -133,7 +138,7 @@ package body LoadData is
          end if;
          if not Is_Read_Accessible_File(Path) then
             Item.Size := To_Unbounded_String("unknown");
-            ItemsList.Append(Item);
+            ItemsList.Insert(Item);
             return;
          end if;
          if Is_Symbolic_Link(Path) then
@@ -145,7 +150,7 @@ package body LoadData is
             Item.Size := To_Unbounded_String("0");
          end if;
       end if;
-      ItemsList.Append(Item);
+      ItemsList.Insert(Item);
    end AddItem;
 
    procedure LoadDirectory(DirectoryName: String) is

@@ -17,7 +17,7 @@
 --with Gtk.Tree_Model; use Gtk.Tree_Model;
 --with Glib; use Glib;
 with Ada.Calendar; use Ada.Calendar;
-with Ada.Containers.Vectors; use Ada.Containers;
+with Ada.Containers.Ordered_Sets; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 -- ****h* Hunter/LoadData
@@ -98,9 +98,11 @@ package LoadData is
       Image: Unbounded_String;
    end record;
 
-   package Items_Container is new Vectors(Positive, Item_Record);
+   function "<" (L, R : Item_Record) return Boolean;
 
-   ItemsList: Items_Container.Vector;
+   package Items_Container is new Ordered_Sets(Item_Record);
+
+   ItemsList: Items_Container.Set;
 
    procedure LoadDirectory(DirectoryName: String);
 
