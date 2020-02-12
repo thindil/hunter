@@ -88,14 +88,13 @@ package LoadData is
 --     (FilesList: Gtk_List_Store; FileIter: out Gtk_Tree_Iter; Path: String);
    -- ****
 
-   type ItemType is (File, Directory);
+   type ItemType is (HiddenDirectory, Directory, HiddenFile, File);
 
    type Item_Record is record
       Name: Unbounded_String;
       Size: Unbounded_String;
       IType: ItemType;
       Modified: Time;
-      Hidden: Boolean;
       Image: Unbounded_String;
    end record;
 

@@ -71,12 +71,12 @@ package body LoadData is
          when others =>
             Item.Modified := Time_Of(1901, 1, 1);
       end;
-      if FileName(1) = '.' then
-         Item.Hidden := True;
-      else
-         Item.Hidden := False;
-      end if;
       if Is_Directory(Path) then
+         if FileName(1) = '.' then
+            Item.IType := HiddenDirectory;
+         else
+            Item.IType := Directory;
+         end if;
          if Is_Symbolic_Link(Path) then
             Item.Image := To_Unbounded_String("emblem-symbolic-link");
          else
@@ -99,6 +99,11 @@ package body LoadData is
             Item.Size := To_Unbounded_String("unknown");
          end if;
       else
+         if FileName(1) = '.' then
+            Item.IType := HiddenFile;
+         else
+            Item.IType := File;
+         end if;
          if Is_Symbolic_Link(Path) then
             Item.Image := To_Unbounded_String("emblem-symbolic-link");
          elsif Is_Executable_File(Path) then
