@@ -168,7 +168,7 @@ package MainWindow is
    -- FUNCTION
    -- Reload directory listing and preview of selected item
    -- SOURCE
---   procedure Reload;
+   procedure Reload;
    -- ****
 
 end MainWindow;
