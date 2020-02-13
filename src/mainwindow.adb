@@ -106,10 +106,13 @@ package body MainWindow is
         Create("arrowdown", "-file ""../share/hunter/images/arrow-down.png""");
       Heading
         (DirectoryTree, "#0",
-         "-text ""Name"" -image """ & ArrowDownIcon.Name & """");
+         "-text ""Name"" -image """ & ArrowDownIcon.Name &
+         """ -command ""Sort name""");
       Set_Directory(CurrentDir);
-      Heading(DirectoryTree, "modified", "-text ""Modified""");
-      Heading(DirectoryTree, "size", "-text ""Size""");
+      Heading
+        (DirectoryTree, "modified",
+         "-text ""Modified"" -command ""Sort modified""");
+      Heading(DirectoryTree, "size", "-text ""Size"" -command ""Sort size""");
       if not Settings.ShowLastModified then
          configure(DirectoryTree, "-displaycolumns [list size]");
       end if;
