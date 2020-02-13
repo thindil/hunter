@@ -65,7 +65,7 @@ package body MainWindow is
            Widget_Image(DirectoryYScroll) & " set""");
       HeaderLabel: constant Ttk_Label := Create(".headerlaber");
       IconName: Unbounded_String;
-      Icon: Tk_Photo;
+      Icon, ArrowDownIcon: Tk_Photo;
    begin
       Set_Directory(Containing_Directory(Command_Name));
       if Ada.Directories.Exists
@@ -95,12 +95,16 @@ package body MainWindow is
       CreateActionToolbar;
       CreateBookmarkMenu(True);
       CreateItemToolbar;
-      Set_Directory(CurrentDir);
       SetToolbars;
       Add(Paned, DirectoryFrame);
       Tcl.Tk.Ada.Pack.Pack(DirectoryXScroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
-      Heading(DirectoryTree, "#0", "-text ""Name""");
+      ArrowDownIcon :=
+        Create("arrowdown", "-file ""../share/hunter/images/arrow-down.png""");
+      Heading
+        (DirectoryTree, "#0",
+         "-text ""Name"" -image """ & ArrowDownIcon.Name & """");
+      Set_Directory(CurrentDir);
       Heading(DirectoryTree, "modified", "-text ""Modified""");
       Heading(DirectoryTree, "size", "-text ""Size""");
       if not Settings.ShowLastModified then
@@ -128,30 +132,33 @@ package body MainWindow is
       declare
          SizeString: Unbounded_String;
       begin
-         for Item of ItemsList loop
-            case Item.Size is
+         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+            case ItemsList(I).Size is
                when -2 =>
                   SizeString := To_Unbounded_String("->");
                when -1 =>
                   SizeString := To_Unbounded_String("unknown");
                when others =>
-                  if not Item.IsDirectory then
+                  if not ItemsList(I).IsDirectory then
                      SizeString :=
                        To_Unbounded_String
-                         (CountFileSize(File_Size(Item.Size)));
+                         (CountFileSize(File_Size(ItemsList(I).Size)));
                   else
                      SizeString :=
-                       To_Unbounded_String(Integer'Image(Item.Size));
+                       To_Unbounded_String(Integer'Image(ItemsList(I).Size));
                   end if;
             end case;
             Insert
               (DirectoryTree,
-               "{} end -text """ & To_String(Item.Name) &
-               """ -values [list """ &
-               Ada.Calendar.Formatting.Image(Item.Modified) & """ """ &
+               "{} end -id" & Positive'Image(I) & " -text """ &
+               To_String(ItemsList(I).Name) & """ -values [list """ &
+               Ada.Calendar.Formatting.Image(ItemsList(I).Modified) & """ """ &
                To_String(SizeString) & """]");
          end loop;
       end;
+      if not ItemsList.Is_Empty then
+         Selection_Set(DirectoryTree, "[list 1]");
+      end if;
    end CreateMainWindow;
 
 --   FilesMenu: Gtk_Menu;
