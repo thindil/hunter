@@ -17,6 +17,7 @@ with Ada.Calendar.Formatting;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CHelper; use CHelper;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
@@ -34,6 +35,7 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
+with MainWindow.Commands; use MainWindow.Commands;
 with Preferences; use Preferences;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
@@ -67,6 +69,7 @@ package body MainWindow is
       IconName: Unbounded_String;
       Icon, ArrowDownIcon: Tk_Photo;
    begin
+      AddCommands;
       Set_Directory(Containing_Directory(Command_Name));
       if Ada.Directories.Exists
           (Value("APPDIR", "") & "/usr/share/doc/hunter") then
@@ -129,37 +132,42 @@ package body MainWindow is
          end if;
       end if;
       LoadDirectory(To_String(CurrentDirectory));
-      declare
-         SizeString: Unbounded_String;
-      begin
-         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            case ItemsList(I).Size is
-               when -2 =>
-                  SizeString := To_Unbounded_String("->");
-               when -1 =>
-                  SizeString := To_Unbounded_String("unknown");
-               when others =>
-                  if not ItemsList(I).IsDirectory then
-                     SizeString :=
-                       To_Unbounded_String
-                         (CountFileSize(File_Size(ItemsList(I).Size)));
-                  else
-                     SizeString :=
-                       To_Unbounded_String(Integer'Image(ItemsList(I).Size));
-                  end if;
-            end case;
-            Insert
-              (DirectoryTree,
-               "{} end -id" & Positive'Image(I) & " -text """ &
-               To_String(ItemsList(I).Name) & """ -values [list """ &
-               Ada.Calendar.Formatting.Image(ItemsList(I).Modified) & """ """ &
-               To_String(SizeString) & """]");
-         end loop;
-      end;
+      Reload;
+   end CreateMainWindow;
+
+   procedure Reload is
+      SizeString: Unbounded_String;
+      DirectoryTree: Ttk_Tree_View;
+   begin
+      DirectoryTree.Interp := Get_Context;
+      DirectoryTree.Name := New_String(".paned.directoryframe.directorytree");
+      for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+         case ItemsList(I).Size is
+            when -2 =>
+               SizeString := To_Unbounded_String("->");
+            when -1 =>
+               SizeString := To_Unbounded_String("unknown");
+            when others =>
+               if not ItemsList(I).IsDirectory then
+                  SizeString :=
+                    To_Unbounded_String
+                      (CountFileSize(File_Size(ItemsList(I).Size)));
+               else
+                  SizeString :=
+                    To_Unbounded_String(Integer'Image(ItemsList(I).Size));
+               end if;
+         end case;
+         Insert
+           (DirectoryTree,
+            "{} end -id" & Positive'Image(I) & " -text """ &
+            To_String(ItemsList(I).Name) & """ -values [list """ &
+            Ada.Calendar.Formatting.Image(ItemsList(I).Modified) & """ """ &
+            To_String(SizeString) & """]");
+      end loop;
       if not ItemsList.Is_Empty then
          Selection_Set(DirectoryTree, "[list 1]");
       end if;
-   end CreateMainWindow;
+   end Reload;
 
 --   FilesMenu: Gtk_Menu;
 --
