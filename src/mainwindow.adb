@@ -62,15 +62,36 @@ package body MainWindow is
       DirectoryTree: constant Ttk_Tree_View :=
         Create
           (Widget_Image(DirectoryFrame) & ".directorytree",
-           "-columns [list modified size] -xscrollcommand """ &
+           "-columns [list name modified size] -xscrollcommand """ &
            Widget_Image(DirectoryXScroll) & " set"" -yscrollcommand """ &
            Widget_Image(DirectoryYScroll) & " set""");
       HeaderLabel: constant Ttk_Label := Create(".headerlaber");
       IconName: Unbounded_String;
-      Icon, ArrowDownIcon: Tk_Photo;
+      Icon, ArrowDownIcon, Image: Tk_Photo;
+      IconsNames: constant array(1 .. 12) of Unbounded_String :=
+        (To_Unbounded_String("emblem-symbolic-link"),
+         To_Unbounded_String("application-x-executable"),
+         To_Unbounded_String("audio-x-generic"),
+         To_Unbounded_String("font-x-generic"),
+         To_Unbounded_String("image-x-generic"),
+         To_Unbounded_String("video-x-generic"),
+         To_Unbounded_String("text-x-generic"),
+         To_Unbounded_String("text-html"),
+         To_Unbounded_String("package-x-generic"),
+         To_Unbounded_String("text-x-generic"),
+         To_Unbounded_String("text-x-generic-template"),
+         To_Unbounded_String("folder"));
+      pragma Unreferenced(Image);
    begin
       AddCommands;
       Set_Directory(Containing_Directory(Command_Name));
+      for IconName of IconsNames loop
+         Image :=
+           Create
+             (To_String(IconName),
+              "-file ""../share/hunter/images/" & To_String(IconName) &
+              ".png""");
+      end loop;
       if Ada.Directories.Exists
           (Value("APPDIR", "") & "/usr/share/doc/hunter") then
          IconName :=
@@ -105,7 +126,7 @@ package body MainWindow is
       ArrowDownIcon :=
         Create("arrowdown", "-file ""../share/hunter/images/arrow-down.png""");
       Heading
-        (DirectoryTree, "#0",
+        (DirectoryTree, "name",
          "-text ""Name"" -image """ & ArrowDownIcon.Name &
          """ -command ""Sort name""");
       Set_Directory(CurrentDir);
@@ -114,7 +135,7 @@ package body MainWindow is
          "-text ""Modified"" -command ""Sort modified""");
       Heading(DirectoryTree, "size", "-text ""Size"" -command ""Sort size""");
       if not Settings.ShowLastModified then
-         configure(DirectoryTree, "-displaycolumns [list size]");
+         configure(DirectoryTree, "-displaycolumns [list name size]");
       end if;
       Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
@@ -167,10 +188,11 @@ package body MainWindow is
          end case;
          Insert
            (DirectoryTree,
-            "{} end -id" & Positive'Image(I) & " -text {" &
-            To_String(ItemsList(I).Name) & "} -values [list """ &
+            "{} end -id" & Positive'Image(I) & " -values [list """ &
+            To_String(ItemsList(I).Name) & """ """ &
             Ada.Calendar.Formatting.Image(ItemsList(I).Modified) & """ """ &
-            To_String(SizeString) & """]");
+            To_String(SizeString) & """] -image " &
+            To_String(ItemsList(I).Image));
       end loop;
       if not ItemsList.Is_Empty then
          Selection_Set(DirectoryTree, "[list 1]");
