@@ -122,7 +122,7 @@ https://www.tcl.tk/
 
 TASHY is distributed under GPLv2 with runtime exception license
 
-https://www.tcl.tk/
+https://github.com/thindil/tashy
 
 ----
 
