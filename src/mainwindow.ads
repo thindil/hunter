@@ -164,11 +164,13 @@ package MainWindow is
    procedure CreateMainWindow(Directory: String);
    -- ****
 
-   -- ****f* MainWindow/Reload
+   -- ****f* MainWindow/UpdateDirectoryList
    -- FUNCTION
-   -- Reload directory listing and preview of selected item
+   -- Update directory list
+   -- PARAMETERS
+   -- Clear - Clear current list of items
    -- SOURCE
-   procedure Reload;
+   procedure UpdateDirectoryList(Clear: Boolean := False);
    -- ****
 
 end MainWindow;

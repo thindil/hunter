@@ -56,7 +56,7 @@ package body MainWindow.Commands is
          end if;
       end if;
       Items_Sorting.Sort(ItemsList);
-      Reload;
+      UpdateDirectoryList(True);
       return 0;
    end Sort_Command;
 
