@@ -124,6 +124,11 @@ TASHY is distributed under GPLv2 with runtime exception license
 
 https://github.com/thindil/tashy
 
+Icons included in the program are modified version of the KDE Breeze Icons
+theme which are available under LGPLv2 license:
+
+https://github.com/KDE/breeze-icons
+
 ----
 
 That's all for now, and again, probably I forgot about something important ;)
