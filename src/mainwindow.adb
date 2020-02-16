@@ -135,15 +135,20 @@ package body MainWindow is
          end if;
       end if;
       LoadDirectory(To_String(CurrentDirectory));
-      Reload;
+      UpdateDirectoryList;
    end CreateMainWindow;
 
-   procedure Reload is
+   procedure UpdateDirectoryList(Clear: Boolean := False) is
       SizeString: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
    begin
       DirectoryTree.Interp := Get_Context;
       DirectoryTree.Name := New_String(".paned.directoryframe.directorytree");
+      if Clear then
+         Delete
+           (DirectoryTree,
+            "[" & Widget_Image(DirectoryTree) & " children {} ]");
+      end if;
       for I in ItemsList.First_Index .. ItemsList.Last_Index loop
          case ItemsList(I).Size is
             when -2 =>
@@ -162,15 +167,15 @@ package body MainWindow is
          end case;
          Insert
            (DirectoryTree,
-            "{} end -id" & Positive'Image(I) & " -text """ &
-            To_String(ItemsList(I).Name) & """ -values [list """ &
+            "{} end -id" & Positive'Image(I) & " -text {" &
+            To_String(ItemsList(I).Name) & "} -values [list """ &
             Ada.Calendar.Formatting.Image(ItemsList(I).Modified) & """ """ &
             To_String(SizeString) & """]");
       end loop;
       if not ItemsList.Is_Empty then
          Selection_Set(DirectoryTree, "[list 1]");
       end if;
-   end Reload;
+   end UpdateDirectoryList;
 
 --   FilesMenu: Gtk_Menu;
 --
