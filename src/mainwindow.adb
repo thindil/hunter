@@ -137,6 +137,9 @@ package body MainWindow is
       if not Settings.ShowLastModified then
          configure(DirectoryTree, "-displaycolumns [list name size]");
       end if;
+      Column(DirectoryTree, "#0", "-stretch false -width 50");
+      Column(DirectoryTree, "modified", "-stretch false");
+      Column(DirectoryTree, "size", "-stretch false");
       Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid
