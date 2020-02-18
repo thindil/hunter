@@ -14,10 +14,12 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with LoadData; use LoadData;
 
 package body MainWindow.Commands is
@@ -35,24 +37,36 @@ package body MainWindow.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
+      DirectoryTree: Ttk_Tree_View;
    begin
+      DirectoryTree.Interp := Get_Context;
+      DirectoryTree.Name := New_String(".paned.directoryframe.directorytree");
+      Heading(DirectoryTree, "name", "-image """"");
+      Heading(DirectoryTree, "modified", "-image """"");
+      Heading(DirectoryTree, "size", "-image """"");
       if CArgv.Arg(Argv, 1) = "name" then
          if SortOrder = NameAsc then
             SortOrder := NameDesc;
+            Heading(DirectoryTree, "name", "-image ""arrow-up""");
          else
             SortOrder := NameAsc;
+            Heading(DirectoryTree, "name", "-image ""arrow-down""");
          end if;
       elsif CArgv.Arg(Argv, 1) = "modified" then
          if SortOrder = ModifiedAsc then
             SortOrder := ModifiedDesc;
+            Heading(DirectoryTree, "modified", "-image ""arrow-up""");
          else
             SortOrder := ModifiedAsc;
+            Heading(DirectoryTree, "modified", "-image ""arrow-down""");
          end if;
       elsif CArgv.Arg(Argv, 1) = "size" then
          if SortOrder = SizeAsc then
             SortOrder := SizeDesc;
+            Heading(DirectoryTree, "size", "-image ""arrow-up""");
          else
             SortOrder := SizeAsc;
+            Heading(DirectoryTree, "size", "-image ""arrow-down""");
          end if;
       end if;
       Items_Sorting.Sort(ItemsList);
