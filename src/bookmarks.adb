@@ -102,6 +102,11 @@ package body Bookmarks is
          Delete(BookmarksMenu, "0", "end");
       end if;
       BookmarksList.Clear;
+      BookmarksList.Append
+        (New_Item =>
+           (MenuName => To_Unbounded_String("Home"),
+            Path => To_Unbounded_String(Value("HOME"))));
+      Add(BookmarksMenu, "command", "-label ""Home""");
       for I in XDGBookmarks'Range loop
          if Ada.Directories.Exists
              (To_String(GetXDGDirectory(To_String(XDGBookmarks(I).Path)))) then
