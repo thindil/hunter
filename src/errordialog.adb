@@ -20,11 +20,14 @@ with Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Text; use Tcl.Tk.Ada.Widgets.Text;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
@@ -68,6 +71,7 @@ package body ErrorDialog is
         Create
           (".errorframe.scrolly",
            "-orient vertical -command [list .errorframe.errorinfo yview]");
+      MainFrame: Ttk_Frame;
    begin
       if Ada.Directories.Exists(ErrorFilePath) then
          Open(ErrorFile, Append_File, ErrorFilePath);
@@ -90,6 +94,9 @@ package body ErrorDialog is
       Put_Line(ErrorFile, To_String(ErrorText));
       Close(ErrorFile);
       Put_Line(To_String(ErrorText));
+      MainFrame.Interp := Get_Context;
+      MainFrame.Name := New_String(".mainframe");
+      Tcl.Tk.Ada.Pack.Pack_Forget(MainFrame);
       Tcl.Tk.Ada.Pack.Pack(ErrorLabel);
       Tcl.Tk.Ada.Pack.Pack(ErrorButton);
       Tcl.Tk.Ada.Pack.Pack(ErrorLabel2);
@@ -98,8 +105,9 @@ package body ErrorDialog is
       Tcl.Tk.Ada.Pack.Pack(ErrorXScroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(ErrorYScroll, "-side right -fill y");
       Tcl.Tk.Ada.Pack.Pack(ErrorInfo, "-side top -fill both -expand true");
-      Insert(ErrorInfo, "1.0", """" & To_String(ErrorText) & """");
+      Insert(ErrorInfo, "1.0", "{" & To_String(ErrorText) & "}");
       configure(ErrorInfo, "-state disabled");
+      Tcl.Tk.Tk_MainLoop;
    end SaveException;
 
 end ErrorDialog;
