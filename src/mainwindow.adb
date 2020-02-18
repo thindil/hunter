@@ -46,9 +46,11 @@ package body MainWindow is
       MainWindow: Tk_Toplevel;
       Interp: constant Tcl.Tcl_Interp := Get_Context;
       CurrentDir: constant String := Current_Directory;
+      MainFrame: constant Ttk_Frame := Create(".mainframe");
       Paned: constant Ttk_PanedWindow :=
-        Create(".paned", "-orient horizontal");
-      DirectoryFrame: constant Ttk_Frame := Create(".paned.directoryframe");
+        Create(".mainframe.paned", "-orient horizontal");
+      DirectoryFrame: constant Ttk_Frame :=
+        Create(Widget_Image(Paned) & ".directoryframe");
       DirectoryXScroll: constant Ttk_Scrollbar :=
         Create
           (Widget_Image(DirectoryFrame) & ".scrollx",
@@ -65,7 +67,7 @@ package body MainWindow is
            "-columns [list name modified size] -xscrollcommand """ &
            Widget_Image(DirectoryXScroll) & " set"" -yscrollcommand """ &
            Widget_Image(DirectoryYScroll) & " set""");
-      HeaderLabel: constant Ttk_Label := Create(".headerlaber");
+      HeaderLabel: constant Ttk_Label := Create(".mainframe.headerlaber");
       IconName: Unbounded_String;
       Icon, Image: Tk_Photo;
       IconsNames: constant array(1 .. 14) of Unbounded_String :=
@@ -117,6 +119,7 @@ package body MainWindow is
       Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Delete>", "{tk_popup .deletemenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
+      Tcl.Tk.Ada.Pack.Pack(MainFrame, "-expand true -fill both");
       CreateActionToolbar;
       CreateBookmarkMenu(True);
       CreateItemToolbar;
@@ -146,8 +149,8 @@ package body MainWindow is
       else
          Tcl.Tk.Ada.Grid.Grid(Paned, "-column 0 -row 1 -sticky nswe");
       end if;
-      Row_Configure(MainWindow, Paned, "-weight 1");
-      Column_Configure(MainWindow, Paned, "-weight 1");
+      Row_Configure(MainFrame, Paned, "-weight 1");
+      Column_Configure(MainFrame, Paned, "-weight 1");
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
@@ -165,7 +168,8 @@ package body MainWindow is
       DirectoryTree: Ttk_Tree_View;
    begin
       DirectoryTree.Interp := Get_Context;
-      DirectoryTree.Name := New_String(".paned.directoryframe.directorytree");
+      DirectoryTree.Name :=
+        New_String(".mainframe.paned.directoryframe.directorytree");
       if Clear then
          Delete
            (DirectoryTree,

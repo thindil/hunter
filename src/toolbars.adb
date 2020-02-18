@@ -42,26 +42,28 @@ package body Toolbars is
       Button: Ttk_Button;
       Label: Ttk_Label;
       ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String(".toolbars.actiontoolbar.quitbutton"),
-         To_Unbounded_String(".toolbars.actiontoolbar.searchbutton"),
-         To_Unbounded_String(".toolbars.actiontoolbar.selectbutton"),
-         To_Unbounded_String(".toolbars.actiontoolbar.renamebutton"),
-         To_Unbounded_String(".toolbars.actiontoolbar.copybutton"),
-         To_Unbounded_String(".toolbars.actiontoolbar.movebutton"),
-         To_Unbounded_String(".toolbars.actiontoolbar.optionsbutton"),
-         To_Unbounded_String(".toolbars.itemtoolbar.runbutton"),
-         To_Unbounded_String(".toolbars.itemtoolbar.openbutton"),
-         To_Unbounded_String(".toolbars.itemtoolbar.openwithbutton"),
-         To_Unbounded_String(".toolbars.itemtoolbar.previewbutton"),
-         To_Unbounded_String(".toolbars.itemtoolbar.infobutton"),
-         To_Unbounded_String(".toolbars.itemtoolbar.addbutton"),
-         To_Unbounded_String(".toolbars.itemtoolbar.deletebutton"));
+        (To_Unbounded_String(".mainframe.toolbars.actiontoolbar.quitbutton"),
+         To_Unbounded_String(".mainframe.toolbars.actiontoolbar.searchbutton"),
+         To_Unbounded_String(".mainframe.toolbars.actiontoolbar.selectbutton"),
+         To_Unbounded_String(".mainframe.toolbars.actiontoolbar.renamebutton"),
+         To_Unbounded_String(".mainframe.toolbars.actiontoolbar.copybutton"),
+         To_Unbounded_String(".mainframe.toolbars.actiontoolbar.movebutton"),
+         To_Unbounded_String
+           (".mainframe.toolbars.actiontoolbar.optionsbutton"),
+         To_Unbounded_String(".mainframe.toolbars.itemtoolbar.runbutton"),
+         To_Unbounded_String(".mainframe.toolbars.itemtoolbar.openbutton"),
+         To_Unbounded_String(".mainframe.toolbars.itemtoolbar.openwithbutton"),
+         To_Unbounded_String(".mainframe.toolbars.itemtoolbar.previewbutton"),
+         To_Unbounded_String(".mainframe.toolbars.itemtoolbar.infobutton"),
+         To_Unbounded_String(".mainframe.toolbars.itemtoolbar.addbutton"),
+         To_Unbounded_String(".mainframe.toolbars.itemtoolbar.deletebutton"));
       MenuButtonsNames: constant array
         (Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String(".toolbars.actiontoolbar.bookmarksbutton"),
-         To_Unbounded_String(".toolbars.actiontoolbar.newbutton"),
-         To_Unbounded_String(".toolbars.actiontoolbar.deletebutton"),
-         To_Unbounded_String(".toolbars.actiontoolbar.aboutbutton"));
+        (To_Unbounded_String
+           (".mainframe.toolbars.actiontoolbar.bookmarksbutton"),
+         To_Unbounded_String(".mainframe.toolbars.actiontoolbar.newbutton"),
+         To_Unbounded_String(".mainframe.toolbars.actiontoolbar.deletebutton"),
+         To_Unbounded_String(".mainframe.toolbars.actiontoolbar.aboutbutton"));
    begin
       if not Settings.ToolbarsOnTop then
          Side := To_Unbounded_String("top");
@@ -87,7 +89,7 @@ package body Toolbars is
       for I in 1 .. 3 loop
          Button.Name :=
            New_String
-             (".toolbars.actiontoolbar.separator" &
+             (".mainframe.toolbars.actiontoolbar.separator" &
               Trim(Positive'Image(I), Both));
          configure(Button, "-orient " & To_String(Orientation));
          Tcl.Tk.Ada.Pack.Pack_Configure
@@ -97,7 +99,7 @@ package body Toolbars is
       for I in 1 .. 2 loop
          Button.Name :=
            New_String
-             (".toolbars.itemtoolbar.separator" &
+             (".mainframe.toolbars.itemtoolbar.separator" &
               Trim(Positive'Image(I), Both));
          configure(Button, "-orient " & To_String(Orientation));
          Tcl.Tk.Ada.Pack.Pack_Configure
@@ -105,20 +107,20 @@ package body Toolbars is
             "-side " & To_String(Side) & " -pad" & Fill & " 5 -fill " & Fill);
       end loop;
       Toolbar.Interp := Get_Context;
-      Toolbar.Name := New_String(".toolbars.itemtoolbar");
+      Toolbar.Name := New_String(".mainframe.toolbars.itemtoolbar");
       if not Settings.ToolbarsOnTop then
          Grid_Configure(Toolbar, "-column 0 -row 2 -sticky s");
       else
          Grid_Configure(Toolbar, "-column 2 -row 0 -sticky e");
       end if;
-      Toolbar.Name := New_String(".toolbars");
+      Toolbar.Name := New_String(".mainframe.toolbars");
       if not Settings.ToolbarsOnTop then
          Grid_Configure(Toolbar, "-sticky ns -row 1");
       else
          Grid_Configure(Toolbar, "-sticky we -row 0");
       end if;
       Label.Interp := Get_Context;
-      Label.Name := New_String(".toolbars.label");
+      Label.Name := New_String(".mainframe.toolbars.label");
       if not Settings.ToolbarsOnTop then
          Column_Configure(Toolbar, Label, "-weight 0");
          Row_Configure(Toolbar, Label, "-weight 1");
@@ -150,36 +152,39 @@ package body Toolbars is
 
    procedure CreateActionToolbar is
       ToolMenuButton: Ttk_MenuButton;
-      ToolbarsFrame: constant Ttk_Frame := Create(".toolbars");
-      Toolbar: constant Ttk_Frame := Create(".toolbars.actiontoolbar");
+      ToolbarsFrame: constant Ttk_Frame := Create(".mainframe.toolbars");
+      Toolbar: constant Ttk_Frame :=
+        Create(".mainframe.toolbars.actiontoolbar");
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
-      Label: constant Ttk_Label := Create(".toolbars.label");
+      Label: constant Ttk_Label := Create(".mainframe.toolbars.label");
       ButtonMenu: Tk_Menu;
    begin
       ToolButton :=
-        Create(".toolbars.actiontoolbar.quitbutton", "-command exit");
+        Create
+          (".mainframe.toolbars.actiontoolbar.quitbutton", "-command exit");
       SetButton(ToolButton, "Quit from the program. \[CTRL+Q\]", "quit");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      Separator := Create(".toolbars.actiontoolbar.separator1");
+      Separator := Create(".mainframe.toolbars.actiontoolbar.separator1");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolMenuButton := Create(".toolbars.actiontoolbar.bookmarksbutton");
+      ToolMenuButton :=
+        Create(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       SetButton(ToolMenuButton, "Show bookmarks menu \[ALT+H\]", "bookmarks");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
-      ToolButton := Create(".toolbars.actiontoolbar.searchbutton");
+      ToolButton := Create(".mainframe.toolbars.actiontoolbar.searchbutton");
       SetButton
         (ToolButton, "Search for the file or directory \[ALT+F\]",
          "edit-find");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".toolbars.actiontoolbar.selectbutton");
+      ToolButton := Create(".mainframe.toolbars.actiontoolbar.selectbutton");
       SetButton
         (ToolButton,
          "Select or unselect all files and directories in currently selected directory. \[CTRL+A\]",
          "edit-select-all");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      Separator := Create(".toolbars.actiontoolbar.separator2");
+      Separator := Create(".mainframe.toolbars.actiontoolbar.separator2");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolMenuButton := Create(".toolbars.actiontoolbar.newbutton");
+      ToolMenuButton := Create(".mainframe.toolbars.actiontoolbar.newbutton");
       SetButton
         (ToolMenuButton, "Show add new item menu \[ALT+N\].", "document-new");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
@@ -188,24 +193,25 @@ package body Toolbars is
       Menu.Add(ButtonMenu, "command", "-label ""New file""");
       Menu.Add(ButtonMenu, "command", "-label ""New link""");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
-      ToolButton := Create(".toolbars.actiontoolbar.renamebutton");
+      ToolButton := Create(".mainframe.toolbars.actiontoolbar.renamebutton");
       SetButton
         (ToolButton, "Rename selected file or directory \[CTRL+R\]",
          "document-save-as");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".toolbars.actiontoolbar.copybutton");
+      ToolButton := Create(".mainframe.toolbars.actiontoolbar.copybutton");
       SetButton
         (ToolButton,
          "Copy selected files \[ALT+C\]. Pressed button means start copying currently selected files or directories. Press again to copy them.",
          "edit-copy");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".toolbars.actiontoolbar.movebutton");
+      ToolButton := Create(".mainframe.toolbars.actiontoolbar.movebutton");
       SetButton
         (ToolButton,
          "Move selected files \[ALT+M\]. Pressed button means start moving currently selected files or directories. Press again to move them.",
          "edit-cut");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolMenuButton := Create(".toolbars.actiontoolbar.deletebutton");
+      ToolMenuButton :=
+        Create(".mainframe.toolbars.actiontoolbar.deletebutton");
       SetButton(ToolMenuButton, "Show delete menu \[Delete\]", "edit-delete");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".deletemenu", "-tearoff false");
@@ -217,22 +223,23 @@ package body Toolbars is
       Menu.Add(ButtonMenu, "command", "-label ""Show Trash""");
       Menu.Add(ButtonMenu, "command", "-label ""Empty Trash""");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
-      ToolButton := Create(".toolbars.actiontoolbar.cancelbutton");
+      ToolButton := Create(".mainframe.toolbars.actiontoolbar.cancelbutton");
       SetButton
         (ToolButton, "Discard all changes and back to files list \[Escape\]",
          "dialog-cancel");
-      ToolButton := Create(".toolbars.actiontoolbar.restorebutton");
+      ToolButton := Create(".mainframe.toolbars.actiontoolbar.restorebutton");
       SetButton
         (ToolButton,
          "Restore selected file or directory from the trash \[ALT+R\]",
          "document-revert");
-      Separator := Create(".toolbars.actiontoolbar.separator3");
+      Separator := Create(".mainframe.toolbars.actiontoolbar.separator3");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolButton := Create(".toolbars.actiontoolbar.optionsbutton");
+      ToolButton := Create(".mainframe.toolbars.actiontoolbar.optionsbutton");
       SetButton
         (ToolButton, "Show the program preferences \[ALT+P\]", "configure");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolMenuButton := Create(".toolbars.actiontoolbar.aboutbutton");
+      ToolMenuButton :=
+        Create(".mainframe.toolbars.actiontoolbar.aboutbutton");
       SetButton
         (ToolMenuButton,
          "Show menu with information about the program \[ALT+A\]",
@@ -250,44 +257,44 @@ package body Toolbars is
    end CreateActionToolbar;
 
    procedure CreateItemToolbar is
-      Toolbar: constant Ttk_Frame := Create(".toolbars.itemtoolbar");
+      Toolbar: constant Ttk_Frame := Create(".mainframe.toolbars.itemtoolbar");
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
    begin
-      ToolButton := Create(".toolbars.itemtoolbar.runbutton");
+      ToolButton := Create(".mainframe.toolbars.itemtoolbar.runbutton");
       SetButton
         (ToolButton, "Execute selected program \[ALT+E\].",
          "media-playback-start");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".toolbars.itemtoolbar.openbutton");
+      ToolButton := Create(".mainframe.toolbars.itemtoolbar.openbutton");
       SetButton
         (ToolButton, "Open selected file or directory \[ALT+O\]",
          "document-open");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".toolbars.itemtoolbar.openwithbutton");
+      ToolButton := Create(".mainframe.toolbars.itemtoolbar.openwithbutton");
       SetButton
         (ToolButton, "Open selected file or directory with command \[ALT+W\]",
          "system-run");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      Separator := Create(".toolbars.itemtoolbar.separator1");
+      Separator := Create(".mainframe.toolbars.itemtoolbar.separator1");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolButton := Create(".toolbars.itemtoolbar.previewbutton");
+      ToolButton := Create(".mainframe.toolbars.itemtoolbar.previewbutton");
       SetButton
         (ToolButton, "Preview file or directory \[ALT+V\]",
          "document-preview");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".toolbars.itemtoolbar.infobutton");
+      ToolButton := Create(".mainframe.toolbars.itemtoolbar.infobutton");
       SetButton
         (ToolButton, "File or directory informations \[ALT+I\]",
          "document-properties");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      Separator := Create(".toolbars.itemtoolbar.separator2");
+      Separator := Create(".mainframe.toolbars.itemtoolbar.separator2");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolButton := Create(".toolbars.itemtoolbar.addbutton");
+      ToolButton := Create(".mainframe.toolbars.itemtoolbar.addbutton");
       SetButton
         (ToolButton, "Add bookmark to this directory \[ALT+B\].", "list-add");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".toolbars.itemtoolbar.deletebutton");
+      ToolButton := Create(".mainframe.toolbars.itemtoolbar.deletebutton");
       SetButton
         (ToolButton, "Remove bookmark to this directory \[ALT+B\]",
          "list-remove");
