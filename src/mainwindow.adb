@@ -67,8 +67,8 @@ package body MainWindow is
            Widget_Image(DirectoryYScroll) & " set""");
       HeaderLabel: constant Ttk_Label := Create(".headerlaber");
       IconName: Unbounded_String;
-      Icon, ArrowDownIcon, Image: Tk_Photo;
-      IconsNames: constant array(1 .. 12) of Unbounded_String :=
+      Icon, Image: Tk_Photo;
+      IconsNames: constant array(1 .. 14) of Unbounded_String :=
         (To_Unbounded_String("emblem-symbolic-link"),
          To_Unbounded_String("application-x-executable"),
          To_Unbounded_String("audio-x-generic"),
@@ -80,7 +80,8 @@ package body MainWindow is
          To_Unbounded_String("package-x-generic"),
          To_Unbounded_String("text-x-generic"),
          To_Unbounded_String("text-x-generic-template"),
-         To_Unbounded_String("folder"));
+         To_Unbounded_String("folder"), To_Unbounded_String("arrow-down"),
+         To_Unbounded_String("arrow-up"));
       pragma Unreferenced(Image);
    begin
       AddCommands;
@@ -123,12 +124,9 @@ package body MainWindow is
       Add(Paned, DirectoryFrame);
       Tcl.Tk.Ada.Pack.Pack(DirectoryXScroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
-      ArrowDownIcon :=
-        Create("arrowdown", "-file ""../share/hunter/images/arrow-down.png""");
       Heading
         (DirectoryTree, "name",
-         "-text ""Name"" -image """ & ArrowDownIcon.Name &
-         """ -command ""Sort name""");
+         "-text ""Name"" -image ""arrow-down"" -command ""Sort name""");
       Set_Directory(CurrentDir);
       Heading
         (DirectoryTree, "modified",
