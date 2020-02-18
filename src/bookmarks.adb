@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -24,27 +24,6 @@ with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
---with GNAT.OS_Lib; use GNAT.OS_Lib;
---with Gtk.Box; use Gtk.Box;
---with Gtk.Container; use Gtk.Container;
---with Gtk.GEntry; use Gtk.GEntry;
---with Gtk.Menu_Item; use Gtk.Menu_Item;
---with Gtk.Menu_Shell; use Gtk.Menu_Shell;
---with Gtk.Paned; use Gtk.Paned;
---with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
---with Gtk.Stack; use Gtk.Stack;
---with Gtk.Toolbar; use Gtk.Toolbar;
---with Gtk.Tree_View; use Gtk.Tree_View;
---with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
---with Gtk.Widget; use Gtk.Widget;
---with Gtkada.Intl; use Gtkada.Intl;
---with LoadData; use LoadData;
---with MainWindow; use MainWindow;
---with Preferences; use Preferences;
---with RefreshData; use RefreshData;
---with ShowItems; use ShowItems;
---with Toolbars; use Toolbars;
---with Utils; use Utils;
 
 package body Bookmarks is
 
@@ -74,6 +53,112 @@ package body Bookmarks is
    -- SOURCE
    BookmarksList: Bookmarks_Container.Vector;
    -- ****
+
+   procedure CreateBookmarkMenu(CreateNew: Boolean := False) is
+      XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
+        ((To_Unbounded_String("Desktop"),
+          To_Unbounded_String("XDG_DESKTOP_DIR")),
+         (To_Unbounded_String("Download"),
+          To_Unbounded_String("XDG_DOWNLOAD_DIR")),
+         (To_Unbounded_String("Public"),
+          To_Unbounded_String("XDG_PUBLICSHARE_DIR")),
+         (To_Unbounded_String("Documents"),
+          To_Unbounded_String("XDG_DOCUMENTS_DIR")),
+         (To_Unbounded_String("Music"), To_Unbounded_String("XDG_MUSIC_DIR")),
+         (To_Unbounded_String("Pictures"),
+          To_Unbounded_String("XDG_PICTURES_DIR")),
+         (To_Unbounded_String("Videos"),
+          To_Unbounded_String("XDG_VIDEOS_DIR")));
+      BookmarksMenu: Tk_Menu;
+      MenuButton: Ttk_MenuButton;
+      function GetXDGDirectory(Name: String) return Unbounded_String is
+         File: File_Type;
+         Line: Unbounded_String;
+         EqualIndex: Natural;
+      begin
+         if not Ada.Environment_Variables.Exists(Name)
+           or else Value(Name) = "" then
+            Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
+            while not End_Of_File(File) loop
+               Line := To_Unbounded_String(Get_Line(File));
+               EqualIndex := Index(Line, "=");
+               if EqualIndex > 0 then
+                  if Slice(Line, 1, EqualIndex - 1) = Name then
+                     Set(Name, Slice(Line, EqualIndex + 2, Length(Line) - 1));
+                     exit;
+                  end if;
+               end if;
+            end loop;
+            Close(File);
+         end if;
+         return To_Unbounded_String(Expand_Path(Value(Name)));
+      end GetXDGDirectory;
+   begin
+      if CreateNew then
+         BookmarksMenu := Create(".bookmarksmenu", "-tearoff false");
+      else
+         BookmarksMenu.Interp := Get_Context;
+         BookmarksMenu.Name := New_String(".bookmarksmenu");
+         Delete(BookmarksMenu, "0", "end");
+      end if;
+      BookmarksList.Clear;
+      for I in XDGBookmarks'Range loop
+         if Ada.Directories.Exists
+             (To_String(GetXDGDirectory(To_String(XDGBookmarks(I).Path)))) then
+            BookmarksList.Append
+              (New_Item =>
+                 (MenuName => XDGBookmarks(I).MenuName,
+                  Path => GetXDGDirectory(To_String(XDGBookmarks(I).Path))));
+            Add
+              (BookmarksMenu, "command",
+               "-label """ & To_String(XDGBookmarks(I).MenuName) & """");
+         end if;
+      end loop;
+      if Ada.Directories.Exists
+          (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
+         declare
+            File: File_Type;
+            Line, Path: Unbounded_String;
+            BookmarkExist: Boolean;
+         begin
+            Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+            while not End_Of_File(File) loop
+               Line := To_Unbounded_String(Get_Line(File));
+               if Slice(Line, 1, 7) = "file://" then
+                  Path := Unbounded_Slice(Line, 8, Length(Line));
+                  BookmarkExist := False;
+                  for I in BookmarksList.Iterate loop
+                     if BookmarksList(I).Path = Path then
+                        BookmarkExist := True;
+                        exit;
+                     end if;
+                  end loop;
+                  if not BookmarkExist and
+                    Ada.Directories.Exists(To_String(Path)) then
+                     BookmarksList.Append
+                       (New_Item =>
+                          (MenuName =>
+                             To_Unbounded_String(Simple_Name(To_String(Path))),
+                           Path => Path));
+                     Add
+                       (BookmarksMenu, "command",
+                        "-label """ & Simple_Name(To_String(Path)) & """");
+                  end if;
+               end if;
+            end loop;
+            Close(File);
+         end;
+      end if;
+      BookmarksList.Append
+        (New_Item =>
+           (MenuName => To_Unbounded_String("Enter destination"),
+            Path => Null_Unbounded_String));
+      Add(BookmarksMenu, "command", "-label ""Enter destination""");
+      MenuButton.Interp := BookmarksMenu.Interp;
+      MenuButton.Name :=
+        New_String(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
+      configure(MenuButton, "-menu .bookmarksmenu");
+   end CreateBookmarkMenu;
 
    -- ****if* Bookmarks/UpdateView
    -- FUNCTION
@@ -167,108 +252,6 @@ package body Bookmarks is
 --   begin
 --      Destroy(Widget);
 --   end RemoveMenu;
-
-   procedure CreateBookmarkMenu(CreateNew: Boolean := False) is
-      XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
-        ((To_Unbounded_String("Desktop"),
-          To_Unbounded_String("XDG_DESKTOP_DIR")),
-         (To_Unbounded_String("Download"),
-          To_Unbounded_String("XDG_DOWNLOAD_DIR")),
-         (To_Unbounded_String("Public"),
-          To_Unbounded_String("XDG_PUBLICSHARE_DIR")),
-         (To_Unbounded_String("Documents"),
-          To_Unbounded_String("XDG_DOCUMENTS_DIR")),
-         (To_Unbounded_String("Music"),
-          To_Unbounded_String("XDG_MUSIC_DIR")),
-         (To_Unbounded_String("Pictures"),
-          To_Unbounded_String("XDG_PICTURES_DIR")),
-         (To_Unbounded_String("Videos"),
-          To_Unbounded_String("XDG_VIDEOS_DIR")));
-      BookmarksMenu: Tk_Menu;
-      MenuButton: Ttk_MenuButton;
-      function GetXDGDirectory(Name: String) return Unbounded_String is
-         File: File_Type;
-         Line: Unbounded_String;
-         EqualIndex: Natural;
-      begin
-         if not Ada.Environment_Variables.Exists(Name)
-           or else Value(Name) = "" then
-            Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
-            while not End_Of_File(File) loop
-               Line := To_Unbounded_String(Get_Line(File));
-               EqualIndex := Index(Line, "=");
-               if EqualIndex > 0 then
-                  if Slice(Line, 1, EqualIndex - 1) = Name then
-                     Set(Name, Slice(Line, EqualIndex + 2, Length(Line) - 1));
-                     exit;
-                  end if;
-               end if;
-            end loop;
-            Close(File);
-         end if;
-         return To_Unbounded_String(Expand_Path(Value(Name)));
-      end GetXDGDirectory;
-   begin
-      if CreateNew then
-         BookmarksMenu := Create(".bookmarksmenu", "-tearoff false");
-      else
-         BookmarksMenu.Interp := Get_Context;
-         BookmarksMenu.Name := New_String(".bookmarksmenu");
-         Delete(BookmarksMenu, "0", "end");
-      end if;
-      BookmarksList.Clear;
-      for I in XDGBookmarks'Range loop
-         if Ada.Directories.Exists
-             (To_String(GetXDGDirectory(To_String(XDGBookmarks(I).Path)))) then
-            BookmarksList.Append
-              (New_Item =>
-                 (MenuName => XDGBookmarks(I).MenuName,
-                  Path => GetXDGDirectory(To_String(XDGBookmarks(I).Path))));
-            Add(BookmarksMenu, "command", "-label """ & To_String(XDGBookmarks(I).MenuName) & """");
-         end if;
-      end loop;
-      if Ada.Directories.Exists
-          (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
-         declare
-            File: File_Type;
-            Line, Path: Unbounded_String;
-            BookmarkExist: Boolean;
-         begin
-            Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
-            while not End_Of_File(File) loop
-               Line := To_Unbounded_String(Get_Line(File));
-               if Slice(Line, 1, 7) = "file://" then
-                  Path := Unbounded_Slice(Line, 8, Length(Line));
-                  BookmarkExist := False;
-                  for I in BookmarksList.Iterate loop
-                     if BookmarksList(I).Path = Path then
-                        BookmarkExist := True;
-                        exit;
-                     end if;
-                  end loop;
-                  if not BookmarkExist and
-                    Ada.Directories.Exists(To_String(Path)) then
-                     BookmarksList.Append
-                       (New_Item =>
-                          (MenuName =>
-                             To_Unbounded_String(Simple_Name(To_String(Path))),
-                           Path => Path));
-                     Add(BookmarksMenu, "command", "-label """ & Simple_Name(To_String(Path)) & """");
-                  end if;
-               end if;
-            end loop;
-            Close(File);
-         end;
-      end if;
-      BookmarksList.Append
-        (New_Item =>
-           (MenuName => To_Unbounded_String("Enter destination"),
-            Path => Null_Unbounded_String));
-      Add(BookmarksMenu, "command", "-label ""Enter destination""");
-      MenuButton.Interp := BookmarksMenu.Interp;
-      MenuButton.Name := New_String(".toolbars.actiontoolbar.bookmarksbutton");
-      configure(MenuButton, "-menu .bookmarksmenu");
-   end CreateBookmarkMenu;
 
    -- ****if* Bookmarks/AddBookmark
    -- FUNCTION
