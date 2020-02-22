@@ -36,6 +36,7 @@ with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
 with MainWindow.Commands; use MainWindow.Commands;
+with Messages; use Messages;
 with Preferences; use Preferences;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
@@ -67,7 +68,7 @@ package body MainWindow is
            "-columns [list name modified size] -xscrollcommand """ &
            Widget_Image(DirectoryXScroll) & " set"" -yscrollcommand """ &
            Widget_Image(DirectoryYScroll) & " set""");
-      HeaderLabel: constant Ttk_Label := Create(".mainframe.headerlaber");
+      HeaderLabel: constant Ttk_Label := Create(".mainframe.headerlabel");
       IconName: Unbounded_String;
       Icon, Image: Tk_Photo;
       IconsNames: constant array(1 .. 14) of Unbounded_String :=
@@ -124,6 +125,7 @@ package body MainWindow is
       CreateBookmarkMenu(True);
       CreateItemToolbar;
       SetToolbars;
+      CreateMessagesUI;
       Add(Paned, DirectoryFrame);
       Tcl.Tk.Ada.Pack.Pack(DirectoryXScroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
@@ -145,9 +147,9 @@ package body MainWindow is
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid
            (HeaderLabel, "-column 0 -row 0 -sticky we -columnspan 2");
-         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 1 -sticky nswe");
+         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 3 -sticky nswe");
       else
-         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 0 -row 1 -sticky nswe");
+         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 0 -row 3 -sticky nswe");
       end if;
       Row_Configure(MainFrame, Paned, "-weight 1");
       Column_Configure(MainFrame, Paned, "-weight 1");

@@ -115,7 +115,7 @@ package body Toolbars is
       end if;
       Toolbar.Name := New_String(".mainframe.toolbars");
       if not Settings.ToolbarsOnTop then
-         Grid_Configure(Toolbar, "-sticky ns -row 1");
+         Grid_Configure(Toolbar, "-sticky ns -row 3");
       else
          Grid_Configure(Toolbar, "-sticky we -row 0");
       end if;
