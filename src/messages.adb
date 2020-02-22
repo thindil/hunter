@@ -15,35 +15,42 @@
 
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 
 package body Messages is
 
    procedure CreateMessagesUI is
---      Label: constant Gtk_Label := Gtk_Label_New;
---      ButtonBox: constant Gtk_Container :=
---        Gtk_Container(Get_Action_Area(InfoBar));
---      Button: Gtk_Button;
---      ButtonsLabels: constant array(1 .. 4) of Unbounded_String :=
---        (To_Unbounded_String(Gettext("No")),
---         To_Unbounded_String(Gettext("Yes")),
---         To_Unbounded_String(Gettext("No for all")),
---         To_Unbounded_String(Gettext("Yes for all")));
       MessageFrame: constant Ttk_Frame := Create(".mainframe.message");
-      MessageLabel: constant Ttk_Label := Create(".mainframe.message.label", "-wraplength 800 -text {test}");
+      MessageLabel: constant Ttk_Label :=
+        Create(".mainframe.message.label", "-wraplength 800 -text {test}");
+      ButtonsBox: constant Ttk_Frame :=
+        Create(".mainframe.message.buttonsbox");
+      Button: Ttk_Button;
    begin
+      Button := Create(".mainframe.message.buttonsbox.buttonno", "-text No");
+      Grid(Button);
+      Button := Create(".mainframe.message.buttonsbox.buttonyes", "-text Yes");
+      Grid(Button, "-column 1 -row 0");
+      Button :=
+        Create
+          (".mainframe.message.buttonsbox.buttonnoall",
+           "-text ""No for all""");
+      Grid(Button, "-column 2 -row 0");
+      Button :=
+        Create
+          (".mainframe.message.buttonsbox.buttonyesall",
+           "-text ""Yes for all""");
+      Grid(Button, "-column 3 -row 0");
+      Button :=
+        Create
+          (".mainframe.message.buttonsbox.buttonclose",
+           "-text x -style Toolbutton");
+      Grid(Button, "-column 4 -row 0");
+      Tcl.Tk.Ada.Pack.Pack(ButtonsBox, "-side right");
       Tcl.Tk.Ada.Pack.Pack(MessageLabel, "-expand true -fill x");
-      Grid(MessageFrame, "-column 0 -row 2 -sticky we");
- --     Set_Line_Wrap(Label, True);
- --     Add(Gtk_Container(Get_Content_Area(InfoBar)), Label);
- --     for ButtonLabel of ButtonsLabels loop
- --        Button := Gtk_Button_New_With_Label(To_String(ButtonLabel));
- --        On_Clicked(Button, SetResponse'Access);
- --        Add(ButtonBox, Button);
- --     end loop;
- --     On_Close(InfoBar, CloseMessage'Access);
- --     On_Response(InfoBar, MessageResponse'Access);
+      Grid(MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
    end CreateMessagesUI;
 
    -- ****iv* Messages/Source_Id
