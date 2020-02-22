@@ -93,7 +93,6 @@ package body ErrorDialog is
       Append(ErrorText, "-------------------------------------------------");
       Put_Line(ErrorFile, To_String(ErrorText));
       Close(ErrorFile);
-      Put_Line(To_String(ErrorText));
       MainFrame.Interp := Get_Context;
       MainFrame.Name := New_String(".mainframe");
       Tcl.Tk.Ada.Pack.Pack_Forget(MainFrame);
