@@ -13,15 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
---with Gtk.Accel_Group; use Gtk.Accel_Group;
---with Gtk.GEntry; use Gtk.GEntry;
---with Gtk.Paned; use Gtk.Paned;
---with Gtk.Stack; use Gtk.Stack;
---with Gtk.Tree_View; use Gtk.Tree_View;
---with Gtk.Widget; use Gtk.Widget;
---with Gtk.Window; use Gtk.Window;
 
 -- ****h* Hunter/MainWindow
 -- FUNCTION
@@ -35,13 +27,6 @@ package MainWindow is
    -- Currently selected directory to show
    -- SOURCE
    CurrentDirectory: Unbounded_String;
-   -- ****
-
-   -- ****v* MainWindow/Setting
-   -- FUNCTION
-   -- If true, the program is in the setting mode
-   -- SOURCE
---   Setting: Boolean;
    -- ****
 
    -- ****t* MainWindow/ItemActions
@@ -61,16 +46,42 @@ package MainWindow is
    -- SHOWTRASH       - show content of the trash
    -- DELETETRASH     - delete file or directory from trash
    -- SOURCE
---   type ItemActions is
---     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
---      GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
+   type ItemActions is
+     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
+      GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
 
    -- ****v* MainWindow/NewAction
    -- FUNCTION
    -- Current performed action on files or directories
    -- SOURCE
---   NewAction: ItemActions;
+   NewAction: ItemActions;
+   -- ****
+
+   -- ****f* MainWindow/CreateMainWindow
+   -- FUNCTION
+   -- Create main window and show content of selected directory
+   -- PARAMETERS
+   -- Directory  - Full path to the directory which will be show at the
+   --              program start
+   -- SOURCE
+   procedure CreateMainWindow(Directory: String);
+   -- ****
+
+   -- ****f* MainWindow/UpdateDirectoryList
+   -- FUNCTION
+   -- Update directory list
+   -- PARAMETERS
+   -- Clear - Clear current list of items
+   -- SOURCE
+   procedure UpdateDirectoryList(Clear: Boolean := False);
+   -- ****
+
+   -- ****v* MainWindow/Setting
+   -- FUNCTION
+   -- If true, the program is in the setting mode
+   -- SOURCE
+--   Setting: Boolean;
    -- ****
 
    -- ****t* MainWindow/UnboundedString_Container
@@ -143,34 +154,6 @@ package MainWindow is
    -- Keyboard accelerators associated with the main program window
    -- SOURCE
 --   Accelerators: Gtk_Accel_Group;
-   -- ****
-
-   -- ****f* MainWindow/Quit
-   -- FUNCTION
-   -- Quit from program
-   -- PARAMETERS
-   -- Self - Main window of the program which triggered this code
-   -- SOURCE
---   procedure Quit(Self: access Gtk_Widget_Record'Class);
-   -- ****
-
-   -- ****f* MainWindow/CreateMainWindow
-   -- FUNCTION
-   -- Create main window and show content of selected directory
-   -- PARAMETERS
-   -- Directory  - Full path to the directory which will be show at the
-   --              program start
-   -- SOURCE
-   procedure CreateMainWindow(Directory: String);
-   -- ****
-
-   -- ****f* MainWindow/UpdateDirectoryList
-   -- FUNCTION
-   -- Update directory list
-   -- PARAMETERS
-   -- Clear - Clear current list of items
-   -- SOURCE
-   procedure UpdateDirectoryList(Clear: Boolean := False);
    -- ****
 
 end MainWindow;

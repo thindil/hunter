@@ -21,10 +21,12 @@ with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with LoadData; use LoadData;
+with Preferences; use Preferences;
 
 package body MainWindow.Commands is
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
+   package ExitCommand is new Tcl.Ada.Generic_ExitHandler(Integer);
 
    function Sort_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -74,6 +76,21 @@ package body MainWindow.Commands is
       return 0;
    end Sort_Command;
 
+   procedure Quit_Command(ClientData: in Integer) with
+      Convention => C;
+
+   procedure Quit_Command(ClientData: in Integer) is
+      pragma Unreferenced(ClientData);
+   begin
+      SavePreferences;
+      if Settings.ClearTrashOnExit then
+         NewAction := CLEARTRASH;
+--         if DeleteSelected then
+--            null;
+--         end if;
+      end if;
+   end Quit_Command;
+
    procedure AddCommands is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -88,6 +105,7 @@ package body MainWindow.Commands is
       end AddCommand;
    begin
       AddCommand("Sort", Sort_Command'Access);
+      ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 
 end MainWindow.Commands;
