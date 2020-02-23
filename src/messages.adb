@@ -15,6 +15,7 @@
 
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
+with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
@@ -24,11 +25,21 @@ package body Messages is
    procedure CreateMessagesUI is
       MessageFrame: constant Ttk_Frame := Create(".mainframe.message");
       MessageLabel: constant Ttk_Label :=
-        Create(".mainframe.message.label", "-wraplength 800 -text {test}");
+        Create(".mainframe.message.label", "-wraplength 800");
       ButtonsBox: constant Ttk_Frame :=
         Create(".mainframe.message.buttonsbox");
       Button: Ttk_Button;
+      pragma Unreferenced(MessageFrame);
    begin
+      Style_Configure("message.TFrame", "-background #00ff00");
+      Style_Configure
+        ("message.TLabel", "-background #00ff00 -foreground #000000");
+      Style_Configure("error.TFrame", "-background #ff0000");
+      Style_Configure
+        ("error.TLabel", "-background #ff0000 -foreground #000000");
+      Style_Configure("question.TFrame", "-background #0000ff");
+      Style_Configure
+        ("question.TLabel", "-background #0000ff -foreground #ffffff");
       Button := Create(".mainframe.message.buttonsbox.buttonno", "-text No");
       Grid(Button);
       Button := Create(".mainframe.message.buttonsbox.buttonyes", "-text Yes");
@@ -50,7 +61,6 @@ package body Messages is
       Grid(Button, "-column 4 -row 0");
       Tcl.Tk.Ada.Pack.Pack(ButtonsBox, "-side right");
       Tcl.Tk.Ada.Pack.Pack(MessageLabel, "-expand true -fill x");
-      Grid(MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
    end CreateMessagesUI;
 
    -- ****iv* Messages/Source_Id
