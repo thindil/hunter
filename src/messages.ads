@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -30,6 +30,17 @@ package Messages is
    procedure CreateMessagesUI;
    -- ****
 
+   -- ****f* Messages/ShowMessage
+   -- FUNCTION
+   -- Show selected message with selected type to the user
+   -- PARAMETERS
+   -- Message     - Text of message to show to the user
+   -- MessageType - Type of message. Posible values are error, message,
+   --               question. Default value is error.
+   -- SOURCE
+   procedure ShowMessage(Message: String; MessageType: String := "error");
+   -- ****
+
    -- ****v* Messages/YesToAll
    -- FUNCTION
    -- Set to True if user clicked Yes for All button in response to question,
@@ -53,17 +64,5 @@ package Messages is
 --   -- SOURCE
 --   procedure CloseMessage(Self: access Gtk_Info_Bar_Record'Class);
 --   -- ****
---
---   -- ****f* Messages/ShowMessage
---   -- FUNCTION
---   -- Show message with selected type to the user
---   -- PARAMETERS
---   -- Message    - Text of message to show to the user
---   -- MesageType - Gtk_Message_Type of message to show to the user. Default is
---   --              Message_Error
---   -- SOURCE
---   procedure ShowMessage
---     (Message: String; MessageType: Gtk_Message_Type := Message_Error);
-   -- ****
 
 end Messages;

@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -13,23 +13,36 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
+with MainWindow; use MainWindow;
 
 package body Messages is
 
+   -- ****iv* Messages/MessageFrame
+   -- FUNCTION
+   -- Main frame for the message widget
+   -- SOURCE
+   MessageFrame: Ttk_Frame;
+   -- ****
+
+   -- ****iv* Messages/MessageLabel
+   -- FUNCTION
+   -- Label which show message text
+   -- SOURCE
+   MessageLabel: Ttk_Label;
+   -- ****
+
    procedure CreateMessagesUI is
-      MessageFrame: constant Ttk_Frame := Create(".mainframe.message");
-      MessageLabel: constant Ttk_Label :=
-        Create(".mainframe.message.label", "-wraplength 800");
-      ButtonsBox: constant Ttk_Frame :=
-        Create(".mainframe.message.buttonsbox");
+      ButtonsBox: Ttk_Frame;
       Button: Ttk_Button;
-      pragma Unreferenced(MessageFrame);
    begin
       Style_Configure("message.TFrame", "-background #00ff00");
       Style_Configure
@@ -40,6 +53,9 @@ package body Messages is
       Style_Configure("question.TFrame", "-background #0000ff");
       Style_Configure
         ("question.TLabel", "-background #0000ff -foreground #ffffff");
+      MessageFrame := Create(".mainframe.message");
+      MessageLabel := Create(".mainframe.message.label", "-wraplength 800");
+      ButtonsBox := Create(".mainframe.message.buttonsbox");
       Button := Create(".mainframe.message.buttonsbox.buttonno", "-text No");
       Grid(Button);
       Button := Create(".mainframe.message.buttonsbox.buttonyes", "-text Yes");
@@ -62,6 +78,42 @@ package body Messages is
       Tcl.Tk.Ada.Pack.Pack(ButtonsBox, "-side right");
       Tcl.Tk.Ada.Pack.Pack(MessageLabel, "-expand true -fill x");
    end CreateMessagesUI;
+
+   procedure ShowMessage(Message: String; MessageType: String := "error") is
+      ButtonsNames: constant array(1 .. 5) of Unbounded_String :=
+        (To_Unbounded_String(".mainframe.message.buttonsbox.buttonno"),
+         To_Unbounded_String(".mainframe.message.buttonsbox.buttonyes"),
+         To_Unbounded_String(".mainframe.message.buttonsbox.buttonnoall"),
+         To_Unbounded_String(".mainframe.message.buttonsbox.buttonyesall"),
+         To_Unbounded_String(".mainframe.message.buttonsbox.buttonclose"));
+      Button: Ttk_Button;
+   begin
+      Button.Interp := MessageLabel.Interp;
+      for ButtonName of ButtonsNames loop
+         Button.Name := New_String(To_String(ButtonName));
+         Grid_Remove(Button);
+      end loop;
+      configure
+        (MessageLabel,
+         "-text {" & Message & "} -style " & MessageType & ".TLabel");
+      configure(MessageFrame, "-style " & MessageType & ".TFrame");
+      if MessageType /= "question" then
+         Button.Name := New_String(To_String(ButtonsNames(5)));
+         Grid(Button);
+      else
+         Button.Name := New_String(To_String(ButtonsNames(1)));
+         Grid(Button);
+         Button.Name := New_String(To_String(ButtonsNames(2)));
+         Grid(Button);
+         if NewAction not in DELETE | CLEARTRASH | DELETETRASH then
+            Button.Name := New_String(To_String(ButtonsNames(3)));
+            Grid(Button);
+            Button.Name := New_String(To_String(ButtonsNames(4)));
+            Grid(Button);
+         end if;
+      end if;
+      Grid(MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
+   end ShowMessage;
 
    -- ****iv* Messages/Source_Id
    -- FUNCTION
