@@ -27,6 +27,7 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with MainWindow; use MainWindow;
+with Preferences; use Preferences;
 
 package body Messages is
 
@@ -42,6 +43,13 @@ package body Messages is
    -- Label which show message text
    -- SOURCE
    MessageLabel: Ttk_Label;
+   -- ****
+
+   -- ****iv* Messages/TimerId
+   -- FUNCTION
+   -- Id of timer for auto close command
+   -- SOURCE
+   TimerId: Unbounded_String := Null_Unbounded_String;
    -- ****
 
    -- ****it* Messages/CreateCommands
@@ -73,6 +81,10 @@ package body Messages is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
       -- ****
    begin
+      if TimerId /= Null_Unbounded_String then
+         Cancel(To_String(TimerId));
+         TimerId := Null_Unbounded_String;
+      end if;
       Grid_Remove(MessageFrame);
       return 0;
    end Close_Command;
@@ -158,29 +170,11 @@ package body Messages is
       end if;
       Tcl.Tk.Ada.Grid.Grid
         (MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
+      TimerId :=
+        To_Unbounded_String
+          (After(Settings.AutoCloseMessagesTime * 1000, "CloseMessage"));
    end ShowMessage;
 
-   -- ****iv* Messages/Source_Id
-   -- FUNCTION
-   -- ID of timer to hide messages
-   -- SOURCE
---   Source_Id: G_Source_Id := No_Source_Id;
---   -- ****
---
---   -- ****if* Messages/AutoHideMessage
---   -- FUNCTION
---   -- Auto hide message after selected amount of seconds
---   -- RESULT
---   -- Returns always False to stop timer
---   -- SOURCE
---   function AutoHideMessage return Boolean is
---   -- ****
---   begin
---      Hide(InfoBar);
---      Source_Id := No_Source_Id;
---      return False;
---   end AutoHideMessage;
---
 --   -- ****if* Messages/SetResponse
 --   -- FUNCTION
 --   -- Set proper GTK Response for info bar buttons
@@ -204,16 +198,6 @@ package body Messages is
 --      end if;
 --      Response(InfoBar, ResponseValue);
 --   end SetResponse;
---
---   procedure CloseMessage(Self: access Gtk_Info_Bar_Record'Class) is
---      pragma Unreferenced(Self);
---   begin
---      if Source_Id /= No_Source_Id then
---         Remove(Source_Id);
---         Source_Id := No_Source_Id;
---      end if;
---      Hide(InfoBar);
---   end CloseMessage;
 --
 --   -- ****if* Messages/MessageResponse
 --   -- FUNCTION
@@ -308,39 +292,5 @@ package body Messages is
 --         CloseMessage(null);
 --      end if;
 --   end MessageResponse;
---
---   procedure ShowMessage
---     (Message: String; MessageType: Gtk_Message_Type := Message_Error) is
---      Label: constant Gtk_Label :=
---        Gtk_Label(Get_Child(Gtk_Box(Get_Content_Area(InfoBar)), 0));
---      ButtonBox: constant Gtk_Box := Gtk_Box(Get_Action_Area(InfoBar));
---   begin
---      if MessageType /= Message_Question then
---         Set_Show_Close_Button(InfoBar, True);
---         if Source_Id /= No_Source_Id then
---            Remove(Source_Id);
---            Source_Id := No_Source_Id;
---         end if;
---         if Settings.AutoCloseMessagesTime > 0 then
---            Source_Id :=
---              Timeout_Add
---                (Guint(Settings.AutoCloseMessagesTime) * 1000,
---                 AutoHideMessage'Access);
---         end if;
---      else
---         Set_Show_Close_Button(InfoBar, False);
---      end if;
---      Set_Text(Label, Message);
---      Set_Message_Type(InfoBar, MessageType);
---      Show_All(Gtk_Widget(InfoBar));
---      if NewAction = DELETE or NewAction = CLEARTRASH or
---        NewAction = DELETETRASH then
---         Hide(Get_Child(ButtonBox, 2));
---         Hide(Get_Child(ButtonBox, 3));
---      end if;
---      if MessageType /= Message_Question then
---         Hide(Get_Action_Area(InfoBar));
---      end if;
---   end ShowMessage;
 
 end Messages;
