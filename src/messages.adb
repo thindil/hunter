@@ -125,29 +125,29 @@ package body Messages is
 --            if NewAction /= CLEARTRASH then
 --               SetProgressBar(Positive(SelectedItems.Length));
 --            end if;
-            if Response = "yes" or Response = "yesall" then
-               begin
-                  if DeleteSelected then
-                     CurrentDirectory :=
-                       To_Unbounded_String
-                         (Normalize_Pathname
-                            (To_String(CurrentDirectory) & "/.."));
-                  end if;
-               exception
-                  when others =>
-                     LoadDirectory(To_String(CurrentDirectory));
-                     UpdateDirectoryList;
-                     return 0;
-               end;
---               if NewAction = CLEARTRASH then
---                  GoHome(null);
+            if Response = "yes" then
+--               begin
+--                  if DeleteSelected then
+--                     CurrentDirectory :=
+--                       To_Unbounded_String
+--                         (Normalize_Pathname
+--                            (To_String(CurrentDirectory) & "/.."));
+--                  end if;
+--               exception
+--                  when others =>
+--                     LoadDirectory(To_String(CurrentDirectory));
+--                     UpdateDirectoryList(True);
+--                     return 0;
+--               end;
+               if NewAction = CLEARTRASH then
+                  Tcl.Ada.Tcl_Eval(Get_Context, "GoHome");
 --               elsif NewAction = DELETETRASH then
 --                  ShowTrash(null);
 --                  NewAction := DELETETRASH;
---               else
---                  LoadDirectory(To_String(CurrentDirectory));
---                  UpdateDirectoryList;
---               end if;
+               else
+                  LoadDirectory(To_String(CurrentDirectory));
+                  UpdateDirectoryList(True);
+               end if;
             end if;
 --            ToggleToolButtons(NewAction, True);
 --            Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
