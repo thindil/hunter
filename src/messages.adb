@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
@@ -26,6 +27,7 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 
@@ -89,6 +91,116 @@ package body Messages is
       return 0;
    end Close_Command;
 
+   function Response_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Messages/Response_Command
+      -- FUNCTION
+      -- Hide message frame and do action, depends on user response
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Response_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc);
+      -- ****
+      OverwriteItem: Boolean := True;
+      Response: constant String := CArgv.Arg(Argv, 1);
+   begin
+      if Response = "yesall" then
+         YesForAll := True;
+      else
+         YesForAll := False;
+      end if;
+      case NewAction is
+         when DELETE | CLEARTRASH | DELETETRASH =>
+--            if NewAction /= CLEARTRASH then
+--               SetProgressBar(Positive(SelectedItems.Length));
+--            end if;
+            if Response = "yes" or Response = "yesall" then
+               begin
+                  if DeleteSelected then
+                     CurrentDirectory :=
+                       To_Unbounded_String
+                         (Normalize_Pathname
+                            (To_String(CurrentDirectory) & "/.."));
+                  end if;
+               exception
+                  when others =>
+                     LoadDirectory(To_String(CurrentDirectory));
+                     UpdateDirectoryList;
+                     return 0;
+               end;
+--               if NewAction = CLEARTRASH then
+--                  GoHome(null);
+--               elsif NewAction = DELETETRASH then
+--                  ShowTrash(null);
+--                  NewAction := DELETETRASH;
+--               else
+--                  LoadDirectory(To_String(CurrentDirectory));
+--                  UpdateDirectoryList;
+--               end if;
+            end if;
+--            ToggleToolButtons(NewAction, True);
+--            Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
+--            if Settings.ShowFinishedInfo then
+--               if NewAction = DELETE and not Settings.DeleteFiles then
+--                  ShowMessage
+--                    (Gettext
+--                       ("All selected files and directories have been moved to Trash."),
+--                     Message_Info);
+--               elsif NewAction = CLEARTRASH then
+--                  ShowMessage
+--                    (Gettext("Trash have been cleared."), Message_Info);
+--               else
+--                  ShowMessage
+--                    (Gettext
+--                       ("All selected files and directories have been deleted."),
+--                     Message_Info);
+--               end if;
+--            else
+--               CloseMessage(null);
+--            end if;
+--         when COPY =>
+--            if Response_Id = Gint(Gtk_Response_Reject) then
+--               CloseMessage(null);
+--               ToggleToolButtons(NewAction, True);
+--               Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
+--               Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
+--               Reload;
+--               return;
+--            elsif Response_Id = Gint(Gtk_Response_No) then
+--               SkipCopying;
+--               return;
+--            end if;
+--            CopySelected(OverwriteItem);
+--         when MOVE =>
+--            if Response_Id = Gint(Gtk_Response_Reject) then
+--               CloseMessage(null);
+--               ToggleToolButtons(NewAction, True);
+--               Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
+--               Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
+--               Reload;
+--               return;
+--            elsif Response_Id = Gint(Gtk_Response_No) then
+--               SkipMoving;
+--               return;
+--            end if;
+--            MoveSelected(OverwriteItem);
+         when others =>
+            null;
+      end case;
+      return 0;
+   end Response_Command;
+
    procedure CreateMessagesUI is
       ButtonsBox: Ttk_Frame;
       Button: Ttk_Button;
@@ -99,6 +211,12 @@ package body Messages is
           (Get_Context, "CloseMessage", Close_Command'Access, 0, null);
       if Command = null then
          raise Program_Error with "Can't add command CloseMessage";
+      end if;
+      Command :=
+        CreateCommands.Tcl_CreateCommand
+          (Get_Context, "MessageResponse", Response_Command'Access, 0, null);
+      if Command = null then
+         raise Program_Error with "Can't add command MessageResponse";
       end if;
       Style_Configure("message.TFrame", "-background #00ff00");
       Style_Configure
@@ -112,19 +230,19 @@ package body Messages is
       MessageFrame := Create(".mainframe.message");
       MessageLabel := Create(".mainframe.message.label", "-wraplength 800");
       ButtonsBox := Create(".mainframe.message.buttonsbox");
-      Button := Create(".mainframe.message.buttonsbox.buttonno", "-text No");
+      Button := Create(".mainframe.message.buttonsbox.buttonno", "-text No -command {MessageResponse no}");
       Tcl.Tk.Ada.Grid.Grid(Button);
-      Button := Create(".mainframe.message.buttonsbox.buttonyes", "-text Yes");
+      Button := Create(".mainframe.message.buttonsbox.buttonyes", "-text Yes -command {MessageResponse no}");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 0");
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonnoall",
-           "-text ""No for all""");
+           "-text ""No for all"" -command {MessageResponse noall}");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonyesall",
-           "-text ""Yes for all""");
+           "-text ""Yes for all"" -command {MessageResponse yesall}");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 3 -row 0");
       Button :=
         Create
@@ -174,123 +292,5 @@ package body Messages is
         To_Unbounded_String
           (After(Settings.AutoCloseMessagesTime * 1000, "CloseMessage"));
    end ShowMessage;
-
---   -- ****if* Messages/SetResponse
---   -- FUNCTION
---   -- Set proper GTK Response for info bar buttons
---   -- PARAMETERS
---   -- Self - Gtk_Button which was pressed
---   -- SOURCE
---   procedure SetResponse(Self: access Gtk_Button_Record'Class) is
---      -- ****
---      ResponseValue: Gint;
---   begin
---      YesForAll := False;
---      if Get_Label(Self) = Gettext("Yes") then
---         ResponseValue := Gint(Gtk_Response_Yes);
---      elsif Get_Label(Self) = Gettext("No") then
---         ResponseValue := Gint(Gtk_Response_No);
---      elsif Get_Label(Self) = Gettext("Yes for all") then
---         YesForAll := True;
---         ResponseValue := Gint(Gtk_Response_Accept);
---      elsif Get_Label(Self) = Gettext("No for all") then
---         ResponseValue := Gint(Gtk_Response_Reject);
---      end if;
---      Response(InfoBar, ResponseValue);
---   end SetResponse;
---
---   -- ****if* Messages/MessageResponse
---   -- FUNCTION
---   -- Hide message or do action, depends on the user response
---   -- PARAMETERS
---   -- Self        - Gtk_Info_Bar which contains the message. Unused
---   -- Response_Id - Gtk_Response depends on which button user clicked
---   -- SOURCE
---   procedure MessageResponse
---     (Self: access Gtk_Info_Bar_Record'Class; Response_Id: Gint) is
---      pragma Unreferenced(Self);
---      -- ****
---      OverwriteItem: Boolean := True;
---   begin
---      case NewAction is
---         when DELETE | CLEARTRASH | DELETETRASH =>
---            if NewAction /= CLEARTRASH then
---               SetProgressBar(Positive(SelectedItems.Length));
---            end if;
---            if Response_Id = Gint(Gtk_Response_Yes) then
---               begin
---                  if DeleteSelected then
---                     CurrentDirectory :=
---                       To_Unbounded_String
---                         (Normalize_Pathname
---                            (To_String(CurrentDirectory) & "/.."));
---                  end if;
---               exception
---                  when others =>
---                     Reload;
---                     return;
---               end;
---               if NewAction = CLEARTRASH then
---                  GoHome(null);
---               elsif NewAction = DELETETRASH then
---                  ShowTrash(null);
---                  NewAction := DELETETRASH;
---               else
---                  Reload;
---               end if;
---            end if;
---            ToggleToolButtons(NewAction, True);
---            Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
---            if Settings.ShowFinishedInfo then
---               if NewAction = DELETE and not Settings.DeleteFiles then
---                  ShowMessage
---                    (Gettext
---                       ("All selected files and directories have been moved to Trash."),
---                     Message_Info);
---               elsif NewAction = CLEARTRASH then
---                  ShowMessage
---                    (Gettext("Trash have been cleared."), Message_Info);
---               else
---                  ShowMessage
---                    (Gettext
---                       ("All selected files and directories have been deleted."),
---                     Message_Info);
---               end if;
---            else
---               CloseMessage(null);
---            end if;
---         when COPY =>
---            if Response_Id = Gint(Gtk_Response_Reject) then
---               CloseMessage(null);
---               ToggleToolButtons(NewAction, True);
---               Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
---               Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
---               Reload;
---               return;
---            elsif Response_Id = Gint(Gtk_Response_No) then
---               SkipCopying;
---               return;
---            end if;
---            CopySelected(OverwriteItem);
---         when MOVE =>
---            if Response_Id = Gint(Gtk_Response_Reject) then
---               CloseMessage(null);
---               ToggleToolButtons(NewAction, True);
---               Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
---               Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
---               Reload;
---               return;
---            elsif Response_Id = Gint(Gtk_Response_No) then
---               SkipMoving;
---               return;
---            end if;
---            MoveSelected(OverwriteItem);
---         when others =>
---            null;
---      end case;
---      if Response_Id = Gint(Gtk_Response_Close) then
---         CloseMessage(null);
---      end if;
---   end MessageResponse;
 
 end Messages;

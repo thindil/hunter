@@ -13,15 +13,20 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Gtk.Info_Bar; use Gtk.Info_Bar;
---with Gtk.Message_Dialog; use Gtk.Message_Dialog;
-
 -- ****h* Hunter/Messages
 -- FUNCTION
 -- Provide code to show or hide messages to the user.
 -- SOURCE
 package Messages is
 -- ****
+
+   -- ****v* Messages/YesToAll
+   -- FUNCTION
+   -- Set to True if user clicked Yes for All button in response to question,
+   -- otherwise False
+   -- SOURCE
+   YesForAll: Boolean;
+   -- ****
 
    -- ****f* Messages/CreateMessagesUI
    -- FUNCTION
@@ -40,29 +45,5 @@ package Messages is
    -- SOURCE
    procedure ShowMessage(Message: String; MessageType: String := "error");
    -- ****
-
-   -- ****v* Messages/YesToAll
-   -- FUNCTION
-   -- Set to True if user clicked Yes for All button in response to question,
-   -- otherwise False
-   -- SOURCE
---   YesForAll: Boolean;
---   -- ****
---
---   -- ****v* Messages/InfoBar
---   -- FUNCTION
---   -- Gtk_Info_Bar which will be showing all messages
---   -- SOURCE
---   InfoBar: Gtk_Info_Bar;
---   -- ****
---
---   -- ****f* Messages/CloseMessage
---   -- FUNCTION
---   -- Close message and stop timer
---   -- PARAMETERS
---   -- Self - Gtk_Info_Bar with message to close. Unused. Can be null
---   -- SOURCE
---   procedure CloseMessage(Self: access Gtk_Info_Bar_Record'Class);
---   -- ****
 
 end Messages;
