@@ -104,7 +104,7 @@ package body Messages is
       -- ClientData - Custom data send to the command. Unused
       -- Interp     - Tcl interpreter in which command was executed. Unused
       -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
       -- SOURCE
    function Response_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
