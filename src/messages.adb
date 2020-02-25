@@ -15,6 +15,10 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with CArgv;
+with Tcl; use Tcl;
+with Tcl.Ada;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
@@ -40,10 +44,50 @@ package body Messages is
    MessageLabel: Ttk_Label;
    -- ****
 
+   -- ****it* Messages/CreateCommands
+   -- FUNCTION
+   -- Used to create Tcl commands
+   -- SOURCE
+   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
+   -- ****
+
+   function Close_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Messages/Close_Command
+      -- FUNCTION
+      -- Hide message frame
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Close_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
+   begin
+      Grid_Remove(MessageFrame);
+      return 0;
+   end Close_Command;
+
    procedure CreateMessagesUI is
       ButtonsBox: Ttk_Frame;
       Button: Ttk_Button;
+      Command: Tcl.Tcl_Command;
    begin
+      Command :=
+        CreateCommands.Tcl_CreateCommand
+          (Get_Context, "CloseMessage", Close_Command'Access, 0, null);
+      if Command = null then
+         raise Program_Error with "Can't add command CloseMessage";
+      end if;
       Style_Configure("message.TFrame", "-background #00ff00");
       Style_Configure
         ("message.TLabel", "-background #00ff00 -foreground #000000");
@@ -57,24 +101,24 @@ package body Messages is
       MessageLabel := Create(".mainframe.message.label", "-wraplength 800");
       ButtonsBox := Create(".mainframe.message.buttonsbox");
       Button := Create(".mainframe.message.buttonsbox.buttonno", "-text No");
-      Grid(Button);
+      Tcl.Tk.Ada.Grid.Grid(Button);
       Button := Create(".mainframe.message.buttonsbox.buttonyes", "-text Yes");
-      Grid(Button, "-column 1 -row 0");
+      Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 0");
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonnoall",
            "-text ""No for all""");
-      Grid(Button, "-column 2 -row 0");
+      Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonyesall",
            "-text ""Yes for all""");
-      Grid(Button, "-column 3 -row 0");
+      Tcl.Tk.Ada.Grid.Grid(Button, "-column 3 -row 0");
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonclose",
-           "-text x -style Toolbutton");
-      Grid(Button, "-column 4 -row 0");
+           "-text x -style Toolbutton -command CloseMessage");
+      Tcl.Tk.Ada.Grid.Grid(Button, "-column 4 -row 0");
       Tcl.Tk.Ada.Pack.Pack(ButtonsBox, "-side right");
       Tcl.Tk.Ada.Pack.Pack(MessageLabel, "-expand true -fill x");
    end CreateMessagesUI;
@@ -99,20 +143,21 @@ package body Messages is
       configure(MessageFrame, "-style " & MessageType & ".TFrame");
       if MessageType /= "question" then
          Button.Name := New_String(To_String(ButtonsNames(5)));
-         Grid(Button);
+         Tcl.Tk.Ada.Grid.Grid(Button);
       else
          Button.Name := New_String(To_String(ButtonsNames(1)));
-         Grid(Button);
+         Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name := New_String(To_String(ButtonsNames(2)));
-         Grid(Button);
+         Tcl.Tk.Ada.Grid.Grid(Button);
          if NewAction not in DELETE | CLEARTRASH | DELETETRASH then
             Button.Name := New_String(To_String(ButtonsNames(3)));
-            Grid(Button);
+            Tcl.Tk.Ada.Grid.Grid(Button);
             Button.Name := New_String(To_String(ButtonsNames(4)));
-            Grid(Button);
+            Tcl.Tk.Ada.Grid.Grid(Button);
          end if;
       end if;
-      Grid(MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
+      Tcl.Tk.Ada.Grid.Grid
+        (MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
    end ShowMessage;
 
    -- ****iv* Messages/Source_Id
