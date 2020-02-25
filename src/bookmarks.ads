@@ -13,31 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Gtk.Menu; use Gtk.Menu;
---with Gtk.Tool_Button; use Gtk.Tool_Button;
-
 -- ****h* Hunter/Bookmarks
 -- FUNCTION
 -- Provide code for add, delete or go to locations bookmarks
 -- SOURCE
 package Bookmarks is
 -- ****
-
-   -- ****v* Bookmarks/BookmarksMenu
-   -- FUNCTION
-   -- Gtk_Menu with the user bookmarks
-   -- SOURCE
---   BookmarksMenu: Gtk_Menu;
---   -- ****
---
---   -- ****f* Bookmarks/GoHome
---   -- FUNCTION
---   -- Go to user home directory
---   -- PARAMETERS
---   -- Self - Gtk_Tool_Button clicked. Unused. Can be null.
---   -- SOURCE
---   procedure GoHome(Self: access Gtk_Tool_Button_Record'Class);
-   -- ****
 
    -- ****f* Bookmarks/CreateBookmarkMenu
    -- FUNCTION
