@@ -20,6 +20,7 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
 
@@ -85,9 +86,9 @@ package body MainWindow.Commands is
       SavePreferences;
       if Settings.ClearTrashOnExit then
          NewAction := CLEARTRASH;
---         if DeleteSelected then
---            null;
---         end if;
+         if DeleteSelected then
+            null;
+         end if;
       end if;
    end Quit_Command;
 
