@@ -30,6 +30,7 @@ use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
+with Tcl.Tk.Ada.Widgets.TtkProgressbar; use Tcl.Tk.Ada.Widgets.TtkProgressbar;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
@@ -85,7 +86,8 @@ package body MainWindow is
          To_Unbounded_String("text-x-generic-template"),
          To_Unbounded_String("folder"), To_Unbounded_String("arrow-down"),
          To_Unbounded_String("arrow-up"));
-      pragma Unreferenced(Image);
+      ProgressBar: constant Ttk_ProgressBar := Create(".mainframe.progressbar", "-orient horizontal");
+      pragma Unreferenced(Image, ProgressBar);
    begin
       AddCommands;
       Set_Directory(Containing_Directory(Command_Name));
