@@ -27,9 +27,11 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
+with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
+with Utils; use Utils;
 
 package body Messages is
 
@@ -122,23 +124,23 @@ package body Messages is
       end if;
       case NewAction is
          when DELETE | CLEARTRASH | DELETETRASH =>
---            if NewAction /= CLEARTRASH then
---               SetProgressBar(Positive(SelectedItems.Length));
---            end if;
+            if NewAction /= CLEARTRASH then
+               SetProgressBar(Positive(SelectedItems.Length));
+            end if;
             if Response = "yes" then
---               begin
---                  if DeleteSelected then
---                     CurrentDirectory :=
---                       To_Unbounded_String
---                         (Normalize_Pathname
---                            (To_String(CurrentDirectory) & "/.."));
---                  end if;
---               exception
---                  when others =>
---                     LoadDirectory(To_String(CurrentDirectory));
---                     UpdateDirectoryList(True);
---                     return 0;
---               end;
+               begin
+                  if DeleteSelected then
+                     CurrentDirectory :=
+                       To_Unbounded_String
+                         (Normalize_Pathname
+                            (To_String(CurrentDirectory) & "/.."));
+                  end if;
+               exception
+                  when others =>
+                     LoadDirectory(To_String(CurrentDirectory));
+                     UpdateDirectoryList(True);
+                     return 0;
+               end;
                if NewAction = CLEARTRASH then
                   Tcl.Ada.Tcl_Eval(Get_Context, "GoHome");
 --               elsif NewAction = DELETETRASH then
