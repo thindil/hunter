@@ -14,8 +14,14 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Command_Line; use Ada.Command_Line;
---with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with LibMagic; use LibMagic;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.TtkProgressBar; use Tcl.Tk.Ada.Widgets.TtkProgressBar;
+with Messages; use Messages;
+--with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --with Gtk.Bin; use Gtk.Bin;
 --with Gtk.Box; use Gtk.Box;
 --with Gtk.Frame; use Gtk.Frame;
@@ -33,27 +39,18 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 --with Gtkada.Intl; use Gtkada.Intl;
 --with Glib; use Glib;
 --with Bookmarks; use Bookmarks;
-with LibMagic; use LibMagic;
 --with LoadData; use LoadData;
---with Messages; use Messages;
 --with Preferences; use Preferences;
 --with ShowItems; use ShowItems;
 --with Toolbars; use Toolbars;
 
 package body Utils is
 
-   -- ****iv* Utils/Positive
-   -- FUNCTION
-   -- Max amount of items to count progress of action
-   -- SOURCE
---   ProgressAmount: Positive;
-   -- ****
-
    -- ****iv* Utils/ProgressIndex
    -- FUNCTION
    -- Currrent index of item
    -- SOURCE
---   ProgressIndex: Positive;
+   ProgressIndex: Natural;
    -- ****
 
    function GetMimeType(FileName: String) return String is
@@ -100,12 +97,30 @@ package body Utils is
       end if;
       ExecutablePath := Locate_Exec_On_Path(Name);
       if ExecutablePath = null then
---         ShowMessage(Gettext("Could not found executable: ") & Name);
+         ShowMessage("Could not found executable: " & Name);
          return "";
       end if;
       return ExecutablePath.all;
    end FindExecutable;
 
+   procedure SetProgressBar(Amount: Positive) is
+      ProgressBar: Ttk_ProgressBar;
+   begin
+      ProgressBar.Interp := Get_Context;
+      ProgressBar.Name :=  New_String(".mainframe.progressbar");
+      configure(ProgressBar, "-maximum" & Positive'Image(Amount) & " -value 0");
+      ProgressIndex := 0;
+   end SetProgressBar;
+
+   procedure UpdateProgressBar is
+      ProgressBar: Ttk_ProgressBar;
+   begin
+      ProgressIndex := ProgressIndex + 1;
+      ProgressBar.Interp := Get_Context;
+      ProgressBar.Name :=  New_String(".mainframe.progressbar");
+      configure(ProgressBar, "-value" & Natural'Image(ProgressIndex));
+   end UpdateProgressBar;
+--
 --   procedure ToggleToolButtons
 --     (Action: ItemActions; Finished: Boolean := False) is
 --      ButtonsIndexes: constant array(Positive range <>) of Positive :=
@@ -266,26 +281,6 @@ package body Utils is
 --         Set_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)), Visible);
 --      end if;
 --   end ToggleActionButtons;
---
---   procedure SetProgressBar(Amount: Positive) is
---      ProgressBar: constant Gtk_Widget :=
---        Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3);
---   begin
---      Show_All(ProgressBar);
---      Set_Fraction(Gtk_Progress_Bar(ProgressBar), 0.0);
---      ProgressAmount := Amount;
---      ProgressIndex := 1;
---   end SetProgressBar;
---
---   procedure UpdateProgressBar is
---      ProgressBar: constant Gtk_Progress_Bar :=
---        Gtk_Progress_Bar
---          (Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
---   begin
---      ProgressIndex := ProgressIndex + 1;
---      Set_Fraction
---        (ProgressBar, Gdouble(ProgressIndex) / Gdouble(ProgressAmount));
---   end UpdateProgressBar;
 --
 --   procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class) is
 --   begin

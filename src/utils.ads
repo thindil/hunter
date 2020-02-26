@@ -68,6 +68,22 @@ package Utils is
    function FindExecutable(Name: String) return String;
    -- ****
 
+   -- ****f* Utils/SetProgressBar
+   -- FUNCTION
+   -- Set values for progress bar and show it to the user
+   -- PARAMETERS
+   -- Amount - Max amount of items - will be used to count progress
+   -- SOURCE
+   procedure SetProgressBar(Amount: Positive);
+   -- ****
+
+   -- ****f* Utils/UpdateProgressBar
+   -- FUNCTION
+   -- Update fraction of the progress bar
+   -- SOURCE
+   procedure UpdateProgressBar;
+   -- ****
+
    -- ****f* Utils/ToggleToolButtons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with
@@ -85,22 +101,6 @@ package Utils is
    -- Show or hide files and directories actions buttons
    -- SOURCE
  --  procedure ToggleActionButtons;
-   -- ****
-
-   -- ****f* Utils/SetProgressBar
-   -- FUNCTION
-   -- Set values for progress bar and show it to the user
-   -- PARAMETERS
-   -- Amount - Max amount of items - will be used to count progress
-   -- SOURCE
---   procedure SetProgressBar(Amount: Positive);
-   -- ****
-
-   -- ****f* Utils/UpdateProgressBar
-   -- FUNCTION
-   -- Update fraction of the progress bar
-   -- SOURCE
---   procedure UpdateProgressBar;
    -- ****
 
    -- ****f* Utils/RemoveChild
