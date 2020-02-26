@@ -29,6 +29,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with Utils; use Utils;
 
 package body DeleteItems is
 
@@ -91,7 +92,7 @@ package body DeleteItems is
          AddTrash("files");
       end if;
       for Item of SelectedItems loop
---         UpdateProgressBar;
+         UpdateProgressBar;
          if Is_Directory(To_String(Item)) then
             Arguments(2) := new String'(To_String(Item));
             if Settings.DeleteFiles or NewAction = DELETETRASH then
