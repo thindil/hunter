@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -12,8 +12,6 @@
 --
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-with Gtk.Tool_Button; use Gtk.Tool_Button;
 
 -- ****h* Hunter/DeleteItems
 -- FUNCTION
@@ -37,7 +35,7 @@ package DeleteItems is
    -- PARAMETERS
    -- Self - Gtk_Tool_Button which was clicked. Unused.
    -- SOURCE
-   procedure DeleteItem(Self: access Gtk_Tool_Button_Record'Class);
+--   procedure DeleteItem(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
 end DeleteItems;

@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 -- ****h* Hunter/MainWindow
@@ -77,26 +78,26 @@ package MainWindow is
    procedure UpdateDirectoryList(Clear: Boolean := False);
    -- ****
 
-   -- ****v* MainWindow/Setting
-   -- FUNCTION
-   -- If true, the program is in the setting mode
-   -- SOURCE
---   Setting: Boolean;
-   -- ****
-
    -- ****t* MainWindow/UnboundedString_Container
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
    -- SOURCE
---   package UnboundedString_Container is new Vectors(Positive,
---      Unbounded_String);
+   package UnboundedString_Container is new Vectors(Positive,
+      Unbounded_String);
    -- ****
 
    -- ****v* MainWindow/SelectedItems
    -- FUNCTION
    -- List of currently selected files and directories by user
    -- SOURCE
---   SelectedItems: UnboundedString_Container.Vector;
+   SelectedItems: UnboundedString_Container.Vector;
+   -- ****
+
+   -- ****v* MainWindow/Setting
+   -- FUNCTION
+   -- If true, the program is in the setting mode
+   -- SOURCE
+--   Setting: Boolean;
    -- ****
 
    -- ****v* MainWindow/CurrentSelected
