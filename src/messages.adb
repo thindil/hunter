@@ -264,6 +264,9 @@ package body Messages is
          To_Unbounded_String(".mainframe.message.buttonsbox.buttonclose"));
       Button: Ttk_Button;
    begin
+      if MessageFrame.Interp = null then
+         return;
+      end if;
       Button.Interp := MessageLabel.Interp;
       for ButtonName of ButtonsNames loop
          Button.Name := New_String(To_String(ButtonName));
