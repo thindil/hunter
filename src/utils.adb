@@ -18,6 +18,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with LibMagic; use LibMagic;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkProgressBar; use Tcl.Tk.Ada.Widgets.TtkProgressBar;
 with Messages; use Messages;
@@ -107,9 +108,12 @@ package body Utils is
       ProgressBar: Ttk_ProgressBar;
    begin
       ProgressBar.Interp := Get_Context;
-      ProgressBar.Name :=  New_String(".mainframe.progressbar");
-      configure(ProgressBar, "-maximum" & Positive'Image(Amount) & " -value 0");
+      ProgressBar.Name := New_String(".mainframe.progressbar");
+      configure
+        (ProgressBar, "-maximum" & Positive'Image(Amount) & " -value 0");
       ProgressIndex := 0;
+      Tcl.Tk.Ada.Grid.Grid
+        (ProgressBar, "-column 0 -row 1 -sticky we -columnspan 2");
    end SetProgressBar;
 
    procedure UpdateProgressBar is
@@ -117,8 +121,11 @@ package body Utils is
    begin
       ProgressIndex := ProgressIndex + 1;
       ProgressBar.Interp := Get_Context;
-      ProgressBar.Name :=  New_String(".mainframe.progressbar");
+      ProgressBar.Name := New_String(".mainframe.progressbar");
       configure(ProgressBar, "-value" & Natural'Image(ProgressIndex));
+      if cget(ProgressBar, "-value") = cget(ProgressBar, "-maximum") then
+         Grid_Remove(ProgressBar);
+      end if;
    end UpdateProgressBar;
 --
 --   procedure ToggleToolButtons
