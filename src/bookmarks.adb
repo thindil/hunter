@@ -109,7 +109,9 @@ package body Bookmarks is
         (New_Item =>
            (MenuName => To_Unbounded_String("Home"),
             Path => To_Unbounded_String(Value("HOME"))));
-      Add(BookmarksMenu, "command", "-label Home -command GoHome");
+      Add
+        (BookmarksMenu, "command",
+         "-label Home -command {GoToBookmark {" & Value("HOME") & "}}");
       for I in XDGBookmarks'Range loop
          if Ada.Directories.Exists
              (To_String(GetXDGDirectory(To_String(XDGBookmarks(I).Path)))) then

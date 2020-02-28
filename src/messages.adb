@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -142,7 +143,8 @@ package body Messages is
                      return 0;
                end;
                if NewAction = CLEARTRASH then
-                  Tcl.Ada.Tcl_Eval(Get_Context, "GoHome");
+                  Tcl.Ada.Tcl_Eval
+                    (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
 --               elsif NewAction = DELETETRASH then
 --                  ShowTrash(null);
 --                  NewAction := DELETETRASH;
@@ -232,9 +234,15 @@ package body Messages is
       MessageFrame := Create(".mainframe.message");
       MessageLabel := Create(".mainframe.message.label", "-wraplength 800");
       ButtonsBox := Create(".mainframe.message.buttonsbox");
-      Button := Create(".mainframe.message.buttonsbox.buttonno", "-text No -command {MessageResponse no}");
+      Button :=
+        Create
+          (".mainframe.message.buttonsbox.buttonno",
+           "-text No -command {MessageResponse no}");
       Tcl.Tk.Ada.Grid.Grid(Button);
-      Button := Create(".mainframe.message.buttonsbox.buttonyes", "-text Yes -command {MessageResponse no}");
+      Button :=
+        Create
+          (".mainframe.message.buttonsbox.buttonyes",
+           "-text Yes -command {MessageResponse no}");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 0");
       Button :=
         Create
