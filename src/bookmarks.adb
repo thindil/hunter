@@ -20,15 +20,12 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with CArgv;
 with Tcl; use Tcl;
-with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
-with LoadData; use LoadData;
-with MainWindow; use MainWindow;
+with Bookmarks.Commands; use Bookmarks.Commands;
 
 package body Bookmarks is
 
@@ -52,81 +49,12 @@ package body Bookmarks is
    package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
    -- ****
 
-   -- ****it* Bookmarks/CreateCommands
-   -- FUNCTION
-   -- Used to create Tcl commands
-   -- SOURCE
-   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
-   -- ****
-
    -- ****iv* Bookmarks/BookmarksList
    -- FUNCTION
    -- List of all bookmarked locations
    -- SOURCE
    BookmarksList: Bookmarks_Container.Vector;
    -- ****
-
-   function GoHome_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-
-      -- ****if* Bookmarks/GoHome_Command
-      -- FUNCTION
-      -- Go to the home directory of the user
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
-   function GoHome_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      -- ****
-   begin
-      if NewAction /= MOVE then
-         NewAction := COPY;
-      end if;
-      CurrentDirectory := To_Unbounded_String(Value("HOME"));
-      LoadDirectory(To_String(CurrentDirectory));
-      UpdateDirectoryList(True);
-      return 0;
-   end GoHome_Command;
-
-   function GoToBookmark_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-
-      -- ****if* Bookmarks/GoToBookmark_Command
-      -- FUNCTION
-      -- Go to the selected bookmarked directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
-   function GoToBookmark_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
-      -- ****
-   begin
-      if NewAction /= MOVE then
-         NewAction := COPY;
-      end if;
-      CurrentDirectory := To_Unbounded_String(CArgv.Arg(Argv, 1));
-      LoadDirectory(To_String(CurrentDirectory));
-      UpdateDirectoryList(True);
-      return 0;
-   end GoToBookmark_Command;
 
    procedure CreateBookmarkMenu(CreateNew: Boolean := False) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
@@ -145,7 +73,6 @@ package body Bookmarks is
           To_Unbounded_String("XDG_VIDEOS_DIR")));
       BookmarksMenu: Tk_Menu;
       MenuButton: Ttk_MenuButton;
-      Command: Tcl.Tcl_Command;
       function GetXDGDirectory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String;
@@ -171,19 +98,7 @@ package body Bookmarks is
    begin
       if CreateNew then
          BookmarksMenu := Create(".bookmarksmenu", "-tearoff false");
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, "GoHome", GoHome_Command'Access, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command GoHome";
-         end if;
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, "GoToBookmark", GoToBookmark_Command'Access, 0,
-              null);
-         if Command = null then
-            raise Program_Error with "Can't add command GoToBookmark";
-         end if;
+         AddCommands;
       else
          BookmarksMenu.Interp := Get_Context;
          BookmarksMenu.Name := New_String(".bookmarksmenu");
