@@ -43,7 +43,8 @@ package body MainWindow.Commands is
       DirectoryTree: Ttk_Tree_View;
    begin
       DirectoryTree.Interp := Get_Context;
-      DirectoryTree.Name := New_String(".paned.directoryframe.directorytree");
+      DirectoryTree.Name :=
+        New_String(".mainframe.paned.directoryframe.directorytree");
       Heading(DirectoryTree, "name", "-image """"");
       Heading(DirectoryTree, "modified", "-image """"");
       Heading(DirectoryTree, "size", "-image """"");
