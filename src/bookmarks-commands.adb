@@ -95,21 +95,20 @@ package body Bookmarks.Commands is
    end GoToBookmark_Command;
 
    procedure AddCommands is
-      Command: Tcl.Tcl_Command;
+      procedure AddCommand
+        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
+         Command: Tcl.Tcl_Command;
+      begin
+         Command :=
+           CreateCommands.Tcl_CreateCommand
+             (Get_Context, Name, AdaCommand, 0, null);
+         if Command = null then
+            raise Program_Error with "Can't add command " & Name;
+         end if;
+      end AddCommand;
    begin
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, "GoHome", GoHome_Command'Access, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command GoHome";
-         end if;
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, "GoToBookmark", GoToBookmark_Command'Access, 0,
-              null);
-         if Command = null then
-            raise Program_Error with "Can't add command GoToBookmark";
-         end if;
+      AddCommand("GoHome", GoHome_Command'Access);
+      AddCommand("GoToBookmark", GoToBookmark_Command'Access);
    end AddCommands;
 
 end Bookmarks.Commands;
