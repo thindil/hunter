@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with CArgv;
@@ -31,37 +30,6 @@ package body Bookmarks.Commands is
    -- SOURCE
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
    -- ****
-
-   function GoHome_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-
-      -- ****if* Bookmarks/GoHome_Command
-      -- FUNCTION
-      -- Go to the home directory of the user
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
-   function GoHome_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      -- ****
-   begin
-      if NewAction /= MOVE then
-         NewAction := COPY;
-      end if;
-      CurrentDirectory := To_Unbounded_String(Value("HOME"));
-      LoadDirectory(To_String(CurrentDirectory));
-      UpdateDirectoryList(True);
-      return 0;
-   end GoHome_Command;
 
    function GoToBookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -107,7 +75,6 @@ package body Bookmarks.Commands is
          end if;
       end AddCommand;
    begin
-      AddCommand("GoHome", GoHome_Command'Access);
       AddCommand("GoToBookmark", GoToBookmark_Command'Access);
    end AddCommands;
 
