@@ -97,6 +97,37 @@ package body Bookmarks is
       return 0;
    end GoHome_Command;
 
+   function GoToBookmark_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Bookmarks/GoToBookmark_Command
+      -- FUNCTION
+      -- Go to the selected bookmarked directory
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function GoToBookmark_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc);
+      -- ****
+   begin
+      if NewAction /= MOVE then
+         NewAction := COPY;
+      end if;
+      CurrentDirectory := To_Unbounded_String(CArgv.Arg(Argv, 1));
+      LoadDirectory(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
+      return 0;
+   end GoToBookmark_Command;
+
    procedure CreateBookmarkMenu(CreateNew: Boolean := False) is
       XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
         ((To_Unbounded_String("Desktop"),
@@ -146,6 +177,13 @@ package body Bookmarks is
          if Command = null then
             raise Program_Error with "Can't add command GoHome";
          end if;
+         Command :=
+           CreateCommands.Tcl_CreateCommand
+             (Get_Context, "GoToBookmark", GoToBookmark_Command'Access, 0,
+              null);
+         if Command = null then
+            raise Program_Error with "Can't add command GoToBookmark";
+         end if;
       else
          BookmarksMenu.Interp := Get_Context;
          BookmarksMenu.Name := New_String(".bookmarksmenu");
@@ -166,7 +204,10 @@ package body Bookmarks is
                   Path => GetXDGDirectory(To_String(XDGBookmarks(I).Path))));
             Add
               (BookmarksMenu, "command",
-               "-label """ & To_String(XDGBookmarks(I).MenuName) & """");
+               "-label {" & To_String(XDGBookmarks(I).MenuName) &
+               "} -command {GoToBookmark {" &
+               To_String(GetXDGDirectory(To_String(XDGBookmarks(I).Path))) &
+               "}}");
          end if;
       end loop;
       if Ada.Directories.Exists
@@ -197,7 +238,8 @@ package body Bookmarks is
                            Path => Path));
                      Add
                        (BookmarksMenu, "command",
-                        "-label """ & Simple_Name(To_String(Path)) & """");
+                        "-label {" & Simple_Name(To_String(Path)) &
+                        "} -command {GoToBookmark {" & To_String(Path) & "}}");
                   end if;
                end if;
             end loop;
@@ -285,16 +327,6 @@ package body Bookmarks is
 --      end if;
 --   end GoToBookmark;
 
---   procedure GoHome(Self: access Gtk_Tool_Button_Record'Class) is
---      pragma Unreferenced(Self);
---   begin
---      if NewAction /= MOVE then
---         NewAction := COPY;
---      end if;
---      CurrentDirectory := To_Unbounded_String(Value("HOME"));
---      UpdateView;
---   end GoHome;
---
 --   -- ****if* Bookmarks/RemoveMenu
 --   -- FUNCTION
 --   -- Remove selected menu item from menu
