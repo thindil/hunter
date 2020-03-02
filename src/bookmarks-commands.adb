@@ -24,7 +24,7 @@ with MainWindow; use MainWindow;
 
 package body Bookmarks.Commands is
 
-   -- ****it* Bookmarks/CreateCommands
+   -- ****it* Commands/CreateCommands
    -- FUNCTION
    -- Used to create Tcl commands
    -- SOURCE
@@ -37,7 +37,7 @@ package body Bookmarks.Commands is
       return Interfaces.C.int with
       Convention => C;
 
-      -- ****if* Bookmarks/GoToBookmark_Command
+      -- ****if* Commands/GoToBookmark_Command
       -- FUNCTION
       -- Go to the selected bookmarked directory
       -- PARAMETERS
