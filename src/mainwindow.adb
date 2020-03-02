@@ -27,6 +27,7 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
@@ -73,7 +74,7 @@ package body MainWindow is
       HeaderLabel: constant Ttk_Label := Create(".mainframe.headerlabel");
       IconName: Unbounded_String;
       Icon, Image: Tk_Photo;
-      IconsNames: constant array(1 .. 14) of Unbounded_String :=
+      IconsNames: constant array(1 .. 15) of Unbounded_String :=
         (To_Unbounded_String("emblem-symbolic-link"),
          To_Unbounded_String("application-x-executable"),
          To_Unbounded_String("audio-x-generic"),
@@ -86,11 +87,14 @@ package body MainWindow is
          To_Unbounded_String("text-x-generic"),
          To_Unbounded_String("text-x-generic-template"),
          To_Unbounded_String("folder"), To_Unbounded_String("arrow-down"),
-         To_Unbounded_String("arrow-up"));
+         To_Unbounded_String("arrow-up"), To_Unbounded_String("ok"));
       ProgressBar: constant Ttk_ProgressBar :=
         Create(".mainframe.progressbar", "-orient horizontal");
-      TextEntry: constant Ttk_Entry := Create(".mainframe.textentry");
-      pragma Unreferenced(Image, ProgressBar, TextEntry);
+      TextFrame: constant Ttk_Frame := Create(".mainframe.textframe");
+      TextEntry: constant Ttk_Entry :=
+        Create(".mainframe.textframe.textentry");
+      Button: Ttk_Button;
+      pragma Unreferenced(Image, ProgressBar);
    begin
       AddCommands;
       Set_Directory(Containing_Directory(Command_Name));
@@ -158,6 +162,16 @@ package body MainWindow is
       end if;
       Row_Configure(MainFrame, Paned, "-weight 1");
       Column_Configure(MainFrame, Paned, "-weight 1");
+      Button :=
+        Create
+          (".mainframe.textframe.closebutton",
+           "-image dialog-cancelicon -style Toolbutton");
+      Tcl.Tk.Ada.Grid.Grid(Button);
+      Tcl.Tk.Ada.Grid.Grid(TextEntry, "-column 1 -row 0 -sticky we");
+      Button :=
+        Create(".mainframe.textframe.okbutton", "-image ok -style Toolbutton");
+      Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
+      Column_Configure(TextFrame, TextEntry, "-weight 1");
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
