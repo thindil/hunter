@@ -62,6 +62,34 @@ package body Bookmarks.Commands is
       return 0;
    end GoToBookmark_Command;
 
+   function SetDestination_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Commands/SetDestination_Command
+      -- FUNCTION
+      -- Show text entry to enter directory destination
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function SetDestination_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
+   begin
+      if NewAction /= MOVE then
+         NewAction := COPY;
+      end if;
+      return 0;
+   end SetDestination_Command;
+
    procedure AddCommands is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -76,6 +104,7 @@ package body Bookmarks.Commands is
       end AddCommand;
    begin
       AddCommand("GoToBookmark", GoToBookmark_Command'Access);
+      AddCommand("SetDestination", SetDestination_Command'Access);
    end AddCommands;
 
 end Bookmarks.Commands;

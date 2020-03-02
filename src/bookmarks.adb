@@ -167,7 +167,9 @@ package body Bookmarks is
         (New_Item =>
            (MenuName => To_Unbounded_String("Enter destination"),
             Path => Null_Unbounded_String));
-      Add(BookmarksMenu, "command", "-label ""Enter destination""");
+      Add
+        (BookmarksMenu, "command",
+         "-label {Enter destination} -command SetDestination");
       MenuButton.Interp := BookmarksMenu.Interp;
       MenuButton.Name :=
         New_String(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
