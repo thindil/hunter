@@ -21,7 +21,10 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 
@@ -87,10 +90,18 @@ package body Bookmarks.Commands is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
       -- ****
       TextFrame: Ttk_Frame;
+      OkButton: Ttk_Button;
+      TextEntry: Ttk_Entry;
    begin
       if NewAction /= MOVE then
          NewAction := COPY;
       end if;
+      OkButton.Interp := Get_Context;
+      OkButton.Name := New_String(".mainframe.textframe.okbutton");
+      Add(OkButton, "Go to the selected destination");
+      TextEntry.Interp := Get_Context;
+      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      Add(TextEntry, "Enter the selected destination");
       TextFrame.Interp := Get_Context;
       TextFrame.Name := New_String(".mainframe.textframe");
       Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
