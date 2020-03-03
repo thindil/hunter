@@ -36,6 +36,7 @@ with Tcl.Tk.Ada.Widgets.TtkProgressBar; use Tcl.Tk.Ada.Widgets.TtkProgressBar;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
+with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
 with MainWindow.Commands; use MainWindow.Commands;
@@ -166,6 +167,7 @@ package body MainWindow is
         Create
           (".mainframe.textframe.closebutton",
            "-image dialog-cancelicon -style Toolbutton");
+      Add(Button, "Hide entry without entering any changes");
       Tcl.Tk.Ada.Grid.Grid(Button);
       Tcl.Tk.Ada.Grid.Grid(TextEntry, "-column 1 -row 0 -sticky we");
       Button :=
