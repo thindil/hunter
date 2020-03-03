@@ -15,10 +15,13 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 
@@ -83,10 +86,14 @@ package body Bookmarks.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
       -- ****
+      TextFrame: Ttk_Frame;
    begin
       if NewAction /= MOVE then
          NewAction := COPY;
       end if;
+      TextFrame.Interp := Get_Context;
+      TextFrame.Name := New_String(".mainframe.textframe");
+      Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       return 0;
    end SetDestination_Command;
 
