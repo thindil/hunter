@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -21,12 +22,14 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with Messages; use Messages;
 
 package body Bookmarks.Commands is
 
@@ -98,6 +101,7 @@ package body Bookmarks.Commands is
       end if;
       OkButton.Interp := Get_Context;
       OkButton.Name := New_String(".mainframe.textframe.okbutton");
+      configure(OkButton, "-command GoToDestination");
       Add(OkButton, "Go to the selected destination");
       TextEntry.Interp := Get_Context;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
@@ -108,6 +112,50 @@ package body Bookmarks.Commands is
       Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       return 0;
    end SetDestination_Command;
+
+   function GoToDestination_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Commands/GoToDestination_Command
+      -- FUNCTION
+      -- Go to the destination directory selected by the user
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function GoToDestination_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
+      TextEntry: Ttk_Entry;
+      HideButton: Ttk_Button;
+   begin
+      if NewAction /= MOVE then
+         NewAction := COPY;
+      end if;
+      TextEntry.Interp := Get_Context;
+      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      if not Exists(Get(TextEntry)) then
+         ShowMessage("Directory '" & Get(TextEntry) & "' doesn't exists.");
+         return 0;
+      end if;
+      CurrentDirectory := To_Unbounded_String(Get(TextEntry));
+      HideButton.Interp := Get_Context;
+      HideButton.Name := New_String(".mainframe.textframe.closebutton");
+      if Invoke(HideButton) /= "" then
+         raise Program_Error with "Can't hide text entry";
+      end if;
+      LoadDirectory(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
+      return 0;
+   end GoToDestination_Command;
 
    procedure AddCommands is
       procedure AddCommand
@@ -124,6 +172,7 @@ package body Bookmarks.Commands is
    begin
       AddCommand("GoToBookmark", GoToBookmark_Command'Access);
       AddCommand("SetDestination", SetDestination_Command'Access);
+      AddCommand("GoToDestination", GoToDestination_Command'Access);
    end AddCommands;
 
 end Bookmarks.Commands;
