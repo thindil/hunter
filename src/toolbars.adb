@@ -212,7 +212,8 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolMenuButton :=
         Create(".mainframe.toolbars.actiontoolbar.deletebutton");
-      SetButton(ToolMenuButton, "Show delete menu \[Delete\]", "edit-delete");
+      SetButton
+        (ToolMenuButton, "Show delete menu \[CTRL+Delete\]", "edit-delete");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".deletemenu", "-tearoff false");
       if Settings.DeleteFiles then
