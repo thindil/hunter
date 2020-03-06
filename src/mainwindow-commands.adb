@@ -19,6 +19,9 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
+with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
@@ -93,6 +96,29 @@ package body MainWindow.Commands is
       end if;
    end Quit_Command;
 
+   function Hide_Entry_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+   function Hide_Entry_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      TextFrame: Ttk_Frame;
+      TextEntry: Ttk_Entry;
+   begin
+      TextEntry.Interp := Get_Context;
+      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      Delete(TextEntry, "0", "end");
+      TextFrame.Interp := Get_Context;
+      TextFrame.Name := New_String(".mainframe.textframe");
+      Tcl.Tk.Ada.Grid.Grid_Remove(TextFrame);
+      return 0;
+   end Hide_Entry_Command;
+
    procedure AddCommands is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -107,6 +133,7 @@ package body MainWindow.Commands is
       end AddCommand;
    begin
       AddCommand("Sort", Sort_Command'Access);
+      AddCommand("HideEntry", Hide_Entry_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 
