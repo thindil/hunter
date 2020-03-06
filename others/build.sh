@@ -12,4 +12,5 @@ cp COPYING $releasedir/share/doc/hunter/
 cp README.md $releasedir/share/doc/hunter/
 cp CONTRIBUTING.md $releasedir/share/doc/hunter/
 cp others/hunter.appdata.xml $releasedir/share/metainfo
+cp -r share $releasedir
 gprclean -P hunter.gpr
