@@ -128,7 +128,8 @@ package body MainWindow is
       Bind_To_Main_Window
         (Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
-      Bind_To_Main_Window(Interp, "<Delete>", "{tk_popup .deletemenu %X %Y}");
+      Bind_To_Main_Window
+        (Interp, "<Control-Delete>", "{tk_popup .deletemenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
       Tcl.Tk.Ada.Pack.Pack(MainFrame, "-expand true -fill both");
       CreateActionToolbar;
