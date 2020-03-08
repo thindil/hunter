@@ -20,9 +20,11 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
@@ -119,6 +121,42 @@ package body MainWindow.Commands is
       return 0;
    end Hide_Entry_Command;
 
+   function Hide_Widget_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+   function Hide_Widget_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      Frame: Ttk_Frame;
+      Button: Ttk_Button;
+   begin
+      Frame.Interp := Get_Context;
+      Button.Interp := Get_Context;
+      Frame.Name := New_String(".mainframe.message");
+      if Winfo_Get(Frame, "ismapped") = "1" then
+         Button.Name :=
+           New_String(".mainframe.message.buttonsbox.buttonclose");
+         if Invoke(Button) /= "" then
+            raise Program_Error with "Can't hide message";
+         end if;
+         return 0;
+      end if;
+      Frame.Name := New_String(".mainframe.textframe");
+      if Winfo_Get(Frame, "ismapped") = "1" then
+         Button.Name := New_String(".mainframe.textframe.closebutton");
+         if Invoke(Button) /= "" then
+            raise Program_Error with "Can't hide text entry";
+         end if;
+         return 0;
+      end if;
+      return 0;
+   end Hide_Widget_Command;
+
    procedure AddCommands is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -134,6 +172,7 @@ package body MainWindow.Commands is
    begin
       AddCommand("Sort", Sort_Command'Access);
       AddCommand("HideEntry", Hide_Entry_Command'Access);
+      AddCommand("HideWidget", Hide_Widget_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 
