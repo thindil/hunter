@@ -175,6 +175,7 @@ package body MainWindow is
       Button :=
         Create(".mainframe.textframe.okbutton", "-image ok -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
+      Bind(TextEntry, "<Return>", "{.mainframe.textframe.okbutton invoke}");
       Column_Configure(TextFrame, TextEntry, "-weight 1");
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
