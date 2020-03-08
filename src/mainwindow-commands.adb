@@ -40,11 +40,21 @@ package body MainWindow.Commands is
       return Interfaces.C.int with
       Convention => C;
 
+      -- ****if* MainWindow-Commands/Sort_Command
+      -- FUNCTION
+      -- Sort directory view based on which header was clicked
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
    function Sort_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
+      -- ****
       DirectoryTree: Ttk_Tree_View;
    begin
       DirectoryTree.Interp := Get_Context;
@@ -86,8 +96,15 @@ package body MainWindow.Commands is
    procedure Quit_Command(ClientData: in Integer) with
       Convention => C;
 
+      -- ****if* MainWindow-Commands/Quit_Command
+      -- FUNCTION
+      -- Save preferences and clear trash on exit from the program
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- SOURCE
    procedure Quit_Command(ClientData: in Integer) is
       pragma Unreferenced(ClientData);
+      -- ****
    begin
       SavePreferences;
       if Settings.ClearTrashOnExit then
@@ -104,11 +121,21 @@ package body MainWindow.Commands is
       return Interfaces.C.int with
       Convention => C;
 
+      -- ****if* MainWindow-Commands/Hide_Entry_Command
+      -- FUNCTION
+      -- Hide text entry and clear its content
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
    function Hide_Entry_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
       TextFrame: Ttk_Frame;
       TextEntry: Ttk_Entry;
    begin
@@ -127,11 +154,21 @@ package body MainWindow.Commands is
       return Interfaces.C.int with
       Convention => C;
 
+      -- ****if* MainWindow-Commands/Hide_Widget_Command
+      -- FUNCTION
+      -- Hide text entry or message, depends on which is visible
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
    function Hide_Widget_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
       Frame: Ttk_Frame;
       Button: Ttk_Button;
    begin
