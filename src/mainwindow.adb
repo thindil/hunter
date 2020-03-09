@@ -42,6 +42,7 @@ with LoadData; use LoadData;
 with MainWindow.Commands; use MainWindow.Commands;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with SearchItems; use SearchItems;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
 
@@ -98,6 +99,7 @@ package body MainWindow is
       pragma Unreferenced(Image, ProgressBar);
    begin
       AddCommands;
+      CreateSearchUI;
       Set_Directory(Containing_Directory(Command_Name));
       for IconName of IconsNames loop
          Image :=
@@ -127,6 +129,7 @@ package body MainWindow is
       Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
       Bind_To_Main_Window
         (Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
+      Bind_To_Main_Window(Interp, "<Alt-f>", "{StartSearch}");
       Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
       Bind_To_Main_Window
         (Interp, "<Control-Delete>", "{tk_popup .deletemenu %X %Y}");

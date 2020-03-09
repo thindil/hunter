@@ -13,34 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtk.Search_Entry; use Gtk.Search_Entry;
-with Gtk.Tree_Model; use Gtk.Tree_Model;
-
 -- ****h* Hunter/SearchItems
 -- FUNCTION
 -- Provide code to show search UI and show search results.
 -- SOURCE
 package SearchItems is
 -- ****
-
-   SearchEntry: Gtk_Search_Entry;
-
-   -- ****f* SearchItems/VisibleItems
-   -- FUNCTION
-   -- Check if selected file, directory or application should be visible,
-   -- when user search for selected names.
-   -- PARAMETERS
-   -- Model - Gtk_Tree_Model which contains all files and directories in
-   --         current directory or all available applications
-   -- Iter  - Gtk_Tree_Iter to currently checked file or directory or
-   --         application
-   -- RESULT
-   -- True if selected file, directory or application should be visible,
-   -- otherwise false.
-   -- SOURCE
-   function VisibleItems
-     (Model: Gtk_Tree_Model; Iter: Gtk_Tree_Iter) return Boolean;
-   -- ****
 
    -- ****f* SearchItems/CreateSearchUI
    -- FUNCTION
