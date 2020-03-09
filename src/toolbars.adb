@@ -26,6 +26,7 @@ with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton; use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
@@ -159,6 +160,7 @@ package body Toolbars is
       Separator: Ttk_Separator;
       Label: constant Ttk_Label := Create(".mainframe.toolbars.label");
       ButtonMenu: Tk_Menu;
+      ToolCheckButton: Ttk_CheckButton;
    begin
       ToolButton :=
         Create
@@ -171,11 +173,14 @@ package body Toolbars is
         Create(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       SetButton(ToolMenuButton, "Show bookmarks menu \[ALT+H\]", "bookmarks");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
-      ToolButton := Create(".mainframe.toolbars.actiontoolbar.searchbutton");
+      ToolCheckButton :=
+        Create
+          (".mainframe.toolbars.actiontoolbar.searchbutton",
+           "-command ToggleSearch");
       SetButton
-        (ToolButton, "Search for the file or directory \[ALT+F\]",
+        (ToolCheckButton, "Search for the file or directory \[ALT+F\]",
          "edit-find");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolButton := Create(".mainframe.toolbars.actiontoolbar.selectbutton");
       SetButton
         (ToolButton,
