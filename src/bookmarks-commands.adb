@@ -93,22 +93,25 @@ package body Bookmarks.Commands is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
       -- ****
       TextFrame: Ttk_Frame;
-      OkButton: Ttk_Button;
+      Button: Ttk_Button;
       TextEntry: Ttk_Entry;
    begin
       if NewAction /= MOVE then
          NewAction := COPY;
       end if;
-      OkButton.Interp := Get_Context;
-      OkButton.Name := New_String(".mainframe.textframe.okbutton");
-      configure(OkButton, "-command GoToDestination");
-      Add(OkButton, "Go to the selected destination");
+      Button.Interp := Get_Context;
+      Button.Name := New_String(".mainframe.textframe.okbutton");
+      configure(Button, "-command GoToDestination");
+      Add(Button, "Go to the selected destination");
       TextEntry.Interp := Get_Context;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       Insert(TextEntry, "0", To_String(CurrentDirectory));
       Add(TextEntry, "Enter the selected destination");
       TextFrame.Interp := Get_Context;
       TextFrame.Name := New_String(".mainframe.textframe");
+      Tcl.Tk.Ada.Grid.Grid(Button);
+      Button.Name := New_String(".mainframe.textframe.closebutton");
+      Tcl.Tk.Ada.Grid.Grid(Button);
       Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       return 0;
    end SetDestination_Command;

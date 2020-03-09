@@ -56,13 +56,14 @@ package body SearchItems is
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
    begin
+      TextEntry.Interp := Get_Context;
+      TextEntry.Name := New_String(".mainframe.textframe.textentry");
       Button.Interp := Get_Context;
-      Button.Name := New_String(".mainframe.textframe.okbutton");
-      if Winfo_Get(Button, "ismapped") = "0" then
-         configure(Button, "-command HideEntry");
-         Add(Button, "Stop searching");
-         TextEntry.Interp := Get_Context;
-         TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      Button.Name := New_String(".mainframe.textframe.closebutton");
+      if Winfo_Get(TextEntry, "ismapped") = "0" then
+         Tcl.Tk.Ada.Grid.Grid_Remove(Button);
+         Button.Name := New_String(".mainframe.textframe.okbutton");
+         Tcl.Tk.Ada.Grid.Grid_Remove(Button);
          Add
            (TextEntry,
             "Enter the name of the file or directory to search for");
@@ -70,7 +71,6 @@ package body SearchItems is
          TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       else
-         Button.Name := New_String(".mainframe.textframe.okbutton");
          if Invoke(Button) /= "" then
             raise Program_Error with "Can't hide search text bar";
          end if;
