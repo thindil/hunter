@@ -100,7 +100,7 @@ package Utils is
    -- FUNCTION
    -- Show or hide files and directories actions buttons
    -- SOURCE
- --  procedure ToggleActionButtons;
+   --  procedure ToggleActionButtons;
    -- ****
 
    -- ****f* Utils/RemoveChild

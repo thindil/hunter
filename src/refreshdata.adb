@@ -209,11 +209,11 @@ package body RefreshData is
          AddWatches(Path);
          InotifyTask.Start;
       end if;
- --     if Settings.AutoRefreshInterval > 0 then
- --        Source_Id :=
- --          Timeout_Add
- --            (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems'Access);
- --     end if;
+      --     if Settings.AutoRefreshInterval > 0 then
+      --        Source_Id :=
+      --          Timeout_Add
+--            (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems'Access);
+      --     end if;
    end StartTimer;
 
    procedure UpdateWatch(Path: String) is
