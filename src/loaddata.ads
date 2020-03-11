@@ -97,12 +97,13 @@ package LoadData is
       Image: Unbounded_String;
    end record;
 
-   type SortingOrder is (NameAsc, NameDesc, ModifiedAsc, ModifiedDesc, SizeAsc, SizeDesc);
+   type SortingOrder is
+     (NameAsc, NameDesc, ModifiedAsc, ModifiedDesc, SizeAsc, SizeDesc);
 
    SortOrder: SortingOrder := NameAsc;
 
-   function "<" (Left, Right : Item_Record) return Boolean;
-   function "=" (Left, Right : Item_Record) return Boolean;
+   function "<"(Left, Right: Item_Record) return Boolean;
+   function "="(Left, Right: Item_Record) return Boolean;
 
    package Items_Container is new Vectors(Positive, Item_Record);
    package Items_Sorting is new Items_Container.Generic_Sorting;

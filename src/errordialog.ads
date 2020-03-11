@@ -29,8 +29,7 @@ package ErrorDialog is
    -- PARAMETERS
    -- An_Exception    - Exception's data which occured
    -- SOURCE
-   procedure SaveException
-     (An_Exception: Exception_Occurrence);
+   procedure SaveException(An_Exception: Exception_Occurrence);
    -- ****
 
 end ErrorDialog;

@@ -137,8 +137,7 @@ package body DeleteItems is
             Exception_Message(An_Exception));
          raise;
       when others =>
-         ShowMessage
-           ("Unknown error during deleting files or directories.");
+         ShowMessage("Unknown error during deleting files or directories.");
          raise;
    end DeleteSelected;
 
