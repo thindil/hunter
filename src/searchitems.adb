@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
@@ -24,8 +25,11 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with LoadData; use LoadData;
+with MainWindow; use MainWindow;
 
 package body SearchItems is
 
@@ -67,10 +71,12 @@ package body SearchItems is
          Add
            (TextEntry,
             "Enter the name of the file or directory to search for");
+         Bind(TextEntry, "<Key>", "{Search}");
          TextFrame.Interp := Get_Context;
          TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       else
+         Unbind(TextEntry, "<Key>");
          if Invoke(Button) /= "" then
             raise Program_Error with "Can't hide search text bar";
          end if;
@@ -89,7 +95,27 @@ package body SearchItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      TextEntry: Ttk_Entry;
+      DirectoryTree: Ttk_Tree_View;
+      Query: Unbounded_String;
    begin
+      TextEntry.Interp := Get_Context;
+      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      Query := To_Unbounded_String(Get(TextEntry));
+      if Length(Query) = 0 then
+         UpdateDirectoryList(True);
+         return 0;
+      end if;
+      DirectoryTree.Interp := Get_Context;
+      DirectoryTree.Name :=
+        New_String(".mainframe.paned.directoryframe.directorytree");
+      for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+         if Index(ItemsList(I).Name, To_String(Query)) = 0 then
+            Detach(DirectoryTree, Positive'Image(I));
+         else
+            Move(DirectoryTree, Positive'Image(I), "{}", Positive'Image(I));
+         end if;
+      end loop;
       return 0;
    end Search_Command;
 
