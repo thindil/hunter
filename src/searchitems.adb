@@ -29,7 +29,6 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
-with MainWindow; use MainWindow;
 
 package body SearchItems is
 
@@ -71,12 +70,11 @@ package body SearchItems is
          Add
            (TextEntry,
             "Enter the name of the file or directory to search for");
-         Bind(TextEntry, "<Key>", "{Search}");
+         Bind(TextEntry, "<KeyRelease>", "{Search}");
          TextFrame.Interp := Get_Context;
          TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       else
-         Unbind(TextEntry, "<Key>");
          if Invoke(Button) /= "" then
             raise Program_Error with "Can't hide search text bar";
          end if;
@@ -102,18 +100,20 @@ package body SearchItems is
       TextEntry.Interp := Get_Context;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       Query := To_Unbounded_String(Get(TextEntry));
-      if Length(Query) = 0 then
-         UpdateDirectoryList(True);
-         return 0;
-      end if;
       DirectoryTree.Interp := Get_Context;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
+      if Length(Query) = 0 then
+         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+            Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
+         end loop;
+         return 0;
+      end if;
       for I in ItemsList.First_Index .. ItemsList.Last_Index loop
          if Index(ItemsList(I).Name, To_String(Query)) = 0 then
             Detach(DirectoryTree, Positive'Image(I));
          else
-            Move(DirectoryTree, Positive'Image(I), "{}", Positive'Image(I));
+            Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
          end if;
       end loop;
       return 0;
