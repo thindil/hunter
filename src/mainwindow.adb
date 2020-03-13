@@ -189,7 +189,7 @@ package body MainWindow is
          end if;
       end if;
       LoadDirectory(To_String(CurrentDirectory));
-      UpdateDirectoryList;
+      UpdateDirectoryList(True);
    end CreateMainWindow;
 
    procedure UpdateDirectoryList(Clear: Boolean := False) is
@@ -203,31 +203,35 @@ package body MainWindow is
          Delete
            (DirectoryTree,
             "[" & Widget_Image(DirectoryTree) & " children {} ]");
+         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+            case ItemsList(I).Size is
+               when -2 =>
+                  SizeString := To_Unbounded_String("->");
+               when -1 =>
+                  SizeString := To_Unbounded_String("unknown");
+               when others =>
+                  if not ItemsList(I).IsDirectory then
+                     SizeString :=
+                       To_Unbounded_String
+                         (CountFileSize(File_Size(ItemsList(I).Size)));
+                  else
+                     SizeString :=
+                       To_Unbounded_String(Integer'Image(ItemsList(I).Size));
+                  end if;
+            end case;
+            Insert
+              (DirectoryTree,
+               "{} end -id" & Positive'Image(I) & " -values [list """ &
+               To_String(ItemsList(I).Name) & """ """ &
+               Ada.Calendar.Formatting.Image(ItemsList(I).Modified) & """ """ &
+               To_String(SizeString) & """] -image " &
+               To_String(ItemsList(I).Image));
+         end loop;
+      else
+         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+            Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
+         end loop;
       end if;
-      for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-         case ItemsList(I).Size is
-            when -2 =>
-               SizeString := To_Unbounded_String("->");
-            when -1 =>
-               SizeString := To_Unbounded_String("unknown");
-            when others =>
-               if not ItemsList(I).IsDirectory then
-                  SizeString :=
-                    To_Unbounded_String
-                      (CountFileSize(File_Size(ItemsList(I).Size)));
-               else
-                  SizeString :=
-                    To_Unbounded_String(Integer'Image(ItemsList(I).Size));
-               end if;
-         end case;
-         Insert
-           (DirectoryTree,
-            "{} end -id" & Positive'Image(I) & " -values [list """ &
-            To_String(ItemsList(I).Name) & """ """ &
-            Ada.Calendar.Formatting.Image(ItemsList(I).Modified) & """ """ &
-            To_String(SizeString) & """] -image " &
-            To_String(ItemsList(I).Image));
-      end loop;
       if not ItemsList.Is_Empty then
          Selection_Set(DirectoryTree, "[list 1]");
       end if;
