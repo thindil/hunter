@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Handling; use Ada.Characters.Handling;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -110,7 +112,10 @@ package body SearchItems is
          return 0;
       end if;
       for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-         if Index(ItemsList(I).Name, To_String(Query)) = 0 then
+         if Index
+             (To_Lower(To_String(ItemsList(I).Name)),
+              To_Lower(To_String(Query))) =
+           0 then
             Detach(DirectoryTree, Positive'Image(I));
          else
             Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
