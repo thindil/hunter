@@ -107,7 +107,7 @@ package body Bookmarks.Commands is
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       Insert(TextEntry, "0", To_String(CurrentDirectory));
       Add(TextEntry, "Enter the selected destination");
-      Bind(TextEntry, "<KeyRelease>", "{}");
+      Unbind(TextEntry, "<KeyRelease>");
       TextFrame.Interp := Get_Context;
       TextFrame.Name := New_String(".mainframe.textframe");
       Tcl.Tk.Ada.Grid.Grid(Button);
