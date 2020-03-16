@@ -68,7 +68,7 @@ package body Bookmarks.Commands is
       CurrentDirectory := To_Unbounded_String(CArgv.Arg(Argv, 1));
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
-      return 0;
+      return TCL_OK;
    end GoToBookmark_Command;
 
    function SetDestination_Command
@@ -114,7 +114,7 @@ package body Bookmarks.Commands is
       Button.Name := New_String(".mainframe.textframe.closebutton");
       Tcl.Tk.Ada.Grid.Grid(Button);
       Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
-      return 0;
+      return TCL_OK;
    end SetDestination_Command;
 
    function GoToDestination_Command
@@ -148,7 +148,7 @@ package body Bookmarks.Commands is
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       if not Exists(Get(TextEntry)) then
          ShowMessage("Directory '" & Get(TextEntry) & "' doesn't exists.");
-         return 0;
+         return TCL_OK;
       end if;
       CurrentDirectory := To_Unbounded_String(Get(TextEntry));
       HideButton.Interp := Get_Context;
@@ -158,7 +158,7 @@ package body Bookmarks.Commands is
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
-      return 0;
+      return TCL_OK;
    end GoToDestination_Command;
 
    procedure AddCommands is

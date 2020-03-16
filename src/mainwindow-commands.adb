@@ -90,7 +90,7 @@ package body MainWindow.Commands is
       end if;
       Items_Sorting.Sort(ItemsList);
       UpdateDirectoryList(True);
-      return 0;
+      return TCL_OK;
    end Sort_Command;
 
    procedure Quit_Command(ClientData: in Integer) with
@@ -145,7 +145,7 @@ package body MainWindow.Commands is
       TextFrame.Interp := Get_Context;
       TextFrame.Name := New_String(".mainframe.textframe");
       Tcl.Tk.Ada.Grid.Grid_Remove(TextFrame);
-      return 0;
+      return TCL_OK;
    end Hide_Entry_Command;
 
    function Hide_Widget_Command
@@ -181,7 +181,7 @@ package body MainWindow.Commands is
          if Invoke(Button) /= "" then
             raise Program_Error with "Can't hide message";
          end if;
-         return 0;
+         return TCL_OK;
       end if;
       Frame.Name := New_String(".mainframe.textframe");
       if Winfo_Get(Frame, "ismapped") = "1" then
@@ -189,9 +189,9 @@ package body MainWindow.Commands is
          if Invoke(Button) /= "" then
             raise Program_Error with "Can't hide text entry";
          end if;
-         return 0;
+         return TCL_OK;
       end if;
-      return 0;
+      return TCL_OK;
    end Hide_Widget_Command;
 
    procedure AddCommands is

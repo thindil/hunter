@@ -81,7 +81,7 @@ package body SearchItems is
             raise Program_Error with "Can't hide search text bar";
          end if;
       end if;
-      return 0;
+      return TCL_OK;
    end Toggle_Search_Command;
 
    function Search_Command
@@ -109,7 +109,7 @@ package body SearchItems is
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
             Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
          end loop;
-         return 0;
+         return TCL_OK;
       end if;
       for I in ItemsList.First_Index .. ItemsList.Last_Index loop
          if Index
@@ -121,7 +121,7 @@ package body SearchItems is
             Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
          end if;
       end loop;
-      return 0;
+      return TCL_OK;
    end Search_Command;
 
    procedure CreateSearchUI is
