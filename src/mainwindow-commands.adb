@@ -24,6 +24,7 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
@@ -185,6 +186,9 @@ package body MainWindow.Commands is
       end if;
       Frame.Name := New_String(".mainframe.textframe");
       if Winfo_Get(Frame, "ismapped") = "1" then
+         Button.Name :=
+           New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
+         State(Button, "!selected");
          Button.Name := New_String(".mainframe.textframe.closebutton");
          if Invoke(Button) /= "" then
             raise Program_Error with "Can't hide text entry";
