@@ -91,7 +91,7 @@ package body Messages is
          TimerId := Null_Unbounded_String;
       end if;
       Grid_Remove(MessageFrame);
-      return 0;
+      return TCL_OK;
    end Close_Command;
 
    function Response_Command
@@ -140,7 +140,7 @@ package body Messages is
                   when others =>
                      LoadDirectory(To_String(CurrentDirectory));
                      UpdateDirectoryList(True);
-                     return 0;
+                     return TCL_OK;
                end;
                if NewAction = CLEARTRASH then
                   Tcl.Ada.Tcl_Eval
@@ -202,7 +202,7 @@ package body Messages is
          when others =>
             null;
       end case;
-      return 0;
+      return TCL_OK;
    end Response_Command;
 
    procedure CreateMessagesUI is
