@@ -32,6 +32,7 @@ with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
+with MainWindow; use MainWindow;
 
 package body SearchItems is
 
@@ -107,9 +108,7 @@ package body SearchItems is
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
       if Length(Query) = 0 then
-         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
-         end loop;
+         UpdateDirectoryList;
          return TCL_OK;
       end if;
       for I in ItemsList.First_Index .. ItemsList.Last_Index loop
