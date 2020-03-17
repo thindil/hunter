@@ -193,13 +193,20 @@ package body MainWindow is
    end CreateMainWindow;
 
    procedure UpdateDirectoryList(Clear: Boolean := False) is
-      SizeString: Unbounded_String;
+      SizeString, ItemIndex: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
    begin
       DirectoryTree.Interp := Get_Context;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
       if Clear then
+         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+            if Exists(DirectoryTree, Positive'Image(I)) = "1" then
+               Move
+                 (DirectoryTree, Positive'Image(I), "{}",
+                  Natural'Image(I - 1));
+            end if;
+         end loop;
          Delete
            (DirectoryTree,
             "[" & Widget_Image(DirectoryTree) & " children {} ]");
@@ -219,17 +226,27 @@ package body MainWindow is
                        To_Unbounded_String(Integer'Image(ItemsList(I).Size));
                   end if;
             end case;
-            Insert
-              (DirectoryTree,
-               "{} end -id" & Positive'Image(I) & " -values [list """ &
-               To_String(ItemsList(I).Name) & """ """ &
-               Ada.Calendar.Formatting.Image(ItemsList(I).Modified) & """ """ &
-               To_String(SizeString) & """] -image " &
-               To_String(ItemsList(I).Image));
+            ItemIndex :=
+              To_Unbounded_String
+                (Insert
+                   (DirectoryTree,
+                    "{} end -id" & Positive'Image(I) & " -values [list """ &
+                    To_String(ItemsList(I).Name) & """ """ &
+                    Ada.Calendar.Formatting.Image(ItemsList(I).Modified) &
+                    """ """ & To_String(SizeString) & """] -image " &
+                    To_String(ItemsList(I).Image)));
+            if not Settings.ShowHidden and then ItemsList(I).IsHidden then
+               Detach(DirectoryTree, To_String(ItemIndex));
+            end if;
          end loop;
       else
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
+            if (Settings.ShowHidden and ItemsList(I).IsHidden) or
+              not ItemsList(I).IsHidden then
+               Move
+                 (DirectoryTree, Positive'Image(I), "{}",
+                  Natural'Image(I - 1));
+            end if;
          end loop;
       end if;
       if not ItemsList.Is_Empty then
