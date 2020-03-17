@@ -100,6 +100,7 @@ package body SearchItems is
       TextEntry: Ttk_Entry;
       DirectoryTree: Ttk_Tree_View;
       Query: Unbounded_String;
+      Selected: Boolean := False;
    begin
       TextEntry.Interp := Get_Context;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
@@ -120,6 +121,10 @@ package body SearchItems is
          elsif (Settings.ShowHidden and ItemsList(I).IsHidden) or
            not ItemsList(I).IsHidden then
             Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
+            if not Selected then
+               Selection_Set(DirectoryTree, Positive'Image(I));
+               Selected := True;
+            end if;
          end if;
       end loop;
       return TCL_OK;
