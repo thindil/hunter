@@ -31,6 +31,7 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
+with Preferences; use Preferences;
 
 package body SearchItems is
 
@@ -117,7 +118,8 @@ package body SearchItems is
               To_Lower(To_String(Query))) =
            0 then
             Detach(DirectoryTree, Positive'Image(I));
-         else
+         elsif (Settings.ShowHidden and ItemsList(I).IsHidden) or
+           not ItemsList(I).IsHidden then
             Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
          end if;
       end loop;
