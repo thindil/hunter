@@ -28,6 +28,7 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
@@ -69,6 +70,9 @@ package body SearchItems is
       Button.Name := New_String(".mainframe.textframe.closebutton");
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid_Remove(Button);
+         Button.Name :=
+           New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
+         State(Button, "selected");
          Button.Name := New_String(".mainframe.textframe.okbutton");
          Tcl.Tk.Ada.Grid.Grid_Remove(Button);
          Add
@@ -82,6 +86,9 @@ package body SearchItems is
          if Invoke(Button) /= "" then
             raise Program_Error with "Can't hide search text bar";
          end if;
+         Button.Name :=
+           New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
+         State(Button, "!selected");
       end if;
       return TCL_OK;
    end Toggle_Search_Command;
