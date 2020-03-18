@@ -193,7 +193,7 @@ package body MainWindow is
    end CreateMainWindow;
 
    procedure UpdateDirectoryList(Clear: Boolean := False) is
-      SizeString, ItemIndex: Unbounded_String;
+      SizeString, ItemIndex, SelectedIndex: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
    begin
       DirectoryTree.Interp := Get_Context;
@@ -237,20 +237,24 @@ package body MainWindow is
                     To_String(ItemsList(I).Image)));
             if not Settings.ShowHidden and then ItemsList(I).IsHidden then
                Detach(DirectoryTree, To_String(ItemIndex));
+            elsif SelectedIndex = Null_Unbounded_String then
+               SelectedIndex := To_Unbounded_String(Positive'Image(I));
             end if;
          end loop;
       else
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
             if (Settings.ShowHidden and ItemsList(I).IsHidden) or
               not ItemsList(I).IsHidden then
-               Move
-                 (DirectoryTree, Positive'Image(I), "{}",
-                  Natural'Image(I - 1));
+               Move(DirectoryTree, Positive'Image(I), "{}", Positive'Image(I));
+               if SelectedIndex = Null_Unbounded_String then
+                  SelectedIndex := To_Unbounded_String(Positive'Image(I));
+               end if;
             end if;
          end loop;
       end if;
       if not ItemsList.Is_Empty then
-         Selection_Set(DirectoryTree, "[list 1]");
+         Selection_Set
+           (DirectoryTree, "[list " & To_String(SelectedIndex) & "]");
       end if;
    end UpdateDirectoryList;
 
