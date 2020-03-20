@@ -281,7 +281,10 @@ package body Toolbars is
         (ToolButton, "Execute selected program \[ALT+E\].",
          "media-playback-start");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".mainframe.toolbars.itemtoolbar.openbutton");
+      ToolButton :=
+        Create
+          (".mainframe.toolbars.itemtoolbar.openbutton",
+           "-command ActivateItem");
       SetButton
         (ToolButton, "Open selected file or directory \[ALT+O\]",
          "document-open");
