@@ -182,7 +182,10 @@ package body Toolbars is
         (ToolCheckButton, "Search for the file or directory \[ALT+F\]",
          "edit-find");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
-      ToolButton := Create(".mainframe.toolbars.actiontoolbar.selectbutton");
+      ToolButton :=
+        Create
+          (".mainframe.toolbars.actiontoolbar.selectbutton",
+           "-command ToggleSelection");
       SetButton
         (ToolButton,
          "Select or unselect all files and directories in currently selected directory. \[CTRL+A\]",
