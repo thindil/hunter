@@ -136,6 +136,7 @@ package body MainWindow is
         (Interp, "<Control-Delete>", "{tk_popup .deletemenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
+      Bind_To_Main_Window(Interp, "<Alt-o>", "{ActivateItem}");
       Tcl.Tk.Ada.Pack.Pack(MainFrame, "-expand true -fill both");
       CreateActionToolbar;
       CreateBookmarkMenu(True);
