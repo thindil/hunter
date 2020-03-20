@@ -199,23 +199,26 @@ package body Toolbars is
       Menu.Add(ButtonMenu, "command", "-label ""New file""");
       Menu.Add(ButtonMenu, "command", "-label ""New link""");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
-      ToolButton := Create(".mainframe.toolbars.actiontoolbar.renamebutton");
+      ToolCheckButton :=
+        Create(".mainframe.toolbars.actiontoolbar.renamebutton");
       SetButton
-        (ToolButton, "Rename selected file or directory \[CTRL+R\]",
+        (ToolCheckButton, "Rename selected file or directory \[CTRL+R\]",
          "document-save-as");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".mainframe.toolbars.actiontoolbar.copybutton");
+      Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
+      ToolCheckButton :=
+        Create(".mainframe.toolbars.actiontoolbar.copybutton");
       SetButton
-        (ToolButton,
+        (ToolCheckButton,
          "Copy selected files \[ALT+C\]. Pressed button means start copying currently selected files or directories. Press again to copy them.",
          "edit-copy");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".mainframe.toolbars.actiontoolbar.movebutton");
+      Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
+      ToolCheckButton :=
+        Create(".mainframe.toolbars.actiontoolbar.movebutton");
       SetButton
-        (ToolButton,
+        (ToolCheckButton,
          "Move selected files \[ALT+M\]. Pressed button means start moving currently selected files or directories. Press again to move them.",
          "edit-cut");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolMenuButton :=
         Create(".mainframe.toolbars.actiontoolbar.deletebutton");
       SetButton
@@ -241,10 +244,12 @@ package body Toolbars is
          "document-revert");
       Separator := Create(".mainframe.toolbars.actiontoolbar.separator3");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolButton := Create(".mainframe.toolbars.actiontoolbar.optionsbutton");
+      ToolCheckButton :=
+        Create(".mainframe.toolbars.actiontoolbar.optionsbutton");
       SetButton
-        (ToolButton, "Show the program preferences \[ALT+P\]", "configure");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+        (ToolCheckButton, "Show the program preferences \[ALT+P\]",
+         "configure");
+      Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolMenuButton :=
         Create(".mainframe.toolbars.actiontoolbar.aboutbutton");
       SetButton
