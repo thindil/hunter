@@ -37,6 +37,7 @@ with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with ActivateItems; use ActivateItems;
 with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
 with MainWindow.Commands; use MainWindow.Commands;
@@ -141,6 +142,7 @@ package body MainWindow is
       CreateItemToolbar;
       SetToolbars;
       CreateMessagesUI;
+      CreateActivateUI;
       Add(Paned, DirectoryFrame);
       Tcl.Tk.Ada.Pack.Pack(DirectoryXScroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
@@ -158,6 +160,8 @@ package body MainWindow is
       Column(DirectoryTree, "#0", "-stretch false -width 50");
       Column(DirectoryTree, "modified", "-stretch false");
       Column(DirectoryTree, "size", "-stretch false");
+      Bind(DirectoryTree, "<Double-1>", "ActivateItem");
+      Bind(DirectoryTree, "<Return>", "ActivateItem");
       Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid
