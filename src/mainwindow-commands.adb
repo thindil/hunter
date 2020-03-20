@@ -198,6 +198,41 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Hide_Widget_Command;
 
+   function Toggle_Selection_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* MainWindow-Commands/Toggle_Selection_Command
+      -- FUNCTION
+      -- Select all or deselect all items in directory view
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Toggle_Selection_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
+      DirectoryTree: Ttk_Tree_View;
+   begin
+      DirectoryTree.Interp := Get_Context;
+      DirectoryTree.Name :=
+        New_String(".mainframe.paned.directoryframe.directorytree");
+      if Selection(DirectoryTree) = Children(DirectoryTree, "{}") then
+         UpdateDirectoryList;
+      else
+         Selection_Set
+           (DirectoryTree, "[list " & Children(DirectoryTree, "{}") & " ]");
+      end if;
+      return TCL_OK;
+   end Toggle_Selection_Command;
+
    procedure AddCommands is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -214,6 +249,7 @@ package body MainWindow.Commands is
       AddCommand("Sort", Sort_Command'Access);
       AddCommand("HideEntry", Hide_Entry_Command'Access);
       AddCommand("HideWidget", Hide_Widget_Command'Access);
+      AddCommand("ToggleSelection", Toggle_Selection_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 
