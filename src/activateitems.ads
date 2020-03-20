@@ -13,12 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtk.GEntry; use Gtk.GEntry;
-with Gtk.Tool_Button; use Gtk.Tool_Button;
-with Gtk.Tree_Model; use Gtk.Tree_Model;
-with Gtk.Tree_View; use Gtk.Tree_View;
-with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
-
 -- ****h* Hunter/ActivateItems
 -- FUNCTION
 -- Provide code for open or execute selected files or directories.
@@ -26,19 +20,11 @@ with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
 package ActivateItems is
 -- ****
 
-   -- ****f* ActivateItems/ActivateFile
+   -- ****f* ActivateItems/CreateActivateUI
    -- FUNCTION
-   -- "Activate" selected file or directory. Action depends on what selected
-   -- item is. For example: it go to selected directory, opens text files in
-   -- editor and so on.
-   -- PARAMETERS
-   -- Self   - Gtk_Tree_View with list of current directory. Unused
-   -- Path   - Gtk_Tree_Path to the selected file or directory. Unused
-   -- Column - Gtk_Tree_Column which was clicked. Unused
+   -- Create activation UI
    -- SOURCE
-   procedure ActivateFile
-     (Self: access Gtk_Tree_View_Record'Class; Path: Gtk_Tree_Path;
-      Column: not null access Gtk_Tree_View_Column_Record'Class);
+   procedure CreateActivateUI;
    -- ****
 
    -- ****f* ActivateItems/StartOpenWith
@@ -48,37 +34,31 @@ package ActivateItems is
    -- PARAMETERS
    -- Self - Gtk_Tool_Button clicked. Unused. Can be null
    -- SOURCE
-   procedure StartOpenWith(Self: access Gtk_Tool_Button_Record'Class);
-   -- ****
-
-   -- ****f* ActivateItems/OpenItemWith
-   -- FUNCTION
-   -- Open selected item or directory with entered by user command. That
-   -- command can have argumets either.
-   -- PARAMETERS
-   -- Self     - Text entry with command to use
-   -- Icon_Pos - Position of text entry icon which was pressed or if key
-   --            Enter was pressed, simulate pressing proper icon
-   -- SOURCE
-   procedure OpenItemWith
-     (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position);
-   -- ****
-
-   -- ****f* ActivateItems/ExecuteFile
-   -- FUNCTION
-   -- Execute selected file. That file must be graphical application or
-   -- all output will be redirected to terminal (invisible to user).
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
-   -- SOURCE
-   procedure ExecuteFile(Self: access Gtk_Tool_Button_Record'Class);
-   -- ****
-
-   -- ****f* ActivateItems/CreateActivateUI
-   -- FUNCTION
-   -- Create activation UI
-   -- SOURCE
-   procedure CreateActivateUI;
-   -- ****
+--   procedure StartOpenWith(Self: access Gtk_Tool_Button_Record'Class);
+--   -- ****
+--
+--   -- ****f* ActivateItems/OpenItemWith
+--   -- FUNCTION
+--   -- Open selected item or directory with entered by user command. That
+--   -- command can have argumets either.
+--   -- PARAMETERS
+--   -- Self     - Text entry with command to use
+--   -- Icon_Pos - Position of text entry icon which was pressed or if key
+--   --            Enter was pressed, simulate pressing proper icon
+--   -- SOURCE
+--   procedure OpenItemWith
+--     (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position);
+--   -- ****
+--
+--   -- ****f* ActivateItems/ExecuteFile
+--   -- FUNCTION
+--   -- Execute selected file. That file must be graphical application or
+--   -- all output will be redirected to terminal (invisible to user).
+--   -- PARAMETERS
+--   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
+--   -- SOURCE
+--   procedure ExecuteFile(Self: access Gtk_Tool_Button_Record'Class);
+--   -- ****
+--
 
 end ActivateItems;
