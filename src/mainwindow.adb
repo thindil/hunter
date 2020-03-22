@@ -235,11 +235,11 @@ package body MainWindow is
               To_Unbounded_String
                 (Insert
                    (DirectoryTree,
-                    "{} end -id" & Positive'Image(I) & " -values [list """ &
-                    To_String(ItemsList(I).Name) & """ """ &
+                    "{} end -id" & Positive'Image(I) & " -values [list {" &
+                    To_String(ItemsList(I).Name) & "} {" &
                     Ada.Calendar.Formatting.Image(ItemsList(I).Modified) &
-                    """ """ & To_String(SizeString) & """] -image " &
-                    To_String(ItemsList(I).Image)));
+                    "} {" & To_String(SizeString) & "}] -image {" &
+                    To_String(ItemsList(I).Image) & "}"));
             if not Settings.ShowHidden and then ItemsList(I).IsHidden then
                Detach(DirectoryTree, To_String(ItemIndex));
             elsif SelectedIndex = Null_Unbounded_String then
