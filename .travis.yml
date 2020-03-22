@@ -27,7 +27,7 @@ deploy:
   api-key: $KEY
   file: hunter-development.tar.gz
   name: Continuous Integration build
-  body: Development build of $TRAVIS_BRANCH ($TRAVIS_COMMIT) built by Travis CI on $(date +'%F %T %Z').
+  body: Development build of $TRAVIS_BRANCH built by Travis CI.
   prerelease: true
   overwrite: true
   target_commitish: $TRAVIS_COMMIT
