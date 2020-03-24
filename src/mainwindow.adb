@@ -260,6 +260,9 @@ package body MainWindow is
       if not ItemsList.Is_Empty then
          Selection_Set
            (DirectoryTree, "[list " & To_String(SelectedIndex) & "]");
+         Tcl.Tk.Ada.Widgets.Focus(DirectoryTree);
+         Tcl.Tk.Ada.Widgets.TtkTreeView.Focus
+           (DirectoryTree, To_String(SelectedIndex));
       end if;
    end UpdateDirectoryList;
 
