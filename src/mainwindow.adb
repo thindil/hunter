@@ -204,7 +204,7 @@ package body MainWindow is
    end CreateMainWindow;
 
    procedure UpdateDirectoryList(Clear: Boolean := False) is
-      SizeString, ItemIndex, SelectedIndex: Unbounded_String;
+      SizeString, ItemIndex, SelectedIndex, Path: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
       PathButtonsFrame: Ttk_Frame;
       Tokens: Slice_Set;
@@ -276,12 +276,15 @@ package body MainWindow is
                  Create
                    (Widget_Image(PathButtonsFrame) & ".button1",
                     "-text {/} -command {GoToBookmark {/}}");
+               Path := To_Unbounded_String("/");
             elsif Slice(Tokens, I) /= "" then
+               Append(Path, Slice(Tokens, I) & "/");
                PathButton :=
                  Create
                    (Widget_Image(PathButtonsFrame) & ".button" &
                     Trim(Slice_Number'Image(I), Both),
-                    "-text {" & Slice(Tokens, I) & "}");
+                    "-text {" & Slice(Tokens, I) &
+                    "} -command {GoToBookmark {" & To_String(Path) & "}}");
             end if;
             Tcl.Tk.Ada.Grid.Grid
               (PathButton, "-row 0 -column" & Natural'Image(Natural(I) - 1));
