@@ -17,6 +17,9 @@ with Ada.Calendar.Formatting;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with GNAT.String_Split; use GNAT.String_Split;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CHelper; use CHelper;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
@@ -97,6 +100,8 @@ package body MainWindow is
       TextEntry: constant Ttk_Entry :=
         Create(".mainframe.textframe.textentry");
       Button: Ttk_Button;
+      PathButtonsFrame: constant Ttk_Frame :=
+        Create(".mainframe.paned.directoryframe.pathframe");
       pragma Unreferenced(Image, ProgressBar);
    begin
       AddCommands;
@@ -145,6 +150,7 @@ package body MainWindow is
       CreateMessagesUI;
       CreateActivateUI;
       Add(Paned, DirectoryFrame);
+      Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");
       Tcl.Tk.Ada.Pack.Pack(DirectoryXScroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
       Heading
@@ -200,10 +206,16 @@ package body MainWindow is
    procedure UpdateDirectoryList(Clear: Boolean := False) is
       SizeString, ItemIndex, SelectedIndex: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
+      PathButtonsFrame: Ttk_Frame;
+      Tokens: Slice_Set;
+      PathButton: Ttk_Button;
    begin
       DirectoryTree.Interp := Get_Context;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
+      PathButtonsFrame.Interp := Get_Context;
+      PathButtonsFrame.Name :=
+        New_String(".mainframe.paned.directoryframe.pathframe");
       if Clear then
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
             if Exists(DirectoryTree, Positive'Image(I)) = "1" then
@@ -245,6 +257,34 @@ package body MainWindow is
             elsif SelectedIndex = Null_Unbounded_String then
                SelectedIndex := To_Unbounded_String(Positive'Image(I));
             end if;
+         end loop;
+         -- Remove old path buttons
+         Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
+         if Slice(Tokens, 1) /= "" then
+            for I in 1 .. Slice_Count(Tokens) loop
+               PathButton.Interp := PathButtonsFrame.Interp;
+               PathButton.Name := New_String(Slice(Tokens, I));
+               Grid_Forget(PathButton);
+               Destroy(PathButton);
+            end loop;
+         end if;
+         -- Add new path buttons
+         Create(Tokens, To_String(CurrentDirectory), "/");
+         for I in 1 .. Slice_Count(Tokens) loop
+            if I = 1 then
+               PathButton :=
+                 Create
+                   (Widget_Image(PathButtonsFrame) & ".button1",
+                    "-text {/} -command {GoToBookmark {/}}");
+            elsif Slice(Tokens, I) /= "" then
+               PathButton :=
+                 Create
+                   (Widget_Image(PathButtonsFrame) & ".button" &
+                    Trim(Slice_Number'Image(I), Both),
+                    "-text {" & Slice(Tokens, I) & "}");
+            end if;
+            Tcl.Tk.Ada.Grid.Grid
+              (PathButton, "-row 0 -column" & Natural'Image(Natural(I) - 1));
          end loop;
       else
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
