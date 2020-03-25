@@ -127,9 +127,9 @@ package body MainWindow is
       MainWindow := Get_Main_Window(Interp);
       Wm_Set(MainWindow, "title", "Hunter");
       Wm_Set
-        (MainWindow, "maxsize",
-         Positive'Image(Settings.WindowWidth) &
-         Positive'Image(Settings.WindowHeight));
+        (MainWindow, "geometry",
+         Trim(Positive'Image(Settings.WindowWidth), Both) & "x" &
+         Trim(Positive'Image(Settings.WindowHeight), Both) & "+0+0");
       Icon := Create("logo", "-file """ & To_String(IconName) & """");
       Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
       Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
