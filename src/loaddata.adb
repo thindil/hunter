@@ -17,6 +17,11 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Maps.Constants; use Ada.Strings.Maps.Constants;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Tcl.Ada; use Tcl.Ada;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Busy;
+with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Utils; use Utils;
 --with Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
@@ -187,6 +192,8 @@ package body LoadData is
       Last: Natural;
       FileName: String(1 .. 1024);
    begin
+      Tcl.Tk.Ada.Busy.Busy(Get_Main_Window(Get_Context));
+      Tcl_Eval(Get_Context, "update");
       ItemsList.Clear;
       if not Is_Read_Accessible_File(DirectoryName) then
          return;
@@ -201,6 +208,7 @@ package body LoadData is
       end loop;
       Close(Directory);
       Items_Sorting.Sort(ItemsList);
+      Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
    end LoadDirectory;
 
 --   function SortFiles
