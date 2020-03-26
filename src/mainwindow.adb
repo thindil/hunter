@@ -47,6 +47,7 @@ with MainWindow.Commands; use MainWindow.Commands;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with SearchItems; use SearchItems;
+with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
 
@@ -201,6 +202,7 @@ package body MainWindow is
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
+      CreateShowItemsUI;
    end CreateMainWindow;
 
    procedure UpdateDirectoryList(Clear: Boolean := False) is
