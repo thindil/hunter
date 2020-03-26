@@ -38,6 +38,7 @@ with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkProgressBar; use Tcl.Tk.Ada.Widgets.TtkProgressBar;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with ActivateItems; use ActivateItems;
@@ -211,6 +212,7 @@ package body MainWindow is
       PathButtonsFrame: Ttk_Frame;
       Tokens: Slice_Set;
       PathButton: Ttk_Button;
+      Row, Width, Column: Natural := 0;
    begin
       DirectoryTree.Interp := Get_Context;
       DirectoryTree.Name :=
@@ -288,8 +290,18 @@ package body MainWindow is
                     "-text {" & Slice(Tokens, I) &
                     "} -command {GoToBookmark {" & To_String(Path) & "}}");
             end if;
+            Width := Width + Positive'Value(Winfo_Get(PathButton, "reqwidth"));
+            if Width >
+              Positive'Value(Winfo_Get(PathButtonsFrame, "width")) then
+               Row := Row + 1;
+               Width := 0;
+               Column := 0;
+            end if;
             Tcl.Tk.Ada.Grid.Grid
-              (PathButton, "-row 0 -column" & Natural'Image(Natural(I) - 1));
+              (PathButton,
+               "-row" & Natural'Image(Row) & " -column" &
+               Natural'Image(Column));
+            Column := Column + 1;
          end loop;
       else
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
