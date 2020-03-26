@@ -15,6 +15,7 @@
 
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
@@ -239,6 +240,58 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Toggle_Selection_Command;
 
+   function Arrange_Path_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* MainWindow-Commands/Arrange_Path_Command
+      -- FUNCTION
+      -- Arrange path buttons when they window were resized
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command
+      -- SOURCE
+   function Arrange_Path_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc);
+      -- ****
+      PathButtonsFrame: Ttk_Frame;
+      Buttons: Unbounded_String;
+      Tokens: Slice_Set;
+      Row, Column, Width: Natural := 0;
+      Button: Ttk_Button;
+   begin
+      PathButtonsFrame.Interp := Get_Context;
+      PathButtonsFrame.Name := New_String(CArgv.Arg(Argv, 1));
+      Buttons :=
+        To_Unbounded_String(Tcl.Tk.Ada.Grid.Grid_Slaves(PathButtonsFrame));
+      if Buttons = Null_Unbounded_String then
+         return TCL_OK;
+      end if;
+      Create(Tokens, To_String(Buttons), " ");
+      Button.Interp := PathButtonsFrame.Interp;
+      for I in reverse 1 .. Slice_Count(Tokens) loop
+         Button.Name := New_String(Slice(Tokens, I));
+         Width := Width + Positive'Value(Winfo_Get(Button, "width"));
+         if Width > Positive'Value(CArgv.Arg(Argv, 2)) then
+            Row := Row + 1;
+            Width := 0;
+            Column := 0;
+         end if;
+         Tcl.Tk.Ada.Grid.Grid_Configure
+           (Button,
+            "-row" & Natural'Image(Row) & " -column" & Natural'Image(Column));
+         Column := Column + 1;
+      end loop;
+      return TCL_OK;
+   end Arrange_Path_Command;
+
    procedure AddCommands is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -256,6 +309,7 @@ package body MainWindow.Commands is
       AddCommand("HideEntry", Hide_Entry_Command'Access);
       AddCommand("HideWidget", Hide_Widget_Command'Access);
       AddCommand("ToggleSelection", Toggle_Selection_Command'Access);
+      AddCommand("ArrangePath", Arrange_Path_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 
