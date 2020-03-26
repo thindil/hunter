@@ -20,6 +20,8 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
@@ -107,6 +109,10 @@ package body MainWindow.Commands is
       pragma Unreferenced(ClientData);
       -- ****
    begin
+      Settings.WindowWidth :=
+        Positive'Value(Winfo_Get(Get_Main_Window(Get_Context), "width"));
+      Settings.WindowHeight :=
+        Positive'Value(Winfo_Get(Get_Main_Window(Get_Context), "height"));
       SavePreferences;
       if Settings.ClearTrashOnExit then
          NewAction := CLEARTRASH;
