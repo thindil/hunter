@@ -215,8 +215,7 @@ package body MainWindow is
       Tokens: Slice_Set;
       PathButton: Ttk_Button;
       Row, Width, Column: Natural := 0;
-      ButtonsAmount: Slice_Number;
-      Shortcut: Unbounded_String;
+      Shortcut, Tooltip: Unbounded_String;
    begin
       DirectoryTree.Interp := Get_Context;
       DirectoryTree.Name :=
@@ -278,8 +277,7 @@ package body MainWindow is
          end if;
          -- Add new path buttons
          Create(Tokens, To_String(CurrentDirectory), "/");
-         ButtonsAmount := Slice_Count(Tokens);
-         for I in 1 .. ButtonsAmount loop
+         for I in 1 .. Slice_Count(Tokens) loop
             if I = 1 then
                PathButton :=
                  Create
@@ -307,18 +305,31 @@ package body MainWindow is
                "-row" & Natural'Image(Row) & " -column" &
                Natural'Image(Column));
             Column := Column + 1;
-            if I = ButtonsAmount then
-               Shortcut := To_Unbounded_String("Alt-u");
-            elsif I = ButtonsAmount - 1 then
+         end loop;
+         Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
+         for I in reverse 1 .. Slice_Count(Tokens) loop
+            PathButton.Interp := PathButtonsFrame.Interp;
+            PathButton.Name := New_String(Slice(Tokens, I));
+            if I = 1 then
                Shortcut := To_Unbounded_String("Alt-r");
-            elsif I < 10 then
+               Tooltip :=
+                 To_Unbounded_String("Reload the current directory \[Alt-r\]");
+            elsif I = 2 then
+               Shortcut := To_Unbounded_String("Alt-u");
+               Tooltip :=
+                 To_Unbounded_String("Go to upper directory \[Alt-u\]");
+            elsif I < 11 then
                Shortcut :=
-                 To_Unbounded_String("Alt-KP_" & Slice_Number'Image(I)(2));
+                 To_Unbounded_String("Alt-KP_" & Slice_Number'Image(I - 2)(2));
+               Tooltip :=
+                 To_Unbounded_String
+                   ("Go to this directory \[Alt-KP" &
+                    Slice_Number'Image(I - 2)(2) & "\]");
             end if;
             Bind_To_Main_Window
               (PathButton.Interp, "<" & To_String(Shortcut) & ">",
                "{puts {hello} }");
-            Add(PathButton, "\[" & To_String(Shortcut) & "\]");
+            Add(PathButton, To_String(Tooltip));
          end loop;
       else
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
