@@ -172,6 +172,7 @@ package body MainWindow is
       Column(DirectoryTree, "size", "-stretch false");
       Bind(DirectoryTree, "<Double-1>", "ActivateItem");
       Bind(DirectoryTree, "<Return>", "ActivateItem");
+      Bind(DirectoryTree, "<<TreeviewSelect>>", "ShowSelected");
       Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid
