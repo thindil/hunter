@@ -13,10 +13,19 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.String_Split; use GNAT.String_Split;
+with CArgv;
+with Tcl; use Tcl;
+with Tcl.Ada;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
+with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with LoadData; use LoadData;
 with Preferences; use Preferences;
+with MainWindow; use MainWindow;
 --with Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones;
 --with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
@@ -24,52 +33,11 @@ with Preferences; use Preferences;
 --with Ada.Directories; use Ada.Directories;
 --with Ada.Environment_Variables; use Ada.Environment_Variables;
 --with Ada.Strings; use Ada.Strings;
---with Ada.Strings.Fixed; use Ada.Strings.Fixed;
---with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --with Ada.Text_IO; use Ada.Text_IO;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 --with GNAT.Expect; use GNAT.Expect;
 --with GNAT.OS_Lib; use GNAT.OS_Lib;
 --with GNAT.String_Split; use GNAT.String_Split;
---with Gtk.Box; use Gtk.Box;
---with Gtk.Button; use Gtk.Button;
---with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
---with Gtk.Cell_Renderer_Pixbuf; use Gtk.Cell_Renderer_Pixbuf;
---with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
---with Gtk.Check_Button; use Gtk.Check_Button;
---with Gtk.Enums; use Gtk.Enums;
---with Gtk.Flow_Box; use Gtk.Flow_Box;
---with Gtk.Frame; use Gtk.Frame;
---with Gtk.Grid; use Gtk.Grid;
---with Gtk.Image; use Gtk.Image;
---with Gtk.Label; use Gtk.Label;
---with Gtk.List_Store; use Gtk.List_Store;
---with Gtk.Menu_Button; use Gtk.Menu_Button;
---with Gtk.Paned; use Gtk.Paned;
---with Gtk.Radio_Tool_Button; use Gtk.Radio_Tool_Button;
---with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
---with Gtk.Text_Buffer; use Gtk.Text_Buffer;
---with Gtk.Text_Iter; use Gtk.Text_Iter;
---with Gtk.Text_View; use Gtk.Text_View;
---with Gtk.Text_Tag; use Gtk.Text_Tag;
---with Gtk.Text_Tag_Table; use Gtk.Text_Tag_Table;
---with Gtk.Tree_Model; use Gtk.Tree_Model;
---with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
---with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
---with Gtk.Tree_View; use Gtk.Tree_View;
---with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
---with Gtk.Toggle_Button; use Gtk.Toggle_Button;
---with Gtk.Toggle_Tool_Button; use Gtk.Toggle_Tool_Button;
---with Gtk.Toolbar; use Gtk.Toolbar;
---with Gtk.Widget; use Gtk.Widget;
---with Gdk.Pixbuf; use Gdk.Pixbuf;
---with Gtkada.Intl; use Gtkada.Intl;
---with Glib; use Glib;
---with Glib.Error; use Glib.Error;
---with Glib.Object; use Glib.Object;
---with Glib.Properties; use Glib.Properties;
---with Glib.Values; use Glib.Values;
---with Pango.Enums; use Pango.Enums;
 --with Bookmarks; use Bookmarks;
 --with CopyItems; use CopyItems;
 --with CreateItems; use CreateItems;
@@ -84,11 +52,59 @@ with Preferences; use Preferences;
 
 package body ShowItems is
 
+   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
+
+   function Show_Selected_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+   function Show_Selected_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      DirectoryTree: Ttk_Tree_View;
+      Tokens: Slice_Set;
+      Items: Unbounded_String;
+   begin
+      DirectoryTree.Interp := Get_Context;
+      DirectoryTree.Name :=
+        New_String(".mainframe.paned.directoryframe.directorytree");
+      SelectedItems.Clear;
+      Items := To_Unbounded_String(Selection(DirectoryTree));
+      if Items = Null_Unbounded_String then
+         return TCL_OK;
+      end if;
+      Create(Tokens, To_String(Items), " ");
+      for I in 1 .. Slice_Count(Tokens) loop
+         SelectedItems.Append
+           (ItemsList(Positive'Value(Slice(Tokens, I))).Name);
+      end loop;
+      if not Settings.ShowPreview then
+         return TCL_OK;
+      end if;
+      return TCL_OK;
+   end Show_Selected_Command;
+
    procedure CreateShowItemsUI is
-      Paned: Ttk_PanedWindow;
       PreviewFrame: constant Ttk_Frame :=
         Create(".mainframe.paned.previewframe");
+      Paned: Ttk_PanedWindow;
+      procedure AddCommand
+        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
+         Command: Tcl.Tcl_Command;
+      begin
+         Command :=
+           CreateCommands.Tcl_CreateCommand
+             (Get_Context, Name, AdaCommand, 0, null);
+         if Command = null then
+            raise Program_Error with "Can't add command " & Name;
+         end if;
+      end AddCommand;
    begin
+      AddCommand("ShowSelected", Show_Selected_Command'Access);
       if Settings.ShowPreview then
          Paned.Interp := PreviewFrame.Interp;
          Paned.Name := New_String(".mainframe.paned");
@@ -96,22 +112,6 @@ package body ShowItems is
       end if;
    end CreateShowItemsUI;
 
-   -- ****if* ShowItems/GetSelectedItems
-   -- FUNCTION
-   -- Add selected file or directory to SelectedItems list.
-   -- PARAMETERS
-   -- Model - Gtk_Tree_Model with content of currently selected directory
-   -- Path  - Gtk_Tree_Path to selected element in Model
-   -- Iter  - Gtk_Tree_Iter to selected element in Model
-   -- SOURCE
---   procedure GetSelectedItems
---     (Model: Gtk_Tree_Model; Path: Gtk_Tree_Path; Iter: Gtk_Tree_Iter) is
---      pragma Unreferenced(Path);
---      -- ****
---   begin
---      SelectedItems.Append(To_Unbounded_String(Get_String(Model, Iter, 6)));
---   end GetSelectedItems;
---
 --   -- ****if* ShowItems/ShowItemInfo
 --   -- FUNCTION
 --   -- Show detailed information (name, size, modification date, etc) about
