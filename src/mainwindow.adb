@@ -215,6 +215,8 @@ package body MainWindow is
       Tokens: Slice_Set;
       PathButton: Ttk_Button;
       Row, Width, Column: Natural := 0;
+      ButtonsAmount: Slice_Number;
+      Shortcut: Unbounded_String;
    begin
       DirectoryTree.Interp := Get_Context;
       DirectoryTree.Name :=
@@ -276,7 +278,8 @@ package body MainWindow is
          end if;
          -- Add new path buttons
          Create(Tokens, To_String(CurrentDirectory), "/");
-         for I in 1 .. Slice_Count(Tokens) loop
+         ButtonsAmount := Slice_Count(Tokens);
+         for I in 1 .. ButtonsAmount loop
             if I = 1 then
                PathButton :=
                  Create
@@ -304,6 +307,18 @@ package body MainWindow is
                "-row" & Natural'Image(Row) & " -column" &
                Natural'Image(Column));
             Column := Column + 1;
+            if I = ButtonsAmount then
+               Shortcut := To_Unbounded_String("Alt-u");
+            elsif I = ButtonsAmount - 1 then
+               Shortcut := To_Unbounded_String("Alt-r");
+            elsif I < 10 then
+               Shortcut :=
+                 To_Unbounded_String("Alt-KP_" & Slice_Number'Image(I)(2));
+            end if;
+            Bind_To_Main_Window
+              (PathButton.Interp, "<" & To_String(Shortcut) & ">",
+               "{puts {hello} }");
+            Add(PathButton, "\[" & To_String(Shortcut) & "\]");
          end loop;
       else
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
