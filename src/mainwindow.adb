@@ -328,7 +328,7 @@ package body MainWindow is
             end if;
             Bind_To_Main_Window
               (PathButton.Interp, "<" & To_String(Shortcut) & ">",
-               "{puts {hello} }");
+               "{" & Widget_Image(PathButton) & " invoke}");
             Add(PathButton, To_String(Tooltip));
          end loop;
       else
