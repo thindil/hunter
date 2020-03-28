@@ -15,17 +15,20 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
+with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with LoadData; use LoadData;
-with Preferences; use Preferences;
 with MainWindow; use MainWindow;
+with Preferences; use Preferences;
 --with Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones;
 --with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
@@ -36,7 +39,6 @@ with MainWindow; use MainWindow;
 --with Ada.Text_IO; use Ada.Text_IO;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 --with GNAT.Expect; use GNAT.Expect;
---with GNAT.OS_Lib; use GNAT.OS_Lib;
 --with GNAT.String_Split; use GNAT.String_Split;
 --with Bookmarks; use Bookmarks;
 --with CopyItems; use CopyItems;
@@ -80,10 +82,15 @@ package body ShowItems is
       Create(Tokens, To_String(Items), " ");
       for I in 1 .. Slice_Count(Tokens) loop
          SelectedItems.Append
-           (ItemsList(Positive'Value(Slice(Tokens, I))).Name);
+           (CurrentDirectory & "/" &
+            ItemsList(Positive'Value(Slice(Tokens, I))).Name);
       end loop;
-      if not Settings.ShowPreview then
+      if not Settings.ShowPreview or SelectedItems(1) = CurrentSelected then
          return TCL_OK;
+      end if;
+      CurrentSelected := SelectedItems(1);
+      if Is_Directory(To_String(CurrentSelected)) then
+         LoadDirectory(To_String(CurrentSelected), True);
       end if;
       return TCL_OK;
    end Show_Selected_Command;
@@ -91,6 +98,23 @@ package body ShowItems is
    procedure CreateShowItemsUI is
       PreviewFrame: constant Ttk_Frame :=
         Create(".mainframe.paned.previewframe");
+      PreviewXScroll: constant Ttk_Scrollbar :=
+        Create
+          (Widget_Image(PreviewFrame) & ".scrollx",
+           "-orient horizontal -command [list " & Widget_Image(PreviewFrame) &
+           ".directorytree xview]");
+      PreviewYScroll: constant Ttk_Scrollbar :=
+        Create
+          (Widget_Image(PreviewFrame) & ".scrolly",
+           "-orient vertical -command [list " & Widget_Image(PreviewFrame) &
+           ".directorytree yview]");
+      PreviewTree: constant Ttk_Tree_View :=
+        Create
+          (Widget_Image(PreviewFrame) & ".directorytree",
+           "-columns [list name modified size] -xscrollcommand """ &
+           Widget_Image(PreviewXScroll) & " set"" -yscrollcommand """ &
+           Widget_Image(PreviewYScroll) & " set""");
+      pragma Unreferenced(PreviewTree);
       Paned: Ttk_PanedWindow;
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
