@@ -21,6 +21,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
@@ -54,7 +55,20 @@ with Preferences; use Preferences;
 
 package body ShowItems is
 
+   PreviewFrame: Ttk_Frame;
+   PreviewXScroll: Ttk_Scrollbar;
+   PreviewYScroll: Ttk_Scrollbar;
+   PreviewTree: Ttk_Tree_View;
+
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
+
+   procedure PreviewDirectory is
+   begin
+      LoadDirectory(To_String(CurrentSelected), True);
+      Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
+      Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack(PreviewTree, "-side top -fill both -expand true");
+   end PreviewDirectory;
 
    function Show_Selected_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -90,31 +104,12 @@ package body ShowItems is
       end if;
       CurrentSelected := SelectedItems(1);
       if Is_Directory(To_String(CurrentSelected)) then
-         LoadDirectory(To_String(CurrentSelected), True);
+         PreviewDirectory;
       end if;
       return TCL_OK;
    end Show_Selected_Command;
 
    procedure CreateShowItemsUI is
-      PreviewFrame: constant Ttk_Frame :=
-        Create(".mainframe.paned.previewframe");
-      PreviewXScroll: constant Ttk_Scrollbar :=
-        Create
-          (Widget_Image(PreviewFrame) & ".scrollx",
-           "-orient horizontal -command [list " & Widget_Image(PreviewFrame) &
-           ".directorytree xview]");
-      PreviewYScroll: constant Ttk_Scrollbar :=
-        Create
-          (Widget_Image(PreviewFrame) & ".scrolly",
-           "-orient vertical -command [list " & Widget_Image(PreviewFrame) &
-           ".directorytree yview]");
-      PreviewTree: constant Ttk_Tree_View :=
-        Create
-          (Widget_Image(PreviewFrame) & ".directorytree",
-           "-columns [list name modified size] -xscrollcommand """ &
-           Widget_Image(PreviewXScroll) & " set"" -yscrollcommand """ &
-           Widget_Image(PreviewYScroll) & " set""");
-      pragma Unreferenced(PreviewTree);
       Paned: Ttk_PanedWindow;
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -128,6 +123,27 @@ package body ShowItems is
          end if;
       end AddCommand;
    begin
+      PreviewFrame := Create(".mainframe.paned.previewframe");
+      PreviewXScroll :=
+        Create
+          (Widget_Image(PreviewFrame) & ".scrollx",
+           "-orient horizontal -command [list " & Widget_Image(PreviewFrame) &
+           ".directorytree xview]");
+      PreviewYScroll :=
+        Create
+          (Widget_Image(PreviewFrame) & ".scrolly",
+           "-orient vertical -command [list " & Widget_Image(PreviewFrame) &
+           ".directorytree yview]");
+      PreviewTree :=
+        Create
+          (Widget_Image(PreviewFrame) & ".directorytree",
+           "-columns [list name] -xscrollcommand """ &
+           Widget_Image(PreviewXScroll) & " set"" -yscrollcommand """ &
+           Widget_Image(PreviewYScroll) & " set""");
+      Heading
+        (PreviewTree, "name",
+         "-text {Name} -image {arrow-down} -command {Sort previewname}");
+      Column(PreviewTree, "#0", "-stretch false -width 50");
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
