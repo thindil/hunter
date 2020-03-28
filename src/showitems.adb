@@ -129,11 +129,9 @@ package body ShowItems is
       end AddCommand;
    begin
       AddCommand("ShowSelected", Show_Selected_Command'Access);
-      if Settings.ShowPreview then
-         Paned.Interp := PreviewFrame.Interp;
-         Paned.Name := New_String(".mainframe.paned");
-         Add(Paned, PreviewFrame, "-weight 20");
-      end if;
+      Paned.Interp := PreviewFrame.Interp;
+      Paned.Name := New_String(".mainframe.paned");
+      Add(Paned, PreviewFrame, "-weight 20");
    end CreateShowItemsUI;
 
 --   -- ****if* ShowItems/ShowItemInfo
