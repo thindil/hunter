@@ -93,18 +93,18 @@ package MainWindow is
    SelectedItems: UnboundedString_Container.Vector;
    -- ****
 
+   -- ****v* MainWindow/CurrentSelected
+   -- FUNCTION
+   -- Full path to currently selected file or directory
+   -- SOURCE
+   CurrentSelected: Unbounded_String;
+   -- ****
+
    -- ****v* MainWindow/Setting
    -- FUNCTION
    -- If true, the program is in the setting mode
    -- SOURCE
 --   Setting: Boolean;
-   -- ****
-
-   -- ****v* MainWindow/CurrentSelected
-   -- FUNCTION
-   -- Full path to currently selected file or directory
-   -- SOURCE
---   CurrentSelected: Unbounded_String;
    -- ****
 
    -- ****v* MainWindow/DestinationPath

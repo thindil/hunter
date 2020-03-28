@@ -29,29 +29,6 @@ with Utils; use Utils;
 --with Ada.Environment_Variables;
 --with Ada.Text_IO; use Ada.Text_IO;
 --with GNAT.String_Split; use GNAT.String_Split;
---with Gtk.Box; use Gtk.Box;
---with Gtk.Bin; use Gtk.Bin;
---with Gtk.Button; use Gtk.Button;
---with Gtk.Enums; use Gtk.Enums;
---with Gtk.Flow_Box; use Gtk.Flow_Box;
---with Gtk.Flow_Box_Child; use Gtk.Flow_Box_Child;
---with Gtk.Image; use Gtk.Image;
---with Gtk.Main; use Gtk.Main;
---with Gtk.Paned; use Gtk.Paned;
---with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
---with Gtk.Stack; use Gtk.Stack;
---with Gtk.Text_Buffer; use Gtk.Text_Buffer;
---with Gtk.Text_View; use Gtk.Text_View;
---with Gtk.Toolbar; use Gtk.Toolbar;
---with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
---with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
---with Gtk.Tree_View; use Gtk.Tree_View;
---with Gtk.Widget; use Gtk.Widget;
---with Gtk.Window; use Gtk.Window;
---with Gtkada.Intl; use Gtkada.Intl;
---with Gdk; use Gdk;
---with Gdk.Cursor; use Gdk.Cursor;
---with Gdk.Window; use Gdk.Window;
 --with MainWindow; use MainWindow;
 --with Preferences; use Preferences;
 --with RefreshData; use RefreshData;
@@ -98,7 +75,7 @@ package body LoadData is
       end case;
    end "<";
 
-   procedure AddItem(Path: String) is
+   procedure AddItem(Path: String; List: in out Items_Container.Vector) is
       FileName: constant String := Simple_Name(Path);
       Size: File_Size;
       SubDirectory: Dir_Type;
@@ -184,10 +161,10 @@ package body LoadData is
             Item.Size := 0;
          end if;
       end if;
-      ItemsList.Append(Item);
+      List.Append(Item);
    end AddItem;
 
-   procedure LoadDirectory(DirectoryName: String) is
+   procedure LoadDirectory(DirectoryName: String; Second: Boolean := False) is
       Directory: Dir_Type;
       Last: Natural;
       FileName: String(1 .. 1024);
@@ -203,11 +180,20 @@ package body LoadData is
          Read(Directory, FileName, Last);
          exit when Last = 0;
          if FileName(1 .. Last) /= "." and FileName(1 .. Last) /= ".." then
-            AddItem(DirectoryName & "/" & FileName(1 .. Last));
+            if not Second then
+               AddItem(DirectoryName & "/" & FileName(1 .. Last), ItemsList);
+            else
+               AddItem
+                 (DirectoryName & "/" & FileName(1 .. Last), SecondItemsList);
+            end if;
          end if;
       end loop;
       Close(Directory);
-      Items_Sorting.Sort(ItemsList);
+      if not Second then
+         Items_Sorting.Sort(ItemsList);
+      else
+         Items_Sorting.Sort(SecondItemsList);
+      end if;
       Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
    end LoadDirectory;
 
