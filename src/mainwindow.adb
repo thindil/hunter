@@ -268,9 +268,20 @@ package body MainWindow is
          -- Remove old path buttons
          Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
          if Slice(Tokens, 1) /= "" then
-            for I in 1 .. Slice_Count(Tokens) loop
+            for I in reverse 1 .. Slice_Count(Tokens) loop
                PathButton.Interp := PathButtonsFrame.Interp;
                PathButton.Name := New_String(Slice(Tokens, I));
+               if I = 1 then
+                  Shortcut := To_Unbounded_String("Alt-r");
+               elsif I = 2 then
+                  Shortcut := To_Unbounded_String("Alt-u");
+               elsif I < 11 then
+                  Shortcut :=
+                    To_Unbounded_String
+                      ("Alt-KP_" & Slice_Number'Image(I - 2)(2));
+               end if;
+               Unbind_From_Main_Window
+                 (PathButton.Interp, "<" & To_String(Shortcut) & ">");
                Grid_Forget(PathButton);
                Destroy(PathButton);
             end loop;
