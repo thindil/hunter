@@ -91,6 +91,20 @@ package body MainWindow.Commands is
             SortOrder := SizeAsc;
             Heading(DirectoryTree, "size", "-image ""arrow-down""");
          end if;
+      elsif CArgv.Arg(Argv, 1) = "previewname" then
+         DirectoryTree.Interp := Get_Context;
+         DirectoryTree.Name :=
+           New_String(".mainframe.paned.previewframe.directorytree");
+         if SortOrder = NameAsc then
+            SortOrder := NameDesc;
+            Heading(DirectoryTree, "name", "-image ""arrow-up""");
+         else
+            SortOrder := NameAsc;
+            Heading(DirectoryTree, "name", "-image ""arrow-down""");
+         end if;
+         Items_Sorting.Sort(SecondItemsList);
+         UpdateDirectoryList(True, "preview");
+         return TCL_OK;
       end if;
       Items_Sorting.Sort(ItemsList);
       UpdateDirectoryList(True);
