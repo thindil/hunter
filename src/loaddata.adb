@@ -171,7 +171,11 @@ package body LoadData is
    begin
       Tcl.Tk.Ada.Busy.Busy(Get_Main_Window(Get_Context));
       Tcl_Eval(Get_Context, "update");
-      ItemsList.Clear;
+      if not Second then
+         ItemsList.Clear;
+      else
+         SecondItemsList.Clear;
+      end if;
       if not Is_Read_Accessible_File(DirectoryName) then
          return;
       end if;

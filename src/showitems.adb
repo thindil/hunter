@@ -62,14 +62,6 @@ package body ShowItems is
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
 
-   procedure PreviewDirectory is
-   begin
-      LoadDirectory(To_String(CurrentSelected), True);
-      Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
-      Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
-      Tcl.Tk.Ada.Pack.Pack(PreviewTree, "-side top -fill both -expand true");
-   end PreviewDirectory;
-
    function Show_Selected_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -104,7 +96,12 @@ package body ShowItems is
       end if;
       CurrentSelected := SelectedItems(1);
       if Is_Directory(To_String(CurrentSelected)) then
-         PreviewDirectory;
+         LoadDirectory(To_String(CurrentSelected), True);
+         Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
+         Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
+         Tcl.Tk.Ada.Pack.Pack
+           (PreviewTree, "-side top -fill both -expand true");
+         UpdateDirectoryList(True, "preview");
       end if;
       return TCL_OK;
    end Show_Selected_Command;
