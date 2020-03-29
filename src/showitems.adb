@@ -29,6 +29,7 @@ with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with Messages; use Messages;
 with Preferences; use Preferences;
 --with Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones;
@@ -96,6 +97,10 @@ package body ShowItems is
       end if;
       CurrentSelected := SelectedItems(1);
       if Is_Directory(To_String(CurrentSelected)) then
+         if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
+            ShowMessage
+              ("You don't have permissions to preview this directory.");
+         end if;
          LoadDirectory(To_String(CurrentSelected), True);
          Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
          Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
