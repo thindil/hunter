@@ -208,7 +208,8 @@ package body MainWindow is
       CreateShowItemsUI;
    end CreateMainWindow;
 
-   procedure UpdateDirectoryList(Clear: Boolean := False) is
+   procedure UpdateDirectoryList
+     (Clear: Boolean := False; FrameName: String := "directory") is
       SizeString, ItemIndex, SelectedIndex, Path: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
       PathButtonsFrame: Ttk_Frame;
@@ -216,15 +217,21 @@ package body MainWindow is
       PathButton: Ttk_Button;
       Row, Width, Column: Natural := 0;
       Shortcut, Tooltip: Unbounded_String;
+      List: Items_Container.Vector;
    begin
       DirectoryTree.Interp := Get_Context;
       DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
+        New_String(".mainframe.paned." & FrameName & "frame.directorytree");
       PathButtonsFrame.Interp := Get_Context;
       PathButtonsFrame.Name :=
         New_String(".mainframe.paned.directoryframe.pathframe");
+      if FrameName = "directory" then
+         List := ItemsList;
+      else
+         List := SecondItemsList;
+      end if;
       if Clear then
-         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+         for I in List.First_Index .. List.Last_Index loop
             if Exists(DirectoryTree, Positive'Image(I)) = "1" then
                Move
                  (DirectoryTree, Positive'Image(I), "{}",
@@ -234,20 +241,20 @@ package body MainWindow is
          Delete
            (DirectoryTree,
             "[" & Widget_Image(DirectoryTree) & " children {} ]");
-         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            case ItemsList(I).Size is
+         for I in List.First_Index .. List.Last_Index loop
+            case List(I).Size is
                when -2 =>
                   SizeString := To_Unbounded_String("->");
                when -1 =>
                   SizeString := To_Unbounded_String("unknown");
                when others =>
-                  if not ItemsList(I).IsDirectory then
+                  if not List(I).IsDirectory then
                      SizeString :=
                        To_Unbounded_String
-                         (CountFileSize(File_Size(ItemsList(I).Size)));
+                         (CountFileSize(File_Size(List(I).Size)));
                   else
                      SizeString :=
-                       To_Unbounded_String(Integer'Image(ItemsList(I).Size));
+                       To_Unbounded_String(Integer'Image(List(I).Size));
                   end if;
             end case;
             ItemIndex :=
@@ -255,97 +262,102 @@ package body MainWindow is
                 (Insert
                    (DirectoryTree,
                     "{} end -id" & Positive'Image(I) & " -values [list {" &
-                    To_String(ItemsList(I).Name) & "} {" &
-                    Ada.Calendar.Formatting.Image(ItemsList(I).Modified) &
-                    "} {" & To_String(SizeString) & "}] -image {" &
-                    To_String(ItemsList(I).Image) & "}"));
-            if not Settings.ShowHidden and then ItemsList(I).IsHidden then
+                    To_String(List(I).Name) & "} {" &
+                    Ada.Calendar.Formatting.Image(List(I).Modified) & "} {" &
+                    To_String(SizeString) & "}] -image {" &
+                    To_String(List(I).Image) & "}"));
+            if not Settings.ShowHidden and then List(I).IsHidden then
                Detach(DirectoryTree, To_String(ItemIndex));
             elsif SelectedIndex = Null_Unbounded_String then
                SelectedIndex := To_Unbounded_String(Positive'Image(I));
             end if;
          end loop;
-         -- Remove old path buttons
-         Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
-         if Slice(Tokens, 1) /= "" then
+         if FrameName = "directory" then
+            -- Remove old path buttons
+            Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
+            if Slice(Tokens, 1) /= "" then
+               for I in reverse 1 .. Slice_Count(Tokens) loop
+                  PathButton.Interp := PathButtonsFrame.Interp;
+                  PathButton.Name := New_String(Slice(Tokens, I));
+                  if I = 1 then
+                     Shortcut := To_Unbounded_String("Alt-r");
+                  elsif I = 2 then
+                     Shortcut := To_Unbounded_String("Alt-u");
+                  elsif I < 11 then
+                     Shortcut :=
+                       To_Unbounded_String
+                         ("Alt-KP_" & Slice_Number'Image(I - 2)(2));
+                  end if;
+                  Unbind_From_Main_Window
+                    (PathButton.Interp, "<" & To_String(Shortcut) & ">");
+                  Grid_Forget(PathButton);
+                  Destroy(PathButton);
+               end loop;
+            end if;
+            -- Add new path buttons
+            Create(Tokens, To_String(CurrentDirectory), "/");
+            for I in 1 .. Slice_Count(Tokens) loop
+               if I = 1 then
+                  PathButton :=
+                    Create
+                      (Widget_Image(PathButtonsFrame) & ".button1",
+                       "-text {/} -command {GoToBookmark {/}}");
+                  Path := To_Unbounded_String("/");
+               elsif Slice(Tokens, I) /= "" then
+                  Append(Path, Slice(Tokens, I) & "/");
+                  PathButton :=
+                    Create
+                      (Widget_Image(PathButtonsFrame) & ".button" &
+                       Trim(Slice_Number'Image(I), Both),
+                       "-text {" & Slice(Tokens, I) &
+                       "} -command {GoToBookmark {" & To_String(Path) & "}}");
+               end if;
+               Width :=
+                 Width + Positive'Value(Winfo_Get(PathButton, "reqwidth"));
+               if Width >
+                 Positive'Value(Winfo_Get(PathButtonsFrame, "width")) then
+                  Row := Row + 1;
+                  Width := 0;
+                  Column := 0;
+               end if;
+               Tcl.Tk.Ada.Grid.Grid
+                 (PathButton,
+                  "-row" & Natural'Image(Row) & " -column" &
+                  Natural'Image(Column));
+               Column := Column + 1;
+            end loop;
+            Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
             for I in reverse 1 .. Slice_Count(Tokens) loop
                PathButton.Interp := PathButtonsFrame.Interp;
                PathButton.Name := New_String(Slice(Tokens, I));
                if I = 1 then
                   Shortcut := To_Unbounded_String("Alt-r");
+                  Tooltip :=
+                    To_Unbounded_String
+                      ("Reload the current directory \[Alt-r\]");
                elsif I = 2 then
                   Shortcut := To_Unbounded_String("Alt-u");
+                  Tooltip :=
+                    To_Unbounded_String("Go to upper directory \[Alt-u\]");
                elsif I < 11 then
                   Shortcut :=
                     To_Unbounded_String
                       ("Alt-KP_" & Slice_Number'Image(I - 2)(2));
+                  Tooltip :=
+                    To_Unbounded_String
+                      ("Go to this directory \[Alt-KP" &
+                       Slice_Number'Image(I - 2)(2) & "\]");
                end if;
-               Unbind_From_Main_Window
-                 (PathButton.Interp, "<" & To_String(Shortcut) & ">");
-               Grid_Forget(PathButton);
-               Destroy(PathButton);
+               Bind_To_Main_Window
+                 (PathButton.Interp, "<" & To_String(Shortcut) & ">",
+                  "{" & Widget_Image(PathButton) & " invoke}");
+               Add(PathButton, To_String(Tooltip));
             end loop;
          end if;
-         -- Add new path buttons
-         Create(Tokens, To_String(CurrentDirectory), "/");
-         for I in 1 .. Slice_Count(Tokens) loop
-            if I = 1 then
-               PathButton :=
-                 Create
-                   (Widget_Image(PathButtonsFrame) & ".button1",
-                    "-text {/} -command {GoToBookmark {/}}");
-               Path := To_Unbounded_String("/");
-            elsif Slice(Tokens, I) /= "" then
-               Append(Path, Slice(Tokens, I) & "/");
-               PathButton :=
-                 Create
-                   (Widget_Image(PathButtonsFrame) & ".button" &
-                    Trim(Slice_Number'Image(I), Both),
-                    "-text {" & Slice(Tokens, I) &
-                    "} -command {GoToBookmark {" & To_String(Path) & "}}");
-            end if;
-            Width := Width + Positive'Value(Winfo_Get(PathButton, "reqwidth"));
-            if Width >
-              Positive'Value(Winfo_Get(PathButtonsFrame, "width")) then
-               Row := Row + 1;
-               Width := 0;
-               Column := 0;
-            end if;
-            Tcl.Tk.Ada.Grid.Grid
-              (PathButton,
-               "-row" & Natural'Image(Row) & " -column" &
-               Natural'Image(Column));
-            Column := Column + 1;
-         end loop;
-         Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
-         for I in reverse 1 .. Slice_Count(Tokens) loop
-            PathButton.Interp := PathButtonsFrame.Interp;
-            PathButton.Name := New_String(Slice(Tokens, I));
-            if I = 1 then
-               Shortcut := To_Unbounded_String("Alt-r");
-               Tooltip :=
-                 To_Unbounded_String("Reload the current directory \[Alt-r\]");
-            elsif I = 2 then
-               Shortcut := To_Unbounded_String("Alt-u");
-               Tooltip :=
-                 To_Unbounded_String("Go to upper directory \[Alt-u\]");
-            elsif I < 11 then
-               Shortcut :=
-                 To_Unbounded_String("Alt-KP_" & Slice_Number'Image(I - 2)(2));
-               Tooltip :=
-                 To_Unbounded_String
-                   ("Go to this directory \[Alt-KP" &
-                    Slice_Number'Image(I - 2)(2) & "\]");
-            end if;
-            Bind_To_Main_Window
-              (PathButton.Interp, "<" & To_String(Shortcut) & ">",
-               "{" & Widget_Image(PathButton) & " invoke}");
-            Add(PathButton, To_String(Tooltip));
-         end loop;
       else
-         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            if (Settings.ShowHidden and ItemsList(I).IsHidden) or
-              not ItemsList(I).IsHidden then
+         for I in List.First_Index .. List.Last_Index loop
+            if (Settings.ShowHidden and List(I).IsHidden) or
+              not List(I).IsHidden then
                Move(DirectoryTree, Positive'Image(I), "{}", Positive'Image(I));
                if SelectedIndex = Null_Unbounded_String then
                   SelectedIndex := To_Unbounded_String(Positive'Image(I));
@@ -353,12 +365,14 @@ package body MainWindow is
             end if;
          end loop;
       end if;
-      if not ItemsList.Is_Empty then
+      if not List.Is_Empty then
          Selection_Set
            (DirectoryTree, "[list " & To_String(SelectedIndex) & "]");
-         Tcl.Tk.Ada.Widgets.Focus(DirectoryTree);
-         Tcl.Tk.Ada.Widgets.TtkTreeView.Focus
-           (DirectoryTree, To_String(SelectedIndex));
+         if FrameName = "directory" then
+            Tcl.Tk.Ada.Widgets.Focus(DirectoryTree);
+            Tcl.Tk.Ada.Widgets.TtkTreeView.Focus
+              (DirectoryTree, To_String(SelectedIndex));
+         end if;
       end if;
    end UpdateDirectoryList;
 

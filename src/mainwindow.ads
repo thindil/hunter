@@ -59,25 +59,6 @@ package MainWindow is
    NewAction: ItemActions;
    -- ****
 
-   -- ****f* MainWindow/CreateMainWindow
-   -- FUNCTION
-   -- Create main window and show content of selected directory
-   -- PARAMETERS
-   -- Directory  - Full path to the directory which will be show at the
-   --              program start
-   -- SOURCE
-   procedure CreateMainWindow(Directory: String);
-   -- ****
-
-   -- ****f* MainWindow/UpdateDirectoryList
-   -- FUNCTION
-   -- Update directory list
-   -- PARAMETERS
-   -- Clear - Clear current list of items
-   -- SOURCE
-   procedure UpdateDirectoryList(Clear: Boolean := False);
-   -- ****
-
    -- ****t* MainWindow/UnboundedString_Container
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
@@ -98,6 +79,26 @@ package MainWindow is
    -- Full path to currently selected file or directory
    -- SOURCE
    CurrentSelected: Unbounded_String;
+   -- ****
+
+   -- ****f* MainWindow/CreateMainWindow
+   -- FUNCTION
+   -- Create main window and show content of selected directory
+   -- PARAMETERS
+   -- Directory  - Full path to the directory which will be show at the
+   --              program start
+   -- SOURCE
+   procedure CreateMainWindow(Directory: String);
+   -- ****
+
+   -- ****f* MainWindow/UpdateDirectoryList
+   -- FUNCTION
+   -- Update directory list
+   -- PARAMETERS
+   -- Clear - Clear current list of items
+   -- SOURCE
+   procedure UpdateDirectoryList
+     (Clear: Boolean := False; FrameName: String := "directory");
    -- ****
 
    -- ****v* MainWindow/Setting
