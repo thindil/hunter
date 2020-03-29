@@ -26,6 +26,7 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with Utils; use Utils;
 --with Ada.Directories; use Ada.Directories;
@@ -79,7 +80,11 @@ package body ActivateItems is
             CurrentDirectory := Null_Unbounded_String;
          end if;
          CurrentDirectory := FileName;
-         LoadDirectory(To_String(CurrentDirectory));
+         if Settings.ShowPreview then
+            ItemsList := SecondItemsList;
+         else
+            LoadDirectory(To_String(CurrentDirectory));
+         end if;
          UpdateDirectoryList(True);
          UpdateWatch(To_String(CurrentDirectory));
       else
