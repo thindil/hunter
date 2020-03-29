@@ -177,6 +177,7 @@ package body LoadData is
          SecondItemsList.Clear;
       end if;
       if not Is_Read_Accessible_File(DirectoryName) then
+         Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
          return;
       end if;
       Open(Directory, DirectoryName);
