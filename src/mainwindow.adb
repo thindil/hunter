@@ -210,7 +210,7 @@ package body MainWindow is
 
    procedure UpdateDirectoryList
      (Clear: Boolean := False; FrameName: String := "directory") is
-      SizeString, ItemIndex, SelectedIndex, Path: Unbounded_String;
+      SizeString, ItemIndex, SelectedIndex, Path, TimeString: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
       PathButtonsFrame: Ttk_Frame;
       Tokens: Slice_Set;
@@ -257,14 +257,21 @@ package body MainWindow is
                        To_Unbounded_String(Integer'Image(List(I).Size));
                   end if;
             end case;
+            begin
+               TimeString :=
+                 To_Unbounded_String
+                   (Ada.Calendar.Formatting.Image(List(I).Modified));
+            exception
+               when Ada.Calendar.Time_Error =>
+                  TimeString := To_Unbounded_String("unknown");
+            end;
             ItemIndex :=
               To_Unbounded_String
                 (Insert
                    (DirectoryTree,
                     "{} end -id" & Positive'Image(I) & " -values [list {" &
-                    To_String(List(I).Name) & "} {" &
-                    Ada.Calendar.Formatting.Image(List(I).Modified) & "} {" &
-                    To_String(SizeString) & "}] -image {" &
+                    To_String(List(I).Name) & "} {" & To_String(TimeString) &
+                    "} {" & To_String(SizeString) & "}] -image {" &
                     To_String(List(I).Image) & "}"));
             if not Settings.ShowHidden and then List(I).IsHidden then
                Detach(DirectoryTree, To_String(ItemIndex));
