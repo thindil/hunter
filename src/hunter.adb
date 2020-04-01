@@ -71,7 +71,7 @@ begin
    -----------------
    if Tcl.Tcl_Init(Interp) = Tcl.TCL_ERROR then
       Ada.Text_IO.Put_Line
-        ("AzipTk: Tcl.Tcl_Init failed: " &
+        ("Hunter: Tcl.Tcl_Init failed: " &
          Tcl.Ada.Tcl_GetStringResult(Interp));
       return;
    end if;
@@ -80,7 +80,7 @@ begin
    ----------------
    if Tcl.Tk.Tk_Init(Interp) = Tcl.TCL_ERROR then
       Ada.Text_IO.Put_Line
-        ("AZipTk: Tcl.Tk.Tk_Init failed: " &
+        ("Hunter: Tcl.Tk.Tk_Init failed: " &
          Tcl.Ada.Tcl_GetStringResult(Interp));
       return;
    end if;
