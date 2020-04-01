@@ -60,12 +60,14 @@ package Utils is
    -- Find executable file with selected name in this same directory where
    -- the program is or in PATH variable
    -- PARAMETERS
-   -- Name - Name of executable file to find
+   -- Name           - Name of executable file to find
+   -- DisplayMessage - If true, show message that executable cannot be found.
+   --                  Default value is true.
    -- RESULT
    -- Full path to the executable file or empty string and show message if
    -- file could not be found.
    -- SOURCE
-   function FindExecutable(Name: String) return String;
+   function FindExecutable(Name: String; DisplayMessage: Boolean := True) return String;
    -- ****
 
    -- ****f* Utils/SetProgressBar

@@ -90,7 +90,8 @@ package body Utils is
       return File_Size'Image(NewSize) & " " & SizeShortcuts(Multiplier);
    end CountFileSize;
 
-   function FindExecutable(Name: String) return String is
+   function FindExecutable
+     (Name: String; DisplayMessage: Boolean := True) return String is
       ExecutablePath: GNAT.OS_Lib.String_Access;
    begin
       if Exists(Containing_Directory(Command_Name) & "/" & Name) then
@@ -98,7 +99,9 @@ package body Utils is
       end if;
       ExecutablePath := Locate_Exec_On_Path(Name);
       if ExecutablePath = null then
-         ShowMessage("Could not found executable: " & Name);
+         if DisplayMessage then
+            ShowMessage("Could not found executable: " & Name);
+         end if;
          return "";
       end if;
       return ExecutablePath.all;
