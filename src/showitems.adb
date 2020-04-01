@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -36,10 +38,8 @@ with Preferences; use Preferences;
 with Utils; use Utils;
 --with Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones;
---with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 --with Ada.Containers; use Ada.Containers;
 --with Ada.Directories; use Ada.Directories;
---with Ada.Environment_Variables; use Ada.Environment_Variables;
 --with Ada.Strings; use Ada.Strings;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 --with GNAT.Expect; use GNAT.Expect;
@@ -130,9 +130,28 @@ package body ShowItems is
                   procedure LoadFile is
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
---                     while not End_Of_File(File) loop
---                        Insert(Buffer, Iter, Get_Line(File) & LF);
---                     end loop;
+                     while not End_Of_File(File) loop
+                        FileLine := To_Unbounded_String(Get_Line(File));
+                        StartIndex := 1;
+                        loop
+                           StartIndex := Index(FileLine, "{", StartIndex);
+                           exit when StartIndex = 0;
+                           Replace_Slice
+                             (FileLine, StartIndex, StartIndex, "\{");
+                           StartIndex := StartIndex + 2;
+                        end loop;
+                        StartIndex := 1;
+                        loop
+                           StartIndex := Index(FileLine, "}", StartIndex);
+                           exit when StartIndex = 0;
+                           Replace_Slice
+                             (FileLine, StartIndex, StartIndex, "\}");
+                           StartIndex := StartIndex + 2;
+                        end loop;
+                        Insert
+                          (PreviewText, "end",
+                           "{" & To_String(FileLine) & LF & "}");
+                     end loop;
                      Close(File);
                   end LoadFile;
                begin
@@ -142,6 +161,7 @@ package body ShowItems is
                   Tcl.Tk.Ada.Pack.Pack
                     (PreviewText, "-side top -fill both -expand true");
                   configure(PreviewText, "-state normal");
+                  Delete(PreviewText, "1.0", "end");
 --                  Set_Wrap_Mode(TextView, Wrap_Word);
 --                  Set_Editable(TextView, False);
 --                  Set_Cursor_Visible(TextView, False);
@@ -150,19 +170,19 @@ package body ShowItems is
                      LoadFile;
                      goto Set_UI;
                   end if;
---                  Spawn
---                    (ExecutableName,
---                     Argument_String_To_List
---                       ("--out-format=pango --force --output=" &
---                        Value("HOME") &
---                        "/.cache/hunter/highlight.tmp --base16 --style=" &
---                        To_String(Settings.ColorTheme) & " " &
---                        To_String(CurrentSelected)).all,
---                     Success);
---                  if not Success then
---                     LoadFile;
---                     goto Set_UI;
---                  end if;
+                  Spawn
+                    (ExecutableName,
+                     Argument_String_To_List
+                       ("--out-format=pango --force --output=" &
+                        Value("HOME") &
+                        "/.cache/hunter/highlight.tmp --base16 --style=" &
+                        To_String(Settings.ColorTheme) & " " &
+                        To_String(CurrentSelected)).all,
+                     Success);
+                  if not Success then
+                     LoadFile;
+                     goto Set_UI;
+                  end if;
 --                  Foreach(Get_Tag_Table(Buffer), RemoveTag'Access);
 --                  Open
 --                    (File, In_File,
