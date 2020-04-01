@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
@@ -23,6 +24,7 @@ with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Text; use Tcl.Tk.Ada.Widgets.Text;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
@@ -31,6 +33,7 @@ with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with Utils; use Utils;
 --with Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones;
 --with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
@@ -38,7 +41,6 @@ with Preferences; use Preferences;
 --with Ada.Directories; use Ada.Directories;
 --with Ada.Environment_Variables; use Ada.Environment_Variables;
 --with Ada.Strings; use Ada.Strings;
---with Ada.Text_IO; use Ada.Text_IO;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 --with GNAT.Expect; use GNAT.Expect;
 --with GNAT.String_Split; use GNAT.String_Split;
@@ -52,7 +54,6 @@ with Preferences; use Preferences;
 --with ProgramsMenu; use ProgramsMenu;
 --with SearchItems; use SearchItems;
 --with Toolbars; use Toolbars;
---with Utils; use Utils;
 
 package body ShowItems is
 
@@ -60,6 +61,7 @@ package body ShowItems is
    PreviewXScroll: Ttk_Scrollbar;
    PreviewYScroll: Ttk_Scrollbar;
    PreviewTree: Ttk_Tree_View;
+   PreviewText: Tk_Text;
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
 
@@ -102,11 +104,153 @@ package body ShowItems is
               ("You don't have permissions to preview this directory.");
          end if;
          LoadDirectory(To_String(CurrentSelected), True);
+         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
          Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
          Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
            (PreviewTree, "-side top -fill both -expand true");
          UpdateDirectoryList(True, "preview");
+      else
+         declare
+            MimeType: constant String :=
+              GetMimeType(To_String(CurrentSelected));
+         begin
+            if MimeType(1 .. 4) = "text" then
+               declare
+                  ExecutableName: constant String :=
+                    FindExecutable("highlight", False);
+                  Success, FirstLine: Boolean;
+                  File: File_Type;
+                  FileLine, TagText: Unbounded_String;
+--                  Tag: Gtk_Text_Tag;
+                  StartIndex, EndIndex, StartColor: Natural;
+--                  Iter: Gtk_Text_Iter;
+--                  TextView: constant Gtk_Text_View := Gtk_Text_View_New;
+--                  Buffer: constant Gtk_Text_Buffer := Get_Buffer(TextView);
+                  procedure LoadFile is
+                  begin
+                     Open(File, In_File, To_String(CurrentSelected));
+--                     while not End_Of_File(File) loop
+--                        Insert(Buffer, Iter, Get_Line(File) & LF);
+--                     end loop;
+                     Close(File);
+                  end LoadFile;
+               begin
+                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
+                  Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (PreviewText, "-side top -fill both -expand true");
+                  configure(PreviewText, "-state normal");
+--                  Set_Wrap_Mode(TextView, Wrap_Word);
+--                  Set_Editable(TextView, False);
+--                  Set_Cursor_Visible(TextView, False);
+--                  Get_Start_Iter(Buffer, Iter);
+                  if not Settings.ColorText or ExecutableName = "" then
+                     LoadFile;
+                     goto Set_UI;
+                  end if;
+--                  Spawn
+--                    (ExecutableName,
+--                     Argument_String_To_List
+--                       ("--out-format=pango --force --output=" &
+--                        Value("HOME") &
+--                        "/.cache/hunter/highlight.tmp --base16 --style=" &
+--                        To_String(Settings.ColorTheme) & " " &
+--                        To_String(CurrentSelected)).all,
+--                     Success);
+--                  if not Success then
+--                     LoadFile;
+--                     goto Set_UI;
+--                  end if;
+--                  Foreach(Get_Tag_Table(Buffer), RemoveTag'Access);
+--                  Open
+--                    (File, In_File,
+--                     Value("HOME") & "/.cache/hunter/highlight.tmp");
+--                  FirstLine := True;
+--                  while not End_Of_File(File) loop
+--                     FileLine := To_Unbounded_String(Get_Line(File));
+--                     if FirstLine then
+--                        FileLine :=
+--                          Unbounded_Slice
+--                            (FileLine, Index(FileLine, ">") + 1,
+--                             Length(FileLine));
+--                        FirstLine := False;
+--                     end if;
+--                     exit when End_Of_File(File);
+--                     loop
+--                        StartIndex := Index(FileLine, "&gt;");
+--                        exit when StartIndex = 0;
+--                        Replace_Slice
+--                          (FileLine, StartIndex, StartIndex + 3, ">");
+--                     end loop;
+--                     loop
+--                        StartIndex := Index(FileLine, "&lt;");
+--                        exit when StartIndex = 0;
+--                        Replace_Slice
+--                          (FileLine, StartIndex, StartIndex + 3, "<");
+--                     end loop;
+--                     loop
+--                        StartIndex := Index(FileLine, "&amp;");
+--                        exit when StartIndex = 0;
+--                        Replace_Slice
+--                          (FileLine, StartIndex, StartIndex + 4, "&");
+--                     end loop;
+--                     StartIndex := 1;
+--                     loop
+--                        StartIndex := Index(FileLine, "<span", StartIndex);
+--                        exit when StartIndex = 0;
+--                        if StartIndex > 1 then
+--                           Insert
+--                             (Buffer, Iter,
+--                              Slice(FileLine, 1, StartIndex - 1));
+--                        end if;
+--                        EndIndex := Index(FileLine, ">", StartIndex);
+--                        TagText :=
+--                          Unbounded_Slice(FileLine, StartIndex, EndIndex);
+--                        Tag := Create_Tag(Buffer);
+--                        StartColor := Index(TagText, "foreground=");
+--                        if Index(TagText, "foreground=") > 0 then
+--                           Set_Property
+--                             (GObject(Tag), Gtk.Text_Tag.Foreground_Property,
+--                              Slice
+--                                (TagText, StartColor + 12, StartColor + 18));
+--                        elsif Index(TagText, "style=""italic""") > 0 then
+--                           Set_Property
+--                             (GObject(Tag), Gtk.Text_Tag.Style_Property,
+--                              Pango_Style_Italic);
+--                        elsif Index(TagText, "weight=""bold""") > 0 then
+--                           Set_Property
+--                             (GObject(Tag), Gtk.Text_Tag.Weight_Property,
+--                              Pango_Weight_Bold);
+--                        end if;
+--                        StartIndex := StartIndex + Length(TagText);
+--                        EndIndex := Index(FileLine, "</span>", StartIndex) - 1;
+--                        if EndIndex > 0 then
+--                           Insert_With_Tags
+--                             (Buffer, Iter,
+--                              Slice(FileLine, StartIndex, EndIndex), Tag);
+--                        else
+--                           Insert
+--                             (Buffer, Iter,
+--                              Slice(FileLine, StartIndex, Length(FileLine)));
+--                        end if;
+--                        StartIndex := 1;
+--                        FileLine :=
+--                          Unbounded_Slice
+--                            (FileLine, EndIndex + 8, Length(FileLine));
+--                     end loop;
+--                     Insert(Buffer, Iter, To_String(FileLine) & LF);
+--                  end loop;
+--                  Close(File);
+--                  Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
+--                  Add(PreviewScroll, TextView);
+--                  Show_All(PreviewScroll);
+                  <<Set_UI>>
+                  configure(PreviewText, "-state disabled");
+               end;
+            end if;
+         end;
       end if;
       return TCL_OK;
    end Show_Selected_Command;
@@ -146,6 +290,8 @@ package body ShowItems is
         (PreviewTree, "name",
          "-text {Name} -image {arrow-down} -command {Sort previewname}");
       Column(PreviewTree, "#0", "-stretch false -width 50");
+      PreviewText :=
+        Create(Widget_Image(PreviewFrame) & ".previewtext", "-wrap char");
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
