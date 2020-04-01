@@ -150,7 +150,8 @@ package body ShowItems is
                         end loop;
                         Insert
                           (PreviewText, "end",
-                           "{" & To_String(FileLine) & LF & "}");
+                           "[subst -nocommands -novariables {" &
+                           To_String(FileLine) & LF & "}]");
                      end loop;
                      Close(File);
                   end LoadFile;
