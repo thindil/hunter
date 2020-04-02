@@ -231,7 +231,12 @@ package body ShowItems is
                           Unbounded_Slice(FileLine, StartIndex, EndIndex);
                         StartColor := Index(TagText, "foreground=");
                         if Index(TagText, "foreground=") > 0 then
-                           null;
+                           TagName :=
+                             Unbounded_Slice
+                               (TagText, StartColor + 12, StartColor + 18);
+                           Tag_Configure
+                             (PreviewText, To_String(TagName),
+                              "-foreground " & To_String(TagName));
                         elsif Index(TagText, "style=""italic""") > 0 then
                            TagName := To_Unbounded_String("italictag");
                         elsif Index(TagText, "weight=""bold""") > 0 then
@@ -242,9 +247,9 @@ package body ShowItems is
                         if EndIndex > 0 then
                            Insert
                              (PreviewText, "end",
-                              "{[subst -nocommands -novariables {" &
+                              "[subst -nocommands -novariables {" &
                               Slice(FileLine, StartIndex, EndIndex) &
-                              "}]} [list " & To_String(TagName) & "]");
+                              "}] [list " & To_String(TagName) & "]");
                         else
                            Insert
                              (PreviewText, "end",
