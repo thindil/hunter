@@ -218,6 +218,22 @@ package body ShowItems is
                      end loop;
                      StartIndex := 1;
                      loop
+                        StartIndex := Index(FileLine, "{", StartIndex);
+                        exit when StartIndex = 0;
+                        Replace_Slice
+                           (FileLine, StartIndex, StartIndex, "\{");
+                        StartIndex := StartIndex + 2;
+                     end loop;
+                     StartIndex := 1;
+                     loop
+                        StartIndex := Index(FileLine, "}", StartIndex);
+                        exit when StartIndex = 0;
+                        Replace_Slice
+                           (FileLine, StartIndex, StartIndex, "\}");
+                        StartIndex := StartIndex + 2;
+                     end loop;
+                     StartIndex := 1;
+                     loop
                         StartIndex := Index(FileLine, "<span", StartIndex);
                         exit when StartIndex = 0;
                         if StartIndex > 1 then
