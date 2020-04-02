@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
@@ -39,7 +40,6 @@ with Utils; use Utils;
 --with Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones;
 --with Ada.Containers; use Ada.Containers;
---with Ada.Directories; use Ada.Directories;
 --with Ada.Strings; use Ada.Strings;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 --with GNAT.Expect; use GNAT.Expect;
@@ -125,12 +125,8 @@ package body ShowItems is
                     FindExecutable("highlight", False);
                   Success, FirstLine: Boolean;
                   File: File_Type;
-                  FileLine, TagText: Unbounded_String;
---                  Tag: Gtk_Text_Tag;
+                  FileLine, TagText, TagName: Unbounded_String;
                   StartIndex, EndIndex, StartColor: Natural;
---                  Iter: Gtk_Text_Iter;
---                  TextView: constant Gtk_Text_View := Gtk_Text_View_New;
---                  Buffer: constant Gtk_Text_Buffer := Get_Buffer(TextView);
                   procedure LoadFile is
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
@@ -171,10 +167,6 @@ package body ShowItems is
                     (PreviewText, "-side top -fill both -expand true");
                   configure(PreviewText, "-state normal");
                   Delete(PreviewText, "1.0", "end");
---                  Set_Wrap_Mode(TextView, Wrap_Word);
---                  Set_Editable(TextView, False);
---                  Set_Cursor_Visible(TextView, False);
---                  Get_Start_Iter(Buffer, Iter);
                   if not Settings.ColorText or ExecutableName = "" then
                      LoadFile;
                      goto Set_UI;
@@ -192,89 +184,86 @@ package body ShowItems is
                      LoadFile;
                      goto Set_UI;
                   end if;
---                  Foreach(Get_Tag_Table(Buffer), RemoveTag'Access);
---                  Open
---                    (File, In_File,
---                     Value("HOME") & "/.cache/hunter/highlight.tmp");
---                  FirstLine := True;
---                  while not End_Of_File(File) loop
---                     FileLine := To_Unbounded_String(Get_Line(File));
---                     if FirstLine then
---                        FileLine :=
---                          Unbounded_Slice
---                            (FileLine, Index(FileLine, ">") + 1,
---                             Length(FileLine));
---                        FirstLine := False;
---                     end if;
---                     exit when End_Of_File(File);
---                     loop
---                        StartIndex := Index(FileLine, "&gt;");
---                        exit when StartIndex = 0;
---                        Replace_Slice
---                          (FileLine, StartIndex, StartIndex + 3, ">");
---                     end loop;
---                     loop
---                        StartIndex := Index(FileLine, "&lt;");
---                        exit when StartIndex = 0;
---                        Replace_Slice
---                          (FileLine, StartIndex, StartIndex + 3, "<");
---                     end loop;
---                     loop
---                        StartIndex := Index(FileLine, "&amp;");
---                        exit when StartIndex = 0;
---                        Replace_Slice
---                          (FileLine, StartIndex, StartIndex + 4, "&");
---                     end loop;
---                     StartIndex := 1;
---                     loop
---                        StartIndex := Index(FileLine, "<span", StartIndex);
---                        exit when StartIndex = 0;
---                        if StartIndex > 1 then
---                           Insert
---                             (Buffer, Iter,
---                              Slice(FileLine, 1, StartIndex - 1));
---                        end if;
---                        EndIndex := Index(FileLine, ">", StartIndex);
---                        TagText :=
---                          Unbounded_Slice(FileLine, StartIndex, EndIndex);
---                        Tag := Create_Tag(Buffer);
---                        StartColor := Index(TagText, "foreground=");
---                        if Index(TagText, "foreground=") > 0 then
---                           Set_Property
---                             (GObject(Tag), Gtk.Text_Tag.Foreground_Property,
---                              Slice
---                                (TagText, StartColor + 12, StartColor + 18));
---                        elsif Index(TagText, "style=""italic""") > 0 then
---                           Set_Property
---                             (GObject(Tag), Gtk.Text_Tag.Style_Property,
---                              Pango_Style_Italic);
---                        elsif Index(TagText, "weight=""bold""") > 0 then
---                           Set_Property
---                             (GObject(Tag), Gtk.Text_Tag.Weight_Property,
---                              Pango_Weight_Bold);
---                        end if;
---                        StartIndex := StartIndex + Length(TagText);
---                        EndIndex := Index(FileLine, "</span>", StartIndex) - 1;
---                        if EndIndex > 0 then
---                           Insert_With_Tags
---                             (Buffer, Iter,
---                              Slice(FileLine, StartIndex, EndIndex), Tag);
---                        else
---                           Insert
---                             (Buffer, Iter,
---                              Slice(FileLine, StartIndex, Length(FileLine)));
---                        end if;
---                        StartIndex := 1;
---                        FileLine :=
---                          Unbounded_Slice
---                            (FileLine, EndIndex + 8, Length(FileLine));
---                     end loop;
---                     Insert(Buffer, Iter, To_String(FileLine) & LF);
---                  end loop;
---                  Close(File);
---                  Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
---                  Add(PreviewScroll, TextView);
---                  Show_All(PreviewScroll);
+                  Open
+                    (File, In_File,
+                     Value("HOME") & "/.cache/hunter/highlight.tmp");
+                  FirstLine := True;
+                  while not End_Of_File(File) loop
+                     FileLine := To_Unbounded_String(Get_Line(File));
+                     if FirstLine then
+                        FileLine :=
+                          Unbounded_Slice
+                            (FileLine, Index(FileLine, ">") + 1,
+                             Length(FileLine));
+                        FirstLine := False;
+                     end if;
+                     exit when End_Of_File(File);
+                     loop
+                        StartIndex := Index(FileLine, "&gt;");
+                        exit when StartIndex = 0;
+                        Replace_Slice
+                          (FileLine, StartIndex, StartIndex + 3, ">");
+                     end loop;
+                     loop
+                        StartIndex := Index(FileLine, "&lt;");
+                        exit when StartIndex = 0;
+                        Replace_Slice
+                          (FileLine, StartIndex, StartIndex + 3, "<");
+                     end loop;
+                     loop
+                        StartIndex := Index(FileLine, "&amp;");
+                        exit when StartIndex = 0;
+                        Replace_Slice
+                          (FileLine, StartIndex, StartIndex + 4, "&");
+                     end loop;
+                     StartIndex := 1;
+                     loop
+                        StartIndex := Index(FileLine, "<span", StartIndex);
+                        exit when StartIndex = 0;
+                        if StartIndex > 1 then
+                           Insert
+                             (PreviewText, "end",
+                              "[subst -nocommands -novariables {" &
+                              Slice(FileLine, 1, StartIndex - 1) & "}]");
+                        end if;
+                        EndIndex := Index(FileLine, ">", StartIndex);
+                        TagText :=
+                          Unbounded_Slice(FileLine, StartIndex, EndIndex);
+                        StartColor := Index(TagText, "foreground=");
+                        if Index(TagText, "foreground=") > 0 then
+                           null;
+                        elsif Index(TagText, "style=""italic""") > 0 then
+                           TagName := To_Unbounded_String("italictag");
+                        elsif Index(TagText, "weight=""bold""") > 0 then
+                           TagName := To_Unbounded_String("boldtag");
+                        end if;
+                        StartIndex := StartIndex + Length(TagText);
+                        EndIndex := Index(FileLine, "</span>", StartIndex) - 1;
+                        if EndIndex > 0 then
+                           Insert
+                             (PreviewText, "end",
+                              "{[subst -nocommands -novariables {" &
+                              Slice(FileLine, StartIndex, EndIndex) &
+                              "}]} [list " & To_String(TagName) & "]");
+                        else
+                           Insert
+                             (PreviewText, "end",
+                              "[subst -nocommands -novariables {" &
+                              Slice(FileLine, StartIndex, Length(FileLine)) &
+                              "}]");
+                        end if;
+                        StartIndex := 1;
+                        FileLine :=
+                          Unbounded_Slice
+                            (FileLine, EndIndex + 8, Length(FileLine));
+                     end loop;
+                     Insert
+                       (PreviewText, "end",
+                        "[subst -nocommands -novariables {" &
+                        To_String(FileLine) & LF & "}]");
+                  end loop;
+                  Close(File);
+                  Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
                   <<Set_UI>>
                   configure(PreviewText, "-state disabled");
                end;
@@ -324,6 +313,8 @@ package body ShowItems is
           (Widget_Image(PreviewFrame) & ".previewtext",
            "-wrap char -yscrollcommand """ & Widget_Image(PreviewYScroll) &
            " set""");
+      Tag_Configure(PreviewText, "boldtag", "-font bold");
+      Tag_Configure(PreviewText, "italictag", "-font italic");
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
