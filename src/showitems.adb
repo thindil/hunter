@@ -105,6 +105,10 @@ package body ShowItems is
          end if;
          LoadDirectory(To_String(CurrentSelected), True);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
+         configure
+           (PreviewYScroll,
+            "-command [list " & Widget_Image(PreviewFrame) &
+            ".directorytree yview]");
          Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
          Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
@@ -158,6 +162,10 @@ package body ShowItems is
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
+                  configure
+                    (PreviewYScroll,
+                     "-command [list " & Widget_Image(PreviewText) &
+                     " yview]");
                   Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
                   Tcl.Tk.Ada.Pack.Pack
                     (PreviewText, "-side top -fill both -expand true");
@@ -312,7 +320,10 @@ package body ShowItems is
          "-text {Name} -image {arrow-down} -command {Sort previewname}");
       Column(PreviewTree, "#0", "-stretch false -width 50");
       PreviewText :=
-        Create(Widget_Image(PreviewFrame) & ".previewtext", "-wrap char");
+        Create
+          (Widget_Image(PreviewFrame) & ".previewtext",
+           "-wrap char -yscrollcommand """ & Widget_Image(PreviewYScroll) &
+           " set""");
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
