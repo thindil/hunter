@@ -108,6 +108,7 @@ package body ShowItems is
          end if;
          LoadDirectory(To_String(CurrentSelected), True);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
+         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
          configure
            (PreviewYScroll,
             "-command [list " & Widget_Image(PreviewFrame) &
@@ -164,6 +165,7 @@ package body ShowItems is
                   end LoadFile;
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
                   configure
                     (PreviewYScroll,
@@ -297,17 +299,25 @@ package body ShowItems is
                declare
                   Image: constant Tk_Photo :=
                     Create
-                      ("previewimage",
-                       "im -file " & To_String(CurrentSelected));
+                      ("previewimage", "-file " & To_String(CurrentSelected));
                begin
+                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
                   configure
-                     (PreviewYScroll,
+                    (PreviewYScroll,
                      "-command [list " & Widget_Image(PreviewCanvas) &
                      " yview]");
                   configure
-                     (PreviewXScroll,
+                    (PreviewXScroll,
                      "-command [list " & Widget_Image(PreviewCanvas) &
                      " xview]");
+                  Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
+                  Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (PreviewCanvas, "-side top -fill both -expand true");
+                  Canvas_Create
+                    (PreviewCanvas, "image",
+                     "0 0 -image " & Widget_Image(Image));
                end;
             end if;
          end;
