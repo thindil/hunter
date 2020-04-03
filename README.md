@@ -33,6 +33,10 @@ To build you need:
 
 * Tcl/Tk library. Should be available in any Linux distribution
 
+* Tk extension *tklib*. Should be available in every Linux distribution.
+
+* Tk extension *Img*. In Debian/Ubuntu/Mint it is named *libtk-img*.
+
 * TASHY library with included binding to Tk and TkLib. You can get it from:
 
    https://github.com/thindil/tashy
