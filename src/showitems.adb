@@ -25,8 +25,10 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Canvas; use Tcl.Tk.Ada.Widgets.Canvas;
 with Tcl.Tk.Ada.Widgets.Text; use Tcl.Tk.Ada.Widgets.Text;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
@@ -62,6 +64,7 @@ package body ShowItems is
    PreviewYScroll: Ttk_Scrollbar;
    PreviewTree: Ttk_Tree_View;
    PreviewText: Tk_Text;
+   PreviewCanvas: Tk_Canvas;
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
 
@@ -109,6 +112,10 @@ package body ShowItems is
            (PreviewYScroll,
             "-command [list " & Widget_Image(PreviewFrame) &
             ".directorytree yview]");
+         configure
+           (PreviewXScroll,
+            "-command [list " & Widget_Image(PreviewFrame) &
+            ".directorytree xview]");
          Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
          Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
@@ -220,16 +227,14 @@ package body ShowItems is
                      loop
                         StartIndex := Index(FileLine, "{", StartIndex);
                         exit when StartIndex = 0;
-                        Replace_Slice
-                           (FileLine, StartIndex, StartIndex, "\{");
+                        Replace_Slice(FileLine, StartIndex, StartIndex, "\{");
                         StartIndex := StartIndex + 2;
                      end loop;
                      StartIndex := 1;
                      loop
                         StartIndex := Index(FileLine, "}", StartIndex);
                         exit when StartIndex = 0;
-                        Replace_Slice
-                           (FileLine, StartIndex, StartIndex, "\}");
+                        Replace_Slice(FileLine, StartIndex, StartIndex, "\}");
                         StartIndex := StartIndex + 2;
                      end loop;
                      StartIndex := 1;
@@ -288,6 +293,22 @@ package body ShowItems is
                   <<Set_UI>>
                   configure(PreviewText, "-state disabled");
                end;
+            elsif MimeType(1 .. 5) = "image" then
+               declare
+                  Image: constant Tk_Photo :=
+                    Create
+                      ("previewimage",
+                       "im -file " & To_String(CurrentSelected));
+               begin
+                  configure
+                     (PreviewYScroll,
+                     "-command [list " & Widget_Image(PreviewCanvas) &
+                     " yview]");
+                  configure
+                     (PreviewXScroll,
+                     "-command [list " & Widget_Image(PreviewCanvas) &
+                     " xview]");
+               end;
             end if;
          end;
       end if;
@@ -336,6 +357,12 @@ package body ShowItems is
            " set""");
       Tag_Configure(PreviewText, "boldtag", "-font bold");
       Tag_Configure(PreviewText, "italictag", "-font italic");
+      PreviewCanvas :=
+        Create
+          (Widget_Image(PreviewFrame) & ".previewcanvas",
+           "-xscrollcommand """ & Widget_Image(PreviewXScroll) &
+           " set"" -yscrollcommand """ & Widget_Image(PreviewYScroll) &
+           " set""");
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
