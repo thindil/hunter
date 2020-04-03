@@ -92,6 +92,7 @@ begin
 
    -- Load required Tcl packages
    Tooltip_Init(Interp);
+   Tcl.Ada.Tcl_Eval(Interp, "package require Img");
 
    -- Load the program setting
    LoadSettings;
