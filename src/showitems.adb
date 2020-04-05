@@ -347,6 +347,8 @@ package body ShowItems is
                         "-shrink " & To_String(ScaleMode) &
                         Natural'Image(Scale));
                      Delete(TempImage);
+                     ImageWidth := Natural'Value(Width(Image));
+                     ImageHeight := Natural'Value(Height(Image));
                   end if;
                   StartX := ImageWidth / 2;
                   StartY := ImageHeight / 2;
