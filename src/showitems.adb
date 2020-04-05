@@ -31,6 +31,9 @@ with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Canvas; use Tcl.Tk.Ada.Widgets.Canvas;
 with Tcl.Tk.Ada.Widgets.Text; use Tcl.Tk.Ada.Widgets.Text;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
+use Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
@@ -119,39 +122,18 @@ package body ShowItems is
          " -scrollregion [list " & BBox(PreviewCanvas, "all") & "]");
    end ScaleImage;
 
-   function Show_Selected_Command
+   function Show_Preview_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
 
-   function Show_Selected_Command
+   function Show_Preview_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      DirectoryTree: Ttk_Tree_View;
-      Tokens: Slice_Set;
-      Items: Unbounded_String;
    begin
-      DirectoryTree.Interp := Get_Context;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
-      SelectedItems.Clear;
-      Items := To_Unbounded_String(Selection(DirectoryTree));
-      if Items = Null_Unbounded_String then
-         return TCL_OK;
-      end if;
-      Create(Tokens, To_String(Items), " ");
-      for I in 1 .. Slice_Count(Tokens) loop
-         SelectedItems.Append
-           (CurrentDirectory & "/" &
-            ItemsList(Positive'Value(Slice(Tokens, I))).Name);
-      end loop;
-      if not Settings.ShowPreview or SelectedItems(1) = CurrentSelected then
-         return TCL_OK;
-      end if;
-      CurrentSelected := SelectedItems(1);
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage
@@ -393,6 +375,54 @@ package body ShowItems is
          end;
       end if;
       return TCL_OK;
+   end Show_Preview_Command;
+
+   function Show_Selected_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+   function Show_Selected_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      DirectoryTree: Ttk_Tree_View;
+      Tokens: Slice_Set;
+      Items: Unbounded_String;
+      ActionButton: Ttk_RadioButton;
+   begin
+      DirectoryTree.Interp := Get_Context;
+      DirectoryTree.Name :=
+        New_String(".mainframe.paned.directoryframe.directorytree");
+      SelectedItems.Clear;
+      Items := To_Unbounded_String(Selection(DirectoryTree));
+      if Items = Null_Unbounded_String then
+         return TCL_OK;
+      end if;
+      Create(Tokens, To_String(Items), " ");
+      for I in 1 .. Slice_Count(Tokens) loop
+         SelectedItems.Append
+           (CurrentDirectory & "/" &
+            ItemsList(Positive'Value(Slice(Tokens, I))).Name);
+      end loop;
+      if not Settings.ShowPreview or SelectedItems(1) = CurrentSelected then
+         return TCL_OK;
+      end if;
+      CurrentSelected := SelectedItems(1);
+      ActionButton.Interp := Get_Context;
+      if Is_Directory(To_String(CurrentSelected)) or
+        Is_Regular_File(To_String(CurrentSelected)) then
+         ActionButton.Name :=
+           New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
+      else
+         return TCL_OK;
+      end if;
+      if Invoke(ActionButton) /= "" then
+         raise Program_Error with "Can't show file or directory preview/info";
+      end if;
+      return TCL_OK;
    end Show_Selected_Command;
 
    procedure CreateShowItemsUI is
@@ -444,6 +474,7 @@ package body ShowItems is
            " set"" -yscrollcommand """ & Widget_Image(PreviewYScroll) &
            " set""");
       AddCommand("ShowSelected", Show_Selected_Command'Access);
+      AddCommand("ShowPreview", Show_Preview_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
       Add(Paned, PreviewFrame, "-weight 20");
