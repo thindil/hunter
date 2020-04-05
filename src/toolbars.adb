@@ -28,6 +28,8 @@ with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
+with Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
+use Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
@@ -275,6 +277,7 @@ package body Toolbars is
       Toolbar: constant Ttk_Frame := Create(".mainframe.toolbars.itemtoolbar");
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
+      ToolRadioButton: Ttk_RadioButton;
    begin
       ToolButton := Create(".mainframe.toolbars.itemtoolbar.runbutton");
       SetButton
@@ -296,16 +299,22 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".mainframe.toolbars.itemtoolbar.separator1");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolButton := Create(".mainframe.toolbars.itemtoolbar.previewbutton");
+      ToolRadioButton :=
+        Create
+          (".mainframe.toolbars.itemtoolbar.previewbutton",
+           "-variable previewtype -value preview");
       SetButton
-        (ToolButton, "Preview file or directory \[ALT+V\]",
+        (ToolRadioButton, "Preview file or directory \[ALT+V\]",
          "document-preview");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".mainframe.toolbars.itemtoolbar.infobutton");
+      Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
+      ToolRadioButton :=
+        Create
+          (".mainframe.toolbars.itemtoolbar.infobutton",
+           "-variable previewtype -value info");
       SetButton
-        (ToolButton, "File or directory informations \[ALT+I\]",
+        (ToolRadioButton, "File or directory informations \[ALT+I\]",
          "document-properties");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
       Separator := Create(".mainframe.toolbars.itemtoolbar.separator2");
       Tcl.Tk.Ada.Pack.Pack(Separator);
       ToolButton := Create(".mainframe.toolbars.itemtoolbar.addbutton");
