@@ -25,6 +25,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Image; use Tcl.Tk.Ada.Image;
 with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -300,9 +301,22 @@ package body ShowItems is
                   Image: constant Tk_Photo :=
                     Create
                       ("previewimage", "-file " & To_String(CurrentSelected));
+                  StartX, StartY: Natural;
                begin
+                  Delete(PreviewCanvas, "all");
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
+                  StartX := Natural'Value(Width(Image)) / 2;
+                  StartY := Natural'Value(Height(Image)) / 2;
+                  Canvas_Create
+                    (PreviewCanvas, "image",
+                     Natural'Image(StartX) & Natural'Image(StartY) &
+                     " -image " & Widget_Image(Image));
+                  configure
+                    (PreviewCanvas,
+                     "-width " & Width(Image) & " -height " & Height(Image) &
+                     " -scrollregion [list " & BBox(PreviewCanvas, "all") &
+                     "]");
                   configure
                     (PreviewYScroll,
                      "-command [list " & Widget_Image(PreviewCanvas) &
@@ -313,11 +327,7 @@ package body ShowItems is
                      " xview]");
                   Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
                   Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
-                  Tcl.Tk.Ada.Pack.Pack
-                    (PreviewCanvas, "-side top -fill both -expand true");
-                  Canvas_Create
-                    (PreviewCanvas, "image",
-                     "0 0 -image " & Widget_Image(Image));
+                  Tcl.Tk.Ada.Pack.Pack(PreviewCanvas, "-side top");
                end;
             end if;
          end;
