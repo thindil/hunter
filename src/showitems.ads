@@ -25,30 +25,11 @@
 package ShowItems is
 -- ****
 
-   -- ****v* ShowItems/InfoStack
+   -- ****f* ShowItems/ScaleImage
    -- FUNCTION
-   -- Gtk_Stack which will show information about selected item
+   -- Scale currently previewed image
    -- SOURCE
---   InfoStack: Gtk_Stack;
---   -- ****
---
---   -- ****f* ShowItems/PreviewItem
---   -- FUNCTION
---   -- Preview selected file or directory. If preview is not available, show
---   -- info about selected file or directory.
---   -- PARAMETERS
---   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
---   -- SOURCE
---   procedure PreviewItem(Self: access Gtk_Tool_Button_Record'Class);
---   -- ****
---
---   -- ****f* ShowItems/ShowItem
---   -- FUNCTION
---   -- Show info about selected item or preview it.
---   -- PARAMETERS
---   -- Self - Gtk_Tree_Selection which contains selected file or directory
---   -- SOURCE
---   procedure ShowItem(Self: access Gtk_Tree_Selection_Record'Class);
+   procedure ScaleImage;
    -- ****
 
    -- ****f* ShowItems/CreateShowItemsUI

@@ -70,15 +70,16 @@ package body ShowItems is
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
 
-   procedure UpdateImage is
-      Image: Tk_Photo;
+   procedure ScaleImage is
+      Image: constant Tk_Photo :=
+        Create("previewimage", "-file " & To_String(CurrentSelected));
       TempImage: Tk_Photo := Create("tempimage");
-      FrameWidth, FrameHeight, ImageWidth, ImageHeight: Natural;
+      FrameWidth, FrameHeight, ImageWidth, ImageHeight, StartX,
+      StartY: Natural;
       ScaleMode: Unbounded_String := To_Unbounded_String("-subsample");
       Scale: Natural;
    begin
-      Image.Name := New_String("previewimage");
-      Image.Interp := TempImage.Interp;
+      Delete(PreviewCanvas, "all");
       ImageWidth := Natural'Value(Width(Image));
       ImageHeight := Natural'Value(Height(Image));
       Copy(Image, TempImage);
@@ -104,7 +105,19 @@ package body ShowItems is
         (TempImage, Image,
          "-shrink " & To_String(ScaleMode) & Natural'Image(Scale));
       Delete(TempImage);
-   end UpdateImage;
+      ImageWidth := Natural'Value(Width(Image));
+      ImageHeight := Natural'Value(Height(Image));
+      StartX := ImageWidth / 2;
+      StartY := ImageHeight / 2;
+      Canvas_Create
+        (PreviewCanvas, "image",
+         Natural'Image(StartX) & Natural'Image(StartY) & " -image " &
+         Widget_Image(Image));
+      configure
+        (PreviewCanvas,
+         "-width " & Width(Image) & " -height " & Height(Image) &
+         " -scrollregion [list " & BBox(PreviewCanvas, "all") & "]");
+   end ScaleImage;
 
    function Show_Selected_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -340,28 +353,27 @@ package body ShowItems is
                       ("previewimage", "-file " & To_String(CurrentSelected));
                   StartX, StartY, ImageWidth, ImageHeight: Natural;
                begin
-                  Delete(PreviewCanvas, "all");
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
                   if Settings.ScaleImages then
                      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
                      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
-                     UpdateImage;
-                  end if;
-                  ImageWidth := Natural'Value(Width(Image));
-                  ImageHeight := Natural'Value(Height(Image));
-                  StartX := ImageWidth / 2;
-                  StartY := ImageHeight / 2;
-                  Canvas_Create
-                    (PreviewCanvas, "image",
-                     Natural'Image(StartX) & Natural'Image(StartY) &
-                     " -image " & Widget_Image(Image));
-                  configure
-                    (PreviewCanvas,
-                     "-width " & Width(Image) & " -height " & Height(Image) &
-                     " -scrollregion [list " & BBox(PreviewCanvas, "all") &
-                     "]");
-                  if not Settings.ScaleImages then
+                     ScaleImage;
+                  else
+                     Delete(PreviewCanvas, "all");
+                     ImageWidth := Natural'Value(Width(Image));
+                     ImageHeight := Natural'Value(Height(Image));
+                     StartX := ImageWidth / 2;
+                     StartY := ImageHeight / 2;
+                     Canvas_Create
+                       (PreviewCanvas, "image",
+                        Natural'Image(StartX) & Natural'Image(StartY) &
+                        " -image " & Widget_Image(Image));
+                     configure
+                       (PreviewCanvas,
+                        "-width " & Width(Image) & " -height " &
+                        Height(Image) & " -scrollregion [list " &
+                        BBox(PreviewCanvas, "all") & "]");
                      configure
                        (PreviewYScroll,
                         "-command [list " & Widget_Image(PreviewCanvas) &
