@@ -32,6 +32,7 @@ with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
+with ShowItems; use ShowItems;
 
 package body MainWindow.Commands is
 
@@ -280,6 +281,7 @@ package body MainWindow.Commands is
       Tokens: Slice_Set;
       Row, Column, Width: Natural := 0;
       Button: Ttk_Button;
+      PreviewCanvas: Ttk_Frame;
    begin
       PathButtonsFrame.Interp := Get_Context;
       PathButtonsFrame.Name := New_String(CArgv.Arg(Argv, 1));
@@ -303,6 +305,13 @@ package body MainWindow.Commands is
             "-row" & Natural'Image(Row) & " -column" & Natural'Image(Column));
          Column := Column + 1;
       end loop;
+      PreviewCanvas.Name :=
+        New_String(".mainframe.paned.previewframe.previewcanvas");
+      PreviewCanvas.Interp := Get_Context;
+      if (Settings.ScaleImages and Settings.ShowPreview)
+        and then Winfo_Get(PreviewCanvas, "ismapped") = "1" then
+         ScaleImage;
+      end if;
       return TCL_OK;
    end Arrange_Path_Command;
 
