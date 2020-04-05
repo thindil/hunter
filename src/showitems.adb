@@ -35,6 +35,7 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -301,13 +302,54 @@ package body ShowItems is
                   Image: constant Tk_Photo :=
                     Create
                       ("previewimage", "-file " & To_String(CurrentSelected));
-                  StartX, StartY: Natural;
+                  TempImage: Tk_Photo := Create("tempimage");
+                  StartX, StartY, FrameWidth, FrameHeight, ImageWidth,
+                  ImageHeight: Natural;
+                  ScaleMode: Unbounded_String :=
+                    To_Unbounded_String("-subsample");
+                  Scale: Natural;
                begin
                   Delete(PreviewCanvas, "all");
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
-                  StartX := Natural'Value(Width(Image)) / 2;
-                  StartY := Natural'Value(Height(Image)) / 2;
+                  ImageWidth := Natural'Value(Width(Image));
+                  ImageHeight := Natural'Value(Height(Image));
+                  if Settings.ScaleImages then
+                     Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
+                     Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
+                     Copy(Image, TempImage);
+                     Blank(Image);
+                     FrameHeight :=
+                       Natural'Value(Winfo_Get(PreviewFrame, "height"));
+                     FrameWidth :=
+                       Natural'Value(Winfo_Get(PreviewFrame, "width"));
+                     if ImageWidth > FrameWidth or
+                       ImageHeight > FrameHeight then
+                        if ImageWidth / FrameWidth >
+                          ImageHeight / FrameHeight then
+                           Scale := ImageWidth / FrameWidth;
+                        else
+                           Scale := ImageHeight / FrameHeight;
+                        end if;
+                        Scale := Scale + 1;
+                     elsif FrameWidth > ImageWidth or
+                       FrameHeight > ImageHeight then
+                        ScaleMode := To_Unbounded_String("-zoom");
+                        if FrameWidth / ImageWidth >
+                          FrameHeight / ImageHeight then
+                           Scale := FrameWidth / ImageWidth;
+                        else
+                           Scale := FrameHeight / ImageHeight;
+                        end if;
+                     end if;
+                     Copy
+                       (TempImage, Image,
+                        "-shrink " & To_String(ScaleMode) &
+                        Natural'Image(Scale));
+                     Delete(TempImage);
+                  end if;
+                  StartX := ImageWidth / 2;
+                  StartY := ImageHeight / 2;
                   Canvas_Create
                     (PreviewCanvas, "image",
                      Natural'Image(StartX) & Natural'Image(StartY) &
@@ -317,16 +359,20 @@ package body ShowItems is
                      "-width " & Width(Image) & " -height " & Height(Image) &
                      " -scrollregion [list " & BBox(PreviewCanvas, "all") &
                      "]");
-                  configure
-                    (PreviewYScroll,
-                     "-command [list " & Widget_Image(PreviewCanvas) &
-                     " yview]");
-                  configure
-                    (PreviewXScroll,
-                     "-command [list " & Widget_Image(PreviewCanvas) &
-                     " xview]");
-                  Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
-                  Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
+                  if not Settings.ScaleImages then
+                     configure
+                       (PreviewYScroll,
+                        "-command [list " & Widget_Image(PreviewCanvas) &
+                        " yview]");
+                     configure
+                       (PreviewXScroll,
+                        "-command [list " & Widget_Image(PreviewCanvas) &
+                        " xview]");
+                     Tcl.Tk.Ada.Pack.Pack
+                       (PreviewXScroll, "-side bottom -fill x");
+                     Tcl.Tk.Ada.Pack.Pack
+                       (PreviewYScroll, "-side right -fill y");
+                  end if;
                   Tcl.Tk.Ada.Pack.Pack(PreviewCanvas, "-side top");
                end;
             end if;
