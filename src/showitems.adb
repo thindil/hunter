@@ -420,6 +420,7 @@ package body ShowItems is
          return TCL_OK;
       end if;
       if Invoke(ActionButton) /= "" then
+         Ada.Text_IO.Put_Line(Tcl.Ada.Tcl_GetResult(Get_Context));
          raise Program_Error with "Can't show file or directory preview/info";
       end if;
       return TCL_OK;
@@ -455,7 +456,7 @@ package body ShowItems is
           (Widget_Image(PreviewFrame) & ".directorytree",
            "-columns [list name] -xscrollcommand {" &
            Widget_Image(PreviewXScroll) & " set} -yscrollcommand {" &
-           Widget_Image(PreviewYScroll) & " set}");
+           Widget_Image(PreviewYScroll) & " set} -selectmode none ");
       Heading
         (PreviewTree, "name",
          "-text {Name} -image {arrow-down} -command {Sort previewname}");
