@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
@@ -46,8 +48,6 @@ with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with Utils; use Utils;
---with Ada.Calendar.Formatting;
---with Ada.Calendar.Time_Zones;
 --with Ada.Containers; use Ada.Containers;
 --with Ada.Strings; use Ada.Strings;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
@@ -402,7 +402,31 @@ package body ShowItems is
       end if;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".fullpath");
       configure(Label, "-text {" & Full_Name(SelectedItem) & "}");
-      Tcl.Tk.Ada.Pack.Pack(InfoFrame, "-fill both -expand true");
+      Label.Name := New_String(Widget_Image(InfoFrame) & ".sizetext");
+      if Is_Directory(SelectedItem) then
+         configure(Label, "-text {Elements:}");
+      else
+         configure(Label, "-text {Size:}");
+      end if;
+      Label.Name := New_String(Widget_Image(InfoFrame) & ".size");
+      if Is_Directory(SelectedItem) then
+         configure
+           (Label,
+            "-text {" & Natural'Image(Natural(SecondItemsList.Length)) & "}");
+      elsif Is_Regular_File(SelectedItem) then
+         configure(Label, "-text {" & CountFileSize(Size(SelectedItem)) & "}");
+      else
+         configure(Label, "-text {Unknown}");
+      end if;
+      Label.Name := New_String(Widget_Image(InfoFrame) & ".lastmodified");
+      configure
+        (Label,
+         "-text {" &
+         Ada.Calendar.Formatting.Image
+           (Modification_Time(SelectedItem), False,
+            Ada.Calendar.Time_Zones.UTC_Time_Offset) &
+         "}");
+      Tcl.Tk.Ada.Pack.Pack(InfoFrame);
    end ShowInfo;
 
    function Show_Preview_Or_Info_Command
@@ -528,6 +552,17 @@ package body ShowItems is
       Tcl.Tk.Ada.Grid.Grid(Label);
       Label := Create(Widget_Image(InfoFrame) & ".fullpath");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 0");
+      Label := Create(Widget_Image(InfoFrame) & ".sizetext");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 1");
+      Label := Create(Widget_Image(InfoFrame) & ".size");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 1");
+      Label :=
+        Create
+          (Widget_Image(InfoFrame) & ".lastmodifiedtext",
+           "-text {Last modified:}");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 2");
+      Label := Create(Widget_Image(InfoFrame) & ".lastmodified");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 2");
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
