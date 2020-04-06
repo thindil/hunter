@@ -373,12 +373,14 @@ package body MainWindow is
          end loop;
       end if;
       if not List.Is_Empty then
-         Selection_Set
-           (DirectoryTree, "[list " & To_String(SelectedIndex) & "]");
          if FrameName = "directory" then
+            Selection_Set
+              (DirectoryTree, "[list " & To_String(SelectedIndex) & "]");
             Tcl.Tk.Ada.Widgets.Focus(DirectoryTree);
             Tcl.Tk.Ada.Widgets.TtkTreeView.Focus
               (DirectoryTree, To_String(SelectedIndex));
+         else
+            Selection_Set(DirectoryTree, "{}");
          end if;
       end if;
    end UpdateDirectoryList;
