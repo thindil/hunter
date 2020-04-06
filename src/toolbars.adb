@@ -302,7 +302,7 @@ package body Toolbars is
       ToolRadioButton :=
         Create
           (".mainframe.toolbars.itemtoolbar.previewbutton",
-           "-variable previewtype -value preview -command ShowPreview");
+           "-variable previewtype -value preview -command ShowPreviewOrInfo");
       SetButton
         (ToolRadioButton, "Preview file or directory \[ALT+V\]",
          "document-preview");
@@ -310,7 +310,7 @@ package body Toolbars is
       ToolRadioButton :=
         Create
           (".mainframe.toolbars.itemtoolbar.infobutton",
-           "-variable previewtype -value info");
+           "-variable previewtype -value info -command ShowPreviewOrInfo");
       SetButton
         (ToolRadioButton, "File or directory informations \[ALT+I\]",
          "document-properties");
