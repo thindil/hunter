@@ -453,9 +453,9 @@ package body ShowItems is
       PreviewTree :=
         Create
           (Widget_Image(PreviewFrame) & ".directorytree",
-           "-columns [list name] -xscrollcommand """ &
-           Widget_Image(PreviewXScroll) & " set"" -yscrollcommand """ &
-           Widget_Image(PreviewYScroll) & " set""");
+           "-columns [list name] -xscrollcommand {" &
+           Widget_Image(PreviewXScroll) & " set} -yscrollcommand {" &
+           Widget_Image(PreviewYScroll) & " set}");
       Heading
         (PreviewTree, "name",
          "-text {Name} -image {arrow-down} -command {Sort previewname}");
