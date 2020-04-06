@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -29,7 +30,6 @@ with Messages; use Messages;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with Utils; use Utils;
---with Ada.Directories; use Ada.Directories;
 --with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 --with Toolbars; use Toolbars;
 
@@ -100,9 +100,18 @@ package body ActivateItems is
                Openable := CanBeOpened("text/plain");
             end if;
             if not Openable then
-               ShowMessage
-                 ("I can't open this file. No application associated with this type of files.");
-               return TCL_OK;
+               if not Is_Executable_File(To_String(FileName)) then
+                  ShowMessage
+                    ("I can't open this file. No application associated with this type of files.");
+                  return TCL_OK;
+               end if;
+               Pid :=
+                 Non_Blocking_Spawn
+                   (Full_Name(To_String(CurrentSelected)),
+                    Argument_String_To_List("").all);
+               if Pid = GNAT.OS_Lib.Invalid_Pid then
+                  ShowMessage("I can't execute this file.");
+               end if;
             else
                if ExecutableName = "" then
                   return TCL_OK;
