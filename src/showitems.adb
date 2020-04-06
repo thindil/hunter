@@ -25,6 +25,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Image; use Tcl.Tk.Ada.Image;
 with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
@@ -35,6 +36,7 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
 use Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
@@ -70,6 +72,7 @@ package body ShowItems is
    PreviewTree: Ttk_Tree_View;
    PreviewText: Tk_Text;
    PreviewCanvas: Tk_Canvas;
+   InfoFrame: Ttk_Frame;
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
 
@@ -122,17 +125,7 @@ package body ShowItems is
          " -scrollregion [list " & BBox(PreviewCanvas, "all") & "]");
    end ScaleImage;
 
-   function Show_Preview_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-
-   function Show_Preview_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+   procedure ShowPreview is
    begin
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
@@ -142,6 +135,7 @@ package body ShowItems is
          LoadDirectory(To_String(CurrentSelected), True);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
+         Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
          configure
            (PreviewYScroll,
             "-command [list " & Widget_Image(PreviewFrame) &
@@ -200,6 +194,7 @@ package body ShowItems is
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
                   configure
                     (PreviewYScroll,
                      "-command [list " & Widget_Image(PreviewText) &
@@ -337,6 +332,7 @@ package body ShowItems is
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
                   if Settings.ScaleImages then
                      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
                      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
@@ -371,11 +367,63 @@ package body ShowItems is
                   end if;
                   Tcl.Tk.Ada.Pack.Pack(PreviewCanvas, "-side top");
                end;
+            else
+               declare
+                  ActionButton: Ttk_RadioButton;
+               begin
+                  ActionButton.Name :=
+                    New_String(".mainframe.toolbars.itemtoolbar.infobutton");
+                  ActionButton.Interp := Get_Context;
+                  if Invoke(ActionButton) /= "" then
+                     raise Program_Error
+                       with "Can't show file or directory info";
+                  end if;
+               end;
             end if;
          end;
       end if;
+   end ShowPreview;
+
+   procedure ShowInfo is
+      Label: Ttk_Label;
+      SelectedItem: constant String := To_String(CurrentSelected);
+   begin
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
+      Label.Interp := Get_Context;
+      Label.Name := New_String(Widget_Image(InfoFrame) & ".fullpathtext");
+      if not Is_Symbolic_Link(SelectedItem) then
+         configure(Label, "-text {Full path:}");
+      else
+         configure(Label, "-text {Links to:}");
+      end if;
+      Label.Name := New_String(Widget_Image(InfoFrame) & ".fullpath");
+      configure(Label, "-text {" & Full_Name(SelectedItem) & "}");
+      Tcl.Tk.Ada.Pack.Pack(InfoFrame, "-fill both -expand true");
+   end ShowInfo;
+
+   function Show_Preview_Or_Info_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+   function Show_Preview_Or_Info_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+   begin
+      if Tcl.Ada.Tcl_GetVar(Interp, "previewtype") = "preview" then
+         ShowPreview;
+      else
+         ShowInfo;
+      end if;
       return TCL_OK;
-   end Show_Preview_Command;
+   end Show_Preview_Or_Info_Command;
 
    function Show_Selected_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -417,10 +465,10 @@ package body ShowItems is
          ActionButton.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
       else
-         return TCL_OK;
+         ActionButton.Name :=
+           New_String(".mainframe.toolbars.itemtoolbar.infobutton");
       end if;
       if Invoke(ActionButton) /= "" then
-         Ada.Text_IO.Put_Line(Tcl.Ada.Tcl_GetResult(Get_Context));
          raise Program_Error with "Can't show file or directory preview/info";
       end if;
       return TCL_OK;
@@ -428,6 +476,7 @@ package body ShowItems is
 
    procedure CreateShowItemsUI is
       Paned: Ttk_PanedWindow;
+      Label: Ttk_Label;
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
          Command: Tcl.Tcl_Command;
@@ -474,8 +523,13 @@ package body ShowItems is
            "-xscrollcommand """ & Widget_Image(PreviewXScroll) &
            " set"" -yscrollcommand """ & Widget_Image(PreviewYScroll) &
            " set""");
+      InfoFrame := Create(Widget_Image(PreviewFrame) & ".infoframe");
+      Label := Create(Widget_Image(InfoFrame) & ".fullpathtext");
+      Tcl.Tk.Ada.Grid.Grid(Label);
+      Label := Create(Widget_Image(InfoFrame) & ".fullpath");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 0");
       AddCommand("ShowSelected", Show_Selected_Command'Access);
-      AddCommand("ShowPreview", Show_Preview_Command'Access);
+      AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
       Add(Paned, PreviewFrame, "-weight 20");
