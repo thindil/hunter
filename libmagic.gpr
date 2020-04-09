@@ -4,7 +4,6 @@ Project libmagic is
   -- If your libmagic is in different place, change this
   For Library_Dir use "/usr/lib";
   For Library_Name use "magic";
-  For Source_Dirs use ();
   For Library_Kind use "dynamic";
 
 End libmagic;
