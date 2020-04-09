@@ -419,13 +419,17 @@ package body ShowItems is
          configure(Label, "-text {Unknown}");
       end if;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".lastmodified");
-      configure
-        (Label,
-         "-text {" &
-         Ada.Calendar.Formatting.Image
-           (Modification_Time(SelectedItem), False,
-            Ada.Calendar.Time_Zones.UTC_Time_Offset) &
-         "}");
+      if Is_Directory(SelectedItem) or Is_Regular_File(SelectedItem) then
+         configure
+           (Label,
+            "-text {" &
+            Ada.Calendar.Formatting.Image
+              (Modification_Time(SelectedItem), False,
+               Ada.Calendar.Time_Zones.UTC_Time_Offset) &
+            "}");
+      else
+         configure(Label, "-text {Unknown}");
+      end if;
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
    end ShowInfo;
 
