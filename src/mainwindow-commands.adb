@@ -30,6 +30,8 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with DeleteItems; use DeleteItems;
+with Inotify; use Inotify;
+with LibMagic; use LibMagic;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
@@ -136,6 +138,8 @@ package body MainWindow.Commands is
             null;
          end if;
       end if;
+      InotifyClose;
+      MagicClose;
    end Quit_Command;
 
    function Hide_Entry_Command
