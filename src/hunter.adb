@@ -28,7 +28,6 @@ with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
-with RefreshData; use RefreshData;
 
 procedure Hunter is
    use type Interfaces.C.int;
@@ -108,12 +107,6 @@ begin
    --  When there are no windows left, Tcl.Tk.Tk_MainLoop returns and we exit.
    --------------------------------------------------------------------------
    Tcl.Tk.Tk_MainLoop;
-
-   -- Close everything and quit
-   abort InotifyTask;
-   InotifyClose;
-   MagicClose;
-   SavePreferences;
 
 exception
    when An_Exception : others =>
