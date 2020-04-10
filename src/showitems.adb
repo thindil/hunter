@@ -66,13 +66,54 @@ with Utils; use Utils;
 
 package body ShowItems is
 
+   -- ****iv* ShowItems/PreviewFrame
+   -- FUNCTION
+   -- Main Ttk_Frame for preview items
+   -- SOURCE
    PreviewFrame: Ttk_Frame;
+   -- ****
+
+   -- ****iv* ShowItems/PreviewXScroll
+   -- FUNCTION
+   -- X coordinates scrollbar for previews
+   -- SOURCE
    PreviewXScroll: Ttk_Scrollbar;
+   -- ****
+
+   -- ****iv* ShowItems/PreviewYScroll
+   -- FUNCTION
+   -- Y coordinates scrollbar for previews
+   -- SOURCE
    PreviewYScroll: Ttk_Scrollbar;
+   -- ****
+
+   -- ****iv* ShowItems/PreviewTree
+   -- FUNCTION
+   -- Tk_Tree_View used to show directories previews
+   -- SOURCE
    PreviewTree: Ttk_Tree_View;
+   -- ****
+
+   -- ****iv* ShowItems/PreviewText
+   -- FUNCTION
+   -- Tk_Text used to show text files previews
+   -- SOURCE
    PreviewText: Tk_Text;
+   -- ****
+
+   -- ****iv* ShowItems/PreviewCanvas
+   -- FUNCTION
+   -- Tk_Canvas used to show images
+   -- SOURCE
    PreviewCanvas: Tk_Canvas;
+   -- ****
+
+   -- ****iv* ShowItems/InfoFrame
+   -- FUNCTION
+   -- Ttk_Frame for show information about the selected item
+   -- SOURCE
    InfoFrame: Ttk_Frame;
+   -- ****
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
 
@@ -125,7 +166,13 @@ package body ShowItems is
          " -scrollregion [list " & BBox(PreviewCanvas, "all") & "]");
    end ScaleImage;
 
+   -- ****if* ShowItems/ShowPreview
+   -- FUNCTION
+   -- Show preview of the currently selected file or directory. If preview is
+   -- not available, show information about the selected item.
+   -- SOURCE
    procedure ShowPreview is
+   -- ****
    begin
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
@@ -384,7 +431,12 @@ package body ShowItems is
       end if;
    end ShowPreview;
 
+   -- ****if* ShowItems/ShowInfo
+   -- FUNCTION
+   -- Show information about the currently selected file or directory.
+   -- SOURCE
    procedure ShowInfo is
+      -- ****
       Label: Ttk_Label;
       SelectedItem: constant String := To_String(CurrentSelected);
    begin
@@ -439,11 +491,22 @@ package body ShowItems is
       return Interfaces.C.int with
       Convention => C;
 
+      -- ****if* ShowItems/Show_Preview_Or_Info_Command
+      -- FUNCTION
+      -- Show preview or information about the currently selected file or
+      -- directory, depends which button was clicked
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
    function Show_Preview_Or_Info_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
    begin
       if Tcl.Ada.Tcl_GetVar(Interp, "previewtype") = "preview" then
          ShowPreview;
@@ -459,11 +522,22 @@ package body ShowItems is
       return Interfaces.C.int with
       Convention => C;
 
+      -- ****if* ShowItems/Show_Selected_Command
+      -- FUNCTION
+      -- Show preview or information about the currently selected file or
+      -- directory after user select it in the directory view
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
    function Show_Selected_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
       DirectoryTree: Ttk_Tree_View;
       Tokens: Slice_Set;
       Items: Unbounded_String;
