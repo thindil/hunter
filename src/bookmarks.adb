@@ -13,10 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -29,14 +27,6 @@ with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Bookmarks.Commands; use Bookmarks.Commands;
 
 package body Bookmarks is
-
-   -- ****it* Bookmarks/Bookmarks_Container
-   -- FUNCTION
-   -- Used to store all bookmarks
-   -- SOURCE
-   package Bookmarks_Container is new Indefinite_Hashed_Maps(String, String,
-      Ada.Strings.Hash, "=");
-   -- ****
 
    -- ****iv* Bookmarks/BookmarksList
    -- FUNCTION
