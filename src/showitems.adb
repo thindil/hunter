@@ -439,6 +439,7 @@ package body ShowItems is
       -- ****
       Label: Ttk_Label;
       SelectedItem: constant String := To_String(CurrentSelected);
+      Button: Ttk_Button;
    begin
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
@@ -446,6 +447,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
       Label.Interp := Get_Context;
+      Button.Interp := Label.Interp;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".fullpathtext");
       if not Is_Symbolic_Link(SelectedItem) then
          configure(Label, "-text {Full path:}");
@@ -481,6 +483,31 @@ package body ShowItems is
             "}");
       else
          configure(Label, "-text {Unknown}");
+      end if;
+      Label.Name := New_String(Widget_Image(InfoFrame) & ".filetypetext");
+      if Is_Directory(SelectedItem) or not Is_Regular_File(SelectedItem) then
+         Tcl.Tk.Ada.Grid.Grid_Remove(Label);
+         Label.Name := New_String(Widget_Image(InfoFrame) & ".filetype");
+         Tcl.Tk.Ada.Grid.Grid_Remove(Label);
+      else
+         Tcl.Tk.Ada.Grid.Grid(Label);
+         Label.Name := New_String(Widget_Image(InfoFrame) & ".filetype");
+         configure(Label, "-text {" & GetMimeType(SelectedItem) & "}");
+         Tcl.Tk.Ada.Grid.Grid(Label);
+      end if;
+      Label.Name :=
+        New_String(Widget_Image(InfoFrame) & ".associatedprogramtext");
+      if not Is_Regular_File(SelectedItem) and
+        not Is_Directory(SelectedItem) then
+         Tcl.Tk.Ada.Grid.Grid_Remove(Label);
+         Button.Name :=
+           New_String(Widget_Image(InfoFrame) & ".associatedprogram");
+         Tcl.Tk.Ada.Grid.Grid_Remove(Button);
+      else
+         Tcl.Tk.Ada.Grid.Grid(Label);
+         Button.Name :=
+           New_String(Widget_Image(InfoFrame) & ".associatedprogram");
+         Tcl.Tk.Ada.Grid.Grid(Button);
       end if;
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
    end ShowInfo;
@@ -579,6 +606,7 @@ package body ShowItems is
    procedure CreateShowItemsUI is
       Paned: Ttk_PanedWindow;
       Label: Ttk_Label;
+      Button: Ttk_Button;
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
          Command: Tcl.Tcl_Command;
@@ -641,6 +669,19 @@ package body ShowItems is
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 2");
       Label := Create(Widget_Image(InfoFrame) & ".lastmodified");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 2");
+      Label :=
+        Create
+          (Widget_Image(InfoFrame) & ".filetypetext", "-text {File type:}");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 3");
+      Label := Create(Widget_Image(InfoFrame) & ".filetype");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 3");
+      Label :=
+        Create
+          (Widget_Image(InfoFrame) & ".associatedprogramtext",
+           "-text {Associated program:}");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 4");
+      Button := Create(Widget_Image(InfoFrame) & ".associatedprogram");
+      Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4");
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
