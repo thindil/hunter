@@ -13,9 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Vectors; use Ada.Containers;
+with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -29,35 +30,27 @@ with Bookmarks.Commands; use Bookmarks.Commands;
 
 package body Bookmarks is
 
-   -- ****it* Bookmarks/Bookmark_Record
-   -- FUNCTION
-   -- Data structure for bookmarks
-   -- PARAMETERS
-   -- MenuName - Text visible to user in menu for this bookmark
-   -- Path     - Full path to this bookmark location
-   -- SOURCE
-   type Bookmark_Record is record
-      MenuName: Unbounded_String;
-      Path: Unbounded_String;
-   end record;
-   -- ****
-
    -- ****it* Bookmarks/Bookmarks_Container
    -- FUNCTION
    -- Used to store all bookmarks
    -- SOURCE
-   package Bookmarks_Container is new Vectors(Positive, Bookmark_Record);
+   package Bookmarks_Container is new Indefinite_Hashed_Maps(String, String,
+      Ada.Strings.Hash, "=");
    -- ****
 
    -- ****iv* Bookmarks/BookmarksList
    -- FUNCTION
    -- List of all bookmarked locations
    -- SOURCE
-   BookmarksList: Bookmarks_Container.Vector;
+   BookmarksList: Bookmarks_Container.Map;
    -- ****
 
    procedure CreateBookmarkMenu(CreateNew: Boolean := False) is
-      XDGBookmarks: constant array(Positive range <>) of Bookmark_Record :=
+      type Bookmark_Record is record
+         MenuName: Unbounded_String;
+         Path: Unbounded_String;
+      end record;
+      XDGBookmarks: constant array(1 .. 7) of Bookmark_Record :=
         ((To_Unbounded_String("Desktop"),
           To_Unbounded_String("XDG_DESKTOP_DIR")),
          (To_Unbounded_String("Download"),
@@ -73,7 +66,7 @@ package body Bookmarks is
           To_Unbounded_String("XDG_VIDEOS_DIR")));
       BookmarksMenu: Tk_Menu;
       MenuButton: Ttk_MenuButton;
-      function GetXDGDirectory(Name: String) return Unbounded_String is
+      function GetXDGDirectory(Name: String) return String is
          File: File_Type;
          Line: Unbounded_String;
          EqualIndex: Natural;
@@ -93,7 +86,7 @@ package body Bookmarks is
             end loop;
             Close(File);
          end if;
-         return To_Unbounded_String(Expand_Path(Value(Name)));
+         return Expand_Path(Value(Name));
       end GetXDGDirectory;
    begin
       if CreateNew then
@@ -105,26 +98,21 @@ package body Bookmarks is
          Delete(BookmarksMenu, "0", "end");
       end if;
       BookmarksList.Clear;
-      BookmarksList.Append
-        (New_Item =>
-           (MenuName => To_Unbounded_String("Home"),
-            Path => To_Unbounded_String(Value("HOME"))));
+      BookmarksList.Include("Home", Value("HOME"));
       Add
         (BookmarksMenu, "command",
          "-label Home -command {GoToBookmark {" & Value("HOME") & "}}");
       for I in XDGBookmarks'Range loop
          if Ada.Directories.Exists
-             (To_String(GetXDGDirectory(To_String(XDGBookmarks(I).Path)))) then
-            BookmarksList.Append
-              (New_Item =>
-                 (MenuName => XDGBookmarks(I).MenuName,
-                  Path => GetXDGDirectory(To_String(XDGBookmarks(I).Path))));
+             (GetXDGDirectory(To_String(XDGBookmarks(I).Path))) then
+            BookmarksList.Include
+              (To_String(XDGBookmarks(I).MenuName),
+               GetXDGDirectory(To_String(XDGBookmarks(I).Path)));
             Add
               (BookmarksMenu, "command",
                "-label {" & To_String(XDGBookmarks(I).MenuName) &
                "} -command {GoToBookmark {" &
-               To_String(GetXDGDirectory(To_String(XDGBookmarks(I).Path))) &
-               "}}");
+               GetXDGDirectory(To_String(XDGBookmarks(I).Path)) & "}}");
          end if;
       end loop;
       if Ada.Directories.Exists
@@ -141,18 +129,15 @@ package body Bookmarks is
                   Path := Unbounded_Slice(Line, 8, Length(Line));
                   BookmarkExist := False;
                   for I in BookmarksList.Iterate loop
-                     if BookmarksList(I).Path = Path then
+                     if BookmarksList(I) = To_String(Path) then
                         BookmarkExist := True;
                         exit;
                      end if;
                   end loop;
                   if not BookmarkExist and
                     Ada.Directories.Exists(To_String(Path)) then
-                     BookmarksList.Append
-                       (New_Item =>
-                          (MenuName =>
-                             To_Unbounded_String(Simple_Name(To_String(Path))),
-                           Path => Path));
+                     BookmarksList.Include
+                       (Simple_Name(To_String(Path)), To_String(Path));
                      Add
                        (BookmarksMenu, "command",
                         "-label {" & Simple_Name(To_String(Path)) &
@@ -163,10 +148,7 @@ package body Bookmarks is
             Close(File);
          end;
       end if;
-      BookmarksList.Append
-        (New_Item =>
-           (MenuName => To_Unbounded_String("Enter destination"),
-            Path => Null_Unbounded_String));
+      BookmarksList.Include("Enter destination", "");
       Add
         (BookmarksMenu, "command",
          "-label {Enter destination} -command SetDestination");
