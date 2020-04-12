@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -13,10 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Gtk.Popover; use Gtk.Popover;
-with Gtk.Widget; use Gtk.Widget;
-
 -- ****h* Hunter/ProgramsMenu
 -- FUNCTION
 -- Provides code for manipulate associated programs with files.
@@ -27,12 +23,8 @@ package ProgramsMenu is
    -- ****f* ProgramsMenu/CreateProgramsMenu
    -- FUNCTION
    -- Create associated programs menu popover
-   -- PARAMETERS
-   -- Parent - Gtk_Widget button which will be parent for that menu
-   -- RESULT
-   -- Created popover menu
    -- SOURCE
-   function CreateProgramsMenu(Parent: Gtk_Widget) return Gtk_Popover;
+   procedure CreateProgramsMenu;
    -- ****
 
    -- ****f* ProgramsMenu/GetProgramName
@@ -41,9 +33,9 @@ package ProgramsMenu is
    -- PARAMETERS
    -- DesktopFile - File name of .desktop file to search
    -- RESULT
-   -- Parameter DesktopFile with name of program or unchanged if nothing found
+   -- Name of the application associated with the selected desktop file
    -- SOURCE
-   procedure GetProgramName(DesktopFile: in out Unbounded_String);
+   function GetProgramName(DesktopFile: String) return String;
    -- ****
 
 end ProgramsMenu;
