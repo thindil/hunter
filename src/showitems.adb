@@ -21,6 +21,7 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
@@ -47,11 +48,11 @@ with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with ProgramsMenu; use ProgramsMenu;
 with Utils; use Utils;
 --with Ada.Containers; use Ada.Containers;
 --with Ada.Strings; use Ada.Strings;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
---with GNAT.Expect; use GNAT.Expect;
 --with GNAT.String_Split; use GNAT.String_Split;
 --with Bookmarks; use Bookmarks;
 --with CopyItems; use CopyItems;
@@ -507,6 +508,38 @@ package body ShowItems is
          Tcl.Tk.Ada.Grid.Grid(Label);
          Button.Name :=
            New_String(Widget_Image(InfoFrame) & ".associatedprogram");
+         declare
+            ProcessDesc: Process_Descriptor;
+            Result: Expect_Match;
+            ExecutableName: constant String := FindExecutable("xdg-mime");
+            DesktopFile: Unbounded_String;
+         begin
+            if ExecutableName = "" then
+               return;
+            end if;
+            Non_Blocking_Spawn
+              (ProcessDesc, ExecutableName,
+               Argument_String_To_List
+                 ("query default " & GetMimeType(SelectedItem)).all);
+            Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+            if Result = 1 then
+               DesktopFile :=
+                 To_Unbounded_String(Expect_Out_Match(ProcessDesc));
+               DesktopFile :=
+                 To_Unbounded_String(GetProgramName(To_String(DesktopFile)));
+               if Index(DesktopFile, ".desktop") = 0 then
+                  configure(Button, "-text {" & To_String(DesktopFile) & "}");
+               else
+                  configure
+                    (Button,
+                     "-text {" & To_String(DesktopFile) & " (not installed)}");
+               end if;
+            end if;
+            Close(ProcessDesc);
+         exception
+            when Process_Died =>
+               configure(Button, "-text {None}");
+         end;
          Tcl.Tk.Ada.Grid.Grid(Button);
       end if;
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
@@ -687,6 +720,7 @@ package body ShowItems is
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
       Add(Paned, PreviewFrame, "-weight 20");
+      CreateProgramsMenu;
    end CreateShowItemsUI;
 
 --   -- ****if* ShowItems/ShowItemInfo
