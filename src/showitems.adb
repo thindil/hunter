@@ -453,28 +453,6 @@ package body ShowItems is
       Label: Ttk_Label;
       SelectedItem: constant String := To_String(CurrentSelected);
       Button: Ttk_Button;
-      procedure SetPermissionsButtons(Name, ButtonState: String) is
-         CheckButton: Ttk_CheckButton;
-      begin
-         CheckButton.Interp := Get_Context;
-         for I in ButtonNames'Range loop
-            CheckButton.Name :=
-              New_String
-                (Widget_Image(InfoFrame) & "." & Name & "frame." &
-                 To_String(ButtonNames(I)));
-            if I = 1 then
-               if Is_Directory(SelectedItem) then
-                  Tcl.Tk.Ada.Pack.Pack_Forget(CheckButton);
-               else
-                  Tcl.Tk.Ada.Pack.Pack
-                    (CheckButton,
-                     "-before " & Widget_Image(InfoFrame) & "." & Name &
-                     "frame.read");
-               end if;
-            end if;
-            State(CheckButton, ButtonState);
-         end loop;
-      end SetPermissionsButtons;
    begin
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
@@ -579,6 +557,59 @@ package body ShowItems is
       declare
          Attributes: Unbounded_String;
          Tokens: Slice_Set;
+         procedure SetPermissionsButtons
+           (Name, ButtonState: String; Permission: Character) is
+            CheckButton: Ttk_CheckButton;
+         begin
+            CheckButton.Interp := Get_Context;
+            for I in ButtonNames'Range loop
+               CheckButton.Name :=
+                 New_String
+                   (Widget_Image(InfoFrame) & "." & Name & "frame." &
+                    To_String(ButtonNames(I)));
+               if I = 1 then
+                  if Is_Directory(SelectedItem) then
+                     Tcl.Tk.Ada.Pack.Pack_Forget(CheckButton);
+                  else
+                     Tcl.Tk.Ada.Pack.Pack
+                       (CheckButton,
+                        "-before " & Widget_Image(InfoFrame) & "." & Name &
+                        "frame.read");
+                  end if;
+               end if;
+               State(CheckButton, ButtonState);
+            end loop;
+            Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "execute", "0");
+            Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "0");
+            Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "0");
+            case Permission is
+               when '1' =>
+                  Tcl.Ada.Tcl_SetVar
+                    (CheckButton.Interp, Name & "execute", "1");
+               when '2' =>
+                  Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "1");
+               when '3' =>
+                  Tcl.Ada.Tcl_SetVar
+                    (CheckButton.Interp, Name & "execute", "1");
+                  Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "1");
+               when '4' =>
+                  Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "1");
+               when '5' =>
+                  Tcl.Ada.Tcl_SetVar
+                    (CheckButton.Interp, Name & "execute", "1");
+                  Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "1");
+               when '6' =>
+                  Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "1");
+                  Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "1");
+               when '7' =>
+                  Tcl.Ada.Tcl_SetVar
+                    (CheckButton.Interp, Name & "execute", "1");
+                  Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "1");
+                  Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "1");
+               when others =>
+                  null;
+            end case;
+         end SetPermissionsButtons;
       begin
          Tcl.Ada.Tcl_Eval(Label.Interp, "file attributes " & SelectedItem);
          Attributes :=
@@ -591,13 +622,23 @@ package body ShowItems is
            New_String(Widget_Image(InfoFrame) & ".ownerframe.owner");
          configure(Label, "-text {" & Slice(Tokens, 4) & "}");
          if Value("USER") /= Slice(Tokens, 4) then
-            SetPermissionsButtons("owner", "disabled");
-            SetPermissionsButtons("group", "disabled");
-            SetPermissionsButtons("others", "disabled");
+            SetPermissionsButtons
+              ("owner", "disabled",
+               Slice(Tokens, 6)(Slice(Tokens, 6)'Last - 2));
+            SetPermissionsButtons
+              ("group", "disabled",
+               Slice(Tokens, 6)(Slice(Tokens, 6)'Last - 1));
+            SetPermissionsButtons
+              ("others", "disabled", Slice(Tokens, 6)(Slice(Tokens, 6)'Last));
          else
-            SetPermissionsButtons("owner", "!disabled");
-            SetPermissionsButtons("group", "!disabled");
-            SetPermissionsButtons("others", "!disabled");
+            SetPermissionsButtons
+              ("owner", "!disabled",
+               Slice(Tokens, 6)(Slice(Tokens, 6)'Last - 2));
+            SetPermissionsButtons
+              ("group", "!disabled",
+               Slice(Tokens, 6)(Slice(Tokens, 6)'Last - 1));
+            SetPermissionsButtons
+              ("others", "!disabled", Slice(Tokens, 6)(Slice(Tokens, 6)'Last));
          end if;
       end;
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
