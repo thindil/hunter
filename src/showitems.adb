@@ -36,6 +36,8 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Canvas; use Tcl.Tk.Ada.Widgets.Canvas;
 with Tcl.Tk.Ada.Widgets.Text; use Tcl.Tk.Ada.Widgets.Text;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
+use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 with Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
 use Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
@@ -43,6 +45,7 @@ with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -114,6 +117,15 @@ package body ShowItems is
    -- Ttk_Frame for show information about the selected item
    -- SOURCE
    InfoFrame: Ttk_Frame;
+   -- ****
+
+   -- ****iv* ShowItems/ButtonNames
+   -- FUNCTION
+   -- Names of the permissions buttons
+   -- SOURCE
+   ButtonNames: constant array(1 .. 3) of Unbounded_String :=
+     (To_Unbounded_String("execute"), To_Unbounded_String("read"),
+      To_Unbounded_String("write"));
    -- ****
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
@@ -441,6 +453,28 @@ package body ShowItems is
       Label: Ttk_Label;
       SelectedItem: constant String := To_String(CurrentSelected);
       Button: Ttk_Button;
+      procedure SetPermissionsButtons(Name, ButtonState: String) is
+         CheckButton: Ttk_CheckButton;
+      begin
+         CheckButton.Interp := Get_Context;
+         for I in ButtonNames'Range loop
+            CheckButton.Name :=
+              New_String
+                (Widget_Image(InfoFrame) & "." & Name & "frame." &
+                 To_String(ButtonNames(I)));
+            if I = 1 then
+               if Is_Directory(SelectedItem) then
+                  Tcl.Tk.Ada.Pack.Pack_Forget(CheckButton);
+               else
+                  Tcl.Tk.Ada.Pack.Pack
+                    (CheckButton,
+                     "-before " & Widget_Image(InfoFrame) & "." & Name &
+                     "frame.read");
+               end if;
+            end if;
+            State(CheckButton, ButtonState);
+         end loop;
+      end SetPermissionsButtons;
    begin
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
@@ -542,6 +576,30 @@ package body ShowItems is
          end;
          Tcl.Tk.Ada.Grid.Grid(Button);
       end if;
+      declare
+         Attributes: Unbounded_String;
+         Tokens: Slice_Set;
+      begin
+         Tcl.Ada.Tcl_Eval(Label.Interp, "file attributes " & SelectedItem);
+         Attributes :=
+           To_Unbounded_String(Tcl.Ada.Tcl_GetResult(Label.Interp));
+         Create(Tokens, To_String(Attributes), " ");
+         Label.Name :=
+           New_String(Widget_Image(InfoFrame) & ".groupframe.group");
+         configure(Label, "-text {" & Slice(Tokens, 2) & "}");
+         Label.Name :=
+           New_String(Widget_Image(InfoFrame) & ".ownerframe.owner");
+         configure(Label, "-text {" & Slice(Tokens, 4) & "}");
+         if Value("USER") /= Slice(Tokens, 4) then
+            SetPermissionsButtons("owner", "disabled");
+            SetPermissionsButtons("group", "disabled");
+            SetPermissionsButtons("others", "disabled");
+         else
+            SetPermissionsButtons("owner", "!disabled");
+            SetPermissionsButtons("group", "!disabled");
+            SetPermissionsButtons("others", "!disabled");
+         end if;
+      end;
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
    end ShowInfo;
 
@@ -640,6 +698,9 @@ package body ShowItems is
       Paned: Ttk_PanedWindow;
       Label: Ttk_Label;
       Button: Ttk_Button;
+      ButtonTexts: constant array(1 .. 3) of Unbounded_String :=
+        (To_Unbounded_String("Can execute"), To_Unbounded_String("Can read"),
+         To_Unbounded_String("Can write"));
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
          Command: Tcl.Tcl_Command;
@@ -651,6 +712,28 @@ package body ShowItems is
             raise Program_Error with "Can't add command " & Name;
          end if;
       end AddCommand;
+      procedure CreatePermissionsFrame(Name, Text: String; Row: Positive) is
+         Frame: constant Ttk_Frame :=
+           Create(".mainframe.paned.previewframe.infoframe." & Name & "frame");
+         CheckButton: Ttk_CheckButton;
+      begin
+         Label :=
+           Create
+             (".mainframe.paned.previewframe.infoframe." & Name & "text",
+              "-text {" & Text & ":}");
+         Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row" & Positive'Image(Row));
+         Label := Create(Widget_Image(Frame) & "." & Name);
+         Tcl.Tk.Ada.Pack.Pack(Label);
+         for I in ButtonNames'Range loop
+            CheckButton :=
+              Create
+                (Widget_Image(Frame) & "." & To_String(ButtonNames(I)),
+                 "-text {" & To_String(ButtonTexts(I)) & "} -variable " &
+                 Name & To_String(ButtonNames(I)));
+            Tcl.Tk.Ada.Pack.Pack(CheckButton);
+         end loop;
+         Tcl.Tk.Ada.Grid.Grid(Frame, "-column 1 -row" & Positive'Image(Row));
+      end CreatePermissionsFrame;
    begin
       PreviewFrame := Create(".mainframe.paned.previewframe");
       PreviewXScroll :=
@@ -715,6 +798,9 @@ package body ShowItems is
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 4");
       Button := Create(Widget_Image(InfoFrame) & ".associatedprogram");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4");
+      CreatePermissionsFrame("owner", "Owner", 5);
+      CreatePermissionsFrame("group", "Group", 6);
+      CreatePermissionsFrame("others", "Others", 7);
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
