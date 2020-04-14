@@ -18,6 +18,8 @@ with Ada.Calendar.Time_Zones;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -54,7 +56,6 @@ with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
 with Utils; use Utils;
 --with Ada.Containers; use Ada.Containers;
---with Ada.Strings; use Ada.Strings;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 --with GNAT.String_Split; use GNAT.String_Split;
 --with Bookmarks; use Bookmarks;
@@ -656,7 +657,7 @@ package body ShowItems is
       -- directory, depends which button was clicked
       -- PARAMETERS
       -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
       -- Argc       - Number of arguments passed to the command. Unused
       -- Argv       - Values of arguments passed to the command.
       -- SOURCE
@@ -735,6 +736,59 @@ package body ShowItems is
       return TCL_OK;
    end Show_Selected_Command;
 
+   function Set_Permissions_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* ShowItems/Set_Permissions_Command
+      -- FUNCTION
+      -- Set the permissions for the selected file or directory
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Permissions_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      SelectedItem: constant String := To_String(CurrentSelected);
+      PermissionsString: Unbounded_String;
+      Permission: Natural;
+      Names: constant array(1 .. 3) of Unbounded_String :=
+        (To_Unbounded_String("owner"), To_Unbounded_String("group"),
+         To_Unbounded_String("others"));
+   begin
+      if Is_Directory(SelectedItem) then
+         PermissionsString := To_Unbounded_String("040");
+      else
+         PermissionsString := To_Unbounded_String("00");
+      end if;
+      for Name of Names loop
+         Permission := 0;
+         if Tcl.Ada.Tcl_GetVar(Interp, To_String(Name) & "execute") = "1" then
+            Permission := Permission + 1;
+         end if;
+         if Tcl.Ada.Tcl_GetVar(Interp, To_String(Name) & "write") = "1" then
+            Permission := Permission + 2;
+         end if;
+         if Tcl.Ada.Tcl_GetVar(Interp, To_String(Name) & "read") = "1" then
+            Permission := Permission + 4;
+         end if;
+         Append(PermissionsString, Trim(Natural'Image(Permission), Both));
+      end loop;
+      Tcl.Ada.Tcl_Eval
+        (Interp,
+         "file attributes " & SelectedItem & " -permissions " &
+         To_String(PermissionsString));
+      return TCL_OK;
+   end Set_Permissions_Command;
+
    procedure CreateShowItemsUI is
       Paned: Ttk_PanedWindow;
       Label: Ttk_Label;
@@ -770,7 +824,8 @@ package body ShowItems is
               Create
                 (Widget_Image(Frame) & "." & To_String(ButtonNames(I)),
                  "-text {" & To_String(ButtonTexts(I)) & "} -variable " &
-                 Name & To_String(ButtonNames(I)));
+                 Name & To_String(ButtonNames(I)) &
+                 " -command SetPermissions");
             Tcl.Tk.Ada.Pack.Pack(CheckButton);
          end loop;
          Tcl.Tk.Ada.Grid.Grid(Frame, "-column 1 -row" & Positive'Image(Row));
@@ -844,6 +899,7 @@ package body ShowItems is
       CreatePermissionsFrame("others", "Others", 7);
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
+      AddCommand("SetPermissions", Set_Permissions_Command'Access);
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
       Add(Paned, PreviewFrame, "-weight 20");
