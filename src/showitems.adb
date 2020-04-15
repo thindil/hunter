@@ -506,7 +506,8 @@ package body ShowItems is
       else
          Tcl.Tk.Ada.Grid.Grid(Label);
          Label.Name := New_String(Widget_Image(InfoFrame) & ".filetype");
-         configure(Label, "-text {" & GetMimeType(SelectedItem) & "}");
+         configure
+           (Label, "-text {" & GetMimeType(Full_Name(SelectedItem)) & "}");
          Tcl.Tk.Ada.Grid.Grid(Label);
       end if;
       Label.Name :=
@@ -533,7 +534,8 @@ package body ShowItems is
             Non_Blocking_Spawn
               (ProcessDesc, ExecutableName,
                Argument_String_To_List
-                 ("query default " & GetMimeType(SelectedItem)).all);
+                 ("query default " &
+                  GetMimeType(Full_Name(SelectedItem))).all);
             Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
             if Result = 1 then
                DesktopFile :=
@@ -757,7 +759,7 @@ package body ShowItems is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
-      SelectedItem: constant String := To_String(CurrentSelected);
+      SelectedItem: constant String := Full_Name(To_String(CurrentSelected));
       PermissionsString: Unbounded_String;
       Permission: Natural;
       Names: constant array(1 .. 3) of Unbounded_String :=
