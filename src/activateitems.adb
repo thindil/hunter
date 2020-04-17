@@ -89,7 +89,8 @@ package body ActivateItems is
          UpdateWatch(To_String(CurrentDirectory));
       else
          declare
-            MimeType: constant String := GetMimeType(To_String(FileName));
+            MimeType: constant String :=
+              GetMimeType(Full_Name(To_String(FileName)));
             Pid: GNAT.OS_Lib.Process_Id;
             Openable: Boolean := CanBeOpened(MimeType);
             Arguments: constant Argument_List :=
