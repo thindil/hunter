@@ -614,7 +614,8 @@ package body ShowItems is
             end case;
          end SetPermissionsButtons;
       begin
-         Tcl.Ada.Tcl_Eval(Label.Interp, "file attributes " & SelectedItem);
+         Tcl.Ada.Tcl_Eval
+           (Label.Interp, "file attributes {" & SelectedItem & "}");
          Attributes :=
            To_Unbounded_String(Tcl.Ada.Tcl_GetResult(Label.Interp));
          Create(Tokens, To_String(Attributes), " ");
@@ -786,7 +787,7 @@ package body ShowItems is
       end loop;
       Tcl.Ada.Tcl_Eval
         (Interp,
-         "file attributes " & SelectedItem & " -permissions " &
+         "file attributes {" & SelectedItem & "} -permissions " &
          To_String(PermissionsString));
       return TCL_OK;
    end Set_Permissions_Command;
