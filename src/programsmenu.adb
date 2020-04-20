@@ -142,6 +142,9 @@ package body ProgramsMenu is
 
    function GetProgramName(DesktopFile: String) return String is
    begin
+      if not ApplicationsList.Contains(DesktopFile) then
+         return DesktopFile;
+      end if;
       return ApplicationsList(DesktopFile);
    end GetProgramName;
 

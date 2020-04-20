@@ -33,7 +33,8 @@ package ProgramsMenu is
    -- PARAMETERS
    -- DesktopFile - File name of .desktop file to search
    -- RESULT
-   -- Name of the application associated with the selected desktop file
+   -- Name of the application associated with the selected desktop file or
+   -- DesktopFile if application was not found
    -- SOURCE
    function GetProgramName(DesktopFile: String) return String;
    -- ****
