@@ -36,7 +36,6 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 --with Gtkada.Intl; use Gtkada.Intl;
 --with Glib; use Glib;
 with Bookmarks; use Bookmarks;
-with MainWindow; use MainWindow;
 --with Messages; use Messages;
 --with Utils; use Utils;
 
@@ -77,7 +76,6 @@ package body ProgramsMenu is
          SubFileName: String(1 .. 1024);
          File: File_Type;
          FileLine: Unbounded_String;
-         NamesList: UnboundedString_Container.Vector;
       begin
          for Path of ApplicationsPaths loop
             if not Ada.Directories.Exists(To_String(Path)) then
@@ -95,14 +93,10 @@ package body ProgramsMenu is
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
                      if Length(FileLine) > 5
-                       and then Slice(FileLine, 1, 5) = "Name="
-                       and then not NamesList.Contains
-                         (Unbounded_Slice(FileLine, 6, Length(FileLine))) then
+                       and then Slice(FileLine, 1, 5) = "Name=" then
                         ApplicationsList.Include
                           (SubFileName(1 .. SubLast),
                            Slice(FileLine, 6, Length(FileLine)));
-                        NamesList.Append
-                          (Unbounded_Slice(FileLine, 6, Length(FileLine)));
                         exit;
                      end if;
                   end loop;
