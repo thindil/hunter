@@ -842,6 +842,8 @@ package body ShowItems is
       end CreatePermissionsFrame;
    begin
       PreviewFrame := Create(".mainframe.paned.previewframe");
+      Paned.Interp := PreviewFrame.Interp;
+      Paned.Name := New_String(".mainframe.paned");
       PreviewXScroll :=
         Create
           (Widget_Image(PreviewFrame) & ".scrollx",
@@ -878,7 +880,11 @@ package body ShowItems is
       InfoFrame := Create(Widget_Image(PreviewFrame) & ".infoframe");
       Label := Create(Widget_Image(InfoFrame) & ".fullpathtext");
       Tcl.Tk.Ada.Grid.Grid(Label);
-      Label := Create(Widget_Image(InfoFrame) & ".fullpath");
+      Label :=
+        Create
+          (Widget_Image(InfoFrame) & ".fullpath",
+           "-wraplength " &
+           Natural'Image(Natural'Value(Winfo_Get(Paned, "width")) / 3));
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 0");
       Label := Create(Widget_Image(InfoFrame) & ".sizetext");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 1");
@@ -910,8 +916,6 @@ package body ShowItems is
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
-      Paned.Interp := PreviewFrame.Interp;
-      Paned.Name := New_String(".mainframe.paned");
       Add(Paned, PreviewFrame, "-weight 20");
       CreateProgramsMenu;
    end CreateShowItemsUI;
