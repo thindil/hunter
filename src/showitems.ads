@@ -13,10 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Gtk.Stack; use Gtk.Stack;
---with Gtk.Tool_Button; use Gtk.Tool_Button;
---with Gtk.Tree_Selection; use Gtk.Tree_Selection;
-
 -- ****h* Hunter/ShowItems
 -- FUNCTION
 -- Provide code to show informations and set some settings for selected files
