@@ -23,6 +23,8 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow; use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -58,13 +60,13 @@ package body ActivateItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
       DirectoryTree: Ttk_Tree_View;
       Tokens: Slice_Set;
       FileName: Unbounded_String;
    begin
-      DirectoryTree.Interp := Get_Context;
+      DirectoryTree.Interp := Interp;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
       Create(Tokens, Selection(DirectoryTree), " ");
@@ -112,6 +114,8 @@ package body ActivateItems is
                     Argument_String_To_List("").all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
                   ShowMessage("I can't execute this file.");
+               else
+                  Lower(Get_Main_Window(Interp));
                end if;
             else
                if ExecutableName = "" then
