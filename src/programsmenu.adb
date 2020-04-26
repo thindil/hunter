@@ -19,23 +19,22 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 --with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with CArgv;
+with Tcl; use Tcl;
+with Tcl.Ada;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
+with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 --with GNAT.OS_Lib; use GNAT.OS_Lib;
---with Gtk.Box; use Gtk.Box;
---with Gtk.Cell_Area_Box; use Gtk.Cell_Area_Box;
---with Gtk.Cell_Renderer_Text; use Gtk.Cell_Renderer_Text;
---with Gtk.Enums; use Gtk.Enums;
---with Gtk.List_Store; use Gtk.List_Store;
---with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
---with Gtk.Search_Entry; use Gtk.Search_Entry;
---with Gtk.Toggle_Button; use Gtk.Toggle_Button;
---with Gtk.Tree_Model; use Gtk.Tree_Model;
---with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
---with Gtk.Tree_View; use Gtk.Tree_View;
---with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
---with Gtkada.Intl; use Gtkada.Intl;
---with Glib; use Glib;
 with Bookmarks; use Bookmarks;
+with MainWindow; use MainWindow;
 --with Messages; use Messages;
 --with Utils; use Utils;
 
@@ -49,89 +48,133 @@ package body ProgramsMenu is
    ApplicationsList: Bookmarks_Container.Map;
    -- ****
 
-   procedure CreateProgramsMenu is
---      Menu: constant Gtk_Popover := Gtk_Popover_New(Parent);
---      MenuBox: constant Gtk_Vbox := Gtk_Vbox_New;
---      SearchEntry: constant Gtk_Search_Entry := Gtk_Search_Entry_New;
---      Scroll: constant Gtk_Scrolled_Window := Gtk_Scrolled_Window_New;
---      ProgramsView: constant Gtk_Tree_View :=
---        Gtk_Tree_View_New_With_Model(+(ProgramsFilter));
---      Renderer: Gtk_Cell_Renderer_Text;
---      Area: Gtk_Cell_Area_Box;
---      Column: Gtk_Tree_View_Column;
---      ProgramsList: constant Gtk_List_Store := -(Get_Model(ProgramsFilter));
+   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
+
+   function Toggle_Applications_Menu_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* ProgramsMenu/Toggle_Applications_Menu_Command
+      -- FUNCTION
+      -- Show or hide menu which allow to set a application which can be used
+      -- to execute the selected file or directory
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Toggle_Applications_Menu_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      ApplicationsFrame: Ttk_Frame;
    begin
-      --     MenuButton := Gtk_Toggle_Button(Parent);
-      declare
-         ApplicationsPaths: constant array
-           (Positive range <>) of Unbounded_String :=
-           (To_Unbounded_String("/usr/share/applications"),
-            To_Unbounded_String("/usr/share/applnk"),
-            To_Unbounded_String("/usr/local/share/applications"),
-            To_Unbounded_String("/usr/local/share/applnk"),
-            To_Unbounded_String(Value("HOME") & "/.local/share/applications"),
-            To_Unbounded_String(Value("HOME") & "/.local/share/applnk"));
-         SubDirectory: Dir_Type;
-         SubLast: Natural;
-         SubFileName: String(1 .. 1024);
-         File: File_Type;
-         FileLine: Unbounded_String;
+      ApplicationsFrame.Interp := Interp;
+      ApplicationsFrame.Name :=
+        New_String(".mainframe.paned.previewframe.infoframe.applicationsmenu");
+      if Winfo_Get(ApplicationsFrame, "ismapped") = "0" then
+         Tcl.Tk.Ada.Grid.Grid
+           (ApplicationsFrame, "-column 1 -row 5 -rowspan 3");
+      else
+         Grid_Forget(ApplicationsFrame);
+      end if;
+      return TCL_OK;
+   end Toggle_Applications_Menu_Command;
+
+   procedure CreateProgramsMenu is
+      ApplicationsPaths: constant array
+        (Positive range <>) of Unbounded_String :=
+        (To_Unbounded_String("/usr/share/applications"),
+         To_Unbounded_String("/usr/share/applnk"),
+         To_Unbounded_String("/usr/local/share/applications"),
+         To_Unbounded_String("/usr/local/share/applnk"),
+         To_Unbounded_String(Value("HOME") & "/.local/share/applications"),
+         To_Unbounded_String(Value("HOME") & "/.local/share/applnk"));
+      SubDirectory: Dir_Type;
+      SubLast: Natural;
+      SubFileName: String(1 .. 1024);
+      File: File_Type;
+      FileLine: Unbounded_String;
+      NamesList: UnboundedString_Container.Vector;
+      ApplicationsFrame: constant Ttk_Frame :=
+        Create
+          (".mainframe.paned.previewframe.infoframe.applicationsmenu",
+           "-width 200 -height 400");
+      SearchEntry: constant Ttk_Entry :=
+        Create(Widget_Image(ApplicationsFrame) & ".searchentry");
+      ApplicationsView: constant Ttk_Tree_View :=
+        Create
+          (Widget_Image(ApplicationsFrame) & ".tree",
+           "-show tree -yscrollcommand {" & Widget_Image(ApplicationsFrame) &
+           ".scrolly set}");
+      ApplicationsYScroll: constant Ttk_Scrollbar :=
+        Create
+          (Widget_Image(ApplicationsFrame) & ".scrolly",
+           "-orient vertical -command [list " &
+           Widget_Image(ApplicationsView) & " yview]");
+      procedure AddCommand
+        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
+         Command: Tcl.Tcl_Command;
       begin
-         for Path of ApplicationsPaths loop
-            if not Ada.Directories.Exists(To_String(Path)) then
-               goto End_Of_Loop;
-            end if;
-            Open(SubDirectory, To_String(Path));
-            loop
-               Read(SubDirectory, SubFileName, SubLast);
-               exit when SubLast = 0;
-               if Extension(SubFileName(1 .. SubLast)) = "desktop" then
-                  Open
-                    (File, In_File,
-                     To_String(Path) & "/" &
-                     Simple_Name(SubFileName(1 .. SubLast)));
-                  while not End_Of_File(File) loop
-                     FileLine := To_Unbounded_String(Get_Line(File));
-                     if Length(FileLine) > 5
-                       and then Slice(FileLine, 1, 5) = "Name=" then
-                        ApplicationsList.Include
-                          (SubFileName(1 .. SubLast),
-                           Slice(FileLine, 6, Length(FileLine)));
-                        exit;
+         Command :=
+           CreateCommands.Tcl_CreateCommand
+             (Get_Context, Name, AdaCommand, 0, null);
+         if Command = null then
+            raise Program_Error with "Can't add command " & Name;
+         end if;
+      end AddCommand;
+   begin
+      for Path of ApplicationsPaths loop
+         if not Ada.Directories.Exists(To_String(Path)) then
+            goto End_Of_Loop;
+         end if;
+         Open(SubDirectory, To_String(Path));
+         loop
+            Read(SubDirectory, SubFileName, SubLast);
+            exit when SubLast = 0;
+            if Extension(SubFileName(1 .. SubLast)) = "desktop" then
+               Open
+                 (File, In_File,
+                  To_String(Path) & "/" &
+                  Simple_Name(SubFileName(1 .. SubLast)));
+               while not End_Of_File(File) loop
+                  FileLine := To_Unbounded_String(Get_Line(File));
+                  if Length(FileLine) > 5
+                    and then Slice(FileLine, 1, 5) = "Name=" then
+                     ApplicationsList.Include
+                       (SubFileName(1 .. SubLast),
+                        Slice(FileLine, 6, Length(FileLine)));
+                     if not NamesList.Contains
+                         (Unbounded_Slice(FileLine, 6, Length(FileLine))) then
+                        NamesList.Append
+                          (Unbounded_Slice(FileLine, 6, Length(FileLine)));
                      end if;
-                  end loop;
-                  Close(File);
-               end if;
-            end loop;
-            Close(SubDirectory);
-            <<End_Of_Loop>>
+                     exit;
+                  end if;
+               end loop;
+               Close(File);
+            end if;
          end loop;
-      end;
---      Set_Sort_Column_Id(ProgramsList, 0, Sort_Ascending);
---      Set_Visible_Func(ProgramsFilter, VisiblePrograms'Access);
---      Set_Placeholder_Text(SearchEntry, Gettext("Search for the program"));
---      On_Search_Changed(SearchEntry, SearchProgram'Access);
---      Pack_Start(MenuBox, SearchEntry, False);
---      Gtk.Cell_Renderer_Text.Gtk_New(Renderer);
---      Area := Gtk_Cell_Area_Box_New;
---      Column := Gtk_Tree_View_Column_New_With_Area(Area);
---      Set_Sort_Column_Id(Column, 0);
---      Set_Title(Column, Gettext("Name"));
---      if Append_Column(ProgramsView, Column) < 0 then
---         Put_Line("Error in adding columns.");
---      end if;
---      Pack_Start(Area, Renderer, True);
---      Add_Attribute(Area, Renderer, "text", 0);
---      Set_Activate_On_Single_Click(ProgramsView, True);
---      On_Row_Activated(ProgramsView, SetProgram'Access);
---      Set_Policy(Scroll, Policy_Never, Policy_Automatic);
---      Add(Scroll, ProgramsView);
---      Pack_Start(MenuBox, Scroll);
---      Show_All(MenuBox);
---      Add(Menu, MenuBox);
---      Set_Modal(Menu, True);
---      Set_Size_Request(Menu, -1, 400);
---      return Menu;
+         Close(SubDirectory);
+         <<End_Of_Loop>>
+      end loop;
+      for I in NamesList.First_Index .. NamesList.Last_Index loop
+         Insert
+           (ApplicationsView,
+            "{} end -id" & Positive'Image(I) & " -text {" &
+            To_String(NamesList(I)) & "}");
+      end loop;
+      Tcl.Tk.Ada.Grid.Grid(SearchEntry, "-columnspan 2 -sticky we");
+      Tcl.Tk.Ada.Grid.Grid(ApplicationsView, "-column 0 -row 1 -sticky we");
+      Tcl.Tk.Ada.Grid.Grid(ApplicationsYScroll, "-column 1 -row 1");
+      Row_Configure(ApplicationsFrame, ApplicationsView, "-weight 1");
+      AddCommand
+        ("ToggleApplicationsMenu", Toggle_Applications_Menu_Command'Access);
    end CreateProgramsMenu;
 
    function GetProgramName(DesktopFile: String) return String is
