@@ -895,7 +895,10 @@ package body ShowItems is
           (Widget_Image(InfoFrame) & ".associatedprogramtext",
            "-text {Associated program:}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 4");
-      Button := Create(Widget_Image(InfoFrame) & ".associatedprogram");
+      Button :=
+        Create
+          (Widget_Image(InfoFrame) & ".associatedprogram",
+           "-command ToggleApplicationsMenu");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4");
       CreatePermissionsFrame("owner", "Owner", 5);
       CreatePermissionsFrame("group", "Group", 6);
