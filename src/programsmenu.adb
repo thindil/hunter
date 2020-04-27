@@ -49,6 +49,7 @@ package body ProgramsMenu is
    -- ****
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
+   package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
 
    function Toggle_Applications_Menu_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -163,6 +164,7 @@ package body ProgramsMenu is
          Close(SubDirectory);
          <<End_Of_Loop>>
       end loop;
+      Programs_Sorting.Sort(NamesList);
       for I in NamesList.First_Index .. NamesList.Last_Index loop
          Insert
            (ApplicationsView,
