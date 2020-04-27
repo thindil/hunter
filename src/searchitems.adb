@@ -89,6 +89,7 @@ package body SearchItems is
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
          State(Button, "!selected");
+         UpdateDirectoryList;
       end if;
       return TCL_OK;
    end Toggle_Search_Command;
