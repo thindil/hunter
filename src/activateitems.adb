@@ -24,8 +24,10 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow; use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -84,6 +86,9 @@ package body ActivateItems is
          CurrentDirectory := FileName;
          if Settings.ShowPreview then
             ItemsList := SecondItemsList;
+            Wm_Set
+              (Get_Main_Window(Get_Context), "title",
+               "{Hunter " & To_String(CurrentDirectory) & "}");
          else
             LoadDirectory(To_String(CurrentDirectory));
          end if;

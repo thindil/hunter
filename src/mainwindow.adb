@@ -127,7 +127,6 @@ package body MainWindow is
               "/others/hunter-icon.png");
       end if;
       MainWindow := Get_Main_Window(Interp);
-      Wm_Set(MainWindow, "title", "Hunter");
       Wm_Set
         (MainWindow, "geometry",
          Trim(Positive'Image(Settings.WindowWidth), Both) & "x" &
