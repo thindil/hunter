@@ -22,6 +22,7 @@ with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Busy;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Utils; use Utils;
 --with Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
@@ -196,6 +197,9 @@ package body LoadData is
       Close(Directory);
       if not Second then
          Items_Sorting.Sort(ItemsList);
+         Wm_Set
+           (Get_Main_Window(Get_Context), "title",
+            "{Hunter " & DirectoryName & "}");
       else
          Items_Sorting.Sort(SecondItemsList);
       end if;
