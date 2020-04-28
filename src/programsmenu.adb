@@ -173,7 +173,7 @@ package body ProgramsMenu is
       end loop;
       Tcl.Tk.Ada.Grid.Grid(SearchEntry, "-columnspan 2 -sticky we");
       Tcl.Tk.Ada.Grid.Grid(ApplicationsView, "-column 0 -row 1 -sticky we");
-      Tcl.Tk.Ada.Grid.Grid(ApplicationsYScroll, "-column 1 -row 1");
+      Tcl.Tk.Ada.Grid.Grid(ApplicationsYScroll, "-column 1 -row 1 -sticky ns");
       Row_Configure(ApplicationsFrame, ApplicationsView, "-weight 1");
       AddCommand
         ("ToggleApplicationsMenu", Toggle_Applications_Menu_Command'Access);
