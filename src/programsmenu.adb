@@ -13,10 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Ada.Characters.Handling; use Ada.Characters.Handling;
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
---with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -46,6 +46,13 @@ package body ProgramsMenu is
    -- directories
    -- SOURCE
    ApplicationsList: Bookmarks_Container.Map;
+   -- ****
+
+   -- ****iv* ProgramsMenu/NamesList
+   -- FUNCTION
+   -- List of all applications showed in the menu
+   -- SOURCE
+   NamesList: UnboundedString_Container.Vector;
    -- ****
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
@@ -87,6 +94,61 @@ package body ProgramsMenu is
       return TCL_OK;
    end Toggle_Applications_Menu_Command;
 
+   function Search_Program_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* ProgramsMenu/Search_Program_Command
+      -- FUNCTION
+      -- Search the programs menu for the selected text (case insensitive) and
+      -- show only matching applications
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Search_Program_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
+      TextEntry: Ttk_Entry;
+      ProgramsTree: Ttk_Tree_View;
+      Query: Unbounded_String;
+      Selected: Boolean := False;
+   begin
+      TextEntry.Interp := Get_Context;
+      TextEntry.Name :=
+        New_String
+          (".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry");
+      Query := To_Unbounded_String(Get(TextEntry));
+      ProgramsTree.Interp := Get_Context;
+      ProgramsTree.Name :=
+        New_String
+          (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree");
+      if Length(Query) = 0 then
+         return TCL_OK;
+      end if;
+      for I in NamesList.First_Index .. NamesList.Last_Index loop
+         if Index
+             (To_Lower(To_String(NamesList(I))), To_Lower(To_String(Query))) =
+           0 then
+            Detach(ProgramsTree, Positive'Image(I));
+         else
+            Move(ProgramsTree, Positive'Image(I), "{}", Natural'Image(I - 1));
+            if not Selected then
+               Selection_Set(ProgramsTree, Positive'Image(I));
+               Selected := True;
+            end if;
+         end if;
+      end loop;
+      return TCL_OK;
+   end Search_Program_Command;
+
    procedure CreateProgramsMenu is
       ApplicationsPaths: constant array
         (Positive range <>) of Unbounded_String :=
@@ -101,7 +163,6 @@ package body ProgramsMenu is
       SubFileName: String(1 .. 1024);
       File: File_Type;
       FileLine: Unbounded_String;
-      NamesList: UnboundedString_Container.Vector;
       ApplicationsFrame: constant Ttk_Frame :=
         Create
           (".mainframe.paned.previewframe.infoframe.applicationsmenu",
@@ -177,6 +238,8 @@ package body ProgramsMenu is
       Row_Configure(ApplicationsFrame, ApplicationsView, "-weight 1");
       AddCommand
         ("ToggleApplicationsMenu", Toggle_Applications_Menu_Command'Access);
+      AddCommand("SearchProgram", Search_Program_Command'Access);
+      Bind(SearchEntry, "<KeyRelease>", "{SearchProgram}");
    end CreateProgramsMenu;
 
    function GetProgramName(DesktopFile: String) return String is
