@@ -21,6 +21,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
@@ -32,11 +33,10 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
---with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Bookmarks; use Bookmarks;
 with MainWindow; use MainWindow;
 --with Messages; use Messages;
---with Utils; use Utils;
+with Utils; use Utils;
 
 package body ProgramsMenu is
 
@@ -149,6 +149,52 @@ package body ProgramsMenu is
       return TCL_OK;
    end Search_Program_Command;
 
+   function Set_Application_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* ProgramsMenu/Set_Application_Command
+      -- FUNCTION
+      -- Show or hide menu which allow to set a application which can be used
+      -- to execute the selected file or directory
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Set_Application_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      -- ****
+      ApplicationsView: Ttk_Tree_View;
+      Pid: Process_Id;
+      ExecutableName: constant String := FindExecutable("xdg-mime");
+   begin
+      ApplicationsView.Interp := Interp;
+      ApplicationsView.Name :=
+        New_String
+          (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree");
+      if ExecutableName = "" then
+         return TCL_OK;
+      end if;
+--      Pid :=
+--        Non_Blocking_Spawn
+--          (ExecutableName,
+--           Argument_String_To_List
+--             ("default " & Get_String(ProgramsFilter, ProgramIter, 1) & " " &
+--              GetMimeType(To_String(CurrentSelected))).all);
+--      if Pid = GNAT.OS_Lib.Invalid_Pid then
+--         ShowMessage(Gettext("Could not set new associated program."));
+--      else
+--         Set_Label(MenuButton, Get_String(ProgramsFilter, ProgramIter, 0));
+--      end if;
+      return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
+   end Set_Application_Command;
+
    procedure CreateProgramsMenu is
       ApplicationsPaths: constant array
         (Positive range <>) of Unbounded_String :=
@@ -239,7 +285,10 @@ package body ProgramsMenu is
       AddCommand
         ("ToggleApplicationsMenu", Toggle_Applications_Menu_Command'Access);
       AddCommand("SearchProgram", Search_Program_Command'Access);
+      AddCommand("SetApplication", Set_Application_Command'Access);
       Bind(SearchEntry, "<KeyRelease>", "{SearchProgram}");
+      Bind(ApplicationsView, "<Double-1>", "{SetApplication}");
+      Bind(ApplicationsView, "<Return>", "{SetApplication}");
    end CreateProgramsMenu;
 
    function GetProgramName(DesktopFile: String) return String is
