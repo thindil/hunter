@@ -221,6 +221,17 @@ package body MainWindow.Commands is
          end if;
          return TCL_OK;
       end if;
+      Frame.Name :=
+        New_String(".mainframe.paned.previewframe.infoframe.applicationsmenu");
+      if Winfo_Get(Frame, "ismapped") = "1" then
+         Button.Name :=
+           New_String
+             (".mainframe.paned.previewframe.infoframe.associatedprogram");
+         if Invoke(Button) /= "" then
+            raise Program_Error with "Can't hide associated programs menu";
+         end if;
+         return TCL_OK;
+      end if;
       return TCL_OK;
    end Hide_Widget_Command;
 
