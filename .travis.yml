@@ -3,7 +3,7 @@ language: minimal
 branches:
    except:
       - travis-dev-build
-      - experimental
+      - tk
 
 services:
    - docker
