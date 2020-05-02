@@ -6,6 +6,9 @@ from [XDG MIME Application Specification](https://specifications.freedesktop.org
 **Note:** This version of README.md is about development version of the
 program. Some things may be different in released version of Hunter.
 
+This is not released yet, new version based on Tk library. For the stable
+version of the program please look [here](https://github.com/thindil/hunter/tree/master)
+
 ## Features
 
 - Two column mode default or one column mode: One column always show files
@@ -17,7 +20,7 @@ program. Some things may be different in released version of Hunter.
 - Standard file manager features: copy, delete, move files and directories,
   change their permissions, change application associated with them.
 - Written in TK and Ada.
-- Available in English and Polish language.
+- Available in English and Polish language (GTK version only for now).
 
 ## Build the program from sources
 
