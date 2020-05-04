@@ -82,6 +82,7 @@ package body ProgramsMenu is
       pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
       ApplicationsFrame: Ttk_Frame;
+      TextEntry: Ttk_Entry;
    begin
       ApplicationsFrame.Interp := Interp;
       ApplicationsFrame.Name :=
@@ -89,6 +90,11 @@ package body ProgramsMenu is
       if Winfo_Get(ApplicationsFrame, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid
            (ApplicationsFrame, "-column 1 -row 5 -rowspan 3");
+         TextEntry.Interp := Interp;
+         TextEntry.Name :=
+           New_String
+             (".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry");
+         Focus(TextEntry);
       else
          Grid_Forget(ApplicationsFrame);
       end if;
@@ -107,7 +113,7 @@ package body ProgramsMenu is
       -- show only matching applications
       -- PARAMETERS
       -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
       -- Argc       - Number of arguments passed to the command. Unused
       -- Argv       - Values of arguments passed to the command. Unused
       -- SOURCE
@@ -115,19 +121,19 @@ package body ProgramsMenu is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
       TextEntry: Ttk_Entry;
       ProgramsTree: Ttk_Tree_View;
       Query: Unbounded_String;
       Selected: Boolean := False;
    begin
-      TextEntry.Interp := Get_Context;
+      TextEntry.Interp := Interp;
       TextEntry.Name :=
         New_String
           (".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry");
       Query := To_Unbounded_String(Get(TextEntry));
-      ProgramsTree.Interp := Get_Context;
+      ProgramsTree.Interp := Interp;
       ProgramsTree.Name :=
         New_String
           (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree");
