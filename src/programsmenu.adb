@@ -137,13 +137,13 @@ package body ProgramsMenu is
       ProgramsTree.Name :=
         New_String
           (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree");
-      if Length(Query) = 0 then
-         return TCL_OK;
-      end if;
       for I in NamesList.First_Index .. NamesList.Last_Index loop
-         if Index
-             (To_Lower(To_String(NamesList(I))), To_Lower(To_String(Query))) =
-           0 then
+         if Query /= Null_Unbounded_String
+           and then
+             Index
+               (To_Lower(To_String(NamesList(I))),
+                To_Lower(To_String(Query))) =
+             0 then
             Detach(ProgramsTree, Positive'Image(I));
          else
             Move(ProgramsTree, Positive'Image(I), "{}", Natural'Image(I - 1));
