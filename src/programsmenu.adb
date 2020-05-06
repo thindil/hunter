@@ -216,6 +216,36 @@ package body ProgramsMenu is
       return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
    end Set_Application_Command;
 
+   function Hide_On_Focus_Out_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* ProgramsMenu/Hide_On_Focus_Out_Command
+      -- FUNCTION
+      -- If application menu lost focus, hide it
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Hide_On_Focus_Out_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+   -- ****
+   begin
+      if Focus(Interp) in
+          ".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry" |
+            ".mainframe.paned.previewframe.infoframe.applicationsmenu.tree" |
+            ".mainframe.paned.previewframe.infoframe.associatedprogram" then
+         return TCL_OK;
+      end if;
+      return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
+   end Hide_On_Focus_Out_Command;
+
    procedure CreateProgramsMenu is
       ApplicationsPaths: constant array
         (Positive range <>) of Unbounded_String :=
@@ -307,9 +337,12 @@ package body ProgramsMenu is
         ("ToggleApplicationsMenu", Toggle_Applications_Menu_Command'Access);
       AddCommand("SearchProgram", Search_Program_Command'Access);
       AddCommand("SetApplication", Set_Application_Command'Access);
+      AddCommand("HideOnFocusOut", Hide_On_Focus_Out_Command'Access);
       Bind(SearchEntry, "<KeyRelease>", "{SearchProgram}");
+      Bind(SearchEntry, "<FocusOut>", "{HideOnFocusOut}");
       Bind(ApplicationsView, "<Double-1>", "{SetApplication}");
       Bind(ApplicationsView, "<Return>", "{SetApplication}");
+      Bind(ApplicationsView, "<FocusOut>", "{HideOnFocusOut}");
    end CreateProgramsMenu;
 
    function GetProgramName(DesktopFile: String) return String is
