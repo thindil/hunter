@@ -34,6 +34,7 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
+with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Bookmarks; use Bookmarks;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -343,6 +344,10 @@ package body ProgramsMenu is
       Bind(ApplicationsView, "<Double-1>", "{SetApplication}");
       Bind(ApplicationsView, "<Return>", "{SetApplication}");
       Bind(ApplicationsView, "<FocusOut>", "{HideOnFocusOut}");
+      Add(SearchEntry, "Search for a program");
+      Add
+        (ApplicationsView,
+         "Press enter or double click to set the selected program as associated with that type of file or directory.");
    end CreateProgramsMenu;
 
    function GetProgramName(DesktopFile: String) return String is
