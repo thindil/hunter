@@ -48,6 +48,30 @@ package body ActivateItems is
 
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
 
+   -- ****if* ActivateItems/ExecuteFile
+   -- FUNCTION
+   -- Execute the selected file
+   -- PARAMETERS
+   -- FileName  - Name of file (full path) which will be executed
+   -- Arguments - Additional arguments passed to the file
+   -- RESULT
+   -- Spawned process ID of the executed file. If the file cannot
+   -- be executed, return Invalid_Pid
+   -- SOURCE
+   function ExecuteFile
+     (FileName, Arguments: String) return GNAT.OS_Lib.Process_Id is
+      -- ****
+      Pid: GNAT.OS_Lib.Process_Id;
+   begin
+      Pid :=
+        Non_Blocking_Spawn
+          (Full_Name(FileName), Argument_String_To_List(Arguments).all);
+      if Pid /= GNAT.OS_Lib.Invalid_Pid then
+         Lower(Get_Main_Window(Get_Context));
+      end if;
+      return Pid;
+   end ExecuteFile;
+
    function Activate_Item_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -107,8 +131,6 @@ package body ActivateItems is
               GetMimeType(Full_Name(To_String(FileName)));
             Pid: GNAT.OS_Lib.Process_Id;
             Openable: Boolean := CanBeOpened(MimeType);
-            Arguments: constant Argument_List :=
-              (new String'(To_String(FileName)), new String'(""));
             ExecutableName: constant String := FindExecutable("xdg-open");
          begin
             if MimeType(1 .. 4) = "text" and not Openable then
@@ -120,23 +142,15 @@ package body ActivateItems is
                     ("I can't open this file. No application associated with this type of files.");
                   return TCL_OK;
                end if;
-               Pid :=
-                 Non_Blocking_Spawn
-                   (Full_Name(To_String(CurrentSelected)),
-                    Argument_String_To_List("").all);
+               Pid := ExecuteFile(To_String(FileName), "");
                if Pid = GNAT.OS_Lib.Invalid_Pid then
                   ShowMessage("I can't execute this file.");
-               else
-                  Lower(Get_Main_Window(Interp));
                end if;
             else
                if ExecutableName = "" then
                   return TCL_OK;
                end if;
-               Pid :=
-                 Non_Blocking_Spawn
-                   (ExecutableName,
-                    Arguments(Arguments'First .. Arguments'Last - 1));
+               Pid := ExecuteFile(ExecutableName, To_String(FileName));
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
@@ -180,7 +194,9 @@ package body ActivateItems is
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name := New_String(".mainframe.textframe.okbutton");
-         Add(Button, "Execute the selected file or directory with the entered program.");
+         Add
+           (Button,
+            "Execute the selected file or directory with the entered program.");
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
