@@ -170,7 +170,7 @@ package body ActivateItems is
       -- ****if* ActivateItems/Toggle_Search_Command
       -- FUNCTION
       -- Show text entry to enter with what program execute selected file or
-      -- direcotry
+      -- directory
       -- PARAMETERS
       -- ClientData - Custom data send to the command. Unused
       -- Interp     - Tcl interpreter in which command was executed.
@@ -194,6 +194,7 @@ package body ActivateItems is
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name := New_String(".mainframe.textframe.okbutton");
+         configure(Button, "-command ExecuteWith");
          Add
            (Button,
             "Execute the selected file or directory with the entered program.");
@@ -202,6 +203,7 @@ package body ActivateItems is
            New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
          State(Button, "selected");
          Add(TextEntry, "Enter command to use to open selected item.");
+         Unbind(TextEntry, "<KeyRelease>");
          TextFrame.Interp := Interp;
          TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
@@ -215,6 +217,72 @@ package body ActivateItems is
       end if;
       return TCL_OK;
    end Toggle_Execute_With_Command;
+
+   function Execute_With_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* ActivateItems/Execute_With_Command
+      -- FUNCTION
+      -- Execute the selected file or directory with the selected command
+      -- entered by an user
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Execute_With_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      -- ****
+      TextEntry: Ttk_Entry;
+      Value, CommandName, Arguments: Unbounded_String;
+      Pid: GNAT.OS_Lib.Process_Id;
+      DirectoryTree: Ttk_Tree_View;
+      Tokens: Slice_Set;
+      FileName: Unbounded_String;
+      SpaceIndex: Natural;
+   begin
+      TextEntry.Interp := Interp;
+      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      Value := To_Unbounded_String(Get(TextEntry));
+      if Value = Null_Unbounded_String then
+         return TCL_OK;
+      end if;
+      SpaceIndex := Index(Value, " ");
+      if SpaceIndex > 0 then
+         CommandName := Unbounded_Slice(Value, 1, SpaceIndex);
+      else
+         CommandName := Value;
+      end if;
+      CommandName :=
+        To_Unbounded_String(FindExecutable(To_String(CommandName)));
+      if CommandName = Null_Unbounded_String then
+         ShowMessage("Can't find command: " & Slice(Value, 1, SpaceIndex));
+         return TCL_OK;
+      end if;
+      if SpaceIndex > 0 then
+         Arguments := Unbounded_Slice(Value, SpaceIndex, Length(Value)) & " ";
+      end if;
+      DirectoryTree.Interp := Interp;
+      DirectoryTree.Name :=
+        New_String(".mainframe.paned.directoryframe.directorytree");
+      Create(Tokens, Selection(DirectoryTree), " ");
+      FileName :=
+        CurrentDirectory & '/' &
+        ItemsList(Positive'Value(Slice(Tokens, 1))).Name;
+      Append(Arguments, FileName);
+      Pid := ExecuteFile(To_String(CommandName), To_String(Arguments));
+      if Pid = GNAT.OS_Lib.Invalid_Pid then
+         ShowMessage("Can't execute this command");
+         return TCL_OK;
+      end if;
+      return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);
+   end Execute_With_Command;
 
    procedure CreateActivateUI is
       procedure AddCommand
@@ -231,6 +299,7 @@ package body ActivateItems is
    begin
       AddCommand("ActivateItem", Activate_Item_Command'Access);
       AddCommand("ToggleExecuteWith", Toggle_Execute_With_Command'Access);
+      AddCommand("ExecuteWith", Execute_With_Command'Access);
    end CreateActivateUI;
 
 --   -- ****if* ActivateItems/ActivateFileButton
