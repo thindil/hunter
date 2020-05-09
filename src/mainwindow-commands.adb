@@ -161,15 +161,20 @@ package body MainWindow.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
       TextFrame: Ttk_Frame;
       TextEntry: Ttk_Entry;
+      Button: Ttk_Button;
    begin
-      TextEntry.Interp := Get_Context;
+      TextEntry.Interp := Interp;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       Delete(TextEntry, "0", "end");
-      TextFrame.Interp := Get_Context;
+      Button.Interp := Interp;
+      Button.Name :=
+        New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
+      State(Button, "!selected");
+      TextFrame.Interp := Interp;
       TextFrame.Name := New_String(".mainframe.textframe");
       Tcl.Tk.Ada.Grid.Grid_Remove(TextFrame);
       return TCL_OK;
@@ -214,6 +219,9 @@ package body MainWindow.Commands is
       if Winfo_Get(Frame, "ismapped") = "1" then
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
+         State(Button, "!selected");
+         Button.Name :=
+           New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
          State(Button, "!selected");
          Button.Name := New_String(".mainframe.textframe.closebutton");
          if Invoke(Button) /= "" then

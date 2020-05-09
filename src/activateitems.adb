@@ -23,11 +23,18 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
+with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
+with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -140,6 +147,59 @@ package body ActivateItems is
       return TCL_OK;
    end Activate_Item_Command;
 
+   function Toggle_Execute_With_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* ActivateItems/Toggle_Search_Command
+      -- FUNCTION
+      -- Show text entry to enter with what program execute selected file or
+      -- direcotry
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Toggle_Execute_With_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      TextFrame: Ttk_Frame;
+      Button: Ttk_Button;
+      TextEntry: Ttk_Entry;
+   begin
+      TextEntry.Interp := Interp;
+      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      Button.Interp := Interp;
+      Button.Name := New_String(".mainframe.textframe.closebutton");
+      if Winfo_Get(TextEntry, "ismapped") = "0" then
+         Tcl.Tk.Ada.Grid.Grid(Button);
+         Button.Name := New_String(".mainframe.textframe.okbutton");
+         Add(Button, "Execute the selected file or directory with the entered program.");
+         Tcl.Tk.Ada.Grid.Grid(Button);
+         Button.Name :=
+           New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
+         State(Button, "selected");
+         Add(TextEntry, "Enter command to use to open selected item.");
+         TextFrame.Interp := Interp;
+         TextFrame.Name := New_String(".mainframe.textframe");
+         Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
+      else
+         if Invoke(Button) /= "" then
+            raise Program_Error with "Can't hide execute program bar";
+         end if;
+         Button.Name :=
+           New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
+         State(Button, "!selected");
+      end if;
+      return TCL_OK;
+   end Toggle_Execute_With_Command;
+
    procedure CreateActivateUI is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -154,6 +214,7 @@ package body ActivateItems is
       end AddCommand;
    begin
       AddCommand("ActivateItem", Activate_Item_Command'Access);
+      AddCommand("ToggleExecuteWith", Toggle_Execute_With_Command'Access);
    end CreateActivateUI;
 
 --   -- ****if* ActivateItems/ActivateFileButton

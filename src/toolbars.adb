@@ -292,7 +292,10 @@ package body Toolbars is
         (ToolButton, "Open selected file or directory \[ALT+O\]",
          "document-open");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".mainframe.toolbars.itemtoolbar.openwithbutton");
+      ToolButton :=
+        Create
+          (".mainframe.toolbars.itemtoolbar.openwithbutton",
+           "-command ToggleExecuteWith");
       SetButton
         (ToolButton, "Open selected file or directory with command \[ALT+W\]",
          "system-run");
