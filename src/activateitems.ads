@@ -27,38 +27,4 @@ package ActivateItems is
    procedure CreateActivateUI;
    -- ****
 
-   -- ****f* ActivateItems/StartOpenWith
-   -- FUNCTION
-   -- Show text entry to start opening selected file or directory with custom
-   -- command.
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
-   -- SOURCE
---   procedure StartOpenWith(Self: access Gtk_Tool_Button_Record'Class);
---   -- ****
---
---   -- ****f* ActivateItems/OpenItemWith
---   -- FUNCTION
---   -- Open selected item or directory with entered by user command. That
---   -- command can have argumets either.
---   -- PARAMETERS
---   -- Self     - Text entry with command to use
---   -- Icon_Pos - Position of text entry icon which was pressed or if key
---   --            Enter was pressed, simulate pressing proper icon
---   -- SOURCE
---   procedure OpenItemWith
---     (Self: access Gtk_Entry_Record'Class; Icon_Pos: Gtk_Entry_Icon_Position);
---   -- ****
---
---   -- ****f* ActivateItems/ExecuteFile
---   -- FUNCTION
---   -- Execute selected file. That file must be graphical application or
---   -- all output will be redirected to terminal (invisible to user).
---   -- PARAMETERS
---   -- Self - Gtk_Tool_Button clicked. Unused. Can be null
---   -- SOURCE
---   procedure ExecuteFile(Self: access Gtk_Tool_Button_Record'Class);
---   -- ****
---
-
 end ActivateItems;
