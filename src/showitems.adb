@@ -50,6 +50,7 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -731,6 +732,7 @@ package body ShowItems is
       if Invoke(ActionButton) /= "" then
          raise Program_Error with "Can't show file or directory preview/info";
       end if;
+      SetBookmarkButton;
       return TCL_OK;
    end Show_Selected_Command;
 
@@ -907,7 +909,9 @@ package body ShowItems is
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
-      Add(Button, "Select new associated program with that type of file or directory.");
+      Add
+        (Button,
+         "Select new associated program with that type of file or directory.");
       Add(Paned, PreviewFrame, "-weight 20");
       CreateProgramsMenu;
    end CreateShowItemsUI;

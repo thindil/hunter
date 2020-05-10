@@ -44,8 +44,8 @@ package Bookmarks is
    -- FUNCTION
    -- Show proper bookmark button for directories
    -- SOURCE
---   procedure SetBookmarkButton;
---   -- ****
+   procedure SetBookmarkButton;
+   -- ****
 --
 --   -- ****f* Bookmarks/CreateBookmarksUI
 --   -- FUNCTION

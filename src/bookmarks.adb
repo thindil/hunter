@@ -21,10 +21,13 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Tcl; use Tcl;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Bookmarks.Commands; use Bookmarks.Commands;
+with MainWindow; use MainWindow;
 
 package body Bookmarks is
 
@@ -147,6 +150,27 @@ package body Bookmarks is
         New_String(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       configure(MenuButton, "-menu .bookmarksmenu");
    end CreateBookmarkMenu;
+
+   procedure SetBookmarkButton is
+      Button: Ttk_Button;
+   begin
+      Button.Interp := Get_Context;
+      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.addbutton");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.deletebutton");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+      if Kind(To_String(CurrentSelected)) /= Directory then
+         return;
+      end if;
+      for Bookmark of BookmarksList loop
+         if Bookmark = CurrentSelected then
+            Tcl.Tk.Ada.Pack.Pack(Button);
+            return;
+         end if;
+      end loop;
+      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.addbutton");
+      Tcl.Tk.Ada.Pack.Pack(Button);
+   end SetBookmarkButton;
 
    -- ****if* Bookmarks/UpdateView
    -- FUNCTION
