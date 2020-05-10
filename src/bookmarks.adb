@@ -157,7 +157,8 @@ package body Bookmarks is
       Button.Interp := Get_Context;
       Button.Name := New_String(".mainframe.toolbars.itemtoolbar.addbutton");
       Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.deletebutton");
+      Button.Name :=
+        New_String(".mainframe.toolbars.itemtoolbar.deletebutton");
       Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       if Kind(To_String(CurrentSelected)) /= Directory then
          return;
