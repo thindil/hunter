@@ -284,6 +284,46 @@ package body ActivateItems is
       return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);
    end Execute_With_Command;
 
+   function Execute_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* ActivateItems/Execute_With_Command
+      -- FUNCTION
+      -- Execute the selected file or directory
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Execute_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      Pid: GNAT.OS_Lib.Process_Id;
+      DirectoryTree: Ttk_Tree_View;
+      Tokens: Slice_Set;
+      FileName: Unbounded_String;
+   begin
+      DirectoryTree.Interp := Interp;
+      DirectoryTree.Name :=
+        New_String(".mainframe.paned.directoryframe.directorytree");
+      Create(Tokens, Selection(DirectoryTree), " ");
+      FileName :=
+        CurrentDirectory & '/' &
+        ItemsList(Positive'Value(Slice(Tokens, 1))).Name;
+      Pid := ExecuteFile(To_String(FileName), "");
+      if Pid = GNAT.OS_Lib.Invalid_Pid then
+         ShowMessage("Can't execute this command");
+      end if;
+      return TCL_OK;
+   end Execute_Command;
+
    procedure CreateActivateUI is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -300,6 +340,7 @@ package body ActivateItems is
       AddCommand("ActivateItem", Activate_Item_Command'Access);
       AddCommand("ToggleExecuteWith", Toggle_Execute_With_Command'Access);
       AddCommand("ExecuteWith", Execute_With_Command'Access);
+      AddCommand("Execute", Execute_Command'Access);
    end CreateActivateUI;
 
 --   -- ****if* ActivateItems/ActivateFileButton

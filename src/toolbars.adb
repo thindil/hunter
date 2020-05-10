@@ -279,7 +279,9 @@ package body Toolbars is
       Separator: Ttk_Separator;
       ToolRadioButton: Ttk_RadioButton;
    begin
-      ToolButton := Create(".mainframe.toolbars.itemtoolbar.runbutton");
+      ToolButton :=
+        Create
+          (".mainframe.toolbars.itemtoolbar.runbutton", "-command Execute");
       SetButton
         (ToolButton, "Execute selected program \[ALT+E\].",
          "media-playback-start");
