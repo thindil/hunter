@@ -322,7 +322,10 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
       Separator := Create(".mainframe.toolbars.itemtoolbar.separator2");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolButton := Create(".mainframe.toolbars.itemtoolbar.addbutton");
+      ToolButton :=
+        Create
+          (".mainframe.toolbars.itemtoolbar.addbutton",
+           "-command AddBookmark");
       SetButton
         (ToolButton, "Add bookmark to this directory \[ALT+B\].", "list-add");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);

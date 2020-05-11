@@ -14,7 +14,9 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
@@ -146,7 +148,7 @@ package body Bookmarks.Commands is
       end if;
       TextEntry.Interp := Get_Context;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
-      if not Exists(Get(TextEntry)) then
+      if not Ada.Directories.Exists(Get(TextEntry)) then
          ShowMessage("Directory '" & Get(TextEntry) & "' doesn't exists.");
          return TCL_OK;
       end if;
@@ -160,6 +162,37 @@ package body Bookmarks.Commands is
       UpdateDirectoryList(True);
       return TCL_OK;
    end GoToDestination_Command;
+
+   function Add_Bookmark_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Commands/Add_Bookmark_Command
+      -- FUNCTION
+      -- Add the bookmark to the selected directory
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Add_Bookmark_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
+      File: File_Type;
+   begin
+      Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      Put_Line(File, "file://" & To_String(CurrentSelected));
+      Close(File);
+      CreateBookmarkMenu;
+      SetBookmarkButton;
+      return TCL_OK;
+   end Add_Bookmark_Command;
 
    procedure AddCommands is
       procedure AddCommand
@@ -177,6 +210,7 @@ package body Bookmarks.Commands is
       AddCommand("GoToBookmark", GoToBookmark_Command'Access);
       AddCommand("SetDestination", SetDestination_Command'Access);
       AddCommand("GoToDestination", GoToDestination_Command'Access);
+      AddCommand("AddBookmark", Add_Bookmark_Command'Access);
    end AddCommands;
 
 end Bookmarks.Commands;
