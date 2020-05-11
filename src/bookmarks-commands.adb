@@ -194,6 +194,52 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end Add_Bookmark_Command;
 
+   function Remove_Bookmark_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Commands/Remove_Bookmark_Command
+      -- FUNCTION
+      -- Remove the bookmark to the selected directory
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Remove_Bookmark_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
+      NewFile, OldFile: File_Type;
+      Line, Path: Unbounded_String;
+   begin
+      Rename
+        (Value("HOME") & "/.config/gtk-3.0/bookmarks",
+         Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Open(OldFile, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Create(NewFile, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      while not End_Of_File(OldFile) loop
+         Line := To_Unbounded_String(Get_Line(OldFile));
+         if Slice(Line, 1, 7) = "file://" then
+            Path := Unbounded_Slice(Line, 8, Length(Line));
+            if Path /= CurrentSelected then
+               Put_Line(NewFile, To_String(Line));
+            end if;
+         end if;
+      end loop;
+      Close(NewFile);
+      Close(OldFile);
+      Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      CreateBookmarkMenu;
+      SetBookmarkButton;
+      return TCL_OK;
+   end Remove_Bookmark_Command;
+
    procedure AddCommands is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -211,6 +257,7 @@ package body Bookmarks.Commands is
       AddCommand("SetDestination", SetDestination_Command'Access);
       AddCommand("GoToDestination", GoToDestination_Command'Access);
       AddCommand("AddBookmark", Add_Bookmark_Command'Access);
+      AddCommand("RemoveBookmark", Remove_Bookmark_Command'Access);
    end AddCommands;
 
 end Bookmarks.Commands;
