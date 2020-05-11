@@ -46,12 +46,5 @@ package Bookmarks is
    -- SOURCE
    procedure SetBookmarkButton;
    -- ****
---
---   -- ****f* Bookmarks/CreateBookmarksUI
---   -- FUNCTION
---   -- Create bookmarks UI
---   -- SOURCE
---   procedure CreateBookmarksUI;
---   -- ****
 
 end Bookmarks;
