@@ -329,7 +329,10 @@ package body Toolbars is
       SetButton
         (ToolButton, "Add bookmark to this directory \[ALT+B\].", "list-add");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(".mainframe.toolbars.itemtoolbar.deletebutton");
+      ToolButton :=
+        Create
+          (".mainframe.toolbars.itemtoolbar.deletebutton",
+           "-command RemoveBookmark");
       SetButton
         (ToolButton, "Remove bookmark to this directory \[ALT+B\]",
          "list-remove");
