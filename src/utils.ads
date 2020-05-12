@@ -67,7 +67,8 @@ package Utils is
    -- Full path to the executable file or empty string and show message if
    -- file could not be found.
    -- SOURCE
-   function FindExecutable(Name: String; DisplayMessage: Boolean := True) return String;
+   function FindExecutable
+     (Name: String; DisplayMessage: Boolean := True) return String;
    -- ****
 
    -- ****f* Utils/SetProgressBar
