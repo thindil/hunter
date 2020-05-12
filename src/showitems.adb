@@ -175,9 +175,19 @@ package body ShowItems is
    -- not available, show information about the selected item.
    -- SOURCE
    procedure ShowPreview is
-   -- ****
+      -- ****
+      Button: Ttk_Button;
    begin
+      Button.Interp := Get_Context;
+      Button.Name :=
+        New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
+      if Winfo_Get(Button, "ismapped") = "0" then
+         Tcl.Tk.Ada.Pack.Pack
+           (Button, "-before .mainframe.toolbars.itemtoolbar.infobutton");
+      end if;
+      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.runbutton");
       if Is_Directory(To_String(CurrentSelected)) then
+         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage
               ("You don't have permissions to preview this directory.");
@@ -200,10 +210,30 @@ package body ShowItems is
            (PreviewTree, "-side top -fill both -expand true");
          UpdateDirectoryList(True, "preview");
       else
+         if Is_Executable_File(To_String(CurrentSelected)) then
+            if Winfo_Get(Button, "ismapped") = "0" then
+               Tcl.Tk.Ada.Pack.Pack
+                 (Button,
+                  "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
+            end if;
+         else
+            Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+         end if;
          declare
             MimeType: constant String :=
               GetMimeType(To_String(CurrentSelected));
          begin
+            Button.Name :=
+              New_String(".mainframe.toolbars.itemtoolbar.openbutton");
+            if CanBeOpened(MimeType) then
+               if Winfo_Get(Button, "ismapped") = "0" then
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Button,
+                     "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
+               end if;
+            else
+               Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+            end if;
             if MimeType(1 .. 4) = "text" then
                declare
                   ExecutableName: constant String :=
@@ -428,6 +458,10 @@ package body ShowItems is
                declare
                   ActionButton: Ttk_RadioButton;
                begin
+                  Button.Name :=
+                    New_String
+                      (".mainframe.toolbars.itemtoolbar.previewbutton");
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Button);
                   ActionButton.Name :=
                     New_String(".mainframe.toolbars.itemtoolbar.infobutton");
                   ActionButton.Interp := Get_Context;
