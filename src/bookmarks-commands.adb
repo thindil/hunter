@@ -19,6 +19,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
@@ -67,7 +68,8 @@ package body Bookmarks.Commands is
       if NewAction /= MOVE then
          NewAction := COPY;
       end if;
-      CurrentDirectory := To_Unbounded_String(CArgv.Arg(Argv, 1));
+      CurrentDirectory :=
+        To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
       return TCL_OK;
