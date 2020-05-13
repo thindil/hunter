@@ -17,17 +17,20 @@ with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
-with Tcl.Ada;
+with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Busy; use Tcl.Tk.Ada.Busy;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
+use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
+with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Utils; use Utils;
 
 package body Preferences.Commands is
@@ -69,6 +72,7 @@ package body Preferences.Commands is
           (Widget_Image(PreferencesDialog) & ".closebutton",
            "-text {Close} -command {CloseDialog " &
            Widget_Image(PreferencesDialog) & "} -underline 0");
+      CheckButton: Ttk_CheckButton;
    begin
       if Tcl.Tk.Ada.Busy.Status(MainWindow) = "0" then
          Tcl.Tk.Ada.Busy.Busy(MainWindow);
@@ -77,12 +81,38 @@ package body Preferences.Commands is
         Create
           (Widget_Image(PreferencesDialog) & ".directory",
            "-text {Directory Listing}");
-      Tcl.Tk.Ada.Pack.Pack(LabelFrame);
+      CheckButton :=
+        Create
+          (Widget_Image(LabelFrame) & ".showhidden",
+           "-text {Show hidden files}");
+      if Settings.ShowHidden then
+         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
+      else
+         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
+      end if;
+      Add
+        (CheckButton,
+         "Show hidden files and directories in directory listing and in directories preview.");
+      Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
+      CheckButton :=
+        Create
+          (Widget_Image(LabelFrame) & ".showmodificationtime",
+           "-text {Show modification time}");
+      if Settings.ShowLastModified then
+         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
+      else
+         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
+      end if;
+      Add
+        (CheckButton,
+         "Show the column with last modification date for files and directories.");
+      Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
+      Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
       Bind
         (PreferencesDialog, "<Alt-c>",
          "{CloseDialog " & Widget_Image(PreferencesDialog) & "}");
-      SetDialog(PreferencesDialog, "Hunter - Preferences", 600, 400);
+      SetDialog(PreferencesDialog, "Hunter - Preferences", 300, 400);
       return TCL_OK;
    end Show_Preferences_Command;
 
