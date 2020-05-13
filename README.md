@@ -15,12 +15,10 @@ version of the program please look [here](https://github.com/thindil/hunter/tree
   and directories, second column is used to preview files and directories
   or select destination location for move or copy files. In one column
   mode, second column appear only when copying or moving files or directories.
-- Everything in one window.
 - Preview of text files (with syntax highlighting) and images.
 - Standard file manager features: copy, delete, move files and directories,
   change their permissions, change application associated with them.
 - Written in TK and Ada.
-- Available in English and Polish language (GTK version only for now).
 
 ## Build the program from sources
 
