@@ -14,13 +14,18 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with LibMagic; use LibMagic;
+with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkProgressBar; use Tcl.Tk.Ada.Widgets.TtkProgressBar;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
+with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Messages; use Messages;
 --with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --with Gtk.Bin; use Gtk.Bin;
@@ -130,7 +135,32 @@ package body Utils is
          Grid_Remove(ProgressBar);
       end if;
    end UpdateProgressBar;
---
+
+   procedure SetDialog
+     (Dialog: Tk_Toplevel; DialogTitle: String; Width, Height: Positive) is
+      X, Y: Integer;
+   begin
+      Wm_Set(Dialog, "title", "{" & DialogTitle & "}");
+      Wm_Set(Dialog, "transient", ".");
+      if Tcl_GetVar(Get_Context, "tcl_platform(os)") = "Linux" then
+         Wm_Set(Dialog, "attributes", "-type dialog");
+      end if;
+      X := (Positive'Value(Winfo_Get(Dialog, "vrootwidth")) - Width) / 2;
+      if X < 0 then
+         X := 0;
+      end if;
+      Y := (Positive'Value(Winfo_Get(Dialog, "vrootheight")) - Height) / 2;
+      if Y < 0 then
+         Y := 0;
+      end if;
+      Wm_Set
+        (Dialog, "geometry",
+         Trim(Positive'Image(Width), Both) & "x" &
+         Trim(Positive'Image(Height), Both) & "+" &
+         Trim(Positive'Image(X), Both) & "+" & Trim(Positive'Image(Y), Both));
+      Bind(Dialog, "<Destroy>", "{CloseDialog " & Value(Dialog.Name) & "}");
+   end SetDialog;
+
 --   procedure ToggleToolButtons
 --     (Action: ItemActions; Finished: Boolean := False) is
 --      ButtonsIndexes: constant array(Positive range <>) of Positive :=

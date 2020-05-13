@@ -150,6 +150,7 @@ package body MainWindow is
       SetToolbars;
       CreateMessagesUI;
       CreateActivateUI;
+      CreatePreferencesUI;
       Add(Paned, DirectoryFrame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");

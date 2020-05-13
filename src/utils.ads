@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 
 -- ****h* Hunter/Utils
 -- FUNCTION
@@ -85,6 +86,19 @@ package Utils is
    -- Update fraction of the progress bar
    -- SOURCE
    procedure UpdateProgressBar;
+   -- ****
+
+   -- ****f* Utils/SetDialog
+   -- FUNCTION
+   -- Set the selected dialog
+   -- PARAMETERS
+   -- Dialog      - Tk_Toplevel dialog to set
+   -- DialogTitle - Title for the selected dialog
+   -- Width       - Desired width for the selected dialog
+   -- Height      - Desired height for the selected dialog
+   -- SOURCE
+   procedure SetDialog
+     (Dialog: Tk_Toplevel; DialogTitle: String; Width, Height: Positive);
    -- ****
 
    -- ****f* Utils/ToggleToolButtons

@@ -16,27 +16,7 @@
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
---with Gtk.Adjustment; use Gtk.Adjustment;
---with Gtk.Box; use Gtk.Box;
---with Gtk.Combo_Box; use Gtk.Combo_Box;
---with Gtk.Combo_Box_Text; use Gtk.Combo_Box_Text;
---with Gtk.Enums; use Gtk.Enums;
---with Gtk.Frame; use Gtk.Frame;
---with Gtk.Grid; use Gtk.Grid;
---with Gtk.Label; use Gtk.Label;
---with Gtk.Paned; use Gtk.Paned;
---with Gtk.Scale; use Gtk.Scale;
---with Gtk.Scrolled_Window; use Gtk.Scrolled_Window;
---with Gtk.Stack; use Gtk.Stack;
---with Gtk.Switch; use Gtk.Switch;
---with Gtk.Tool_Button; use Gtk.Tool_Button;
---with Gtk.Toolbar; use Gtk.Toolbar;
---with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
---with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
---with Gtk.Tree_View; use Gtk.Tree_View;
---with Gtk.Tree_View_Column; use Gtk.Tree_View_Column;
---with Gtkada.Intl; use Gtkada.Intl;
---with Glib; use Glib;
+with Preferences.Commands; use Preferences.Commands;
 --with MainWindow; use MainWindow;
 --with RefreshData; use RefreshData;
 --with ShowItems; use ShowItems;
@@ -44,38 +24,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Utils; use Utils;
 
 package body Preferences is
-
-   -- ****if* Preferences/TogglePreferences
-   -- FUNCTION
-   -- Show or hide the program preferences window
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button which was clicked. Unused.
-   -- SOURCE
---   procedure TogglePreferences(Self: access Gtk_Tool_Button_Record'Class) is
---      pragma Unreferenced(Self);
---      -- ****
---   begin
---      if Is_Visible(Gtk_Widget(PreferencesPopup)) then
---         Hide(Gtk_Widget(PreferencesPopup));
---      else
---         Show_All(Gtk_Widget(PreferencesPopup));
---      end if;
---   end TogglePreferences;
---
---   procedure SetDeleteTooltip is
---   begin
---      if Settings.DeleteFiles then
---         Set_Tooltip_Text
---           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
---            Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
---      else
---
---         Set_Tooltip_Text
---           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
---            Gettext
---              ("Move selected file(s) or folder(s) to trash [ALT-Delete]."));
---      end if;
---   end SetDeleteTooltip;
 
    -- ****if* Preferences/LoadSettings
    -- FUNCTION
@@ -202,6 +150,43 @@ package body Preferences is
          Positive'Image(Settings.AutoRefreshInterval));
       Close(ConfigFile);
    end SavePreferences;
+
+   procedure CreatePreferencesUI is
+   begin
+      AddCommands;
+   end CreatePreferencesUI;
+
+   -- ****if* Preferences/TogglePreferences
+   -- FUNCTION
+   -- Show or hide the program preferences window
+   -- PARAMETERS
+   -- Self - Gtk_Tool_Button which was clicked. Unused.
+   -- SOURCE
+--   procedure TogglePreferences(Self: access Gtk_Tool_Button_Record'Class) is
+--      pragma Unreferenced(Self);
+--      -- ****
+--   begin
+--      if Is_Visible(Gtk_Widget(PreferencesPopup)) then
+--         Hide(Gtk_Widget(PreferencesPopup));
+--      else
+--         Show_All(Gtk_Widget(PreferencesPopup));
+--      end if;
+--   end TogglePreferences;
+--
+--   procedure SetDeleteTooltip is
+--   begin
+--      if Settings.DeleteFiles then
+--         Set_Tooltip_Text
+--           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
+--            Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
+--      else
+--
+--         Set_Tooltip_Text
+--           (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
+--            Gettext
+--              ("Move selected file(s) or folder(s) to trash [ALT-Delete]."));
+--      end if;
+--   end SetDeleteTooltip;
 
    -- ****if* Preferences/SetAutoRefresh
    -- FUNCTION

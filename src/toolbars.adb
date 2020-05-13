@@ -249,11 +249,12 @@ package body Toolbars is
          "document-revert");
       Separator := Create(".mainframe.toolbars.actiontoolbar.separator3");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolCheckButton :=
-        Create(".mainframe.toolbars.actiontoolbar.optionsbutton");
+      ToolButton :=
+        Create
+          (".mainframe.toolbars.actiontoolbar.optionsbutton",
+           "-command ShowPreferences");
       SetButton
-        (ToolCheckButton, "Show the program preferences \[ALT+P\]",
-         "configure");
+        (ToolButton, "Show the program preferences \[ALT+P\]", "configure");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolMenuButton :=
         Create(".mainframe.toolbars.actiontoolbar.aboutbutton");
