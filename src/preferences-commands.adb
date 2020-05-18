@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
@@ -20,6 +22,7 @@ with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Busy; use Tcl.Tk.Ada.Busy;
+with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
@@ -28,6 +31,9 @@ use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
+with Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
+use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
+with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
@@ -212,6 +218,55 @@ package body Preferences.Commands is
         (CheckButton,
          "Color files syntax in files preview. Not all text (especially source code)\nfiles are supported. You may not be able to enable this\noption if you don't have installed the program 'highlight'.");
       Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
+      declare
+         Search: Search_Type;
+         File: Directory_Entry_Type;
+         ThemesName: Unbounded_String;
+         ComboBox: Ttk_ComboBox;
+         ColorFrame: constant Ttk_Frame :=
+           Create(Widget_Image(LabelFrame) & ".colorframe");
+      begin
+         if not Ada.Environment_Variables.Exists("HIGHLIGHT_DATADIR") then
+            Ada.Environment_Variables.Set
+              ("HIGHLIGHT_DATADIR",
+               Ada.Environment_Variables.Value("APPDIR", "") &
+               "/usr/share/highlight");
+         end if;
+         if Exists
+             (Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+              "/themes/base16") then
+            Start_Search
+              (Search,
+               Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+               "/themes/base16",
+               "*.theme");
+            while More_Entries(Search) loop
+               Get_Next_Entry(Search, File);
+               Append(ThemesName, " " & Base_Name(Simple_Name(File)));
+            end loop;
+            End_Search(Search);
+         end if;
+         ComboBox :=
+           Create
+             (Widget_Image(ColorFrame) & ".highlighttheme",
+              "-state readonly -values [list" & To_String(ThemesName) & "]");
+         if ColorsEnabled then
+            State(ComboBox, "!disabled");
+         else
+            State(ComboBox, "disabled");
+         end if;
+         Set(ComboBox, "{" & To_String(Settings.ColorTheme) & "}");
+         Add
+           (ComboBox,
+            "Select color theme for coloring syntax in text files in preview. You may\nnot be able to enable this option if you don't have installed\nthe program 'highlight'.");
+         Label :=
+           Create
+             (Widget_Image(ColorFrame) & ".themelabel",
+              "-text {Color theme:}");
+         Tcl.Tk.Ada.Grid.Grid(Label);
+         Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
+         Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
+      end;
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
       Bind
