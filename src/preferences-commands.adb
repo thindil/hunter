@@ -84,6 +84,13 @@ package body Preferences.Commands is
             Natural'Image
               (Natural(Float'Value(Tcl_GetVar(Interp, "updateinterval")))) &
             " seconds}");
+      else
+         Tcl.Tk.Ada.Widgets.configure
+           (Label,
+            "-text {Hide messages after " &
+            Natural'Image
+              (Natural(Float'Value(Tcl_GetVar(Interp, "messagesinterval")))) &
+            " seconds}");
       end if;
       return TCL_OK;
    end Set_Label_Command;
@@ -267,6 +274,27 @@ package body Preferences.Commands is
          Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
          Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
       end;
+      Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
+      LabelFrame :=
+        Create
+          (Widget_Image(PreferencesDialog) & ".interface",
+           "-text {Interface}");
+      Tcl_SetVar
+        (CheckButton.Interp, "messagesinterval",
+         Natural'Image(Settings.AutoCloseMessagesTime));
+      Label :=
+        Create
+          (Widget_Image(LabelFrame) & ".messageslabel",
+           "-text ""Hide messages after $messagesinterval seconds""");
+      Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
+      Scale :=
+        Create
+          (Widget_Image(LabelFrame) & ".messagesscale",
+           "-from 0 -to 60 -variable messagesinterval -orient horizontal -command {SetLabel interface.messages}");
+      Add
+        (Scale,
+         "After that amount of seconds, all messages will be automatically closed by the\nprogram. If you set it to 0, this feature will be\ndisabled.");
+      Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
       Bind
