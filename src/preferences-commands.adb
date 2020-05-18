@@ -31,6 +31,7 @@ use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
+with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Utils; use Utils;
@@ -114,6 +115,8 @@ package body Preferences.Commands is
       CheckButton: Ttk_CheckButton;
       Label: Ttk_Label;
       Scale: Ttk_Scale;
+      ColorsEnabled: constant Boolean :=
+        (if FindExecutable("highlight")'Length > 0 then True else False);
    begin
       if Tcl.Tk.Ada.Busy.Status(MainWindow) = "0" then
          Tcl.Tk.Ada.Busy.Busy(MainWindow);
@@ -178,6 +181,36 @@ package body Preferences.Commands is
       Add
         (CheckButton,
          "Show second panel with preview of files and directories.\nIf you disable this option, second panel will be visible only during\ncopying and moving files or directories and during creating new link.");
+      Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
+      CheckButton :=
+        Create
+          (Widget_Image(LabelFrame) & ".scaleimages", "-text {Scale images}");
+      if Settings.ScaleImages then
+         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
+      else
+         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
+      end if;
+      Add
+        (CheckButton,
+         "Scale images in preview. When disabled, images shows with\nnatural size. When enabled, images are resized to the size of the\npreview window.");
+      Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
+      CheckButton :=
+        Create
+          (Widget_Image(LabelFrame) & ".syntaxhighlightning",
+           "-text {Syntax highlightning}");
+      if Settings.ColorText then
+         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
+      else
+         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
+      end if;
+      if ColorsEnabled then
+         State(CheckButton, "!disabled");
+      else
+         State(CheckButton, "disabled");
+      end if;
+      Add
+        (CheckButton,
+         "Color files syntax in files preview. Not all text (especially source code)\nfiles are supported. You may not be able to enable this\noption if you don't have installed the program 'highlight'.");
       Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
