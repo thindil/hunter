@@ -37,14 +37,16 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
+with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with MainWindow; use MainWindow;
 with Utils; use Utils;
 
 package body Preferences.Commands is
 
-   -- ****it* Commands/CreateCommands
+   -- ****it* PCommands/CreateCommands
    -- FUNCTION
    -- Used to create Tcl commands
    -- SOURCE
@@ -57,7 +59,7 @@ package body Preferences.Commands is
       return Interfaces.C.int with
       Convention => C;
 
-      -- ****if* Commands/Set_Label_Command
+      -- ****if* PCommands/Set_Label_Command
       -- FUNCTION
       -- Update text of the selected label
       -- PARAMETERS
@@ -95,13 +97,86 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Label_Command;
 
+   function Set_Show_Hidden_Files_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Show_Hidden_Files_Command
+      -- FUNCTION
+      -- Update show hidden files setting and reload the current directory
+      -- listing
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Show_Hidden_Files_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+   begin
+      if Tcl_GetVar(Interp, ".preferencesdialog.directory.showhidden") =
+        "0" then
+         Settings.ShowHidden := False;
+      else
+         Settings.ShowHidden := True;
+      end if;
+      UpdateDirectoryList(True);
+      return TCL_OK;
+   end Set_Show_Hidden_Files_Command;
+
+   function Set_Show_Modification_Time_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Show_Modification_Time_Command
+      -- FUNCTION
+      -- Update show modification time column and reload the current directory
+      -- listing
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Show_Modification_Time_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      DirectoryTree: Ttk_Tree_View;
+   begin
+      DirectoryTree.Interp := Interp;
+      DirectoryTree.Name :=
+        New_String(".mainframe.paned.directoryframe.directorytree");
+      if Tcl_GetVar
+          (Interp, ".preferencesdialog.directory.showmodificationtime") =
+        "0" then
+         Settings.ShowLastModified := False;
+         Tcl.Tk.Ada.Widgets.configure
+           (DirectoryTree, "-displaycolumns [list name size]");
+      else
+         Settings.ShowLastModified := True;
+         Tcl.Tk.Ada.Widgets.configure(DirectoryTree, "-displaycolumns #all");
+      end if;
+      return TCL_OK;
+   end Set_Show_Modification_Time_Command;
+
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
 
-      -- ****if* Commands/Show_Preferences_Command
+      -- ****if* PCommands/Show_Preferences_Command
       -- FUNCTION
       -- Go to the selected bookmarked directory
       -- PARAMETERS
@@ -131,11 +206,17 @@ package body Preferences.Commands is
       ColorsEnabled: constant Boolean :=
         (if FindExecutable("highlight")'Length > 0 then True else False);
       procedure AddButton
-        (Name, Text: String; Value: Boolean; TooltipText: String) is
+        (Name, Text: String; Value: Boolean; TooltipText: String;
+         Command: String := "") is
          CheckButton: Ttk_CheckButton;
       begin
          CheckButton :=
-           Create(Widget_Image(LabelFrame) & Name, "-text {" & Text & "}");
+           (if Command /= "" then
+              Create
+                (Widget_Image(LabelFrame) & Name,
+                 "-text {" & Text & "} -command " & Command)
+            else Create
+                (Widget_Image(LabelFrame) & Name, "-text {" & Text & "}"));
          if Value then
             Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
          else
@@ -154,11 +235,13 @@ package body Preferences.Commands is
            "-text {Directory Listing}");
       AddButton
         (".showhidden", "Show hidden files", Settings.ShowHidden,
-         "Show hidden files and directories in directory\nlisting and in directories preview.");
+         "Show hidden files and directories in directory\nlisting and in directories preview.",
+         "SetShowHiddenFiles");
       AddButton
         (".showmodificationtime", "Show modification time",
          Settings.ShowLastModified,
-         "Show the column with last modification\ndate for files and directories.");
+         "Show the column with last modification\ndate for files and directories.",
+         "SetShowModificationTime");
       Tcl_SetVar
         (Interp, "updateinterval",
          Natural'Image(Settings.AutoRefreshInterval));
@@ -295,8 +378,11 @@ package body Preferences.Commands is
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create
-          (Widget_Image(PreferencesDialog) & ".copying", "-text {Copying or moving}");
-      AddButton(".overwrite", "Overwrite existing", Settings.OverwriteOnExist, "If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory.");
+          (Widget_Image(PreferencesDialog) & ".copying",
+           "-text {Copying or moving}");
+      AddButton
+        (".overwrite", "Overwrite existing", Settings.OverwriteOnExist,
+         "If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory.");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
       Bind
@@ -346,6 +432,9 @@ package body Preferences.Commands is
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
       AddCommand("CloseDialog", Close_Dialog_Command'Access);
       AddCommand("SetLabel", Set_Label_Command'Access);
+      AddCommand("SetShowHiddenFiles", Set_Show_Hidden_Files_Command'Access);
+      AddCommand
+        ("SetShowModificationTime", Set_Show_Modification_Time_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
