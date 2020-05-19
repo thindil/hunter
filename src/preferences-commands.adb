@@ -293,11 +293,16 @@ package body Preferences.Commands is
         (".cleartrash", "Clear Trash on exit", Settings.ClearTrashOnExit,
          "Automatically clear Trash on exit from the program.");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
+      LabelFrame :=
+        Create
+          (Widget_Image(PreferencesDialog) & ".copying", "-text {Copying or moving}");
+      AddButton(".overwrite", "Overwrite existing", Settings.OverwriteOnExist, "If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory.");
+      Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
       Bind
         (PreferencesDialog, "<Alt-c>",
          "{CloseDialog " & Widget_Image(PreferencesDialog) & "}");
-      SetDialog(PreferencesDialog, "Hunter - Preferences", 350, 600);
+      SetDialog(PreferencesDialog, "Hunter - Preferences", 350, 550);
       return TCL_OK;
    end Show_Preferences_Command;
 
