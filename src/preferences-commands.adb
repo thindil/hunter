@@ -106,7 +106,7 @@ package body Preferences.Commands is
       -- Go to the selected bookmarked directory
       -- PARAMETERS
       -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
       -- Argc       - Number of arguments passed to the command. Unused
       -- Argv       - Values of arguments passed to the command.
       -- SOURCE
@@ -114,7 +114,7 @@ package body Preferences.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
       PreferencesDialog: constant Tk_Toplevel :=
         Create(".preferencesdialog", "-class Dialog");
@@ -130,6 +130,20 @@ package body Preferences.Commands is
       Scale: Ttk_Scale;
       ColorsEnabled: constant Boolean :=
         (if FindExecutable("highlight")'Length > 0 then True else False);
+      procedure AddButton
+        (Name, Text: String; Value: Boolean; TooltipText: String) is
+         CheckButton: Ttk_CheckButton;
+      begin
+         CheckButton :=
+           Create(Widget_Image(LabelFrame) & Name, "-text {" & Text & "}");
+         if Value then
+            Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
+         else
+            Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
+         end if;
+         Add(CheckButton, TooltipText);
+         Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
+      end AddButton;
    begin
       if Tcl.Tk.Ada.Busy.Status(MainWindow) = "0" then
          Tcl.Tk.Ada.Busy.Busy(MainWindow);
@@ -138,34 +152,15 @@ package body Preferences.Commands is
         Create
           (Widget_Image(PreferencesDialog) & ".directory",
            "-text {Directory Listing}");
-      CheckButton :=
-        Create
-          (Widget_Image(LabelFrame) & ".showhidden",
-           "-text {Show hidden files}");
-      if Settings.ShowHidden then
-         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
-      else
-         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
-      end if;
-      Add
-        (CheckButton,
+      AddButton
+        (".showhidden", "Show hidden files", Settings.ShowHidden,
          "Show hidden files and directories in directory\nlisting and in directories preview.");
-      Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
-      CheckButton :=
-        Create
-          (Widget_Image(LabelFrame) & ".showmodificationtime",
-           "-text {Show modification time}");
-      if Settings.ShowLastModified then
-         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
-      else
-         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
-      end if;
-      Add
-        (CheckButton,
+      AddButton
+        (".showmodificationtime", "Show modification time",
+         Settings.ShowLastModified,
          "Show the column with last modification\ndate for files and directories.");
-      Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
       Tcl_SetVar
-        (CheckButton.Interp, "updateinterval",
+        (Interp, "updateinterval",
          Natural'Image(Settings.AutoRefreshInterval));
       Label :=
         Create
@@ -183,30 +178,12 @@ package body Preferences.Commands is
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create(Widget_Image(PreferencesDialog) & ".preview", "-text Preview");
-      CheckButton :=
-        Create
-          (Widget_Image(LabelFrame) & ".showpreview", "-text {Show preview}");
-      if Settings.ShowPreview then
-         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
-      else
-         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
-      end if;
-      Add
-        (CheckButton,
+      AddButton
+        (".showpreview", "Show preview", Settings.ShowPreview,
          "Show second panel with preview of files and directories.\nIf you disable this option, second panel will be visible only during\ncopying and moving files or directories and during creating new link.");
-      Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
-      CheckButton :=
-        Create
-          (Widget_Image(LabelFrame) & ".scaleimages", "-text {Scale images}");
-      if Settings.ScaleImages then
-         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
-      else
-         Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
-      end if;
-      Add
-        (CheckButton,
+      AddButton
+        (".scaleimages", "Scale images", Settings.ScaleImages,
          "Scale images in preview. When disabled, images shows with\nnatural size. When enabled, images are resized to the size of the\npreview window.");
-      Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
       CheckButton :=
         Create
           (Widget_Image(LabelFrame) & ".syntaxhighlightning",
@@ -295,12 +272,22 @@ package body Preferences.Commands is
         (Scale,
          "After that amount of seconds, all messages will be automatically closed by the\nprogram. If you set it to 0, this feature will be\ndisabled.");
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
+      AddButton
+        (".stayinold", "Stay in source directory", Settings.StayInOld,
+         "After copying, moving files and directories or creating new link, stay in old\ndirectory, don't automatically go to destination directory.");
+      AddButton
+        (".showfinished", "Show info about finished action",
+         Settings.ShowFinishedInfo,
+         "Show information about finished copying, moving and\ndeleting files or directories.");
+      AddButton
+        (".toolbarsontop", "Toolbars on top", Settings.ToolbarsOnTop,
+         "If enabled, show toolbars for actions and information on top of the window.\nOtherwise, they will be at left side of the window.");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
       Bind
         (PreferencesDialog, "<Alt-c>",
          "{CloseDialog " & Widget_Image(PreferencesDialog) & "}");
-      SetDialog(PreferencesDialog, "Hunter - Preferences", 300, 400);
+      SetDialog(PreferencesDialog, "Hunter - Preferences", 350, 600);
       return TCL_OK;
    end Show_Preferences_Command;
 
