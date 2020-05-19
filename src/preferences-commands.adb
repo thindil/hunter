@@ -283,6 +283,16 @@ package body Preferences.Commands is
         (".toolbarsontop", "Toolbars on top", Settings.ToolbarsOnTop,
          "If enabled, show toolbars for actions and information on top of the window.\nOtherwise, they will be at left side of the window.");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
+      LabelFrame :=
+        Create
+          (Widget_Image(PreferencesDialog) & ".deleting", "-text {Deleting}");
+      AddButton
+        (".deletefiles", "Delete files", Settings.DeleteFiles,
+         "Delete selected files and directories instead of moving them to Trash.");
+      AddButton
+        (".cleartrash", "Clear Trash on exit", Settings.ClearTrashOnExit,
+         "Automatically clear Trash on exit from the program.");
+      Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
       Bind
         (PreferencesDialog, "<Alt-c>",
