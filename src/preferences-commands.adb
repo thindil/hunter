@@ -36,12 +36,14 @@ use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
+with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with MainWindow; use MainWindow;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body Preferences.Commands is
@@ -170,6 +172,44 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Modification_Time_Command;
 
+   function Set_Show_Preview_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Show_Preview_Command
+      -- FUNCTION
+      -- Update show preview setting and show or hide it
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Show_Preview_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      -- ****
+      PreviewFrame: Ttk_Frame;
+      Paned: Ttk_PanedWindow;
+   begin
+      PreviewFrame.Interp := Interp;
+      PreviewFrame.Name := New_String(".mainframe.paned.previewframe");
+      Paned.Interp := Interp;
+      Paned.Name := New_String(".mainframe.paned");
+      if Tcl_GetVar(Interp, ".preferencesdialog.preview.showpreview") =
+        "0" then
+         Settings.ShowPreview := False;
+         Forget(Paned, PreviewFrame);
+         return TCL_OK;
+      end if;
+      Settings.ShowPreview := True;
+      Add(Paned, PreviewFrame, "-weight 20");
+      return Show_Selected_Command(ClientData, Interp, Argc, Argv);
+   end Set_Show_Preview_Command;
+
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -263,7 +303,8 @@ package body Preferences.Commands is
         Create(Widget_Image(PreferencesDialog) & ".preview", "-text Preview");
       AddButton
         (".showpreview", "Show preview", Settings.ShowPreview,
-         "Show second panel with preview of files and directories.\nIf you disable this option, second panel will be visible only during\ncopying and moving files or directories and during creating new link.");
+         "Show second panel with preview of files and directories.\nIf you disable this option, second panel will be visible only during\ncopying and moving files or directories and during creating new link.",
+         "SetShowPreview");
       AddButton
         (".scaleimages", "Scale images", Settings.ScaleImages,
          "Scale images in preview. When disabled, images shows with\nnatural size. When enabled, images are resized to the size of the\npreview window.");
@@ -388,7 +429,7 @@ package body Preferences.Commands is
       Bind
         (PreferencesDialog, "<Alt-c>",
          "{CloseDialog " & Widget_Image(PreferencesDialog) & "}");
-      SetDialog(PreferencesDialog, "Hunter - Preferences", 350, 550);
+      SetDialog(PreferencesDialog, "Hunter - Preferences", 350, 600);
       return TCL_OK;
    end Show_Preferences_Command;
 
@@ -435,6 +476,7 @@ package body Preferences.Commands is
       AddCommand("SetShowHiddenFiles", Set_Show_Hidden_Files_Command'Access);
       AddCommand
         ("SetShowModificationTime", Set_Show_Modification_Time_Command'Access);
+      AddCommand("SetShowPreview", Set_Show_Preview_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
