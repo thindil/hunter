@@ -26,8 +26,6 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
-with CArgv;
-with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
@@ -712,25 +710,8 @@ package body ShowItems is
    function Show_Selected_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-
-      -- ****if* ShowItems/Show_Selected_Command
-      -- FUNCTION
-      -- Show preview or information about the currently selected file or
-      -- directory after user select it in the directory view
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
-   function Show_Selected_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      -- ****
       DirectoryTree: Ttk_Tree_View;
       Tokens: Slice_Set;
       Items: Unbounded_String;
@@ -946,7 +927,9 @@ package body ShowItems is
       Add
         (Button,
          "Select new associated program with that type of file or directory.");
-      Add(Paned, PreviewFrame, "-weight 20");
+      if Settings.ShowPreview then
+         Add(Paned, PreviewFrame, "-weight 20");
+      end if;
       CreateProgramsMenu;
    end CreateShowItemsUI;
 

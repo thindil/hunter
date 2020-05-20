@@ -13,6 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Interfaces.C;
+with CArgv;
+with Tcl; use Tcl;
+
 -- ****h* Hunter/ShowItems
 -- FUNCTION
 -- Provide code to show informations and set some settings for selected files
@@ -27,6 +31,23 @@ package ShowItems is
    -- SOURCE
    procedure ScaleImage;
    -- ****
+
+      -- ****f* ShowItems/Show_Selected_Command
+      -- FUNCTION
+      -- Show preview or information about the currently selected file or
+      -- directory after user select it in the directory view
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Show_Selected_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
 
    -- ****f* ShowItems/CreateShowItemsUI
    -- FUNCTION
