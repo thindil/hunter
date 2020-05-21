@@ -62,6 +62,7 @@ project hunter is
                 "--no-separate-loop-then",
                 "--no-separate-is",
                 "-rnb",
+                "--comments-unchanged",
                 "-j0");
     end Pretty_Printer;
 
