@@ -167,13 +167,7 @@ package body ShowItems is
          " -scrollregion [list " & BBox(PreviewCanvas, "all") & "]");
    end ScaleImage;
 
-   -- ****if* ShowItems/ShowPreview
-   -- FUNCTION
-   -- Show preview of the currently selected file or directory. If preview is
-   -- not available, show information about the selected item.
-   -- SOURCE
    procedure ShowPreview is
-      -- ****
       Button: Ttk_Button;
    begin
       Button.Interp := Get_Context;
