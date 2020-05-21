@@ -246,6 +246,48 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Scale_Images_Command;
 
+   function Set_Color_Text_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Scale_Images_Command
+      -- FUNCTION
+      -- Update show hidden files setting and reload the current directory
+      -- listing
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Color_Text_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      ComboBox: Ttk_ComboBox;
+      MimeType: constant String := GetMimeType(To_String(CurrentSelected));
+   begin
+      ComboBox.Interp := Interp;
+      ComboBox.Name :=
+        New_String(".preferencesdialog.preview.colorframe.highlighttheme");
+      if Tcl_GetVar(Interp, ".preferencesdialog.preview.syntaxhighlightning") =
+        "0" then
+         Settings.ColorText := False;
+         State(ComboBox, "disabled");
+      else
+         Settings.ColorText := True;
+         State(ComboBox, "!disabled");
+      end if;
+      if MimeType(1 .. 4) = "text" then
+         ShowPreview;
+      end if;
+      return TCL_OK;
+   end Set_Color_Text_Command;
+
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -348,7 +390,7 @@ package body Preferences.Commands is
       CheckButton :=
         Create
           (Widget_Image(LabelFrame) & ".syntaxhighlightning",
-           "-text {Syntax highlightning}");
+           "-text {Syntax highlightning} -command {SetColorText}");
       if Settings.ColorText then
          Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
       else
@@ -515,6 +557,7 @@ package body Preferences.Commands is
         ("SetShowModificationTime", Set_Show_Modification_Time_Command'Access);
       AddCommand("SetShowPreview", Set_Show_Preview_Command'Access);
       AddCommand("SetScaleImages", Set_Scale_Images_Command'Access);
+      AddCommand("SetColorText", Set_Color_Text_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
