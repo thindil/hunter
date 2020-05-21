@@ -32,16 +32,24 @@ package ShowItems is
    procedure ScaleImage;
    -- ****
 
-      -- ****f* ShowItems/Show_Selected_Command
-      -- FUNCTION
-      -- Show preview or information about the currently selected file or
-      -- directory after user select it in the directory view
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
+   -- ****f* ShowItems/ShowPreview
+   -- FUNCTION
+   -- Show preview of the currently selected file or directory. If preview is
+   -- not available, show information about the selected item.
+   -- SOURCE
+   procedure ShowPreview;
+   -- ****
+
+   -- ****f* ShowItems/Show_Selected_Command
+   -- FUNCTION
+   -- Show preview or information about the currently selected file or
+   -- directory after user select it in the directory view
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- SOURCE
    function Show_Selected_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -49,11 +57,11 @@ package ShowItems is
       Convention => C;
       -- ****
 
-   -- ****f* ShowItems/CreateShowItemsUI
-   -- FUNCTION
-   -- Create UI related to show items and destination for moving/copying
-   -- items.
-   -- SOURCE
+      -- ****f* ShowItems/CreateShowItemsUI
+      -- FUNCTION
+      -- Create UI related to show items and destination for moving/copying
+      -- items.
+      -- SOURCE
    procedure CreateShowItemsUI;
    -- ****
 

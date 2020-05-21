@@ -210,6 +210,42 @@ package body Preferences.Commands is
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Set_Show_Preview_Command;
 
+   function Set_Scale_Images_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Scale_Images_Command
+      -- FUNCTION
+      -- Update show hidden files setting and reload the current directory
+      -- listing
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Scale_Images_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      MimeType: constant String := GetMimeType(To_String(CurrentSelected));
+   begin
+      if Tcl_GetVar(Interp, ".preferencesdialog.preview.scaleimages") =
+        "0" then
+         Settings.ScaleImages := False;
+      else
+         Settings.ScaleImages := True;
+      end if;
+      if MimeType(1 .. 5) = "image" then
+         ShowPreview;
+      end if;
+      return TCL_OK;
+   end Set_Scale_Images_Command;
+
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -307,7 +343,8 @@ package body Preferences.Commands is
          "SetShowPreview");
       AddButton
         (".scaleimages", "Scale images", Settings.ScaleImages,
-         "Scale images in preview. When disabled, images shows with\nnatural size. When enabled, images are resized to the size of the\npreview window.");
+         "Scale images in preview. When disabled, images shows with\nnatural size. When enabled, images are resized to the size of the\npreview window.",
+         "SetScaleImages");
       CheckButton :=
         Create
           (Widget_Image(LabelFrame) & ".syntaxhighlightning",
@@ -477,6 +514,7 @@ package body Preferences.Commands is
       AddCommand
         ("SetShowModificationTime", Set_Show_Modification_Time_Command'Access);
       AddCommand("SetShowPreview", Set_Show_Preview_Command'Access);
+      AddCommand("SetScaleImages", Set_Scale_Images_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
