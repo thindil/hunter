@@ -218,8 +218,8 @@ package body Preferences.Commands is
 
       -- ****if* PCommands/Set_Scale_Images_Command
       -- FUNCTION
-      -- Update show hidden files setting and reload the current directory
-      -- listing
+      -- Enable or disable images scaling and rescale currently
+      -- previewed image if needed
       -- PARAMETERS
       -- ClientData - Custom data send to the command.
       -- Interp     - Tcl interpreter in which command was executed.
@@ -252,10 +252,10 @@ package body Preferences.Commands is
       return Interfaces.C.int with
       Convention => C;
 
-      -- ****if* PCommands/Set_Scale_Images_Command
+      -- ****if* PCommands/Set_Color_Text_Command
       -- FUNCTION
-      -- Update show hidden files setting and reload the current directory
-      -- listing
+      -- Enable or disable syntax highlightning in text files and reload the
+      -- currently previewed file if it is text file
       -- PARAMETERS
       -- ClientData - Custom data send to the command.
       -- Interp     - Tcl interpreter in which command was executed.
@@ -287,6 +287,41 @@ package body Preferences.Commands is
       end if;
       return TCL_OK;
    end Set_Color_Text_Command;
+
+   function Set_Color_Theme_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Color_Theme_Command
+      -- FUNCTION
+      -- Set color theme for syntax highligthning in text files and reload
+      -- the current previewed text file if needed
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Color_Theme_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      ComboBox: Ttk_ComboBox;
+      MimeType: constant String := GetMimeType(To_String(CurrentSelected));
+   begin
+      ComboBox.Interp := Interp;
+      ComboBox.Name :=
+        New_String(".preferencesdialog.preview.colorframe.highlighttheme");
+      Settings.ColorTheme := To_Unbounded_String(Get(ComboBox));
+      if MimeType(1 .. 4) = "text" then
+         ShowPreview;
+      end if;
+      return TCL_OK;
+   end Set_Color_Theme_Command;
 
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -443,6 +478,7 @@ package body Preferences.Commands is
             State(ComboBox, "disabled");
          end if;
          Set(ComboBox, "{" & To_String(Settings.ColorTheme) & "}");
+         Bind(ComboBox, "<<ComboboxSelected>>", "SetColorTheme");
          Add
            (ComboBox,
             "Select color theme for coloring syntax in text files in preview. You may\nnot be able to enable this option if you don't have installed\nthe program 'highlight'.");
@@ -558,6 +594,7 @@ package body Preferences.Commands is
       AddCommand("SetShowPreview", Set_Show_Preview_Command'Access);
       AddCommand("SetScaleImages", Set_Scale_Images_Command'Access);
       AddCommand("SetColorText", Set_Color_Text_Command'Access);
+      AddCommand("SetColorTheme", Set_Color_Theme_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
