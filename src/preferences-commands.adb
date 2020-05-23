@@ -44,6 +44,7 @@ with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with MainWindow; use MainWindow;
 with ShowItems; use ShowItems;
+with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body Preferences.Commands is
@@ -323,6 +324,119 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Color_Theme_Command;
 
+   function Set_Stay_In_Old_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Stay_In_Old_Command
+      -- FUNCTION
+      -- Set if after copying, moving, etc operations user should
+      -- see old directory or new
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Stay_In_Old_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+   begin
+      if Tcl_GetVar(Interp, ".preferencesdialog.interface.stayinold") =
+        "0" then
+         Settings.StayInOld := False;
+      else
+         Settings.StayInOld := True;
+      end if;
+      return TCL_OK;
+   end Set_Stay_In_Old_Command;
+
+   function Set_Show_Finished_Info_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Show_Finished_Info_Command
+      -- FUNCTION
+      -- Set if after finishing action, show info about it to the
+      -- user
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Show_Finished_Info_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+   begin
+      if Tcl_GetVar(Interp, ".preferencesdialog.interface.showfinished") =
+        "0" then
+         Settings.ShowFinishedInfo := False;
+      else
+         Settings.ShowFinishedInfo := True;
+      end if;
+      return TCL_OK;
+   end Set_Show_Finished_Info_Command;
+
+   function Set_Toolbars_On_Top_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Toolbars_On_Top_Command
+      -- FUNCTION
+      -- Set if toolbars should be on top of the program's window or on the
+      -- left
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Toolbars_On_Top_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      HeaderLabel: Ttk_Label;
+      Paned: Ttk_Frame;
+   begin
+      HeaderLabel.Interp := Interp;
+      HeaderLabel.Name := New_String(".mainframe.headerlabel");
+      Paned.Interp := Interp;
+      Paned.Name := New_String(".mainframe.paned");
+      if Tcl_GetVar(Interp, ".preferencesdialog.interface.toolbarsontop") =
+        "0" then
+         Settings.ToolbarsOnTop := False;
+      else
+         Tcl.Tk.Ada.Grid.Grid_Forget(HeaderLabel);
+         Settings.ToolbarsOnTop := True;
+      end if;
+      SetToolbars;
+      if not Settings.ToolbarsOnTop then
+         Tcl.Tk.Ada.Grid.Grid
+           (HeaderLabel, "-column 0 -row 0 -sticky we -columnspan 2");
+         Tcl.Tk.Ada.Grid.Grid_Configure
+           (Paned, "-column 1 -row 3 -sticky nswe");
+      else
+         Tcl.Tk.Ada.Grid.Grid_Configure
+           (Paned, "-column 0 -row 3 -sticky nswe -columnspan 2");
+      end if;
+      return TCL_OK;
+   end Set_Toolbars_On_Top_Command;
+
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -513,14 +627,17 @@ package body Preferences.Commands is
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       AddButton
         (".stayinold", "Stay in source directory", Settings.StayInOld,
-         "After copying, moving files and directories or creating new link, stay in old\ndirectory, don't automatically go to destination directory.");
+         "After copying, moving files and directories or creating new link, stay in old\ndirectory, don't automatically go to destination directory.",
+         "SetStayInOld");
       AddButton
         (".showfinished", "Show info about finished action",
          Settings.ShowFinishedInfo,
-         "Show information about finished copying, moving and\ndeleting files or directories.");
+         "Show information about finished copying, moving and\ndeleting files or directories.",
+         "SetShowFinishedInfo");
       AddButton
         (".toolbarsontop", "Toolbars on top", Settings.ToolbarsOnTop,
-         "If enabled, show toolbars for actions and information on top of the window.\nOtherwise, they will be at left side of the window.");
+         "If enabled, show toolbars for actions and information on top of the window.\nOtherwise, they will be at left side of the window.",
+         "SetToolbarsOnTop");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create
@@ -595,6 +712,9 @@ package body Preferences.Commands is
       AddCommand("SetScaleImages", Set_Scale_Images_Command'Access);
       AddCommand("SetColorText", Set_Color_Text_Command'Access);
       AddCommand("SetColorTheme", Set_Color_Theme_Command'Access);
+      AddCommand("SetStayInOld", Set_Stay_In_Old_Command'Access);
+      AddCommand("SetShowFinishedInfo", Set_Show_Finished_Info_Command'Access);
+      AddCommand("SetToolbarsOnTop", Set_Toolbars_On_Top_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
