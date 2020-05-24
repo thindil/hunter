@@ -43,6 +43,7 @@ with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with MainWindow; use MainWindow;
+with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
@@ -558,7 +559,7 @@ package body Preferences.Commands is
       CloseButton: constant Ttk_Button :=
         Create
           (Widget_Image(PreferencesDialog) & ".closebutton",
-           "-text {Close} -command {CloseDialog " &
+           "-text {Close} -command {ClosePreferences " &
            Widget_Image(PreferencesDialog) & "} -underline 0");
       CheckButton: Ttk_CheckButton;
       Label: Ttk_Label;
@@ -780,6 +781,39 @@ package body Preferences.Commands is
       return TCL_OK;
    end Close_Dialog_Command;
 
+   function Close_Preferences_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Close_Preferences_Command
+      -- FUNCTION
+      -- Set the program's settings, restart autorefresh view and close the
+      -- preferences dialog
+      -- names
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Close_Preferences_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      -- ****
+      Scale: Ttk_Scale;
+   begin
+      Scale.Interp := Interp;
+      Scale.Name := New_String(".preferencesdialog.directory.intervalscale");
+      Settings.AutoRefreshInterval := Natural(Float'Value(Get(Scale)));
+      Scale.Name := New_String(".preferencesdialog.interface.messagesscale");
+      Settings.AutoCloseMessagesTime := Natural(Float'Value(Get(Scale)));
+      StartTimer;
+      return Close_Dialog_Command(ClientData, Interp, Argc, Argv);
+   end Close_Preferences_Command;
+
    procedure AddCommands is
       procedure AddCommand
         (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
@@ -809,6 +843,7 @@ package body Preferences.Commands is
       AddCommand("SetDeleteFiles", Set_Delete_Files_Command'Access);
       AddCommand("SetClearTrash", Set_Clear_Trash_Command'Access);
       AddCommand("SetOverwrite", Set_Overwrite_Command'Access);
+      AddCommand("ClosePreferences", Close_Preferences_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
