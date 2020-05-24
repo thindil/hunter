@@ -47,6 +47,7 @@ with LoadData; use LoadData;
 with MainWindow.Commands; use MainWindow.Commands;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with RefreshData; use RefreshData;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
@@ -204,6 +205,7 @@ package body MainWindow is
          end if;
       end if;
       LoadDirectory(To_String(CurrentDirectory));
+      StartTimer(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
       CreateShowItemsUI;
    end CreateMainWindow;

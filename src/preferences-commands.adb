@@ -43,7 +43,6 @@ with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with MainWindow; use MainWindow;
-with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
@@ -810,7 +809,6 @@ package body Preferences.Commands is
       Settings.AutoRefreshInterval := Natural(Float'Value(Get(Scale)));
       Scale.Name := New_String(".preferencesdialog.interface.messagesscale");
       Settings.AutoCloseMessagesTime := Natural(Float'Value(Get(Scale)));
-      StartTimer;
       return Close_Dialog_Command(ClientData, Interp, Argc, Argv);
    end Close_Preferences_Command;
 

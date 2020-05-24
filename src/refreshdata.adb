@@ -16,9 +16,8 @@
 --with Ada.Calendar; use Ada.Calendar;
 --with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
---with Ada.Containers; use Ada.Containers;
---with Ada.Directories; use Ada.Directories;
---with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Directories; use Ada.Directories;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 --with GNAT.OS_Lib; use GNAT.OS_Lib;
 --with Gtk.List_Store; use Gtk.List_Store;
@@ -28,10 +27,10 @@
 --with Gtk.Tree_View;
 --with Glib; use Glib;
 --with Glib.Main; use Glib.Main;
---with LoadData; use LoadData;
---with MainWindow; use MainWindow;
 with Inotify; use Inotify;
---with Preferences; use Preferences;
+with LoadData; use LoadData;
+with MainWindow; use MainWindow;
+with Preferences; use Preferences;
 --with ShowItems; use ShowItems;
 --with Utils; use Utils;
 
@@ -200,20 +199,42 @@ package body RefreshData is
       InotifyRead;
    end InotifyTask;
 
+   task CheckItems is
+      entry Start;
+   end CheckItems;
+
+   task body CheckItems is
+      RefreshList: Boolean := False;
+   begin
+      accept Start;
+      loop
+         delay Duration(Settings.AutoRefreshInterval);
+         if not TemporaryStop then
+            for Event of EventsList loop
+               if Event.Path = CurrentDirectory
+                 and then
+                 ((Event.Event in Moved_To | Metadata | Accessed) and
+                  Exists(To_String(Event.Path & "/" & Event.Target))) then
+                  AddItem(To_String(Event.Path & "/" & Event.Target), ItemsList);
+                  RefreshList := True;
+               end if;
+            end loop;
+         end if;
+         if RefreshList then
+            Items_Sorting.Sort(ItemsList);
+            RefreshList := False;
+         end if;
+         EventsList.Clear;
+      end loop;
+   end CheckItems;
+
    procedure StartTimer(Path: String := "") is
    begin
---      if Source_Id /= No_Source_Id then
---         Remove(Source_Id);
---      end if;
       if Path /= "" then
          AddWatches(Path);
          InotifyTask.Start;
       end if;
-      --     if Settings.AutoRefreshInterval > 0 then
-      --        Source_Id :=
-      --          Timeout_Add
---            (Guint(Settings.AutoRefreshInterval) * 1000, CheckItems'Access);
-      --     end if;
+      CheckItems.Start;
    end StartTimer;
 
    procedure UpdateWatch(Path: String) is

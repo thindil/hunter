@@ -60,10 +60,12 @@ package body LoadData is
       end if;
       case SortOrder is
          when NameAsc =>
-            return Translate(Left.Name, Lower_Case_Map) <
+            return
+              Translate(Left.Name, Lower_Case_Map) <
               Translate(Right.Name, Lower_Case_Map);
          when NameDesc =>
-            return Translate(Left.Name, Lower_Case_Map) >
+            return
+              Translate(Left.Name, Lower_Case_Map) >
               Translate(Right.Name, Lower_Case_Map);
          when ModifiedAsc =>
             return Left.Modified < Right.Modified;
@@ -81,7 +83,7 @@ package body LoadData is
       Size: File_Size;
       SubDirectory: Dir_Type;
       SubLast: Natural;
-      SubFileName: String(1 .. 1024);
+      SubFileName: String(1 .. 1_024);
       MimeType: Unbounded_String;
       Item: Item_Record;
    begin
@@ -90,7 +92,7 @@ package body LoadData is
          Item.Modified := Modification_Time(Path);
       exception
          when others =>
-            Item.Modified := Time_Of(1901, 1, 1);
+            Item.Modified := Time_Of(1_901, 1, 1);
       end;
       if FileName(1) = '.' then
          Item.IsHidden := True;
@@ -168,7 +170,7 @@ package body LoadData is
    procedure LoadDirectory(DirectoryName: String; Second: Boolean := False) is
       Directory: Dir_Type;
       Last: Natural;
-      FileName: String(1 .. 1024);
+      FileName: String(1 .. 1_024);
    begin
       Tcl.Tk.Ada.Busy.Busy(Get_Main_Window(Get_Context));
       Tcl_Eval(Get_Context, "update");
