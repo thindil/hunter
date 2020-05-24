@@ -46,6 +46,7 @@ package LoadData is
 
    ItemsList, SecondItemsList: Items_Container.Vector;
 
+   procedure AddItem(Path: String; List: in out Items_Container.Vector);
    procedure LoadDirectory(DirectoryName: String; Second: Boolean := False);
 
 end LoadData;
