@@ -499,6 +499,37 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Clear_Trash_Command;
 
+   function Set_Overwrite_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Overwrite_Command
+      -- FUNCTION
+      -- Set if the program should overwrite files or create new with new
+      -- names
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Overwrite_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+   begin
+      if Tcl_GetVar(Interp, ".preferencesdialog.copying.overwrite") = "0" then
+         Settings.OverwriteOnExist := False;
+      else
+         Settings.OverwriteOnExist := True;
+      end if;
+      return TCL_OK;
+   end Set_Overwrite_Command;
+
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -535,17 +566,12 @@ package body Preferences.Commands is
       ColorsEnabled: constant Boolean :=
         (if FindExecutable("highlight")'Length > 0 then True else False);
       procedure AddButton
-        (Name, Text: String; Value: Boolean; TooltipText: String;
-         Command: String := "") is
-         CheckButton: Ttk_CheckButton;
+        (Name, Text: String; Value: Boolean; TooltipText, Command: String) is
+         CheckButton: constant Ttk_CheckButton :=
+           Create
+             (Widget_Image(LabelFrame) & Name,
+              "-text {" & Text & "} -command " & Command);
       begin
-         CheckButton :=
-           (if Command /= "" then
-              Create
-                (Widget_Image(LabelFrame) & Name,
-                 "-text {" & Text & "} -command " & Command)
-            else Create
-                (Widget_Image(LabelFrame) & Name, "-text {" & Text & "}"));
          if Value then
             Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
          else
@@ -719,7 +745,8 @@ package body Preferences.Commands is
            "-text {Copying or moving}");
       AddButton
         (".overwrite", "Overwrite existing", Settings.OverwriteOnExist,
-         "If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory.");
+         "If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory.",
+         "SetOverwrite");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
       Bind
@@ -781,6 +808,7 @@ package body Preferences.Commands is
       AddCommand("SetToolbarsOnTop", Set_Toolbars_On_Top_Command'Access);
       AddCommand("SetDeleteFiles", Set_Delete_Files_Command'Access);
       AddCommand("SetClearTrash", Set_Clear_Trash_Command'Access);
+      AddCommand("SetOverwrite", Set_Overwrite_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
