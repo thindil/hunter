@@ -437,6 +437,68 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Toolbars_On_Top_Command;
 
+   function Set_Delete_Files_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Delete_Files_Command
+      -- FUNCTION
+      -- Set if files should be deleted of moved to Trash
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Delete_Files_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+   begin
+      if Tcl_GetVar(Interp, ".preferencesdialog.deleting.deletefiles") =
+        "0" then
+         Settings.DeleteFiles := False;
+      else
+         Settings.DeleteFiles := True;
+      end if;
+      return TCL_OK;
+   end Set_Delete_Files_Command;
+
+   function Set_Clear_Trash_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* PCommands/Set_Clear_Trash_Command
+      -- FUNCTION
+      -- Set if Trash should be cleared on the program exit
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Set_Clear_Trash_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+   begin
+      if Tcl_GetVar(Interp, ".preferencesdialog.deleting.cleartrash") =
+        "0" then
+         Settings.ClearTrashOnExit := False;
+      else
+         Settings.ClearTrashOnExit := True;
+      end if;
+      return TCL_OK;
+   end Set_Clear_Trash_Command;
+
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -644,10 +706,12 @@ package body Preferences.Commands is
           (Widget_Image(PreferencesDialog) & ".deleting", "-text {Deleting}");
       AddButton
         (".deletefiles", "Delete files", Settings.DeleteFiles,
-         "Delete selected files and directories instead of moving them to Trash.");
+         "Delete selected files and directories instead of moving them to Trash.",
+         "SetDeleteFiles");
       AddButton
         (".cleartrash", "Clear Trash on exit", Settings.ClearTrashOnExit,
-         "Automatically clear Trash on exit from the program.");
+         "Automatically clear Trash on exit from the program.",
+         "SetClearTrash");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create
@@ -715,6 +779,8 @@ package body Preferences.Commands is
       AddCommand("SetStayInOld", Set_Stay_In_Old_Command'Access);
       AddCommand("SetShowFinishedInfo", Set_Show_Finished_Info_Command'Access);
       AddCommand("SetToolbarsOnTop", Set_Toolbars_On_Top_Command'Access);
+      AddCommand("SetDeleteFiles", Set_Delete_Files_Command'Access);
+      AddCommand("SetClearTrash", Set_Clear_Trash_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
