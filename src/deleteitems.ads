@@ -32,10 +32,8 @@ package DeleteItems is
    -- ****f* DeleteItems/DeleteItem
    -- FUNCTION
    -- Show message to start deleting selected files and directories.
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button which was clicked. Unused.
    -- SOURCE
---   procedure DeleteItem(Self: access Gtk_Tool_Button_Record'Class);
+   procedure DeleteItem;
    -- ****
 
 end DeleteItems;
