@@ -21,7 +21,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C; use Interfaces.C;
 with Tcl; use Tcl;
---with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 --with Gtk.List_Store; use Gtk.List_Store;
 --with Gtk.Tree_Model; use Gtk.Tree_Model;
@@ -34,8 +34,7 @@ with Inotify; use Inotify;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
---with ShowItems; use ShowItems;
---with Utils; use Utils;
+with ShowItems; use ShowItems;
 
 package body RefreshData is
 
@@ -224,6 +223,9 @@ package body RefreshData is
       RefreshList: Boolean := False;
       ItemIndex: Positive;
       FileName: Unbounded_String;
+      Directory: Dir_Type;
+      Last: Natural;
+      SubFileName: String(1 .. 1_024);
       procedure RemoveItem is
       begin
          ItemsList.Delete(ItemIndex);
@@ -245,10 +247,9 @@ package body RefreshData is
             end if;
             ItemIndex := ItemsList.First_Index;
             while ItemIndex <= ItemsList.Last_Index loop
-               if ItemsList(ItemIndex).Name = Event.Path or
+               FileName := CurrentDirectory & "/" & ItemsList(ItemIndex).Name;
+               if FileName = Event.Path or
                  ItemsList(ItemIndex).Name = Event.Target then
-                  FileName :=
-                    CurrentDirectory & "/" & ItemsList(ItemIndex).Name;
                   case Event.Event is
                      when Moved_From | Deleted =>
                         RemoveItem;
@@ -258,6 +259,7 @@ package body RefreshData is
                            RemoveItem;
                            exit;
                         end if;
+                        RefreshList := True;
                         ItemsList(ItemIndex).Modified :=
                           Modification_Time(To_String(FileName));
                         if not Is_Read_Accessible_File
@@ -265,6 +267,28 @@ package body RefreshData is
                            ItemsList(ItemIndex).Size := -1;
                            exit;
                         end if;
+                        if Is_Directory(To_String(FileName)) then
+                           Open(Directory, To_String(FileName));
+                           ItemsList(ItemIndex).Size := 0;
+                           loop
+                              Read(Directory, SubFileName, Last);
+                              exit when Last = 0;
+                              if SubFileName(1 .. Last) /= "." and
+                                SubFileName(1 .. Last) /= ".." then
+                                 ItemsList(ItemIndex).Size :=
+                                   ItemsList(ItemIndex).Size + 1;
+                              end if;
+                           end loop;
+                           Close(Directory);
+                        elsif Is_Regular_File(To_String(FileName)) then
+                           ItemsList(ItemIndex).Size :=
+                             Integer
+                               (Ada.Directories.Size(To_String(FileName)));
+                        end if;
+                        if FileName = To_String(CurrentSelected) then
+                           ShowPreview;
+                        end if;
+                        exit;
                      when others =>
                         null;
                   end case;
