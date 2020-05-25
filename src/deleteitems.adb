@@ -16,6 +16,7 @@
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
@@ -24,8 +25,12 @@ with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
@@ -141,56 +146,58 @@ package body DeleteItems is
          raise;
    end DeleteSelected;
 
---   procedure DeleteItem(Self: access Gtk_Tool_Button_Record'Class) is
---      pragma Unreferenced(Self);
---      Message, FileLine: Unbounded_String;
---      FileInfo: File_Type;
---      I: Positive := SelectedItems.First_Index;
---   begin
---      if not Is_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10))) then
---         NewAction := DELETE;
---      else
---         NewAction := DELETETRASH;
---      end if;
---      if Settings.DeleteFiles or NewAction = DELETETRASH then
---         Message := To_Unbounded_String(Gettext("Delete?") & LF);
---      else
---         Message := To_Unbounded_String(Gettext("Move to trash?") & LF);
---      end if;
---      while I <= SelectedItems.Last_Index loop
---         if NewAction = DELETE then
---            Append(Message, SelectedItems(I));
---         else
---            Open
---              (FileInfo, In_File,
---               Ada.Environment_Variables.Value("HOME") &
---               "/.local/share/Trash/info/" &
---               Simple_Name(To_String(SelectedItems(I))) & ".trashinfo");
---            Skip_Line(FileInfo);
---            for I in 1 .. 2 loop
---               FileLine := To_Unbounded_String(Get_Line(FileInfo));
---               if Slice(FileLine, 1, 4) = "Path" then
---                  Append
---                    (Message,
---                     Simple_Name(Slice(FileLine, 6, Length(FileLine))));
---               end if;
---            end loop;
---            Close(FileInfo);
---         end if;
---         if Is_Directory(To_String(SelectedItems(I))) then
---            Append(Message, Gettext("(and its content)"));
---         end if;
---         if I /= SelectedItems.Last_Index then
---            Append(Message, LF);
---         end if;
---         I := I + 1;
---         if I = 11 then
---            Append(Message, Gettext("(and more)"));
---            exit;
---         end if;
---      end loop;
---      ToggleToolButtons(NewAction);
---      ShowMessage(To_String(Message), Message_Question);
---   end DeleteItem;
+   procedure DeleteItem is
+      Message, FileLine: Unbounded_String;
+      FileInfo: File_Type;
+      I: Positive := SelectedItems.First_Index;
+      DeleteButton: Ttk_Button;
+   begin
+      DeleteButton.Interp := Get_Context;
+      DeleteButton.Name := New_String(".mainframe.toolbars.actiontoolbar.deletebutton");
+      if Winfo_Get(DeleteButton, "ismapped") = "1" then
+         NewAction := DELETE;
+      else
+         NewAction := DELETETRASH;
+      end if;
+      if Settings.DeleteFiles or NewAction = DELETETRASH then
+         Message := To_Unbounded_String("Delete?" & LF);
+      else
+         Message := To_Unbounded_String("Move to trash?" & LF);
+      end if;
+      while I <= SelectedItems.Last_Index loop
+         if NewAction = DELETE then
+            Append(Message, SelectedItems(I));
+         else
+            Open
+              (FileInfo, In_File,
+               Ada.Environment_Variables.Value("HOME") &
+               "/.local/share/Trash/info/" &
+               Simple_Name(To_String(SelectedItems(I))) & ".trashinfo");
+            Skip_Line(FileInfo);
+            for I in 1 .. 2 loop
+               FileLine := To_Unbounded_String(Get_Line(FileInfo));
+               if Slice(FileLine, 1, 4) = "Path" then
+                  Append
+                    (Message,
+                     Simple_Name(Slice(FileLine, 6, Length(FileLine))));
+               end if;
+            end loop;
+            Close(FileInfo);
+         end if;
+         if Is_Directory(To_String(SelectedItems(I))) then
+            Append(Message, "(and its content)");
+         end if;
+         if I /= SelectedItems.Last_Index then
+            Append(Message, LF);
+         end if;
+         I := I + 1;
+         if I = 11 then
+            Append(Message, "(and more)");
+            exit;
+         end if;
+      end loop;
+      --ToggleToolButtons(NewAction);
+      ShowMessage(To_String(Message), "question");
+   end DeleteItem;
 
 end DeleteItems;
