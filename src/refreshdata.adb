@@ -16,10 +16,13 @@
 --with Ada.Calendar; use Ada.Calendar;
 --with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 --with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
+with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Interfaces.C; use Interfaces.C;
+with Tcl; use Tcl;
 --with GNAT.Directory_Operations; use GNAT.Directory_Operations;
---with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 --with Gtk.List_Store; use Gtk.List_Store;
 --with Gtk.Tree_Model; use Gtk.Tree_Model;
 --with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
@@ -199,42 +202,105 @@ package body RefreshData is
       InotifyRead;
    end InotifyTask;
 
-   task CheckItems is
-      entry Start;
-   end CheckItems;
+   -- ****iv* RefreshData/Timer_Token
+   -- FUNCTION
+   -- Identifier for the timer for periodically update directory listing
+   -- SOURCE
+   Timer_Token: Tcl_TimerToken;
+   -- ****
 
-   task body CheckItems is
+   -- ****if* RefreshData/CheckItems
+   -- FUNCTION
+   -- Check all inotify events and update directory listing if needed
+   -- PARAMETERS
+   -- data - Custom data send to the command. Unused
+   -- SOURCE
+   procedure CheckItems(data: ClientData) with
+      Convention => C;
+      -- ****
+
+   procedure CheckItems(data: ClientData) is
+      pragma Unreferenced(data);
       RefreshList: Boolean := False;
-   begin
-      accept Start;
-      loop
-         delay Duration(Settings.AutoRefreshInterval);
-         if not TemporaryStop then
-            for Event of EventsList loop
-               if Event.Path = CurrentDirectory
-                 and then
-                 ((Event.Event in Moved_To | Metadata | Accessed) and
-                  Exists(To_String(Event.Path & "/" & Event.Target))) then
-                  AddItem(To_String(Event.Path & "/" & Event.Target), ItemsList);
-                  RefreshList := True;
-               end if;
-            end loop;
+      ItemIndex: Positive;
+      FileName: Unbounded_String;
+      procedure RemoveItem is
+      begin
+         ItemsList.Delete(ItemIndex);
+         if ItemsList.Length = 0 then
+            CurrentSelected := CurrentDirectory;
          end if;
+         RefreshList := True;
+      end RemoveItem;
+   begin
+      if not TemporaryStop then
+         for Event of EventsList loop
+            if Event.Path = CurrentDirectory
+              and then
+              ((Event.Event in Moved_To | Metadata | Accessed) and
+               Exists(To_String(Event.Path & "/" & Event.Target))) then
+               AddItem(To_String(Event.Path & "/" & Event.Target), ItemsList);
+               RefreshList := True;
+               goto End_Of_Loop;
+            end if;
+            ItemIndex := ItemsList.First_Index;
+            while ItemIndex <= ItemsList.Last_Index loop
+               if ItemsList(ItemIndex).Name = Event.Path or
+                 ItemsList(ItemIndex).Name = Event.Target then
+                  FileName :=
+                    CurrentDirectory & "/" & ItemsList(ItemIndex).Name;
+                  case Event.Event is
+                     when Moved_From | Deleted =>
+                        RemoveItem;
+                        exit;
+                     when Metadata | Modified | Moved_To | Accessed =>
+                        if not Exists(To_String(FileName)) then
+                           RemoveItem;
+                           exit;
+                        end if;
+                        ItemsList(ItemIndex).Modified :=
+                          Modification_Time(To_String(FileName));
+                        if not Is_Read_Accessible_File
+                            (To_String(FileName)) then
+                           ItemsList(ItemIndex).Size := -1;
+                           exit;
+                        end if;
+                     when others =>
+                        null;
+                  end case;
+               end if;
+               ItemIndex := ItemIndex + 1;
+            end loop;
+            <<End_Of_Loop>>
+         end loop;
          if RefreshList then
             Items_Sorting.Sort(ItemsList);
+            UpdateDirectoryList(True);
             RefreshList := False;
          end if;
-         EventsList.Clear;
-      end loop;
+      end if;
+      EventsList.Clear;
+      Timer_Token :=
+        Tcl_CreateTimerHandler
+          (int(Settings.AutoRefreshInterval) * 1_000, CheckItems'Access,
+           Null_ClientData);
    end CheckItems;
 
    procedure StartTimer(Path: String := "") is
    begin
+      if Timer_Token /= null then
+         Tcl_DeleteTimerHandler(Timer_Token);
+      end if;
       if Path /= "" then
          AddWatches(Path);
          InotifyTask.Start;
       end if;
-      CheckItems.Start;
+      if Settings.AutoRefreshInterval > 0 then
+         Timer_Token :=
+           Tcl_CreateTimerHandler
+             (int(Settings.AutoRefreshInterval) * 1_000, CheckItems'Access,
+              Null_ClientData);
+      end if;
    end StartTimer;
 
    procedure UpdateWatch(Path: String) is
