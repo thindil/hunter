@@ -231,7 +231,9 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".deletemenu", "-tearoff false");
       if Settings.DeleteFiles then
-         Menu.Add(ButtonMenu, "command", "-label ""Delete selected""");
+         Menu.Add
+           (ButtonMenu, "command",
+            "-label {Delete selected} -command StartDeleting");
       else
          Menu.Add(ButtonMenu, "command", "-label ""Move selected to Trash""");
       end if;

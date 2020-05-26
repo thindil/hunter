@@ -28,6 +28,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with CArgv;
+with Tcl; use Tcl;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
@@ -146,14 +148,35 @@ package body DeleteItems is
          raise;
    end DeleteSelected;
 
-   procedure DeleteItem is
+   function Start_Deleting_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Commands/Start_Deleting_Command
+      -- FUNCTION
+      -- Show confirmation to delete the selected files and directories
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Start_Deleting_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
       Message, FileLine: Unbounded_String;
       FileInfo: File_Type;
       I: Positive := SelectedItems.First_Index;
       DeleteButton: Ttk_Button;
    begin
       DeleteButton.Interp := Get_Context;
-      DeleteButton.Name := New_String(".mainframe.toolbars.actiontoolbar.deletebutton");
+      DeleteButton.Name :=
+        New_String(".mainframe.toolbars.actiontoolbar.deletebutton");
       if Winfo_Get(DeleteButton, "ismapped") = "1" then
          NewAction := DELETE;
       else
@@ -198,6 +221,12 @@ package body DeleteItems is
       end loop;
       --ToggleToolButtons(NewAction);
       ShowMessage(To_String(Message), "question");
-   end DeleteItem;
+      return TCL_OK;
+   end Start_Deleting_Command;
+
+   procedure CreateDeleteUI is
+   begin
+      AddCommand("StartDeleting", Start_Deleting_Command'Access);
+   end CreateDeleteUI;
 
 end DeleteItems;
