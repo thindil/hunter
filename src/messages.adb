@@ -104,16 +104,15 @@ package body Messages is
       -- FUNCTION
       -- Hide message frame and do action, depends on user response
       -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
+      -- ClientData - Custom data send to the command.
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command.
       -- Argv       - Values of arguments passed to the command.
       -- SOURCE
    function Response_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
       -- ****
       OverwriteItem: Boolean := True;
       Response: constant String := CArgv.Arg(Argv, 1);
@@ -154,25 +153,21 @@ package body Messages is
                end if;
             end if;
 --            ToggleToolButtons(NewAction, True);
---            Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
---            if Settings.ShowFinishedInfo then
---               if NewAction = DELETE and not Settings.DeleteFiles then
---                  ShowMessage
---                    (Gettext
---                       ("All selected files and directories have been moved to Trash."),
---                     Message_Info);
---               elsif NewAction = CLEARTRASH then
---                  ShowMessage
---                    (Gettext("Trash have been cleared."), Message_Info);
---               else
---                  ShowMessage
---                    (Gettext
---                       ("All selected files and directories have been deleted."),
---                     Message_Info);
---               end if;
---            else
---               CloseMessage(null);
---            end if;
+            if Settings.ShowFinishedInfo then
+               if NewAction = DELETE and not Settings.DeleteFiles then
+                  ShowMessage
+                    ("All selected files and directories have been moved to Trash.",
+                     "info");
+               elsif NewAction = CLEARTRASH then
+                  ShowMessage("Trash have been cleared.", "info");
+               else
+                  ShowMessage
+                    ("All selected files and directories have been deleted.",
+                     "info");
+               end if;
+            else
+               return Close_Command(ClientData, Interp, Argc, Argv);
+            end if;
 --         when COPY =>
 --            if Response_Id = Gint(Gtk_Response_Reject) then
 --               CloseMessage(null);
@@ -242,7 +237,7 @@ package body Messages is
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonyes",
-           "-text Yes -command {MessageResponse no}");
+           "-text Yes -command {MessageResponse yes}");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 0");
       Button :=
         Create
@@ -303,7 +298,7 @@ package body Messages is
         (MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
       TimerId :=
         To_Unbounded_String
-          (After(Settings.AutoCloseMessagesTime * 1000, "CloseMessage"));
+          (After(Settings.AutoCloseMessagesTime * 1_000, "CloseMessage"));
    end ShowMessage;
 
 end Messages;
