@@ -29,11 +29,11 @@ package DeleteItems is
    function DeleteSelected return Boolean;
    -- ****
 
-   -- ****f* DeleteItems/DeleteItem
+   -- ****f* DeleteItems/CreateDeleteUI
    -- FUNCTION
-   -- Show message to start deleting selected files and directories.
+   -- Create UI for deleting items
    -- SOURCE
-   procedure DeleteItem;
+   procedure CreateDeleteUI;
    -- ****
 
 end DeleteItems;

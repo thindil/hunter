@@ -43,6 +43,7 @@ with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with ActivateItems; use ActivateItems;
 with Bookmarks; use Bookmarks;
+with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with MainWindow.Commands; use MainWindow.Commands;
 with Messages; use Messages;
@@ -152,6 +153,7 @@ package body MainWindow is
       CreateMessagesUI;
       CreateActivateUI;
       CreatePreferencesUI;
+      CreateDeleteUI;
       Add(Paned, DirectoryFrame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");
