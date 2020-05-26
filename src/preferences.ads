@@ -107,19 +107,4 @@ package Preferences is
    procedure CreatePreferencesUI;
    -- ****
 
-   -- ****v* Preferences/PreferencesPopup
-   -- FUNCTION
-   -- The preferences Gtk_Popover "window"
-   -- SOURCE
---   PreferencesPopup: Gtk_Popover;
---   -- ****
---
---   -- ****f* Preferences/SetDeleteTooltip
---   -- FUNCTION
---   -- Set tooltip for delete button, depends did delete action delete files or
---   -- move them to trash
---   -- SOURCE
---   procedure SetDeleteTooltip;
---   -- ****
---
 end Preferences;
