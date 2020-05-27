@@ -219,7 +219,7 @@ package body DeleteItems is
             exit;
          end if;
       end loop;
-      --ToggleToolButtons(NewAction);
+      ToggleToolButtons(NewAction);
       ShowMessage(To_String(Message), "question");
       return TCL_OK;
    end Start_Deleting_Command;

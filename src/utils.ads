@@ -16,6 +16,7 @@
 with Ada.Directories; use Ada.Directories;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
+with MainWindow; use MainWindow;
 
 -- ****h* Hunter/Utils
 -- FUNCTION
@@ -129,8 +130,8 @@ package Utils is
    -- Action   - Action on files or directories started or finished.
    -- Finished - If true, action was finished. Default is False
    -- SOURCE
---   procedure ToggleToolButtons
---     (Action: ItemActions; Finished: Boolean := False);
+   procedure ToggleToolButtons
+     (Action: ItemActions; Finished: Boolean := False);
    -- ****
 
    -- ****f* Utils/ToggleActionButtons
