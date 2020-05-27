@@ -23,10 +23,15 @@ with Tcl; use Tcl;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
+with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkProgressBar; use Tcl.Tk.Ada.Widgets.TtkProgressBar;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
+with Bookmarks; use Bookmarks;
 with Messages; use Messages;
+with Preferences; use Preferences;
 --with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 --with Gtk.Bin; use Gtk.Bin;
 --with Gtk.Box; use Gtk.Box;
@@ -161,29 +166,47 @@ package body Utils is
       Bind(Dialog, "<Destroy>", "{CloseDialog " & Value(Dialog.Name) & "}");
    end SetDialog;
 
-      procedure AddCommand
-        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
-         Command: Tcl.Tcl_Command;
-      begin
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, Name, AdaCommand, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command " & Name;
-         end if;
-      end AddCommand;
+   procedure AddCommand
+     (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
+      Command: Tcl.Tcl_Command;
+   begin
+      Command :=
+        CreateCommands.Tcl_CreateCommand
+          (Get_Context, Name, AdaCommand, 0, null);
+      if Command = null then
+         raise Program_Error with "Can't add command " & Name;
+      end if;
+   end AddCommand;
 
---   procedure ToggleToolButtons
---     (Action: ItemActions; Finished: Boolean := False) is
---      ButtonsIndexes: constant array(Positive range <>) of Positive :=
---        (1, 2, 4, 5, 6, 7, 8, 12, 13);
---      CurrentButtonIndex: Natural := 0;
---   begin
---      case Action is
---         when CREATEFILE | CREATEDIRECTORY | RENAME | DELETE | DELETETRASH =>
---            Set_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 0)), Finished);
---         when CREATELINK =>
---            null;
+   procedure ToggleToolButtons
+     (Action: ItemActions; Finished: Boolean := False) is
+      ButtonsIndexes: constant array(Positive range <>) of Positive :=
+        (1, 2, 4, 5, 6, 7, 8, 12, 13);
+      CurrentButtonIndex: Natural := 0;
+      Visibility: constant String := (if Finished then "1" else "0");
+      Toolbar: Ttk_Frame;
+      Paned: Ttk_PanedWindow;
+      HeaderLabel: Ttk_Label;
+   begin
+      Toolbar.Interp := Get_Context;
+      Toolbar.Name := New_String(".mainframe.toolbars");
+      Paned.Interp := Get_Context;
+      Paned.Name := New_String(".mainframe.paned");
+      HeaderLabel.Interp := Get_Context;
+      if Settings.ToolbarsOnTop then
+         HeaderLabel.Name := New_String(".mainframe.toolbars.label");
+      else
+         HeaderLabel.Name := New_String(".mainframe.headerlabel");
+      end if;
+      case Action is
+         when CREATEFILE | CREATEDIRECTORY | RENAME | DELETE | DELETETRASH =>
+            if not Finished then
+               Grid_Remove(Toolbar);
+            else
+               Tcl.Tk.Ada.Grid.Grid(Toolbar);
+            end if;
+         when CREATELINK =>
+            null;
 --         when COPY =>
 --            CurrentButtonIndex := 6;
 --            Set_Tooltip_Text
@@ -198,9 +221,9 @@ package body Utils is
 --            CurrentButtonIndex := 8;
 --            Set_Visible
 --              (Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)), not Finished);
---         when others =>
---            return;
---      end case;
+         when others =>
+            return;
+      end case;
 --      if (Action = CREATELINK or Action = COPY or Action = MOVE)
 --        and then (not Settings.ShowPreview) and then (not Finished) then
 --         Set_Position
@@ -247,22 +270,22 @@ package body Utils is
 --            end if;
 --         end loop;
 --      end if;
---      if Finished then
---         Set_Title
---           (Gtk_Header_Bar(Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---            "");
---         Show_All(Gtk_Widget(ItemToolBar));
---         if not Settings.ShowPreview then
---            Set_Position(FilesPaned, Get_Allocated_Width(Gtk_Widget(Window)));
---            Hide(Get_Child2(FilesPaned));
---         else
---            SetBookmarkButton;
---         end if;
---      else
---         if Action /= SHOWTRASH then
---            Hide(Gtk_Widget(ItemToolBar));
---         end if;
---         case Action is
+      Toolbar.Name := New_String(".mainframe.toolbars.itemtoolbar");
+      if Finished then
+         configure
+            (HeaderLabel, "-text {}");
+         Tcl.Tk.Ada.Grid.Grid(Toolbar);
+         if not Settings.ShowPreview then
+            Toolbar.Name := New_String(".mainframe.paned.previewframe");
+            Forget(Paned, Toolbar);
+         else
+            SetBookmarkButton;
+         end if;
+      else
+         if Action /= SHOWTRASH then
+            Grid_Remove(Toolbar);
+         end if;
+         case Action is
 --            when CREATEFILE =>
 --               Set_Title
 --                 (Gtk_Header_Bar
@@ -297,24 +320,20 @@ package body Utils is
 --                  Gettext("Moving files and directories"));
 --               Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 2)));
 --               Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1)));
---            when DELETE | DELETETRASH =>
---               if Settings.DeleteFiles or Action = DELETETRASH then
---                  Set_Title
---                    (Gtk_Header_Bar
---                       (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---                     Gettext("Deleting files and directories"));
---               else
---                  Set_Title
---                    (Gtk_Header_Bar
---                       (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---                     Gettext("Moving files and directories to trash"));
---               end if;
---            when others =>
---               null;
---         end case;
---      end if;
---   end ToggleToolButtons;
---
+            when DELETE | DELETETRASH =>
+               if Settings.DeleteFiles or Action = DELETETRASH then
+                  configure
+                    (HeaderLabel, "-text {Deleting files and directories}");
+               else
+                  configure
+                    (HeaderLabel, "Moving files and directories to trash");
+               end if;
+            when others =>
+               null;
+         end case;
+      end if;
+   end ToggleToolButtons;
+
 --   procedure ToggleActionButtons is
 --      Visible: Boolean;
 --   begin

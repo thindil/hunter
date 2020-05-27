@@ -152,7 +152,7 @@ package body Messages is
                   UpdateDirectoryList(True);
                end if;
             end if;
---            ToggleToolButtons(NewAction, True);
+            ToggleToolButtons(NewAction, True);
             if Settings.ShowFinishedInfo then
                if NewAction = DELETE and not Settings.DeleteFiles then
                   ShowMessage
