@@ -420,8 +420,7 @@ package body Preferences.Commands is
       end if;
       SetToolbars;
       if not Settings.ToolbarsOnTop then
-         Tcl.Tk.Ada.Grid.Grid
-           (HeaderLabel, "-column 0 -row 0 -sticky we -columnspan 2");
+         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 0 -row 0 -columnspan 2");
          Tcl.Tk.Ada.Grid.Grid_Configure
            (Paned, "-column 1 -row 3 -sticky nswe");
       else

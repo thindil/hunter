@@ -178,8 +178,7 @@ package body MainWindow is
       Bind(DirectoryTree, "<<TreeviewSelect>>", "ShowSelected");
       Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
-         Tcl.Tk.Ada.Grid.Grid
-           (HeaderLabel, "-column 0 -row 0 -sticky we -columnspan 2");
+         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 0 -row 0 -columnspan 2");
          Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 3 -sticky nswe");
       else
          Tcl.Tk.Ada.Grid.Grid(Paned, "-column 0 -row 3 -sticky nswe");
