@@ -116,8 +116,6 @@ package body ShowItems is
       To_Unbounded_String("write"));
    -- ****
 
-   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
-
    procedure ScaleImage is
       Image: constant Tk_Photo :=
         Create("previewimage", "-file " & To_String(CurrentSelected));
@@ -805,17 +803,6 @@ package body ShowItems is
       ButtonTexts: constant array(1 .. 3) of Unbounded_String :=
         (To_Unbounded_String("Can execute"), To_Unbounded_String("Can read"),
          To_Unbounded_String("Can write"));
-      procedure AddCommand
-        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
-         Command: Tcl.Tcl_Command;
-      begin
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, Name, AdaCommand, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command " & Name;
-         end if;
-      end AddCommand;
       procedure CreatePermissionsFrame(Name, Text: String; Row: Positive) is
          Frame: constant Ttk_Frame :=
            Create(".mainframe.paned.previewframe.infoframe." & Name & "frame");

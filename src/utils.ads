@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 
 -- ****h* Hunter/Utils
@@ -22,6 +23,13 @@ with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 -- SOURCE
 package Utils is
 -- ****
+
+   -- ****t* Utils/CreateCommands
+   -- FUNCTION
+   -- Used to add new commands to Tcl
+   -- SOURCE
+   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
+   -- ****
 
    -- ****f* Utils/GetMimeType
    -- FUNCTION
@@ -99,6 +107,18 @@ package Utils is
    -- SOURCE
    procedure SetDialog
      (Dialog: Tk_Toplevel; DialogTitle: String; Width, Height: Positive);
+   -- ****
+
+   -- ****f* Utils/AddCommand
+   -- FUNCTION
+   -- Add command to the Tcl interpreter
+   -- PARAMETERS
+   -- Name       - Name of the Tcl command which will be used to invoke the
+   --              Ada code
+   -- AdaCommand - Ada function which will be invoked
+   -- SOURCE
+   procedure AddCommand
+     (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc);
    -- ****
 
    -- ****f* Utils/ToggleToolButtons

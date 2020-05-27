@@ -24,7 +24,6 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
-with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -57,7 +56,6 @@ package body ProgramsMenu is
    NamesList: UnboundedString_Container.Vector;
    -- ****
 
-   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
    package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
 
    function Toggle_Applications_Menu_Command
@@ -277,17 +275,6 @@ package body ProgramsMenu is
           (Widget_Image(ApplicationsFrame) & ".scrolly",
            "-orient vertical -command [list " &
            Widget_Image(ApplicationsView) & " yview]");
-      procedure AddCommand
-        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
-         Command: Tcl.Tcl_Command;
-      begin
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, Name, AdaCommand, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command " & Name;
-         end if;
-      end AddCommand;
    begin
       for Path of ApplicationsPaths loop
          if not Ada.Directories.Exists(To_String(Path)) then
