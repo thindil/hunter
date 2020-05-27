@@ -21,7 +21,6 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
 with Tcl; use Tcl;
-with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -43,8 +42,6 @@ with RefreshData; use RefreshData;
 with Utils; use Utils;
 
 package body ActivateItems is
-
-   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
 
    -- ****if* ActivateItems/ExecuteFile
    -- FUNCTION
@@ -323,17 +320,6 @@ package body ActivateItems is
    end Execute_Command;
 
    procedure CreateActivateUI is
-      procedure AddCommand
-        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
-         Command: Tcl.Tcl_Command;
-      begin
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, Name, AdaCommand, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command " & Name;
-         end if;
-      end AddCommand;
    begin
       AddCommand("ActivateItem", Activate_Item_Command'Access);
       AddCommand("ToggleExecuteWith", Toggle_Execute_With_Command'Access);

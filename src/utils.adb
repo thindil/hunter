@@ -19,7 +19,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with LibMagic; use LibMagic;
-with Tcl.Ada; use Tcl.Ada;
+with Tcl; use Tcl;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -160,6 +160,18 @@ package body Utils is
          Trim(Positive'Image(X), Both) & "+" & Trim(Positive'Image(Y), Both));
       Bind(Dialog, "<Destroy>", "{CloseDialog " & Value(Dialog.Name) & "}");
    end SetDialog;
+
+      procedure AddCommand
+        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
+         Command: Tcl.Tcl_Command;
+      begin
+         Command :=
+           CreateCommands.Tcl_CreateCommand
+             (Get_Context, Name, AdaCommand, 0, null);
+         if Command = null then
+            raise Program_Error with "Can't add command " & Name;
+         end if;
+      end AddCommand;
 
 --   procedure ToggleToolButtons
 --     (Action: ItemActions; Finished: Boolean := False) is

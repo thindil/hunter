@@ -50,13 +50,6 @@ with Utils; use Utils;
 
 package body Preferences.Commands is
 
-   -- ****it* PCommands/CreateCommands
-   -- FUNCTION
-   -- Used to create Tcl commands
-   -- SOURCE
-   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
-   -- ****
-
    function Set_Label_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -815,17 +808,6 @@ package body Preferences.Commands is
    end Close_Preferences_Command;
 
    procedure AddCommands is
-      procedure AddCommand
-        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
-         Command: Tcl.Tcl_Command;
-      begin
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, Name, AdaCommand, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command " & Name;
-         end if;
-      end AddCommand;
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
       AddCommand("CloseDialog", Close_Dialog_Command'Access);

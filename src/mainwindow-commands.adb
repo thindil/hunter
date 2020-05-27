@@ -35,10 +35,10 @@ with LibMagic; use LibMagic;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
+with Utils; use Utils;
 
 package body MainWindow.Commands is
 
-   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
    package ExitCommand is new Tcl.Ada.Generic_ExitHandler(Integer);
 
    function Sort_Command
@@ -339,17 +339,6 @@ package body MainWindow.Commands is
    end Arrange_Path_Command;
 
    procedure AddCommands is
-      procedure AddCommand
-        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
-         Command: Tcl.Tcl_Command;
-      begin
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, Name, AdaCommand, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command " & Name;
-         end if;
-      end AddCommand;
    begin
       AddCommand("Sort", Sort_Command'Access);
       AddCommand("HideEntry", Hide_Entry_Command'Access);
