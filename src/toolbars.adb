@@ -235,7 +235,9 @@ package body Toolbars is
            (ButtonMenu, "command",
             "-label {Delete selected} -command StartDeleting");
       else
-         Menu.Add(ButtonMenu, "command", "-label ""Move selected to Trash""");
+         Menu.Add
+           (ButtonMenu, "command",
+            "-label {Move selected to Trash} -command StartDeleting");
       end if;
       Menu.Add(ButtonMenu, "command", "-label ""Show Trash""");
       Menu.Add(ButtonMenu, "command", "-label ""Empty Trash""");
