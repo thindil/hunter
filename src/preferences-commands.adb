@@ -404,23 +404,18 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
-      HeaderLabel: Ttk_Label;
       Paned: Ttk_Frame;
    begin
-      HeaderLabel.Interp := Interp;
-      HeaderLabel.Name := New_String(".mainframe.headerlabel");
       Paned.Interp := Interp;
       Paned.Name := New_String(".mainframe.paned");
       if Tcl_GetVar(Interp, ".preferencesdialog.interface.toolbarsontop") =
         "0" then
          Settings.ToolbarsOnTop := False;
       else
-         Tcl.Tk.Ada.Grid.Grid_Forget(HeaderLabel);
          Settings.ToolbarsOnTop := True;
       end if;
       SetToolbars;
       if not Settings.ToolbarsOnTop then
-         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 0 -row 0 -columnspan 2");
          Tcl.Tk.Ada.Grid.Grid_Configure
            (Paned, "-column 1 -row 3 -sticky nswe");
       else

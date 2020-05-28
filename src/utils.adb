@@ -183,7 +183,6 @@ package body Utils is
       ButtonsIndexes: constant array(Positive range <>) of Positive :=
         (1, 2, 4, 5, 6, 7, 8, 12, 13);
       CurrentButtonIndex: Natural := 0;
-      Visibility: constant String := (if Finished then "1" else "0");
       Toolbar: Ttk_Frame;
       Paned: Ttk_PanedWindow;
       HeaderLabel: Ttk_Label;
@@ -193,11 +192,7 @@ package body Utils is
       Paned.Interp := Get_Context;
       Paned.Name := New_String(".mainframe.paned");
       HeaderLabel.Interp := Get_Context;
-      if Settings.ToolbarsOnTop then
-         HeaderLabel.Name := New_String(".mainframe.toolbars.label");
-      else
-         HeaderLabel.Name := New_String(".mainframe.headerlabel");
-      end if;
+      HeaderLabel.Name := New_String(".mainframe.headerlabel");
       case Action is
          when CREATEFILE | CREATEDIRECTORY | RENAME | DELETE | DELETETRASH =>
             if not Finished then
@@ -272,8 +267,7 @@ package body Utils is
 --      end if;
       Toolbar.Name := New_String(".mainframe.toolbars.itemtoolbar");
       if Finished then
-         configure
-            (HeaderLabel, "-text {}");
+         Grid_Remove(HeaderLabel);
          Tcl.Tk.Ada.Grid.Grid(Toolbar);
          if not Settings.ShowPreview then
             Toolbar.Name := New_String(".mainframe.paned.previewframe");
@@ -326,11 +320,13 @@ package body Utils is
                     (HeaderLabel, "-text {Deleting files and directories}");
                else
                   configure
-                    (HeaderLabel, "Moving files and directories to trash");
+                    (HeaderLabel,
+                     "-text {Moving files and directories to trash}");
                end if;
             when others =>
                null;
          end case;
+         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 0 -row 0 -columnspan 2");
       end if;
    end ToggleToolButtons;
 
