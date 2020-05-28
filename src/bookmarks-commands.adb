@@ -109,6 +109,7 @@ package body Bookmarks.Commands is
       Add(Button, "Go to the selected destination");
       TextEntry.Interp := Get_Context;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      Focus(TextEntry);
       Insert(TextEntry, "0", To_String(CurrentDirectory));
       Add(TextEntry, "Enter the selected destination");
       Unbind(TextEntry, "<KeyRelease>");
