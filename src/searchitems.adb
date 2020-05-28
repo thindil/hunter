@@ -79,6 +79,7 @@ package body SearchItems is
            (TextEntry,
             "Enter the name of the file or directory to search for");
          Bind(TextEntry, "<KeyRelease>", "{Search}");
+         Focus(TextEntry);
          TextFrame.Interp := Get_Context;
          TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
