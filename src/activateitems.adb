@@ -199,6 +199,7 @@ package body ActivateItems is
          State(Button, "selected");
          Add(TextEntry, "Enter command to use to open selected item.");
          Unbind(TextEntry, "<KeyRelease>");
+         Focus(TextEntry);
          TextFrame.Interp := Interp;
          TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
