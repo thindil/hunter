@@ -57,13 +57,6 @@ package body Messages is
    TimerId: Unbounded_String := Null_Unbounded_String;
    -- ****
 
-   -- ****it* Messages/CreateCommands
-   -- FUNCTION
-   -- Used to create Tcl commands
-   -- SOURCE
-   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
-   -- ****
-
    function Close_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -203,20 +196,9 @@ package body Messages is
    procedure CreateMessagesUI is
       ButtonsBox: Ttk_Frame;
       Button: Ttk_Button;
-      Command: Tcl.Tcl_Command;
    begin
-      Command :=
-        CreateCommands.Tcl_CreateCommand
-          (Get_Context, "CloseMessage", Close_Command'Access, 0, null);
-      if Command = null then
-         raise Program_Error with "Can't add command CloseMessage";
-      end if;
-      Command :=
-        CreateCommands.Tcl_CreateCommand
-          (Get_Context, "MessageResponse", Response_Command'Access, 0, null);
-      if Command = null then
-         raise Program_Error with "Can't add command MessageResponse";
-      end if;
+      AddCommand("CloseMessage", Close_Command'Access);
+      AddCommand("MessageResponse", Response_Command'Access);
       Style_Configure("message.TFrame", "-background #00ff00");
       Style_Configure
         ("message.TLabel", "-background #00ff00 -foreground #000000");
