@@ -22,7 +22,6 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
-with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -33,15 +32,9 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Utils; use Utils;
 
 package body Bookmarks.Commands is
-
-   -- ****it* Commands/CreateCommands
-   -- FUNCTION
-   -- Used to create Tcl commands
-   -- SOURCE
-   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
-   -- ****
 
    function GoToBookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -244,17 +237,6 @@ package body Bookmarks.Commands is
    end Remove_Bookmark_Command;
 
    procedure AddCommands is
-      procedure AddCommand
-        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
-         Command: Tcl.Tcl_Command;
-      begin
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, Name, AdaCommand, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command " & Name;
-         end if;
-      end AddCommand;
    begin
       AddCommand("GoToBookmark", GoToBookmark_Command'Access);
       AddCommand("SetDestination", SetDestination_Command'Access);

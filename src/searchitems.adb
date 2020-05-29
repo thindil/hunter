@@ -20,7 +20,6 @@ with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
-with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -34,10 +33,9 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
 with MainWindow; use MainWindow;
+with Utils; use Utils;
 
 package body SearchItems is
-
-   package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
 
    function Toggle_Search_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -151,17 +149,6 @@ package body SearchItems is
    end Search_Command;
 
    procedure CreateSearchUI is
-      procedure AddCommand
-        (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
-         Command: Tcl.Tcl_Command;
-      begin
-         Command :=
-           CreateCommands.Tcl_CreateCommand
-             (Get_Context, Name, AdaCommand, 0, null);
-         if Command = null then
-            raise Program_Error with "Can't add command " & Name;
-         end if;
-      end AddCommand;
    begin
       AddCommand("ToggleSearch", Toggle_Search_Command'Access);
       AddCommand("Search", Search_Command'Access);
