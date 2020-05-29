@@ -25,6 +25,7 @@ with Tcl.Tk.Ada.Busy; use Tcl.Tk.Ada.Busy;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
@@ -446,12 +447,17 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
+      ButtonMenu: Tk_Menu;
    begin
+      ButtonMenu.Interp := Interp;
+      ButtonMenu.Name := New_String(".deletemenu");
       if Tcl_GetVar(Interp, ".preferencesdialog.deleting.deletefiles") =
         "0" then
          Settings.DeleteFiles := False;
+         Entry_Configure(ButtonMenu, "0", "-label {Move selected to Trash}");
       else
          Settings.DeleteFiles := True;
+         Entry_Configure(ButtonMenu, "0", "-label {Delete selected}");
       end if;
       return TCL_OK;
    end Set_Delete_Files_Command;
