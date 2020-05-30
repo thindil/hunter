@@ -176,7 +176,11 @@ package body MainWindow.Commands is
       State(Button, "!selected");
       Button.Name :=
         New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
-      State(Button, "!selected");
+      if State(Button) = "selected" then
+         State(Button, "!selected");
+         ToggleToolButtons(NewAction, True);
+         NewAction := COPY;
+      end if;
       TextFrame.Interp := Interp;
       TextFrame.Name := New_String(".mainframe.textframe");
       Tcl.Tk.Ada.Grid.Grid_Remove(TextFrame);
@@ -228,7 +232,11 @@ package body MainWindow.Commands is
          State(Button, "!selected");
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
-         State(Button, "!selected");
+         if State(Button) = "selected" then
+            State(Button, "!selected");
+            ToggleToolButtons(NewAction, True);
+            NewAction := COPY;
+         end if;
          Button.Name := New_String(".mainframe.textframe.closebutton");
          if Invoke(Button) /= "" then
             raise Program_Error with "Can't hide text entry";

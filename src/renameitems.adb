@@ -91,8 +91,6 @@ package body RenameItems is
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
          State(Button, "!selected");
-         ToggleToolButtons(NewAction, True);
-         NewAction := COPY;
       end if;
       return TCL_OK;
    end Toggle_Rename_Command;
