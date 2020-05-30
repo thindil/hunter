@@ -174,6 +174,9 @@ package body MainWindow.Commands is
       Button.Name :=
         New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
       State(Button, "!selected");
+      Button.Name :=
+        New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
+      State(Button, "!selected");
       TextFrame.Interp := Interp;
       TextFrame.Name := New_String(".mainframe.textframe");
       Tcl.Tk.Ada.Grid.Grid_Remove(TextFrame);
@@ -222,6 +225,9 @@ package body MainWindow.Commands is
          State(Button, "!selected");
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
+         State(Button, "!selected");
+         Button.Name :=
+           New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
          State(Button, "!selected");
          Button.Name := New_String(".mainframe.textframe.closebutton");
          if Invoke(Button) /= "" then
