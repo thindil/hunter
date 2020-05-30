@@ -13,8 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
@@ -26,6 +28,7 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with MainWindow; use MainWindow;
 with Utils; use Utils;
 
 package body RenameItems is
@@ -63,17 +66,24 @@ package body RenameItems is
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name := New_String(".mainframe.textframe.okbutton");
          configure(Button, "-command Rename");
-         Add(Button, "Set a new name for the selected item.");
+         if Is_Directory(To_String(CurrentSelected)) then
+            Add(Button, "Set a new name for the selected directory.");
+            Add(TextEntry, "Enter a new name for the selected directory.");
+         else
+            Add(Button, "Set a new name for the selected file.");
+            Add(TextEntry, "Enter a new name for the selected file.");
+         end if;
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
          State(Button, "selected");
-         Add(TextEntry, "Enter a new name for the selected item.");
          Unbind(TextEntry, "<KeyRelease>");
          Focus(TextEntry);
          TextFrame.Interp := Interp;
          TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
+         NewAction := RENAME;
+         ToggleToolButtons(NewAction);
       else
          if Invoke(Button) /= "" then
             raise Program_Error with "Can't hide rename item bar";
@@ -81,6 +91,8 @@ package body RenameItems is
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
          State(Button, "!selected");
+         ToggleToolButtons(NewAction, True);
+         NewAction := COPY;
       end if;
       return TCL_OK;
    end Toggle_Rename_Command;
@@ -104,10 +116,9 @@ package body RenameItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
       -- ****
    begin
-      return TCL_OK;
+      return Toggle_Rename_Command(ClientData, Interp, Argc, Argv);
    end Rename_Command;
 
    procedure CreateRenameUI is

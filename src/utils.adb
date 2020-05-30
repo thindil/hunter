@@ -295,11 +295,8 @@ package body Utils is
 --                 (Gtk_Header_Bar
 --                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
 --                  Gettext("Creating new link"));
---            when RENAME =>
---               Set_Title
---                 (Gtk_Header_Bar
---                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---                  Gettext("Renaming file or directory"));
+            when RENAME =>
+               configure(HeaderLabel, "-text {Renaming file or directory}");
 --            when COPY =>
 --               Set_Title
 --                 (Gtk_Header_Bar
