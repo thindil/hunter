@@ -49,6 +49,7 @@ with MainWindow.Commands; use MainWindow.Commands;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
+with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
@@ -154,6 +155,7 @@ package body MainWindow is
       CreateActivateUI;
       CreatePreferencesUI;
       CreateDeleteUI;
+      CreateRenameUI;
       Add(Paned, DirectoryFrame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");

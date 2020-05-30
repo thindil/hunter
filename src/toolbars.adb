@@ -205,7 +205,9 @@ package body Toolbars is
       Menu.Add(ButtonMenu, "command", "-label ""New link""");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       ToolCheckButton :=
-        Create(".mainframe.toolbars.actiontoolbar.renamebutton");
+        Create
+          (".mainframe.toolbars.actiontoolbar.renamebutton",
+           "-command ToggleRename");
       SetButton
         (ToolCheckButton, "Rename selected file or directory \[CTRL+R\]",
          "document-save-as");
