@@ -20,58 +20,35 @@ with Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
+with Interfaces.C;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with Tcl;
+with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Text; use Tcl.Tk.Ada.Widgets.Text;
+with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
+with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
-with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Utils; use Utils;
 
 package body ErrorDialog is
 
    procedure SaveException(An_Exception: Exception_Occurrence) is
+      use type Interfaces.C.int;
+
       ErrorFile: File_Type;
       ErrorText: Unbounded_String;
       ErrorFilePath: constant String :=
         Value("HOME") & "/.cache/hunter/error.log";
-      ErrorLabel: constant Ttk_Label :=
-        Create
-          (".errorlabel",
-           "-text ""Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at:"" -wraplength 600");
-      ErrorButton: constant Ttk_Button :=
-        Create
-          (".errorbutton",
-           "-text ""https://github.com/thindil/hunter/issues"" -command {exec " &
-           FindExecutable("xdg-open") &
-           " ""https://github.com/thindil/hunter/issues""}");
-      ErrorLabel2: constant Ttk_Label :=
-        Create
-          (".errorlabel2",
-           "-text ""and attach (if possible) file 'error.log' from" &
-           Value("HOME") & "/.cache/hunter' directory."" -wraplength 600");
-      CloseButton: constant Ttk_Button :=
-        Create(".closebutton", "-text Close -command exit");
-      ErrorFrame: constant Ttk_LabelFrame :=
-        Create(".errorframe", "-text ""Technical information""");
-      ErrorInfo: constant Tk_Text :=
-        Create
-          (".errorframe.errorinfo",
-           "-xscrollcommand "".errorframe.scrollx set"" -yscrollcommand "".errorframe.scrolly set""");
-      ErrorXScroll: constant Ttk_Scrollbar :=
-        Create
-          (".errorframe.scrollx",
-           "-orient horizontal -command [list .errorframe.erroinfo xview]");
-      ErrorYScroll: constant Ttk_Scrollbar :=
-        Create
-          (".errorframe.scrolly",
-           "-orient vertical -command [list .errorframe.errorinfo yview]");
-      MainFrame: Ttk_Frame;
+      Interp: Tcl.Tcl_Interp := Get_Context;
+      MainWindow: Tk_Toplevel := Get_Main_Window(Interp);
    begin
       if Ada.Directories.Exists(ErrorFilePath) then
          Open(ErrorFile, Append_File, ErrorFilePath);
@@ -93,20 +70,66 @@ package body ErrorDialog is
       Append(ErrorText, "-------------------------------------------------");
       Put_Line(ErrorFile, To_String(ErrorText));
       Close(ErrorFile);
-      MainFrame.Interp := Get_Context;
-      MainFrame.Name := New_String(".mainframe");
-      Tcl.Tk.Ada.Pack.Pack_Forget(MainFrame);
-      Tcl.Tk.Ada.Pack.Pack(ErrorLabel);
-      Tcl.Tk.Ada.Pack.Pack(ErrorButton);
-      Tcl.Tk.Ada.Pack.Pack(ErrorLabel2);
-      Tcl.Tk.Ada.Pack.Pack(CloseButton);
-      Tcl.Tk.Ada.Pack.Pack(ErrorFrame, "-fill both -expand true");
-      Tcl.Tk.Ada.Pack.Pack(ErrorXScroll, "-side bottom -fill x");
-      Tcl.Tk.Ada.Pack.Pack(ErrorYScroll, "-side right -fill y");
-      Tcl.Tk.Ada.Pack.Pack(ErrorInfo, "-side top -fill both -expand true");
-      Insert(ErrorInfo, "1.0", "{" & To_String(ErrorText) & "}");
-      configure(ErrorInfo, "-state disabled");
-      Tcl.Tk.Tk_MainLoop;
+      Destroy(MainWindow);
+      Interp := Tcl.Tcl_CreateInterp;
+      if Tcl.Tcl_Init(Interp) = Tcl.TCL_ERROR then
+         Ada.Text_IO.Put_Line
+           ("Hunter: Tcl.Tcl_Init failed: " &
+            Tcl.Ada.Tcl_GetStringResult(Interp));
+         return;
+      end if;
+      if Tcl.Tk.Tk_Init(Interp) = Tcl.TCL_ERROR then
+         Ada.Text_IO.Put_Line
+           ("Hunter: Tcl.Tk.Tk_Init failed: " &
+            Tcl.Ada.Tcl_GetStringResult(Interp));
+         return;
+      end if;
+      Set_Context(Interp);
+      declare
+         ErrorLabel: constant Ttk_Label :=
+           Create
+             (".errorlabel",
+              "-text ""Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at:"" -wraplength 800");
+         ErrorButton: constant Ttk_Button :=
+           Create
+             (".errorbutton",
+              "-text ""https://github.com/thindil/hunter/issues"" -command {exec " &
+              FindExecutable("xdg-open") &
+              " ""https://github.com/thindil/hunter/issues""}");
+         ErrorLabel2: constant Ttk_Label :=
+           Create
+             (".errorlabel2",
+              "-text {and attach (if possible) file 'error.log' from" &
+              Value("HOME") & "/.cache/hunter' directory.} -wraplength 800");
+         CloseButton: constant Ttk_Button :=
+           Create(".closebutton", "-text Close -command exit");
+         ErrorFrame: constant Ttk_LabelFrame :=
+           Create(".errorframe", "-text {Technical information}");
+         ErrorInfo: constant Tk_Text :=
+           Create
+             (".errorframe.errorinfo",
+              "-wrap word -yscrollcommand [list .errorframe.scroll set]");
+         ErrorScroll: constant Ttk_Scrollbar :=
+           Create
+             (".errorframe.scroll",
+              "-orient vertical -command [list .errorframe.errorinfo yview]");
+      begin
+         MainWindow := Get_Main_Window(Interp);
+         Wm_Set(MainWindow, "title", "{Hunter - error}");
+         Wm_Set
+           (MainWindow, "geometry",
+            "800x600+[expr ([winfo vrootwidth .] - 800) / 2]+[expr ([winfo vrootheight .] - 600) / 2]");
+         Tcl.Tk.Ada.Pack.Pack(ErrorLabel);
+         Tcl.Tk.Ada.Pack.Pack(ErrorButton);
+         Tcl.Tk.Ada.Pack.Pack(ErrorLabel2);
+         Tcl.Tk.Ada.Pack.Pack(CloseButton);
+         Tcl.Tk.Ada.Pack.Pack(ErrorFrame, "-fill both -expand true");
+         Tcl.Tk.Ada.Pack.Pack(ErrorScroll, "-fill y -side right");
+         Tcl.Tk.Ada.Pack.Pack(ErrorInfo, "-side top -fill both -expand true");
+         Insert(ErrorInfo, "end", "{" & To_String(ErrorText) & "}");
+         configure(ErrorInfo, "-state disabled");
+         Tcl.Tk.Tk_MainLoop;
+      end;
    end SaveException;
 
 end ErrorDialog;
