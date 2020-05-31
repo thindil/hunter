@@ -21,6 +21,7 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
@@ -126,11 +127,17 @@ package body MainWindow.Commands is
    procedure Quit_Command(ClientData: in Integer) is
       pragma Unreferenced(ClientData);
       -- ****
+      MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
+      ErrorButton: Ttk_Button;
    begin
-      Settings.WindowWidth :=
-        Positive'Value(Winfo_Get(Get_Main_Window(Get_Context), "width"));
-      Settings.WindowHeight :=
-        Positive'Value(Winfo_Get(Get_Main_Window(Get_Context), "height"));
+      ErrorButton.Interp := Get_Context;
+      ErrorButton.Name := New_String(".errorbutton");
+      if Winfo_Get(ErrorButton, "exists") = "0" then
+         Settings.WindowWidth :=
+           Positive'Value(Winfo_Get(MainWindow, "width"));
+         Settings.WindowHeight :=
+           Positive'Value(Winfo_Get(MainWindow, "height"));
+      end if;
       SavePreferences;
       if Settings.ClearTrashOnExit then
          NewAction := CLEARTRASH;
