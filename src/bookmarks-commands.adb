@@ -32,6 +32,7 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with RefreshData; use RefreshData;
 with Utils; use Utils;
 
 package body Bookmarks.Commands is
@@ -156,6 +157,7 @@ package body Bookmarks.Commands is
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
+      UpdateWatch(To_String(CurrentDirectory));
       return TCL_OK;
    end GoToDestination_Command;
 
