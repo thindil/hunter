@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -28,7 +29,10 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with Messages; use Messages;
+with RefreshData; use RefreshData;
 with Utils; use Utils;
 
 package body RenameItems is
@@ -39,9 +43,9 @@ package body RenameItems is
       return Interfaces.C.int with
       Convention => C;
 
-      -- ****if* RenameItems/Start_Rename_Command
+      -- ****if* RenameItems/Toggle_Rename_Command
       -- FUNCTION
-      -- Show text entry to enter a new name for the item
+      -- Show or hide text entry to enter a new name for the item
       -- PARAMETERS
       -- ClientData - Custom data send to the command. Unused
       -- Interp     - Tcl interpreter in which command was executed.
@@ -78,6 +82,7 @@ package body RenameItems is
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
          State(Button, "selected");
          Unbind(TextEntry, "<KeyRelease>");
+         Insert(TextEntry, "end", Simple_Name(To_String(CurrentSelected)));
          Focus(TextEntry);
          TextFrame.Interp := Interp;
          TextFrame.Name := New_String(".mainframe.textframe");
@@ -115,7 +120,41 @@ package body RenameItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       -- ****
+      TextEntry: Ttk_Entry;
+      NewName, ActionBlocker: Unbounded_String;
+      Success: Boolean;
    begin
+      TextEntry.Interp := Interp;
+      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      NewName := CurrentDirectory & "/" & To_Unbounded_String(Get(TextEntry));
+      if Exists(To_String(NewName)) or
+        Is_Symbolic_Link(To_String(NewName)) then
+         if Is_Directory(To_String(NewName)) then
+            ActionBlocker := To_Unbounded_String("directory");
+         else
+            ActionBlocker := To_Unbounded_String("file");
+         end if;
+         ShowMessage
+           ("You can't rename " & To_String(CurrentSelected) & " to " &
+            To_String(NewName) & " because there exists " &
+            To_String(ActionBlocker) & " with that name");
+         return TCL_OK;
+      end if;
+      if not Is_Write_Accessible_File
+          (Containing_Directory(To_String(NewName))) then
+         ShowMessage
+           ("You don't have permissions to rename " & To_String(NewName));
+         return TCL_OK;
+      end if;
+      Rename_File(To_String(CurrentSelected), To_String(NewName), Success);
+      if not Success then
+         ShowMessage("Can't rename " & To_String(CurrentSelected) & ".");
+         return TCL_OK;
+      end if;
+      CurrentSelected := NewName;
+      LoadDirectory(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
+      UpdateWatch(To_String(CurrentDirectory));
       return Toggle_Rename_Command(ClientData, Interp, Argc, Argv);
    end Rename_Command;
 
