@@ -235,13 +235,6 @@ package body MainWindow is
          List := SecondItemsList;
       end if;
       if Clear then
-         for I in List.First_Index .. List.Last_Index loop
-            if Exists(DirectoryTree, Positive'Image(I)) = "1" then
-               Move
-                 (DirectoryTree, Positive'Image(I), "{}",
-                  Natural'Image(I - 1));
-            end if;
-         end loop;
          Delete
            (DirectoryTree,
             "[" & Widget_Image(DirectoryTree) & " children {} ]");
