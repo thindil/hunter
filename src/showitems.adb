@@ -116,6 +116,14 @@ package body ShowItems is
       To_Unbounded_String("write"));
    -- ****
 
+   -- ****ie* ShowItems/Hunter_Show_Items_Exception
+   -- FUNCTION
+   -- Exception raised when any problems with showing item preview
+   -- occurs
+   -- SOURCE
+   Hunter_Show_Items_Exception: exception;
+   -- ****
+
    procedure ScaleImage is
       Image: constant Tk_Photo :=
         Create("previewimage", "-file " & To_String(CurrentSelected));
@@ -456,7 +464,7 @@ package body ShowItems is
                     New_String(".mainframe.toolbars.itemtoolbar.infobutton");
                   ActionButton.Interp := Get_Context;
                   if Invoke(ActionButton) /= "" then
-                     raise Program_Error
+                     raise Hunter_Show_Items_Exception
                        with "Can't show file or directory info";
                   end if;
                end;
@@ -737,7 +745,8 @@ package body ShowItems is
            New_String(".mainframe.toolbars.itemtoolbar.infobutton");
       end if;
       if Invoke(ActionButton) /= "" then
-         raise Program_Error with "Can't show file or directory preview/info";
+         raise Hunter_Show_Items_Exception
+           with "Can't show file or directory preview/info";
       end if;
       SetBookmarkButton;
       return TCL_OK;

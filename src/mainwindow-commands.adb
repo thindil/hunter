@@ -217,6 +217,7 @@ package body MainWindow.Commands is
       -- ****
       Frame: Ttk_Frame;
       Button: Ttk_Button;
+      Hunter_Hide_Widget_Exception: exception;
    begin
       Frame.Interp := Get_Context;
       Button.Interp := Get_Context;
@@ -225,7 +226,7 @@ package body MainWindow.Commands is
          Button.Name :=
            New_String(".mainframe.message.buttonsbox.buttonclose");
          if Invoke(Button) /= "" then
-            raise Program_Error with "Can't hide message";
+            raise Hunter_Hide_Widget_Exception with "Can't hide message";
          end if;
          return TCL_OK;
       end if;
@@ -246,7 +247,7 @@ package body MainWindow.Commands is
          end if;
          Button.Name := New_String(".mainframe.textframe.closebutton");
          if Invoke(Button) /= "" then
-            raise Program_Error with "Can't hide text entry";
+            raise Hunter_Hide_Widget_Exception with "Can't hide text entry";
          end if;
          return TCL_OK;
       end if;
@@ -257,7 +258,8 @@ package body MainWindow.Commands is
            New_String
              (".mainframe.paned.previewframe.infoframe.associatedprogram");
          if Invoke(Button) /= "" then
-            raise Program_Error with "Can't hide associated programs menu";
+            raise Hunter_Hide_Widget_Exception
+              with "Can't hide associated programs menu";
          end if;
          return TCL_OK;
       end if;

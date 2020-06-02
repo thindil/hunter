@@ -139,6 +139,7 @@ package body Bookmarks.Commands is
       -- ****
       TextEntry: Ttk_Entry;
       HideButton: Ttk_Button;
+      Hunter_Go_To_Destination_Exception: exception;
    begin
       if NewAction /= MOVE then
          NewAction := COPY;
@@ -153,7 +154,7 @@ package body Bookmarks.Commands is
       HideButton.Interp := Get_Context;
       HideButton.Name := New_String(".mainframe.textframe.closebutton");
       if Invoke(HideButton) /= "" then
-         raise Program_Error with "Can't hide text entry";
+         raise Hunter_Go_To_Destination_Exception with "Can't hide text entry";
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);

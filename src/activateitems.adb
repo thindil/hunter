@@ -181,6 +181,7 @@ package body ActivateItems is
       TextFrame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
+      Hunter_Activate_Item_Exception: exception;
    begin
       TextEntry.Interp := Interp;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
@@ -205,7 +206,8 @@ package body ActivateItems is
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       else
          if Invoke(Button) /= "" then
-            raise Program_Error with "Can't hide execute program bar";
+            raise Hunter_Activate_Item_Exception
+              with "Can't hide execute program bar";
          end if;
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
