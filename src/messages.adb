@@ -143,6 +143,7 @@ package body Messages is
                else
                   LoadDirectory(To_String(CurrentDirectory));
                   UpdateDirectoryList(True);
+                  Tcl.Ada.Tcl_Eval(Get_Context, "update");
                end if;
             end if;
             ToggleToolButtons(NewAction, True);
