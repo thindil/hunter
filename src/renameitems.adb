@@ -61,6 +61,7 @@ package body RenameItems is
       TextFrame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
+      Hunter_Rename_Exception: exception;
    begin
       TextEntry.Interp := Interp;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
@@ -91,7 +92,7 @@ package body RenameItems is
          ToggleToolButtons(NewAction);
       else
          if Invoke(Button) /= "" then
-            raise Program_Error with "Can't hide rename item bar";
+            raise Hunter_Rename_Exception with "Can't hide rename item bar";
          end if;
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
