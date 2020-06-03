@@ -131,6 +131,7 @@ package body DeleteItems is
          Settings.DeleteFiles := OldSetting;
       end if;
       SelectedItems.Clear;
+      CurrentSelected := CurrentDirectory;
       return GoUp;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
