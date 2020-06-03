@@ -722,16 +722,19 @@ package body ShowItems is
         New_String(".mainframe.paned.directoryframe.directorytree");
       SelectedItems.Clear;
       Items := To_Unbounded_String(Selection(DirectoryTree));
-      if Items = Null_Unbounded_String then
-         return TCL_OK;
+      if Items /= Null_Unbounded_String then
+         Create(Tokens, To_String(Items), " ");
+         for I in 1 .. Slice_Count(Tokens) loop
+            SelectedItems.Append
+              (CurrentDirectory & "/" &
+               ItemsList(Positive'Value(Slice(Tokens, I))).Name);
+         end loop;
+      else
+         SelectedItems.Append(CurrentDirectory);
       end if;
-      Create(Tokens, To_String(Items), " ");
-      for I in 1 .. Slice_Count(Tokens) loop
-         SelectedItems.Append
-           (CurrentDirectory & "/" &
-            ItemsList(Positive'Value(Slice(Tokens, I))).Name);
-      end loop;
-      if not Settings.ShowPreview or SelectedItems(1) = CurrentSelected then
+      if not Settings.ShowPreview or
+        (SelectedItems(1) = CurrentSelected and
+         CurrentSelected /= CurrentDirectory) then
          return TCL_OK;
       end if;
       CurrentSelected := SelectedItems(1);
