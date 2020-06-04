@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+--with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 -- ****h* Hunter/CreateItems
 -- FUNCTION
@@ -26,7 +26,7 @@ package CreateItems is
    -- FUNCTION
    -- Destination for new symbolic link
    -- SOURCE
-   LinkTarget: Unbounded_String;
+--   LinkTarget: Unbounded_String;
    -- ****
 
    -- ****f* CreateItems/CreateCreateUI

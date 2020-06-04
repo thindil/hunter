@@ -183,9 +183,9 @@ package body MainWindow.Commands is
       State(Button, "!selected");
       Button.Name :=
         New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
+      ToggleToolButtons(NewAction, True);
       if State(Button) = "selected" then
          State(Button, "!selected");
-         ToggleToolButtons(NewAction, True);
          NewAction := COPY;
       end if;
       TextFrame.Interp := Interp;
@@ -240,9 +240,9 @@ package body MainWindow.Commands is
          State(Button, "!selected");
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
+         ToggleToolButtons(NewAction, True);
          if State(Button) = "selected" then
             State(Button, "!selected");
-            ToggleToolButtons(NewAction, True);
             NewAction := COPY;
          end if;
          Button.Name := New_String(".mainframe.textframe.closebutton");

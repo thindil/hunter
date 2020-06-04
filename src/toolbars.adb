@@ -200,9 +200,15 @@ package body Toolbars is
         (ToolMenuButton, "Show add new item menu \[ALT+N\].", "document-new");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".newmenu", "-tearoff false");
-      Menu.Add(ButtonMenu, "command", "-label ""New directory""");
-      Menu.Add(ButtonMenu, "command", "-label ""New file""");
-      Menu.Add(ButtonMenu, "command", "-label ""New link""");
+      Menu.Add
+        (ButtonMenu, "command",
+         "-label {New directory} -command {ShowCreate directory}");
+      Menu.Add
+        (ButtonMenu, "command",
+         "-label {New file} -command {ShowCreate file}");
+      Menu.Add
+        (ButtonMenu, "command",
+         "-label {New link} -command {ShowCreate link}");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       ToolCheckButton :=
         Create
