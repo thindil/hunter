@@ -92,12 +92,16 @@ package body ActivateItems is
       -- ****
       DirectoryTree: Ttk_Tree_View;
       Tokens: Slice_Set;
-      FileName: Unbounded_String;
+      FileName, Items: Unbounded_String;
    begin
       DirectoryTree.Interp := Interp;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
-      Create(Tokens, Selection(DirectoryTree), " ");
+      Items := To_Unbounded_String(Selection(DirectoryTree));
+      if Items = Null_Unbounded_String then
+         return TCL_OK;
+      end if;
+      Create(Tokens, To_String(Items), " ");
       FileName :=
         CurrentDirectory & '/' &
         ItemsList(Positive'Value(Slice(Tokens, 1))).Name;
