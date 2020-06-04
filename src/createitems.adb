@@ -13,8 +13,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Tk.Ada.Grid;
@@ -24,17 +27,23 @@ with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with Messages; use Messages;
+with Preferences; use Preferences;
 with Utils; use Utils;
 --with ActivateItems; use ActivateItems;
---with LoadData; use LoadData;
---with MainWindow; use MainWindow;
---with Messages; use Messages;
---with Preferences; use Preferences;
 --with ShowItems; use ShowItems;
 --with Toolbars; use Toolbars;
 
 package body CreateItems is
+
+   -- ****ie* CreateItems/Hunter_Create_Exception
+   -- FUNCTION
+   -- Raised when any problems with creating items happen
+   -- SOURCE
+   Hunter_Create_Exception: exception;
+   -- ****
 
    function Show_Create_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -42,7 +51,7 @@ package body CreateItems is
       return Interfaces.C.int with
       Convention => C;
 
-      -- ****if* CreateItems/Toggle_Create_Command
+      -- ****if* CreateItems/Show_Create_Command
       -- FUNCTION
       -- Show text entry to enter a name of the new item
       -- PARAMETERS
@@ -60,7 +69,6 @@ package body CreateItems is
       TextFrame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
-      Hunter_Rename_Exception: exception;
    begin
       TextEntry.Interp := Interp;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
@@ -84,7 +92,7 @@ package body CreateItems is
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
          if CArgv.Arg(Argv, 1) = "file" then
             NewAction := CREATEFILE;
-         elsif Cargv.Arg(Argv, 1) = "directory" then
+         elsif CArgv.Arg(Argv, 1) = "directory" then
             NewAction := CREATEDIRECTORY;
          else
             NewAction := CREATELINK;
@@ -92,15 +100,90 @@ package body CreateItems is
          ToggleToolButtons(NewAction);
       else
          if Invoke(Button) /= "" then
-            raise Hunter_Rename_Exception with "Can't hide create item bar";
+            raise Hunter_Create_Exception with "Can't hide create item bar";
          end if;
       end if;
       return TCL_OK;
    end Show_Create_Command;
 
+   function Create_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* CreateItems/Create_Command
+      -- FUNCTION
+      -- Show text entry to enter a name of the new item
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Create_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc);
+      TextEntry: Ttk_Entry;
+      NewItemName, ActionString, ActionBlocker: Unbounded_String;
+      Button: Ttk_Button;
+      File: File_Descriptor;
+   begin
+      TextEntry.Interp := Interp;
+      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      NewItemName := CurrentDirectory & "/" & Get(TextEntry);
+      Button.Interp := Interp;
+      Button.Name := New_String(".mainframe.textframe.closebutton");
+      if Exists(To_String(NewItemName)) or
+        Is_Symbolic_Link(To_String(NewItemName)) then
+         ActionString :=
+           To_Unbounded_String("create " & CArgv.Arg(Argv, 1) & " with");
+         if Is_Directory(To_String(NewItemName)) then
+            ActionBlocker := To_Unbounded_String("directory");
+         else
+            ActionBlocker := To_Unbounded_String("file");
+         end if;
+         ShowMessage
+           ("You can't " & To_String(ActionString) & " name '" &
+            To_String(NewItemName) & "' because there exists " &
+            To_String(ActionBlocker) & " with that name.");
+         goto End_Of_Create;
+      end if;
+      if not Is_Write_Accessible_File
+          (Containing_Directory(To_String(NewItemName))) then
+         ShowMessage
+           ("You don't have permissions to write to " &
+            Containing_Directory(To_String(NewItemName)));
+         goto End_Of_Create;
+      end if;
+      case NewAction is
+         when CREATEFILE =>
+            Create_Path(Containing_Directory(To_String(NewItemName)));
+            File := Create_File(To_String(NewItemName), Binary);
+            Close(File);
+         when others =>
+            null;
+      end case;
+      if not Settings.StayInOld then
+         CurrentDirectory :=
+           To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
+      end if;
+      LoadDirectory(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
+      <<End_Of_Create>>
+      if Invoke(Button) /= "" then
+         raise Hunter_Create_Exception with "Can't hide create item bar";
+      end if;
+      ToggleToolButtons(NewAction, True);
+      return TCL_OK;
+   end Create_Command;
+
    procedure CreateCreateUI is
    begin
       AddCommand("ShowCreate", Show_Create_Command'Access);
+      AddCommand("Create", Create_Command'Access);
    end CreateCreateUI;
 
 --   -- ****iv* CreateItems/SourceDirectory
