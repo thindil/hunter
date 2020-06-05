@@ -31,6 +31,7 @@ with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with RefreshData; use RefreshData;
 with Utils; use Utils;
 --with ActivateItems; use ActivateItems;
 --with ShowItems; use ShowItems;
@@ -159,6 +160,8 @@ package body CreateItems is
          goto End_Of_Create;
       end if;
       case NewAction is
+         when CREATEDIRECTORY =>
+            Create_Path(To_String(NewItemName));
          when CREATEFILE =>
             Create_Path(Containing_Directory(To_String(NewItemName)));
             File := Create_File(To_String(NewItemName), Binary);
@@ -171,6 +174,7 @@ package body CreateItems is
            To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
       end if;
       LoadDirectory(To_String(CurrentDirectory));
+      UpdateWatch(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
       <<End_Of_Create>>
       if Invoke(Button) /= "" then
