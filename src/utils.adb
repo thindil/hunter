@@ -285,11 +285,8 @@ package body Utils is
                configure(HeaderLabel, "-text {Creating empty file}");
             when CREATEDIRECTORY =>
                configure(HeaderLabel, "-text {Creating new directory}");
---            when CREATELINK =>
---               Set_Title
---                 (Gtk_Header_Bar
---                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---                  Gettext("Creating new link"));
+            when CREATELINK =>
+               configure(HeaderLabel, "-text {Creating new link}");
             when RENAME =>
                configure(HeaderLabel, "-text {Renaming file or directory}");
 --            when COPY =>
