@@ -21,10 +21,12 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
@@ -67,9 +69,10 @@ package body CreateItems is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       -- ****
-      TextFrame: Ttk_Frame;
+      Frame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
+      Paned: Ttk_PanedWindow;
    begin
       TextEntry.Interp := Interp;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
@@ -88,15 +91,41 @@ package body CreateItems is
          Tcl.Tk.Ada.Grid.Grid(Button);
          Unbind(TextEntry, "<KeyRelease>");
          Focus(TextEntry);
-         TextFrame.Interp := Interp;
-         TextFrame.Name := New_String(".mainframe.textframe");
-         Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
+         Frame.Interp := Interp;
+         Frame.Name := New_String(".mainframe.textframe");
+         Tcl.Tk.Ada.Grid.Grid(Frame, "-row 1 -columnspan 2 -sticky we");
          if CArgv.Arg(Argv, 1) = "file" then
             NewAction := CREATEFILE;
          elsif CArgv.Arg(Argv, 1) = "directory" then
             NewAction := CREATEDIRECTORY;
          else
             NewAction := CREATELINK;
+            Frame.Name := New_String(".mainframe.paned.previewframe");
+            if not Settings.ShowPreview then
+               Add(Paned, Frame, "-weight 20");
+            end if;
+            Frame.Name := New_String(".mainframe.paned.previewframe.scrollx");
+            configure
+              (Frame,
+               "-command [list .mainframe.paned.previewframe.directorytree yview]");
+            Tcl.Tk.Ada.Pack.Pack(Frame, "-side bottom -fill x");
+            Frame.Name := New_String(".mainframe.paned.previewframe.scrolly");
+            configure
+              (Frame,
+               "-command [list .mainframe.paned.previewframe.directorytree xview]");
+            Tcl.Tk.Ada.Pack.Pack(Frame, "-side right -fill y");
+            Frame.Name :=
+              New_String(".mainframe.paned.previewframe.directorytree");
+            configure(Frame, "-selectmode browse");
+            Tcl.Tk.Ada.Pack.Pack(Frame, "-side top -fill both -expand true");
+            Frame.Name :=
+              New_String(".mainframe.paned.previewframe.previewcanvas");
+            Tcl.Tk.Ada.Pack.Pack_Forget(Frame);
+            Frame.Name :=
+              New_String(".mainframe.paned.previewframe.previewtext");
+            Tcl.Tk.Ada.Pack.Pack_Forget(Frame);
+            LoadDirectory(To_String(CurrentDirectory), True);
+            UpdateDirectoryList(True, "preview");
          end if;
          ToggleToolButtons(NewAction);
       else
