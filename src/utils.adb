@@ -281,16 +281,10 @@ package body Utils is
             Grid_Remove(Toolbar);
          end if;
          case Action is
---            when CREATEFILE =>
---               Set_Title
---                 (Gtk_Header_Bar
---                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---                  Gettext("Creating empty file"));
---            when CREATEDIRECTORY =>
---               Set_Title
---                 (Gtk_Header_Bar
---                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---                  Gettext("Creating new directory"));
+            when CREATEFILE =>
+               configure(HeaderLabel, "-text {Creating empty file}");
+            when CREATEDIRECTORY =>
+               configure(HeaderLabel, "-text {Creating new directory}");
 --            when CREATELINK =>
 --               Set_Title
 --                 (Gtk_Header_Bar
