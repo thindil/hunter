@@ -191,7 +191,7 @@ package body MainWindow is
       Button :=
         Create
           (".mainframe.textframe.closebutton",
-           "-image dialog-cancelicon -style Toolbutton -command HideEntry");
+           "-image dialog-cancelicon -style Toolbutton -command HideWidget");
       Add(Button, "Hide entry without entering any changes");
       Tcl.Tk.Ada.Grid.Grid(Button);
       Tcl.Tk.Ada.Grid.Grid(TextEntry, "-column 1 -row 0 -sticky we");
