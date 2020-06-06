@@ -175,7 +175,11 @@ package body ShowItems is
 
    procedure ShowPreview is
       Button: Ttk_Button;
+      Label: Ttk_Label;
    begin
+      Label.Interp := Get_Context;
+      Label.Name := New_String(Widget_Image(PreviewFrame) & ".title");
+      configure(Label, "-text {Preview}");
       Button.Interp := Get_Context;
       Button.Name :=
         New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
@@ -489,6 +493,8 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
       Label.Interp := Get_Context;
+      Label.Name := New_String(Widget_Image(PreviewFrame) & ".title");
+      configure(Label, "-text {Information}");
       Button.Interp := Label.Interp;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".fullpathtext");
       if not Is_Symbolic_Link(SelectedItem) then
@@ -840,6 +846,8 @@ package body ShowItems is
       end CreatePermissionsFrame;
    begin
       PreviewFrame := Create(".mainframe.paned.previewframe");
+      Label := Create(Widget_Image(PreviewFrame) & ".title");
+      Tcl.Tk.Ada.Pack.Pack(Label);
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
       PreviewXScroll :=
