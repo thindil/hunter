@@ -149,51 +149,6 @@ package body MainWindow.Commands is
       MagicClose;
    end Quit_Command;
 
-   function Hide_Entry_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-
-      -- ****if* MainWindow-Commands/Hide_Entry_Command
-      -- FUNCTION
-      -- Hide text entry and clear its content
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
-   function Hide_Entry_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
-      TextFrame: Ttk_Frame;
-      TextEntry: Ttk_Entry;
-      Button: Ttk_Button;
-   begin
-      TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
-      Delete(TextEntry, "0", "end");
-      Button.Interp := Interp;
-      Button.Name :=
-        New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
-      State(Button, "!selected");
-      Button.Name :=
-        New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
-      ToggleToolButtons(NewAction, True);
-      if State(Button) = "selected" then
-         State(Button, "!selected");
-         NewAction := COPY;
-      end if;
-      TextFrame.Interp := Interp;
-      TextFrame.Name := New_String(".mainframe.textframe");
-      Tcl.Tk.Ada.Grid.Grid_Remove(TextFrame);
-      return TCL_OK;
-   end Hide_Entry_Command;
-
    function Hide_Widget_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
@@ -213,14 +168,15 @@ package body MainWindow.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
       Frame: Ttk_Frame;
       Button: Ttk_Button;
+      TextEntry: Ttk_Entry;
       Hunter_Hide_Widget_Exception: exception;
    begin
-      Frame.Interp := Get_Context;
-      Button.Interp := Get_Context;
+      Frame.Interp := Interp;
+      Button.Interp := Interp;
       Frame.Name := New_String(".mainframe.message");
       if Winfo_Get(Frame, "ismapped") = "1" then
          Button.Name :=
@@ -245,10 +201,10 @@ package body MainWindow.Commands is
             State(Button, "!selected");
             NewAction := COPY;
          end if;
-         Button.Name := New_String(".mainframe.textframe.closebutton");
-         if Invoke(Button) /= "" then
-            raise Hunter_Hide_Widget_Exception with "Can't hide text entry";
-         end if;
+         TextEntry.Interp := Interp;
+         TextEntry.Name := New_String(".mainframe.textframe.textentry");
+         Delete(TextEntry, "0", "end");
+         Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
          return TCL_OK;
       end if;
       Frame.Name :=
@@ -364,7 +320,6 @@ package body MainWindow.Commands is
    procedure AddCommands is
    begin
       AddCommand("Sort", Sort_Command'Access);
-      AddCommand("HideEntry", Hide_Entry_Command'Access);
       AddCommand("HideWidget", Hide_Widget_Command'Access);
       AddCommand("ToggleSelection", Toggle_Selection_Command'Access);
       AddCommand("ArrangePath", Arrange_Path_Command'Access);
