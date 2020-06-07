@@ -206,6 +206,7 @@ package body ShowItems is
            (PreviewXScroll,
             "-command [list " & Widget_Image(PreviewFrame) &
             ".directorytree xview]");
+         configure(PreviewTree, "-selectmode none");
          Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
          Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
