@@ -48,6 +48,7 @@ with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
+with Ada.Text_IO;
 
 package body Preferences.Commands is
 
@@ -559,6 +560,7 @@ package body Preferences.Commands is
       Scale: Ttk_Scale;
       ColorsEnabled: constant Boolean :=
         (if FindExecutable("highlight")'Length > 0 then True else False);
+      Width, Height: Positive := 1;
       procedure AddButton
         (Name, Text: String; Value: Boolean; TooltipText, Command: String) is
          CheckButton: constant Ttk_CheckButton :=
@@ -573,6 +575,9 @@ package body Preferences.Commands is
          end if;
          Add(CheckButton, TooltipText);
          Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
+         if Positive'Value(Winfo_Get(CheckButton, "reqwidth")) > Width then
+            Width := Positive'Value(Winfo_Get(CheckButton, "reqwidth"));
+         end if;
       end AddButton;
    begin
       if Tcl.Tk.Ada.Busy.Status(MainWindow) = "0" then
@@ -743,10 +748,12 @@ package body Preferences.Commands is
          "SetOverwrite");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
+      Height := Positive'Value(Winfo_Get(CloseButton, "reqheight")) * 18;
       Bind
         (PreferencesDialog, "<Alt-c>",
          "{CloseDialog " & Widget_Image(PreferencesDialog) & "}");
-      SetDialog(PreferencesDialog, "Hunter - Preferences", 350, 600);
+      Ada.Text_IO.Put_Line(Height'img);
+      SetDialog(PreferencesDialog, "Hunter - Preferences", Width + 10, Height);
       return TCL_OK;
    end Show_Preferences_Command;
 
