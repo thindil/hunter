@@ -197,6 +197,7 @@ package body MainWindow.Commands is
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
          if NewAction = CREATELINK then
+            NewAction := COPY;
             ShowPreview;
          end if;
          ToggleToolButtons(NewAction, True);

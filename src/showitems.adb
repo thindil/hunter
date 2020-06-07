@@ -745,6 +745,9 @@ package body ShowItems is
          return TCL_OK;
       end if;
       CurrentSelected := SelectedItems(1);
+      if NewAction = CREATELINK then
+         return TCL_OK;
+      end if;
       ActionButton.Interp := Get_Context;
       if Is_Directory(To_String(CurrentSelected)) or
         Is_Regular_File(To_String(CurrentSelected)) then
