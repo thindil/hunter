@@ -216,7 +216,8 @@ package body MainWindow is
 
    procedure UpdateDirectoryList
      (Clear: Boolean := False; FrameName: String := "directory") is
-      SizeString, ItemIndex, SelectedIndex, Path, TimeString: Unbounded_String;
+      SizeString, ItemIndex, SelectedIndex, Path, TimeString, PathCommand,
+      PathShortcut: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
       PathButtonsFrame: Ttk_Frame;
       Tokens: Slice_Set;
@@ -230,11 +231,14 @@ package body MainWindow is
         New_String(".mainframe.paned." & FrameName & "frame.directorytree");
       PathButtonsFrame.Interp := Get_Context;
       PathButtonsFrame.Name :=
-        New_String(".mainframe.paned.directoryframe.pathframe");
+        New_String(".mainframe.paned." & FrameName & "frame.pathframe");
       if FrameName = "directory" then
          List := ItemsList;
+         PathCommand := To_Unbounded_String("GoToBookmark");
+         PathShortcut := To_Unbounded_String("Alt");
       else
          List := SecondItemsList;
+         PathShortcut := To_Unbounded_String("Ctrl");
       end if;
       if Clear then
          for I in List.First_Index .. List.Last_Index loop
@@ -286,7 +290,7 @@ package body MainWindow is
                SelectedIndex := To_Unbounded_String(Positive'Image(I));
             end if;
          end loop;
-         if FrameName = "directory" then
+         if Winfo_Get(PathButtonsFrame, "ismapped") = "1" then
             -- Remove old path buttons
             Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
             if Slice(Tokens, 1) /= "" then
@@ -294,13 +298,12 @@ package body MainWindow is
                   PathButton.Interp := PathButtonsFrame.Interp;
                   PathButton.Name := New_String(Slice(Tokens, I));
                   if I = 1 then
-                     Shortcut := To_Unbounded_String("Alt-r");
+                     Shortcut := PathShortcut & "-r";
                   elsif I = 2 then
-                     Shortcut := To_Unbounded_String("Alt-u");
+                     Shortcut := PathShortcut & "-u";
                   elsif I < 11 then
                      Shortcut :=
-                       To_Unbounded_String
-                         ("Alt-KP_" & Slice_Number'Image(I - 2)(2));
+                       PathShortcut & "-KP_" & Slice_Number'Image(I - 2)(2);
                   end if;
                   Unbind_From_Main_Window
                     (PathButton.Interp, "<" & To_String(Shortcut) & ">");
@@ -315,7 +318,8 @@ package body MainWindow is
                   PathButton :=
                     Create
                       (Widget_Image(PathButtonsFrame) & ".button1",
-                       "-text {/} -command {GoToBookmark {/}}");
+                       "-text {/} -command {" & To_String(PathCommand) &
+                       " {/}}");
                   Path := To_Unbounded_String("/");
                elsif Slice(Tokens, I) /= "" then
                   Append(Path, Slice(Tokens, I) & "/");
@@ -323,8 +327,8 @@ package body MainWindow is
                     Create
                       (Widget_Image(PathButtonsFrame) & ".button" &
                        Trim(Slice_Number'Image(I), Both),
-                       "-text {" & Slice(Tokens, I) &
-                       "} -command {GoToBookmark {" & To_String(Path) & "}}");
+                       "-text {" & Slice(Tokens, I) & "} -command {" &
+                       To_String(PathCommand) & " {" & To_String(Path) & "}}");
                end if;
                Width :=
                  Width + Positive'Value(Winfo_Get(PathButton, "reqwidth"));
@@ -345,22 +349,16 @@ package body MainWindow is
                PathButton.Interp := PathButtonsFrame.Interp;
                PathButton.Name := New_String(Slice(Tokens, I));
                if I = 1 then
-                  Shortcut := To_Unbounded_String("Alt-r");
+                  Shortcut := PathShortcut & "-r";
                   Tooltip :=
-                    To_Unbounded_String
-                      ("Reload the current directory \[Alt-r\]");
+                    "Reload the current directory \[" & Shortcut & "\]";
                elsif I = 2 then
-                  Shortcut := To_Unbounded_String("Alt-u");
-                  Tooltip :=
-                    To_Unbounded_String("Go to upper directory \[Alt-u\]");
+                  Shortcut := PathShortcut & "-u";
+                  Tooltip := "Go to upper directory \[" & Shortcut & "\]";
                elsif I < 11 then
                   Shortcut :=
-                    To_Unbounded_String
-                      ("Alt-KP_" & Slice_Number'Image(I - 2)(2));
-                  Tooltip :=
-                    To_Unbounded_String
-                      ("Go to this directory \[Alt-KP" &
-                       Slice_Number'Image(I - 2)(2) & "\]");
+                    PathShortcut & "-KP_" & Slice_Number'Image(I - 2)(2);
+                  Tooltip := "Go to this directory \[" & Shortcut & "\]";
                end if;
                Bind_To_Main_Window
                  (PathButton.Interp, "<" & To_String(Shortcut) & ">",
