@@ -196,11 +196,11 @@ package body MainWindow.Commands is
          State(Button, "!selected");
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
+         ToggleToolButtons(NewAction, True);
          if NewAction = CREATELINK then
             NewAction := COPY;
             ShowPreview;
          end if;
-         ToggleToolButtons(NewAction, True);
          if State(Button) = "selected" then
             State(Button, "!selected");
             NewAction := COPY;
