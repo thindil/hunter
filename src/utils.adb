@@ -195,14 +195,12 @@ package body Utils is
       HeaderLabel.Interp := Get_Context;
       HeaderLabel.Name := New_String(".mainframe.headerlabel");
       case Action is
-         when CREATEFILE | CREATEDIRECTORY | RENAME | DELETE | DELETETRASH =>
+         when CREATEFILE | CREATEDIRECTORY | CREATELINK | RENAME | DELETE | DELETETRASH =>
             if not Finished then
                Grid_Remove(Toolbar);
             else
                Tcl.Tk.Ada.Grid.Grid(Toolbar);
             end if;
-         when CREATELINK =>
-            null;
 --         when COPY =>
 --            CurrentButtonIndex := 6;
 --            Set_Tooltip_Text
