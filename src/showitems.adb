@@ -825,6 +825,8 @@ package body ShowItems is
       ButtonTexts: constant array(1 .. 3) of Unbounded_String :=
         (To_Unbounded_String("Can execute"), To_Unbounded_String("Can read"),
          To_Unbounded_String("Can write"));
+      PathButtonsFrame: Ttk_Frame;
+      pragma Unreferenced(PathButtonsFrame);
       procedure CreatePermissionsFrame(Name, Text: String; Row: Positive) is
          Frame: constant Ttk_Frame :=
            Create(".mainframe.paned.previewframe.infoframe." & Name & "frame");
@@ -852,6 +854,7 @@ package body ShowItems is
       PreviewFrame := Create(".mainframe.paned.previewframe");
       Label := Create(Widget_Image(PreviewFrame) & ".title");
       Tcl.Tk.Ada.Pack.Pack(Label);
+      PathButtonsFrame := Create(Widget_Image(PreviewFrame) & ".pathframe");
       Paned.Interp := PreviewFrame.Interp;
       Paned.Name := New_String(".mainframe.paned");
       PreviewXScroll :=
