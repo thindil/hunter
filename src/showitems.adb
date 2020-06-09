@@ -757,7 +757,7 @@ package body ShowItems is
          ActionButton.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.infobutton");
       end if;
-      if Invoke(ActionButton) /= "" then
+      if Invoke(ActionButton) /= "" and Invoke(ActionButton) /= "0" then
          raise Hunter_Show_Items_Exception
            with "Can't show file or directory preview/info";
       end if;
