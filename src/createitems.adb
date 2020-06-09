@@ -20,6 +20,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -27,6 +28,7 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
+with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -151,15 +153,19 @@ package body CreateItems is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       TextEntry: Ttk_Entry;
-      NewItemName, ActionString, ActionBlocker: Unbounded_String;
+      NewItemName, ActionString, ActionBlocker, Destination: Unbounded_String;
       Button: Ttk_Button;
       File: File_Descriptor;
+      DirectoryView: Ttk_Tree_View;
    begin
       TextEntry.Interp := Interp;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       NewItemName := CurrentDirectory & "/" & Get(TextEntry);
       Button.Interp := Interp;
       Button.Name := New_String(".mainframe.textframe.closebutton");
+      DirectoryView.Interp := Interp;
+      DirectoryView.Name :=
+        New_String(".mainframe.paned.previewframe.directorytree");
       if Exists(To_String(NewItemName)) or
         Is_Symbolic_Link(To_String(NewItemName)) then
          ActionString :=
@@ -189,8 +195,16 @@ package body CreateItems is
             Create_Path(Containing_Directory(To_String(NewItemName)));
             File := Create_File(To_String(NewItemName), Binary);
             Close(File);
+         when CREATELINK =>
+            Destination :=
+              SecondItemsList(Positive'Value(Selection(DirectoryView))).Name;
+            Tcl_Eval
+              (Interp,
+               "file link -symbolic {" &
+               To_String(CurrentDirectory & "/" & NewItemName) & "} {" &
+               To_String(Destination) & "}");
          when others =>
-            null;
+            raise Hunter_Create_Exception with "Invalid action type";
       end case;
       if not Settings.StayInOld then
          CurrentDirectory :=
