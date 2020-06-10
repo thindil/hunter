@@ -32,6 +32,7 @@ with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
+with RefreshData; use RefreshData;
 with Utils; use Utils;
 
 package body Messages is
@@ -143,6 +144,7 @@ package body Messages is
                else
                   LoadDirectory(To_String(CurrentDirectory));
                   UpdateDirectoryList(True);
+                  UpdateWatch(To_String(CurrentDirectory));
                   Tcl.Ada.Tcl_Eval(Get_Context, "ShowSelected");
                   Tcl.Ada.Tcl_Eval(Get_Context, "update");
                end if;
