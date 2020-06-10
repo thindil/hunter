@@ -31,6 +31,7 @@ package LoadData is
       IsHidden: Boolean;
       Modified: Time;
       Image: Unbounded_String;
+      HiddenItems: Natural;
    end record;
 
    type SortingOrder is

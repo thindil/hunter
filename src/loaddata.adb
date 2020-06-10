@@ -82,7 +82,7 @@ package body LoadData is
       FileName: constant String := Simple_Name(Path);
       Size: File_Size;
       SubDirectory: Dir_Type;
-      SubLast: Natural;
+      SubLast, HiddenAmount: Natural;
       SubFileName: String(1 .. 1_024);
       MimeType: Unbounded_String;
       Item: Item_Record;
@@ -109,16 +109,22 @@ package body LoadData is
          if Is_Read_Accessible_File(Path) then
             Open(SubDirectory, Path);
             Size := 0;
+            HiddenAmount := 0;
             loop
                Read(SubDirectory, SubFileName, SubLast);
                exit when SubLast = 0;
                if SubFileName(1 .. SubLast) /= "." and
                  SubFileName(1 .. SubLast) /= ".." then
-                  Size := Size + 1;
+                 if SubFileName(1) = '.' then
+                    HiddenAmount := HiddenAmount + 1;
+                 else
+                    Size := Size + 1;
+                 end if;
                end if;
             end loop;
             Close(SubDirectory);
             Item.Size := Integer(Size);
+            Item.HiddenItems := HiddenAmount;
          else
             Item.Size := -1;
          end if;
