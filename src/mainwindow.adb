@@ -263,8 +263,15 @@ package body MainWindow is
                        To_Unbounded_String
                          (CountFileSize(File_Size(List(I).Size)));
                   else
-                     SizeString :=
-                       To_Unbounded_String(Integer'Image(List(I).Size));
+                     if Settings.ShowHidden then
+                        SizeString :=
+                          To_Unbounded_String
+                            (Integer'Image
+                               (List(I).Size + List(I).HiddenItems));
+                     else
+                        SizeString :=
+                          To_Unbounded_String(Integer'Image(List(I).Size));
+                     end if;
                   end if;
             end case;
             begin
