@@ -48,7 +48,6 @@ with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
-with Ada.Text_IO;
 
 package body Preferences.Commands is
 
@@ -752,7 +751,6 @@ package body Preferences.Commands is
       Bind
         (PreferencesDialog, "<Alt-c>",
          "{CloseDialog " & Widget_Image(PreferencesDialog) & "}");
-      Ada.Text_IO.Put_Line(Height'img);
       SetDialog(PreferencesDialog, "Hunter - Preferences", Width + 10, Height);
       return TCL_OK;
    end Show_Preferences_Command;
