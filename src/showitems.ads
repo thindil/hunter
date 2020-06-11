@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
@@ -24,6 +25,14 @@ with Tcl; use Tcl;
 -- SOURCE
 package ShowItems is
 -- ****
+
+   -- ****f* ShowItems/DestinationDirectory
+   -- FUNCTION
+   -- Current directory previewed. Used during showing destination target for
+   -- various commands
+   -- SOURCE
+   DestinationDirectory: Unbounded_String;
+   -- ****
 
    -- ****f* ShowItems/ScaleImage
    -- FUNCTION
