@@ -20,7 +20,6 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Expect; use GNAT.Expect;
@@ -818,6 +817,44 @@ package body ShowItems is
       return TCL_OK;
    end Set_Permissions_Command;
 
+   function GoToDirectory_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Commands/GoToDirectory_Command
+      -- FUNCTION
+      -- Go to the selected directory in preview
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function GoToDirectory_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
+      SelectedItem: Unbounded_String;
+   begin
+      if Selection(PreviewTree) = "" then
+         return TCL_OK;
+      end if;
+      SelectedItem :=
+        DestinationDirectory & "/" &
+        To_Unbounded_String(Set(PreviewTree, Selection(PreviewTree), "name"));
+      if not Is_Directory(To_String(SelectedItem)) then
+         return TCL_OK;
+      end if;
+      DestinationDirectory := SelectedItem;
+      LoadDirectory(To_String(SelectedItem), True);
+      UpdateDirectoryList(True, "preview");
+      return TCL_OK;
+   end GoToDirectory_Command;
+
    procedure CreateShowItemsUI is
       Paned: Ttk_PanedWindow;
       Label: Ttk_Label;
@@ -877,6 +914,8 @@ package body ShowItems is
         (PreviewTree, "name",
          "-text {Name} -image {arrow-down} -command {Sort previewname}");
       Column(PreviewTree, "#0", "-stretch false -width 50");
+      Bind(PreviewTree, "<Double-1>", "GoToDirectory");
+      Bind(PreviewTree, "<Return>", "GoToDirectory");
       PreviewText :=
         Create
           (Widget_Image(PreviewFrame) & ".previewtext",
@@ -932,6 +971,7 @@ package body ShowItems is
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
+      AddCommand("GoToDirectory", GoToDirectory_Command'Access);
       Add
         (Button,
          "Select new associated program with that type of file or directory.");
