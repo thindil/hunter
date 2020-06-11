@@ -238,7 +238,7 @@ package body MainWindow is
          PathShortcut := To_Unbounded_String("Alt");
       else
          List := SecondItemsList;
-         PathShortcut := To_Unbounded_String("Ctrl");
+         PathShortcut := To_Unbounded_String("Control");
       end if;
       if Clear then
          for I in List.First_Index .. List.Last_Index loop
