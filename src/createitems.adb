@@ -35,9 +35,9 @@ with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 --with ActivateItems; use ActivateItems;
---with ShowItems; use ShowItems;
 --with Toolbars; use Toolbars;
 
 package body CreateItems is
@@ -104,6 +104,8 @@ package body CreateItems is
          if not Settings.ShowPreview then
             Add(Paned, Frame, "-weight 20");
          end if;
+         Frame.Name := New_String(".mainframe.paned.previewframe.pathframe");
+         Tcl.Tk.Ada.Pack.Pack(Frame, "-after .mainframe.paned.previewframe.title -fill x");
          Frame.Name := New_String(".mainframe.paned.previewframe.scrollx");
          configure
            (Frame,
@@ -125,7 +127,8 @@ package body CreateItems is
          Tcl.Tk.Ada.Pack.Pack_Forget(Frame);
          Frame.Name := New_String(".mainframe.paned.previewframe.title");
          configure(Frame, "-text {Destination directory}");
-         LoadDirectory(To_String(CurrentDirectory), True);
+         DestinationDirectory := CurrentDirectory;
+         LoadDirectory(To_String(DestinationDirectory), True);
          UpdateDirectoryList(True, "preview");
       end if;
       ToggleToolButtons(NewAction);

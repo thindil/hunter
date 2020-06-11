@@ -21,6 +21,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with LibMagic; use LibMagic;
 with Tcl; use Tcl;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
@@ -195,11 +196,17 @@ package body Utils is
       HeaderLabel.Interp := Get_Context;
       HeaderLabel.Name := New_String(".mainframe.headerlabel");
       case Action is
-         when CREATEFILE | CREATEDIRECTORY | CREATELINK | RENAME | DELETE | DELETETRASH =>
+         when CREATEFILE | CREATEDIRECTORY | CREATELINK | RENAME | DELETE |
+           DELETETRASH =>
             if not Finished then
                Grid_Remove(Toolbar);
             else
                Tcl.Tk.Ada.Grid.Grid(Toolbar);
+               if Action = CREATELINK then
+                  Toolbar.Name :=
+                    New_String(".mainframe.paned.previewframe.pathframe");
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+               end if;
             end if;
 --         when COPY =>
 --            CurrentButtonIndex := 6;
