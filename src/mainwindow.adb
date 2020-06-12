@@ -238,6 +238,7 @@ package body MainWindow is
          PathShortcut := To_Unbounded_String("Alt");
       else
          List := SecondItemsList;
+         PathCommand := To_Unbounded_String("GoToDirectory");
          PathShortcut := To_Unbounded_String("Control");
       end if;
       if Clear then
