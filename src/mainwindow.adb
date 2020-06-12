@@ -320,7 +320,11 @@ package body MainWindow is
                end loop;
             end if;
             -- Add new path buttons
-            Create(Tokens, To_String(CurrentDirectory), "/");
+            if FrameName = "directory" then
+               Create(Tokens, To_String(CurrentDirectory), "/");
+            else
+               Create(Tokens, To_String(DestinationDirectory), "/");
+            end if;
             for I in 1 .. Slice_Count(Tokens) loop
                if I = 1 then
                   PathButton :=
