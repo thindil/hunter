@@ -830,24 +830,29 @@ package body ShowItems is
       -- ClientData - Custom data send to the command. Unused
       -- Interp     - Tcl interpreter in which command was executed. Unused
       -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
       -- SOURCE
    function GoToDirectory_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Interp);
       -- ****
       SelectedItem: Unbounded_String;
    begin
-      if Selection(PreviewTree) = "" then
-         return TCL_OK;
-      end if;
-      SelectedItem :=
-        DestinationDirectory & "/" &
-        To_Unbounded_String(Set(PreviewTree, Selection(PreviewTree), "name"));
-      if not Is_Directory(To_String(SelectedItem)) then
-         return TCL_OK;
+      if Argc = 2 then
+         SelectedItem := To_Unbounded_String(CArgv.Arg(Argv, 1));
+      else
+         if Selection(PreviewTree) = "" then
+            return TCL_OK;
+         end if;
+         SelectedItem :=
+           DestinationDirectory & "/" &
+           To_Unbounded_String
+             (Set(PreviewTree, Selection(PreviewTree), "name"));
+         if not Is_Directory(To_String(SelectedItem)) then
+            return TCL_OK;
+         end if;
       end if;
       DestinationDirectory := SelectedItem;
       LoadDirectory(To_String(SelectedItem), True);

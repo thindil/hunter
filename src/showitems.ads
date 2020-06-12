@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Interfaces.C;
+with Interfaces.C; use Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 
