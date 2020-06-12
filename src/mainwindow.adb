@@ -391,8 +391,8 @@ package body MainWindow is
          end loop;
       end if;
       if not List.Is_Empty then
-         if FrameName = "directory" and
-           SelectedIndex /= Null_Unbounded_String then
+         if SelectedIndex /= Null_Unbounded_String and
+           cget(DirectoryTree, "-selectmode") /= "none" then
             Selection_Set
               (DirectoryTree, "[list " & To_String(SelectedIndex) & "]");
             Tcl.Tk.Ada.Widgets.Focus(DirectoryTree);
