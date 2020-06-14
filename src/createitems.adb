@@ -209,8 +209,7 @@ package body CreateItems is
             end if;
             Tcl_Eval
               (Interp,
-               "file link -symbolic {" &
-               To_String(CurrentDirectory & "/" & NewItemName) & "} {" &
+               "file link -symbolic {" & To_String(NewItemName) & "} {" &
                To_String(Destination) & "}");
          when others =>
             raise Hunter_Create_Exception with "Invalid action type";
