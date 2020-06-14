@@ -74,4 +74,11 @@ package ShowItems is
    procedure CreateShowItemsUI;
    -- ****
 
+   -- ****f* ShowItems/ShowDestination
+   -- FUNCTION
+   -- Show destination directory for various commands in the preview widget
+   -- SOURCE
+   procedure ShowDestination;
+   -- ****
+
 end ShowItems;

@@ -986,4 +986,42 @@ package body ShowItems is
       CreateProgramsMenu;
    end CreateShowItemsUI;
 
+   procedure ShowDestination is
+      Frame: Ttk_Frame;
+      Paned: Ttk_PanedWindow;
+   begin
+      Frame.Interp := Get_Context;
+      Frame.Name := New_String(".mainframe.paned.previewframe");
+      if not Settings.ShowPreview then
+         Paned.Interp := Get_Context;
+         Paned.Name := New_String(".mainframe.paned");
+         Add(Paned, Frame, "-weight 20");
+      end if;
+      Frame.Name := New_String(".mainframe.paned.previewframe.pathframe");
+      Tcl.Tk.Ada.Pack.Pack
+        (Frame, "-after .mainframe.paned.previewframe.title -fill x");
+      Frame.Name := New_String(".mainframe.paned.previewframe.scrollx");
+      configure
+        (Frame,
+         "-command [list .mainframe.paned.previewframe.directorytree yview]");
+      Tcl.Tk.Ada.Pack.Pack(Frame, "-side bottom -fill x");
+      Frame.Name := New_String(".mainframe.paned.previewframe.scrolly");
+      configure
+        (Frame,
+         "-command [list .mainframe.paned.previewframe.directorytree xview]");
+      Tcl.Tk.Ada.Pack.Pack(Frame, "-side right -fill y");
+      Frame.Name := New_String(".mainframe.paned.previewframe.directorytree");
+      configure(Frame, "-selectmode browse");
+      Tcl.Tk.Ada.Pack.Pack(Frame, "-side top -fill both -expand true");
+      Frame.Name := New_String(".mainframe.paned.previewframe.previewcanvas");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Frame);
+      Frame.Name := New_String(".mainframe.paned.previewframe.previewtext");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Frame);
+      Frame.Name := New_String(".mainframe.paned.previewframe.title");
+      configure(Frame, "-text {Destination directory}");
+      DestinationDirectory := CurrentDirectory;
+      LoadDirectory(To_String(DestinationDirectory), True);
+      UpdateDirectoryList(True, "preview");
+   end ShowDestination;
+
 end ShowItems;
