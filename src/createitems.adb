@@ -105,7 +105,8 @@ package body CreateItems is
             Add(Paned, Frame, "-weight 20");
          end if;
          Frame.Name := New_String(".mainframe.paned.previewframe.pathframe");
-         Tcl.Tk.Ada.Pack.Pack(Frame, "-after .mainframe.paned.previewframe.title -fill x");
+         Tcl.Tk.Ada.Pack.Pack
+           (Frame, "-after .mainframe.paned.previewframe.title -fill x");
          Frame.Name := New_String(".mainframe.paned.previewframe.scrollx");
          configure
            (Frame,
@@ -199,8 +200,13 @@ package body CreateItems is
             File := Create_File(To_String(NewItemName), Binary);
             Close(File);
          when CREATELINK =>
-            Destination :=
-              SecondItemsList(Positive'Value(Selection(DirectoryView))).Name;
+            if Selection(DirectoryView)'Length > 0 then
+               Destination :=
+                 SecondItemsList(Positive'Value(Selection(DirectoryView)))
+                   .Name;
+            else
+               Destination := DestinationDirectory;
+            end if;
             Tcl_Eval
               (Interp,
                "file link -symbolic {" &
