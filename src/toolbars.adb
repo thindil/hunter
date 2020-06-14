@@ -222,14 +222,14 @@ package body Toolbars is
         Create(".mainframe.toolbars.actiontoolbar.copybutton");
       SetButton
         (ToolCheckButton,
-         "Copy selected files \[ALT+C\]. Pressed button means start copying currently selected files or directories. Press again to copy them.",
+         "Copy selected files \[ALT+C\]. Pressed button means start copying\ncurrently selected files or directories.\nPress again to copy them.",
          "edit-copy");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton :=
         Create(".mainframe.toolbars.actiontoolbar.movebutton");
       SetButton
         (ToolCheckButton,
-         "Move selected files \[ALT+M\]. Pressed button means start moving currently selected files or directories. Press again to move them.",
+         "Move selected files \[ALT+M\]. Pressed button means start moving\ncurrently selected files or directories.\nPress again to move them.",
          "edit-cut");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolMenuButton :=
