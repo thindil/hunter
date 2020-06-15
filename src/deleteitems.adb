@@ -208,7 +208,8 @@ package body DeleteItems is
             end loop;
             Close(FileInfo);
          end if;
-         if Is_Directory(To_String(SelectedItems(I))) then
+         if not Is_Symbolic_Link(To_String(SelectedItems(I)))
+           and then Is_Directory(To_String(SelectedItems(I))) then
             Append(Message, "(and its content)");
          end if;
          if I /= SelectedItems.Last_Index then
