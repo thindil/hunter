@@ -486,6 +486,7 @@ package body ShowItems is
       Label: Ttk_Label;
       SelectedItem: constant String := To_String(CurrentSelected);
       Button: Ttk_Button;
+      MimeType: constant String := GetMimeType(SelectedItem);
    begin
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
@@ -496,6 +497,11 @@ package body ShowItems is
       Label.Name := New_String(Widget_Image(PreviewFrame) & ".title");
       configure(Label, "-text {Information}");
       Button.Interp := Label.Interp;
+      if MimeType not in "text" | "image" then
+         Button.Name :=
+           New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
+         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+      end if;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".fullpathtext");
       if not Is_Symbolic_Link(SelectedItem) then
          configure(Label, "-text {Full path:}");
@@ -567,9 +573,7 @@ package body ShowItems is
             end if;
             Non_Blocking_Spawn
               (ProcessDesc, ExecutableName,
-               Argument_String_To_List
-                 ("query default " &
-                  GetMimeType(Full_Name(SelectedItem))).all);
+               Argument_String_To_List("query default " & MimeType).all);
             Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
             if Result = 1 then
                DesktopFile :=
