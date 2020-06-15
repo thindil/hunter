@@ -160,7 +160,8 @@ package body Bookmarks is
       Button.Name :=
         New_String(".mainframe.toolbars.itemtoolbar.deletebutton");
       Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-      if Kind(To_String(CurrentSelected)) /= Directory then
+      if not Ada.Directories.Exists(To_String(CurrentSelected))
+        or else Kind(To_String(CurrentSelected)) /= Directory then
          return;
       end if;
       for Bookmark of BookmarksList loop

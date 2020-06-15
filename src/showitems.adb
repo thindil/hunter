@@ -594,6 +594,8 @@ package body ShowItems is
       declare
          Attributes: Unbounded_String;
          Tokens: Slice_Set;
+         type Integer_Access is access Integer;
+         Status: constant Integer_Access := new Integer;
          procedure SetPermissionsButtons
            (Name, ButtonState: String; Permission: Character) is
             CheckButton: Ttk_CheckButton;
@@ -648,10 +650,14 @@ package body ShowItems is
             end case;
          end SetPermissionsButtons;
       begin
-         Tcl.Ada.Tcl_Eval
-           (Label.Interp, "file attributes {" & SelectedItem & "}");
          Attributes :=
-           To_Unbounded_String(Tcl.Ada.Tcl_GetResult(Label.Interp));
+           To_Unbounded_String
+             (Get_Command_Output
+                ("stat",
+                 Argument_String_To_List
+                   ("-c ""-group %G -owner %U -permissions 000%a"" " &
+                    SelectedItem).all,
+                 "", Status));
          Create(Tokens, To_String(Attributes), " ");
          Label.Name :=
            New_String(Widget_Image(InfoFrame) & ".groupframe.group");
