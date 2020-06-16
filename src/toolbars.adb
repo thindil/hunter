@@ -219,7 +219,9 @@ package body Toolbars is
          "document-save-as");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton :=
-        Create(".mainframe.toolbars.actiontoolbar.copybutton");
+        Create
+          (".mainframe.toolbars.actiontoolbar.copybutton",
+           "-command CopyData");
       SetButton
         (ToolCheckButton,
          "Copy selected files \[ALT+C\]. Pressed button means start copying\ncurrently selected files or directories.\nPress again to copy them.",

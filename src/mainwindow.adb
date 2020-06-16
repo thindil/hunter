@@ -43,6 +43,7 @@ with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with ActivateItems; use ActivateItems;
 with Bookmarks; use Bookmarks;
+with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
@@ -158,6 +159,7 @@ package body MainWindow is
       CreateDeleteUI;
       CreateRenameUI;
       CreateCreateUI;
+      CreateCopyUI;
       Add(Paned, DirectoryFrame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");

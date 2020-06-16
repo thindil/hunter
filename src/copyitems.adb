@@ -15,13 +15,11 @@
 
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
+with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Box; use Gtk.Box;
-with Gtk.Message_Dialog; use Gtk.Message_Dialog;
-with Gtk.Stack; use Gtk.Stack;
-with Gtk.Tree_View; use Gtk.Tree_View;
-with Gtk.Widget; use Gtk.Widget;
-with Gtkada.Intl; use Gtkada.Intl;
+with CArgv;
+with Tcl; use Tcl;
+with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
@@ -36,38 +34,55 @@ package body CopyItems is
    SourceDirectory: Unbounded_String;
    -- ****
 
-   procedure CopyData(Self: access Gtk_Tool_Button_Record'Class) is
-      pragma Unreferenced(Self);
+   function Copy_Data_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* Commands/Copy_Data_Command
+      -- FUNCTION
+      -- Show confirmation to delete the selected files and directories
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Copy_Data_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      -- ****
       OverwriteItem: Boolean := False;
    begin
-      if Setting then
-         return;
-      end if;
       if CopyItemsList.Length > 0
         and then Containing_Directory(To_String(CopyItemsList(1))) =
           To_String(CurrentDirectory) then
          CopyItemsList.Clear;
          ToggleToolButtons(NewAction, True);
          CurrentSelected := Null_Unbounded_String;
-         ShowItem(Get_Selection(DirectoryView));
-         return;
+         ShowPreview;
+         return TCL_OK;
       end if;
       if CopyItemsList.Length = 0 then
          CopyItemsList := SelectedItems;
          SourceDirectory := CurrentDirectory;
          ToggleToolButtons(COPY);
-         return;
+         ShowDestination;
+         return TCL_OK;
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
          ShowMessage
-           (Gettext
-              ("You don't have permissions to copy selected items here."));
-         return;
+           ("You don't have permissions to copy selected items here.");
+         return TCL_OK;
       end if;
       NewAction := COPY;
       SetProgressBar(Positive(CopyItemsList.Length));
       CopySelected(OverwriteItem);
-   end CopyData;
+      return TCL_OK;
+   end Copy_Data_Command;
 
    procedure CopyItem
      (Name: String; Path: Unbounded_String; Success: in out Boolean) is
@@ -133,7 +148,7 @@ package body CopyItems is
       Success: Boolean := True;
    begin
       while CopyItemsList.Length > 0 loop
-         Path := DestinationPath;
+         Path := DestinationDirectory;
          if Exists
              (To_String(Path) & "/" &
               Simple_Name(To_String(CopyItemsList(1)))) and
@@ -141,15 +156,15 @@ package body CopyItems is
             if Is_Directory
                 (To_String(Path) & "/" &
                  Simple_Name(To_String(CopyItemsList(1)))) then
-               ItemType := To_Unbounded_String(Gettext("Directory"));
+               ItemType := To_Unbounded_String("Directory");
             else
-               ItemType := To_Unbounded_String(Gettext("File"));
+               ItemType := To_Unbounded_String("File");
             end if;
             ShowMessage
               (To_String(ItemType) & " " &
                Simple_Name(To_String(CopyItemsList(1))) &
-               Gettext(" exists. Do you want to overwrite it?"),
-               Message_Question);
+               " exists. Do you want to overwrite it?",
+               "question");
             return;
          end if;
          CopyItem(To_String(CopyItemsList(1)), Path, Success);
@@ -160,19 +175,16 @@ package body CopyItems is
          end if;
       end loop;
       CopyItemsList.Clear;
-      Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
       ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage
-           (Gettext("All selected files and directories have been copied."),
-            Message_Info);
-      else
-         CloseMessage(null);
+           ("All selected files and directories have been copied.", "message");
       end if;
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;
       end if;
-      Reload;
+      LoadDirectory(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
    end CopySelected;
 
    procedure SkipCopying is
@@ -182,5 +194,10 @@ package body CopyItems is
       UpdateProgressBar;
       CopySelected(OverwriteItem);
    end SkipCopying;
+
+   procedure CreateCopyUI is
+   begin
+      AddCommand("CopyData", Copy_Data_Command'Access);
+   end CreateCopyUI;
 
 end CopyItems;
