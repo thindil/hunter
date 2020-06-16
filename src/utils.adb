@@ -16,6 +16,7 @@
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with LibMagic; use LibMagic;
@@ -170,6 +171,12 @@ package body Utils is
       Toolbar: Ttk_Frame;
       Paned: Ttk_PanedWindow;
       HeaderLabel: Ttk_Label;
+      ButtonsNames: constant array(1 .. 7) of Unbounded_String :=
+        (To_Unbounded_String("new"), To_Unbounded_String("rename"),
+         To_Unbounded_String("copy"), To_Unbounded_String("move"),
+         To_Unbounded_String("delete"), To_Unbounded_String("options"),
+         To_Unbounded_String("about"));
+      CurrentButton: Positive;
    begin
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(".mainframe.toolbars");
@@ -196,7 +203,7 @@ package body Utils is
             if not Finished then
                Add(Toolbar, "Stop copying files and directories \[Escape\]");
             end if;
---            CurrentButtonIndex := 6;
+            CurrentButton := 3;
 --         when MOVE =>
 --            CurrentButtonIndex := 7;
 --            Set_Tooltip_Text
@@ -215,10 +222,36 @@ package body Utils is
             Toolbar.Name :=
               New_String(".mainframe.paned.previewframe.pathframe");
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+            for I in ButtonsNames'Range loop
+               if I < CurrentButton then
+                  Toolbar.Name :=
+                    New_String
+                      (".mainframe.paned.actiontoolbar." &
+                       To_String(ButtonsNames(I)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Toolbar,
+                     "-before .mainframe.toolbars.actiontoolbar." &
+                     To_String(ButtonsNames(CurrentButton)) & "button");
+               elsif I > CurrentButton then
+                  Toolbar.Name :=
+                    New_String
+                      (".mainframe.toolbars.actiontoolbar." &
+                       To_String(ButtonsNames(I)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack(Toolbar);
+               end if;
+            end loop;
          else
             Tcl.Tk.Ada.Pack.Pack
-              (Toolbar,
-               "-after .mainframe.toolbars.actiontoolbar.copybutton");
+              (Toolbar, "-after .mainframe.toolbars.actiontoolbar.copybutton");
+            for I in ButtonsNames'Range loop
+               if I /= CurrentButton then
+                  Toolbar.Name :=
+                    New_String
+                      (".mainframe.toolbars.actiontoolbar." &
+                       To_String(ButtonsNames(I)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+               end if;
+            end loop;
          end if;
       end if;
 --      if Action = DELETETRASH and then Finished then
