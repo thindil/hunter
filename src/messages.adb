@@ -28,6 +28,7 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
+with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -165,19 +166,17 @@ package body Messages is
             else
                return Close_Command(ClientData, Interp, Argc, Argv);
             end if;
---         when COPY =>
---            if Response_Id = Gint(Gtk_Response_Reject) then
---               CloseMessage(null);
---               ToggleToolButtons(NewAction, True);
---               Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
---               Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
---               Reload;
---               return;
---            elsif Response_Id = Gint(Gtk_Response_No) then
---               SkipCopying;
---               return;
---            end if;
---            CopySelected(OverwriteItem);
+         when COPY =>
+            if Response = "noall" then
+               ToggleToolButtons(NewAction, True);
+               LoadDirectory(To_String(CurrentDirectory));
+               UpdateDirectoryList(True);
+               return Close_Command(ClientData, Interp, Argc, Argv);
+            elsif Response = "no" then
+               SkipCopying;
+               return Close_Command(ClientData, Interp, Argc, Argv);
+            end if;
+            CopySelected(OverwriteItem);
 --         when MOVE =>
 --            if Response_Id = Gint(Gtk_Response_Reject) then
 --               CloseMessage(null);

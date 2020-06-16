@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Gtk.Tool_Button; use Gtk.Tool_Button;
 with MainWindow; use MainWindow;
 
 -- ****h* Hunter/CopyItems
@@ -29,15 +28,6 @@ package CopyItems is
    -- Stores names of all selected to copy files and directories
    -- SOURCE
    CopyItemsList: UnboundedString_Container.Vector;
-   -- ****
-
-   -- ****f* CopyItems/CopyData
-   -- FUNCTION
-   -- Copy selected files/directories to new location
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button which was clicked. Unused.
-   -- SOURCE
-   procedure CopyData(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
    -- ****f* CopyItems/CopyItem
@@ -68,6 +58,13 @@ package CopyItems is
    -- Skip copying current file and move to next
    -- SOURCE
    procedure SkipCopying;
+   -- ****
+
+   -- ****f* CopyItems/CreateCopyUI
+   -- FUNCTION
+   -- Create UI for deleting items
+   -- SOURCE
+   procedure CreateCopyUI;
    -- ****
 
 end CopyItems;

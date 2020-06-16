@@ -30,26 +30,11 @@ with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkProgressBar; use Tcl.Tk.Ada.Widgets.TtkProgressBar;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
+with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Bookmarks; use Bookmarks;
 with Messages; use Messages;
 with Preferences; use Preferences;
 --with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
---with Gtk.Bin; use Gtk.Bin;
---with Gtk.Box; use Gtk.Box;
---with Gtk.Frame; use Gtk.Frame;
---with Gtk.Header_Bar; use Gtk.Header_Bar;
---with Gtk.Label; use Gtk.Label;
---with Gtk.List_Store; use Gtk.List_Store;
---with Gtk.Paned; use Gtk.Paned;
---with Gtk.Progress_Bar; use Gtk.Progress_Bar;
---with Gtk.Stack; use Gtk.Stack;
---with Gtk.Toolbar; use Gtk.Toolbar;
---with Gtk.Tree_Model; use Gtk.Tree_Model;
---with Gtk.Tree_Model_Filter; use Gtk.Tree_Model_Filter;
---with Gtk.Tree_Model_Sort; use Gtk.Tree_Model_Sort;
---with Gtk.Tree_View; use Gtk.Tree_View;
---with Gtkada.Intl; use Gtkada.Intl;
---with Glib; use Glib;
 --with Bookmarks; use Bookmarks;
 --with LoadData; use LoadData;
 --with Preferences; use Preferences;
@@ -182,9 +167,6 @@ package body Utils is
 
    procedure ToggleToolButtons
      (Action: ItemActions; Finished: Boolean := False) is
-      ButtonsIndexes: constant array(Positive range <>) of Positive :=
-        (1, 2, 4, 5, 6, 7, 8, 12, 13);
-      CurrentButtonIndex: Natural := 0;
       Toolbar: Ttk_Frame;
       Paned: Ttk_PanedWindow;
       HeaderLabel: Ttk_Label;
@@ -208,11 +190,13 @@ package body Utils is
                   Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
                end if;
             end if;
---         when COPY =>
+         when COPY =>
+            Toolbar.Name :=
+              New_String(".mainframe.toolbars.actiontoolbar.cancelbutton");
+            if not Finished then
+               Add(Toolbar, "Stop copying files and directories \[Escape\]");
+            end if;
 --            CurrentButtonIndex := 6;
---            Set_Tooltip_Text
---              (Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)),
---               Gettext("Stop copying files and directories [Escape]"));
 --         when MOVE =>
 --            CurrentButtonIndex := 7;
 --            Set_Tooltip_Text
@@ -225,28 +209,18 @@ package body Utils is
          when others =>
             return;
       end case;
---      if (Action = CREATELINK or Action = COPY or Action = MOVE)
---        and then (not Settings.ShowPreview) and then (not Finished) then
---         Set_Position
---           (FilesPaned,
---            Gint(Float(Get_Allocated_Width(Gtk_Widget(Window))) * 0.3));
---         Show_All(Get_Child2(FilesPaned));
---      end if;
---      if (Action = COPY or Action = MOVE) then
---         if not Finished then
---            LoadDirectory(To_String(CurrentDirectory), "fileslist2");
---            Set_Markup
---              (Gtk_Label
---                 (Get_Label_Widget
---                    (Gtk_Frame
---                       (Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 1)))),
---               "<b>" & Gettext("Destination directory") & "</b>");
---            Set_Visible_Child_Name(InfoStack, "destination");
---         else
---            Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
---         end if;
---         Set_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)), not Finished);
---      end if;
+      if (Action = COPY or Action = MOVE) then
+         if Finished then
+            Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+            Toolbar.Name :=
+              New_String(".mainframe.paned.previewframe.pathframe");
+            Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+         else
+            Tcl.Tk.Ada.Pack.Pack
+              (Toolbar,
+               "-after .mainframe.toolbars.actiontoolbar.copybutton");
+         end if;
+      end if;
 --      if Action = DELETETRASH and then Finished then
 --         if Gtk.List_Store.N_Children
 --             (-(Gtk.Tree_Model_Filter.Get_Model
@@ -294,11 +268,8 @@ package body Utils is
                configure(HeaderLabel, "-text {Creating new link}");
             when RENAME =>
                configure(HeaderLabel, "-text {Renaming file or directory}");
---            when COPY =>
---               Set_Title
---                 (Gtk_Header_Bar
---                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---                  Gettext("Copying files and directories"));
+            when COPY =>
+               configure(HeaderLabel, "-text {Copying files and directories}");
 --               Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 2)));
 --               Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1)));
 --            when MOVE =>
