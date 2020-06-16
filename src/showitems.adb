@@ -758,6 +758,15 @@ package body ShowItems is
          return TCL_OK;
       end if;
       ActionButton.Interp := Get_Context;
+      ActionButton.Name :=
+        New_String(".mainframe.toolbars.itemtoolbar.openbutton");
+      if CanBeOpened(GetMimeType(To_String(CurrentSelected))) then
+         Tcl.Tk.Ada.Pack.Pack
+           (ActionButton,
+            "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
+      else
+         Tcl.Tk.Ada.Pack.Pack_Forget(ActionButton);
+      end if;
       if Is_Directory(To_String(CurrentSelected)) or
         Is_Regular_File(To_String(CurrentSelected)) then
          ActionButton.Name :=
