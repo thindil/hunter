@@ -226,7 +226,7 @@ package body Utils is
                if I < CurrentButton then
                   Toolbar.Name :=
                     New_String
-                      (".mainframe.paned.actiontoolbar." &
+                      (".mainframe.toolbars.actiontoolbar." &
                        To_String(ButtonsNames(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack
                     (Toolbar,
@@ -237,9 +237,17 @@ package body Utils is
                     New_String
                       (".mainframe.toolbars.actiontoolbar." &
                        To_String(ButtonsNames(I)) & "button");
-                  Tcl.Tk.Ada.Pack.Pack(Toolbar);
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Toolbar,
+                     "-after .mainframe.toolbars.actiontoolbar." &
+                     To_String(ButtonsNames(I - 1)) & "button");
                end if;
             end loop;
+            Toolbar.Name :=
+              New_String(".mainframe.toolbars.actiontoolbar.separator3");
+            Tcl.Tk.Ada.Pack.Pack_Configure
+              (Toolbar,
+               "-after .mainframe.toolbars.actiontoolbar.deletebutton");
          else
             Tcl.Tk.Ada.Pack.Pack
               (Toolbar, "-after .mainframe.toolbars.actiontoolbar.copybutton");
