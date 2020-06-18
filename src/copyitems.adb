@@ -64,7 +64,6 @@ package body CopyItems is
           To_String(CurrentDirectory) then
          CopyItemsList.Clear;
          ToggleToolButtons(NewAction, True);
-         CurrentSelected := Null_Unbounded_String;
          ShowPreview;
          return TCL_OK;
       end if;
