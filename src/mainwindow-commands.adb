@@ -30,6 +30,7 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
+with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
@@ -321,12 +322,50 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Arrange_Path_Command;
 
+   function Cancel_Action_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* MainWindow-Commands/Cancel_Action_Command
+      -- FUNCTION
+      -- Select all or deselect all items in directory view
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Cancel_Action_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
+      ActionButton: Ttk_Button;
+   begin
+      ActionButton.Interp := Interp;
+      if NewAction = COPY then
+         CopyItemsList.Clear;
+         ActionButton.Name :=
+           New_String(".mainframe.toolbars.actiontoolbar.copybutton");
+      end if;
+      if State(ActionButton) = "selected" then
+         State(ActionButton, "!selected");
+      end if;
+      Unbind_From_Main_Window(Interp, "<Escape>");
+      ToggleToolButtons(NewAction, True);
+      return TCL_OK;
+   end Cancel_Action_Command;
+
    procedure AddCommands is
    begin
       AddCommand("Sort", Sort_Command'Access);
       AddCommand("HideWidget", Hide_Widget_Command'Access);
       AddCommand("ToggleSelection", Toggle_Selection_Command'Access);
       AddCommand("ArrangePath", Arrange_Path_Command'Access);
+      AddCommand("CancelAction", Cancel_Action_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 

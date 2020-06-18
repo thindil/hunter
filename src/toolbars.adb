@@ -252,7 +252,7 @@ package body Toolbars is
       Menu.Add(ButtonMenu, "command", "-label ""Show Trash""");
       Menu.Add(ButtonMenu, "command", "-label ""Empty Trash""");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
-      ToolButton := Create(".mainframe.toolbars.actiontoolbar.cancelbutton");
+      ToolButton := Create(".mainframe.toolbars.actiontoolbar.cancelbutton", "-command CancelAction");
       SetButton
         (ToolButton, "Discard all changes and back to files list \[Escape\]",
          "dialog-cancel");
