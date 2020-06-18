@@ -1036,6 +1036,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(Frame);
       Frame.Name := New_String(".mainframe.paned.previewframe.previewtext");
       Tcl.Tk.Ada.Pack.Pack_Forget(Frame);
+      Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
       Frame.Name := New_String(".mainframe.paned.previewframe.title");
       configure(Frame, "-text {Destination directory}");
       DestinationDirectory := CurrentDirectory;
