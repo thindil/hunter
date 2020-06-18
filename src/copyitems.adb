@@ -19,6 +19,8 @@ with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
@@ -53,7 +55,7 @@ package body CopyItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
       OverwriteItem: Boolean := False;
    begin
@@ -69,8 +71,12 @@ package body CopyItems is
       if CopyItemsList.Length = 0 then
          CopyItemsList := SelectedItems;
          SourceDirectory := CurrentDirectory;
-         ToggleToolButtons(COPY);
+         NewAction := COPY;
+         ToggleToolButtons(NewAction);
          ShowDestination;
+         Bind_To_Main_Window
+           (Interp, "<Escape>",
+            "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
          return TCL_OK;
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
