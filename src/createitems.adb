@@ -167,12 +167,12 @@ package body CreateItems is
             File := Create_File(To_String(NewItemName), Binary);
             Close(File);
          when CREATELINK =>
+            Destination := DestinationDirectory;
             if Selection(DirectoryView)'Length > 0 then
                Destination :=
+                 DestinationDirectory &
                  SecondItemsList(Positive'Value(Selection(DirectoryView)))
                    .Name;
-            else
-               Destination := DestinationDirectory;
             end if;
             Tcl_Eval
               (Interp,
