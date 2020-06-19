@@ -1019,23 +1019,18 @@ package body ShowItems is
       Frame.Name := New_String(".mainframe.paned.previewframe.pathframe");
       Tcl.Tk.Ada.Pack.Pack
         (Frame, "-after .mainframe.paned.previewframe.title -fill x");
-      Frame.Name := New_String(".mainframe.paned.previewframe.scrollx");
       configure
-        (Frame,
+        (PreviewYScroll,
          "-command [list .mainframe.paned.previewframe.directorytree yview]");
-      Tcl.Tk.Ada.Pack.Pack(Frame, "-side bottom -fill x");
-      Frame.Name := New_String(".mainframe.paned.previewframe.scrolly");
+      Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side bottom -fill x");
       configure
-        (Frame,
+        (PreviewXScroll,
          "-command [list .mainframe.paned.previewframe.directorytree xview]");
-      Tcl.Tk.Ada.Pack.Pack(Frame, "-side right -fill y");
-      Frame.Name := New_String(".mainframe.paned.previewframe.directorytree");
-      configure(Frame, "-selectmode browse");
-      Tcl.Tk.Ada.Pack.Pack(Frame, "-side top -fill both -expand true");
-      Frame.Name := New_String(".mainframe.paned.previewframe.previewcanvas");
-      Tcl.Tk.Ada.Pack.Pack_Forget(Frame);
-      Frame.Name := New_String(".mainframe.paned.previewframe.previewtext");
-      Tcl.Tk.Ada.Pack.Pack_Forget(Frame);
+      Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side right -fill y");
+      configure(PreviewTree, "-selectmode browse");
+      Tcl.Tk.Ada.Pack.Pack(PreviewTree, "-side top -fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
       Frame.Name := New_String(".mainframe.paned.previewframe.title");
       configure(Frame, "-text {Destination directory}");
