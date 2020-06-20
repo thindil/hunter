@@ -181,7 +181,7 @@ package body CreateItems is
          when others =>
             raise Hunter_Create_Exception with "Invalid action type";
       end case;
-      if not Settings.StayInOld then
+      if not Settings.StayInOld and then NewAction /= CREATELINK then
          CurrentDirectory :=
            To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
       end if;
