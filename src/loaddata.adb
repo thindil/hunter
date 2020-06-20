@@ -60,12 +60,10 @@ package body LoadData is
       end if;
       case SortOrder is
          when NameAsc =>
-            return
-              Translate(Left.Name, Lower_Case_Map) <
+            return Translate(Left.Name, Lower_Case_Map) <
               Translate(Right.Name, Lower_Case_Map);
          when NameDesc =>
-            return
-              Translate(Left.Name, Lower_Case_Map) >
+            return Translate(Left.Name, Lower_Case_Map) >
               Translate(Right.Name, Lower_Case_Map);
          when ModifiedAsc =>
             return Left.Modified < Right.Modified;
@@ -115,11 +113,11 @@ package body LoadData is
                exit when SubLast = 0;
                if SubFileName(1 .. SubLast) /= "." and
                  SubFileName(1 .. SubLast) /= ".." then
-                 if SubFileName(1) = '.' then
-                    HiddenAmount := HiddenAmount + 1;
-                 else
-                    Size := Size + 1;
-                 end if;
+                  if SubFileName(1) = '.' then
+                     HiddenAmount := HiddenAmount + 1;
+                  else
+                     Size := Size + 1;
+                  end if;
                end if;
             end loop;
             Close(SubDirectory);
@@ -211,7 +209,9 @@ package body LoadData is
       else
          Items_Sorting.Sort(SecondItemsList);
       end if;
-      Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
+      if Tcl.Tk.Ada.Busy.Status(Get_Main_Window(Get_Context)) = "1" then
+         Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
+      end if;
    end LoadDirectory;
 
 --   function SortFiles
