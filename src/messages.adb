@@ -177,6 +177,7 @@ package body Messages is
                return Close_Command(ClientData, Interp, Argc, Argv);
             end if;
             CopySelected(OverwriteItem);
+            return Close_Command(ClientData, Interp, Argc, Argv);
 --         when MOVE =>
 --            if Response_Id = Gint(Gtk_Response_Reject) then
 --               CloseMessage(null);
