@@ -204,11 +204,13 @@ package body Utils is
                Add(Toolbar, "Stop copying files and directories \[Escape\]");
             end if;
             CurrentButton := 3;
---         when MOVE =>
---            CurrentButtonIndex := 7;
---            Set_Tooltip_Text
---              (Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)),
---               Gettext("Stop moving files and directories [Escape]"));
+         when MOVE =>
+            Toolbar.Name :=
+              New_String(".mainframe.toolbars.actiontoolbar.cancelbutton");
+            if not Finished then
+               Add(Toolbar, "Stop moving files and directories \[Escape\]");
+            end if;
+            CurrentButton := 4;
 --         when SHOWTRASH =>
 --            CurrentButtonIndex := 8;
 --            Set_Visible
@@ -250,7 +252,7 @@ package body Utils is
                "-after .mainframe.toolbars.actiontoolbar.deletebutton");
          else
             Tcl.Tk.Ada.Pack.Pack
-              (Toolbar, "-after .mainframe.toolbars.actiontoolbar.copybutton");
+              (Toolbar, "-after .mainframe.toolbars.actiontoolbar.movebutton");
             for I in ButtonsNames'Range loop
                if I /= CurrentButton then
                   Toolbar.Name :=
@@ -311,15 +313,8 @@ package body Utils is
                configure(HeaderLabel, "-text {Renaming file or directory}");
             when COPY =>
                configure(HeaderLabel, "-text {Copying files and directories}");
---               Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 2)));
---               Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1)));
---            when MOVE =>
---               Set_Title
---                 (Gtk_Header_Bar
---                    (Get_Child(Gtk_Box(Get_Child(Gtk_Bin(Window))), 0)),
---                  Gettext("Moving files and directories"));
---               Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 2)));
---               Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 1)));
+            when MOVE =>
+               configure(HeaderLabel, "-text {Moving files and directories}");
             when DELETE | DELETETRASH =>
                if Settings.DeleteFiles or Action = DELETETRASH then
                   configure

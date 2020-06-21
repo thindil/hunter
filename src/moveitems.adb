@@ -16,15 +16,15 @@
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Interfaces.C;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Gtk.Box; use Gtk.Box;
-with Gtk.Message_Dialog; use Gtk.Message_Dialog;
-with Gtk.Stack; use Gtk.Stack;
-with Gtk.Tree_View; use Gtk.Tree_View;
-with Gtk.Widget; use Gtk.Widget;
-with Gtkada.Intl; use Gtkada.Intl;
+with CArgv;
+with Tcl; use Tcl;
+with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with CopyItems; use CopyItems;
+with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
@@ -39,38 +39,58 @@ package body MoveItems is
    SourceDirectory: Unbounded_String;
    -- ****
 
-   procedure MoveData(Self: access Gtk_Tool_Button_Record'Class) is
-      pragma Unreferenced(Self);
+   function Move_Data_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* MoveItems/Move_Data_Command
+      -- FUNCTION
+      -- Enter or quit moving items mode
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Move_Data_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      -- ****
       OverwriteItem: Boolean := False;
    begin
-      if Setting then
-         return;
-      end if;
       if MoveItemsList.Length > 0
         and then Containing_Directory(To_String(MoveItemsList(1))) =
-          To_String(CurrentDirectory) then
+          To_String(DestinationDirectory) then
          MoveItemsList.Clear;
          ToggleToolButtons(NewAction, True);
-         CurrentSelected := Null_Unbounded_String;
-         ShowItem(Get_Selection(DirectoryView));
-         return;
+         ShowPreview;
+         return TCL_OK;
       end if;
       if MoveItemsList.Length = 0 then
          MoveItemsList := SelectedItems;
          SourceDirectory := CurrentDirectory;
-         ToggleToolButtons(MOVE);
-         return;
+         NewAction := MOVE;
+         ToggleToolButtons(NewAction);
+         ShowDestination;
+         Bind_To_Main_Window
+           (Interp, "<Escape>",
+            "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
+         return TCL_OK;
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
          ShowMessage
-           (Gettext
-              ("You don't have permissions to move selected items here."));
-         return;
+           ("You don't have permissions to move selected items here.");
+         return TCL_OK;
       end if;
       NewAction := MOVE;
       SetProgressBar(Positive(MoveItemsList.Length));
       MoveSelected(OverwriteItem);
-   end MoveData;
+      return TCL_OK;
+   end Move_Data_Command;
 
    procedure MoveSelected(Overwrite: in out Boolean) is
       ItemType: Unbounded_String;
@@ -79,20 +99,20 @@ package body MoveItems is
    begin
       while MoveItemsList.Length > 0 loop
          NewName :=
-           DestinationPath & To_Unbounded_String("/") &
+           DestinationDirectory & To_Unbounded_String("/") &
            Simple_Name(To_String(MoveItemsList(1)));
          if Exists(To_String(NewName)) then
             if not Overwrite and Settings.OverwriteOnExist then
                if Is_Directory(To_String(NewName)) then
-                  ItemType := To_Unbounded_String(Gettext("Directory"));
+                  ItemType := To_Unbounded_String("Directory");
                else
-                  ItemType := To_Unbounded_String(Gettext("File"));
+                  ItemType := To_Unbounded_String("File");
                end if;
                ShowMessage
                  (To_String(ItemType) & " " &
                   Simple_Name(To_String(MoveItemsList(1))) &
-                  Gettext(" exists. Do you want to overwrite it?"),
-                  Message_Question);
+                  " exists. Do you want to overwrite it?",
+                  "question");
                return;
             end if;
             if not Settings.OverwriteOnExist then
@@ -100,7 +120,7 @@ package body MoveItems is
                  To_Unbounded_String(Extension(To_String(MoveItemsList(1))));
                loop
                   NewName :=
-                    DestinationPath &
+                    DestinationDirectory &
                     To_Unbounded_String
                       ("/" & Ada.Directories.Base_Name(To_String(NewName)) &
                        "_");
@@ -114,7 +134,8 @@ package body MoveItems is
          end if;
          Rename_File(To_String(MoveItemsList(1)), To_String(NewName), Success);
          if not Success then
-            CopyItem(To_String(MoveItemsList(1)), DestinationPath, Success);
+            CopyItem
+              (To_String(MoveItemsList(1)), DestinationDirectory, Success);
             if Success then
                if Is_Directory(To_String(MoveItemsList(1))) then
                   Remove_Dir(To_String(MoveItemsList(1)), True);
@@ -122,8 +143,7 @@ package body MoveItems is
                   Delete_File(To_String(MoveItemsList(1)));
                end if;
             else
-               ShowMessage
-                 (Gettext("Can't move ") & To_String(MoveItemsList(1)) & ".");
+               ShowMessage("Can't move " & To_String(MoveItemsList(1)) & ".");
                return;
             end if;
          end if;
@@ -134,19 +154,19 @@ package body MoveItems is
          UpdateProgressBar;
       end loop;
       MoveItemsList.Clear;
-      Hide(Get_Child(Gtk_Box(Get_Child_By_Name(FileStack, "page0")), 3));
       ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage
-           (Gettext("All selected files and directories have been moved."),
-            Message_Info);
-      else
-         CloseMessage(null);
+           ("All selected files and directories have been moved.", "message");
       end if;
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;
+      else
+         CurrentDirectory := DestinationDirectory;
       end if;
-      Reload;
+      LoadDirectory(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
+      ShowPreview;
    end MoveSelected;
 
    procedure SkipMoving is
@@ -156,5 +176,10 @@ package body MoveItems is
       UpdateProgressBar;
       MoveSelected(OverwriteItem);
    end SkipMoving;
+
+   procedure CreateMoveUI is
+   begin
+      AddCommand("MoveData", Move_Data_Command'Access);
+   end CreateMoveUI;
 
 end MoveItems;
