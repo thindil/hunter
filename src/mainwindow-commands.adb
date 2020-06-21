@@ -35,6 +35,7 @@ with DeleteItems; use DeleteItems;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with LoadData; use LoadData;
+with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
@@ -350,6 +351,10 @@ package body MainWindow.Commands is
          CopyItemsList.Clear;
          ActionButton.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.copybutton");
+      elsif NewAction = MOVE then
+         MoveItemsList.Clear;
+         ActionButton.Name :=
+           New_String(".mainframe.toolbars.actiontoolbar.movebutton");
       end if;
       if State(ActionButton) = "selected" then
          State(ActionButton, "!selected");

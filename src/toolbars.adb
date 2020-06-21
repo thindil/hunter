@@ -228,7 +228,9 @@ package body Toolbars is
          "edit-copy");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton :=
-        Create(".mainframe.toolbars.actiontoolbar.movebutton");
+        Create
+          (".mainframe.toolbars.actiontoolbar.movebutton",
+           "-command MoveData");
       SetButton
         (ToolCheckButton,
          "Move selected files \[ALT+M\]. Pressed button means start moving\ncurrently selected files or directories.\nPress again to move them.",
@@ -252,7 +254,10 @@ package body Toolbars is
       Menu.Add(ButtonMenu, "command", "-label ""Show Trash""");
       Menu.Add(ButtonMenu, "command", "-label ""Empty Trash""");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
-      ToolButton := Create(".mainframe.toolbars.actiontoolbar.cancelbutton", "-command CancelAction");
+      ToolButton :=
+        Create
+          (".mainframe.toolbars.actiontoolbar.cancelbutton",
+           "-command CancelAction");
       SetButton
         (ToolButton, "Discard all changes and back to files list \[Escape\]",
          "dialog-cancel");

@@ -32,6 +32,7 @@ with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with Utils; use Utils;
@@ -178,19 +179,18 @@ package body Messages is
             end if;
             CopySelected(OverwriteItem);
             return Close_Command(ClientData, Interp, Argc, Argv);
---         when MOVE =>
---            if Response_Id = Gint(Gtk_Response_Reject) then
---               CloseMessage(null);
---               ToggleToolButtons(NewAction, True);
---               Hide(Get_Child(Gtk_Box(Get_Child2(FilesPaned)), 0));
---               Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 9)));
---               Reload;
---               return;
---            elsif Response_Id = Gint(Gtk_Response_No) then
---               SkipMoving;
---               return;
---            end if;
---            MoveSelected(OverwriteItem);
+         when MOVE =>
+            if Response = "noall" then
+               ToggleToolButtons(NewAction, True);
+               LoadDirectory(To_String(CurrentDirectory));
+               UpdateDirectoryList(True);
+               return Close_Command(ClientData, Interp, Argc, Argv);
+            elsif Response = "no" then
+               SkipMoving;
+               return Close_Command(ClientData, Interp, Argc, Argv);
+            end if;
+            MoveSelected(OverwriteItem);
+            return Close_Command(ClientData, Interp, Argc, Argv);
          when others =>
             null;
       end case;

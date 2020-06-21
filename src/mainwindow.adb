@@ -49,6 +49,7 @@ with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with MainWindow.Commands; use MainWindow.Commands;
 with Messages; use Messages;
+with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with RenameItems; use RenameItems;
@@ -160,6 +161,7 @@ package body MainWindow is
       CreateRenameUI;
       CreateCreateUI;
       CreateCopyUI;
+      CreateMoveUI;
       Add(Paned, DirectoryFrame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");

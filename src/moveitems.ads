@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtk.Tool_Button; use Gtk.Tool_Button;
 with MainWindow; use MainWindow;
 
 -- ****h* Hunter/MoveItems
@@ -28,15 +27,6 @@ package MoveItems is
    -- Stores names of all selected to move files and directories
    -- SOURCE
    MoveItemsList: UnboundedString_Container.Vector;
-   -- ****
-
-   -- ****f* MoveItems/MoveData
-   -- FUNCTION
-   -- Move selected files/directories to new place
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button which was clicked. Unused.
-   -- SOURCE
-   procedure MoveData(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
    -- ****f* MoveItems/MoveSelected
@@ -55,6 +45,13 @@ package MoveItems is
    -- Skip moving current file and move to next
    -- SOURCE
    procedure SkipMoving;
+   -- ****
+
+   -- ****f* MoveItems/CreateMoveUI
+   -- FUNCTION
+   -- Create UI for moving items
+   -- SOURCE
+   procedure CreateMoveUI;
    -- ****
 
 end MoveItems;
