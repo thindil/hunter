@@ -156,13 +156,13 @@ package body Messages is
                if NewAction = DELETE and not Settings.DeleteFiles then
                   ShowMessage
                     ("All selected files and directories have been moved to Trash.",
-                     "info");
+                     "message");
                elsif NewAction = CLEARTRASH then
-                  ShowMessage("Trash have been cleared.", "info");
+                  ShowMessage("Trash have been cleared.", "message");
                else
                   ShowMessage
                     ("All selected files and directories have been deleted.",
-                     "info");
+                     "message");
                end if;
             else
                return Close_Command(ClientData, Interp, Argc, Argv);
