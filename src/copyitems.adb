@@ -61,7 +61,7 @@ package body CopyItems is
    begin
       if CopyItemsList.Length > 0
         and then Containing_Directory(To_String(CopyItemsList(1))) =
-          To_String(CurrentDirectory) then
+          To_String(DestinationDirectory) then
          CopyItemsList.Clear;
          ToggleToolButtons(NewAction, True);
          ShowPreview;
@@ -187,9 +187,12 @@ package body CopyItems is
       end if;
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;
+      else
+         CurrentDirectory := DestinationDirectory;
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
+      ShowPreview;
    end CopySelected;
 
    procedure SkipCopying is
