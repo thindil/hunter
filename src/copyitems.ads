@@ -62,7 +62,7 @@ package CopyItems is
 
    -- ****f* CopyItems/CreateCopyUI
    -- FUNCTION
-   -- Create UI for deleting items
+   -- Create UI for copying items
    -- SOURCE
    procedure CreateCopyUI;
    -- ****
