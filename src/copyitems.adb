@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -42,9 +42,9 @@ package body CopyItems is
       return Interfaces.C.int with
       Convention => C;
 
-      -- ****if* Commands/Copy_Data_Command
+      -- ****if* CopyItems/Copy_Data_Command
       -- FUNCTION
-      -- Show confirmation to delete the selected files and directories
+      -- Enter or quit copying items mode
       -- PARAMETERS
       -- ClientData - Custom data send to the command. Unused
       -- Interp     - Tcl interpreter in which command was executed. Unused
