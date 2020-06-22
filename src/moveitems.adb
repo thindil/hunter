@@ -27,6 +27,7 @@ with CopyItems; use CopyItems;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 
@@ -168,6 +169,7 @@ package body MoveItems is
         CurrentDirectory & "/" & Simple_Name(To_String(CurrentSelected));
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
+      UpdateWatch(To_String(CurrentDirectory));
       ShowPreview;
    end MoveSelected;
 
