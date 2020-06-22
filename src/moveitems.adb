@@ -164,6 +164,8 @@ package body MoveItems is
       else
          CurrentDirectory := DestinationDirectory;
       end if;
+      CurrentSelected :=
+        CurrentDirectory & "/" & Simple_Name(To_String(CurrentSelected));
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
       ShowPreview;
