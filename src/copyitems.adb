@@ -24,6 +24,7 @@ use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with LoadData; use LoadData;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 
@@ -192,6 +193,7 @@ package body CopyItems is
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
+      UpdateWatch(To_String(CurrentDirectory));
       ShowPreview;
    end CopySelected;
 
