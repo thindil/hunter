@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -13,10 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtk.Button; use Gtk.Button;
-with Gtk.Menu_Item; use Gtk.Menu_Item;
-with Gtk.Tool_Button; use Gtk.Tool_Button;
-
 -- ****h* Hunter/Trash
 -- FUNCTION
 -- Provide code to manipulate system Trash
@@ -30,7 +26,7 @@ package Trash is
    -- PARAMETERS
    -- Self - Gtk_Tool_Button which was clicked. Unused.
    -- SOURCE
-   procedure RestoreItem(Self: access Gtk_Tool_Button_Record'Class);
+--   procedure RestoreItem(Self: access Gtk_Tool_Button_Record'Class);
    -- ****
 
    -- ****f* Trash/PathClicked
@@ -39,16 +35,7 @@ package Trash is
    -- PARAMETERS
    -- Self - Button which was clicked by user
    -- SOURCE
-   procedure PathClicked(Self: access Gtk_Button_Record'Class);
-   -- ****
-
-   -- ****f* Trash/ShowTrash
-   -- FUNCTION
-   -- Show content of the Trash
-   -- PARAMETERS
-   -- Self - Gtk_Menu_Item which was clicked. Unused.
-   -- SOURCE
-   procedure ShowTrash(Self: access Gtk_Menu_Item_Record'Class);
+--   procedure PathClicked(Self: access Gtk_Button_Record'Class);
    -- ****
 
    -- ****f* Trash/CreateTrashUI
