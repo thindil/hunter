@@ -21,13 +21,7 @@ with Utils; use Utils;
 
 package body Preferences is
 
-   -- ****if* Preferences/LoadSettings
-   -- FUNCTION
-   -- Load the program settings from file. If file not exists, load default
-   -- settings.
-   -- SOURCE
    procedure LoadSettings is
-      -- ****
       ConfigFile: File_Type;
       RawData, FieldName, Value: Unbounded_String;
       EqualIndex: Natural;

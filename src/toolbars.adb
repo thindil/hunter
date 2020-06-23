@@ -149,6 +149,7 @@ package body Toolbars is
           (ImageName & "icon",
            "-file ""../share/hunter/images/" & ImageName & ".png""");
       pragma Unreferenced(Image);
+      -- ****
    begin
       Add(Button, TooltipText);
       configure(Button, "-style Toolbutton -image " & ImageName & "icon");
