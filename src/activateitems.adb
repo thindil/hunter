@@ -292,7 +292,7 @@ package body ActivateItems is
       return Interfaces.C.int with
       Convention => C;
 
-      -- ****if* ActivateItems/Execute_With_Command
+      -- ****if* ActivateItems/Execute_Command
       -- FUNCTION
       -- Execute the selected file or directory
       -- PARAMETERS
