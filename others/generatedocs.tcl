@@ -64,7 +64,7 @@ proc fixdocs {dir} {
 }
 
 set docsdir docs
-set configfile [file join scripts robodocada.rc]
+set configfile [file join others robodocada.rc]
 if {$argc > 0} {
    set configfile [lindex $argv 0]
 }
