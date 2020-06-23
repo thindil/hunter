@@ -56,6 +56,7 @@ with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
+with Trash; use Trash;
 with Utils; use Utils;
 
 package body MainWindow is
@@ -162,6 +163,7 @@ package body MainWindow is
       CreateCreateUI;
       CreateCopyUI;
       CreateMoveUI;
+      CreateTrashUI;
       Add(Paned, DirectoryFrame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");
