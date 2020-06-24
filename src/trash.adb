@@ -18,6 +18,7 @@
 --with Messages; use Messages;
 --with ShowItems; use ShowItems;
 --with Toolbars; use Toolbars;
+with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -123,24 +124,24 @@ package body Trash is
            To_Unbounded_String
              (Value("HOME") & "/.local/share/Trash/files/" &
               FileName(1 .. Last));
---         Set(FilesList, FileIter, 6, To_String(FullName));
+         Item.Path := FullName;
          Open
            (FileInfo, In_File,
             Value("HOME") & "/.local/share/Trash/info/" & FileName(1 .. Last) &
             ".trashinfo");
          Skip_Line(FileInfo);
---         for I in 1 .. 2 loop
---            FileLine := To_Unbounded_String(Get_Line(FileInfo));
---            if Slice(FileLine, 1, 4) = "Path" then
---               Set
---                 (FilesList, FileIter, 0,
---                  Simple_Name(Slice(FileLine, 6, Length(FileLine))));
---            else
---               FileLine := Unbounded_Slice(FileLine, 14, Length(FileLine));
---               Replace_Slice(FileLine, 11, 11, " ");
---               Set(FilesList, FileIter, 5, To_String(FileLine));
---            end if;
---         end loop;
+         for I in 1 .. 2 loop
+            FileLine := To_Unbounded_String(Get_Line(FileInfo));
+            if Slice(FileLine, 1, 4) = "Path" then
+               Item.Name :=
+                 To_Unbounded_String
+                   (Simple_Name(Slice(FileLine, 6, Length(FileLine))));
+            else
+               FileLine := Unbounded_Slice(FileLine, 14, Length(FileLine));
+               Replace_Slice(FileLine, 11, 11, " ");
+               Item.Modified := Value(To_String(FileLine));
+            end if;
+         end loop;
          Close(FileInfo);
          if Is_Directory(To_String(FullName)) then
             Item.IsDirectory := True;
