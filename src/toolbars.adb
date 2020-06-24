@@ -252,7 +252,8 @@ package body Toolbars is
            (ButtonMenu, "command",
             "-label {Move selected to Trash} -command StartDeleting");
       end if;
-      Menu.Add(ButtonMenu, "command", "-label ""Show Trash""");
+      Menu.Add
+        (ButtonMenu, "command", "-label {Show Trash} -command ShowTrash");
       Menu.Add(ButtonMenu, "command", "-label ""Empty Trash""");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       ToolButton :=

@@ -14,22 +14,22 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Ada.Directories; use Ada.Directories;
 --with Ada.Environment_Variables; use Ada.Environment_Variables;
---with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
---with Ada.Text_IO; use Ada.Text_IO;
---with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 --with GNAT.OS_Lib; use GNAT.OS_Lib;
 --with GNAT.String_Split; use GNAT.String_Split;
 --with LoadData; use LoadData;
---with MainWindow; use MainWindow;
 --with Messages; use Messages;
---with RefreshData; use RefreshData;
 --with ShowItems; use ShowItems;
 --with Toolbars; use Toolbars;
+with Ada.Directories; use Ada.Directories;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with CArgv;
 with Tcl; use Tcl;
+with MainWindow; use MainWindow;
+with RefreshData; use RefreshData;
 with Utils; use Utils;
 
 package body Trash is
@@ -100,44 +100,16 @@ package body Trash is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
       -- ****
---      FilesList: constant Gtk_List_Store :=
---        -(Gtk.Tree_Model_Filter.Get_Model
---           (-(Gtk.Tree_Model_Sort.Get_Model
---               (-(Gtk.Tree_View.Get_Model(DirectoryView))))));
---      FileIter: Gtk_Tree_Iter;
---      Directory, SubDirectory: Dir_Type;
---      Last, SubLast: Natural;
---      FileName, SubFileName: String(1 .. 1024);
---      FilesSort: constant Gtk_Tree_Model_Sort :=
---        -(Gtk.Tree_View.Get_Model(DirectoryView));
---      FileInfo: File_Type;
---      Size: File_Size;
---      FileLine, FullName, MimeType: Unbounded_String;
---      Button: Gtk_Button;
---      ButtonBox: constant Gtk_Flow_Box :=
---        Gtk_Flow_Box(Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 0));
+      Directory, SubDirectory: Dir_Type;
+      Last, SubLast: Natural;
+      FileName, SubFileName: String(1 .. 1024);
+      FileInfo: File_Type;
+      Size: File_Size;
+      FileLine, FullName, MimeType: Unbounded_String;
    begin
---      Setting := True;
---      TemporaryStop := True;
---      if MainWindow.Window /= null then
---         Set_Cursor
---           (Get_Window(Gtk_Widget(MainWindow.Window)), Gdk_Cursor_New(Watch));
---         Set_Sensitive(MainWindow.Window, False);
---         while Events_Pending loop
---            if Main_Iteration_Do(False) then
---               exit;
---            end if;
---         end loop;
---      end if;
---      Set_Title
---        (Get_Column
---           (Gtk_Tree_View
---              (Get_Child
---                 (Gtk_Scrolled_Window
---                    (Get_Child(Gtk_Box(Get_Child1(FilesPaned)), 2)))),
---            2),
---         Gettext("Deleted"));
---      ToggleToolButtons(SHOWTRASH);
+      TemporaryStop := True;
+      NewAction := SHOWTRASH;
+      ToggleToolButtons(SHOWTRASH);
 --      Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 12)));
 --      Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 13)));
 --      Set_Tooltip_Text

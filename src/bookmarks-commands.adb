@@ -60,6 +60,9 @@ package body Bookmarks.Commands is
       -- ****
    begin
       if NewAction /= MOVE then
+         if NewAction = SHOWTRASH then
+            ToggleToolButtons(NewAction, True);
+         end if;
          NewAction := COPY;
       end if;
       CurrentDirectory :=
@@ -95,6 +98,9 @@ package body Bookmarks.Commands is
       TextEntry: Ttk_Entry;
    begin
       if NewAction /= MOVE then
+         if NewAction = SHOWTRASH then
+            ToggleToolButtons(NewAction, True);
+         end if;
          NewAction := COPY;
       end if;
       Button.Interp := Get_Context;
@@ -142,6 +148,9 @@ package body Bookmarks.Commands is
       Hunter_Go_To_Destination_Exception: exception;
    begin
       if NewAction /= MOVE then
+         if NewAction = SHOWTRASH then
+            ToggleToolButtons(NewAction, True);
+         end if;
          NewAction := COPY;
       end if;
       TextEntry.Interp := Get_Context;

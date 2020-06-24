@@ -211,10 +211,10 @@ package body Utils is
                Add(Toolbar, "Stop moving files and directories \[Escape\]");
             end if;
             CurrentButton := 4;
---         when SHOWTRASH =>
---            CurrentButtonIndex := 8;
---            Set_Visible
---              (Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)), not Finished);
+         when SHOWTRASH =>
+            Toolbar.Name :=
+              New_String(".mainframe.toolbars.actiontoolbar.restorebutton");
+            CurrentButton := 5;
          when others =>
             return;
       end case;
@@ -264,6 +264,49 @@ package body Utils is
             end loop;
          end if;
       end if;
+      if Action = SHOWTRASH then
+         if not Finished then
+            Tcl.Tk.Ada.Pack.Pack
+               (Toolbar, "-after .mainframe.toolbars.actiontoolbar.deletebutton");
+            for I in ButtonsNames'Range loop
+               if I /= CurrentButton then
+                  Toolbar.Name :=
+                     New_String
+                        (".mainframe.toolbars.actiontoolbar." &
+                        To_String(ButtonsNames(I)) & "button");
+                     Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+               end if;
+            end loop;
+         else
+            Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+            for I in ButtonsNames'Range loop
+               if I < CurrentButton then
+                  Toolbar.Name :=
+                    New_String
+                      (".mainframe.toolbars.actiontoolbar." &
+                       To_String(ButtonsNames(I)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Toolbar,
+                     "-before .mainframe.toolbars.actiontoolbar." &
+                     To_String(ButtonsNames(CurrentButton)) & "button");
+               elsif I > CurrentButton then
+                  Toolbar.Name :=
+                    New_String
+                      (".mainframe.toolbars.actiontoolbar." &
+                       To_String(ButtonsNames(I)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Toolbar,
+                     "-after .mainframe.toolbars.actiontoolbar." &
+                     To_String(ButtonsNames(I - 1)) & "button");
+               end if;
+            end loop;
+            Toolbar.Name :=
+              New_String(".mainframe.toolbars.actiontoolbar.separator3");
+            Tcl.Tk.Ada.Pack.Pack_Configure
+              (Toolbar,
+               "-after .mainframe.toolbars.actiontoolbar.deletebutton");
+         end if;
+      end if;
 --      if Action = DELETETRASH and then Finished then
 --         if Gtk.List_Store.N_Children
 --             (-(Gtk.Tree_Model_Filter.Get_Model
@@ -276,17 +319,6 @@ package body Utils is
 --            Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)));
 --            Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)));
 --         end if;
---      else
---         if Action /= SHOWTRASH then
---            Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)));
---         end if;
---         for Index of ButtonsIndexes loop
---            if Index /= CurrentButtonIndex then
---               Set_Visible
---                 (Gtk_Widget(Get_Nth_Item(ActionToolBar, Gint(Index))),
---                  Finished);
---            end if;
---         end loop;
 --      end if;
       Toolbar.Name := New_String(".mainframe.toolbars.itemtoolbar");
       if Finished then
@@ -324,6 +356,8 @@ package body Utils is
                     (HeaderLabel,
                      "-text {Moving files and directories to trash}");
                end if;
+            when SHOWTRASH =>
+               configure(HeaderLabel, "-text {Trash can}");
             when others =>
                null;
          end case;
