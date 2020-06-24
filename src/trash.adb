@@ -14,20 +14,20 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Ada.Environment_Variables; use Ada.Environment_Variables;
---with GNAT.OS_Lib; use GNAT.OS_Lib;
 --with GNAT.String_Split; use GNAT.String_Split;
---with LoadData; use LoadData;
 --with Messages; use Messages;
 --with ShowItems; use ShowItems;
 --with Toolbars; use Toolbars;
 with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with RefreshData; use RefreshData;
 with Utils; use Utils;
@@ -106,36 +106,29 @@ package body Trash is
       FileInfo: File_Type;
       Size: File_Size;
       FileLine, FullName, MimeType: Unbounded_String;
+      Item: Item_Record;
    begin
       TemporaryStop := True;
       NewAction := SHOWTRASH;
       ToggleToolButtons(SHOWTRASH);
---      Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 12)));
---      Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 13)));
---      Set_Tooltip_Text
---        (Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)),
---         Gettext("Delete selected file(s) or folder(s) [ALT-Delete]."));
---      FilesList.Clear;
---      Gtk.Tree_Model_Sort.Set_Sort_Func
---        (-(Gtk.Tree_View.Get_Model(DirectoryView)), 0, EmptySortFiles'Access);
---      Open(Directory, Value("HOME") & "/.local/share/Trash/files");
---      loop
---         Read(Directory, FileName, Last);
---         exit when Last = 0;
---         if FileName(1 .. Last) = "." or FileName(1 .. Last) = ".." then
---            goto End_Of_Loop;
---         end if;
---         Append(FilesList, FileIter);
---         FullName :=
---           To_Unbounded_String
---             (Value("HOME") & "/.local/share/Trash/files/" &
---              FileName(1 .. Last));
+      ItemsList.Clear;
+      Open(Directory, Value("HOME") & "/.local/share/Trash/files");
+      loop
+         Read(Directory, FileName, Last);
+         exit when Last = 0;
+         if FileName(1 .. Last) = "." or FileName(1 .. Last) = ".." then
+            goto End_Of_Loop;
+         end if;
+         FullName :=
+           To_Unbounded_String
+             (Value("HOME") & "/.local/share/Trash/files/" &
+              FileName(1 .. Last));
 --         Set(FilesList, FileIter, 6, To_String(FullName));
---         Open
---           (FileInfo, In_File,
---            Value("HOME") & "/.local/share/Trash/info/" & FileName(1 .. Last) &
---            ".trashinfo");
---         Skip_Line(FileInfo);
+         Open
+           (FileInfo, In_File,
+            Value("HOME") & "/.local/share/Trash/info/" & FileName(1 .. Last) &
+            ".trashinfo");
+         Skip_Line(FileInfo);
 --         for I in 1 .. 2 loop
 --            FileLine := To_Unbounded_String(Get_Line(FileInfo));
 --            if Slice(FileLine, 1, 4) = "Path" then
@@ -148,89 +141,85 @@ package body Trash is
 --               Set(FilesList, FileIter, 5, To_String(FileLine));
 --            end if;
 --         end loop;
---         Close(FileInfo);
---         if Is_Directory(To_String(FullName)) then
---            if FileName(1) = '.' then
---               Set(FilesList, FileIter, 1, 1);
---            else
---               Set(FilesList, FileIter, 1, 2);
---            end if;
---            if Is_Symbolic_Link(To_String(FullName)) then
---               Set(FilesList, FileIter, 2, "emblem-symbolic-link");
---            else
---               Set(FilesList, FileIter, 2, "folder");
---            end if;
---            Set(FilesList, FileIter, 4, Gint'Last);
---            if Is_Read_Accessible_File(To_String(FullName)) then
---               Open(SubDirectory, To_String(FullName));
---               Size := 0;
---               loop
---                  Read(SubDirectory, SubFileName, SubLast);
---                  exit when SubLast = 0;
---                  Size := Size + 1;
---               end loop;
---               Close(SubDirectory);
---               Set(FilesList, FileIter, 3, File_Size'Image(Size - 2));
---            else
---               Set(FilesList, FileIter, 3, "?");
---            end if;
---         else
---            if FileName(1) = '.' then
---               Set(FilesList, FileIter, 1, 3);
---            else
---               Set(FilesList, FileIter, 1, 4);
---            end if;
---            if Is_Symbolic_Link(To_String(FullName)) then
---               Set(FilesList, FileIter, 2, "emblem-symbolic-link");
---            elsif Is_Executable_File(To_String(FullName)) then
---               Set(FilesList, FileIter, 2, "application-x-executable");
---            else
---               MimeType :=
---                 To_Unbounded_String(GetMimeType(To_String(FullName)));
---               if Index(MimeType, "audio") > 0 then
---                  Set(FilesList, FileIter, 2, "audio-x-generic");
---               elsif Index(MimeType, "font") > 0 then
---                  Set(FilesList, FileIter, 2, "font-x-generic");
---               elsif Index(MimeType, "image") > 0 then
---                  Set(FilesList, FileIter, 2, "image-x-generic");
---               elsif Index(MimeType, "video") > 0 then
---                  Set(FilesList, FileIter, 2, "video-x-generic");
---               elsif Index(MimeType, "text/x-script") > 0 then
---                  Set(FilesList, FileIter, 2, "text-x-script");
---               elsif MimeType = To_Unbounded_String("text/html") then
---                  Set(FilesList, FileIter, 2, "text-html");
---               elsif Index(MimeType, "zip") > 0 or
---                 Index(MimeType, "x-xz") > 0 then
---                  Set(FilesList, FileIter, 2, "package-x-generic");
---               elsif Index(MimeType, "text") > 0 then
---                  Set(FilesList, FileIter, 2, "text-x-generic");
---               else
---                  Set(FilesList, FileIter, 2, "text-x-generic-template");
---               end if;
---            end if;
---            if not Is_Read_Accessible_File(To_String(FullName)) then
---               Set(FilesList, FileIter, 3, "?");
---               Set(FilesList, FileIter, 4, 0);
---               goto End_Of_Loop;
---            end if;
---            if Is_Symbolic_Link(To_String(FullName)) then
---               Set(FilesList, FileIter, 3, "->");
---               Set(FilesList, FileIter, 4, 0);
---            elsif Is_Regular_File(To_String(FullName)) then
---               Size := Ada.Directories.Size(To_String(FullName));
---               Set(FilesList, FileIter, 3, CountFileSize(Size));
---               if Size > File_Size(Gint'Last) then
---                  Size := File_Size(Gint'Last);
---               end if;
---               Set(FilesList, FileIter, 4, Gint(Size));
---            else
---               Set(FilesList, FileIter, 3, "0");
---               Set(FilesList, FileIter, 4, 0);
---            end if;
---         end if;
---         <<End_Of_Loop>>
---      end loop;
---      Close(Directory);
+         Close(FileInfo);
+         if Is_Directory(To_String(FullName)) then
+            Item.IsDirectory := True;
+            if FileName(1) = '.' then
+               Item.IsHidden := True;
+            else
+               Item.IsHidden := False;
+            end if;
+            if Is_Symbolic_Link(To_String(FullName)) then
+               Item.Image := To_Unbounded_String("emblem-symbolic-link");
+            else
+               Item.Image := To_Unbounded_String("folder");
+            end if;
+            if Is_Read_Accessible_File(To_String(FullName)) then
+               Open(SubDirectory, To_String(FullName));
+               Size := 0;
+               loop
+                  Read(SubDirectory, SubFileName, SubLast);
+                  exit when SubLast = 0;
+                  Size := Size + 1;
+               end loop;
+               Close(SubDirectory);
+               Item.Size := Integer(Size - 2);
+            else
+               Item.Size := -1;
+            end if;
+         else
+            Item.IsDirectory := False;
+            if FileName(1) = '.' then
+               Item.IsHidden := True;
+            else
+               Item.IsHidden := False;
+            end if;
+            if Is_Symbolic_Link(To_String(FullName)) then
+               Item.Image := To_Unbounded_String("emblem-symbolic-link");
+            elsif Is_Executable_File(To_String(FullName)) then
+               Item.Image := To_Unbounded_String("application-x-executable");
+            else
+               MimeType :=
+                 To_Unbounded_String(GetMimeType(To_String(FullName)));
+               if Index(MimeType, "audio") > 0 then
+                  Item.Image := To_Unbounded_String("audio-x-generic");
+               elsif Index(MimeType, "font") > 0 then
+                  Item.Image := To_Unbounded_String("font-x-generic");
+               elsif Index(MimeType, "image") > 0 then
+                  Item.Image := To_Unbounded_String("image-x-generic");
+               elsif Index(MimeType, "video") > 0 then
+                  Item.Image := To_Unbounded_String("video-x-generic");
+               elsif Index(MimeType, "text/x-script") > 0 then
+                  Item.Image := To_Unbounded_String("text-x-script");
+               elsif MimeType = To_Unbounded_String("text/html") then
+                  Item.Image := To_Unbounded_String("text-html");
+               elsif Index(MimeType, "zip") > 0 or
+                 Index(MimeType, "x-xz") > 0 then
+                  Item.Image := To_Unbounded_String("package-x-generic");
+               elsif Index(MimeType, "text") > 0 then
+                  Item.Image := To_Unbounded_String("text-x-generic");
+               else
+                  Item.Image := To_Unbounded_String("text-x-generic-template");
+               end if;
+            end if;
+            if not Is_Read_Accessible_File(To_String(FullName)) then
+               Item.Size := -1;
+               ItemsList.Append(Item);
+               goto End_Of_Loop;
+            end if;
+            if Is_Symbolic_Link(To_String(FullName)) then
+               Item.Size := -2;
+            elsif Is_Regular_File(To_String(FullName)) then
+               Item.Size := Integer(Ada.Directories.Size(To_String(FullName)));
+            else
+               Item.Size := 0;
+            end if;
+         end if;
+         ItemsList.Append(Item);
+         <<End_Of_Loop>>
+      end loop;
+      Close(Directory);
+      UpdateDirectoryList(True);
 --      Foreach(ButtonBox, RemovePathButtons'Access);
 --      Gtk_New(Button, "Trash");
 --      Insert(ButtonBox, Button, -1);
@@ -258,8 +247,6 @@ package body Trash is
 --         Grab_Focus(DirectoryView);
 --      end if;
 --      ShowItem(Get_Selection(DirectoryView));
---      NewAction := SHOWTRASH;
---      ToggleActionButtons;
       return TCL_OK;
    end Show_Trash_Command;
 
