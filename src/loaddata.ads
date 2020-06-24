@@ -32,6 +32,7 @@ package LoadData is
       Modified: Time;
       Image: Unbounded_String;
       HiddenItems: Natural;
+      Path: Unbounded_String;
    end record;
 
    type SortingOrder is
