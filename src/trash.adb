@@ -23,8 +23,11 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with RefreshData; use RefreshData;
@@ -84,7 +87,7 @@ package body Trash is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       -- ****
       Directory, SubDirectory: Dir_Type;
       Last, SubLast: Natural;
@@ -93,6 +96,7 @@ package body Trash is
       Size: File_Size;
       FileLine, FullName, MimeType: Unbounded_String;
       Item: Item_Record;
+      PathButton: Ttk_Button;
    begin
       TemporaryStop := True;
       NewAction := SHOWTRASH;
@@ -206,33 +210,9 @@ package body Trash is
       end loop;
       Close(Directory);
       UpdateDirectoryList(True);
---      Foreach(ButtonBox, RemovePathButtons'Access);
---      Gtk_New(Button, "Trash");
---      Insert(ButtonBox, Button, -1);
---      On_Clicked(Button, PathClicked'Access);
---      Set_Tooltip_Text
---        (Gtk_Widget(Button), Gettext("Reload current directory [ALT+R]"));
---      Set_Accel_Path(Gtk_Widget(Button), "<mainwindow>/reload", Accelerators);
---      Show_All(ButtonBox);
---      Set_Sort_Func(FilesSort, 0, SortFiles'Access);
---      Set_Sort_Column_Id(FilesSort, 0, Sort_Ascending);
---      if MainWindow.Window /= null then
---         Set_Cursor(Get_Window(MainWindow.Window), Gdk_Cursor_New(Arrow));
---         Set_Sensitive(MainWindow.Window, True);
---      end if;
---      Setting := False;
---      Refilter
---        (-(Gtk.Tree_Model_Sort.Get_Model
---            (-(Gtk.Tree_View.Get_Model(DirectoryView)))));
---      if N_Children(Get_Model(DirectoryView), Null_Iter) = 0 then
---         CurrentSelected :=
---           To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files/");
---      else
---         Set_Cursor
---           (DirectoryView, Gtk_Tree_Path_New_From_String("0"), null, False);
---         Grab_Focus(DirectoryView);
---      end if;
---      ShowItem(Get_Selection(DirectoryView));
+      PathButton.Interp := Interp;
+      PathButton.Name := New_String(".mainframe.paned.directoryframe.pathframe.button1");
+      configure(PathButton, "-text {Trash} -command {ShowTrash}");
       return TCL_OK;
    end Show_Trash_Command;
 
