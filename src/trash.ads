@@ -13,6 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Interfaces.C;
+with CArgv;
+with Tcl; use Tcl;
+
 -- ****h* Hunter/Trash
 -- FUNCTION
 -- Provide code to manipulate system Trash
@@ -37,6 +41,19 @@ package Trash is
    -- SOURCE
 --   procedure PathClicked(Self: access Gtk_Button_Record'Class);
    -- ****
+
+   -- ****f* Trash/ShowTrash
+   -- FUNCTION
+   -- Show content of the Trash
+   -- PARAMETERS
+   -- Self - Gtk_Menu_Item which was clicked. Unused.
+   -- SOURCE
+   function Show_Trash_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
 
    -- ****f* Trash/CreateTrashUI
    -- FUNCTION

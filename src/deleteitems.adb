@@ -177,8 +177,8 @@ package body DeleteItems is
    begin
       DeleteButton.Interp := Get_Context;
       DeleteButton.Name :=
-        New_String(".mainframe.toolbars.actiontoolbar.deletebutton");
-      if Winfo_Get(DeleteButton, "ismapped") = "1" then
+        New_String(".mainframe.toolbars.actiontoolbar.restorebutton");
+      if Winfo_Get(DeleteButton, "ismapped") = "0" then
          NewAction := DELETE;
       else
          NewAction := DELETETRASH;

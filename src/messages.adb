@@ -16,6 +16,7 @@
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
@@ -35,6 +36,7 @@ with MainWindow; use MainWindow;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
+with Trash; use Trash;
 with Utils; use Utils;
 
 package body Messages is
@@ -112,6 +114,7 @@ package body Messages is
       -- ****
       OverwriteItem: Boolean := True;
       Response: constant String := CArgv.Arg(Argv, 1);
+      Hunter_Message_Exception: exception;
    begin
       if Response = "yesall" then
          YesForAll := True;
@@ -140,9 +143,11 @@ package body Messages is
                if NewAction = CLEARTRASH then
                   Tcl.Ada.Tcl_Eval
                     (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
---               elsif NewAction = DELETETRASH then
---                  ShowTrash(null);
---                  NewAction := DELETETRASH;
+               elsif NewAction = DELETETRASH then
+                  if Show_Trash_Command(ClientData, Interp, Argc, Argv) /= TCL_OK then
+                     raise Hunter_Message_Exception with "Can't show Trash";
+                  end if;
+                  NewAction := DELETETRASH;
                else
                   LoadDirectory(To_String(CurrentDirectory));
                   UpdateDirectoryList(True);
