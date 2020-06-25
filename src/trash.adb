@@ -23,11 +23,8 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces.C;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with CArgv;
-with Tcl; use Tcl;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with RefreshData; use RefreshData;
@@ -83,18 +80,6 @@ package body Trash is
 --      Reload;
 --   end PathClicked;
 
-   function Show_Trash_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-
-   -- ****if* Trash/ShowTrash
-   -- FUNCTION
-   -- Show content of the Trash
-   -- PARAMETERS
-   -- Self - Gtk_Menu_Item which was clicked. Unused.
-   -- SOURCE
    function Show_Trash_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)

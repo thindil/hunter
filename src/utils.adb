@@ -25,6 +25,7 @@ with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
@@ -177,6 +178,7 @@ package body Utils is
          To_Unbounded_String("delete"), To_Unbounded_String("options"),
          To_Unbounded_String("about"));
       CurrentButton: Positive;
+      DeleteMenu: Tk_Menu;
    begin
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(".mainframe.toolbars");
@@ -265,18 +267,22 @@ package body Utils is
          end if;
       end if;
       if Action = SHOWTRASH then
+         DeleteMenu.Interp := Get_Context;
+         DeleteMenu.Name := New_String(".deletemenu");
          if not Finished then
             Tcl.Tk.Ada.Pack.Pack
-               (Toolbar, "-after .mainframe.toolbars.actiontoolbar.deletebutton");
+              (Toolbar,
+               "-after .mainframe.toolbars.actiontoolbar.deletebutton");
             for I in ButtonsNames'Range loop
                if I /= CurrentButton then
                   Toolbar.Name :=
-                     New_String
-                        (".mainframe.toolbars.actiontoolbar." &
-                        To_String(ButtonsNames(I)) & "button");
-                     Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+                    New_String
+                      (".mainframe.toolbars.actiontoolbar." &
+                       To_String(ButtonsNames(I)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
                end if;
             end loop;
+            Entry_Configure(DeleteMenu, "0", "-label {Delete selected}");
          else
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
             for I in ButtonsNames'Range loop
@@ -305,21 +311,12 @@ package body Utils is
             Tcl.Tk.Ada.Pack.Pack_Configure
               (Toolbar,
                "-after .mainframe.toolbars.actiontoolbar.deletebutton");
+            if not Settings.DeleteFiles then
+               Entry_Configure
+                 (DeleteMenu, "0", "-label {Move selected to Trash}");
+            end if;
          end if;
       end if;
---      if Action = DELETETRASH and then Finished then
---         if Gtk.List_Store.N_Children
---             (-(Gtk.Tree_Model_Filter.Get_Model
---                 (-(Gtk.Tree_Model_Sort.Get_Model
---                     (-(Gtk.Tree_View.Get_Model(DirectoryView))))))) =
---           0 then
---            Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)));
---            Hide(Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)));
---         else
---            Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)));
---            Show_All(Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)));
---         end if;
---      end if;
       Toolbar.Name := New_String(".mainframe.toolbars.itemtoolbar");
       if Finished then
          Grid_Remove(HeaderLabel);
