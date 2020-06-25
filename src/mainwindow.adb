@@ -326,7 +326,8 @@ package body MainWindow is
                end loop;
             end if;
             -- Add new path buttons
-            if FrameName = "directory" then
+            if FrameName = "directory"
+              and then NewAction not in SHOWTRASH | DELETETRASH then
                Create(Tokens, To_String(CurrentDirectory), "/");
             else
                Create(Tokens, To_String(DestinationDirectory), "/");
