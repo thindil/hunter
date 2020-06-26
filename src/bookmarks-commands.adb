@@ -60,6 +60,9 @@ package body Bookmarks.Commands is
       -- ****
    begin
       if NewAction /= MOVE then
+         if NewAction = CLEARTRASH then
+            NewAction := SHOWTRASH;
+         end if;
          if NewAction = SHOWTRASH then
             ToggleToolButtons(NewAction, True);
          end if;

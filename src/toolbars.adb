@@ -254,7 +254,8 @@ package body Toolbars is
       end if;
       Menu.Add
         (ButtonMenu, "command", "-label {Show Trash} -command ShowTrash");
-      Menu.Add(ButtonMenu, "command", "-label ""Empty Trash""");
+      Menu.Add
+        (ButtonMenu, "command", "-label {Empty Trash} -command ClearTrash");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       ToolButton :=
         Create
