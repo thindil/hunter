@@ -36,23 +36,6 @@ with Utils; use Utils;
 
 package body Trash is
 
-   -- ****if* Trash/ClearTrash
-   -- FUNCTION
-   -- Show message to start clearing the trash.
-   -- PARAMETERS
-   -- Self - Gtk_Menu_Item which was clicked. Unused.
-   -- SOURCE
---   procedure ClearTrash(Self: access Gtk_Menu_Item_Record'Class) is
---      pragma Unreferenced(Self);
---      -- ****
---   begin
---      NewAction := CLEARTRASH;
---      ToggleToolButtons(NewAction);
---      ShowMessage
---        (Gettext("Remove all files and directories from Trash?"),
---         Message_Question);
---   end ClearTrash;
---
 --   -- ****if* Trash/RemovePathButtons
 --   -- FUNCTION
 --   -- Remove selected button from path buttons
@@ -275,10 +258,39 @@ package body Trash is
       return Show_Trash_Command(ClientData, Interp, Argc, Argv);
    end Restore_Item_Command;
 
+   -- ****f* Trash/Clear_Trash_Command
+   -- FUNCTION
+   -- Remove everything from the Trash
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- SOURCE
+   function Clear_Trash_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Clear_Trash_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+   begin
+      NewAction := CLEARTRASH;
+      ToggleToolButtons(NewAction);
+      ShowMessage("Remove all files and directories from Trash?", "question");
+      return TCL_OK;
+   end Clear_Trash_Command;
+
    procedure CreateTrashUI is
    begin
       AddCommand("ShowTrash", Show_Trash_Command'Access);
       AddCommand("RestoreItems", Restore_Item_Command'Access);
+      AddCommand("ClearTrash", Clear_Trash_Command'Access);
    end CreateTrashUI;
 
 end Trash;
