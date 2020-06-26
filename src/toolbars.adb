@@ -263,7 +263,10 @@ package body Toolbars is
       SetButton
         (ToolButton, "Discard all changes and back to files list \[Escape\]",
          "dialog-cancel");
-      ToolButton := Create(".mainframe.toolbars.actiontoolbar.restorebutton");
+      ToolButton :=
+        Create
+          (".mainframe.toolbars.actiontoolbar.restorebutton",
+           "-command RestoreItems");
       SetButton
         (ToolButton,
          "Restore selected file or directory from the trash \[ALT+R\]",

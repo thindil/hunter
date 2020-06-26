@@ -30,6 +30,7 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
+with Messages; use Messages;
 with RefreshData; use RefreshData;
 with Utils; use Utils;
 
@@ -211,55 +212,73 @@ package body Trash is
       Close(Directory);
       UpdateDirectoryList(True);
       PathButton.Interp := Interp;
-      PathButton.Name := New_String(".mainframe.paned.directoryframe.pathframe.button1");
+      PathButton.Name :=
+        New_String(".mainframe.paned.directoryframe.pathframe.button1");
       configure(PathButton, "-text {Trash} -command {ShowTrash}");
       return TCL_OK;
    end Show_Trash_Command;
 
---   procedure RestoreItem(Self: access Gtk_Tool_Button_Record'Class) is
---      pragma Unreferenced(Self);
---      RestoreInfo, FileLine, Destination, ItemType: Unbounded_String;
---      StartIndex: Positive;
---      FileInfo: File_Type;
---   begin
---      for Item of SelectedItems loop
---         StartIndex := Index(Item, "files");
---         RestoreInfo :=
---           Unbounded_Slice(Item, 1, StartIndex - 1) & "info" &
---           Unbounded_Slice(Item, StartIndex + 5, Length(Item)) &
---           To_Unbounded_String(".trashinfo");
---         Open(FileInfo, In_File, To_String(RestoreInfo));
---         Skip_Line(FileInfo);
---         for I in 1 .. 2 loop
---            FileLine := To_Unbounded_String(Get_Line(FileInfo));
---            if Slice(FileLine, 1, 4) = "Path" then
---               Destination := Unbounded_Slice(FileLine, 6, Length(FileLine));
---               if Ada.Directories.Exists(To_String(Destination)) then
---                  if Is_Directory(To_String(Destination)) then
---                     ItemType := To_Unbounded_String(Gettext("Directory"));
---                  else
---                     ItemType := To_Unbounded_String(Gettext("File"));
---                  end if;
---                  ShowMessage
---                    (Gettext("Can't restore ") & To_String(Destination) & " " &
---                     To_String(ItemType) & " " &
---                     Gettext("with that name exists."));
---                  Close(FileInfo);
---                  ShowTrash(null);
---                  return;
---               end if;
---               Rename(To_String(Item), Slice(FileLine, 6, Length(FileLine)));
---            end if;
---         end loop;
---         Close(FileInfo);
---         Delete_File(To_String(RestoreInfo));
---      end loop;
---      ShowTrash(null);
---   end RestoreItem;
+   -- ****f* Trash/Restore_Item_Command
+   -- FUNCTION
+   -- Restore the selected item
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- SOURCE
+   function Restore_Item_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Restore_Item_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      RestoreInfo, FileLine, Destination, ItemType: Unbounded_String;
+      StartIndex: Positive;
+      FileInfo: File_Type;
+   begin
+      for Item of SelectedItems loop
+         StartIndex := Index(Item, "files");
+         RestoreInfo :=
+           Unbounded_Slice(Item, 1, StartIndex - 1) & "info" &
+           Unbounded_Slice(Item, StartIndex + 5, Length(Item)) &
+           To_Unbounded_String(".trashinfo");
+         Open(FileInfo, In_File, To_String(RestoreInfo));
+         Skip_Line(FileInfo);
+         for I in 1 .. 2 loop
+            FileLine := To_Unbounded_String(Get_Line(FileInfo));
+            if Slice(FileLine, 1, 4) = "Path" then
+               Destination := Unbounded_Slice(FileLine, 6, Length(FileLine));
+               if Ada.Directories.Exists(To_String(Destination)) then
+                  if Is_Directory(To_String(Destination)) then
+                     ItemType := To_Unbounded_String("Directory");
+                  else
+                     ItemType := To_Unbounded_String("File");
+                  end if;
+                  ShowMessage
+                    ("Can't restore " & To_String(Destination) & " " &
+                     To_String(ItemType) & " " & "with that name exists.");
+                  Close(FileInfo);
+                  return Show_Trash_Command(ClientData, Interp, Argc, Argv);
+               end if;
+               Rename(To_String(Item), Slice(FileLine, 6, Length(FileLine)));
+            end if;
+         end loop;
+         Close(FileInfo);
+         Delete_File(To_String(RestoreInfo));
+      end loop;
+      return Show_Trash_Command(ClientData, Interp, Argc, Argv);
+   end Restore_Item_Command;
 
    procedure CreateTrashUI is
    begin
       AddCommand("ShowTrash", Show_Trash_Command'Access);
+      AddCommand("RestoreItems", Restore_Item_Command'Access);
    end CreateTrashUI;
 
 end Trash;
