@@ -24,15 +24,6 @@ with Tcl; use Tcl;
 package Trash is
 -- ****
 
-   -- ****f* Trash/RestoreItem
-   -- FUNCTION
-   -- Restore selected file or directory from the trash
-   -- PARAMETERS
-   -- Self - Gtk_Tool_Button which was clicked. Unused.
-   -- SOURCE
---   procedure RestoreItem(Self: access Gtk_Tool_Button_Record'Class);
-   -- ****
-
    -- ****f* Trash/PathClicked
    -- FUNCTION
    -- Go to selected location and show it in current directory view.
@@ -42,11 +33,14 @@ package Trash is
 --   procedure PathClicked(Self: access Gtk_Button_Record'Class);
    -- ****
 
-   -- ****f* Trash/ShowTrash
+   -- ****f* Trash/Show_Trash_Command
    -- FUNCTION
    -- Show content of the Trash
    -- PARAMETERS
-   -- Self - Gtk_Menu_Item which was clicked. Unused.
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
    -- SOURCE
    function Show_Trash_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
