@@ -21,6 +21,8 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
+with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
@@ -364,6 +366,63 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Cancel_Action_Command;
 
+   function Show_File_Menu_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* MainWindow-Commands/Show_File_Menu_Command
+      -- FUNCTION
+      -- Show menu for the selected items in current directory
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Show_File_Menu_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc);
+      -- ****
+      FileMenu: Tk_Menu;
+      Button: Ttk_Button;
+      ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
+        (To_Unbounded_String("itemtoolbar.runbutton"),
+         To_Unbounded_String("itemtoolbar.openbutton"),
+         To_Unbounded_String("itemtoolbar.openwithbutton"),
+         To_Unbounded_String("actiontoolbar.renamebutton"),
+         To_Unbounded_String("actiontoolbar.copybutton"),
+         To_Unbounded_String("actiontoolbar.movebutton"),
+         To_Unbounded_String("actiontoolbar.deletebutton"),
+         To_Unbounded_String("actiontoolbar.selectbutton"));
+      MenuLabels: constant array(ButtonsNames'Range) of Unbounded_String :=
+        (To_Unbounded_String("Execute"), To_Unbounded_String("Open"),
+         To_Unbounded_String("Open with..."), To_Unbounded_String("Rename"),
+         To_Unbounded_String("Copy"), To_Unbounded_String("Move"),
+         To_Unbounded_String("Delete"),
+         To_Unbounded_String("Select/Deselect all"));
+   begin
+      FileMenu.Interp := Interp;
+      FileMenu.Name := New_String(".filemenu");
+      Delete(FileMenu, "0", "end");
+      Button.Interp := Interp;
+      for I in ButtonsNames'Range loop
+         Button.Name :=
+           New_String(".mainframe.toolbars." & To_String(ButtonsNames(I)));
+         if Winfo_Get(Button, "ismapped") = "1" then
+            Add
+              (FileMenu, "command",
+               "-label {" & To_String(MenuLabels(I)) & "} -command {" &
+               Widget_Image(Button) & " invoke}");
+         end if;
+      end loop;
+      Tk_Popup(FileMenu, CArgv.Arg(Argv, 1), CArgv.Arg(Argv, 2));
+      return TCL_OK;
+   end Show_File_Menu_Command;
+
    procedure AddCommands is
    begin
       AddCommand("Sort", Sort_Command'Access);
@@ -371,6 +430,7 @@ package body MainWindow.Commands is
       AddCommand("ToggleSelection", Toggle_Selection_Command'Access);
       AddCommand("ArrangePath", Arrange_Path_Command'Access);
       AddCommand("CancelAction", Cancel_Action_Command'Access);
+      AddCommand("ShowFileMenu", Show_File_Menu_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 
