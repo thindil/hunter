@@ -13,8 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
 with Tcl; use Tcl;
@@ -423,6 +427,49 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Show_File_Menu_Command;
 
+   function Show_File_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* MainWindow-Commands/Show_File_Command
+      -- FUNCTION
+      -- Show content of the selected file. Used in about menu
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed. Unused
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command. Unused
+      -- SOURCE
+   function Show_File_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc);
+      -- ****
+   begin
+      CurrentDirectory :=
+        To_Unbounded_String
+          (Normalize_Pathname
+             (Containing_Directory(Containing_Directory(Command_Name))));
+      if Ada.Directories.Exists
+          (Value("APPDIR", "") & "/usr/share/doc/hunter") then
+         CurrentDirectory :=
+           To_Unbounded_String(Value("APPDIR", "") & "/usr/share/doc/hunter");
+      end if;
+      LoadDirectory(To_String(CurrentDirectory));
+      for I in ItemsList.Iterate loop
+         if ItemsList(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
+            CurrentSelected := CurrentDirectory & "/" & ItemsList(I).Name;
+            exit;
+         end if;
+      end loop;
+      UpdateDirectoryList(True);
+      ShowPreview;
+      return TCL_OK;
+   end Show_File_Command;
+
    procedure AddCommands is
    begin
       AddCommand("Sort", Sort_Command'Access);
@@ -431,6 +478,7 @@ package body MainWindow.Commands is
       AddCommand("ArrangePath", Arrange_Path_Command'Access);
       AddCommand("CancelAction", Cancel_Action_Command'Access);
       AddCommand("ShowFileMenu", Show_File_Menu_Command'Access);
+      AddCommand("ShowFile", Show_File_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 
