@@ -27,6 +27,7 @@ with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
@@ -111,7 +112,8 @@ package body MainWindow is
       Button: Ttk_Button;
       PathButtonsFrame: constant Ttk_Frame :=
         Create(".mainframe.paned.directoryframe.pathframe");
-      pragma Unreferenced(Image, ProgressBar, HeaderLabel);
+      FileMenu: constant Tk_Menu := Create(".filemenu", "-tearoff false");
+      pragma Unreferenced(Image, ProgressBar, HeaderLabel, FileMenu);
    begin
       AddCommands;
       CreateSearchUI;
@@ -186,6 +188,7 @@ package body MainWindow is
       Bind(DirectoryTree, "<Double-1>", "ActivateItem");
       Bind(DirectoryTree, "<Return>", "ActivateItem");
       Bind(DirectoryTree, "<<TreeviewSelect>>", "ShowSelected");
+      Bind(DirectoryTree, "<3>", "{ShowFileMenu %X %Y}");
       Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 3 -sticky nswe");
