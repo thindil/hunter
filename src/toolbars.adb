@@ -290,9 +290,15 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".aboutmenu", "-tearoff false");
       Menu.Add(ButtonMenu, "command", "-label ""About the program""");
-      Menu.Add(ButtonMenu, "command", "-label ""Show README""");
-      Menu.Add(ButtonMenu, "command", "-label ""Show list of changes""");
-      Menu.Add(ButtonMenu, "command", "-label ""Get involved""");
+      Menu.Add
+        (ButtonMenu, "command",
+         "-label {Show README} -command {ShowFile README.md}");
+      Menu.Add
+        (ButtonMenu, "command",
+         "-label {Show list of changes} -command {ShowFile CHANGELOG.md}");
+      Menu.Add
+        (ButtonMenu, "command",
+         "-label {Get involved} -command {ShowFile CONTRIBUTING.md}");
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
       Tcl.Tk.Ada.Grid.Grid(Label);
