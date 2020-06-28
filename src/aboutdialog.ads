@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -13,8 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Gtk.Window; use Gtk.Window;
-
 -- ****h* Hunter/AboutDialog
 -- FUNCTION
 -- Provides code for showing About the program dialog
@@ -22,14 +20,11 @@ with Gtk.Window; use Gtk.Window;
 package AboutDialog is
 -- ****
 
-   -- ****f* AboutDialog/ShowAboutDialog
+   -- ****f* AboutDialog/CreateAboutUI
    -- FUNCTION
-   -- Create and show About Dialog to the user
-   -- PARAMETERS
-   -- Parent - Gtk_Window which will be parent for the dialog. Should be always
-   --          main window.
+   -- Create about UI
    -- SOURCE
-   procedure ShowAboutDialog(Parent: Gtk_Window);
+   procedure CreateAboutUI;
    -- ****
 
 end AboutDialog;

@@ -42,6 +42,7 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with AboutDialog; use AboutDialog;
 with ActivateItems; use ActivateItems;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
@@ -166,6 +167,7 @@ package body MainWindow is
       CreateCopyUI;
       CreateMoveUI;
       CreateTrashUI;
+      CreateAboutUI;
       Add(Paned, DirectoryFrame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");

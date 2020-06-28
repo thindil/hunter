@@ -289,7 +289,9 @@ package body Toolbars is
          "help-about");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".aboutmenu", "-tearoff false");
-      Menu.Add(ButtonMenu, "command", "-label ""About the program""");
+      Menu.Add
+        (ButtonMenu, "command",
+         "-label {About the program} -command ShowAbout");
       Menu.Add
         (ButtonMenu, "command",
          "-label {Show README} -command {ShowFile README.md}");
