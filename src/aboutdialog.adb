@@ -13,8 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with Ada.Directories; use Ada.Directories;
---with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -31,6 +29,8 @@ use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
+with Tcl.Tk.Ada.Widgets.TtkNotebook; use Tcl.Tk.Ada.Widgets.TtkNotebook;
+with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Utils; use Utils;
 
@@ -103,8 +103,10 @@ package body AboutDialog is
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
       Label: Ttk_Label;
       Frame: Ttk_Frame;
-      Width: Positive;
+      Width, Height: Positive;
       WebsiteButton: Ttk_Button;
+      Creditsbook: constant Ttk_Notebook := Create(".aboutdialog.credits");
+      View: Ttk_Tree_View;
    begin
       if Tcl.Tk.Ada.Busy.Status(MainWindow) = "0" then
          Tcl.Tk.Ada.Busy.Busy(MainWindow);
@@ -119,6 +121,7 @@ package body AboutDialog is
            "-text {Hunter - Graphical file manager for Linux}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Width := Width + Positive'Value(Winfo_Get(Label, "reqwidth"));
+      Height := Positive'Value(Winfo_Get(Label, "reqheight")) * 15;
       Label :=
         Create
           (Widget_Image(Frame) & ".copyright",
@@ -139,11 +142,21 @@ package body AboutDialog is
            "-text {Website} -command {OpenLink http://thindil.github.io/hunter/} -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(WebsiteButton);
       Tcl.Tk.Ada.Grid.Grid(Frame, "-row 0 -column 1 -sticky nwe");
+      Tcl.Tk.Ada.Grid.Grid(Creditsbook, "-columnspan 2 -sticky nwes");
+      Frame := Create(Widget_Image(Creditsbook) & ".programmers");
+      View :=
+        Create
+          (Widget_Image(Frame) & ".view",
+           "-show tree -selectmode none -height 5");
+      Column(View, "#0", "-stretch true -width" & Positive'Image(Width - 50));
+      Insert(View, "{} end -text {Bartek Jasicki <thindil@laeran.pl>}");
+      Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
+      Add(Creditsbook, Widget_Image(Frame), "-text {Programmers}");
       Tcl.Tk.Ada.Grid.Grid(CloseButton, "-columnspan 2");
       Bind
         (AboutDialog, "<Alt-c>",
          "{CloseDialog " & Widget_Image(AboutDialog) & "}");
-      SetDialog(AboutDialog, "Hunter - About", Width, 300);
+      SetDialog(AboutDialog, "Hunter - About", Width, Height);
       return TCL_OK;
    end Show_About_Command;
 
