@@ -750,7 +750,7 @@ package body Preferences.Commands is
       Height := Positive'Value(Winfo_Get(CloseButton, "reqheight")) * 18;
       Bind
         (PreferencesDialog, "<Alt-c>",
-         "{CloseDialog " & Widget_Image(PreferencesDialog) & "}");
+         "{ClosePreferences " & Widget_Image(PreferencesDialog) & "}");
       SetDialog(PreferencesDialog, "Hunter - Preferences", Width + 10, Height);
       return TCL_OK;
    end Show_Preferences_Command;
