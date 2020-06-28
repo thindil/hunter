@@ -15,10 +15,12 @@
 
 --with Ada.Directories; use Ada.Directories;
 --with Ada.Environment_Variables; use Ada.Environment_Variables;
---with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Busy;
 with Tcl.Tk.Ada.Grid;
@@ -27,6 +29,9 @@ with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Utils; use Utils;
 
 package body AboutDialog is
@@ -93,24 +98,104 @@ package body AboutDialog is
       CloseButton: constant Ttk_Button :=
         Create
           (Widget_Image(AboutDialog) & ".closebutton",
-           "-text {Close} -command {CloseDialog " &
-           Widget_Image(AboutDialog) & "} -underline 0");
+           "-text {Close} -command {CloseDialog " & Widget_Image(AboutDialog) &
+           "} -underline 0");
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
+      Label: Ttk_Label;
+      Frame: Ttk_Frame;
+      Width: Positive;
+      WebsiteButton: Ttk_Button;
    begin
       if Tcl.Tk.Ada.Busy.Status(MainWindow) = "0" then
          Tcl.Tk.Ada.Busy.Busy(MainWindow);
       end if;
-      Tcl.Tk.Ada.Grid.Grid(CloseButton);
+      Label := Create(".aboutdialog.logo", "-image logo");
+      Tcl.Tk.Ada.Grid.Grid(Label);
+      Width := Positive'Value(Winfo_Get(Label, "reqwidth"));
+      Frame := Create(".aboutdialog.general");
+      Label :=
+        Create
+          (Widget_Image(Frame) & ".info",
+           "-text {Hunter - Graphical file manager for Linux}");
+      Tcl.Tk.Ada.Grid.Grid(Label);
+      Width := Width + Positive'Value(Winfo_Get(Label, "reqwidth"));
+      Label :=
+        Create
+          (Widget_Image(Frame) & ".copyright",
+           "-text {© Bartek Jasicki 2019-2020}");
+      Tcl.Tk.Ada.Grid.Grid(Label);
+      Label :=
+        Create
+          (Widget_Image(Frame) & ".license", "-text {License: GNU GPL v3}");
+      Tcl.Tk.Ada.Grid.Grid(Label);
+      Label :=
+        Create
+          (Widget_Image(Frame) & ".version",
+           "-text {Version: 1.3 (development)}");
+      Tcl.Tk.Ada.Grid.Grid(Label);
+      WebsiteButton :=
+        Create
+          (Widget_Image(Frame) & ".website",
+           "-text {Website} -command {OpenLink http://thindil.github.io/hunter/} -style Toolbutton");
+      Tcl.Tk.Ada.Grid.Grid(WebsiteButton);
+      Tcl.Tk.Ada.Grid.Grid(Frame, "-row 0 -column 1 -sticky nwe");
+      Tcl.Tk.Ada.Grid.Grid(CloseButton, "-columnspan 2");
       Bind
         (AboutDialog, "<Alt-c>",
          "{CloseDialog " & Widget_Image(AboutDialog) & "}");
-      SetDialog(AboutDialog, "Hunter - About", 400, 300);
+      SetDialog(AboutDialog, "Hunter - About", Width, 300);
       return TCL_OK;
    end Show_About_Command;
+
+   -- ****if* AboutDialog/Open_Link_Command
+   -- FUNCTION
+   -- Open the selected link in the default web browser
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
+   function Open_Link_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Open_Link_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc);
+      OsName: constant String := Tcl_GetVar(Get_Context, "tcl_platform(os)");
+      Command: Unbounded_String;
+      ProcessId: Process_Id;
+      Azip_Execute_Error: exception;
+   begin
+      if OsName = "Windows" then
+         Command := To_Unbounded_String(Locate_Exec_On_Path("start").all);
+      elsif OsName = "Linux" then
+         Command := To_Unbounded_String(Locate_Exec_On_Path("xdg-open").all);
+      elsif OsName = "Darwin" then
+         Command := To_Unbounded_String(Locate_Exec_On_Path("open").all);
+      end if;
+      ProcessId :=
+        Non_Blocking_Spawn
+          (To_String(Command),
+           Argument_String_To_List(CArgv.Arg(Argv, 1)).all);
+      if ProcessId = Invalid_Pid then
+         raise Azip_Execute_Error with "Can't open link";
+      end if;
+      return TCL_OK;
+   end Open_Link_Command;
 
    procedure CreateAboutUI is
    begin
       AddCommand("ShowAbout", Show_About_Command'Access);
+      AddCommand("OpenLink", Open_Link_Command'Access);
    end CreateAboutUI;
 
 end AboutDialog;
