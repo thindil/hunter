@@ -497,7 +497,8 @@ package body ShowItems is
       Label.Name := New_String(Widget_Image(PreviewFrame) & ".title");
       configure(Label, "-text {Information}");
       Button.Interp := Label.Interp;
-      if MimeType not in "text" | "image" then
+      if (MimeType'Length > 4 and MimeType(1 .. 4) not in "text" | "imag") and
+        not Is_Directory(SelectedItem) then
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
