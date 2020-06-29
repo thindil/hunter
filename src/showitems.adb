@@ -25,7 +25,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
-with Tcl.Ada;
+with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Image; use Tcl.Tk.Ada.Image;
@@ -414,11 +414,12 @@ package body ShowItems is
                end;
             elsif MimeType(1 .. 5) = "image" then
                declare
-                  Image: constant Tk_Photo :=
-                    Create
-                      ("previewimage", "-file " & To_String(CurrentSelected));
+                  Image: Tk_Photo;
                   StartX, StartY, ImageWidth, ImageHeight: Natural;
                begin
+                  Image :=
+                    Create
+                      ("previewimage", "-file " & To_String(CurrentSelected));
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
@@ -455,6 +456,24 @@ package body ShowItems is
                        (PreviewYScroll, "-side right -fill y");
                   end if;
                   Tcl.Tk.Ada.Pack.Pack(PreviewCanvas, "-side top");
+               exception
+                  when Tcl_Error_Exception =>
+                     declare
+                        ActionButton: Ttk_RadioButton;
+                     begin
+                        Button.Name :=
+                          New_String
+                            (".mainframe.toolbars.itemtoolbar.previewbutton");
+                        Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+                        ActionButton.Name :=
+                          New_String
+                            (".mainframe.toolbars.itemtoolbar.infobutton");
+                        ActionButton.Interp := Get_Context;
+                        if Invoke(ActionButton) /= "" then
+                           raise Hunter_Show_Items_Exception
+                             with "Can't show file or directory info";
+                        end if;
+                     end;
                end;
             else
                declare
