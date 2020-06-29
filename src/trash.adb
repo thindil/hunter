@@ -27,6 +27,8 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -198,6 +200,7 @@ package body Trash is
       PathButton.Name :=
         New_String(".mainframe.paned.directoryframe.pathframe.button1");
       configure(PathButton, "-text {Trash} -command {ShowTrash}");
+      Bind_To_Main_Window(Interp, "<Alt-r>", "{RestoreItems}");
       return TCL_OK;
    end Show_Trash_Command;
 

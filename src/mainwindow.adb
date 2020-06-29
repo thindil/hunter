@@ -153,6 +153,11 @@ package body MainWindow is
       Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
       Bind_To_Main_Window(Interp, "<Alt-o>", "{ActivateItem}");
+      Bind_To_Main_Window(Interp, "<Control-a>", "{ToggleSelection}");
+      Bind_To_Main_Window(Interp, "<Control-r>", "{ToggleRename}");
+      Bind_To_Main_Window(Interp, "<Alt-c>", "{CopyData}");
+      Bind_To_Main_Window(Interp, "<Alt-m>", "{MoveData}");
+      Bind_To_Main_Window(Interp, "<Alt-p>", "{ShowPreferences}");
       Tcl.Tk.Ada.Pack.Pack(MainFrame, "-expand true -fill both");
       CreateActionToolbar;
       CreateBookmarkMenu(True);
