@@ -392,7 +392,9 @@ package body MainWindow is
                Bind_To_Main_Window
                  (PathButton.Interp, "<" & To_String(Shortcut) & ">",
                   "{" & Widget_Image(PathButton) & " invoke}");
-               Add(PathButton, To_String(Tooltip));
+               if I < 11 then
+                  Add(PathButton, To_String(Tooltip));
+               end if;
             end loop;
          end if;
       else
