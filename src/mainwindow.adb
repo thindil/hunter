@@ -158,6 +158,11 @@ package body MainWindow is
       Bind_To_Main_Window(Interp, "<Alt-c>", "{CopyData}");
       Bind_To_Main_Window(Interp, "<Alt-m>", "{MoveData}");
       Bind_To_Main_Window(Interp, "<Alt-p>", "{ShowPreferences}");
+      Bind_To_Main_Window(Interp, "<Alt-w>", "{ToggleExecuteWith}");
+      Bind_To_Main_Window(Interp, "<Alt-i>", "{ShowPreviewOrInfo}");
+      Bind_To_Main_Window(Interp, "<Alt-v>", "{ShowPreviewOrInfo}");
+      Bind_To_Main_Window(Interp, "<Alt-b>", "{AddBookmark}");
+      Bind_To_Main_Window(Interp, "<Alt-r>", "{RemoveBookmark}");
       Tcl.Tk.Ada.Pack.Pack(MainFrame, "-expand true -fill both");
       CreateActionToolbar;
       CreateBookmarkMenu(True);
