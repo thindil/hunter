@@ -368,7 +368,7 @@ package body Toolbars is
           (".mainframe.toolbars.itemtoolbar.deletebutton",
            "-command RemoveBookmark");
       SetButton
-        (ToolButton, "Remove bookmark to this directory \[ALT+B\]",
+        (ToolButton, "Remove bookmark to this directory \[ALT+R\]",
          "list-remove");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Tcl.Tk.Ada.Grid.Grid(Toolbar);
