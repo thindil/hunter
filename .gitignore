@@ -1,7 +1,12 @@
 bin/hunter
-obj
-tests/driver/test_runner
-LC_MESSAGES
+bin/highlight
+bin/xdg-open
 bin/gmon.out
+lib
+obj
+share/file
+share/hightlight
+tests/driver/test_runner
 gcov
 gprofreport.txt
+ru.sh
