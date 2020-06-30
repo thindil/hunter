@@ -1047,13 +1047,13 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack
         (Frame, "-after .mainframe.paned.previewframe.title -fill x");
       configure
-        (PreviewYScroll,
-         "-command [list .mainframe.paned.previewframe.directorytree yview]");
-      Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side bottom -fill x");
-      configure
         (PreviewXScroll,
          "-command [list .mainframe.paned.previewframe.directorytree xview]");
-      Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
+      configure
+        (PreviewYScroll,
+         "-command [list .mainframe.paned.previewframe.directorytree yview]");
+      Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
       configure(PreviewTree, "-selectmode browse");
       Tcl.Tk.Ada.Pack.Pack(PreviewTree, "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
