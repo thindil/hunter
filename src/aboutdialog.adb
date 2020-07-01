@@ -36,42 +36,6 @@ with Utils; use Utils;
 
 package body AboutDialog is
 
---   procedure ShowAboutDialog(Parent: Gtk_Window) is
---      AboutDialog: constant Gtk_About_Dialog := Gtk_About_Dialog_New;
---      Error: GError;
---      LogoBuf: Gdk_Pixbuf;
---      IconName: Unbounded_String;
---   begin
---      Set_Transient_For(Gtk_Window(AboutDialog), Parent);
---      Set_Program_Name(AboutDialog, "Hunter");
---      Set_License_Type(AboutDialog, License_Gpl_3_0);
---      Set_Comments(AboutDialog, "Graphical File Manager for Linux");
---      Set_Copyright(AboutDialog, "(c) 2019 Bartek thindil Jasicki");
---      Set_Authors
---        (AboutDialog,
---         (new String'("Bartek thindil Jasicki <thindil@laeran.pl>"),
---          new String'("")));
---      Set_Translator_Credits(AboutDialog, Gettext("translator-credits"));
---      if Ada.Directories.Exists
---          (Value("APPDIR", "") & "/usr/share/doc/hunter") then
---         IconName :=
---           To_Unbounded_String(Value("APPDIR", "") & "/hunter-icon.png");
---      else
---         IconName :=
---           To_Unbounded_String
---             (Containing_Directory(Current_Directory) &
---              "/others/hunter-icon.png");
---      end if;
---      Gdk_New_From_File(LogoBuf, To_String(IconName), Error);
---      Set_Logo(AboutDialog, LogoBuf);
---      Set_Version(AboutDialog, "1.2.1");
---      Set_Website(AboutDialog, "https://thindil.github.io/hunter/");
---      Set_Website_Label(AboutDialog, "Website");
---      if Run(Gtk_Dialog(AboutDialog)) = Gtk_Response_Delete_Event then
---         Destroy(Gtk_Widget(AboutDialog));
---      end if;
---   end ShowAboutDialog;
-
    function Show_About_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
