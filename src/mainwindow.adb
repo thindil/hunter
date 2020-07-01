@@ -146,23 +146,47 @@ package body MainWindow is
       Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
       Bind_To_Main_Window
         (Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
-      Bind_To_Main_Window(Interp, "<Alt-f>", "{ToggleSearch}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-f>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.searchbutton}");
       Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
       Bind_To_Main_Window
         (Interp, "<Control-Delete>", "{tk_popup .deletemenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
-      Bind_To_Main_Window(Interp, "<Alt-o>", "{ActivateItem}");
-      Bind_To_Main_Window(Interp, "<Control-a>", "{ToggleSelection}");
-      Bind_To_Main_Window(Interp, "<Control-r>", "{ToggleRename}");
-      Bind_To_Main_Window(Interp, "<Alt-c>", "{CopyData}");
-      Bind_To_Main_Window(Interp, "<Alt-m>", "{MoveData}");
-      Bind_To_Main_Window(Interp, "<Alt-p>", "{ShowPreferences}");
-      Bind_To_Main_Window(Interp, "<Alt-w>", "{ToggleExecuteWith}");
-      Bind_To_Main_Window(Interp, "<Alt-i>", "{ShowPreviewOrInfo}");
-      Bind_To_Main_Window(Interp, "<Alt-v>", "{ShowPreviewOrInfo}");
-      Bind_To_Main_Window(Interp, "<Alt-b>", "{AddBookmark}");
-      Bind_To_Main_Window(Interp, "<Alt-r>", "{RemoveBookmark}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-o>",
+         "{InvokeButton .mainframe.toolbars.itemtoolbar.openbutton}");
+      Bind_To_Main_Window
+        (Interp, "<Control-a>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.selectbutton}");
+      Bind_To_Main_Window
+        (Interp, "<Control-r>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.renamebutton}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-c>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.copybutton}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-m>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.movebutton}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-p>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.optionsbutton}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-w>",
+         "{InvokeButton .mainframe.toolbars.itemtoolbar.openwithbutton}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-i>",
+         "{InvokeButton .mainframe.toolbars.itemtoolbar.infobutton}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-v>",
+         "{InvokeButton .mainframe.toolbars.itemtoolbar.previewbutton}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-b>",
+         "{InvokeButton .mainframe.toolbars.itemtoolbar.addbutton}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-r>",
+         "{InvokeButton .mainframe.toolbars.itemtoolbar.deletebutton}");
       Tcl.Tk.Ada.Pack.Pack(MainFrame, "-expand true -fill both");
       CreateActionToolbar;
       CreateBookmarkMenu(True);

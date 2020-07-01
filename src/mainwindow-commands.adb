@@ -470,6 +470,42 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Show_File_Command;
 
+   function Invoke_Button_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+
+      -- ****if* MainWindow-Commands/Invoke_Button_Command
+      -- FUNCTION
+      -- Invoke the selected button if it is mapped
+      -- PARAMETERS
+      -- ClientData - Custom data send to the command. Unused
+      -- Interp     - Tcl interpreter in which command was executed.
+      -- Argc       - Number of arguments passed to the command. Unused
+      -- Argv       - Values of arguments passed to the command.
+      -- SOURCE
+   function Invoke_Button_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc);
+      -- ****
+      Button: Ttk_Button;
+      Hunter_Button_Exception: exception;
+   begin
+      Button.Interp := Interp;
+      Button.Name := New_String(CArgv.Arg(Argv, 1));
+      if Winfo_Get(Button, "ismapped") = "0" then
+         return TCL_OK;
+      end if;
+      if Invoke(Button) /= "" then
+         raise Hunter_Button_Exception
+           with "Can't invoke button " & CArgv.Arg(Argv, 1);
+      end if;
+      return TCL_OK;
+   end Invoke_Button_Command;
+
    procedure AddCommands is
    begin
       AddCommand("Sort", Sort_Command'Access);
@@ -479,6 +515,7 @@ package body MainWindow.Commands is
       AddCommand("CancelAction", Cancel_Action_Command'Access);
       AddCommand("ShowFileMenu", Show_File_Menu_Command'Access);
       AddCommand("ShowFile", Show_File_Command'Access);
+      AddCommand("InvokeButton", Invoke_Button_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 
