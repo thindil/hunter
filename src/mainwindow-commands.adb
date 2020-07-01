@@ -357,10 +357,12 @@ package body MainWindow.Commands is
          CopyItemsList.Clear;
          ActionButton.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.copybutton");
+         ShowPreview;
       elsif NewAction = MOVE then
          MoveItemsList.Clear;
          ActionButton.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.movebutton");
+         ShowPreview;
       end if;
       if State(ActionButton) = "selected" then
          State(ActionButton, "!selected");
