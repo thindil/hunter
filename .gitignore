@@ -5,8 +5,8 @@ bin/gmon.out
 lib
 obj
 share/file
-share/hightlight
+share/highlight
 tests/driver/test_runner
 gcov
 gprofreport.txt
-ru.sh
+run.sh
