@@ -145,14 +145,20 @@ package body MainWindow is
       Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
       Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
       Bind_To_Main_Window
-        (Interp, "<Alt-h>", "{tk_popup .bookmarksmenu %X %Y}");
+        (Interp, "<Alt-h>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.bookmarksbutton}");
       Bind_To_Main_Window
         (Interp, "<Alt-f>",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.searchbutton}");
-      Bind_To_Main_Window(Interp, "<Alt-n>", "{tk_popup .newmenu %X %Y}");
       Bind_To_Main_Window
-        (Interp, "<Control-Delete>", "{tk_popup .deletemenu %X %Y}");
-      Bind_To_Main_Window(Interp, "<Alt-a>", "{tk_popup .aboutmenu %X %Y}");
+        (Interp, "<Alt-n>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.newbutton}");
+      Bind_To_Main_Window
+        (Interp, "<Control-Delete>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.deletebutton}");
+      Bind_To_Main_Window
+        (Interp, "<Alt-a>",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.aboutbutton}");
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
       Bind_To_Main_Window
         (Interp, "<Alt-o>",

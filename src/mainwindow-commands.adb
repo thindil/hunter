@@ -22,7 +22,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
 with Tcl; use Tcl;
-with Tcl.Ada;
+with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -495,10 +495,44 @@ package body MainWindow.Commands is
       -- ****
       Button: Ttk_Button;
       Hunter_Button_Exception: exception;
+      Menu: Tk_Menu;
    begin
       Button.Interp := Interp;
       Button.Name := New_String(CArgv.Arg(Argv, 1));
       if Winfo_Get(Button, "ismapped") = "0" then
+         return TCL_OK;
+      end if;
+      Menu.Interp := Interp;
+      if CArgv.Arg(Argv, 1) =
+        ".mainframe.toolbars.actiontoolbar.bookmarksbutton" then
+         Menu.Name := New_String(".bookmarksmenu");
+         Tk_Popup
+           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+            Winfo_Get(Get_Main_Window(Interp), "pointery"));
+         return TCL_OK;
+      end if;
+      if CArgv.Arg(Argv, 1) =
+        ".mainframe.toolbars.actiontoolbar.newbutton" then
+         Menu.Name := New_String(".newmenu");
+         Tk_Popup
+           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+            Winfo_Get(Get_Main_Window(Interp), "pointery"));
+         return TCL_OK;
+      end if;
+      if CArgv.Arg(Argv, 1) =
+        ".mainframe.toolbars.actiontoolbar.deletebutton" then
+         Menu.Name := New_String(".deletemenu");
+         Tk_Popup
+           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+            Winfo_Get(Get_Main_Window(Interp), "pointery"));
+         return TCL_OK;
+      end if;
+      if CArgv.Arg(Argv, 1) =
+        ".mainframe.toolbars.actiontoolbar.aboutbutton" then
+         Menu.Name := New_String(".aboutmenu");
+         Tk_Popup
+           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+            Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
       if Invoke(Button) /= "" then
