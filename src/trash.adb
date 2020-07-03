@@ -1,4 +1,3 @@
--- /home/thindil/Projekty/hunter/hunter/src/trash.adb
 -- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
@@ -14,10 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
---with GNAT.String_Split; use GNAT.String_Split;
---with Messages; use Messages;
---with ShowItems; use ShowItems;
---with Toolbars; use Toolbars;
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
@@ -37,37 +32,6 @@ with RefreshData; use RefreshData;
 with Utils; use Utils;
 
 package body Trash is
-
---   -- ****if* Trash/RemovePathButtons
---   -- FUNCTION
---   -- Remove selected button from path buttons
---   -- PARAMETERS
---   -- Widget - Button to remove
---   -- SOURCE
---   procedure RemovePathButtons
---     (Widget: not null access Gtk_Widget_Record'Class) is
---   -- ****
---   begin
---      Set_Accel_Path(Widget, "", Accelerators);
---      Destroy(Widget);
---   end RemovePathButtons;
---
---   procedure PathClicked(Self: access Gtk_Button_Record'Class) is
---      Tokens: Slice_Set;
---      Index: constant Gint := Get_Index(Gtk_Flow_Box_Child(Get_Parent(Self)));
---   begin
---      if Index = 0 then
---         ShowTrash(null);
---         return;
---      end if;
---      Create(Tokens, To_String(CurrentDirectory), "/");
---      CurrentDirectory :=
---        To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
---      for I in 2 .. (Index + 1) loop
---         Append(CurrentDirectory, "/" & Slice(Tokens, Slice_Number(I)));
---      end loop;
---      Reload;
---   end PathClicked;
 
    function Show_Trash_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
