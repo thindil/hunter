@@ -36,12 +36,6 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Bookmarks; use Bookmarks;
 with Messages; use Messages;
 with Preferences; use Preferences;
---with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
---with Bookmarks; use Bookmarks;
---with LoadData; use LoadData;
---with Preferences; use Preferences;
---with ShowItems; use ShowItems;
---with Toolbars; use Toolbars;
 
 package body Utils is
 
@@ -361,29 +355,5 @@ package body Utils is
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 0 -row 0 -columnspan 2");
       end if;
    end ToggleToolButtons;
-
---   procedure ToggleActionButtons is
---      Visible: Boolean;
---   begin
---      if N_Children(Get_Model(DirectoryView), Null_Iter) = 0 then
---         Visible := False;
---      else
---         Visible := True;
---      end if;
---      if NewAction /= SHOWTRASH then
---         for I in 5 .. 8 loop
---            Set_Visible
---              (Gtk_Widget(Get_Nth_Item(ActionToolBar, Gint(I))), Visible);
---         end loop;
---      else
---         Set_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 8)), Visible);
---         Set_Visible(Gtk_Widget(Get_Nth_Item(ActionToolBar, 10)), Visible);
---      end if;
---   end ToggleActionButtons;
---
---   procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class) is
---   begin
---      Destroy(Widget);
---   end RemoveChild;
 
 end Utils;
