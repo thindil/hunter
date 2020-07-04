@@ -24,15 +24,6 @@ with Tcl; use Tcl;
 package Trash is
 -- ****
 
-   -- ****f* Trash/PathClicked
-   -- FUNCTION
-   -- Go to selected location and show it in current directory view.
-   -- PARAMETERS
-   -- Self - Button which was clicked by user
-   -- SOURCE
---   procedure PathClicked(Self: access Gtk_Button_Record'Class);
-   -- ****
-
    -- ****f* Trash/Show_Trash_Command
    -- FUNCTION
    -- Show content of the Trash
