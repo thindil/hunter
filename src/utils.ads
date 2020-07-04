@@ -134,19 +134,4 @@ package Utils is
      (Action: ItemActions; Finished: Boolean := False);
    -- ****
 
-   -- ****f* Utils/ToggleActionButtons
-   -- FUNCTION
-   -- Show or hide files and directories actions buttons
-   -- SOURCE
-   --  procedure ToggleActionButtons;
-   -- ****
-
-   -- ****f* Utils/RemoveChild
-   -- FUNCTION
-   -- Remove all children from preview window
-   -- Widget - Gtk_Widget to remove
-   -- SOURCE
---   procedure RemoveChild(Widget: not null access Gtk_Widget_Record'Class);
-   -- ****
-
 end Utils;
