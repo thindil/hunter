@@ -506,6 +506,7 @@ package body ShowItems is
       SelectedItem: constant String := To_String(CurrentSelected);
       Button: Ttk_Button;
       MimeType: constant String := GetMimeType(SelectedItem);
+      DirectorySize: Natural := 0;
    begin
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
@@ -538,9 +539,19 @@ package body ShowItems is
       end if;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".size");
       if Is_Directory(SelectedItem) then
-         configure
-           (Label,
-            "-text {" & Natural'Image(Natural(SecondItemsList.Length)) & "}");
+         if Settings.ShowHidden then
+            configure
+              (Label,
+               "-text {" & Natural'Image(Natural(SecondItemsList.Length)) &
+               "}");
+         else
+            for Item of SecondItemsList loop
+               if not Item.IsHidden then
+                  DirectorySize := DirectorySize + 1;
+               end if;
+            end loop;
+            configure(Label, "-text {" & Natural'Image(DirectorySize) & "}");
+         end if;
       elsif Is_Regular_File(SelectedItem) then
          configure(Label, "-text {" & CountFileSize(Size(SelectedItem)) & "}");
       else
