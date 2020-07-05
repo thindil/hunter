@@ -67,29 +67,31 @@ package body ActivateItems is
       return Pid;
    end ExecuteFile;
 
+   -- ****if* ActivateItems/Activate_Item_Command
+   -- FUNCTION
+   -- "Activate" selected file or directory. Action depends on what selected
+   -- item is. For example: it go to selected directory, opens text files in
+   -- editor and so on.
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Activate_Item_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ActivateItems/Activate_Item_Command
-      -- FUNCTION
-      -- "Activate" selected file or directory. Action depends on what selected
-      -- item is. For example: it go to selected directory, opens text files in
-      -- editor and so on.
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Activate_Item_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       DirectoryTree: Ttk_Tree_View;
       Tokens: Slice_Set;
       FileName, Items: Unbounded_String;
@@ -160,28 +162,30 @@ package body ActivateItems is
       return TCL_OK;
    end Activate_Item_Command;
 
+   -- ****if* ActivateItems/Toggle_Search_Command
+   -- FUNCTION
+   -- Show text entry to enter with what program execute selected file or
+   -- directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Toggle_Execute_With_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ActivateItems/Toggle_Search_Command
-      -- FUNCTION
-      -- Show text entry to enter with what program execute selected file or
-      -- directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Toggle_Execute_With_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       TextFrame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
@@ -220,27 +224,29 @@ package body ActivateItems is
       return TCL_OK;
    end Toggle_Execute_With_Command;
 
+   -- ****if* ActivateItems/Execute_With_Command
+   -- FUNCTION
+   -- Execute the selected file or directory with the selected command
+   -- entered by an user
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK;
+   -- SOURCE
    function Execute_With_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ActivateItems/Execute_With_Command
-      -- FUNCTION
-      -- Execute the selected file or directory with the selected command
-      -- entered by an user
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Execute_With_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      -- ****
       TextEntry: Ttk_Entry;
       Value, CommandName, Arguments: Unbounded_String;
       Pid: GNAT.OS_Lib.Process_Id;
@@ -286,27 +292,29 @@ package body ActivateItems is
       return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);
    end Execute_With_Command;
 
+   -- ****if* ActivateItems/Execute_Command
+   -- FUNCTION
+   -- Execute the selected file or directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Execute_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ActivateItems/Execute_Command
-      -- FUNCTION
-      -- Execute the selected file or directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
    function Execute_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       Pid: GNAT.OS_Lib.Process_Id;
       DirectoryTree: Ttk_Tree_View;
       Tokens: Slice_Set;
