@@ -45,27 +45,29 @@ package body CreateItems is
    Hunter_Create_Exception: exception;
    -- ****
 
+   -- ****if* CreateItems/Show_Create_Command
+   -- FUNCTION
+   -- Show text entry to enter a name of the new item
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Show_Create_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* CreateItems/Show_Create_Command
-      -- FUNCTION
-      -- Show text entry to enter a name of the new item
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Show_Create_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      -- ****
       Frame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
@@ -101,26 +103,28 @@ package body CreateItems is
       return TCL_OK;
    end Show_Create_Command;
 
+   -- ****if* CreateItems/Create_Command
+   -- FUNCTION
+   -- Show text entry to enter a name of the new item
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Create_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* CreateItems/Create_Command
-      -- FUNCTION
-      -- Show text entry to enter a name of the new item
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Create_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      -- ****
       pragma Unreferenced(ClientData, Argc);
       TextEntry: Ttk_Entry;
       NewItemName, ActionString, ActionBlocker, Destination: Unbounded_String;
