@@ -24,6 +24,22 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package LoadData is
 -- ****
 
+   -- ****t* LoadData/Item_Record
+   -- FUNCTION
+   -- Data structure with information about files and directories
+   -- OPTIONS
+   -- Name        - The name of the file or directory
+   -- Size        - For file size in bytes, for directory amount of items
+   --               inside
+   -- IsDirectory - If True, the item is a directory, otherwise false
+   -- IsHidden    - If True, the item is hidden, otherwise false
+   -- Modified    - Time of last modificiation of the item
+   -- Image       - The name of the image used to show on the left to the
+   --               item on the list
+   -- HiddenItems - In directory, amount of hidden items
+   -- Path        - The path to the selected item. Used in showing Trash
+   --               content
+   -- SOURCE
    type Item_Record is record
       Name: Unbounded_String;
       Size: Integer;
@@ -34,6 +50,7 @@ package LoadData is
       HiddenItems: Natural;
       Path: Unbounded_String;
    end record;
+   -- ****
 
    type SortingOrder is
      (NameAsc, NameDesc, ModifiedAsc, ModifiedDesc, SizeAsc, SizeDesc);
