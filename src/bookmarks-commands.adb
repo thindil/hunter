@@ -39,27 +39,29 @@ with Utils; use Utils;
 
 package body Bookmarks.Commands is
 
+   -- ****if* Commands/GoToBookmark_Command
+   -- FUNCTION
+   -- Go to the selected bookmarked directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function GoToBookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* Commands/GoToBookmark_Command
-      -- FUNCTION
-      -- Go to the selected bookmarked directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function GoToBookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      -- ****
    begin
       if NewAction /= MOVE then
          if NewAction = CLEARTRASH then
@@ -78,27 +80,29 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end GoToBookmark_Command;
 
+   -- ****if* Commands/SetDestination_Command
+   -- FUNCTION
+   -- Show text entry to enter directory destination
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function SetDestination_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* Commands/SetDestination_Command
-      -- FUNCTION
-      -- Show text entry to enter directory destination
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function SetDestination_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      -- ****
       TextFrame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
@@ -128,27 +132,29 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end SetDestination_Command;
 
+   -- ****if* Commands/GoToDestination_Command
+   -- FUNCTION
+   -- Go to the destination directory selected by the user
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function GoToDestination_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* Commands/GoToDestination_Command
-      -- FUNCTION
-      -- Go to the destination directory selected by the user
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
    function GoToDestination_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      -- ****
       TextEntry: Ttk_Entry;
       HideButton: Ttk_Button;
       Hunter_Go_To_Destination_Exception: exception;
@@ -177,27 +183,29 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end GoToDestination_Command;
 
+   -- ****if* Commands/Add_Bookmark_Command
+   -- FUNCTION
+   -- Add the bookmark to the selected directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Add_Bookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* Commands/Add_Bookmark_Command
-      -- FUNCTION
-      -- Add the bookmark to the selected directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Add_Bookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      -- ****
       File: File_Type;
    begin
       Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
@@ -208,27 +216,29 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end Add_Bookmark_Command;
 
+   -- ****if* Commands/Remove_Bookmark_Command
+   -- FUNCTION
+   -- Remove the bookmark to the selected directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Remove_Bookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* Commands/Remove_Bookmark_Command
-      -- FUNCTION
-      -- Remove the bookmark to the selected directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Remove_Bookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      -- ****
       NewFile, OldFile: File_Type;
       Line, Path: Unbounded_String;
    begin
