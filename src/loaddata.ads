@@ -52,13 +52,55 @@ package LoadData is
    end record;
    -- ****
 
+   -- ****t* LoadData/SortingOrder
+   -- FUNCTION
+   -- Possible options of sorting for items in directory view
+   -- OPTIONS
+   -- NameAsc      - Sort by name ascending
+   -- NameDesc     - Sort by name descending
+   -- ModifiedAsc  - Sort by modified time ascending
+   -- ModifiedDesc - Sort by modified time descending
+   -- SizeAsc      - Sort by size ascending
+   -- SizeDesc     - Sort by size descending
+   -- SOURCE
    type SortingOrder is
      (NameAsc, NameDesc, ModifiedAsc, ModifiedDesc, SizeAsc, SizeDesc);
+   -- ****
 
+   -- ****v* LoadData/SortOrder
+   -- FUNCTION
+   -- Currently set sorting order for directory view. Default value is NameAsc
+   -- SOURCE
    SortOrder: SortingOrder := NameAsc;
+   -- ****
 
+   -- ****f* LoadData/"<"
+   -- FUNCTION
+   -- Used in sorting items in directory view. Check if one item is smaller
+   -- than other
+   -- PARAMETERS
+   -- Left  - First item in directory view to compare
+   -- Right - Second item in directory view to compare
+   -- RESULT
+   -- True if Left is smaller than Right, otherwise false. Depends on
+   -- currently selected sorting order
+   -- SOURCE
    function "<"(Left, Right: Item_Record) return Boolean;
+   -- ****
+
+   -- ****f* LoadData/"="
+   -- FUNCTION
+   -- Used in sorting items in directory view. Check if one item is equal to
+   -- another
+   -- PARAMETERS
+   -- Left  - First item in directory view to compare
+   -- Right - Second item in directory view to compare
+   -- RESULT
+   -- True if items are equal, otherwise false. Depends on currently selected
+   -- sorting order
+   -- SOURCE
    function "="(Left, Right: Item_Record) return Boolean;
+   -- ****
 
    package Items_Container is new Vectors(Positive, Item_Record);
    package Items_Sorting is new Items_Container.Generic_Sorting;
