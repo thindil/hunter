@@ -149,27 +149,29 @@ package body DeleteItems is
          raise;
    end DeleteSelected;
 
+   -- ****if* Commands/Start_Deleting_Command
+   -- FUNCTION
+   -- Show confirmation to delete the selected files and directories
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Start_Deleting_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* Commands/Start_Deleting_Command
-      -- FUNCTION
-      -- Show confirmation to delete the selected files and directories
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
    function Start_Deleting_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      -- ****
       Message, FileLine: Unbounded_String;
       FileInfo: File_Type;
       I: Positive := SelectedItems.First_Index;
