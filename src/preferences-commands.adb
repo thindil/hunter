@@ -51,27 +51,29 @@ with Utils; use Utils;
 
 package body Preferences.Commands is
 
+   -- ****if* PCommands/Set_Label_Command
+   -- FUNCTION
+   -- Update text of the selected label
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Label_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Label_Command
-      -- FUNCTION
-      -- Update text of the selected label
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Label_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      -- ****
       Label: Ttk_Label;
    begin
       Label.Interp := Interp;
@@ -95,28 +97,30 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Label_Command;
 
+   -- ****if* PCommands/Set_Show_Hidden_Files_Command
+   -- FUNCTION
+   -- Update show hidden files setting and reload the current directory
+   -- listing
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Show_Hidden_Files_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Show_Hidden_Files_Command
-      -- FUNCTION
-      -- Update show hidden files setting and reload the current directory
-      -- listing
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Show_Hidden_Files_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
    begin
       if Tcl_GetVar(Interp, ".preferencesdialog.directory.showhidden") =
         "0" then
@@ -128,28 +132,30 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Hidden_Files_Command;
 
+   -- ****if* PCommands/Set_Show_Modification_Time_Command
+   -- FUNCTION
+   -- Update show modification time column and reload the current directory
+   -- listing
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Show_Modification_Time_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Show_Modification_Time_Command
-      -- FUNCTION
-      -- Update show modification time column and reload the current directory
-      -- listing
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Show_Modification_Time_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       DirectoryTree: Ttk_Tree_View;
    begin
       DirectoryTree.Interp := Interp;
@@ -168,26 +174,28 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Modification_Time_Command;
 
+   -- ****if* PCommands/Set_Show_Preview_Command
+   -- FUNCTION
+   -- Update show preview setting and show or hide it
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Show_Preview_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Show_Preview_Command
-      -- FUNCTION
-      -- Update show preview setting and show or hide it
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Show_Preview_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      -- ****
       PreviewFrame: Ttk_Frame;
       Paned: Ttk_PanedWindow;
    begin
@@ -206,28 +214,30 @@ package body Preferences.Commands is
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Set_Show_Preview_Command;
 
+   -- ****if* PCommands/Set_Scale_Images_Command
+   -- FUNCTION
+   -- Enable or disable images scaling and rescale currently
+   -- previewed image if needed
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Scale_Images_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Scale_Images_Command
-      -- FUNCTION
-      -- Enable or disable images scaling and rescale currently
-      -- previewed image if needed
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Scale_Images_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       MimeType: constant String := GetMimeType(To_String(CurrentSelected));
    begin
       if Tcl_GetVar(Interp, ".preferencesdialog.preview.scaleimages") =
@@ -242,28 +252,30 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Scale_Images_Command;
 
+   -- ****if* PCommands/Set_Color_Text_Command
+   -- FUNCTION
+   -- Enable or disable syntax highlightning in text files and reload the
+   -- currently previewed file if it is text file
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Color_Text_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Color_Text_Command
-      -- FUNCTION
-      -- Enable or disable syntax highlightning in text files and reload the
-      -- currently previewed file if it is text file
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Color_Text_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       ComboBox: Ttk_ComboBox;
       MimeType: constant String := GetMimeType(To_String(CurrentSelected));
    begin
@@ -284,28 +296,30 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Color_Text_Command;
 
+   -- ****if* PCommands/Set_Color_Theme_Command
+   -- FUNCTION
+   -- Set color theme for syntax highligthning in text files and reload
+   -- the current previewed text file if needed
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Color_Theme_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Color_Theme_Command
-      -- FUNCTION
-      -- Set color theme for syntax highligthning in text files and reload
-      -- the current previewed text file if needed
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Color_Theme_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       ComboBox: Ttk_ComboBox;
       MimeType: constant String := GetMimeType(To_String(CurrentSelected));
    begin
@@ -319,28 +333,30 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Color_Theme_Command;
 
+   -- ****if* PCommands/Set_Stay_In_Old_Command
+   -- FUNCTION
+   -- Set if after copying, moving, etc operations user should
+   -- see old directory or new
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Stay_In_Old_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Stay_In_Old_Command
-      -- FUNCTION
-      -- Set if after copying, moving, etc operations user should
-      -- see old directory or new
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Stay_In_Old_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
    begin
       if Tcl_GetVar(Interp, ".preferencesdialog.interface.stayinold") =
         "0" then
@@ -351,28 +367,30 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Stay_In_Old_Command;
 
+   -- ****if* PCommands/Set_Show_Finished_Info_Command
+   -- FUNCTION
+   -- Set if after finishing action, show info about it to the
+   -- user
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Show_Finished_Info_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Show_Finished_Info_Command
-      -- FUNCTION
-      -- Set if after finishing action, show info about it to the
-      -- user
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Show_Finished_Info_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
    begin
       if Tcl_GetVar(Interp, ".preferencesdialog.interface.showfinished") =
         "0" then
@@ -383,28 +401,30 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Finished_Info_Command;
 
+   -- ****if* PCommands/Set_Toolbars_On_Top_Command
+   -- FUNCTION
+   -- Set if toolbars should be on top of the program's window or on the
+   -- left
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Toolbars_On_Top_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Toolbars_On_Top_Command
-      -- FUNCTION
-      -- Set if toolbars should be on top of the program's window or on the
-      -- left
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Toolbars_On_Top_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       Paned: Ttk_Frame;
    begin
       Paned.Interp := Interp;
