@@ -62,27 +62,29 @@ package body Messages is
    TimerId: Unbounded_String := Null_Unbounded_String;
    -- ****
 
+   -- ****if* Messages/Close_Command
+   -- FUNCTION
+   -- Hide message frame
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Close_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* Messages/Close_Command
-      -- FUNCTION
-      -- Hide message frame
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
    function Close_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      -- ****
    begin
       if TimerId /= Null_Unbounded_String then
          Cancel(To_String(TimerId));
@@ -92,26 +94,28 @@ package body Messages is
       return TCL_OK;
    end Close_Command;
 
+   -- ****if* Messages/Response_Command
+   -- FUNCTION
+   -- Hide message frame and do action, depends on user response
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Response_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* Messages/Response_Command
-      -- FUNCTION
-      -- Hide message frame and do action, depends on user response
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Response_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      -- ****
       OverwriteItem: Boolean := True;
       Response: constant String := CArgv.Arg(Argv, 1);
       Hunter_Message_Exception: exception;
