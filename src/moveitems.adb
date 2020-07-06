@@ -40,27 +40,29 @@ package body MoveItems is
    SourceDirectory: Unbounded_String;
    -- ****
 
+   -- ****if* MoveItems/Move_Data_Command
+   -- FUNCTION
+   -- Enter or quit moving items mode
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Move_Data_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* MoveItems/Move_Data_Command
-      -- FUNCTION
-      -- Enter or quit moving items mode
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
    function Move_Data_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       OverwriteItem: Boolean := False;
    begin
       if MoveItemsList.Length > 0
