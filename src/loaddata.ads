@@ -102,12 +102,55 @@ package LoadData is
    function "="(Left, Right: Item_Record) return Boolean;
    -- ****
 
+   -- ****t* LoadData/Items_Container
+   -- FUNCTION
+   -- Used to store information about selected directories contents
+   -- SOURCE
    package Items_Container is new Vectors(Positive, Item_Record);
+   -- ****
+
+   -- ****t* LoadData/Items_Sorting
+   -- FUNCTION
+   -- Used to sort the selected directories contets
+   -- SOURCE
    package Items_Sorting is new Items_Container.Generic_Sorting;
+   -- ****
 
-   ItemsList, SecondItemsList: Items_Container.Vector;
+   -- ****v* LoadData/ItemsList
+   -- FUNCTION
+   -- The content of the currently viewed directory
+   -- SOURCE
+   ItemsList: Items_Container.Vector;
+   -- ****
 
+   -- ****v* LoadData/SecondItemsList
+   -- FUNCTION
+   -- The content of the currently previewed directory or destination
+   -- directory for actions like moving, copying, creating links
+   -- SOURCE
+   SecondItemsList: Items_Container.Vector;
+   -- ****
+
+   -- ****f* LoadData/AddItem
+   -- FUNCTION
+   -- Add the selected item to the selected list
+   -- PARAMETERS
+   -- Path - Full path to the file or directory which will be added
+   -- List - The list to which a new item will be added
+   -- SOURCE
    procedure AddItem(Path: String; List: in out Items_Container.Vector);
+   -- ****
+
+   -- ****f* LoadData/LoadDirectory
+   -- FUNCTION
+   -- Load content of the selected directory to the proper list
+   -- PARAMETERS
+   -- DirectoryName - Full path to the directory which content will be added
+   --                 to the proper list
+   -- Second        - If true, add directory content to the SecondItemsList,
+   --                 otherwise add to the ItemsList. Default value is false
+   -- SOURCE
    procedure LoadDirectory(DirectoryName: String; Second: Boolean := False);
+   -- ****
 
 end LoadData;
