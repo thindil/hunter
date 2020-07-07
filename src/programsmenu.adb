@@ -56,30 +56,37 @@ package body ProgramsMenu is
    NamesList: UnboundedString_Container.Vector;
    -- ****
 
+   -- ****it* ProgramsMenu/Programs_Sorting
+   -- FUNCTION
+   -- Used in sorting available programs
+   -- SOURCE
    package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
+   -- ****
 
+   -- ****if* ProgramsMenu/Toggle_Applications_Menu_Command
+   -- FUNCTION
+   -- Show or hide menu which allow to set a application which can be used
+   -- to execute the selected file or directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Toggle_Applications_Menu_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ProgramsMenu/Toggle_Applications_Menu_Command
-      -- FUNCTION
-      -- Show or hide menu which allow to set a application which can be used
-      -- to execute the selected file or directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
    function Toggle_Applications_Menu_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       ApplicationsFrame: Ttk_Frame;
       TextEntry: Ttk_Entry;
    begin
@@ -100,28 +107,30 @@ package body ProgramsMenu is
       return TCL_OK;
    end Toggle_Applications_Menu_Command;
 
+   -- ****if* ProgramsMenu/Search_Program_Command
+   -- FUNCTION
+   -- Search the programs menu for the selected text (case insensitive) and
+   -- show only matching applications
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Search_Program_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ProgramsMenu/Search_Program_Command
-      -- FUNCTION
-      -- Search the programs menu for the selected text (case insensitive) and
-      -- show only matching applications
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
    function Search_Program_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       TextEntry: Ttk_Entry;
       ProgramsTree: Ttk_Tree_View;
       Query: Unbounded_String;
@@ -155,27 +164,29 @@ package body ProgramsMenu is
       return TCL_OK;
    end Search_Program_Command;
 
+   -- ****if* ProgramsMenu/Set_Application_Command
+   -- FUNCTION
+   -- Set the selected application as a default application to open the
+   -- selected mime type items
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Application_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ProgramsMenu/Set_Application_Command
-      -- FUNCTION
-      -- Set the selected application as a default application to open the
-      -- selected mime type items
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Application_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      -- ****
       ApplicationsView: Ttk_Tree_View;
       Pid: Process_Id;
       ExecutableName: constant String := FindExecutable("xdg-mime");
@@ -215,26 +226,28 @@ package body ProgramsMenu is
       return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
    end Set_Application_Command;
 
+   -- ****if* ProgramsMenu/Hide_On_Focus_Out_Command
+   -- FUNCTION
+   -- If application menu lost focus, hide it
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Hide_On_Focus_Out_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ProgramsMenu/Hide_On_Focus_Out_Command
-      -- FUNCTION
-      -- If application menu lost focus, hide it
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Hide_On_Focus_Out_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-   -- ****
    begin
       if Focus(Interp) in
           ".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry" |
