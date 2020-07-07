@@ -446,27 +446,29 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Toolbars_On_Top_Command;
 
+   -- ****if* PCommands/Set_Delete_Files_Command
+   -- FUNCTION
+   -- Set if files should be deleted of moved to Trash
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Delete_Files_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Delete_Files_Command
-      -- FUNCTION
-      -- Set if files should be deleted of moved to Trash
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Delete_Files_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       ButtonMenu: Tk_Menu;
    begin
       ButtonMenu.Interp := Interp;
@@ -482,27 +484,29 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Delete_Files_Command;
 
+   -- ****if* PCommands/Set_Clear_Trash_Command
+   -- FUNCTION
+   -- Set if Trash should be cleared on the program exit
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Clear_Trash_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Clear_Trash_Command
-      -- FUNCTION
-      -- Set if Trash should be cleared on the program exit
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Clear_Trash_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
    begin
       if Tcl_GetVar(Interp, ".preferencesdialog.deleting.cleartrash") =
         "0" then
@@ -513,28 +517,30 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Clear_Trash_Command;
 
+   -- ****if* PCommands/Set_Overwrite_Command
+   -- FUNCTION
+   -- Set if the program should overwrite files or create new with new
+   -- names
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Overwrite_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Set_Overwrite_Command
-      -- FUNCTION
-      -- Set if the program should overwrite files or create new with new
-      -- names
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Overwrite_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
    begin
       if Tcl_GetVar(Interp, ".preferencesdialog.copying.overwrite") = "0" then
          Settings.OverwriteOnExist := False;
@@ -544,27 +550,29 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Overwrite_Command;
 
+   -- ****if* PCommands/Show_Preferences_Command
+   -- FUNCTION
+   -- Go to the selected bookmarked directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Show_Preferences_Command
-      -- FUNCTION
-      -- Go to the selected bookmarked directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       PreferencesDialog: constant Tk_Toplevel :=
         Create(".preferencesdialog", "-class Dialog");
       LabelFrame: Ttk_LabelFrame;
@@ -799,28 +807,30 @@ package body Preferences.Commands is
       return TCL_OK;
    end Close_Dialog_Command;
 
+   -- ****if* PCommands/Close_Preferences_Command
+   -- FUNCTION
+   -- Set the program's settings, restart autorefresh view and close the
+   -- preferences dialog
+   -- names
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Close_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* PCommands/Close_Preferences_Command
-      -- FUNCTION
-      -- Set the program's settings, restart autorefresh view and close the
-      -- preferences dialog
-      -- names
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command.
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command.
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Close_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      -- ****
       Scale: Ttk_Scale;
    begin
       Scale.Interp := Interp;
