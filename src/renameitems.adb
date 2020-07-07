@@ -37,27 +37,29 @@ with Utils; use Utils;
 
 package body RenameItems is
 
+   -- ****if* RenameItems/Toggle_Rename_Command
+   -- FUNCTION
+   -- Show or hide text entry to enter a new name for the item
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Toggle_Rename_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* RenameItems/Toggle_Rename_Command
-      -- FUNCTION
-      -- Show or hide text entry to enter a new name for the item
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Toggle_Rename_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       TextFrame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
@@ -101,21 +103,24 @@ package body RenameItems is
       return TCL_OK;
    end Toggle_Rename_Command;
 
+   -- ****if* RenameItems/Rename_Command
+   -- FUNCTION
+   -- Rename currently selected file or directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Rename_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* RenameItems/Rename_Command
-      -- FUNCTION
-      -- Rename currently selected file or directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command. Unused
-      -- SOURCE
    function Rename_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
