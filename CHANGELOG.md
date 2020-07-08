@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated contributing guide
 - Updated README.md
+- Rewritten to use Tk library instead of GTK
 
 ## [1.2.1] - 2020-01-21
 
