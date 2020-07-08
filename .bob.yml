@@ -12,9 +12,7 @@
 - command:
    name: release
    execute:
-      - gprclean -P hunter.gpr
-      - others/build.sh
-      - gprclean -P hunter.gpr
+      - others/build.tcl
    description: Build Hunter in release mode
 - command:
    name: analyze
