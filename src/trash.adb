@@ -176,6 +176,8 @@ package body Trash is
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
    -- SOURCE
    function Restore_Item_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -233,6 +235,8 @@ package body Trash is
    -- Interp     - Tcl interpreter in which command was executed. Unused
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
    -- SOURCE
    function Clear_Trash_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
