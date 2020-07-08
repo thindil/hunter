@@ -723,28 +723,30 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
    end ShowInfo;
 
+   -- ****if* ShowItems/Show_Preview_Or_Info_Command
+   -- FUNCTION
+   -- Show preview or information about the currently selected file or
+   -- directory, depends which button was clicked
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Show_Preview_Or_Info_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ShowItems/Show_Preview_Or_Info_Command
-      -- FUNCTION
-      -- Show preview or information about the currently selected file or
-      -- directory, depends which button was clicked
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Show_Preview_Or_Info_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
    begin
       if Tcl.Ada.Tcl_GetVar(Interp, "previewtype") = "preview" then
          ShowPreview;
@@ -821,27 +823,29 @@ package body ShowItems is
       return TCL_OK;
    end Show_Selected_Command;
 
+   -- ****if* ShowItems/Set_Permissions_Command
+   -- FUNCTION
+   -- Set the permissions for the selected file or directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function Set_Permissions_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* ShowItems/Set_Permissions_Command
-      -- FUNCTION
-      -- Set the permissions for the selected file or directory
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed.
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function Set_Permissions_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       SelectedItem: constant String := Full_Name(To_String(CurrentSelected));
       PermissionsString: Unbounded_String;
       Permission: Natural;
@@ -874,27 +878,29 @@ package body ShowItems is
       return TCL_OK;
    end Set_Permissions_Command;
 
+   -- ****if* Commands/GoToDirectory_Command
+   -- FUNCTION
+   -- Go to the selected directory in preview
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
    function GoToDirectory_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
-      -- ****if* Commands/GoToDirectory_Command
-      -- FUNCTION
-      -- Go to the selected directory in preview
-      -- PARAMETERS
-      -- ClientData - Custom data send to the command. Unused
-      -- Interp     - Tcl interpreter in which command was executed. Unused
-      -- Argc       - Number of arguments passed to the command. Unused
-      -- Argv       - Values of arguments passed to the command.
-      -- SOURCE
    function GoToDirectory_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp);
-      -- ****
       SelectedItem: Unbounded_String;
    begin
       if Argc = 2 then
