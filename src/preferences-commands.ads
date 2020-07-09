@@ -13,14 +13,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* Preferences/Commands
+-- ****h* Preferences/PCommands
 -- FUNCTION
 -- Provides code for Tcl commands related to the program preferences
 -- SOURCE
 package Preferences.Commands is
 -- ****
 
-   -- ****f* Commands/AddCommands
+   -- ****f* PCommands/AddCommands
    -- FUNCTION
    -- Adds the Ada code to the Tcl interpreter
    -- SOURCE
