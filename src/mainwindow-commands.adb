@@ -48,14 +48,14 @@ with Utils; use Utils;
 
 package body MainWindow.Commands is
 
-   -- ****it* MainWindow.Commands/ExitCommand
+   -- ****it* MCommands/ExitCommand
    -- FUNCTION
    -- Used in creating exit handler for the program
    -- SOURCE
    package ExitCommand is new Tcl.Ada.Generic_ExitHandler(Integer);
    -- ****
 
-   -- ****if* MainWindow-Commands/Sort_Command
+   -- ****if* MCommands/Sort_Command
    -- FUNCTION
    -- Sort directory view based on which header was clicked
    -- PARAMETERS
@@ -130,7 +130,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Sort_Command;
 
-   -- ****if* MainWindow-Commands/Quit_Command
+   -- ****if* MCommands/Quit_Command
    -- FUNCTION
    -- Save preferences and clear trash on exit from the program
    -- PARAMETERS
@@ -164,7 +164,7 @@ package body MainWindow.Commands is
       MagicClose;
    end Quit_Command;
 
-   -- ****if* MainWindow-Commands/Hide_Widget_Command
+   -- ****if* MCommands/Hide_Widget_Command
    -- FUNCTION
    -- Hide text entry or message, depends on which is visible
    -- PARAMETERS
@@ -243,7 +243,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Hide_Widget_Command;
 
-   -- ****if* MainWindow-Commands/Toggle_Selection_Command
+   -- ****if* MCommands/Toggle_Selection_Command
    -- FUNCTION
    -- Select all or deselect all items in directory view
    -- PARAMETERS
@@ -280,7 +280,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Toggle_Selection_Command;
 
-   -- ****if* MainWindow-Commands/Arrange_Path_Command
+   -- ****if* MCommands/Arrange_Path_Command
    -- FUNCTION
    -- Arrange path buttons when they window were resized
    -- PARAMETERS
@@ -342,7 +342,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Arrange_Path_Command;
 
-   -- ****if* MainWindow-Commands/Cancel_Action_Command
+   -- ****if* MCommands/Cancel_Action_Command
    -- FUNCTION
    -- Select all or deselect all items in directory view
    -- PARAMETERS
@@ -387,7 +387,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Cancel_Action_Command;
 
-   -- ****if* MainWindow-Commands/Show_File_Menu_Command
+   -- ****if* MCommands/Show_File_Menu_Command
    -- FUNCTION
    -- Show menu for the selected items in current directory
    -- PARAMETERS
@@ -446,7 +446,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Show_File_Menu_Command;
 
-   -- ****if* MainWindow-Commands/Show_File_Command
+   -- ****if* MCommands/Show_File_Command
    -- FUNCTION
    -- Show content of the selected file. Used in about menu
    -- PARAMETERS
@@ -491,7 +491,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Show_File_Command;
 
-   -- ****if* MainWindow-Commands/Invoke_Button_Command
+   -- ****if* MCommands/Invoke_Button_Command
    -- FUNCTION
    -- Invoke the selected button if it is mapped
    -- PARAMETERS
