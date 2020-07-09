@@ -162,7 +162,7 @@ package body ActivateItems is
       return TCL_OK;
    end Activate_Item_Command;
 
-   -- ****if* ActivateItems/Toggle_Search_Command
+   -- ****if* ActivateItems/Toggle_Execute_With_Command
    -- FUNCTION
    -- Show text entry to enter with what program execute selected file or
    -- directory
