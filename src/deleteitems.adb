@@ -149,7 +149,7 @@ package body DeleteItems is
          raise;
    end DeleteSelected;
 
-   -- ****if* Commands/Start_Deleting_Command
+   -- ****if* DeleteItems/Start_Deleting_Command
    -- FUNCTION
    -- Show confirmation to delete the selected files and directories
    -- PARAMETERS
