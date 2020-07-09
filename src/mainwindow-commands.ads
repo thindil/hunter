@@ -13,14 +13,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* Hunter/MainWindow-Commands
+-- ****h* MainWindow/MCommands
 -- FUNCTION
 -- Provide code to quit the program, show or hide text entry
 -- SOURCE
 package MainWindow.Commands is
 -- ****
 
-   -- ****f* MainWindow-Commands/AddCommands
+   -- ****f* MCommands/AddCommands
    -- FUNCTION
    -- Adds the Ada code to the Tcl interpreter
    -- SOURCE
