@@ -12,7 +12,7 @@ install:
    - docker pull thindil/gnat-tashy-devel
 
 script:
-   - docker run -v $(pwd):/app thindil/gnat-tashy-devel /bin/sh -c "apt-get update && apt-get install -y libmagic-dev && cd /app && others/build.sh"
+   - docker run -v $(pwd):/app thindil/gnat-tashy-devel /bin/sh -c "apt-get update && apt-get install -y libmagic-dev && cd /app && others/build.tcl"
    - tar -czf hunter-development.tar.gz usr
 
 before_deploy:
