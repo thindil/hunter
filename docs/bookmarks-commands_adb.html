@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
-<title>./src/programsmenu.adb</title>
-<!-- Source: ./src/programsmenu.adb -->
+<title>./src/bookmarks-commands.adb</title>
+<!-- Source: ./src/bookmarks-commands.adb -->
 <!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
 </head>
 <body>
@@ -28,70 +28,31 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo43">ProgramsMenu/Programs_Sorting</a></li>
-<li>2. <a href="#robo67">ProgramsMenu/ApplicationsList</a></li>
-<li>3. <a href="#robo68">ProgramsMenu/NamesList</a></li>
-<li>4. <a href="#robo175">ProgramsMenu/Hide_On_Focus_Out_Command</a></li>
-<li>5. <a href="#robo176">ProgramsMenu/Search_Program_Command</a></li>
-<li>6. <a href="#robo177">ProgramsMenu/Set_Application_Command</a></li>
-<li>7. <a href="#robo178">ProgramsMenu/Toggle_Applications_Menu_Command</a></li>
+<li>1. <a href="#robo93">Commands/Add_Bookmark_Command</a></li>
+<li>2. <a href="#robo95">Commands/GoToBookmark_Command</a></li>
+<li>3. <a href="#robo96">Commands/GoToDestination_Command</a></li>
+<li>4. <a href="#robo98">Commands/Remove_Bookmark_Command</a></li>
+<li>5. <a href="#robo99">Commands/SetDestination_Command</a></li>
 </ul>
 <hr />
-<a name="ProgramsMenu2fPrograms5fSorting"></a>
-<a name="robo43"></a><h2>ProgramsMenu/Programs_Sorting [ Types ]</h2>
+<a name="Commands2fAdd5fBookmark5fCommand"></a>
+<a name="robo93"></a><h2>Commands/Add_Bookmark_Command [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo15">ProgramsMenu</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks-commands_ads.html#robo0">Commands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Used in sorting available programs
+<pre> Add the bookmark to the selected directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>Programs_Sorting</strong> <span class="keyword">is</span> <span class="keyword">new</span> <a href="./mainwindow_ads.html#robo40">UnboundedString_Container</a><span class="sign">.</span>Generic_Sorting<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="ProgramsMenu2fApplicationsList"></a>
-<a name="robo67"></a><h2>ProgramsMenu/ApplicationsList [ Variables ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo15">ProgramsMenu</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> List of all applications which can be used to execute files or
- directories
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <strong>ApplicationsList</strong><span class="sign">:</span> <a href="./bookmarks_ads.html#robo26">Bookmarks_Container</a><span class="sign">.</span>Map<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="ProgramsMenu2fNamesList"></a>
-<a name="robo68"></a><h2>ProgramsMenu/NamesList [ Variables ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo15">ProgramsMenu</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> List of all applications showed in the menu
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <strong>NamesList</strong><span class="sign">:</span> <a href="./mainwindow_ads.html#robo40">UnboundedString_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="ProgramsMenu2fHide5fOn5fFocus5fOut5fCommand"></a>
-<a name="robo175"></a><h2>ProgramsMenu/Hide_On_Focus_Out_Command [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo15">ProgramsMenu</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> If application menu lost focus, hide it
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Hide_On_Focus_Out_Command</strong>
+<pre class="source">   <span class="keyword">function</span> <strong>Add_Bookmark_Command</strong>
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> ClientData - Custom data send to the command.
- Interp     - Tcl interpreter in which command was executed.
- Argc       - Number of arguments passed to the command.
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed. Unused
+ Argc       - Number of arguments passed to the command. Unused
  Argv       - Values of arguments passed to the command.
 </pre>
 <p class="item_name">RESULT</p>
@@ -99,16 +60,15 @@
 </pre>
 
 <hr />
-<a name="ProgramsMenu2fSearch5fProgram5fCommand"></a>
-<a name="robo176"></a><h2>ProgramsMenu/Search_Program_Command [ Subprograms ]</h2>
+<a name="Commands2fGoToBookmark5fCommand"></a>
+<a name="robo95"></a><h2>Commands/GoToBookmark_Command [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo15">ProgramsMenu</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks-commands_ads.html#robo0">Commands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Search the programs menu for the selected text (case insensitive) and
- show only matching applications
+<pre> Go to the selected bookmarked directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Search_Program_Command</strong>
+<pre class="source">   <span class="keyword">function</span> <strong>GoToBookmark_Command</strong>
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -118,32 +78,6 @@
 <pre> ClientData - Custom data send to the command. Unused
  Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
- Argv       - Values of arguments passed to the command. Unused
-</pre>
-<p class="item_name">RESULT</p>
-<pre> This function always return TCL_OK
-</pre>
-
-<hr />
-<a name="ProgramsMenu2fSet5fApplication5fCommand"></a>
-<a name="robo177"></a><h2>ProgramsMenu/Set_Application_Command [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo15">ProgramsMenu</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Set the selected application as a default application to open the
- selected mime type items
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Application_Command</strong>
-     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
-      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
-      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
-      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> ClientData - Custom data send to the command.
- Interp     - Tcl interpreter in which command was executed.
- Argc       - Number of arguments passed to the command.
  Argv       - Values of arguments passed to the command.
 </pre>
 <p class="item_name">RESULT</p>
@@ -151,16 +85,15 @@
 </pre>
 
 <hr />
-<a name="ProgramsMenu2fToggle5fApplications5fMenu5fCommand"></a>
-<a name="robo178"></a><h2>ProgramsMenu/Toggle_Applications_Menu_Command [ Subprograms ]</h2>
+<a name="Commands2fGoToDestination5fCommand"></a>
+<a name="robo96"></a><h2>Commands/GoToDestination_Command [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo15">ProgramsMenu</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks-commands_ads.html#robo0">Commands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Show or hide menu which allow to set a application which can be used
- to execute the selected file or directory
+<pre> Go to the destination directory selected by the user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Toggle_Applications_Menu_Command</strong>
+<pre class="source">   <span class="keyword">function</span> <strong>GoToDestination_Command</strong>
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -168,7 +101,57 @@
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> ClientData - Custom data send to the command. Unused
- Interp     - Tcl interpreter in which command was executed.
+ Interp     - Tcl interpreter in which command was executed. Unused
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+
+<hr />
+<a name="Commands2fRemove5fBookmark5fCommand"></a>
+<a name="robo98"></a><h2>Commands/Remove_Bookmark_Command [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks-commands_ads.html#robo0">Commands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Remove the bookmark to the selected directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>Remove_Bookmark_Command</strong>
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed. Unused
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+
+<hr />
+<a name="Commands2fSetDestination5fCommand"></a>
+<a name="robo99"></a><h2>Commands/SetDestination_Command [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks-commands_ads.html#robo0">Commands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show text entry to enter directory destination
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>SetDestination_Command</strong>
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed. Unused
  Argc       - Number of arguments passed to the command. Unused
  Argv       - Values of arguments passed to the command. Unused
 </pre>
@@ -178,7 +161,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/programsmenu.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 10 2020 09:43:48
+<p>Generated from ./src/bookmarks-commands.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 10 2020 09:43:48
 </p>
 </div> <!-- footer -->
 </body>

@@ -8,17 +8,18 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/copyitems.ads</title>
 <!-- Source: ./src/copyitems.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.3 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -27,19 +28,20 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo3">Hunter/CopyItems</a></li>
+<li>1. <a href="#robo4">Hunter/CopyItems</a></li>
 <ul>
-<li>1.1. <a href="#robo36">CopyItems/CopyItemsList</a></li>
-<li>1.2. <a href="./copyitems_adb.html#robo37">CopyItems/SourceDirectory</a></li>
-<li>1.3. <a href="#robo93">CopyItems/CopyData</a></li>
-<li>1.4. <a href="#robo94">CopyItems/CopyItem</a></li>
-<li>1.5. <a href="#robo95">CopyItems/CopySelected</a></li>
-<li>1.6. <a href="#robo96">CopyItems/SkipCopying</a></li>
+<li>1.1. <a href="#robo46">CopyItems/CopyItemsList</a></li>
+<li>1.2. <a href="./copyitems_adb.html#robo47">CopyItems/SourceDirectory</a></li>
+<li>1.3. <a href="./copyitems_adb.html#robo100">CopyItems/Copy_Data_Command</a></li>
+<li>1.4. <a href="#robo101">CopyItems/CopyItem</a></li>
+<li>1.5. <a href="#robo102">CopyItems/CopySelected</a></li>
+<li>1.6. <a href="#robo103">CopyItems/CreateCopyUI</a></li>
+<li>1.7. <a href="#robo104">CopyItems/SkipCopying</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Hunter2fCopyItems"></a>
-<a name="robo3"></a><h2>Hunter/CopyItems [ Packages ]</h2>
+<a name="robo4"></a><h2>Hunter/CopyItems [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -51,36 +53,21 @@
 
 <hr />
 <a name="CopyItems2fCopyItemsList"></a>
-<a name="robo36"></a><h2>CopyItems/CopyItemsList [ Variables ]</h2>
+<a name="robo46"></a><h2>CopyItems/CopyItemsList [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo3">CopyItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">CopyItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Stores names of all selected to copy files and directories
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>CopyItemsList</strong><span class="sign">:</span> <a href="./mainwindow_ads.html#robo32">UnboundedString_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="CopyItems2fCopyData"></a>
-<a name="robo93"></a><h2>CopyItems/CopyData [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo3">CopyItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Copy selected files/directories to new location
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CopyData</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Self - Gtk_Tool_Button which was clicked. Unused.
+<pre class="source">   <strong>CopyItemsList</strong><span class="sign">:</span> <a href="./mainwindow_ads.html#robo40">UnboundedString_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="CopyItems2fCopyItem"></a>
-<a name="robo94"></a><h2>CopyItems/CopyItem [ Subprograms ]</h2>
+<a name="robo101"></a><h2>CopyItems/CopyItem [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo3">CopyItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">CopyItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Copy selected file or directory to new location
 </pre>
@@ -96,9 +83,9 @@
 
 <hr />
 <a name="CopyItems2fCopySelected"></a>
-<a name="robo95"></a><h2>CopyItems/CopySelected [ Subprograms ]</h2>
+<a name="robo102"></a><h2>CopyItems/CopySelected [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo3">CopyItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">CopyItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Copy selected files and directories
 </pre>
@@ -112,10 +99,22 @@
 </pre>
 
 <hr />
-<a name="CopyItems2fSkipCopying"></a>
-<a name="robo96"></a><h2>CopyItems/SkipCopying [ Subprograms ]</h2>
+<a name="CopyItems2fCreateCopyUI"></a>
+<a name="robo103"></a><h2>CopyItems/CreateCopyUI [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo3">CopyItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">CopyItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Create UI for copying items
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CreateCopyUI</strong><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="CopyItems2fSkipCopying"></a>
+<a name="robo104"></a><h2>CopyItems/SkipCopying [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo4">CopyItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Skip copying current file and move to next
 </pre>
@@ -125,8 +124,9 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/copyitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
+<p>Generated from ./src/copyitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 10 2020 09:43:48
 </p>
 </div> <!-- footer -->
 </body>
 </html>
+

@@ -8,17 +8,18 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/messages.ads</title>
 <!-- Source: ./src/messages.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.3 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -27,22 +28,21 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo11">Hunter/Messages</a></li>
+<li>1. <a href="#robo12">Hunter/Messages</a></li>
 <ul>
-<li>1.1. <a href="#robo59">Messages/InfoBar</a></li>
-<li>1.2. <a href="./messages_adb.html#robo60">Messages/Source_Id</a></li>
-<li>1.3. <a href="#robo61">Messages/YesToAll</a></li>
-<li>1.4. <a href="./messages_adb.html#robo158">Messages/AutoHideMessage</a></li>
-<li>1.5. <a href="#robo159">Messages/CloseMessage</a></li>
-<li>1.6. <a href="#robo160">Messages/CreateMessagesUI</a></li>
-<li>1.7. <a href="./messages_adb.html#robo161">Messages/MessageResponse</a></li>
-<li>1.8. <a href="./messages_adb.html#robo162">Messages/SetResponse</a></li>
-<li>1.9. <a href="#robo163">Messages/ShowMessage</a></li>
+<li>1.1. <a href="./messages_adb.html#robo60">Messages/MessageFrame</a></li>
+<li>1.2. <a href="./messages_adb.html#robo61">Messages/MessageLabel</a></li>
+<li>1.3. <a href="./messages_adb.html#robo62">Messages/TimerId</a></li>
+<li>1.4. <a href="#robo63">Messages/YesToAll</a></li>
+<li>1.5. <a href="./messages_adb.html#robo146">Messages/Close_Command</a></li>
+<li>1.6. <a href="#robo147">Messages/CreateMessagesUI</a></li>
+<li>1.7. <a href="./messages_adb.html#robo148">Messages/Response_Command</a></li>
+<li>1.8. <a href="#robo149">Messages/ShowMessage</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Hunter2fMessages"></a>
-<a name="robo11"></a><h2>Hunter/Messages [ Packages ]</h2>
+<a name="robo12"></a><h2>Hunter/Messages [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -53,22 +53,10 @@
 </pre>
 
 <hr />
-<a name="Messages2fInfoBar"></a>
-<a name="robo59"></a><h2>Messages/InfoBar [ Variables ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Gtk_Info_Bar which will be showing all messages
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <strong>InfoBar</strong><span class="sign">:</span> Gtk_Info_Bar<span class="sign">;</span>
-</pre>
-
-<hr />
 <a name="Messages2fYesToAll"></a>
-<a name="robo61"></a><h2>Messages/YesToAll [ Variables ]</h2>
+<a name="robo63"></a><h2>Messages/YesToAll [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set to True if user clicked Yes for All button in response to question,
  otherwise False
@@ -78,25 +66,10 @@
 </pre>
 
 <hr />
-<a name="Messages2fCloseMessage"></a>
-<a name="robo159"></a><h2>Messages/CloseMessage [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Close message and stop timer
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CloseMessage</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Info_Bar_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Self - Gtk_Info_Bar with message to close. Unused. Can be null
-</pre>
-
-<hr />
 <a name="Messages2fCreateMessagesUI"></a>
-<a name="robo160"></a><h2>Messages/CreateMessagesUI [ Subprograms ]</h2>
+<a name="robo147"></a><h2>Messages/CreateMessagesUI [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create UI related to the program messages
 </pre>
@@ -106,26 +79,26 @@
 
 <hr />
 <a name="Messages2fShowMessage"></a>
-<a name="robo163"></a><h2>Messages/ShowMessage [ Subprograms ]</h2>
+<a name="robo149"></a><h2>Messages/ShowMessage [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Show message with selected type to the user
+<pre> Show selected message with selected type to the user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowMessage</strong>
-     <span class="sign">(</span>Message<span class="sign">:</span> String<span class="sign">;</span> MessageType<span class="sign">:</span> Gtk_Message_Type <span class="sign">:</span><span class="sign">=</span> Message_Error<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowMessage</strong><span class="sign">(</span>Message<span class="sign">:</span> String<span class="sign">;</span> MessageType<span class="sign">:</span> String <span class="sign">:</span><span class="sign">=</span> <span class="quote">"error"</span><span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Message    - Text of message to show to the user
- MesageType - Gtk_Message_Type of message to show to the user. Default is
-              Message_Error
+<pre> Message     - Text of message to show to the user
+ MessageType - Type of message. Posible values are error, message,
+               question. Default value is error.
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
+<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 10 2020 09:43:48
 </p>
 </div> <!-- footer -->
 </body>
 </html>
+
