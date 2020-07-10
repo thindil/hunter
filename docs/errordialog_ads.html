@@ -8,17 +8,18 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/errordialog.ads</title>
 <!-- Source: ./src/errordialog.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.3 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -27,17 +28,14 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo6">Hunter/ErrorDialog</a></li>
+<li>1. <a href="#robo7">Hunter/ErrorDialog</a></li>
 <ul>
-<li>1.1. <a href="./errordialog_adb.html#robo40">ErrorDialog/ErrorBuffer</a></li>
-<li>1.2. <a href="#robo106">ErrorDialog/CreateErrorUI</a></li>
-<li>1.3. <a href="#robo107">ErrorDialog/On_Exception</a></li>
-<li>1.4. <a href="#robo108">ErrorDialog/SaveException</a></li>
+<li>1.1. <a href="#robo111">ErrorDialog/SaveException</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Hunter2fErrorDialog"></a>
-<a name="robo6"></a><h2>Hunter/ErrorDialog [ Packages ]</h2>
+<a name="robo7"></a><h2>Hunter/ErrorDialog [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -48,54 +46,25 @@
 </pre>
 
 <hr />
-<a name="ErrorDialog2fCreateErrorUI"></a>
-<a name="robo106"></a><h2>ErrorDialog/CreateErrorUI [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">ErrorDialog</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Create UI to show information about crash
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateErrorUI</strong><span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="ErrorDialog2fOn5fException"></a>
-<a name="robo107"></a><h2>ErrorDialog/On_Exception [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">ErrorDialog</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Handle GUI exceptions
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>On_Exception</strong><span class="sign">(</span>An_Exception<span class="sign">:</span> Exception_Occurrence<span class="sign">)</span><span class="sign">;</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> An_Exception - Exception's data which occured
-</pre>
-
-<hr />
 <a name="ErrorDialog2fSaveException"></a>
-<a name="robo108"></a><h2>ErrorDialog/SaveException [ Subprograms ]</h2>
+<a name="robo111"></a><h2>ErrorDialog/SaveException [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo6">ErrorDialog</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo7">ErrorDialog</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Save exception data to file and show error dialog
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SaveException</strong>
-     <span class="sign">(</span>An_Exception<span class="sign">:</span> Exception_Occurrence<span class="sign">;</span> PrintToTerminal<span class="sign">:</span> Boolean<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SaveException</strong><span class="sign">(</span>An_Exception<span class="sign">:</span> Exception_Occurrence<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> An_Exception    - Exception's data which occured
- PrintToTerminal - If true, information about exception will be printed
-                   in terminal
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/errordialog.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
+<p>Generated from ./src/errordialog.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 10 2020 09:43:48
 </p>
 </div> <!-- footer -->
 </body>
 </html>
+

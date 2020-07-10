@@ -8,17 +8,18 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/refreshdata.ads</title>
 <!-- Source: ./src/refreshdata.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.3 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -27,20 +28,19 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo15">Hunter/RefreshData</a></li>
+<li>1. <a href="#robo16">Hunter/RefreshData</a></li>
 <ul>
-<li>1.1. <a href="#robo20">RefreshData/InotifyTask</a></li>
-<li>1.2. <a href="./refreshdata_adb.html#robo70">RefreshData/Source_Id</a></li>
-<li>1.3. <a href="#robo71">RefreshData/TemporaryStop</a></li>
-<li>1.4. <a href="./refreshdata_adb.html#robo192">RefreshData/CheckItems</a></li>
-<li>1.5. <a href="#robo193">RefreshData/StartTimer</a></li>
-<li>1.6. <a href="./refreshdata_adb.html#robo194">RefreshData/UpdateItem</a></li>
-<li>1.7. <a href="#robo195">RefreshData/UpdateWatch</a></li>
+<li>1.1. <a href="#robo25">RefreshData/InotifyTask</a></li>
+<li>1.2. <a href="#robo69">RefreshData/TemporaryStop</a></li>
+<li>1.3. <a href="./refreshdata_adb.html#robo70">RefreshData/Timer_Token</a></li>
+<li>1.4. <a href="./refreshdata_adb.html#robo179">RefreshData/CheckItems</a></li>
+<li>1.5. <a href="#robo180">RefreshData/StartTimer</a></li>
+<li>1.6. <a href="#robo181">RefreshData/UpdateWatch</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Hunter2fRefreshData"></a>
-<a name="robo15"></a><h2>Hunter/RefreshData [ Packages ]</h2>
+<a name="robo16"></a><h2>Hunter/RefreshData [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -53,9 +53,9 @@
 
 <hr />
 <a name="RefreshData2fInotifyTask"></a>
-<a name="robo20"></a><h2>RefreshData/InotifyTask [ Tasks ]</h2>
+<a name="robo25"></a><h2>RefreshData/InotifyTask [ Tasks ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo15">RefreshData</a> ] [ <a href="./robo_tasks.html#robo_top_of_doc">Tasks</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">RefreshData</a> ] [ <a href="./robo_tasks.html#robo_top_of_doc">Tasks</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Task to monitor changes on disk
 </pre>
@@ -67,9 +67,9 @@
 
 <hr />
 <a name="RefreshData2fTemporaryStop"></a>
-<a name="robo71"></a><h2>RefreshData/TemporaryStop [ Variables ]</h2>
+<a name="robo69"></a><h2>RefreshData/TemporaryStop [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo15">RefreshData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">RefreshData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> If true, temporary stop refreshing directory listing (mainly in trash).
  Default is false
@@ -80,9 +80,9 @@
 
 <hr />
 <a name="RefreshData2fStartTimer"></a>
-<a name="robo193"></a><h2>RefreshData/StartTimer [ Subprograms ]</h2>
+<a name="robo180"></a><h2>RefreshData/StartTimer [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo15">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Start timer for refreshing current directory listing
 </pre>
@@ -92,9 +92,9 @@
 
 <hr />
 <a name="RefreshData2fUpdateWatch"></a>
-<a name="robo195"></a><h2>RefreshData/UpdateWatch [ Subprograms ]</h2>
+<a name="robo181"></a><h2>RefreshData/UpdateWatch [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo15">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Update inotify watch with new path to watch.
 </pre>
@@ -107,8 +107,9 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/refreshdata.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
+<p>Generated from ./src/refreshdata.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 10 2020 09:43:48
 </p>
 </div> <!-- footer -->
 </body>
 </html>
+

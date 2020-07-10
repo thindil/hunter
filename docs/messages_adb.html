@@ -8,17 +8,18 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/messages.adb</title>
 <!-- Source: ./src/messages.adb -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.3 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -27,75 +28,103 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo60">Messages/Source_Id</a></li>
-<li>2. <a href="#robo158">Messages/AutoHideMessage</a></li>
-<li>3. <a href="#robo161">Messages/MessageResponse</a></li>
-<li>4. <a href="#robo162">Messages/SetResponse</a></li>
+<li>1. <a href="#robo60">Messages/MessageFrame</a></li>
+<li>2. <a href="#robo61">Messages/MessageLabel</a></li>
+<li>3. <a href="#robo62">Messages/TimerId</a></li>
+<li>4. <a href="#robo146">Messages/Close_Command</a></li>
+<li>5. <a href="#robo148">Messages/Response_Command</a></li>
 </ul>
 <hr />
-<a name="Messages2fSource5fId"></a>
-<a name="robo60"></a><h2>Messages/Source_Id [ Variables ]</h2>
+<a name="Messages2fMessageFrame"></a>
+<a name="robo60"></a><h2>Messages/MessageFrame [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo11">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo12">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> ID of timer to hide messages
+<pre> Main frame for the message widget
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>Source_Id</strong><span class="sign">:</span> G_Source_Id <span class="sign">:</span><span class="sign">=</span> No_Source_Id<span class="sign">;</span>
+<pre class="source">   <strong>MessageFrame</strong><span class="sign">:</span> Ttk_Frame<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Messages2fAutoHideMessage"></a>
-<a name="robo158"></a><h2>Messages/AutoHideMessage [ Subprograms ]</h2>
+<a name="Messages2fMessageLabel"></a>
+<a name="robo61"></a><h2>Messages/MessageLabel [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo11">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo12">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Auto hide message after selected amount of seconds
+<pre> Label which show message text
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>AutoHideMessage</strong> <span class="keyword">return</span> Boolean <span class="keyword">is</span>
+<pre class="source">   <strong>MessageLabel</strong><span class="sign">:</span> Ttk_Label<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Messages2fTimerId"></a>
+<a name="robo62"></a><h2>Messages/TimerId [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo12">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Id of timer for auto close command
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>TimerId</strong><span class="sign">:</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span> Null_Unbounded_String<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Messages2fClose5fCommand"></a>
+<a name="robo146"></a><h2>Messages/Close_Command [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo12">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Hide message frame
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>Close_Command</strong>
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed. Unused
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
 </pre>
 <p class="item_name">RESULT</p>
-<pre> Returns always False to stop timer
+<pre> This function always return TCL_OK
 </pre>
 
 <hr />
-<a name="Messages2fMessageResponse"></a>
-<a name="robo161"></a><h2>Messages/MessageResponse [ Subprograms ]</h2>
+<a name="Messages2fResponse5fCommand"></a>
+<a name="robo148"></a><h2>Messages/Response_Command [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo11">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo12">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Hide message or do action, depends on the user response
+<pre> Hide message frame and do action, depends on user response
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>MessageResponse</strong>
-     <span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Info_Bar_Record<span class="keyword">'Class</span><span class="sign">;</span> Response_Id<span class="sign">:</span> Gint<span class="sign">)</span><span class="keyword"> is
-</span>     <span class="keyword"> pragma </span>Unreferenced<span class="sign">(</span>Self<span class="sign"><span class="sign">)</span>;</span>
+<pre class="source">   <span class="keyword">function</span> <strong>Response_Command</strong>
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Self        - Gtk_Info_Bar which contains the message. Unused
- Response_Id - Gtk_Response depends on which button user clicked
+<pre> ClientData - Custom data send to the command.
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command.
+ Argv       - Values of arguments passed to the command.
 </pre>
-
-<hr />
-<a name="Messages2fSetResponse"></a>
-<a name="robo162"></a><h2>Messages/SetResponse [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./messages_ads.html#robo11">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Set proper GTK Response for info bar buttons
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SetResponse</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Button_Record<span class="keyword">'Class</span><span class="sign">)</span><span class="keyword"> is
-</span></pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Self - Gtk_Button which was pressed
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/messages.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
+<p>Generated from ./src/messages.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 10 2020 09:43:48
 </p>
 </div> <!-- footer -->
 </body>
 </html>
+

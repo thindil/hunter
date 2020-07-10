@@ -8,17 +8,18 @@
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
 <title>./src/showitems.ads</title>
 <!-- Source: ./src/showitems.ads -->
-<!-- Generated with ROBODoc Version 4.99.43 (Jul 26 2019) -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.2 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.3 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
@@ -27,23 +28,31 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo17">Hunter/ShowItems</a></li>
+<li>1. <a href="#robo19">Hunter/ShowItems</a></li>
 <ul>
-<li>1.1. <a href="#robo72">ShowItems/InfoStack</a></li>
-<li>1.2. <a href="#robo200">ShowItems/CreateShowItemsUI</a></li>
-<li>1.3. <a href="./showitems_adb.html#robo201">ShowItems/GetSelectedItems</a></li>
-<li>1.4. <a href="#robo202">ShowItems/PreviewItem</a></li>
-<li>1.5. <a href="./showitems_adb.html#robo203">ShowItems/RemoveTag</a></li>
-<li>1.6. <a href="./showitems_adb.html#robo204">ShowItems/SetDestination</a></li>
-<li>1.7. <a href="./showitems_adb.html#robo205">ShowItems/SetPermission</a></li>
-<li>1.8. <a href="#robo206">ShowItems/ShowItem</a></li>
-<li>1.9. <a href="./showitems_adb.html#robo207">ShowItems/ShowItemInfo</a></li>
-<li>1.10. <a href="./showitems_adb.html#robo208">ShowItems/UpdateImage</a></li>
+<li>1.1. <a href="./showitems_adb.html#robo71">ShowItems/ButtonNames</a></li>
+<li>1.2. <a href="./showitems_adb.html#robo72">ShowItems/InfoFrame</a></li>
+<li>1.3. <a href="./showitems_adb.html#robo73">ShowItems/PreviewCanvas</a></li>
+<li>1.4. <a href="./showitems_adb.html#robo74">ShowItems/PreviewFrame</a></li>
+<li>1.5. <a href="./showitems_adb.html#robo75">ShowItems/PreviewText</a></li>
+<li>1.6. <a href="./showitems_adb.html#robo76">ShowItems/PreviewTree</a></li>
+<li>1.7. <a href="./showitems_adb.html#robo77">ShowItems/PreviewXScroll</a></li>
+<li>1.8. <a href="./showitems_adb.html#robo78">ShowItems/PreviewYScroll</a></li>
+<li>1.9. <a href="./showitems_adb.html#robo81">ShowItems/Hunter_Show_Items_Exception</a></li>
+<li>1.10. <a href="#robo188">ShowItems/CreateShowItemsUI</a></li>
+<li>1.11. <a href="#robo189">ShowItems/DestinationDirectory</a></li>
+<li>1.12. <a href="#robo190">ShowItems/ScaleImage</a></li>
+<li>1.13. <a href="./showitems_adb.html#robo191">ShowItems/Set_Permissions_Command</a></li>
+<li>1.14. <a href="./showitems_adb.html#robo192">ShowItems/Show_Preview_Or_Info_Command</a></li>
+<li>1.15. <a href="#robo193">ShowItems/Show_Selected_Command</a></li>
+<li>1.16. <a href="#robo194">ShowItems/ShowDestination</a></li>
+<li>1.17. <a href="./showitems_adb.html#robo195">ShowItems/ShowInfo</a></li>
+<li>1.18. <a href="#robo196">ShowItems/ShowPreview</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Hunter2fShowItems"></a>
-<a name="robo17"></a><h2>Hunter/ShowItems [ Packages ]</h2>
+<a name="robo19"></a><h2>Hunter/ShowItems [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -55,22 +64,10 @@
 </pre>
 
 <hr />
-<a name="ShowItems2fInfoStack"></a>
-<a name="robo72"></a><h2>ShowItems/InfoStack [ Variables ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo17">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Gtk_Stack which will show information about selected item
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <strong>InfoStack</strong><span class="sign">:</span> Gtk_Stack<span class="sign">;</span>
-</pre>
-
-<hr />
 <a name="ShowItems2fCreateShowItemsUI"></a>
-<a name="robo200"></a><h2>ShowItems/CreateShowItemsUI [ Subprograms ]</h2>
+<a name="robo188"></a><h2>ShowItems/CreateShowItemsUI [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo17">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create UI related to show items and destination for moving/copying
  items.
@@ -80,40 +77,83 @@
 </pre>
 
 <hr />
-<a name="ShowItems2fPreviewItem"></a>
-<a name="robo202"></a><h2>ShowItems/PreviewItem [ Subprograms ]</h2>
+<a name="ShowItems2fDestinationDirectory"></a>
+<a name="robo189"></a><h2>ShowItems/DestinationDirectory [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo17">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Preview selected file or directory. If preview is not available, show
- info about selected file or directory.
+<pre> Current directory previewed. Used during showing destination target for
+ various commands
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>PreviewItem</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tool_Button_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Self - Gtk_Tool_Button clicked. Unused. Can be null
+<pre class="source">   <strong>DestinationDirectory</strong><span class="sign">:</span> Unbounded_String<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fShowItem"></a>
-<a name="robo206"></a><h2>ShowItems/ShowItem [ Subprograms ]</h2>
+<a name="ShowItems2fScaleImage"></a>
+<a name="robo190"></a><h2>ShowItems/ScaleImage [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo17">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Show info about selected item or preview it.
+<pre> Scale currently previewed image
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowItem</strong><span class="sign">(</span>Self<span class="sign">:</span> <span class="keyword">access</span> Gtk_Tree_Selection_Record<span class="keyword">'Class</span><span class="sign"><span class="sign">)</span>;</span>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ScaleImage</strong><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItems2fShow5fSelected5fCommand"></a>
+<a name="robo193"></a><h2>ShowItems/Show_Selected_Command [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show preview or information about the currently selected file or
+ directory after user select it in the directory view
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> <strong>Show_Selected_Command</strong>
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Self - Gtk_Tree_Selection which contains selected file or directory
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed. Unused
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
+</pre>
+
+<hr />
+<a name="ShowItems2fShowDestination"></a>
+<a name="robo194"></a><h2>ShowItems/ShowDestination [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show destination directory for various commands in the preview widget
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowDestination</strong><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItems2fShowPreview"></a>
+<a name="robo196"></a><h2>ShowItems/ShowPreview [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show preview of the currently selected file or directory. If preview is
+ not available, show information about the selected item.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>ShowPreview</strong><span class="sign">;</span>
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/showitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sat Jan 18 2020 07:06:09
+<p>Generated from ./src/showitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 10 2020 09:43:48
 </p>
 </div> <!-- footer -->
 </body>
 </html>
+
