@@ -249,7 +249,8 @@ package body MainWindow is
         Create
           (".mainframe.textframe.closebutton",
            "-image dialog-cancelicon -style Toolbutton -command HideWidget");
-      Add(Button, "Hide entry without entering any changes");
+      Add
+        (Button, Mc(Get_Context, "{Hide entry without entering any changes}"));
       Tcl.Tk.Ada.Grid.Grid(Button);
       Tcl.Tk.Ada.Grid.Grid(TextEntry, "-column 1 -row 0 -sticky we");
       Button :=
@@ -421,14 +422,19 @@ package body MainWindow is
                if I = 1 then
                   Shortcut := PathShortcut & "-r";
                   Tooltip :=
-                    "Reload the current directory \[" & Shortcut & "\]";
+                    Mc(Get_Context, "{Reload the current directory}") & " \[" &
+                    Shortcut & "\]";
                elsif I = 2 then
                   Shortcut := PathShortcut & "-u";
-                  Tooltip := "Go to upper directory \[" & Shortcut & "\]";
+                  Tooltip :=
+                    Mc(Get_Context, "{Go to upper directory}") & " \[" &
+                    Shortcut & "\]";
                elsif I < 11 then
                   Shortcut :=
                     PathShortcut & "-KP_" & Slice_Number'Image(I - 2)(2);
-                  Tooltip := "Go to this directory \[" & Shortcut & "\]";
+                  Tooltip :=
+                    Mc(Get_Context, "{Go to this directory}") & " \[" &
+                    Shortcut & "\]";
                end if;
                Bind_To_Main_Window
                  (PathButton.Interp, "<" & To_String(Shortcut) & ">",
