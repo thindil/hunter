@@ -21,6 +21,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -109,7 +110,7 @@ package body ActivateItems is
         ItemsList(Positive'Value(Slice(Tokens, 1))).Name;
       if Is_Directory(To_String(FileName)) then
          if not Is_Read_Accessible_File(To_String(FileName)) then
-            ShowMessage("You can't enter this directory.");
+            ShowMessage(Mc(Interp, "{You can't enter this directory.}"));
             return TCL_OK;
          end if;
          if CurrentDirectory = To_Unbounded_String("/") then
@@ -140,7 +141,9 @@ package body ActivateItems is
             if not Openable then
                if not Is_Executable_File(To_String(FileName)) then
                   ShowMessage
-                    ("I can't open this file. No application associated with this type of files.");
+                    (Mc
+                       (Interp,
+                        "{I can't open this file. No application associated with this type of files.}"));
                   return TCL_OK;
                end if;
                Pid := ExecuteFile(To_String(FileName), "");
@@ -155,7 +158,9 @@ package body ActivateItems is
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
-                 ("I can't open this file. Can't start application asociated with this type of files.");
+                 (Mc
+                    (Interp,
+                     "{I can't open this file. Can't start application asociated with this type of files.}"));
             end if;
          end;
       end if;
@@ -201,12 +206,16 @@ package body ActivateItems is
          configure(Button, "-command ExecuteWith");
          Add
            (Button,
-            "Execute the selected file or directory with the entered program.");
+            Mc
+              (Interp,
+               "{Execute the selected file or directory with the entered program.}"));
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
          State(Button, "selected");
-         Add(TextEntry, "Enter command to use to open selected item.");
+         Add
+           (TextEntry,
+            Mc(Interp, "{Enter command to use to open selected item.}"));
          Unbind(TextEntry, "<KeyRelease>");
          Focus(TextEntry);
          TextFrame.Interp := Interp;
@@ -215,7 +224,7 @@ package body ActivateItems is
       else
          if Invoke(Button) /= "" then
             raise Hunter_Activate_Item_Exception
-              with "Can't hide execute program bar";
+              with Mc(Interp, "{Can't hide execute program bar}");
          end if;
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
@@ -270,7 +279,9 @@ package body ActivateItems is
       CommandName :=
         To_Unbounded_String(FindExecutable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
-         ShowMessage("Can't find command: " & Slice(Value, 1, SpaceIndex));
+         ShowMessage
+           (Mc(Interp, "{Can't find command:}") & " " &
+            Slice(Value, 1, SpaceIndex));
          return TCL_OK;
       end if;
       if SpaceIndex > 0 then
@@ -286,7 +297,7 @@ package body ActivateItems is
       Append(Arguments, FileName);
       Pid := ExecuteFile(To_String(CommandName), To_String(Arguments));
       if Pid = GNAT.OS_Lib.Invalid_Pid then
-         ShowMessage("Can't execute this command");
+         ShowMessage(Mc(Interp, "{Can't execute this command}"));
          return TCL_OK;
       end if;
       return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);
@@ -329,7 +340,7 @@ package body ActivateItems is
         ItemsList(Positive'Value(Slice(Tokens, 1))).Name;
       Pid := ExecuteFile(To_String(FileName), "");
       if Pid = GNAT.OS_Lib.Invalid_Pid then
-         ShowMessage("Can't execute this command");
+         ShowMessage(Mc(Interp, "{Can't execute this command}"));
       end if;
       return TCL_OK;
    end Execute_Command;
