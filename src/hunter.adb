@@ -21,6 +21,7 @@ with Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
+with Tcl.Msgcat.Ada; use Tcl.Msgcat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with ErrorDialog; use ErrorDialog;
@@ -51,7 +52,7 @@ begin
    MagicOpen;
    -- Start inotify
    InotifyInit;
-   -- Start Tk
+   -- Start Tcl/Tk
 
    --  Get command-line arguments and put them into C-style "argv"
    --------------------------------------------------------------
@@ -92,6 +93,7 @@ begin
    -- Load required Tcl packages
    Tooltip_Init(Interp);
    Tcl.Ada.Tcl_Eval(Interp, "package require Img");
+   MsgCat_Init(Interp);
 
    -- Load the program setting
    LoadSettings;
