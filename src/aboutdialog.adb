@@ -19,6 +19,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Busy;
 with Tcl.Tk.Ada.Grid;
@@ -41,7 +42,7 @@ package body AboutDialog is
    -- Show information about the program
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
@@ -58,14 +59,14 @@ package body AboutDialog is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       AboutDialog: constant Tk_Toplevel :=
         Create(".aboutdialog", "-class Dialog");
       CloseButton: constant Ttk_Button :=
         Create
           (Widget_Image(AboutDialog) & ".closebutton",
-           "-text {Close} -command {CloseDialog " & Widget_Image(AboutDialog) &
-           "} -underline 0");
+           "-text {" & Mc(Interp, "Close") & "} -command {CloseDialog " &
+           Widget_Image(AboutDialog) & "} -underline 0");
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
       Label: Ttk_Label;
       Frame: Ttk_Frame;
@@ -84,7 +85,8 @@ package body AboutDialog is
       Label :=
         Create
           (Widget_Image(Frame) & ".info",
-           "-text {Hunter - Graphical file manager for Linux}");
+           "-text {" &
+           Mc(Interp, "{Hunter - Graphical file manager for Linux}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Width := Width + Positive'Value(Winfo_Get(Label, "reqwidth"));
       Height := Positive'Value(Winfo_Get(Label, "reqheight")) * 15;
@@ -95,17 +97,20 @@ package body AboutDialog is
       Tcl.Tk.Ada.Grid.Grid(Label);
       Label :=
         Create
-          (Widget_Image(Frame) & ".license", "-text {License: GNU GPL v3}");
+          (Widget_Image(Frame) & ".license",
+           "-text {" & Mc(Interp, "{License:}") & " GNU GPLv3}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Label :=
         Create
           (Widget_Image(Frame) & ".version",
-           "-text {Version: 1.4 (development)}");
+           "-text {" & Mc(Interp, "{Version:}") & " 1.4 (" &
+           Mc(Interp, "{development}") & ")}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       WebsiteButton :=
         Create
           (Widget_Image(Frame) & ".website",
-           "-text {Website} -command {OpenLink http://thindil.github.io/hunter/} -style Toolbutton");
+           "-text {" & Mc(Interp, "Website") &
+           "} -command {OpenLink http://thindil.github.io/hunter/} -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(WebsiteButton);
       Tcl.Tk.Ada.Grid.Grid(Frame, "-row 0 -column 1 -sticky nwe");
       Tcl.Tk.Ada.Grid.Grid(Creditsbook, "-columnspan 2 -sticky nwes");
@@ -117,12 +122,14 @@ package body AboutDialog is
       Column(View, "#0", "-stretch true -width" & Positive'Image(Width - 50));
       Insert(View, "{} end -text {Bartek Jasicki <thindil@laeran.pl>}");
       Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
-      Add(Creditsbook, Widget_Image(Frame), "-text {Programmers}");
+      Add
+        (Creditsbook, Widget_Image(Frame),
+         "-text {" & Mc(Interp, "Programmers") & "}");
       Tcl.Tk.Ada.Grid.Grid(CloseButton, "-columnspan 2");
       Bind
         (AboutDialog, "<Alt-c>",
          "{CloseDialog " & Widget_Image(AboutDialog) & "}");
-      SetDialog(AboutDialog, "Hunter - About", Width, Height);
+      SetDialog(AboutDialog, Mc(Interp, "{Hunter - About}"), Width, Height);
       return TCL_OK;
    end Show_About_Command;
 
@@ -131,7 +138,7 @@ package body AboutDialog is
    -- Open the selected link in the default web browser
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
@@ -148,7 +155,7 @@ package body AboutDialog is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
+      pragma Unreferenced(ClientData, Argc);
       OsName: constant String := Tcl_GetVar(Get_Context, "tcl_platform(os)");
       Command: Unbounded_String;
       ProcessId: Process_Id;
@@ -166,7 +173,7 @@ package body AboutDialog is
           (To_String(Command),
            Argument_String_To_List(CArgv.Arg(Argv, 1)).all);
       if ProcessId = Invalid_Pid then
-         raise Azip_Execute_Error with "Can't open link";
+         raise Azip_Execute_Error with Mc(Interp, "{Can't open link}");
       end if;
       return TCL_OK;
    end Open_Link_Command;
