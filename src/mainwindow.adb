@@ -22,6 +22,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.String_Split; use GNAT.String_Split;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CHelper; use CHelper;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
@@ -119,6 +120,7 @@ package body MainWindow is
       AddCommands;
       CreateSearchUI;
       Set_Directory(Containing_Directory(Command_Name));
+      Mc_Load("../share/hunter/translations", Get_Context);
       for IconName of IconsNames loop
          Image :=
            Create
@@ -215,12 +217,16 @@ package body MainWindow is
       Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
       Heading
         (DirectoryTree, "name",
-         "-text ""Name"" -image ""arrow-down"" -command ""Sort name""");
+         "-text {" & Mc(Get_Context, "Name") &
+         "} -image arrow-down -command {Sort name}");
       Set_Directory(CurrentDir);
       Heading
         (DirectoryTree, "modified",
-         "-text ""Modified"" -command ""Sort modified""");
-      Heading(DirectoryTree, "size", "-text ""Size"" -command ""Sort size""");
+         "-text {" & Mc(Get_Context, "Modified") &
+         "} -command {Sort modified}");
+      Heading
+        (DirectoryTree, "size",
+         "-text {" & Mc(Get_Context, "Size") & "} -command {Sort size}");
       if not Settings.ShowLastModified then
          configure(DirectoryTree, "-displaycolumns [list name size]");
       end if;
