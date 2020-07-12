@@ -92,6 +92,9 @@ package body Preferences is
          Settings.ColorText := False;
       end if;
       Close(ConfigFile);
+   exception
+      when Ada.Directories.NAME_ERROR =>
+         null;
    end LoadSettings;
 
    procedure SavePreferences is
