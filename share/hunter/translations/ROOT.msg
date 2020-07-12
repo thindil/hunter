@@ -21,4 +21,9 @@
    "Can't hide execute program bar" "Can't hide execute program bar"
    "Can't find command:" "Can't find command:"
    "Can't execute this command" "Can't execute this command"
+   "Go to the selected destination" "Go to the selected destination"
+   "Enter the selected destination" "Enter the selected destination"
+   "Directory" "Directory"
+   "doesn't exists." "doesn't exists."
+   "Can't hide text entry" "Can't hide text entry"
 }
