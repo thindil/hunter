@@ -75,7 +75,7 @@ package body ActivateItems is
    -- editor and so on.
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
