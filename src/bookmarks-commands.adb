@@ -22,6 +22,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -85,7 +86,7 @@ package body Bookmarks.Commands is
    -- Show text entry to enter directory destination
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
@@ -102,7 +103,7 @@ package body Bookmarks.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       TextFrame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
@@ -116,12 +117,12 @@ package body Bookmarks.Commands is
       Button.Interp := Get_Context;
       Button.Name := New_String(".mainframe.textframe.okbutton");
       configure(Button, "-command GoToDestination");
-      Add(Button, "Go to the selected destination");
+      Add(Button, Mc(Interp, "{Go to the selected destination}"));
       TextEntry.Interp := Get_Context;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       Focus(TextEntry);
       Insert(TextEntry, "0", To_String(CurrentDirectory));
-      Add(TextEntry, "Enter the selected destination");
+      Add(TextEntry, Mc(Interp, "{Enter the selected destination}"));
       Unbind(TextEntry, "<KeyRelease>");
       TextFrame.Interp := Get_Context;
       TextFrame.Name := New_String(".mainframe.textframe");
@@ -137,7 +138,7 @@ package body Bookmarks.Commands is
    -- Go to the destination directory selected by the user
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
@@ -154,7 +155,7 @@ package body Bookmarks.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       TextEntry: Ttk_Entry;
       HideButton: Ttk_Button;
       Hunter_Go_To_Destination_Exception: exception;
@@ -168,14 +169,17 @@ package body Bookmarks.Commands is
       TextEntry.Interp := Get_Context;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       if not Ada.Directories.Exists(Get(TextEntry)) then
-         ShowMessage("Directory '" & Get(TextEntry) & "' doesn't exists.");
+         ShowMessage
+           (Mc(Interp, "{Directory}") & " '" & Get(TextEntry) & "' " &
+            Mc(Interp, "{doesn't exists.}"));
          return TCL_OK;
       end if;
       CurrentDirectory := To_Unbounded_String(Get(TextEntry));
       HideButton.Interp := Get_Context;
       HideButton.Name := New_String(".mainframe.textframe.closebutton");
       if Invoke(HideButton) /= "" then
-         raise Hunter_Go_To_Destination_Exception with "Can't hide text entry";
+         raise Hunter_Go_To_Destination_Exception
+           with Mc(Interp, "{Can't hide text entry}");
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
