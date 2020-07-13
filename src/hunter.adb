@@ -21,7 +21,7 @@ with Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
-with Tcl.Msgcat.Ada; use Tcl.Msgcat.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with ErrorDialog; use ErrorDialog;
