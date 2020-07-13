@@ -325,11 +325,12 @@ package body MainWindow is
                      if Settings.ShowHidden then
                         SizeString :=
                           To_Unbounded_String
-                            (Integer'Image
-                               (List(I).Size + List(I).HiddenItems));
+                            (Item_Size'Image
+                               (List(I).Size +
+                                Item_Size(List(I).HiddenItems)));
                      else
                         SizeString :=
-                          To_Unbounded_String(Integer'Image(List(I).Size));
+                          To_Unbounded_String(Item_Size'Image(List(I).Size));
                      end if;
                   end if;
             end case;

@@ -103,7 +103,7 @@ package body Trash is
                   Size := Size + 1;
                end loop;
                Close(SubDirectory);
-               Item.Size := Integer(Size - 2);
+               Item.Size := Item_Size(Size - 2);
             else
                Item.Size := -1;
             end if;
@@ -150,7 +150,8 @@ package body Trash is
             if Is_Symbolic_Link(To_String(FullName)) then
                Item.Size := -2;
             elsif Is_Regular_File(To_String(FullName)) then
-               Item.Size := Integer(Ada.Directories.Size(To_String(FullName)));
+               Item.Size :=
+                 Item_Size(Ada.Directories.Size(To_String(FullName)));
             else
                Item.Size := 0;
             end if;
