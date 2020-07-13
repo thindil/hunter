@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Maps.Constants; use Ada.Strings.Maps.Constants;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -109,7 +108,7 @@ package body LoadData is
                end if;
             end loop;
             Close(SubDirectory);
-            Item.Size := Integer(Size);
+            Item.Size := Item_Size(Size);
             Item.HiddenItems := HiddenAmount;
          else
             Item.Size := -1;
@@ -151,7 +150,7 @@ package body LoadData is
          if Is_Symbolic_Link(Path) then
             Item.Size := -2;
          elsif Is_Regular_File(Path) then
-            Item.Size := Integer(Ada.Directories.Size(Path));
+            Item.Size := Item_Size(Ada.Directories.Size(Path));
          else
             Item.Size := 0;
          end if;

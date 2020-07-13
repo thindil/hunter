@@ -115,7 +115,7 @@ package body RefreshData is
                            Close(Directory);
                         elsif Is_Regular_File(To_String(FileName)) then
                            ItemsList(ItemIndex).Size :=
-                             Integer
+                             Item_Size
                                (Ada.Directories.Size(To_String(FileName)));
                         end if;
                         if FileName = To_String(CurrentSelected) then

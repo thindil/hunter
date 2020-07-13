@@ -15,6 +15,7 @@
 
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Containers.Vectors; use Ada.Containers;
+with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 -- ****h* Hunter/LoadData
@@ -23,6 +24,8 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 -- SOURCE
 package LoadData is
 -- ****
+
+   type Item_Size is range -2 .. File_Size'Last;
 
    -- ****t* LoadData/Item_Record
    -- FUNCTION
@@ -42,7 +45,7 @@ package LoadData is
    -- SOURCE
    type Item_Record is record
       Name: Unbounded_String;
-      Size: Integer;
+      Size: Item_Size;
       IsDirectory: Boolean;
       IsHidden: Boolean;
       Modified: Time;
