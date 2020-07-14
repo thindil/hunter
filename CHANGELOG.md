@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 - Crash on lack of configuration file
 - Crash on very large files
+- Crash on showing info about items with space in their names
 
 ## [1.3] - 2020-07-10
 
