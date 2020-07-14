@@ -93,7 +93,7 @@ package body Preferences is
       end if;
       Close(ConfigFile);
    exception
-      when Ada.Directories.NAME_ERROR =>
+      when Ada.Directories.Name_Error =>
          null;
    end LoadSettings;
 
