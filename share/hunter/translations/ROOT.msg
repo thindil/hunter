@@ -26,4 +26,10 @@
    "Directory" "Directory"
    "doesn't exists." "doesn't exists."
    "Can't hide text entry" "Can't hide text entry"
+   "Home" "Home"
+   "Enter destination" "Enter destination"
+   "You don't have permissions to copy selected items here." "You don't have permissions to copy selected items here."
+   "File" "File"
+   " exists. Do you want to overwrite it?" " exists. Do you want to overwrite it?"
+   "All selected files and directories have been copied." "All selected files and directories have been copied."
 }
