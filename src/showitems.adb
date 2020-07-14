@@ -631,6 +631,8 @@ package body ShowItems is
          Tokens: Slice_Set;
          type Integer_Access is access Integer;
          Status: constant Integer_Access := new Integer;
+         Arguments: constant Argument_List :=
+           (new String'("-c%a %U %G"), new String'(SelectedItem));
          procedure SetPermissionsButtons
            (Name, ButtonState: String; Permission: Character) is
             CheckButton: Ttk_CheckButton;
@@ -687,37 +689,32 @@ package body ShowItems is
       begin
          Attributes :=
            To_Unbounded_String
-             (Get_Command_Output
-                ("stat",
-                 Argument_String_To_List
-                   ("-c ""-group %G -owner %U -permissions 000%a"" " &
-                    SelectedItem).all,
-                 "", Status));
+             (Get_Command_Output("stat", Arguments, "", Status));
          Create(Tokens, To_String(Attributes), " ");
          Label.Name :=
            New_String(Widget_Image(InfoFrame) & ".groupframe.group");
-         configure(Label, "-text {" & Slice(Tokens, 2) & "}");
+         configure(Label, "-text {" & Slice(Tokens, 3) & "}");
          Label.Name :=
            New_String(Widget_Image(InfoFrame) & ".ownerframe.owner");
-         configure(Label, "-text {" & Slice(Tokens, 4) & "}");
-         if Value("USER") /= Slice(Tokens, 4) then
+         configure(Label, "-text {" & Slice(Tokens, 2) & "}");
+         if Value("USER") /= Slice(Tokens, 2) then
             SetPermissionsButtons
               ("owner", "disabled",
-               Slice(Tokens, 6)(Slice(Tokens, 6)'Last - 2));
+               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
             SetPermissionsButtons
               ("group", "disabled",
-               Slice(Tokens, 6)(Slice(Tokens, 6)'Last - 1));
+               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
             SetPermissionsButtons
-              ("others", "disabled", Slice(Tokens, 6)(Slice(Tokens, 6)'Last));
+              ("others", "disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
          else
             SetPermissionsButtons
               ("owner", "!disabled",
-               Slice(Tokens, 6)(Slice(Tokens, 6)'Last - 2));
+               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
             SetPermissionsButtons
               ("group", "!disabled",
-               Slice(Tokens, 6)(Slice(Tokens, 6)'Last - 1));
+               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
             SetPermissionsButtons
-              ("others", "!disabled", Slice(Tokens, 6)(Slice(Tokens, 6)'Last));
+              ("others", "!disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
          end if;
       end;
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
