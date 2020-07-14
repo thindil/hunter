@@ -19,6 +19,8 @@ with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with LoadData; use LoadData;
@@ -83,7 +85,9 @@ package body CopyItems is
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
          ShowMessage
-           ("You don't have permissions to copy selected items here.");
+           (Mc
+              (Interp,
+               "You don't have permissions to copy selected items here."));
          return TCL_OK;
       end if;
       NewAction := COPY;
@@ -164,14 +168,14 @@ package body CopyItems is
             if Is_Directory
                 (To_String(Path) & "/" &
                  Simple_Name(To_String(CopyItemsList(1)))) then
-               ItemType := To_Unbounded_String("Directory");
+               ItemType := To_Unbounded_String(Mc(Get_Context, "Directory"));
             else
-               ItemType := To_Unbounded_String("File");
+               ItemType := To_Unbounded_String(Mc(Get_Context, "File"));
             end if;
             ShowMessage
               (To_String(ItemType) & " " &
                Simple_Name(To_String(CopyItemsList(1))) &
-               " exists. Do you want to overwrite it?",
+               Mc(Get_Context, " exists. Do you want to overwrite it?"),
                "question");
             return;
          end if;
@@ -186,7 +190,10 @@ package body CopyItems is
       ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage
-           ("All selected files and directories have been copied.", "message");
+           (Mc
+              (Get_Context,
+               "All selected files and directories have been copied."),
+            "message");
       end if;
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;

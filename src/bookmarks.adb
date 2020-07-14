@@ -20,6 +20,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -94,7 +95,8 @@ package body Bookmarks is
       BookmarksList.Include("Home", Value("HOME"));
       Add
         (BookmarksMenu, "command",
-         "-label Home -command {GoToBookmark {" & Value("HOME") & "}}");
+         "-label " & Mc(Get_Context, "Home") & " -command {GoToBookmark {" &
+         Value("HOME") & "}}");
       for I in XDGBookmarks'Range loop
          if Ada.Directories.Exists
              (GetXDGDirectory(To_String(XDGBookmarks(I).Path))) then
@@ -141,10 +143,11 @@ package body Bookmarks is
             Close(File);
          end;
       end if;
-      BookmarksList.Include("Enter destination", "");
+      BookmarksList.Include(Mc(Get_Context, "Enter destination"), "");
       Add
         (BookmarksMenu, "command",
-         "-label {Enter destination} -command SetDestination");
+         "-label {" & Mc(Get_Context, "Enter destination") &
+         "} -command SetDestination");
       MenuButton.Interp := BookmarksMenu.Interp;
       MenuButton.Name :=
         New_String(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
