@@ -148,7 +148,8 @@ package body Messages is
                   Tcl.Ada.Tcl_Eval
                     (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
                elsif NewAction = DELETETRASH then
-                  if Show_Trash_Command(ClientData, Interp, Argc, Argv) /= TCL_OK then
+                  if Show_Trash_Command(ClientData, Interp, Argc, Argv) /=
+                    TCL_OK then
                      raise Hunter_Message_Exception with "Can't show Trash";
                   end if;
                   NewAction := DELETETRASH;
