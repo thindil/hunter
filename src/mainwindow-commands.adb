@@ -436,10 +436,17 @@ package body MainWindow.Commands is
          Button.Name :=
            New_String(".mainframe.toolbars." & To_String(ButtonsNames(I)));
          if Winfo_Get(Button, "ismapped") = "1" then
-            Add
-              (FileMenu, "command",
-               "-label {" & To_String(MenuLabels(I)) & "} -command {" &
-               Widget_Image(Button) & " invoke}");
+            if I /= 7 then
+               Add
+                 (FileMenu, "command",
+                  "-label {" & To_String(MenuLabels(I)) & "} -command {" &
+                  Widget_Image(Button) & " invoke}");
+            else
+               Add
+                 (FileMenu, "command",
+                  "-label {" & To_String(MenuLabels(I)) &
+                  "} -command {.deletemenu invoke 0}");
+            end if;
          end if;
       end loop;
       Tk_Popup(FileMenu, CArgv.Arg(Argv, 1), CArgv.Arg(Argv, 2));
