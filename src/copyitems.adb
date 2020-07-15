@@ -87,7 +87,7 @@ package body CopyItems is
          ShowMessage
            (Mc
               (Interp,
-               "You don't have permissions to copy selected items here."));
+               "{You don't have permissions to copy selected items here.}"));
          return TCL_OK;
       end if;
       NewAction := COPY;
@@ -168,14 +168,14 @@ package body CopyItems is
             if Is_Directory
                 (To_String(Path) & "/" &
                  Simple_Name(To_String(CopyItemsList(1)))) then
-               ItemType := To_Unbounded_String(Mc(Get_Context, "Directory"));
+               ItemType := To_Unbounded_String(Mc(Get_Context, "{Directory}"));
             else
-               ItemType := To_Unbounded_String(Mc(Get_Context, "File"));
+               ItemType := To_Unbounded_String(Mc(Get_Context, "{File}"));
             end if;
             ShowMessage
               (To_String(ItemType) & " " &
                Simple_Name(To_String(CopyItemsList(1))) &
-               Mc(Get_Context, " exists. Do you want to overwrite it?"),
+               Mc(Get_Context, "{ exists. Do you want to overwrite it?}"),
                "question");
             return;
          end if;
@@ -192,7 +192,7 @@ package body CopyItems is
          ShowMessage
            (Mc
               (Get_Context,
-               "All selected files and directories have been copied."),
+               "{All selected files and directories have been copied.}"),
             "message");
       end if;
       if Settings.StayInOld then
