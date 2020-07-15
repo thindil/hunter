@@ -21,6 +21,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
@@ -81,10 +82,12 @@ package body CreateItems is
       configure(Button, "-command {Create " & CArgv.Arg(Argv, 1) & "}");
       Add
         (Button,
-         "Create a new " & CArgv.Arg(Argv, 1) & " with the selected name.");
+         Mc(Interp, "{Create a new }") & Mc(Interp, CArgv.Arg(Argv, 1)) &
+         Mc(Interp, "{ with the selected name.}"));
       Add
         (TextEntry,
-         "Enter a name for the newly created " & CArgv.Arg(Argv, 1) & ".");
+         Mc(Interp, "{Enter a name for the newly created }") &
+         Mc(Interp, CArgv.Arg(Argv, 1)) & ".");
       Tcl.Tk.Ada.Grid.Grid(Button);
       Unbind(TextEntry, "<KeyRelease>");
       Focus(TextEntry);
@@ -143,22 +146,25 @@ package body CreateItems is
       if Exists(To_String(NewItemName)) or
         Is_Symbolic_Link(To_String(NewItemName)) then
          ActionString :=
-           To_Unbounded_String("create " & CArgv.Arg(Argv, 1) & " with");
+           To_Unbounded_String
+             (Mc(Interp, "{create }") & CArgv.Arg(Argv, 1) &
+              Mc(Interp, "{ with}"));
          if Is_Directory(To_String(NewItemName)) then
-            ActionBlocker := To_Unbounded_String("directory");
+            ActionBlocker := To_Unbounded_String(Mc(Interp, "directory"));
          else
-            ActionBlocker := To_Unbounded_String("file");
+            ActionBlocker := To_Unbounded_String(Mc(Interp, "file"));
          end if;
          ShowMessage
-           ("You can't " & To_String(ActionString) & " name '" &
-            To_String(NewItemName) & "' because there exists " &
-            To_String(ActionBlocker) & " with that name.");
+           (Mc(Interp, "{You can't }") & To_String(ActionString) &
+            Mc(Interp, "{ name '}") & To_String(NewItemName) &
+            Mc(Interp, "{' because there exists }") &
+            To_String(ActionBlocker) & Mc(Interp, "{ with that name.}"));
          goto End_Of_Create;
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewItemName))) then
          ShowMessage
-           ("You don't have permissions to write to " &
+           (Mc(Interp, "{You don't have permissions to write to }") &
             Containing_Directory(To_String(NewItemName)));
          goto End_Of_Create;
       end if;
@@ -182,7 +188,8 @@ package body CreateItems is
                "file link -symbolic {" & To_String(NewItemName) & "} {" &
                To_String(Destination) & "}");
          when others =>
-            raise Hunter_Create_Exception with "Invalid action type";
+            raise Hunter_Create_Exception
+              with Mc(Interp, "{Invalid action type}");
       end case;
       if not Settings.StayInOld and then NewAction /= CREATELINK then
          CurrentDirectory :=
@@ -193,7 +200,8 @@ package body CreateItems is
       UpdateDirectoryList(True);
       <<End_Of_Create>>
       if Invoke(Button) /= "" then
-         raise Hunter_Create_Exception with "Can't hide create item bar";
+         raise Hunter_Create_Exception
+           with Mc(Interp, "{Can't hide create item bar}");
       end if;
       ToggleToolButtons(NewAction, True);
       return TCL_OK;
