@@ -68,74 +68,74 @@ package body RefreshData is
          RefreshList := True;
       end RemoveItem;
    begin
-      if not TemporaryStop then
-         for Event of EventsList loop
-            if Event.Path = CurrentDirectory
-              and then
-              ((Event.Event in Moved_To | Metadata | Accessed) and
-               Exists(To_String(Event.Path & "/" & Event.Target))) then
-               AddItem(To_String(Event.Path & "/" & Event.Target), ItemsList);
-               RefreshList := True;
-               goto End_Of_Loop;
-            end if;
-            ItemIndex := ItemsList.First_Index;
-            while ItemIndex <= ItemsList.Last_Index loop
-               FileName := CurrentDirectory & "/" & ItemsList(ItemIndex).Name;
-               if FileName = Event.Path or
-                 ItemsList(ItemIndex).Name = Event.Target then
-                  case Event.Event is
-                     when Moved_From | Deleted =>
+      if TemporaryStop then
+         goto Clear_List;
+      end if;
+      for Event of EventsList loop
+         if Event.Path = CurrentDirectory
+           and then
+           ((Event.Event in Moved_To | Metadata | Accessed) and
+            Exists(To_String(Event.Path & "/" & Event.Target))) then
+            AddItem(To_String(Event.Path & "/" & Event.Target), ItemsList);
+            RefreshList := True;
+            goto End_Of_Loop;
+         end if;
+         ItemIndex := ItemsList.First_Index;
+         while ItemIndex <= ItemsList.Last_Index loop
+            FileName := CurrentDirectory & "/" & ItemsList(ItemIndex).Name;
+            if FileName = Event.Path or
+              ItemsList(ItemIndex).Name = Event.Target then
+               case Event.Event is
+                  when Moved_From | Deleted =>
+                     RemoveItem;
+                     exit;
+                  when Metadata | Modified | Moved_To | Accessed =>
+                     if not Exists(To_String(FileName)) then
                         RemoveItem;
                         exit;
-                     when Metadata | Modified | Moved_To | Accessed =>
-                        if not Exists(To_String(FileName)) then
-                           RemoveItem;
-                           exit;
-                        end if;
-                        RefreshList := True;
-                        ItemsList(ItemIndex).Modified :=
-                          Modification_Time(To_String(FileName));
-                        if not Is_Read_Accessible_File
-                            (To_String(FileName)) then
-                           ItemsList(ItemIndex).Size := -1;
-                           exit;
-                        end if;
-                        if Is_Directory(To_String(FileName)) then
-                           Open(Directory, To_String(FileName));
-                           ItemsList(ItemIndex).Size := 0;
-                           loop
-                              Read(Directory, SubFileName, Last);
-                              exit when Last = 0;
-                              if SubFileName(1 .. Last) /= "." and
-                                SubFileName(1 .. Last) /= ".." then
-                                 ItemsList(ItemIndex).Size :=
-                                   ItemsList(ItemIndex).Size + 1;
-                              end if;
-                           end loop;
-                           Close(Directory);
-                        elsif Is_Regular_File(To_String(FileName)) then
-                           ItemsList(ItemIndex).Size :=
-                             Item_Size
-                               (Ada.Directories.Size(To_String(FileName)));
-                        end if;
-                        if FileName = To_String(CurrentSelected) then
-                           ShowPreview;
-                        end if;
+                     end if;
+                     RefreshList := True;
+                     ItemsList(ItemIndex).Modified :=
+                       Modification_Time(To_String(FileName));
+                     if not Is_Read_Accessible_File(To_String(FileName)) then
+                        ItemsList(ItemIndex).Size := -1;
                         exit;
-                     when others =>
-                        null;
-                  end case;
-               end if;
-               ItemIndex := ItemIndex + 1;
-            end loop;
-            <<End_Of_Loop>>
+                     end if;
+                     if Is_Directory(To_String(FileName)) then
+                        Open(Directory, To_String(FileName));
+                        ItemsList(ItemIndex).Size := 0;
+                        loop
+                           Read(Directory, SubFileName, Last);
+                           exit when Last = 0;
+                           if SubFileName(1 .. Last) /= "." and
+                             SubFileName(1 .. Last) /= ".." then
+                              ItemsList(ItemIndex).Size :=
+                                ItemsList(ItemIndex).Size + 1;
+                           end if;
+                        end loop;
+                        Close(Directory);
+                     elsif Is_Regular_File(To_String(FileName)) then
+                        ItemsList(ItemIndex).Size :=
+                          Item_Size(Ada.Directories.Size(To_String(FileName)));
+                     end if;
+                     if FileName = To_String(CurrentSelected) then
+                        ShowPreview;
+                     end if;
+                     exit;
+                  when others =>
+                     null;
+               end case;
+            end if;
+            ItemIndex := ItemIndex + 1;
          end loop;
-         if RefreshList then
-            Items_Sorting.Sort(ItemsList);
-            UpdateDirectoryList(True);
-            RefreshList := False;
-         end if;
+         <<End_Of_Loop>>
+      end loop;
+      if RefreshList then
+         Items_Sorting.Sort(ItemsList);
+         UpdateDirectoryList(True);
+         RefreshList := False;
       end if;
+      <<Clear_List>>
       EventsList.Clear;
       Timer_Token :=
         Tcl_CreateTimerHandler
