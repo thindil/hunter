@@ -13,17 +13,19 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with Tcl;
 with Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -85,11 +87,18 @@ package body ErrorDialog is
          return;
       end if;
       Set_Context(Interp);
+      MsgCat_Init(Interp);
+      Ada.Directories.Set_Directory
+        (Ada.Directories.Containing_Directory(Command_Name));
+      Mc_Load("../share/hunter/translations", Interp);
       declare
          ErrorLabel: constant Ttk_Label :=
            Create
              (".errorlabel",
-              "-text ""Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at:"" -wraplength 800");
+              "-text {" &
+              Mc(Interp,
+                 "{Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at:}") &
+              "} -wraplength 800");
          ErrorButton: constant Ttk_Button :=
            Create
              (".errorbutton",
@@ -99,12 +108,17 @@ package body ErrorDialog is
          ErrorLabel2: constant Ttk_Label :=
            Create
              (".errorlabel2",
-              "-text {and attach (if possible) file 'error.log' from" &
+              "-text {" &
+              Mc(Interp, "{and attach (if possible) file 'error.log' from}") &
               Value("HOME") & "/.cache/hunter' directory.} -wraplength 800");
          CloseButton: constant Ttk_Button :=
-           Create(".closebutton", "-text Close -command exit");
+           Create
+             (".closebutton",
+              "-text " & Mc(Interp, "{Close}") & " -command exit");
          ErrorFrame: constant Ttk_LabelFrame :=
-           Create(".errorframe", "-text {Technical information}");
+           Create
+             (".errorframe",
+              "-text {" & Mc(Interp, "{Technical information}") & "}");
          ErrorInfo: constant Tk_Text :=
            Create
              (".errorframe.errorinfo",
