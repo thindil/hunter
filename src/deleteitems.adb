@@ -30,6 +30,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
@@ -136,16 +137,21 @@ package body DeleteItems is
    exception
       when An_Exception : Ada.Directories.Use_Error =>
          ShowMessage
-           ("Could not delete selected files or directories. Reason: " &
+           (Mc
+              (Get_Context,
+               "{Could not delete selected files or directories. Reason: }") &
             Exception_Message(An_Exception));
          raise;
       when An_Exception : Directory_Error =>
          ShowMessage
-           ("Can't delete selected directory: " &
+           (Mc(Get_Context, "{Can't delete selected directory: }") &
             Exception_Message(An_Exception));
          raise;
       when others =>
-         ShowMessage("Unknown error during deleting files or directories.");
+         ShowMessage
+           (Mc
+              (Get_Context,
+               "{Unknown error during deleting files or directories.}"));
          raise;
    end DeleteSelected;
 
@@ -154,7 +160,7 @@ package body DeleteItems is
    -- Show confirmation to delete the selected files and directories
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
@@ -171,7 +177,7 @@ package body DeleteItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       Message, FileLine: Unbounded_String;
       FileInfo: File_Type;
       I: Positive := SelectedItems.First_Index;
@@ -186,9 +192,9 @@ package body DeleteItems is
          NewAction := DELETETRASH;
       end if;
       if Settings.DeleteFiles or NewAction = DELETETRASH then
-         Message := To_Unbounded_String("Delete?" & LF);
+         Message := To_Unbounded_String(Mc(Interp, "{Delete?}") & LF);
       else
-         Message := To_Unbounded_String("Move to trash?" & LF);
+         Message := To_Unbounded_String(Mc(Interp, "{Move to trash?}") & LF);
       end if;
       while I <= SelectedItems.Last_Index loop
          if NewAction = DELETE then
@@ -212,14 +218,14 @@ package body DeleteItems is
          end if;
          if not Is_Symbolic_Link(To_String(SelectedItems(I)))
            and then Is_Directory(To_String(SelectedItems(I))) then
-            Append(Message, "(and its content)");
+            Append(Message, Mc(Interp, "{(and its content)}"));
          end if;
          if I /= SelectedItems.Last_Index then
             Append(Message, LF);
          end if;
          I := I + 1;
          if I = 11 then
-            Append(Message, "(and more)");
+            Append(Message, Mc(Interp, "{(and more)}"));
             exit;
          end if;
       end loop;
