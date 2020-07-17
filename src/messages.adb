@@ -21,6 +21,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
@@ -150,7 +151,8 @@ package body Messages is
                elsif NewAction = DELETETRASH then
                   if Show_Trash_Command(ClientData, Interp, Argc, Argv) /=
                     TCL_OK then
-                     raise Hunter_Message_Exception with "Can't show Trash";
+                     raise Hunter_Message_Exception
+                       with Mc(Interp, "{Can't show Trash}");
                   end if;
                   NewAction := DELETETRASH;
                else
@@ -165,13 +167,18 @@ package body Messages is
             if Settings.ShowFinishedInfo then
                if NewAction = DELETE and not Settings.DeleteFiles then
                   ShowMessage
-                    ("All selected files and directories have been moved to Trash.",
+                    (Mc
+                       (Interp,
+                        "{All selected files and directories have been moved to Trash.}"),
                      "message");
                elsif NewAction = CLEARTRASH then
-                  ShowMessage("Trash have been cleared.", "message");
+                  ShowMessage
+                    (Mc(Interp, "{Trash have been cleared.}"), "message");
                else
                   ShowMessage
-                    ("All selected files and directories have been deleted.",
+                    (Mc
+                       (Interp,
+                        "{All selected files and directories have been deleted.}"),
                      "message");
                end if;
             else
