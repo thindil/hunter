@@ -53,7 +53,7 @@ package body RefreshData is
 
    procedure CheckItems(data: ClientData) is
       pragma Unreferenced(data);
-      RefreshList: Boolean := False;
+      RefreshList, ItemExists: Boolean := False;
       ItemIndex: Positive;
       FileName: Unbounded_String;
       Directory: Dir_Type;
@@ -76,9 +76,18 @@ package body RefreshData is
            and then
            ((Event.Event in Moved_To | Metadata | Accessed) and
             Exists(To_String(Event.Path & "/" & Event.Target))) then
-            AddItem(To_String(Event.Path & "/" & Event.Target), ItemsList);
-            RefreshList := True;
-            goto End_Of_Loop;
+            ItemExists := False;
+            for Item of ItemsList loop
+               if Item.Name = Event.Target then
+                  ItemExists := True;
+                  exit;
+               end if;
+            end loop;
+            if not ItemExists then
+               AddItem(To_String(Event.Path & "/" & Event.Target), ItemsList);
+               RefreshList := True;
+               goto End_Of_Loop;
+            end if;
          end if;
          ItemIndex := ItemsList.First_Index;
          while ItemIndex <= ItemsList.Last_Index loop
