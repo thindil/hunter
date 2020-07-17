@@ -23,6 +23,7 @@ with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -83,32 +84,32 @@ package body MainWindow.Commands is
       DirectoryTree.Interp := Get_Context;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
-      Heading(DirectoryTree, "name", "-image """"");
-      Heading(DirectoryTree, "modified", "-image """"");
-      Heading(DirectoryTree, "size", "-image """"");
+      Heading(DirectoryTree, "name", "-image {}");
+      Heading(DirectoryTree, "modified", "-image {}");
+      Heading(DirectoryTree, "size", "-image {}");
       if CArgv.Arg(Argv, 1) = "name" then
          if SortOrder = NameAsc then
             SortOrder := NameDesc;
-            Heading(DirectoryTree, "name", "-image ""arrow-up""");
+            Heading(DirectoryTree, "name", "-image {arrow-up}");
          else
             SortOrder := NameAsc;
-            Heading(DirectoryTree, "name", "-image ""arrow-down""");
+            Heading(DirectoryTree, "name", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "modified" then
          if SortOrder = ModifiedAsc then
             SortOrder := ModifiedDesc;
-            Heading(DirectoryTree, "modified", "-image ""arrow-up""");
+            Heading(DirectoryTree, "modified", "-image {arrow-up}");
          else
             SortOrder := ModifiedAsc;
-            Heading(DirectoryTree, "modified", "-image ""arrow-down""");
+            Heading(DirectoryTree, "modified", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "size" then
          if SortOrder = SizeAsc then
             SortOrder := SizeDesc;
-            Heading(DirectoryTree, "size", "-image ""arrow-up""");
+            Heading(DirectoryTree, "size", "-image {arrow-up}");
          else
             SortOrder := SizeAsc;
-            Heading(DirectoryTree, "size", "-image ""arrow-down""");
+            Heading(DirectoryTree, "size", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "previewname" then
          DirectoryTree.Interp := Get_Context;
@@ -116,10 +117,10 @@ package body MainWindow.Commands is
            New_String(".mainframe.paned.previewframe.directorytree");
          if SortOrder = NameAsc then
             SortOrder := NameDesc;
-            Heading(DirectoryTree, "name", "-image ""arrow-up""");
+            Heading(DirectoryTree, "name", "-image {arrow-up}");
          else
             SortOrder := NameAsc;
-            Heading(DirectoryTree, "name", "-image ""arrow-down""");
+            Heading(DirectoryTree, "name", "-image {arrow-down}");
          end if;
          Items_Sorting.Sort(SecondItemsList);
          UpdateDirectoryList(True, "preview");
@@ -199,7 +200,8 @@ package body MainWindow.Commands is
          Button.Name :=
            New_String(".mainframe.message.buttonsbox.buttonclose");
          if Invoke(Button) /= "" then
-            raise Hunter_Hide_Widget_Exception with "Can't hide message";
+            raise Hunter_Hide_Widget_Exception
+              with Mc(Interp, "{Can't hide message}");
          end if;
          return TCL_OK;
       end if;
@@ -236,7 +238,7 @@ package body MainWindow.Commands is
              (".mainframe.paned.previewframe.infoframe.associatedprogram");
          if Invoke(Button) /= "" then
             raise Hunter_Hide_Widget_Exception
-              with "Can't hide associated programs menu";
+              with Mc(Interp, "{Can't hide associated programs menu}");
          end if;
          return TCL_OK;
       end if;
@@ -422,11 +424,14 @@ package body MainWindow.Commands is
          To_Unbounded_String("actiontoolbar.deletebutton"),
          To_Unbounded_String("actiontoolbar.selectbutton"));
       MenuLabels: constant array(ButtonsNames'Range) of Unbounded_String :=
-        (To_Unbounded_String("Execute"), To_Unbounded_String("Open"),
-         To_Unbounded_String("Open with..."), To_Unbounded_String("Rename"),
-         To_Unbounded_String("Copy"), To_Unbounded_String("Move"),
-         To_Unbounded_String("Delete"),
-         To_Unbounded_String("Select/Deselect all"));
+        (To_Unbounded_String(Mc(Interp, "{Execute}")),
+         To_Unbounded_String(Mc(Interp, "{Open}")),
+         To_Unbounded_String(Mc(Interp, "{Open with...}")),
+         To_Unbounded_String(Mc(Interp, "{Rename}")),
+         To_Unbounded_String(Mc(Interp, "{Copy}")),
+         To_Unbounded_String(Mc(Interp, "{Move}")),
+         To_Unbounded_String(Mc(Interp, "{Delete}")),
+         To_Unbounded_String(Mc(Interp, "{Select/Deselect all}")));
    begin
       FileMenu.Interp := Interp;
       FileMenu.Name := New_String(".filemenu");
@@ -565,7 +570,7 @@ package body MainWindow.Commands is
       end if;
       if Invoke(Button) /= "" then
          raise Hunter_Button_Exception
-           with "Can't invoke button " & CArgv.Arg(Argv, 1);
+           with Mc(Interp, "{Can't invoke button }") & CArgv.Arg(Argv, 1);
       end if;
       return TCL_OK;
    end Invoke_Button_Command;
