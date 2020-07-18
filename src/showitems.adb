@@ -53,6 +53,7 @@ with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
+with Toolbars; use Toolbars;
 with Utils; use Utils;
 
 package body ShowItems is
@@ -186,9 +187,8 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack
            (Button, "-before .mainframe.toolbars.itemtoolbar.infobutton");
       end if;
-      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.runbutton");
+      SetActionsButtons;
       if Is_Directory(To_String(CurrentSelected)) then
-         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage
               ("You don't have permissions to preview this directory.");
@@ -212,30 +212,10 @@ package body ShowItems is
            (PreviewTree, "-side top -fill both -expand true");
          UpdateDirectoryList(True, "preview");
       else
-         if Is_Executable_File(To_String(CurrentSelected)) then
-            if Winfo_Get(Button, "ismapped") = "0" then
-               Tcl.Tk.Ada.Pack.Pack
-                 (Button,
-                  "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
-            end if;
-         else
-            Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-         end if;
          declare
             MimeType: constant String :=
               GetMimeType(To_String(CurrentSelected));
          begin
-            Button.Name :=
-              New_String(".mainframe.toolbars.itemtoolbar.openbutton");
-            if CanBeOpened(MimeType) then
-               if Winfo_Get(Button, "ismapped") = "0" then
-                  Tcl.Tk.Ada.Pack.Pack
-                    (Button,
-                     "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
-               end if;
-            else
-               Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-            end if;
             if MimeType(1 .. 4) = "text" then
                declare
                   ExecutableName: constant String :=
@@ -794,16 +774,8 @@ package body ShowItems is
       if NewAction = CREATELINK then
          return TCL_OK;
       end if;
+      SetActionsButtons;
       ActionButton.Interp := Get_Context;
-      ActionButton.Name :=
-        New_String(".mainframe.toolbars.itemtoolbar.openbutton");
-      if CanBeOpened(GetMimeType(To_String(CurrentSelected))) then
-         Tcl.Tk.Ada.Pack.Pack
-           (ActionButton,
-            "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
-      else
-         Tcl.Tk.Ada.Pack.Pack_Forget(ActionButton);
-      end if;
       if Is_Directory(To_String(CurrentSelected)) or
         Is_Regular_File(To_String(CurrentSelected)) then
          ActionButton.Name :=

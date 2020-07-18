@@ -17,6 +17,7 @@ with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl; use Tcl;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Image; use Tcl.Tk.Ada.Image;
@@ -34,8 +35,11 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Tcl.Tk.Ada.Widgets.TtkSeparator; use Tcl.Tk.Ada.Widgets.TtkSeparator;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with MainWindow; use MainWindow;
 with Preferences; use Preferences;
+with Utils; use Utils;
 
 package body Toolbars is
 
@@ -378,5 +382,31 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Tcl.Tk.Ada.Grid.Grid(Toolbar);
    end CreateItemToolbar;
+
+   procedure SetActionsButtons is
+      Button: Ttk_Button;
+   begin
+      Button.Interp := Get_Context;
+      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.runbutton");
+      if Is_Executable_File(To_String(CurrentSelected)) then
+         if Winfo_Get(Button, "ismapped") = "0" then
+            Tcl.Tk.Ada.Pack.Pack
+              (Button,
+               "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
+         end if;
+      else
+         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+      end if;
+      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.openbutton");
+      if CanBeOpened(GetMimeType(To_String(CurrentSelected))) then
+         if Winfo_Get(Button, "ismapped") = "0" then
+            Tcl.Tk.Ada.Pack.Pack
+              (Button,
+               "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
+         end if;
+      else
+         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+      end if;
+   end SetActionsButtons;
 
 end Toolbars;
