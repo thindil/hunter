@@ -42,7 +42,7 @@ package body Toolbars is
    procedure SetToolbars is
       Side, Direction, Orientation: Unbounded_String;
       Fill: String(1 .. 1);
-      Toolbar: Ttk_Frame;
+      Toolbar, MainFrame: Ttk_Frame;
       Button: Ttk_Button;
       Label: Ttk_Label;
       ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
@@ -117,14 +117,19 @@ package body Toolbars is
       else
          Grid_Configure(Toolbar, "-column 2 -row 0 -sticky e");
       end if;
+      MainFrame.Interp := Get_Context;
+      MainFrame.Name := New_String(".mainframe");
       Toolbar.Name := New_String(".mainframe.toolbars");
       if not Settings.ToolbarsOnTop then
          Grid_Configure(Toolbar, "-sticky ns -row 3 -column 0 -columnspan 1");
+         Column_Configure(MainFrame, Toolbar, "-weight 0");
+         Row_Configure(MainFrame, Toolbar, "-weight 0");
       else
          Grid_Configure(Toolbar, "-sticky we -row 0 -columnspan 2");
       end if;
       Label.Interp := Get_Context;
       Label.Name := New_String(".mainframe.toolbars.label");
+      Toolbar.Name := New_String(".mainframe.toolbars");
       if not Settings.ToolbarsOnTop then
          Column_Configure(Toolbar, Label, "-weight 0");
          Row_Configure(Toolbar, Label, "-weight 1");

@@ -425,7 +425,7 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      Paned: Ttk_Frame;
+      MainFrame, Paned: Ttk_Frame;
    begin
       Paned.Interp := Interp;
       Paned.Name := New_String(".mainframe.paned");
@@ -436,9 +436,13 @@ package body Preferences.Commands is
          Settings.ToolbarsOnTop := True;
       end if;
       SetToolbars;
+      MainFrame.Interp := Interp;
+      MainFrame.Name := New_String(".mainframe");
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid_Configure
            (Paned, "-column 1 -row 3 -sticky nswe");
+         Grid.Column_Configure(MainFrame, Paned, "-weight 1");
+         Grid.Row_Configure(MainFrame, Paned, "-weight 1");
       else
          Tcl.Tk.Ada.Grid.Grid_Configure
            (Paned, "-column 0 -row 3 -sticky nswe -columnspan 2");
