@@ -41,4 +41,11 @@ package Toolbars is
    procedure CreateItemToolbar;
    -- ****
 
+   -- ****f* Toolbars/SetActionsButtons
+   -- FUNCTION
+   -- Set visibility for buttons actions related to the currently selected item
+   -- SOURCE
+   procedure SetActionsButtons;
+   -- ****
+
 end Toolbars;
