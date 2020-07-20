@@ -21,6 +21,8 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with CopyItems; use CopyItems;
@@ -86,7 +88,9 @@ package body MoveItems is
       end if;
       if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
          ShowMessage
-           ("You don't have permissions to move selected items here.");
+           (Mc
+              (Interp,
+               "{You don't have permissions to move selected items here.}"));
          return TCL_OK;
       end if;
       NewAction := MOVE;
@@ -107,14 +111,15 @@ package body MoveItems is
          if Exists(To_String(NewName)) then
             if not Overwrite and Settings.OverwriteOnExist then
                if Is_Directory(To_String(NewName)) then
-                  ItemType := To_Unbounded_String("Directory");
+                  ItemType :=
+                    To_Unbounded_String(Mc(Get_Context, "{Directory}"));
                else
-                  ItemType := To_Unbounded_String("File");
+                  ItemType := To_Unbounded_String(Mc(Get_Context, "{File}"));
                end if;
                ShowMessage
                  (To_String(ItemType) & " " &
                   Simple_Name(To_String(MoveItemsList(1))) &
-                  " exists. Do you want to overwrite it?",
+                  Mc(Get_Context, "{ exists. Do you want to overwrite it?}"),
                   "question");
                return;
             end if;
@@ -146,7 +151,9 @@ package body MoveItems is
                   Delete_File(To_String(MoveItemsList(1)));
                end if;
             else
-               ShowMessage("Can't move " & To_String(MoveItemsList(1)) & ".");
+               ShowMessage
+                 (Mc(Get_Context, "{Can't move }") &
+                  To_String(MoveItemsList(1)) & ".");
                return;
             end if;
          end if;
@@ -160,7 +167,10 @@ package body MoveItems is
       ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage
-           ("All selected files and directories have been moved.", "message");
+           (Mc
+              (Get_Context,
+               "{All selected files and directories have been moved.}"),
+            "message");
       end if;
       if Settings.StayInOld then
          CurrentDirectory := SourceDirectory;
