@@ -37,6 +37,7 @@ with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Tcl.Tk.Ada.Widgets.TtkSeparator; use Tcl.Tk.Ada.Widgets.TtkSeparator;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Bookmarks; use Bookmarks;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with Utils; use Utils;
@@ -140,6 +141,10 @@ package body Toolbars is
       else
          Column_Configure(Toolbar, Label, "-weight 1");
          Row_Configure(Toolbar, Label, "-weight 0");
+      end if;
+      if CurrentSelected /= Null_Unbounded_String then
+         SetActionsButtons;
+         SetBookmarkButton;
       end if;
    end SetToolbars;
 
