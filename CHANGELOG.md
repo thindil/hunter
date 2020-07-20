@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Deleting items from right click menu
 - Refreshing info about changed file or directory
 - Setting location of toolbars
+- Show proper buttons when changing toolbars location
 
 ## [1.3] - 2020-07-10
 
