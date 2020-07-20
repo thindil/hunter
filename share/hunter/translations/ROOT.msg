@@ -71,4 +71,7 @@
    "All selected files and directories have been moved to Trash." "All selected files and directories have been moved to Trash."
    "Trash have been cleared." "Trash have been cleared."
    "All selected files and directories have been deleted." "All selected files and directories have been deleted."
+   "You don't have permissions to move selected items here." "You don't have permissions to move selected items here."
+   "Can't move " "Can't move "
+   "All selected files and directories have been moved." "All selected files and directories have been moved."
 }
