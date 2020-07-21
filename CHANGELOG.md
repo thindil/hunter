@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Refreshing info about changed file or directory
 - Setting location of toolbars
 - Show proper buttons when changing toolbars location
+- Showing buttons after finishing moving/copying items
 
 ## [1.3] - 2020-07-10
 
