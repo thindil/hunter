@@ -169,10 +169,11 @@ package body Utils is
       ButtonsNames: constant array(1 .. 7) of Unbounded_String :=
         (To_Unbounded_String("new"), To_Unbounded_String("rename"),
          To_Unbounded_String("copy"), To_Unbounded_String("move"),
-         To_Unbounded_String("delete"), To_Unbounded_String("options"),
-         To_Unbounded_String("about"));
+         To_Unbounded_String("delete"), To_Unbounded_String("about"),
+         To_Unbounded_String("options"));
       CurrentButton: Positive;
       DeleteMenu: Tk_Menu;
+      Side: Unbounded_String;
    begin
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(".mainframe.toolbars");
@@ -215,6 +216,11 @@ package body Utils is
             return;
       end case;
       if (Action = COPY or Action = MOVE) then
+         if not Settings.ToolbarsOnTop then
+            Side := To_Unbounded_String("top");
+         else
+            Side := To_Unbounded_String("left");
+         end if;
          if Finished then
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
             Toolbar.Name :=
@@ -230,6 +236,8 @@ package body Utils is
                     (Toolbar,
                      "-before .mainframe.toolbars.actiontoolbar." &
                      To_String(ButtonsNames(CurrentButton)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack_Configure
+                    (Toolbar, "-side " & To_String(Side));
                elsif I > CurrentButton then
                   Toolbar.Name :=
                     New_String
@@ -239,6 +247,8 @@ package body Utils is
                     (Toolbar,
                      "-after .mainframe.toolbars.actiontoolbar." &
                      To_String(ButtonsNames(I - 1)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack_Configure
+                    (Toolbar, "-side " & To_String(Side));
                end if;
             end loop;
             Toolbar.Name :=
@@ -249,6 +259,8 @@ package body Utils is
          else
             Tcl.Tk.Ada.Pack.Pack
               (Toolbar, "-after .mainframe.toolbars.actiontoolbar.movebutton");
+            Tcl.Tk.Ada.Pack.Pack_Configure
+               (Toolbar, "-side " & To_String(Side));
             for I in ButtonsNames'Range loop
                if I /= CurrentButton then
                   Toolbar.Name :=
