@@ -20,6 +20,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Busy; use Tcl.Tk.Ada.Busy;
 with Tcl.Tk.Ada.Grid;
@@ -82,17 +83,17 @@ package body Preferences.Commands is
       if CArgv.Arg(Argv, 1) = "directory.interval" then
          Tcl.Tk.Ada.Widgets.configure
            (Label,
-            "-text {Auto refresh every " &
+            "-text {" & Mc(Interp, "{Auto refresh every }") &
             Natural'Image
               (Natural(Float'Value(Tcl_GetVar(Interp, "updateinterval")))) &
-            " seconds}");
+            Mc(Interp, "{ seconds}") & "}");
       else
          Tcl.Tk.Ada.Widgets.configure
            (Label,
-            "-text {Hide messages after " &
+            "-text {" & Mc(Interp, "{Hide messages after }") &
             Natural'Image
               (Natural(Float'Value(Tcl_GetVar(Interp, "messagesinterval")))) &
-            " seconds}");
+            Mc(Interp, "{ seconds}") & "}");
       end if;
       return TCL_OK;
    end Set_Label_Command;
@@ -480,10 +481,14 @@ package body Preferences.Commands is
       if Tcl_GetVar(Interp, ".preferencesdialog.deleting.deletefiles") =
         "0" then
          Settings.DeleteFiles := False;
-         Entry_Configure(ButtonMenu, "0", "-label {Move selected to Trash}");
+         Entry_Configure
+           (ButtonMenu, "0",
+            "-label {" & Mc(Interp, "{Move selected to Trash}") & "}");
       else
          Settings.DeleteFiles := True;
-         Entry_Configure(ButtonMenu, "0", "-label {Delete selected}");
+         Entry_Configure
+           (ButtonMenu, "0",
+            "-label {" & Mc(Interp, "{Delete selected}") & "}");
       end if;
       return TCL_OK;
    end Set_Delete_Files_Command;
@@ -584,8 +589,9 @@ package body Preferences.Commands is
       CloseButton: constant Ttk_Button :=
         Create
           (Widget_Image(PreferencesDialog) & ".closebutton",
-           "-text {Close} -command {ClosePreferences " &
-           Widget_Image(PreferencesDialog) & "} -underline 0");
+           "-text {" & Mc(Interp, "{Close}") &
+           "} -command {ClosePreferences " & Widget_Image(PreferencesDialog) &
+           "} -underline 0");
       CheckButton: Ttk_CheckButton;
       Label: Ttk_Label;
       Scale: Ttk_Scale;
@@ -617,15 +623,19 @@ package body Preferences.Commands is
       LabelFrame :=
         Create
           (Widget_Image(PreferencesDialog) & ".directory",
-           "-text {Directory Listing}");
+           "-text {" & Mc(Interp, "{Directory Listing}") & "}");
       AddButton
-        (".showhidden", "Show hidden files", Settings.ShowHidden,
-         "Show hidden files and directories in directory\nlisting and in directories preview.",
+        (".showhidden", Mc(Interp, "{Show hidden files}"), Settings.ShowHidden,
+         Mc
+           (Interp,
+            "{Show hidden files and directories in directory\nlisting and in directories preview.}"),
          "SetShowHiddenFiles");
       AddButton
-        (".showmodificationtime", "Show modification time",
+        (".showmodificationtime", Mc(Interp, "{Show modification time}"),
          Settings.ShowLastModified,
-         "Show the column with last modification\ndate for files and directories.",
+         Mc
+           (Interp,
+            "{Show the column with last modification\ndate for files and directories.}"),
          "SetShowModificationTime");
       Tcl_SetVar
         (Interp, "updateinterval",
@@ -633,7 +643,8 @@ package body Preferences.Commands is
       Label :=
         Create
           (Widget_Image(LabelFrame) & ".intervallabel",
-           "-text ""Auto refresh every $updateinterval seconds""");
+           "-text """ & Mc(Interp, "{Auto refresh every }") &
+           "$updateinterval" & Mc(Interp, "{ seconds}") & """");
       Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
       Scale :=
         Create
@@ -641,11 +652,15 @@ package body Preferences.Commands is
            "-from 0 -to 30 -variable updateinterval -orient horizontal -command {SetLabel directory.interval}");
       Add
         (Scale,
-         "How often (in seconds) the program should check\nfor changes in current directory.\nIf set to zero, autorefresh will be disabled.");
+         Mc
+           (Interp,
+            "{How often (in seconds) the program should check\nfor changes in current directory.\nIf set to zero, autorefresh will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
-        Create(Widget_Image(PreferencesDialog) & ".preview", "-text Preview");
+        Create
+          (Widget_Image(PreferencesDialog) & ".preview",
+           "-text {" & Mc(Interp, "{Preview}") & "}");
       AddButton
         (".showpreview", "Show preview", Settings.ShowPreview,
          "Show second panel with preview of files and directories.\nIf you disable this option, second panel will be visible only during\ncopying and moving files or directories and during creating new link.",
