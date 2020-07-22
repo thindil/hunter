@@ -662,17 +662,22 @@ package body Preferences.Commands is
           (Widget_Image(PreferencesDialog) & ".preview",
            "-text {" & Mc(Interp, "{Preview}") & "}");
       AddButton
-        (".showpreview", "Show preview", Settings.ShowPreview,
-         "Show second panel with preview of files and directories.\nIf you disable this option, second panel will be visible only during\ncopying and moving files or directories and during creating new link.",
+        (".showpreview", Mc(Interp, "{Show preview}"), Settings.ShowPreview,
+         Mc
+           (Interp,
+            "{Show second panel with preview of files and directories.\nIf you disable this option, second panel will be visible only during\ncopying and moving files or directories and during creating new link.}"),
          "SetShowPreview");
       AddButton
-        (".scaleimages", "Scale images", Settings.ScaleImages,
-         "Scale images in preview. When disabled, images shows with\nnatural size. When enabled, images are resized to the size of the\npreview window.",
+        (".scaleimages", Mc(Interp, "{Scale images}"), Settings.ScaleImages,
+         Mc
+           (Interp,
+            "{Scale images in preview. When disabled, images shows with\nnatural size. When enabled, images are resized to the size of the\npreview window.}"),
          "SetScaleImages");
       CheckButton :=
         Create
           (Widget_Image(LabelFrame) & ".syntaxhighlightning",
-           "-text {Syntax highlightning} -command {SetColorText}");
+           "-text {" & Mc(Interp, "{Syntax highlightning}") &
+           "} -command {SetColorText}");
       if Settings.ColorText then
          Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
       else
@@ -685,7 +690,9 @@ package body Preferences.Commands is
       end if;
       Add
         (CheckButton,
-         "Color files syntax in files preview. Not all text (especially source code)\nfiles are supported. You may not be able to enable this\noption if you don't have installed the program 'highlight'.");
+         Mc
+           (Interp,
+            "{Color files syntax in files preview. Not all text (especially source code)\nfiles are supported. You may not be able to enable this\noption if you don't have installed the program 'highlight'.}"));
       Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
       declare
          Search: Search_Type;
@@ -728,11 +735,13 @@ package body Preferences.Commands is
          Bind(ComboBox, "<<ComboboxSelected>>", "SetColorTheme");
          Add
            (ComboBox,
-            "Select color theme for coloring syntax in text files in preview. You may\nnot be able to enable this option if you don't have installed\nthe program 'highlight'.");
+            Mc
+              (Interp,
+               "{Select color theme for coloring syntax in text files in preview. You may\nnot be able to enable this option if you don't have installed\nthe program 'highlight'.}"));
          Label :=
            Create
              (Widget_Image(ColorFrame) & ".themelabel",
-              "-text {Color theme:}");
+              "-text {" & Mc(Interp, "{Color theme:}") & "}");
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
          Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
@@ -741,14 +750,15 @@ package body Preferences.Commands is
       LabelFrame :=
         Create
           (Widget_Image(PreferencesDialog) & ".interface",
-           "-text {Interface}");
+           "-text {" & Mc(Interp, "{Interface}") & "}");
       Tcl_SetVar
         (CheckButton.Interp, "messagesinterval",
          Natural'Image(Settings.AutoCloseMessagesTime));
       Label :=
         Create
           (Widget_Image(LabelFrame) & ".messageslabel",
-           "-text ""Hide messages after $messagesinterval seconds""");
+           "-text """ & Mc(Interp, "{Hide messages after }") &
+           "$messagesinterval" & Mc(Interp, "{ seconds}") & """");
       Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
       Scale :=
         Create
@@ -756,41 +766,58 @@ package body Preferences.Commands is
            "-from 0 -to 60 -variable messagesinterval -orient horizontal -command {SetLabel interface.messages}");
       Add
         (Scale,
-         "After that amount of seconds, all messages will be automatically closed by the\nprogram. If you set it to 0, this feature will be\ndisabled.");
+         Mc
+           (Interp,
+            "{After that amount of seconds, all messages will be automatically closed by the\nprogram. If you set it to 0, this feature will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       AddButton
-        (".stayinold", "Stay in source directory", Settings.StayInOld,
-         "After copying, moving files and directories or creating new link, stay in old\ndirectory, don't automatically go to destination directory.",
+        (".stayinold", Mc(Interp, "{Stay in source directory}"),
+         Settings.StayInOld,
+         Mc
+           (Interp,
+            "{After copying, moving files and directories or creating new link, stay in old\ndirectory, don't automatically go to destination directory.}"),
          "SetStayInOld");
       AddButton
-        (".showfinished", "Show info about finished action",
+        (".showfinished", Mc(Interp, "{Show info about finished action}"),
          Settings.ShowFinishedInfo,
-         "Show information about finished copying, moving and\ndeleting files or directories.",
+         Mc
+           (Interp,
+            "{Show information about finished copying, moving and\ndeleting files or directories.}"),
          "SetShowFinishedInfo");
       AddButton
-        (".toolbarsontop", "Toolbars on top", Settings.ToolbarsOnTop,
-         "If enabled, show toolbars for actions and information on top of the window.\nOtherwise, they will be at left side of the window.",
+        (".toolbarsontop", Mc(Interp, "{Toolbars on top}"),
+         Settings.ToolbarsOnTop,
+         Mc
+           (Interp,
+            "{If enabled, show toolbars for actions and information on top of the window.\nOtherwise, they will be at left side of the window.}"),
          "SetToolbarsOnTop");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create
-          (Widget_Image(PreferencesDialog) & ".deleting", "-text {Deleting}");
+          (Widget_Image(PreferencesDialog) & ".deleting",
+           "-text {" & Mc(Interp, "{Deleting}") & "}");
       AddButton
-        (".deletefiles", "Delete files", Settings.DeleteFiles,
-         "Delete selected files and directories instead of moving them to Trash.",
+        (".deletefiles", Mc(Interp, "{Delete files}"), Settings.DeleteFiles,
+         Mc
+           (Interp,
+            "{Delete selected files and directories instead of moving them to Trash.}"),
          "SetDeleteFiles");
       AddButton
-        (".cleartrash", "Clear Trash on exit", Settings.ClearTrashOnExit,
-         "Automatically clear Trash on exit from the program.",
+        (".cleartrash", Mc(Interp, "{Clear Trash on exit}"),
+         Settings.ClearTrashOnExit,
+         Mc(Interp, "{Automatically clear Trash on exit from the program.}"),
          "SetClearTrash");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create
           (Widget_Image(PreferencesDialog) & ".copying",
-           "-text {Copying or moving}");
+           "-text {" & Mc(Interp, "{Copying or moving}") & "}");
       AddButton
-        (".overwrite", "Overwrite existing", Settings.OverwriteOnExist,
-         "If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory.",
+        (".overwrite", Mc(Interp, "{Overwrite existing}"),
+         Settings.OverwriteOnExist,
+         Mc
+           (Interp,
+            "{If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory.}"),
          "SetOverwrite");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
@@ -798,7 +825,9 @@ package body Preferences.Commands is
       Bind
         (PreferencesDialog, "<Alt-c>",
          "{ClosePreferences " & Widget_Image(PreferencesDialog) & "}");
-      SetDialog(PreferencesDialog, "Hunter - Preferences", Width + 10, Height);
+      SetDialog
+        (PreferencesDialog, Mc(Interp, "{Hunter - Preferences}"), Width + 10,
+         Height);
       return TCL_OK;
    end Show_Preferences_Command;
 
