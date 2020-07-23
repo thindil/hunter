@@ -110,4 +110,7 @@
    "Overwrite existing" "Overwrite existing"
    "If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory." "If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory."
    "Hunter - Preferences" "Hunter - Preferences"
+   "Could not set new associated program." "Could not set new associated program."
+   "Search for a program" "Search for a program"
+   "Press enter or double click to set the selected program as associated with that type of file or directory." "Press enter or double click to set the selected program as associated with that type of file or directory."
 }
