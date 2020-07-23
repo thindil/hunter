@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Better detection of dialogs height
+- Updated README.md
 
 ### Fixed
 - Crash on lack of configuration file
