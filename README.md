@@ -38,6 +38,10 @@ To build you need:
 
 * Tk extension *Img*. In Debian/Ubuntu/Mint it is named *libtk-img*.
 
+* Tk extension *tksvg*. You can get it from:
+
+   https://github.com/auriocus/tksvg
+
 * TASHY library with included binding to Tk and TkLib. You can get it from:
 
    https://github.com/thindil/tashy
@@ -71,6 +75,11 @@ libraries. Just run it as any AppImage file. More informations about AppImage
 files usage, you can find at:
 
 https://docs.appimage.org/user-guide/run-appimages.html
+
+**IMPORTANT:** The current AppImage version require GNU LibC in version at
+least 2.29. It will not works with earlier versions. In that situation,
+unfortunately you will have to build the program by yourself. I will try to
+fix this problem before version 2.0
 
 When you trying to run build by yourself version of the program, run
 `hunter` from `bin` directory. To work the program needs scripts *xdg-open*
