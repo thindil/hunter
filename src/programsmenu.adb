@@ -24,6 +24,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -216,7 +217,8 @@ package body ProgramsMenu is
                    ("default " & Bookmarks_Container.Key(I) & " " &
                     GetMimeType(To_String(CurrentSelected))).all);
             if Pid = GNAT.OS_Lib.Invalid_Pid then
-               ShowMessage("Could not set new associated program.");
+               ShowMessage
+                 (Mc(Interp, "{Could not set new associated program.}"));
             else
                configure(Button, "-text {" & ApplicationsList(I) & "}");
             end if;
@@ -344,10 +346,12 @@ package body ProgramsMenu is
       Bind(ApplicationsView, "<Double-1>", "{SetApplication}");
       Bind(ApplicationsView, "<Return>", "{SetApplication}");
       Bind(ApplicationsView, "<FocusOut>", "{HideOnFocusOut}");
-      Add(SearchEntry, "Search for a program");
+      Add(SearchEntry, Mc(Get_Context, "{Search for a program}"));
       Add
         (ApplicationsView,
-         "Press enter or double click to set the selected program as associated with that type of file or directory.");
+         Mc
+           (Get_Context,
+            "{Press enter or double click to set the selected program as associated with that type of file or directory.}"));
    end CreateProgramsMenu;
 
    function GetProgramName(DesktopFile: String) return String is
