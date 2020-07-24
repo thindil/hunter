@@ -113,4 +113,13 @@
    "Could not set new associated program." "Could not set new associated program."
    "Search for a program" "Search for a program"
    "Press enter or double click to set the selected program as associated with that type of file or directory." "Press enter or double click to set the selected program as associated with that type of file or directory."
+   "Set a new name for the selected directory." "Set a new name for the selected directory."
+   "Enter a new name for the selected directory." "Enter a new name for the selected directory."
+   "Set a new name for the selected file." "Set a new name for the selected file."
+   "Enter a new name for the selected file." "Enter a new name for the selected file."
+   "Can't hide rename item bar" "Can't hide rename item bar"
+   "You can't rename " "You can't rename "
+   " to " " to "
+   "You don't have permissions to rename " "You don't have permissions to rename "
+   "Can't rename " "Can't rename "
 }
