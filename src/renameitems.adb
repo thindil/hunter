@@ -20,6 +20,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -74,11 +75,17 @@ package body RenameItems is
          Button.Name := New_String(".mainframe.textframe.okbutton");
          configure(Button, "-command Rename");
          if Is_Directory(To_String(CurrentSelected)) then
-            Add(Button, "Set a new name for the selected directory.");
-            Add(TextEntry, "Enter a new name for the selected directory.");
+            Add
+              (Button,
+               Mc(Interp, "{Set a new name for the selected directory.}"));
+            Add
+              (TextEntry,
+               Mc(Interp, "{Enter a new name for the selected directory.}"));
          else
-            Add(Button, "Set a new name for the selected file.");
-            Add(TextEntry, "Enter a new name for the selected file.");
+            Add(Button, Mc(Interp, "{Set a new name for the selected file.}"));
+            Add
+              (TextEntry,
+               Mc(Interp, "{Enter a new name for the selected file.}"));
          end if;
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name :=
@@ -94,7 +101,8 @@ package body RenameItems is
          ToggleToolButtons(NewAction);
       else
          if Invoke(Button) /= "" then
-            raise Hunter_Rename_Exception with "Can't hide rename item bar";
+            raise Hunter_Rename_Exception
+              with Mc(Interp, "{Can't hide rename item bar}");
          end if;
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
@@ -136,25 +144,28 @@ package body RenameItems is
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
          if Is_Directory(To_String(NewName)) then
-            ActionBlocker := To_Unbounded_String("directory");
+            ActionBlocker := To_Unbounded_String(Mc(Interp, "{directory}"));
          else
-            ActionBlocker := To_Unbounded_String("file");
+            ActionBlocker := To_Unbounded_String(Mc(Interp, "{file}"));
          end if;
          ShowMessage
-           ("You can't rename " & To_String(CurrentSelected) & " to " &
-            To_String(NewName) & " because there exists " &
-            To_String(ActionBlocker) & " with that name");
+           (Mc(Interp, "{You can't rename }") & To_String(CurrentSelected) &
+            Mc(Interp, "{ to }") & To_String(NewName) &
+            Mc(Interp, "{ because there exists }") & To_String(ActionBlocker) &
+            Mc(Interp, "{ with that name}"));
          return TCL_OK;
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewName))) then
          ShowMessage
-           ("You don't have permissions to rename " & To_String(NewName));
+           (Mc(Interp, "{You don't have permissions to rename }") &
+            To_String(NewName));
          return TCL_OK;
       end if;
       Rename_File(To_String(CurrentSelected), To_String(NewName), Success);
       if not Success then
-         ShowMessage("Can't rename " & To_String(CurrentSelected) & ".");
+         ShowMessage
+           (Mc(Interp, "{Can't rename }") & To_String(CurrentSelected) & ".");
          return TCL_OK;
       end if;
       CurrentSelected := NewName;
