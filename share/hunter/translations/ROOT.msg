@@ -122,4 +122,6 @@
    " to " " to "
    "You don't have permissions to rename " "You don't have permissions to rename "
    "Can't rename " "Can't rename "
+   "Enter the name of the file or directory to search for" "Enter the name of the file or directory to search for"
+   "Can't hide search text bar" "Can't hide search text bar"
 }
