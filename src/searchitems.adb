@@ -20,6 +20,7 @@ with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -42,7 +43,7 @@ package body SearchItems is
    -- Show text entry to enter directory destination
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
@@ -59,15 +60,15 @@ package body SearchItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       TextFrame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
       Hunter_Search_Exception: exception;
    begin
-      TextEntry.Interp := Get_Context;
+      TextEntry.Interp := Interp;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
-      Button.Interp := Get_Context;
+      Button.Interp := Interp;
       Button.Name := New_String(".mainframe.textframe.closebutton");
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid_Remove(Button);
@@ -78,15 +79,18 @@ package body SearchItems is
          Tcl.Tk.Ada.Grid.Grid_Remove(Button);
          Add
            (TextEntry,
-            "Enter the name of the file or directory to search for");
+            Mc
+              (Interp,
+               "{Enter the name of the file or directory to search for}"));
          Bind(TextEntry, "<KeyRelease>", "{Search}");
          Focus(TextEntry);
-         TextFrame.Interp := Get_Context;
+         TextFrame.Interp := Interp;
          TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       else
          if Invoke(Button) /= "" then
-            raise Hunter_Search_Exception with "Can't hide search text bar";
+            raise Hunter_Search_Exception
+              with Mc(Interp, "{Can't hide search text bar}");
          end if;
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
