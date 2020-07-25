@@ -26,7 +26,6 @@ with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
-with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
@@ -127,8 +126,6 @@ package body Utils is
    procedure SetDialog
      (Dialog: Tk_Toplevel; DialogTitle: String; Width, Height: Positive) is
       X, Y: Integer;
-      CloseButton: Ttk_Button;
-      NewHeight: Positive;
    begin
       Wm_Set(Dialog, "title", "{" & DialogTitle & "}");
       Wm_Set(Dialog, "transient", ".");
@@ -148,27 +145,7 @@ package body Utils is
          Trim(Positive'Image(Width), Both) & "x" &
          Trim(Positive'Image(Height), Both) & "+" &
          Trim(Positive'Image(X), Both) & "+" & Trim(Positive'Image(Y), Both));
-      Tcl_Eval(Dialog.Interp, "update");
-      CloseButton.Interp := Dialog.Interp;
-      CloseButton.Name := New_String(Widget_Image(Dialog) & ".closebutton");
-      NewHeight :=
-        Positive'Value(Winfo_Get(CloseButton, "y")) +
-        Positive'Value(Winfo_Get(CloseButton, "height"));
-      if NewHeight /= Height then
-         Y :=
-           (Positive'Value(Winfo_Get(Dialog, "vrootheight")) - NewHeight) / 2;
-         if Y < 0 then
-            Y := 0;
-         end if;
-         Wm_Set
-           (Dialog, "geometry",
-            Trim(Positive'Image(Width), Both) & "x" &
-            Trim(Positive'Image(NewHeight), Both) & "+" &
-            Trim(Positive'Image(X), Both) & "+" &
-            Trim(Positive'Image(Y), Both));
-      end if;
       Bind(Dialog, "<Destroy>", "{CloseDialog " & Value(Dialog.Name) & "}");
-
    end SetDialog;
 
    procedure AddCommand
