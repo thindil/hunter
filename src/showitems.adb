@@ -26,6 +26,7 @@ with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Image; use Tcl.Tk.Ada.Image;
@@ -179,7 +180,7 @@ package body ShowItems is
    begin
       Label.Interp := Get_Context;
       Label.Name := New_String(Widget_Image(PreviewFrame) & ".title");
-      configure(Label, "-text {Preview}");
+      configure(Label, "-text {" & Mc(Get_Context, "{Preview}") & "}");
       Button.Interp := Get_Context;
       Button.Name :=
         New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
@@ -191,7 +192,9 @@ package body ShowItems is
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage
-              ("You don't have permissions to preview this directory.");
+              (Mc
+                 (Get_Context,
+                  "{You don't have permissions to preview this directory.}"));
          end if;
          LoadDirectory(To_String(CurrentSelected), True);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
@@ -451,7 +454,9 @@ package body ShowItems is
                         ActionButton.Interp := Get_Context;
                         if Invoke(ActionButton) /= "" then
                            raise Hunter_Show_Items_Exception
-                             with "Can't show file or directory info";
+                             with Mc
+                               (Get_Context,
+                                "{Can't show file or directory info}");
                         end if;
                      end;
                end;
@@ -468,7 +473,8 @@ package body ShowItems is
                   ActionButton.Interp := Get_Context;
                   if Invoke(ActionButton) /= "" then
                      raise Hunter_Show_Items_Exception
-                       with "Can't show file or directory info";
+                       with Mc
+                         (Get_Context, "{Can't show file or directory info}");
                   end if;
                end;
             end if;
@@ -495,7 +501,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
       Label.Interp := Get_Context;
       Label.Name := New_String(Widget_Image(PreviewFrame) & ".title");
-      configure(Label, "-text {Information}");
+      configure(Label, "-text {" & Mc(Get_Context, "{Information}") & "}");
       Button.Interp := Label.Interp;
       if (MimeType'Length > 4 and MimeType(1 .. 4) not in "text" | "imag") and
         not Is_Directory(SelectedItem) then
@@ -505,17 +511,17 @@ package body ShowItems is
       end if;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".fullpathtext");
       if not Is_Symbolic_Link(SelectedItem) then
-         configure(Label, "-text {Full path:}");
+         configure(Label, "-text {" & Mc(Get_Context, "{Full path:}") & "}");
       else
-         configure(Label, "-text {Links to:}");
+         configure(Label, "-text {" & Mc(Get_Context, "{Links to:}") & "}");
       end if;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".fullpath");
       configure(Label, "-text {" & Full_Name(SelectedItem) & "}");
       Label.Name := New_String(Widget_Image(InfoFrame) & ".sizetext");
       if Is_Directory(SelectedItem) then
-         configure(Label, "-text {Elements:}");
+         configure(Label, "-text {" & Mc(Get_Context, "{Elements:}") & "}");
       else
-         configure(Label, "-text {Size:}");
+         configure(Label, "-text {" & Mc(Get_Context, "{Size:}") & "}");
       end if;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".size");
       if Is_Directory(SelectedItem) then
@@ -535,7 +541,7 @@ package body ShowItems is
       elsif Is_Regular_File(SelectedItem) then
          configure(Label, "-text {" & CountFileSize(Size(SelectedItem)) & "}");
       else
-         configure(Label, "-text {Unknown}");
+         configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
       end if;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".lastmodified");
       if Is_Directory(SelectedItem) or Is_Regular_File(SelectedItem) then
@@ -547,7 +553,7 @@ package body ShowItems is
                Ada.Calendar.Time_Zones.UTC_Time_Offset) &
             "}");
       else
-         configure(Label, "-text {Unknown}");
+         configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
       end if;
       Label.Name := New_String(Widget_Image(InfoFrame) & ".filetypetext");
       if Is_Directory(SelectedItem) or not Is_Regular_File(SelectedItem) then
@@ -596,13 +602,14 @@ package body ShowItems is
                else
                   configure
                     (Button,
-                     "-text {" & To_String(DesktopFile) & " (not installed)}");
+                     "-text {" & To_String(DesktopFile) & " (" &
+                     Mc(Get_Context, "{not installed}") & ")}");
                end if;
             end if;
             Close(ProcessDesc);
          exception
             when Process_Died =>
-               configure(Button, "-text {None}");
+               configure(Button, "-text {" & Mc(Get_Context, "{None}") & "}");
          end;
          Tcl.Tk.Ada.Grid.Grid(Button);
       end if;
@@ -897,8 +904,9 @@ package body ShowItems is
       Label: Ttk_Label;
       Button: Ttk_Button;
       ButtonTexts: constant array(1 .. 3) of Unbounded_String :=
-        (To_Unbounded_String("Can execute"), To_Unbounded_String("Can read"),
-         To_Unbounded_String("Can write"));
+        (To_Unbounded_String(Mc(Get_Context, "{Can execute}")),
+         To_Unbounded_String(Mc(Get_Context, "{Can read}")),
+         To_Unbounded_String(Mc(Get_Context, "{Can write}")));
       PathButtonsFrame: Ttk_Frame;
       pragma Unreferenced(PathButtonsFrame);
       procedure CreatePermissionsFrame(Name, Text: String; Row: Positive) is
@@ -982,36 +990,39 @@ package body ShowItems is
       Label :=
         Create
           (Widget_Image(InfoFrame) & ".lastmodifiedtext",
-           "-text {Last modified:}");
+           "-text {" & Mc(Get_Context, "{Last modified:}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 2");
       Label := Create(Widget_Image(InfoFrame) & ".lastmodified");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 2");
       Label :=
         Create
-          (Widget_Image(InfoFrame) & ".filetypetext", "-text {File type:}");
+          (Widget_Image(InfoFrame) & ".filetypetext",
+           "-text {" & Mc(Get_Context, "{File type:}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 3");
       Label := Create(Widget_Image(InfoFrame) & ".filetype");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 3");
       Label :=
         Create
           (Widget_Image(InfoFrame) & ".associatedprogramtext",
-           "-text {Associated program:}");
+           "-text {" & Mc(Get_Context, "{Associated program:}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 4");
       Button :=
         Create
           (Widget_Image(InfoFrame) & ".associatedprogram",
            "-command ToggleApplicationsMenu");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4");
-      CreatePermissionsFrame("owner", "Owner", 5);
-      CreatePermissionsFrame("group", "Group", 6);
-      CreatePermissionsFrame("others", "Others", 7);
+      CreatePermissionsFrame("owner", Mc(Get_Context, "{Owner}"), 5);
+      CreatePermissionsFrame("group", Mc(Get_Context, "{Group}"), 6);
+      CreatePermissionsFrame("others", Mc(Get_Context, "{Others}"), 7);
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
       AddCommand("GoToDirectory", GoToDirectory_Command'Access);
       Add
         (Button,
-         "Select new associated program with that type of file or directory.");
+         Mc
+           (Get_Context,
+            "{Select new associated program with that type of file or directory.}"));
       if Settings.ShowPreview then
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
@@ -1046,7 +1057,8 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
       Frame.Name := New_String(".mainframe.paned.previewframe.title");
-      configure(Frame, "-text {Destination directory}");
+      configure
+        (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
       DestinationDirectory := CurrentDirectory;
       LoadDirectory(To_String(DestinationDirectory), True);
       UpdateDirectoryList(True, "preview");
