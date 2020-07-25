@@ -615,6 +615,7 @@ package body Preferences.Commands is
          if Positive'Value(Winfo_Get(CheckButton, "reqwidth")) > Width then
             Width := Positive'Value(Winfo_Get(CheckButton, "reqwidth"));
          end if;
+         Height := Height + Positive'Value(Winfo_Get(CheckButton, "reqheight"));
       end AddButton;
    begin
       if Tcl.Tk.Ada.Busy.Status(MainWindow) = "0" then
@@ -646,6 +647,7 @@ package body Preferences.Commands is
            "-text """ & Mc(Interp, "{Auto refresh every }") &
            "$updateinterval" & Mc(Interp, "{ seconds}") & """");
       Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
+      Height := Height + Positive'Value(Winfo_Get(Label, "reqheight"));
       Scale :=
         Create
           (Widget_Image(LabelFrame) & ".intervalscale",
@@ -656,6 +658,7 @@ package body Preferences.Commands is
            (Interp,
             "{How often (in seconds) the program should check\nfor changes in current directory.\nIf set to zero, autorefresh will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
+      Height := Height + Positive'Value(Winfo_Get(Scale, "reqheight"));
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create
@@ -694,6 +697,7 @@ package body Preferences.Commands is
            (Interp,
             "{Color files syntax in files preview. Not all text (especially source code)\nfiles are supported. You may not be able to enable this\noption if you don't have installed the program 'highlight'.}"));
       Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
+      Height := Height + Positive'Value(Winfo_Get(CheckButton, "reqheight"));
       declare
          Search: Search_Type;
          File: Directory_Entry_Type;
@@ -743,6 +747,7 @@ package body Preferences.Commands is
              (Widget_Image(ColorFrame) & ".themelabel",
               "-text {" & Mc(Interp, "{Color theme:}") & "}");
          Tcl.Tk.Ada.Grid.Grid(Label);
+         Height := Height + Positive'Value(Winfo_Get(Label, "reqheight"));
          Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
          Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
       end;
@@ -770,6 +775,7 @@ package body Preferences.Commands is
            (Interp,
             "{After that amount of seconds, all messages will be automatically closed by the\nprogram. If you set it to 0, this feature will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
+      Height := Height + Positive'Value(Winfo_Get(Scale, "reqheight"));
       AddButton
         (".stayinold", Mc(Interp, "{Stay in source directory}"),
          Settings.StayInOld,
@@ -796,6 +802,7 @@ package body Preferences.Commands is
         Create
           (Widget_Image(PreferencesDialog) & ".deleting",
            "-text {" & Mc(Interp, "{Deleting}") & "}");
+      Height := Height + Positive'Value(Winfo_Get(LabelFrame, "reqheight"));
       AddButton
         (".deletefiles", Mc(Interp, "{Delete files}"), Settings.DeleteFiles,
          Mc
@@ -812,6 +819,7 @@ package body Preferences.Commands is
         Create
           (Widget_Image(PreferencesDialog) & ".copying",
            "-text {" & Mc(Interp, "{Copying or moving}") & "}");
+      Height := Height + Positive'Value(Winfo_Get(LabelFrame, "reqheight"));
       AddButton
         (".overwrite", Mc(Interp, "{Overwrite existing}"),
          Settings.OverwriteOnExist,
@@ -821,13 +829,14 @@ package body Preferences.Commands is
          "SetOverwrite");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(CloseButton);
-      Height := Positive'Value(Winfo_Get(CloseButton, "reqheight")) * 18;
+      Height := Height + Positive'Value(Winfo_Get(CloseButton, "reqheight"));
+      Height := Height + (Positive'Value(Winfo_Get(Label, "reqheight")) * 6);
       Bind
         (PreferencesDialog, "<Alt-c>",
          "{ClosePreferences " & Widget_Image(PreferencesDialog) & "}");
       SetDialog
         (PreferencesDialog, Mc(Interp, "{Hunter - Preferences}"), Width + 10,
-         Height);
+         Height + 10);
       return TCL_OK;
    end Show_Preferences_Command;
 
