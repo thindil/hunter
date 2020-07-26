@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Setting location of toolbars
 - Show proper buttons when changing toolbars location
 - Showing buttons after finishing moving/copying items
+- Showing name of home directory bookmark
 
 ## [1.3] - 2020-07-10
 
