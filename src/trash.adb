@@ -21,6 +21,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
@@ -164,7 +166,9 @@ package body Trash is
       PathButton.Interp := Interp;
       PathButton.Name :=
         New_String(".mainframe.paned.directoryframe.pathframe.button1");
-      configure(PathButton, "-text {Trash} -command {ShowTrash}");
+      configure
+        (PathButton,
+         "-text {" & Mc(Get_Context, "{Trash}") & "} -command {ShowTrash}");
       Bind_To_Main_Window(Interp, "<Alt-r>", "{RestoreItems}");
       return TCL_OK;
    end Show_Trash_Command;
@@ -209,13 +213,15 @@ package body Trash is
                Destination := Unbounded_Slice(FileLine, 6, Length(FileLine));
                if Ada.Directories.Exists(To_String(Destination)) then
                   if Is_Directory(To_String(Destination)) then
-                     ItemType := To_Unbounded_String("Directory");
+                     ItemType :=
+                       To_Unbounded_String(Mc(Interp, "{Directory}"));
                   else
-                     ItemType := To_Unbounded_String("File");
+                     ItemType := To_Unbounded_String(Mc(Interp, "{File}"));
                   end if;
                   ShowMessage
-                    ("Can't restore " & To_String(Destination) & " " &
-                     To_String(ItemType) & " " & "with that name exists.");
+                    (Mc(Interp, "{Can't restore }") & To_String(Destination) &
+                     " " & To_String(ItemType) & " " &
+                     Mc(Interp, "{with that name exists.}"));
                   Close(FileInfo);
                   return Show_Trash_Command(ClientData, Interp, Argc, Argv);
                end if;
@@ -250,11 +256,13 @@ package body Trash is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
    begin
       NewAction := CLEARTRASH;
       ToggleToolButtons(NewAction);
-      ShowMessage("Remove all files and directories from Trash?", "question");
+      ShowMessage
+        (Mc(Interp, "{Remove all files and directories from Trash?}"),
+         "question");
       return TCL_OK;
    end Clear_Trash_Command;
 
