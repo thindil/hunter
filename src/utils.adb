@@ -21,6 +21,7 @@ with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with LibMagic; use LibMagic;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
@@ -92,7 +93,8 @@ package body Utils is
       ExecutablePath := Locate_Exec_On_Path(Name);
       if ExecutablePath = null then
          if DisplayMessage then
-            ShowMessage("Could not found executable: " & Name);
+            ShowMessage
+              (Mc(Get_Context, "{Could not found executable: }") & Name);
          end if;
          return "";
       end if;
@@ -157,7 +159,8 @@ package body Utils is
         CreateCommands.Tcl_CreateCommand
           (Get_Context, Name, AdaCommand, 0, null);
       if Command = null then
-         raise Hunter_Add_Command_Exception with "Can't add command " & Name;
+         raise Hunter_Add_Command_Exception
+           with Mc(Get_Context, "{Can't add command }") & Name;
       end if;
    end AddCommand;
 
@@ -198,14 +201,22 @@ package body Utils is
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.cancelbutton");
             if not Finished then
-               Add(Toolbar, "Stop copying files and directories \[Escape\]");
+               Add
+                 (Toolbar,
+                  Mc
+                    (Get_Context,
+                     "{Stop copying files and directories \[Escape\]}"));
             end if;
             CurrentButton := 3;
          when MOVE =>
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.cancelbutton");
             if not Finished then
-               Add(Toolbar, "Stop moving files and directories \[Escape\]");
+               Add
+                 (Toolbar,
+                  Mc
+                    (Get_Context,
+                     "{Stop moving files and directories \[Escape\]}"));
             end if;
             CurrentButton := 4;
          when SHOWTRASH =>
@@ -288,7 +299,9 @@ package body Utils is
                   Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
                end if;
             end loop;
-            Entry_Configure(DeleteMenu, "0", "-label {Delete selected}");
+            Entry_Configure
+              (DeleteMenu, "0",
+               "-label {" & Mc(Get_Context, "{Delete selected}") & "}");
          else
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
             for I in ButtonsNames'Range loop
@@ -319,7 +332,9 @@ package body Utils is
                "-after .mainframe.toolbars.actiontoolbar.deletebutton");
             if not Settings.DeleteFiles then
                Entry_Configure
-                 (DeleteMenu, "0", "-label {Move selected to Trash}");
+                 (DeleteMenu, "0",
+                  "-label {" & Mc(Get_Context, "{Move selected to Trash}") &
+                  "}");
             end if;
          end if;
       end if;
@@ -339,28 +354,52 @@ package body Utils is
          end if;
          case Action is
             when CREATEFILE =>
-               configure(HeaderLabel, "-text {Creating empty file}");
+               configure
+                 (HeaderLabel,
+                  "-text {" & Mc(Get_Context, "{Creating empty file}") & "}");
             when CREATEDIRECTORY =>
-               configure(HeaderLabel, "-text {Creating new directory}");
+               configure
+                 (HeaderLabel,
+                  "-text {" & Mc(Get_Context, "{Creating new directory}") &
+                  "}");
             when CREATELINK =>
-               configure(HeaderLabel, "-text {Creating new link}");
+               configure
+                 (HeaderLabel,
+                  "-text {" & Mc(Get_Context, "{Creating new link}") & "}");
             when RENAME =>
-               configure(HeaderLabel, "-text {Renaming file or directory}");
+               configure
+                 (HeaderLabel,
+                  "-text {" & Mc(Get_Context, "{Renaming file or directory}") &
+                  "}");
             when COPY =>
-               configure(HeaderLabel, "-text {Copying files and directories}");
+               configure
+                 (HeaderLabel,
+                  "-text {" &
+                  Mc(Get_Context, "{Copying files and directories}") & "}");
             when MOVE =>
-               configure(HeaderLabel, "-text {Moving files and directories}");
+               configure
+                 (HeaderLabel,
+                  "-text {" &
+                  Mc(Get_Context, "{Moving files and directories}") & "}");
             when DELETE | DELETETRASH =>
                if Settings.DeleteFiles or Action = DELETETRASH then
                   configure
-                    (HeaderLabel, "-text {Deleting files and directories}");
+                    (HeaderLabel,
+                     "-text {" &
+                     Mc(Get_Context, "{Deleting files and directories}") &
+                     "}");
                else
                   configure
                     (HeaderLabel,
-                     "-text {Moving files and directories to trash}");
+                     "-text {" &
+                     Mc(Get_Context,
+                        "{Moving files and directories to trash}") &
+                     "}");
                end if;
             when SHOWTRASH =>
-               configure(HeaderLabel, "-text {Trash can}");
+               configure
+                 (HeaderLabel,
+                  "-text {" & Mc(Get_Context, "{Trash can}") & "}");
             when others =>
                null;
          end case;
