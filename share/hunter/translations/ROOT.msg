@@ -176,4 +176,8 @@
    "File or directory informations \[ALT+I\]" "File or directory informations \[ALT+I\]"
    "Add bookmark to this directory \[ALT+B\]." "Add bookmark to this directory \[ALT+B\]."
    "Remove bookmark to this directory \[ALT+R\]" "Remove bookmark to this directory \[ALT+R\]"
+   "Trash" "Trash"
+   "Can't restore " "Can't restore "
+   "with that name exists." "with that name exists."
+   "Remove all files and directories from Trash?" "Remove all files and directories from Trash?"
 }
