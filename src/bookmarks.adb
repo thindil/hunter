@@ -95,7 +95,7 @@ package body Bookmarks is
       BookmarksList.Include("Home", Value("HOME"));
       Add
         (BookmarksMenu, "command",
-         "-label " & Mc(Get_Context, "{Home}") & " -command {GoToBookmark {" &
+         "-label {" & Mc(Get_Context, "{Home}") & "} -command {GoToBookmark {" &
          Value("HOME") & "}}");
       for I in XDGBookmarks'Range loop
          if Ada.Directories.Exists
