@@ -44,3 +44,9 @@
    execute:
       - gprof bin/hunter gmon.out
    description: Generate gprof report
+- command:
+   name: buildall
+   execute:
+      - bob release
+      - bob debug
+   description: Build Hunter release then debug version
