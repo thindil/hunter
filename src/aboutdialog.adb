@@ -125,6 +125,18 @@ package body AboutDialog is
       Add
         (Creditsbook, Widget_Image(Frame),
          "-text {" & Mc(Interp, "Programmers") & "}");
+      Frame := Create(Widget_Image(Creditsbook) & ".translators");
+      View :=
+        Create
+          (Widget_Image(Frame) & ".view",
+           "-show tree -selectmode none -height 5");
+      Column(View, "#0", "-stretch true -width" & Positive'Image(Width - 50));
+      Insert
+        (View, "{} end -text {Polski - Bartek Jasicki <thindil@laeran.pl>}");
+      Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
+      Add
+        (Creditsbook, Widget_Image(Frame),
+         "-text {" & Mc(Interp, "Translators") & "}");
       Tcl.Tk.Ada.Grid.Grid(CloseButton, "-columnspan 2");
       Bind
         (AboutDialog, "<Alt-c>",
