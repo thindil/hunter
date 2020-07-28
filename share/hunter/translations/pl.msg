@@ -11,6 +11,7 @@
    "Version:" "Wersja:"
    "Website" "Strona"
    "Programmers" "Programiści"
+   "Translators" "Tłumacze"
    "Hunter - About" "Hunter - O programie"
    "Can't open link" "Nie można otworzyć linku"
    "You can't enter this directory." "You can't enter this directory."
