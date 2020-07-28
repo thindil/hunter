@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Information about the program translators
+
 ### Changed
 - Better detection of dialogs height
 - Updated README.md
