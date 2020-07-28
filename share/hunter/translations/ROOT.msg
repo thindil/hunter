@@ -11,6 +11,7 @@
    "Version:" "Version:"
    "Website" "Website"
    "Programmers" "Programmers"
+   "Translators" "Translators"
    "Hunter - About" "Hunter - About"
    "Can't open link" "Can't open link"
    "You can't enter this directory." "You can't enter this directory."
