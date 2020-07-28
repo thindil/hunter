@@ -50,3 +50,8 @@
       - bob release
       - bob debug
    description: Build Hunter release then debug version
+- command:
+   name: generatetranslation
+   execute:
+      - others/translations.tcl generate
+   description: (Re)Generate ROOT translation of the program
