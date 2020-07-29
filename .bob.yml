@@ -60,3 +60,8 @@
    execute:
       - others/translations.tcl create $1
    description: Create a new translation for the selected language
+- command:
+   name: updatetranslations
+   execute:
+      - others/translations.tcl update
+   description: Update all existing translations (except ROOT)
