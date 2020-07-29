@@ -36,15 +36,19 @@ if {$argc == 0} {
    return
 }
 
+# Set directory where translations are
+set directory "share/hunter/translations"
+
 # Generate ROOT translation from the source files
 if {[lindex $argv 0] == "generate"} {
    puts -nonewline {(Re)Generating the ROOT translation ...}
-   set rootmsg [open share/hunter/translations/ROOT.msg w]
+   set rootmsg [open $directory/ROOT.msg w]
    set translist [list ]
    puts $rootmsg "::msgcat::mcflmset {"
    foreach filename [glob -directory src *.ad*] {
       set adafile [open $filename r]
       set content [read $adafile]
+      close $adafile
       set translations [regexp -all -inline {Mc+\W*\(\W*\w+,\W* "[^"]+} $content]
       foreach translation $translations {
          regsub {^.+"+\{*} $translation "" translation
@@ -54,18 +58,38 @@ if {[lindex $argv 0] == "generate"} {
             lappend translist $translation
          }
       }
-      close $adafile
    }
    puts $rootmsg "}"
    close $rootmsg
-   puts {done.}
+   puts { done.}
 # Creating a new translation for the selected language
 } elseif {[lindex $argv 0] == "create"} {
-   puts -nonewline "Creating a new translation for language [lindex $argv 1]..."
-   puts {done.}
+   set lang [lindex $argv 1]
+   if {[file exists $directory/$lang.msg] == 1} {
+      puts "Can't create a new translation for language $lang because there exists one."
+      return
+   }
+   if {[file exists $directory/ROOT.msg] == 0} {
+      puts "ROOT translation doesn't exists. Please create it first."
+      return
+   }
+   puts -nonewline "Creating a new translation for language $lang ..."
+   set newmsg [open $directory/$lang.msg w]
+   puts $newmsg "::msgcat::mcflmset {"
+   set rootfile [open $directory/ROOT.msg r]
+   while {[gets $rootfile line] >= 0} {
+      set translation [string range [regexp -inline {"[^"]+"} $line] 1 end-1]
+      if {$translation != ""} {
+         puts $newmsg "   $translation \"\""
+      }
+   }
+   close $rootfile
+   puts $newmsg "}"
+   close $newmsg
+   puts { done.}
 # Updating all existing translations from the ROOT translation
 } elseif {[lindex $argv 0] == "update"} {
-   puts -nonewline {Updating all existing translations...}
+   puts -nonewline {Updating all existing translations ...}
    puts {done.}
 } else {
    ShowHelp
