@@ -43,7 +43,7 @@ set directory "share/hunter/translations"
 if {[lindex $argv 0] == "generate"} {
    puts -nonewline {(Re)Generating the ROOT translation ...}
    set rootmsg [open $directory/ROOT.msg w]
-   set translist [list ]
+   set translist {}
    puts $rootmsg "::msgcat::mcflmset {"
    foreach filename [glob -directory src *.ad*] {
       set adafile [open $filename r]
@@ -90,7 +90,41 @@ if {[lindex $argv 0] == "generate"} {
 # Updating all existing translations from the ROOT translation
 } elseif {[lindex $argv 0] == "update"} {
    puts -nonewline {Updating all existing translations ...}
-   puts {done.}
+   set translist {}
+   set rootfile [open $directory/ROOT.msg r]
+   while {[gets $rootfile line] >= 0} {
+      set translation [string range [regexp -inline {"[^"]+"} $line] 1 end-1]
+      if {$translation != ""} {
+         lappend translist $translation
+      }
+   }
+   close $rootfile
+   foreach filename [glob -directory $directory *.msg] {
+      if {[file tail $filename] == "ROOT.msg"} {
+         continue
+      }
+      file rename $filename $filename.bak
+      set newmsg [open $filename w]
+      puts $newmsg "::msgcat::mcflmset {"
+      set oldmsg [open $filename.bak r]
+      while {[gets $oldmsg line] >= 0} {
+         set translation [string range [regexp -inline {"[^"]+"} $line] 1 end-1]
+         if {[lsearch -exact $translist $translation] > -1} {
+            puts $newmsg $line
+            set translist [lsearch -inline -all -not -exact $translist $translation]
+         }
+      }
+      close $oldmsg
+      if {[llength $translist] > 0} {
+         foreach translation $translist {
+            puts $newmsg "   $translation \"\""
+         }
+      }
+      puts $newmsg "}"
+      close $newmsg
+      file delete $filename.bak
+   }
+   puts { done.}
 } else {
    ShowHelp
 }
