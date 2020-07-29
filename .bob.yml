@@ -55,3 +55,8 @@
    execute:
       - others/translations.tcl generate
    description: (Re)Generate ROOT translation of the program
+- command:
+   name: createtranslation
+   execute:
+      - others/translations.tcl create $1
+   description: Create a new translation for the selected language
