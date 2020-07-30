@@ -22,6 +22,11 @@ exec tclsh "$0" ${1+"$@"}
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+if {[file exists hunter.gpr] == 0} {
+   puts {This script must be run in the directory where hunter.gpr file is}
+   return
+}
+
 proc ShowHelp {} {
    puts {Possible options:
    - generate      - (Re)Generate ROOT translation of the program
