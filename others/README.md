@@ -13,3 +13,7 @@ Various files which are not necessary needed for development:
                      **Important:** run this script from the main project
                      directory, not from this.
 - hunter.appdata.xml - AppStream meta data for AppImage.
+- translations.tcl - script to manage the program translations. **Important:**
+                     run this script from the main project directory, not from
+                     this.
+
