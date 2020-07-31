@@ -79,18 +79,7 @@ if {[lindex $argv 0] == "generate"} {
       return
    }
    puts -nonewline "Creating a new translation for language $lang ..."
-   set newmsg [open $directory/$lang.msg w]
-   puts $newmsg "::msgcat::mcflmset {"
-   set rootfile [open $directory/ROOT.msg r]
-   while {[gets $rootfile line] >= 0} {
-      set translation [string range [regexp -inline {"[^"]+"} $line] 1 end-1]
-      if {$translation != ""} {
-         puts $newmsg "   $translation \"\""
-      }
-   }
-   close $rootfile
-   puts $newmsg "}"
-   close $newmsg
+   file copy $directory/ROOT.msg $directory/$lang.msg
    puts { done.}
 # Updating all existing translations from the ROOT translation
 } elseif {[lindex $argv 0] == "update"} {
