@@ -46,9 +46,9 @@ To build you need:
 
    https://github.com/thindil/tashy
 
-   **Important:** To build this version of Hunter you will need a repository
-   version of the library, not release (probably soon or later it will
-   be better synchronized).
+   **Important:** To build this version of Hunter the best version is 8.6.7.
+   Ealier version may not works due to lack of some bindings and newer
+   version may bring incompatibility changes.
 
 * File command (libmagic) development files. It can have different names in
   every Linux distribution: in Fedora it is *file-devel* on Debian/Ubuntu/Mint
