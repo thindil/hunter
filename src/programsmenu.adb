@@ -34,6 +34,7 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
+with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Bookmarks; use Bookmarks;
 with MainWindow; use MainWindow;
@@ -291,6 +292,7 @@ package body ProgramsMenu is
            "-orient vertical -command [list " &
            Widget_Image(ApplicationsView) & " yview]");
    begin
+      Autoscroll(ApplicationsYScroll);
       for Path of ApplicationsPaths loop
          if not Ada.Directories.Exists(To_String(Path)) then
             goto End_Of_Loop;

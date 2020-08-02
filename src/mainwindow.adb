@@ -42,6 +42,7 @@ with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
+with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with AboutDialog; use AboutDialog;
 with ActivateItems; use ActivateItems;
@@ -117,6 +118,8 @@ package body MainWindow is
       FileMenu: constant Tk_Menu := Create(".filemenu", "-tearoff false");
       pragma Unreferenced(Image, ProgressBar, HeaderLabel, FileMenu);
    begin
+      Autoscroll(DirectoryYScroll);
+      Autoscroll(DirectoryXScroll);
       AddCommands;
       CreateSearchUI;
       Set_Directory(Containing_Directory(Command_Name));

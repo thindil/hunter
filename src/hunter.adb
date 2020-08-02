@@ -23,6 +23,7 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with ErrorDialog; use ErrorDialog;
 with Inotify; use Inotify;
@@ -94,6 +95,7 @@ begin
    Tooltip_Init(Interp);
    Tcl.Ada.Tcl_Eval(Interp, "package require Img");
    MsgCat_Init(Interp);
+   Autoscroll_Init(Interp);
 
    -- Load the program setting
    LoadSettings;
