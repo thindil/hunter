@@ -120,3 +120,49 @@ or, if you prefer (and you have installed), use [Bob](https://github.com/thindil
 More informations about code coverage and profiling, you can find in proper
 documentation for both programs.
 
+## Translating the program
+
+The Hunter uses Tcl msgcat package as a translation system. To create new or
+update existing translations, use *translations.tcl* script located in the
+*others* directory. You can see all the options available for this script by
+entering terminal command in main the project directory:
+`others/translations.tcl help`
+
+
+**Important:** always run this script from the main directory of the project.
+
+If you have [Bob](https://github.com/thindil/bob) installed, you can also
+use it to manage translations.
+
+### Adding new translation
+
+To add new translation to the program, enter the terminal command:
+`others/translations.tcl create [localename]` where *localename* is
+a standard language code (for example `de` or `en_US`). It will create a new
+translation file and fill it with English translation. For example,
+creating a German translation of the program will looks that:
+
+`others/translations.tcl create de`
+
+If you have [Bob](https://github.com/thindil/bob) installed, you can also
+use it to create a new translation:
+
+`bob createtranslation de`
+
+### Editing existing translation
+
+To edit existing translation, just open proper *.msg* file in text editor. The
+first string between quotes is an original text which appears in the code. The
+second string between quotes is translation. Edit only the second string.
+
+### Updating existing translations
+
+This should not be needed to do, unless you added a new strings to translate
+in the code. First, regenerate ROOT.msg translation with command:
+`others/translations.tcl generate`. Then update all other translations with
+command: `others/translations.tcl update`
+
+If you have [Bob](https://github.com/thindil/bob) installed, you can also use
+it to update translations:
+
+`bob generatetranslation` and then `bob updatetranslations`
