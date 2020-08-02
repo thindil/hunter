@@ -24,15 +24,11 @@ version of the program please look [here](https://github.com/thindil/hunter/tree
 
 To build you need:
 
-* compiler - GCC with enabled Ada support or (best option) GNAT from:
-
-  https://www.adacore.com/download/
-
-  It is recommended to use GNAT GPL 2019 to compile the program.
-  The program does not work with old compilers (like GCC 4.9) since it
+* compiler - GCC with enabled Ada support. The most distributions should have
+  it. The program does not work with old compilers (like GCC 4.9) since it
   lacks full support for Ada 2012.
 
-* Tcl/Tk library. Should be available in any Linux distribution
+* Tcl/Tk library. Should be available in any Linux distribution.
 
 * Tk extension *tklib*. Should be available in every Linux distribution.
 
@@ -57,9 +53,9 @@ To build you need:
 If you have all the required packages, navigate to the main directory(where
 this file is) to compile:
 
-* Easiest way to compile the program is use Gnat Programming Studio included
-  in GNAT. Just run GPS, select *hunter.gpr* as a project file and select
-  option `Build All`.
+* Easiest way to compile the program is use Gnat Studio. It should be available
+  in the most distributions. Just run it, select *hunter.gpr* as a project file
+  and select option `Build All`.
 
 * If you prefer using console: in main source code directory type
   `gprbuild -P hunter.gpr` for debug mode build or for release mode:
