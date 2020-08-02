@@ -8,10 +8,10 @@ services:
    - docker
 
 install:
-   - docker pull thindil/gnat-tashy
+   - docker pull thindil/gnat-tashy:release-8.6.7
 
 script:
-   - docker run -v $(pwd):/app thindil/gnat-tashy /bin/sh -c "apt-get update && apt-get install -y libmagic-dev && cd /app && others/build.tcl"
+   - docker run -v $(pwd):/app thindil/gnat-tashy:release-8.6.7 /bin/sh -c "apt-get update && apt-get install -y libmagic-dev && cd /app && others/build.tcl"
    - tar -czf hunter-development.tar.gz usr
 
 before_deploy:
@@ -26,7 +26,7 @@ deploy:
   api-key: $KEY
   file: hunter-development.tar.gz
   name: Continuous Integration build
-  body: Development build of $TRAVIS_BRANCH built by Travis CI.
+  body: Development build of Hunter built by Travis CI.
   prerelease: true
   overwrite: true
   target_commitish: $TRAVIS_COMMIT
