@@ -744,13 +744,13 @@ package body ShowItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(ClientData, Argc, Argv);
       DirectoryTree: Ttk_Tree_View;
       Tokens: Slice_Set;
       Items: Unbounded_String;
       ActionButton: Ttk_RadioButton;
    begin
-      DirectoryTree.Interp := Get_Context;
+      DirectoryTree.Interp := Interp;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
       SelectedItems.Clear;
@@ -782,7 +782,7 @@ package body ShowItems is
          return TCL_OK;
       end if;
       SetActionsButtons;
-      ActionButton.Interp := Get_Context;
+      ActionButton.Interp := Interp;
       if Is_Directory(To_String(CurrentSelected)) or
         Is_Regular_File(To_String(CurrentSelected)) then
          ActionButton.Name :=
