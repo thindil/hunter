@@ -1,4 +1,8 @@
-language: minimal
+language: shell
+
+os: linux
+
+dist: xenial
 
 branches:
    except:
@@ -22,11 +26,11 @@ before_deploy:
 
 deploy:
   provider: releases
-  skip_cleanup: true
-  api-key: $KEY
+  token: $KEY
+  cleanup: false
   file: hunter-development.tar.gz
   name: Continuous Integration build
-  body: Development build of Hunter built by Travis CI.
+  release_notes: Development build of Hunter built by Travis CI.
   prerelease: true
   overwrite: true
   target_commitish: $TRAVIS_COMMIT
