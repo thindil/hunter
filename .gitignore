@@ -1,11 +1,7 @@
 bin/hunter
-bin/highlight
-bin/xdg-open
 bin/gmon.out
 lib
 obj
-share/file
-share/highlight
 tests/driver/test_runner
 gcov
 gprofreport.txt
