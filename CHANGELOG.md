@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Better detection of dialogs height
 - Updated README.md
 - Updated contributing guide
+- Autohide scrollbars
 
 ### Fixed
 - Crash on lack of configuration file
