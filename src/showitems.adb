@@ -47,6 +47,7 @@ with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
+with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
@@ -189,6 +190,10 @@ package body ShowItems is
            (Button, "-before .mainframe.toolbars.itemtoolbar.infobutton");
       end if;
       SetActionsButtons;
+      Unautoscroll(PreviewXScroll);
+      Set(PreviewXScroll, "0.0", "1.0");
+      Unautoscroll(PreviewYScroll);
+      Set(PreviewYScroll, "0.0", "1.0");
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage
@@ -214,6 +219,8 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack
            (PreviewTree, "-side top -fill both -expand true");
          UpdateDirectoryList(True, "preview");
+         Autoscroll(PreviewXScroll);
+         Autoscroll(PreviewYScroll);
       else
          declare
             MimeType: constant String :=
@@ -395,6 +402,7 @@ package body ShowItems is
                   <<Set_UI>>
                   configure(PreviewText, "-state disabled");
                end;
+               Autoscroll(PreviewYScroll);
             elsif MimeType(1 .. 5) = "image" then
                declare
                   Image: Tk_Photo;
@@ -460,6 +468,8 @@ package body ShowItems is
                         end if;
                      end;
                end;
+               Autoscroll(PreviewXScroll);
+               Autoscroll(PreviewYScroll);
             else
                declare
                   ActionButton: Ttk_RadioButton;
@@ -494,6 +504,8 @@ package body ShowItems is
       MimeType: constant String := GetMimeType(SelectedItem);
       DirectorySize: Natural := 0;
    begin
+      Unautoscroll(PreviewXScroll);
+      Unautoscroll(PreviewYScroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
@@ -792,8 +804,8 @@ package body ShowItems is
            New_String(".mainframe.toolbars.itemtoolbar.infobutton");
       end if;
       if Invoke(ActionButton) /= "" and Invoke(ActionButton) /= "0" then
-         raise Hunter_Show_Items_Exception
-           with "Can't show file or directory preview/info";
+         SetBookmarkButton;
+         return TCL_OK;
       end if;
       SetBookmarkButton;
       return TCL_OK;
@@ -1040,6 +1052,8 @@ package body ShowItems is
          Paned.Name := New_String(".mainframe.paned");
          Add(Paned, Frame, "-weight 20");
       end if;
+      Unautoscroll(PreviewXScroll);
+      Unautoscroll(PreviewYScroll);
       Frame.Name := New_String(".mainframe.paned.previewframe.pathframe");
       Tcl.Tk.Ada.Pack.Pack
         (Frame, "-after .mainframe.paned.previewframe.title -fill x");
@@ -1062,6 +1076,8 @@ package body ShowItems is
       DestinationDirectory := CurrentDirectory;
       LoadDirectory(To_String(DestinationDirectory), True);
       UpdateDirectoryList(True, "preview");
+      Autoscroll(PreviewXScroll);
+      Autoscroll(PreviewYScroll);
    end ShowDestination;
 
 end ShowItems;
