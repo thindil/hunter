@@ -27,7 +27,7 @@ before_deploy:
 deploy:
   provider: releases
   token: $KEY
-  cleanup: false
+  skip_cleanup: true
   file: hunter-development.tar.gz
   name: Continuous Integration build
   release_notes: Development build of Hunter built by Travis CI.
