@@ -235,22 +235,26 @@ package body Messages is
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonno",
-           "-text No -command {MessageResponse no}");
+           "-text " & Mc(Get_Context, "{No}") &
+           " -command {MessageResponse no}");
       Tcl.Tk.Ada.Grid.Grid(Button);
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonyes",
-           "-text Yes -command {MessageResponse yes}");
+           "-text " & Mc(Get_Context, "{Yes}") &
+           " -command {MessageResponse yes}");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 0");
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonnoall",
-           "-text ""No for all"" -command {MessageResponse noall}");
+           "-text {" & Mc(Get_Context, "{No for all}") &
+           "} -command {MessageResponse noall}");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
       Button :=
         Create
           (".mainframe.message.buttonsbox.buttonyesall",
-           "-text ""Yes for all"" -command {MessageResponse yesall}");
+           "-text {" & Mc(Get_Context, "{Yes for all}") &
+           "} -command {MessageResponse yesall}");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 3 -row 0");
       Button :=
         Create
