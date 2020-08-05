@@ -197,4 +197,8 @@
    "Delete files" "Kasowanie plików"
    "Go to this directory" "Idź do tego katalogu"
    "Open with..." "Otwórz z..."
+   "No" "Nie"
+   "Yes" "Tak"
+   "No for all" "Nie dla wszystkich"
+   "Yes for all" "Tak dla wszystkich"
 }
