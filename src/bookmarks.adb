@@ -40,26 +40,17 @@ package body Bookmarks is
    -- ****
 
    procedure CreateBookmarkMenu(CreateNew: Boolean := False) is
-      type Bookmark_Record is record
-         MenuName: Unbounded_String;
-         Path: Unbounded_String;
-      end record;
-      XDGBookmarks: constant array(1 .. 7) of Bookmark_Record :=
-        ((To_Unbounded_String("Desktop"),
-          To_Unbounded_String("XDG_DESKTOP_DIR")),
-         (To_Unbounded_String("Download"),
-          To_Unbounded_String("XDG_DOWNLOAD_DIR")),
-         (To_Unbounded_String("Public"),
-          To_Unbounded_String("XDG_PUBLICSHARE_DIR")),
-         (To_Unbounded_String("Documents"),
-          To_Unbounded_String("XDG_DOCUMENTS_DIR")),
-         (To_Unbounded_String("Music"), To_Unbounded_String("XDG_MUSIC_DIR")),
-         (To_Unbounded_String("Pictures"),
-          To_Unbounded_String("XDG_PICTURES_DIR")),
-         (To_Unbounded_String("Videos"),
-          To_Unbounded_String("XDG_VIDEOS_DIR")));
+      XDGBookmarks: constant array(1 .. 7) of Unbounded_String :=
+        (To_Unbounded_String("XDG_DESKTOP_DIR"),
+         To_Unbounded_String("XDG_DOWNLOAD_DIR"),
+         To_Unbounded_String("XDG_PUBLICSHARE_DIR"),
+         To_Unbounded_String("XDG_DOCUMENTS_DIR"),
+         To_Unbounded_String("XDG_MUSIC_DIR"),
+         To_Unbounded_String("XDG_PICTURES_DIR"),
+         To_Unbounded_String("XDG_VIDEOS_DIR"));
       BookmarksMenu: Tk_Menu;
       MenuButton: Ttk_MenuButton;
+      Path: Unbounded_String;
       function GetXDGDirectory(Name: String) return String is
          File: File_Type;
          Line: Unbounded_String;
@@ -95,19 +86,18 @@ package body Bookmarks is
       BookmarksList.Include("Home", Value("HOME"));
       Add
         (BookmarksMenu, "command",
-         "-label {" & Mc(Get_Context, "{Home}") & "} -command {GoToBookmark {" &
-         Value("HOME") & "}}");
+         "-label {" & Mc(Get_Context, "{Home}") &
+         "} -command {GoToBookmark {" & Value("HOME") & "}}");
       for I in XDGBookmarks'Range loop
-         if Ada.Directories.Exists
-             (GetXDGDirectory(To_String(XDGBookmarks(I).Path))) then
+         Path :=
+           To_Unbounded_String(GetXDGDirectory(To_String(XDGBookmarks(I))));
+         if Ada.Directories.Exists(To_String(Path)) then
             BookmarksList.Include
-              (To_String(XDGBookmarks(I).MenuName),
-               GetXDGDirectory(To_String(XDGBookmarks(I).Path)));
+              (Simple_Name(To_String(Path)), To_String(Path));
             Add
               (BookmarksMenu, "command",
-               "-label {" & To_String(XDGBookmarks(I).MenuName) &
-               "} -command {GoToBookmark {" &
-               GetXDGDirectory(To_String(XDGBookmarks(I).Path)) & "}}");
+               "-label {" & Simple_Name(To_String(Path)) &
+               "} -command {GoToBookmark {" & To_String(Path) & "}}");
          end if;
       end loop;
       if Ada.Directories.Exists
