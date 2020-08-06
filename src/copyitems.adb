@@ -68,8 +68,8 @@ package body CopyItems is
         and then Containing_Directory(To_String(CopyItemsList(1))) =
           To_String(DestinationDirectory) then
          CopyItemsList.Clear;
-         ToggleToolButtons(NewAction, True);
          ShowPreview;
+         ToggleToolButtons(NewAction, True);
          return TCL_OK;
       end if;
       if CopyItemsList.Length = 0 then
@@ -187,7 +187,6 @@ package body CopyItems is
          end if;
       end loop;
       CopyItemsList.Clear;
-      ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage
            (Mc
@@ -204,6 +203,7 @@ package body CopyItems is
       UpdateDirectoryList(True);
       UpdateWatch(To_String(CurrentDirectory));
       ShowPreview;
+      ToggleToolButtons(NewAction, True);
    end CopySelected;
 
    procedure SkipCopying is
