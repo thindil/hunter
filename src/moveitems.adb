@@ -71,8 +71,8 @@ package body MoveItems is
         and then Containing_Directory(To_String(MoveItemsList(1))) =
           To_String(DestinationDirectory) then
          MoveItemsList.Clear;
-         ToggleToolButtons(NewAction, True);
          ShowPreview;
+         ToggleToolButtons(NewAction, True);
          return TCL_OK;
       end if;
       if MoveItemsList.Length = 0 then
@@ -164,7 +164,6 @@ package body MoveItems is
          UpdateProgressBar;
       end loop;
       MoveItemsList.Clear;
-      ToggleToolButtons(NewAction, True);
       if Settings.ShowFinishedInfo then
          ShowMessage
            (Mc
@@ -183,6 +182,7 @@ package body MoveItems is
       UpdateDirectoryList(True);
       UpdateWatch(To_String(CurrentDirectory));
       ShowPreview;
+      ToggleToolButtons(NewAction, True);
    end MoveSelected;
 
    procedure SkipMoving is
