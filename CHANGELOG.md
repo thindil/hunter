@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Updated README.md
 - Updated contributing guide
 - Autohide scrollbars
+- Use localized names for the default bookmarks
 
 ### Fixed
 - Crash on lack of configuration file
