@@ -2,8 +2,6 @@ language: shell
 
 os: linux
 
-dist: xenial
-
 branches:
    except:
       - travis-dev-build
