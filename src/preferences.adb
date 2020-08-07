@@ -40,7 +40,8 @@ package body Preferences is
          ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
          DeleteFiles => True, ClearTrashOnExit => False,
          ShowFinishedInfo => False, OverwriteOnExist => True,
-         ToolbarsOnTop => True, AutoRefreshInterval => 10);
+         ToolbarsOnTop => True, AutoRefreshInterval => 10,
+         UITheme => To_Unbounded_String("light"));
       Open
         (ConfigFile, In_File,
          Ada.Environment_Variables.Value("HOME") &
@@ -85,6 +86,8 @@ package body Preferences is
             elsif FieldName = To_Unbounded_String("AutoRefreshInterval") then
                Settings.AutoRefreshInterval :=
                  Positive'Value(To_String(Value));
+            elsif FieldName = To_Unbounded_String("UITheme") then
+               Settings.UITheme := Value;
             end if;
          end if;
       end loop;
@@ -141,6 +144,7 @@ package body Preferences is
         (ConfigFile,
          "AutoRefreshInterval =" &
          Positive'Image(Settings.AutoRefreshInterval));
+      Put_Line(ConfigFile, "UITheme = " & To_String(Settings.UITheme));
       Close(ConfigFile);
    end SavePreferences;
 
