@@ -57,6 +57,7 @@ package Preferences is
    --                         with information will be on the right
    -- AutoRefreshInterval   - How often, in seconds, auto refresh should be
    --                         triggered
+   -- UITheme               - Tk theme used by the program
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -75,6 +76,7 @@ package Preferences is
       OverwriteOnExist: Boolean;
       ToolbarsOnTop: Boolean;
       AutoRefreshInterval: Natural;
+      UITheme: Unbounded_String;
    end record;
    -- ****
 
