@@ -278,7 +278,7 @@ package body MainWindow is
    procedure UpdateDirectoryList
      (Clear: Boolean := False; FrameName: String := "directory") is
       SizeString, ItemIndex, SelectedIndex, Path, TimeString, PathCommand,
-      PathShortcut, Shortcut, Tooltip: Unbounded_String;
+      PathShortcut, Shortcut, Tooltip, ButtonLabel: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
       PathButtonsFrame: Ttk_Frame;
       Tokens: Slice_Set;
@@ -400,11 +400,15 @@ package body MainWindow is
                   Path := To_Unbounded_String("/");
                else
                   Append(Path, Slice(Tokens, I) & "/");
+                  ButtonLabel := To_Unbounded_String(Slice(Tokens, I));
+                  if Length(ButtonLabel) > 7 then
+                     ButtonLabel := Unbounded_Slice(ButtonLabel, 1, 7) & "...";
+                  end if;
                   PathButton :=
                     Create
                       (Widget_Image(PathButtonsFrame) & ".button" &
                        Trim(Slice_Number'Image(I), Both),
-                       "-text {" & Slice(Tokens, I) & "} -command {" &
+                       "-text {" & To_String(ButtonLabel) & "} -command {" &
                        To_String(PathCommand) & " {" & To_String(Path) & "}}");
                end if;
                Width :=
