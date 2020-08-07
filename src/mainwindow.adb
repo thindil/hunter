@@ -278,13 +278,12 @@ package body MainWindow is
    procedure UpdateDirectoryList
      (Clear: Boolean := False; FrameName: String := "directory") is
       SizeString, ItemIndex, SelectedIndex, Path, TimeString, PathCommand,
-      PathShortcut: Unbounded_String;
+      PathShortcut, Shortcut, Tooltip: Unbounded_String;
       DirectoryTree: Ttk_Tree_View;
       PathButtonsFrame: Ttk_Frame;
       Tokens: Slice_Set;
       PathButton: Ttk_Button;
       Row, Width, Column: Natural := 0;
-      Shortcut, Tooltip: Unbounded_String;
       List: Items_Container.Vector;
    begin
       DirectoryTree.Interp := Get_Context;
@@ -389,6 +388,9 @@ package body MainWindow is
                Create(Tokens, To_String(DestinationDirectory), "/");
             end if;
             for I in 1 .. Slice_Count(Tokens) loop
+               if Slice(Tokens, I) = "" and I > 1 then
+                  goto End_Of_Loop;
+               end if;
                if I = 1 then
                   PathButton :=
                     Create
@@ -396,7 +398,7 @@ package body MainWindow is
                        "-text {/} -command {" & To_String(PathCommand) &
                        " {/}}");
                   Path := To_Unbounded_String("/");
-               elsif Slice(Tokens, I) /= "" then
+               else
                   Append(Path, Slice(Tokens, I) & "/");
                   PathButton :=
                     Create
@@ -418,6 +420,7 @@ package body MainWindow is
                   "-row" & Natural'Image(Row) & " -column" &
                   Natural'Image(Column));
                Column := Column + 1;
+               <<End_Of_Loop>>
             end loop;
             Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
             for I in reverse 1 .. Slice_Count(Tokens) loop
