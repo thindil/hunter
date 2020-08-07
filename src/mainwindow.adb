@@ -411,6 +411,30 @@ package body MainWindow is
                        "-text {" & To_String(ButtonLabel) & "} -command {" &
                        To_String(PathCommand) & " {" & To_String(Path) & "}}");
                end if;
+               if I + 11 > Slice_Count(Tokens) then
+                  if I = Slice_Count(Tokens) then
+                     Shortcut := PathShortcut & "-r";
+                     Tooltip :=
+                       Mc(Get_Context, "{Reload the current directory:}") &
+                       "\n" & To_String(Path) & "\n\[" & Shortcut & "\]";
+                  elsif I = Slice_Count(Tokens) - 1 then
+                     Shortcut := PathShortcut & "-u";
+                     Tooltip :=
+                       Mc(Get_Context, "{Go to directory:}") & "\n" &
+                       To_String(Path) & "\n\[" & Shortcut & "\]";
+                  else
+                     Shortcut :=
+                       PathShortcut & "-KP_" &
+                       Slice_Number'Image(Slice_Count(Tokens) - I - 1)(2);
+                     Tooltip :=
+                       Mc(Get_Context, "{Go to directory:}") & "\n" &
+                       To_String(Path) & "\n\[" & Shortcut & "\]";
+                  end if;
+                  Bind_To_Main_Window
+                    (PathButton.Interp, "<" & To_String(Shortcut) & ">",
+                     "{" & Widget_Image(PathButton) & " invoke}");
+                  Add(PathButton, To_String(Tooltip));
+               end if;
                Width :=
                  Width + Positive'Value(Winfo_Get(PathButton, "reqwidth"));
                if Width >
@@ -425,34 +449,6 @@ package body MainWindow is
                   Natural'Image(Column));
                Column := Column + 1;
                <<End_Of_Loop>>
-            end loop;
-            Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
-            for I in reverse 1 .. Slice_Count(Tokens) loop
-               PathButton.Interp := PathButtonsFrame.Interp;
-               PathButton.Name := New_String(Slice(Tokens, I));
-               if I = 1 then
-                  Shortcut := PathShortcut & "-r";
-                  Tooltip :=
-                    Mc(Get_Context, "{Reload the current directory}") & " \[" &
-                    Shortcut & "\]";
-               elsif I = 2 then
-                  Shortcut := PathShortcut & "-u";
-                  Tooltip :=
-                    Mc(Get_Context, "{Go to upper directory}") & " \[" &
-                    Shortcut & "\]";
-               elsif I < 11 then
-                  Shortcut :=
-                    PathShortcut & "-KP_" & Slice_Number'Image(I - 2)(2);
-                  Tooltip :=
-                    Mc(Get_Context, "{Go to this directory}") & " \[" &
-                    Shortcut & "\]";
-               end if;
-               Bind_To_Main_Window
-                 (PathButton.Interp, "<" & To_String(Shortcut) & ">",
-                  "{" & Widget_Image(PathButton) & " invoke}");
-               if I < 11 then
-                  Add(PathButton, To_String(Tooltip));
-               end if;
             end loop;
          end if;
       else
