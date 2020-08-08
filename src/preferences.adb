@@ -16,6 +16,9 @@
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
+with Tcl.Ada; use Tcl.Ada;
+with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
 with Preferences.Commands; use Preferences.Commands;
 with Utils; use Utils;
 
@@ -152,5 +155,19 @@ package body Preferences is
    begin
       AddCommands;
    end CreatePreferencesUI;
+
+   procedure LoadTheme is
+   begin
+      if Settings.UITheme = To_Unbounded_String("light") then
+         Tcl_EvalFile(Get_Context, "../share/hunter/themes/light/breeze.tcl");
+         Theme_Use("breeze");
+      elsif Settings.UITheme = To_Unbounded_String("dark") then
+         Tcl_EvalFile
+           (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
+         Theme_Use("breeze-dark");
+      else
+         Theme_Use(To_String(Settings.UITheme));
+      end if;
+   end LoadTheme;
 
 end Preferences;
