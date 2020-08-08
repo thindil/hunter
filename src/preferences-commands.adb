@@ -749,7 +749,13 @@ package body Preferences.Commands is
              (Widget_Image(ColorFrame) & ".themelabel",
               "-text {" & Mc(Interp, "{Color theme:}") & "}");
          Tcl.Tk.Ada.Grid.Grid(Label);
-         Height := Height + Positive'Value(Winfo_Get(Label, "reqheight"));
+         if Positive'Value(Winfo_Get(ComboBox, "reqheight")) >
+           Positive'Value(Winfo_Get(Label, "reqheight")) then
+            Height :=
+              Height + Positive'Value(Winfo_Get(ComboBox, "reqheight"));
+         else
+            Height := Height + Positive'Value(Winfo_Get(Label, "reqheight"));
+         end if;
          Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
          Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
       end;
