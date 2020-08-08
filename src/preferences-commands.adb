@@ -813,6 +813,7 @@ package body Preferences.Commands is
              (Widget_Image(ThemeFrame) & ".uitheme",
               "-state readonly -values [list light dark " & Theme_Names & "]");
       begin
+         Bind(ColorBox, "<<ComboboxSelected>>", "SetUITheme");
          Label :=
            Create
              (Widget_Image(ThemeFrame) & ".themelabel",
@@ -931,6 +932,39 @@ package body Preferences.Commands is
       return Close_Dialog_Command(ClientData, Interp, Argc, Argv);
    end Close_Preferences_Command;
 
+   -- ****if* PCommands/Set_UI_Theme_Command
+   -- FUNCTION
+   -- Set the UI theme
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
+   function Set_UI_Theme_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Set_UI_Theme_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      ComboBox: Ttk_ComboBox;
+   begin
+      ComboBox.Interp := Interp;
+      ComboBox.Name :=
+        New_String(".preferencesdialog.interface.colorframe.uitheme");
+      Settings.UITheme := To_Unbounded_String(Get(ComboBox));
+      LoadTheme(True);
+      return TCL_OK;
+   end Set_UI_Theme_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -950,6 +984,7 @@ package body Preferences.Commands is
       AddCommand("SetClearTrash", Set_Clear_Trash_Command'Access);
       AddCommand("SetOverwrite", Set_Overwrite_Command'Access);
       AddCommand("ClosePreferences", Close_Preferences_Command'Access);
+      AddCommand("SetUITheme", Set_UI_Theme_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
