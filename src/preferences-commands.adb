@@ -25,6 +25,7 @@ with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Busy; use Tcl.Tk.Ada.Busy;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
+with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
@@ -615,7 +616,8 @@ package body Preferences.Commands is
          if Positive'Value(Winfo_Get(CheckButton, "reqwidth")) > Width then
             Width := Positive'Value(Winfo_Get(CheckButton, "reqwidth"));
          end if;
-         Height := Height + Positive'Value(Winfo_Get(CheckButton, "reqheight"));
+         Height :=
+           Height + Positive'Value(Winfo_Get(CheckButton, "reqheight"));
       end AddButton;
    begin
       if Tcl.Tk.Ada.Busy.Status(MainWindow) = "0" then
@@ -797,6 +799,30 @@ package body Preferences.Commands is
            (Interp,
             "{If enabled, show toolbars for actions and information on top of the window.\nOtherwise, they will be at left side of the window.}"),
          "SetToolbarsOnTop");
+      declare
+         ThemeFrame: constant Ttk_Frame :=
+           Create(Widget_Image(LabelFrame) & ".colorframe");
+         ColorBox: constant Ttk_ComboBox :=
+           Create
+             (Widget_Image(ThemeFrame) & ".uitheme",
+              "-state readonly -values [list light dark " & Theme_Names & "]");
+      begin
+         Label :=
+           Create
+             (Widget_Image(ThemeFrame) & ".themelabel",
+              "-text {" & Mc(Interp, "{UI theme:}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(Label);
+         Tcl.Tk.Ada.Grid.Grid(ColorBox, "-column 1 -row 0");
+         if Positive'Value(Winfo_Get(ColorBox, "reqheight")) >
+           Positive'Value(Winfo_Get(Label, "reqheight")) then
+            Height :=
+              Height + Positive'Value(Winfo_Get(ColorBox, "reqheight"));
+         else
+            Height := Height + Positive'Value(Winfo_Get(Label, "reqheight"));
+         end if;
+         Set(ColorBox, To_String(Settings.UITheme));
+         Tcl.Tk.Ada.Pack.Pack(ThemeFrame, "-fill x");
+      end;
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create
