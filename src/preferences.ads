@@ -109,4 +109,11 @@ package Preferences is
    procedure CreatePreferencesUI;
    -- ****
 
+   -- ****f* Preferences/LoadTheme
+   -- FUNCTION
+   -- Load the currently selected UI theme
+   -- SOURCE
+   procedure LoadTheme;
+   -- ****
+
 end Preferences;
