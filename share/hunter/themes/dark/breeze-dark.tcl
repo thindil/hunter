@@ -6,10 +6,10 @@
 
 package require Tk 8.6.0
 
-namespace eval ttk::theme::breeze-dark {
+namespace eval ttk::theme::dark {
 
     variable version 0.1
-    package provide ttk::theme::breeze-dark $version
+    package provide ttk::theme::dark $version
 
     variable colors
     array set colors {
@@ -37,7 +37,7 @@ namespace eval ttk::theme::breeze-dark {
 
     LoadImages [file join [file dirname [info script]] breeze-dark]
 
-    ttk::style theme create breeze-dark -parent default -settings {
+    ttk::style theme create dark -parent default -settings {
         ttk::style configure . \
             -background $colors(-bg) \
             -foreground $colors(-fg) \
