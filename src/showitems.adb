@@ -967,7 +967,8 @@ package body ShowItems is
            Widget_Image(PreviewYScroll) & " set} -selectmode none ");
       Heading
         (PreviewTree, "name",
-         "-text {Name} -image {arrow-down} -command {Sort previewname}");
+         "-text {" & Mc(Get_Context, "{Name}") &
+         "} -image {arrow-down} -command {Sort previewname}");
       Column(PreviewTree, "#0", "-stretch false -width 50");
       Bind(PreviewTree, "<Double-1>", "GoToDirectory");
       Bind(PreviewTree, "<Return>", "GoToDirectory");
