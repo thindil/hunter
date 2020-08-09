@@ -13,13 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
-with Tcl.Ada; use Tcl.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
-with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
 with Preferences.Commands; use Preferences.Commands;
 with Utils; use Utils;
 
@@ -156,26 +152,5 @@ package body Preferences is
    begin
       AddCommands;
    end CreatePreferencesUI;
-
-   procedure LoadTheme(SetDirectory: Boolean := False) is
-      CurrentDir: constant String := Current_Directory;
-   begin
-      if SetDirectory then
-         Set_Directory(Containing_Directory(Command_Name));
-      end if;
-      if Settings.UITheme = To_Unbounded_String("light") then
-         Tcl_EvalFile(Get_Context, "../share/hunter/themes/light/breeze.tcl");
-         Theme_Use("breeze");
-      elsif Settings.UITheme = To_Unbounded_String("dark") then
-         Tcl_EvalFile
-           (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
-         Theme_Use("breeze-dark");
-      else
-         Theme_Use(To_String(Settings.UITheme));
-      end if;
-      if SetDirectory then
-         Set_Directory(CurrentDir);
-      end if;
-   end LoadTheme;
 
 end Preferences;

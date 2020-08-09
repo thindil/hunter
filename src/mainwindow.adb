@@ -22,11 +22,13 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.String_Split; use GNAT.String_Split;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CHelper; use CHelper;
+with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
+with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
@@ -123,8 +125,12 @@ package body MainWindow is
       AddCommands;
       CreateSearchUI;
       Set_Directory(Containing_Directory(Command_Name));
-      -- Load the selected Tk theme
-      LoadTheme;
+      -- Load the program Tk themes
+      Tcl_EvalFile
+         (Get_Context, "../share/hunter/themes/light/breeze.tcl");
+      Tcl_EvalFile
+         (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
+      Theme_Use(To_String(Settings.UITheme));
       -- Load translations
       Mc_Load("../share/hunter/translations", Get_Context);
       -- Set the program images
