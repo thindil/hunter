@@ -118,15 +118,23 @@ xdg-utils project and released under MIT license:
 
 https://github.com/freedesktop/xdg-utils
 
-Highlight program distributed with the program is under GPLv3 license.
+Highlight program distributed with the program is under GPLv3 license:
 
 http://www.andre-simon.de/doku/highlight/en/highlight.php
 
-Tcl/Tk libraries are available under BSD-like license
+Tcl/Tk, Tklib libraries are available under BSD-like license:
 
 https://www.tcl.tk/
 
-TASHY is distributed under GPLv2 with runtime exception license
+Tk Img library is available under BSD-like license:
+
+https://sourceforge.net/projects/tkimg/
+
+Tksvg library is available under BSD-like license:
+
+https://github.com/auriocus/tksvg
+
+TASHY is distributed under GPLv2 with runtime exception license:
 
 https://github.com/thindil/tashy
 
