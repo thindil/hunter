@@ -17,7 +17,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with CArgv;
+with CArgv; use CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -811,7 +811,7 @@ package body Preferences.Commands is
          ColorBox: constant Ttk_ComboBox :=
            Create
              (Widget_Image(ThemeFrame) & ".uitheme",
-              "-state readonly -values [list light dark " & Theme_Names & "]");
+              "-state readonly -values [list " & Theme_Names & "]");
       begin
          Bind(ColorBox, "<<ComboboxSelected>>", "SetUITheme");
          Label :=
@@ -936,7 +936,7 @@ package body Preferences.Commands is
    -- FUNCTION
    -- Set the UI theme
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
+   -- ClientData - Custom data send to the command.
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
@@ -954,15 +954,17 @@ package body Preferences.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+      pragma Unreferenced(Argc, Argv);
       ComboBox: Ttk_ComboBox;
    begin
       ComboBox.Interp := Interp;
       ComboBox.Name :=
         New_String(".preferencesdialog.interface.colorframe.uitheme");
       Settings.UITheme := To_Unbounded_String(Get(ComboBox));
-      LoadTheme(True);
-      return TCL_OK;
+      Theme_Use(To_String(Settings.UITheme));
+      return Close_Preferences_Command
+          (ClientData, Interp, 2,
+           CArgv.Empty & "ClosePreferences" & ".preferencesdialog");
    end Set_UI_Theme_Command;
 
    procedure AddCommands is
