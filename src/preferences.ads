@@ -109,14 +109,4 @@ package Preferences is
    procedure CreatePreferencesUI;
    -- ****
 
-   -- ****f* Preferences/LoadTheme
-   -- FUNCTION
-   -- Load the currently selected UI theme
-   -- PARAMETERS
-   -- SetDirectory - if true, set current directory to place where the program
-   --                is. Otherwise don't change it.
-   -- SOURCE
-   procedure LoadTheme(SetDirectory: Boolean := False);
-   -- ****
-
 end Preferences;
