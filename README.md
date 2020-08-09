@@ -31,14 +31,6 @@ To build you need:
 
 * Tcl/Tk library. Should be available in any Linux distribution.
 
-* Tk extension *tklib*. Should be available in every Linux distribution.
-
-* Tk extension *Img*. In Debian/Ubuntu/Mint it is named *libtk-img*.
-
-* Tk extension *tksvg*. You can get it from:
-
-   https://github.com/auriocus/tksvg
-
 * TASHY library with included binding to Tk and TkLib. You can get it from:
 
    https://github.com/thindil/tashy
@@ -64,7 +56,6 @@ this file is) to compile:
   [Bob](https://github.com/thindil/bob) you can type `bob debug` for build in
   debug mode or `bob release` to prepare release for the program.
 
-
 ## Running Hunter
 
 If you use downloaded AppImage version, you don't need any additional
@@ -75,16 +66,20 @@ https://docs.appimage.org/user-guide/run-appimages.html
 
 **IMPORTANT:** The current AppImage version require GNU LibC in version at
 least 2.29. It will not works with earlier versions. In that situation,
-unfortunately you will have to build the program by yourself. I will try to
-fix this problem before version 2.0
+unfortunately you will have to build the program by yourself.
 
 When you trying to run build by yourself version of the program, run
-`hunter` from `bin` directory. To work the program needs scripts *xdg-open*
-and *xdg-mime*. In most Linux distributions they are in *xdg-utils* package.
-Additionally, to coloring syntax in text files preview, the program needs
-other program: *highlight* which should be available in most Linux
-distributions. If you don't have that program installed, coloring syntax
-option will be disabled.
+`hunter` from `bin` directory. Additionally, the program requires a few
+more libraries:
+
+* Tk extension *tklib*. Should be available in every Linux distribution.
+
+* Tk extension *Img*. In Debian/Ubuntu/Mint it is named *libtk-img*.
+
+* Tk extension *tksvg*. You can get it from:
+
+   https://github.com/auriocus/tksvg
+
 
 ### Starting parameter
 
