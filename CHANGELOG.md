@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Information about the program translators
 - Bring back the Polish translation
+- Light and dark theme for the program
 
 ### Changed
 - Better detection of dialogs height
