@@ -648,6 +648,11 @@ package body Preferences.Commands is
           (Widget_Image(LabelFrame) & ".intervallabel",
            "-text """ & Mc(Interp, "{Auto refresh every }") &
            "$updateinterval" & Mc(Interp, "{ seconds}") & """");
+      Add
+        (Label,
+         Mc
+           (Interp,
+            "{How often (in seconds) the program should check\nfor changes in current directory.\nIf set to zero, autorefresh will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
       Height := Height + Positive'Value(Winfo_Get(Label, "reqheight"));
       Scale :=
@@ -748,6 +753,11 @@ package body Preferences.Commands is
            Create
              (Widget_Image(ColorFrame) & ".themelabel",
               "-text {" & Mc(Interp, "{Color theme:}") & "}");
+         Add
+           (Label,
+            Mc
+              (Interp,
+               "{Select color theme for coloring syntax in text files in preview. You may\nnot be able to enable this option if you don't have installed\nthe program 'highlight'.}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          if Positive'Value(Winfo_Get(ComboBox, "reqheight")) >
            Positive'Value(Winfo_Get(Label, "reqheight")) then
@@ -772,6 +782,11 @@ package body Preferences.Commands is
           (Widget_Image(LabelFrame) & ".messageslabel",
            "-text """ & Mc(Interp, "{Hide messages after }") &
            "$messagesinterval" & Mc(Interp, "{ seconds}") & """");
+      Add
+        (Label,
+         Mc
+           (Interp,
+            "{After that amount of seconds, all messages will be automatically closed by the\nprogram. If you set it to 0, this feature will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
       Scale :=
         Create
