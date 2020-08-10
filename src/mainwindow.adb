@@ -126,10 +126,13 @@ package body MainWindow is
       CreateSearchUI;
       Set_Directory(Containing_Directory(Command_Name));
       -- Load the program Tk themes
-      Tcl_EvalFile
-         (Get_Context, "../share/hunter/themes/light/breeze.tcl");
-      Tcl_EvalFile
-         (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
+      if Settings.UITheme = To_Unbounded_String("light") then
+         Tcl_EvalFile
+            (Get_Context, "../share/hunter/themes/light/breeze.tcl");
+      elsif Settings.UITheme = To_Unbounded_String("dark") then
+         Tcl_EvalFile
+            (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
+      end if;
       Theme_Use(To_String(Settings.UITheme));
       -- Load translations
       Mc_Load("../share/hunter/translations", Get_Context);
