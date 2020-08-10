@@ -46,6 +46,7 @@ with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with MainWindow; use MainWindow;
+with Messages; use Messages;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
@@ -823,11 +824,18 @@ package body Preferences.Commands is
       declare
          ThemeFrame: constant Ttk_Frame :=
            Create(Widget_Image(LabelFrame) & ".colorframe");
+         ThemesNames: Unbounded_String := To_Unbounded_String(Theme_Names);
          ColorBox: constant Ttk_ComboBox :=
-           Create
-             (Widget_Image(ThemeFrame) & ".uitheme",
-              "-state readonly -values [list " & Theme_Names & "]");
+           Create(Widget_Image(ThemeFrame) & ".uitheme", "-state readonly");
       begin
+         if Index(ThemesNames, " dark", 1) = 0 then
+            Append(ThemesNames, " dark");
+         end if;
+         if Index(ThemesNames, " light", 1) = 0 then
+            Append(ThemesNames, " light");
+         end if;
+         Widgets.configure
+           (ColorBox, "-values [list " & To_String(ThemesNames) & "]");
          Bind(ColorBox, "<<ComboboxSelected>>", "SetUITheme");
          Label :=
            Create
@@ -976,7 +984,9 @@ package body Preferences.Commands is
       ComboBox.Name :=
         New_String(".preferencesdialog.interface.colorframe.uitheme");
       Settings.UITheme := To_Unbounded_String(Get(ComboBox));
-      Theme_Use(To_String(Settings.UITheme));
+      ShowMessage
+        (Mc(Interp, "{To use the new UI theme, please restart the program.}"),
+         "message");
       return Close_Preferences_Command
           (ClientData, Interp, 2,
            CArgv.Empty & "ClosePreferences" & ".preferencesdialog");
