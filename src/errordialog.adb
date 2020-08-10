@@ -109,7 +109,7 @@ package body ErrorDialog is
            Create
              (".errorlabel2",
               "-text {" &
-              Mc(Interp, "{and attach (if possible) file 'error.log' from}") &
+              Mc(Interp, "{and attach (if possible) file 'error.log' from '}") &
               Value("HOME") & "/.cache/hunter' directory.} -wraplength 800");
          CloseButton: constant Ttk_Button :=
            Create
