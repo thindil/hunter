@@ -94,6 +94,7 @@ begin
    -- Load required Tcl packages
    Tooltip_Init(Interp);
    Tcl.Ada.Tcl_Eval(Interp, "package require Img");
+   Tcl.Ada.Tcl_Eval(Interp, "package require tksvg");
    MsgCat_Init(Interp);
    Autoscroll_Init(Interp);
 
