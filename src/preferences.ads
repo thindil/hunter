@@ -58,6 +58,7 @@ package Preferences is
    -- AutoRefreshInterval   - How often, in seconds, auto refresh should be
    --                         triggered
    -- UITheme               - Tk theme used by the program
+   -- ToolbarsSize          - Size of the toolbars icons
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -77,6 +78,7 @@ package Preferences is
       ToolbarsOnTop: Boolean;
       AutoRefreshInterval: Natural;
       UITheme: Unbounded_String;
+      ToolbarsSize: Positive;
    end record;
    -- ****
 

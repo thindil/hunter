@@ -41,7 +41,7 @@ package body Preferences is
          DeleteFiles => True, ClearTrashOnExit => False,
          ShowFinishedInfo => False, OverwriteOnExist => True,
          ToolbarsOnTop => True, AutoRefreshInterval => 10,
-         UITheme => To_Unbounded_String("light"));
+         UITheme => To_Unbounded_String("light"), ToolbarsSize => 24);
       Open
         (ConfigFile, In_File,
          Ada.Environment_Variables.Value("HOME") &
@@ -88,6 +88,8 @@ package body Preferences is
                  Positive'Value(To_String(Value));
             elsif FieldName = To_Unbounded_String("UITheme") then
                Settings.UITheme := Value;
+            elsif FieldName = To_Unbounded_String("ToolbarsSize") then
+               Settings.ToolbarsSize := Positive'Value(To_String(Value));
             end if;
          end if;
       end loop;
@@ -145,6 +147,8 @@ package body Preferences is
          "AutoRefreshInterval =" &
          Positive'Image(Settings.AutoRefreshInterval));
       Put_Line(ConfigFile, "UITheme = " & To_String(Settings.UITheme));
+      Put_Line
+        (ConfigFile, "ToolbarsSize =" & Positive'Image(Settings.ToolbarsSize));
       Close(ConfigFile);
    end SavePreferences;
 
