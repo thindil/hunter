@@ -127,11 +127,10 @@ package body MainWindow is
       Set_Directory(Containing_Directory(Command_Name));
       -- Load the program Tk themes
       if Settings.UITheme = To_Unbounded_String("light") then
-         Tcl_EvalFile
-            (Get_Context, "../share/hunter/themes/light/breeze.tcl");
+         Tcl_EvalFile(Get_Context, "../share/hunter/themes/light/breeze.tcl");
       elsif Settings.UITheme = To_Unbounded_String("dark") then
          Tcl_EvalFile
-            (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
+           (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
       end if;
       Theme_Use(To_String(Settings.UITheme));
       -- Load translations
@@ -141,8 +140,8 @@ package body MainWindow is
          Image :=
            Create
              (To_String(IconName),
-              "-file ""../share/hunter/images/" & To_String(IconName) &
-              ".png""");
+              "-file {../share/hunter/images/" & To_String(IconName) &
+              ".svg}");
       end loop;
       if Ada.Directories.Exists
           (Value("APPDIR", "") & "/usr/share/doc/hunter") then

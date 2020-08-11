@@ -162,7 +162,7 @@ package body Toolbars is
       Image: constant Tk_Photo :=
         Create
           (ImageName & "icon",
-           "-file ""../share/hunter/images/" & ImageName & ".png""");
+           "-file {../share/hunter/images/" & ImageName & ".svg}");
       pragma Unreferenced(Image);
       -- ****
    begin
@@ -289,7 +289,8 @@ package body Toolbars is
       end if;
       Menu.Add
         (ButtonMenu, "command",
-         "-label {" & Mc(Get_Context, "{Show Trash}") & "} -command ShowTrash");
+         "-label {" & Mc(Get_Context, "{Show Trash}") &
+         "} -command ShowTrash");
       Menu.Add
         (ButtonMenu, "command",
          "-label {" & Mc(Get_Context, "{Empty Trash}") &
