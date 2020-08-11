@@ -828,10 +828,10 @@ package body Preferences.Commands is
          ColorBox: constant Ttk_ComboBox :=
            Create(Widget_Image(ThemeFrame) & ".uitheme", "-state readonly");
       begin
-         if Index(ThemesNames, " dark", 1) = 0 then
+         if Index(ThemesNames, "dark", 1) = 0 then
             Append(ThemesNames, " dark");
          end if;
-         if Index(ThemesNames, " light", 1) = 0 then
+         if Index(ThemesNames, "light", 1) = 0 then
             Append(ThemesNames, " light");
          end if;
          Widgets.configure
