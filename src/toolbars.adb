@@ -162,7 +162,9 @@ package body Toolbars is
       Image: constant Tk_Photo :=
         Create
           (ImageName & "icon",
-           "-file {../share/hunter/images/" & ImageName & ".svg}");
+           "-file {../share/hunter/images/" & ImageName &
+           ".svg} -format {svg -scaletoheight" &
+           Natural'Image(Settings.ToolbarsSize) & "}");
       pragma Unreferenced(Image);
       -- ****
    begin
