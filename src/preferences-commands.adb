@@ -1054,9 +1054,27 @@ package body Preferences.Commands is
       ComboBox: Ttk_ComboBox;
       ToolbarSize: Natural;
       ImageSize: Positive;
-      ImagesNames: constant array(1 .. 2) of Unbounded_String :=
-        (To_Unbounded_String("quiticon"),
-         To_Unbounded_String("bookmarksicon"));
+      ImagesNames: constant array(1 .. 21) of Unbounded_String :=
+        (To_Unbounded_String("quiticon"), To_Unbounded_String("bookmarksicon"),
+         To_Unbounded_String("edit-findicon"),
+         To_Unbounded_String("edit-select-allicon"),
+         To_Unbounded_String("document-newicon"),
+         To_Unbounded_String("document-save-asicon"),
+         To_Unbounded_String("edit-copyicon"),
+         To_Unbounded_String("edit-cuticon"),
+         To_Unbounded_String("edit-deleteicon"),
+         To_Unbounded_String("dialog-cancelicon"),
+         To_Unbounded_String("document-reverticon"),
+         To_Unbounded_String("configureicon"),
+         To_Unbounded_String("help-abouticon"),
+         To_Unbounded_String("media-playback-starticon"),
+         To_Unbounded_String("document-openicon"),
+         To_Unbounded_String("system-runicon"),
+         To_Unbounded_String("document-previewicon"),
+         To_Unbounded_String("document-propertiesicon"),
+         To_Unbounded_String("list-addicon"),
+         To_Unbounded_String("list-removeicon"),
+         To_Unbounded_String("ok"));
       Image: Ttk_Frame;
       CurrentDir: constant String := Current_Directory;
    begin
