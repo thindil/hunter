@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Interfaces.C;
@@ -863,7 +864,7 @@ package body Preferences.Commands is
               "} {" & Mc(Interp, "{medium}") & "} {" & Mc(Interp, "{large}") &
               "} {" & Mc(Interp, "{huge}") & "}]");
       begin
-         --Bind(ColorBox, "<<ComboboxSelected>>", "SetUITheme");
+         Bind(ToolbarBox, "<<ComboboxSelected>>", "SetToolbarsSize");
          Label :=
            Create
              (Widget_Image(ToolbarFrame) & ".toolbarlabel",
@@ -1027,6 +1028,66 @@ package body Preferences.Commands is
            CArgv.Empty & "ClosePreferences" & ".preferencesdialog");
    end Set_UI_Theme_Command;
 
+   -- ****if* PCommands/Set_Toolbars_Size_Command
+   -- FUNCTION
+   -- Set the toolbars icons size
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
+   function Set_Toolbars_Size_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Set_Toolbars_Size_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      ComboBox: Ttk_ComboBox;
+      ToolbarSize: Natural;
+      ImageSize: Positive;
+      ImagesNames: constant array(1 .. 2) of Unbounded_String :=
+        (To_Unbounded_String("quiticon"),
+         To_Unbounded_String("bookmarksicon"));
+      Image: Ttk_Frame;
+      CurrentDir: constant String := Current_Directory;
+   begin
+      Set_Directory(Containing_Directory(Command_Name));
+      ComboBox.Interp := Interp;
+      ComboBox.Name :=
+        New_String(".preferencesdialog.interface.toolbarframe.toolbarsize");
+      ToolbarSize := Natural'Value(Current(ComboBox));
+      case ToolbarSize is
+         when 0 =>
+            ImageSize := 16;
+         when 1 =>
+            ImageSize := 24;
+         when 2 =>
+            ImageSize := 32;
+         when 3 =>
+            ImageSize := 64;
+         when others =>
+            null;
+      end case;
+      Image.Interp := Interp;
+      for ImageName of ImagesNames loop
+         Image.Name := New_String(To_String(ImageName));
+         Widgets.configure
+           (Image,
+            "-format {svg -scaletoheight" & Positive'Image(ImageSize) & "}");
+      end loop;
+      Set_Directory(CurrentDir);
+      return TCL_OK;
+   end Set_Toolbars_Size_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -1047,6 +1108,7 @@ package body Preferences.Commands is
       AddCommand("SetOverwrite", Set_Overwrite_Command'Access);
       AddCommand("ClosePreferences", Close_Preferences_Command'Access);
       AddCommand("SetUITheme", Set_UI_Theme_Command'Access);
+      AddCommand("SetToolbarsSize", Set_Toolbars_Size_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
