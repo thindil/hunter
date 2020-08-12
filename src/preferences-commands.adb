@@ -1103,6 +1103,7 @@ package body Preferences.Commands is
             "-format {svg -scaletoheight" & Positive'Image(ImageSize) & "}");
       end loop;
       Set_Directory(CurrentDir);
+      Settings.ToolbarsSize := ImageSize;
       return TCL_OK;
    end Set_Toolbars_Size_Command;
 
