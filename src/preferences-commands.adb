@@ -853,6 +853,41 @@ package body Preferences.Commands is
          Set(ColorBox, To_String(Settings.UITheme));
          Tcl.Tk.Ada.Pack.Pack(ThemeFrame, "-fill x");
       end;
+      declare
+         ToolbarFrame: constant Ttk_Frame :=
+           Create(Widget_Image(LabelFrame) & ".toolbarframe");
+         ToolbarBox: constant Ttk_ComboBox :=
+           Create
+             (Widget_Image(ToolbarFrame) & ".toolbarsize",
+              "-state readonly -values [list {" & Mc(Interp, "{small}") &
+              "} {" & Mc(Interp, "{medium}") & "} {" & Mc(Interp, "{large}") &
+              "} {" & Mc(Interp, "{huge}") & "}]");
+      begin
+         --Bind(ColorBox, "<<ComboboxSelected>>", "SetUITheme");
+         Label :=
+           Create
+             (Widget_Image(ToolbarFrame) & ".toolbarlabel",
+              "-text {" & Mc(Interp, "{Toolbars size:}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(Label);
+         Tcl.Tk.Ada.Grid.Grid(ToolbarBox, "-column 1 -row 0");
+         if Positive'Value(Winfo_Get(ToolbarBox, "reqheight")) >
+           Positive'Value(Winfo_Get(Label, "reqheight")) then
+            Height :=
+              Height + Positive'Value(Winfo_Get(ToolbarBox, "reqheight"));
+         else
+            Height := Height + Positive'Value(Winfo_Get(Label, "reqheight"));
+         end if;
+         if Settings.ToolbarsSize < 24 then
+            Set(ToolbarBox, Mc(Interp, "{small}"));
+         elsif Settings.ToolbarsSize < 32 then
+            Set(ToolbarBox, Mc(Interp, "{medium}"));
+         elsif Settings.ToolbarsSize < 64 then
+            Set(ToolbarBox, Mc(Interp, "{large}"));
+         else
+            Set(ToolbarBox, Mc(Interp, "{huge}"));
+         end if;
+         Tcl.Tk.Ada.Pack.Pack(ToolbarFrame, "-fill x");
+      end;
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create
