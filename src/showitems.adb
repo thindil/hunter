@@ -163,6 +163,9 @@ package body ShowItems is
       Delete(TempImage);
       ImageWidth := Natural'Value(Width(Image));
       ImageHeight := Natural'Value(Height(Image));
+      if ImageHeight < FrameHeight then
+         ImageHeight := FrameHeight;
+      end if;
       StartX := ImageWidth / 2;
       StartY := ImageHeight / 2;
       Canvas_Create
@@ -171,8 +174,7 @@ package body ShowItems is
          Widget_Image(Image));
       configure
         (PreviewCanvas,
-         "-width " & Width(Image) & " -height " & Height(Image) &
-         " -scrollregion [list " & BBox(PreviewCanvas, "all") & "]");
+         "-width " & Width(Image) & " -height" & Natural'Image(ImageHeight));
    end ScaleImage;
 
    procedure ShowPreview is
@@ -420,6 +422,11 @@ package body ShowItems is
                      Delete(PreviewCanvas, "all");
                      ImageWidth := Natural'Value(Width(Image));
                      ImageHeight := Natural'Value(Height(Image));
+                     if ImageHeight <
+                       Natural'Value(Winfo_Get(PreviewFrame, "height")) then
+                        ImageHeight :=
+                          Natural'Value(Winfo_Get(PreviewFrame, "height"));
+                     end if;
                      StartX := ImageWidth / 2;
                      StartY := ImageHeight / 2;
                      Canvas_Create
@@ -428,8 +435,8 @@ package body ShowItems is
                         " -image " & Widget_Image(Image));
                      configure
                        (PreviewCanvas,
-                        "-width " & Width(Image) & " -height " &
-                        Height(Image) & " -scrollregion [list " &
+                        "-width " & Width(Image) & " -height" &
+                        Natural'Image(ImageHeight) & " -scrollregion [list " &
                         BBox(PreviewCanvas, "all") & "]");
                      configure
                        (PreviewYScroll,
