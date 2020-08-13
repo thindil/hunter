@@ -95,7 +95,7 @@ package body MainWindow is
       HeaderLabel: constant Ttk_Label := Create(".mainframe.headerlabel");
       IconName: Unbounded_String;
       Icon, Image: Tk_Photo;
-      IconsNames: constant array(1 .. 15) of Unbounded_String :=
+      IconsNames: constant array(1 .. 14) of Unbounded_String :=
         (To_Unbounded_String("emblem-symbolic-link"),
          To_Unbounded_String("application-x-executable"),
          To_Unbounded_String("audio-x-generic"),
@@ -108,7 +108,7 @@ package body MainWindow is
          To_Unbounded_String("text-x-generic"),
          To_Unbounded_String("text-x-generic-template"),
          To_Unbounded_String("folder"), To_Unbounded_String("arrow-down"),
-         To_Unbounded_String("arrow-up"), To_Unbounded_String("ok"));
+         To_Unbounded_String("arrow-up"));
       ProgressBar: constant Ttk_ProgressBar :=
         Create(".mainframe.progressbar", "-orient horizontal");
       TextFrame: constant Ttk_Frame := Create(".mainframe.textframe");
@@ -141,8 +141,13 @@ package body MainWindow is
            Create
              (To_String(IconName),
               "-file {../share/hunter/images/" & To_String(IconName) &
-              ".svg}");
+              ".svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
       end loop;
+      Image :=
+        Create
+          ("ok",
+           "-file {../share/hunter/images/ok.svg} -format {svg -scaletoheight" &
+           Natural'Image(Settings.ToolbarsSize) & "}");
       if Ada.Directories.Exists
           (Value("APPDIR", "") & "/usr/share/doc/hunter") then
          IconName :=
