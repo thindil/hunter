@@ -838,10 +838,12 @@ package body Preferences.Commands is
          Widgets.configure
            (ColorBox, "-values [list " & To_String(ThemesNames) & "]");
          Bind(ColorBox, "<<ComboboxSelected>>", "SetUITheme");
+         Add(ColorBox, Mc(Interp, "{Select other theme for the program. After selecting a new theme,\nyou will have to restart the program to apply all changes.}"));
          Label :=
            Create
              (Widget_Image(ThemeFrame) & ".themelabel",
               "-text {" & Mc(Interp, "{UI theme:}") & "}");
+         Add(Label, Mc(Interp, "{Select other theme for the program. After selecting a new theme,\nyou will have to restart the program to apply all changes.}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ColorBox, "-column 1 -row 0");
          if Positive'Value(Winfo_Get(ColorBox, "reqheight")) >
