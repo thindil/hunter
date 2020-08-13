@@ -695,12 +695,16 @@ package body ShowItems is
            To_Unbounded_String
              (Get_Command_Output("stat", Arguments, "", Status));
          Create(Tokens, To_String(Attributes), " ");
-         Label.Name :=
-           New_String(Widget_Image(InfoFrame) & ".groupframe.group");
-         configure(Label, "-text {" & Slice(Tokens, 3) & "}");
-         Label.Name :=
-           New_String(Widget_Image(InfoFrame) & ".ownerframe.owner");
-         configure(Label, "-text {" & Slice(Tokens, 2) & "}");
+         Label.Name := New_String(Widget_Image(InfoFrame) & ".grouptext");
+         configure
+           (Label,
+            "-text {" & Mc(Get_Context, "{Group}") & ": " & Slice(Tokens, 3) &
+            "}");
+         Label.Name := New_String(Widget_Image(InfoFrame) & ".ownertext");
+         configure
+           (Label,
+            "-text {" & Mc(Get_Context, "{Owner}") & ": " & Slice(Tokens, 2) &
+            "}");
          if Value("USER") /= Slice(Tokens, 2) then
             SetPermissionsButtons
               ("owner", "disabled",
@@ -936,8 +940,6 @@ package body ShowItems is
              (".mainframe.paned.previewframe.infoframe." & Name & "text",
               "-text {" & Text & ":}");
          Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row" & Positive'Image(Row));
-         Label := Create(Widget_Image(Frame) & "." & Name);
-         Tcl.Tk.Ada.Pack.Pack(Label);
          for I in ButtonNames'Range loop
             CheckButton :=
               Create
