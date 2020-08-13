@@ -838,12 +838,20 @@ package body Preferences.Commands is
          Widgets.configure
            (ColorBox, "-values [list " & To_String(ThemesNames) & "]");
          Bind(ColorBox, "<<ComboboxSelected>>", "SetUITheme");
-         Add(ColorBox, Mc(Interp, "{Select other theme for the program. After selecting a new theme,\nyou will have to restart the program to apply all changes.}"));
+         Add
+           (ColorBox,
+            Mc
+              (Interp,
+               "{Select other theme for the program. After selecting a new theme,\nyou will have to restart the program to apply all changes.}"));
          Label :=
            Create
              (Widget_Image(ThemeFrame) & ".themelabel",
               "-text {" & Mc(Interp, "{UI theme:}") & "}");
-         Add(Label, Mc(Interp, "{Select other theme for the program. After selecting a new theme,\nyou will have to restart the program to apply all changes.}"));
+         Add
+           (Label,
+            Mc
+              (Interp,
+               "{Select other theme for the program. After selecting a new theme,\nyou will have to restart the program to apply all changes.}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ColorBox, "-column 1 -row 0");
          if Positive'Value(Winfo_Get(ColorBox, "reqheight")) >
@@ -867,10 +875,12 @@ package body Preferences.Commands is
               "} {" & Mc(Interp, "{huge}") & "}]");
       begin
          Bind(ToolbarBox, "<<ComboboxSelected>>", "SetToolbarsSize");
+         Add(ToolbarBox, Mc(Interp, "{Set the size of icons in toolbars}"));
          Label :=
            Create
              (Widget_Image(ToolbarFrame) & ".toolbarlabel",
               "-text {" & Mc(Interp, "{Toolbars size:}") & "}");
+         Add(Label, Mc(Interp, "{Set the size of icons in toolbars}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ToolbarBox, "-column 1 -row 0");
          if Positive'Value(Winfo_Get(ToolbarBox, "reqheight")) >
@@ -1075,8 +1085,7 @@ package body Preferences.Commands is
          To_Unbounded_String("document-previewicon"),
          To_Unbounded_String("document-propertiesicon"),
          To_Unbounded_String("list-addicon"),
-         To_Unbounded_String("list-removeicon"),
-         To_Unbounded_String("ok"));
+         To_Unbounded_String("list-removeicon"), To_Unbounded_String("ok"));
       Image: Ttk_Frame;
       CurrentDir: constant String := Current_Directory;
    begin
