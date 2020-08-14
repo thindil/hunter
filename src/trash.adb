@@ -31,6 +31,7 @@ with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with RefreshData; use RefreshData;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body Trash is
@@ -39,8 +40,6 @@ package body Trash is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      -- ****
       Directory, SubDirectory: Dir_Type;
       Last, SubLast: Natural;
       FileName, SubFileName: String(1 .. 1024);
@@ -54,6 +53,8 @@ package body Trash is
       NewAction := SHOWTRASH;
       ToggleToolButtons(SHOWTRASH);
       ItemsList.Clear;
+      CurrentDirectory :=
+        To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
       Open(Directory, Value("HOME") & "/.local/share/Trash/files");
       loop
          Read(Directory, FileName, Last);
@@ -170,7 +171,7 @@ package body Trash is
         (PathButton,
          "-text {" & Mc(Get_Context, "{Trash}") & "} -command {ShowTrash}");
       Bind_To_Main_Window(Interp, "<Alt-r>", "{RestoreItems}");
-      return TCL_OK;
+      return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 
    -- ****f* Trash/Restore_Item_Command
