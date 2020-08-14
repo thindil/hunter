@@ -302,6 +302,7 @@ package body Utils is
             Entry_Configure
               (DeleteMenu, "0",
                "-label {" & Mc(Get_Context, "{Delete selected}") & "}");
+            Delete(DeleteMenu, "1");
          else
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
             for I in ButtonsNames'Range loop
@@ -336,6 +337,10 @@ package body Utils is
                   "-label {" & Mc(Get_Context, "{Move selected to Trash}") &
                   "}");
             end if;
+            Insert
+              (DeleteMenu, "1", "command",
+               "-label {" & Mc(Get_Context, "{Show Trash}") &
+               "} -command ShowTrash");
          end if;
       end if;
       Toolbar.Name := New_String(".mainframe.toolbars.itemtoolbar");
