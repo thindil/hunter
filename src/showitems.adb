@@ -996,41 +996,41 @@ package body ShowItems is
            " set""");
       InfoFrame := Create(Widget_Image(PreviewFrame) & ".infoframe");
       Label := Create(Widget_Image(InfoFrame) & ".fullpathtext");
-      Tcl.Tk.Ada.Grid.Grid(Label);
+      Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
       Label :=
         Create
           (Widget_Image(InfoFrame) & ".fullpath",
            "-wraplength " &
            Natural'Image(Natural'Value(Winfo_Get(Paned, "width")) / 3));
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 0");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 0 -sticky w");
       Label := Create(Widget_Image(InfoFrame) & ".sizetext");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 1");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 1 -sticky w");
       Label := Create(Widget_Image(InfoFrame) & ".size");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 1");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 1 -sticky w");
       Label :=
         Create
           (Widget_Image(InfoFrame) & ".lastmodifiedtext",
            "-text {" & Mc(Get_Context, "{Last modified:}") & "}");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 2");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 2 -sticky w");
       Label := Create(Widget_Image(InfoFrame) & ".lastmodified");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 2");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 2 -sticky w");
       Label :=
         Create
           (Widget_Image(InfoFrame) & ".filetypetext",
            "-text {" & Mc(Get_Context, "{File type:}") & "}");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 3");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 3 -sticky w");
       Label := Create(Widget_Image(InfoFrame) & ".filetype");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 3");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 3 -sticky w");
       Label :=
         Create
           (Widget_Image(InfoFrame) & ".associatedprogramtext",
            "-text {" & Mc(Get_Context, "{Associated program:}") & "}");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 4");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 4 -sticky w");
       Button :=
         Create
           (Widget_Image(InfoFrame) & ".associatedprogram",
            "-command ToggleApplicationsMenu");
-      Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4");
+      Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4 -sticky w");
       CreatePermissionsFrame("owner", Mc(Get_Context, "{Owner}"), 5);
       CreatePermissionsFrame("group", Mc(Get_Context, "{Group}"), 6);
       CreatePermissionsFrame("others", Mc(Get_Context, "{Others}"), 7);
