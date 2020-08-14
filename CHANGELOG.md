@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - Showing buttons after finishing moving/copying items
 - Showing name of home directory bookmark
 - Hide path buttons for destination directory after ending copying/moving items
+- Refreshing preview in empty Trash
 
 ## [1.3] - 2020-07-10
 
