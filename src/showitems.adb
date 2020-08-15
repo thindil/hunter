@@ -696,15 +696,15 @@ package body ShowItems is
              (Get_Command_Output("stat", Arguments, "", Status));
          Create(Tokens, To_String(Attributes), " ");
          Label.Name := New_String(Widget_Image(InfoFrame) & ".grouptext");
-         configure
-           (Label,
-            "-text {" & Mc(Get_Context, "{Group}") & ": " & Slice(Tokens, 3) &
-            "}");
+         configure(Label, "-text {" & Mc(Get_Context, "{Group}") & ":}");
+         Label.Name := New_String(Widget_Image(InfoFrame) & ".group");
+         configure(Label, "-text {" & Slice(Tokens, 3) & "}");
          Label.Name := New_String(Widget_Image(InfoFrame) & ".ownertext");
-         configure
-           (Label,
-            "-text {" & Mc(Get_Context, "{Owner}") & ": " & Slice(Tokens, 2) &
-            "}");
+         configure(Label, "-text {" & Mc(Get_Context, "{Owner}") & ":}");
+         Label.Name := New_String(Widget_Image(InfoFrame) & ".owner");
+         configure(Label, "-text {" & Slice(Tokens, 2) & "}");
+         Label.Name := New_String(Widget_Image(InfoFrame) & ".otherstext");
+         configure(Label, "-text {" & Mc(Get_Context, "{Others}") & ":}");
          if Value("USER") /= Slice(Tokens, 2) then
             SetPermissionsButtons
               ("owner", "disabled",
@@ -930,16 +930,18 @@ package body ShowItems is
          To_Unbounded_String(Mc(Get_Context, "{Can write}")));
       PathButtonsFrame: Ttk_Frame;
       pragma Unreferenced(PathButtonsFrame);
-      procedure CreatePermissionsFrame(Name, Text: String; Row: Positive) is
+      procedure CreatePermissionsFrame(Name: String; Row: Positive) is
          Frame: constant Ttk_Frame :=
            Create(".mainframe.paned.previewframe.infoframe." & Name & "frame");
          CheckButton: Ttk_CheckButton;
       begin
          Label :=
-           Create
-             (".mainframe.paned.previewframe.infoframe." & Name & "text",
-              "-text {" & Text & ":}");
-         Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row" & Positive'Image(Row));
+           Create(".mainframe.paned.previewframe.infoframe." & Name & "text");
+         Tcl.Tk.Ada.Grid.Grid
+           (Label, "-column 0 -row" & Positive'Image(Row) & " -sticky w");
+         Label := Create(".mainframe.paned.previewframe.infoframe." & Name);
+         Tcl.Tk.Ada.Grid.Grid
+           (Label, "-column 1 -row" & Positive'Image(Row) & " -sticky w");
          for I in ButtonNames'Range loop
             CheckButton :=
               Create
@@ -947,9 +949,10 @@ package body ShowItems is
                  "-text {" & To_String(ButtonTexts(I)) & "} -variable " &
                  Name & To_String(ButtonNames(I)) &
                  " -command SetPermissions");
-            Tcl.Tk.Ada.Pack.Pack(CheckButton);
+            Tcl.Tk.Ada.Pack.Pack(CheckButton, "-anchor w");
          end loop;
-         Tcl.Tk.Ada.Grid.Grid(Frame, "-column 1 -row" & Positive'Image(Row));
+         Tcl.Tk.Ada.Grid.Grid
+           (Frame, "-column 1 -row" & Positive'Image(Row + 1));
       end CreatePermissionsFrame;
    begin
       PreviewFrame := Create(".mainframe.paned.previewframe");
@@ -1031,9 +1034,9 @@ package body ShowItems is
           (Widget_Image(InfoFrame) & ".associatedprogram",
            "-command ToggleApplicationsMenu");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4 -sticky w");
-      CreatePermissionsFrame("owner", Mc(Get_Context, "{Owner}"), 5);
-      CreatePermissionsFrame("group", Mc(Get_Context, "{Group}"), 6);
-      CreatePermissionsFrame("others", Mc(Get_Context, "{Others}"), 7);
+      CreatePermissionsFrame("owner", 5);
+      CreatePermissionsFrame("group", 7);
+      CreatePermissionsFrame("others", 9);
       AddCommand("ShowSelected", Show_Selected_Command'Access);
       AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
