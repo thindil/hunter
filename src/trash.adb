@@ -18,15 +18,11 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
-with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -47,7 +43,6 @@ package body Trash is
       Size: File_Size;
       FileLine, FullName, MimeType: Unbounded_String;
       Item: Item_Record;
-      PathButton: Ttk_Button;
    begin
       TemporaryStop := True;
       NewAction := SHOWTRASH;
@@ -164,12 +159,6 @@ package body Trash is
       end loop;
       Close(Directory);
       UpdateDirectoryList(True);
-      PathButton.Interp := Interp;
-      PathButton.Name :=
-        New_String(".mainframe.paned.directoryframe.pathframe.button1");
-      configure
-        (PathButton,
-         "-text {" & Mc(Get_Context, "{Trash}") & "} -command {ShowTrash}");
       Bind_To_Main_Window(Interp, "<Alt-r>", "{RestoreItems}");
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
