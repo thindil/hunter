@@ -36,7 +36,7 @@ To build you need:
    https://github.com/thindil/tashy
 
    **Important:** To build this version of Hunter the best version is 8.6.7.
-   Ealier version may not works due to lack of some bindings and newer
+   Ealier version may not works due to lack of some bindings and a newer
    version may bring incompatibility changes.
 
 * File command (libmagic) development files. It can have different names in
@@ -142,6 +142,10 @@ Icons included in the program are modified version of the KDE Breeze Icons
 theme which are available under LGPLv2 license:
 
 https://github.com/KDE/breeze-icons
+
+The Hunter default themes are tkBreeze themes released under LGPLv2 license:
+
+https://github.com/thindil/tkBreeze
 
 ----
 
