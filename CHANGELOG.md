@@ -28,6 +28,7 @@ All notable changes to this project will be documented in this file.
 - Hide path buttons for destination directory after ending copying/moving items
 - Refreshing preview in empty Trash
 - Don't show "Show trash" option in Trash
+- Refreshing tooltip for path button in Trash
 
 ## [1.3] - 2020-07-10
 
