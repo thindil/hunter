@@ -409,12 +409,23 @@ package body MainWindow is
                   goto End_Of_Loop;
                end if;
                if I = 1 then
-                  PathButton :=
-                    Create
-                      (Widget_Image(PathButtonsFrame) & ".button1",
-                       "-text {/} -command {" & To_String(PathCommand) &
-                       " {/}}");
-                  Path := To_Unbounded_String("/");
+                  if NewAction /= SHOWTRASH then
+                     PathButton :=
+                       Create
+                         (Widget_Image(PathButtonsFrame) & ".button1",
+                          "-text {/} -command {" & To_String(PathCommand) &
+                          " {/}}");
+                     Path := To_Unbounded_String("/");
+                  else
+                     PathButton :=
+                       Create
+                         (Widget_Image(PathButtonsFrame) & ".button1",
+                          "-text {" & Mc(Get_Context, "{Trash}") &
+                          "} -command {ShowTrash}");
+                     Path :=
+                       To_Unbounded_String
+                         (Value("HOME") & "/.local/share/Trash/files");
+                  end if;
                else
                   Append(Path, Slice(Tokens, I) & "/");
                   ButtonLabel := To_Unbounded_String(Slice(Tokens, I));
