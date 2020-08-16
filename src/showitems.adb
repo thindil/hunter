@@ -930,6 +930,8 @@ package body ShowItems is
          To_Unbounded_String(Mc(Get_Context, "{Can write}")));
       PathButtonsFrame: Ttk_Frame;
       pragma Unreferenced(PathButtonsFrame);
+      Font: constant String :=
+        (if Settings.MonospaceFont then "TkFixedFont" else "TkDefaultFont");
       procedure CreatePermissionsFrame(Name: String; Row: Positive) is
          Frame: constant Ttk_Frame :=
            Create(".mainframe.paned.previewframe.infoframe." & Name & "frame");
@@ -988,7 +990,7 @@ package body ShowItems is
         Create
           (Widget_Image(PreviewFrame) & ".previewtext",
            "-wrap char -yscrollcommand """ & Widget_Image(PreviewYScroll) &
-           " set""");
+           " set"" -font " & Font);
       Tag_Configure(PreviewText, "boldtag", "-font bold");
       Tag_Configure(PreviewText, "italictag", "-font italic");
       PreviewCanvas :=

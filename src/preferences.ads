@@ -59,6 +59,7 @@ package Preferences is
    --                         triggered
    -- UITheme               - Tk theme used by the program
    -- ToolbarsSize          - Size of the toolbars icons
+   -- MonospaceFont         - If true, use monospace font in text files preview
    -- SOURCE
    type Settings_Data is record
       ShowHidden: Boolean;
@@ -79,6 +80,7 @@ package Preferences is
       AutoRefreshInterval: Natural;
       UITheme: Unbounded_String;
       ToolbarsSize: Positive;
+      MonospaceFont: Boolean;
    end record;
    -- ****
 

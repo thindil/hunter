@@ -41,7 +41,8 @@ package body Preferences is
          DeleteFiles => True, ClearTrashOnExit => False,
          ShowFinishedInfo => False, OverwriteOnExist => True,
          ToolbarsOnTop => True, AutoRefreshInterval => 10,
-         UITheme => To_Unbounded_String("light"), ToolbarsSize => 24);
+         UITheme => To_Unbounded_String("light"), ToolbarsSize => 24,
+         MonospaceFont => False);
       Open
         (ConfigFile, In_File,
          Ada.Environment_Variables.Value("HOME") &
@@ -90,6 +91,8 @@ package body Preferences is
                Settings.UITheme := Value;
             elsif FieldName = To_Unbounded_String("ToolbarsSize") then
                Settings.ToolbarsSize := Positive'Value(To_String(Value));
+            elsif FieldName = To_Unbounded_String("MonospaceFont") then
+               Settings.MonospaceFont := LoadBoolean;
             end if;
          end if;
       end loop;
@@ -149,6 +152,7 @@ package body Preferences is
       Put_Line(ConfigFile, "UITheme = " & To_String(Settings.UITheme));
       Put_Line
         (ConfigFile, "ToolbarsSize =" & Positive'Image(Settings.ToolbarsSize));
+      SaveBoolean(Settings.MonospaceFont, "MonospaceFont");
       Close(ConfigFile);
    end SavePreferences;
 
