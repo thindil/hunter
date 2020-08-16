@@ -337,6 +337,45 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Color_Theme_Command;
 
+   -- ****if* PCommands/Set_Monospace_Font_Command
+   -- FUNCTION
+   -- Enable or disable using monospace font in text files and reload the
+   -- currently previewed file if it is text file
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
+   function Set_Monospace_Font_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Set_Monospace_Font_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      PreviewText: Ttk_Frame;
+   begin
+      PreviewText.Interp := Interp;
+      PreviewText.Name := New_String(".mainframe.paned.previewframe.previewtext");
+      if Tcl_GetVar(Interp, ".preferencesdialog.preview.monospacefont") =
+        "0" then
+         Settings.MonospaceFont := False;
+         Widgets.configure(PreviewText, "-font TkDefaultFont");
+      else
+         Settings.MonospaceFont := True;
+         Widgets.configure(PreviewText, "-font TkFixedFont");
+      end if;
+      return TCL_OK;
+   end Set_Monospace_Font_Command;
+
    -- ****if* PCommands/Set_Stay_In_Old_Command
    -- FUNCTION
    -- Set if after copying, moving, etc operations user should
@@ -771,6 +810,11 @@ package body Preferences.Commands is
          Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
          Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
       end;
+      AddButton
+        (".monospacefont", Mc(Interp, "{Use monospace font}"),
+         Settings.MonospaceFont,
+         Mc(Interp, "{Use monospace font in the preview of text files.}"),
+         "SetMonospaceFont");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
         Create
@@ -1130,6 +1174,7 @@ package body Preferences.Commands is
       AddCommand("SetScaleImages", Set_Scale_Images_Command'Access);
       AddCommand("SetColorText", Set_Color_Text_Command'Access);
       AddCommand("SetColorTheme", Set_Color_Theme_Command'Access);
+      AddCommand("SetMonospaceFont", Set_Monospace_Font_Command'Access);
       AddCommand("SetStayInOld", Set_Stay_In_Old_Command'Access);
       AddCommand("SetShowFinishedInfo", Set_Show_Finished_Info_Command'Access);
       AddCommand("SetToolbarsOnTop", Set_Toolbars_On_Top_Command'Access);
