@@ -41,7 +41,7 @@ package body Preferences is
          DeleteFiles => True, ClearTrashOnExit => False,
          ShowFinishedInfo => False, OverwriteOnExist => True,
          ToolbarsOnTop => True, AutoRefreshInterval => 10,
-         UITheme => To_Unbounded_String("light"), ToolbarsSize => 24,
+         UITheme => To_Unbounded_String("hunter-light"), ToolbarsSize => 24,
          MonospaceFont => False);
       Open
         (ConfigFile, In_File,

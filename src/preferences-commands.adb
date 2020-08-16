@@ -873,11 +873,11 @@ package body Preferences.Commands is
          ColorBox: constant Ttk_ComboBox :=
            Create(Widget_Image(ThemeFrame) & ".uitheme", "-state readonly");
       begin
-         if Index(ThemesNames, "dark", 1) = 0 then
-            Append(ThemesNames, " dark");
+         if Index(ThemesNames, "hunter-dark", 1) = 0 then
+            Append(ThemesNames, " hunter-dark");
          end if;
-         if Index(ThemesNames, "light", 1) = 0 then
-            Append(ThemesNames, " light");
+         if Index(ThemesNames, "hunter-light", 1) = 0 then
+            Append(ThemesNames, " hunter-light");
          end if;
          Widgets.configure
            (ColorBox, "-values [list " & To_String(ThemesNames) & "]");

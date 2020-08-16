@@ -126,9 +126,9 @@ package body MainWindow is
       CreateSearchUI;
       Set_Directory(Containing_Directory(Command_Name));
       -- Load the program Tk themes
-      if Settings.UITheme = To_Unbounded_String("light") then
+      if Settings.UITheme = To_Unbounded_String("hunter-light") then
          Tcl_EvalFile(Get_Context, "../share/hunter/themes/light/breeze.tcl");
-      elsif Settings.UITheme = To_Unbounded_String("dark") then
+      elsif Settings.UITheme = To_Unbounded_String("hunter-dark") then
          Tcl_EvalFile
            (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
       end if;
