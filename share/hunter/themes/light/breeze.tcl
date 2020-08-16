@@ -6,10 +6,10 @@
 
 package require Tk 8.6.0
 
-namespace eval ttk::theme::light {
+namespace eval ttk::theme::hunter-light {
 
     variable version 0.6
-    package provide ttk::theme::light $version
+    package provide ttk::theme::hunter-light $version
 
     variable colors
     array set colors {
@@ -39,7 +39,7 @@ namespace eval ttk::theme::light {
 
     LoadImages [file join [file dirname [info script]] breeze]
 
-    ttk::style theme create light -parent default -settings {
+    ttk::style theme create hunter-light -parent default -settings {
         ttk::style configure . \
             -background $colors(-bg) \
             -foreground $colors(-fg) \
