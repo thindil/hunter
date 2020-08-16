@@ -47,7 +47,7 @@ namespace eval ttk::theme::light {
             -selectbackground $colors(-selectbg) \
             -selectforeground $colors(-selectfg) \
             -fieldbackground $colors(-window) \
-            -font "Helvetica 10" \
+            -font TkDefaultFont \
             -borderwidth 1 \
             -focuscolor $colors(-focuscolor) \
             -highlightcolor $colors(-checklight)

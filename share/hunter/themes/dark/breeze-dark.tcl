@@ -45,7 +45,7 @@ namespace eval ttk::theme::dark {
             -selectbackground $colors(-selectbg) \
             -selectforeground $colors(-selectfg) \
             -fieldbackground $colors(-window) \
-            -font TKDefaultFont \
+            -font TkDefaultFont \
             -borderwidth 1 \
             -focuscolor $colors(-focuscolor) \
             -highlightcolor $colors(-checklight)
