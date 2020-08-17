@@ -364,7 +364,8 @@ package body Preferences.Commands is
       PreviewText: Ttk_Frame;
    begin
       PreviewText.Interp := Interp;
-      PreviewText.Name := New_String(".mainframe.paned.previewframe.previewtext");
+      PreviewText.Name :=
+        New_String(".mainframe.paned.previewframe.previewtext");
       if Tcl_GetVar(Interp, ".preferencesdialog.preview.monospacefont") =
         "0" then
          Settings.MonospaceFont := False;
@@ -628,12 +629,6 @@ package body Preferences.Commands is
         Create(".preferencesdialog", "-class Dialog");
       LabelFrame: Ttk_LabelFrame;
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
-      CloseButton: constant Ttk_Button :=
-        Create
-          (Widget_Image(PreferencesDialog) & ".closebutton",
-           "-text {" & Mc(Interp, "{Close}") &
-           "} -command {ClosePreferences " & Widget_Image(PreferencesDialog) &
-           "} -underline 0");
       CheckButton: Ttk_CheckButton;
       Label: Ttk_Label;
       Scale: Ttk_Scale;
@@ -976,8 +971,27 @@ package body Preferences.Commands is
             "{If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory.}"),
          "SetOverwrite");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
-      Tcl.Tk.Ada.Pack.Pack(CloseButton);
-      Height := Height + Positive'Value(Winfo_Get(CloseButton, "reqheight"));
+      declare
+         ButtonsFrame: constant Ttk_Frame :=
+           Create(Widget_Image(PreferencesDialog) & ".buttonsframe");
+         CloseButton: constant Ttk_Button :=
+           Create
+             (Widget_Image(ButtonsFrame) & ".closebutton",
+              "-text {" & Mc(Interp, "{Close}") &
+              "} -command {ClosePreferences " &
+              Widget_Image(PreferencesDialog) & "} -underline 0");
+         RestoreButton: constant Ttk_Button :=
+           Create
+             (Widget_Image(ButtonsFrame) & ".restorebutton",
+              "-text {" & Mc(Interp, "{Restore defaults}") &
+              "} -command RestoreDefaults");
+      begin
+         Tcl.Tk.Ada.Grid.Grid(RestoreButton, "-sticky w");
+         Tcl.Tk.Ada.Grid.Grid(CloseButton, "-sticky e -row 0 -column 1");
+         Height :=
+           Height + Positive'Value(Winfo_Get(CloseButton, "reqheight"));
+         Tcl.Tk.Ada.Pack.Pack(ButtonsFrame, "-fill x");
+      end;
       Height := Height + (Positive'Value(Winfo_Get(Label, "reqheight")) * 6);
       Bind
         (PreferencesDialog, "<Alt-c>",
@@ -1162,6 +1176,41 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Toolbars_Size_Command;
 
+   -- ****if* PCommands/Restore_Defaults_Command
+   -- FUNCTION
+   -- Restore default the program setttings
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- SOURCE
+   function Restore_Defaults_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Restore_Defaults_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(Argc, Argv);
+   begin
+      SetDefaultSettings;
+      ShowMessage
+        (Mc
+           (Interp,
+            "{To bring back all default Hunter settings, please restart the program.}"),
+         "message");
+      return Close_Preferences_Command
+          (ClientData, Interp, 2,
+           CArgv.Empty & "ClosePreferences" & ".preferencesdialog");
+   end Restore_Defaults_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -1184,6 +1233,7 @@ package body Preferences.Commands is
       AddCommand("ClosePreferences", Close_Preferences_Command'Access);
       AddCommand("SetUITheme", Set_UI_Theme_Command'Access);
       AddCommand("SetToolbarsSize", Set_Toolbars_Size_Command'Access);
+      AddCommand("RestoreDefaults", Restore_Defaults_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
