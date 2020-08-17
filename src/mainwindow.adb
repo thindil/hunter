@@ -132,6 +132,10 @@ package body MainWindow is
          Tcl_EvalFile
            (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
       end if;
+      if Index(Theme_Names, To_String(Settings.UITheme)) = 0 then
+         Settings.UITheme := To_Unbounded_String("hunter-light");
+         Tcl_EvalFile(Get_Context, "../share/hunter/themes/light/breeze.tcl");
+      end if;
       Theme_Use(To_String(Settings.UITheme));
       -- Load translations
       Mc_Load("../share/hunter/translations", Get_Context);
