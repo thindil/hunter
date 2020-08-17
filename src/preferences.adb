@@ -33,16 +33,7 @@ package body Preferences is
          return False;
       end LoadBoolean;
    begin
-      Settings :=
-        (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
-         AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
-         ShowPreview => True, StayInOld => False, ColorText => True,
-         ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
-         DeleteFiles => True, ClearTrashOnExit => False,
-         ShowFinishedInfo => False, OverwriteOnExist => True,
-         ToolbarsOnTop => True, AutoRefreshInterval => 10,
-         UITheme => To_Unbounded_String("hunter-light"), ToolbarsSize => 24,
-         MonospaceFont => False);
+      SetDefaultSettings;
       Open
         (ConfigFile, In_File,
          Ada.Environment_Variables.Value("HOME") &
@@ -160,5 +151,19 @@ package body Preferences is
    begin
       AddCommands;
    end CreatePreferencesUI;
+
+   procedure SetDefaultSettings is
+   begin
+      Settings :=
+        (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
+         AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
+         ShowPreview => True, StayInOld => False, ColorText => True,
+         ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
+         DeleteFiles => True, ClearTrashOnExit => False,
+         ShowFinishedInfo => False, OverwriteOnExist => True,
+         ToolbarsOnTop => True, AutoRefreshInterval => 10,
+         UITheme => To_Unbounded_String("hunter-light"), ToolbarsSize => 24,
+         MonospaceFont => False);
+   end SetDefaultSettings;
 
 end Preferences;
