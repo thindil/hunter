@@ -89,7 +89,7 @@ package body AboutDialog is
            Mc(Interp, "{Hunter - Graphical file manager for Linux}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Width := Width + Positive'Value(Winfo_Get(Label, "reqwidth"));
-      Height := Positive'Value(Winfo_Get(Label, "reqheight")) * 15;
+      Height := Positive'Value(Winfo_Get(Label, "reqheight")) * 17;
       Label :=
         Create
           (Widget_Image(Frame) & ".copyright",
