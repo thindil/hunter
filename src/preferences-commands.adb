@@ -986,8 +986,8 @@ package body Preferences.Commands is
               "-text {" & Mc(Interp, "{Restore defaults}") &
               "} -command RestoreDefaults");
       begin
-         Tcl.Tk.Ada.Grid.Grid(RestoreButton, "-sticky w");
-         Tcl.Tk.Ada.Grid.Grid(CloseButton, "-sticky e -row 0 -column 1");
+         Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
+         Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
          Height :=
            Height + Positive'Value(Winfo_Get(CloseButton, "reqheight"));
          Tcl.Tk.Ada.Pack.Pack(ButtonsFrame, "-fill x");
