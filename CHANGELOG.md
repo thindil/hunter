@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Bring back the Polish translation
 - Light and dark theme for the program
 - Ability to set monospace font in text files preview
+- Ability to restore the program's default settings
 
 ### Changed
 - Better detection of dialogs height
