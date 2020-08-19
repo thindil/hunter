@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.4] - 2020-08-19
 
 ### Added
 - Information about the program translators
