@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.3 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -34,26 +34,31 @@
 <ul>
 <li>1.1.1. <a href="./preferences-commands_ads.html#robo154">PCommands/AddCommands</a></li>
 <li>1.1.2. <a href="./preferences-commands_adb.html#robo155">PCommands/Close_Preferences_Command</a></li>
-<li>1.1.3. <a href="./preferences-commands_adb.html#robo156">PCommands/Set_Clear_Trash_Command</a></li>
-<li>1.1.4. <a href="./preferences-commands_adb.html#robo157">PCommands/Set_Color_Text_Command</a></li>
-<li>1.1.5. <a href="./preferences-commands_adb.html#robo158">PCommands/Set_Color_Theme_Command</a></li>
-<li>1.1.6. <a href="./preferences-commands_adb.html#robo159">PCommands/Set_Delete_Files_Command</a></li>
-<li>1.1.7. <a href="./preferences-commands_adb.html#robo160">PCommands/Set_Label_Command</a></li>
-<li>1.1.8. <a href="./preferences-commands_adb.html#robo161">PCommands/Set_Overwrite_Command</a></li>
-<li>1.1.9. <a href="./preferences-commands_adb.html#robo162">PCommands/Set_Scale_Images_Command</a></li>
-<li>1.1.10. <a href="./preferences-commands_adb.html#robo163">PCommands/Set_Show_Finished_Info_Command</a></li>
-<li>1.1.11. <a href="./preferences-commands_adb.html#robo164">PCommands/Set_Show_Hidden_Files_Command</a></li>
-<li>1.1.12. <a href="./preferences-commands_adb.html#robo165">PCommands/Set_Show_Modification_Time_Command</a></li>
-<li>1.1.13. <a href="./preferences-commands_adb.html#robo166">PCommands/Set_Show_Preview_Command</a></li>
-<li>1.1.14. <a href="./preferences-commands_adb.html#robo167">PCommands/Set_Stay_In_Old_Command</a></li>
-<li>1.1.15. <a href="./preferences-commands_adb.html#robo168">PCommands/Set_Toolbars_On_Top_Command</a></li>
-<li>1.1.16. <a href="./preferences-commands_adb.html#robo169">PCommands/Show_Preferences_Command</a></li>
+<li>1.1.3. <a href="./preferences-commands_adb.html#robo156">PCommands/Restore_Defaults_Command</a></li>
+<li>1.1.4. <a href="./preferences-commands_adb.html#robo157">PCommands/Set_Clear_Trash_Command</a></li>
+<li>1.1.5. <a href="./preferences-commands_adb.html#robo158">PCommands/Set_Color_Text_Command</a></li>
+<li>1.1.6. <a href="./preferences-commands_adb.html#robo159">PCommands/Set_Color_Theme_Command</a></li>
+<li>1.1.7. <a href="./preferences-commands_adb.html#robo160">PCommands/Set_Delete_Files_Command</a></li>
+<li>1.1.8. <a href="./preferences-commands_adb.html#robo161">PCommands/Set_Label_Command</a></li>
+<li>1.1.9. <a href="./preferences-commands_adb.html#robo162">PCommands/Set_Monospace_Font_Command</a></li>
+<li>1.1.10. <a href="./preferences-commands_adb.html#robo163">PCommands/Set_Overwrite_Command</a></li>
+<li>1.1.11. <a href="./preferences-commands_adb.html#robo164">PCommands/Set_Scale_Images_Command</a></li>
+<li>1.1.12. <a href="./preferences-commands_adb.html#robo165">PCommands/Set_Show_Finished_Info_Command</a></li>
+<li>1.1.13. <a href="./preferences-commands_adb.html#robo166">PCommands/Set_Show_Hidden_Files_Command</a></li>
+<li>1.1.14. <a href="./preferences-commands_adb.html#robo167">PCommands/Set_Show_Modification_Time_Command</a></li>
+<li>1.1.15. <a href="./preferences-commands_adb.html#robo168">PCommands/Set_Show_Preview_Command</a></li>
+<li>1.1.16. <a href="./preferences-commands_adb.html#robo169">PCommands/Set_Stay_In_Old_Command</a></li>
+<li>1.1.17. <a href="./preferences-commands_adb.html#robo170">PCommands/Set_Toolbars_On_Top_Command</a></li>
+<li>1.1.18. <a href="./preferences-commands_adb.html#robo171">PCommands/Set_Toolbars_Size_Command</a></li>
+<li>1.1.19. <a href="./preferences-commands_adb.html#robo172">PCommands/Set_UI_Theme_Command</a></li>
+<li>1.1.20. <a href="./preferences-commands_adb.html#robo173">PCommands/Show_Preferences_Command</a></li>
 </ul>
 <li>1.2. <a href="#robo42">Preferences/Settings_Data</a></li>
 <li>1.3. <a href="#robo66">Preferences/Settings</a></li>
-<li>1.4. <a href="#robo170">Preferences/CreatePreferences</a></li>
-<li>1.5. <a href="#robo171">Preferences/LoadSettings</a></li>
-<li>1.6. <a href="#robo172">Preferences/SavePreferences</a></li>
+<li>1.4. <a href="#robo174">Preferences/CreatePreferences</a></li>
+<li>1.5. <a href="#robo175">Preferences/LoadSettings</a></li>
+<li>1.6. <a href="#robo176">Preferences/SavePreferences</a></li>
+<li>1.7. <a href="#robo177">Preferences/SetDefaultSettings</a></li>
 </ul>
 </ul>
 <hr />
@@ -84,7 +89,7 @@
       AutoCloseMessagesTime<span class="sign">:</span> Natural<span class="sign">;</span>
       WindowWidth<span class="sign">:</span> Positive<span class="sign">;</span>
       WindowHeight<span class="sign">:</span> Positive<span class="sign">;</span>
-      <a href="./showitems_ads.html#robo196">ShowPreview</a><span class="sign">:</span> Boolean<span class="sign">;</span>
+      <a href="./showitems_ads.html#robo201">ShowPreview</a><span class="sign">:</span> Boolean<span class="sign">;</span>
       StayInOld<span class="sign">:</span> Boolean<span class="sign">;</span>
       ColorText<span class="sign">:</span> Boolean<span class="sign">;</span>
       ColorTheme<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
@@ -94,6 +99,9 @@
       OverwriteOnExist<span class="sign">:</span> Boolean<span class="sign">;</span>
       ToolbarsOnTop<span class="sign">:</span> Boolean<span class="sign">;</span>
       AutoRefreshInterval<span class="sign">:</span> Natural<span class="sign">;</span>
+      UITheme<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+      ToolbarsSize<span class="sign">:</span> Positive<span class="sign">;</span>
+      MonospaceFont<span class="sign">:</span> Boolean<span class="sign">;</span>
    <span class="keyword">end</span> <span class="keyword">record</span><span class="sign">;</span>
 </pre>
 <p class="item_name">OPTIONS</p>
@@ -105,7 +113,7 @@
                          will be auto hidden
  WindowWidth           - Width of the main window in pixels
  WindowHeight          - Height of the main window in pixels
- <a href="./showitems_ads.html#robo196">ShowPreview</a>           - If true, show preview panel for files and
+ <a href="./showitems_ads.html#robo201">ShowPreview</a>           - If true, show preview panel for files and
                          directories
  StayInOld             - If true, after copying, moving files and
                          directories or creating new link, stay in old
@@ -128,6 +136,9 @@
                          with information will be on the right
  AutoRefreshInterval   - How often, in seconds, auto refresh should be
                          triggered
+ UITheme               - Tk theme used by the program
+ ToolbarsSize          - Size of the toolbars icons
+ MonospaceFont         - If true, use monospace font in text files preview
 </pre>
 
 <hr />
@@ -144,7 +155,7 @@
 
 <hr />
 <a name="Preferences2fCreatePreferences"></a>
-<a name="robo170"></a><h2>Preferences/CreatePreferences [ Subprograms ]</h2>
+<a name="robo174"></a><h2>Preferences/CreatePreferences [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -156,7 +167,7 @@
 
 <hr />
 <a name="Preferences2fLoadSettings"></a>
-<a name="robo171"></a><h2>Preferences/LoadSettings [ Subprograms ]</h2>
+<a name="robo175"></a><h2>Preferences/LoadSettings [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -169,7 +180,7 @@
 
 <hr />
 <a name="Preferences2fSavePreferences"></a>
-<a name="robo172"></a><h2>Preferences/SavePreferences [ Subprograms ]</h2>
+<a name="robo176"></a><h2>Preferences/SavePreferences [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -179,9 +190,21 @@
 <pre class="source">   <span class="keyword">procedure</span> <strong>SavePreferences</strong><span class="sign">;</span>
 </pre>
 
+<hr />
+<a name="Preferences2fSetDefaultSettings"></a>
+<a name="robo177"></a><h2>Preferences/SetDefaultSettings [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set default values for the program's settings
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>SetDefaultSettings</strong><span class="sign">;</span>
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/preferences.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Jul 10 2020 09:43:48
+<p>Generated from ./src/preferences.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
 </p>
 </div> <!-- footer -->
 </body>
