@@ -103,7 +103,7 @@ package body AboutDialog is
       Label :=
         Create
           (Widget_Image(Frame) & ".version",
-           "-text {" & Mc(Interp, "{Version:}") & " 1.4 (" &
+           "-text {" & Mc(Interp, "{Version:}") & " 1.5 (" &
            Mc(Interp, "{development}") & ")}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       WebsiteButton :=
