@@ -37,7 +37,7 @@ with Utils; use Utils;
 
 package body AboutDialog is
 
-   -- ****if* AboutDialog/Show_About_Command
+   -- ****o* AboutDialog/Show_About_Command
    -- FUNCTION
    -- Show information about the program
    -- PARAMETERS
@@ -47,6 +47,8 @@ package body AboutDialog is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ShowAbout
    -- SOURCE
    function Show_About_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -145,7 +147,7 @@ package body AboutDialog is
       return TCL_OK;
    end Show_About_Command;
 
-   -- ****if* AboutDialog/Open_Link_Command
+   -- ****o* AboutDialog/Open_Link_Command
    -- FUNCTION
    -- Open the selected link in the default web browser
    -- PARAMETERS
@@ -155,6 +157,9 @@ package body AboutDialog is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- OpenLink URL
+   -- URL is the full URL (with http(s)://) to open
    -- SOURCE
    function Open_Link_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
