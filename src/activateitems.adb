@@ -68,7 +68,7 @@ package body ActivateItems is
       return Pid;
    end ExecuteFile;
 
-   -- ****if* ActivateItems/Activate_Item_Command
+   -- ****o* ActivateItems/Activate_Item_Command
    -- FUNCTION
    -- "Activate" selected file or directory. Action depends on what selected
    -- item is. For example: it go to selected directory, opens text files in
@@ -77,9 +77,11 @@ package body ActivateItems is
    -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.a Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ActivateItem
    -- SOURCE
    function Activate_Item_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -167,7 +169,7 @@ package body ActivateItems is
       return TCL_OK;
    end Activate_Item_Command;
 
-   -- ****if* ActivateItems/Toggle_Execute_With_Command
+   -- ****o* ActivateItems/Toggle_Execute_With_Command
    -- FUNCTION
    -- Show text entry to enter with what program execute selected file or
    -- directory
@@ -178,6 +180,8 @@ package body ActivateItems is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ToggleExecuteWith
    -- SOURCE
    function Toggle_Execute_With_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -233,7 +237,7 @@ package body ActivateItems is
       return TCL_OK;
    end Toggle_Execute_With_Command;
 
-   -- ****if* ActivateItems/Execute_With_Command
+   -- ****o* ActivateItems/Execute_With_Command
    -- FUNCTION
    -- Execute the selected file or directory with the selected command
    -- entered by an user
@@ -244,6 +248,8 @@ package body ActivateItems is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK;
+   -- COMMANDS
+   -- ExecuteWith
    -- SOURCE
    function Execute_With_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -303,7 +309,7 @@ package body ActivateItems is
       return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);
    end Execute_With_Command;
 
-   -- ****if* ActivateItems/Execute_Command
+   -- ****o* ActivateItems/Execute_Command
    -- FUNCTION
    -- Execute the selected file or directory
    -- PARAMETERS
@@ -313,6 +319,8 @@ package body ActivateItems is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- Execute
    -- SOURCE
    function Execute_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
