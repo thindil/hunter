@@ -219,7 +219,9 @@ package body MainWindow is
       Bind_To_Main_Window
         (Interp, "<Alt-r>",
          "{InvokeButton .mainframe.toolbars.itemtoolbar.deletebutton}");
-      Tcl.Tk.Ada.Pack.Pack(MainFrame, "-expand true -fill both");
+      Tcl.Tk.Ada.Grid.Grid(MainFrame, "-sticky nwse");
+      Tcl.Tk.Ada.Grid.Row_Configure(MainWindow, MainFrame, "-weight 1");
+      Tcl.Tk.Ada.Grid.Column_Configure(MainWindow, MainFrame, "-weight 1");
       CreateActionToolbar;
       CreateBookmarkMenu(True);
       CreateItemToolbar;
