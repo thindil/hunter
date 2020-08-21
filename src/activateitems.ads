@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* Hunter/ActivateItems
+-- ****h* ActivateItems/ActivateItems
 -- FUNCTION
 -- Provide code for open or execute selected files or directories.
 -- SOURCE

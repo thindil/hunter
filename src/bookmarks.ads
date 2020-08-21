@@ -16,7 +16,7 @@
 with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Strings.Hash;
 
--- ****h* Hunter/Bookmarks
+-- ****h* Bookmarks/Bookmarks
 -- FUNCTION
 -- Provide code for add, delete or go to locations bookmarks
 -- SOURCE

@@ -40,7 +40,7 @@ with Utils; use Utils;
 
 package body Bookmarks.Commands is
 
-   -- ****if* Commands/GoToBookmark_Command
+   -- ****o* Commands/GoToBookmark_Command
    -- FUNCTION
    -- Go to the selected bookmarked directory
    -- PARAMETERS
@@ -50,6 +50,10 @@ package body Bookmarks.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- GoToBookmark path
+   -- Path is the full path to the directory which will be set as current
+   -- directory (and show to the user)
    -- SOURCE
    function GoToBookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -81,7 +85,7 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end GoToBookmark_Command;
 
-   -- ****if* Commands/SetDestination_Command
+   -- ****o* Commands/SetDestination_Command
    -- FUNCTION
    -- Show text entry to enter directory destination
    -- PARAMETERS
@@ -91,6 +95,8 @@ package body Bookmarks.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetDestination
    -- SOURCE
    function SetDestination_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -133,7 +139,7 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end SetDestination_Command;
 
-   -- ****if* Commands/GoToDestination_Command
+   -- ****o* Commands/GoToDestination_Command
    -- FUNCTION
    -- Go to the destination directory selected by the user
    -- PARAMETERS
@@ -143,6 +149,8 @@ package body Bookmarks.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- GoToDestination
    -- SOURCE
    function GoToDestination_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -187,16 +195,18 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end GoToDestination_Command;
 
-   -- ****if* Commands/Add_Bookmark_Command
+   -- ****o* Commands/Add_Bookmark_Command
    -- FUNCTION
    -- Add the bookmark to the selected directory
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed. Unused
    -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- AddBookmark
    -- SOURCE
    function Add_Bookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -220,7 +230,7 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end Add_Bookmark_Command;
 
-   -- ****if* Commands/Remove_Bookmark_Command
+   -- ****o* Commands/Remove_Bookmark_Command
    -- FUNCTION
    -- Remove the bookmark to the selected directory
    -- PARAMETERS
@@ -230,6 +240,8 @@ package body Bookmarks.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- RemoveBookmark
    -- SOURCE
    function Remove_Bookmark_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
