@@ -46,7 +46,7 @@ package body CreateItems is
    Hunter_Create_Exception: exception;
    -- ****
 
-   -- ****if* CreateItems/Show_Create_Command
+   -- ****o* CreateItems/Show_Create_Command
    -- FUNCTION
    -- Show text entry to enter a name of the new item
    -- PARAMETERS
@@ -56,6 +56,9 @@ package body CreateItems is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ShowCreate itemtype
+   -- Itemtype is an item type which will be created. Can be file or directory
    -- SOURCE
    function Show_Create_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -106,7 +109,7 @@ package body CreateItems is
       return TCL_OK;
    end Show_Create_Command;
 
-   -- ****if* CreateItems/Create_Command
+   -- ****o* CreateItems/Create_Command
    -- FUNCTION
    -- Show text entry to enter a name of the new item
    -- PARAMETERS
@@ -116,6 +119,9 @@ package body CreateItems is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- Create itemtype
+   -- Itemtype is an item type which will be created. Can be file or directory
    -- SOURCE
    function Create_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
