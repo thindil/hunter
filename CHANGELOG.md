@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+- Show preferences in main window instead as a separated dialog
+
 ## [1.4] - 2020-08-19
 
 ### Added
