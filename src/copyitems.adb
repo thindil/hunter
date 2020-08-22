@@ -39,7 +39,7 @@ package body CopyItems is
    SourceDirectory: Unbounded_String;
    -- ****
 
-   -- ****if* CopyItems/Copy_Data_Command
+   -- ****o* CopyItems/Copy_Data_Command
    -- FUNCTION
    -- Enter or quit copying items mode
    -- PARAMETERS
@@ -49,6 +49,8 @@ package body CopyItems is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- CopyData
    -- SOURCE
    function Copy_Data_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;

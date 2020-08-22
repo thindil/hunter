@@ -16,7 +16,7 @@
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with MainWindow; use MainWindow;
 
--- ****h* Hunter/CopyItems
+-- ****h* CopyItems/CopyItems
 -- FUNCTION
 -- Provide code for copy selected files or directories.
 -- SOURCE
