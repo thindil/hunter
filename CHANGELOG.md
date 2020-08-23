@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Show preferences in main window instead as a separated dialog
+- In preferences, changed button Close to Save
 
 ## [1.4] - 2020-08-19
 
