@@ -220,15 +220,15 @@ package body Messages is
    begin
       AddCommand("CloseMessage", Close_Command'Access);
       AddCommand("MessageResponse", Response_Command'Access);
-      Style_Configure("message.TFrame", "-background #00ff00");
+      Style_Configure("message.TFrame", "-background #27ae60");
       Style_Configure
-        ("message.TLabel", "-background #00ff00 -foreground #000000");
-      Style_Configure("error.TFrame", "-background #ff0000");
+        ("message.TLabel", "-background #27ae60 -foreground #ffffff");
+      Style_Configure("error.TFrame", "-background #da4453");
       Style_Configure
-        ("error.TLabel", "-background #ff0000 -foreground #000000");
-      Style_Configure("question.TFrame", "-background #0000ff");
+        ("error.TLabel", "-background #da4453 -foreground #ffffff");
+      Style_Configure("question.TFrame", "-background #3daee9");
       Style_Configure
-        ("question.TLabel", "-background #0000ff -foreground #ffffff");
+        ("question.TLabel", "-background #3daee9 -foreground #ffffff");
       MessageFrame := Create(".mainframe.message");
       MessageLabel := Create(".mainframe.message.label", "-wraplength 800");
       ButtonsBox := Create(".mainframe.message.buttonsbox");
