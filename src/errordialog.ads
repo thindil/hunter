@@ -15,7 +15,7 @@
 
 with Ada.Exceptions; use Ada.Exceptions;
 
--- ****h* Hunter/ErrorDialog
+-- ****h* ErrorDialog/ErrorDialog
 -- FUNCTION
 -- Provide code to show informations about program crash (unhandled exception).
 -- SOURCE
