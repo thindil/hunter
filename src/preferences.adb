@@ -33,6 +33,7 @@ use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
+with Tcl.Tk.Ada.Widgets.TtkNotebook; use Tcl.Tk.Ada.Widgets.TtkNotebook;
 with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
@@ -170,7 +171,11 @@ package body Preferences is
       CheckButton: Ttk_CheckButton;
       Label: Ttk_Label;
       Scale: Ttk_Scale;
-      PreferencesFrame: constant Ttk_Frame := Create(".preferencesframe");
+      MainFrame: constant Ttk_Frame := Create(".preferencesframe");
+      Notebook: constant Ttk_Notebook :=
+        Create(Widget_Image(MainFrame) & ".notebook");
+      PreferencesFrame: constant Ttk_Frame :=
+        Create(Widget_Image(Notebook) & ".preferences");
       ColorsEnabled: constant Boolean :=
         (if FindExecutable("highlight")'Length > 0 then True else False);
       procedure AddButton
@@ -189,6 +194,7 @@ package body Preferences is
          Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
       end AddButton;
    begin
+      Tcl.Tk.Ada.Pack.Pack(Notebook, "-fill both -expand true");
       LabelFrame :=
         Create
           (Widget_Image(PreferencesFrame) & ".directory",
@@ -502,6 +508,9 @@ package body Preferences is
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
          Tcl.Tk.Ada.Pack.Pack(ButtonsFrame, "-fill x");
       end;
+      TtkNotebook.Add
+        (Notebook, Widget_Image(PreferencesFrame),
+         "-text {" & Mc(Get_Context, "{Preferences}") & "}");
       AddCommands;
    end CreatePreferencesUI;
 
