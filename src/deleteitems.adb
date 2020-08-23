@@ -155,7 +155,7 @@ package body DeleteItems is
          raise;
    end DeleteSelected;
 
-   -- ****if* DeleteItems/Start_Deleting_Command
+   -- ****o* DeleteItems/Start_Deleting_Command
    -- FUNCTION
    -- Show confirmation to delete the selected files and directories
    -- PARAMETERS
@@ -165,6 +165,8 @@ package body DeleteItems is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- StartDeleting
    -- SOURCE
    function Start_Deleting_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
