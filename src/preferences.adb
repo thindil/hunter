@@ -504,6 +504,7 @@ package body Preferences is
               "-text {" & Mc(Get_Context, "{Restore defaults}") &
               "} -command RestoreDefaults");
       begin
+         Add(RestoreButton, Mc(Get_Context, "{Restore default settings for the program. You will have to restart\nthe program to apply all changes}"));
          Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
          Add(OkButton, Mc(Get_Context, "{Save all changes and back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(OkButton, "-side right");
