@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@ package Inotify is
       Unmounted_Filesystem => 16#2000#);
    -- ****
 
-   -- ****t* Inotify/Event_Data
+   -- ****s* Inotify/Event_Data
    -- FUNCTION
    -- Data structure used to store information about inotify event
    -- OPTIONS

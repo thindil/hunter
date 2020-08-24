@@ -29,7 +29,7 @@ package body Inotify is
    Instance: File_Descriptor;
    -- ****
 
-   -- ****it* Inotify/Watch_Data
+   -- ****is* Inotify/Watch_Data
    -- FUNCTION
    -- Data structure for inotify watches
    -- OPTIONS
