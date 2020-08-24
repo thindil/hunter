@@ -27,7 +27,7 @@ package LoadData is
 
    type Item_Size is range -2 .. File_Size'Last;
 
-   -- ****t* LoadData/Item_Record
+   -- ****s* LoadData/Item_Record
    -- FUNCTION
    -- Data structure with information about files and directories
    -- OPTIONS
