@@ -492,22 +492,26 @@ package body Preferences is
       declare
          ButtonsFrame: constant Ttk_Frame :=
            Create(Widget_Image(PreferencesFrame) & ".buttonsframe");
-         OkButton: constant Ttk_Button :=
+         CloseButton: constant Ttk_Button :=
            Create
              (Widget_Image(ButtonsFrame) & ".closebutton",
-              "-text {" & Mc(Get_Context, "{Save}") &
+              "-text {" & Mc(Get_Context, "{Close}") &
               "} -command {ClosePreferences " &
-              Widget_Image(PreferencesFrame) & "} -underline 0");
+              Widget_Image(PreferencesFrame) & "}");
          RestoreButton: constant Ttk_Button :=
            Create
              (Widget_Image(ButtonsFrame) & ".restorebutton",
               "-text {" & Mc(Get_Context, "{Restore defaults}") &
               "} -command RestoreDefaults");
       begin
-         Add(RestoreButton, Mc(Get_Context, "{Restore default settings for the program. You will have to restart\nthe program to apply all changes}"));
+         Add
+           (RestoreButton,
+            Mc
+              (Get_Context,
+               "{Restore default settings for the program. You will have to restart\nthe program to apply all changes}"));
          Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
-         Add(OkButton, Mc(Get_Context, "{Save all changes and back to the program}"));
-         Tcl.Tk.Ada.Pack.Pack(OkButton, "-side right");
+         Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
          Tcl.Tk.Ada.Pack.Pack(ButtonsFrame, "-fill x");
       end;
       TtkNotebook.Add
