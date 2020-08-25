@@ -74,7 +74,9 @@ package body Preferences.Commands is
    begin
       Label.Interp := Interp;
       Label.Name :=
-        New_String(".preferencesframe.notebook.preferences." & CArgv.Arg(Argv, 1) & "label");
+        New_String
+          (".preferencesframe.notebook.preferences." & CArgv.Arg(Argv, 1) &
+           "label");
       if CArgv.Arg(Argv, 1) = "directory.interval" then
          Tcl.Tk.Ada.Widgets.configure
            (Label,
@@ -118,7 +120,9 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.directory.showhidden") =
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.directory.showhidden") =
         "0" then
          Settings.ShowHidden := False;
       else
@@ -158,7 +162,8 @@ package body Preferences.Commands is
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
       if Tcl_GetVar
-          (Interp, ".preferencesframe.notebook.preferences.directory.showmodificationtime") =
+          (Interp,
+           ".preferencesframe.notebook.preferences.directory.showmodificationtime") =
         "0" then
          Settings.ShowLastModified := False;
          Tcl.Tk.Ada.Widgets.configure
@@ -199,7 +204,10 @@ package body Preferences.Commands is
       PreviewFrame.Name := New_String(".mainframe.paned.previewframe");
       Paned.Interp := Interp;
       Paned.Name := New_String(".mainframe.paned");
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.preview.showpreview") = "0" then
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.preview.showpreview") =
+        "0" then
          Settings.ShowPreview := False;
          Forget(Paned, PreviewFrame);
          return TCL_OK;
@@ -235,7 +243,10 @@ package body Preferences.Commands is
       pragma Unreferenced(ClientData, Argc, Argv);
       MimeType: constant String := GetMimeType(To_String(CurrentSelected));
    begin
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.preview.scaleimages") = "0" then
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.preview.scaleimages") =
+        "0" then
          Settings.ScaleImages := False;
       else
          Settings.ScaleImages := True;
@@ -275,8 +286,11 @@ package body Preferences.Commands is
    begin
       ComboBox.Interp := Interp;
       ComboBox.Name :=
-        New_String(".preferencesframe.notebook.preferences.preview.colorframe.highlighttheme");
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.preview.syntaxhighlightning") =
+        New_String
+          (".preferencesframe.notebook.preferences.preview.colorframe.highlighttheme");
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.preview.syntaxhighlightning") =
         "0" then
          Settings.ColorText := False;
          State(ComboBox, "disabled");
@@ -319,7 +333,8 @@ package body Preferences.Commands is
    begin
       ComboBox.Interp := Interp;
       ComboBox.Name :=
-        New_String(".preferencesframe.notebook.preferences.preview.colorframe.highlighttheme");
+        New_String
+          (".preferencesframe.notebook.preferences.preview.colorframe.highlighttheme");
       Settings.ColorTheme := To_Unbounded_String(Get(ComboBox));
       if MimeType(1 .. 4) = "text" then
          ShowPreview;
@@ -356,7 +371,9 @@ package body Preferences.Commands is
       PreviewText.Interp := Interp;
       PreviewText.Name :=
         New_String(".mainframe.paned.previewframe.previewtext");
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.preview.monospacefont") =
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.preview.monospacefont") =
         "0" then
          Settings.MonospaceFont := False;
          Widgets.configure(PreviewText, "-font TkDefaultFont");
@@ -392,7 +409,10 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.interface.stayinold") = "0" then
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.interface.stayinold") =
+        "0" then
          Settings.StayInOld := False;
       else
          Settings.StayInOld := True;
@@ -425,7 +445,9 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.interface.showfinished") =
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.interface.showfinished") =
         "0" then
          Settings.ShowFinishedInfo := False;
       else
@@ -462,7 +484,9 @@ package body Preferences.Commands is
    begin
       Paned.Interp := Interp;
       Paned.Name := New_String(".mainframe.paned");
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.interface.toolbarsontop") =
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.interface.toolbarsontop") =
         "0" then
          Settings.ToolbarsOnTop := False;
       else
@@ -510,7 +534,9 @@ package body Preferences.Commands is
    begin
       ButtonMenu.Interp := Interp;
       ButtonMenu.Name := New_String(".deletemenu");
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.deleting.deletefiles") =
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.deleting.deletefiles") =
         "0" then
          Settings.DeleteFiles := False;
          Entry_Configure
@@ -549,7 +575,10 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.deleting.cleartrash") = "0" then
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.deleting.cleartrash") =
+        "0" then
          Settings.ClearTrashOnExit := False;
       else
          Settings.ClearTrashOnExit := True;
@@ -582,7 +611,10 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar(Interp, ".preferencesframe.notebook.preferences.copying.overwrite") = "0" then
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.notebook.preferences.copying.overwrite") =
+        "0" then
          Settings.OverwriteOnExist := False;
       else
          Settings.OverwriteOnExist := True;
@@ -620,6 +652,8 @@ package body Preferences.Commands is
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".preferencesframe");
       Tcl.Tk.Ada.Grid.Grid(Frame, "-sticky nwes");
+      Unbind_From_Main_Window(Interp, "<Escape>");
+      Bind_To_Main_Window(Interp, "<Escape>", "{ClosePreferences}");
       return TCL_OK;
    end Show_Preferences_Command;
 
@@ -675,10 +709,16 @@ package body Preferences.Commands is
       Scale: Ttk_Scale;
       Frame: Ttk_Frame;
    begin
+      Unbind_From_Main_Window(Interp, "<Escape>");
+      Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
       Scale.Interp := Interp;
-      Scale.Name := New_String(".preferencesframe.notebook.preferences.directory.intervalscale");
+      Scale.Name :=
+        New_String
+          (".preferencesframe.notebook.preferences.directory.intervalscale");
       Settings.AutoRefreshInterval := Natural(Float'Value(Get(Scale)));
-      Scale.Name := New_String(".preferencesframe.notebook.preferences.interface.messagesscale");
+      Scale.Name :=
+        New_String
+          (".preferencesframe.notebook.preferences.interface.messagesscale");
       Settings.AutoCloseMessagesTime := Natural(Float'Value(Get(Scale)));
       StartTimer;
       Frame.Interp := Interp;
@@ -715,7 +755,8 @@ package body Preferences.Commands is
    begin
       ComboBox.Interp := Interp;
       ComboBox.Name :=
-        New_String(".preferencesframe.notebook.preferences.interface.colorframe.uitheme");
+        New_String
+          (".preferencesframe.notebook.preferences.interface.colorframe.uitheme");
       Settings.UITheme := To_Unbounded_String(Get(ComboBox));
       ShowMessage
         (Mc(Interp, "{To use the new UI theme, please restart the program.}"),
@@ -775,7 +816,8 @@ package body Preferences.Commands is
       Set_Directory(Containing_Directory(Command_Name));
       ComboBox.Interp := Interp;
       ComboBox.Name :=
-        New_String(".preferencesframe.notebook.preferences.interface.toolbarframe.toolbarsize");
+        New_String
+          (".preferencesframe.notebook.preferences.interface.toolbarframe.toolbarsize");
       ToolbarSize := Natural'Value(Current(ComboBox));
       case ToolbarSize is
          when 0 =>
