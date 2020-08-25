@@ -56,7 +56,7 @@ package body MainWindow.Commands is
    package ExitCommand is new Tcl.Ada.Generic_ExitHandler(Integer);
    -- ****
 
-   -- ****if* MCommands/Sort_Command
+   -- ****o* MCommands/Sort_Command
    -- FUNCTION
    -- Sort directory view based on which header was clicked
    -- PARAMETERS
@@ -66,6 +66,10 @@ package body MainWindow.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- Sort columnname
+   -- Columnname is a name of column which will be used for sorting. Possible
+   -- values are name, modified, size and previewname
    -- SOURCE
    function Sort_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -131,11 +135,13 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Sort_Command;
 
-   -- ****if* MCommands/Quit_Command
+   -- ****o* MCommands/Quit_Command
    -- FUNCTION
    -- Save preferences and clear trash on exit from the program
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
+   -- COMMANDS
+   -- Quit
    -- SOURCE
    procedure Quit_Command(ClientData: in Integer) with
       Convention => C;
@@ -165,7 +171,7 @@ package body MainWindow.Commands is
       MagicClose;
    end Quit_Command;
 
-   -- ****if* MCommands/Hide_Widget_Command
+   -- ****o* MCommands/Hide_Widget_Command
    -- FUNCTION
    -- Hide text entry or message, depends on which is visible
    -- PARAMETERS
@@ -175,6 +181,8 @@ package body MainWindow.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- HideWidget
    -- SOURCE
    function Hide_Widget_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -245,7 +253,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Hide_Widget_Command;
 
-   -- ****if* MCommands/Toggle_Selection_Command
+   -- ****o* MCommands/Toggle_Selection_Command
    -- FUNCTION
    -- Select all or deselect all items in directory view
    -- PARAMETERS
@@ -255,6 +263,8 @@ package body MainWindow.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ToggleSelection
    -- SOURCE
    function Toggle_Selection_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -282,7 +292,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Toggle_Selection_Command;
 
-   -- ****if* MCommands/Arrange_Path_Command
+   -- ****o* MCommands/Arrange_Path_Command
    -- FUNCTION
    -- Arrange path buttons when they window were resized
    -- PARAMETERS
@@ -292,6 +302,10 @@ package body MainWindow.Commands is
    -- Argv       - Values of arguments passed to the command
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ArrangePath buttonsframe width
+   -- Buttonsframe is the pathname of the frame which hold buttons which will
+   -- be resized. Width is the new width for the buttonsframe
    -- SOURCE
    function Arrange_Path_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -344,7 +358,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Arrange_Path_Command;
 
-   -- ****if* MCommands/Cancel_Action_Command
+   -- ****o* MCommands/Cancel_Action_Command
    -- FUNCTION
    -- Select all or deselect all items in directory view
    -- PARAMETERS
@@ -354,6 +368,8 @@ package body MainWindow.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK;
+   -- COMMANDS
+   -- CancelAction
    -- SOURCE
    function Cancel_Action_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -389,7 +405,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Cancel_Action_Command;
 
-   -- ****if* MCommands/Show_File_Menu_Command
+   -- ****o* MCommands/Show_File_Menu_Command
    -- FUNCTION
    -- Show menu for the selected items in current directory
    -- PARAMETERS
@@ -399,6 +415,10 @@ package body MainWindow.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ShowFileMenu x y
+   -- X is X coordinate where menu will be show, Y is Y coordinate where menu
+   -- will be show
    -- SOURCE
    function Show_File_Menu_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -458,7 +478,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Show_File_Menu_Command;
 
-   -- ****if* MCommands/Show_File_Command
+   -- ****o* MCommands/Show_File_Command
    -- FUNCTION
    -- Show content of the selected file. Used in about menu
    -- PARAMETERS
@@ -468,6 +488,9 @@ package body MainWindow.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ShowFile filename
+   -- Filename is the name of the file which preview will be show
    -- SOURCE
    function Show_File_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -503,7 +526,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Show_File_Command;
 
-   -- ****if* MCommands/Invoke_Button_Command
+   -- ****o* MCommands/Invoke_Button_Command
    -- FUNCTION
    -- Invoke the selected button if it is mapped
    -- PARAMETERS
@@ -513,6 +536,9 @@ package body MainWindow.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- InvokeButton buttonname
+   -- Buttonname is pathname of the button which will be invoked
    -- SOURCE
    function Invoke_Button_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;

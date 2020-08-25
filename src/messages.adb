@@ -63,7 +63,7 @@ package body Messages is
    TimerId: Unbounded_String := Null_Unbounded_String;
    -- ****
 
-   -- ****if* Messages/Close_Command
+   -- ****o* Messages/Close_Command
    -- FUNCTION
    -- Hide message frame
    -- PARAMETERS
@@ -73,6 +73,8 @@ package body Messages is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- CloseMessage
    -- SOURCE
    function Close_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -95,7 +97,7 @@ package body Messages is
       return TCL_OK;
    end Close_Command;
 
-   -- ****if* Messages/Response_Command
+   -- ****o* Messages/Response_Command
    -- FUNCTION
    -- Hide message frame and do action, depends on user response
    -- PARAMETERS
@@ -105,6 +107,9 @@ package body Messages is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- MessageResponse answer
+   -- Answer is the answer which the user selected by clicking in button
    -- SOURCE
    function Response_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
