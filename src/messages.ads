@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* Hunter/Messages
+-- ****h* Messages/Messages
 -- FUNCTION
 -- Provide code to show or hide messages to the user.
 -- SOURCE
