@@ -178,6 +178,7 @@ package body Preferences is
         Create(Widget_Image(Notebook) & ".preferences");
       ColorsEnabled: constant Boolean :=
         (if FindExecutable("highlight")'Length > 0 then True else False);
+      ShortcutsFrame: constant Ttk_Frame := Create(Widget_Image(Notebook) & ".shortcuts");
       procedure AddButton
         (Name, Text: String; Value: Boolean; TooltipText, Command: String) is
          CheckButton: constant Ttk_CheckButton :=
@@ -517,6 +518,34 @@ package body Preferences is
       TtkNotebook.Add
         (Notebook, Widget_Image(PreferencesFrame),
          "-text {" & Mc(Get_Context, "{Preferences}") & "}");
+      declare
+         ButtonsFrame: constant Ttk_Frame :=
+           Create(Widget_Image(ShortcutsFrame) & ".buttonsframe");
+         CloseButton: constant Ttk_Button :=
+           Create
+             (Widget_Image(ButtonsFrame) & ".closebutton",
+              "-text {" & Mc(Get_Context, "{Close}") &
+              "} -command {ClosePreferences " &
+              Widget_Image(PreferencesFrame) & "}");
+         RestoreButton: constant Ttk_Button :=
+           Create
+             (Widget_Image(ButtonsFrame) & ".restorebutton",
+              "-text {" & Mc(Get_Context, "{Restore defaults}") &
+              "} -command RestoreDefaultsShortcuts");
+      begin
+         Add
+           (RestoreButton,
+            Mc
+              (Get_Context,
+               "{Restore default keyboard shortcuts for the program.}"));
+         Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
+         Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
+         Tcl.Tk.Ada.Pack.Pack(ButtonsFrame, "-fill x");
+      end;
+      TtkNotebook.Add
+        (Notebook, Widget_Image(ShortcutsFrame),
+         "-text {" & Mc(Get_Context, "{Keyboard shortcuts}") & "}");
       AddCommands;
    end CreatePreferencesUI;
 
