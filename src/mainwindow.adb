@@ -169,55 +169,56 @@ package body MainWindow is
          Trim(Positive'Image(Settings.WindowHeight), Both) & "+0+0");
       Icon := Create("logo", "-file """ & To_String(IconName) & """");
       Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
-      Bind_To_Main_Window(Interp, "<Control-q>", "{exit}");
       Bind_To_Main_Window
-        (Interp, "<Alt-h>",
+        (Interp, "<" & To_String(Accelerators(1)) & ">", "{exit}");
+      Bind_To_Main_Window
+        (Interp, "<" & To_String(Accelerators(2)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.bookmarksbutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-f>",
+        (Interp, "<" & To_String(Accelerators(3)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.searchbutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-n>",
+        (Interp, "<" & To_String(Accelerators(4)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.newbutton}");
       Bind_To_Main_Window
-        (Interp, "<Control-Delete>",
+        (Interp, "<" & To_String(Accelerators(5)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.deletebutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-a>",
+        (Interp, "<" & To_String(Accelerators(6)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.aboutbutton}");
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
       Bind_To_Main_Window
-        (Interp, "<Alt-o>",
+        (Interp, "<" & To_String(Accelerators(7)) & ">",
          "{InvokeButton .mainframe.toolbars.itemtoolbar.openbutton}");
       Bind_To_Main_Window
-        (Interp, "<Control-a>",
+        (Interp, "<" & To_String(Accelerators(8)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.selectbutton}");
       Bind_To_Main_Window
-        (Interp, "<Control-r>",
+        (Interp, "<" & To_String(Accelerators(9)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.renamebutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-c>",
+        (Interp, "<" & To_String(Accelerators(10)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.copybutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-m>",
+        (Interp, "<" & To_String(Accelerators(11)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.movebutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-p>",
+        (Interp, "<" & To_String(Accelerators(12)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.optionsbutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-w>",
+        (Interp, "<" & To_String(Accelerators(13)) & ">",
          "{InvokeButton .mainframe.toolbars.itemtoolbar.openwithbutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-i>",
+        (Interp, "<" & To_String(Accelerators(14)) & ">",
          "{InvokeButton .mainframe.toolbars.itemtoolbar.infobutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-v>",
+        (Interp, "<" & To_String(Accelerators(15)) & ">",
          "{InvokeButton .mainframe.toolbars.itemtoolbar.previewbutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-b>",
+        (Interp, "<" & To_String(Accelerators(16)) & ">",
          "{InvokeButton .mainframe.toolbars.itemtoolbar.addbutton}");
       Bind_To_Main_Window
-        (Interp, "<Alt-r>",
+        (Interp, "<" & To_String(Accelerators(17)) & ">",
          "{InvokeButton .mainframe.toolbars.itemtoolbar.deletebutton}");
       Tcl.Tk.Ada.Grid.Grid(MainFrame, "-sticky nwse");
       Tcl.Tk.Ada.Grid.Row_Configure(MainWindow, MainFrame, "-weight 1");
