@@ -95,16 +95,7 @@ package Preferences is
    -- FUNCTION
    -- Array with keyboard shortcuts used by the program
    -- SOURCE
-   Accelerators: array(1 .. 17) of Unbounded_String :=
-     (To_Unbounded_String("Control-q"), To_Unbounded_String("Alt-h"),
-      To_Unbounded_String("Alt-f"), To_Unbounded_String("Alt-n"),
-      To_Unbounded_String("Control-Delete"), To_Unbounded_String("Alt-a"),
-      To_Unbounded_String("Alt-o"), To_Unbounded_String("Control-a"),
-      To_Unbounded_String("Control-l"), To_Unbounded_String("Alt-c"),
-      To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
-      To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
-      To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
-      To_Unbounded_String("Alt-r"));
+   Accelerators: array(1 .. 17) of Unbounded_String;
    -- ****
 
    -- ****f* Preferences/LoadSettings
@@ -134,6 +125,13 @@ package Preferences is
    -- Set default values for the program's settings
    -- SOURCE
    procedure SetDefaultSettings;
+   -- ****
+
+   -- ****f* Preferences/SetDefaultAccelerators
+   -- FUNCTION
+   -- Set default values for the program's keyboard shortcuts
+   -- SOURCE
+   procedure SetDefaultAccelerators;
    -- ****
 
 end Preferences;

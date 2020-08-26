@@ -44,6 +44,7 @@ package body Preferences is
       ConfigFile: File_Type;
       RawData, FieldName, Value: Unbounded_String;
       EqualIndex: Natural;
+      KeyIndex: Positive := 1;
       function LoadBoolean return Boolean is
       begin
          if Value = To_Unbounded_String("Yes") then
@@ -53,6 +54,7 @@ package body Preferences is
       end LoadBoolean;
    begin
       SetDefaultSettings;
+      SetDefaultAccelerators;
       Open
         (ConfigFile, In_File,
          Ada.Environment_Variables.Value("HOME") &
@@ -110,6 +112,17 @@ package body Preferences is
          Settings.ColorText := False;
       end if;
       Close(ConfigFile);
+      Open
+        (ConfigFile, In_File,
+         Ada.Environment_Variables.Value("HOME") & "/.config/hunter/keys.cfg");
+      while not End_Of_File(ConfigFile) loop
+         RawData := To_Unbounded_String(Get_Line(ConfigFile));
+         if Length(RawData) > 0 then
+            Accelerators(KeyIndex) := RawData;
+            KeyIndex := KeyIndex + 1;
+         end if;
+      end loop;
+      Close(ConfigFile);
    exception
       when Ada.Directories.Name_Error =>
          null;
@@ -164,6 +177,13 @@ package body Preferences is
         (ConfigFile, "ToolbarsSize =" & Positive'Image(Settings.ToolbarsSize));
       SaveBoolean(Settings.MonospaceFont, "MonospaceFont");
       Close(ConfigFile);
+      Create
+        (ConfigFile, Append_File,
+         Ada.Environment_Variables.Value("HOME") & "/.config/hunter/keys.cfg");
+      for Accel of Accelerators loop
+         Put_Line(ConfigFile, To_String(Accel));
+      end loop;
+      Close(ConfigFile);
    end SavePreferences;
 
    procedure CreatePreferencesUI is
@@ -178,7 +198,8 @@ package body Preferences is
         Create(Widget_Image(Notebook) & ".preferences");
       ColorsEnabled: constant Boolean :=
         (if FindExecutable("highlight")'Length > 0 then True else False);
-      ShortcutsFrame: constant Ttk_Frame := Create(Widget_Image(Notebook) & ".shortcuts");
+      ShortcutsFrame: constant Ttk_Frame :=
+        Create(Widget_Image(Notebook) & ".shortcuts");
       procedure AddButton
         (Name, Text: String; Value: Boolean; TooltipText, Command: String) is
          CheckButton: constant Ttk_CheckButton :=
@@ -562,5 +583,19 @@ package body Preferences is
          UITheme => To_Unbounded_String("hunter-light"), ToolbarsSize => 24,
          MonospaceFont => False);
    end SetDefaultSettings;
+
+   procedure SetDefaultAccelerators is
+   begin
+      Accelerators :=
+         (To_Unbounded_String("Control-q"), To_Unbounded_String("Alt-h"),
+      To_Unbounded_String("Alt-f"), To_Unbounded_String("Alt-n"),
+      To_Unbounded_String("Control-Delete"), To_Unbounded_String("Alt-a"),
+      To_Unbounded_String("Alt-o"), To_Unbounded_String("Control-a"),
+      To_Unbounded_String("Control-l"), To_Unbounded_String("Alt-c"),
+      To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
+      To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
+      To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
+      To_Unbounded_String("Alt-r"));
+   end SetDefaultAccelerators;
 
 end Preferences;
