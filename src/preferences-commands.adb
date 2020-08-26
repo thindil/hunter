@@ -225,7 +225,7 @@ package body Preferences.Commands is
       end if;
       Settings.ShowPreview := True;
       Add(Paned, PreviewFrame, "-weight 20");
-      return Show_Selected_Command(ClientData, Interp, Argc, Argv);
+      return TCL_OK;
    end Set_Show_Preview_Command;
 
    -- ****if* PCommands/Set_Scale_Images_Command
