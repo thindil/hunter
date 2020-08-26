@@ -47,7 +47,7 @@ with Utils; use Utils;
 
 package body Preferences.Commands is
 
-   -- ****if* PCommands/Set_Label_Command
+   -- ****o* PCommands/Set_Label_Command
    -- FUNCTION
    -- Update text of the selected label
    -- PARAMETERS
@@ -57,6 +57,11 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetLabel labelname
+   -- Labelname is the partial pathname of the label which text will be
+   -- updated. Possible values are directory.interval and
+   -- inteface.messagesscale
    -- SOURCE
    function Set_Label_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -95,7 +100,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Label_Command;
 
-   -- ****if* PCommands/Set_Show_Hidden_Files_Command
+   -- ****o* PCommands/Set_Show_Hidden_Files_Command
    -- FUNCTION
    -- Update show hidden files setting and reload the current directory
    -- listing
@@ -106,6 +111,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetShowHiddenFiles
    -- SOURCE
    function Set_Show_Hidden_Files_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -132,7 +139,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Hidden_Files_Command;
 
-   -- ****if* PCommands/Set_Show_Modification_Time_Command
+   -- ****o* PCommands/Set_Show_Modification_Time_Command
    -- FUNCTION
    -- Update show modification time column and reload the current directory
    -- listing
@@ -143,6 +150,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetShowModificationTime
    -- SOURCE
    function Set_Show_Modification_Time_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -185,6 +194,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetShowPreview
    -- SOURCE
    function Set_Show_Preview_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
