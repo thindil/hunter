@@ -42,7 +42,7 @@ package body MoveItems is
    SourceDirectory: Unbounded_String;
    -- ****
 
-   -- ****if* MoveItems/Move_Data_Command
+   -- ****o* MoveItems/Move_Data_Command
    -- FUNCTION
    -- Enter or quit moving items mode
    -- PARAMETERS
@@ -52,6 +52,8 @@ package body MoveItems is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- MoveData
    -- SOURCE
    function Move_Data_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
