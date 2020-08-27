@@ -208,6 +208,7 @@ package body Preferences.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
       PreviewFrame: Ttk_Frame;
       Paned: Ttk_PanedWindow;
    begin
