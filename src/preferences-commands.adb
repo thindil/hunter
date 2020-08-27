@@ -184,7 +184,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Modification_Time_Command;
 
-   -- ****if* PCommands/Set_Show_Preview_Command
+   -- ****o* PCommands/Set_Show_Preview_Command
    -- FUNCTION
    -- Update show preview setting and show or hide it
    -- PARAMETERS
@@ -228,7 +228,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Preview_Command;
 
-   -- ****if* PCommands/Set_Scale_Images_Command
+   -- ****o* PCommands/Set_Scale_Images_Command
    -- FUNCTION
    -- Enable or disable images scaling and rescale currently
    -- previewed image if needed
@@ -239,6 +239,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetScaleImages
    -- SOURCE
    function Set_Scale_Images_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -268,7 +270,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Scale_Images_Command;
 
-   -- ****if* PCommands/Set_Color_Text_Command
+   -- ****o* PCommands/Set_Color_Text_Command
    -- FUNCTION
    -- Enable or disable syntax highlightning in text files and reload the
    -- currently previewed file if it is text file
@@ -279,6 +281,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetColorText
    -- SOURCE
    function Set_Color_Text_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -315,7 +319,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Color_Text_Command;
 
-   -- ****if* PCommands/Set_Color_Theme_Command
+   -- ****o* PCommands/Set_Color_Theme_Command
    -- FUNCTION
    -- Set color theme for syntax highligthning in text files and reload
    -- the current previewed text file if needed
@@ -326,6 +330,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetColorTheme
    -- SOURCE
    function Set_Color_Theme_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -353,7 +359,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Color_Theme_Command;
 
-   -- ****if* PCommands/Set_Monospace_Font_Command
+   -- ****o* PCommands/Set_Monospace_Font_Command
    -- FUNCTION
    -- Enable or disable using monospace font in text files and reload the
    -- currently previewed file if it is text file
@@ -364,6 +370,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetMonoSpaceFont
    -- SOURCE
    function Set_Monospace_Font_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -395,7 +403,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Monospace_Font_Command;
 
-   -- ****if* PCommands/Set_Stay_In_Old_Command
+   -- ****o* PCommands/Set_Stay_In_Old_Command
    -- FUNCTION
    -- Set if after copying, moving, etc operations user should
    -- see old directory or new
@@ -406,6 +414,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetStayInOld
    -- SOURCE
    function Set_Stay_In_Old_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -431,7 +441,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Stay_In_Old_Command;
 
-   -- ****if* PCommands/Set_Show_Finished_Info_Command
+   -- ****o* PCommands/Set_Show_Finished_Info_Command
    -- FUNCTION
    -- Set if after finishing action, show info about it to the
    -- user
@@ -442,6 +452,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetShowFinishedInfo
    -- SOURCE
    function Set_Show_Finished_Info_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -467,7 +479,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Finished_Info_Command;
 
-   -- ****if* PCommands/Set_Toolbars_On_Top_Command
+   -- ****o* PCommands/Set_Toolbars_On_Top_Command
    -- FUNCTION
    -- Set if toolbars should be on top of the program's window or on the
    -- left
@@ -478,6 +490,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetToolbarsOnTop
    -- SOURCE
    function Set_Toolbars_On_Top_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -518,16 +532,18 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Toolbars_On_Top_Command;
 
-   -- ****if* PCommands/Set_Delete_Files_Command
+   -- ****o* PCommands/Set_Delete_Files_Command
    -- FUNCTION
    -- Set if files should be deleted of moved to Trash
    -- PARAMETERS
-   -- ClientData - Custom data send to the command.
+   -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command.
-   -- Argv       - Values of arguments passed to the command.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetDeleteFiles
    -- SOURCE
    function Set_Delete_Files_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -562,16 +578,18 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Delete_Files_Command;
 
-   -- ****if* PCommands/Set_Clear_Trash_Command
+   -- ****o* PCommands/Set_Clear_Trash_Command
    -- FUNCTION
    -- Set if Trash should be cleared on the program exit
    -- PARAMETERS
-   -- ClientData - Custom data send to the command.
+   -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command.
-   -- Argv       - Values of arguments passed to the command.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetClearTrash
    -- SOURCE
    function Set_Clear_Trash_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -597,17 +615,19 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Clear_Trash_Command;
 
-   -- ****if* PCommands/Set_Overwrite_Command
+   -- ****o* PCommands/Set_Overwrite_Command
    -- FUNCTION
    -- Set if the program should overwrite files or create new with new
    -- names
    -- PARAMETERS
-   -- ClientData - Custom data send to the command.
+   -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command.
-   -- Argv       - Values of arguments passed to the command.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetOverwrite
    -- SOURCE
    function Set_Overwrite_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -633,7 +653,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Overwrite_Command;
 
-   -- ****if* PCommands/Show_Preferences_Command
+   -- ****o* PCommands/Show_Preferences_Command
    -- FUNCTION
    -- Go to the selected bookmarked directory
    -- PARAMETERS
@@ -643,6 +663,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ShowPreferences
    -- SOURCE
    function Show_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -668,11 +690,26 @@ package body Preferences.Commands is
       return TCL_OK;
    end Show_Preferences_Command;
 
+   -- ****o* PCommands/Close_Dialog_Command
+   -- FUNCTION
+   -- Close the selected dialog window
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- CloseDialog dialogpath
+   -- Dialogpath is the pathname of the dialog to close
+   -- SOURCE
    function Close_Dialog_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int with
       Convention => C;
+      -- ****
 
    function Close_Dialog_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -692,7 +729,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Close_Dialog_Command;
 
-   -- ****if* PCommands/Close_Preferences_Command
+   -- ****o* PCommands/Close_Preferences_Command
    -- FUNCTION
    -- Set the program's settings, restart autorefresh view and close the
    -- preferences dialog
@@ -704,6 +741,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ClosePreferences
    -- SOURCE
    function Close_Preferences_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -740,7 +779,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Close_Preferences_Command;
 
-   -- ****if* PCommands/Set_UI_Theme_Command
+   -- ****o* PCommands/Set_UI_Theme_Command
    -- FUNCTION
    -- Set the UI theme
    -- PARAMETERS
@@ -750,6 +789,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetUITheme
    -- SOURCE
    function Set_UI_Theme_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -775,7 +816,7 @@ package body Preferences.Commands is
       return Close_Preferences_Command(ClientData, Interp, Argc, Argv);
    end Set_UI_Theme_Command;
 
-   -- ****if* PCommands/Set_Toolbars_Size_Command
+   -- ****o* PCommands/Set_Toolbars_Size_Command
    -- FUNCTION
    -- Set the toolbars icons size
    -- PARAMETERS
@@ -785,6 +826,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetToolbarsSize
    -- SOURCE
    function Set_Toolbars_Size_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -854,7 +897,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Toolbars_Size_Command;
 
-   -- ****if* PCommands/Restore_Defaults_Command
+   -- ****o* PCommands/Restore_Defaults_Command
    -- FUNCTION
    -- Restore default the program setttings
    -- PARAMETERS
@@ -864,6 +907,8 @@ package body Preferences.Commands is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- RestoreDefaults
    -- SOURCE
    function Restore_Defaults_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
