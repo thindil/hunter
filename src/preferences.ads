@@ -22,7 +22,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package Preferences is
 -- ****
 
-   -- ****t* Preferences/Settings_Data
+   -- ****s* Preferences/Settings_Data
    -- FUNCTION
    -- Data structure to the program settings
    -- OPTIONS

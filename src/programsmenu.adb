@@ -65,7 +65,7 @@ package body ProgramsMenu is
    package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
    -- ****
 
-   -- ****if* ProgramsMenu/Toggle_Applications_Menu_Command
+   -- ****o* ProgramsMenu/Toggle_Applications_Menu_Command
    -- FUNCTION
    -- Show or hide menu which allow to set a application which can be used
    -- to execute the selected file or directory
@@ -76,6 +76,8 @@ package body ProgramsMenu is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ToggleApplicationsMenu
    -- SOURCE
    function Toggle_Applications_Menu_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -109,7 +111,7 @@ package body ProgramsMenu is
       return TCL_OK;
    end Toggle_Applications_Menu_Command;
 
-   -- ****if* ProgramsMenu/Search_Program_Command
+   -- ****o* ProgramsMenu/Search_Program_Command
    -- FUNCTION
    -- Search the programs menu for the selected text (case insensitive) and
    -- show only matching applications
@@ -120,6 +122,8 @@ package body ProgramsMenu is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SearchProgram
    -- SOURCE
    function Search_Program_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -166,7 +170,7 @@ package body ProgramsMenu is
       return TCL_OK;
    end Search_Program_Command;
 
-   -- ****if* ProgramsMenu/Set_Application_Command
+   -- ****o* ProgramsMenu/Set_Application_Command
    -- FUNCTION
    -- Set the selected application as a default application to open the
    -- selected mime type items
@@ -177,6 +181,8 @@ package body ProgramsMenu is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetApplication
    -- SOURCE
    function Set_Application_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -229,7 +235,7 @@ package body ProgramsMenu is
       return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
    end Set_Application_Command;
 
-   -- ****if* ProgramsMenu/Hide_On_Focus_Out_Command
+   -- ****o* ProgramsMenu/Hide_On_Focus_Out_Command
    -- FUNCTION
    -- If application menu lost focus, hide it
    -- PARAMETERS
@@ -239,6 +245,8 @@ package body ProgramsMenu is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- HideOnFocusOut
    -- SOURCE
    function Hide_On_Focus_Out_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
