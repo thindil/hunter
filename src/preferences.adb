@@ -15,6 +15,8 @@
 
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with Preferences.Commands; use Preferences.Commands;
 with Utils; use Utils;
@@ -28,6 +30,7 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
+with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
 use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
@@ -553,7 +556,59 @@ package body Preferences is
              (Widget_Image(ButtonsFrame) & ".restorebutton",
               "-text {" & Mc(Get_Context, "{Restore defaults}") &
               "} -command RestoreDefaultsShortcuts");
+         KeysLabels: constant array(1 .. 17) of Unbounded_String :=
+           (To_Unbounded_String(Mc(Get_Context, "{Quit from the program}")),
+            To_Unbounded_String(Mc(Get_Context, "{Show bookmarks menu}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{Search for the file or directory}")),
+            To_Unbounded_String(Mc(Get_Context, "{Show add new item menu}")),
+            To_Unbounded_String(Mc(Get_Context, "{Show delete menu}")),
+            To_Unbounded_String
+              (Mc
+                 (Get_Context,
+                  "{Show menu with information about the program}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{Open selected file or directory}")),
+            To_Unbounded_String
+              (Mc
+                 (Get_Context,
+                  "{Select or unselect all files and directories}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{Rename selected file or directory}")),
+            To_Unbounded_String(Mc(Get_Context, "{Copy selected files}")),
+            To_Unbounded_String(Mc(Get_Context, "{Move selected files}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{Show the program preferences}")),
+            To_Unbounded_String
+              (Mc
+                 (Get_Context,
+                  "{Open selected file or directory with command}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{File or directory information}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{Preview file or directory}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{Add bookmark to this directory}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{Remove bookmark from this directory}")));
+         Label: Ttk_Label;
+         TEntry: Ttk_Entry;
       begin
+         for I in KeysLabels'Range loop
+            Label :=
+              Create
+                (Widget_Image(ShortcutsFrame) & ".label" &
+                 Trim(Positive'Image(I), Left),
+                 "-text {" & To_String(KeysLabels(I)) & "}");
+            Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
+            TEntry :=
+              Create
+                (Widget_Image(ShortcutsFrame) & ".entry" &
+                 Trim(Positive'Image(I), Left));
+            Insert(TEntry, "end", To_String(Accelerators(I)));
+            Tcl.Tk.Ada.Grid.Grid
+              (TEntry, "-sticky w -column 1 -row" & Natural'Image(I - 1));
+         end loop;
          Add
            (RestoreButton,
             Mc
@@ -562,7 +617,8 @@ package body Preferences is
          Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
-         Tcl.Tk.Ada.Pack.Pack(ButtonsFrame, "-fill x");
+         Tcl.Tk.Ada.Grid.Grid(ButtonsFrame, "-sticky we -columnspan 2");
+         Grid.Column_Configure(ShortcutsFrame, ButtonsFrame, "-weight 1");
       end;
       TtkNotebook.Add
         (Notebook, Widget_Image(ShortcutsFrame),
@@ -587,15 +643,15 @@ package body Preferences is
    procedure SetDefaultAccelerators is
    begin
       Accelerators :=
-         (To_Unbounded_String("Control-q"), To_Unbounded_String("Alt-h"),
-      To_Unbounded_String("Alt-f"), To_Unbounded_String("Alt-n"),
-      To_Unbounded_String("Control-Delete"), To_Unbounded_String("Alt-a"),
-      To_Unbounded_String("Alt-o"), To_Unbounded_String("Control-a"),
-      To_Unbounded_String("Control-l"), To_Unbounded_String("Alt-c"),
-      To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
-      To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
-      To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
-      To_Unbounded_String("Alt-r"));
+        (To_Unbounded_String("Control-q"), To_Unbounded_String("Alt-h"),
+         To_Unbounded_String("Alt-f"), To_Unbounded_String("Alt-n"),
+         To_Unbounded_String("Control-Delete"), To_Unbounded_String("Alt-a"),
+         To_Unbounded_String("Alt-o"), To_Unbounded_String("Control-a"),
+         To_Unbounded_String("Control-l"), To_Unbounded_String("Alt-c"),
+         To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
+         To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
+         To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
+         To_Unbounded_String("Alt-r"));
    end SetDefaultAccelerators;
 
 end Preferences;
