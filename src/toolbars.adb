@@ -215,7 +215,7 @@ package body Toolbars is
         (ToolButton,
          Mc
            (Get_Context,
-            "{Select or unselect all files and directories in currently selected directory. \[CTRL+A\]}"),
+            "{Select or unselect all files and directories. \[CTRL+A\]}"),
          "edit-select-all");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".mainframe.toolbars.actiontoolbar.separator2");
@@ -411,7 +411,7 @@ package body Toolbars is
            "-variable previewtype -value info -command ShowPreviewOrInfo");
       SetButton
         (ToolRadioButton,
-         Mc(Get_Context, "{File or directory informations \[ALT+I\]}"),
+         Mc(Get_Context, "{File or directory information \[ALT+I\]}"),
          "document-properties");
       Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
       Separator := Create(".mainframe.toolbars.itemtoolbar.separator2");
@@ -431,7 +431,7 @@ package body Toolbars is
            "-command RemoveBookmark");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Remove bookmark to this directory \[ALT+R\]}"),
+         Mc(Get_Context, "{Remove bookmark from this directory \[ALT+R\]}"),
          "list-remove");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Tcl.Tk.Ada.Grid.Grid(Toolbar);
