@@ -10,6 +10,7 @@ services:
    - docker
 
 install:
+   - echo "$DOCKERPASS" | docker login -u "$DOCKERUSER" --password-stdin
    - docker pull docker.pkg.github.com/thindil/tashy/tashy:8.6.7
 
 script:
