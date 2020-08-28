@@ -647,7 +647,7 @@ package body Preferences is
          To_Unbounded_String("Alt-f"), To_Unbounded_String("Alt-n"),
          To_Unbounded_String("Control-Delete"), To_Unbounded_String("Alt-a"),
          To_Unbounded_String("Alt-o"), To_Unbounded_String("Control-a"),
-         To_Unbounded_String("Control-l"), To_Unbounded_String("Alt-c"),
+         To_Unbounded_String("Control-r"), To_Unbounded_String("Alt-c"),
          To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
          To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
          To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
