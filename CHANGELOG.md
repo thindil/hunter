@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Show preferences in main window instead as a separated dialog
-- In preferences, changed button Close to Save
+- Keyboard shortcut for quitting from the program now works only when quit
+  button is visible
 
 ### Fixed
 - Tooltips for remove bookmark, select all and file information buttons
