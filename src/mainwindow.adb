@@ -170,7 +170,8 @@ package body MainWindow is
       Icon := Create("logo", "-file """ & To_String(IconName) & """");
       Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
       Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(1)) & ">", "{exit}");
+        (Interp, "<" & To_String(Accelerators(1)) & ">",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.quitbutton}");
       Bind_To_Main_Window
         (Interp, "<" & To_String(Accelerators(2)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.bookmarksbutton}");
