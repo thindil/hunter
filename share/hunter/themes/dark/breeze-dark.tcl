@@ -295,6 +295,7 @@ namespace eval ttk::theme::hunter-dark {
         ttk::style configure TCheckbutton -padding 4
         ttk::style configure TRadiobutton -padding 4
         ttk::style configure TSeparator -background $colors(-bg)
+        ttk::style configure TEntry -insertcolor $colors(-fg)
 
         #ttk::style configure TPanedwindow -width 1 -padding 0
         ttk::style map TPanedwindow -background [list hover $colors(-checklight)]
