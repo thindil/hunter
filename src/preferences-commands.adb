@@ -974,9 +974,60 @@ package body Preferences.Commands is
       Unbind_From_Main_Window(Interp, "<Escape>");
       Bind_To_Main_Window
         (Interp, "<KeyRelease>",
-         "{ChangeShortcut " & CArgv.Arg(Argv, 1) & "}");
+         "{ChangeShortcut " & CArgv.Arg(Argv, 1) & " %K}");
+      Tcl_SetVar(Interp, "specialkey", "{}");
       return TCL_OK;
    end Start_Changing_Shortcut_Command;
+
+   -- ****o* PCommands/Change_Shortcut_Command
+   -- FUNCTION
+   -- Change the selected keyboard shortcut
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- ChangeShortcut shortcutindex
+   -- Shortcutindex is the index of the keyboard shortcut which will be
+   -- changed
+   -- SOURCE
+   function Change_Shortcut_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Change_Shortcut_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc);
+      Label: Ttk_Label;
+      Key: constant String := CArgv.Arg(Argv, 2);
+      Shortcut: constant String :=
+        (if Tcl_GetVar(Interp, "specialkey") = "{}" then Key
+         else Tcl_GetVar(Interp, "specialkey") & "-" & Key);
+   begin
+      Label.Interp := Interp;
+      Label.Name :=
+        New_String
+          (".preferencesframe.notebook.shortcuts.labelshortcut" &
+           CArgv.Arg(Argv, 1));
+      if Key in "Control_L" | "Control_R" | "Alt_L" | "Alt_R" | "Shift_L" |
+            "Shift_R" then
+         Tcl_SetVar(Interp, "specialkey", Key(Key'First .. Key'Length - 2));
+         Widgets.configure(Label, "-text ""$specialkey-""");
+         return TCL_OK;
+      end if;
+      Unbind_From_Main_Window(Interp, "<KeyRelease>");
+      Bind_To_Main_Window(Interp, "<Escape>", "{ClosePreferences}");
+      Widgets.configure(Label, "-text {" & Shortcut & "}");
+      return TCL_OK;
+   end Change_Shortcut_Command;
 
    procedure AddCommands is
    begin
@@ -1003,6 +1054,7 @@ package body Preferences.Commands is
       AddCommand("RestoreDefaults", Restore_Defaults_Command'Access);
       AddCommand
         ("StartChangingShortcut", Start_Changing_Shortcut_Command'Access);
+      AddCommand("ChangeShortcut", Change_Shortcut_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
