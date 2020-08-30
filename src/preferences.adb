@@ -619,6 +619,10 @@ package body Preferences is
                 (Widget_Image(ShortcutsFrame) & ".button" &
                  Trim(Positive'Image(I), Left),
                  "-style Toolbutton -image " & Widget_Image(Image));
+            Add
+              (Button,
+               Mc(Get_Context, "{Change keyboard shortcut for}") & ":\n" &
+               To_String(KeysLabels(I)));
             Tcl.Tk.Ada.Grid.Grid
               (Button, "-sticky w -column 2 -row" & Natural'Image(I - 1));
          end loop;
