@@ -38,16 +38,18 @@ with Utils; use Utils;
 
 package body RenameItems is
 
-   -- ****if* RenameItems/Toggle_Rename_Command
+   -- ****o* RenameItems/Toggle_Rename_Command
    -- FUNCTION
    -- Show or hide text entry to enter a new name for the item
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ToggleRename
    -- SOURCE
    function Toggle_Rename_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -111,16 +113,18 @@ package body RenameItems is
       return TCL_OK;
    end Toggle_Rename_Command;
 
-   -- ****if* RenameItems/Rename_Command
+   -- ****o* RenameItems/Rename_Command
    -- FUNCTION
    -- Rename currently selected file or directory
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- Rename
    -- SOURCE
    function Rename_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
