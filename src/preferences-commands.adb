@@ -932,6 +932,52 @@ package body Preferences.Commands is
       return Close_Preferences_Command(ClientData, Interp, Argc, Argv);
    end Restore_Defaults_Command;
 
+   -- ****o* PCommands/Start_Changing_Shortcut_Command
+   -- FUNCTION
+   -- Start changing the selected keyboard shortcut
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- StartChangingShortcut shortcutindex
+   -- Shortcutindex is the index of the keyboard shortcut which will be
+   -- changed
+   -- SOURCE
+   function Start_Changing_Shortcut_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Start_Changing_Shortcut_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc);
+      Label: Ttk_Label;
+   begin
+      Label.Interp := Interp;
+      Label.Name :=
+        New_String
+          (".preferencesframe.notebook.shortcuts.labelshortcut" &
+           CArgv.Arg(Argv, 1));
+      Widgets.configure
+        (Label,
+         "-text {" &
+         Mc(Interp, "{Select a new shortcut or press Escape to cancel}") &
+         "}");
+      Unbind_From_Main_Window(Interp, "<Escape>");
+      Bind_To_Main_Window
+        (Interp, "<KeyRelease>",
+         "{ChangeShortcut " & CArgv.Arg(Argv, 1) & "}");
+      return TCL_OK;
+   end Start_Changing_Shortcut_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -955,6 +1001,8 @@ package body Preferences.Commands is
       AddCommand("SetUITheme", Set_UI_Theme_Command'Access);
       AddCommand("SetToolbarsSize", Set_Toolbars_Size_Command'Access);
       AddCommand("RestoreDefaults", Restore_Defaults_Command'Access);
+      AddCommand
+        ("StartChangingShortcut", Start_Changing_Shortcut_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
