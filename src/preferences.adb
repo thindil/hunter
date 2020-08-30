@@ -599,7 +599,7 @@ package body Preferences is
          Image :=
            Create
              ("refreshicon",
-              "-file {../share/hunter/images/view-refresh.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
+              "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
          for I in KeysLabels'Range loop
             Label :=
               Create
