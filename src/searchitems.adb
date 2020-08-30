@@ -38,16 +38,18 @@ with Utils; use Utils;
 
 package body SearchItems is
 
-   -- ****if* SearchItems/Start_Search_Command
+   -- ****o* SearchItems/Toggle_Search_Command
    -- FUNCTION
    -- Show text entry to enter directory destination
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ToggleSearch
    -- SOURCE
    function Toggle_Search_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -100,7 +102,7 @@ package body SearchItems is
       return TCL_OK;
    end Toggle_Search_Command;
 
-   -- ****if* SearchItems/Search_Command
+   -- ****o* SearchItems/Search_Command
    -- FUNCTION
    -- Search current directory for the selected text (case insensitive) and
    -- show only matching files and directories
@@ -111,6 +113,8 @@ package body SearchItems is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- Search
    -- SOURCE
    function Search_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;

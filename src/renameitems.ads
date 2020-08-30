@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* Hunter/RenameItems
+-- ****h* RenameItems/RenameItems
 -- FUNCTION
 -- Provide code to rename items UI and rename them.
 -- SOURCE
