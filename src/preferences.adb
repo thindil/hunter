@@ -592,22 +592,28 @@ package body Preferences is
             To_Unbounded_String
               (Mc(Get_Context, "{Remove bookmark from this directory}")));
          Label: Ttk_Label;
-         TEntry: Ttk_Entry;
+         Button: Ttk_Button;
       begin
          for I in KeysLabels'Range loop
             Label :=
               Create
                 (Widget_Image(ShortcutsFrame) & ".label" &
                  Trim(Positive'Image(I), Left),
-                 "-text {" & To_String(KeysLabels(I)) & "}");
+                 "-text {" & To_String(KeysLabels(I)) & ": }");
             Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
-            TEntry :=
+            Label :=
               Create
-                (Widget_Image(ShortcutsFrame) & ".entry" &
-                 Trim(Positive'Image(I), Left));
-            Insert(TEntry, "end", To_String(Accelerators(I)));
+                (Widget_Image(ShortcutsFrame) & ".labelshortcut" &
+                 Trim(Positive'Image(I), Left),
+                 "-text {" & To_String(Accelerators(I)) & "}");
             Tcl.Tk.Ada.Grid.Grid
-              (TEntry, "-sticky w -column 1 -row" & Natural'Image(I - 1));
+              (Label, "-sticky w -column 1 -row" & Natural'Image(I - 1));
+            Button :=
+              Create
+                (Widget_Image(ShortcutsFrame) & ".button" &
+                 Trim(Positive'Image(I), Left), "-text {Change}");
+            Tcl.Tk.Ada.Grid.Grid
+              (Button, "-sticky w -column 2 -row" & Natural'Image(I - 1));
          end loop;
          Add
            (RestoreButton,
@@ -617,8 +623,7 @@ package body Preferences is
          Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
-         Tcl.Tk.Ada.Grid.Grid(ButtonsFrame, "-sticky we -columnspan 2");
-         Grid.Column_Configure(ShortcutsFrame, ButtonsFrame, "-weight 1");
+         Tcl.Tk.Ada.Grid.Grid(ButtonsFrame, "-sticky we -columnspan 3");
       end;
       TtkNotebook.Add
         (Notebook, Widget_Image(ShortcutsFrame),
