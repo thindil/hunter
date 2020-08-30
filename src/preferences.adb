@@ -611,14 +611,15 @@ package body Preferences is
               Create
                 (Widget_Image(ShortcutsFrame) & ".labelshortcut" &
                  Trim(Positive'Image(I), Left),
-                 "-text {" & To_String(Accelerators(I)) & "}");
+                 "-text {" & To_String(Accelerators(I)) & "} -wraplength 150");
             Tcl.Tk.Ada.Grid.Grid
               (Label, "-sticky w -column 1 -row" & Natural'Image(I - 1));
             Button :=
               Create
                 (Widget_Image(ShortcutsFrame) & ".button" &
                  Trim(Positive'Image(I), Left),
-                 "-style Toolbutton -image " & Widget_Image(Image));
+                 "-style Toolbutton -image " & Widget_Image(Image) &
+                 " -command {StartChangingShortcut" & Positive'Image(I) & "}");
             Add
               (Button,
                Mc(Get_Context, "{Change keyboard shortcut for}") & ":\n" &
