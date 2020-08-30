@@ -23,6 +23,7 @@ with Utils; use Utils;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
@@ -593,7 +594,12 @@ package body Preferences is
               (Mc(Get_Context, "{Remove bookmark from this directory}")));
          Label: Ttk_Label;
          Button: Ttk_Button;
+         Image: Tk_Photo;
       begin
+         Image :=
+           Create
+             ("refreshicon",
+              "-file {../share/hunter/images/view-refresh.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
          for I in KeysLabels'Range loop
             Label :=
               Create
@@ -611,7 +617,8 @@ package body Preferences is
             Button :=
               Create
                 (Widget_Image(ShortcutsFrame) & ".button" &
-                 Trim(Positive'Image(I), Left), "-text {Change}");
+                 Trim(Positive'Image(I), Left),
+                 "-style Toolbutton -image " & Widget_Image(Image));
             Tcl.Tk.Ada.Grid.Grid
               (Button, "-sticky w -column 2 -row" & Natural'Image(I - 1));
          end loop;
