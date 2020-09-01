@@ -1052,6 +1052,35 @@ package body Preferences.Commands is
       return TCL_OK;
    end Change_Shortcut_Command;
 
+   -- ****o* PCommands/Restore_Default_Shortcuts_Command
+   -- FUNCTION
+   -- Restore default keyboard shortcuts
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- RestoreDefaultShortcuts
+   -- SOURCE
+   function Restore_Default_Shortcuts_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Restore_Default_Shortcuts_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+   begin
+      return TCL_OK;
+   end Restore_Default_Shortcuts_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -1078,6 +1107,7 @@ package body Preferences.Commands is
       AddCommand
         ("StartChangingShortcut", Start_Changing_Shortcut_Command'Access);
       AddCommand("ChangeShortcut", Change_Shortcut_Command'Access);
+      AddCommand("RestoreDefaultShortcuts", Restore_Default_Shortcuts_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
