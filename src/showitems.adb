@@ -728,7 +728,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
    end ShowInfo;
 
-   -- ****if* ShowItems/Show_Preview_Or_Info_Command
+   -- ****o* ShowItems/Show_Preview_Or_Info_Command
    -- FUNCTION
    -- Show preview or information about the currently selected file or
    -- directory, depends which button was clicked
@@ -736,9 +736,11 @@ package body ShowItems is
    -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ShowPreviewOrInfo
    -- SOURCE
    function Show_Preview_Or_Info_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -820,16 +822,18 @@ package body ShowItems is
       return TCL_OK;
    end Show_Selected_Command;
 
-   -- ****if* ShowItems/Set_Permissions_Command
+   -- ****o* ShowItems/Set_Permissions_Command
    -- FUNCTION
    -- Set the permissions for the selected file or directory
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- SetPermissions
    -- SOURCE
    function Set_Permissions_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -875,7 +879,7 @@ package body ShowItems is
       return TCL_OK;
    end Set_Permissions_Command;
 
-   -- ****if* Commands/GoToDirectory_Command
+   -- ****o* Commands/GoToDirectory_Command
    -- FUNCTION
    -- Go to the selected directory in preview
    -- PARAMETERS
@@ -885,6 +889,9 @@ package body ShowItems is
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- GoToDirectory ?selecteditem?
+   -- Selecteditem is full path to the currently selected file or directory
    -- SOURCE
    function GoToDirectory_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
