@@ -18,7 +18,7 @@ with Interfaces.C; use Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 
--- ****h* Hunter/ShowItems
+-- ****h* ShowItems/ShowItems
 -- FUNCTION
 -- Provide code to show informations and set some settings for selected files
 -- or directories.
@@ -49,7 +49,7 @@ package ShowItems is
    procedure ShowPreview;
    -- ****
 
-   -- ****f* ShowItems/Show_Selected_Command
+   -- ****o* ShowItems/Show_Selected_Command
    -- FUNCTION
    -- Show preview or information about the currently selected file or
    -- directory after user select it in the directory view
@@ -58,6 +58,10 @@ package ShowItems is
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- ShowSelected
    -- SOURCE
    function Show_Selected_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;

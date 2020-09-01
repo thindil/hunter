@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* Hunter/SearchItems
+-- ****h* SearchItems/SearchItems
 -- FUNCTION
 -- Provide code to show search UI and show search results.
 -- SOURCE
