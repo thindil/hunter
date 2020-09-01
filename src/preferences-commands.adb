@@ -15,6 +15,8 @@
 
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv; use CArgv;
@@ -1077,7 +1079,29 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
+      OldAccelerators: constant Accelerators_Array := Accelerators;
+      Script: Unbounded_String;
+      Label: Ttk_Label;
    begin
+      Label.Interp := Interp;
+      SetDefaultAccelerators;
+      for I in OldAccelerators'Range loop
+         Script :=
+           To_Unbounded_String
+             (Bind_To_Main_Window
+                (Interp, "<" & To_String(OldAccelerators(I)) & ">"));
+         Unbind_From_Main_Window
+           (Interp, "<" & To_String(OldAccelerators(I)) & ">");
+         Bind_To_Main_Window
+           (Interp, "<" & To_String(Accelerators(I)) & ">",
+            "{" & To_String(Script) & "}");
+         Label.Name :=
+           New_String
+             (".preferencesframe.notebook.shortcuts.labelshortcut" &
+              Trim(Positive'Image(I), Left));
+         Widgets.configure
+           (Label, "-text {" & To_String(Accelerators(I)) & "}");
+      end loop;
       return TCL_OK;
    end Restore_Default_Shortcuts_Command;
 
@@ -1107,7 +1131,8 @@ package body Preferences.Commands is
       AddCommand
         ("StartChangingShortcut", Start_Changing_Shortcut_Command'Access);
       AddCommand("ChangeShortcut", Change_Shortcut_Command'Access);
-      AddCommand("RestoreDefaultShortcuts", Restore_Default_Shortcuts_Command'Access);
+      AddCommand
+        ("RestoreDefaultShortcuts", Restore_Default_Shortcuts_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
