@@ -91,11 +91,18 @@ package Preferences is
    Settings: Settings_Data;
    -- ****
 
+   -- ****t* Preferences/Accelerators_Array
+   -- FUNCTION
+   -- Array used to store keyboard shortcuts
+   -- SOURCE
+   type Accelerators_Array is array (1 .. 17) of Unbounded_String;
+   -- ****
+
    -- ****v* Preferences/Accelerators
    -- FUNCTION
    -- Array with keyboard shortcuts used by the program
    -- SOURCE
-   Accelerators: array(1 .. 17) of Unbounded_String;
+   Accelerators: Accelerators_Array;
    -- ****
 
    -- ****f* Preferences/LoadSettings
