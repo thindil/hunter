@@ -556,7 +556,7 @@ package body Preferences is
            Create
              (Widget_Image(ButtonsFrame) & ".restorebutton",
               "-text {" & Mc(Get_Context, "{Restore defaults}") &
-              "} -command RestoreDefaultsShortcuts");
+              "} -command RestoreDefaultShortcuts");
          KeysLabels: constant array(1 .. 17) of Unbounded_String :=
            (To_Unbounded_String(Mc(Get_Context, "{Quit from the program}")),
             To_Unbounded_String(Mc(Get_Context, "{Show bookmarks menu}")),
