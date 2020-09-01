@@ -1011,18 +1011,31 @@ package body Preferences.Commands is
       Shortcut: constant String :=
         (if Tcl_GetVar(Interp, "specialkey") = "{}" then Key
          else Tcl_GetVar(Interp, "specialkey") & "-" & Key);
+      Index: constant Positive := Positive'Value(CArgv.Arg(Argv, 1));
    begin
       Label.Interp := Interp;
       Label.Name :=
         New_String
           (".preferencesframe.notebook.shortcuts.labelshortcut" &
            CArgv.Arg(Argv, 1));
+      if Key = "Escape" then
+         Widgets.configure
+           (Label, "-text {" & To_String(Accelerators(Index)) & "}");
+         Unbind_From_Main_Window(Interp, "<KeyRelease>");
+         Bind_To_Main_Window(Interp, "<Escape>", "{ClosePreferences}");
+         return TCL_OK;
+      end if;
       if Key in "Control_L" | "Control_R" | "Alt_L" | "Alt_R" | "Shift_L" |
             "Shift_R" then
          Tcl_SetVar(Interp, "specialkey", Key(Key'First .. Key'Length - 2));
          Widgets.configure(Label, "-text ""$specialkey-""");
          return TCL_OK;
       end if;
+      for Accelerator of Accelerators loop
+         if To_Unbounded_String(Shortcut) = Accelerator then
+            return TCL_OK;
+         end if;
+      end loop;
       Unbind_From_Main_Window(Interp, "<KeyRelease>");
       Bind_To_Main_Window(Interp, "<Escape>", "{ClosePreferences}");
       Widgets.configure(Label, "-text {" & Shortcut & "}");
