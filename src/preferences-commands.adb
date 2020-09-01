@@ -1012,6 +1012,7 @@ package body Preferences.Commands is
         (if Tcl_GetVar(Interp, "specialkey") = "{}" then Key
          else Tcl_GetVar(Interp, "specialkey") & "-" & Key);
       Index: constant Positive := Positive'Value(CArgv.Arg(Argv, 1));
+      Script: Unbounded_String;
    begin
       Label.Interp := Interp;
       Label.Name :=
@@ -1036,6 +1037,15 @@ package body Preferences.Commands is
             return TCL_OK;
          end if;
       end loop;
+      Script :=
+        To_Unbounded_String
+          (Bind_To_Main_Window
+             (Interp, "<" & To_String(Accelerators(Index)) & ">"));
+      Unbind_From_Main_Window
+        (Interp, "<" & To_String(Accelerators(Index)) & ">");
+      Bind_To_Main_Window
+        (Interp, "<" & Shortcut & ">", "{" & To_String(Script) & "}");
+      Accelerators(Index) := To_Unbounded_String(Shortcut);
       Unbind_From_Main_Window(Interp, "<KeyRelease>");
       Bind_To_Main_Window(Interp, "<Escape>", "{ClosePreferences}");
       Widgets.configure(Label, "-text {" & Shortcut & "}");
