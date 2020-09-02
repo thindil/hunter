@@ -18,7 +18,7 @@ with Tcl.Ada; use Tcl.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with MainWindow; use MainWindow;
 
--- ****h* Hunter/Utils
+-- ****h* Utils/Utils
 -- FUNCTION
 -- Various utility subprograms.
 -- SOURCE
