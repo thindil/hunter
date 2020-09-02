@@ -33,7 +33,6 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
-with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -96,20 +95,17 @@ package body ActivateItems is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       DirectoryTree: Ttk_Tree_View;
-      Tokens: Slice_Set;
-      FileName, Items: Unbounded_String;
+      FileName: Unbounded_String;
    begin
       DirectoryTree.Interp := Interp;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
-      Items := To_Unbounded_String(Selection(DirectoryTree));
-      if Items = Null_Unbounded_String then
+      if Focus(DirectoryTree) = "{}" then
          return TCL_OK;
       end if;
-      Create(Tokens, To_String(Items), " ");
       FileName :=
         CurrentDirectory & '/' &
-        ItemsList(Positive'Value(Slice(Tokens, 1))).Name;
+        ItemsList(Positive'Value(Focus(DirectoryTree))).Name;
       if Is_Directory(To_String(FileName)) then
          if not Is_Read_Accessible_File(To_String(FileName)) then
             ShowMessage(Mc(Interp, "{You can't enter this directory.}"));
@@ -121,9 +117,6 @@ package body ActivateItems is
          CurrentDirectory := FileName;
          if Settings.ShowPreview then
             ItemsList := SecondItemsList;
-            Wm_Set
-              (Get_Main_Window(Get_Context), "title",
-               "{Hunter " & To_String(CurrentDirectory) & "}");
          else
             LoadDirectory(To_String(CurrentDirectory));
          end if;
