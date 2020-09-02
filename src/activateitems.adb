@@ -18,7 +18,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -259,7 +258,6 @@ package body ActivateItems is
       Value, CommandName, Arguments: Unbounded_String;
       Pid: GNAT.OS_Lib.Process_Id;
       DirectoryTree: Ttk_Tree_View;
-      Tokens: Slice_Set;
       FileName: Unbounded_String;
       SpaceIndex: Natural;
    begin
@@ -289,10 +287,9 @@ package body ActivateItems is
       DirectoryTree.Interp := Interp;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
-      Create(Tokens, Selection(DirectoryTree), " ");
       FileName :=
         CurrentDirectory & '/' &
-        ItemsList(Positive'Value(Slice(Tokens, 1))).Name;
+        ItemsList(Positive'Value(Focus(DirectoryTree))).Name;
       Append(Arguments, FileName);
       Pid := ExecuteFile(To_String(CommandName), To_String(Arguments));
       if Pid = GNAT.OS_Lib.Invalid_Pid then
@@ -329,16 +326,14 @@ package body ActivateItems is
       pragma Unreferenced(ClientData, Argc, Argv);
       Pid: GNAT.OS_Lib.Process_Id;
       DirectoryTree: Ttk_Tree_View;
-      Tokens: Slice_Set;
       FileName: Unbounded_String;
    begin
       DirectoryTree.Interp := Interp;
       DirectoryTree.Name :=
         New_String(".mainframe.paned.directoryframe.directorytree");
-      Create(Tokens, Selection(DirectoryTree), " ");
       FileName :=
         CurrentDirectory & '/' &
-        ItemsList(Positive'Value(Slice(Tokens, 1))).Name;
+        ItemsList(Positive'Value(Focus(DirectoryTree))).Name;
       Pid := ExecuteFile(To_String(FileName), "");
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage(Mc(Interp, "{Can't execute this command}"));
