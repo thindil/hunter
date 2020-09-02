@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Option to configure the program keyboard shortcuts
+
 ### Changed
 - Show preferences in main window instead as a separated dialog
 - Keyboard shortcut for quitting from the program now works only when quit
