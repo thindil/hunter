@@ -17,14 +17,14 @@ with Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 
--- ****h* Hunter/Trash
+-- ****h* Trash/Trash
 -- FUNCTION
 -- Provide code to manipulate system Trash
 -- SOURCE
 package Trash is
 -- ****
 
-   -- ****f* Trash/Show_Trash_Command
+   -- ****o* Trash/Show_Trash_Command
    -- FUNCTION
    -- Show content of the Trash
    -- PARAMETERS
@@ -32,6 +32,8 @@ package Trash is
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
+   -- COMMANDS
+   -- ShowTrash
    -- SOURCE
    function Show_Trash_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;

@@ -163,7 +163,7 @@ package body Trash is
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 
-   -- ****f* Trash/Restore_Item_Command
+   -- ****o* Trash/Restore_Item_Command
    -- FUNCTION
    -- Restore the selected item
    -- PARAMETERS
@@ -173,6 +173,8 @@ package body Trash is
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- RestoreItem
    -- SOURCE
    function Restore_Item_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -224,16 +226,18 @@ package body Trash is
       return Show_Trash_Command(ClientData, Interp, Argc, Argv);
    end Restore_Item_Command;
 
-   -- ****f* Trash/Clear_Trash_Command
+   -- ****o* Trash/Clear_Trash_Command
    -- FUNCTION
    -- Remove everything from the Trash
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
+   -- COMMANDS
+   -- ClearTrash
    -- SOURCE
    function Clear_Trash_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
