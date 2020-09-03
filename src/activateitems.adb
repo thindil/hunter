@@ -93,27 +93,16 @@ package body ActivateItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      DirectoryTree: Ttk_Tree_View;
-      FileName: Unbounded_String;
    begin
-      DirectoryTree.Interp := Interp;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
-      if Focus(DirectoryTree) = "{}" then
-         return TCL_OK;
-      end if;
-      FileName :=
-        CurrentDirectory & '/' &
-        ItemsList(Positive'Value(Focus(DirectoryTree))).Name;
-      if Is_Directory(To_String(FileName)) then
-         if not Is_Read_Accessible_File(To_String(FileName)) then
+      if Is_Directory(To_String(CurrentSelected)) then
+         if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage(Mc(Interp, "{You can't enter this directory.}"));
             return TCL_OK;
          end if;
          if CurrentDirectory = To_Unbounded_String("/") then
             CurrentDirectory := Null_Unbounded_String;
          end if;
-         CurrentDirectory := FileName;
+         CurrentDirectory := CurrentSelected;
          if Settings.ShowPreview then
             ItemsList := SecondItemsList;
          else
@@ -124,7 +113,7 @@ package body ActivateItems is
       else
          declare
             MimeType: constant String :=
-              GetMimeType(Full_Name(To_String(FileName)));
+              GetMimeType(To_String(CurrentSelected));
             Pid: GNAT.OS_Lib.Process_Id;
             Openable: Boolean := CanBeOpened(MimeType);
             ExecutableName: constant String := FindExecutable("xdg-open");
@@ -133,14 +122,14 @@ package body ActivateItems is
                Openable := CanBeOpened("text/plain");
             end if;
             if not Openable then
-               if not Is_Executable_File(To_String(FileName)) then
+               if not Is_Executable_File(To_String(CurrentSelected)) then
                   ShowMessage
                     (Mc
                        (Interp,
                         "{I can't open this file. No application associated with this type of files.}"));
                   return TCL_OK;
                end if;
-               Pid := ExecuteFile(To_String(FileName), "");
+               Pid := ExecuteFile(To_String(CurrentSelected), "");
                if Pid = GNAT.OS_Lib.Invalid_Pid then
                   ShowMessage("I can't execute this file.");
                end if;
@@ -148,7 +137,7 @@ package body ActivateItems is
                if ExecutableName = "" then
                   return TCL_OK;
                end if;
-               Pid := ExecuteFile(ExecutableName, To_String(FileName));
+               Pid := ExecuteFile(ExecutableName, To_String(CurrentSelected));
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
