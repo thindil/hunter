@@ -65,3 +65,18 @@
    execute:
       - others/translations.tcl update
    description: Update all existing translations (except ROOT)
+- command:
+   name: createdocker
+   execute:
+      - sudo docker build -t hunter/build:latest .
+   description: Create Docker image with all needed libraries for build the program
+- command:
+   name: debugdocker
+   execute:
+      - sudo docker run --rm -v $PWD:/app hunter/build:latest gprbuild -P /app/hunter.gpr
+   description: Build the program in debug mode with Docker image
+- command:
+   name: releasedocker
+   execute:
+      - tclsh others/dockerrelease.tcl
+   description: Build the program in release mode with Docker image
