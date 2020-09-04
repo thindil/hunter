@@ -23,6 +23,27 @@ program please look [here](https://github.com/thindil/hunter/tree/master)
 
 ## Build the program from sources
 
+### Docker way
+
+You can build Docker image with all needed libraries by using `Dockerfile`
+from the main directory of the project. Just run command:
+
+`sudo docker build -t hunter/build:latest .`
+
+Then to build the program in the debug mode:
+
+`others/builddocker.tcl debug`
+
+And to build the program in the release mode:
+
+`others/builddocker.tcl release`
+
+If you have installed [Bob](https://github.com/thindil/bob) you can type
+`bob createdocker` to create Docker image, `bob dockerdebug` to build in
+the debug mode and `bob dockerrelease` to build in the release mode.
+
+### Classic way
+
 To build you need:
 
 * compiler - GCC with enabled Ada support. The most distributions should have
