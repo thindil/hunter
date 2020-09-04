@@ -29,7 +29,6 @@ use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
-with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
@@ -98,9 +97,6 @@ package body ActivateItems is
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage(Mc(Interp, "{You can't enter this directory.}"));
             return TCL_OK;
-         end if;
-         if CurrentDirectory = To_Unbounded_String("/") then
-            CurrentDirectory := Null_Unbounded_String;
          end if;
          CurrentDirectory := CurrentSelected;
          if Settings.ShowPreview then
@@ -246,8 +242,6 @@ package body ActivateItems is
       TextEntry: Ttk_Entry;
       Value, CommandName, Arguments: Unbounded_String;
       Pid: GNAT.OS_Lib.Process_Id;
-      DirectoryTree: Ttk_Tree_View;
-      FileName: Unbounded_String;
       SpaceIndex: Natural;
    begin
       TextEntry.Interp := Interp;
@@ -257,11 +251,9 @@ package body ActivateItems is
          return TCL_OK;
       end if;
       SpaceIndex := Index(Value, " ");
-      if SpaceIndex > 0 then
-         CommandName := Unbounded_Slice(Value, 1, SpaceIndex);
-      else
-         CommandName := Value;
-      end if;
+      CommandName :=
+        (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex)
+         else Value);
       CommandName :=
         To_Unbounded_String(FindExecutable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
@@ -273,13 +265,7 @@ package body ActivateItems is
       if SpaceIndex > 0 then
          Arguments := Unbounded_Slice(Value, SpaceIndex, Length(Value)) & " ";
       end if;
-      DirectoryTree.Interp := Interp;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
-      FileName :=
-        CurrentDirectory & '/' &
-        ItemsList(Positive'Value(Focus(DirectoryTree))).Name;
-      Append(Arguments, FileName);
+      Append(Arguments, CurrentSelected);
       Pid := ExecuteFile(To_String(CommandName), To_String(Arguments));
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage(Mc(Interp, "{Can't execute this command}"));
@@ -314,16 +300,8 @@ package body ActivateItems is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       Pid: GNAT.OS_Lib.Process_Id;
-      DirectoryTree: Ttk_Tree_View;
-      FileName: Unbounded_String;
    begin
-      DirectoryTree.Interp := Interp;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
-      FileName :=
-        CurrentDirectory & '/' &
-        ItemsList(Positive'Value(Focus(DirectoryTree))).Name;
-      Pid := ExecuteFile(To_String(FileName), "");
+      Pid := ExecuteFile(To_String(CurrentSelected), "");
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage(Mc(Interp, "{Can't execute this command}"));
       end if;
