@@ -95,7 +95,7 @@ package Preferences is
    -- FUNCTION
    -- Array used to store keyboard shortcuts
    -- SOURCE
-   type Accelerators_Array is array (1 .. 17) of Unbounded_String;
+   type Accelerators_Array is array (1 .. 18) of Unbounded_String;
    -- ****
 
    -- ****v* Preferences/Accelerators

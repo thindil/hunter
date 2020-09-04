@@ -557,7 +557,7 @@ package body Preferences is
              (Widget_Image(ButtonsFrame) & ".restorebutton",
               "-text {" & Mc(Get_Context, "{Restore defaults}") &
               "} -command RestoreDefaultShortcuts");
-         KeysLabels: constant array(1 .. 17) of Unbounded_String :=
+         KeysLabels: constant array(Accelerators'Range) of Unbounded_String :=
            (To_Unbounded_String(Mc(Get_Context, "{Quit from the program}")),
             To_Unbounded_String(Mc(Get_Context, "{Show bookmarks menu}")),
             To_Unbounded_String
@@ -591,7 +591,9 @@ package body Preferences is
             To_Unbounded_String
               (Mc(Get_Context, "{Add bookmark to this directory}")),
             To_Unbounded_String
-              (Mc(Get_Context, "{Remove bookmark from this directory}")));
+              (Mc(Get_Context, "{Remove bookmark from this directory}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{Execute selected program}")));
          Label: Ttk_Label;
          Button: Ttk_Button;
          Image: Tk_Photo;
@@ -668,7 +670,7 @@ package body Preferences is
          To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
          To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
          To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
-         To_Unbounded_String("Alt-r"));
+         To_Unbounded_String("Alt-r"), To_Unbounded_String("Alt-e"));
    end SetDefaultAccelerators;
 
 end Preferences;
