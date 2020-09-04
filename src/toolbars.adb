@@ -169,7 +169,9 @@ package body Toolbars is
       -- ****
    begin
       Add(Button, TooltipText);
-      configure(Button, "-style Toolbutton -image " & ImageName & "icon");
+      configure
+        (Button,
+         "-style Toolbutton -image " & ImageName & "icon -takefocus 0");
    end SetButton;
 
    procedure CreateActionToolbar is
