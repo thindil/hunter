@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Show preferences in main window instead as a separated dialog
 - Keyboard shortcut for quitting from the program now works only when quit
   button is visible
+- Disabled Tab/Alt-Tab traversing by toolbars
 
 ### Fixed
 - Tooltips for remove bookmark, select all and file information buttons
