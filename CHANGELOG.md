@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Tooltips for remove bookmark, select all and file information buttons
+- Open file or directory with command when command has arguments
 
 ## [1.4] - 2020-08-19
 
