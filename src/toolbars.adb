@@ -189,7 +189,9 @@ package body Toolbars is
         Create
           (".mainframe.toolbars.actiontoolbar.quitbutton", "-command exit");
       SetButton
-        (ToolButton, Mc(Get_Context, "{Quit from the program. \[CTRL+Q\]}"),
+        (ToolButton,
+         Mc(Get_Context, "{Quit from the program.}") & " \[" &
+         To_String(Accelerators(1)) & "\]",
          "quit");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".mainframe.toolbars.actiontoolbar.separator1");
@@ -197,7 +199,9 @@ package body Toolbars is
       ToolMenuButton :=
         Create(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       SetButton
-        (ToolMenuButton, Mc(Get_Context, "{Show bookmarks menu \[ALT+H\]}"),
+        (ToolMenuButton,
+         Mc(Get_Context, "{Show bookmarks menu }") & " \[" &
+         To_String(Accelerators(2)) & "\]",
          "bookmarks");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ToolCheckButton :=
@@ -206,7 +210,8 @@ package body Toolbars is
            "-command ToggleSearch");
       SetButton
         (ToolCheckButton,
-         Mc(Get_Context, "{Search for the file or directory \[ALT+F\]}"),
+         Mc(Get_Context, "{Search for the file or directory }") & " \[" &
+         To_String(Accelerators(3)) & "\]",
          "edit-find");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolButton :=
@@ -215,9 +220,8 @@ package body Toolbars is
            "-command ToggleSelection");
       SetButton
         (ToolButton,
-         Mc
-           (Get_Context,
-            "{Select or unselect all files and directories. \[CTRL+A\]}"),
+         Mc(Get_Context, "{Select or unselect all files and directories.}") &
+         " \[" & To_String(Accelerators(6)) & "\]",
          "edit-select-all");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".mainframe.toolbars.actiontoolbar.separator2");
@@ -225,7 +229,8 @@ package body Toolbars is
       ToolMenuButton := Create(".mainframe.toolbars.actiontoolbar.newbutton");
       SetButton
         (ToolMenuButton,
-         Mc(Get_Context, "{Show add new item menu \[ALT+N\].}"),
+         Mc(Get_Context, "{Show add new item menu }") & " \[" &
+         To_String(Accelerators(4)) & "\]",
          "document-new");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".newmenu", "-tearoff false");
@@ -248,7 +253,8 @@ package body Toolbars is
            "-command ToggleRename");
       SetButton
         (ToolCheckButton,
-         Mc(Get_Context, "{Rename selected file or directory \[CTRL+R\]}"),
+         Mc(Get_Context, "{Rename selected file or directory }") & " \[" &
+         To_String(Accelerators(9)) & "\]",
          "document-save-as");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton :=
@@ -257,9 +263,9 @@ package body Toolbars is
            "-command CopyData");
       SetButton
         (ToolCheckButton,
-         Mc
-           (Get_Context,
-            "{Copy selected files \[ALT+C\]. Pressed button means start copying\ncurrently selected files or directories.\nPress again to copy them.}"),
+         Mc(Get_Context, "{Copy selected files }") & " \[" &
+         To_String(Accelerators(10)) &
+         "\]. Pressed button means start copying\ncurrently selected files or directories.\nPress again to copy them.",
          "edit-copy");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton :=
@@ -268,15 +274,17 @@ package body Toolbars is
            "-command MoveData");
       SetButton
         (ToolCheckButton,
-         Mc
-           (Get_Context,
-            "{Move selected files \[ALT+M\]. Pressed button means start moving\ncurrently selected files or directories.\nPress again to move them.}"),
+         Mc(Get_Context, "{Move selected files }") & " \[" &
+         To_String(Accelerators(11)) &
+         "\]. Pressed button means start moving\ncurrently selected files or directories.\nPress again to move them.",
          "edit-cut");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolMenuButton :=
         Create(".mainframe.toolbars.actiontoolbar.deletebutton");
       SetButton
-        (ToolMenuButton, Mc(Get_Context, "{Show delete menu \[CTRL+Delete\]}"),
+        (ToolMenuButton,
+         Mc(Get_Context, "{Show delete menu }") & " \[" &
+         To_String(Accelerators(5)) & "\]",
          "edit-delete");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".deletemenu", "-tearoff false");
@@ -318,7 +326,8 @@ package body Toolbars is
         (ToolButton,
          Mc
            (Get_Context,
-            "{Restore selected file or directory from the trash \[ALT+R\]}"),
+            "{Restore selected file or directory from the trash }") &
+         " \[" & To_String(Accelerators(17)) & "\]",
          "document-revert");
       Separator := Create(".mainframe.toolbars.actiontoolbar.separator3");
       Tcl.Tk.Ada.Pack.Pack(Separator);
@@ -328,16 +337,16 @@ package body Toolbars is
            "-command ShowPreferences");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Show the program preferences \[ALT+P\]}"),
+         Mc(Get_Context, "{Show the program preferences }") & " \[" &
+         To_String(Accelerators(12)) & "\]",
          "configure");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolMenuButton :=
         Create(".mainframe.toolbars.actiontoolbar.aboutbutton");
       SetButton
         (ToolMenuButton,
-         Mc
-           (Get_Context,
-            "{Show menu with information about the program \[ALT+A\]}"),
+         Mc(Get_Context, "{Show menu with information about the program }") &
+         " \[" & To_String(Accelerators(6)) & "\]",
          "help-about");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".aboutmenu", "-tearoff false");
