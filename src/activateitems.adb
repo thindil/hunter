@@ -252,7 +252,7 @@ package body ActivateItems is
       end if;
       SpaceIndex := Index(Value, " ");
       CommandName :=
-        (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex)
+        (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex - 1)
          else Value);
       CommandName :=
         To_Unbounded_String(FindExecutable(To_String(CommandName)));
