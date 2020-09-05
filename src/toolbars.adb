@@ -382,7 +382,9 @@ package body Toolbars is
         Create
           (".mainframe.toolbars.itemtoolbar.runbutton", "-command Execute");
       SetButton
-        (ToolButton, Mc(Get_Context, "{Execute selected program \[ALT+E\].}"),
+        (ToolButton,
+         Mc(Get_Context, "{Execute selected program }") & " \[" &
+         To_String(Accelerators(18)) & "\]",
          "media-playback-start");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolButton :=
@@ -391,7 +393,8 @@ package body Toolbars is
            "-command ActivateItem");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Open selected file or directory \[ALT+O\]}"),
+         Mc(Get_Context, "{Open selected file or directory }") & " \[" &
+         To_String(Accelerators(7)) & "\]",
          "document-open");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolButton :=
@@ -400,9 +403,8 @@ package body Toolbars is
            "-command ToggleExecuteWith");
       SetButton
         (ToolButton,
-         Mc
-           (Get_Context,
-            "{Open selected file or directory with command \[ALT+W\]}"),
+         Mc(Get_Context, "{Open selected file or directory with command }") &
+         " \[" & To_String(Accelerators(13)) & "\]",
          "system-run");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".mainframe.toolbars.itemtoolbar.separator1");
@@ -413,7 +415,8 @@ package body Toolbars is
            "-variable previewtype -value preview -command ShowPreviewOrInfo");
       SetButton
         (ToolRadioButton,
-         Mc(Get_Context, "{Preview file or directory \[ALT+V\]}"),
+         Mc(Get_Context, "{Preview file or directory }") & " \[" &
+         To_String(Accelerators(15)) & "\]",
          "document-preview");
       Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
       ToolRadioButton :=
@@ -422,7 +425,8 @@ package body Toolbars is
            "-variable previewtype -value info -command ShowPreviewOrInfo");
       SetButton
         (ToolRadioButton,
-         Mc(Get_Context, "{File or directory information \[ALT+I\]}"),
+         Mc(Get_Context, "{File or directory information }") & " \[" &
+         To_String(Accelerators(14)) & "\]",
          "document-properties");
       Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
       Separator := Create(".mainframe.toolbars.itemtoolbar.separator2");
@@ -433,7 +437,8 @@ package body Toolbars is
            "-command AddBookmark");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Add bookmark to this directory \[ALT+B\].}"),
+         Mc(Get_Context, "{Add bookmark to this directory }") & " \[" &
+         To_String(Accelerators(16)) & "\]",
          "list-add");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolButton :=
@@ -442,7 +447,8 @@ package body Toolbars is
            "-command RemoveBookmark");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Remove bookmark from this directory \[ALT+R\]}"),
+         Mc(Get_Context, "{Remove bookmark from this directory }") & " \[" &
+         To_String(Accelerators(17)) & "\]",
          "list-remove");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Tcl.Tk.Ada.Grid.Grid(Toolbar);
