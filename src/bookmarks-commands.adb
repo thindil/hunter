@@ -85,6 +85,20 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end GoToBookmark_Command;
 
+   -- ****if* Bookmarks.Commands/UpdateNewAction
+   -- FUNCTION
+   -- Update NewAction and toolbars if needed
+   -- SOURCE
+   procedure UpdateNewAction is
+   begin
+      if NewAction /= MOVE then
+         if NewAction = SHOWTRASH then
+            ToggleToolButtons(NewAction, True);
+         end if;
+         NewAction := COPY;
+      end if;
+   end UpdateNewAction;
+
    -- ****o* Commands/SetDestination_Command
    -- FUNCTION
    -- Show text entry to enter directory destination
@@ -114,12 +128,7 @@ package body Bookmarks.Commands is
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
    begin
-      if NewAction /= MOVE then
-         if NewAction = SHOWTRASH then
-            ToggleToolButtons(NewAction, True);
-         end if;
-         NewAction := COPY;
-      end if;
+      UpdateNewAction;
       Button.Interp := Get_Context;
       Button.Name := New_String(".mainframe.textframe.okbutton");
       configure(Button, "-command GoToDestination");
@@ -168,12 +177,7 @@ package body Bookmarks.Commands is
       HideButton: Ttk_Button;
       Hunter_Go_To_Destination_Exception: exception;
    begin
-      if NewAction /= MOVE then
-         if NewAction = SHOWTRASH then
-            ToggleToolButtons(NewAction, True);
-         end if;
-         NewAction := COPY;
-      end if;
+      UpdateNewAction;
       TextEntry.Interp := Get_Context;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       if not Ada.Directories.Exists(Get(TextEntry)) then
