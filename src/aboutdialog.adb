@@ -66,9 +66,9 @@ package body AboutDialog is
         Create(".aboutdialog", "-class Dialog");
       CloseButton: constant Ttk_Button :=
         Create
-          (Widget_Image(AboutDialog) & ".closebutton",
+          (AboutDialog & ".closebutton",
            "-text {" & Mc(Interp, "Close") & "} -command {CloseDialog " &
-           Widget_Image(AboutDialog) & "} -underline 0");
+           AboutDialog & "} -underline 0");
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
       Label: Ttk_Label;
       Frame: Ttk_Frame;
@@ -86,52 +86,44 @@ package body AboutDialog is
       Frame := Create(".aboutdialog.general");
       Label :=
         Create
-          (Widget_Image(Frame) & ".info",
+          (Frame & ".info",
            "-text {" &
            Mc(Interp, "{Hunter - Graphical file manager for Linux}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Width := Width + Positive'Value(Winfo_Get(Label, "reqwidth"));
       Height := Positive'Value(Winfo_Get(Label, "reqheight")) * 17;
       Label :=
-        Create
-          (Widget_Image(Frame) & ".copyright",
-           "-text {© Bartek Jasicki 2019-2020}");
+        Create(Frame & ".copyright", "-text {© Bartek Jasicki 2019-2020}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Label :=
         Create
-          (Widget_Image(Frame) & ".license",
+          (Frame & ".license",
            "-text {" & Mc(Interp, "{License:}") & " GNU GPLv3}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Label :=
         Create
-          (Widget_Image(Frame) & ".version",
+          (Frame & ".version",
            "-text {" & Mc(Interp, "{Version:}") & " 1.5 (" &
            Mc(Interp, "{development}") & ")}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       WebsiteButton :=
         Create
-          (Widget_Image(Frame) & ".website",
+          (Frame & ".website",
            "-text {" & Mc(Interp, "Website") &
            "} -command {OpenLink http://thindil.github.io/hunter/} -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(WebsiteButton);
       Tcl.Tk.Ada.Grid.Grid(Frame, "-row 0 -column 1 -sticky nwe");
       Tcl.Tk.Ada.Grid.Grid(Creditsbook, "-columnspan 2 -sticky nwes");
-      Frame := Create(Widget_Image(Creditsbook) & ".programmers");
-      View :=
-        Create
-          (Widget_Image(Frame) & ".view",
-           "-show tree -selectmode none -height 5");
+      Frame := Create(Creditsbook & ".programmers");
+      View := Create(Frame & ".view", "-show tree -selectmode none -height 5");
       Column(View, "#0", "-stretch true -width" & Positive'Image(Width - 50));
       Insert(View, "{} end -text {Bartek Jasicki <thindil@laeran.pl>}");
       Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
       Add
         (Creditsbook, Widget_Image(Frame),
          "-text {" & Mc(Interp, "Programmers") & "}");
-      Frame := Create(Widget_Image(Creditsbook) & ".translators");
-      View :=
-        Create
-          (Widget_Image(Frame) & ".view",
-           "-show tree -selectmode none -height 5");
+      Frame := Create(Creditsbook & ".translators");
+      View := Create(Frame & ".view", "-show tree -selectmode none -height 5");
       Column(View, "#0", "-stretch true -width" & Positive'Image(Width - 50));
       Insert
         (View, "{} end -text {Polski - Bartek Jasicki <thindil@laeran.pl>}");
@@ -140,9 +132,7 @@ package body AboutDialog is
         (Creditsbook, Widget_Image(Frame),
          "-text {" & Mc(Interp, "Translators") & "}");
       Tcl.Tk.Ada.Grid.Grid(CloseButton, "-columnspan 2");
-      Bind
-        (AboutDialog, "<Alt-c>",
-         "{CloseDialog " & Widget_Image(AboutDialog) & "}");
+      Bind(AboutDialog, "<Alt-c>", "{CloseDialog " & AboutDialog & "}");
       SetDialog(AboutDialog, Mc(Interp, "{Hunter - About}"), Width, Height);
       return TCL_OK;
    end Show_About_Command;
