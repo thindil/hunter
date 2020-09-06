@@ -178,7 +178,7 @@ package body Bookmarks.Commands is
       Hunter_Go_To_Destination_Exception: exception;
    begin
       UpdateNewAction;
-      TextEntry.Interp := Get_Context;
+      TextEntry.Interp := Interp;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
       if not Ada.Directories.Exists(Get(TextEntry)) then
          ShowMessage
@@ -187,7 +187,7 @@ package body Bookmarks.Commands is
          return TCL_OK;
       end if;
       CurrentDirectory := To_Unbounded_String(Get(TextEntry));
-      HideButton.Interp := Get_Context;
+      HideButton.Interp := Interp;
       HideButton.Name := New_String(".mainframe.textframe.closebutton");
       if Invoke(HideButton) /= "" then
          raise Hunter_Go_To_Destination_Exception
