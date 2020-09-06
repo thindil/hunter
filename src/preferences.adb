@@ -28,6 +28,7 @@ with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Canvas; use Tcl.Tk.Ada.Widgets.Canvas;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
@@ -39,7 +40,10 @@ with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.TtkNotebook; use Tcl.Tk.Ada.Widgets.TtkNotebook;
 with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
+with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
+with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
+with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 
 package body Preferences is
@@ -196,8 +200,21 @@ package body Preferences is
       Label: Ttk_Label;
       Scale: Ttk_Scale;
       MainFrame: constant Ttk_Frame := Create(".preferencesframe");
-      Notebook: constant Ttk_Notebook :=
-        Create(Widget_Image(MainFrame) & ".notebook");
+      ScrollX: constant Ttk_Scrollbar :=
+        Create
+          (MainFrame & ".scrollx",
+           "-orient horizontal -command [list " & MainFrame &
+           ".canvas xview]");
+      ScrollY: constant Ttk_Scrollbar :=
+        Create
+          (MainFrame & ".scrolly",
+           "-orient vertical -command [list " & MainFrame & ".canvas yview]");
+      Canvas: constant Tk_Canvas :=
+        Create
+          (MainFrame & ".canvas",
+           "-xscrollcommand {" & ScrollX & " set} -yscrollcommand {" &
+           ScrollY & " set}");
+      Notebook: constant Ttk_Notebook := Create(Canvas & ".notebook");
       PreferencesFrame: constant Ttk_Frame :=
         Create(Widget_Image(Notebook) & ".preferences");
       ColorsEnabled: constant Boolean :=
@@ -220,7 +237,11 @@ package body Preferences is
          Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
       end AddButton;
    begin
-      Tcl.Tk.Ada.Pack.Pack(Notebook, "-fill both -expand true");
+      Autoscroll(ScrollX);
+      Autoscroll(ScrollY);
+      Tcl.Tk.Ada.Pack.Pack(ScrollX, "-side bottom -fill x");
+      Tcl.Tk.Ada.Pack.Pack(ScrollY, "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack(Canvas, "-side top -fill both -expand true");
       LabelFrame :=
         Create
           (Widget_Image(PreferencesFrame) & ".directory",
@@ -642,6 +663,12 @@ package body Preferences is
       TtkNotebook.Add
         (Notebook, Widget_Image(ShortcutsFrame),
          "-text {" & Mc(Get_Context, "{Keyboard shortcuts}") & "}");
+      Canvas_Create
+        (Canvas, "window",
+         "[expr " & Winfo_Get(Notebook, "reqwidth") & " / 2] [expr " &
+         Winfo_Get(Notebook, "reqheight") & " / 2] -window " & Notebook);
+      Tcl_Eval(Get_Context, "update");
+      configure(Canvas, "-scrollregion [list " & BBox(Canvas, "all") & "]");
       AddCommands;
    end CreatePreferencesUI;
 
