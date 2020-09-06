@@ -261,7 +261,7 @@ package body MainWindow is
       Column(DirectoryTree, "#0", "-stretch false -width 50");
       Column(DirectoryTree, "modified", "-stretch false");
       Column(DirectoryTree, "size", "-stretch false");
-      Bind(DirectoryTree, "<Double-1>", "ActivateItem");
+      Tag_Bind(DirectoryTree, "itemrow", "<Double-1>", "ActivateItem");
       Bind(DirectoryTree, "<Return>", "ActivateItem");
       Bind(DirectoryTree, "<<TreeviewSelect>>", "ShowSelected");
       Bind(DirectoryTree, "<3>", "{ShowFileMenu %X %Y}");
@@ -376,7 +376,7 @@ package body MainWindow is
                     "{} end -id" & Positive'Image(I) & " -values [list {" &
                     To_String(List(I).Name) & "} {" & To_String(TimeString) &
                     "} {" & To_String(SizeString) & "}] -image {" &
-                    To_String(List(I).Image) & "}"));
+                    To_String(List(I).Image) & "} -tags [list itemrow]"));
             if not Settings.ShowHidden and then List(I).IsHidden then
                Detach(DirectoryTree, To_String(ItemIndex));
             elsif SelectedIndex = Null_Unbounded_String or
