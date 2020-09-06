@@ -82,8 +82,8 @@ package body Preferences.Commands is
       Label.Interp := Interp;
       Label.Name :=
         New_String
-          (".preferencesframe.notebook.preferences." & CArgv.Arg(Argv, 1) &
-           "label");
+          (".preferencesframe.canvas.notebook.preferences." &
+           CArgv.Arg(Argv, 1) & "label");
       if CArgv.Arg(Argv, 1) = "directory.interval" then
          Tcl.Tk.Ada.Widgets.configure
            (Label,
@@ -131,7 +131,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.directory.showhidden") =
+           ".preferencesframe.canvas.notebook.preferences.directory.showhidden") =
         "0" then
          Settings.ShowHidden := False;
       else
@@ -174,7 +174,7 @@ package body Preferences.Commands is
         New_String(".mainframe.paned.directoryframe.directorytree");
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.directory.showmodificationtime") =
+           "preferencesframe.canvas.notebook.preferences.directory.showmodificationtime") =
         "0" then
          Settings.ShowLastModified := False;
          Tcl.Tk.Ada.Widgets.configure
@@ -220,7 +220,7 @@ package body Preferences.Commands is
       Paned.Name := New_String(".mainframe.paned");
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.preview.showpreview") =
+           "preferencesframe.canvas.notebook.preferences.preview.showpreview") =
         "0" then
          Settings.ShowPreview := False;
          Forget(Paned, PreviewFrame);
@@ -261,7 +261,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.preview.scaleimages") =
+           "preferencesframe.canvas.notebook.preferences.preview.scaleimages") =
         "0" then
          Settings.ScaleImages := False;
       else
@@ -305,10 +305,10 @@ package body Preferences.Commands is
       ComboBox.Interp := Interp;
       ComboBox.Name :=
         New_String
-          (".preferencesframe.notebook.preferences.preview.colorframe.highlighttheme");
+          ("preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme");
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.preview.syntaxhighlightning") =
+           "preferencesframe.canvas.notebook.preferences.preview.syntaxhighlightning") =
         "0" then
          Settings.ColorText := False;
          State(ComboBox, "disabled");
@@ -354,7 +354,7 @@ package body Preferences.Commands is
       ComboBox.Interp := Interp;
       ComboBox.Name :=
         New_String
-          (".preferencesframe.notebook.preferences.preview.colorframe.highlighttheme");
+          ("preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme");
       Settings.ColorTheme := To_Unbounded_String(Get(ComboBox));
       if MimeType(1 .. 4) = "text" then
          ShowPreview;
@@ -395,7 +395,7 @@ package body Preferences.Commands is
         New_String(".mainframe.paned.previewframe.previewtext");
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.preview.monospacefont") =
+           "preferencesframe.canvas.notebook.preferences.preview.monospacefont") =
         "0" then
          Settings.MonospaceFont := False;
          Widgets.configure(PreviewText, "-font TkDefaultFont");
@@ -435,7 +435,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.interface.stayinold") =
+           "preferencesframe.canvas.notebook.preferences.interface.stayinold") =
         "0" then
          Settings.StayInOld := False;
       else
@@ -473,7 +473,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.interface.showfinished") =
+           "preferencesframe.canvas.notebook.preferences.interface.showfinished") =
         "0" then
          Settings.ShowFinishedInfo := False;
       else
@@ -514,7 +514,7 @@ package body Preferences.Commands is
       Paned.Name := New_String(".mainframe.paned");
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.interface.toolbarsontop") =
+           "preferencesframe.canvas.notebook.preferences.interface.toolbarsontop") =
         "0" then
          Settings.ToolbarsOnTop := False;
       else
@@ -566,7 +566,7 @@ package body Preferences.Commands is
       ButtonMenu.Name := New_String(".deletemenu");
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.deleting.deletefiles") =
+           "preferencesframe.canvas.notebook.preferences.deleting.deletefiles") =
         "0" then
          Settings.DeleteFiles := False;
          Entry_Configure
@@ -609,7 +609,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.deleting.cleartrash") =
+           "preferencesframe.canvas.notebook.preferences.deleting.cleartrash") =
         "0" then
          Settings.ClearTrashOnExit := False;
       else
@@ -647,7 +647,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           ".preferencesframe.notebook.preferences.copying.overwrite") =
+           "preferencesframe.canvas.notebook.preferences.copying.overwrite") =
         "0" then
          Settings.OverwriteOnExist := False;
       else
@@ -767,11 +767,11 @@ package body Preferences.Commands is
       Scale.Interp := Interp;
       Scale.Name :=
         New_String
-          (".preferencesframe.notebook.preferences.directory.intervalscale");
+          (".preferencesframe.canvas.notebook.preferences.directory.intervalscale");
       Settings.AutoRefreshInterval := Natural(Float'Value(Get(Scale)));
       Scale.Name :=
         New_String
-          (".preferencesframe.notebook.preferences.interface.messagesscale");
+          (".preferencesframe.canvas.notebook.preferences.interface.messagesscale");
       Settings.AutoCloseMessagesTime := Natural(Float'Value(Get(Scale)));
       StartTimer;
       Frame.Interp := Interp;
@@ -811,7 +811,7 @@ package body Preferences.Commands is
       ComboBox.Interp := Interp;
       ComboBox.Name :=
         New_String
-          (".preferencesframe.notebook.preferences.interface.colorframe.uitheme");
+          (".preferencesframe.canvas.notebook.preferences.interface.colorframe.uitheme");
       Settings.UITheme := To_Unbounded_String(Get(ComboBox));
       ShowMessage
         (Mc(Interp, "{To use the new UI theme, please restart the program.}"),
@@ -874,7 +874,7 @@ package body Preferences.Commands is
       ComboBox.Interp := Interp;
       ComboBox.Name :=
         New_String
-          (".preferencesframe.notebook.preferences.interface.toolbarframe.toolbarsize");
+          (".preferencesframe.canvas.notebook.preferences.interface.toolbarframe.toolbarsize");
       ToolbarSize := Natural'Value(Current(ComboBox));
       case ToolbarSize is
          when 0 =>
@@ -966,7 +966,7 @@ package body Preferences.Commands is
       Label.Interp := Interp;
       Label.Name :=
         New_String
-          (".preferencesframe.notebook.shortcuts.labelshortcut" &
+          (".preferencesframe.canvas.notebook.shortcuts.labelshortcut" &
            CArgv.Arg(Argv, 1));
       Widgets.configure
         (Label,
@@ -1019,7 +1019,7 @@ package body Preferences.Commands is
       Label.Interp := Interp;
       Label.Name :=
         New_String
-          (".preferencesframe.notebook.shortcuts.labelshortcut" &
+          (".preferencesframe.canvas.notebook.shortcuts.labelshortcut" &
            CArgv.Arg(Argv, 1));
       if Key = "Escape" then
          Widgets.configure
@@ -1097,7 +1097,7 @@ package body Preferences.Commands is
             "{" & To_String(Script) & "}");
          Label.Name :=
            New_String
-             (".preferencesframe.notebook.shortcuts.labelshortcut" &
+             (".preferencesframe.canvas.notebook.shortcuts.labelshortcut" &
               Trim(Positive'Image(I), Left));
          Widgets.configure
            (Label, "-text {" & To_String(Accelerators(I)) & "}");
