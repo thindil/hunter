@@ -327,7 +327,7 @@ package body Toolbars is
          Mc
            (Get_Context,
             "{Restore selected file or directory from the trash }") &
-         " \[" & To_String(Accelerators(17)) & "\]",
+         " \[" & To_String(Accelerators(19)) & "\]",
          "document-revert");
       Separator := Create(".mainframe.toolbars.actiontoolbar.separator3");
       Tcl.Tk.Ada.Pack.Pack(Separator);
