@@ -700,7 +700,7 @@ package body Preferences is
          To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
          To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
          To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
-         To_Unbounded_String("Alt-r"), To_Unbounded_String("Alt-e"),
+         To_Unbounded_String("Alt-d"), To_Unbounded_String("Alt-e"),
          To_Unbounded_String("Alt-s"));
    end SetDefaultAccelerators;
 
