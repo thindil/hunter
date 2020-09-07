@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Keyboard shortcut for quitting from the program now works only when quit
   button is visible
 - Disabled Tab/Alt-Tab traversing by toolbars
+- Default keyboard shortcut for removing bookmarks
 
 ### Fixed
 - Tooltips for remove bookmark, select all and file information buttons
