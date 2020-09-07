@@ -613,8 +613,11 @@ package body Preferences is
               (Mc(Get_Context, "{Add bookmark to this directory}")),
             To_Unbounded_String
               (Mc(Get_Context, "{Remove bookmark from this directory}")),
+            To_Unbounded_String(Mc(Get_Context, "{Execute selected program}")),
             To_Unbounded_String
-              (Mc(Get_Context, "{Execute selected program}")));
+              (Mc
+                 (Get_Context,
+                  "{Restore deleted file or directory from Trash}")));
          Label: Ttk_Label;
          Button: Ttk_Button;
          Image: Tk_Photo;
@@ -697,7 +700,8 @@ package body Preferences is
          To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
          To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
          To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
-         To_Unbounded_String("Alt-r"), To_Unbounded_String("Alt-e"));
+         To_Unbounded_String("Alt-r"), To_Unbounded_String("Alt-e"),
+         To_Unbounded_String("Alt-s"));
    end SetDefaultAccelerators;
 
 end Preferences;
