@@ -14,15 +14,19 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
+with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -44,6 +48,7 @@ package body Trash is
       Size: File_Size;
       FileLine, FullName, MimeType: Unbounded_String;
       Item: Item_Record;
+      Button: Ttk_Button;
    begin
       TemporaryStop := True;
       NewAction := SHOWTRASH;
@@ -160,7 +165,21 @@ package body Trash is
       end loop;
       Close(Directory);
       UpdateDirectoryList(True);
-      Bind_To_Main_Window(Interp, "<" & To_String(Accelerators(19)) & ">", "{RestoreItems}");
+      if ItemsList.Length = 0 then
+         Button.Interp := Interp;
+         Button.Name :=
+           New_String(".mainframe.toolbars.actiontoolbar.restorebutton");
+         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+         Button.Name :=
+           New_String(".mainframe.toolbars.actiontoolbar.deletebutton");
+         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+         Button.Name :=
+           New_String(".mainframe.toolbars.actiontoolbar.separator3");
+         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+      end if;
+      Bind_To_Main_Window
+        (Interp, "<" & To_String(Accelerators(19)) & ">",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.restorebutton}");
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 
