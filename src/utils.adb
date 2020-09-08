@@ -305,27 +305,48 @@ package body Utils is
             Delete(DeleteMenu, "1");
          else
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
-            for I in ButtonsNames'Range loop
-               if I < CurrentButton then
-                  Toolbar.Name :=
-                    New_String
-                      (".mainframe.toolbars.actiontoolbar." &
-                       To_String(ButtonsNames(I)) & "button");
-                  Tcl.Tk.Ada.Pack.Pack
-                    (Toolbar,
-                     "-before .mainframe.toolbars.actiontoolbar." &
-                     To_String(ButtonsNames(CurrentButton)) & "button");
-               elsif I > CurrentButton then
-                  Toolbar.Name :=
-                    New_String
-                      (".mainframe.toolbars.actiontoolbar." &
-                       To_String(ButtonsNames(I)) & "button");
-                  Tcl.Tk.Ada.Pack.Pack
-                    (Toolbar,
-                     "-after .mainframe.toolbars.actiontoolbar." &
-                     To_String(ButtonsNames(I - 1)) & "button");
+            Toolbar.Name :=
+              New_String(".mainframe.toolbars.actiontoolbar.separator3");
+            if Winfo_Get(Toolbar, "ismapped") = "1" then
+               for I in ButtonsNames'Range loop
+                  if I < CurrentButton then
+                     Toolbar.Name :=
+                       New_String
+                         (".mainframe.toolbars.actiontoolbar." &
+                          To_String(ButtonsNames(I)) & "button");
+                     Tcl.Tk.Ada.Pack.Pack
+                       (Toolbar,
+                        "-before .mainframe.toolbars.actiontoolbar." &
+                        To_String(ButtonsNames(CurrentButton)) & "button");
+                  elsif I > CurrentButton then
+                     Toolbar.Name :=
+                       New_String
+                         (".mainframe.toolbars.actiontoolbar." &
+                          To_String(ButtonsNames(I)) & "button");
+                     Tcl.Tk.Ada.Pack.Pack
+                       (Toolbar,
+                        "-after .mainframe.toolbars.actiontoolbar." &
+                        To_String(ButtonsNames(I - 1)) & "button");
+                  end if;
+               end loop;
+            else
+               if not Settings.ToolbarsOnTop then
+                  configure(Toolbar, "-orient horizontal");
+                  Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill x -padx 5 -side top");
+               else
+                  configure(Toolbar, "-orient vertical");
+                  Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill y -pady 5 -side left");
                end if;
-            end loop;
+               for I in ButtonsNames'Range loop
+                  Toolbar.Name :=
+                    New_String
+                      (".mainframe.toolbars.actiontoolbar." &
+                       To_String(ButtonsNames(I)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Toolbar,
+                     "-before .mainframe.toolbars.actiontoolbar.separator3");
+               end loop;
+            end if;
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.separator3");
             Tcl.Tk.Ada.Pack.Pack_Configure
