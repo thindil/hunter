@@ -188,16 +188,13 @@ package body DeleteItems is
       DeleteButton.Interp := Get_Context;
       DeleteButton.Name :=
         New_String(".mainframe.toolbars.actiontoolbar.restorebutton");
-      if Winfo_Get(DeleteButton, "ismapped") = "0" then
-         NewAction := DELETE;
-      else
-         NewAction := DELETETRASH;
-      end if;
-      if Settings.DeleteFiles or NewAction = DELETETRASH then
-         Message := To_Unbounded_String(Mc(Interp, "{Delete?}") & LF);
-      else
-         Message := To_Unbounded_String(Mc(Interp, "{Move to trash?}") & LF);
-      end if;
+      NewAction :=
+        (if Winfo_Get(DeleteButton, "ismapped") = "0" then DELETE
+         else DELETETRASH);
+      Message :=
+        (if Settings.DeleteFiles or NewAction = DELETETRASH then
+           To_Unbounded_String(Mc(Interp, "{Delete?}") & LF)
+         else To_Unbounded_String(Mc(Interp, "{Move to trash?}") & LF));
       while I <= SelectedItems.Last_Index loop
          if NewAction = DELETE then
             Append(Message, SelectedItems(I));
