@@ -26,6 +26,7 @@ use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
@@ -159,7 +160,7 @@ package body Trash is
       end loop;
       Close(Directory);
       UpdateDirectoryList(True);
-      Bind_To_Main_Window(Interp, "<Alt-r>", "{RestoreItems}");
+      Bind_To_Main_Window(Interp, "<" & To_String(Accelerators(19)) & ">", "{RestoreItems}");
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 
