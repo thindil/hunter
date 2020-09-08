@@ -196,11 +196,8 @@ package body CopyItems is
                "{All selected files and directories have been copied.}"),
             "message");
       end if;
-      if Settings.StayInOld then
-         CurrentDirectory := SourceDirectory;
-      else
-         CurrentDirectory := DestinationDirectory;
-      end if;
+      CurrentDirectory :=
+        (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
       UpdateWatch(To_String(CurrentDirectory));
