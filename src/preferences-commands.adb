@@ -174,7 +174,7 @@ package body Preferences.Commands is
         New_String(".mainframe.paned.directoryframe.directorytree");
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.directory.showmodificationtime") =
+           ".preferencesframe.canvas.notebook.preferences.directory.showmodificationtime") =
         "0" then
          Settings.ShowLastModified := False;
          Tcl.Tk.Ada.Widgets.configure
@@ -220,7 +220,7 @@ package body Preferences.Commands is
       Paned.Name := New_String(".mainframe.paned");
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.preview.showpreview") =
+           ".preferencesframe.canvas.notebook.preferences.preview.showpreview") =
         "0" then
          Settings.ShowPreview := False;
          Forget(Paned, PreviewFrame);
@@ -261,7 +261,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.preview.scaleimages") =
+           ".preferencesframe.canvas.notebook.preferences.preview.scaleimages") =
         "0" then
          Settings.ScaleImages := False;
       else
@@ -305,10 +305,10 @@ package body Preferences.Commands is
       ComboBox.Interp := Interp;
       ComboBox.Name :=
         New_String
-          ("preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme");
+          (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme");
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.preview.syntaxhighlightning") =
+           ".preferencesframe.canvas.notebook.preferences.preview.syntaxhighlightning") =
         "0" then
          Settings.ColorText := False;
          State(ComboBox, "disabled");
@@ -354,7 +354,7 @@ package body Preferences.Commands is
       ComboBox.Interp := Interp;
       ComboBox.Name :=
         New_String
-          ("preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme");
+          (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme");
       Settings.ColorTheme := To_Unbounded_String(Get(ComboBox));
       if MimeType(1 .. 4) = "text" then
          ShowPreview;
@@ -395,7 +395,7 @@ package body Preferences.Commands is
         New_String(".mainframe.paned.previewframe.previewtext");
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.preview.monospacefont") =
+           ".preferencesframe.canvas.notebook.preferences.preview.monospacefont") =
         "0" then
          Settings.MonospaceFont := False;
          Widgets.configure(PreviewText, "-font TkDefaultFont");
@@ -435,7 +435,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.interface.stayinold") =
+           ".preferencesframe.canvas.notebook.preferences.interface.stayinold") =
         "0" then
          Settings.StayInOld := False;
       else
@@ -473,7 +473,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.interface.showfinished") =
+           ".preferencesframe.canvas.notebook.preferences.interface.showfinished") =
         "0" then
          Settings.ShowFinishedInfo := False;
       else
@@ -514,7 +514,7 @@ package body Preferences.Commands is
       Paned.Name := New_String(".mainframe.paned");
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.interface.toolbarsontop") =
+           ".preferencesframe.canvas.notebook.preferences.interface.toolbarsontop") =
         "0" then
          Settings.ToolbarsOnTop := False;
       else
@@ -566,7 +566,7 @@ package body Preferences.Commands is
       ButtonMenu.Name := New_String(".deletemenu");
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.deleting.deletefiles") =
+           ".preferencesframe.canvas.notebook.preferences.deleting.deletefiles") =
         "0" then
          Settings.DeleteFiles := False;
          Entry_Configure
@@ -609,7 +609,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.deleting.cleartrash") =
+           ".preferencesframe.canvas.notebook.preferences.deleting.cleartrash") =
         "0" then
          Settings.ClearTrashOnExit := False;
       else
@@ -647,7 +647,7 @@ package body Preferences.Commands is
    begin
       if Tcl_GetVar
           (Interp,
-           "preferencesframe.canvas.notebook.preferences.copying.overwrite") =
+           ".preferencesframe.canvas.notebook.preferences.copying.overwrite") =
         "0" then
          Settings.OverwriteOnExist := False;
       else
