@@ -226,6 +226,15 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".mainframe.toolbars.actiontoolbar.separator2");
       Tcl.Tk.Ada.Pack.Pack(Separator);
+      ToolMenuButton := Create(".mainframe.toolbars.actiontoolbar.userbutton");
+      SetButton
+        (ToolMenuButton,
+         Mc(Get_Context, "{Show user actions menu }") & " \[" &
+         To_String(Accelerators(4)) & "\]",
+         "run-build");
+      Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
+      ButtonMenu := Create(".newmenu", "-tearoff false");
+      configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       ToolMenuButton := Create(".mainframe.toolbars.actiontoolbar.newbutton");
       SetButton
         (ToolMenuButton,
