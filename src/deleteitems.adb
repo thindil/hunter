@@ -25,15 +25,13 @@ with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
+with Interfaces.C;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
-with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
-with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
@@ -183,14 +181,8 @@ package body DeleteItems is
       Message, FileLine: Unbounded_String;
       FileInfo: File_Type;
       I: Positive := SelectedItems.First_Index;
-      DeleteButton: Ttk_Button;
    begin
-      DeleteButton.Interp := Get_Context;
-      DeleteButton.Name :=
-        New_String(".mainframe.toolbars.actiontoolbar.restorebutton");
-      NewAction :=
-        (if Winfo_Get(DeleteButton, "ismapped") = "0" then DELETE
-         else DELETETRASH);
+      NewAction := (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
       Message :=
         (if Settings.DeleteFiles or NewAction = DELETETRASH then
            To_Unbounded_String(Mc(Interp, "{Delete?}") & LF)
