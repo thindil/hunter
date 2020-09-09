@@ -57,18 +57,13 @@ package body ErrorDialog is
       else
          Create(ErrorFile, Append_File, ErrorFilePath);
       end if;
-      Append(ErrorText, Ada.Calendar.Formatting.Image(Clock));
-      Append(ErrorText, LF);
-      Append(ErrorText, "1.5");
-      Append(ErrorText, LF);
-      Append(ErrorText, "Exception: " & Exception_Name(An_Exception));
-      Append(ErrorText, LF);
-      Append(ErrorText, "Message: " & Exception_Message(An_Exception));
-      Append(ErrorText, LF);
-      Append(ErrorText, "-------------------------------------------------");
-      Append(ErrorText, LF);
-      Append(ErrorText, Symbolic_Traceback(An_Exception));
-      Append(ErrorText, LF);
+      Append(ErrorText, Ada.Calendar.Formatting.Image(Clock) & LF);
+      Append(ErrorText, "1.5" & LF);
+      Append(ErrorText, "Exception: " & Exception_Name(An_Exception) & LF);
+      Append(ErrorText, "Message: " & Exception_Message(An_Exception) & LF);
+      Append
+        (ErrorText, "-------------------------------------------------" & LF);
+      Append(ErrorText, Symbolic_Traceback(An_Exception) & LF);
       Append(ErrorText, "-------------------------------------------------");
       Put_Line(ErrorFile, To_String(ErrorText));
       Close(ErrorFile);
@@ -109,7 +104,8 @@ package body ErrorDialog is
            Create
              (".errorlabel2",
               "-text {" &
-              Mc(Interp, "{and attach (if possible) file 'error.log' from '}") &
+              Mc(Interp,
+                 "{and attach (if possible) file 'error.log' from '}") &
               Value("HOME") & "/.cache/hunter' directory.} -wraplength 800");
          CloseButton: constant Ttk_Button :=
            Create
