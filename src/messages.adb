@@ -124,7 +124,6 @@ package body Messages is
       return Interfaces.C.int is
       OverwriteItem: Boolean := True;
       Response: constant String := CArgv.Arg(Argv, 1);
-      Hunter_Message_Exception: exception;
    begin
       if Response = "yesall" then
          YesForAll := True;
@@ -154,12 +153,10 @@ package body Messages is
                   Tcl.Ada.Tcl_Eval
                     (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
                elsif NewAction = DELETETRASH then
-                  if Show_Trash_Command(ClientData, Interp, Argc, Argv) /=
-                    TCL_OK then
-                     raise Hunter_Message_Exception
-                       with Mc(Interp, "{Can't show Trash}");
+                  ToggleToolButtons(NewAction, True);
+                  if Close_Command(ClientData, Interp, Argc, Argv) = TCL_OK then
+                     return Show_Trash_Command(ClientData, Interp, Argc, Argv);
                   end if;
-                  NewAction := DELETETRASH;
                else
                   LoadDirectory(To_String(CurrentDirectory));
                   UpdateDirectoryList(True);
