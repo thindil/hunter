@@ -208,12 +208,13 @@ package body Preferences is
       Close(ConfigFile);
       if not UserCommands.Is_Empty then
          Create
-            (ConfigFile, Append_File,
+           (ConfigFile, Append_File,
             Ada.Environment_Variables.Value("HOME") &
             "/.config/hunter/actions.cfg");
          for I in UserCommands.Iterate loop
             Put_Line
-               (ConfigFile, Bookmarks_Container.Key(I) & " = " & UserCommands(I));
+              (ConfigFile,
+               Bookmarks_Container.Key(I) & " = " & UserCommands(I));
          end loop;
          Close(ConfigFile);
       end if;
@@ -246,6 +247,7 @@ package body Preferences is
         (if FindExecutable("highlight")'Length > 0 then True else False);
       ShortcutsFrame: constant Ttk_Frame :=
         Create(Widget_Image(Notebook) & ".shortcuts");
+      ActionsFrame: constant Ttk_Frame := Create(Notebook & ".actions");
       procedure AddButton
         (Name, Text: String; Value: Boolean; TooltipText, Command: String) is
          CheckButton: constant Ttk_CheckButton :=
@@ -589,6 +591,7 @@ package body Preferences is
       TtkNotebook.Add
         (Notebook, Widget_Image(PreferencesFrame),
          "-text {" & Mc(Get_Context, "{Preferences}") & "}");
+      -- Keyboard shortcuts settings
       declare
          ButtonsFrame: constant Ttk_Frame :=
            Create(Widget_Image(ShortcutsFrame) & ".buttonsframe");
@@ -691,6 +694,54 @@ package body Preferences is
       TtkNotebook.Add
         (Notebook, Widget_Image(ShortcutsFrame),
          "-text {" & Mc(Get_Context, "{Keyboard shortcuts}") & "}");
+      -- Actions settings
+      declare
+         CloseButton: constant Ttk_Button :=
+           Create
+             (ActionsFrame & ".closebutton",
+              "-text {" & Mc(Get_Context, "{Close}") &
+              "} -command {ClosePreferences " & PreferencesFrame & "}");
+         Button: Ttk_Button;
+         Label: Ttk_Label;
+         Tentry: Ttk_Entry;
+      begin
+         LabelFrame :=
+           Create
+             (ActionsFrame & ".addframe",
+              "-text {" & Mc(Get_Context, "{Add a new command}") & "}");
+         Label :=
+           Create
+             (LabelFrame & ".titlelbl",
+              "-text {" & Mc(Get_Context, "{Menu label:}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
+         Tentry := Create(LabelFrame & ".title");
+         Tcl.Tk.Ada.Grid.Grid(Tentry, "-row 0 -column 1");
+         Label :=
+           Create
+             (LabelFrame & ".commandlbl",
+              "-text {" & Mc(Get_Context, "{Command to execute:}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
+         Tentry := Create(LabelFrame & ".command");
+         Tcl.Tk.Ada.Grid.Grid(Tentry, "-row 1 -column 1");
+         Button :=
+           Create
+             (LabelFrame & ".add",
+              "-text {" & Mc(Get_Context, "{Add command}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(Button, "-columnspan 2 -sticky we");
+         Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
+         if not UserCommands.Is_Empty then
+            LabelFrame :=
+              Create
+                (ActionsFrame & ".addframe",
+                 "-text {" & Mc(Get_Context, "{Defined commands}") & "}");
+            Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
+         end if;
+         Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right -anchor s");
+      end;
+      TtkNotebook.Add
+        (Notebook, Widget_Image(ActionsFrame),
+         "-text {" & Mc(Get_Context, "{User commands}") & "}");
       Canvas_Create
         (Canvas, "window",
          "[expr " & Winfo_Get(Notebook, "reqwidth") & " / 2] [expr " &
