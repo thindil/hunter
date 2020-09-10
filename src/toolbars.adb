@@ -232,8 +232,10 @@ package body Toolbars is
          Mc(Get_Context, "{Show user actions menu }") & " \[" &
          To_String(Accelerators(4)) & "\]",
          "run-build");
-      Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
-      ButtonMenu := Create(".newmenu", "-tearoff false");
+      ButtonMenu := Create(".actionsmenu", "-tearoff false");
+      if not Bookmarks_Container.Is_Empty(UserCommands) then
+         Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
+      end if;
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
       ToolMenuButton := Create(".mainframe.toolbars.actiontoolbar.newbutton");
       SetButton
