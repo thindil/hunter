@@ -206,6 +206,17 @@ package body Preferences is
          Put_Line(ConfigFile, To_String(Accel));
       end loop;
       Close(ConfigFile);
+      if not UserCommands.Is_Empty then
+         Create
+            (ConfigFile, Append_File,
+            Ada.Environment_Variables.Value("HOME") &
+            "/.config/hunter/actions.cfg");
+         for I in UserCommands.Iterate loop
+            Put_Line
+               (ConfigFile, Bookmarks_Container.Key(I) & " = " & UserCommands(I));
+         end loop;
+         Close(ConfigFile);
+      end if;
    end SavePreferences;
 
    procedure CreatePreferencesUI is
