@@ -79,11 +79,7 @@ package body LoadData is
          when others =>
             Item.Modified := Time_Of(1_901, 1, 1);
       end;
-      if FileName(1) = '.' then
-         Item.IsHidden := True;
-      else
-         Item.IsHidden := False;
-      end if;
+      Item.IsHidden := (if FileName(1) = '.' then True else False);
       if Is_Directory(Path) then
          Item.IsDirectory := True;
          if Is_Symbolic_Link(Path) then
@@ -91,6 +87,7 @@ package body LoadData is
          else
             Item.Image := To_Unbounded_String("folder");
          end if;
+         Item.Size := -1;
          if Is_Read_Accessible_File(Path) then
             Open(SubDirectory, Path);
             Size := 0;
@@ -110,8 +107,6 @@ package body LoadData is
             Close(SubDirectory);
             Item.Size := Item_Size(Size);
             Item.HiddenItems := HiddenAmount;
-         else
-            Item.Size := -1;
          end if;
       else
          Item.IsDirectory := False;
@@ -147,12 +142,11 @@ package body LoadData is
             ItemsList.Append(Item);
             return;
          end if;
+         Item.Size := 0;
          if Is_Symbolic_Link(Path) then
             Item.Size := -2;
          elsif Is_Regular_File(Path) then
             Item.Size := Item_Size(Ada.Directories.Size(Path));
-         else
-            Item.Size := 0;
          end if;
       end if;
       List.Append(Item);
