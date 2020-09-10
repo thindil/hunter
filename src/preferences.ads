@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Bookmarks; use Bookmarks;
 
 -- ****h* Hunter/Preferences
 -- FUNCTION
@@ -103,6 +104,13 @@ package Preferences is
    -- Array with keyboard shortcuts used by the program
    -- SOURCE
    Accelerators: Accelerators_Array;
+   -- ****
+
+   -- ****v* Preferences/UserCommands
+   -- FUNCTION
+   -- User defined commands list
+   -- SOURCE
+   UserCommands: Bookmarks_Container.Map;
    -- ****
 
    -- ****f* Preferences/LoadSettings
