@@ -131,6 +131,20 @@ package body Preferences is
          end if;
       end loop;
       Close(ConfigFile);
+      Open
+        (ConfigFile, In_File,
+         Ada.Environment_Variables.Value("HOME") &
+         "/.config/hunter/actions.cfg");
+      while not End_Of_File(ConfigFile) loop
+         RawData := To_Unbounded_String(Get_Line(ConfigFile));
+         if Length(RawData) > 0 then
+            EqualIndex := Index(RawData, "=");
+            FieldName := Head(RawData, EqualIndex - 2);
+            Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
+            UserCommands.Include(To_String(FieldName), To_String(Value));
+         end if;
+      end loop;
+      Close(ConfigFile);
    exception
       when Ada.Directories.Name_Error =>
          null;
