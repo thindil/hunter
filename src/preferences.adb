@@ -723,6 +723,12 @@ package body Preferences is
          Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
          Tentry := Create(LabelFrame & ".command");
          Tcl.Tk.Ada.Grid.Grid(Tentry, "-row 1 -column 1");
+         CheckButton :=
+           Create
+             (LabelFrame & ".output",
+              "-text {" & Mc(Get_Context, "{Show command output in preview}") &
+              "}");
+         Tcl.Tk.Ada.Grid.Grid(CheckButton, "-sticky we -columnspan 2");
          Button :=
            Create
              (LabelFrame & ".add",
