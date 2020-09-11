@@ -13,6 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Interfaces.C;
+with CArgv;
+with Tcl; use Tcl;
+
 -- ****h* Hunter/ProgramsMenu
 -- FUNCTION
 -- Provides code for manipulate associated programs with files.
@@ -20,10 +24,31 @@
 package ProgramsMenu is
 -- ****
 
-   -- ****f* ProgramsMenu/CreateProgramsMenu
+   -- ****o* ProgramsMenu/Toggle_Applications_Menu_Command
    -- FUNCTION
-   -- Create associated programs menu popover
+   -- Show or hide menu which allow to set a application which can be used
+   -- to execute the selected file or directory
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- ToggleApplicationsMenu
    -- SOURCE
+   function Toggle_Applications_Menu_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+      -- ****f* ProgramsMenu/CreateProgramsMenu
+      -- FUNCTION
+      -- Create associated programs menu popover
+      -- SOURCE
    procedure CreateProgramsMenu;
    -- ****
 

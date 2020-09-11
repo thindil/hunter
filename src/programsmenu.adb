@@ -22,8 +22,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with CArgv;
-with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
@@ -64,27 +62,6 @@ package body ProgramsMenu is
    -- SOURCE
    package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
    -- ****
-
-   -- ****o* ProgramsMenu/Toggle_Applications_Menu_Command
-   -- FUNCTION
-   -- Show or hide menu which allow to set a application which can be used
-   -- to execute the selected file or directory
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- ToggleApplicationsMenu
-   -- SOURCE
-   function Toggle_Applications_Menu_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-      -- ****
 
    function Toggle_Applications_Menu_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
