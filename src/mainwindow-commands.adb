@@ -42,8 +42,10 @@ with DeleteItems; use DeleteItems;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with LoadData; use LoadData;
+with Messages; use Messages;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
+with ProgramsMenu; use ProgramsMenu;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 
@@ -175,10 +177,10 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Hide text entry or message, depends on which is visible
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
+   -- ClientData - Custom data send to the command.
    -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -195,24 +197,16 @@ package body MainWindow.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
       Frame: Ttk_Frame;
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
-      Hunter_Hide_Widget_Exception: exception;
    begin
       Frame.Interp := Interp;
-      Button.Interp := Interp;
       Frame.Name := New_String(".mainframe.message");
       if Winfo_Get(Frame, "ismapped") = "1" then
-         Button.Name :=
-           New_String(".mainframe.message.buttonsbox.buttonclose");
-         if Invoke(Button) /= "" then
-            raise Hunter_Hide_Widget_Exception
-              with Mc(Interp, "{Can't hide message}");
-         end if;
-         return TCL_OK;
+         return Close_Command(ClientData, Interp, Argc, Argv);
       end if;
+      Button.Interp := Interp;
       Frame.Name := New_String(".mainframe.textframe");
       if Winfo_Get(Frame, "ismapped") = "1" then
          Button.Name :=
@@ -241,14 +235,8 @@ package body MainWindow.Commands is
       Frame.Name :=
         New_String(".mainframe.paned.previewframe.infoframe.applicationsmenu");
       if Winfo_Get(Frame, "ismapped") = "1" then
-         Button.Name :=
-           New_String
-             (".mainframe.paned.previewframe.infoframe.associatedprogram");
-         if Invoke(Button) /= "" then
-            raise Hunter_Hide_Widget_Exception
-              with Mc(Interp, "{Can't hide associated programs menu}");
-         end if;
-         return TCL_OK;
+         return Toggle_Applications_Menu_Command
+             (ClientData, Interp, Argc, Argv);
       end if;
       return TCL_OK;
    end Hide_Widget_Command;

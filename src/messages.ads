@@ -13,6 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Interfaces.C; use Interfaces.C;
+with CArgv;
+with Tcl; use Tcl;
+
 -- ****h* Messages/Messages
 -- FUNCTION
 -- Provide code to show or hide messages to the user.
@@ -28,10 +32,30 @@ package Messages is
    YesForAll: Boolean;
    -- ****
 
-   -- ****f* Messages/CreateMessagesUI
+   -- ****o* Messages/Close_Command
    -- FUNCTION
-   -- Create UI related to the program messages
+   -- Hide message frame
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- CloseMessage
    -- SOURCE
+   function Close_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+      -- ****f* Messages/CreateMessagesUI
+      -- FUNCTION
+      -- Create UI related to the program messages
+      -- SOURCE
    procedure CreateMessagesUI;
    -- ****
 
