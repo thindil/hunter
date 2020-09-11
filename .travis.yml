@@ -14,7 +14,7 @@ install:
    - docker pull docker.pkg.github.com/thindil/tashy/tashy:8.6.8
 
 script:
-   - docker run -v $(pwd):/app docker.pkg.github.com/thindil/tashy/tashy:8.6.8 /bin/sh -c "apt-get update && apt-get install -y libmagic-dev && cd /app && others/build.tcl"
+   - docker run -v $(pwd):/app docker.pkg.github.com/thindil/tashy/tashy:8.6.8 /bin/sh -c "apt-get update && apt-get install -y libmagic-dev libxmlada-schema9-dev libxmlada-input9-dev && cd /app && others/build.tcl"
    - tar -czf hunter-development.tar.gz usr
 
 before_deploy:
