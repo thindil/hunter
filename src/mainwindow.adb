@@ -342,7 +342,8 @@ package body MainWindow is
                when -2 =>
                   SizeString := To_Unbounded_String("->");
                when -1 =>
-                  SizeString := To_Unbounded_String("unknown");
+                  SizeString :=
+                    To_Unbounded_String(Mc(Get_Context, "unknown"));
                when others =>
                   if not List(I).IsDirectory then
                      SizeString :=
@@ -367,7 +368,8 @@ package body MainWindow is
                    (Ada.Calendar.Formatting.Image(List(I).Modified));
             exception
                when Ada.Calendar.Time_Error =>
-                  TimeString := To_Unbounded_String("unknown");
+                  TimeString :=
+                    To_Unbounded_String(Mc(Get_Context, "unknown"));
             end;
             ItemIndex :=
               To_Unbounded_String
