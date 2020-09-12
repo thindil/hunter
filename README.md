@@ -52,6 +52,11 @@ To build you need:
 
 * Tcl/Tk library. Should be available in any Linux distribution.
 
+* XmlAda - Should be available in the most Linux distributions. In other
+  situation, you may need to download it from:
+
+  https://github.com/AdaCore/xmlada
+
 * TASHY library with included binding to Tk and TkLib. You can get it from:
 
    https://github.com/thindil/tashy
