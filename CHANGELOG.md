@@ -14,6 +14,7 @@ All notable changes to this project will be documented in this file.
 - Disabled Tab/Alt-Tab traversing by toolbars
 - Default keyboard shortcut for removing bookmarks
 - Hide Trash actions buttons when Trash is empty
+- Updated README.md
 
 ### Fixed
 - Tooltips for remove bookmark, select all and file information buttons
