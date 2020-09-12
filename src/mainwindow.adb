@@ -74,25 +74,24 @@ package body MainWindow is
       MainFrame: constant Ttk_Frame := Create(".mainframe");
       Paned: constant Ttk_PanedWindow :=
         Create(".mainframe.paned", "-orient horizontal");
-      DirectoryFrame: constant Ttk_Frame :=
-        Create(Widget_Image(Paned) & ".directoryframe");
+      DirectoryFrame: constant Ttk_Frame := Create(Paned & ".directoryframe");
       DirectoryXScroll: constant Ttk_Scrollbar :=
         Create
-          (Widget_Image(DirectoryFrame) & ".scrollx",
-           "-orient horizontal -command [list " &
-           Widget_Image(DirectoryFrame) & ".directorytree xview]");
+          (DirectoryFrame & ".scrollx",
+           "-orient horizontal -command [list " & DirectoryFrame &
+           ".directorytree xview]");
       DirectoryYScroll: constant Ttk_Scrollbar :=
         Create
-          (Widget_Image(DirectoryFrame) & ".scrolly",
-           "-orient vertical -command [list " & Widget_Image(DirectoryFrame) &
+          (DirectoryFrame & ".scrolly",
+           "-orient vertical -command [list " & DirectoryFrame &
            ".directorytree yview]");
       DirectoryTree: constant Ttk_Tree_View :=
         Create
-          (Widget_Image(DirectoryFrame) & ".directorytree",
-           "-columns [list name modified size] -xscrollcommand """ &
-           Widget_Image(DirectoryXScroll) & " set"" -yscrollcommand """ &
-           Widget_Image(DirectoryYScroll) & " set""");
-      HeaderLabel: constant Ttk_Label := Create(".mainframe.headerlabel");
+          (DirectoryFrame & ".directorytree",
+           "-columns [list name modified size] -xscrollcommand {" &
+           DirectoryXScroll & " set} -yscrollcommand {" & DirectoryYScroll &
+           " set}");
+      HeaderLabel: constant Ttk_Label := Create(MainFrame & ".headerlabel");
       IconName: Unbounded_String;
       Icon, Image: Tk_Photo;
       IconsNames: constant array(1 .. 14) of Unbounded_String :=
@@ -110,13 +109,12 @@ package body MainWindow is
          To_Unbounded_String("folder"), To_Unbounded_String("arrow-down"),
          To_Unbounded_String("arrow-up"));
       ProgressBar: constant Ttk_ProgressBar :=
-        Create(".mainframe.progressbar", "-orient horizontal");
-      TextFrame: constant Ttk_Frame := Create(".mainframe.textframe");
-      TextEntry: constant Ttk_Entry :=
-        Create(".mainframe.textframe.textentry");
+        Create(MainFrame & ".progressbar", "-orient horizontal");
+      TextFrame: constant Ttk_Frame := Create(MainFrame & ".textframe");
+      TextEntry: constant Ttk_Entry := Create(TextFrame & ".textentry");
       Button: Ttk_Button;
       PathButtonsFrame: constant Ttk_Frame :=
-        Create(".mainframe.paned.directoryframe.pathframe");
+        Create(MainFrame & ".paned.directoryframe.pathframe");
       FileMenu: constant Tk_Menu := Create(".filemenu", "-tearoff false");
       pragma Unreferenced(Image, ProgressBar, HeaderLabel, FileMenu);
    begin
@@ -278,14 +276,13 @@ package body MainWindow is
       Column_Configure(MainFrame, Paned, "-weight 1");
       Button :=
         Create
-          (".mainframe.textframe.closebutton",
+          (TextFrame & ".closebutton",
            "-image dialog-cancelicon -style Toolbutton -command HideWidget");
       Add
         (Button, Mc(Get_Context, "{Hide entry without entering any changes}"));
       Tcl.Tk.Ada.Grid.Grid(Button);
       Tcl.Tk.Ada.Grid.Grid(TextEntry, "-column 1 -row 0 -sticky we");
-      Button :=
-        Create(".mainframe.textframe.okbutton", "-image ok -style Toolbutton");
+      Button := Create(TextFrame & ".okbutton", "-image ok -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
       Bind(TextEntry, "<Return>", "{.mainframe.textframe.okbutton invoke}");
       Column_Configure(TextFrame, TextEntry, "-weight 1");
