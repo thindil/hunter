@@ -13,8 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
+with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Bookmarks; use Bookmarks;
 
 -- ****h* Hunter/Preferences
 -- FUNCTION
@@ -96,7 +97,7 @@ package Preferences is
    -- FUNCTION
    -- Array used to store keyboard shortcuts
    -- SOURCE
-   type Accelerators_Array is array (1 .. 19) of Unbounded_String;
+   type Accelerators_Array is array(1 .. 19) of Unbounded_String;
    -- ****
 
    -- ****v* Preferences/Accelerators
@@ -106,11 +107,24 @@ package Preferences is
    Accelerators: Accelerators_Array;
    -- ****
 
+   type UserCommand is record
+      NeedOutput: Boolean;
+      Command: Unbounded_String;
+   end record;
+
+   -- ****t* Bookmarks/Bookmarks_Container
+   -- FUNCTION
+   -- Used to store all bookmarks
+   -- SOURCE
+   package Commands_Container is new Indefinite_Hashed_Maps(String,
+      UserCommand, Ada.Strings.Hash, "=");
+   -- ****
+
    -- ****v* Preferences/UserCommands
    -- FUNCTION
    -- User defined commands list
    -- SOURCE
-   UserCommands: Bookmarks_Container.Map;
+   UserCommands: Commands_Container.Map;
    -- ****
 
    -- ****f* Preferences/LoadSettings
