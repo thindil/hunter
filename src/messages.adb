@@ -102,11 +102,7 @@ package body Messages is
       OverwriteItem: Boolean := True;
       Response: constant String := CArgv.Arg(Argv, 1);
    begin
-      if Response = "yesall" then
-         YesForAll := True;
-      else
-         YesForAll := False;
-      end if;
+      YesForAll := (if Response = "yesall" then True else False);
       case NewAction is
          when DELETE | CLEARTRASH | DELETETRASH =>
             if NewAction /= CLEARTRASH then
@@ -131,7 +127,8 @@ package body Messages is
                     (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
                elsif NewAction = DELETETRASH then
                   ToggleToolButtons(NewAction, True);
-                  if Close_Command(ClientData, Interp, Argc, Argv) = TCL_OK then
+                  if Close_Command(ClientData, Interp, Argc, Argv) =
+                    TCL_OK then
                      return Show_Trash_Command(ClientData, Interp, Argc, Argv);
                   end if;
                else
@@ -196,6 +193,17 @@ package body Messages is
    procedure CreateMessagesUI is
       ButtonsBox: Ttk_Frame;
       Button: Ttk_Button;
+      procedure AddButton
+        (Name, Text, Response: String; Column: Natural := 0) is
+         ResponseButton: constant Ttk_Button :=
+           Create
+             (ButtonsBox & ".button" & Name,
+              "-text {" & Mc(Get_Context, "{" & Text & "}") &
+              "} -command {MessageResponse " & Response & "}");
+      begin
+         Tcl.Tk.Ada.Grid.Grid
+           (ResponseButton, "-row 0 -column" & Natural'Image(Column));
+      end AddButton;
    begin
       AddCommand("CloseMessage", Close_Command'Access);
       AddCommand("MessageResponse", Response_Command'Access);
@@ -209,35 +217,15 @@ package body Messages is
       Style_Configure
         ("question.TLabel", "-background #3daee9 -foreground #ffffff");
       MessageFrame := Create(".mainframe.message");
-      MessageLabel := Create(".mainframe.message.label", "-wraplength 800");
-      ButtonsBox := Create(".mainframe.message.buttonsbox");
+      MessageLabel := Create(MessageFrame & ".label", "-wraplength 800");
+      ButtonsBox := Create(MessageFrame & ".buttonsbox");
+      AddButton("no", "No", "no");
+      AddButton("yes", "Yes", "yes", 1);
+      AddButton("noall", "No for all", "noall", 2);
+      AddButton("yesall", "Yes for all", "yesall", 3);
       Button :=
         Create
-          (".mainframe.message.buttonsbox.buttonno",
-           "-text " & Mc(Get_Context, "{No}") &
-           " -command {MessageResponse no}");
-      Tcl.Tk.Ada.Grid.Grid(Button);
-      Button :=
-        Create
-          (".mainframe.message.buttonsbox.buttonyes",
-           "-text " & Mc(Get_Context, "{Yes}") &
-           " -command {MessageResponse yes}");
-      Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 0");
-      Button :=
-        Create
-          (".mainframe.message.buttonsbox.buttonnoall",
-           "-text {" & Mc(Get_Context, "{No for all}") &
-           "} -command {MessageResponse noall}");
-      Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
-      Button :=
-        Create
-          (".mainframe.message.buttonsbox.buttonyesall",
-           "-text {" & Mc(Get_Context, "{Yes for all}") &
-           "} -command {MessageResponse yesall}");
-      Tcl.Tk.Ada.Grid.Grid(Button, "-column 3 -row 0");
-      Button :=
-        Create
-          (".mainframe.message.buttonsbox.buttonclose",
+          (ButtonsBox & ".buttonclose",
            "-text x -style Toolbutton -command CloseMessage");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 4 -row 0");
       Tcl.Tk.Ada.Pack.Pack(ButtonsBox, "-side right");
@@ -246,11 +234,11 @@ package body Messages is
 
    procedure ShowMessage(Message: String; MessageType: String := "error") is
       ButtonsNames: constant array(1 .. 5) of Unbounded_String :=
-        (To_Unbounded_String(".mainframe.message.buttonsbox.buttonno"),
-         To_Unbounded_String(".mainframe.message.buttonsbox.buttonyes"),
-         To_Unbounded_String(".mainframe.message.buttonsbox.buttonnoall"),
-         To_Unbounded_String(".mainframe.message.buttonsbox.buttonyesall"),
-         To_Unbounded_String(".mainframe.message.buttonsbox.buttonclose"));
+        (To_Unbounded_String(MessageFrame & ".buttonsbox.buttonno"),
+         To_Unbounded_String(MessageFrame & ".buttonsbox.buttonyes"),
+         To_Unbounded_String(MessageFrame & ".buttonsbox.buttonnoall"),
+         To_Unbounded_String(MessageFrame & ".buttonsbox.buttonyesall"),
+         To_Unbounded_String(MessageFrame & ".buttonsbox.buttonclose"));
       Button: Ttk_Button;
    begin
       if MessageFrame.Interp = null then
