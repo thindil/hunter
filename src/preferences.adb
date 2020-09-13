@@ -114,7 +114,7 @@ package body Preferences is
             elsif Get_Attribute(DataNode, "name") = "ColorText" then
                Settings.ColorText :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ColorThere" then
+            elsif Get_Attribute(DataNode, "name") = "ColorTheme" then
                Settings.ColorTheme :=
                  To_Unbounded_String(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "DeleteFiles" then
