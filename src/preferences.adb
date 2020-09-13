@@ -18,8 +18,11 @@ with Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
-with Preferences.Commands; use Preferences.Commands;
-with Utils; use Utils;
+with DOM.Core; use DOM.Core;
+with DOM.Core.Nodes; use DOM.Core.Nodes;
+with DOM.Core.Elements; use DOM.Core.Elements;
+with DOM.Readers; use DOM.Readers;
+with Input_Sources.File; use Input_Sources.File;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
@@ -45,106 +48,114 @@ with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Preferences.Commands; use Preferences.Commands;
+with Utils; use Utils;
 
 package body Preferences is
 
    procedure LoadSettings is
-      ConfigFile: File_Type;
-      RawData, FieldName, Value: Unbounded_String;
-      EqualIndex: Natural;
-      KeyIndex: Positive := 1;
-      function LoadBoolean return Boolean is
+      Reader: Tree_Reader;
+      DataFile: File_Input;
+      SettingsData: Document;
+      NodesList: Node_List;
+      NodeName: Unbounded_String;
+      DataNode: Node;
+      function LoadBoolean(Value: String) return Boolean is
       begin
-         if Value = To_Unbounded_String("Yes") then
+         if Value = "Yes" then
             return True;
+         else
+            return False;
          end if;
-         return False;
       end LoadBoolean;
    begin
       SetDefaultSettings;
       SetDefaultAccelerators;
       Open
-        (ConfigFile, In_File,
-         Ada.Environment_Variables.Value("HOME") &
-         "/.config/hunter/hunter.cfg");
-      while not End_Of_File(ConfigFile) loop
-         RawData := To_Unbounded_String(Get_Line(ConfigFile));
-         if Length(RawData) > 0 then
-            EqualIndex := Index(RawData, "=");
-            FieldName := Head(RawData, EqualIndex - 2);
-            Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
-            if FieldName = To_Unbounded_String("ShowHidden") then
-               Settings.ShowHidden := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("ShowLastModified") then
-               Settings.ShowLastModified := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("ScaleImages") then
-               Settings.ScaleImages := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("AutoCloseMessagesTime") then
+        (Ada.Environment_Variables.Value("HOME") &
+         "/.config/hunter/hunter.xml",
+         DataFile);
+      Parse(Reader, DataFile);
+      Close(DataFile);
+      SettingsData := Get_Tree(Reader);
+      NodesList := Child_Nodes(First_Child(SettingsData));
+      for I in 0 .. Length(NodesList) - 1 loop
+         DataNode := Item(NodesList, I);
+         NodeName := To_Unbounded_String(Node_Name(DataNode));
+         -- The program settings
+         if NodeName = To_Unbounded_String("setting") then
+            if Get_Attribute(DataNode, "name") = "ShowHidden" then
+               Settings.ShowHidden :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "ShowLastModified" then
+               Settings.ShowLastModified :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "ScaleImages" then
+               Settings.ScaleImages :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") =
+              "AutoCloseMessagesTime" then
                Settings.AutoCloseMessagesTime :=
-                 Natural'Value(To_String(Value));
-            elsif FieldName = To_Unbounded_String("WindowWidth") then
-               Settings.WindowWidth := Positive'Value(To_String(Value));
-            elsif FieldName = To_Unbounded_String("WindowHeight") then
-               Settings.WindowHeight := Positive'Value(To_String(Value));
-            elsif FieldName = To_Unbounded_String("ShowPreview") then
-               Settings.ShowPreview := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("StayInOld") then
-               Settings.StayInOld := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("ColorText") then
-               Settings.ColorText := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("ColorTheme") then
-               Settings.ColorTheme := Value;
-            elsif FieldName = To_Unbounded_String("DeleteFiles") then
-               Settings.DeleteFiles := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("ClearTrashOnExit") then
-               Settings.ClearTrashOnExit := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("ShowFinishedInfo") then
-               Settings.ShowFinishedInfo := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("OverwriteOnExist") then
-               Settings.OverwriteOnExist := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("ToolbarsOnTop") then
-               Settings.ToolbarsOnTop := LoadBoolean;
-            elsif FieldName = To_Unbounded_String("AutoRefreshInterval") then
+                 Natural'Value(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "WindowWidth" then
+               Settings.WindowWidth :=
+                 Positive'Value(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "WindowHeight" then
+               Settings.WindowHeight :=
+                 Positive'Value(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "ShowPreview" then
+               Settings.ShowPreview :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "StayInOld" then
+               Settings.StayInOld :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "ColorText" then
+               Settings.ColorText :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "ColorThere" then
+               Settings.ColorTheme :=
+                 To_Unbounded_String(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "DeleteFiles" then
+               Settings.DeleteFiles :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "ClearTrashOnExit" then
+               Settings.ClearTrashOnExit :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "ShowFinishedInfo" then
+               Settings.ShowFinishedInfo :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "OverwriteOnExist" then
+               Settings.OverwriteOnExist :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "ToolbarsOnTop" then
+               Settings.ToolbarsOnTop :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "AutoRefreshInterval" then
                Settings.AutoRefreshInterval :=
-                 Positive'Value(To_String(Value));
-            elsif FieldName = To_Unbounded_String("UITheme") then
-               Settings.UITheme := Value;
-            elsif FieldName = To_Unbounded_String("ToolbarsSize") then
-               Settings.ToolbarsSize := Positive'Value(To_String(Value));
-            elsif FieldName = To_Unbounded_String("MonospaceFont") then
-               Settings.MonospaceFont := LoadBoolean;
+                 Natural'Value(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "UITheme" then
+               Settings.UITheme :=
+                 To_Unbounded_String(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "ToolbarsSize" then
+               Settings.ToolbarsSize :=
+                 Positive'Value(Get_Attribute(DataNode, "value"));
+            elsif Get_Attribute(DataNode, "name") = "MonospaceFont" then
+               Settings.MonospaceFont :=
+                 LoadBoolean(Get_Attribute(DataNode, "value"));
             end if;
+         -- Add the keyboard shortcuts
+         elsif NodeName = To_Unbounded_String("accelerator") then
+            Accelerators(Positive'Value(Get_Attribute(DataNode, "index"))) :=
+              To_Unbounded_String(Get_Attribute(DataNode, "value"));
+         -- Add the user defined commands
+         elsif NodeName = To_Unbounded_String("command") then
+            UserCommands.Include
+              (Get_Attribute(DataNode, "menuentry"), Node_Value(DataNode));
          end if;
       end loop;
       if FindExecutable("highlight") = "" then
          Settings.ColorText := False;
       end if;
-      Close(ConfigFile);
-      Open
-        (ConfigFile, In_File,
-         Ada.Environment_Variables.Value("HOME") & "/.config/hunter/keys.cfg");
-      while not End_Of_File(ConfigFile) loop
-         RawData := To_Unbounded_String(Get_Line(ConfigFile));
-         if Length(RawData) > 0 then
-            Accelerators(KeyIndex) := RawData;
-            KeyIndex := KeyIndex + 1;
-         end if;
-      end loop;
-      Close(ConfigFile);
-      Open
-        (ConfigFile, In_File,
-         Ada.Environment_Variables.Value("HOME") &
-         "/.config/hunter/actions.cfg");
-      while not End_Of_File(ConfigFile) loop
-         RawData := To_Unbounded_String(Get_Line(ConfigFile));
-         if Length(RawData) > 0 then
-            EqualIndex := Index(RawData, "=");
-            FieldName := Head(RawData, EqualIndex - 2);
-            Value := Tail(RawData, (Length(RawData) - EqualIndex - 1));
-            UserCommands.Include(To_String(FieldName), To_String(Value));
-         end if;
-      end loop;
-      Close(ConfigFile);
    exception
       when Ada.Directories.Name_Error =>
          null;
