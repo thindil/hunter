@@ -151,8 +151,17 @@ package body Preferences is
               To_Unbounded_String(Get_Attribute(DataNode, "value"));
          -- The user defined commands
          elsif NodeName = To_Unbounded_String("command") then
-            UserCommands.Include
-              (Get_Attribute(DataNode, "menuentry"), Node_Value(DataNode));
+            if Get_Attribute(DataNode, "needoutput") = "Yes" then
+               UserCommands.Include
+                 (Get_Attribute(DataNode, "menuentry"),
+                  (NeedOutput => True,
+                   Command => To_Unbounded_String(Node_Value(DataNode))));
+            else
+               UserCommands.Include
+                 (Get_Attribute(DataNode, "menuentry"),
+                  (NeedOutput => False,
+                   Command => To_Unbounded_String(Node_Value(DataNode))));
+            end if;
          end if;
       end loop;
       if FindExecutable("highlight") = "" then
@@ -168,7 +177,7 @@ package body Preferences is
       Configuration: DOM_Implementation;
       SettingNode, MainNode: DOM.Core.Element;
       SettingsData: Document;
-      UserCommand: Text;
+      UserCommandNode: Text;
       procedure SaveBoolean(Value: Boolean; Name: String) is
       begin
          SettingNode := Create_Element(SettingsData, "setting");
@@ -233,9 +242,15 @@ package body Preferences is
       for I in UserCommands.Iterate loop
          SettingNode := Create_Element(SettingsData, "command");
          SettingNode := Append_Child(MainNode, SettingNode);
-         Set_Attribute(SettingNode, "menuentry", Bookmarks_Container.Key(I));
-         UserCommand := Create_Text_Node(SettingsData, UserCommands(I));
-         UserCommand := Append_Child(SettingNode, UserCommand);
+         Set_Attribute(SettingNode, "menuentry", Commands_Container.Key(I));
+         if UserCommands(I).NeedOutput then
+            Set_Attribute(SettingNode, "needoutput", "Yes");
+         else
+            Set_Attribute(SettingNode, "needoutput", "No");
+         end if;
+         UserCommandNode :=
+           Create_Text_Node(SettingsData, To_String(UserCommands(I).Command));
+         UserCommandNode := Append_Child(SettingNode, UserCommandNode);
       end loop;
       Create
         (ConfigFile, Out_File,

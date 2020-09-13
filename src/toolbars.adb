@@ -233,7 +233,7 @@ package body Toolbars is
          To_String(Accelerators(4)) & "\]",
          "run-build");
       ButtonMenu := Create(".actionsmenu", "-tearoff false");
-      if not Bookmarks_Container.Is_Empty(UserCommands) then
+      if not Commands_Container.Is_Empty(UserCommands) then
          Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       end if;
       configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
