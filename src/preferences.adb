@@ -18,7 +18,9 @@ with Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
 with DOM.Core; use DOM.Core;
+with DOM.Core.Documents; use DOM.Core.Documents;
 with DOM.Core.Nodes; use DOM.Core.Nodes;
 with DOM.Core.Elements; use DOM.Core.Elements;
 with DOM.Readers; use DOM.Readers;
@@ -163,72 +165,86 @@ package body Preferences is
 
    procedure SavePreferences is
       ConfigFile: File_Type;
+      Configuration: DOM_Implementation;
+      SettingNode, MainNode: DOM.Core.Element;
+      SettingsData: Document;
+      UserCommand: Text;
       procedure SaveBoolean(Value: Boolean; Name: String) is
       begin
+         SettingNode := Create_Element(SettingsData, "setting");
+         SettingNode := Append_Child(MainNode, SettingNode);
+         Set_Attribute(SettingNode, "name", Name);
          if Value then
-            Put_Line(ConfigFile, Name & " = Yes");
+            Set_Attribute(SettingNode, "value", "Yes");
          else
-            Put_Line(ConfigFile, Name & " = No");
+            Set_Attribute(SettingNode, "value", "No");
          end if;
       end SaveBoolean;
+      procedure SaveNumber(Value: Natural; Name: String) is
+         RawValue: constant String :=
+           Trim(Natural'Image(Value), Ada.Strings.Left);
+      begin
+         SettingNode := Create_Element(SettingsData, "setting");
+         SettingNode := Append_Child(MainNode, SettingNode);
+         Set_Attribute(SettingNode, "name", Name);
+         Set_Attribute(SettingNode, "value", RawValue);
+      end SaveNumber;
+      procedure SaveString(Value: Unbounded_String; Name: String) is
+      begin
+         SettingNode := Create_Element(SettingsData, "setting");
+         SettingNode := Append_Child(MainNode, SettingNode);
+         Set_Attribute(SettingNode, "name", Name);
+         Set_Attribute(SettingNode, "value", To_String(Value));
+      end SaveString;
    begin
       if not Ada.Directories.Exists
           (Ada.Environment_Variables.Value("HOME") & "/.config/hunter") then
          Create_Path
            (Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
       end if;
-      Create
-        (ConfigFile, Append_File,
-         Ada.Environment_Variables.Value("HOME") &
-         "/.config/hunter/hunter.cfg");
+      SettingsData := Create_Document(Configuration);
+      MainNode := Create_Element(SettingsData, "hunter");
+      MainNode := Append_Child(SettingsData, MainNode);
       SaveBoolean(Settings.ShowHidden, "ShowHidden");
       SaveBoolean(Settings.ShowLastModified, "ShowLastModified");
       SaveBoolean(Settings.ScaleImages, "ScaleImages");
-      Put_Line
-        (ConfigFile,
-         "AutoCloseMessagesTime =" &
-         Natural'Image(Settings.AutoCloseMessagesTime));
-      Put_Line
-        (ConfigFile, "WindowWidth =" & Positive'Image(Settings.WindowWidth));
-      Put_Line
-        (ConfigFile, "WindowHeight =" & Positive'Image(Settings.WindowHeight));
+      SaveNumber(Settings.AutoCloseMessagesTime, "AutoCloseMessagesTime");
+      SaveNumber(Settings.WindowWidth, "WindowWidth");
+      SaveNumber(Settings.WindowHeight, "WindowHeight");
       SaveBoolean(Settings.ShowPreview, "ShowPreview");
       SaveBoolean(Settings.StayInOld, "StayInOld");
       SaveBoolean(Settings.ColorText, "ColorText");
-      Put_Line(ConfigFile, "ColorTheme = " & To_String(Settings.ColorTheme));
+      SaveString(Settings.ColorTheme, "ColorTheme");
       SaveBoolean(Settings.DeleteFiles, "DeleteFiles");
       SaveBoolean(Settings.ClearTrashOnExit, "ClearTrashOnExit");
       SaveBoolean(Settings.ShowFinishedInfo, "ShowFinishedInfo");
       SaveBoolean(Settings.OverwriteOnExist, "OverwriteOnExist");
       SaveBoolean(Settings.ToolbarsOnTop, "ToolbarsOnTop");
-      Put_Line
-        (ConfigFile,
-         "AutoRefreshInterval =" &
-         Positive'Image(Settings.AutoRefreshInterval));
-      Put_Line(ConfigFile, "UITheme = " & To_String(Settings.UITheme));
-      Put_Line
-        (ConfigFile, "ToolbarsSize =" & Positive'Image(Settings.ToolbarsSize));
+      SaveNumber(Settings.AutoRefreshInterval, "AutoRefreshInterval");
+      SaveString(Settings.UITheme, "UITheme");
+      SaveNumber(Settings.ToolbarsSize, "ToolbarsSize");
       SaveBoolean(Settings.MonospaceFont, "MonospaceFont");
-      Close(ConfigFile);
-      Create
-        (ConfigFile, Append_File,
-         Ada.Environment_Variables.Value("HOME") & "/.config/hunter/keys.cfg");
-      for Accel of Accelerators loop
-         Put_Line(ConfigFile, To_String(Accel));
+      for I in Accelerators'Range loop
+         SettingNode := Create_Element(SettingsData, "accelerator");
+         SettingNode := Append_Child(MainNode, SettingNode);
+         Set_Attribute(SettingNode, "index", Trim(Positive'Image(I), Left));
+         Set_Attribute(SettingNode, "value", To_String(Accelerators(I)));
       end loop;
+      for I in UserCommands.Iterate loop
+         SettingNode := Create_Element(SettingsData, "command");
+         SettingNode := Append_Child(MainNode, SettingNode);
+         Set_Attribute(SettingNode, "menuentry", Bookmarks_Container.Key(I));
+         UserCommand := Create_Text_Node(SettingsData, UserCommands(I));
+         UserCommand := Append_Child(SettingNode, UserCommand);
+      end loop;
+      Create
+        (ConfigFile, Out_File,
+         Ada.Environment_Variables.Value("HOME") &
+         "/.config/hunter/hunter.xml");
+      Write
+        (Stream => Stream(ConfigFile), N => SettingsData,
+         Pretty_Print => True);
       Close(ConfigFile);
-      if not UserCommands.Is_Empty then
-         Create
-           (ConfigFile, Append_File,
-            Ada.Environment_Variables.Value("HOME") &
-            "/.config/hunter/actions.cfg");
-         for I in UserCommands.Iterate loop
-            Put_Line
-              (ConfigFile,
-               Bookmarks_Container.Key(I) & " = " & UserCommands(I));
-         end loop;
-         Close(ConfigFile);
-      end if;
    end SavePreferences;
 
    procedure CreatePreferencesUI is
