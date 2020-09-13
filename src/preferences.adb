@@ -143,11 +143,11 @@ package body Preferences is
                Settings.MonospaceFont :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             end if;
-         -- Add the keyboard shortcuts
+         -- The keyboard shortcuts
          elsif NodeName = To_Unbounded_String("accelerator") then
             Accelerators(Positive'Value(Get_Attribute(DataNode, "index"))) :=
               To_Unbounded_String(Get_Attribute(DataNode, "value"));
-         -- Add the user defined commands
+         -- The user defined commands
          elsif NodeName = To_Unbounded_String("command") then
             UserCommands.Include
               (Get_Attribute(DataNode, "menuentry"), Node_Value(DataNode));
