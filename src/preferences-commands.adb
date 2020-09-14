@@ -31,6 +31,7 @@ with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
 use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
@@ -1105,6 +1106,64 @@ package body Preferences.Commands is
       return TCL_OK;
    end Restore_Default_Shortcuts_Command;
 
+   -- ****o* PCommands/Add_Command_Command
+   -- FUNCTION
+   -- Add user defined command
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- AddCommand
+   -- SOURCE
+   function Add_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Add_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc, Argv);
+      Tentry: Ttk_Entry;
+      MenuEntry, Command: Unbounded_String;
+      NeedOutput: Boolean;
+   begin
+      Tentry.Interp := Interp;
+      Tentry.Name :=
+        New_String(".preferencesframe.canvas.notebook.actions.addframe.title");
+      MenuEntry := To_Unbounded_String(Get(Tentry));
+      if MenuEntry = Null_Unbounded_String then
+         return TCL_OK;
+      end if;
+      if UserCommands.Contains(To_String(MenuEntry)) then
+         return TCL_OK;
+      end if;
+      Tentry.Name :=
+        New_String
+          (".preferencesframe.canvas.notebook.actions.addframe.command");
+      Command := To_Unbounded_String(Get(Tentry));
+      if Command = Null_Unbounded_String then
+         return TCL_OK;
+      end if;
+      if Tcl_GetVar
+          (Interp,
+           ".preferencesframe.canvas.notebook.actions.addframe.output") =
+        "1" then
+         NeedOutput := True;
+      else
+         NeedOutput := False;
+      end if;
+      UserCommands.Include(To_String(MenuEntry), (NeedOutput, Command));
+      return TCL_OK;
+   end Add_Command_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -1133,6 +1192,7 @@ package body Preferences.Commands is
       AddCommand("ChangeShortcut", Change_Shortcut_Command'Access);
       AddCommand
         ("RestoreDefaultShortcuts", Restore_Default_Shortcuts_Command'Access);
+      AddCommand("AddCommand", Add_Command_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;

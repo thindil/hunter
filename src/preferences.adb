@@ -774,7 +774,8 @@ package body Preferences is
          Button :=
            Create
              (LabelFrame & ".add",
-              "-text {" & Mc(Get_Context, "{Add command}") & "}");
+              "-text {" & Mc(Get_Context, "{Add command}") &
+              "} -command AddCommand");
          Tcl.Tk.Ada.Grid.Grid(Button, "-columnspan 2 -sticky we");
          Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
          if not UserCommands.Is_Empty then
