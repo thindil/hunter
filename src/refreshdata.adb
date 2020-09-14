@@ -21,6 +21,7 @@ with Tcl; use Tcl;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Inotify; use Inotify;
+pragma Elaborate_All(Inotify);
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;

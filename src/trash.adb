@@ -27,11 +27,11 @@ with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Inotify; use Inotify;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
-with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 
