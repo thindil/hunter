@@ -112,12 +112,10 @@ package body MoveItems is
            Simple_Name(To_String(MoveItemsList(1)));
          if Exists(To_String(NewName)) then
             if not Overwrite and Settings.OverwriteOnExist then
-               if Is_Directory(To_String(NewName)) then
-                  ItemType :=
-                    To_Unbounded_String(Mc(Get_Context, "{Directory}"));
-               else
-                  ItemType := To_Unbounded_String(Mc(Get_Context, "{File}"));
-               end if;
+               ItemType :=
+                 (if Is_Directory(To_String(NewName)) then
+                    To_Unbounded_String(Mc(Get_Context, "{Directory}"))
+                  else To_Unbounded_String(Mc(Get_Context, "{File}")));
                ShowMessage
                  (To_String(ItemType) & " " &
                   Simple_Name(To_String(MoveItemsList(1))) &
@@ -173,11 +171,8 @@ package body MoveItems is
                "{All selected files and directories have been moved.}"),
             "message");
       end if;
-      if Settings.StayInOld then
-         CurrentDirectory := SourceDirectory;
-      else
-         CurrentDirectory := DestinationDirectory;
-      end if;
+      CurrentDirectory :=
+        (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
       CurrentSelected :=
         CurrentDirectory & "/" & Simple_Name(To_String(CurrentSelected));
       LoadDirectory(To_String(CurrentDirectory));
