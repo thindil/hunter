@@ -69,6 +69,14 @@ package Inotify is
    EventsList: Events_Container.Vector;
    -- ****
 
+   -- ****v* Inotify/TemporaryStop
+   -- FUNCTION
+   -- If true, temporary stop refreshing directory listing (mainly in trash).
+   -- Default is false
+   -- SOURCE
+   TemporaryStop: Boolean := False;
+   -- ****
+
    -- ****f* Inotify/InotifyInit
    -- FUNCTION
    -- Start inotify instance

@@ -30,14 +30,6 @@ package RefreshData is
    end InotifyTask;
    -- ****
 
-   -- ****v* RefreshData/TemporaryStop
-   -- FUNCTION
-   -- If true, temporary stop refreshing directory listing (mainly in trash).
-   -- Default is false
-   -- SOURCE
-   TemporaryStop: Boolean := False;
-   -- ****
-
    -- ****f* RefreshData/StartTimer
    -- FUNCTION
    -- Start timer for refreshing current directory listing
