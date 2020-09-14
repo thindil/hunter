@@ -781,7 +781,7 @@ package body Preferences is
          if not UserCommands.Is_Empty then
             LabelFrame :=
               Create
-                (ActionsFrame & ".addframe",
+                (ActionsFrame & ".commandsframe",
                  "-text {" & Mc(Get_Context, "{Defined commands}") & "}");
             Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
          end if;
