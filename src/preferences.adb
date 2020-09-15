@@ -155,12 +155,14 @@ package body Preferences is
                UserCommands.Include
                  (Get_Attribute(DataNode, "menuentry"),
                   (NeedOutput => True,
-                   Command => To_Unbounded_String(Node_Value(DataNode))));
+                   Command =>
+                     To_Unbounded_String(Node_Value(First_Child(DataNode)))));
             else
                UserCommands.Include
                  (Get_Attribute(DataNode, "menuentry"),
                   (NeedOutput => False,
-                   Command => To_Unbounded_String(Node_Value(DataNode))));
+                   Command =>
+                     To_Unbounded_String(Node_Value(First_Child(DataNode)))));
             end if;
          end if;
       end loop;
