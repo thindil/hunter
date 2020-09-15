@@ -163,4 +163,11 @@ package Preferences is
    procedure SetDefaultAccelerators;
    -- ****
 
+   -- ****f* Preferences/UpdateUserCommandsList
+   -- FUNCTION
+   -- Update list of user defined commands
+   -- SOURCE
+   procedure UpdateUserCommandsList;
+   -- ****
+
 end Preferences;
