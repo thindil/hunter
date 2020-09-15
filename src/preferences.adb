@@ -19,6 +19,8 @@ with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
+with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.String_Split; use GNAT.String_Split;
 with DOM.Core; use DOM.Core;
 with DOM.Core.Documents; use DOM.Core.Documents;
 with DOM.Core.Nodes; use DOM.Core.Nodes;
@@ -748,7 +750,6 @@ package body Preferences is
          Button: Ttk_Button;
          Label: Ttk_Label;
          Tentry: Ttk_Entry;
-         Row: Positive := 1;
       begin
          LabelFrame :=
            Create
@@ -781,48 +782,18 @@ package body Preferences is
               "} -command AddCommand");
          Tcl.Tk.Ada.Grid.Grid(Button, "-columnspan 2 -sticky we");
          Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
-         if not UserCommands.Is_Empty then
-            LabelFrame :=
-              Create
-                (ActionsFrame & ".commandsframe",
-                 "-text {" & Mc(Get_Context, "{Defined commands}") & "}");
-            Label := Create(LabelFrame & ".name", "-text {Menu label}");
-            Tcl.Tk.Ada.Grid.Grid(Label);
-            Label := Create(LabelFrame & ".command", "-text {Command}");
-            Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 1");
-            Label := Create(LabelFrame & ".output", "-text {Output}");
-            Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
-            for I in UserCommands.Iterate loop
-               Label :=
-                 Create
-                   (LabelFrame & ".name" & Trim(Positive'Image(Row), Left),
-                    "-text {" & Commands_Container.Key(I) & "}");
-               Tcl.Tk.Ada.Grid.Grid(Label, "-row" & Positive'Image(Row));
-               Label :=
-                 Create
-                   (LabelFrame & ".command" & Trim(Positive'Image(Row), Left),
-                    "-text {" & To_String(UserCommands(I).Command) & "}");
-               Tcl.Tk.Ada.Grid.Grid
-                 (Label, "-row" & Positive'Image(Row) & " -column 1");
-               if UserCommands(I).NeedOutput then
-                  Label :=
-                    Create
-                      (LabelFrame & ".output" &
-                       Trim(Positive'Image(Row), Left),
-                       "-text {" & Mc(Get_Context, "{Yes}") & "}");
-               else
-                  Label :=
-                    Create
-                      (LabelFrame & ".output" &
-                       Trim(Positive'Image(Row), Left),
-                       "-text {" & Mc(Get_Context, "{No}") & "}");
-               end if;
-               Tcl.Tk.Ada.Grid.Grid
-                 (Label, "-row" & Positive'Image(Row) & " -column 2");
-               Row := Row + 1;
-            end loop;
-            Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
-         end if;
+         LabelFrame :=
+           Create
+             (ActionsFrame & ".commandsframe",
+              "-text {" & Mc(Get_Context, "{Defined commands}") & "}");
+         Label := Create(LabelFrame & ".name", "-text {Menu label}");
+         Tcl.Tk.Ada.Grid.Grid(Label);
+         Label := Create(LabelFrame & ".command", "-text {Command}");
+         Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 1");
+         Label := Create(LabelFrame & ".output", "-text {Output}");
+         Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
+         UpdateUserCommandsList;
+         Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right -anchor s");
       end;
@@ -866,5 +837,60 @@ package body Preferences is
          To_Unbounded_String("Alt-d"), To_Unbounded_String("Alt-e"),
          To_Unbounded_String("Alt-s"));
    end SetDefaultAccelerators;
+
+   procedure UpdateUserCommandsList is
+      Row: Positive := 1;
+      Label: Ttk_Label;
+      CommandsFrame, Item: Ttk_Frame;
+      Tokens: Slice_Set;
+   begin
+      CommandsFrame.Interp := Get_Context;
+      CommandsFrame.Name :=
+        New_String(".preferencesframe.canvas.notebook.actions.commandsframe");
+      Create(Tokens, Tcl.Tk.Ada.Grid.Grid_Size(CommandsFrame), " ");
+      for I in 1 .. (Natural'Value(Slice(Tokens, 2)) - 1) loop
+         Create
+           (Tokens,
+            Tcl.Tk.Ada.Grid.Grid_Slaves
+              (CommandsFrame, "-row" & Positive'Image(I)),
+            " ");
+         for J in 1 .. Slice_Count(Tokens) loop
+            Item.Interp := Get_Context;
+            Item.Name := New_String(Slice(Tokens, J));
+            Destroy(Item);
+         end loop;
+      end loop;
+      for I in UserCommands.Iterate loop
+         Label :=
+           Create
+             (".preferencesframe.canvas.notebook.actions.commandsframe.name" &
+              Trim(Positive'Image(Row), Left),
+              "-text {" & Commands_Container.Key(I) & "}");
+         Tcl.Tk.Ada.Grid.Grid(Label, "-row" & Positive'Image(Row));
+         Label :=
+           Create
+             (".preferencesframe.canvas.notebook.actions.commandsframe.command" &
+              Trim(Positive'Image(Row), Left),
+              "-text {" & To_String(UserCommands(I).Command) & "}");
+         Tcl.Tk.Ada.Grid.Grid
+           (Label, "-row" & Positive'Image(Row) & " -column 1");
+         if UserCommands(I).NeedOutput then
+            Label :=
+              Create
+                (".preferencesframe.canvas.notebook.actions.commandsframe.output" &
+                 Trim(Positive'Image(Row), Left),
+                 "-text {" & Mc(Get_Context, "{Yes}") & "}");
+         else
+            Label :=
+              Create
+                (".preferencesframe.canvas.notebook.actions.commandsframe.output" &
+                 Trim(Positive'Image(Row), Left),
+                 "-text {" & Mc(Get_Context, "{No}") & "}");
+         end if;
+         Tcl.Tk.Ada.Grid.Grid
+           (Label, "-row" & Positive'Image(Row) & " -column 2");
+         Row := Row + 1;
+      end loop;
+   end UpdateUserCommandsList;
 
 end Preferences;
