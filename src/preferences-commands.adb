@@ -1141,9 +1141,6 @@ package body Preferences.Commands is
       if MenuEntry = Null_Unbounded_String then
          return TCL_OK;
       end if;
-      if UserCommands.Contains(To_String(MenuEntry)) then
-         return TCL_OK;
-      end if;
       Tentry.Name :=
         New_String
           (".preferencesframe.canvas.notebook.actions.addframe.command");
@@ -1159,7 +1156,11 @@ package body Preferences.Commands is
       else
          NeedOutput := False;
       end if;
-      UserCommands.Include(To_String(MenuEntry), (NeedOutput, Command));
+      if UserCommands.Contains(To_String(MenuEntry)) then
+         UserCommands(To_String(MenuEntry)) := (NeedOutput, Command);
+      else
+         UserCommands.Include(To_String(MenuEntry), (NeedOutput, Command));
+      end if;
       return TCL_OK;
    end Add_Command_Command;
 
