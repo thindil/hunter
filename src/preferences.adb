@@ -746,6 +746,7 @@ package body Preferences is
          Button: Ttk_Button;
          Label: Ttk_Label;
          Tentry: Ttk_Entry;
+         Row: Positive := 1;
       begin
          LabelFrame :=
            Create
@@ -783,6 +784,41 @@ package body Preferences is
               Create
                 (ActionsFrame & ".commandsframe",
                  "-text {" & Mc(Get_Context, "{Defined commands}") & "}");
+            Label := Create(LabelFrame & ".name", "-text {Menu label}");
+            Tcl.Tk.Ada.Grid.Grid(Label);
+            Label := Create(LabelFrame & ".command", "-text {Command}");
+            Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 1");
+            Label := Create(LabelFrame & ".output", "-text {Output}");
+            Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
+            for I in UserCommands.Iterate loop
+               Label :=
+                 Create
+                   (LabelFrame & ".name" & Trim(Positive'Image(Row), Left),
+                    "-text {" & Commands_Container.Key(I) & "}");
+               Tcl.Tk.Ada.Grid.Grid(Label, "-row" & Positive'Image(Row));
+               Label :=
+                 Create
+                   (LabelFrame & ".command" & Trim(Positive'Image(Row), Left),
+                    "-text {" & To_String(UserCommands(I).Command) & "}");
+               Tcl.Tk.Ada.Grid.Grid
+                 (Label, "-row" & Positive'Image(Row) & " -column 1");
+               if UserCommands(I).NeedOutput then
+                  Label :=
+                    Create
+                      (LabelFrame & ".output" &
+                       Trim(Positive'Image(Row), Left),
+                       "-text {" & Mc(Get_Context, "{Yes}") & "}");
+               else
+                  Label :=
+                    Create
+                      (LabelFrame & ".output" &
+                       Trim(Positive'Image(Row), Left),
+                       "-text {" & Mc(Get_Context, "{No}") & "}");
+               end if;
+               Tcl.Tk.Ada.Grid.Grid
+                 (Label, "-row" & Positive'Image(Row) & " -column 2");
+               Row := Row + 1;
+            end loop;
             Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
          end if;
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
