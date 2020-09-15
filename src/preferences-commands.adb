@@ -215,10 +215,10 @@ package body Preferences.Commands is
       PreviewFrame: Ttk_Frame;
       Paned: Ttk_PanedWindow;
    begin
-      PreviewFrame.Interp := Interp;
-      PreviewFrame.Name := New_String(".mainframe.paned.previewframe");
       Paned.Interp := Interp;
       Paned.Name := New_String(".mainframe.paned");
+      PreviewFrame.Interp := Interp;
+      PreviewFrame.Name := New_String(Paned & ".previewframe");
       if Tcl_GetVar
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.preview.showpreview") =
@@ -511,8 +511,10 @@ package body Preferences.Commands is
       pragma Unreferenced(ClientData, Argc, Argv);
       MainFrame, Paned: Ttk_Frame;
    begin
+      MainFrame.Interp := Interp;
+      MainFrame.Name := New_String(".mainframe");
       Paned.Interp := Interp;
-      Paned.Name := New_String(".mainframe.paned");
+      Paned.Name := New_String(MainFrame & ".paned");
       if Tcl_GetVar
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.interface.toolbarsontop") =
@@ -522,8 +524,6 @@ package body Preferences.Commands is
          Settings.ToolbarsOnTop := True;
       end if;
       SetToolbars;
-      MainFrame.Interp := Interp;
-      MainFrame.Name := New_String(".mainframe");
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid_Configure
            (Paned, "-column 1 -row 3 -sticky nswe");
@@ -763,7 +763,6 @@ package body Preferences.Commands is
       Scale: Ttk_Scale;
       Frame: Ttk_Frame;
    begin
-      Unbind_From_Main_Window(Interp, "<Escape>");
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
       Scale.Interp := Interp;
       Scale.Name :=
