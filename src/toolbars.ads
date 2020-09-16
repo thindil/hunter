@@ -48,4 +48,11 @@ package Toolbars is
    procedure SetActionsButtons;
    -- ****
 
+   -- ****f* Toolbars/SetUserCommandsMenu
+   -- FUNCTION
+   -- Set menu and button related to the user defined commands/actions
+   -- SOURCE
+   procedure SetUserCommandsMenu;
+   -- ****
+
 end Toolbars;

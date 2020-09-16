@@ -233,10 +233,10 @@ package body Toolbars is
          To_String(Accelerators(4)) & "\]",
          "run-build");
       ButtonMenu := Create(".actionsmenu", "-tearoff false");
-      if not Commands_Container.Is_Empty(UserCommands) then
-         Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
-      end if;
-      configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
+      configure
+        (ToolMenuButton,
+         "-menu " & Widget_Image(ButtonMenu) & " -direction right");
+      SetUserCommandsMenu;
       ToolMenuButton := Create(".mainframe.toolbars.actiontoolbar.newbutton");
       SetButton
         (ToolMenuButton,
@@ -490,5 +490,29 @@ package body Toolbars is
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       end if;
    end SetActionsButtons;
+
+   procedure SetUserCommandsMenu is
+      ActionsMenu: Tk_Menu;
+      ActionsButton: Ttk_MenuButton;
+   begin
+      ActionsButton.Interp := Get_Context;
+      ActionsButton.Name :=
+        New_String(".mainframe.toolbars.actiontoolbar.userbutton");
+      ActionsMenu.Interp := Get_Context;
+      ActionsMenu.Name := New_String(".actionsmenu");
+      Delete(ActionsMenu, "0", "end");
+      if UserCommands.Is_Empty then
+         Tcl.Tk.Ada.Pack.Pack_Forget(ActionsButton);
+      else
+         Tcl.Tk.Ada.Pack.Pack
+           (ActionsButton,
+            "-after .mainframe.toolbars.actiontoolbar.separator2");
+      end if;
+      for I in UserCommands.Iterate loop
+         Menu.Add
+           (ActionsMenu, "command",
+            "-label {" & Commands_Container.Key(I) & "}");
+      end loop;
+   end SetUserCommandsMenu;
 
 end Toolbars;
