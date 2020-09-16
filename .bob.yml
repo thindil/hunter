@@ -80,3 +80,8 @@
    execute:
       - tclsh others/dockerrelease.tcl
    description: Build the program in release mode with Docker image
+- command:
+   name: pretty
+   execute:
+      - gnatpp -P hunter.gpr
+   description: Pretty print Hunter source code
