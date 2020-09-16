@@ -1161,6 +1161,7 @@ package body Preferences.Commands is
       else
          UserCommands.Include(To_String(MenuEntry), (NeedOutput, Command));
       end if;
+      UpdateUserCommandsList;
       return TCL_OK;
    end Add_Command_Command;
 
