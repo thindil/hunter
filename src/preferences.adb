@@ -861,28 +861,24 @@ package body Preferences is
       for I in UserCommands.Iterate loop
          Label :=
            Create
-             (".preferencesframe.canvas.notebook.actions.commandsframe.name" &
-              Trim(Positive'Image(Row), Left),
+             (CommandsFrame & ".name" & Trim(Positive'Image(Row), Left),
               "-text {" & Commands_Container.Key(I) & "}");
          Tcl.Tk.Ada.Grid.Grid(Label, "-row" & Positive'Image(Row));
          Label :=
            Create
-             (".preferencesframe.canvas.notebook.actions.commandsframe.command" &
-              Trim(Positive'Image(Row), Left),
+             (CommandsFrame & ".command" & Trim(Positive'Image(Row), Left),
               "-text {" & To_String(UserCommands(I).Command) & "}");
          Tcl.Tk.Ada.Grid.Grid
            (Label, "-row" & Positive'Image(Row) & " -column 1");
          if UserCommands(I).NeedOutput then
             Label :=
               Create
-                (".preferencesframe.canvas.notebook.actions.commandsframe.output" &
-                 Trim(Positive'Image(Row), Left),
+                (CommandsFrame & ".output" & Trim(Positive'Image(Row), Left),
                  "-text {" & Mc(Get_Context, "{Yes}") & "}");
          else
             Label :=
               Create
-                (".preferencesframe.canvas.notebook.actions.commandsframe.output" &
-                 Trim(Positive'Image(Row), Left),
+                (CommandsFrame & ".output" & Trim(Positive'Image(Row), Left),
                  "-text {" & Mc(Get_Context, "{No}") & "}");
          end if;
          Tcl.Tk.Ada.Grid.Grid
