@@ -149,6 +149,8 @@ package Preferences is
    procedure CreatePreferencesUI;
    -- ****
 
+private
+
    -- ****f* Preferences/SetDefaultSettings
    -- FUNCTION
    -- Set default values for the program's settings
