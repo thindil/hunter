@@ -778,14 +778,8 @@ package body Preferences is
            Create
              (ActionsFrame & ".commandsframe",
               "-text {" & Mc(Get_Context, "{Defined commands}") & "}");
-         Label := Create(LabelFrame & ".name", "-text {Menu label}");
-         Tcl.Tk.Ada.Grid.Grid(Label);
-         Label := Create(LabelFrame & ".command", "-text {Command}");
-         Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 1");
-         Label := Create(LabelFrame & ".output", "-text {Output}");
-         Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
-         UpdateUserCommandsList;
          Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
+         UpdateUserCommandsList;
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right -anchor s");
       end;
@@ -840,7 +834,7 @@ package body Preferences is
       CommandsFrame.Name :=
         New_String(".preferencesframe.canvas.notebook.actions.commandsframe");
       Create(Tokens, Tcl.Tk.Ada.Grid.Grid_Size(CommandsFrame), " ");
-      for I in 1 .. (Natural'Value(Slice(Tokens, 2)) - 1) loop
+      for I in 0 .. (Natural'Value(Slice(Tokens, 2)) - 1) loop
          Create
            (Tokens,
             Tcl.Tk.Ada.Grid.Grid_Slaves
@@ -852,6 +846,15 @@ package body Preferences is
             Destroy(Item);
          end loop;
       end loop;
+      if UserCommands.Is_Empty then
+         return;
+      end if;
+      Label := Create(CommandsFrame & ".name", "-text {Menu label}");
+      Tcl.Tk.Ada.Grid.Grid(Label);
+      Label := Create(CommandsFrame & ".command", "-text {Command}");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 1");
+      Label := Create(CommandsFrame & ".output", "-text {Output}");
+      Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
       for I in UserCommands.Iterate loop
          Label :=
            Create
