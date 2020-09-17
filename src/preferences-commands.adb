@@ -1162,6 +1162,7 @@ package body Preferences.Commands is
          UserCommands.Include(To_String(MenuEntry), (NeedOutput, Command));
       end if;
       UpdateUserCommandsList;
+      SetUserCommandsMenu;
       return TCL_OK;
    end Add_Command_Command;
 
