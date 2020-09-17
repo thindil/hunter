@@ -851,10 +851,13 @@ package body Preferences is
       end if;
       Label := Create(CommandsFrame & ".name", "-text {Menu label}");
       Tcl.Tk.Ada.Grid.Grid(Label);
+      Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
       Label := Create(CommandsFrame & ".command", "-text {Command}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 1");
+      Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
       Label := Create(CommandsFrame & ".output", "-text {Output}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
+      Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
       for I in UserCommands.Iterate loop
          Label :=
            Create
