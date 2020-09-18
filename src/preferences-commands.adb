@@ -1138,6 +1138,7 @@ package body Preferences.Commands is
       Tentry.Name :=
         New_String(".preferencesframe.canvas.notebook.actions.addframe.title");
       MenuEntry := To_Unbounded_String(Get(Tentry));
+      Delete(Tentry, "0", "end");
       if MenuEntry = Null_Unbounded_String then
          return TCL_OK;
       end if;
@@ -1145,6 +1146,7 @@ package body Preferences.Commands is
         New_String
           (".preferencesframe.canvas.notebook.actions.addframe.command");
       Command := To_Unbounded_String(Get(Tentry));
+      Delete(Tentry, "0", "end");
       if Command = Null_Unbounded_String then
          return TCL_OK;
       end if;
@@ -1156,6 +1158,9 @@ package body Preferences.Commands is
       else
          NeedOutput := False;
       end if;
+      Tcl_SetVar
+        (Interp, ".preferencesframe.canvas.notebook.actions.addframe.output",
+         "0");
       if UserCommands.Contains(To_String(MenuEntry)) then
          UserCommands(To_String(MenuEntry)) := (NeedOutput, Command);
       else
