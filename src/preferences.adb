@@ -857,7 +857,6 @@ package body Preferences is
       Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
       Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
       Image.Interp := Get_Context;
-      Image.Name := New_String("refreshicon");
       for I in UserCommands.Iterate loop
          Label :=
            Create
@@ -883,11 +882,12 @@ package body Preferences is
          end if;
          Tcl.Tk.Ada.Grid.Grid
            (Label, "-row" & Positive'Image(Row) & " -column 2");
+         Image.Name := New_String("refreshicon");
          Button :=
            Create
              (CommandsFrame & ".editbutton" & Trim(Positive'Image(Row), Left),
-              "-style Toolbutton -image " & Widget_Image(Image) &
-              " -command {EditCommand " & Commands_Container.Key(I) & "}");
+              "-style Toolbutton -image " & Image & " -command {EditCommand " &
+              Commands_Container.Key(I) & "}");
          Add
            (Button,
             Mc
@@ -895,6 +895,16 @@ package body Preferences is
                "{Edit the selected command. If you change the menu label,\na new command will be added.}"));
          Tcl.Tk.Ada.Grid.Grid
            (Button, "-row" & Positive'Image(Row) & " -column 3");
+         Image.Name := New_String("edit-deleteicon");
+         Button :=
+           Create
+             (CommandsFrame & ".deletebutton" &
+              Trim(Positive'Image(Row), Left),
+              "-style Toolbutton -image " & Image &
+              " -command {DeleteCommand " & Commands_Container.Key(I) & "}");
+         Add(Button, Mc(Get_Context, "{Delete the selected command.}"));
+         Tcl.Tk.Ada.Grid.Grid
+           (Button, "-row" & Positive'Image(Row) & " -column 4");
          Row := Row + 1;
       end loop;
    end UpdateUserCommandsList;
