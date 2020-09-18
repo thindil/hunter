@@ -1222,6 +1222,39 @@ package body Preferences.Commands is
       return TCL_OK;
    end Edit_Command_Command;
 
+   -- ****o* PCommands/Delete_Command_Command
+   -- FUNCTION
+   -- Delete the selected user defined command
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- EditCommand menuentry
+   -- Menuentry is the menu label of the command which will be deleted
+   -- SOURCE
+   function Delete_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Delete_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc);
+   begin
+      UserCommands.Delete(CArgv.Arg(Argv, 1));
+      UpdateUserCommandsList;
+      SetUserCommandsMenu;
+      return TCL_OK;
+   end Delete_Command_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -1252,6 +1285,7 @@ package body Preferences.Commands is
         ("RestoreDefaultShortcuts", Restore_Default_Shortcuts_Command'Access);
       AddCommand("AddCommand", Add_Command_Command'Access);
       AddCommand("EditCommand", Edit_Command_Command'Access);
+      AddCommand("DeleteCommand", Delete_Command_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
