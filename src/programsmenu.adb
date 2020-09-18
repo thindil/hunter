@@ -78,9 +78,7 @@ package body ProgramsMenu is
          Tcl.Tk.Ada.Grid.Grid
            (ApplicationsFrame, "-column 1 -row 5 -rowspan 3");
          TextEntry.Interp := Interp;
-         TextEntry.Name :=
-           New_String
-             (".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry");
+         TextEntry.Name := New_String(ApplicationsFrame & ".searchentry");
          Focus(TextEntry);
       else
          Grid_Forget(ApplicationsFrame);
