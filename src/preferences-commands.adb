@@ -1166,6 +1166,57 @@ package body Preferences.Commands is
       return TCL_OK;
    end Add_Command_Command;
 
+   -- ****o* PCommands/Edit_Command_Command
+   -- FUNCTION
+   -- Edit the selected user defined command
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- EditCommand menuentry
+   -- Menuentry is the menu label of the command which will be edited
+   -- SOURCE
+   function Edit_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Edit_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc);
+      Tentry: Ttk_Entry;
+      MenuEntry: constant String := CArgv.Arg(Argv, 1);
+   begin
+      Tentry.Interp := Interp;
+      Tentry.Name :=
+        New_String(".preferencesframe.canvas.notebook.actions.addframe.title");
+      Delete(Tentry, "0", "end");
+      Insert(Tentry, "end", MenuEntry);
+      Tentry.Name :=
+        New_String
+          (".preferencesframe.canvas.notebook.actions.addframe.command");
+      Delete(Tentry, "0", "end");
+      Insert(Tentry, "end", To_String(UserCommands(MenuEntry).Command));
+      if UserCommands(MenuEntry).NeedOutput then
+         Tcl_SetVar
+           (Interp,
+            ".preferencesframe.canvas.notebook.actions.addframe.output", "1");
+      else
+         Tcl_SetVar
+           (Interp,
+            ".preferencesframe.canvas.notebook.actions.addframe.output", "0");
+      end if;
+      return TCL_OK;
+   end Edit_Command_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -1195,6 +1246,7 @@ package body Preferences.Commands is
       AddCommand
         ("RestoreDefaultShortcuts", Restore_Default_Shortcuts_Command'Access);
       AddCommand("AddCommand", Add_Command_Command'Access);
+      AddCommand("EditCommand", Edit_Command_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;

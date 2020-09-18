@@ -49,7 +49,6 @@ with Tcl.Tk.Ada.Widgets.TtkNotebook; use Tcl.Tk.Ada.Widgets.TtkNotebook;
 with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
-with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Preferences.Commands; use Preferences.Commands;
@@ -786,10 +785,7 @@ package body Preferences is
       TtkNotebook.Add
         (Notebook, Widget_Image(ActionsFrame),
          "-text {" & Mc(Get_Context, "{User commands}") & "}");
-      Canvas_Create
-        (Canvas, "window",
-         "[expr " & Winfo_Get(Notebook, "reqwidth") & " / 2] [expr " &
-         Winfo_Get(Notebook, "reqheight") & " / 2] -window " & Notebook);
+      Canvas_Create(Canvas, "window", "0 0 -anchor nw -window " & Notebook);
       Tcl_Eval(Get_Context, "update");
       configure(Canvas, "-scrollregion [list " & BBox(Canvas, "all") & "]");
       AddCommands;
@@ -829,6 +825,8 @@ package body Preferences is
       Label: Ttk_Label;
       CommandsFrame, Item: Ttk_Frame;
       Tokens: Slice_Set;
+      Image: Tk_Photo;
+      Button: Ttk_Button;
    begin
       CommandsFrame.Interp := Get_Context;
       CommandsFrame.Name :=
@@ -858,6 +856,8 @@ package body Preferences is
       Label := Create(CommandsFrame & ".output", "-text {Output}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
       Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
+      Image.Interp := Get_Context;
+      Image.Name := New_String("refreshicon");
       for I in UserCommands.Iterate loop
          Label :=
            Create
@@ -883,6 +883,18 @@ package body Preferences is
          end if;
          Tcl.Tk.Ada.Grid.Grid
            (Label, "-row" & Positive'Image(Row) & " -column 2");
+         Button :=
+           Create
+             (CommandsFrame & ".editbutton" & Trim(Positive'Image(Row), Left),
+              "-style Toolbutton -image " & Widget_Image(Image) &
+              " -command {EditCommand " & Commands_Container.Key(I) & "}");
+         Add
+           (Button,
+            Mc
+              (Get_Context,
+               "{Edit the selected command. If you change the menu label,\na new command will be added.}"));
+         Tcl.Tk.Ada.Grid.Grid
+           (Button, "-row" & Positive'Image(Row) & " -column 3");
          Row := Row + 1;
       end loop;
    end UpdateUserCommandsList;
