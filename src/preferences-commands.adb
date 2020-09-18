@@ -31,6 +31,7 @@ with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
 use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
@@ -1133,23 +1134,24 @@ package body Preferences.Commands is
       Tentry: Ttk_Entry;
       MenuEntry, Command: Unbounded_String;
       NeedOutput: Boolean;
+      Button: Ttk_Button;
    begin
       Tentry.Interp := Interp;
       Tentry.Name :=
         New_String(".preferencesframe.canvas.notebook.actions.addframe.title");
       MenuEntry := To_Unbounded_String(Get(Tentry));
-      Delete(Tentry, "0", "end");
       if MenuEntry = Null_Unbounded_String then
          return TCL_OK;
       end if;
+      Delete(Tentry, "0", "end");
       Tentry.Name :=
         New_String
           (".preferencesframe.canvas.notebook.actions.addframe.command");
       Command := To_Unbounded_String(Get(Tentry));
-      Delete(Tentry, "0", "end");
       if Command = Null_Unbounded_String then
          return TCL_OK;
       end if;
+      Delete(Tentry, "0", "end");
       if Tcl_GetVar
           (Interp,
            ".preferencesframe.canvas.notebook.actions.addframe.output") =
@@ -1166,6 +1168,10 @@ package body Preferences.Commands is
       else
          UserCommands.Include(To_String(MenuEntry), (NeedOutput, Command));
       end if;
+      Button.Interp := Interp;
+      Button.Name :=
+        New_String(".preferencesframe.canvas.notebook.actions.addframe.add");
+      Widgets.configure(Button, "-text {" & Mc(Interp, "{Add command}") & "}");
       UpdateUserCommandsList;
       SetUserCommandsMenu;
       return TCL_OK;
@@ -1199,6 +1205,7 @@ package body Preferences.Commands is
       pragma Unreferenced(ClientData, Argc);
       Tentry: Ttk_Entry;
       MenuEntry: constant String := CArgv.Arg(Argv, 1);
+      Button: Ttk_Button;
    begin
       Tentry.Interp := Interp;
       Tentry.Name :=
@@ -1219,6 +1226,11 @@ package body Preferences.Commands is
            (Interp,
             ".preferencesframe.canvas.notebook.actions.addframe.output", "0");
       end if;
+      Button.Interp := Interp;
+      Button.Name :=
+        New_String(".preferencesframe.canvas.notebook.actions.addframe.add");
+      Widgets.configure
+        (Button, "-text {" & Mc(Interp, "{Edit command}") & "}");
       return TCL_OK;
    end Edit_Command_Command;
 
