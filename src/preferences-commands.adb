@@ -1258,6 +1258,36 @@ package body Preferences.Commands is
       return TCL_OK;
    end Delete_Command_Command;
 
+   -- ****o* PCommands/Reset_Command_Command
+   -- FUNCTION
+   -- Clear the add command form
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- ResetCommand
+   -- SOURCE
+   function Reset_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Reset_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+   begin
+      Clear_Add_Command;
+      return TCL_OK;
+   end Reset_Command_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -1289,6 +1319,7 @@ package body Preferences.Commands is
       AddCommand("AddCommand", Add_Command_Command'Access);
       AddCommand("EditCommand", Edit_Command_Command'Access);
       AddCommand("DeleteCommand", Delete_Command_Command'Access);
+      AddCommand("ResetCommand", Reset_Command_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
