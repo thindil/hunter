@@ -41,6 +41,7 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Bookmarks; use Bookmarks;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
+with UserCommands; use UserCommands;
 with Utils; use Utils;
 
 package body Toolbars is
@@ -501,14 +502,14 @@ package body Toolbars is
       ActionsMenu.Interp := Get_Context;
       ActionsMenu.Name := New_String(".actionsmenu");
       Delete(ActionsMenu, "0", "end");
-      if UserCommands.Is_Empty then
+      if UserCommandsList.Is_Empty then
          Tcl.Tk.Ada.Pack.Pack_Forget(ActionsButton);
       else
          Tcl.Tk.Ada.Pack.Pack
            (ActionsButton,
             "-after .mainframe.toolbars.actiontoolbar.separator2");
       end if;
-      for I in UserCommands.Iterate loop
+      for I in UserCommandsList.Iterate loop
          Menu.Add
            (ActionsMenu, "command",
             "-label {" & Commands_Container.Key(I) & "}");
