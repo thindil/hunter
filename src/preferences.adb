@@ -771,7 +771,13 @@ package body Preferences is
              (LabelFrame & ".add",
               "-text {" & Mc(Get_Context, "{Add command}") &
               "} -command AddCommand");
-         Tcl.Tk.Ada.Grid.Grid(Button, "-columnspan 2 -sticky we");
+         Tcl.Tk.Ada.Grid.Grid(Button, "-sticky w");
+         Button :=
+           Create
+             (LabelFrame & ".reset",
+              "-text {" & Mc(Get_Context, "{Reset}") &
+              "} -command ResetCommand");
+         Tcl.Tk.Ada.Grid.Grid(Button, "-sticky e -row 3 -column 1");
          Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
          LabelFrame :=
            Create
@@ -922,12 +928,13 @@ package body Preferences is
           (".preferencesframe.canvas.notebook.actions.addframe.command");
       Delete(Tentry, "0", "end");
       Tcl_SetVar
-        (Get_Context, ".preferencesframe.canvas.notebook.actions.addframe.output",
-         "0");
+        (Get_Context,
+         ".preferencesframe.canvas.notebook.actions.addframe.output", "0");
       Button.Interp := Get_Context;
       Button.Name :=
         New_String(".preferencesframe.canvas.notebook.actions.addframe.add");
-      Widgets.configure(Button, "-text {" & Mc(Get_Context, "{Add command}") & "}");
+      Widgets.configure
+        (Button, "-text {" & Mc(Get_Context, "{Add command}") & "}");
    end Clear_Add_Command;
 
 end Preferences;
