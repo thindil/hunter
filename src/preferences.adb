@@ -909,4 +909,25 @@ package body Preferences is
       end loop;
    end UpdateUserCommandsList;
 
+   procedure Clear_Add_Command is
+      Tentry: Ttk_Entry;
+      Button: Ttk_Button;
+   begin
+      Tentry.Interp := Get_Context;
+      Tentry.Name :=
+        New_String(".preferencesframe.canvas.notebook.actions.addframe.title");
+      Delete(Tentry, "0", "end");
+      Tentry.Name :=
+        New_String
+          (".preferencesframe.canvas.notebook.actions.addframe.command");
+      Delete(Tentry, "0", "end");
+      Tcl_SetVar
+        (Get_Context, ".preferencesframe.canvas.notebook.actions.addframe.output",
+         "0");
+      Button.Interp := Get_Context;
+      Button.Name :=
+        New_String(".preferencesframe.canvas.notebook.actions.addframe.add");
+      Widgets.configure(Button, "-text {" & Mc(Get_Context, "{Add command}") & "}");
+   end Clear_Add_Command;
+
 end Preferences;

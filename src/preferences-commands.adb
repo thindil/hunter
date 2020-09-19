@@ -1134,7 +1134,6 @@ package body Preferences.Commands is
       Tentry: Ttk_Entry;
       MenuEntry, Command: Unbounded_String;
       NeedOutput: Boolean;
-      Button: Ttk_Button;
    begin
       Tentry.Interp := Interp;
       Tentry.Name :=
@@ -1143,7 +1142,6 @@ package body Preferences.Commands is
       if MenuEntry = Null_Unbounded_String then
          return TCL_OK;
       end if;
-      Delete(Tentry, "0", "end");
       Tentry.Name :=
         New_String
           (".preferencesframe.canvas.notebook.actions.addframe.command");
@@ -1151,7 +1149,6 @@ package body Preferences.Commands is
       if Command = Null_Unbounded_String then
          return TCL_OK;
       end if;
-      Delete(Tentry, "0", "end");
       if Tcl_GetVar
           (Interp,
            ".preferencesframe.canvas.notebook.actions.addframe.output") =
@@ -1160,18 +1157,12 @@ package body Preferences.Commands is
       else
          NeedOutput := False;
       end if;
-      Tcl_SetVar
-        (Interp, ".preferencesframe.canvas.notebook.actions.addframe.output",
-         "0");
       if UserCommands.Contains(To_String(MenuEntry)) then
          UserCommands(To_String(MenuEntry)) := (NeedOutput, Command);
       else
          UserCommands.Include(To_String(MenuEntry), (NeedOutput, Command));
       end if;
-      Button.Interp := Interp;
-      Button.Name :=
-        New_String(".preferencesframe.canvas.notebook.actions.addframe.add");
-      Widgets.configure(Button, "-text {" & Mc(Interp, "{Add command}") & "}");
+      Clear_Add_Command;
       UpdateUserCommandsList;
       SetUserCommandsMenu;
       return TCL_OK;
