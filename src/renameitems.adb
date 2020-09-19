@@ -68,13 +68,15 @@ package body RenameItems is
       TextEntry: Ttk_Entry;
       Hunter_Rename_Exception: exception;
    begin
+      TextFrame.Interp := Interp;
+      TextFrame.Name := New_String(".mainframe.textframe");
       TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      TextEntry.Name := New_String(TextFrame & ".textentry");
       Button.Interp := Interp;
-      Button.Name := New_String(".mainframe.textframe.closebutton");
+      Button.Name := New_String(TextFrame & ".closebutton");
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid(Button);
-         Button.Name := New_String(".mainframe.textframe.okbutton");
+         Button.Name := New_String(TextFrame & ".okbutton");
          configure(Button, "-command Rename");
          if Is_Directory(To_String(CurrentSelected)) then
             Add
@@ -96,8 +98,6 @@ package body RenameItems is
          Unbind(TextEntry, "<KeyRelease>");
          Insert(TextEntry, "end", Simple_Name(To_String(CurrentSelected)));
          Focus(TextEntry);
-         TextFrame.Interp := Interp;
-         TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
          NewAction := RENAME;
          ToggleToolButtons(NewAction);
@@ -147,11 +147,10 @@ package body RenameItems is
       NewName := CurrentDirectory & "/" & To_Unbounded_String(Get(TextEntry));
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
-         if Is_Directory(To_String(NewName)) then
-            ActionBlocker := To_Unbounded_String(Mc(Interp, "{directory}"));
-         else
-            ActionBlocker := To_Unbounded_String(Mc(Interp, "{file}"));
-         end if;
+         ActionBlocker :=
+           (if Is_Directory(To_String(NewName)) then
+              To_Unbounded_String(Mc(Interp, "{directory}"))
+            else To_Unbounded_String(Mc(Interp, "{file}")));
          ShowMessage
            (Mc(Interp, "{You can't rename }") & To_String(CurrentSelected) &
             Mc(Interp, "{ to }") & To_String(NewName) &
