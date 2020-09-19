@@ -47,6 +47,7 @@ with Messages; use Messages;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
+with UserCommands; use UserCommands;
 with Utils; use Utils;
 
 package body Preferences.Commands is
@@ -1157,10 +1158,10 @@ package body Preferences.Commands is
       else
          NeedOutput := False;
       end if;
-      if UserCommands.Contains(To_String(MenuEntry)) then
-         UserCommands(To_String(MenuEntry)) := (NeedOutput, Command);
+      if UserCommandsList.Contains(To_String(MenuEntry)) then
+         UserCommandsList(To_String(MenuEntry)) := (NeedOutput, Command);
       else
-         UserCommands.Include(To_String(MenuEntry), (NeedOutput, Command));
+         UserCommandsList.Include(To_String(MenuEntry), (NeedOutput, Command));
       end if;
       Clear_Add_Command;
       UpdateUserCommandsList;
@@ -1207,8 +1208,8 @@ package body Preferences.Commands is
         New_String
           (".preferencesframe.canvas.notebook.actions.addframe.command");
       Delete(Tentry, "0", "end");
-      Insert(Tentry, "end", To_String(UserCommands(MenuEntry).Command));
-      if UserCommands(MenuEntry).NeedOutput then
+      Insert(Tentry, "end", To_String(UserCommandsList(MenuEntry).Command));
+      if UserCommandsList(MenuEntry).NeedOutput then
          Tcl_SetVar
            (Interp,
             ".preferencesframe.canvas.notebook.actions.addframe.output", "1");
@@ -1252,7 +1253,7 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
    begin
-      UserCommands.Delete(CArgv.Arg(Argv, 1));
+      UserCommandsList.Delete(CArgv.Arg(Argv, 1));
       UpdateUserCommandsList;
       SetUserCommandsMenu;
       return TCL_OK;

@@ -20,7 +20,6 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.String_Split; use GNAT.String_Split;
 with DOM.Core; use DOM.Core;
 with DOM.Core.Documents; use DOM.Core.Documents;
 with DOM.Core.Nodes; use DOM.Core.Nodes;
@@ -52,6 +51,7 @@ with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Preferences.Commands; use Preferences.Commands;
+with UserCommands; use UserCommands;
 with Utils; use Utils;
 
 package body Preferences is
@@ -153,13 +153,13 @@ package body Preferences is
          -- The user defined commands
          elsif NodeName = To_Unbounded_String("command") then
             if Get_Attribute(DataNode, "needoutput") = "Yes" then
-               UserCommands.Include
+               UserCommandsList.Include
                  (Get_Attribute(DataNode, "menuentry"),
                   (NeedOutput => True,
                    Command =>
                      To_Unbounded_String(Node_Value(First_Child(DataNode)))));
             else
-               UserCommands.Include
+               UserCommandsList.Include
                  (Get_Attribute(DataNode, "menuentry"),
                   (NeedOutput => False,
                    Command =>
@@ -242,17 +242,17 @@ package body Preferences is
          Set_Attribute(SettingNode, "index", Trim(Positive'Image(I), Left));
          Set_Attribute(SettingNode, "value", To_String(Accelerators(I)));
       end loop;
-      for I in UserCommands.Iterate loop
+      for I in UserCommandsList.Iterate loop
          SettingNode := Create_Element(SettingsData, "command");
          SettingNode := Append_Child(MainNode, SettingNode);
          Set_Attribute(SettingNode, "menuentry", Commands_Container.Key(I));
-         if UserCommands(I).NeedOutput then
+         if UserCommandsList(I).NeedOutput then
             Set_Attribute(SettingNode, "needoutput", "Yes");
          else
             Set_Attribute(SettingNode, "needoutput", "No");
          end if;
          UserCommandNode :=
-           Create_Text_Node(SettingsData, To_String(UserCommands(I).Command));
+           Create_Text_Node(SettingsData, To_String(UserCommandsList(I).Command));
          UserCommandNode := Append_Child(SettingNode, UserCommandNode);
       end loop;
       Create
@@ -856,95 +856,6 @@ package body Preferences is
          To_Unbounded_String("Alt-d"), To_Unbounded_String("Alt-e"),
          To_Unbounded_String("Alt-s"));
    end SetDefaultAccelerators;
-
-   procedure UpdateUserCommandsList is
-      Row: Positive := 1;
-      Label: Ttk_Label;
-      CommandsFrame, Item: Ttk_Frame;
-      Tokens: Slice_Set;
-      Image: Tk_Photo;
-      Button: Ttk_Button;
-   begin
-      CommandsFrame.Interp := Get_Context;
-      CommandsFrame.Name :=
-        New_String(".preferencesframe.canvas.notebook.actions.commandsframe");
-      Create(Tokens, Tcl.Tk.Ada.Grid.Grid_Size(CommandsFrame), " ");
-      for I in 0 .. (Natural'Value(Slice(Tokens, 2)) - 1) loop
-         Create
-           (Tokens,
-            Tcl.Tk.Ada.Grid.Grid_Slaves
-              (CommandsFrame, "-row" & Positive'Image(I)),
-            " ");
-         for J in 1 .. Slice_Count(Tokens) loop
-            Item.Interp := Get_Context;
-            Item.Name := New_String(Slice(Tokens, J));
-            Destroy(Item);
-         end loop;
-      end loop;
-      if UserCommands.Is_Empty then
-         return;
-      end if;
-      Label := Create(CommandsFrame & ".name", "-text {Menu label}");
-      Tcl.Tk.Ada.Grid.Grid(Label);
-      Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
-      Label := Create(CommandsFrame & ".command", "-text {Command}");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 1");
-      Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
-      Label := Create(CommandsFrame & ".output", "-text {Output}");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
-      Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
-      Image.Interp := Get_Context;
-      for I in UserCommands.Iterate loop
-         Label :=
-           Create
-             (CommandsFrame & ".name" & Trim(Positive'Image(Row), Left),
-              "-text {" & Commands_Container.Key(I) & "}");
-         Tcl.Tk.Ada.Grid.Grid(Label, "-row" & Positive'Image(Row));
-         Label :=
-           Create
-             (CommandsFrame & ".command" & Trim(Positive'Image(Row), Left),
-              "-text {" & To_String(UserCommands(I).Command) & "}");
-         Tcl.Tk.Ada.Grid.Grid
-           (Label, "-row" & Positive'Image(Row) & " -column 1");
-         if UserCommands(I).NeedOutput then
-            Label :=
-              Create
-                (CommandsFrame & ".output" & Trim(Positive'Image(Row), Left),
-                 "-text {" & Mc(Get_Context, "{Yes}") & "}");
-         else
-            Label :=
-              Create
-                (CommandsFrame & ".output" & Trim(Positive'Image(Row), Left),
-                 "-text {" & Mc(Get_Context, "{No}") & "}");
-         end if;
-         Tcl.Tk.Ada.Grid.Grid
-           (Label, "-row" & Positive'Image(Row) & " -column 2");
-         Image.Name := New_String("refreshicon");
-         Button :=
-           Create
-             (CommandsFrame & ".editbutton" & Trim(Positive'Image(Row), Left),
-              "-style Toolbutton -image " & Image & " -command {EditCommand " &
-              Commands_Container.Key(I) & "}");
-         Add
-           (Button,
-            Mc
-              (Get_Context,
-               "{Edit the selected command. If you change the menu label,\na new command will be added.}"));
-         Tcl.Tk.Ada.Grid.Grid
-           (Button, "-row" & Positive'Image(Row) & " -column 3");
-         Image.Name := New_String("edit-deleteicon");
-         Button :=
-           Create
-             (CommandsFrame & ".deletebutton" &
-              Trim(Positive'Image(Row), Left),
-              "-style Toolbutton -image " & Image &
-              " -command {DeleteCommand " & Commands_Container.Key(I) & "}");
-         Add(Button, Mc(Get_Context, "{Delete the selected command.}"));
-         Tcl.Tk.Ada.Grid.Grid
-           (Button, "-row" & Positive'Image(Row) & " -column 4");
-         Row := Row + 1;
-      end loop;
-   end UpdateUserCommandsList;
 
    procedure Clear_Add_Command is
       Tentry: Ttk_Entry;
