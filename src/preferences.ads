@@ -172,4 +172,11 @@ private
    procedure UpdateUserCommandsList;
    -- ****
 
+   -- ****f* Preferences/Clear_Add_Command
+   -- FUNCTION
+   -- Clear form for edit or add user defined commands
+   -- SOURCE
+   procedure Clear_Add_Command;
+   -- ****
+
 end Preferences;
