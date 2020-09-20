@@ -30,6 +30,7 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Utils; use Utils;
 
@@ -152,7 +153,7 @@ package body UserCommands is
       pragma Unreferenced(ClientData, Argc);
       Value, CommandName, Arguments: Unbounded_String;
       Pid: GNAT.OS_Lib.Process_Id;
-      SpaceIndex: Natural;
+      SpaceIndex, ArgumentIndex: Natural;
    begin
       Value := UserCommandsList(CArgv.Arg(Argv, 1)).Command;
       SpaceIndex := Index(Value, " ");
@@ -170,6 +171,22 @@ package body UserCommands is
       if SpaceIndex > 0 then
          Arguments := Unbounded_Slice(Value, SpaceIndex, Length(Value)) & " ";
       end if;
+      ArgumentIndex := 1;
+      loop
+         ArgumentIndex := Index(Arguments, "@1", ArgumentIndex);
+         exit when ArgumentIndex = 0;
+         Replace_Slice
+           (Arguments, ArgumentIndex, ArgumentIndex + 1,
+            To_String(CurrentDirectory));
+      end loop;
+      ArgumentIndex := 1;
+      loop
+         ArgumentIndex := Index(Arguments, "@2", ArgumentIndex);
+         exit when ArgumentIndex = 0;
+         Replace_Slice
+           (Arguments, ArgumentIndex, ArgumentIndex + 1,
+            To_String(CurrentSelected));
+      end loop;
       Pid :=
         Non_Blocking_Spawn
           (Full_Name(To_String(CommandName)),
