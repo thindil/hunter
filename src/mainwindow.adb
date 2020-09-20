@@ -63,6 +63,7 @@ with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
 with Trash; use Trash;
+with UserCommands;
 with Utils; use Utils;
 
 package body MainWindow is
@@ -121,6 +122,7 @@ package body MainWindow is
       Autoscroll(DirectoryYScroll);
       Autoscroll(DirectoryXScroll);
       AddCommands;
+      UserCommands.AddCommands;
       CreateSearchUI;
       Set_Directory(Containing_Directory(Command_Name));
       -- Load the program Tk themes

@@ -512,7 +512,8 @@ package body Toolbars is
       for I in UserCommandsList.Iterate loop
          Menu.Add
            (ActionsMenu, "command",
-            "-label {" & Commands_Container.Key(I) & "}");
+            "-label {" & Commands_Container.Key(I) &
+            "} -command {ExecuteCommand " & Commands_Container.Key(I) & "}");
       end loop;
    end SetUserCommandsMenu;
 
