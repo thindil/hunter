@@ -50,7 +50,7 @@ with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Preferences.Commands; use Preferences.Commands;
+with Preferences.Commands;
 with UserCommands; use UserCommands;
 with Utils; use Utils;
 
@@ -252,7 +252,8 @@ package body Preferences is
             Set_Attribute(SettingNode, "needoutput", "No");
          end if;
          UserCommandNode :=
-           Create_Text_Node(SettingsData, To_String(UserCommandsList(I).Command));
+           Create_Text_Node
+             (SettingsData, To_String(UserCommandsList(I).Command));
          UserCommandNode := Append_Child(SettingNode, UserCommandNode);
       end loop;
       Create
@@ -825,7 +826,7 @@ package body Preferences is
       Canvas_Create(Canvas, "window", "0 0 -anchor nw -window " & Notebook);
       Tcl_Eval(Get_Context, "update");
       configure(Canvas, "-scrollregion [list " & BBox(Canvas, "all") & "]");
-      AddCommands;
+      Preferences.Commands.AddCommands;
    end CreatePreferencesUI;
 
    procedure SetDefaultSettings is
