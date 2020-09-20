@@ -68,16 +68,18 @@ package body SearchItems is
       TextEntry: Ttk_Entry;
       Hunter_Search_Exception: exception;
    begin
+      TextFrame.Interp := Interp;
+      TextFrame.Name := New_String(".mainframe.textframe");
       TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      TextEntry.Name := New_String(TextFrame & ".textentry");
       Button.Interp := Interp;
-      Button.Name := New_String(".mainframe.textframe.closebutton");
+      Button.Name := New_String(TextFrame & ".closebutton");
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid_Remove(Button);
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
          State(Button, "selected");
-         Button.Name := New_String(".mainframe.textframe.okbutton");
+         Button.Name := New_String(TextFrame & ".okbutton");
          Tcl.Tk.Ada.Grid.Grid_Remove(Button);
          Add
            (TextEntry,
@@ -86,8 +88,6 @@ package body SearchItems is
                "{Enter the name of the file or directory to search for}"));
          Bind(TextEntry, "<KeyRelease>", "{Search}");
          Focus(TextEntry);
-         TextFrame.Interp := Interp;
-         TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       else
          if Invoke(Button) /= "" then
