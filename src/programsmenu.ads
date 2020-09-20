@@ -17,7 +17,7 @@ with Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 
--- ****h* Hunter/ProgramsMenu
+-- ****h* ProgramsMenu/ProgramsMenu
 -- FUNCTION
 -- Provides code for manipulate associated programs with files.
 -- SOURCE

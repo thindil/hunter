@@ -17,7 +17,7 @@ with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
--- ****h* Hunter/UserCommands
+-- ****h* UserCommands/UserCommands
 -- FUNCTION
 -- Provide code for manipulate the user defined commands/actions
 -- SOURCE

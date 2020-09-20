@@ -16,7 +16,7 @@
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
--- ****h* Hunter/Inotify
+-- ****h* Inotify/Inotify
 -- FUNCTION
 -- Small Ada binding to kernel inotify
 -- SOURCE

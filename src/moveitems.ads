@@ -15,7 +15,7 @@
 
 with MainWindow; use MainWindow;
 
--- ****h* Hunter/MoveItems
+-- ****h* MoveItems/MoveItems
 -- FUNCTION
 -- Provide code to move selected files or directories.
 -- SOURCE
