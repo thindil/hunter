@@ -55,4 +55,11 @@ package UserCommands is
    procedure UpdateUserCommandsList;
    -- ****
 
+   -- ****f* UserCommands/AddCommands
+   -- FUNCTION
+   -- Adds the Ada code to the Tcl interpreter
+   -- SOURCE
+   procedure AddCommands;
+   -- ****
+
 end UserCommands;

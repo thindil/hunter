@@ -13,10 +13,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
+with CArgv;
+with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
@@ -26,6 +30,8 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Messages; use Messages;
+with Utils; use Utils;
 
 package body UserCommands is
 
@@ -117,5 +123,66 @@ package body UserCommands is
          Row := Row + 1;
       end loop;
    end UpdateUserCommandsList;
+
+   -- ****o* UserCommands/Execute_Command_Command
+   -- FUNCTION
+   -- Clear the add command form
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- ExecuteCommand menuentry
+   -- Menuentry is the menu label of the command which will be executed
+   -- SOURCE
+   function Execute_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Execute_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc);
+      Value, CommandName, Arguments: Unbounded_String;
+      Pid: GNAT.OS_Lib.Process_Id;
+      SpaceIndex: Natural;
+   begin
+      Value := UserCommandsList(CArgv.Arg(Argv, 1)).Command;
+      SpaceIndex := Index(Value, " ");
+      CommandName :=
+        (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex - 1)
+         else Value);
+      CommandName :=
+        To_Unbounded_String(FindExecutable(To_String(CommandName)));
+      if CommandName = Null_Unbounded_String then
+         ShowMessage
+           (Mc(Interp, "{Can't find command:}") & " " &
+            Slice(Value, 1, SpaceIndex));
+         return TCL_OK;
+      end if;
+      if SpaceIndex > 0 then
+         Arguments := Unbounded_Slice(Value, SpaceIndex, Length(Value)) & " ";
+      end if;
+      Pid :=
+        Non_Blocking_Spawn
+          (Full_Name(To_String(CommandName)),
+           Argument_String_To_List(To_String(Arguments)).all);
+      if Pid = GNAT.OS_Lib.Invalid_Pid then
+         ShowMessage(Mc(Interp, "{Can't execute this command}"));
+      end if;
+      return TCL_OK;
+   end Execute_Command_Command;
+
+   procedure AddCommands is
+   begin
+      AddCommand("ExecuteCommand", Execute_Command_Command'Access);
+   end AddCommands;
 
 end UserCommands;
