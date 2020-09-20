@@ -18,7 +18,7 @@ with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
--- ****h* Hunter/LoadData
+-- ****h* LoadData/LoadData
 -- FUNCTION
 -- Provide code to load directories information.
 -- SOURCE

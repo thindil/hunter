@@ -15,7 +15,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
--- ****h* Hunter/Preferences
+-- ****h* Preferences/Preferences
 -- FUNCTION
 -- Provide code for save/restore and manipulate the program settings
 -- SOURCE

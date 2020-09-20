@@ -16,7 +16,7 @@
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
--- ****h* Hunter/MainWindow
+-- ****h* MainWindow/MainWindow
 -- FUNCTION
 -- Provide code to show and manipulate the main program window.
 -- SOURCE
