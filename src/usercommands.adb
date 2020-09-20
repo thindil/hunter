@@ -13,10 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with CArgv;
@@ -32,6 +34,7 @@ with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body UserCommands is
@@ -151,9 +154,10 @@ package body UserCommands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Value, CommandName, Arguments: Unbounded_String;
-      Pid: GNAT.OS_Lib.Process_Id;
+      Value, CommandName, Arguments, CommandResult: Unbounded_String;
       SpaceIndex, ArgumentIndex: Natural;
+      Result: Expect_Match;
+      ProcessDesc: Process_Descriptor;
    begin
       Value := UserCommandsList(CArgv.Arg(Argv, 1)).Command;
       SpaceIndex := Index(Value, " ");
@@ -187,14 +191,26 @@ package body UserCommands is
            (Arguments, ArgumentIndex, ArgumentIndex + 1,
             To_String(CurrentSelected));
       end loop;
-      Pid :=
-        Non_Blocking_Spawn
-          (Full_Name(To_String(CommandName)),
-           Argument_String_To_List(To_String(Arguments)).all);
-      if Pid = GNAT.OS_Lib.Invalid_Pid then
-         ShowMessage(Mc(Interp, "{Can't execute this command}"));
+      Non_Blocking_Spawn
+        (ProcessDesc, Full_Name(To_String(CommandName)),
+         Argument_String_To_List(To_String(Arguments)).all);
+      if UserCommandsList(CArgv.Arg(Argv, 1)).NeedOutput then
+         loop
+            Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+            exit when Result /= 1;
+            Append(CommandResult, Expect_Out_Match(ProcessDesc) & LF);
+         end loop;
       end if;
+      Close(ProcessDesc);
       return TCL_OK;
+   exception
+      when Process_Died =>
+         if CommandResult /= Null_Unbounded_String then
+            ShowOutput(To_String(CommandResult));
+         else
+            ShowMessage(Mc(Interp, "{Can't execute this command}"));
+         end if;
+         return TCL_OK;
    end Execute_Command_Command;
 
    procedure AddCommands is

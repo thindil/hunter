@@ -1099,4 +1099,39 @@ package body ShowItems is
       Autoscroll(PreviewYScroll);
    end ShowDestination;
 
+   procedure ShowOutput(Text: String) is
+      Frame: Ttk_Frame;
+      Paned: Ttk_PanedWindow;
+   begin
+      Frame.Interp := Get_Context;
+      if not Settings.ShowPreview then
+         Paned.Interp := Get_Context;
+         Paned.Name := New_String(".mainframe.paned");
+         Add(Paned, PreviewFrame, "-weight 20");
+      end if;
+      Unautoscroll(PreviewXScroll);
+      Unautoscroll(PreviewYScroll);
+      configure
+        (PreviewXScroll,
+         "-command [list " & Widget_Image(PreviewText) & " xview]");
+      Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
+      configure
+        (PreviewYScroll,
+         "-command [list " & Widget_Image(PreviewText) & " yview]");
+      Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack(PreviewText, "-side top -fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
+      Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
+      Frame.Name := New_String(Widget_Image(PreviewFrame) & ".title");
+      configure
+        (Frame, "-text {" & Mc(Get_Context, "{Command output}") & "}");
+      configure(PreviewText, "-state normal");
+      Delete(PreviewText, "1.0", "end");
+      Insert(PreviewText, "end", "{" & Text & "}");
+      configure(PreviewText, "-state disabled");
+      Autoscroll(PreviewXScroll);
+      Autoscroll(PreviewYScroll);
+   end ShowOutput;
+
 end ShowItems;
