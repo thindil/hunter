@@ -85,4 +85,11 @@ package ShowItems is
    procedure ShowDestination;
    -- ****
 
+   -- ****f* ShowItems/ShowOutput
+   -- FUNCTION
+   -- Show the output of the selected command
+   -- SOURCE
+   procedure ShowOutput(Text: String);
+   -- ****
+
 end ShowItems;
