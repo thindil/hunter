@@ -47,6 +47,7 @@ with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.TtkNotebook; use Tcl.Tk.Ada.Widgets.TtkNotebook;
 with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
@@ -293,6 +294,7 @@ package body Preferences is
         (if FindExecutable("highlight")'Length > 0 then True else False);
       ShortcutsFrame: constant Ttk_Frame := Create(Notebook & ".shortcuts");
       ActionsFrame: constant Ttk_Frame := Create(Notebook & ".actions");
+      ModulesFrame: constant Ttk_Frame := Create(Notebook & ".modules");
       procedure AddButton
         (Name, Text: String; Value: Boolean; TooltipText, Command: String) is
          CheckButton: constant Ttk_CheckButton :=
@@ -823,6 +825,36 @@ package body Preferences is
       TtkNotebook.Add
         (Notebook, Widget_Image(ActionsFrame),
          "-text {" & Mc(Get_Context, "{User commands}") & "}");
+      -- The program modules settings
+      declare
+         CloseButton: constant Ttk_Button :=
+           Create
+             (ModulesFrame & ".closebutton",
+              "-text {" & Mc(Get_Context, "{Close}") &
+              "} -command {ClosePreferences " & PreferencesFrame & "}");
+         ModulesView: constant Ttk_Tree_View :=
+           Create
+             (ModulesFrame & ".view",
+              "-show headings -columns [list enabled name]");
+         ModuleFrame: constant Ttk_LabelFrame := Create(ModulesFrame & ".moduleframe", "-text {" & Mc(Get_Context, "{Module information}") & "}");
+      begin
+         Heading
+           (ModulesView, "enabled",
+            "-text {" & Mc(Get_Context, "{Enabled}") & "}");
+         Heading
+           (ModulesView, "name", "-text {" & Mc(Get_Context, "{Name}") & "}");
+         Column(ModulesView, "enabled", "-width 50");
+         Tcl.Tk.Ada.Grid.Grid(ModulesView, "-sticky nwes");
+         Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, ModulesView, "-weight 1");
+         Tcl.Tk.Ada.Grid.Row_Configure(ModulesFrame, ModulesView, "-weight 1");
+         Tcl.Tk.Ada.Grid.Grid(ModuleFrame, "-column 1 -row 0 -sticky nwes");
+         Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, ModulesView, "-weight 1");
+         Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
+         Tcl.Tk.Ada.Grid.Grid(CloseButton, "-sticky se -column 1");
+      end;
+      TtkNotebook.Add
+        (Notebook, Widget_Image(ModulesFrame),
+         "-text {" & Mc(Get_Context, "{Modules}") & "}");
       Canvas_Create(Canvas, "window", "0 0 -anchor nw -window " & Notebook);
       Tcl_Eval(Get_Context, "update");
       configure(Canvas, "-scrollregion [list " & BBox(Canvas, "all") & "]");
