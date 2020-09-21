@@ -1093,13 +1093,11 @@ package body ShowItems is
          Paned.Name := New_String(".mainframe.paned");
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
-      Unautoscroll(PreviewXScroll);
       Unautoscroll(PreviewYScroll);
-      configure(PreviewXScroll, "-command [list " & PreviewText & " xview]");
-      Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
       configure(PreviewYScroll, "-command [list " & PreviewText & " yview]");
       Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
       Tcl.Tk.Ada.Pack.Pack(PreviewText, "-side top -fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
       Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
@@ -1109,7 +1107,6 @@ package body ShowItems is
       Delete(PreviewText, "1.0", "end");
       Insert(PreviewText, "end", "{" & Text & "}");
       configure(PreviewText, "-state disabled");
-      Autoscroll(PreviewXScroll);
       Autoscroll(PreviewYScroll);
    end ShowOutput;
 
