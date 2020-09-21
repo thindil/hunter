@@ -26,12 +26,16 @@ package UserCommands is
 
    -- ****s* UserCommands/UserCommand
    -- FUNCTION
-   --
+   -- Data structure for the user defined commands
+   -- OPTIONS
+   -- NeedOutput - If true, show the command output to the user
+   -- Command    - The command to execute
    -- SOURCE
    type UserCommand is record
       NeedOutput: Boolean;
       Command: Unbounded_String;
    end record;
+   -- ****
 
    -- ****t* UserCommands/Commands_Container
    -- FUNCTION
