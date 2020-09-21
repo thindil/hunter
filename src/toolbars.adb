@@ -513,7 +513,7 @@ package body Toolbars is
          Menu.Add
            (ActionsMenu, "command",
             "-label {" & Commands_Container.Key(I) &
-            "} -command {ExecuteCommand " & Commands_Container.Key(I) & "}");
+            "} -command {ExecuteCommand {" & Commands_Container.Key(I) & "}}");
       end loop;
    end SetUserCommandsMenu;
 

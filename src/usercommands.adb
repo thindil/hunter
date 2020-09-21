@@ -105,8 +105,8 @@ package body UserCommands is
          Button :=
            Create
              (CommandsFrame & ".editbutton" & Trim(Positive'Image(Row), Left),
-              "-style Toolbutton -image " & Image & " -command {EditCommand " &
-              Commands_Container.Key(I) & "}");
+              "-style Toolbutton -image " & Image &
+              " -command {EditCommand {" & Commands_Container.Key(I) & "}}");
          Add
            (Button,
             Mc
@@ -120,7 +120,7 @@ package body UserCommands is
              (CommandsFrame & ".deletebutton" &
               Trim(Positive'Image(Row), Left),
               "-style Toolbutton -image " & Image &
-              " -command {DeleteCommand " & Commands_Container.Key(I) & "}");
+              " -command {DeleteCommand {" & Commands_Container.Key(I) & "}}");
          Add(Button, Mc(Get_Context, "{Delete the selected command.}"));
          Tcl.Tk.Ada.Grid.Grid
            (Button, "-row" & Positive'Image(Row) & " -column 4");
