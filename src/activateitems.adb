@@ -240,9 +240,10 @@ package body ActivateItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       TextEntry: Ttk_Entry;
-      Value, CommandName, Arguments: Unbounded_String;
+      Value, CommandName: Unbounded_String;
       Pid: GNAT.OS_Lib.Process_Id;
       SpaceIndex: Natural;
+      Arguments: Argument_List_Access;
    begin
       TextEntry.Interp := Interp;
       TextEntry.Name := New_String(".mainframe.textframe.textentry");
@@ -262,14 +263,23 @@ package body ActivateItems is
             Slice(Value, 1, SpaceIndex));
          return TCL_OK;
       end if;
-      if SpaceIndex > 0 then
-         Arguments := Unbounded_Slice(Value, SpaceIndex, Length(Value)) & " ";
-      end if;
-      Append(Arguments, CurrentSelected);
-      Pid := ExecuteFile(To_String(CommandName), To_String(Arguments));
+      Arguments :=
+        (if SpaceIndex > 0 then
+           Argument_String_To_List
+             (Slice(Value, SpaceIndex, Length(Value)) & " @2")
+         else Argument_String_To_List("@2"));
+      for I in Arguments'Range loop
+         if Arguments(I).all = "@2" then
+            Arguments(I) := new String'(To_String(CurrentSelected));
+         end if;
+      end loop;
+      Pid :=
+        Non_Blocking_Spawn(Full_Name(To_String(CommandName)), Arguments.all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage(Mc(Interp, "{Can't execute this command}"));
          return TCL_OK;
+      else
+         Lower(Get_Main_Window(Get_Context));
       end if;
       return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);
    end Execute_With_Command;
