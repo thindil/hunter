@@ -48,7 +48,7 @@ package body Toolbars is
 
    procedure SetToolbars is
       Side, Direction, Orientation: Unbounded_String;
-      Fill: String(1 .. 1);
+      Fill: Character;
       Toolbar, MainFrame: Ttk_Frame;
       Button: Ttk_Button;
       Label: Ttk_Label;
@@ -78,12 +78,12 @@ package body Toolbars is
    begin
       if not Settings.ToolbarsOnTop then
          Side := To_Unbounded_String("top");
-         Fill := "x";
+         Fill := 'x';
          Direction := To_Unbounded_String("right");
          Orientation := To_Unbounded_String("horizontal");
       else
          Side := To_Unbounded_String("left");
-         Fill := "y";
+         Fill := 'y';
          Direction := To_Unbounded_String("below");
          Orientation := To_Unbounded_String("vertical");
       end if;
@@ -234,9 +234,7 @@ package body Toolbars is
          To_String(Accelerators(4)) & "\]",
          "run-build");
       ButtonMenu := Create(".actionsmenu", "-tearoff false");
-      configure
-        (ToolMenuButton,
-         "-menu " & Widget_Image(ButtonMenu) & " -direction right");
+      configure(ToolMenuButton, "-menu " & ButtonMenu & " -direction right");
       SetUserCommandsMenu;
       ToolMenuButton := Create(".mainframe.toolbars.actiontoolbar.newbutton");
       SetButton
@@ -258,7 +256,7 @@ package body Toolbars is
         (ButtonMenu, "command",
          "-label {" & Mc(Get_Context, "{New link}") &
          "} -command {ShowCreate link}");
-      configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
+      configure(ToolMenuButton, "-menu " & ButtonMenu);
       ToolCheckButton :=
         Create
           (".mainframe.toolbars.actiontoolbar.renamebutton",
@@ -319,7 +317,7 @@ package body Toolbars is
         (ButtonMenu, "command",
          "-label {" & Mc(Get_Context, "{Empty Trash}") &
          "} -command ClearTrash");
-      configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
+      configure(ToolMenuButton, "-menu " & ButtonMenu);
       ToolButton :=
         Create
           (".mainframe.toolbars.actiontoolbar.cancelbutton",
@@ -378,7 +376,7 @@ package body Toolbars is
         (ButtonMenu, "command",
          "-label {" & Mc(Get_Context, "{Get involved}") &
          "} -command {ShowFile CONTRIBUTING.md}");
-      configure(ToolMenuButton, "-menu " & Widget_Image(ButtonMenu));
+      configure(ToolMenuButton, "-menu " & ButtonMenu);
       Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Tcl.Tk.Ada.Grid.Grid(ToolbarsFrame);
