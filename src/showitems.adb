@@ -168,8 +168,7 @@ package body ShowItems is
       StartY := ImageHeight / 2;
       Canvas_Create
         (PreviewCanvas, "image",
-         Natural'Image(StartX) & Natural'Image(StartY) & " -image " &
-         Widget_Image(Image));
+         Natural'Image(StartX) & Natural'Image(StartY) & " -image " & Image);
       configure
         (PreviewCanvas,
          "-width " & Width(Image) & " -height" & Natural'Image(ImageHeight));
@@ -427,7 +426,7 @@ package body ShowItems is
                      Canvas_Create
                        (PreviewCanvas, "image",
                         Natural'Image(StartX) & Natural'Image(StartY) &
-                        " -image " & Widget_Image(Image));
+                        " -image " & Image);
                      configure
                        (PreviewCanvas,
                         "-width " & Width(Image) & " -height" &
@@ -643,8 +642,7 @@ package body ShowItems is
                   else
                      Tcl.Tk.Ada.Pack.Pack
                        (CheckButton,
-                        "-before " & Widget_Image(InfoFrame) & "." & Name &
-                        "frame.read");
+                        "-before " & InfoFrame & "." & Name & "frame.read");
                   end if;
                end if;
                State(CheckButton, ButtonState);
@@ -1073,7 +1071,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
-      Frame.Name := New_String(Widget_Image(PreviewFrame) & ".title");
+      Frame.Name := New_String(PreviewFrame & ".title");
       configure
         (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
       DestinationDirectory := CurrentDirectory;
