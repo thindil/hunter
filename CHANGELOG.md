@@ -23,6 +23,7 @@ All notable changes to this project will be documented in this file.
 - Open file or directory with command when command has arguments
 - Don't enter the selected directory on header clicking
 - Added missing translations
+- Running file or directory with command when file or directory contains space
 
 ## [1.4] - 2020-08-19
 
