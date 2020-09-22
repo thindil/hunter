@@ -291,7 +291,7 @@ package body Preferences is
       PreferencesFrame: constant Ttk_Frame :=
         Create(Notebook & ".preferences");
       ColorsEnabled: constant Boolean :=
-        (if FindExecutable("highlight")'Length > 0 then True else False);
+        (if FindExecutable("highlight", False)'Length > 0 then True else False);
       ShortcutsFrame: constant Ttk_Frame := Create(Notebook & ".shortcuts");
       ActionsFrame: constant Ttk_Frame := Create(Notebook & ".actions");
       ModulesFrame: constant Ttk_Frame := Create(Notebook & ".modules");
