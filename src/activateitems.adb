@@ -41,30 +41,6 @@ with Utils; use Utils;
 
 package body ActivateItems is
 
-   -- ****if* ActivateItems/ExecuteFile
-   -- FUNCTION
-   -- Execute the selected file
-   -- PARAMETERS
-   -- FileName  - Name of file (full path) which will be executed
-   -- Arguments - Additional arguments passed to the file
-   -- RESULT
-   -- Spawned process ID of the executed file. If the file cannot
-   -- be executed, return Invalid_Pid
-   -- SOURCE
-   function ExecuteFile
-     (FileName, Arguments: String) return GNAT.OS_Lib.Process_Id is
-      -- ****
-      Pid: GNAT.OS_Lib.Process_Id;
-   begin
-      Pid :=
-        Non_Blocking_Spawn
-          (Full_Name(FileName), Argument_String_To_List(Arguments).all);
-      if Pid /= GNAT.OS_Lib.Invalid_Pid then
-         Lower(Get_Main_Window(Get_Context));
-      end if;
-      return Pid;
-   end ExecuteFile;
-
    -- ****o* ActivateItems/Activate_Item_Command
    -- FUNCTION
    -- "Activate" selected file or directory. Action depends on what selected
@@ -125,21 +101,30 @@ package body ActivateItems is
                         "{I can't open this file. No application associated with this type of files.}"));
                   return TCL_OK;
                end if;
-               Pid := ExecuteFile(To_String(CurrentSelected), "");
+               Pid :=
+                 Non_Blocking_Spawn
+                   (To_String(CurrentSelected),
+                    Argument_String_To_List("").all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
                   ShowMessage("I can't execute this file.");
+                  return TCL_OK;
                end if;
             else
                if ExecutableName = "" then
                   return TCL_OK;
                end if;
-               Pid := ExecuteFile(ExecutableName, To_String(CurrentSelected));
+               Pid :=
+                 Non_Blocking_Spawn
+                   (To_String(CurrentSelected),
+                    Argument_String_To_List("").all);
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
                  (Mc
                     (Interp,
                      "{I can't open this file. Can't start application asociated with this type of files.}"));
+            else
+               Lower(Get_Main_Window(Interp));
             end if;
          end;
       end if;
@@ -311,9 +296,13 @@ package body ActivateItems is
       pragma Unreferenced(ClientData, Argc, Argv);
       Pid: GNAT.OS_Lib.Process_Id;
    begin
-      Pid := ExecuteFile(To_String(CurrentSelected), "");
+      Pid :=
+        Non_Blocking_Spawn
+          (To_String(CurrentSelected), Argument_String_To_List("").all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage(Mc(Interp, "{Can't execute this command}"));
+      else
+         Lower(Get_Main_Window(Interp));
       end if;
       return TCL_OK;
    end Execute_Command;
