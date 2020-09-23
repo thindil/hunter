@@ -106,7 +106,7 @@ package body ActivateItems is
                    (To_String(CurrentSelected),
                     Argument_String_To_List("").all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
-                  ShowMessage("I can't execute this file.");
+                  ShowMessage(Mc(Interp, "{I can't execute this file.}"));
                   return TCL_OK;
                end if;
             else
