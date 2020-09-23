@@ -259,6 +259,7 @@ package body ShowItems is
                   end LoadFile;
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
                   Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
