@@ -154,10 +154,11 @@ package body UserCommands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Value, CommandName, Arguments, CommandResult: Unbounded_String;
-      SpaceIndex, ArgumentIndex: Natural;
+      Value, CommandName, CommandResult: Unbounded_String;
+      SpaceIndex: Natural;
       Result: Expect_Match;
       ProcessDesc: Process_Descriptor;
+      Arguments: Argument_List_Access;
    begin
       Value := UserCommandsList(CArgv.Arg(Argv, 1)).Command;
       SpaceIndex := Index(Value, " ");
@@ -173,27 +174,19 @@ package body UserCommands is
          return TCL_OK;
       end if;
       if SpaceIndex > 0 then
-         Arguments := Unbounded_Slice(Value, SpaceIndex, Length(Value)) & " ";
+         Arguments :=
+           Argument_String_To_List(Slice(Value, SpaceIndex, Length(Value)));
       end if;
-      ArgumentIndex := 1;
-      loop
-         ArgumentIndex := Index(Arguments, "@1", ArgumentIndex);
-         exit when ArgumentIndex = 0;
-         Replace_Slice
-           (Arguments, ArgumentIndex, ArgumentIndex + 1,
-            To_String(CurrentDirectory));
-      end loop;
-      ArgumentIndex := 1;
-      loop
-         ArgumentIndex := Index(Arguments, "@2", ArgumentIndex);
-         exit when ArgumentIndex = 0;
-         Replace_Slice
-           (Arguments, ArgumentIndex, ArgumentIndex + 1,
-            To_String(CurrentSelected));
+      for I in Arguments'Range loop
+         if Arguments(I).all = "@1" then
+            Arguments(I) := new String'(To_String(CurrentDirectory));
+         end if;
+         if Arguments(I).all = "@2" then
+            Arguments(I) := new String'(To_String(CurrentSelected));
+         end if;
       end loop;
       Non_Blocking_Spawn
-        (ProcessDesc, Full_Name(To_String(CommandName)),
-         Argument_String_To_List(To_String(Arguments)).all);
+        (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
       if UserCommandsList(CArgv.Arg(Argv, 1)).NeedOutput then
          loop
             Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
