@@ -86,18 +86,13 @@ package body Trash is
             end if;
          end loop;
          Close(FileInfo);
+         Item.IsHidden := (if FileName(1) = '.' then True else False);
          if Is_Directory(To_String(FullName)) then
             Item.IsDirectory := True;
-            if FileName(1) = '.' then
-               Item.IsHidden := True;
-            else
-               Item.IsHidden := False;
-            end if;
-            if Is_Symbolic_Link(To_String(FullName)) then
-               Item.Image := To_Unbounded_String("emblem-symbolic-link");
-            else
-               Item.Image := To_Unbounded_String("folder");
-            end if;
+            Item.Image :=
+              (if Is_Symbolic_Link(To_String(FullName)) then
+                 To_Unbounded_String("emblem-symbolic-link")
+               else To_Unbounded_String("folder"));
             if Is_Read_Accessible_File(To_String(FullName)) then
                Open(SubDirectory, To_String(FullName));
                Size := 0;
@@ -113,11 +108,6 @@ package body Trash is
             end if;
          else
             Item.IsDirectory := False;
-            if FileName(1) = '.' then
-               Item.IsHidden := True;
-            else
-               Item.IsHidden := False;
-            end if;
             if Is_Symbolic_Link(To_String(FullName)) then
                Item.Image := To_Unbounded_String("emblem-symbolic-link");
             elsif Is_Executable_File(To_String(FullName)) then
@@ -224,12 +214,10 @@ package body Trash is
             if Slice(FileLine, 1, 4) = "Path" then
                Destination := Unbounded_Slice(FileLine, 6, Length(FileLine));
                if Ada.Directories.Exists(To_String(Destination)) then
-                  if Is_Directory(To_String(Destination)) then
-                     ItemType :=
-                       To_Unbounded_String(Mc(Interp, "{Directory}"));
-                  else
-                     ItemType := To_Unbounded_String(Mc(Interp, "{File}"));
-                  end if;
+                  ItemType :=
+                    (if Is_Directory(To_String(Destination)) then
+                       To_Unbounded_String(Mc(Interp, "{Directory}"))
+                     else To_Unbounded_String(Mc(Interp, "{File}")));
                   ShowMessage
                     (Mc(Interp, "{Can't restore }") & To_String(Destination) &
                      " " & To_String(ItemType) & " " &
