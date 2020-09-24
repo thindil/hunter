@@ -88,17 +88,14 @@ package body UserCommands is
               "-text {" & To_String(UserCommandsList(I).Command) & "}");
          Tcl.Tk.Ada.Grid.Grid
            (Label, "-row" & Positive'Image(Row) & " -column 1");
-         if UserCommandsList(I).NeedOutput then
-            Label :=
+         Label :=
+           (if UserCommandsList(I).NeedOutput then
               Create
                 (CommandsFrame & ".output" & Trim(Positive'Image(Row), Left),
-                 "-text {" & Mc(Get_Context, "{Yes}") & "}");
-         else
-            Label :=
-              Create
+                 "-text {" & Mc(Get_Context, "{Yes}") & "}")
+            else Create
                 (CommandsFrame & ".output" & Trim(Positive'Image(Row), Left),
-                 "-text {" & Mc(Get_Context, "{No}") & "}");
-         end if;
+                 "-text {" & Mc(Get_Context, "{No}") & "}"));
          Tcl.Tk.Ada.Grid.Grid
            (Label, "-row" & Positive'Image(Row) & " -column 2");
          Image.Name := New_String("refreshicon");
@@ -180,8 +177,7 @@ package body UserCommands is
       for I in Arguments'Range loop
          if Arguments(I).all = "@1" then
             Arguments(I) := new String'(To_String(CurrentDirectory));
-         end if;
-         if Arguments(I).all = "@2" then
+         elsif Arguments(I).all = "@2" then
             Arguments(I) := new String'(To_String(CurrentSelected));
          end if;
       end loop;
