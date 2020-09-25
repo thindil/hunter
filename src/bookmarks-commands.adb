@@ -82,11 +82,12 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end GoToBookmark_Command;
 
-   -- ****if* Bookmarks.Commands/UpdateNewAction
+   -- ****if* Commands/UpdateNewAction
    -- FUNCTION
    -- Update NewAction and toolbars if needed
    -- SOURCE
    procedure UpdateNewAction is
+      -- ****
    begin
       if NewAction /= MOVE then
          if NewAction = SHOWTRASH then
