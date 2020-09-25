@@ -1,9 +1,0 @@
-Project libmagic is
-
-  For Externally_Built use "true";
-  -- If your libmagic is in different place, change this
-  For Library_Dir use "/usr/lib";
-  For Library_Name use "magic";
-  For Library_Kind use "dynamic";
-
-End libmagic;
