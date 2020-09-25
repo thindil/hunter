@@ -227,11 +227,9 @@ package body Utils is
             return;
       end case;
       if (Action = COPY or Action = MOVE) then
-         if not Settings.ToolbarsOnTop then
-            Side := To_Unbounded_String("top");
-         else
-            Side := To_Unbounded_String("left");
-         end if;
+         Side :=
+           (if not Settings.ToolbarsOnTop then To_Unbounded_String("top")
+            else To_Unbounded_String("left"));
          if Finished then
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
             Toolbar.Name :=
