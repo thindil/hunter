@@ -20,7 +20,7 @@
 package AboutDialog is
 -- ****
 
-   -- ****f* AboutDialog/CreateAboutUI
+   -- ****f* AboutDialog/AboutDialog.CreateAboutUI
    -- FUNCTION
    -- Create about UI
    -- SOURCE
