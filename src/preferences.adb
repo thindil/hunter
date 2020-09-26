@@ -837,6 +837,7 @@ package body Preferences is
              (ModulesFrame & ".view",
               "-show headings -columns [list enabled name]");
          ModuleFrame: constant Ttk_LabelFrame := Create(ModulesFrame & ".moduleframe", "-text {" & Mc(Get_Context, "{Module information}") & "}");
+         ModuleInfo: constant Ttk_Label := Create(ModuleFrame & ".info", "-wraplength 400");
       begin
          Heading
            (ModulesView, "enabled",
@@ -847,6 +848,7 @@ package body Preferences is
          Tcl.Tk.Ada.Grid.Grid(ModulesView, "-sticky nwes");
          Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, ModulesView, "-weight 1");
          Tcl.Tk.Ada.Grid.Row_Configure(ModulesFrame, ModulesView, "-weight 1");
+         Tcl.Tk.Ada.Grid.Grid(ModuleInfo, "-sticky nwes");
          Tcl.Tk.Ada.Grid.Grid(ModuleFrame, "-column 1 -row 0 -sticky nwes");
          Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, ModulesView, "-weight 1");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
