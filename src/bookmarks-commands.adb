@@ -17,6 +17,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -225,7 +226,7 @@ package body Bookmarks.Commands is
       File: File_Type;
    begin
       Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
-      Put_Line(File, "file://" & To_String(CurrentSelected));
+      Put_Line(File, "file://" & CurrentSelected);
       Close(File);
       CreateBookmarkMenu;
       SetBookmarkButton;
@@ -266,11 +267,11 @@ package body Bookmarks.Commands is
       Open(OldFile, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
       Create(NewFile, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
       while not End_Of_File(OldFile) loop
-         Line := To_Unbounded_String(Get_Line(OldFile));
+         Line := Get_Line(OldFile);
          if Slice(Line, 1, 7) = "file://" then
             Path := Unbounded_Slice(Line, 8, Length(Line));
             if Path /= CurrentSelected then
-               Put_Line(NewFile, To_String(Line));
+               Put_Line(NewFile, Line);
             end if;
          end if;
       end loop;
