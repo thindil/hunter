@@ -115,8 +115,8 @@ package body ActivateItems is
                end if;
                Pid :=
                  Non_Blocking_Spawn
-                   (To_String(CurrentSelected),
-                    Argument_String_To_List("").all);
+                   (ExecutableName,
+                    Argument_String_To_List(To_String(CurrentSelected)).all);
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
