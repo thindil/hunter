@@ -225,7 +225,13 @@ package body Bookmarks.Commands is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
       File: File_Type;
    begin
-      Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      if Ada.Directories.Exists
+          (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
+         Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      else
+         Create
+           (File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      end if;
       Put_Line(File, "file://" & CurrentSelected);
       Close(File);
       CreateBookmarkMenu;
