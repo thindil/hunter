@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - Don't enter the selected directory on header clicking
 - Added missing translations
 - Running file or directory with command when file or directory contains space
+- Crash on creating bookmark when bookmarks file doesn't exists
 
 ## [1.4] - 2020-08-19
 
