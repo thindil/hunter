@@ -185,7 +185,7 @@ package body UserCommands is
         (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
       if UserCommandsList(CArgv.Arg(Argv, 1)).NeedOutput then
          loop
-            Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+            Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 300_000);
             exit when Result /= 1;
             Append(CommandResult, Expect_Out_Match(ProcessDesc) & LF);
          end loop;
