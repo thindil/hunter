@@ -41,7 +41,7 @@ with Utils; use Utils;
 
 package body ActivateItems is
 
-   -- ****o* ActivateItems/Activate_Item_Command
+   -- ****o* ActivateItems/ActivateItems.Activate_Item_Command
    -- FUNCTION
    -- "Activate" selected file or directory. Action depends on what selected
    -- item is. For example: it go to selected directory, opens text files in
@@ -131,7 +131,7 @@ package body ActivateItems is
       return TCL_OK;
    end Activate_Item_Command;
 
-   -- ****o* ActivateItems/Toggle_Execute_With_Command
+   -- ****o* ActivateItems/ActivateItems.Toggle_Execute_With_Command
    -- FUNCTION
    -- Show text entry to enter with what program execute selected file or
    -- directory
@@ -199,7 +199,7 @@ package body ActivateItems is
       return TCL_OK;
    end Toggle_Execute_With_Command;
 
-   -- ****o* ActivateItems/Execute_With_Command
+   -- ****o* ActivateItems/ActivateItems.Execute_With_Command
    -- FUNCTION
    -- Execute the selected file or directory with the selected command
    -- entered by an user
@@ -269,7 +269,7 @@ package body ActivateItems is
       return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);
    end Execute_With_Command;
 
-   -- ****o* ActivateItems/Execute_Command
+   -- ****o* ActivateItems/ActivateItems.Execute_Command
    -- FUNCTION
    -- Execute the selected file or directory
    -- PARAMETERS
