@@ -24,8 +24,6 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
@@ -123,8 +121,6 @@ package body ActivateItems is
                  (Mc
                     (Interp,
                      "{I can't open this file. Can't start application asociated with this type of files.}"));
-            else
-               Lower(Get_Main_Window(Interp));
             end if;
          end;
       end if;
@@ -263,8 +259,6 @@ package body ActivateItems is
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage(Mc(Interp, "{Can't execute this command}"));
          return TCL_OK;
-      else
-         Lower(Get_Main_Window(Get_Context));
       end if;
       return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);
    end Execute_With_Command;
@@ -301,8 +295,6 @@ package body ActivateItems is
           (To_String(CurrentSelected), Argument_String_To_List("").all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage(Mc(Interp, "{Can't execute this command}"));
-      else
-         Lower(Get_Main_Window(Interp));
       end if;
       return TCL_OK;
    end Execute_Command;
