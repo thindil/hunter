@@ -17,6 +17,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Tcl; use Tcl;
@@ -51,16 +52,15 @@ package body Bookmarks is
       BookmarksMenu: Tk_Menu;
       MenuButton: Ttk_MenuButton;
       Path: Unbounded_String;
-      function GetXDGDirectory(Name: String) return String is
+      function GetXDGDirectory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String;
          EqualIndex: Natural;
       begin
-         if not Ada.Environment_Variables.Exists(Name)
-           or else Value(Name) = "" then
+         if Value(Name, "") = "" then
             Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
             while not End_Of_File(File) loop
-               Line := To_Unbounded_String(Get_Line(File));
+               Line := Get_Line(File);
                EqualIndex := Index(Line, "=");
                if EqualIndex > 0 then
                   if Slice(Line, 1, EqualIndex - 1) = Name then
@@ -71,7 +71,7 @@ package body Bookmarks is
             end loop;
             Close(File);
          end if;
-         return Expand_Path(Value(Name));
+         return To_Unbounded_String(Expand_Path(Value(Name)));
       end GetXDGDirectory;
    begin
       if CreateNew then
@@ -89,8 +89,7 @@ package body Bookmarks is
          "-label {" & Mc(Get_Context, "{Home}") &
          "} -command {GoToBookmark {" & Value("HOME") & "}}");
       for I in XDGBookmarks'Range loop
-         Path :=
-           To_Unbounded_String(GetXDGDirectory(To_String(XDGBookmarks(I))));
+         Path := GetXDGDirectory(To_String(XDGBookmarks(I)));
          if Ada.Directories.Exists(To_String(Path)) then
             BookmarksList.Include
               (Simple_Name(To_String(Path)), To_String(Path));
@@ -109,7 +108,7 @@ package body Bookmarks is
          begin
             Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
             while not End_Of_File(File) loop
-               Line := To_Unbounded_String(Get_Line(File));
+               Line := Get_Line(File);
                if Slice(Line, 1, 7) = "file://" then
                   Path := Unbounded_Slice(Line, 8, Length(Line));
                   BookmarkExist := False;
