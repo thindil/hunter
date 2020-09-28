@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Option to configure the program keyboard shortcuts
 - Separated keyboard shortcut for restore files or directories from Trash
 - User defined commands and actions
+- Blocked option to remove system (based on XDG directories) bookmarks
 
 ### Changed
 - Show preferences in main window instead as a separated dialog
