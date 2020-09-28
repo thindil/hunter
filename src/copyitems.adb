@@ -167,13 +167,13 @@ package body CopyItems is
              (To_String(Path) & "/" &
               Simple_Name(To_String(CopyItemsList(1)))) and
            not Overwrite and Settings.OverwriteOnExist then
-            if Is_Directory
-                (To_String(Path) & "/" &
-                 Simple_Name(To_String(CopyItemsList(1)))) then
-               ItemType := To_Unbounded_String(Mc(Get_Context, "{Directory}"));
-            else
-               ItemType := To_Unbounded_String(Mc(Get_Context, "{File}"));
-            end if;
+            ItemType :=
+              (if
+                 Is_Directory
+                   (To_String(Path) & "/" &
+                    Simple_Name(To_String(CopyItemsList(1))))
+               then To_Unbounded_String(Mc(Get_Context, "{Directory}"))
+               else To_Unbounded_String(Mc(Get_Context, "{File}")));
             ShowMessage
               (To_String(ItemType) & " " &
                Simple_Name(To_String(CopyItemsList(1))) &
