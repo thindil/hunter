@@ -20,7 +20,7 @@
 package ActivateItems is
 -- ****
 
-   -- ****f* ActivateItems/CreateActivateUI
+   -- ****f* ActivateItems/ActivateItems.CreateActivateUI
    -- FUNCTION
    -- Create activation UI
    -- SOURCE
