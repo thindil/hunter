@@ -87,9 +87,16 @@ package ShowItems is
 
    -- ****f* ShowItems/ShowOutput
    -- FUNCTION
-   -- Show the output of the selected command
+   -- Show the UI for the output of the user command
    -- SOURCE
-   procedure ShowOutput(Text: String);
+   procedure ShowOutput;
+   -- ****
+
+   -- ****f* ShowItems/UpdateOutput
+   -- FUNCTION
+   -- Update UI with the output of the user command
+   -- SOURCE
+   procedure UpdateOutput(Text: String);
    -- ****
 
 end ShowItems;

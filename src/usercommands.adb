@@ -151,11 +151,12 @@ package body UserCommands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Value, CommandName, CommandResult: Unbounded_String;
+      Value, CommandName: Unbounded_String;
       SpaceIndex: Natural;
       Result: Expect_Match;
       ProcessDesc: Process_Descriptor;
       Arguments: Argument_List_Access;
+      Success: Boolean := False;
    begin
       Value := UserCommandsList(CArgv.Arg(Argv, 1)).Command;
       SpaceIndex := Index(Value, " ");
@@ -184,20 +185,22 @@ package body UserCommands is
       Non_Blocking_Spawn
         (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
       if UserCommandsList(CArgv.Arg(Argv, 1)).NeedOutput then
+         ShowOutput;
          loop
             Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 300_000);
             exit when Result /= 1;
-            Append(CommandResult, Expect_Out_Match(ProcessDesc) & LF);
+            UpdateOutput(Expect_Out_Match(ProcessDesc) & LF);
+            Success := True;
          end loop;
       end if;
       Close(ProcessDesc);
       return TCL_OK;
    exception
       when Process_Died =>
-         if CommandResult /= Null_Unbounded_String then
-            ShowOutput(To_String(CommandResult));
-         else
-            ShowMessage(Mc(Interp, "{Can't execute this command}"));
+         if not Success then
+            ShowMessage
+              (Mc(Interp, "{Can't execute command:}") & " " &
+               Slice(Value, 1, SpaceIndex));
          end if;
          return TCL_OK;
    end Execute_Command_Command;
