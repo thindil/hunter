@@ -145,6 +145,7 @@ package body Bookmarks is
 
    procedure SetBookmarkButton is
       Button: Ttk_Button;
+      Menu: Tk_Menu;
    begin
       Button.Interp := Get_Context;
       Button.Name := New_String(".mainframe.toolbars.itemtoolbar.addbutton");
@@ -156,8 +157,13 @@ package body Bookmarks is
         or else Kind(To_String(CurrentSelected)) /= Directory then
          return;
       end if;
-      for Bookmark of BookmarksList loop
-         if Bookmark = CurrentSelected then
+      Menu.Interp := Get_Context;
+      Menu.Name := New_String(".bookmarksmenu");
+      for I in BookmarksList.Iterate loop
+         if BookmarksList(I) = CurrentSelected then
+            if Natural'Value(Index(Menu, Bookmarks_Container.Key(I))) < 8 then
+               return;
+            end if;
             Tcl.Tk.Ada.Pack.Pack(Button);
             return;
          end if;
