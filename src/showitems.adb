@@ -1082,7 +1082,7 @@ package body ShowItems is
       Autoscroll(PreviewYScroll);
    end ShowDestination;
 
-   procedure ShowOutput(Text: String) is
+   procedure ShowOutput is
       Frame: Ttk_Frame;
       Paned: Ttk_PanedWindow;
    begin
@@ -1104,9 +1104,16 @@ package body ShowItems is
       configure(Frame, "-text {" & Mc(Get_Context, "{Command output}") & "}");
       configure(PreviewText, "-state normal");
       Delete(PreviewText, "1.0", "end");
-      Insert(PreviewText, "end", "{" & Text & "}");
       configure(PreviewText, "-state disabled");
       Autoscroll(PreviewYScroll);
    end ShowOutput;
+
+   procedure UpdateOutput(Text: String) is
+   begin
+      configure(PreviewText, "-state normal");
+      Insert(PreviewText, "end", "{" & Text & "}");
+      configure(PreviewText, "-state disabled");
+      Tcl_Eval(Get_Context, "update");
+   end UpdateOutput;
 
 end ShowItems;
