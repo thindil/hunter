@@ -266,6 +266,7 @@ package body Bookmarks.Commands is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
       NewFile, OldFile: File_Type;
       Line, Path: Unbounded_String;
+      Added: Boolean := False;
    begin
       Rename
         (Value("HOME") & "/.config/gtk-3.0/bookmarks",
@@ -278,12 +279,16 @@ package body Bookmarks.Commands is
             Path := Unbounded_Slice(Line, 8, Length(Line));
             if Path /= CurrentSelected then
                Put_Line(NewFile, Line);
+               Added := True;
             end if;
          end if;
       end loop;
       Close(NewFile);
       Close(OldFile);
       Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      if not Added then
+         Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      end if;
       CreateBookmarkMenu;
       SetBookmarkButton;
       return TCL_OK;
