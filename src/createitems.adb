@@ -76,12 +76,14 @@ package body CreateItems is
       Button: Ttk_Button;
       TextEntry: Ttk_Entry;
    begin
+      Frame.Interp := Interp;
+      Frame.Name := New_String(".mainframe.textframe");
       TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
+      TextEntry.Name := New_String(Frame & ".textentry");
       Button.Interp := Interp;
-      Button.Name := New_String(".mainframe.textframe.closebutton");
+      Button.Name := New_String(Frame & ".closebutton");
       Tcl.Tk.Ada.Grid.Grid(Button);
-      Button.Name := New_String(".mainframe.textframe.okbutton");
+      Button.Name := New_String(Frame & ".okbutton");
       configure(Button, "-command {Create " & CArgv.Arg(Argv, 1) & "}");
       Add
         (Button,
@@ -94,8 +96,6 @@ package body CreateItems is
       Tcl.Tk.Ada.Grid.Grid(Button);
       Unbind(TextEntry, "<KeyRelease>");
       Focus(TextEntry);
-      Frame.Interp := Interp;
-      Frame.Name := New_String(".mainframe.textframe");
       Tcl.Tk.Ada.Grid.Grid(Frame, "-row 1 -columnspan 2 -sticky we");
       if CArgv.Arg(Argv, 1) = "file" then
          NewAction := CREATEFILE;
