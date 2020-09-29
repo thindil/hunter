@@ -39,7 +39,7 @@ with Utils; use Utils;
 
 package body Bookmarks.Commands is
 
-   -- ****o* Commands/GoToBookmark_Command
+   -- ****o* Commands/Commands.GoToBookmark_Command
    -- FUNCTION
    -- Go to the selected bookmarked directory
    -- PARAMETERS
@@ -83,7 +83,7 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end GoToBookmark_Command;
 
-   -- ****if* Commands/UpdateNewAction
+   -- ****if* Commands/Commands.UpdateNewAction
    -- FUNCTION
    -- Update NewAction and toolbars if needed
    -- SOURCE
@@ -98,7 +98,7 @@ package body Bookmarks.Commands is
       end if;
    end UpdateNewAction;
 
-   -- ****o* Commands/SetDestination_Command
+   -- ****o* Commands/Commands.SetDestination_Command
    -- FUNCTION
    -- Show text entry to enter directory destination
    -- PARAMETERS
@@ -147,7 +147,7 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end SetDestination_Command;
 
-   -- ****o* Commands/GoToDestination_Command
+   -- ****o* Commands/Commands.GoToDestination_Command
    -- FUNCTION
    -- Go to the destination directory selected by the user
    -- PARAMETERS
@@ -198,7 +198,7 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end GoToDestination_Command;
 
-   -- ****o* Commands/Add_Bookmark_Command
+   -- ****o* Commands/Commands.Add_Bookmark_Command
    -- FUNCTION
    -- Add the bookmark to the selected directory
    -- PARAMETERS
@@ -239,7 +239,7 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end Add_Bookmark_Command;
 
-   -- ****o* Commands/Remove_Bookmark_Command
+   -- ****o* Commands/Commands.Remove_Bookmark_Command
    -- FUNCTION
    -- Remove the bookmark to the selected directory
    -- PARAMETERS
