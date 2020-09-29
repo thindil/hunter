@@ -109,6 +109,9 @@ package body Bookmarks is
             Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
             while not End_Of_File(File) loop
                Line := Get_Line(File);
+               if Length(Line) < 7 then
+                  goto End_Of_Loop;
+               end if;
                if Slice(Line, 1, 7) = "file://" then
                   Path := Unbounded_Slice(Line, 8, Length(Line));
                   BookmarkExist := False;
@@ -128,6 +131,7 @@ package body Bookmarks is
                         "} -command {GoToBookmark {" & To_String(Path) & "}}");
                   end if;
                end if;
+               <<End_Of_Loop>>
             end loop;
             Close(File);
          end;
