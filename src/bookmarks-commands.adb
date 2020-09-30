@@ -275,7 +275,7 @@ package body Bookmarks.Commands is
       Create(NewFile, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
       while not End_Of_File(OldFile) loop
          Line := Get_Line(OldFile);
-         if Slice(Line, 1, 7) = "file://" then
+         if Length(Line) > 7 and then Slice(Line, 1, 7) = "file://" then
             Path := Unbounded_Slice(Line, 8, Length(Line));
             if Path /= CurrentSelected then
                Put_Line(NewFile, Line);
