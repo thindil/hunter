@@ -20,7 +20,7 @@
 package Bookmarks.Commands is
 -- ****
 
-   -- ****f* Commands/AddCommands
+   -- ****f* Commands/Commands.AddCommands
    -- FUNCTION
    -- Adds the Ada code to the Tcl interpreter
    -- SOURCE
