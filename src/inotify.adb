@@ -236,13 +236,10 @@ package body Inotify is
                   exit;
                end if;
             end loop;
-            if Character'Pos(Buffer(Start + 4)) > 0 then
-               Event :=
-                 Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 4)));
-            else
-               Event :=
-                 Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5)));
-            end if;
+            Event :=
+              (if Character'Pos(Buffer(Start + 4)) > 0 then
+                 Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 4)))
+               else Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5))));
             Added := False;
             for Event2 of EventsList loop
                if Event2.Path = Path and Event2.Target = Target then
