@@ -1,0 +1,27 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ tk ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    container: ghcr.io/thindil/adabuild:2020.1
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+         others/build.tcl
+         tar -cf hunter-development.tar usr
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v2
+      with:
+         name: hunter-development
+         path: hunter-development.tar.gz
