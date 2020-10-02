@@ -33,7 +33,7 @@ with MainWindow; use MainWindow;
 
 package body Bookmarks is
 
-   -- ****iv* Bookmarks/BookmarksList
+   -- ****iv* Bookmarks/Bookmarks.BookmarksList
    -- FUNCTION
    -- List of all bookmarked locations
    -- SOURCE
