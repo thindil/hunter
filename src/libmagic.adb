@@ -1,4 +1,4 @@
--- Copyright (c) 2019 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -136,11 +136,10 @@ package body LibMagic is
               (ProcessDesc, ExecutableName,
                Argument_String_To_List("query filetype " & Name).all);
             Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
-            if Result = 1 then
-               MimeType := To_Unbounded_String(Expect_Out_Match(ProcessDesc));
-            else
-               MimeType := To_Unbounded_String("unknown");
-            end if;
+            MimeType :=
+              (if Result = 1 then
+                 To_Unbounded_String(Expect_Out_Match(ProcessDesc))
+               else To_Unbounded_String("unknown"));
             Close(ProcessDesc);
             return To_String(MimeType);
          exception
