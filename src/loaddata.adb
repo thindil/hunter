@@ -82,11 +82,10 @@ package body LoadData is
       Item.IsHidden := (if FileName(1) = '.' then True else False);
       if Is_Directory(Path) then
          Item.IsDirectory := True;
-         if Is_Symbolic_Link(Path) then
-            Item.Image := To_Unbounded_String("emblem-symbolic-link");
-         else
-            Item.Image := To_Unbounded_String("folder");
-         end if;
+         Item.Image :=
+           (if Is_Symbolic_Link(Path) then
+              To_Unbounded_String("emblem-symbolic-link")
+            else To_Unbounded_String("folder"));
          Item.Size := -1;
          if Is_Read_Accessible_File(Path) then
             Open(SubDirectory, Path);
