@@ -23,7 +23,7 @@ with Ada.Strings.Hash;
 package Bookmarks is
 -- ****
 
-   -- ****t* Bookmarks/Bookmarks_Container
+   -- ****t* Bookmarks/Bookmarks.Bookmarks_Container
    -- FUNCTION
    -- Used to store all bookmarks
    -- SOURCE
@@ -31,7 +31,7 @@ package Bookmarks is
       Ada.Strings.Hash, "=");
    -- ****
 
-   -- ****f* Bookmarks/CreateBookmarkMenu
+   -- ****f* Bookmarks/Bookmarks.CreateBookmarkMenu
    -- FUNCTION
    -- Create bookmarks menu - show only existing bookmarks
    -- PARAMETERS
@@ -40,7 +40,7 @@ package Bookmarks is
    procedure CreateBookmarkMenu(CreateNew: Boolean := False);
    -- ****
 
-   -- ****f* Bookmarks/SetBookmarkButton
+   -- ****f* Bookmarks/Bookmarks.SetBookmarkButton
    -- FUNCTION
    -- Show proper bookmark button for directories
    -- SOURCE
