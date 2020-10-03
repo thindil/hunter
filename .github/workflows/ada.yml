@@ -15,13 +15,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Build
-      run: |
-         others/build.tcl
-         tar -cf hunter-development.tar usr
+    - name: Build the program
+      run: others/build.tcl
 
-    - name: Upload Artifact
+    - name: Compress the artifact
+      run: tar -cf hunter-development.tar usr
+
+    - name: Upload the artifact
       uses: actions/upload-artifact@v2
       with:
          name: hunter-development
-         path: hunter-development.tar.gz
+         path: hunter-development.tar
