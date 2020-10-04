@@ -126,27 +126,30 @@ package body Utils is
    end UpdateProgressBar;
 
    procedure SetDialog
-     (Dialog: Tk_Toplevel; DialogTitle: String; Width, Height: Positive) is
-      X, Y: Integer;
+     (Dialog: Tk_Toplevel; DialogTitle: String; Width: Width_Range;
+      Height: Height_Range) is
+      X: Width_Range;
+      Y: Height_Range;
    begin
       Wm_Set(Dialog, "title", "{" & DialogTitle & "}");
       Wm_Set(Dialog, "transient", ".");
       if Tcl_GetVar(Get_Context, "tcl_platform(os)") = "Linux" then
          Wm_Set(Dialog, "attributes", "-type dialog");
       end if;
-      X := (Positive'Value(Winfo_Get(Dialog, "vrootwidth")) - Width) / 2;
+      X := (Width_Range'Value(Winfo_Get(Dialog, "vrootwidth")) - Width) / 2;
       if X < 0 then
          X := 0;
       end if;
-      Y := (Positive'Value(Winfo_Get(Dialog, "vrootheight")) - Height) / 2;
+      Y := (Height_Range'Value(Winfo_Get(Dialog, "vrootheight")) - Height) / 2;
       if Y < 0 then
          Y := 0;
       end if;
       Wm_Set
         (Dialog, "geometry",
-         Trim(Positive'Image(Width), Both) & "x" &
-         Trim(Positive'Image(Height), Both) & "+" &
-         Trim(Positive'Image(X), Both) & "+" & Trim(Positive'Image(Y), Both));
+         Trim(Width_Range'Image(Width), Both) & "x" &
+         Trim(Height_Range'Image(Height), Both) & "+" &
+         Trim(Width_Range'Image(X), Both) & "+" &
+         Trim(Height_Range'Image(Y), Both));
       Bind(Dialog, "<Destroy>", "{CloseDialog " & Value(Dialog.Name) & "}");
    end SetDialog;
 

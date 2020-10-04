@@ -72,7 +72,8 @@ package body AboutDialog is
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
       Label: Ttk_Label;
       Frame: Ttk_Frame;
-      Width, Height: Positive;
+      Width: Width_Range;
+      Height: Height_Range;
       WebsiteButton: Ttk_Button;
       Creditsbook: constant Ttk_Notebook := Create(".aboutdialog.credits");
       View: Ttk_Tree_View;
@@ -82,7 +83,7 @@ package body AboutDialog is
       end if;
       Label := Create(".aboutdialog.logo", "-image logo");
       Tcl.Tk.Ada.Grid.Grid(Label);
-      Width := Positive'Value(Winfo_Get(Label, "reqwidth"));
+      Width := Width_Range'Value(Winfo_Get(Label, "reqwidth"));
       Frame := Create(".aboutdialog.general");
       Label :=
         Create
@@ -90,8 +91,8 @@ package body AboutDialog is
            "-text {" &
            Mc(Interp, "{Hunter - Graphical file manager for Linux}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label);
-      Width := Width + Positive'Value(Winfo_Get(Label, "reqwidth"));
-      Height := Positive'Value(Winfo_Get(Label, "reqheight")) * 17;
+      Width := Width + Width_Range'Value(Winfo_Get(Label, "reqwidth"));
+      Height := Height_Range'Value(Winfo_Get(Label, "reqheight")) * 17;
       Label :=
         Create(Frame & ".copyright", "-text {© Bartek Jasicki 2019-2020}");
       Tcl.Tk.Ada.Grid.Grid(Label);
@@ -116,7 +117,7 @@ package body AboutDialog is
       Tcl.Tk.Ada.Grid.Grid(Creditsbook, "-columnspan 2 -sticky nwes");
       Frame := Create(Creditsbook & ".programmers");
       View := Create(Frame & ".view", "-show tree -selectmode none -height 5");
-      Column(View, "#0", "-stretch true -width" & Positive'Image(Width - 50));
+      Column(View, "#0", "-stretch true -width" & Width_Range'Image(Width - 50));
       Insert(View, "{} end -text {Bartek Jasicki <thindil@laeran.pl>}");
       Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
       Add
@@ -124,7 +125,7 @@ package body AboutDialog is
          "-text {" & Mc(Interp, "Programmers") & "}");
       Frame := Create(Creditsbook & ".translators");
       View := Create(Frame & ".view", "-show tree -selectmode none -height 5");
-      Column(View, "#0", "-stretch true -width" & Positive'Image(Width - 50));
+      Column(View, "#0", "-stretch true -width" & Width_Range'Image(Width - 50));
       Insert
         (View, "{} end -text {Polski - Bartek Jasicki <thindil@laeran.pl>}");
       Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
