@@ -25,6 +25,20 @@ with MainWindow; use MainWindow;
 package Utils is
 -- ****
 
+   -- ****t* Utils/Width_Range
+   -- FUNCTION
+   -- Used to store the width of the widgets
+   -- SOURCE
+   type Width_Range is new Integer;
+   -- ****
+
+   -- ****f* Utils/Height_Range
+   -- FUNCTION
+   -- Used to store the height of the widgets
+   -- SOURCE
+   type Height_Range is new Integer;
+   -- ****
+
    -- ****t* Utils/CreateCommands
    -- FUNCTION
    -- Used to add new commands to Tcl
@@ -107,7 +121,8 @@ package Utils is
    -- Height      - Desired height for the selected dialog
    -- SOURCE
    procedure SetDialog
-     (Dialog: Tk_Toplevel; DialogTitle: String; Width, Height: Positive);
+     (Dialog: Tk_Toplevel; DialogTitle: String; Width: Width_Range;
+      Height: Height_Range);
    -- ****
 
    -- ****f* Utils/AddCommand
