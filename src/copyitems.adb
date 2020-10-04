@@ -32,14 +32,14 @@ with Utils; use Utils;
 
 package body CopyItems is
 
-   -- ****iv* CopyItems/SourceDirectory
+   -- ****iv* CopyItems/CopyItems.SourceDirectory
    -- FUNCTION
    -- Full path to the source directory of copied files and directories
    -- SOURCE
    SourceDirectory: Unbounded_String;
    -- ****
 
-   -- ****o* CopyItems/Copy_Data_Command
+   -- ****o* CopyItems/CopyItems.Copy_Data_Command
    -- FUNCTION
    -- Enter or quit copying items mode
    -- PARAMETERS
