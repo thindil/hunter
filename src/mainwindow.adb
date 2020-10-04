@@ -224,6 +224,9 @@ package body MainWindow is
       Bind_To_Main_Window
         (Interp, "<" & To_String(Accelerators(18)) & ">",
          "{InvokeButton .mainframe.toolbars.itemtoolbar.runbutton}");
+      Bind_To_Main_Window
+        (Interp, "<" & To_String(Accelerators(20)) & ">",
+         "{InvokeButton .mainframe.toolbars.actiontoolbar.userbutton}");
       Tcl.Tk.Ada.Grid.Grid(MainFrame, "-sticky nwse");
       Tcl.Tk.Ada.Grid.Row_Configure(MainWindow, MainFrame, "-weight 1");
       Tcl.Tk.Ada.Grid.Column_Configure(MainWindow, MainFrame, "-weight 1");

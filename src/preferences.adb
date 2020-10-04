@@ -291,7 +291,8 @@ package body Preferences is
       PreferencesFrame: constant Ttk_Frame :=
         Create(Notebook & ".preferences");
       ColorsEnabled: constant Boolean :=
-        (if FindExecutable("highlight", False)'Length > 0 then True else False);
+        (if FindExecutable("highlight", False)'Length > 0 then True
+         else False);
       ShortcutsFrame: constant Ttk_Frame := Create(Notebook & ".shortcuts");
       ActionsFrame: constant Ttk_Frame := Create(Notebook & ".actions");
       ModulesFrame: constant Ttk_Frame := Create(Notebook & ".modules");
@@ -687,7 +688,9 @@ package body Preferences is
             To_Unbounded_String
               (Mc
                  (Get_Context,
-                  "{Restore deleted file or directory from Trash}")));
+                  "{Restore deleted file or directory from Trash}")),
+            To_Unbounded_String
+              (Mc(Get_Context, "{Show the user defined actions}")));
          Label: Ttk_Label;
          Button: Ttk_Button;
          Image: Tk_Photo;
@@ -836,8 +839,12 @@ package body Preferences is
            Create
              (ModulesFrame & ".view",
               "-show headings -columns [list enabled name]");
-         ModuleFrame: constant Ttk_LabelFrame := Create(ModulesFrame & ".moduleframe", "-text {" & Mc(Get_Context, "{Module information}") & "}");
-         ModuleInfo: constant Ttk_Label := Create(ModuleFrame & ".info", "-wraplength 400");
+         ModuleFrame: constant Ttk_LabelFrame :=
+           Create
+             (ModulesFrame & ".moduleframe",
+              "-text {" & Mc(Get_Context, "{Module information}") & "}");
+         ModuleInfo: constant Ttk_Label :=
+           Create(ModuleFrame & ".info", "-wraplength 400");
       begin
          Heading
            (ModulesView, "enabled",
@@ -846,11 +853,13 @@ package body Preferences is
            (ModulesView, "name", "-text {" & Mc(Get_Context, "{Name}") & "}");
          Column(ModulesView, "enabled", "-width 50");
          Tcl.Tk.Ada.Grid.Grid(ModulesView, "-sticky nwes");
-         Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, ModulesView, "-weight 1");
+         Tcl.Tk.Ada.Grid.Column_Configure
+           (ModulesFrame, ModulesView, "-weight 1");
          Tcl.Tk.Ada.Grid.Row_Configure(ModulesFrame, ModulesView, "-weight 1");
          Tcl.Tk.Ada.Grid.Grid(ModuleInfo, "-sticky nwes");
          Tcl.Tk.Ada.Grid.Grid(ModuleFrame, "-column 1 -row 0 -sticky nwes");
-         Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, ModulesView, "-weight 1");
+         Tcl.Tk.Ada.Grid.Column_Configure
+           (ModulesFrame, ModulesView, "-weight 1");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Grid.Grid(CloseButton, "-sticky se -column 1");
       end;
@@ -889,7 +898,7 @@ package body Preferences is
          To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
          To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
          To_Unbounded_String("Alt-d"), To_Unbounded_String("Alt-e"),
-         To_Unbounded_String("Alt-s"));
+         To_Unbounded_String("Alt-s"), To_Unbounded_String("Alt-t"));
    end SetDefaultAccelerators;
 
    procedure Clear_Add_Command is

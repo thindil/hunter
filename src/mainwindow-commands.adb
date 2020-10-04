@@ -582,6 +582,14 @@ package body MainWindow.Commands is
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
+      if CArgv.Arg(Argv, 1) =
+        ".mainframe.toolbars.actiontoolbar.userbutton" then
+         Menu.Name := New_String(".actionsmenu");
+         Tk_Popup
+           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+            Winfo_Get(Get_Main_Window(Interp), "pointery"));
+         return TCL_OK;
+      end if;
       if Invoke(Button) /= "" then
          raise Hunter_Button_Exception
            with Mc(Interp, "{Can't invoke button }") & CArgv.Arg(Argv, 1);

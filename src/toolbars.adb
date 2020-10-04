@@ -231,7 +231,7 @@ package body Toolbars is
       SetButton
         (ToolMenuButton,
          Mc(Get_Context, "{Show user actions menu }") & " \[" &
-         To_String(Accelerators(4)) & "\]",
+         To_String(Accelerators(20)) & "\]",
          "run-build");
       ButtonMenu := Create(".actionsmenu", "-tearoff false");
       configure(ToolMenuButton, "-menu " & ButtonMenu & " -direction right");
