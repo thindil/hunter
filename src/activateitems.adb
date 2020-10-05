@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -153,18 +154,16 @@ package body ActivateItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      TextFrame: Ttk_Frame;
-      Button: Ttk_Button;
-      TextEntry: Ttk_Entry;
+      TextFrame: constant Ttk_Frame :=
+        Get_Widget(".mainframe.textframe", Interp);
+      Button: Ttk_Button := Get_Widget(TextFrame & ".closebutton");
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(TextFrame & ".textentry", Interp);
       Hunter_Activate_Item_Exception: exception;
    begin
-      TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
-      Button.Interp := Interp;
-      Button.Name := New_String(".mainframe.textframe.closebutton");
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid(Button);
-         Button.Name := New_String(".mainframe.textframe.okbutton");
+         Button.Name := New_String(TextFrame & ".okbutton");
          configure(Button, "-command ExecuteWith");
          Add
            (Button,
@@ -180,8 +179,6 @@ package body ActivateItems is
             Mc(Interp, "{Enter command to use to open selected item.}"));
          Unbind(TextEntry, "<KeyRelease>");
          Focus(TextEntry);
-         TextFrame.Interp := Interp;
-         TextFrame.Name := New_String(".mainframe.textframe");
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       else
          if Invoke(Button) /= "" then
@@ -220,34 +217,32 @@ package body ActivateItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      TextEntry: Ttk_Entry;
-      Value, CommandName: Unbounded_String;
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(".mainframe.textframe.textentry", Interp);
+      Value: constant String := Get(TextEntry);
+      CommandName: Unbounded_String;
       Pid: GNAT.OS_Lib.Process_Id;
-      SpaceIndex: Natural;
+      SpaceIndex: Natural range 0 .. Value'Length;
       Arguments: Argument_List_Access;
    begin
-      TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
-      Value := To_Unbounded_String(Get(TextEntry));
-      if Value = Null_Unbounded_String then
+      if Value'Length = 0 then
          return TCL_OK;
       end if;
       SpaceIndex := Index(Value, " ");
       CommandName :=
-        (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex - 1)
-         else Value);
+        (if SpaceIndex > 0 then To_Unbounded_String(Value(1 .. SpaceIndex - 1))
+         else To_Unbounded_String(Value));
       CommandName :=
         To_Unbounded_String(FindExecutable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
          ShowMessage
            (Mc(Interp, "{Can't find command:}") & " " &
-            Slice(Value, 1, SpaceIndex));
+            Value(1 .. SpaceIndex));
          return TCL_OK;
       end if;
       Arguments :=
         (if SpaceIndex > 0 then
-           Argument_String_To_List
-             (Slice(Value, SpaceIndex, Length(Value)) & " @2")
+           Argument_String_To_List(Value(SpaceIndex .. Value'Length) & " @2")
          else Argument_String_To_List("@2"));
       for I in Arguments'Range loop
          if Arguments(I).all = "@2" then
