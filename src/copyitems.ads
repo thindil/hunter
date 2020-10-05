@@ -23,14 +23,14 @@ with MainWindow; use MainWindow;
 package CopyItems is
 -- ****
 
-   -- ****v* CopyItems/CopyItemsList
+   -- ****v* CopyItems/CopyItems.CopyItemsList
    -- FUNCTION
    -- Stores names of all selected to copy files and directories
    -- SOURCE
    CopyItemsList: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****f* CopyItems/CopyItem
+   -- ****f* CopyItems/CopyItems.CopyItem
    -- FUNCTION
    -- Copy selected file or directory to new location
    -- PARAMETERS
@@ -42,7 +42,7 @@ package CopyItems is
      (Name: String; Path: Unbounded_String; Success: in out Boolean);
    -- ****
 
-   -- ****f* CopyItems/CopySelected
+   -- ****f* CopyItems/CopyItems.CopySelected
    -- FUNCTION
    -- Copy selected files and directories
    -- PARAMETERS
@@ -53,14 +53,14 @@ package CopyItems is
    procedure CopySelected(Overwrite: in out Boolean);
    -- ****
 
-   -- ****f* CopyItems/SkipCopying
+   -- ****f* CopyItems/CopyItems.SkipCopying
    -- FUNCTION
    -- Skip copying current file and move to next
    -- SOURCE
    procedure SkipCopying;
    -- ****
 
-   -- ****f* CopyItems/CreateCopyUI
+   -- ****f* CopyItems/CopyItems.CreateCopyUI
    -- FUNCTION
    -- Create UI for copying items
    -- SOURCE
