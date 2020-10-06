@@ -39,14 +39,14 @@ with Utils; use Utils;
 
 package body CreateItems is
 
-   -- ****ie* CreateItems/Hunter_Create_Exception
+   -- ****ie* CreateItems/CreateItems.Hunter_Create_Exception
    -- FUNCTION
    -- Raised when any problems with creating items happen
    -- SOURCE
    Hunter_Create_Exception: exception;
    -- ****
 
-   -- ****o* CreateItems/Show_Create_Command
+   -- ****o* CreateItems/CreateItems.Show_Create_Command
    -- FUNCTION
    -- Show text entry to enter a name of the new item
    -- PARAMETERS
@@ -109,7 +109,7 @@ package body CreateItems is
       return TCL_OK;
    end Show_Create_Command;
 
-   -- ****o* CreateItems/Create_Command
+   -- ****o* CreateItems/CreateItems.Create_Command
    -- FUNCTION
    -- Show text entry to enter a name of the new item
    -- PARAMETERS
