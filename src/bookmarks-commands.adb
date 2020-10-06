@@ -123,23 +123,19 @@ package body Bookmarks.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      TextFrame: Ttk_Frame;
-      Button: Ttk_Button;
-      TextEntry: Ttk_Entry;
+      TextFrame: constant Ttk_Frame :=
+        Get_Widget(".mainframe.textframe", Interp);
+      Button: Ttk_Button := Get_Widget(TextFrame & ".okbutton", Interp);
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(TextFrame & ".textentry", Interp);
    begin
       UpdateNewAction;
-      Button.Interp := Get_Context;
-      Button.Name := New_String(".mainframe.textframe.okbutton");
       configure(Button, "-command GoToDestination");
       Add(Button, Mc(Interp, "{Go to the selected destination}"));
-      TextEntry.Interp := Get_Context;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
       Focus(TextEntry);
       Insert(TextEntry, "0", To_String(CurrentDirectory));
       Add(TextEntry, Mc(Interp, "{Enter the selected destination}"));
       Unbind(TextEntry, "<KeyRelease>");
-      TextFrame.Interp := Get_Context;
-      TextFrame.Name := New_String(".mainframe.textframe");
       Tcl.Tk.Ada.Grid.Grid(Button);
       Button.Name := New_String(".mainframe.textframe.closebutton");
       Tcl.Tk.Ada.Grid.Grid(Button);
@@ -172,13 +168,13 @@ package body Bookmarks.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      TextEntry: Ttk_Entry;
-      HideButton: Ttk_Button;
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(".mainframe.textframe.textentry", Interp);
+      HideButton: constant Ttk_Button :=
+        Get_Widget(".mainframe.textframe.closebutton", Interp);
       Hunter_Go_To_Destination_Exception: exception;
    begin
       UpdateNewAction;
-      TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
       if not Ada.Directories.Exists(Get(TextEntry)) then
          ShowMessage
            (Mc(Interp, "{Directory}") & " '" & Get(TextEntry) & "' " &
@@ -186,8 +182,6 @@ package body Bookmarks.Commands is
          return TCL_OK;
       end if;
       CurrentDirectory := To_Unbounded_String(Get(TextEntry));
-      HideButton.Interp := Interp;
-      HideButton.Name := New_String(".mainframe.textframe.closebutton");
       if Invoke(HideButton) /= "" then
          raise Hunter_Go_To_Destination_Exception
            with Mc(Interp, "{Can't hide text entry}");
