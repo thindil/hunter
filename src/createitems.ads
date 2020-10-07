@@ -20,7 +20,7 @@
 package CreateItems is
 -- ****
 
-   -- ****f* CreateItems/CreateCreateUI
+   -- ****f* CreateItems/CreateItems.CreateCreateUI
    -- FUNCTION
    -- Create creating new items UI
    -- SOURCE
