@@ -50,7 +50,8 @@ package body Bookmarks is
          To_Unbounded_String("XDG_PICTURES_DIR"),
          To_Unbounded_String("XDG_VIDEOS_DIR"));
       BookmarksMenu: Tk_Menu;
-      MenuButton: Ttk_MenuButton;
+      MenuButton: constant Ttk_MenuButton :=
+        Get_Widget(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       Path: Unbounded_String;
       function GetXDGDirectory(Name: String) return Unbounded_String is
          File: File_Type;
@@ -78,8 +79,7 @@ package body Bookmarks is
          BookmarksMenu := Create(".bookmarksmenu", "-tearoff false");
          AddCommands;
       else
-         BookmarksMenu.Interp := Get_Context;
-         BookmarksMenu.Name := New_String(".bookmarksmenu");
+         BookmarksMenu := Get_Widget(".bookmarksmenu");
          Delete(BookmarksMenu, "0", "end");
       end if;
       BookmarksList.Clear;
@@ -141,18 +141,14 @@ package body Bookmarks is
         (BookmarksMenu, "command",
          "-label {" & Mc(Get_Context, "{Enter destination}") &
          "} -command SetDestination");
-      MenuButton.Interp := BookmarksMenu.Interp;
-      MenuButton.Name :=
-        New_String(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       configure(MenuButton, "-menu .bookmarksmenu");
    end CreateBookmarkMenu;
 
    procedure SetBookmarkButton is
-      Button: Ttk_Button;
-      Menu: Tk_Menu;
+      Button: Ttk_Button :=
+        Get_Widget(".mainframe.toolbars.itemtoolbar.addbutton");
+      Menu: constant Tk_Menu := Get_Widget(".bookmarksmenu");
    begin
-      Button.Interp := Get_Context;
-      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.addbutton");
       Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       Button.Name :=
         New_String(".mainframe.toolbars.itemtoolbar.deletebutton");
@@ -161,8 +157,6 @@ package body Bookmarks is
         or else Kind(To_String(CurrentSelected)) /= Directory then
          return;
       end if;
-      Menu.Interp := Get_Context;
-      Menu.Name := New_String(".bookmarksmenu");
       for I in BookmarksList.Iterate loop
          if BookmarksList(I) = CurrentSelected then
             if Natural'Value(Index(Menu, Bookmarks_Container.Key(I))) < 8 then
