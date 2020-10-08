@@ -16,7 +16,3 @@ Various files which are not necessary needed for development:
 - translations.tcl - script to manage the program translations. **Important:**
                      run this script from the main project directory, not from
                      this.
-- dockerrelease.tcl - script to build the program in release mode using Docker
-                      image. **Important:** run this script from the main
-                      project directory, not from this.
-
