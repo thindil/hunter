@@ -72,16 +72,11 @@ package body CreateItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Frame: Ttk_Frame;
-      Button: Ttk_Button;
-      TextEntry: Ttk_Entry;
+      Frame: constant Ttk_Frame := Get_Widget(".mainframe.textframe", Interp);
+      Button: Ttk_Button := Get_Widget(Frame & ".closebutton", Interp);
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(Frame & ".textentry", Interp);
    begin
-      Frame.Interp := Interp;
-      Frame.Name := New_String(".mainframe.textframe");
-      TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(Frame & ".textentry");
-      Button.Interp := Interp;
-      Button.Name := New_String(Frame & ".closebutton");
       Tcl.Tk.Ada.Grid.Grid(Button);
       Button.Name := New_String(Frame & ".okbutton");
       configure(Button, "-command {Create " & CArgv.Arg(Argv, 1) & "}");
@@ -135,20 +130,16 @@ package body CreateItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      TextEntry: Ttk_Entry;
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(".mainframe.textframe.textentry", Interp);
       NewItemName, ActionString, ActionBlocker, Destination: Unbounded_String;
-      Button: Ttk_Button;
+      Button: constant Ttk_Button :=
+        Get_Widget(".mainframe.textframe.closebutton", Interp);
       File: File_Descriptor;
-      DirectoryView: Ttk_Tree_View;
+      DirectoryView: constant Ttk_Tree_View :=
+        Get_Widget(".mainframe.paned.previewframe.directorytree", Interp);
    begin
-      TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
       NewItemName := CurrentDirectory & "/" & Get(TextEntry);
-      Button.Interp := Interp;
-      Button.Name := New_String(".mainframe.textframe.closebutton");
-      DirectoryView.Interp := Interp;
-      DirectoryView.Name :=
-        New_String(".mainframe.paned.previewframe.directorytree");
       if Exists(To_String(NewItemName)) or
         Is_Symbolic_Link(To_String(NewItemName)) then
          ActionString :=
