@@ -20,7 +20,7 @@
 package DeleteItems is
 -- ****
 
-   -- ****f* DeleteItems/DeleteSelected
+   -- ****f* DeleteItems/DeleteItems.DeleteSelected
    -- FUNCTION
    -- Delete selected files and directories
    -- RESULT
@@ -29,7 +29,7 @@ package DeleteItems is
    function DeleteSelected return Boolean;
    -- ****
 
-   -- ****f* DeleteItems/CreateDeleteUI
+   -- ****f* DeleteItems/DeleteItems.CreateDeleteUI
    -- FUNCTION
    -- Create UI for deleting items
    -- SOURCE
