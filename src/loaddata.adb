@@ -153,8 +153,8 @@ package body LoadData is
 
    procedure LoadDirectory(DirectoryName: String; Second: Boolean := False) is
       Directory: Dir_Type;
-      Last: Natural;
       FileName: String(1 .. 1_024);
+      Last: Natural range 0 .. FileName'Last;
    begin
       Tcl.Tk.Ada.Busy.Busy(Get_Main_Window(Get_Context));
       Tcl_Eval(Get_Context, "update");
