@@ -23,7 +23,7 @@ package ErrorDialog is
 -- ****
 
    -- ****
-   -- ****f* ErrorDialog/SaveException
+   -- ****f* ErrorDialog/ErrorDialog.SaveException
    -- FUNCTION
    -- Save exception data to file and show error dialog
    -- PARAMETERS
