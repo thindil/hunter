@@ -63,7 +63,7 @@ package body MainWindow.Commands is
    -- Sort directory view based on which header was clicked
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
@@ -84,12 +84,10 @@ package body MainWindow.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
-      DirectoryTree: Ttk_Tree_View;
+      pragma Unreferenced(ClientData, Argc);
+      DirectoryTree: Ttk_Tree_View :=
+        Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
    begin
-      DirectoryTree.Interp := Get_Context;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
       Heading(DirectoryTree, "name", "-image {}");
       Heading(DirectoryTree, "modified", "-image {}");
       Heading(DirectoryTree, "size", "-image {}");
@@ -118,7 +116,6 @@ package body MainWindow.Commands is
             Heading(DirectoryTree, "size", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "previewname" then
-         DirectoryTree.Interp := Get_Context;
          DirectoryTree.Name :=
            New_String(".mainframe.paned.previewframe.directorytree");
          if SortOrder = NameAsc then
@@ -152,10 +149,8 @@ package body MainWindow.Commands is
    procedure Quit_Command(ClientData: in Integer) is
       pragma Unreferenced(ClientData);
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
-      ErrorButton: Ttk_Button;
+      ErrorButton: constant Ttk_Button := Get_Widget(".errorbutton");
    begin
-      ErrorButton.Interp := Get_Context;
-      ErrorButton.Name := New_String(".errorbutton");
       if Winfo_Get(ErrorButton, "exists") = "0" then
          Settings.WindowWidth :=
            Positive'Value(Winfo_Get(MainWindow, "width"));
@@ -197,20 +192,17 @@ package body MainWindow.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      Frame: Ttk_Frame;
-      Button: Ttk_Button;
-      TextEntry: Ttk_Entry;
+      Frame: Ttk_Frame := Get_Widget(".mainframe.message", Interp);
+      Button: Ttk_Button :=
+        Get_Widget(".mainframe.toolbars.actiontoolbar.searchbutton", Interp);
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(".mainframe.textframe.textentry", Interp);
    begin
-      Frame.Interp := Interp;
-      Frame.Name := New_String(".mainframe.message");
       if Winfo_Get(Frame, "ismapped") = "1" then
          return Close_Command(ClientData, Interp, Argc, Argv);
       end if;
-      Button.Interp := Interp;
       Frame.Name := New_String(".mainframe.textframe");
       if Winfo_Get(Frame, "ismapped") = "1" then
-         Button.Name :=
-           New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
          State(Button, "!selected");
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
@@ -226,8 +218,6 @@ package body MainWindow.Commands is
             State(Button, "!selected");
             NewAction := COPY;
          end if;
-         TextEntry.Interp := Interp;
-         TextEntry.Name := New_String(".mainframe.textframe.textentry");
          Delete(TextEntry, "0", "end");
          Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
          return TCL_OK;
@@ -246,7 +236,7 @@ package body MainWindow.Commands is
    -- Select all or deselect all items in directory view
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
@@ -265,12 +255,10 @@ package body MainWindow.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      DirectoryTree: Ttk_Tree_View;
+      pragma Unreferenced(ClientData, Argc, Argv);
+      DirectoryTree: constant Ttk_Tree_View :=
+        Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
    begin
-      DirectoryTree.Interp := Get_Context;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
       if Selection(DirectoryTree) = Children(DirectoryTree, "{}") then
          UpdateDirectoryList;
       else
@@ -285,7 +273,7 @@ package body MainWindow.Commands is
    -- Arrange path buttons when they window were resized
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command
    -- RESULT
@@ -306,23 +294,23 @@ package body MainWindow.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
-      PathButtonsFrame: Ttk_Frame;
+      pragma Unreferenced(ClientData, Argc);
+      PathButtonsFrame: constant Ttk_Frame :=
+        Get_Widget(CArgv.Arg(Argv, 1), Interp);
       Buttons: Unbounded_String;
       Tokens: Slice_Set;
       Row, Column, Width: Natural := 0;
       Button: Ttk_Button;
-      PreviewCanvas: Ttk_Frame;
+      PreviewCanvas: constant Ttk_Frame :=
+        Get_Widget(".mainframe.paned.previewframe.previewcanvas", Interp);
    begin
-      PathButtonsFrame.Interp := Get_Context;
-      PathButtonsFrame.Name := New_String(CArgv.Arg(Argv, 1));
       Buttons :=
         To_Unbounded_String(Tcl.Tk.Ada.Grid.Grid_Slaves(PathButtonsFrame));
       if Buttons = Null_Unbounded_String then
          return TCL_OK;
       end if;
       Create(Tokens, To_String(Buttons), " ");
-      Button.Interp := PathButtonsFrame.Interp;
+      Button.Interp := Interp;
       for I in reverse 1 .. Slice_Count(Tokens) loop
          Button.Name := New_String(Slice(Tokens, I));
          Width := Width + Positive'Value(Winfo_Get(Button, "width"));
@@ -336,9 +324,6 @@ package body MainWindow.Commands is
             "-row" & Natural'Image(Row) & " -column" & Natural'Image(Column));
          Column := Column + 1;
       end loop;
-      PreviewCanvas.Name :=
-        New_String(".mainframe.paned.previewframe.previewcanvas");
-      PreviewCanvas.Interp := Get_Context;
       if (Settings.ScaleImages and Settings.ShowPreview)
         and then Winfo_Get(PreviewCanvas, "ismapped") = "1" then
          ScaleImage;
@@ -420,7 +405,7 @@ package body MainWindow.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      FileMenu: Tk_Menu;
+      FileMenu: constant Tk_Menu := Get_Widget(".filemenu", Interp);
       Button: Ttk_Button;
       ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
         (To_Unbounded_String("itemtoolbar.runbutton"),
@@ -441,8 +426,6 @@ package body MainWindow.Commands is
          To_Unbounded_String(Mc(Interp, "{Delete}")),
          To_Unbounded_String(Mc(Interp, "{Select/Deselect all}")));
    begin
-      FileMenu.Interp := Interp;
-      FileMenu.Name := New_String(".filemenu");
       Delete(FileMenu, "0", "end");
       Button.Interp := Interp;
       for I in ButtonsNames'Range loop
@@ -540,12 +523,10 @@ package body MainWindow.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Button: Ttk_Button;
+      Button: constant Ttk_Button := Get_Widget(CArgv.Arg(Argv, 1), Interp);
       Hunter_Button_Exception: exception;
       Menu: Tk_Menu;
    begin
-      Button.Interp := Interp;
-      Button.Name := New_String(CArgv.Arg(Argv, 1));
       if Winfo_Get(Button, "ismapped") = "0" then
          return TCL_OK;
       end if;
