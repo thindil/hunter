@@ -25,22 +25,12 @@ program please look [here](https://github.com/thindil/hunter/tree/master)
 
 ### Docker way
 
-You can build Docker image with all needed libraries by using `Dockerfile`
-from the main directory of the project. Just run command:
+You can use Docker image `adabuild` from the project [dockerada](https://github.com/thindil/dockerada).
+It contain all libraries and compiler needed to build the program.
 
-`sudo docker build -t hunter/build:latest .`
+To build the program, download `adabuild` image and type in console:
 
-Then to build the program in the debug mode:
-
-`others/builddocker.tcl debug`
-
-And to build the program in the release mode:
-
-`others/builddocker.tcl release`
-
-If you have installed [Bob](https://github.com/thindil/bob) you can type
-`bob createdocker` to create Docker image, `bob dockerdebug` to build in
-the debug mode and `bob dockerrelease` to build in the release mode.
+`docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuild /bin/bash -c "cd /app && gprbuild -p -P hunter.gpr -XMode=release"`
 
 ### Classic way
 
