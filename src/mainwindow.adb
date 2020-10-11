@@ -69,8 +69,8 @@ with Utils; use Utils;
 package body MainWindow is
 
    procedure CreateMainWindow(Directory: String) is
-      MainWindow: Tk_Toplevel;
       Interp: constant Tcl.Tcl_Interp := Get_Context;
+      MainWindow: constant Tk_Toplevel := Get_Main_Window(Interp);
       CurrentDir: constant String := Current_Directory;
       MainFrame: constant Ttk_Frame := Create(".mainframe");
       Paned: constant Ttk_PanedWindow :=
@@ -117,6 +117,27 @@ package body MainWindow is
       PathButtonsFrame: constant Ttk_Frame :=
         Create(MainFrame & ".paned.directoryframe.pathframe");
       FileMenu: constant Tk_Menu := Create(".filemenu", "-tearoff false");
+      ButtonsNames: constant array
+        (Accelerators_Array'Range) of Unbounded_String :=
+        (To_Unbounded_String("actiontoolbar.quitbutton"),
+         To_Unbounded_String("actiontoolbar.bookmarksbutton"),
+         To_Unbounded_String("actiontoolbar.searchbutton"),
+         To_Unbounded_String("actiontoolbar.newbutton"),
+         To_Unbounded_String("actiontoolbar.deletebutton"),
+         To_Unbounded_String("actiontoolbar.aboutbutton"),
+         To_Unbounded_String("itemtoolbar.openbutton"),
+         To_Unbounded_String("actiontoolbar.selectbutton"),
+         To_Unbounded_String("actiontoolbar.renamebutton"),
+         To_Unbounded_String("actiontoolbar.copybutton"),
+         To_Unbounded_String("actiontoolbar.movebutton"),
+         To_Unbounded_String("actiontoolbar.optionsbutton"),
+         To_Unbounded_String("itemtoolbar.openwithbutton"),
+         To_Unbounded_String("itemtoolbar.infobutton"),
+         To_Unbounded_String("itemtoolbar.previewbutton"),
+         To_Unbounded_String("itemtoolbar.addbutton"),
+         To_Unbounded_String("itemtoolbar.deletebutton"),
+         To_Unbounded_String("itemtoolbar.runbutton"), Null_Unbounded_String,
+         To_Unbounded_String("actiontoolbar.userbutton"));
       pragma Unreferenced(Image, ProgressBar, HeaderLabel, FileMenu);
    begin
       Autoscroll(DirectoryYScroll);
@@ -127,18 +148,18 @@ package body MainWindow is
       Set_Directory(Containing_Directory(Command_Name));
       -- Load the program Tk themes
       if Settings.UITheme = To_Unbounded_String("hunter-light") then
-         Tcl_EvalFile(Get_Context, "../share/hunter/themes/light/breeze.tcl");
+         Tcl_EvalFile(Interp, "../share/hunter/themes/light/breeze.tcl");
       elsif Settings.UITheme = To_Unbounded_String("hunter-dark") then
          Tcl_EvalFile
            (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
       end if;
       if Index(Theme_Names, To_String(Settings.UITheme)) = 0 then
          Settings.UITheme := To_Unbounded_String("hunter-light");
-         Tcl_EvalFile(Get_Context, "../share/hunter/themes/light/breeze.tcl");
+         Tcl_EvalFile(Interp, "../share/hunter/themes/light/breeze.tcl");
       end if;
       Theme_Use(To_String(Settings.UITheme));
       -- Load translations
-      Mc_Load("../share/hunter/translations", Get_Context);
+      Mc_Load("../share/hunter/translations", Interp);
       -- Set the program images
       for IconName of IconsNames loop
          Image :=
@@ -152,81 +173,29 @@ package body MainWindow is
           ("ok",
            "-file {../share/hunter/images/ok.svg} -format {svg -scaletoheight" &
            Natural'Image(Settings.ToolbarsSize) & "}");
-      if Ada.Directories.Exists
-          (Value("APPDIR", "") & "/usr/share/doc/hunter") then
-         IconName :=
-           To_Unbounded_String(Value("APPDIR", "") & "/hunter-icon.png");
-      else
-         IconName :=
-           To_Unbounded_String
+      IconName :=
+        (if
+           Ada.Directories.Exists
+             (Value("APPDIR", "") & "/usr/share/doc/hunter")
+         then To_Unbounded_String(Value("APPDIR", "") & "/hunter-icon.png")
+         else To_Unbounded_String
              (Containing_Directory(Current_Directory) &
-              "/others/hunter-icon.png");
-      end if;
-      MainWindow := Get_Main_Window(Interp);
+              "/others/hunter-icon.png"));
       Wm_Set
         (MainWindow, "geometry",
          Trim(Positive'Image(Settings.WindowWidth), Both) & "x" &
          Trim(Positive'Image(Settings.WindowHeight), Both) & "+0+0");
       Icon := Create("logo", "-file """ & To_String(IconName) & """");
       Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(1)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.quitbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(2)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.bookmarksbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(3)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.searchbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(4)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.newbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(5)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.deletebutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(6)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.aboutbutton}");
+      for I in ButtonsNames'Range loop
+         if ButtonsNames(I) /= Null_Unbounded_String then
+            Bind_To_Main_Window
+              (Interp, "<" & To_String(Accelerators(I)) & ">",
+               "{InvokeButton .mainframe.toolbars." &
+               To_String(ButtonsNames(I)) & "}");
+         end if;
+      end loop;
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(7)) & ">",
-         "{InvokeButton .mainframe.toolbars.itemtoolbar.openbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(8)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.selectbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(9)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.renamebutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(10)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.copybutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(11)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.movebutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(12)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.optionsbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(13)) & ">",
-         "{InvokeButton .mainframe.toolbars.itemtoolbar.openwithbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(14)) & ">",
-         "{InvokeButton .mainframe.toolbars.itemtoolbar.infobutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(15)) & ">",
-         "{InvokeButton .mainframe.toolbars.itemtoolbar.previewbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(16)) & ">",
-         "{InvokeButton .mainframe.toolbars.itemtoolbar.addbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(17)) & ">",
-         "{InvokeButton .mainframe.toolbars.itemtoolbar.deletebutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(18)) & ">",
-         "{InvokeButton .mainframe.toolbars.itemtoolbar.runbutton}");
-      Bind_To_Main_Window
-        (Interp, "<" & To_String(Accelerators(20)) & ">",
-         "{InvokeButton .mainframe.toolbars.actiontoolbar.userbutton}");
       Tcl.Tk.Ada.Grid.Grid(MainFrame, "-sticky nwse");
       Tcl.Tk.Ada.Grid.Row_Configure(MainWindow, MainFrame, "-weight 1");
       Tcl.Tk.Ada.Grid.Column_Configure(MainWindow, MainFrame, "-weight 1");
@@ -309,19 +278,15 @@ package body MainWindow is
      (Clear: Boolean := False; FrameName: String := "directory") is
       SizeString, ItemIndex, SelectedIndex, Path, TimeString, PathCommand,
       PathShortcut, Shortcut, Tooltip, ButtonLabel: Unbounded_String;
-      DirectoryTree: Ttk_Tree_View;
-      PathButtonsFrame: Ttk_Frame;
+      DirectoryTree: constant Ttk_Tree_View :=
+        Get_Widget(".mainframe.paned." & FrameName & "frame.directorytree");
+      PathButtonsFrame: constant Ttk_Frame :=
+        Get_Widget(".mainframe.paned." & FrameName & "frame.pathframe");
       Tokens: Slice_Set;
       PathButton: Ttk_Button;
       Row, Width, Column: Natural := 0;
       List: Items_Container.Vector;
    begin
-      DirectoryTree.Interp := Get_Context;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned." & FrameName & "frame.directorytree");
-      PathButtonsFrame.Interp := Get_Context;
-      PathButtonsFrame.Name :=
-        New_String(".mainframe.paned." & FrameName & "frame.pathframe");
       if FrameName = "directory" then
          List := ItemsList;
          PathCommand := To_Unbounded_String("GoToBookmark");
