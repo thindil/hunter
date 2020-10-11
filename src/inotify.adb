@@ -21,14 +21,14 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 
 package body Inotify is
 
-   -- ****iv* Inotify/Instance
+   -- ****iv* Inotify/Inotify.Instance
    -- FUNCTION
    -- inotify instance to read
    -- SOURCE
    Instance: File_Descriptor;
    -- ****
 
-   -- ****is* Inotify/Watch_Data
+   -- ****is* Inotify/Inotify.Watch_Data
    -- FUNCTION
    -- Data structure for inotify watches
    -- OPTIONS
@@ -41,28 +41,28 @@ package body Inotify is
    end record;
    -- ****
 
-   -- ****it* Inotify/Watches_Container
+   -- ****it* Inotify/Inotify.Watches_Container
    -- FUNCTION
    -- Used to store information about inotify watches
    -- SOURCE
    package Watches_Container is new Vectors(Positive, Watch_Data);
    -- ****
 
-   -- ****iv* Inotify/Watches
+   -- ****iv* Inotify/Inotify.Watches
    -- FUNCTION
    -- Stores information about all active inotify watches
    -- SOURCE
    Watches: Watches_Container.Vector;
    -- ****
 
-   -- ****it* Inotify/Mask_Array
+   -- ****it* Inotify/Inotify.Mask_Array
    -- FUNCTION
    -- Array of inotify events to catch
    -- SOURCE
    type Mask_Array is array(Positive range <>) of Inotify_Events;
    -- ****
 
-   -- ****if* Inotify/inotify_init
+   -- ****if* Inotify/Inotify.inotify_init
    -- FUNCTION
    -- Binding to the C function
    -- RESULT
@@ -74,7 +74,7 @@ package body Inotify is
       External_Name => "inotify_init";
       -- ****
 
-      -- ****if* Inotify/inotify_add_watch
+      -- ****if* Inotify/Inotify.inotify_add_watch
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
@@ -92,7 +92,7 @@ package body Inotify is
       External_Name => "inotify_add_watch";
       -- ****
 
-      -- ****if* Inotify/inotify_rm_watch
+      -- ****if* Inotify/Inotify.inotify_rm_watch
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
@@ -117,7 +117,7 @@ package body Inotify is
       Close(Instance);
    end InotifyClose;
 
-   -- ****if* Inotify/CreateMask
+   -- ****if* Inotify/Inotify.CreateMask
    -- FUNCTION
    -- Convert list of inotify events to mask value for C
    -- PARAMETERS
@@ -137,7 +137,7 @@ package body Inotify is
       return int(Mask);
    end CreateMask;
 
-   -- ****if* Inotify/AddWatch
+   -- ****if* Inotify/Inotify.AddWatch
    -- FUNCTION
    -- Add inotify watch to selected path
    -- PARAMETERS
@@ -188,7 +188,7 @@ package body Inotify is
       Watches.Clear;
    end RemoveWatches;
 
-   -- ****if* Inotify/RemoveWatch
+   -- ****if* Inotify/Inotify.RemoveWatch
    -- FUNCTION
    -- Remove selected watch
    -- PARAMETERS
