@@ -14,12 +14,7 @@ project hunter is
    Mode : Mode_Type := external ("Mode", "debug");
 
    package Builder is
-      case Mode is
-         when "debug" | "analyze" =>
-            for Default_Switches("ada") use ("-j0", "-gnat2012", "-g");
-         when "release" =>
-            for Default_Switches("ada") use ("-j0", "-gnat2012");
-      end case;
+      for Default_Switches("ada") use ("-j0", "-gnat2012", "-g");
       for Global_Configuration_Pragmas use "gnat.adc";
    end Builder;
 
@@ -58,8 +53,7 @@ project hunter is
             for Default_Switches ("ada") use ("-no-pie", "-lmagic");
          when "release" =>
             for Default_Switches ("ada") use ("-Wl,--gc-sections",
-               "-lmagic",
-               "-s");
+               "-lmagic");
          when "analyze" =>
             for Default_Switches ("ada") use ("-no-pie",
                "-pg",
