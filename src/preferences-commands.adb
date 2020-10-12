@@ -80,13 +80,12 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Label: Ttk_Label;
-   begin
-      Label.Interp := Interp;
-      Label.Name :=
-        New_String
+      Label: constant Ttk_Label :=
+        Get_Widget
           (".preferencesframe.canvas.notebook.preferences." &
-           CArgv.Arg(Argv, 1) & "label");
+           CArgv.Arg(Argv, 1) & "label",
+           Interp);
+   begin
       if CArgv.Arg(Argv, 1) = "directory.interval" then
          Tcl.Tk.Ada.Widgets.configure
            (Label,
@@ -132,14 +131,14 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar
-          (Interp,
-           ".preferencesframe.canvas.notebook.preferences.directory.showhidden") =
-        "0" then
-         Settings.ShowHidden := False;
-      else
-         Settings.ShowHidden := True;
-      end if;
+      Settings.ShowHidden :=
+        (if
+           Tcl_GetVar
+             (Interp,
+              ".preferencesframe.canvas.notebook.preferences.directory.showhidden") =
+           "0"
+         then False
+         else True);
       UpdateDirectoryList(True);
       return TCL_OK;
    end Set_Show_Hidden_Files_Command;
@@ -170,11 +169,9 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      DirectoryTree: Ttk_Tree_View;
+      DirectoryTree: constant Ttk_Tree_View :=
+        Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
    begin
-      DirectoryTree.Interp := Interp;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
       if Tcl_GetVar
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.directory.showmodificationtime") =
@@ -214,13 +211,11 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      PreviewFrame: Ttk_Frame;
-      Paned: Ttk_PanedWindow;
+      Paned: constant Ttk_PanedWindow :=
+        Get_Widget(".mainframe.paned", Interp);
+      PreviewFrame: constant Ttk_Frame :=
+        Get_Widget(Paned & ".previewframe", Interp);
    begin
-      Paned.Interp := Interp;
-      Paned.Name := New_String(".mainframe.paned");
-      PreviewFrame.Interp := Interp;
-      PreviewFrame.Name := New_String(Paned & ".previewframe");
       if Tcl_GetVar
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.preview.showpreview") =
@@ -262,14 +257,14 @@ package body Preferences.Commands is
       pragma Unreferenced(ClientData, Argc, Argv);
       MimeType: constant String := GetMimeType(To_String(CurrentSelected));
    begin
-      if Tcl_GetVar
-          (Interp,
-           ".preferencesframe.canvas.notebook.preferences.preview.scaleimages") =
-        "0" then
-         Settings.ScaleImages := False;
-      else
-         Settings.ScaleImages := True;
-      end if;
+      Settings.ScaleImages :=
+        (if
+           Tcl_GetVar
+             (Interp,
+              ".preferencesframe.canvas.notebook.preferences.preview.scaleimages") =
+           "0"
+         then False
+         else True);
       if MimeType(1 .. 5) = "image" then
          ShowPreview;
       end if;
@@ -302,13 +297,12 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      ComboBox: Ttk_ComboBox;
+      ComboBox: constant Ttk_ComboBox :=
+        Get_Widget
+          (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme",
+           Interp);
       MimeType: constant String := GetMimeType(To_String(CurrentSelected));
    begin
-      ComboBox.Interp := Interp;
-      ComboBox.Name :=
-        New_String
-          (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme");
       if Tcl_GetVar
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.preview.syntaxhighlightning") =
@@ -351,13 +345,12 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      ComboBox: Ttk_ComboBox;
+      ComboBox: constant Ttk_ComboBox :=
+        Get_Widget
+          (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme",
+           Interp);
       MimeType: constant String := GetMimeType(To_String(CurrentSelected));
    begin
-      ComboBox.Interp := Interp;
-      ComboBox.Name :=
-        New_String
-          (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme");
       Settings.ColorTheme := To_Unbounded_String(Get(ComboBox));
       if MimeType(1 .. 4) = "text" then
          ShowPreview;
@@ -391,11 +384,9 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      PreviewText: Ttk_Frame;
+      PreviewText: constant Ttk_Frame :=
+        Get_Widget(".mainframe.paned.previewframe.previewtext", Interp);
    begin
-      PreviewText.Interp := Interp;
-      PreviewText.Name :=
-        New_String(".mainframe.paned.previewframe.previewtext");
       if Tcl_GetVar
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.preview.monospacefont") =
@@ -436,14 +427,14 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar
-          (Interp,
-           ".preferencesframe.canvas.notebook.preferences.interface.stayinold") =
-        "0" then
-         Settings.StayInOld := False;
-      else
-         Settings.StayInOld := True;
-      end if;
+      Settings.StayInOld :=
+        (if
+           Tcl_GetVar
+             (Interp,
+              ".preferencesframe.canvas.notebook.preferences.interface.stayinold") =
+           "0"
+         then False
+         else True);
       return TCL_OK;
    end Set_Stay_In_Old_Command;
 
@@ -474,14 +465,14 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar
-          (Interp,
-           ".preferencesframe.canvas.notebook.preferences.interface.showfinished") =
-        "0" then
-         Settings.ShowFinishedInfo := False;
-      else
-         Settings.ShowFinishedInfo := True;
-      end if;
+      Settings.ShowFinishedInfo :=
+        (if
+           Tcl_GetVar
+             (Interp,
+              ".preferencesframe.canvas.notebook.preferences.interface.showfinished") =
+           "0"
+         then False
+         else True);
       return TCL_OK;
    end Set_Show_Finished_Info_Command;
 
@@ -511,20 +502,17 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      MainFrame, Paned: Ttk_Frame;
+      MainFrame: constant Ttk_Frame := Get_Widget(".mainframe", Interp);
+      Paned: constant Ttk_Frame := Get_Widget(MainFrame & ".paned", Interp);
    begin
-      MainFrame.Interp := Interp;
-      MainFrame.Name := New_String(".mainframe");
-      Paned.Interp := Interp;
-      Paned.Name := New_String(MainFrame & ".paned");
-      if Tcl_GetVar
-          (Interp,
-           ".preferencesframe.canvas.notebook.preferences.interface.toolbarsontop") =
-        "0" then
-         Settings.ToolbarsOnTop := False;
-      else
-         Settings.ToolbarsOnTop := True;
-      end if;
+      Settings.ToolbarsOnTop :=
+        (if
+           Tcl_GetVar
+             (Interp,
+              ".preferencesframe.canvas.notebook.preferences.interface.toolbarsontop") =
+           "0"
+         then False
+         else True);
       SetToolbars;
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid_Configure
@@ -563,10 +551,8 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      ButtonMenu: Tk_Menu;
+      ButtonMenu: constant Tk_Menu := Get_Widget(".deletemenu", Interp);
    begin
-      ButtonMenu.Interp := Interp;
-      ButtonMenu.Name := New_String(".deletemenu");
       if Tcl_GetVar
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.deleting.deletefiles") =
@@ -610,14 +596,14 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar
-          (Interp,
-           ".preferencesframe.canvas.notebook.preferences.deleting.cleartrash") =
-        "0" then
-         Settings.ClearTrashOnExit := False;
-      else
-         Settings.ClearTrashOnExit := True;
-      end if;
+      Settings.ClearTrashOnExit :=
+        (if
+           Tcl_GetVar
+             (Interp,
+              ".preferencesframe.canvas.notebook.preferences.deleting.cleartrash") =
+           "0"
+         then False
+         else True);
       return TCL_OK;
    end Set_Clear_Trash_Command;
 
@@ -648,14 +634,14 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Tcl_GetVar
-          (Interp,
-           ".preferencesframe.canvas.notebook.preferences.copying.overwrite") =
-        "0" then
-         Settings.OverwriteOnExist := False;
-      else
-         Settings.OverwriteOnExist := True;
-      end if;
+      Settings.OverwriteOnExist :=
+        (if
+           Tcl_GetVar
+             (Interp,
+              ".preferencesframe.canvas.notebook.preferences.copying.overwrite") =
+           "0"
+         then False
+         else True);
       return TCL_OK;
    end Set_Overwrite_Command;
 
@@ -684,10 +670,8 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      Frame: Ttk_Frame;
+      Frame: Ttk_Frame := Get_Widget(".mainframe", Interp);
    begin
-      Frame.Interp := Interp;
-      Frame.Name := New_String(".mainframe");
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".preferencesframe");
       Tcl.Tk.Ada.Grid.Grid(Frame, "-sticky nwes");
