@@ -23,7 +23,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package Inotify is
 -- ****
 
-   -- ****t* Inotify/Inotify_Events
+   -- ****t* Inotify/Inotify.Inotify_Events
    -- FUNCTION
    -- Types of inotify events and values for them
    -- SOURCE
@@ -40,7 +40,7 @@ package Inotify is
       Unmounted_Filesystem => 16#2000#);
    -- ****
 
-   -- ****s* Inotify/Event_Data
+   -- ****s* Inotify/Inotify.Event_Data
    -- FUNCTION
    -- Data structure used to store information about inotify event
    -- OPTIONS
@@ -55,21 +55,21 @@ package Inotify is
    end record;
    -- ****
 
-   -- ****t* Inotify/Events_Container
+   -- ****t* Inotify/Inotify.Events_Container
    -- FUNCTION
    -- Used to store data about inotify events
    -- SOURCE
    package Events_Container is new Vectors(Positive, Event_Data);
    -- ****
 
-   -- ****v* Inotify/EventsList
+   -- ****v* Inotify/Inotify.EventsList
    -- FUNCTION
    -- List of all caught inotify events
    -- SOURCE
    EventsList: Events_Container.Vector;
    -- ****
 
-   -- ****v* Inotify/TemporaryStop
+   -- ****v* Inotify/Inotify.TemporaryStop
    -- FUNCTION
    -- If true, temporary stop refreshing directory listing (mainly in trash).
    -- Default is false
@@ -77,21 +77,21 @@ package Inotify is
    TemporaryStop: Boolean := False;
    -- ****
 
-   -- ****f* Inotify/InotifyInit
+   -- ****f* Inotify/Inotify.InotifyInit
    -- FUNCTION
    -- Start inotify instance
    -- SOURCE
    procedure InotifyInit;
    -- ****
 
-   -- ****f* Inotify/InotifyClose
+   -- ****f* Inotify/Inotify.InotifyClose
    -- FUNCTION
    -- Close inotify instance
    -- SOURCE
    procedure InotifyClose;
    -- ****
 
-   -- ****f* Inotify/AddWatches
+   -- ****f* Inotify/Inotify.AddWatches
    -- FUNCTION
    -- Add inotify watches for selected path and all subdirectories inside it,
    -- but not deeper.
@@ -101,14 +101,14 @@ package Inotify is
    procedure AddWatches(Path: String);
    -- ****
 
-   -- ****f* Inotify/RemoveWatches
+   -- ****f* Inotify/Inotify.RemoveWatches
    -- FUNCTION
    -- Remove all inotify watches
    -- SOURCE
    procedure RemoveWatches;
    -- ****
 
-   -- ****f* Inotify/InotifyRead
+   -- ****f* Inotify/Inotify.InotifyRead
    -- FUNCTION
    -- Read all caught and waiting inotify events and store them in EventsList.
    -- If need, remove and add new watches also.
