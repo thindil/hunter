@@ -23,35 +23,35 @@ with Utils; use Utils;
 
 package body LibMagic is
 
-   -- ****it* LibMagic/magic_set
+   -- ****it* LibMagic/LibMagic.magic_set
    -- FUNCTION
    -- Used to store Magic data
    -- SOURCE
    type magic_set is null record;
    -- ****
 
-   -- ****it* LibMagic/magic_t
+   -- ****it* LibMagic/LibMagic.magic_t
    -- FUNCTION
    -- Used as pointer to the Magic data
    -- SOURCE
    type magic_t is access all magic_set;
    -- ****
 
-   -- ****iv* LibMagic/MagicData
+   -- ****iv* LibMagic/LibMagic.MagicData
    -- FUNCTION
    -- Pointer to the Magic data
    -- SOURCE
    MagicData: magic_t;
    -- ****
 
-   -- ****iv* LibMagic/Initialized
+   -- ****iv* LibMagic/LibMagic.Initialized
    -- FUNCTION
    -- If true, libmagic was succesfully initialized. Default is false.
    -- SOURCE
    Initialized: Boolean := False;
    -- ****
 
-   -- ****if* LibMagic/magic_open
+   -- ****if* LibMagic/LibMagic.magic_open
    -- FUNCTION
    -- Binding to the C function
    -- PARAMETERS
@@ -65,7 +65,7 @@ package body LibMagic is
       External_Name => "magic_open";
       -- ****
 
-      -- ****if* LibMagic/magic_load
+      -- ****if* LibMagic/LibMagic.magic_load
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
@@ -80,7 +80,7 @@ package body LibMagic is
       External_Name => "magic_load";
       -- ****
 
-      -- ****if* LibMagic/magic_close
+      -- ****if* LibMagic/LibMagic.magic_close
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
@@ -92,7 +92,7 @@ package body LibMagic is
       External_Name => "magic_close";
       -- ****
 
-      -- ****if* LibMagic/magic_file
+      -- ****if* LibMagic/LibMagic.magic_file
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
