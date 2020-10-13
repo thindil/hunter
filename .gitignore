@@ -5,4 +5,3 @@ obj
 tests/driver/test_runner
 gcov
 gprofreport.txt
-run.sh
