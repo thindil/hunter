@@ -706,11 +706,9 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Dialog: Tk_Toplevel;
+      Dialog: Tk_Toplevel := Get_Widget(CArgv.Arg(Argv, 1), Interp);
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Interp);
    begin
-      Dialog.Interp := Interp;
-      Dialog.Name := New_String(CArgv.Arg(Argv, 1));
       Destroy(Dialog);
       if Winfo_Get(MainWindow, "exists") = "1"
         and then Status(MainWindow) = "1" then
@@ -746,22 +744,19 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      Scale: Ttk_Scale;
-      Frame: Ttk_Frame;
+      Frame: Ttk_Frame := Get_Widget(".preferencesframe", Interp);
+      Scale: Ttk_Scale :=
+        Get_Widget
+          (Frame & ".canvas.notebook.preferences.directory.intervalscale",
+           Interp);
    begin
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
-      Scale.Interp := Interp;
-      Scale.Name :=
-        New_String
-          (".preferencesframe.canvas.notebook.preferences.directory.intervalscale");
       Settings.AutoRefreshInterval := Natural(Float'Value(Get(Scale)));
       Scale.Name :=
         New_String
           (".preferencesframe.canvas.notebook.preferences.interface.messagesscale");
       Settings.AutoCloseMessagesTime := Natural(Float'Value(Get(Scale)));
       StartTimer;
-      Frame.Interp := Interp;
-      Frame.Name := New_String(".preferencesframe");
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".mainframe");
       Tcl.Tk.Ada.Grid.Grid(Frame);
@@ -792,12 +787,11 @@ package body Preferences.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      ComboBox: Ttk_ComboBox;
+      ComboBox: constant Ttk_ComboBox :=
+        Get_Widget
+          (".preferencesframe.canvas.notebook.preferences.interface.colorframe.uitheme",
+           Interp);
    begin
-      ComboBox.Interp := Interp;
-      ComboBox.Name :=
-        New_String
-          (".preferencesframe.canvas.notebook.preferences.interface.colorframe.uitheme");
       Settings.UITheme := To_Unbounded_String(Get(ComboBox));
       ShowMessage
         (Mc(Interp, "{To use the new UI theme, please restart the program.}"),
@@ -830,7 +824,10 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      ComboBox: Ttk_ComboBox;
+      ComboBox: constant Ttk_ComboBox :=
+        Get_Widget
+          (".preferencesframe.canvas.notebook.preferences.interface.toolbarframe.toolbarsize",
+           Interp);
       ToolbarSize: Natural;
       ImageSize: Positive;
       ImagesNames: constant array(1 .. 21) of Unbounded_String :=
@@ -857,10 +854,6 @@ package body Preferences.Commands is
       CurrentDir: constant String := Current_Directory;
    begin
       Set_Directory(Containing_Directory(Command_Name));
-      ComboBox.Interp := Interp;
-      ComboBox.Name :=
-        New_String
-          (".preferencesframe.canvas.notebook.preferences.interface.toolbarframe.toolbarsize");
       ToolbarSize := Natural'Value(Current(ComboBox));
       case ToolbarSize is
          when 0 =>
@@ -947,13 +940,12 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Label: Ttk_Label;
-   begin
-      Label.Interp := Interp;
-      Label.Name :=
-        New_String
+      Label: constant Ttk_Label :=
+        Get_Widget
           (".preferencesframe.canvas.notebook.shortcuts.labelshortcut" &
-           CArgv.Arg(Argv, 1));
+           CArgv.Arg(Argv, 1),
+           Interp);
+   begin
       Widgets.configure
         (Label,
          "-text {" &
@@ -994,7 +986,11 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Label: Ttk_Label;
+      Label: constant Ttk_Label :=
+        Get_Widget
+          (".preferencesframe.canvas.notebook.shortcuts.labelshortcut" &
+           CArgv.Arg(Argv, 1),
+           Interp);
       Key: constant String := CArgv.Arg(Argv, 2);
       Shortcut: constant String :=
         (if Tcl_GetVar(Interp, "specialkey") = "{}" then Key
@@ -1002,11 +998,6 @@ package body Preferences.Commands is
       Index: constant Positive := Positive'Value(CArgv.Arg(Argv, 1));
       Script: Unbounded_String;
    begin
-      Label.Interp := Interp;
-      Label.Name :=
-        New_String
-          (".preferencesframe.canvas.notebook.shortcuts.labelshortcut" &
-           CArgv.Arg(Argv, 1));
       if Key = "Escape" then
          Widgets.configure
            (Label, "-text {" & To_String(Accelerators(Index)) & "}");
@@ -1116,13 +1107,12 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      Tentry: Ttk_Entry;
+      Tentry: Ttk_Entry :=
+        Get_Widget
+          (".preferencesframe.canvas.notebook.actions.addframe.title", Interp);
       MenuEntry, Command: Unbounded_String;
       NeedOutput: Boolean;
    begin
-      Tentry.Interp := Interp;
-      Tentry.Name :=
-        New_String(".preferencesframe.canvas.notebook.actions.addframe.title");
       MenuEntry := To_Unbounded_String(Get(Tentry));
       if MenuEntry = Null_Unbounded_String then
          return TCL_OK;
@@ -1179,13 +1169,14 @@ package body Preferences.Commands is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      Tentry: Ttk_Entry;
+      Tentry: Ttk_Entry :=
+        Get_Widget
+          (".preferencesframe.canvas.notebook.actions.addframe.title", Interp);
       MenuEntry: constant String := CArgv.Arg(Argv, 1);
-      Button: Ttk_Button;
+      Button: constant Ttk_Button :=
+        Get_Widget
+          (".preferencesframe.canvas.notebook.actions.addframe.add", Interp);
    begin
-      Tentry.Interp := Interp;
-      Tentry.Name :=
-        New_String(".preferencesframe.canvas.notebook.actions.addframe.title");
       Delete(Tentry, "0", "end");
       Insert(Tentry, "end", MenuEntry);
       Tentry.Name :=
@@ -1202,9 +1193,6 @@ package body Preferences.Commands is
            (Interp,
             ".preferencesframe.canvas.notebook.actions.addframe.output", "0");
       end if;
-      Button.Interp := Interp;
-      Button.Name :=
-        New_String(".preferencesframe.canvas.notebook.actions.addframe.add");
       Widgets.configure
         (Button, "-text {" & Mc(Interp, "{Edit command}") & "}");
       return TCL_OK;
