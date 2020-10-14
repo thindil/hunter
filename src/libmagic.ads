@@ -20,14 +20,14 @@
 package LibMagic is
 -- ****
 
-   -- ****f* LibMagic/MagicOpen
+   -- ****f* LibMagic/LibMagic.MagicOpen
    -- FUNCTION
    -- Initialize magic data
    -- SOURCE
    procedure MagicOpen;
    -- ****
 
-   -- ****f* LibMagic/MagicFile
+   -- ****f* LibMagic/LibMagic.MagicFile
    -- FUNCTION
    -- Get mime type of selected file if libmagic is not initialized, it
    -- fallback to the xdg-mime program.
@@ -40,7 +40,7 @@ package LibMagic is
    function MagicFile(Name: String) return String;
    -- ****
 
-   -- ****f* LibMagic/MagicClose
+   -- ****f* LibMagic/LibMagic.MagicClose
    -- FUNCTION
    -- Close and release all magic data
    -- SOURCE
