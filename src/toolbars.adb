@@ -222,7 +222,7 @@ package body Toolbars is
       SetButton
         (ToolButton,
          Mc(Get_Context, "{Select or unselect all files and directories.}") &
-         " \[" & To_String(Accelerators(6)) & "\]",
+         " \[" & To_String(Accelerators(8)) & "\]",
          "edit-select-all");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Separator := Create(".mainframe.toolbars.actiontoolbar.separator2");
