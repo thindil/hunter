@@ -8,7 +8,7 @@ set env(HIGHLIGHT_DATADIR) [pwd]/share/highlight/
 cd bin
 
 if {$argc > 0} {
-   exec [pwd]/hunter [list $argv]
+   exec [pwd]/hunter [list $argv] >@stdout
 } else {
-   exec [pwd]/hunter
+   exec [pwd]/hunter >@stdout
 }
