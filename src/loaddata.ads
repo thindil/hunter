@@ -25,9 +25,14 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package LoadData is
 -- ****
 
+   -- ****t* LoadData/LoadData.Item_Size
+   -- FUNCTION
+   -- Used to store size of files and directories
+   -- SOURCE
    type Item_Size is range -2 .. File_Size'Last;
+   -- ****
 
-   -- ****s* LoadData/Item_Record
+   -- ****s* LoadData/LoadData.Item_Record
    -- FUNCTION
    -- Data structure with information about files and directories
    -- OPTIONS
@@ -55,7 +60,7 @@ package LoadData is
    end record;
    -- ****
 
-   -- ****t* LoadData/SortingOrder
+   -- ****t* LoadData/LoadData.SortingOrder
    -- FUNCTION
    -- Possible options of sorting for items in directory view
    -- OPTIONS
@@ -70,14 +75,14 @@ package LoadData is
      (NameAsc, NameDesc, ModifiedAsc, ModifiedDesc, SizeAsc, SizeDesc);
    -- ****
 
-   -- ****v* LoadData/SortOrder
+   -- ****v* LoadData/LoadData.SortOrder
    -- FUNCTION
    -- Currently set sorting order for directory view. Default value is NameAsc
    -- SOURCE
    SortOrder: SortingOrder := NameAsc;
    -- ****
 
-   -- ****f* LoadData/"<"
+   -- ****f* LoadData/LoadData."<"
    -- FUNCTION
    -- Used in sorting items in directory view. Check if one item is smaller
    -- than other
@@ -91,7 +96,7 @@ package LoadData is
    function "<"(Left, Right: Item_Record) return Boolean;
    -- ****
 
-   -- ****f* LoadData/"="
+   -- ****f* LoadData/LoadData."="
    -- FUNCTION
    -- Used in sorting items in directory view. Check if one item is equal to
    -- another
@@ -105,28 +110,28 @@ package LoadData is
    function "="(Left, Right: Item_Record) return Boolean;
    -- ****
 
-   -- ****t* LoadData/Items_Container
+   -- ****t* LoadData/LoadData.Items_Container
    -- FUNCTION
    -- Used to store information about selected directories contents
    -- SOURCE
    package Items_Container is new Vectors(Positive, Item_Record);
    -- ****
 
-   -- ****t* LoadData/Items_Sorting
+   -- ****t* LoadData/LoadData.Items_Sorting
    -- FUNCTION
    -- Used to sort the selected directories contets
    -- SOURCE
    package Items_Sorting is new Items_Container.Generic_Sorting;
    -- ****
 
-   -- ****v* LoadData/ItemsList
+   -- ****v* LoadData/LoadData.ItemsList
    -- FUNCTION
    -- The content of the currently viewed directory
    -- SOURCE
    ItemsList: Items_Container.Vector;
    -- ****
 
-   -- ****v* LoadData/SecondItemsList
+   -- ****v* LoadData/LoadData.SecondItemsList
    -- FUNCTION
    -- The content of the currently previewed directory or destination
    -- directory for actions like moving, copying, creating links
@@ -134,7 +139,7 @@ package LoadData is
    SecondItemsList: Items_Container.Vector;
    -- ****
 
-   -- ****f* LoadData/AddItem
+   -- ****f* LoadData/LoadData.AddItem
    -- FUNCTION
    -- Add the selected item to the selected list
    -- PARAMETERS
@@ -144,7 +149,7 @@ package LoadData is
    procedure AddItem(Path: String; List: in out Items_Container.Vector);
    -- ****
 
-   -- ****f* LoadData/LoadDirectory
+   -- ****f* LoadData/LoadData.LoadDirectory
    -- FUNCTION
    -- Load content of the selected directory to the proper list
    -- PARAMETERS
