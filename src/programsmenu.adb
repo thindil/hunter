@@ -19,7 +19,6 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -68,17 +67,15 @@ package body ProgramsMenu is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      ApplicationsFrame: Ttk_Frame;
-      TextEntry: Ttk_Entry;
+      ApplicationsFrame: constant Ttk_Frame :=
+        Get_Widget
+          (".mainframe.paned.previewframe.infoframe.applicationsmenu", Interp);
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(ApplicationsFrame & ".searchentry", Interp);
    begin
-      ApplicationsFrame.Interp := Interp;
-      ApplicationsFrame.Name :=
-        New_String(".mainframe.paned.previewframe.infoframe.applicationsmenu");
       if Winfo_Get(ApplicationsFrame, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid
            (ApplicationsFrame, "-column 1 -row 5 -rowspan 3");
-         TextEntry.Interp := Interp;
-         TextEntry.Name := New_String(ApplicationsFrame & ".searchentry");
          Focus(TextEntry);
       else
          Grid_Forget(ApplicationsFrame);
@@ -112,20 +109,18 @@ package body ProgramsMenu is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      TextEntry: Ttk_Entry;
-      ProgramsTree: Ttk_Tree_View;
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget
+          (".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry",
+           Interp);
+      ProgramsTree: constant Ttk_Tree_View :=
+        Get_Widget
+          (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree",
+           Interp);
       Query: Unbounded_String;
       Selected: Boolean := False;
    begin
-      TextEntry.Interp := Interp;
-      TextEntry.Name :=
-        New_String
-          (".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry");
       Query := To_Unbounded_String(Get(TextEntry));
-      ProgramsTree.Interp := Interp;
-      ProgramsTree.Name :=
-        New_String
-          (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree");
       for I in NamesList.First_Index .. NamesList.Last_Index loop
          if Query /= Null_Unbounded_String
            and then
@@ -170,26 +165,24 @@ package body ProgramsMenu is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      ApplicationsView: Ttk_Tree_View;
+      ApplicationsView: constant Ttk_Tree_View :=
+        Get_Widget
+          (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree",
+           Interp);
       Pid: Process_Id;
       ExecutableName: constant String := FindExecutable("xdg-mime");
       ApplicationName: Unbounded_String;
-      Button: Ttk_Button;
+      Button: constant Ttk_Button :=
+        Get_Widget
+          (".mainframe.paned.previewframe.infoframe.associatedprogram",
+           Interp);
    begin
       if ExecutableName = "" then
          return TCL_OK;
       end if;
-      ApplicationsView.Interp := Interp;
-      ApplicationsView.Name :=
-        New_String
-          (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree");
       ApplicationName :=
         To_Unbounded_String
           (Item(ApplicationsView, Selection(ApplicationsView), "-text"));
-      Button.Interp := Interp;
-      Button.Name :=
-        New_String
-          (".mainframe.paned.previewframe.infoframe.associatedprogram");
       for I in ApplicationsList.Iterate loop
          if ApplicationsList(I) = ApplicationName then
             Pid :=
