@@ -55,11 +55,11 @@ package body RefreshData is
    procedure CheckItems(data: ClientData) is
       pragma Unreferenced(data);
       RefreshList, ItemExists: Boolean := False;
-      ItemIndex: Positive;
+      ItemIndex: Items_Container.Extended_Index;
       FileName: Unbounded_String;
       Directory: Dir_Type;
-      Last: Natural;
       SubFileName: String(1 .. 1_024);
+      Last: Natural range 0 .. SubFileName'Last;
       procedure RemoveItem is
       begin
          ItemsList.Delete(ItemIndex);
