@@ -20,7 +20,7 @@
 package MainWindow.Commands is
 -- ****
 
-   -- ****f* MCommands/AddCommands
+   -- ****f* MCommands/MCommands.AddCommands
    -- FUNCTION
    -- Adds the Ada code to the Tcl interpreter
    -- SOURCE
