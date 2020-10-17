@@ -63,17 +63,13 @@ package body RenameItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      TextFrame: Ttk_Frame;
-      Button: Ttk_Button;
-      TextEntry: Ttk_Entry;
+      TextFrame: constant Ttk_Frame :=
+        Get_Widget(".mainframe.textframe", Interp);
+      Button: Ttk_Button := Get_Widget(TextFrame & ".closebutton", Interp);
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(TextFrame & ".textentry", Interp);
       Hunter_Rename_Exception: exception;
    begin
-      TextFrame.Interp := Interp;
-      TextFrame.Name := New_String(".mainframe.textframe");
-      TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(TextFrame & ".textentry");
-      Button.Interp := Interp;
-      Button.Name := New_String(TextFrame & ".closebutton");
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name := New_String(TextFrame & ".okbutton");
@@ -138,12 +134,11 @@ package body RenameItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       -- ****
-      TextEntry: Ttk_Entry;
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(".mainframe.textframe.textentry", Interp);
       NewName, ActionBlocker: Unbounded_String;
       Success: Boolean;
    begin
-      TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
       NewName := CurrentDirectory & "/" & To_Unbounded_String(Get(TextEntry));
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
