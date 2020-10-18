@@ -88,6 +88,7 @@ package body ActivateItems is
             Pid: GNAT.OS_Lib.Process_Id;
             Openable: Boolean := CanBeOpened(MimeType);
             ExecutableName: constant String := FindExecutable("xdg-open");
+            Arguments: Argument_List_Access;
          begin
             if MimeType(1 .. 4) = "text" and not Openable then
                Openable := CanBeOpened("text/plain");
@@ -112,10 +113,9 @@ package body ActivateItems is
                if ExecutableName = "" then
                   return TCL_OK;
                end if;
-               Pid :=
-                 Non_Blocking_Spawn
-                   (ExecutableName,
-                    Argument_String_To_List(To_String(CurrentSelected)).all);
+               Arguments := Argument_String_To_List("@2");
+               Arguments(1) := new String'(To_String(CurrentSelected));
+               Pid := Non_Blocking_Spawn(ExecutableName, Arguments.all);
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
