@@ -27,6 +27,7 @@ All notable changes to this project will be documented in this file.
 - Running file or directory with command when file or directory contains space
 - Crash on creating bookmark when bookmarks file doesn't exists
 - Crash during starting program when bookmarks file contains invalid data
+- Openining files with spaces in names
 
 ## [1.4] - 2020-08-19
 
