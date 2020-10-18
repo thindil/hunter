@@ -63,17 +63,12 @@ package body SearchItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      TextFrame: Ttk_Frame;
-      Button: Ttk_Button;
-      TextEntry: Ttk_Entry;
+      TextFrame: constant Ttk_Frame :=
+        Get_Widget(".mainframe.textframe", Interp);
+      Button: Ttk_Button := Get_Widget(TextFrame & ".closebutton");
+      TextEntry: constant Ttk_Entry := Get_Widget(TextFrame & ".textentry");
       Hunter_Search_Exception: exception;
    begin
-      TextFrame.Interp := Interp;
-      TextFrame.Name := New_String(".mainframe.textframe");
-      TextEntry.Interp := Interp;
-      TextEntry.Name := New_String(TextFrame & ".textentry");
-      Button.Interp := Interp;
-      Button.Name := New_String(TextFrame & ".closebutton");
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid_Remove(Button);
          Button.Name :=
@@ -108,7 +103,7 @@ package body SearchItems is
    -- show only matching files and directories
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
@@ -127,18 +122,15 @@ package body SearchItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
-      TextEntry: Ttk_Entry;
-      DirectoryTree: Ttk_Tree_View;
+      pragma Unreferenced(ClientData, Argc, Argv);
+      TextEntry: constant Ttk_Entry :=
+        Get_Widget(".mainframe.textframe.textentry", Interp);
+      DirectoryTree: constant Ttk_Tree_View :=
+        Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
       Query: Unbounded_String;
       Selected: Boolean := False;
    begin
-      TextEntry.Interp := Get_Context;
-      TextEntry.Name := New_String(".mainframe.textframe.textentry");
       Query := To_Unbounded_String(Get(TextEntry));
-      DirectoryTree.Interp := Get_Context;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
       if Length(Query) = 0 then
          UpdateDirectoryList;
          return TCL_OK;
