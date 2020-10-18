@@ -23,14 +23,14 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package MainWindow is
 -- ****
 
-   -- ****v* MainWindow/CurrentDirectory
+   -- ****v* MainWindow/MainWindow.CurrentDirectory
    -- FUNCTION
    -- Currently selected directory to show
    -- SOURCE
    CurrentDirectory: Unbounded_String;
    -- ****
 
-   -- ****t* MainWindow/ItemActions
+   -- ****t* MainWindow/MainWindow.ItemActions
    -- FUNCTION
    -- Types of action on files and directories
    -- OPTIONS
@@ -52,14 +52,14 @@ package MainWindow is
       GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
 
-   -- ****v* MainWindow/NewAction
+   -- ****v* MainWindow/MainWindow.NewAction
    -- FUNCTION
    -- Current performed action on files or directories
    -- SOURCE
    NewAction: ItemActions;
    -- ****
 
-   -- ****t* MainWindow/UnboundedString_Container
+   -- ****t* MainWindow/MainWindow.UnboundedString_Container
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
    -- SOURCE
@@ -67,21 +67,21 @@ package MainWindow is
       Unbounded_String);
    -- ****
 
-   -- ****v* MainWindow/SelectedItems
+   -- ****v* MainWindow/MainWindow.SelectedItems
    -- FUNCTION
    -- List of currently selected files and directories by user
    -- SOURCE
    SelectedItems: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****v* MainWindow/CurrentSelected
+   -- ****v* MainWindow/MainWindow.CurrentSelected
    -- FUNCTION
    -- Full path to currently selected file or directory
    -- SOURCE
    CurrentSelected: Unbounded_String;
    -- ****
 
-   -- ****f* MainWindow/CreateMainWindow
+   -- ****f* MainWindow/MainWindow.CreateMainWindow
    -- FUNCTION
    -- Create main window and show content of selected directory
    -- PARAMETERS
@@ -91,7 +91,7 @@ package MainWindow is
    procedure CreateMainWindow(Directory: String);
    -- ****
 
-   -- ****f* MainWindow/UpdateDirectoryList
+   -- ****f* MainWindow/MainWindow.UpdateDirectoryList
    -- FUNCTION
    -- Update directory list
    -- PARAMETERS
