@@ -39,21 +39,21 @@ with Utils; use Utils;
 
 package body Messages is
 
-   -- ****iv* Messages/MessageFrame
+   -- ****iv* Messages/Messages.MessageFrame
    -- FUNCTION
    -- Main frame for the message widget
    -- SOURCE
    MessageFrame: Ttk_Frame;
    -- ****
 
-   -- ****iv* Messages/MessageLabel
+   -- ****iv* Messages/Messages.MessageLabel
    -- FUNCTION
    -- Label which show message text
    -- SOURCE
    MessageLabel: Ttk_Label;
    -- ****
 
-   -- ****iv* Messages/TimerId
+   -- ****iv* Messages/Messages.TimerId
    -- FUNCTION
    -- Id of timer for auto close command
    -- SOURCE
@@ -74,7 +74,7 @@ package body Messages is
       return TCL_OK;
    end Close_Command;
 
-   -- ****o* Messages/Response_Command
+   -- ****o* Messages/Messages.Response_Command
    -- FUNCTION
    -- Hide message frame and do action, depends on user response
    -- PARAMETERS
