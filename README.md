@@ -104,13 +104,17 @@ program with `hunter /`
 
 ### Testing versions
 
-Here are available also testing versions of the program. You can find them
-in [Releases](https://github.com/thindil/hunter/releases/tag/travis-dev-build).
-To use them, first you must download normal release. Then, inside directory
-where the program is, type `./hunter-x86_64.AppImage --appimage-extract` to
-extract whole program to directory *squashfs-root*. And then just move files
-from the archive to proper locations. To run that version, just enter
+Here are available testing versions of the game. You can find them
+in [Actions](https://github.com/thindil/hunter/actions?query=workflow%3A"Continuous+Integration").
+Just select option from the list of results to see Artifacts list.
+To use them, first you must download normal release. Then, for Linux: inside
+directory where the game is, type `./hunter-x86_64.AppImage --appimage-extract`
+to extract whole game to directory *squashfs-root*. And then move files
+from the archive to the proper location. To run that version, enter
 *squashfs-root* directory and type in console `./AppRun`.
+
+Size is a file's size after unpacking. You will download it compressed with
+Zip.
 
 ## Generating code documentation
 
