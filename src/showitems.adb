@@ -175,15 +175,11 @@ package body ShowItems is
    end ScaleImage;
 
    procedure ShowPreview is
-      Button: Ttk_Button;
-      Label: Ttk_Label;
+      Button: Ttk_Button :=
+        Get_Widget(".mainframe.toolbars.itemtoolbar.previewbutton");
+      Label: constant Ttk_Label := Get_Widget(PreviewFrame & ".title");
    begin
-      Label.Interp := Get_Context;
-      Label.Name := New_String(PreviewFrame & ".title");
       configure(Label, "-text {" & Mc(Get_Context, "{Preview}") & "}");
-      Button.Interp := Get_Context;
-      Button.Name :=
-        New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
       if Winfo_Get(Button, "ismapped") = "0" then
          Tcl.Tk.Ada.Pack.Pack
            (Button, "-before .mainframe.toolbars.itemtoolbar.infobutton");
@@ -400,12 +396,11 @@ package body ShowItems is
                Autoscroll(PreviewYScroll);
             elsif MimeType(1 .. 5) = "image" then
                declare
-                  Image: Tk_Photo;
-                  StartX, StartY, ImageWidth, ImageHeight: Natural;
-               begin
-                  Image :=
+                  Image: constant Tk_Photo :=
                     Create
                       ("previewimage", "-file " & To_String(CurrentSelected));
+                  StartX, StartY, ImageWidth, ImageHeight: Natural;
+               begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
@@ -448,16 +443,14 @@ package body ShowItems is
                exception
                   when Tcl_Error_Exception =>
                      declare
-                        ActionButton: Ttk_RadioButton;
+                        ActionButton: constant Ttk_RadioButton :=
+                          Get_Widget
+                            (".mainframe.toolbars.itemtoolbar.infobutton");
                      begin
                         Button.Name :=
                           New_String
                             (".mainframe.toolbars.itemtoolbar.previewbutton");
                         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-                        ActionButton.Name :=
-                          New_String
-                            (".mainframe.toolbars.itemtoolbar.infobutton");
-                        ActionButton.Interp := Get_Context;
                         if Invoke(ActionButton) /= "" then
                            raise Hunter_Show_Items_Exception
                              with Mc
@@ -470,15 +463,13 @@ package body ShowItems is
                Autoscroll(PreviewYScroll);
             else
                declare
-                  ActionButton: Ttk_RadioButton;
+                  ActionButton: constant Ttk_RadioButton :=
+                    Get_Widget(".mainframe.toolbars.itemtoolbar.infobutton");
                begin
                   Button.Name :=
                     New_String
                       (".mainframe.toolbars.itemtoolbar.previewbutton");
                   Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-                  ActionButton.Name :=
-                    New_String(".mainframe.toolbars.itemtoolbar.infobutton");
-                  ActionButton.Interp := Get_Context;
                   if Invoke(ActionButton) /= "" then
                      raise Hunter_Show_Items_Exception
                        with Mc
@@ -496,7 +487,7 @@ package body ShowItems is
    -- SOURCE
    procedure ShowInfo is
       -- ****
-      Label: Ttk_Label;
+      Label: Ttk_Label := Get_Widget(PreviewFrame & ".title");
       SelectedItem: constant String := To_String(CurrentSelected);
       Button: Ttk_Button;
       MimeType: constant String := GetMimeType(SelectedItem);
@@ -509,8 +500,6 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
-      Label.Interp := Get_Context;
-      Label.Name := New_String(PreviewFrame & ".title");
       configure(Label, "-text {" & Mc(Get_Context, "{Information}") & "}");
       Button.Interp := Label.Interp;
       if (MimeType'Length > 4 and MimeType(1 .. 4) not in "text" | "imag") and
@@ -757,14 +746,12 @@ package body ShowItems is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      DirectoryTree: Ttk_Tree_View;
+      DirectoryTree: constant Ttk_Tree_View :=
+        Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
       Tokens: Slice_Set;
       Items: Unbounded_String;
       ActionButton: Ttk_RadioButton;
    begin
-      DirectoryTree.Interp := Interp;
-      DirectoryTree.Name :=
-        New_String(".mainframe.paned.directoryframe.directorytree");
       SelectedItems.Clear;
       Items := To_Unbounded_String(Selection(DirectoryTree));
       if Items /= Null_Unbounded_String then
@@ -838,7 +825,7 @@ package body ShowItems is
       pragma Unreferenced(ClientData, Argc, Argv);
       SelectedItem: constant String := Full_Name(To_String(CurrentSelected));
       PermissionsString: Unbounded_String;
-      Permission: Natural;
+      Permission: Natural range 0 .. 7;
       Names: constant array(1 .. 3) of Unbounded_String :=
         (To_Unbounded_String("owner"), To_Unbounded_String("group"),
          To_Unbounded_String("others"));
@@ -917,7 +904,7 @@ package body ShowItems is
    end GoToDirectory_Command;
 
    procedure CreateShowItemsUI is
-      Paned: Ttk_PanedWindow;
+      Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
       Label: Ttk_Label;
       Button: Ttk_Button;
       ButtonTexts: constant array(1 .. 3) of Unbounded_String :=
@@ -953,12 +940,10 @@ package body ShowItems is
            (Frame, "-column 1 -row" & Positive'Image(Row + 1));
       end CreatePermissionsFrame;
    begin
-      PreviewFrame := Create(".mainframe.paned.previewframe");
+      PreviewFrame := Create(Paned & ".previewframe");
       Label := Create(PreviewFrame & ".title");
       Tcl.Tk.Ada.Pack.Pack(Label);
       PathButtonsFrame := Create(PreviewFrame & ".pathframe");
-      Paned.Interp := PreviewFrame.Interp;
-      Paned.Name := New_String(".mainframe.paned");
       PreviewXScroll :=
         Create
           (PreviewFrame & ".scrollx",
@@ -1051,12 +1036,10 @@ package body ShowItems is
 
    procedure ShowDestination is
       Frame: Ttk_Frame;
-      Paned: Ttk_PanedWindow;
+      Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
    begin
       Frame.Interp := Get_Context;
       if not Settings.ShowPreview then
-         Paned.Interp := Get_Context;
-         Paned.Name := New_String(".mainframe.paned");
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
       Unautoscroll(PreviewXScroll);
@@ -1084,12 +1067,10 @@ package body ShowItems is
 
    procedure ShowOutput is
       Frame: Ttk_Frame;
-      Paned: Ttk_PanedWindow;
+      Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
    begin
       Frame.Interp := Get_Context;
       if not Settings.ShowPreview then
-         Paned.Interp := Get_Context;
-         Paned.Name := New_String(".mainframe.paned");
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
       Unautoscroll(PreviewYScroll);
