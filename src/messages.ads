@@ -24,7 +24,7 @@ with Tcl; use Tcl;
 package Messages is
 -- ****
 
-   -- ****v* Messages/YesToAll
+   -- ****v* Messages/Messages.YesToAll
    -- FUNCTION
    -- Set to True if user clicked Yes for All button in response to question,
    -- otherwise False
@@ -32,7 +32,7 @@ package Messages is
    YesForAll: Boolean;
    -- ****
 
-   -- ****o* Messages/Close_Command
+   -- ****o* Messages/Messages.Close_Command
    -- FUNCTION
    -- Hide message frame
    -- PARAMETERS
@@ -52,14 +52,14 @@ package Messages is
       Convention => C;
       -- ****
 
-      -- ****f* Messages/CreateMessagesUI
+      -- ****f* Messages/Messages.CreateMessagesUI
       -- FUNCTION
       -- Create UI related to the program messages
       -- SOURCE
    procedure CreateMessagesUI;
    -- ****
 
-   -- ****f* Messages/ShowMessage
+   -- ****f* Messages/Messages.ShowMessage
    -- FUNCTION
    -- Show selected message with selected type to the user
    -- PARAMETERS
