@@ -42,13 +42,15 @@ package body Trash is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       Directory, SubDirectory: Dir_Type;
-      Last, SubLast: Natural;
       FileName, SubFileName: String(1 .. 1024);
+      Last: Natural range 0 .. FileName'Last;
+      SubLast: Natural range 0 .. SubFileName'Last;
       FileInfo: File_Type;
       Size: File_Size;
       FileLine, FullName, MimeType: Unbounded_String;
       Item: Item_Record;
-      Button: Ttk_Button;
+      Button: Ttk_Button :=
+        Get_Widget(".mainframe.toolbars.actiontoolbar.restorebutton");
    begin
       TemporaryStop := True;
       NewAction := SHOWTRASH;
@@ -156,9 +158,6 @@ package body Trash is
       Close(Directory);
       UpdateDirectoryList(True);
       if ItemsList.Length = 0 then
-         Button.Interp := Interp;
-         Button.Name :=
-           New_String(".mainframe.toolbars.actiontoolbar.restorebutton");
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.deletebutton");
