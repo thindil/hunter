@@ -35,14 +35,14 @@ with Utils; use Utils;
 
 package body MoveItems is
 
-   -- ****iv* MoveItems/SourceDirectory
+   -- ****iv* MoveItems/MoveItems.SourceDirectory
    -- FUNCTION
    -- Full path to the source directory of moved files and directories
    -- SOURCE
    SourceDirectory: Unbounded_String;
    -- ****
 
-   -- ****o* MoveItems/Move_Data_Command
+   -- ****o* MoveItems/MoveItems.Move_Data_Command
    -- FUNCTION
    -- Enter or quit moving items mode
    -- PARAMETERS
