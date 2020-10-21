@@ -11,22 +11,22 @@ program please look [here](https://github.com/thindil/hunter/tree/master)
 
 ## Features
 
-- Two column mode default or one column mode: One column always show files
+* Two column mode default or one column mode: One column always show files
   and directories, second column is used to preview files and directories
   or select destination location for move or copy files. In one column
   mode, second column appear only when copying or moving files or directories.
-- Preview of text files (with syntax highlighting) and images.
-- Standard file manager features: copy, delete, move files and directories,
+* Preview of text files (with syntax highlighting) and images.
+* Standard file manager features: copy, delete, move files and directories,
   change their permissions, change application associated with them.
-- Written in TK and Ada.
-- Available in English and Polish languages.
+* Written in TK and Ada.
+* Available in English and Polish languages.
 
 ## Build the program from sources
 
 ### Docker way
 
 You can use Docker image `adabuild` from the project [dockerada](https://github.com/thindil/dockerada).
-It contain all libraries and compiler needed to build the program.
+It contains all libraries and compiler needed to build the program.
 
 To build the program, download `adabuild` image and type in console:
 
@@ -52,7 +52,7 @@ To build you need:
    https://github.com/thindil/tashy
 
    **Important:** To build this version of Hunter the version 8.6.9 is
-   required. Ealier versions will not works due to lack of some bindings.
+   required. Ealier versions will not work due to lack of some bindings.
 
 * File command (libmagic) development files. It can have different names in
   every Linux distribution: in Fedora it is *file-devel* on Debian/Ubuntu/Mint
@@ -61,7 +61,7 @@ To build you need:
 If you have all the required packages, navigate to the main directory(where
 this file is) to compile:
 
-* Easiest way to compile the program is use Gnat Studio. It should be available
+* The simplest way to compile the program is use Gnat Studio. It should be available
   in the most distributions. Just run it, select *hunter.gpr* as a project file
   and select option `Build All`.
 
@@ -74,16 +74,16 @@ this file is) to compile:
 ## Running Hunter
 
 If you use downloaded AppImage version, you don't need any additional
-libraries. Just run it as any AppImage file. More informations about AppImage
+libraries. Just run it as any AppImage file. More information about AppImage
 files usage, you can find at:
 
 https://docs.appimage.org/user-guide/run-appimages.html
 
 **IMPORTANT:** The current AppImage version require GNU LibC in version at
-least 2.29. It will not works with earlier versions. In that situation,
+least 2.29. It will not work with earlier versions. In that situation,
 unfortunately you will have to build the program by yourself.
 
-When you trying to run build by yourself version of the program, run
+When you are trying to run build by yourself version of the program, run
 `hunter` from `bin` directory. Additionally, the program requires a few
 more libraries:
 
@@ -126,7 +126,7 @@ version of script have set all default settings for Hunter code. If you have
 [Bob](https://github.com/thindil/bob) installed, you can type `bob docs`.
 
 ## Contributing to the project
-For detailed informations about contributing to the project (bugs reporting,
+For detailed information about contributing to the project (bugs reporting,
 ideas propositions, code conduct, etc), see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Licenses
