@@ -28,6 +28,7 @@ All notable changes to this project will be documented in this file.
 - Crash on creating bookmark when bookmarks file doesn't exists
 - Crash during starting program when bookmarks file contains invalid data
 - Openining files with spaces in names
+- Typos in README.md
 
 ## [1.4] - 2020-08-19
 
