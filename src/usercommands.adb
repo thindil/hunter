@@ -42,14 +42,13 @@ package body UserCommands is
    procedure UpdateUserCommandsList is
       Row: Positive := 1;
       Label: Ttk_Label;
-      CommandsFrame, Item: Ttk_Frame;
+      CommandsFrame: constant Ttk_Frame :=
+        Get_Widget(".preferencesframe.canvas.notebook.actions.commandsframe");
+      Item: Ttk_Frame;
       Tokens: Slice_Set;
       Image: Tk_Photo;
       Button: Ttk_Button;
    begin
-      CommandsFrame.Interp := Get_Context;
-      CommandsFrame.Name :=
-        New_String(".preferencesframe.canvas.notebook.actions.commandsframe");
       Create(Tokens, Tcl.Tk.Ada.Grid.Grid_Size(CommandsFrame), " ");
       for I in 0 .. (Natural'Value(Slice(Tokens, 2)) - 1) loop
          Create
@@ -58,8 +57,7 @@ package body UserCommands is
               (CommandsFrame, "-row" & Positive'Image(I)),
             " ");
          for J in 1 .. Slice_Count(Tokens) loop
-            Item.Interp := Get_Context;
-            Item.Name := New_String(Slice(Tokens, J));
+            Item := Get_Widget(Slice(Tokens, J));
             Destroy(Item);
          end loop;
       end loop;
