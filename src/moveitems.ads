@@ -22,14 +22,14 @@ with MainWindow; use MainWindow;
 package MoveItems is
 -- ****
 
-   -- ****v* MoveItems/MoveItemsList
+   -- ****v* MoveItems/MoveItems.MoveItemsList
    -- FUNCTION
    -- Stores names of all selected to move files and directories
    -- SOURCE
    MoveItemsList: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****f* MoveItems/MoveSelected
+   -- ****f* MoveItems/MoveItems.MoveSelected
    -- FUNCTION
    -- Move selected files and directories
    -- PARAMETERS
@@ -40,14 +40,14 @@ package MoveItems is
    procedure MoveSelected(Overwrite: in out Boolean);
    -- ****
 
-   -- ****f* MoveItems/SkipMoving
+   -- ****f* MoveItems/MoveItems.SkipMoving
    -- FUNCTION
    -- Skip moving current file and move to next
    -- SOURCE
    procedure SkipMoving;
    -- ****
 
-   -- ****f* MoveItems/CreateMoveUI
+   -- ****f* MoveItems/MoveItems.CreateMoveUI
    -- FUNCTION
    -- Create UI for moving items
    -- SOURCE
