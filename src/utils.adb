@@ -69,14 +69,15 @@ package body Utils is
    end CanBeOpened;
 
    function CountFileSize(Size: File_Size) return String is
-      Multiplier: Natural;
+      Multiplier: Natural range 0 .. 8;
       NewSize: File_Size;
-      SizeShortcuts: constant array(Natural range <>) of String(1 .. 3) :=
+      SizeShortcuts: constant array(Natural range 0 .. 8) of String(1 .. 3) :=
         ("B  ", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
    begin
       NewSize := Size;
       Multiplier := 0;
       while NewSize > 1024 loop
+         exit when Multiplier = 8;
          NewSize := NewSize / 1024;
          Multiplier := Multiplier + 1;
       end loop;
@@ -102,10 +103,9 @@ package body Utils is
    end FindExecutable;
 
    procedure SetProgressBar(Amount: Positive) is
-      ProgressBar: Ttk_ProgressBar;
+      ProgressBar: constant Ttk_ProgressBar :=
+        Get_Widget(".mainframe.progressbar");
    begin
-      ProgressBar.Interp := Get_Context;
-      ProgressBar.Name := New_String(".mainframe.progressbar");
       configure
         (ProgressBar, "-maximum" & Positive'Image(Amount) & " -value 0");
       ProgressIndex := 0;
@@ -114,11 +114,10 @@ package body Utils is
    end SetProgressBar;
 
    procedure UpdateProgressBar is
-      ProgressBar: Ttk_ProgressBar;
+      ProgressBar: constant Ttk_ProgressBar :=
+        Get_Widget(".mainframe.progressbar");
    begin
       ProgressIndex := ProgressIndex + 1;
-      ProgressBar.Interp := Get_Context;
-      ProgressBar.Name := New_String(".mainframe.progressbar");
       configure(ProgressBar, "-value" & Natural'Image(ProgressIndex));
       if cget(ProgressBar, "-value") = cget(ProgressBar, "-maximum") then
          Grid_Remove(ProgressBar);
@@ -169,24 +168,18 @@ package body Utils is
 
    procedure ToggleToolButtons
      (Action: ItemActions; Finished: Boolean := False) is
-      Toolbar: Ttk_Frame;
-      Paned: Ttk_PanedWindow;
-      HeaderLabel: Ttk_Label;
+      Toolbar: Ttk_Frame := Get_Widget(".mainframe.toolbars");
+      Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
+      HeaderLabel: constant Ttk_Label := Get_Widget(".mainframe.headerlabel");
       ButtonsNames: constant array(1 .. 7) of Unbounded_String :=
         (To_Unbounded_String("new"), To_Unbounded_String("rename"),
          To_Unbounded_String("copy"), To_Unbounded_String("move"),
          To_Unbounded_String("delete"), To_Unbounded_String("about"),
          To_Unbounded_String("options"));
       CurrentButton: Positive;
-      DeleteMenu: Tk_Menu;
+      DeleteMenu: constant Tk_Menu := Get_Widget(".deletemenu");
       Side: Unbounded_String;
    begin
-      Toolbar.Interp := Get_Context;
-      Toolbar.Name := New_String(".mainframe.toolbars");
-      Paned.Interp := Get_Context;
-      Paned.Name := New_String(".mainframe.paned");
-      HeaderLabel.Interp := Get_Context;
-      HeaderLabel.Name := New_String(".mainframe.headerlabel");
       case Action is
          when CREATEFILE | CREATEDIRECTORY | CREATELINK | RENAME | DELETE |
            DELETETRASH =>
@@ -285,8 +278,6 @@ package body Utils is
          end if;
       end if;
       if Action = SHOWTRASH then
-         DeleteMenu.Interp := Get_Context;
-         DeleteMenu.Name := New_String(".deletemenu");
          if not Finished then
             Tcl.Tk.Ada.Pack.Pack
               (Toolbar,
