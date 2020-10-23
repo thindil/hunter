@@ -7,15 +7,15 @@ find any bug in the program, please report it at
 
 ### Some general hints about reporting bugs
 
-- In "Title" field try write short but not too general description of
+* In "Title" field try to write short but not too general description of
   problem. Good example: "The program crash when opening directory". Bad
   example: "The program crashes often."
-- In body/comment field try write that much informations about problem as
-  possible. In most cases more informations is better than less. General rule
-  of good problem report is give enough informations which allow to reproduce
+* In body/comment field try to write that much information about problem as
+  possible. In most cases more information is better than less. General rule
+  of good problem report is give enough information which allow reproducing
   problem by other people. It may be in form of steps which are needed for
   cause problem.
-- If the program crashed, in most cases it should create file *error.log* in
+* If the program crashed, in most cases it should create file *error.log* in
   *$HOME/.cache/hunter* directory. It will be a lot of help if you can attach
   that file to bug report. Each bug information in this file contains: date
   when crash happens, version of the program used, source code file and line
@@ -40,18 +40,18 @@ Body:
 If you want to talk/propose changes in any existing the program feature or
 mechanic, feel free to contact me via issues tracker or mail (addresses of
 both you can find at top of this file). General rule about propositions is
-same as for bugs reports - please, try write that much informations as
+same as for bugs reports - please, try to write that much information as
 possible. This help us all better understand purpose of your changes.
 
 ## Code propositions
 
-### General informations
+### General information
 
 If you want to start help in the program development, please consider starts
 from something easy like fixing bugs. Before you been want to add new feature
 to the program, please contact with me by issues tracker or mail, addresses
 of both are at top of this file. Same as with features proposition - your code
-may "collide" with my work and it this moment you may just lost time by
+may "collide" with my work and it this moment you may just lose time by
 working on it. So it is better that we first discuss your proposition. In any
 other case, fell free to fix my code.
 
@@ -68,7 +68,7 @@ which automatically format source code to project coding standard. Proper
 
 The program uses [ROBODoc](https://rfsber.home.xs4all.nl/Robo/) for generating
 code documentation. When you write your own code, please add proper header
-documentation to it. If you use Vim/NeoVim, easiest way is to use plugin
+documentation to it. If you use Vim/NeoVim, the easiest way is to use plugin
 [RoboVim](https://github.com/thindil/robovim). Example of documentation
 header:
 
@@ -117,7 +117,7 @@ or, if you prefer (and you have installed), use [Bob](https://github.com/thindil
 
 `bob analyze`
 
-More informations about code coverage and profiling, you can find in proper
+More information about code coverage and profiling, you can find in proper
 documentation for both programs.
 
 ## Translating the program
@@ -140,7 +140,7 @@ To add new translation to the program, enter the terminal command:
 `others/translations.tcl create [localename]` where *localename* is
 a standard language code (for example `de` or `en_US`). It will create a new
 translation file and fill it with English translation. For example,
-creating a German translation of the program will looks that:
+creating a German translation of the program will look that:
 
 `others/translations.tcl create de`
 
@@ -157,7 +157,7 @@ second string between quotes is translation. Edit only the second string.
 
 ### Updating existing translations
 
-This should not be needed to do, unless you added a new strings to translate
+This should not be needed to do, unless you added new strings to translate
 in the code. First, regenerate ROOT.msg translation with command:
 `others/translations.tcl generate`. Then update all other translations with
 command: `others/translations.tcl update`
