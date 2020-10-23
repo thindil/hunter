@@ -52,7 +52,7 @@ with Utils; use Utils;
 
 package body Preferences.Commands is
 
-   -- ****o* PCommands/Set_Label_Command
+   -- ****o* PCommands/PCommands.Set_Label_Command
    -- FUNCTION
    -- Update text of the selected label
    -- PARAMETERS
@@ -104,7 +104,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Label_Command;
 
-   -- ****o* PCommands/Set_Show_Hidden_Files_Command
+   -- ****o* PCommands/PCommands.Set_Show_Hidden_Files_Command
    -- FUNCTION
    -- Update show hidden files setting and reload the current directory
    -- listing
@@ -143,7 +143,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Hidden_Files_Command;
 
-   -- ****o* PCommands/Set_Show_Modification_Time_Command
+   -- ****o* PCommands/PCommands.Set_Show_Modification_Time_Command
    -- FUNCTION
    -- Update show modification time column and reload the current directory
    -- listing
@@ -186,7 +186,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Modification_Time_Command;
 
-   -- ****o* PCommands/Set_Show_Preview_Command
+   -- ****o* PCommands/PCommands.Set_Show_Preview_Command
    -- FUNCTION
    -- Update show preview setting and show or hide it
    -- PARAMETERS
@@ -229,7 +229,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Preview_Command;
 
-   -- ****o* PCommands/Set_Scale_Images_Command
+   -- ****o* PCommands/PCommands.Set_Scale_Images_Command
    -- FUNCTION
    -- Enable or disable images scaling and rescale currently
    -- previewed image if needed
@@ -271,7 +271,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Scale_Images_Command;
 
-   -- ****o* PCommands/Set_Color_Text_Command
+   -- ****o* PCommands/PCommands.Set_Color_Text_Command
    -- FUNCTION
    -- Enable or disable syntax highlightning in text files and reload the
    -- currently previewed file if it is text file
@@ -319,7 +319,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Color_Text_Command;
 
-   -- ****o* PCommands/Set_Color_Theme_Command
+   -- ****o* PCommands/PCommands.Set_Color_Theme_Command
    -- FUNCTION
    -- Set color theme for syntax highligthning in text files and reload
    -- the current previewed text file if needed
@@ -358,7 +358,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Color_Theme_Command;
 
-   -- ****o* PCommands/Set_Monospace_Font_Command
+   -- ****o* PCommands/PCommands.Set_Monospace_Font_Command
    -- FUNCTION
    -- Enable or disable using monospace font in text files and reload the
    -- currently previewed file if it is text file
@@ -400,7 +400,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Monospace_Font_Command;
 
-   -- ****o* PCommands/Set_Stay_In_Old_Command
+   -- ****o* PCommands/PCommands.Set_Stay_In_Old_Command
    -- FUNCTION
    -- Set if after copying, moving, etc operations user should
    -- see old directory or new
@@ -438,7 +438,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Stay_In_Old_Command;
 
-   -- ****o* PCommands/Set_Show_Finished_Info_Command
+   -- ****o* PCommands/PCommands.Set_Show_Finished_Info_Command
    -- FUNCTION
    -- Set if after finishing action, show info about it to the
    -- user
@@ -476,7 +476,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Show_Finished_Info_Command;
 
-   -- ****o* PCommands/Set_Toolbars_On_Top_Command
+   -- ****o* PCommands/PCommands.Set_Toolbars_On_Top_Command
    -- FUNCTION
    -- Set if toolbars should be on top of the program's window or on the
    -- left
@@ -526,7 +526,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Toolbars_On_Top_Command;
 
-   -- ****o* PCommands/Set_Delete_Files_Command
+   -- ****o* PCommands/PCommands.Set_Delete_Files_Command
    -- FUNCTION
    -- Set if files should be deleted of moved to Trash
    -- PARAMETERS
@@ -570,7 +570,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Delete_Files_Command;
 
-   -- ****o* PCommands/Set_Clear_Trash_Command
+   -- ****o* PCommands/PCommands.Set_Clear_Trash_Command
    -- FUNCTION
    -- Set if Trash should be cleared on the program exit
    -- PARAMETERS
@@ -607,7 +607,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Clear_Trash_Command;
 
-   -- ****o* PCommands/Set_Overwrite_Command
+   -- ****o* PCommands/PCommands.Set_Overwrite_Command
    -- FUNCTION
    -- Set if the program should overwrite files or create new with new
    -- names
@@ -645,7 +645,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Overwrite_Command;
 
-   -- ****o* PCommands/Show_Preferences_Command
+   -- ****o* PCommands/PCommands.Show_Preferences_Command
    -- FUNCTION
    -- Go to the selected bookmarked directory
    -- PARAMETERS
@@ -680,7 +680,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Show_Preferences_Command;
 
-   -- ****o* PCommands/Close_Dialog_Command
+   -- ****o* PCommands/PCommands.Close_Dialog_Command
    -- FUNCTION
    -- Close the selected dialog window
    -- PARAMETERS
@@ -717,7 +717,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Close_Dialog_Command;
 
-   -- ****o* PCommands/Close_Preferences_Command
+   -- ****o* PCommands/PCommands.Close_Preferences_Command
    -- FUNCTION
    -- Set the program's settings, restart autorefresh view and close the
    -- preferences dialog
@@ -763,7 +763,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Close_Preferences_Command;
 
-   -- ****o* PCommands/Set_UI_Theme_Command
+   -- ****o* PCommands/PCommands.Set_UI_Theme_Command
    -- FUNCTION
    -- Set the UI theme
    -- PARAMETERS
@@ -799,7 +799,7 @@ package body Preferences.Commands is
       return Close_Preferences_Command(ClientData, Interp, Argc, Argv);
    end Set_UI_Theme_Command;
 
-   -- ****o* PCommands/Set_Toolbars_Size_Command
+   -- ****o* PCommands/PCommands.Set_Toolbars_Size_Command
    -- FUNCTION
    -- Set the toolbars icons size
    -- PARAMETERS
@@ -879,7 +879,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Set_Toolbars_Size_Command;
 
-   -- ****o* PCommands/Restore_Defaults_Command
+   -- ****o* PCommands/PCommands.Restore_Defaults_Command
    -- FUNCTION
    -- Restore default the program setttings
    -- PARAMETERS
@@ -913,7 +913,7 @@ package body Preferences.Commands is
       return Close_Preferences_Command(ClientData, Interp, Argc, Argv);
    end Restore_Defaults_Command;
 
-   -- ****o* PCommands/Start_Changing_Shortcut_Command
+   -- ****o* PCommands/PCommands.Start_Changing_Shortcut_Command
    -- FUNCTION
    -- Start changing the selected keyboard shortcut
    -- PARAMETERS
@@ -959,7 +959,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Start_Changing_Shortcut_Command;
 
-   -- ****o* PCommands/Change_Shortcut_Command
+   -- ****o* PCommands/PCommands.Change_Shortcut_Command
    -- FUNCTION
    -- Change the selected keyboard shortcut
    -- PARAMETERS
@@ -1031,7 +1031,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Change_Shortcut_Command;
 
-   -- ****o* PCommands/Restore_Default_Shortcuts_Command
+   -- ****o* PCommands/PCommands.Restore_Default_Shortcuts_Command
    -- FUNCTION
    -- Restore default keyboard shortcuts
    -- PARAMETERS
@@ -1082,7 +1082,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Restore_Default_Shortcuts_Command;
 
-   -- ****o* PCommands/Add_Command_Command
+   -- ****o* PCommands/PCommands.Add_Command_Command
    -- FUNCTION
    -- Add user defined command
    -- PARAMETERS
@@ -1143,7 +1143,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Add_Command_Command;
 
-   -- ****o* PCommands/Edit_Command_Command
+   -- ****o* PCommands/PCommands.Edit_Command_Command
    -- FUNCTION
    -- Edit the selected user defined command
    -- PARAMETERS
@@ -1198,7 +1198,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Edit_Command_Command;
 
-   -- ****o* PCommands/Delete_Command_Command
+   -- ****o* PCommands/PCommands.Delete_Command_Command
    -- FUNCTION
    -- Delete the selected user defined command
    -- PARAMETERS
@@ -1231,7 +1231,7 @@ package body Preferences.Commands is
       return TCL_OK;
    end Delete_Command_Command;
 
-   -- ****o* PCommands/Reset_Command_Command
+   -- ****o* PCommands/PCommands.Reset_Command_Command
    -- FUNCTION
    -- Clear the add command form
    -- PARAMETERS
