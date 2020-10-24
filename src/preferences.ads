@@ -65,7 +65,7 @@ package Preferences is
       ShowHidden: Boolean;
       ShowLastModified: Boolean;
       ScaleImages: Boolean;
-      AutoCloseMessagesTime: Natural;
+      AutoCloseMessagesTime: Natural range 0 .. 60;
       WindowWidth: Positive;
       WindowHeight: Positive;
       ShowPreview: Boolean;
@@ -77,9 +77,9 @@ package Preferences is
       ShowFinishedInfo: Boolean;
       OverwriteOnExist: Boolean;
       ToolbarsOnTop: Boolean;
-      AutoRefreshInterval: Natural;
+      AutoRefreshInterval: Natural range 0 .. 30;
       UITheme: Unbounded_String;
-      ToolbarsSize: Positive;
+      ToolbarsSize: Positive range 8 .. 128;
       MonospaceFont: Boolean;
    end record;
    -- ****
