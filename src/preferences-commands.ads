@@ -20,7 +20,7 @@
 package Preferences.Commands is
 -- ****
 
-   -- ****f* PCommands/AddCommands
+   -- ****f* PCommands/PCommands.AddCommands
    -- FUNCTION
    -- Adds the Ada code to the Tcl interpreter
    -- SOURCE
