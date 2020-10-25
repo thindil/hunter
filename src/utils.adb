@@ -222,7 +222,7 @@ package body Utils is
          when others =>
             return;
       end case;
-      if (Action = COPY or Action = MOVE) then
+      if Action in COPY | MOVE then
          Side :=
            (if not Settings.ToolbarsOnTop then To_Unbounded_String("top")
             else To_Unbounded_String("left"));

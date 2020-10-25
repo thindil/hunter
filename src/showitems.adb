@@ -1035,16 +1035,14 @@ package body ShowItems is
    end CreateShowItemsUI;
 
    procedure ShowDestination is
-      Frame: Ttk_Frame;
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
+      Frame: Ttk_Frame := Get_Widget(PreviewFrame & ".pathframe");
    begin
-      Frame.Interp := Get_Context;
       if not Settings.ShowPreview then
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
       Unautoscroll(PreviewXScroll);
       Unautoscroll(PreviewYScroll);
-      Frame.Name := New_String(PreviewFrame & ".pathframe");
       Tcl.Tk.Ada.Pack.Pack(Frame, "-after " & PreviewFrame & ".title -fill x");
       configure(PreviewXScroll, "-command [list " & PreviewTree & " xview]");
       Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
