@@ -22,7 +22,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package Preferences is
 -- ****
 
-   -- ****s* Preferences/Settings_Data
+   -- ****s* Preferences/Preferences.Settings_Data
    -- FUNCTION
    -- Data structure to the program settings
    -- OPTIONS
@@ -84,28 +84,28 @@ package Preferences is
    end record;
    -- ****
 
-   -- ****v* Preferences/Settings
+   -- ****v* Preferences/Preferences.Settings
    -- FUNCTION
    -- The program settings
    -- SOURCE
    Settings: Settings_Data;
    -- ****
 
-   -- ****t* Preferences/Accelerators_Array
+   -- ****t* Preferences/Preferences.Accelerators_Array
    -- FUNCTION
    -- Array used to store keyboard shortcuts
    -- SOURCE
    type Accelerators_Array is array(1 .. 20) of Unbounded_String;
    -- ****
 
-   -- ****v* Preferences/Accelerators
+   -- ****v* Preferences/Preferences.Accelerators
    -- FUNCTION
    -- Array with keyboard shortcuts used by the program
    -- SOURCE
    Accelerators: Accelerators_Array;
    -- ****
 
-   -- ****f* Preferences/LoadSettings
+   -- ****f* Preferences/Preferences.LoadSettings
    -- FUNCTION
    -- Load the program settings from file. If file not exists, load default
    -- settings.
@@ -113,14 +113,14 @@ package Preferences is
    procedure LoadSettings;
    -- ****
 
-   -- ****f* Preferences/SavePreferences
+   -- ****f* Preferences/Preferences.SavePreferences
    -- FUNCTION
    -- Save the program preferences to the file.
    -- SOURCE
    procedure SavePreferences;
    -- ****
 
-   -- ****f* Preferences/CreatePreferences
+   -- ****f* Preferences/Preferences.CreatePreferences
    -- FUNCTION
    -- Create preferences UI and fill it with data from the program settings
    -- SOURCE
@@ -129,21 +129,21 @@ package Preferences is
 
 private
 
-   -- ****f* Preferences/SetDefaultSettings
+   -- ****f* Preferences/Preferences.SetDefaultSettings
    -- FUNCTION
    -- Set default values for the program's settings
    -- SOURCE
    procedure SetDefaultSettings;
    -- ****
 
-   -- ****f* Preferences/SetDefaultAccelerators
+   -- ****f* Preferences/Preferences.SetDefaultAccelerators
    -- FUNCTION
    -- Set default values for the program's keyboard shortcuts
    -- SOURCE
    procedure SetDefaultAccelerators;
    -- ****
 
-   -- ****f* Preferences/Clear_Add_Command
+   -- ****f* Preferences/Preferences.Clear_Add_Command
    -- FUNCTION
    -- Clear form for edit or add user defined commands
    -- SOURCE
