@@ -119,9 +119,9 @@ Zip.
 ## Generating code documentation
 
 To generate (or regenerate) code documentation, you need [ROBODoc](https://rfsber.home.xs4all.nl/Robo/)
-If you have it, in main program directory (where this file is) enter terminal
-command: `others/generatedocs.py`. For more information about this script,
-please look [here](https://github.com/thindil/roboada#generatedocspy). This
+If you have it, in the main program directory (where this file is) enter
+terminal command: `others/generatedocs.tcl`. For more information about this
+script, please look [here](https://github.com/thindil/roboada#generatedocspy). This
 version of script have set all default settings for Hunter code. If you have
 [Bob](https://github.com/thindil/bob) installed, you can type `bob docs`.
 
