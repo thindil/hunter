@@ -29,6 +29,8 @@ All notable changes to this project will be documented in this file.
 - Crash during starting program when bookmarks file contains invalid data
 - Openining files with spaces in names
 - Typos in README.md, CONTRIBUTING.md
+- Showing path buttons for destination after finished copying, moving or
+  creating link to file or directory
 
 ## [1.4] - 2020-08-19
 
