@@ -178,6 +178,7 @@ package body ShowItems is
       Button: Ttk_Button :=
         Get_Widget(".mainframe.toolbars.itemtoolbar.previewbutton");
       Label: constant Ttk_Label := Get_Widget(PreviewFrame & ".title");
+      PathFrame: constant Ttk_Frame := Get_Widget(".mainframe.paned.previewframe.pathframe");
    begin
       configure(Label, "-text {" & Mc(Get_Context, "{Preview}") & "}");
       if Winfo_Get(Button, "ismapped") = "0" then
@@ -209,6 +210,8 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
            (PreviewTree, "-side top -fill both -expand true");
+         Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
+         Tcl_Eval(Get_Context, "update");
          UpdateDirectoryList(True, "preview");
          Autoscroll(PreviewXScroll);
          Autoscroll(PreviewYScroll);
@@ -392,6 +395,8 @@ package body ShowItems is
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
                   <<Set_UI>>
                   configure(PreviewText, "-state disabled");
+                  Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
+                  Tcl_Eval(Get_Context, "update");
                end;
                Autoscroll(PreviewYScroll);
             elsif MimeType(1 .. 5) = "image" then
@@ -459,6 +464,8 @@ package body ShowItems is
                         end if;
                      end;
                end;
+               Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
+               Tcl_Eval(Get_Context, "update");
                Autoscroll(PreviewXScroll);
                Autoscroll(PreviewYScroll);
             else
@@ -492,9 +499,12 @@ package body ShowItems is
       Button: Ttk_Button;
       MimeType: constant String := GetMimeType(SelectedItem);
       DirectorySize: Natural := 0;
+      PathFrame: constant Ttk_Frame := Get_Widget(".mainframe.paned.previewframe.pathframe");
    begin
       Unautoscroll(PreviewXScroll);
       Unautoscroll(PreviewYScroll);
+      Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
+      Tcl_Eval(Get_Context, "update");
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);

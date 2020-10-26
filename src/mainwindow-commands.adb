@@ -358,6 +358,7 @@ package body MainWindow.Commands is
       pragma Unreferenced(ClientData, Argc, Argv);
       ActionButton: Ttk_Button;
    begin
+      ToggleToolButtons(NewAction, True);
       ActionButton.Interp := Interp;
       if NewAction = COPY then
          CopyItemsList.Clear;
@@ -374,7 +375,6 @@ package body MainWindow.Commands is
          State(ActionButton, "!selected");
       end if;
       Unbind_From_Main_Window(Interp, "<Escape>");
-      ToggleToolButtons(NewAction, True);
       return TCL_OK;
    end Cancel_Action_Command;
 
