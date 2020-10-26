@@ -40,7 +40,7 @@ with Utils; use Utils;
 
 package body ProgramsMenu is
 
-   -- ****iv* ProgramsMenu/ApplicationsList
+   -- ****iv* ProgramsMenu/ProgramsMenu.ApplicationsList
    -- FUNCTION
    -- List of all applications which can be used to execute files or
    -- directories
@@ -48,14 +48,14 @@ package body ProgramsMenu is
    ApplicationsList: Bookmarks_Container.Map;
    -- ****
 
-   -- ****iv* ProgramsMenu/NamesList
+   -- ****iv* ProgramsMenu/ProgramsMenu.NamesList
    -- FUNCTION
    -- List of all applications showed in the menu
    -- SOURCE
    NamesList: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****it* ProgramsMenu/Programs_Sorting
+   -- ****it* ProgramsMenu/ProgramsMenu.Programs_Sorting
    -- FUNCTION
    -- Used in sorting available programs
    -- SOURCE
@@ -83,7 +83,7 @@ package body ProgramsMenu is
       return TCL_OK;
    end Toggle_Applications_Menu_Command;
 
-   -- ****o* ProgramsMenu/Search_Program_Command
+   -- ****o* ProgramsMenu/ProgramsMenu.Search_Program_Command
    -- FUNCTION
    -- Search the programs menu for the selected text (case insensitive) and
    -- show only matching applications
@@ -140,7 +140,7 @@ package body ProgramsMenu is
       return TCL_OK;
    end Search_Program_Command;
 
-   -- ****o* ProgramsMenu/Set_Application_Command
+   -- ****o* ProgramsMenu/ProgramsMenu.Set_Application_Command
    -- FUNCTION
    -- Set the selected application as a default application to open the
    -- selected mime type items
@@ -203,7 +203,7 @@ package body ProgramsMenu is
       return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
    end Set_Application_Command;
 
-   -- ****o* ProgramsMenu/Hide_On_Focus_Out_Command
+   -- ****o* ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command
    -- FUNCTION
    -- If application menu lost focus, hide it
    -- PARAMETERS
