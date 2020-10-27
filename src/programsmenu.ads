@@ -24,7 +24,7 @@ with Tcl; use Tcl;
 package ProgramsMenu is
 -- ****
 
-   -- ****o* ProgramsMenu/Toggle_Applications_Menu_Command
+   -- ****o* ProgramsMenu/ProgramsMenu.Toggle_Applications_Menu_Command
    -- FUNCTION
    -- Show or hide menu which allow to set a application which can be used
    -- to execute the selected file or directory
@@ -45,14 +45,14 @@ package ProgramsMenu is
       Convention => C;
       -- ****
 
-      -- ****f* ProgramsMenu/CreateProgramsMenu
+      -- ****f* ProgramsMenu/ProgramsMenu.CreateProgramsMenu
       -- FUNCTION
       -- Create associated programs menu popover
       -- SOURCE
    procedure CreateProgramsMenu;
    -- ****
 
-   -- ****f* ProgramsMenu/GetProgramName
+   -- ****f* ProgramsMenu/ProgramsMenu.GetProgramName
    -- FUNCTION
    -- Search for name of application associated with selected desktop file
    -- PARAMETERS
