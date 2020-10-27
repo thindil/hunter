@@ -17,6 +17,11 @@ with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.String_Split; use GNAT.String_Split;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CArgv; use CArgv;
@@ -32,6 +37,8 @@ with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
+use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
 use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
@@ -671,12 +678,111 @@ package body Preferences.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       Frame: Ttk_Frame := Get_Widget(".mainframe", Interp);
+      CurrentDir: constant String := Current_Directory;
+      Directory: Dir_Type;
+      FileName: String(1 .. 1_024);
+      Last: Natural range 0 .. FileName'Last;
+      ConfigName: GNAT.OS_Lib.String_Access;
+      ConfigFile: File_Type;
+      Line: Unbounded_String;
+      Row: Positive := 1;
+      Label: Ttk_Label;
+      ModulesFrame: constant Ttk_Frame :=
+        Get_Widget(".preferencesframe.canvas.notebook.modules", Interp);
+      CloseButton: constant Ttk_Button :=
+        Get_Widget(ModulesFrame & ".closebutton", Interp);
+      Rows: Natural;
+      Tokens: Slice_Set;
+      Item: Ttk_Frame;
+      CheckButton: Ttk_CheckButton;
    begin
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".preferencesframe");
       Tcl.Tk.Ada.Grid.Grid(Frame, "-sticky nwes");
       Unbind_From_Main_Window(Interp, "<Escape>");
       Bind_To_Main_Window(Interp, "<Escape>", "{ClosePreferences}");
+      -- Remove the old list of the program modules
+      Create(Tokens, Tcl.Tk.Ada.Grid.Grid_Size(ModulesFrame), " ");
+      Rows := Natural'Value(Slice(Tokens, 2));
+      for I in 1 .. (Rows - 1) loop
+         Create
+           (Tokens,
+            Tcl.Tk.Ada.Grid.Grid_Slaves
+              (ModulesFrame, "-row" & Positive'Image(I)),
+            " ");
+         for J in 1 .. Slice_Count(Tokens) loop
+            Item := Get_Widget(Slice(Tokens, J), Interp);
+            if Widget_Image(Item) /= ModulesFrame & ".closebutton" then
+               Destroy(Item);
+            end if;
+         end loop;
+      end loop;
+      -- Load the list of the program modules
+      Set_Directory(Containing_Directory(Command_Name));
+      if not Exists("../share/hunter/modules") then
+         Set_Directory(CurrentDir);
+         return TCL_OK;
+      end if;
+      Open(Directory, "../share/hunter/modules");
+      loop
+         Read(Directory, FileName, Last);
+         exit when Last = 0;
+         if FileName(1 .. Last) in "." | ".." then
+            goto End_Of_Read_Loop;
+         end if;
+         if not Is_Directory
+             ("../share/hunter/modules/" & FileName(1 .. Last)) then
+            goto End_Of_Read_Loop;
+         end if;
+         ConfigName :=
+           Locate_Regular_File
+             ("module.cfg", "../share/hunter/modules/" & FileName(1 .. Last));
+         if ConfigName = null then
+            goto End_Of_Read_Loop;
+         end if;
+         CheckButton :=
+           Create(ModulesFrame & ".enabled" & Trim(Positive'Image(Row), Left));
+         Tcl.Tk.Ada.Grid.Grid(CheckButton, "-row" & Positive'Image(Row));
+         Open(ConfigFile, In_File, ConfigName.all);
+         while not End_Of_File(ConfigFile) loop
+            Line := Get_Line(ConfigFile);
+            if Length(Line) > 5 and then Index(Line, "Name=") = 1 then
+               Label :=
+                 Create
+                   (ModulesFrame & ".name" & Trim(Positive'Image(Row), Left),
+                    "-text {" & Slice(Line, 6, Length(Line)) &
+                    "} -wraplength 200");
+               Tcl.Tk.Ada.Grid.Grid
+                 (Label, "-column 1 -row" & Positive'Image(Row));
+            elsif Length(Line) > 8 and then Index(Line, "Version=") = 1 then
+               Label :=
+                 Create
+                   (ModulesFrame & ".version" &
+                    Trim(Positive'Image(Row), Left),
+                    "-text {" & Slice(Line, 9, Length(Line)) &
+                    "} -wraplength 100");
+               Tcl.Tk.Ada.Grid.Grid
+                 (Label, "-column 2 -row" & Positive'Image(Row));
+            elsif Length(Line) > 12
+              and then Index(Line, "Description=") = 1 then
+               Label :=
+                 Create
+                   (ModulesFrame & ".description" &
+                    Trim(Positive'Image(Row), Left),
+                    "-text {" & Slice(Line, 13, Length(Line)) &
+                    "} -wraplength 400");
+               Tcl.Tk.Ada.Grid.Grid
+                 (Label, "-column 3 -row" & Positive'Image(Row));
+            end if;
+         end loop;
+         Close(ConfigFile);
+         Row := Row + 1;
+         <<End_Of_Read_Loop>>
+      end loop;
+      Tcl.Tk.Ada.Grid.Grid_Configure
+        (CloseButton, "-row" & Positive'Image(Row));
+      Close(Directory);
+      Set_Directory(CurrentDir);
       return TCL_OK;
    end Show_Preferences_Command;
 
