@@ -35,14 +35,14 @@ package body RefreshData is
       InotifyRead;
    end InotifyTask;
 
-   -- ****iv* RefreshData/Timer_Token
+   -- ****iv* RefreshData/RefreshData.Timer_Token
    -- FUNCTION
    -- Identifier for the timer for periodically update directory listing
    -- SOURCE
    Timer_Token: Tcl_TimerToken;
    -- ****
 
-   -- ****if* RefreshData/CheckItems
+   -- ****if* RefreshData/RefreshData.CheckItems
    -- FUNCTION
    -- Check all inotify events and update directory listing if needed
    -- PARAMETERS
