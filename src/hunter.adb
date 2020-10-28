@@ -38,17 +38,6 @@ procedure Hunter is
    Argv: CArgv.Chars_Ptr_Ptr;
    Interp: Tcl.Tcl_Interp;
 begin
-   if not Ada.Directories.Exists(Value("HOME") & "/.cache/hunter") then
-      Create_Path(Value("HOME") & "/.cache/hunter");
-   end if;
-   if not Ada.Directories.Exists
-       (Value("HOME") & "/.local/share/Trash/files") then
-      Create_Path(Value("HOME") & "/.local/share/Trash/files");
-   end if;
-   if not Ada.Directories.Exists
-       (Value("HOME") & "/.local/share/Trash/info") then
-      Create_Path(Value("HOME") & "/.local/share/Trash/info");
-   end if;
    -- Start libmagic data
    MagicOpen;
    -- Start inotify
