@@ -90,6 +90,11 @@ package body DeleteItems is
          End_Search(Search);
       end AddTrash;
    begin
+      Create_Path
+        (Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/info");
+      Create_Path
+        (Ada.Environment_Variables.Value("HOME") &
+         "/.local/share/Trash/files");
       if NewAction = CLEARTRASH then
          OldSetting := Settings.DeleteFiles;
          Settings.DeleteFiles := True;

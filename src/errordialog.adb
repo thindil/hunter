@@ -52,6 +52,8 @@ package body ErrorDialog is
       Interp: Tcl.Tcl_Interp := Get_Context;
       MainWindow: Tk_Toplevel := Get_Main_Window(Interp);
    begin
+      Ada.Directories.Create_Path
+         (Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
       if Ada.Directories.Exists(ErrorFilePath) then
          Open(ErrorFile, Append_File, ErrorFilePath);
       else
