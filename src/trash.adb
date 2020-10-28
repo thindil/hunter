@@ -53,6 +53,11 @@ package body Trash is
         Get_Widget(".mainframe.toolbars.actiontoolbar.restorebutton");
    begin
       TemporaryStop := True;
+      Create_Path
+        (Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/info");
+      Create_Path
+        (Ada.Environment_Variables.Value("HOME") &
+         "/.local/share/Trash/files");
       NewAction := SHOWTRASH;
       ToggleToolButtons(SHOWTRASH);
       ItemsList.Clear;

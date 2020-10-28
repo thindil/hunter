@@ -209,11 +209,6 @@ package body Preferences is
          Set_Attribute(SettingNode, "value", To_String(Value));
       end SaveString;
    begin
-      if not Ada.Directories.Exists
-          (Ada.Environment_Variables.Value("HOME") & "/.config/hunter") then
-         Create_Path
-           (Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
-      end if;
       SettingsData := Create_Document(Configuration);
       MainNode := Create_Element(SettingsData, "hunter");
       MainNode := Append_Child(SettingsData, MainNode);
@@ -256,6 +251,8 @@ package body Preferences is
              (SettingsData, To_String(UserCommandsList(I).Command));
          UserCommandNode := Append_Child(SettingNode, UserCommandNode);
       end loop;
+      Create_Path
+         (Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
       Create
         (ConfigFile, Out_File,
          Ada.Environment_Variables.Value("HOME") &
