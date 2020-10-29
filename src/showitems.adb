@@ -178,7 +178,8 @@ package body ShowItems is
       Button: Ttk_Button :=
         Get_Widget(".mainframe.toolbars.itemtoolbar.previewbutton");
       Label: constant Ttk_Label := Get_Widget(PreviewFrame & ".title");
-      PathFrame: constant Ttk_Frame := Get_Widget(".mainframe.paned.previewframe.pathframe");
+      PathFrame: constant Ttk_Frame :=
+        Get_Widget(".mainframe.paned.previewframe.pathframe");
    begin
       configure(Label, "-text {" & Mc(Get_Context, "{Preview}") & "}");
       if Winfo_Get(Button, "ismapped") = "0" then
@@ -499,7 +500,8 @@ package body ShowItems is
       Button: Ttk_Button;
       MimeType: constant String := GetMimeType(SelectedItem);
       DirectorySize: Natural := 0;
-      PathFrame: constant Ttk_Frame := Get_Widget(".mainframe.paned.previewframe.pathframe");
+      PathFrame: constant Ttk_Frame :=
+        Get_Widget(".mainframe.paned.previewframe.pathframe");
    begin
       Unautoscroll(PreviewXScroll);
       Unautoscroll(PreviewYScroll);
