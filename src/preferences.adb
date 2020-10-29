@@ -251,8 +251,7 @@ package body Preferences is
              (SettingsData, To_String(UserCommandsList(I).Command));
          UserCommandNode := Append_Child(SettingNode, UserCommandNode);
       end loop;
-      Create_Path
-         (Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
+      Create_Path(Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
       Create
         (ConfigFile, Out_File,
          Ada.Environment_Variables.Value("HOME") &
@@ -729,6 +728,10 @@ package body Preferences is
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
          Tcl.Tk.Ada.Grid.Grid(ButtonsFrame, "-sticky we -columnspan 3");
+         Tcl.Tk.Ada.Grid.Column_Configure
+           (ShortcutsFrame, ButtonsFrame, "-weight 1");
+         Tcl.Tk.Ada.Grid.Row_Configure
+           (ShortcutsFrame, ButtonsFrame, "-weight 1");
       end;
       TtkNotebook.Add
         (Notebook, Widget_Image(ShortcutsFrame),
@@ -835,17 +838,21 @@ package body Preferences is
       begin
          HeaderLabel := Create(ModulesFrame & ".enabled", "-text {Enabled}");
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-sticky ew");
-         Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, HeaderLabel, "-weight 1");
+         Tcl.Tk.Ada.Grid.Column_Configure
+           (ModulesFrame, HeaderLabel, "-weight 1");
          HeaderLabel := Create(ModulesFrame & ".name", "-text {Name}");
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 1 -row 0 -sticky ew");
-         Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, HeaderLabel, "-weight 1");
+         Tcl.Tk.Ada.Grid.Column_Configure
+           (ModulesFrame, HeaderLabel, "-weight 1");
          HeaderLabel := Create(ModulesFrame & ".version", "-text {Version}");
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 2 -row 0 -sticky ew");
-         Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, HeaderLabel, "-weight 1");
+         Tcl.Tk.Ada.Grid.Column_Configure
+           (ModulesFrame, HeaderLabel, "-weight 1");
          HeaderLabel :=
            Create(ModulesFrame & ".description", "-text {Description}");
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 3 -row 0 -sticky ew");
-         Tcl.Tk.Ada.Grid.Column_Configure(ModulesFrame, HeaderLabel, "-weight 1");
+         Tcl.Tk.Ada.Grid.Column_Configure
+           (ModulesFrame, HeaderLabel, "-weight 1");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Grid.Grid(CloseButton, "-sticky se -columnspan 4");
       end;
