@@ -38,7 +38,7 @@ with Utils; use Utils;
 
 package body RenameItems is
 
-   -- ****o* RenameItems/Toggle_Rename_Command
+   -- ****o* RenameItems/RenameItems.Toggle_Rename_Command
    -- FUNCTION
    -- Show or hide text entry to enter a new name for the item
    -- PARAMETERS
@@ -109,7 +109,7 @@ package body RenameItems is
       return TCL_OK;
    end Toggle_Rename_Command;
 
-   -- ****o* RenameItems/Rename_Command
+   -- ****o* RenameItems/RenameItems.Rename_Command
    -- FUNCTION
    -- Rename currently selected file or directory
    -- PARAMETERS
