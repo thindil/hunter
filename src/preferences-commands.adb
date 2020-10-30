@@ -719,10 +719,6 @@ package body Preferences.Commands is
       end loop;
       -- Load the list of the program modules
       Set_Directory(Containing_Directory(Command_Name));
-      if not Exists("../share/hunter/modules") then
-         Set_Directory(CurrentDir);
-         return TCL_OK;
-      end if;
       Open(Directory, "../share/hunter/modules");
       loop
          Read(Directory, FileName, Last);
@@ -784,6 +780,9 @@ package body Preferences.Commands is
       Close(Directory);
       Set_Directory(CurrentDir);
       return TCL_OK;
+   exception
+      when DIRECTORY_ERROR =>
+         return TCL_OK;
    end Show_Preferences_Command;
 
    -- ****o* PCommands/PCommands.Close_Dialog_Command
