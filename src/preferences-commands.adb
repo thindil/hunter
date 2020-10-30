@@ -15,6 +15,7 @@
 
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
@@ -679,12 +680,6 @@ package body Preferences.Commands is
       pragma Unreferenced(ClientData, Argc, Argv);
       Frame: Ttk_Frame := Get_Widget(".mainframe", Interp);
       CurrentDir: constant String := Current_Directory;
-      Directory: Dir_Type;
-      FileName: String(1 .. 1_024);
-      Last: Natural range 0 .. FileName'Last;
-      ConfigName: GNAT.OS_Lib.String_Access;
-      ConfigFile: File_Type;
-      Line: Unbounded_String;
       Row: Positive := 1;
       Label: Ttk_Label;
       ModulesFrame: constant Ttk_Frame :=
@@ -695,6 +690,73 @@ package body Preferences.Commands is
       Tokens: Slice_Set;
       Item: Ttk_Frame;
       CheckButton: Ttk_CheckButton;
+      procedure LoadModulesInfo(Path: String) is
+         Directory: Dir_Type;
+         FileName: String(1 .. 1_024);
+         Last: Natural range 0 .. FileName'Last;
+         ConfigName: GNAT.OS_Lib.String_Access;
+         ConfigFile: File_Type;
+         Line: Unbounded_String;
+      begin
+         Open(Directory, Path);
+         loop
+            Read(Directory, FileName, Last);
+            exit when Last = 0;
+            if FileName(1 .. Last) in "." | ".." then
+               goto End_Of_Read_Loop;
+            end if;
+            if not Is_Directory(Path & "/" & FileName(1 .. Last)) then
+               goto End_Of_Read_Loop;
+            end if;
+            ConfigName :=
+              Locate_Regular_File
+                ("module.cfg", Path & "/" & FileName(1 .. Last));
+            if ConfigName = null then
+               goto End_Of_Read_Loop;
+            end if;
+            CheckButton :=
+              Create
+                (ModulesFrame & ".enabled" & Trim(Positive'Image(Row), Left));
+            Tcl.Tk.Ada.Grid.Grid(CheckButton, "-row" & Positive'Image(Row));
+            Open(ConfigFile, In_File, ConfigName.all);
+            while not End_Of_File(ConfigFile) loop
+               Line := Get_Line(ConfigFile);
+               if Length(Line) > 5 and then Index(Line, "Name=") = 1 then
+                  Label :=
+                    Create
+                      (ModulesFrame & ".name" &
+                       Trim(Positive'Image(Row), Left),
+                       "-text {" & Slice(Line, 6, Length(Line)) &
+                       "} -wraplength 200");
+                  Tcl.Tk.Ada.Grid.Grid
+                    (Label, "-column 1 -row" & Positive'Image(Row));
+               elsif Length(Line) > 8 and then Index(Line, "Version=") = 1 then
+                  Label :=
+                    Create
+                      (ModulesFrame & ".version" &
+                       Trim(Positive'Image(Row), Left),
+                       "-text {" & Slice(Line, 9, Length(Line)) &
+                       "} -wraplength 100");
+                  Tcl.Tk.Ada.Grid.Grid
+                    (Label, "-column 2 -row" & Positive'Image(Row));
+               elsif Length(Line) > 12
+                 and then Index(Line, "Description=") = 1 then
+                  Label :=
+                    Create
+                      (ModulesFrame & ".description" &
+                       Trim(Positive'Image(Row), Left),
+                       "-text {" & Slice(Line, 13, Length(Line)) &
+                       "} -wraplength 400");
+                  Tcl.Tk.Ada.Grid.Grid
+                    (Label, "-column 3 -row" & Positive'Image(Row));
+               end if;
+            end loop;
+            Close(ConfigFile);
+            Row := Row + 1;
+            <<End_Of_Read_Loop>>
+         end loop;
+         Close(Directory);
+      end LoadModulesInfo;
    begin
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".preferencesframe");
@@ -719,69 +781,14 @@ package body Preferences.Commands is
       end loop;
       -- Load the list of the program modules
       Set_Directory(Containing_Directory(Command_Name));
-      Open(Directory, "../share/hunter/modules");
-      loop
-         Read(Directory, FileName, Last);
-         exit when Last = 0;
-         if FileName(1 .. Last) in "." | ".." then
-            goto End_Of_Read_Loop;
-         end if;
-         if not Is_Directory
-             ("../share/hunter/modules/" & FileName(1 .. Last)) then
-            goto End_Of_Read_Loop;
-         end if;
-         ConfigName :=
-           Locate_Regular_File
-             ("module.cfg", "../share/hunter/modules/" & FileName(1 .. Last));
-         if ConfigName = null then
-            goto End_Of_Read_Loop;
-         end if;
-         CheckButton :=
-           Create(ModulesFrame & ".enabled" & Trim(Positive'Image(Row), Left));
-         Tcl.Tk.Ada.Grid.Grid(CheckButton, "-row" & Positive'Image(Row));
-         Open(ConfigFile, In_File, ConfigName.all);
-         while not End_Of_File(ConfigFile) loop
-            Line := Get_Line(ConfigFile);
-            if Length(Line) > 5 and then Index(Line, "Name=") = 1 then
-               Label :=
-                 Create
-                   (ModulesFrame & ".name" & Trim(Positive'Image(Row), Left),
-                    "-text {" & Slice(Line, 6, Length(Line)) &
-                    "} -wraplength 200");
-               Tcl.Tk.Ada.Grid.Grid
-                 (Label, "-column 1 -row" & Positive'Image(Row));
-            elsif Length(Line) > 8 and then Index(Line, "Version=") = 1 then
-               Label :=
-                 Create
-                   (ModulesFrame & ".version" &
-                    Trim(Positive'Image(Row), Left),
-                    "-text {" & Slice(Line, 9, Length(Line)) &
-                    "} -wraplength 100");
-               Tcl.Tk.Ada.Grid.Grid
-                 (Label, "-column 2 -row" & Positive'Image(Row));
-            elsif Length(Line) > 12
-              and then Index(Line, "Description=") = 1 then
-               Label :=
-                 Create
-                   (ModulesFrame & ".description" &
-                    Trim(Positive'Image(Row), Left),
-                    "-text {" & Slice(Line, 13, Length(Line)) &
-                    "} -wraplength 400");
-               Tcl.Tk.Ada.Grid.Grid
-                 (Label, "-column 3 -row" & Positive'Image(Row));
-            end if;
-         end loop;
-         Close(ConfigFile);
-         Row := Row + 1;
-         <<End_Of_Read_Loop>>
-      end loop;
+      LoadModulesInfo("../share/hunter/modules");
+      LoadModulesInfo(Value("HOME") & "/.local/share/hunter/modules");
       Tcl.Tk.Ada.Grid.Grid_Configure
         (CloseButton, "-row" & Positive'Image(Row));
-      Close(Directory);
       Set_Directory(CurrentDir);
       return TCL_OK;
    exception
-      when DIRECTORY_ERROR =>
+      when Directory_Error =>
          return TCL_OK;
    end Show_Preferences_Command;
 
