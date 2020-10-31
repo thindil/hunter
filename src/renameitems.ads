@@ -20,7 +20,7 @@
 package RenameItems is
 -- ****
 
-   -- ****f* RenameItems/CreateRenameUI
+   -- ****f* RenameItems/RenameItems.CreateRenameUI
    -- FUNCTION
    -- Create rename UI
    -- SOURCE
