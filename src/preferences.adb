@@ -50,6 +50,7 @@ with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Modules; use Modules;
 with Preferences.Commands;
 with UserCommands; use UserCommands;
 with Utils; use Utils;
@@ -165,6 +166,10 @@ package body Preferences is
                    Command =>
                      To_Unbounded_String(Node_Value(First_Child(DataNode)))));
             end if;
+         -- The program modules
+         elsif NodeName = To_Unbounded_String("module") then
+            Enabled_Modules.Append
+              (To_Unbounded_String(Get_Attribute(DataNode, "path")));
          end if;
       end loop;
       if FindExecutable("highlight") = "" then
@@ -250,6 +255,11 @@ package body Preferences is
            Create_Text_Node
              (SettingsData, To_String(UserCommandsList(I).Command));
          UserCommandNode := Append_Child(SettingNode, UserCommandNode);
+      end loop;
+      for ModuleName of Enabled_Modules loop
+         SettingNode := Create_Element(SettingsData, "module");
+         SettingNode := Append_Child(MainNode, SettingNode);
+         Set_Attribute(SettingNode, "path", To_String(ModuleName));
       end loop;
       Create_Path(Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
       Create
