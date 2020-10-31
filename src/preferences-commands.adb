@@ -711,7 +711,10 @@ package body Preferences.Commands is
             ConfigName :=
               Locate_Regular_File
                 ("module.cfg", Path & "/" & FileName(1 .. Last));
-            if ConfigName = null then
+            if ConfigName = null or
+              Locate_Regular_File
+                  ("module.tcl", Path & "/" & FileName(1 .. Last)) =
+                null then
                goto End_Of_Read_Loop;
             end if;
             CheckButton :=
