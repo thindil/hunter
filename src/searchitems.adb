@@ -38,7 +38,7 @@ with Utils; use Utils;
 
 package body SearchItems is
 
-   -- ****o* SearchItems/Toggle_Search_Command
+   -- ****o* SearchItems/SearchItems.Toggle_Search_Command
    -- FUNCTION
    -- Show text entry to enter directory destination
    -- PARAMETERS
@@ -97,7 +97,7 @@ package body SearchItems is
       return TCL_OK;
    end Toggle_Search_Command;
 
-   -- ****o* SearchItems/Search_Command
+   -- ****o* SearchItems/SearchItems.Search_Command
    -- FUNCTION
    -- Search current directory for the selected text (case insensitive) and
    -- show only matching files and directories
