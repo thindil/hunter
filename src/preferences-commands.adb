@@ -759,6 +759,9 @@ package body Preferences.Commands is
             <<End_Of_Read_Loop>>
          end loop;
          Close(Directory);
+      exception
+         when Directory_Error =>
+            null;
       end LoadModulesInfo;
    begin
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
@@ -790,9 +793,6 @@ package body Preferences.Commands is
         (CloseButton, "-row" & Positive'Image(Row));
       Set_Directory(CurrentDir);
       return TCL_OK;
-   exception
-      when Directory_Error =>
-         return TCL_OK;
    end Show_Preferences_Command;
 
    -- ****o* PCommands/PCommands.Close_Dialog_Command
