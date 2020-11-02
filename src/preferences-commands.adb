@@ -52,6 +52,7 @@ with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Modules; use Modules;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;
@@ -696,7 +697,7 @@ package body Preferences.Commands is
          Last: Natural range 0 .. FileName'Last;
          ConfigName: GNAT.OS_Lib.String_Access;
          ConfigFile: File_Type;
-         Line: Unbounded_String;
+         Line, CheckButtonName: Unbounded_String;
       begin
          Open(Directory, Path);
          loop
@@ -717,9 +718,16 @@ package body Preferences.Commands is
                 null then
                goto End_Of_Read_Loop;
             end if;
-            CheckButton :=
-              Create
+            CheckButtonName :=
+              To_Unbounded_String
                 (ModulesFrame & ".enabled" & Trim(Positive'Image(Row), Left));
+            CheckButton := Create(To_String(CheckButtonName));
+            if Enabled_Modules.Contains
+                (To_Unbounded_String(Path & "/" & FileName(1 .. Last))) then
+               Tcl_SetVar(Interp, To_String(CheckButtonName), "1");
+            else
+               Tcl_SetVar(Interp, To_String(CheckButtonName), "0");
+            end if;
             Tcl.Tk.Ada.Grid.Grid(CheckButton, "-row" & Positive'Image(Row));
             Open(ConfigFile, In_File, ConfigName.all);
             while not End_Of_File(ConfigFile) loop
