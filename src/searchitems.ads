@@ -20,7 +20,7 @@
 package SearchItems is
 -- ****
 
-   -- ****f* SearchItems/CreateSearchUI
+   -- ****f* SearchItems/SearchItems.CreateSearchUI
    -- FUNCTION
    -- Create search UI
    -- SOURCE
