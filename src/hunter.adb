@@ -38,6 +38,9 @@ procedure Hunter is
    Argv: CArgv.Chars_Ptr_Ptr;
    Interp: Tcl.Tcl_Interp;
 begin
+   -- Create needed directories
+   Create_Path(Value("HOME") & "/.cache/hunter");
+   Create_Path(Value("HOME") & "/.local/share/hunter/modules");
    -- Start libmagic data
    MagicOpen;
    -- Start inotify
