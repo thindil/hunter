@@ -51,6 +51,7 @@ with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Modules; use Modules;
+with Modules.Commands;
 with Preferences.Commands;
 with UserCommands; use UserCommands;
 with Utils; use Utils;
@@ -873,6 +874,7 @@ package body Preferences is
       Tcl_Eval(Get_Context, "update");
       configure(Canvas, "-scrollregion [list " & BBox(Canvas, "all") & "]");
       Preferences.Commands.AddCommands;
+      Modules.Commands.AddCommands;
    end CreatePreferencesUI;
 
    procedure SetDefaultSettings is
