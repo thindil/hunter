@@ -721,7 +721,11 @@ package body Preferences.Commands is
             CheckButtonName :=
               To_Unbounded_String
                 (ModulesFrame & ".enabled" & Trim(Positive'Image(Row), Left));
-            CheckButton := Create(To_String(CheckButtonName));
+            CheckButton :=
+              Create
+                (To_String(CheckButtonName),
+                 "-command {ToggleModule {" & Path & "/" &
+                 FileName(1 .. Last) & "}}");
             if Enabled_Modules.Contains
                 (To_Unbounded_String(Path & "/" & FileName(1 .. Last))) then
                Tcl_SetVar(Interp, To_String(CheckButtonName), "1");
