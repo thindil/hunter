@@ -60,56 +60,56 @@ with Utils; use Utils;
 
 package body ShowItems is
 
-   -- ****iv* ShowItems/PreviewFrame
+   -- ****iv* ShowItems/ShowItems.PreviewFrame
    -- FUNCTION
    -- Main Ttk_Frame for preview items
    -- SOURCE
    PreviewFrame: Ttk_Frame;
    -- ****
 
-   -- ****iv* ShowItems/PreviewXScroll
+   -- ****iv* ShowItems/ShowItems.PreviewXScroll
    -- FUNCTION
    -- X coordinates scrollbar for previews
    -- SOURCE
    PreviewXScroll: Ttk_Scrollbar;
    -- ****
 
-   -- ****iv* ShowItems/PreviewYScroll
+   -- ****iv* ShowItems/ShowItems.PreviewYScroll
    -- FUNCTION
    -- Y coordinates scrollbar for previews
    -- SOURCE
    PreviewYScroll: Ttk_Scrollbar;
    -- ****
 
-   -- ****iv* ShowItems/PreviewTree
+   -- ****iv* ShowItems/ShowItems.PreviewTree
    -- FUNCTION
    -- Tk_Tree_View used to show directories previews
    -- SOURCE
    PreviewTree: Ttk_Tree_View;
    -- ****
 
-   -- ****iv* ShowItems/PreviewText
+   -- ****iv* ShowItems/ShowItems.PreviewText
    -- FUNCTION
    -- Tk_Text used to show text files previews
    -- SOURCE
    PreviewText: Tk_Text;
    -- ****
 
-   -- ****iv* ShowItems/PreviewCanvas
+   -- ****iv* ShowItems/ShowItems.PreviewCanvas
    -- FUNCTION
    -- Tk_Canvas used to show images
    -- SOURCE
    PreviewCanvas: Tk_Canvas;
    -- ****
 
-   -- ****iv* ShowItems/InfoFrame
+   -- ****iv* ShowItems/ShowItems.InfoFrame
    -- FUNCTION
    -- Ttk_Frame for show information about the selected item
    -- SOURCE
    InfoFrame: Ttk_Frame;
    -- ****
 
-   -- ****iv* ShowItems/ButtonNames
+   -- ****iv* ShowItems/ShowItems.ButtonNames
    -- FUNCTION
    -- Names of the permissions buttons
    -- SOURCE
@@ -118,7 +118,7 @@ package body ShowItems is
       To_Unbounded_String("write"));
    -- ****
 
-   -- ****ie* ShowItems/Hunter_Show_Items_Exception
+   -- ****ie* ShowItems/ShowItems.Hunter_Show_Items_Exception
    -- FUNCTION
    -- Exception raised when any problems with showing item preview
    -- occurs
@@ -489,7 +489,7 @@ package body ShowItems is
       end if;
    end ShowPreview;
 
-   -- ****if* ShowItems/ShowInfo
+   -- ****if* ShowItems/ShowItems.ShowInfo
    -- FUNCTION
    -- Show information about the currently selected file or directory.
    -- SOURCE
@@ -718,7 +718,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
    end ShowInfo;
 
-   -- ****o* ShowItems/Show_Preview_Or_Info_Command
+   -- ****o* ShowItems/ShowItems.Show_Preview_Or_Info_Command
    -- FUNCTION
    -- Show preview or information about the currently selected file or
    -- directory, depends which button was clicked
@@ -810,7 +810,7 @@ package body ShowItems is
       return TCL_OK;
    end Show_Selected_Command;
 
-   -- ****o* ShowItems/Set_Permissions_Command
+   -- ****o* ShowItems/ShowItems.Set_Permissions_Command
    -- FUNCTION
    -- Set the permissions for the selected file or directory
    -- PARAMETERS
@@ -867,7 +867,7 @@ package body ShowItems is
       return TCL_OK;
    end Set_Permissions_Command;
 
-   -- ****o* Commands/GoToDirectory_Command
+   -- ****o* Commands/ShowItems.GoToDirectory_Command
    -- FUNCTION
    -- Go to the selected directory in preview
    -- PARAMETERS
