@@ -699,12 +699,11 @@ package body Preferences is
               (Mc(Get_Context, "{Show the user defined actions}")));
          Label: Ttk_Label;
          Button: Ttk_Button;
-         Image: Tk_Photo;
-      begin
-         Image :=
+         Image: constant Tk_Photo :=
            Create
              ("refreshicon",
               "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
+      begin
          for I in KeysLabels'Range loop
             Label :=
               Create
