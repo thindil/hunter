@@ -26,7 +26,7 @@ with Tcl; use Tcl;
 package ShowItems is
 -- ****
 
-   -- ****f* ShowItems/DestinationDirectory
+   -- ****f* ShowItems/ShowItems.DestinationDirectory
    -- FUNCTION
    -- Current directory previewed. Used during showing destination target for
    -- various commands
@@ -34,14 +34,14 @@ package ShowItems is
    DestinationDirectory: Unbounded_String;
    -- ****
 
-   -- ****f* ShowItems/ScaleImage
+   -- ****f* ShowItems/ShowItems.ScaleImage
    -- FUNCTION
    -- Scale currently previewed image
    -- SOURCE
    procedure ScaleImage;
    -- ****
 
-   -- ****f* ShowItems/ShowPreview
+   -- ****f* ShowItems/ShowItems.ShowPreview
    -- FUNCTION
    -- Show preview of the currently selected file or directory. If preview is
    -- not available, show information about the selected item.
@@ -49,7 +49,7 @@ package ShowItems is
    procedure ShowPreview;
    -- ****
 
-   -- ****o* ShowItems/Show_Selected_Command
+   -- ****o* ShowItems/ShowItems.Show_Selected_Command
    -- FUNCTION
    -- Show preview or information about the currently selected file or
    -- directory after user select it in the directory view
@@ -70,7 +70,7 @@ package ShowItems is
       Convention => C;
       -- ****
 
-      -- ****f* ShowItems/CreateShowItemsUI
+      -- ****f* ShowItems/ShowItems.CreateShowItemsUI
       -- FUNCTION
       -- Create UI related to show items and destination for moving/copying
       -- items.
@@ -78,21 +78,21 @@ package ShowItems is
    procedure CreateShowItemsUI;
    -- ****
 
-   -- ****f* ShowItems/ShowDestination
+   -- ****f* ShowItems/ShowItems.ShowDestination
    -- FUNCTION
    -- Show destination directory for various commands in the preview widget
    -- SOURCE
    procedure ShowDestination;
    -- ****
 
-   -- ****f* ShowItems/ShowOutput
+   -- ****f* ShowItems/ShowItems.ShowOutput
    -- FUNCTION
    -- Show the UI for the output of the user command
    -- SOURCE
    procedure ShowOutput;
    -- ****
 
-   -- ****f* ShowItems/UpdateOutput
+   -- ****f* ShowItems/ShowItems.UpdateOutput
    -- FUNCTION
    -- Update UI with the output of the user command
    -- SOURCE
