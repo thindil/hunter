@@ -874,8 +874,15 @@ package body Preferences is
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 3 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
            (ModulesFrame, HeaderLabel, "-weight 1");
+         HeaderLabel :=
+           Create
+             (ModulesFrame & ".show",
+              "-text {" & Mc(Get_Context, "{Show}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 4 -row 0");
+         Tcl.Tk.Ada.Grid.Column_Configure
+           (ModulesFrame, HeaderLabel, "-weight 1");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
-         Tcl.Tk.Ada.Grid.Grid(CloseButton, "-sticky se -columnspan 4");
+         Tcl.Tk.Ada.Grid.Grid(CloseButton, "-sticky se -columnspan 5");
       end;
       TtkNotebook.Add
         (Notebook, Widget_Image(ModulesFrame),
