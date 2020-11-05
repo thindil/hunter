@@ -690,7 +690,6 @@ package body Preferences.Commands is
       Rows: Natural;
       Tokens: Slice_Set;
       Item: Ttk_Frame;
-      CheckButton: Ttk_CheckButton;
       procedure LoadModulesInfo(Path: String) is
          Directory: Dir_Type;
          FileName: String(1 .. 1_024);
@@ -698,6 +697,7 @@ package body Preferences.Commands is
          ConfigName: GNAT.OS_Lib.String_Access;
          ConfigFile: File_Type;
          Line, CheckButtonName: Unbounded_String;
+         CheckButton: Ttk_CheckButton;
       begin
          Open(Directory, Path);
          loop
