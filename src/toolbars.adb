@@ -157,7 +157,7 @@ package body Toolbars is
       end if;
    end SetToolbars;
 
-   -- ****if* Toolbars/SetButton
+   -- ****if* Toolbars/Toolbars.SetButton
    -- FUNCTION
    -- Configure selected button on toolbars
    -- PARAMETERS
