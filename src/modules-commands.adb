@@ -13,10 +13,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv; use CArgv;
 with Tcl; use Tcl;
+with Tcl.Ada; use Tcl.Ada;
 with Utils; use Utils;
 
 package body Modules.Commands is
@@ -46,16 +50,26 @@ package body Modules.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
+      pragma Unreferenced(ClientData, Argc);
       ModulePath: constant Unbounded_String :=
-        To_Unbounded_String(CArgv.Arg(Argv, 1));
+        To_Unbounded_String
+          (Normalize_Pathname
+             (CArgv.Arg(Argv, 1), Containing_Directory(Command_Name)));
    begin
       if Enabled_Modules.Contains(ModulePath) then
          Enabled_Modules.Delete(Enabled_Modules.Find_Index(ModulePath));
+         Tcl_Eval(Interp, Simple_Name(To_String(ModulePath)) & "::on_disable");
+         Tcl_Eval
+           (Interp, "namespace delete " & Simple_Name(To_String(ModulePath)));
       else
          Enabled_Modules.Append(ModulePath);
+         Tcl_EvalFile(Interp, To_String(ModulePath) & "/module.tcl");
+         Tcl_Eval(Interp, Simple_Name(To_String(ModulePath)) & "::on_enable");
       end if;
       return TCL_OK;
+   exception
+      when Tcl_Error_Exception =>
+         return TCL_ERROR;
    end Toggle_Module_Command;
 
    procedure AddCommands is
