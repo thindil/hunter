@@ -50,6 +50,8 @@ with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
+with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Modules; use Modules;
@@ -698,6 +700,7 @@ package body Preferences.Commands is
          ConfigFile: File_Type;
          Line, CheckButtonName: Unbounded_String;
          CheckButton: Ttk_CheckButton;
+         Button: Ttk_Button;
       begin
          Open(Directory, Path);
          loop
@@ -726,6 +729,9 @@ package body Preferences.Commands is
                 (To_String(CheckButtonName),
                  "-command {ToggleModule {" & Path & "/" &
                  FileName(1 .. Last) & "}}");
+            Add
+              (CheckButton,
+               Mc(Get_Context, "{Enable or disable the selected module}"));
             if Enabled_Modules.Contains
                 (To_Unbounded_String(Path & "/" & FileName(1 .. Last))) then
                Tcl_SetVar(Interp, To_String(CheckButtonName), "1");
@@ -767,6 +773,16 @@ package body Preferences.Commands is
                end if;
             end loop;
             Close(ConfigFile);
+            Button :=
+              Create
+                (ModulesFrame & ".show" & Trim(Positive'Image(Row), Left),
+                 "-image document-openicon -style Toolbutton -command {ShowModule {" &
+                 Path & "/" & FileName(1 .. Last) & "}}");
+            Add
+              (Button,
+               Mc(Get_Context, "{Show directory of the selected module}"));
+            Tcl.Tk.Ada.Grid.Grid
+              (Button, "-column 4 -row" & Positive'Image(Row));
             Row := Row + 1;
             <<End_Of_Read_Loop>>
          end loop;
@@ -1388,6 +1404,41 @@ package body Preferences.Commands is
       return TCL_OK;
    end Reset_Command_Command;
 
+   -- ****o* PCommands/PCommands.Show_Module_Command
+   -- FUNCTION
+   -- Show the directory of the selected module
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command.
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- ShowModule modulepath
+   -- Modulepath is full or relative path to the selected module's directory
+   -- SOURCE
+   function Show_Module_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Show_Module_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+   begin
+      CurrentDirectory :=
+        To_Unbounded_String
+          (Normalize_Pathname
+             (CArgv.Arg(Argv, 1), Containing_Directory(Command_Name)));
+      LoadDirectory(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
+      return Close_Preferences_Command(ClientData, Interp, Argc, Argv);
+   end Show_Module_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ShowPreferences", Show_Preferences_Command'Access);
@@ -1420,6 +1471,7 @@ package body Preferences.Commands is
       AddCommand("EditCommand", Edit_Command_Command'Access);
       AddCommand("DeleteCommand", Delete_Command_Command'Access);
       AddCommand("ResetCommand", Reset_Command_Command'Access);
+      AddCommand("ShowModule", Show_Module_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;
