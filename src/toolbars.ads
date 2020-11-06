@@ -20,35 +20,35 @@
 package Toolbars is
 -- ****
 
-   -- ****f* Toolbars/SetToolbars
+   -- ****f* Toolbars/Toolbars.SetToolbars
    -- FUNCTION
    -- Set proper orientation for the toolbars;
    -- SOURCE
    procedure SetToolbars;
    -- ****
 
-   -- ****f* Toolbars/CreateActionToolbar
+   -- ****f* Toolbars/Toolbars.CreateActionToolbar
    -- FUNCTION
    -- Create ActionToolBar
    -- SOURCE
    procedure CreateActionToolbar;
    -- ****
 
-   -- ****f* Toolbars/CreateItemToolbar
+   -- ****f* Toolbars/Toolbars.CreateItemToolbar
    -- FUNCTION
    -- Crete ItemToolBar
    -- SOURCE
    procedure CreateItemToolbar;
    -- ****
 
-   -- ****f* Toolbars/SetActionsButtons
+   -- ****f* Toolbars/Toolbars.SetActionsButtons
    -- FUNCTION
    -- Set visibility for buttons actions related to the currently selected item
    -- SOURCE
    procedure SetActionsButtons;
    -- ****
 
-   -- ****f* Toolbars/SetUserCommandsMenu
+   -- ****f* Toolbars/Toolbars.SetUserCommandsMenu
    -- FUNCTION
    -- Set menu and button related to the user defined commands/actions
    -- SOURCE
