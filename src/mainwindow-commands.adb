@@ -43,6 +43,7 @@ with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with LoadData; use LoadData;
 with Messages; use Messages;
+with Modules; use Modules;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
@@ -158,6 +159,7 @@ package body MainWindow.Commands is
            Positive'Value(Winfo_Get(MainWindow, "height"));
       end if;
       SavePreferences;
+      UnloadModules;
       if Settings.ClearTrashOnExit then
          NewAction := CLEARTRASH;
          if DeleteSelected then
