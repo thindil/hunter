@@ -55,6 +55,7 @@ with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with MainWindow.Commands; use MainWindow.Commands;
 with Messages; use Messages;
+with Modules; use Modules;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
@@ -213,6 +214,7 @@ package body MainWindow is
       CreateMoveUI;
       CreateTrashUI;
       CreateAboutUI;
+      LoadModules;
       Add(Paned, DirectoryFrame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");

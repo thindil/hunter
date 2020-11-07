@@ -24,4 +24,13 @@ package Modules is
    Enabled_Modules: UnboundedString_Container.Vector;
    -- ****
 
+   -- ****f* Modules/Modules.LoadModules
+   -- FUNCTION
+   -- Load all enabled modules at start the program
+   -- SOURCE
+   procedure LoadModules;
+   -- ****
+
+   procedure UnloadModules;
+
 end Modules;
