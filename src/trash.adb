@@ -177,7 +177,7 @@ package body Trash is
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 
-   -- ****o* Trash/Restore_Item_Command
+   -- ****o* Trash/Trash.Restore_Item_Command
    -- FUNCTION
    -- Restore the selected item
    -- PARAMETERS
@@ -238,7 +238,7 @@ package body Trash is
       return Show_Trash_Command(ClientData, Interp, Argc, Argv);
    end Restore_Item_Command;
 
-   -- ****o* Trash/Clear_Trash_Command
+   -- ****o* Trash/Trash.Clear_Trash_Command
    -- FUNCTION
    -- Remove everything from the Trash
    -- PARAMETERS
