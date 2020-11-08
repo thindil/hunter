@@ -24,7 +24,7 @@ with Tcl; use Tcl;
 package Trash is
 -- ****
 
-   -- ****o* Trash/Show_Trash_Command
+   -- ****o* Trash/Trash.Show_Trash_Command
    -- FUNCTION
    -- Show content of the Trash
    -- PARAMETERS
@@ -42,7 +42,7 @@ package Trash is
       Convention => C;
       -- ****
 
-   -- ****f* Trash/CreateTrashUI
+   -- ****f* Trash/Trash.CreateTrashUI
    -- FUNCTION
    -- Create trash UI
    -- SOURCE
