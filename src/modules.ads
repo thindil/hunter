@@ -24,6 +24,8 @@ package Modules is
    Enabled_Modules: UnboundedString_Container.Vector;
    -- ****
 
+   type Triggers is (On_Quit, On_Activate);
+
    -- ****f* Modules/Modules.LoadModules
    -- FUNCTION
    -- Load all enabled modules at start the program
@@ -31,6 +33,6 @@ package Modules is
    procedure LoadModules;
    -- ****
 
-   procedure UnloadModules;
+   procedure Execute_Modules(State: Triggers; Arguments: String := "");
 
 end Modules;

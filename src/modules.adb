@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -41,17 +42,19 @@ package body Modules is
       end loop;
    end LoadModules;
 
-   procedure UnloadModules is
+   procedure Execute_Modules(State: Triggers; Arguments: String := "") is
    begin
       for ModulePath of Enabled_Modules loop
          begin
             Tcl_Eval
-              (Get_Context, Simple_Name(To_String(ModulePath)) & "::on_quit");
+              (Get_Context,
+               Simple_Name(To_String(ModulePath)) & "::" &
+               To_Lower(Triggers'Image(State)) & " " & Arguments);
          exception
             when Tcl_Error_Exception =>
                null;
          end;
       end loop;
-   end UnloadModules;
+   end Execute_Modules;
 
 end Modules;

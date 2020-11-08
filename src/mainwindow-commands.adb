@@ -159,7 +159,7 @@ package body MainWindow.Commands is
            Positive'Value(Winfo_Get(MainWindow, "height"));
       end if;
       SavePreferences;
-      UnloadModules;
+      Execute_Modules(On_Quit);
       if Settings.ClearTrashOnExit then
          NewAction := CLEARTRASH;
          if DeleteSelected then
