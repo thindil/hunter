@@ -34,6 +34,7 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Modules; use Modules;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with Utils; use Utils;
@@ -125,6 +126,7 @@ package body ActivateItems is
             end if;
          end;
       end if;
+      Execute_Modules(On_Activate, To_String(CurrentSelected));
       return TCL_OK;
    end Activate_Item_Command;
 
