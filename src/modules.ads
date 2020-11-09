@@ -24,7 +24,7 @@ package Modules is
    Enabled_Modules: UnboundedString_Container.Vector;
    -- ****
 
-   type Triggers is (On_Quit, On_Activate);
+   type Triggers is (On_Quit, On_Activate, On_Enter);
 
    -- ****f* Modules/Modules.LoadModules
    -- FUNCTION

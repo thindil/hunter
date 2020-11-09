@@ -53,6 +53,7 @@ with Bookmarks; use Bookmarks;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Modules; use Modules;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
 with Toolbars; use Toolbars;
@@ -912,6 +913,7 @@ package body ShowItems is
       DestinationDirectory := SelectedItem;
       LoadDirectory(To_String(SelectedItem), True);
       UpdateDirectoryList(True, "preview");
+      Execute_Modules(On_Enter, To_String(DestinationDirectory));
       return TCL_OK;
    end GoToDirectory_Command;
 
