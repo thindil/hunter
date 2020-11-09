@@ -123,7 +123,7 @@ package body UserCommands is
       end loop;
    end UpdateUserCommandsList;
 
-   -- ****o* UserCommands/Execute_Command_Command
+   -- ****o* UserCommands/UserCommands.Execute_Command_Command
    -- FUNCTION
    -- Clear the add command form
    -- PARAMETERS
