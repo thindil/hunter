@@ -34,6 +34,7 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Modules; use Modules;
 with RefreshData; use RefreshData;
 with Utils; use Utils;
 
@@ -80,6 +81,7 @@ package body Bookmarks.Commands is
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
+      Execute_Modules(On_Enter, To_String(CurrentDirectory));
       return TCL_OK;
    end GoToBookmark_Command;
 

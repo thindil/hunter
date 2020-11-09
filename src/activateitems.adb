@@ -82,6 +82,7 @@ package body ActivateItems is
          end if;
          UpdateDirectoryList(True);
          UpdateWatch(To_String(CurrentDirectory));
+         Execute_Modules(On_Enter, To_String(CurrentDirectory));
       else
          declare
             MimeType: constant String :=
