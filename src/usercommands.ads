@@ -24,7 +24,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package UserCommands is
 -- ****
 
-   -- ****s* UserCommands/UserCommand
+   -- ****s* UserCommands/UserCommands.UserCommand
    -- FUNCTION
    -- Data structure for the user defined commands
    -- OPTIONS
@@ -37,7 +37,7 @@ package UserCommands is
    end record;
    -- ****
 
-   -- ****t* UserCommands/Commands_Container
+   -- ****t* UserCommands/UserCommands.Commands_Container
    -- FUNCTION
    -- Used to store all bookmarks
    -- SOURCE
@@ -45,21 +45,21 @@ package UserCommands is
       UserCommand, Ada.Strings.Hash, "=");
    -- ****
 
-   -- ****v* UserCommands/UserCommandsList
+   -- ****v* UserCommands/UserCommands.UserCommandsList
    -- FUNCTION
    -- User defined commands list
    -- SOURCE
    UserCommandsList: Commands_Container.Map;
    -- ****
 
-   -- ****f* UserCommands/UpdateUserCommandsList
+   -- ****f* UserCommands/UserCommands.UpdateUserCommandsList
    -- FUNCTION
    -- Update list of user defined commands
    -- SOURCE
    procedure UpdateUserCommandsList;
    -- ****
 
-   -- ****f* UserCommands/AddCommands
+   -- ****f* UserCommands/UserCommands.AddCommands
    -- FUNCTION
    -- Adds the Ada code to the Tcl interpreter
    -- SOURCE
