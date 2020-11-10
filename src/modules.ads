@@ -24,7 +24,22 @@ package Modules is
    Enabled_Modules: UnboundedString_Container.Vector;
    -- ****
 
+   -- ****t* Modules/Triggers
+   -- FUNCTION
+   -- The program states on which the selected the program's module code will
+   -- be triggered
+   -- OPTIONS
+   -- On_Quit     - The program quits normally, triggered after the config is
+   --               saved but before clear the Trash and stop inotify
+   -- On_Activate - On activating by the user the selected directory or file
+   --               on the directory list
+   -- On_Enter    - On entering the selected directory: during the start the
+   --               program, when the user activate it on the directory list,
+   --               when the user uses path buttons or when the user uses
+   --               bookmarks
+   -- SOURCE
    type Triggers is (On_Quit, On_Activate, On_Enter);
+   -- ****
 
    -- ****f* Modules/Modules.LoadModules
    -- FUNCTION
@@ -33,6 +48,15 @@ package Modules is
    procedure LoadModules;
    -- ****
 
+   -- ****f* Modules/Modules.Execute_Modules
+   -- FUNCTION
+   -- Execute the program modules code based on the selected trigger
+   -- PARAMETERS
+   -- State     - Trigger state on which the module code will be executed
+   -- Arguments - Arguments passed to the Tcl code. Can be empty. Default
+   --             value is empty
+   -- SOURCE
    procedure Execute_Modules(State: Triggers; Arguments: String := "");
+   -- ****
 
 end Modules;
