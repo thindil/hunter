@@ -62,25 +62,13 @@ package body Modules.Commands is
    begin
       if Enabled_Modules.Contains(ModulePath) then
          Enabled_Modules.Delete(Enabled_Modules.Find_Index(ModulePath));
-         begin
-            Tcl_Eval
-              (Interp, Simple_Name(To_String(ModulePath)) & "::on_disable");
-         exception
-            when Tcl_Error_Exception =>
-               null;
-         end;
+         Tcl_Eval(Interp, Simple_Name(To_String(ModulePath)) & "::on_disable");
          Tcl_Eval
            (Interp, "namespace delete " & Simple_Name(To_String(ModulePath)));
       else
          Enabled_Modules.Append(ModulePath);
          Tcl_EvalFile(Interp, To_String(ModulePath) & "/module.tcl");
-         begin
-            Tcl_Eval
-              (Interp, Simple_Name(To_String(ModulePath)) & "::on_enable");
-         exception
-            when Tcl_Error_Exception =>
-               null;
-         end;
+         Tcl_Eval(Interp, Simple_Name(To_String(ModulePath)) & "::on_enable");
       end if;
       return TCL_OK;
    exception
