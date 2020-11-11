@@ -68,7 +68,10 @@ package body Modules.Commands is
       else
          Enabled_Modules.Append(ModulePath);
          Tcl_EvalFile(Interp, To_String(ModulePath) & "/module.tcl");
-         Tcl_Eval(Interp, Simple_Name(To_String(ModulePath)) & "::on_enable");
+         Tcl_Eval
+           (Interp,
+            Simple_Name(To_String(ModulePath)) & "::on_enable {" &
+            To_String(ModulePath) & "}");
       end if;
       return TCL_OK;
    exception

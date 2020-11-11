@@ -34,7 +34,9 @@ package body Modules is
          begin
             Tcl_EvalFile(Get_Context, To_String(FullPath) & "/module.tcl");
             Tcl_Eval
-              (Get_Context, Simple_Name(To_String(ModulePath)) & "::on_start");
+              (Get_Context,
+               Simple_Name(To_String(ModulePath)) & "::on_start {" &
+               To_String(FullPath) & "}");
          exception
             when Tcl_Error_Exception =>
                null;
