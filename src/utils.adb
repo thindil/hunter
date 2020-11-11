@@ -40,7 +40,7 @@ with Preferences; use Preferences;
 
 package body Utils is
 
-   -- ****iv* Utils/ProgressIndex
+   -- ****iv* Utils/Utils.ProgressIndex
    -- FUNCTION
    -- Currrent index of item
    -- SOURCE
