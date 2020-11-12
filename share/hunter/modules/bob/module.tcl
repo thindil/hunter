@@ -2,8 +2,8 @@ namespace eval bob {
 
    proc Create_UI {path} {
       image create photo BobIcon -file [file join $path bob.svg] -format "svg -scaletoheight [GetConfig toolbarssize]"
-      ttk::menubutton .actiontoolbar.bobbutton -style Toolbutton -image BobIcon -takefocus 0
-      pack .actiontoolbar.bobbutton -after .actiontoolbar.deletebutton
+      ttk::menubutton .mainframe.toolbars.actiontoolbar.bobbutton -style Toolbutton -image BobIcon -takefocus 0
+      pack .mainframe.toolbars.actiontoolbar.bobbutton -after .mainframe.toolbars.actiontoolbar.deletebutton
    }
 
    proc on_enable {path} {
