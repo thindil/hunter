@@ -25,28 +25,28 @@ with MainWindow; use MainWindow;
 package Utils is
 -- ****
 
-   -- ****t* Utils/Width_Range
+   -- ****t* Utils/Utils.Width_Range
    -- FUNCTION
    -- Used to store the width of the widgets
    -- SOURCE
    type Width_Range is new Integer;
    -- ****
 
-   -- ****f* Utils/Height_Range
+   -- ****f* Utils/Utils.Height_Range
    -- FUNCTION
    -- Used to store the height of the widgets
    -- SOURCE
    type Height_Range is new Integer;
    -- ****
 
-   -- ****t* Utils/CreateCommands
+   -- ****t* Utils/Utils.CreateCommands
    -- FUNCTION
    -- Used to add new commands to Tcl
    -- SOURCE
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
    -- ****
 
-   -- ****f* Utils/GetMimeType
+   -- ****f* Utils/Utils.GetMimeType
    -- FUNCTION
    -- Check MIME Type of selected file
    -- PARAMETERS
@@ -57,7 +57,7 @@ package Utils is
    function GetMimeType(FileName: String) return String;
    -- ****
 
-   -- ****f* Utils/CanBeOpened
+   -- ****f* Utils/Utils.CanBeOpened
    -- FUNCTION
    -- Check if there is application associated to open selected MIME Type
    -- PARAMETERS
@@ -68,7 +68,7 @@ package Utils is
    function CanBeOpened(MimeType: String) return Boolean;
    -- ****
 
-   -- ****f* Utils/CountFileSize
+   -- ****f* Utils/Utils.CountFileSize
    -- FUNCTION
    -- Convert file size to human readable format
    -- PARAMETERS
@@ -79,7 +79,7 @@ package Utils is
    function CountFileSize(Size: File_Size) return String;
    -- ****
 
-   -- ****f* Utils/FindExecutable
+   -- ****f* Utils/Utils.FindExecutable
    -- FUNCTION
    -- Find executable file with selected name in this same directory where
    -- the program is or in PATH variable
@@ -95,7 +95,7 @@ package Utils is
      (Name: String; DisplayMessage: Boolean := True) return String;
    -- ****
 
-   -- ****f* Utils/SetProgressBar
+   -- ****f* Utils/Utils.SetProgressBar
    -- FUNCTION
    -- Set values for progress bar and show it to the user
    -- PARAMETERS
@@ -104,14 +104,14 @@ package Utils is
    procedure SetProgressBar(Amount: Positive);
    -- ****
 
-   -- ****f* Utils/UpdateProgressBar
+   -- ****f* Utils/Utils.UpdateProgressBar
    -- FUNCTION
    -- Update fraction of the progress bar
    -- SOURCE
    procedure UpdateProgressBar;
    -- ****
 
-   -- ****f* Utils/SetDialog
+   -- ****f* Utils/Utils.SetDialog
    -- FUNCTION
    -- Set the selected dialog
    -- PARAMETERS
@@ -125,7 +125,7 @@ package Utils is
       Height: Height_Range);
    -- ****
 
-   -- ****f* Utils/AddCommand
+   -- ****f* Utils/Utils.AddCommand
    -- FUNCTION
    -- Add command to the Tcl interpreter
    -- PARAMETERS
@@ -137,7 +137,7 @@ package Utils is
      (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc);
    -- ****
 
-   -- ****f* Utils/ToggleToolButtons
+   -- ****f* Utils/Utils.ToggleToolButtons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with
    -- files or directories
