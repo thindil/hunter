@@ -125,7 +125,7 @@ package body UserCommands is
 
    -- ****o* UserCommands/UserCommands.Execute_Command_Command
    -- FUNCTION
-   -- Clear the add command form
+   -- Execute the selected user command and show its output if needed
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed. Unused
