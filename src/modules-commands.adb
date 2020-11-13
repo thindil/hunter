@@ -183,14 +183,15 @@ package body Modules.Commands is
    -- Execute the selected module command and show its output if needed
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
-   -- Argc       - Number of arguments passed to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command.
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
-   -- ExecuteCommand command
-   -- Command is the command with attributes to execute
+   -- ExecuteCommand command ?path?
+   -- Command is the command with attributes to execute. Path is the working
+   -- directory in which the command should be executed
    -- SOURCE
    function Execute_Module_Command_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -203,14 +204,18 @@ package body Modules.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
+      pragma Unreferenced(ClientData);
       Value, CommandName: Unbounded_String;
       SpaceIndex: Natural;
       Result: Expect_Match;
       ProcessDesc: Process_Descriptor;
       Arguments: Argument_List_Access;
       Success: Boolean := False;
+      CurrentDir: constant String := Current_Directory;
    begin
+      if Argc = 3 then
+         Set_Directory(CArgv.Arg(Argv, 2));
+      end if;
       Value := To_Unbounded_String(CArgv.Arg(Argv, 1));
       SpaceIndex := Index(Value, " ");
       CommandName :=
@@ -222,6 +227,9 @@ package body Modules.Commands is
          ShowMessage
            (Mc(Interp, "{Can't find command:}") & " " &
             Slice(Value, 1, SpaceIndex));
+         if Argc = 3 then
+            Set_Directory(CurrentDir);
+         end if;
          return TCL_OK;
       end if;
       if SpaceIndex > 0 then
@@ -245,6 +253,9 @@ package body Modules.Commands is
          Success := True;
       end loop;
       Close(ProcessDesc);
+      if Argc = 3 then
+         Set_Directory(CurrentDir);
+      end if;
       return TCL_OK;
    exception
       when Process_Died =>
@@ -252,6 +263,9 @@ package body Modules.Commands is
             ShowMessage
               (Mc(Interp, "{Can't execute command:}") & " " &
                Slice(Value, 1, SpaceIndex));
+         end if;
+         if Argc = 3 then
+            Set_Directory(CurrentDir);
          end if;
          return TCL_OK;
    end Execute_Module_Command_Command;
