@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings; use Ada.Strings;
@@ -20,11 +21,15 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv; use CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Messages; use Messages;
 with Preferences; use Preferences;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body Modules.Commands is
@@ -173,10 +178,90 @@ package body Modules.Commands is
       return TCL_OK;
    end Get_Config_Command;
 
+   -- ****o* MCommands2/MCommands2.Execute_Module_Command_Command
+   -- FUNCTION
+   -- Execute the selected module command and show its output if needed
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- ExecuteCommand command
+   -- Command is the command with attributes to execute
+   -- SOURCE
+   function Execute_Module_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Execute_Module_Command_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc);
+      Value, CommandName: Unbounded_String;
+      SpaceIndex: Natural;
+      Result: Expect_Match;
+      ProcessDesc: Process_Descriptor;
+      Arguments: Argument_List_Access;
+      Success: Boolean := False;
+   begin
+      Value := To_Unbounded_String(CArgv.Arg(Argv, 1));
+      SpaceIndex := Index(Value, " ");
+      CommandName :=
+        (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex - 1)
+         else Value);
+      CommandName :=
+        To_Unbounded_String(FindExecutable(To_String(CommandName)));
+      if CommandName = Null_Unbounded_String then
+         ShowMessage
+           (Mc(Interp, "{Can't find command:}") & " " &
+            Slice(Value, 1, SpaceIndex));
+         return TCL_OK;
+      end if;
+      if SpaceIndex > 0 then
+         Arguments :=
+           Argument_String_To_List(Slice(Value, SpaceIndex, Length(Value)));
+      end if;
+      for I in Arguments'Range loop
+         if Arguments(I).all = "@1" then
+            Arguments(I) := new String'(To_String(CurrentDirectory));
+         elsif Arguments(I).all = "@2" then
+            Arguments(I) := new String'(To_String(CurrentSelected));
+         end if;
+      end loop;
+      Non_Blocking_Spawn
+        (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
+      ShowOutput;
+      loop
+         Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 300_000);
+         exit when Result /= 1;
+         UpdateOutput(Expect_Out_Match(ProcessDesc) & LF);
+         Success := True;
+      end loop;
+      Close(ProcessDesc);
+      return TCL_OK;
+   exception
+      when Process_Died =>
+         if not Success then
+            ShowMessage
+              (Mc(Interp, "{Can't execute command:}") & " " &
+               Slice(Value, 1, SpaceIndex));
+         end if;
+         return TCL_OK;
+   end Execute_Module_Command_Command;
+
    procedure AddCommands is
    begin
       AddCommand("ToggleModule", Toggle_Module_Command'Access);
       AddCommand("GetConfig", Get_Config_Command'Access);
+      AddCommand
+        ("ExecuteModuleCommand", Execute_Module_Command_Command'Access);
    end AddCommands;
 
 end Modules.Commands;
