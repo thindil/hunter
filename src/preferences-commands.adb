@@ -815,9 +815,7 @@ package body Preferences.Commands is
       end loop;
       -- Load the list of the program modules
       Set_Directory(Containing_Directory(Command_Name));
-      LoadModulesInfo
-        (Normalize_Pathname
-           ("../share/hunter/modules", Containing_Directory(Command_Name)));
+      LoadModulesInfo("../share/hunter/modules");
       LoadModulesInfo(Value("HOME") & "/.local/share/hunter/modules");
       Tcl.Tk.Ada.Grid.Grid_Configure
         (CloseButton, "-row" & Positive'Image(Row));
