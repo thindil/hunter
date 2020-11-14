@@ -200,8 +200,11 @@ package body ShowItems is
                   "{You don't have permissions to preview this directory.}"));
          end if;
          LoadDirectory(To_String(CurrentSelected), True);
+         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
+         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
+         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
          Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
          configure
            (PreviewYScroll, "-command [list " & PreviewTree & " yview]");
