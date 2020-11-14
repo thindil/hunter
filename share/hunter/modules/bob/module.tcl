@@ -31,7 +31,8 @@ namespace eval bob {
       set bobfile [open $filename]
       while {[gets $bobfile line] >= 0} {
          if {[string first {name:} $line] == 3} {
-            .bobmenu add command -label [string range $line 9 end]
+            set cmdname [string range $line 9 end]
+            .bobmenu add command -label $cmdname -command "ExecuteModuleCommand {bob $cmdname} {$path}"
          }
       }
       close $bobfile
