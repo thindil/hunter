@@ -14,7 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
@@ -61,9 +60,7 @@ package body Modules.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       ModulePath: constant Unbounded_String :=
-        To_Unbounded_String
-          (Normalize_Pathname
-             (CArgv.Arg(Argv, 1), Containing_Directory(Command_Name)));
+        To_Unbounded_String(CArgv.Arg(Argv, 1));
    begin
       if Enabled_Modules.Contains(ModulePath) then
          Enabled_Modules.Delete(Enabled_Modules.Find_Index(ModulePath));
