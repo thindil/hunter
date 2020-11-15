@@ -59,7 +59,9 @@ namespace eval bob {
    # SOURCE
    proc on_disable {} {
    # ****
+      image delete BobIcon
       destroy .mainframe.toolbars.actiontoolbar.bobbutton
+      destroy .bobmenu
    }
 
    # ****m* bob/bob.on_start
