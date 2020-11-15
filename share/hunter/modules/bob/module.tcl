@@ -41,6 +41,7 @@ namespace eval bob {
    # Code executed when the module was enabled by the user. If module doesn't
    # have any code to execute during enabling, you can omit this procedure.
    # But it is always good to have one even empty.
+   # This one creates the module UI.
    # PARAMETERS
    # path - Path to the directory where the module is located
    # SOURCE
@@ -54,17 +55,40 @@ namespace eval bob {
    # Code executed when the module was disabled by the user. If module doesn't
    # have any code to execute during disabling, you can omit this procedure.
    # But it is always good to have one even empty.
+   # This one removes the module UI
    # SOURCE
    proc on_disable {} {
    # ****
       destroy .mainframe.toolbars.actiontoolbar.bobbutton
    }
 
+   # ****m* bob/bob.on_start
+   # FUNCTION
+   # Code executed when the program starts and the module is enabled. If module
+   # doesn't have any code to execute during the program start, you can omit
+   # this procedure. But it is always good to have one even empty.
+   # This one created the module UI.
+   # PARAMETERS
+   # path - Path to the directory where the module is located
+   # SOURCE
    proc on_start {path} {
+   # ****
       bob::Create_UI $path
    }
 
+   # ****m* bob/bob.on_enter
+   # FUNCTION
+   # Code executed when the user enters any directory, also automatically,
+   # after start the program on show the first directory. If module doesn't
+   # have any code to execute during disabling, you can omit this procedure.
+   # But it is always good to have one even empty.
+   # This one looking for Bob configuration file in the selected directory.
+   # If find, creates the module button menu with available options.
+   # PARAMETERS
+   # path - Path to the directory to which the user entered
+   # SOURCE
    proc on_enter {path} {
+   # ****
       set filename [file join $path .bob.yml]
       if {[file exists $filename] == 0} {
          pack forget .mainframe.toolbars.actiontoolbar.bobbutton
@@ -83,7 +107,15 @@ namespace eval bob {
       close $bobfile
    }
 
+   # ****m* bob/bob.on_quit
+   # FUNCTION
+   # Code executed when the programs ends (quits). If the module doesn't have
+   # any code to execute during the program start, you can omit this
+   # procedure. But it is always good to have one even empty.
+   # This one does nothing
+   # SOURCE
    proc on_quit {} {
+   # ****
       return
    }
 }
