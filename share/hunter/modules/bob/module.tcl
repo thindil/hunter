@@ -112,11 +112,25 @@ namespace eval bob {
    # ****m* bob/bob.on_quit
    # FUNCTION
    # Code executed when the programs ends (quits). If the module doesn't have
-   # any code to execute during the program start, you can omit this
+   # any code to execute during the program ending, you can omit this
    # procedure. But it is always good to have one even empty.
    # This one does nothing
    # SOURCE
    proc on_quit {} {
+   # ****
+      return
+   }
+
+   # ****m* bob/bob.on_activate
+   # FUNCTION
+   # Code executed when the user activates file or directory. If the module
+   # doesn't have any code to execute during the activation of an item, you
+   # can omit this procedure. But it is always good to have one even empty.
+   # This one does nothing
+   # PARAMETERS
+   # path - Path to the item (file or directory) which was activated
+   # SOURCE
+   proc on_activate {path} {
    # ****
       return
    }
