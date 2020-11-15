@@ -916,7 +916,7 @@ package body ShowItems is
       DestinationDirectory := SelectedItem;
       LoadDirectory(To_String(SelectedItem), True);
       UpdateDirectoryList(True, "preview");
-      Execute_Modules(On_Enter, To_String(DestinationDirectory));
+      Execute_Modules(On_Enter, "{" & To_String(DestinationDirectory) & "}");
       return TCL_OK;
    end GoToDirectory_Command;
 

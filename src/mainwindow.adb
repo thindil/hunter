@@ -273,7 +273,7 @@ package body MainWindow is
       LoadDirectory(To_String(CurrentDirectory));
       StartTimer(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
-      Execute_Modules(On_Enter, To_String(CurrentDirectory));
+      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
       CreateShowItemsUI;
    end CreateMainWindow;
 

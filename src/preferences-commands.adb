@@ -903,7 +903,7 @@ package body Preferences.Commands is
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".mainframe");
       Tcl.Tk.Ada.Grid.Grid(Frame);
-      Execute_Modules(On_Enter, To_String(CurrentDirectory));
+      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
       return TCL_OK;
    end Close_Preferences_Command;
 
