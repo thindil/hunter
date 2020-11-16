@@ -20,6 +20,7 @@ file copy CHANGELOG.md $releasedir/share/doc/hunter/
 file copy COPYING $releasedir/share/doc/hunter/
 file copy README.md $releasedir/share/doc/hunter/
 file copy CONTRIBUTING.md $releasedir/share/doc/hunter/
+file copy MODDING.md $releasedir/share/doc/hunter/
 file copy others/hunter.appdata.xml $releasedir/share/metainfo
 file copy share/file $releasedir/share
 file copy share/highlight $releasedir/share
