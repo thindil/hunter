@@ -358,6 +358,10 @@ package body Toolbars is
         (ButtonMenu, "command",
          "-label {" & Mc(Get_Context, "{Get involved}") &
          "} -command {ShowFile CONTRIBUTING.md}");
+      Menu.Add
+        (ButtonMenu, "command",
+         "-label {" & Mc(Get_Context, "{Show modding guide}") &
+         "} -command {ShowFile MODDING.md}");
       configure(ToolMenuButton, "-menu " & ButtonMenu);
       Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
       Tcl.Tk.Ada.Grid.Grid(Label);
