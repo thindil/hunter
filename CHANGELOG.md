@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Separated keyboard shortcut for restore files or directories from Trash
 - User defined commands and actions
 - Blocked option to remove system (based on XDG directories) bookmarks
+- Modding guide
 
 ### Changed
 - Show preferences in main window instead as a separated dialog
