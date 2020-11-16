@@ -31,6 +31,7 @@ with Inotify; use Inotify;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
+with Modules; use Modules;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
@@ -174,6 +175,7 @@ package body Trash is
       Bind_To_Main_Window
         (Interp, "<" & To_String(Accelerators(19)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.restorebutton}");
+      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 
