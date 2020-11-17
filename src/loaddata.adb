@@ -73,6 +73,7 @@ package body LoadData is
       Item: Item_Record;
    begin
       Item.Name := To_Unbounded_String(FileName);
+      Item.Path := To_Unbounded_String(Path);
       begin
          Item.Modified := Modification_Time(Path);
       exception
