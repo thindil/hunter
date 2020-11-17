@@ -35,6 +35,7 @@ All notable changes to this project will be documented in this file.
 - Showing path buttons for destination after finished copying, moving or
   creating link to file or directory
 - Hang when trying to refresh the Trash view
+- Showing content of directories in Trash
 
 ## [1.4] - 2020-08-19
 
