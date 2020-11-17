@@ -59,8 +59,10 @@ package body Trash is
       Create_Path
         (Ada.Environment_Variables.Value("HOME") &
          "/.local/share/Trash/files");
-      NewAction := SHOWTRASH;
-      ToggleToolButtons(SHOWTRASH);
+      if NewAction /= SHOWTRASH then
+         NewAction := SHOWTRASH;
+         ToggleToolButtons(SHOWTRASH);
+      end if;
       ItemsList.Clear;
       CurrentDirectory :=
         To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
