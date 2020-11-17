@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Blocked option to remove system (based on XDG directories) bookmarks
 - Modding guide
 - Option to extend the program with external modules
+- Option to show modding guide in the program
 
 ### Changed
 - Show preferences in main window instead as a separated dialog
