@@ -14,14 +14,13 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Calendar; use Ada.Calendar;
-with Ada.Calendar.Formatting;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
+with GNAT.Time_Stamp; use GNAT.Time_Stamp;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with Tcl;
 with Tcl.Ada;
@@ -59,7 +58,7 @@ package body ErrorDialog is
       else
          Create(ErrorFile, Append_File, ErrorFilePath);
       end if;
-      Append(ErrorText, Ada.Calendar.Formatting.Image(Clock) & LF);
+      Append(ErrorText, Current_Time & LF);
       Append(ErrorText, "1.5" & LF);
       Append(ErrorText, "Exception: " & Exception_Name(An_Exception) & LF);
       Append(ErrorText, "Message: " & Exception_Message(An_Exception) & LF);
