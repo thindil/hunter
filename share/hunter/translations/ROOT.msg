@@ -118,7 +118,6 @@
    "Text which will be shown in user actions menu." "Text which will be shown in user actions menu."
    "Command to execute:" "Command to execute:"
    "Command to execute. That command must be a program not a shell command.\n@1 will be replaced by current directory\n@2 will be replaced by currently selected item on list." "Command to execute. That command must be a program not a shell command.\n@1 will be replaced by current directory\n@2 will be replaced by currently selected item on list."
-   "Command to execute. That command must be a program not a shell command.\n@1 will be replaced by current directory\n@2 will be replaced by currently selected item on list." "Command to execute. That command must be a program not a shell command.\n@1 will be replaced by current directory\n@2 will be replaced by currently selected item on list."
    "Show command output in preview" "Show command output in preview"
    "If checked, the command output will be shown in preview window.\nOtherwise, the command output will be ignored." "If checked, the command output will be shown in preview window.\nOtherwise, the command output will be ignored."
    "Add command" "Add command"
