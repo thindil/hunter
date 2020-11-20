@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,37 +22,41 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo19">Hunter/ShowItems</a></li>
+<li>1. <a href="#robo23">ShowItems/ShowItems</a></li>
 <ul>
-<li>1.1. <a href="./showitems_adb.html#robo71">ShowItems/ButtonNames</a></li>
-<li>1.2. <a href="./showitems_adb.html#robo72">ShowItems/InfoFrame</a></li>
-<li>1.3. <a href="./showitems_adb.html#robo73">ShowItems/PreviewCanvas</a></li>
-<li>1.4. <a href="./showitems_adb.html#robo74">ShowItems/PreviewFrame</a></li>
-<li>1.5. <a href="./showitems_adb.html#robo75">ShowItems/PreviewText</a></li>
-<li>1.6. <a href="./showitems_adb.html#robo76">ShowItems/PreviewTree</a></li>
-<li>1.7. <a href="./showitems_adb.html#robo77">ShowItems/PreviewXScroll</a></li>
-<li>1.8. <a href="./showitems_adb.html#robo78">ShowItems/PreviewYScroll</a></li>
-<li>1.9. <a href="./showitems_adb.html#robo81">ShowItems/Hunter_Show_Items_Exception</a></li>
-<li>1.10. <a href="#robo193">ShowItems/CreateShowItemsUI</a></li>
-<li>1.11. <a href="#robo194">ShowItems/DestinationDirectory</a></li>
-<li>1.12. <a href="#robo195">ShowItems/ScaleImage</a></li>
-<li>1.13. <a href="./showitems_adb.html#robo196">ShowItems/Set_Permissions_Command</a></li>
-<li>1.14. <a href="./showitems_adb.html#robo197">ShowItems/Show_Preview_Or_Info_Command</a></li>
-<li>1.15. <a href="#robo198">ShowItems/Show_Selected_Command</a></li>
-<li>1.16. <a href="#robo199">ShowItems/ShowDestination</a></li>
-<li>1.17. <a href="./showitems_adb.html#robo200">ShowItems/ShowInfo</a></li>
-<li>1.18. <a href="#robo201">ShowItems/ShowPreview</a></li>
+<li>1.1. <a href="./showitems_adb.html#robo82">ShowItems/ShowItems.ButtonNames</a></li>
+<li>1.2. <a href="./showitems_adb.html#robo83">ShowItems/ShowItems.InfoFrame</a></li>
+<li>1.3. <a href="./showitems_adb.html#robo84">ShowItems/ShowItems.PreviewCanvas</a></li>
+<li>1.4. <a href="./showitems_adb.html#robo85">ShowItems/ShowItems.PreviewFrame</a></li>
+<li>1.5. <a href="./showitems_adb.html#robo86">ShowItems/ShowItems.PreviewText</a></li>
+<li>1.6. <a href="./showitems_adb.html#robo87">ShowItems/ShowItems.PreviewTree</a></li>
+<li>1.7. <a href="./showitems_adb.html#robo88">ShowItems/ShowItems.PreviewXScroll</a></li>
+<li>1.8. <a href="./showitems_adb.html#robo89">ShowItems/ShowItems.PreviewYScroll</a></li>
+<li>1.9. <a href="./showitems_adb.html#robo93">ShowItems/ShowItems.Hunter_Show_Items_Exception</a></li>
+<li>1.10. <a href="#robo155">ShowItems/ShowItems.CreateShowItemsUI</a></li>
+<li>1.11. <a href="#robo156">ShowItems/ShowItems.DestinationDirectory</a></li>
+<li>1.12. <a href="#robo157">ShowItems/ShowItems.ScaleImage</a></li>
+<li>1.13. <a href="#robo158">ShowItems/ShowItems.ShowDestination</a></li>
+<li>1.14. <a href="./showitems_adb.html#robo159">ShowItems/ShowItems.ShowInfo</a></li>
+<li>1.15. <a href="#robo160">ShowItems/ShowItems.ShowOutput</a></li>
+<li>1.16. <a href="#robo161">ShowItems/ShowItems.ShowPreview</a></li>
+<li>1.17. <a href="#robo162">ShowItems/ShowItems.UpdateOutput</a></li>
+<li>1.18. <a href="./showitems_adb.html#robo249">ShowItems/ShowItems.Set_Permissions_Command</a></li>
+<li>1.19. <a href="./showitems_adb.html#robo250">ShowItems/ShowItems.Show_Preview_Or_Info_Command</a></li>
+<li>1.20. <a href="#robo251">ShowItems/ShowItems.Show_Selected_Command</a></li>
 </ul>
 </ul>
 <hr />
-<a name="Hunter2fShowItems"></a>
-<a name="robo19"></a><h2>Hunter/ShowItems [ Packages ]</h2>
+<a name="ShowItems2fShowItems"></a>
+<a name="robo23"></a><h2>ShowItems/ShowItems [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -64,54 +68,103 @@
 </pre>
 
 <hr />
-<a name="ShowItems2fCreateShowItemsUI"></a>
-<a name="robo193"></a><h2>ShowItems/CreateShowItemsUI [ Subprograms ]</h2>
+<a name="ShowItems2fShowItems2eCreateShowItemsUI"></a>
+<a name="robo155"></a><h2>ShowItems/ShowItems.CreateShowItemsUI [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create UI related to show items and destination for moving/copying
  items.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateShowItemsUI</strong><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> CreateShowItemsUI<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fDestinationDirectory"></a>
-<a name="robo194"></a><h2>ShowItems/DestinationDirectory [ Subprograms ]</h2>
+<a name="ShowItems2fShowItems2eDestinationDirectory"></a>
+<a name="robo156"></a><h2>ShowItems/ShowItems.DestinationDirectory [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Current directory previewed. Used during showing destination target for
  various commands
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>DestinationDirectory</strong><span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+<pre class="source">   DestinationDirectory<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fScaleImage"></a>
-<a name="robo195"></a><h2>ShowItems/ScaleImage [ Subprograms ]</h2>
+<a name="ShowItems2fShowItems2eScaleImage"></a>
+<a name="robo157"></a><h2>ShowItems/ShowItems.ScaleImage [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Scale currently previewed image
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ScaleImage</strong><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> ScaleImage<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fShow5fSelected5fCommand"></a>
-<a name="robo198"></a><h2>ShowItems/Show_Selected_Command [ Subprograms ]</h2>
+<a name="ShowItems2fShowItems2eShowDestination"></a>
+<a name="robo158"></a><h2>ShowItems/ShowItems.ShowDestination [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show destination directory for various commands in the preview widget
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> ShowDestination<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItems2fShowItems2eShowOutput"></a>
+<a name="robo160"></a><h2>ShowItems/ShowItems.ShowOutput [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show the UI for the output of the user command
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> ShowOutput<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItems2fShowItems2eShowPreview"></a>
+<a name="robo161"></a><h2>ShowItems/ShowItems.ShowPreview [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show preview of the currently selected file or directory. If preview is
+ not available, show information about the selected item.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> ShowPreview<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItems2fShowItems2eUpdateOutput"></a>
+<a name="robo162"></a><h2>ShowItems/ShowItems.UpdateOutput [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Update UI with the output of the user command
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> UpdateOutput<span class="sign">(</span>Text<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItems2fShowItems2eShow5fSelected5fCommand"></a>
+<a name="robo251"></a><h2>ShowItems/ShowItems.Show_Selected_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">ShowItems</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show preview or information about the currently selected file or
  directory after user select it in the directory view
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Show_Selected_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Show_Selected_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -123,35 +176,16 @@
  Argc       - Number of arguments passed to the command. Unused
  Argv       - Values of arguments passed to the command. Unused
 </pre>
-
-<hr />
-<a name="ShowItems2fShowDestination"></a>
-<a name="robo199"></a><h2>ShowItems/ShowDestination [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Show destination directory for various commands in the preview widget
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
 </pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowDestination</strong><span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="ShowItems2fShowPreview"></a>
-<a name="robo201"></a><h2>ShowItems/ShowPreview [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Show preview of the currently selected file or directory. If preview is
- not available, show information about the selected item.
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowPreview</strong><span class="sign">;</span>
+<p class="item_name">COMMANDS</p>
+<pre> ShowSelected
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/showitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/showitems.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

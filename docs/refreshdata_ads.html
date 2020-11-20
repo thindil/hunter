@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,25 +22,26 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo16">Hunter/RefreshData</a></li>
+<li>1. <a href="#robo20">RefreshData/RefreshData</a></li>
 <ul>
-<li>1.1. <a href="#robo25">RefreshData/InotifyTask</a></li>
-<li>1.2. <a href="#robo69">RefreshData/TemporaryStop</a></li>
-<li>1.3. <a href="./refreshdata_adb.html#robo70">RefreshData/Timer_Token</a></li>
-<li>1.4. <a href="./refreshdata_adb.html#robo184">RefreshData/CheckItems</a></li>
-<li>1.5. <a href="#robo185">RefreshData/StartTimer</a></li>
-<li>1.6. <a href="#robo186">RefreshData/UpdateWatch</a></li>
+<li>1.1. <a href="#robo28">RefreshData/RefreshData.InotifyTask</a></li>
+<li>1.2. <a href="./refreshdata_adb.html#robo81">RefreshData/RefreshData.Timer_Token</a></li>
+<li>1.3. <a href="./refreshdata_adb.html#robo150">RefreshData/RefreshData.CheckItems</a></li>
+<li>1.4. <a href="#robo151">RefreshData/RefreshData.StartTimer</a></li>
+<li>1.5. <a href="#robo152">RefreshData/RefreshData.UpdateWatch</a></li>
 </ul>
 </ul>
 <hr />
-<a name="Hunter2fRefreshData"></a>
-<a name="robo16"></a><h2>Hunter/RefreshData [ Packages ]</h2>
+<a name="RefreshData2fRefreshData"></a>
+<a name="robo20"></a><h2>RefreshData/RefreshData [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -52,54 +53,41 @@
 </pre>
 
 <hr />
-<a name="RefreshData2fInotifyTask"></a>
-<a name="robo25"></a><h2>RefreshData/InotifyTask [ Tasks ]</h2>
+<a name="RefreshData2fRefreshData2eInotifyTask"></a>
+<a name="robo28"></a><h2>RefreshData/RefreshData.InotifyTask [ Tasks ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">RefreshData</a> ] [ <a href="./robo_tasks.html#robo_top_of_doc">Tasks</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo20">RefreshData</a> ] [ <a href="./robo_tasks.html#robo_top_of_doc">Tasks</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Task to monitor changes on disk
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">task</span> <strong>InotifyTask</strong> <span class="keyword">is</span>
+<pre class="source">   <span class="keyword">task</span> InotifyTask <span class="keyword">is</span>
       <span class="keyword">entry</span> Start<span class="sign">;</span>
-   <span class="keyword">end</span> <strong>InotifyTask</strong><span class="sign">;</span>
+   <span class="keyword">end</span> InotifyTask<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="RefreshData2fTemporaryStop"></a>
-<a name="robo69"></a><h2>RefreshData/TemporaryStop [ Variables ]</h2>
+<a name="RefreshData2fRefreshData2eStartTimer"></a>
+<a name="robo151"></a><h2>RefreshData/RefreshData.StartTimer [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">RefreshData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> If true, temporary stop refreshing directory listing (mainly in trash).
- Default is false
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <strong>TemporaryStop</strong><span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="RefreshData2fStartTimer"></a>
-<a name="robo185"></a><h2>RefreshData/StartTimer [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo20">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Start timer for refreshing current directory listing
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>StartTimer</strong><span class="sign">(</span>Path<span class="sign">:</span> String <span class="sign">:</span><span class="sign">=</span> <span class="quote">""</span><span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> StartTimer<span class="sign">(</span>Path<span class="sign">:</span> String <span class="sign">:</span><span class="sign">=</span> <span class="quote">""</span><span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="RefreshData2fUpdateWatch"></a>
-<a name="robo186"></a><h2>RefreshData/UpdateWatch [ Subprograms ]</h2>
+<a name="RefreshData2fRefreshData2eUpdateWatch"></a>
+<a name="robo152"></a><h2>RefreshData/RefreshData.UpdateWatch [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo20">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Update inotify watch with new path to watch.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>UpdateWatch</strong><span class="sign">(</span>Path<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> UpdateWatch<span class="sign">(</span>Path<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Path - Full path to the directory which will be watched for changes.
@@ -107,7 +95,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/refreshdata.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/refreshdata.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,45 +22,47 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo41">MCommands/ExitCommand</a></li>
-<li>2. <a href="#robo137">MCommands/Arrange_Path_Command</a></li>
-<li>3. <a href="#robo138">MCommands/Cancel_Action_Command</a></li>
-<li>4. <a href="#robo139">MCommands/Hide_Widget_Command</a></li>
-<li>5. <a href="#robo140">MCommands/Invoke_Button_Command</a></li>
-<li>6. <a href="#robo141">MCommands/Quit_Command</a></li>
-<li>7. <a href="#robo142">MCommands/Show_File_Command</a></li>
-<li>8. <a href="#robo143">MCommands/Show_File_Menu_Command</a></li>
-<li>9. <a href="#robo144">MCommands/Sort_Command</a></li>
-<li>10. <a href="#robo145">MCommands/Toggle_Selection_Command</a></li>
+<li>1. <a href="#robo42">MCommands/MCommands.ExitCommand</a></li>
+<li>2. <a href="#robo198">MCommands/MCommands.Arrange_Path_Command</a></li>
+<li>3. <a href="#robo199">MCommands/MCommands.Cancel_Action_Command</a></li>
+<li>4. <a href="#robo200">MCommands/MCommands.Hide_Widget_Command</a></li>
+<li>5. <a href="#robo201">MCommands/MCommands.Invoke_Button_Command</a></li>
+<li>6. <a href="#robo202">MCommands/MCommands.Quit_Command</a></li>
+<li>7. <a href="#robo203">MCommands/MCommands.Show_File_Command</a></li>
+<li>8. <a href="#robo204">MCommands/MCommands.Show_File_Menu_Command</a></li>
+<li>9. <a href="#robo205">MCommands/MCommands.Sort_Command</a></li>
+<li>10. <a href="#robo206">MCommands/MCommands.Toggle_Selection_Command</a></li>
 </ul>
 <hr />
-<a name="MCommands2fExitCommand"></a>
-<a name="robo41"></a><h2>MCommands/ExitCommand [ Types ]</h2>
+<a name="MCommands2fMCommands2eExitCommand"></a>
+<a name="robo42"></a><h2>MCommands/MCommands.ExitCommand [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used in creating exit handler for the program
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>ExitCommand</strong> <span class="keyword">is</span> <span class="keyword">new</span> Tcl<span class="sign">.</span>Ada<span class="sign">.</span>Generic_ExitHandler<span class="sign">(</span>Integer<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">package</span> ExitCommand <span class="keyword">is</span> <span class="keyword">new</span> Tcl<span class="sign">.</span>Ada<span class="sign">.</span>Generic_ExitHandler<span class="sign">(</span>Integer<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="MCommands2fArrange5fPath5fCommand"></a>
-<a name="robo137"></a><h2>MCommands/Arrange_Path_Command [ Subprograms ]</h2>
+<a name="MCommands2fMCommands2eArrange5fPath5fCommand"></a>
+<a name="robo198"></a><h2>MCommands/MCommands.Arrange_Path_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Arrange path buttons when they window were resized
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Arrange_Path_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Arrange_Path_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -68,24 +70,29 @@
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> ClientData - Custom data send to the command. Unused
- Interp     - Tcl interpreter in which command was executed. Unused
+ Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
  Argv       - Values of arguments passed to the command
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> ArrangePath buttonsframe width
+ Buttonsframe is the pathname of the frame which hold buttons which will
+ be resized. Width is the new width for the buttonsframe
+</pre>
 
 <hr />
-<a name="MCommands2fCancel5fAction5fCommand"></a>
-<a name="robo138"></a><h2>MCommands/Cancel_Action_Command [ Subprograms ]</h2>
+<a name="MCommands2fMCommands2eCancel5fAction5fCommand"></a>
+<a name="robo199"></a><h2>MCommands/MCommands.Cancel_Action_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Select all or deselect all items in directory view
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Cancel_Action_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Cancel_Action_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -100,42 +107,48 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK;
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> CancelAction
+</pre>
 
 <hr />
-<a name="MCommands2fHide5fWidget5fCommand"></a>
-<a name="robo139"></a><h2>MCommands/Hide_Widget_Command [ Subprograms ]</h2>
+<a name="MCommands2fMCommands2eHide5fWidget5fCommand"></a>
+<a name="robo200"></a><h2>MCommands/MCommands.Hide_Widget_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Hide text entry or message, depends on which is visible
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Hide_Widget_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Hide_Widget_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> ClientData - Custom data send to the command. Unused
+<pre> ClientData - Custom data send to the command.
  Interp     - Tcl interpreter in which command was executed.
- Argc       - Number of arguments passed to the command. Unused
- Argv       - Values of arguments passed to the command. Unused
+ Argc       - Number of arguments passed to the command.
+ Argv       - Values of arguments passed to the command.
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> HideWidget
+</pre>
 
 <hr />
-<a name="MCommands2fInvoke5fButton5fCommand"></a>
-<a name="robo140"></a><h2>MCommands/Invoke_Button_Command [ Subprograms ]</h2>
+<a name="MCommands2fMCommands2eInvoke5fButton5fCommand"></a>
+<a name="robo201"></a><h2>MCommands/MCommands.Invoke_Button_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Invoke the selected button if it is mapped
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Invoke_Button_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Invoke_Button_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -150,33 +163,40 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> InvokeButton buttonname
+ Buttonname is pathname of the button which will be invoked
+</pre>
 
 <hr />
-<a name="MCommands2fQuit5fCommand"></a>
-<a name="robo141"></a><h2>MCommands/Quit_Command [ Subprograms ]</h2>
+<a name="MCommands2fMCommands2eQuit5fCommand"></a>
+<a name="robo202"></a><h2>MCommands/MCommands.Quit_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Save preferences and clear trash on exit from the program
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>Quit_Command</strong><span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">)</span> <span class="keyword">with</span>
+<pre class="source">   <span class="keyword">procedure</span> Quit_Command<span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">)</span> <span class="keyword">with</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> ClientData - Custom data send to the command. Unused
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> Quit
+</pre>
 
 <hr />
-<a name="MCommands2fShow5fFile5fCommand"></a>
-<a name="robo142"></a><h2>MCommands/Show_File_Command [ Subprograms ]</h2>
+<a name="MCommands2fMCommands2eShow5fFile5fCommand"></a>
+<a name="robo203"></a><h2>MCommands/MCommands.Show_File_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show content of the selected file. Used in about menu
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Show_File_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Show_File_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -191,17 +211,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> ShowFile filename
+ Filename is the name of the file which preview will be show
+</pre>
 
 <hr />
-<a name="MCommands2fShow5fFile5fMenu5fCommand"></a>
-<a name="robo143"></a><h2>MCommands/Show_File_Menu_Command [ Subprograms ]</h2>
+<a name="MCommands2fMCommands2eShow5fFile5fMenu5fCommand"></a>
+<a name="robo204"></a><h2>MCommands/MCommands.Show_File_Menu_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show menu for the selected items in current directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Show_File_Menu_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Show_File_Menu_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -216,17 +240,22 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> ShowFileMenu x y
+ X is X coordinate where menu will be show, Y is Y coordinate where menu
+ will be show
+</pre>
 
 <hr />
-<a name="MCommands2fSort5fCommand"></a>
-<a name="robo144"></a><h2>MCommands/Sort_Command [ Subprograms ]</h2>
+<a name="MCommands2fMCommands2eSort5fCommand"></a>
+<a name="robo205"></a><h2>MCommands/MCommands.Sort_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Sort directory view based on which header was clicked
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Sort_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Sort_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -234,24 +263,29 @@
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> ClientData - Custom data send to the command. Unused
- Interp     - Tcl interpreter in which command was executed. Unused
+ Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
  Argv       - Values of arguments passed to the command.
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> Sort columnname
+ Columnname is a name of column which will be used for sorting. Possible
+ values are name, modified, size and previewname
+</pre>
 
 <hr />
-<a name="MCommands2fToggle5fSelection5fCommand"></a>
-<a name="robo145"></a><h2>MCommands/Toggle_Selection_Command [ Subprograms ]</h2>
+<a name="MCommands2fMCommands2eToggle5fSelection5fCommand"></a>
+<a name="robo206"></a><h2>MCommands/MCommands.Toggle_Selection_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo23">MCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./mainwindow-commands_ads.html#robo12">MCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Select all or deselect all items in directory view
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Toggle_Selection_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Toggle_Selection_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -259,17 +293,20 @@
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> ClientData - Custom data send to the command. Unused
- Interp     - Tcl interpreter in which command was executed. Unused
+ Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
  Argv       - Values of arguments passed to the command. Unused
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> ToggleSelection
+</pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/mainwindow-commands.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/mainwindow-commands.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

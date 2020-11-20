@@ -6,8 +6,8 @@
 <meta http-equiv="Content-Style-Type" content="text/css" />
 <meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
 <link rel="stylesheet" href="./robodoc.css" type="text/css" />
-<title>./src/programsmenu.adb</title>
-<!-- Source: ./src/programsmenu.adb -->
+<title>./src/modules-commands.adb</title>
+<!-- Source: ./src/modules-commands.adb -->
 <!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
 </head>
 <body>
@@ -30,67 +30,27 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo45">ProgramsMenu/ProgramsMenu.Programs_Sorting</a></li>
-<li>2. <a href="#robo79">ProgramsMenu/ProgramsMenu.ApplicationsList</a></li>
-<li>3. <a href="#robo80">ProgramsMenu/ProgramsMenu.NamesList</a></li>
-<li>4. <a href="#robo241">ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command</a></li>
-<li>5. <a href="#robo242">ProgramsMenu/ProgramsMenu.Search_Program_Command</a></li>
-<li>6. <a href="#robo243">ProgramsMenu/ProgramsMenu.Set_Application_Command</a></li>
+<li>1. <a href="#robo207">MCommands2/MCommands2.Execute_Module_Command_Command</a></li>
+<li>2. <a href="#robo208">MCommands2/MCommands2.Get_Config_Command</a></li>
+<li>3. <a href="#robo209">MCommands2/MCommands2.Toggle_Module_Command</a></li>
 </ul>
 <hr />
-<a name="ProgramsMenu2fProgramsMenu2ePrograms5fSorting"></a>
-<a name="robo45"></a><h2>ProgramsMenu/ProgramsMenu.Programs_Sorting [ Types ]</h2>
+<a name="MCommands22fMCommands22eExecute5fModule5fCommand5fCommand"></a>
+<a name="robo207"></a><h2>MCommands2/MCommands2.Execute_Module_Command_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo19">ProgramsMenu</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./modules-commands_ads.html#robo14">MCommands2</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Used in sorting available programs
+<pre> Execute the selected module command and show its output if needed
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> Programs_Sorting <span class="keyword">is</span> <span class="keyword">new</span> UnboundedString_Container<span class="sign">.</span>Generic_Sorting<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="ProgramsMenu2fProgramsMenu2eApplicationsList"></a>
-<a name="robo79"></a><h2>ProgramsMenu/ProgramsMenu.ApplicationsList [ Variables ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo19">ProgramsMenu</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> List of all applications which can be used to execute files or
- directories
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   ApplicationsList<span class="sign">:</span> Bookmarks_Container<span class="sign">.</span>Map<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="ProgramsMenu2fProgramsMenu2eNamesList"></a>
-<a name="robo80"></a><h2>ProgramsMenu/ProgramsMenu.NamesList [ Variables ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo19">ProgramsMenu</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> List of all applications showed in the menu
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   NamesList<span class="sign">:</span> UnboundedString_Container<span class="sign">.</span>Vector<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="ProgramsMenu2fProgramsMenu2eHide5fOn5fFocus5fOut5fCommand"></a>
-<a name="robo241"></a><h2>ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command [ Commands ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo19">ProgramsMenu</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> If application menu lost focus, hide it
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> Hide_On_Focus_Out_Command
+<pre class="source">   <span class="keyword">function</span> Execute_Module_Command_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> ClientData - Custom data send to the command.
+<pre> ClientData - Custom data send to the command. Unused
  Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command.
  Argv       - Values of arguments passed to the command.
@@ -99,20 +59,50 @@
 <pre> This function always return TCL_OK
 </pre>
 <p class="item_name">COMMANDS</p>
-<pre> HideOnFocusOut
+<pre> ExecuteCommand command ?path?
+ Command is the command with attributes to execute. Path is the working
+ directory in which the command should be executed
 </pre>
 
 <hr />
-<a name="ProgramsMenu2fProgramsMenu2eSearch5fProgram5fCommand"></a>
-<a name="robo242"></a><h2>ProgramsMenu/ProgramsMenu.Search_Program_Command [ Commands ]</h2>
+<a name="MCommands22fMCommands22eGet5fConfig5fCommand"></a>
+<a name="robo208"></a><h2>MCommands2/MCommands2.Get_Config_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo19">ProgramsMenu</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./modules-commands_ads.html#robo14">MCommands2</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Search the programs menu for the selected text (case insensitive) and
- show only matching applications
+<pre> Get the value of the selected configuration option of the program
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> Search_Program_Command
+<pre class="source">   <span class="keyword">function</span> Get_Config_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command.
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> GetConfig optionname
+ Optionname is the name of the program's option which value will be get
+</pre>
+
+<hr />
+<a name="MCommands22fMCommands22eToggle5fModule5fCommand"></a>
+<a name="robo209"></a><h2>MCommands2/MCommands2.Toggle_Module_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./modules-commands_ads.html#robo14">MCommands2</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Enable or disable the selected module
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Toggle_Module_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -122,47 +112,19 @@
 <pre> ClientData - Custom data send to the command. Unused
  Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
- Argv       - Values of arguments passed to the command. Unused
-</pre>
-<p class="item_name">RESULT</p>
-<pre> This function always return TCL_OK
-</pre>
-<p class="item_name">COMMANDS</p>
-<pre> SearchProgram
-</pre>
-
-<hr />
-<a name="ProgramsMenu2fProgramsMenu2eSet5fApplication5fCommand"></a>
-<a name="robo243"></a><h2>ProgramsMenu/ProgramsMenu.Set_Application_Command [ Commands ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo19">ProgramsMenu</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Set the selected application as a default application to open the
- selected mime type items
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> Set_Application_Command
-     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
-      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
-      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
-      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> ClientData - Custom data send to the command.
- Interp     - Tcl interpreter in which command was executed.
- Argc       - Number of arguments passed to the command.
  Argv       - Values of arguments passed to the command.
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
 <p class="item_name">COMMANDS</p>
-<pre> SetApplication
+<pre> ToggleModule path
+ Path is the path to the module which will be enabled or disabled
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/programsmenu.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
+<p>Generated from ./src/modules-commands.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

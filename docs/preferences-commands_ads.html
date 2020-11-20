@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,63 +22,74 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo24">Preferences/PCommands</a></li>
+<li>1. <a href="#robo17">Preferences/PCommands</a></li>
 <ul>
-<li>1.1. <a href="#robo154">PCommands/AddCommands</a></li>
-<li>1.2. <a href="./preferences-commands_adb.html#robo155">PCommands/Close_Preferences_Command</a></li>
-<li>1.3. <a href="./preferences-commands_adb.html#robo156">PCommands/Restore_Defaults_Command</a></li>
-<li>1.4. <a href="./preferences-commands_adb.html#robo157">PCommands/Set_Clear_Trash_Command</a></li>
-<li>1.5. <a href="./preferences-commands_adb.html#robo158">PCommands/Set_Color_Text_Command</a></li>
-<li>1.6. <a href="./preferences-commands_adb.html#robo159">PCommands/Set_Color_Theme_Command</a></li>
-<li>1.7. <a href="./preferences-commands_adb.html#robo160">PCommands/Set_Delete_Files_Command</a></li>
-<li>1.8. <a href="./preferences-commands_adb.html#robo161">PCommands/Set_Label_Command</a></li>
-<li>1.9. <a href="./preferences-commands_adb.html#robo162">PCommands/Set_Monospace_Font_Command</a></li>
-<li>1.10. <a href="./preferences-commands_adb.html#robo163">PCommands/Set_Overwrite_Command</a></li>
-<li>1.11. <a href="./preferences-commands_adb.html#robo164">PCommands/Set_Scale_Images_Command</a></li>
-<li>1.12. <a href="./preferences-commands_adb.html#robo165">PCommands/Set_Show_Finished_Info_Command</a></li>
-<li>1.13. <a href="./preferences-commands_adb.html#robo166">PCommands/Set_Show_Hidden_Files_Command</a></li>
-<li>1.14. <a href="./preferences-commands_adb.html#robo167">PCommands/Set_Show_Modification_Time_Command</a></li>
-<li>1.15. <a href="./preferences-commands_adb.html#robo168">PCommands/Set_Show_Preview_Command</a></li>
-<li>1.16. <a href="./preferences-commands_adb.html#robo169">PCommands/Set_Stay_In_Old_Command</a></li>
-<li>1.17. <a href="./preferences-commands_adb.html#robo170">PCommands/Set_Toolbars_On_Top_Command</a></li>
-<li>1.18. <a href="./preferences-commands_adb.html#robo171">PCommands/Set_Toolbars_Size_Command</a></li>
-<li>1.19. <a href="./preferences-commands_adb.html#robo172">PCommands/Set_UI_Theme_Command</a></li>
-<li>1.20. <a href="./preferences-commands_adb.html#robo173">PCommands/Show_Preferences_Command</a></li>
+<li>1.1. <a href="#robo141">PCommands/PCommands.AddCommands</a></li>
+<li>1.2. <a href="./preferences-commands_adb.html#robo213">PCommands/PCommands.Add_Command_Command</a></li>
+<li>1.3. <a href="./preferences-commands_adb.html#robo214">PCommands/PCommands.Change_Shortcut_Command</a></li>
+<li>1.4. <a href="./preferences-commands_adb.html#robo215">PCommands/PCommands.Close_Dialog_Command</a></li>
+<li>1.5. <a href="./preferences-commands_adb.html#robo216">PCommands/PCommands.Close_Preferences_Command</a></li>
+<li>1.6. <a href="./preferences-commands_adb.html#robo217">PCommands/PCommands.Delete_Command_Command</a></li>
+<li>1.7. <a href="./preferences-commands_adb.html#robo218">PCommands/PCommands.Edit_Command_Command</a></li>
+<li>1.8. <a href="./preferences-commands_adb.html#robo219">PCommands/PCommands.Reset_Command_Command</a></li>
+<li>1.9. <a href="./preferences-commands_adb.html#robo220">PCommands/PCommands.Restore_Default_Shortcuts_Command</a></li>
+<li>1.10. <a href="./preferences-commands_adb.html#robo221">PCommands/PCommands.Restore_Defaults_Command</a></li>
+<li>1.11. <a href="./preferences-commands_adb.html#robo222">PCommands/PCommands.Set_Clear_Trash_Command</a></li>
+<li>1.12. <a href="./preferences-commands_adb.html#robo223">PCommands/PCommands.Set_Color_Text_Command</a></li>
+<li>1.13. <a href="./preferences-commands_adb.html#robo224">PCommands/PCommands.Set_Color_Theme_Command</a></li>
+<li>1.14. <a href="./preferences-commands_adb.html#robo225">PCommands/PCommands.Set_Delete_Files_Command</a></li>
+<li>1.15. <a href="./preferences-commands_adb.html#robo226">PCommands/PCommands.Set_Label_Command</a></li>
+<li>1.16. <a href="./preferences-commands_adb.html#robo227">PCommands/PCommands.Set_Monospace_Font_Command</a></li>
+<li>1.17. <a href="./preferences-commands_adb.html#robo228">PCommands/PCommands.Set_Overwrite_Command</a></li>
+<li>1.18. <a href="./preferences-commands_adb.html#robo229">PCommands/PCommands.Set_Scale_Images_Command</a></li>
+<li>1.19. <a href="./preferences-commands_adb.html#robo230">PCommands/PCommands.Set_Show_Finished_Info_Command</a></li>
+<li>1.20. <a href="./preferences-commands_adb.html#robo231">PCommands/PCommands.Set_Show_Hidden_Files_Command</a></li>
+<li>1.21. <a href="./preferences-commands_adb.html#robo232">PCommands/PCommands.Set_Show_Modification_Time_Command</a></li>
+<li>1.22. <a href="./preferences-commands_adb.html#robo233">PCommands/PCommands.Set_Show_Preview_Command</a></li>
+<li>1.23. <a href="./preferences-commands_adb.html#robo234">PCommands/PCommands.Set_Stay_In_Old_Command</a></li>
+<li>1.24. <a href="./preferences-commands_adb.html#robo235">PCommands/PCommands.Set_Toolbars_On_Top_Command</a></li>
+<li>1.25. <a href="./preferences-commands_adb.html#robo236">PCommands/PCommands.Set_Toolbars_Size_Command</a></li>
+<li>1.26. <a href="./preferences-commands_adb.html#robo237">PCommands/PCommands.Set_UI_Theme_Command</a></li>
+<li>1.27. <a href="./preferences-commands_adb.html#robo238">PCommands/PCommands.Show_Module_Command</a></li>
+<li>1.28. <a href="./preferences-commands_adb.html#robo239">PCommands/PCommands.Show_Preferences_Command</a></li>
+<li>1.29. <a href="./preferences-commands_adb.html#robo240">PCommands/PCommands.Start_Changing_Shortcut_Command</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Preferences2fPCommands"></a>
-<a name="robo24"></a><h2>Preferences/PCommands [ Packages ]</h2>
+<a name="robo17"></a><h2>Preferences/PCommands [ Packages ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo14">Preferences</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences_ads.html#robo18">Preferences</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Provides code for Tcl commands related to the program preferences
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source"><span class="keyword">package</span> <a href="./preferences_ads.html#robo14">Preferences</a><span class="sign">.</span><a href="./bookmarks-commands_ads.html#robo0">Commands</a> <span class="keyword">is</span>
+<pre class="source"><span class="keyword">package</span> <a href="./preferences_ads.html#robo18">Preferences</a><span class="sign">.</span><a href="./bookmarks-commands_ads.html#robo3">Commands</a> <span class="keyword">is</span>
 </pre>
 
 <hr />
-<a name="PCommands2fAddCommands"></a>
-<a name="robo154"></a><h2>PCommands/AddCommands [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eAddCommands"></a>
+<a name="robo141"></a><h2>PCommands/PCommands.AddCommands [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo17">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Adds the Ada code to the Tcl interpreter
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>AddCommands</strong><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> AddCommands<span class="sign">;</span>
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/preferences-commands.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/preferences-commands.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

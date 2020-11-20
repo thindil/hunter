@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,30 +22,31 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo85">ActivateItems/Activate_Item_Command</a></li>
-<li>2. <a href="#robo87">ActivateItems/Execute_Command</a></li>
-<li>3. <a href="#robo88">ActivateItems/Execute_With_Command</a></li>
-<li>4. <a href="#robo89">ActivateItems/ExecuteFile</a></li>
-<li>5. <a href="#robo90">ActivateItems/Toggle_Execute_With_Command</a></li>
+<li>1. <a href="#robo184">ActivateItems/ActivateItems.Activate_Item_Command</a></li>
+<li>2. <a href="#robo185">ActivateItems/ActivateItems.Execute_Command</a></li>
+<li>3. <a href="#robo186">ActivateItems/ActivateItems.Execute_With_Command</a></li>
+<li>4. <a href="#robo187">ActivateItems/ActivateItems.Toggle_Execute_With_Command</a></li>
 </ul>
 <hr />
-<a name="ActivateItems2fActivate5fItem5fCommand"></a>
-<a name="robo85"></a><h2>ActivateItems/Activate_Item_Command [ Subprograms ]</h2>
+<a name="ActivateItems2fActivateItems2eActivate5fItem5fCommand"></a>
+<a name="robo184"></a><h2>ActivateItems/ActivateItems.Activate_Item_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo2">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo1">ActivateItems</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> "Activate" selected file or directory. Action depends on what selected
  item is. For example: it go to selected directory, opens text files in
  editor and so on.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Activate_Item_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Activate_Item_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -55,22 +56,25 @@
 <pre> ClientData - Custom data send to the command. Unused
  Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
- Argv       - Values of arguments passed to the command.
+ Argv       - Values of arguments passed to the command.a Unused
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> ActivateItem
+</pre>
 
 <hr />
-<a name="ActivateItems2fExecute5fCommand"></a>
-<a name="robo87"></a><h2>ActivateItems/Execute_Command [ Subprograms ]</h2>
+<a name="ActivateItems2fActivateItems2eExecute5fCommand"></a>
+<a name="robo185"></a><h2>ActivateItems/ActivateItems.Execute_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo2">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo1">ActivateItems</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Execute the selected file or directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Execute_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Execute_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -85,18 +89,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> Execute
+</pre>
 
 <hr />
-<a name="ActivateItems2fExecute5fWith5fCommand"></a>
-<a name="robo88"></a><h2>ActivateItems/Execute_With_Command [ Subprograms ]</h2>
+<a name="ActivateItems2fActivateItems2eExecute5fWith5fCommand"></a>
+<a name="robo186"></a><h2>ActivateItems/ActivateItems.Execute_With_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo2">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo1">ActivateItems</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Execute the selected file or directory with the selected command
  entered by an user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Execute_With_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Execute_With_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -111,39 +118,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK;
 </pre>
-
-<hr />
-<a name="ActivateItems2fExecuteFile"></a>
-<a name="robo89"></a><h2>ActivateItems/ExecuteFile [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo2">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Execute the selected file
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>ExecuteFile</strong>
-     <span class="sign">(</span>FileName<span class="sign">,</span> Arguments<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">return</span> GNAT<span class="sign">.</span>OS_Lib<span class="sign">.</span>Process_Id <span class="keyword">is</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> FileName  - Name of file (full path) which will be executed
- Arguments - Additional arguments passed to the file
-</pre>
-<p class="item_name">RESULT</p>
-<pre> Spawned process ID of the executed file. If the file cannot
- be executed, return Invalid_Pid
+<p class="item_name">COMMANDS</p>
+<pre> ExecuteWith
 </pre>
 
 <hr />
-<a name="ActivateItems2fToggle5fExecute5fWith5fCommand"></a>
-<a name="robo90"></a><h2>ActivateItems/Toggle_Execute_With_Command [ Subprograms ]</h2>
+<a name="ActivateItems2fActivateItems2eToggle5fExecute5fWith5fCommand"></a>
+<a name="robo187"></a><h2>ActivateItems/ActivateItems.Toggle_Execute_With_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo2">ActivateItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./activateitems_ads.html#robo1">ActivateItems</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show text entry to enter with what program execute selected file or
  directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Toggle_Execute_With_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Toggle_Execute_With_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -158,10 +147,13 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> ToggleExecuteWith
+</pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/activateitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/activateitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

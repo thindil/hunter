@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="./robodoc.css" type="text/css" />
+<title>./src/modules.ads</title>
+<!-- Source: ./src/modules.ads -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="./sources.html#top">Source files</a>
+<a class="menuitem" href="./index.html#top">Index</a>
+<a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
+<a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
+<a class="menuitem" href="./robo_types.html#top">Types</a>
+<a class="menuitem" href="./robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo15">Modules/Modules</a></li>
+<ul>
+<li>1.1. <a href="./modules-commands_ads.html#robo14">Modules/MCommands2</a></li>
+<ul>
+<li>1.1.1. <a href="./modules-commands_ads.html#robo133">MCommands2/MCommands2.AddCommands</a></li>
+<li>1.1.2. <a href="./modules-commands_adb.html#robo207">MCommands2/MCommands2.Execute_Module_Command_Command</a></li>
+<li>1.1.3. <a href="./modules-commands_adb.html#robo208">MCommands2/MCommands2.Get_Config_Command</a></li>
+<li>1.1.4. <a href="./modules-commands_adb.html#robo209">MCommands2/MCommands2.Toggle_Module_Command</a></li>
+</ul>
+<li>1.2. <a href="#robo43">Modules/Modules.Triggers</a></li>
+<li>1.3. <a href="#robo74">Modules/Modules.Enabled_Modules</a></li>
+<li>1.4. <a href="#robo136">Modules/Modules.Execute_Modules</a></li>
+<li>1.5. <a href="#robo137">Modules/Modules.LoadModules</a></li>
+</ul>
+</ul>
+<hr />
+<a name="Modules2fModules"></a>
+<a name="robo15"></a><h2>Modules/Modules [ Packages ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Provide code for manipulating the program's modules
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="keyword">package</span> <strong>Modules</strong> <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="Modules2fModules2eTriggers"></a>
+<a name="robo43"></a><h2>Modules/Modules.Triggers [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo15">Modules</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> The program states on which the selected the program's module code will
+ be triggered
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">type</span> Triggers <span class="keyword">is</span> <span class="sign">(</span>On_Quit<span class="sign">,</span> On_Activate<span class="sign">,</span> On_Enter<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">OPTIONS</p>
+<pre> On_Quit     - The program quits normally, triggered after the config is
+               saved but before clear the <a href="./trash_ads.html#robo25">Trash</a> and stop inotify
+ On_Activate - On activating by the user the selected directory or file
+               on the directory list
+ On_Enter    - On entering the selected directory: during the start the
+               program, when the user activate it on the directory list,
+               when the user uses path buttons or when the user uses
+               bookmarks
+</pre>
+
+<hr />
+<a name="Modules2fModules2eEnabled5fModules"></a>
+<a name="robo74"></a><h2>Modules/Modules.Enabled_Modules [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo15">Modules</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Store paths to the enabled the program's modules
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Enabled_Modules<span class="sign">:</span> UnboundedString_Container<span class="sign">.</span>Vector<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Modules2fModules2eExecute5fModules"></a>
+<a name="robo136"></a><h2>Modules/Modules.Execute_Modules [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo15">Modules</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Execute the program modules code based on the selected trigger
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> Execute_Modules<span class="sign">(</span>State<span class="sign">:</span> Triggers<span class="sign">;</span> Arguments<span class="sign">:</span> String <span class="sign">:</span><span class="sign">=</span> <span class="quote">""</span><span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> State     - Trigger state on which the module code will be executed
+ Arguments - Arguments passed to the Tcl code. Can be empty. Default
+             value is empty
+</pre>
+
+<hr />
+<a name="Modules2fModules2eLoadModules"></a>
+<a name="robo137"></a><h2>Modules/Modules.LoadModules [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo15">Modules</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Load all enabled modules at start the program
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> LoadModules<span class="sign">;</span>
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/modules.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
+</p>
+</div> <!-- footer -->
+</body>
+</html>
+

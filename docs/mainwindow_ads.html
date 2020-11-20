@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,41 +22,43 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo11">Hunter/MainWindow</a></li>
+<li>1. <a href="#robo11">MainWindow/MainWindow</a></li>
 <ul>
-<li>1.1. <a href="./mainwindow-commands_ads.html#robo23">MainWindow/MCommands</a></li>
+<li>1.1. <a href="./mainwindow-commands_ads.html#robo12">MainWindow/MCommands</a></li>
 <ul>
-<li>1.1.1. <a href="./mainwindow-commands_adb.html#robo41">MCommands/ExitCommand</a></li>
-<li>1.1.2. <a href="./mainwindow-commands_ads.html#robo136">MCommands/AddCommands</a></li>
-<li>1.1.3. <a href="./mainwindow-commands_adb.html#robo137">MCommands/Arrange_Path_Command</a></li>
-<li>1.1.4. <a href="./mainwindow-commands_adb.html#robo138">MCommands/Cancel_Action_Command</a></li>
-<li>1.1.5. <a href="./mainwindow-commands_adb.html#robo139">MCommands/Hide_Widget_Command</a></li>
-<li>1.1.6. <a href="./mainwindow-commands_adb.html#robo140">MCommands/Invoke_Button_Command</a></li>
-<li>1.1.7. <a href="./mainwindow-commands_adb.html#robo141">MCommands/Quit_Command</a></li>
-<li>1.1.8. <a href="./mainwindow-commands_adb.html#robo142">MCommands/Show_File_Command</a></li>
-<li>1.1.9. <a href="./mainwindow-commands_adb.html#robo143">MCommands/Show_File_Menu_Command</a></li>
-<li>1.1.10. <a href="./mainwindow-commands_adb.html#robo144">MCommands/Sort_Command</a></li>
-<li>1.1.11. <a href="./mainwindow-commands_adb.html#robo145">MCommands/Toggle_Selection_Command</a></li>
+<li>1.1.1. <a href="./mainwindow-commands_adb.html#robo42">MCommands/MCommands.ExitCommand</a></li>
+<li>1.1.2. <a href="./mainwindow-commands_ads.html#robo132">MCommands/MCommands.AddCommands</a></li>
+<li>1.1.3. <a href="./mainwindow-commands_adb.html#robo198">MCommands/MCommands.Arrange_Path_Command</a></li>
+<li>1.1.4. <a href="./mainwindow-commands_adb.html#robo199">MCommands/MCommands.Cancel_Action_Command</a></li>
+<li>1.1.5. <a href="./mainwindow-commands_adb.html#robo200">MCommands/MCommands.Hide_Widget_Command</a></li>
+<li>1.1.6. <a href="./mainwindow-commands_adb.html#robo201">MCommands/MCommands.Invoke_Button_Command</a></li>
+<li>1.1.7. <a href="./mainwindow-commands_adb.html#robo202">MCommands/MCommands.Quit_Command</a></li>
+<li>1.1.8. <a href="./mainwindow-commands_adb.html#robo203">MCommands/MCommands.Show_File_Command</a></li>
+<li>1.1.9. <a href="./mainwindow-commands_adb.html#robo204">MCommands/MCommands.Show_File_Menu_Command</a></li>
+<li>1.1.10. <a href="./mainwindow-commands_adb.html#robo205">MCommands/MCommands.Sort_Command</a></li>
+<li>1.1.11. <a href="./mainwindow-commands_adb.html#robo206">MCommands/MCommands.Toggle_Selection_Command</a></li>
 </ul>
-<li>1.2. <a href="#robo39">MainWindow/ItemActions</a></li>
-<li>1.3. <a href="#robo40">MainWindow/UnboundedString_Container</a></li>
-<li>1.4. <a href="#robo56">MainWindow/CurrentDirectory</a></li>
-<li>1.5. <a href="#robo57">MainWindow/CurrentSelected</a></li>
-<li>1.6. <a href="#robo58">MainWindow/NewAction</a></li>
-<li>1.7. <a href="#robo59">MainWindow/SelectedItems</a></li>
-<li>1.8. <a href="#robo134">MainWindow/CreateMainWindow</a></li>
-<li>1.9. <a href="#robo135">MainWindow/UpdateDirectoryList</a></li>
+<li>1.2. <a href="#robo40">MainWindow/MainWindow.ItemActions</a></li>
+<li>1.3. <a href="#robo41">MainWindow/MainWindow.UnboundedString_Container</a></li>
+<li>1.4. <a href="#robo66">MainWindow/MainWindow.CurrentDirectory</a></li>
+<li>1.5. <a href="#robo67">MainWindow/MainWindow.CurrentSelected</a></li>
+<li>1.6. <a href="#robo68">MainWindow/MainWindow.NewAction</a></li>
+<li>1.7. <a href="#robo69">MainWindow/MainWindow.SelectedItems</a></li>
+<li>1.8. <a href="#robo130">MainWindow/MainWindow.CreateMainWindow</a></li>
+<li>1.9. <a href="#robo131">MainWindow/MainWindow.UpdateDirectoryList</a></li>
 </ul>
 </ul>
 <hr />
-<a name="Hunter2fMainWindow"></a>
-<a name="robo11"></a><h2>Hunter/MainWindow [ Packages ]</h2>
+<a name="MainWindow2fMainWindow"></a>
+<a name="robo11"></a><h2>MainWindow/MainWindow [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -67,15 +69,15 @@
 </pre>
 
 <hr />
-<a name="MainWindow2fItemActions"></a>
-<a name="robo39"></a><h2>MainWindow/ItemActions [ Types ]</h2>
+<a name="MainWindow2fMainWindow2eItemActions"></a>
+<a name="robo40"></a><h2>MainWindow/MainWindow.ItemActions [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">MainWindow</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Types of action on files and directories
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">type</span> <strong>ItemActions</strong> <span class="keyword">is</span>
+<pre class="source">   <span class="keyword">type</span> ItemActions <span class="keyword">is</span>
      <span class="sign">(</span>CREATEFILE<span class="sign">,</span> CREATEDIRECTORY<span class="sign">,</span> RENAME<span class="sign">,</span> DELETE<span class="sign">,</span> COPY<span class="sign">,</span> MOVE<span class="sign">,</span> OPENWITH<span class="sign">,</span>
       GOTOPATH<span class="sign">,</span> CREATELINK<span class="sign">,</span> CLEARTRASH<span class="sign">,</span> SHOWTRASH<span class="sign">,</span> DELETETRASH<span class="sign">)</span><span class="sign">;</span>
 </pre>
@@ -95,76 +97,76 @@
 </pre>
 
 <hr />
-<a name="MainWindow2fUnboundedString5fContainer"></a>
-<a name="robo40"></a><h2>MainWindow/UnboundedString_Container [ Types ]</h2>
+<a name="MainWindow2fMainWindow2eUnboundedString5fContainer"></a>
+<a name="robo41"></a><h2>MainWindow/MainWindow.UnboundedString_Container [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">MainWindow</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store various Unbounded_String data in list.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>UnboundedString_Container</strong> <span class="keyword">is</span> <span class="keyword">new</span> Vectors<span class="sign">(</span>Positive<span class="sign">,</span>
+<pre class="source">   <span class="keyword">package</span> UnboundedString_Container <span class="keyword">is</span> <span class="keyword">new</span> Vectors<span class="sign">(</span>Positive<span class="sign">,</span>
       Unbounded_String<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="MainWindow2fCurrentDirectory"></a>
-<a name="robo56"></a><h2>MainWindow/CurrentDirectory [ Variables ]</h2>
+<a name="MainWindow2fMainWindow2eCurrentDirectory"></a>
+<a name="robo66"></a><h2>MainWindow/MainWindow.CurrentDirectory [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Currently selected directory to show
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>CurrentDirectory</strong><span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+<pre class="source">   CurrentDirectory<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="MainWindow2fCurrentSelected"></a>
-<a name="robo57"></a><h2>MainWindow/CurrentSelected [ Variables ]</h2>
+<a name="MainWindow2fMainWindow2eCurrentSelected"></a>
+<a name="robo67"></a><h2>MainWindow/MainWindow.CurrentSelected [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Full path to currently selected file or directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>CurrentSelected</strong><span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+<pre class="source">   CurrentSelected<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="MainWindow2fNewAction"></a>
-<a name="robo58"></a><h2>MainWindow/NewAction [ Variables ]</h2>
+<a name="MainWindow2fMainWindow2eNewAction"></a>
+<a name="robo68"></a><h2>MainWindow/MainWindow.NewAction [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Current performed action on files or directories
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>NewAction</strong><span class="sign">:</span> <a href="#robo39">ItemActions</a><span class="sign">;</span>
+<pre class="source">   NewAction<span class="sign">:</span> ItemActions<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="MainWindow2fSelectedItems"></a>
-<a name="robo59"></a><h2>MainWindow/SelectedItems [ Variables ]</h2>
+<a name="MainWindow2fMainWindow2eSelectedItems"></a>
+<a name="robo69"></a><h2>MainWindow/MainWindow.SelectedItems [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">MainWindow</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> List of currently selected files and directories by user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>SelectedItems</strong><span class="sign">:</span> <a href="#robo40">UnboundedString_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
+<pre class="source">   SelectedItems<span class="sign">:</span> UnboundedString_Container<span class="sign">.</span>Vector<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="MainWindow2fCreateMainWindow"></a>
-<a name="robo134"></a><h2>MainWindow/CreateMainWindow [ Subprograms ]</h2>
+<a name="MainWindow2fMainWindow2eCreateMainWindow"></a>
+<a name="robo130"></a><h2>MainWindow/MainWindow.CreateMainWindow [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create main window and show content of selected directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateMainWindow</strong><span class="sign">(</span>Directory<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> CreateMainWindow<span class="sign">(</span>Directory<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Directory  - Full path to the directory which will be show at the
@@ -172,15 +174,15 @@
 </pre>
 
 <hr />
-<a name="MainWindow2fUpdateDirectoryList"></a>
-<a name="robo135"></a><h2>MainWindow/UpdateDirectoryList [ Subprograms ]</h2>
+<a name="MainWindow2fMainWindow2eUpdateDirectoryList"></a>
+<a name="robo131"></a><h2>MainWindow/MainWindow.UpdateDirectoryList [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo11">MainWindow</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Update directory list
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>UpdateDirectoryList</strong>
+<pre class="source">   <span class="keyword">procedure</span> UpdateDirectoryList
      <span class="sign">(</span>Clear<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span> FrameName<span class="sign">:</span> String <span class="sign">:</span><span class="sign">=</span> <span class="quote">"directory"</span><span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
@@ -189,7 +191,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

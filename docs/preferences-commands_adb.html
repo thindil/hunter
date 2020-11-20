@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,76 +22,149 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo155">PCommands/Close_Preferences_Command</a></li>
-<li>2. <a href="#robo156">PCommands/Restore_Defaults_Command</a></li>
-<li>3. <a href="#robo157">PCommands/Set_Clear_Trash_Command</a></li>
-<li>4. <a href="#robo158">PCommands/Set_Color_Text_Command</a></li>
-<li>5. <a href="#robo159">PCommands/Set_Color_Theme_Command</a></li>
-<li>6. <a href="#robo160">PCommands/Set_Delete_Files_Command</a></li>
-<li>7. <a href="#robo161">PCommands/Set_Label_Command</a></li>
-<li>8. <a href="#robo162">PCommands/Set_Monospace_Font_Command</a></li>
-<li>9. <a href="#robo163">PCommands/Set_Overwrite_Command</a></li>
-<li>10. <a href="#robo164">PCommands/Set_Scale_Images_Command</a></li>
-<li>11. <a href="#robo165">PCommands/Set_Show_Finished_Info_Command</a></li>
-<li>12. <a href="#robo166">PCommands/Set_Show_Hidden_Files_Command</a></li>
-<li>13. <a href="#robo167">PCommands/Set_Show_Modification_Time_Command</a></li>
-<li>14. <a href="#robo168">PCommands/Set_Show_Preview_Command</a></li>
-<li>15. <a href="#robo169">PCommands/Set_Stay_In_Old_Command</a></li>
-<li>16. <a href="#robo170">PCommands/Set_Toolbars_On_Top_Command</a></li>
-<li>17. <a href="#robo171">PCommands/Set_Toolbars_Size_Command</a></li>
-<li>18. <a href="#robo172">PCommands/Set_UI_Theme_Command</a></li>
-<li>19. <a href="#robo173">PCommands/Show_Preferences_Command</a></li>
+<li>1. <a href="#robo213">PCommands/PCommands.Add_Command_Command</a></li>
+<li>2. <a href="#robo214">PCommands/PCommands.Change_Shortcut_Command</a></li>
+<li>3. <a href="#robo215">PCommands/PCommands.Close_Dialog_Command</a></li>
+<li>4. <a href="#robo216">PCommands/PCommands.Close_Preferences_Command</a></li>
+<li>5. <a href="#robo217">PCommands/PCommands.Delete_Command_Command</a></li>
+<li>6. <a href="#robo218">PCommands/PCommands.Edit_Command_Command</a></li>
+<li>7. <a href="#robo219">PCommands/PCommands.Reset_Command_Command</a></li>
+<li>8. <a href="#robo220">PCommands/PCommands.Restore_Default_Shortcuts_Command</a></li>
+<li>9. <a href="#robo221">PCommands/PCommands.Restore_Defaults_Command</a></li>
+<li>10. <a href="#robo222">PCommands/PCommands.Set_Clear_Trash_Command</a></li>
+<li>11. <a href="#robo223">PCommands/PCommands.Set_Color_Text_Command</a></li>
+<li>12. <a href="#robo224">PCommands/PCommands.Set_Color_Theme_Command</a></li>
+<li>13. <a href="#robo225">PCommands/PCommands.Set_Delete_Files_Command</a></li>
+<li>14. <a href="#robo226">PCommands/PCommands.Set_Label_Command</a></li>
+<li>15. <a href="#robo227">PCommands/PCommands.Set_Monospace_Font_Command</a></li>
+<li>16. <a href="#robo228">PCommands/PCommands.Set_Overwrite_Command</a></li>
+<li>17. <a href="#robo229">PCommands/PCommands.Set_Scale_Images_Command</a></li>
+<li>18. <a href="#robo230">PCommands/PCommands.Set_Show_Finished_Info_Command</a></li>
+<li>19. <a href="#robo231">PCommands/PCommands.Set_Show_Hidden_Files_Command</a></li>
+<li>20. <a href="#robo232">PCommands/PCommands.Set_Show_Modification_Time_Command</a></li>
+<li>21. <a href="#robo233">PCommands/PCommands.Set_Show_Preview_Command</a></li>
+<li>22. <a href="#robo234">PCommands/PCommands.Set_Stay_In_Old_Command</a></li>
+<li>23. <a href="#robo235">PCommands/PCommands.Set_Toolbars_On_Top_Command</a></li>
+<li>24. <a href="#robo236">PCommands/PCommands.Set_Toolbars_Size_Command</a></li>
+<li>25. <a href="#robo237">PCommands/PCommands.Set_UI_Theme_Command</a></li>
+<li>26. <a href="#robo238">PCommands/PCommands.Show_Module_Command</a></li>
+<li>27. <a href="#robo239">PCommands/PCommands.Show_Preferences_Command</a></li>
+<li>28. <a href="#robo240">PCommands/PCommands.Start_Changing_Shortcut_Command</a></li>
 </ul>
 <hr />
-<a name="PCommands2fClose5fPreferences5fCommand"></a>
-<a name="robo155"></a><h2>PCommands/Close_Preferences_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eAdd5fCommand5fCommand"></a>
+<a name="robo213"></a><h2>PCommands/PCommands.Add_Command_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Add user defined command
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Add_Command_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> AddCommand
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eChange5fShortcut5fCommand"></a>
+<a name="robo214"></a><h2>PCommands/PCommands.Change_Shortcut_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Change the selected keyboard shortcut
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Change_Shortcut_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> ChangeShortcut shortcutindex
+ Shortcutindex is the index of the keyboard shortcut which will be
+ changed
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eClose5fDialog5fCommand"></a>
+<a name="robo215"></a><h2>PCommands/PCommands.Close_Dialog_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Close the selected dialog window
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Close_Dialog_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> CloseDialog dialogpath
+ Dialogpath is the pathname of the dialog to close
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eClose5fPreferences5fCommand"></a>
+<a name="robo216"></a><h2>PCommands/PCommands.Close_Preferences_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set the program's settings, restart autorefresh view and close the
  preferences dialog
  names
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Close_Preferences_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Close_Preferences_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> ClientData - Custom data send to the command.
- Interp     - Tcl interpreter in which command was executed.
- Argc       - Number of arguments passed to the command.
- Argv       - Values of arguments passed to the command.
-</pre>
-<p class="item_name">RESULT</p>
-<pre> This function always return TCL_OK
-</pre>
-
-<hr />
-<a name="PCommands2fRestore5fDefaults5fCommand"></a>
-<a name="robo156"></a><h2>PCommands/Restore_Defaults_Command [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Restore default the program setttings
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Restore_Defaults_Command</strong>
-     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
-      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
-      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
-      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> ClientData - Custom data send to the command.
+<pre> ClientData - Custom data send to the command. Unused
  Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
  Argv       - Values of arguments passed to the command. Unused
@@ -99,17 +172,134 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> ClosePreferences
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fClear5fTrash5fCommand"></a>
-<a name="robo157"></a><h2>PCommands/Set_Clear_Trash_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eDelete5fCommand5fCommand"></a>
+<a name="robo217"></a><h2>PCommands/PCommands.Delete_Command_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Set if <a href="./trash_ads.html#robo21">Trash</a> should be cleared on the program exit
+<pre> Delete the selected user defined command
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Clear_Trash_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Delete_Command_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed. Unused
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> EditCommand menuentry
+ Menuentry is the menu label of the command which will be deleted
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eEdit5fCommand5fCommand"></a>
+<a name="robo218"></a><h2>PCommands/PCommands.Edit_Command_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Edit the selected user defined command
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Edit_Command_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> EditCommand menuentry
+ Menuentry is the menu label of the command which will be edited
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eReset5fCommand5fCommand"></a>
+<a name="robo219"></a><h2>PCommands/PCommands.Reset_Command_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Clear the add command form
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Reset_Command_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed. Unused
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> ResetCommand
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eRestore5fDefault5fShortcuts5fCommand"></a>
+<a name="robo220"></a><h2>PCommands/PCommands.Restore_Default_Shortcuts_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Restore default keyboard shortcuts
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Restore_Default_Shortcuts_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> RestoreDefaultShortcuts
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eRestore5fDefaults5fCommand"></a>
+<a name="robo221"></a><h2>PCommands/PCommands.Restore_Defaults_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Restore default the program setttings
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Restore_Defaults_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -124,18 +314,49 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> RestoreDefaults
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fColor5fText5fCommand"></a>
-<a name="robo158"></a><h2>PCommands/Set_Color_Text_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fClear5fTrash5fCommand"></a>
+<a name="robo222"></a><h2>PCommands/PCommands.Set_Clear_Trash_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set if <a href="./trash_ads.html#robo25">Trash</a> should be cleared on the program exit
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Set_Clear_Trash_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetClearTrash
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eSet5fColor5fText5fCommand"></a>
+<a name="robo223"></a><h2>PCommands/PCommands.Set_Color_Text_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Enable or disable syntax highlightning in text files and reload the
  currently previewed file if it is text file
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Color_Text_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Color_Text_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -150,18 +371,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetColorText
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fColor5fTheme5fCommand"></a>
-<a name="robo159"></a><h2>PCommands/Set_Color_Theme_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fColor5fTheme5fCommand"></a>
+<a name="robo224"></a><h2>PCommands/PCommands.Set_Color_Theme_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set color theme for syntax highligthning in text files and reload
  the current previewed text file if needed
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Color_Theme_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Color_Theme_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -176,42 +400,48 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetColorTheme
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fDelete5fFiles5fCommand"></a>
-<a name="robo160"></a><h2>PCommands/Set_Delete_Files_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fDelete5fFiles5fCommand"></a>
+<a name="robo225"></a><h2>PCommands/PCommands.Set_Delete_Files_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Set if files should be deleted of moved to <a href="./trash_ads.html#robo21">Trash</a>
+<pre> Set if files should be deleted of moved to <a href="./trash_ads.html#robo25">Trash</a>
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Delete_Files_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Delete_Files_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> ClientData - Custom data send to the command.
+<pre> ClientData - Custom data send to the command. Unused
  Interp     - Tcl interpreter in which command was executed.
- Argc       - Number of arguments passed to the command.
- Argv       - Values of arguments passed to the command.
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetDeleteFiles
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fLabel5fCommand"></a>
-<a name="robo161"></a><h2>PCommands/Set_Label_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fLabel5fCommand"></a>
+<a name="robo226"></a><h2>PCommands/PCommands.Set_Label_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Update text of the selected label
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Label_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Label_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -226,18 +456,24 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetLabel labelname
+ Labelname is the partial pathname of the label which text will be
+ updated. Possible values are directory.interval and
+ inteface.messagesscale
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fMonospace5fFont5fCommand"></a>
-<a name="robo162"></a><h2>PCommands/Set_Monospace_Font_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fMonospace5fFont5fCommand"></a>
+<a name="robo227"></a><h2>PCommands/PCommands.Set_Monospace_Font_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Enable or disable using monospace font in text files and reload the
  currently previewed file if it is text file
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Monospace_Font_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Monospace_Font_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -252,44 +488,50 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetMonoSpaceFont
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fOverwrite5fCommand"></a>
-<a name="robo163"></a><h2>PCommands/Set_Overwrite_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fOverwrite5fCommand"></a>
+<a name="robo228"></a><h2>PCommands/PCommands.Set_Overwrite_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set if the program should overwrite files or create new with new
  names
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Overwrite_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Overwrite_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> ClientData - Custom data send to the command.
+<pre> ClientData - Custom data send to the command. Unused
  Interp     - Tcl interpreter in which command was executed.
- Argc       - Number of arguments passed to the command.
- Argv       - Values of arguments passed to the command.
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetOverwrite
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fScale5fImages5fCommand"></a>
-<a name="robo164"></a><h2>PCommands/Set_Scale_Images_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fScale5fImages5fCommand"></a>
+<a name="robo229"></a><h2>PCommands/PCommands.Set_Scale_Images_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Enable or disable images scaling and rescale currently
  previewed image if needed
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Scale_Images_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Scale_Images_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -304,18 +546,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetScaleImages
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fShow5fFinished5fInfo5fCommand"></a>
-<a name="robo165"></a><h2>PCommands/Set_Show_Finished_Info_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fShow5fFinished5fInfo5fCommand"></a>
+<a name="robo230"></a><h2>PCommands/PCommands.Set_Show_Finished_Info_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set if after finishing action, show info about it to the
  user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Show_Finished_Info_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Show_Finished_Info_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -330,18 +575,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetShowFinishedInfo
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fShow5fHidden5fFiles5fCommand"></a>
-<a name="robo166"></a><h2>PCommands/Set_Show_Hidden_Files_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fShow5fHidden5fFiles5fCommand"></a>
+<a name="robo231"></a><h2>PCommands/PCommands.Set_Show_Hidden_Files_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Update show hidden files setting and reload the current directory
  listing
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Show_Hidden_Files_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Show_Hidden_Files_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -356,18 +604,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetShowHiddenFiles
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fShow5fModification5fTime5fCommand"></a>
-<a name="robo167"></a><h2>PCommands/Set_Show_Modification_Time_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fShow5fModification5fTime5fCommand"></a>
+<a name="robo232"></a><h2>PCommands/PCommands.Set_Show_Modification_Time_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Update show modification time column and reload the current directory
  listing
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Show_Modification_Time_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Show_Modification_Time_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -382,17 +633,20 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetShowModificationTime
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fShow5fPreview5fCommand"></a>
-<a name="robo168"></a><h2>PCommands/Set_Show_Preview_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fShow5fPreview5fCommand"></a>
+<a name="robo233"></a><h2>PCommands/PCommands.Set_Show_Preview_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Update show preview setting and show or hide it
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Show_Preview_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Show_Preview_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -407,18 +661,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetShowPreview
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fStay5fIn5fOld5fCommand"></a>
-<a name="robo169"></a><h2>PCommands/Set_Stay_In_Old_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fStay5fIn5fOld5fCommand"></a>
+<a name="robo234"></a><h2>PCommands/PCommands.Set_Stay_In_Old_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set if after copying, moving, etc operations user should
  see old directory or new
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Stay_In_Old_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Stay_In_Old_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -433,18 +690,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetStayInOld
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fToolbars5fOn5fTop5fCommand"></a>
-<a name="robo170"></a><h2>PCommands/Set_Toolbars_On_Top_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fToolbars5fOn5fTop5fCommand"></a>
+<a name="robo235"></a><h2>PCommands/PCommands.Set_Toolbars_On_Top_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set if toolbars should be on top of the program's window or on the
  left
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Toolbars_On_Top_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Toolbars_On_Top_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -459,17 +719,20 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetToolbarsOnTop
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fToolbars5fSize5fCommand"></a>
-<a name="robo171"></a><h2>PCommands/Set_Toolbars_Size_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fToolbars5fSize5fCommand"></a>
+<a name="robo236"></a><h2>PCommands/PCommands.Set_Toolbars_Size_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set the toolbars icons size
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Toolbars_Size_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Toolbars_Size_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -484,17 +747,20 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetToolbarsSize
+</pre>
 
 <hr />
-<a name="PCommands2fSet5fUI5fTheme5fCommand"></a>
-<a name="robo172"></a><h2>PCommands/Set_UI_Theme_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eSet5fUI5fTheme5fCommand"></a>
+<a name="robo237"></a><h2>PCommands/PCommands.Set_UI_Theme_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set the UI theme
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_UI_Theme_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_UI_Theme_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -503,23 +769,83 @@
 <p class="item_name">PARAMETERS</p>
 <pre> ClientData - Custom data send to the command.
  Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command.
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetUITheme
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eShow5fModule5fCommand"></a>
+<a name="robo238"></a><h2>PCommands/PCommands.Show_Module_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show the directory of the selected module
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Show_Module_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command.
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command.
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> ShowModule modulepath
+ Modulepath is full or relative path to the selected module's directory
+</pre>
+
+<hr />
+<a name="PCommands2fPCommands2eShow5fPreferences5fCommand"></a>
+<a name="robo239"></a><h2>PCommands/PCommands.Show_Preferences_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Go to the selected bookmarked directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Show_Preferences_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
  Argv       - Values of arguments passed to the command. Unused
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> ShowPreferences
+</pre>
 
 <hr />
-<a name="PCommands2fShow5fPreferences5fCommand"></a>
-<a name="robo173"></a><h2>PCommands/Show_Preferences_Command [ Subprograms ]</h2>
+<a name="PCommands2fPCommands2eStart5fChanging5fShortcut5fCommand"></a>
+<a name="robo240"></a><h2>PCommands/PCommands.Start_Changing_Shortcut_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo24">PCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./preferences-commands_ads.html#robo17">PCommands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Go to the selected bookmarked directory
+<pre> Start changing the selected keyboard shortcut
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Show_Preferences_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Start_Changing_Shortcut_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -534,10 +860,15 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> StartChangingShortcut shortcutindex
+ Shortcutindex is the index of the keyboard shortcut which will be
+ changed
+</pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/preferences-commands.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/preferences-commands.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>
