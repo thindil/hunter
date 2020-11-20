@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,147 +22,161 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo71">ShowItems/ButtonNames</a></li>
-<li>2. <a href="#robo72">ShowItems/InfoFrame</a></li>
-<li>3. <a href="#robo73">ShowItems/PreviewCanvas</a></li>
-<li>4. <a href="#robo74">ShowItems/PreviewFrame</a></li>
-<li>5. <a href="#robo75">ShowItems/PreviewText</a></li>
-<li>6. <a href="#robo76">ShowItems/PreviewTree</a></li>
-<li>7. <a href="#robo77">ShowItems/PreviewXScroll</a></li>
-<li>8. <a href="#robo78">ShowItems/PreviewYScroll</a></li>
-<li>9. <a href="#robo81">ShowItems/Hunter_Show_Items_Exception</a></li>
-<li>10. <a href="#robo97">Commands/GoToDirectory_Command</a></li>
-<li>11. <a href="#robo196">ShowItems/Set_Permissions_Command</a></li>
-<li>12. <a href="#robo197">ShowItems/Show_Preview_Or_Info_Command</a></li>
-<li>13. <a href="#robo200">ShowItems/ShowInfo</a></li>
+<li>1. <a href="#robo82">ShowItems/ShowItems.ButtonNames</a></li>
+<li>2. <a href="#robo83">ShowItems/ShowItems.InfoFrame</a></li>
+<li>3. <a href="#robo84">ShowItems/ShowItems.PreviewCanvas</a></li>
+<li>4. <a href="#robo85">ShowItems/ShowItems.PreviewFrame</a></li>
+<li>5. <a href="#robo86">ShowItems/ShowItems.PreviewText</a></li>
+<li>6. <a href="#robo87">ShowItems/ShowItems.PreviewTree</a></li>
+<li>7. <a href="#robo88">ShowItems/ShowItems.PreviewXScroll</a></li>
+<li>8. <a href="#robo89">ShowItems/ShowItems.PreviewYScroll</a></li>
+<li>9. <a href="#robo93">ShowItems/ShowItems.Hunter_Show_Items_Exception</a></li>
+<li>10. <a href="#robo159">ShowItems/ShowItems.ShowInfo</a></li>
+<li>11. <a href="#robo193">Commands/ShowItems.GoToDirectory_Command</a></li>
+<li>12. <a href="#robo249">ShowItems/ShowItems.Set_Permissions_Command</a></li>
+<li>13. <a href="#robo250">ShowItems/ShowItems.Show_Preview_Or_Info_Command</a></li>
 </ul>
 <hr />
-<a name="ShowItems2fButtonNames"></a>
-<a name="robo71"></a><h2>ShowItems/ButtonNames [ Variables ]</h2>
+<a name="ShowItems2fShowItems2eButtonNames"></a>
+<a name="robo82"></a><h2>ShowItems/ShowItems.ButtonNames [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Names of the permissions buttons
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>ButtonNames</strong><span class="sign">:</span> <span class="keyword">constant</span> <span class="keyword">array</span><span class="sign">(</span>1 <span class="sign">.</span><span class="sign">.</span> 3<span class="sign">)</span> <span class="keyword">of</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
+<pre class="source">   ButtonNames<span class="sign">:</span> <span class="keyword">constant</span> <span class="keyword">array</span><span class="sign">(</span>1 <span class="sign">.</span><span class="sign">.</span> 3<span class="sign">)</span> <span class="keyword">of</span> Unbounded_String <span class="sign">:</span><span class="sign">=</span>
      <span class="sign">(</span>To_Unbounded_String<span class="sign">(</span><span class="quote">"execute"</span><span class="sign">)</span><span class="sign">,</span> To_Unbounded_String<span class="sign">(</span><span class="quote">"read"</span><span class="sign">)</span><span class="sign">,</span>
       To_Unbounded_String<span class="sign">(</span><span class="quote">"write"</span><span class="sign">)</span><span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fInfoFrame"></a>
-<a name="robo72"></a><h2>ShowItems/InfoFrame [ Variables ]</h2>
+<a name="ShowItems2fShowItems2eInfoFrame"></a>
+<a name="robo83"></a><h2>ShowItems/ShowItems.InfoFrame [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Ttk_Frame for show information about the selected item
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>InfoFrame</strong><span class="sign">:</span> Ttk_Frame<span class="sign">;</span>
+<pre class="source">   InfoFrame<span class="sign">:</span> Ttk_Frame<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fPreviewCanvas"></a>
-<a name="robo73"></a><h2>ShowItems/PreviewCanvas [ Variables ]</h2>
+<a name="ShowItems2fShowItems2ePreviewCanvas"></a>
+<a name="robo84"></a><h2>ShowItems/ShowItems.PreviewCanvas [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Tk_Canvas used to show images
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>PreviewCanvas</strong><span class="sign">:</span> Tk_Canvas<span class="sign">;</span>
+<pre class="source">   PreviewCanvas<span class="sign">:</span> Tk_Canvas<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fPreviewFrame"></a>
-<a name="robo74"></a><h2>ShowItems/PreviewFrame [ Variables ]</h2>
+<a name="ShowItems2fShowItems2ePreviewFrame"></a>
+<a name="robo85"></a><h2>ShowItems/ShowItems.PreviewFrame [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Main Ttk_Frame for preview items
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>PreviewFrame</strong><span class="sign">:</span> Ttk_Frame<span class="sign">;</span>
+<pre class="source">   PreviewFrame<span class="sign">:</span> Ttk_Frame<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fPreviewText"></a>
-<a name="robo75"></a><h2>ShowItems/PreviewText [ Variables ]</h2>
+<a name="ShowItems2fShowItems2ePreviewText"></a>
+<a name="robo86"></a><h2>ShowItems/ShowItems.PreviewText [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Tk_Text used to show text files previews
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>PreviewText</strong><span class="sign">:</span> Tk_Text<span class="sign">;</span>
+<pre class="source">   PreviewText<span class="sign">:</span> Tk_Text<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fPreviewTree"></a>
-<a name="robo76"></a><h2>ShowItems/PreviewTree [ Variables ]</h2>
+<a name="ShowItems2fShowItems2ePreviewTree"></a>
+<a name="robo87"></a><h2>ShowItems/ShowItems.PreviewTree [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Tk_Tree_View used to show directories previews
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>PreviewTree</strong><span class="sign">:</span> Ttk_Tree_View<span class="sign">;</span>
+<pre class="source">   PreviewTree<span class="sign">:</span> Ttk_Tree_View<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fPreviewXScroll"></a>
-<a name="robo77"></a><h2>ShowItems/PreviewXScroll [ Variables ]</h2>
+<a name="ShowItems2fShowItems2ePreviewXScroll"></a>
+<a name="robo88"></a><h2>ShowItems/ShowItems.PreviewXScroll [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> X coordinates scrollbar for previews
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>PreviewXScroll</strong><span class="sign">:</span> Ttk_Scrollbar<span class="sign">;</span>
+<pre class="source">   PreviewXScroll<span class="sign">:</span> Ttk_Scrollbar<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fPreviewYScroll"></a>
-<a name="robo78"></a><h2>ShowItems/PreviewYScroll [ Variables ]</h2>
+<a name="ShowItems2fShowItems2ePreviewYScroll"></a>
+<a name="robo89"></a><h2>ShowItems/ShowItems.PreviewYScroll [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Y coordinates scrollbar for previews
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>PreviewYScroll</strong><span class="sign">:</span> Ttk_Scrollbar<span class="sign">;</span>
+<pre class="source">   PreviewYScroll<span class="sign">:</span> Ttk_Scrollbar<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="ShowItems2fHunter5fShow5fItems5fException"></a>
-<a name="robo81"></a><h2>ShowItems/Hunter_Show_Items_Exception [ Exceptions ]</h2>
+<a name="ShowItems2fShowItems2eHunter5fShow5fItems5fException"></a>
+<a name="robo93"></a><h2>ShowItems/ShowItems.Hunter_Show_Items_Exception [ Exceptions ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_exceptions.html#robo_top_of_doc">Exceptions</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_exceptions.html#robo_top_of_doc">Exceptions</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Exception raised when any problems with showing item preview
  occurs
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>Hunter_Show_Items_Exception</strong><span class="sign">:</span> <span class="keyword">exception</span><span class="sign">;</span>
+<pre class="source">   Hunter_Show_Items_Exception<span class="sign">:</span> <span class="keyword">exception</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Commands2fGoToDirectory5fCommand"></a>
-<a name="robo97"></a><h2>Commands/GoToDirectory_Command [ Subprograms ]</h2>
+<a name="ShowItems2fShowItems2eShowInfo"></a>
+<a name="robo159"></a><h2>ShowItems/ShowItems.ShowInfo [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks-commands_ads.html#robo0">Commands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show information about the currently selected file or directory.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> ShowInfo <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="Commands2fShowItems2eGoToDirectory5fCommand"></a>
+<a name="robo193"></a><h2>Commands/ShowItems.GoToDirectory_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./bookmarks-commands_ads.html#robo3">Commands</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Go to the selected directory in preview
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>GoToDirectory_Command</strong>
+<pre class="source">   <span class="keyword">function</span> GoToDirectory_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -177,17 +191,21 @@
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> GoToDirectory ?selecteditem?
+ Selecteditem is full path to the currently selected file or directory
+</pre>
 
 <hr />
-<a name="ShowItems2fSet5fPermissions5fCommand"></a>
-<a name="robo196"></a><h2>ShowItems/Set_Permissions_Command [ Subprograms ]</h2>
+<a name="ShowItems2fShowItems2eSet5fPermissions5fCommand"></a>
+<a name="robo249"></a><h2>ShowItems/ShowItems.Set_Permissions_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set the permissions for the selected file or directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Set_Permissions_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Set_Permissions_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -197,23 +215,26 @@
 <pre> ClientData - Custom data send to the command. Unused
  Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
- Argv       - Values of arguments passed to the command.
+ Argv       - Values of arguments passed to the command. Unused
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetPermissions
+</pre>
 
 <hr />
-<a name="ShowItems2fShow5fPreview5fOr5fInfo5fCommand"></a>
-<a name="robo197"></a><h2>ShowItems/Show_Preview_Or_Info_Command [ Subprograms ]</h2>
+<a name="ShowItems2fShowItems2eShow5fPreview5fOr5fInfo5fCommand"></a>
+<a name="robo250"></a><h2>ShowItems/ShowItems.Show_Preview_Or_Info_Command [ Commands ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo23">ShowItems</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show preview or information about the currently selected file or
  directory, depends which button was clicked
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>Show_Preview_Or_Info_Command</strong>
+<pre class="source">   <span class="keyword">function</span> Show_Preview_Or_Info_Command
      <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
       Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
       <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
@@ -223,27 +244,18 @@
 <pre> ClientData - Custom data send to the command. Unused
  Interp     - Tcl interpreter in which command was executed.
  Argc       - Number of arguments passed to the command. Unused
- Argv       - Values of arguments passed to the command.
+ Argv       - Values of arguments passed to the command. Unused
 </pre>
 <p class="item_name">RESULT</p>
 <pre> This function always return TCL_OK
 </pre>
-
-<hr />
-<a name="ShowItems2fShowInfo"></a>
-<a name="robo200"></a><h2>ShowItems/ShowInfo [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo19">ShowItems</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Show information about the currently selected file or directory.
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowInfo</strong> <span class="keyword">is</span>
+<p class="item_name">COMMANDS</p>
+<pre> ShowPreviewOrInfo
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/showitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/showitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

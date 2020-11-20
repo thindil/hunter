@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,48 +22,63 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo14">Hunter/Preferences</a></li>
+<li>1. <a href="#robo18">Preferences/Preferences</a></li>
 <ul>
-<li>1.1. <a href="./preferences-commands_ads.html#robo24">Preferences/PCommands</a></li>
+<li>1.1. <a href="./preferences-commands_ads.html#robo17">Preferences/PCommands</a></li>
 <ul>
-<li>1.1.1. <a href="./preferences-commands_ads.html#robo154">PCommands/AddCommands</a></li>
-<li>1.1.2. <a href="./preferences-commands_adb.html#robo155">PCommands/Close_Preferences_Command</a></li>
-<li>1.1.3. <a href="./preferences-commands_adb.html#robo156">PCommands/Restore_Defaults_Command</a></li>
-<li>1.1.4. <a href="./preferences-commands_adb.html#robo157">PCommands/Set_Clear_Trash_Command</a></li>
-<li>1.1.5. <a href="./preferences-commands_adb.html#robo158">PCommands/Set_Color_Text_Command</a></li>
-<li>1.1.6. <a href="./preferences-commands_adb.html#robo159">PCommands/Set_Color_Theme_Command</a></li>
-<li>1.1.7. <a href="./preferences-commands_adb.html#robo160">PCommands/Set_Delete_Files_Command</a></li>
-<li>1.1.8. <a href="./preferences-commands_adb.html#robo161">PCommands/Set_Label_Command</a></li>
-<li>1.1.9. <a href="./preferences-commands_adb.html#robo162">PCommands/Set_Monospace_Font_Command</a></li>
-<li>1.1.10. <a href="./preferences-commands_adb.html#robo163">PCommands/Set_Overwrite_Command</a></li>
-<li>1.1.11. <a href="./preferences-commands_adb.html#robo164">PCommands/Set_Scale_Images_Command</a></li>
-<li>1.1.12. <a href="./preferences-commands_adb.html#robo165">PCommands/Set_Show_Finished_Info_Command</a></li>
-<li>1.1.13. <a href="./preferences-commands_adb.html#robo166">PCommands/Set_Show_Hidden_Files_Command</a></li>
-<li>1.1.14. <a href="./preferences-commands_adb.html#robo167">PCommands/Set_Show_Modification_Time_Command</a></li>
-<li>1.1.15. <a href="./preferences-commands_adb.html#robo168">PCommands/Set_Show_Preview_Command</a></li>
-<li>1.1.16. <a href="./preferences-commands_adb.html#robo169">PCommands/Set_Stay_In_Old_Command</a></li>
-<li>1.1.17. <a href="./preferences-commands_adb.html#robo170">PCommands/Set_Toolbars_On_Top_Command</a></li>
-<li>1.1.18. <a href="./preferences-commands_adb.html#robo171">PCommands/Set_Toolbars_Size_Command</a></li>
-<li>1.1.19. <a href="./preferences-commands_adb.html#robo172">PCommands/Set_UI_Theme_Command</a></li>
-<li>1.1.20. <a href="./preferences-commands_adb.html#robo173">PCommands/Show_Preferences_Command</a></li>
+<li>1.1.1. <a href="./preferences-commands_ads.html#robo141">PCommands/PCommands.AddCommands</a></li>
+<li>1.1.2. <a href="./preferences-commands_adb.html#robo213">PCommands/PCommands.Add_Command_Command</a></li>
+<li>1.1.3. <a href="./preferences-commands_adb.html#robo214">PCommands/PCommands.Change_Shortcut_Command</a></li>
+<li>1.1.4. <a href="./preferences-commands_adb.html#robo215">PCommands/PCommands.Close_Dialog_Command</a></li>
+<li>1.1.5. <a href="./preferences-commands_adb.html#robo216">PCommands/PCommands.Close_Preferences_Command</a></li>
+<li>1.1.6. <a href="./preferences-commands_adb.html#robo217">PCommands/PCommands.Delete_Command_Command</a></li>
+<li>1.1.7. <a href="./preferences-commands_adb.html#robo218">PCommands/PCommands.Edit_Command_Command</a></li>
+<li>1.1.8. <a href="./preferences-commands_adb.html#robo219">PCommands/PCommands.Reset_Command_Command</a></li>
+<li>1.1.9. <a href="./preferences-commands_adb.html#robo220">PCommands/PCommands.Restore_Default_Shortcuts_Command</a></li>
+<li>1.1.10. <a href="./preferences-commands_adb.html#robo221">PCommands/PCommands.Restore_Defaults_Command</a></li>
+<li>1.1.11. <a href="./preferences-commands_adb.html#robo222">PCommands/PCommands.Set_Clear_Trash_Command</a></li>
+<li>1.1.12. <a href="./preferences-commands_adb.html#robo223">PCommands/PCommands.Set_Color_Text_Command</a></li>
+<li>1.1.13. <a href="./preferences-commands_adb.html#robo224">PCommands/PCommands.Set_Color_Theme_Command</a></li>
+<li>1.1.14. <a href="./preferences-commands_adb.html#robo225">PCommands/PCommands.Set_Delete_Files_Command</a></li>
+<li>1.1.15. <a href="./preferences-commands_adb.html#robo226">PCommands/PCommands.Set_Label_Command</a></li>
+<li>1.1.16. <a href="./preferences-commands_adb.html#robo227">PCommands/PCommands.Set_Monospace_Font_Command</a></li>
+<li>1.1.17. <a href="./preferences-commands_adb.html#robo228">PCommands/PCommands.Set_Overwrite_Command</a></li>
+<li>1.1.18. <a href="./preferences-commands_adb.html#robo229">PCommands/PCommands.Set_Scale_Images_Command</a></li>
+<li>1.1.19. <a href="./preferences-commands_adb.html#robo230">PCommands/PCommands.Set_Show_Finished_Info_Command</a></li>
+<li>1.1.20. <a href="./preferences-commands_adb.html#robo231">PCommands/PCommands.Set_Show_Hidden_Files_Command</a></li>
+<li>1.1.21. <a href="./preferences-commands_adb.html#robo232">PCommands/PCommands.Set_Show_Modification_Time_Command</a></li>
+<li>1.1.22. <a href="./preferences-commands_adb.html#robo233">PCommands/PCommands.Set_Show_Preview_Command</a></li>
+<li>1.1.23. <a href="./preferences-commands_adb.html#robo234">PCommands/PCommands.Set_Stay_In_Old_Command</a></li>
+<li>1.1.24. <a href="./preferences-commands_adb.html#robo235">PCommands/PCommands.Set_Toolbars_On_Top_Command</a></li>
+<li>1.1.25. <a href="./preferences-commands_adb.html#robo236">PCommands/PCommands.Set_Toolbars_Size_Command</a></li>
+<li>1.1.26. <a href="./preferences-commands_adb.html#robo237">PCommands/PCommands.Set_UI_Theme_Command</a></li>
+<li>1.1.27. <a href="./preferences-commands_adb.html#robo238">PCommands/PCommands.Show_Module_Command</a></li>
+<li>1.1.28. <a href="./preferences-commands_adb.html#robo239">PCommands/PCommands.Show_Preferences_Command</a></li>
+<li>1.1.29. <a href="./preferences-commands_adb.html#robo240">PCommands/PCommands.Start_Changing_Shortcut_Command</a></li>
 </ul>
-<li>1.2. <a href="#robo42">Preferences/Settings_Data</a></li>
-<li>1.3. <a href="#robo66">Preferences/Settings</a></li>
-<li>1.4. <a href="#robo174">Preferences/CreatePreferences</a></li>
-<li>1.5. <a href="#robo175">Preferences/LoadSettings</a></li>
-<li>1.6. <a href="#robo176">Preferences/SavePreferences</a></li>
-<li>1.7. <a href="#robo177">Preferences/SetDefaultSettings</a></li>
+<li>1.2. <a href="#robo44">Preferences/Preferences.Accelerators_Array</a></li>
+<li>1.3. <a href="#robo52">Preferences/Preferences.Settings_Data</a></li>
+<li>1.4. <a href="#robo77">Preferences/Preferences.Accelerators</a></li>
+<li>1.5. <a href="#robo78">Preferences/Preferences.Settings</a></li>
+<li>1.6. <a href="#robo142">Preferences/Preferences.Clear_Add_Command</a></li>
+<li>1.7. <a href="#robo143">Preferences/Preferences.CreatePreferences</a></li>
+<li>1.8. <a href="#robo144">Preferences/Preferences.LoadSettings</a></li>
+<li>1.9. <a href="#robo145">Preferences/Preferences.SavePreferences</a></li>
+<li>1.10. <a href="#robo146">Preferences/Preferences.SetDefaultAccelerators</a></li>
+<li>1.11. <a href="#robo147">Preferences/Preferences.SetDefaultSettings</a></li>
 </ul>
 </ul>
 <hr />
-<a name="Hunter2fPreferences"></a>
-<a name="robo14"></a><h2>Hunter/Preferences [ Packages ]</h2>
+<a name="Preferences2fPreferences"></a>
+<a name="robo18"></a><h2>Preferences/Preferences [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -74,22 +89,34 @@
 </pre>
 
 <hr />
-<a name="Preferences2fSettings5fData"></a>
-<a name="robo42"></a><h2>Preferences/Settings_Data [ Types ]</h2>
+<a name="Preferences2fPreferences2eAccelerators5fArray"></a>
+<a name="robo44"></a><h2>Preferences/Preferences.Accelerators_Array [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Array used to store keyboard shortcuts
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">type</span> Accelerators_Array <span class="keyword">is</span> <span class="keyword">array</span><span class="sign">(</span>1 <span class="sign">.</span><span class="sign">.</span> 20<span class="sign">)</span> <span class="keyword">of</span> Unbounded_String<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Preferences2fPreferences2eSettings5fData"></a>
+<a name="robo52"></a><h2>Preferences/Preferences.Settings_Data [ Records ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_records.html#robo_top_of_doc">Records</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Data structure to the program settings
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">type</span> <strong>Settings_Data</strong> <span class="keyword">is</span> <span class="keyword">record</span>
+<pre class="source">   <span class="keyword">type</span> Settings_Data <span class="keyword">is</span> <span class="keyword">record</span>
       ShowHidden<span class="sign">:</span> Boolean<span class="sign">;</span>
       ShowLastModified<span class="sign">:</span> Boolean<span class="sign">;</span>
       ScaleImages<span class="sign">:</span> Boolean<span class="sign">;</span>
-      AutoCloseMessagesTime<span class="sign">:</span> Natural<span class="sign">;</span>
+      AutoCloseMessagesTime<span class="sign">:</span> Natural <span class="keyword">range</span> 0 <span class="sign">.</span><span class="sign">.</span> 60<span class="sign">;</span>
       WindowWidth<span class="sign">:</span> Positive<span class="sign">;</span>
       WindowHeight<span class="sign">:</span> Positive<span class="sign">;</span>
-      <a href="./showitems_ads.html#robo201">ShowPreview</a><span class="sign">:</span> Boolean<span class="sign">;</span>
+      ShowPreview<span class="sign">:</span> Boolean<span class="sign">;</span>
       StayInOld<span class="sign">:</span> Boolean<span class="sign">;</span>
       ColorText<span class="sign">:</span> Boolean<span class="sign">;</span>
       ColorTheme<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
@@ -98,9 +125,9 @@
       ShowFinishedInfo<span class="sign">:</span> Boolean<span class="sign">;</span>
       OverwriteOnExist<span class="sign">:</span> Boolean<span class="sign">;</span>
       ToolbarsOnTop<span class="sign">:</span> Boolean<span class="sign">;</span>
-      AutoRefreshInterval<span class="sign">:</span> Natural<span class="sign">;</span>
+      AutoRefreshInterval<span class="sign">:</span> Natural <span class="keyword">range</span> 0 <span class="sign">.</span><span class="sign">.</span> 30<span class="sign">;</span>
       UITheme<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
-      ToolbarsSize<span class="sign">:</span> Positive<span class="sign">;</span>
+      ToolbarsSize<span class="sign">:</span> Positive <span class="keyword">range</span> 8 <span class="sign">.</span><span class="sign">.</span> 128<span class="sign">;</span>
       MonospaceFont<span class="sign">:</span> Boolean<span class="sign">;</span>
    <span class="keyword">end</span> <span class="keyword">record</span><span class="sign">;</span>
 </pre>
@@ -113,7 +140,7 @@
                          will be auto hidden
  WindowWidth           - Width of the main window in pixels
  WindowHeight          - Height of the main window in pixels
- <a href="./showitems_ads.html#robo201">ShowPreview</a>           - If true, show preview panel for files and
+ ShowPreview           - If true, show preview panel for files and
                          directories
  StayInOld             - If true, after copying, moving files and
                          directories or creating new link, stay in old
@@ -142,22 +169,46 @@
 </pre>
 
 <hr />
-<a name="Preferences2fSettings"></a>
-<a name="robo66"></a><h2>Preferences/Settings [ Variables ]</h2>
+<a name="Preferences2fPreferences2eAccelerators"></a>
+<a name="robo77"></a><h2>Preferences/Preferences.Accelerators [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Array with keyboard shortcuts used by the program
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Accelerators<span class="sign">:</span> Accelerators_Array<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Preferences2fPreferences2eSettings"></a>
+<a name="robo78"></a><h2>Preferences/Preferences.Settings [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> The program settings
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>Settings</strong><span class="sign">:</span> <a href="#robo42">Settings_Data</a><span class="sign">;</span>
+<pre class="source">   Settings<span class="sign">:</span> Settings_Data<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Preferences2fCreatePreferences"></a>
-<a name="robo174"></a><h2>Preferences/CreatePreferences [ Subprograms ]</h2>
+<a name="Preferences2fPreferences2eClear5fAdd5fCommand"></a>
+<a name="robo142"></a><h2>Preferences/Preferences.Clear_Add_Command [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Clear form for edit or add user defined commands
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> Clear_Add_Command<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Preferences2fPreferences2eCreatePreferences"></a>
+<a name="robo143"></a><h2>Preferences/Preferences.CreatePreferences [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create preferences UI and fill it with data from the program settings
 </pre>
@@ -166,45 +217,57 @@
 </pre>
 
 <hr />
-<a name="Preferences2fLoadSettings"></a>
-<a name="robo175"></a><h2>Preferences/LoadSettings [ Subprograms ]</h2>
+<a name="Preferences2fPreferences2eLoadSettings"></a>
+<a name="robo144"></a><h2>Preferences/Preferences.LoadSettings [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Load the program settings from file. If file not exists, load default
  settings.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>LoadSettings</strong><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> LoadSettings<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Preferences2fSavePreferences"></a>
-<a name="robo176"></a><h2>Preferences/SavePreferences [ Subprograms ]</h2>
+<a name="Preferences2fPreferences2eSavePreferences"></a>
+<a name="robo145"></a><h2>Preferences/Preferences.SavePreferences [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Save the program preferences to the file.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SavePreferences</strong><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> SavePreferences<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Preferences2fSetDefaultSettings"></a>
-<a name="robo177"></a><h2>Preferences/SetDefaultSettings [ Subprograms ]</h2>
+<a name="Preferences2fPreferences2eSetDefaultAccelerators"></a>
+<a name="robo146"></a><h2>Preferences/Preferences.SetDefaultAccelerators [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo14">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set default values for the program's keyboard shortcuts
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> SetDefaultAccelerators<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Preferences2fPreferences2eSetDefaultSettings"></a>
+<a name="robo147"></a><h2>Preferences/Preferences.SetDefaultSettings [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo18">Preferences</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set default values for the program's settings
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SetDefaultSettings</strong><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> SetDefaultSettings<span class="sign">;</span>
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/preferences.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/preferences.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,27 +22,29 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo12">Hunter/Messages</a></li>
+<li>1. <a href="#robo13">Messages/Messages</a></li>
 <ul>
-<li>1.1. <a href="./messages_adb.html#robo60">Messages/MessageFrame</a></li>
-<li>1.2. <a href="./messages_adb.html#robo61">Messages/MessageLabel</a></li>
-<li>1.3. <a href="./messages_adb.html#robo62">Messages/TimerId</a></li>
-<li>1.4. <a href="#robo63">Messages/YesToAll</a></li>
-<li>1.5. <a href="./messages_adb.html#robo146">Messages/Close_Command</a></li>
-<li>1.6. <a href="#robo147">Messages/CreateMessagesUI</a></li>
-<li>1.7. <a href="./messages_adb.html#robo148">Messages/Response_Command</a></li>
-<li>1.8. <a href="#robo149">Messages/ShowMessage</a></li>
+<li>1.1. <a href="./messages_adb.html#robo70">Messages/Messages.MessageFrame</a></li>
+<li>1.2. <a href="./messages_adb.html#robo71">Messages/Messages.MessageLabel</a></li>
+<li>1.3. <a href="./messages_adb.html#robo72">Messages/Messages.TimerId</a></li>
+<li>1.4. <a href="#robo73">Messages/Messages.YesToAll</a></li>
+<li>1.5. <a href="#robo134">Messages/Messages.CreateMessagesUI</a></li>
+<li>1.6. <a href="#robo135">Messages/Messages.ShowMessage</a></li>
+<li>1.7. <a href="#robo210">Messages/Messages.Close_Command</a></li>
+<li>1.8. <a href="./messages_adb.html#robo211">Messages/Messages.Response_Command</a></li>
 </ul>
 </ul>
 <hr />
-<a name="Hunter2fMessages"></a>
-<a name="robo12"></a><h2>Hunter/Messages [ Packages ]</h2>
+<a name="Messages2fMessages"></a>
+<a name="robo13"></a><h2>Messages/Messages [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -53,10 +55,10 @@
 </pre>
 
 <hr />
-<a name="Messages2fYesToAll"></a>
-<a name="robo63"></a><h2>Messages/YesToAll [ Variables ]</h2>
+<a name="Messages2fMessages2eYesToAll"></a>
+<a name="robo73"></a><h2>Messages/Messages.YesToAll [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Messages</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set to True if user clicked Yes for All button in response to question,
  otherwise False
@@ -66,27 +68,27 @@
 </pre>
 
 <hr />
-<a name="Messages2fCreateMessagesUI"></a>
-<a name="robo147"></a><h2>Messages/CreateMessagesUI [ Subprograms ]</h2>
+<a name="Messages2fMessages2eCreateMessagesUI"></a>
+<a name="robo134"></a><h2>Messages/Messages.CreateMessagesUI [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Create UI related to the program messages
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>CreateMessagesUI</strong><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> CreateMessagesUI<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Messages2fShowMessage"></a>
-<a name="robo149"></a><h2>Messages/ShowMessage [ Subprograms ]</h2>
+<a name="Messages2fMessages2eShowMessage"></a>
+<a name="robo135"></a><h2>Messages/Messages.ShowMessage [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo12">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Messages</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show selected message with selected type to the user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ShowMessage</strong><span class="sign">(</span>Message<span class="sign">:</span> String<span class="sign">;</span> MessageType<span class="sign">:</span> String <span class="sign">:</span><span class="sign">=</span> <span class="quote">"error"</span><span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> ShowMessage<span class="sign">(</span>Message<span class="sign">:</span> String<span class="sign">;</span> MessageType<span class="sign">:</span> String <span class="sign">:</span><span class="sign">=</span> <span class="quote">"error"</span><span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Message     - Text of message to show to the user
@@ -94,9 +96,37 @@
                question. Default value is error.
 </pre>
 
+<hr />
+<a name="Messages2fMessages2eClose5fCommand"></a>
+<a name="robo210"></a><h2>Messages/Messages.Close_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo13">Messages</a> ] [ <a href="./robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Hide message frame
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Close_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> <span class="keyword">in</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> <span class="keyword">in</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span>
+      Argc<span class="sign">:</span> <span class="keyword">in</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span> Argv<span class="sign">:</span> <span class="keyword">in</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span>
+      <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed. Unused
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> CloseMessage
+</pre>
+
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

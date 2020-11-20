@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,30 +22,33 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo10">Hunter/LoadData</a></li>
+<li>1. <a href="#robo10">LoadData/LoadData</a></li>
 <ul>
-<li>1.1. <a href="#robo35">LoadData/Item_Record</a></li>
-<li>1.2. <a href="#robo36">LoadData/Items_Container</a></li>
-<li>1.3. <a href="#robo37">LoadData/Items_Sorting</a></li>
-<li>1.4. <a href="#robo38">LoadData/SortingOrder</a></li>
-<li>1.5. <a href="#robo53">LoadData/ItemsList</a></li>
-<li>1.6. <a href="#robo54">LoadData/SecondItemsList</a></li>
-<li>1.7. <a href="#robo55">LoadData/SortOrder</a></li>
-<li>1.8. <a href="#robo130">LoadData/"&lt;"</a></li>
-<li>1.9. <a href="#robo131">LoadData/"="</a></li>
-<li>1.10. <a href="#robo132">LoadData/AddItem</a></li>
-<li>1.11. <a href="#robo133">LoadData/LoadDirectory</a></li>
+<li>1.1. <a href="#robo36">LoadData/LoadData.Item_Size</a></li>
+<li>1.2. <a href="#robo37">LoadData/LoadData.Items_Container</a></li>
+<li>1.3. <a href="#robo38">LoadData/LoadData.Items_Sorting</a></li>
+<li>1.4. <a href="#robo39">LoadData/LoadData.SortingOrder</a></li>
+<li>1.5. <a href="#robo51">LoadData/LoadData.Item_Record</a></li>
+<li>1.6. <a href="#robo63">LoadData/LoadData.ItemsList</a></li>
+<li>1.7. <a href="#robo64">LoadData/LoadData.SecondItemsList</a></li>
+<li>1.8. <a href="#robo65">LoadData/LoadData.SortOrder</a></li>
+<li>1.9. <a href="#robo126">LoadData/LoadData."&lt;"</a></li>
+<li>1.10. <a href="#robo127">LoadData/LoadData."="</a></li>
+<li>1.11. <a href="#robo128">LoadData/LoadData.AddItem</a></li>
+<li>1.12. <a href="#robo129">LoadData/LoadData.LoadDirectory</a></li>
 </ul>
 </ul>
 <hr />
-<a name="Hunter2fLoadData"></a>
-<a name="robo10"></a><h2>Hunter/LoadData [ Packages ]</h2>
+<a name="LoadData2fLoadData"></a>
+<a name="robo10"></a><h2>LoadData/LoadData [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -56,15 +59,72 @@
 </pre>
 
 <hr />
-<a name="LoadData2fItem5fRecord"></a>
-<a name="robo35"></a><h2>LoadData/Item_Record [ Types ]</h2>
+<a name="LoadData2fLoadData2eItem5fSize"></a>
+<a name="robo36"></a><h2>LoadData/LoadData.Item_Size [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Used to store size of files and directories
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">type</span> Item_Size <span class="keyword">is</span> <span class="keyword">range</span> <span class="sign">-</span>2 <span class="sign">.</span><span class="sign">.</span> File_Size<span class="keyword">'Last</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="LoadData2fLoadData2eItems5fContainer"></a>
+<a name="robo37"></a><h2>LoadData/LoadData.Items_Container [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Used to store information about selected directories contents
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">package</span> Items_Container <span class="keyword">is</span> <span class="keyword">new</span> Vectors<span class="sign">(</span>Positive<span class="sign">,</span> Item_Record<span class="sign">)</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="LoadData2fLoadData2eItems5fSorting"></a>
+<a name="robo38"></a><h2>LoadData/LoadData.Items_Sorting [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Used to sort the selected directories contets
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">package</span> Items_Sorting <span class="keyword">is</span> <span class="keyword">new</span> Items_Container<span class="sign">.</span>Generic_Sorting<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="LoadData2fLoadData2eSortingOrder"></a>
+<a name="robo39"></a><h2>LoadData/LoadData.SortingOrder [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Possible options of sorting for items in directory view
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">type</span> SortingOrder <span class="keyword">is</span>
+     <span class="sign">(</span>NameAsc<span class="sign">,</span> NameDesc<span class="sign">,</span> ModifiedAsc<span class="sign">,</span> ModifiedDesc<span class="sign">,</span> SizeAsc<span class="sign">,</span> SizeDesc<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">OPTIONS</p>
+<pre> NameAsc      - Sort by name ascending
+ NameDesc     - Sort by name descending
+ ModifiedAsc  - Sort by modified time ascending
+ ModifiedDesc - Sort by modified time descending
+ SizeAsc      - Sort by size ascending
+ SizeDesc     - Sort by size descending
+</pre>
+
+<hr />
+<a name="LoadData2fLoadData2eItem5fRecord"></a>
+<a name="robo51"></a><h2>LoadData/LoadData.Item_Record [ Records ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_records.html#robo_top_of_doc">Records</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Data structure with information about files and directories
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">type</span> <strong>Item_Record</strong> <span class="keyword">is</span> <span class="keyword">record</span>
+<pre class="source">   <span class="keyword">type</span> Item_Record <span class="keyword">is</span> <span class="keyword">record</span>
       Name<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
       Size<span class="sign">:</span> Item_Size<span class="sign">;</span>
       IsDirectory<span class="sign">:</span> Boolean<span class="sign">;</span>
@@ -85,70 +145,25 @@
  Image       - The name of the image used to show on the left to the
                item on the list
  HiddenItems - In directory, amount of hidden items
- Path        - The path to the selected item. Used in showing <a href="./trash_ads.html#robo21">Trash</a>
+ Path        - The path to the selected item. Used in showing <a href="./trash_ads.html#robo25">Trash</a>
                content
 </pre>
 
 <hr />
-<a name="LoadData2fItems5fContainer"></a>
-<a name="robo36"></a><h2>LoadData/Items_Container [ Types ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Used to store information about selected directories contents
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>Items_Container</strong> <span class="keyword">is</span> <span class="keyword">new</span> Vectors<span class="sign">(</span>Positive<span class="sign">,</span> <a href="#robo35">Item_Record</a><span class="sign">)</span><span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="LoadData2fItems5fSorting"></a>
-<a name="robo37"></a><h2>LoadData/Items_Sorting [ Types ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Used to sort the selected directories contets
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>Items_Sorting</strong> <span class="keyword">is</span> <span class="keyword">new</span> <a href="#robo36">Items_Container</a><span class="sign">.</span>Generic_Sorting<span class="sign">;</span>
-</pre>
-
-<hr />
-<a name="LoadData2fSortingOrder"></a>
-<a name="robo38"></a><h2>LoadData/SortingOrder [ Types ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Possible options of sorting for items in directory view
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">type</span> <strong>SortingOrder</strong> <span class="keyword">is</span>
-     <span class="sign">(</span>NameAsc<span class="sign">,</span> NameDesc<span class="sign">,</span> ModifiedAsc<span class="sign">,</span> ModifiedDesc<span class="sign">,</span> SizeAsc<span class="sign">,</span> SizeDesc<span class="sign">)</span><span class="sign">;</span>
-</pre>
-<p class="item_name">OPTIONS</p>
-<pre> NameAsc      - Sort by name ascending
- NameDesc     - Sort by name descending
- ModifiedAsc  - Sort by modified time ascending
- ModifiedDesc - Sort by modified time descending
- SizeAsc      - Sort by size ascending
- SizeDesc     - Sort by size descending
-</pre>
-
-<hr />
-<a name="LoadData2fItemsList"></a>
-<a name="robo53"></a><h2>LoadData/ItemsList [ Variables ]</h2>
+<a name="LoadData2fLoadData2eItemsList"></a>
+<a name="robo63"></a><h2>LoadData/LoadData.ItemsList [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> The content of the currently viewed directory
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>ItemsList</strong><span class="sign">:</span> <a href="#robo36">Items_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
+<pre class="source">   ItemsList<span class="sign">:</span> Items_Container<span class="sign">.</span>Vector<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="LoadData2fSecondItemsList"></a>
-<a name="robo54"></a><h2>LoadData/SecondItemsList [ Variables ]</h2>
+<a name="LoadData2fLoadData2eSecondItemsList"></a>
+<a name="robo64"></a><h2>LoadData/LoadData.SecondItemsList [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -156,24 +171,24 @@
  directory for actions like moving, copying, creating links
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>SecondItemsList</strong><span class="sign">:</span> <a href="#robo36">Items_Container</a><span class="sign">.</span>Vector<span class="sign">;</span>
+<pre class="source">   SecondItemsList<span class="sign">:</span> Items_Container<span class="sign">.</span>Vector<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="LoadData2fSortOrder"></a>
-<a name="robo55"></a><h2>LoadData/SortOrder [ Variables ]</h2>
+<a name="LoadData2fLoadData2eSortOrder"></a>
+<a name="robo65"></a><h2>LoadData/LoadData.SortOrder [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Currently set sorting order for directory view. Default value is NameAsc
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>SortOrder</strong><span class="sign">:</span> <a href="#robo38">SortingOrder</a> <span class="sign">:</span><span class="sign">=</span> NameAsc<span class="sign">;</span>
+<pre class="source">   SortOrder<span class="sign">:</span> SortingOrder <span class="sign">:</span><span class="sign">=</span> NameAsc<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="LoadData2f223c22"></a>
-<a name="robo130"></a><h2>LoadData/"&lt;" [ Subprograms ]</h2>
+<a name="LoadData2fLoadData2e223c22"></a>
+<a name="robo126"></a><h2>LoadData/LoadData."&lt;" [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -181,7 +196,7 @@
  than other
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <span class="quote">"<span class="sign">&lt;</span>"</span><span class="sign">(</span>Left<span class="sign">,</span> Right<span class="sign">:</span> <a href="#robo35">Item_Record</a><span class="sign">)</span> <span class="keyword">return</span> Boolean<span class="sign">;</span>
+<pre class="source">   <span class="keyword">function</span> <span class="quote">"<span class="sign">&lt;</span>"</span><span class="sign">(</span>Left<span class="sign">,</span> Right<span class="sign">:</span> Item_Record<span class="sign">)</span> <span class="keyword">return</span> Boolean<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Left  - First item in directory view to compare
@@ -193,8 +208,8 @@
 </pre>
 
 <hr />
-<a name="LoadData2f223d22"></a>
-<a name="robo131"></a><h2>LoadData/"=" [ Subprograms ]</h2>
+<a name="LoadData2fLoadData2e223d22"></a>
+<a name="robo127"></a><h2>LoadData/LoadData."=" [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -202,7 +217,7 @@
  another
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <span class="quote">"="</span><span class="sign">(</span>Left<span class="sign">,</span> Right<span class="sign">:</span> <a href="#robo35">Item_Record</a><span class="sign">)</span> <span class="keyword">return</span> Boolean<span class="sign">;</span>
+<pre class="source">   <span class="keyword">function</span> <span class="quote">"="</span><span class="sign">(</span>Left<span class="sign">,</span> Right<span class="sign">:</span> Item_Record<span class="sign">)</span> <span class="keyword">return</span> Boolean<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Left  - First item in directory view to compare
@@ -214,15 +229,15 @@
 </pre>
 
 <hr />
-<a name="LoadData2fAddItem"></a>
-<a name="robo132"></a><h2>LoadData/AddItem [ Subprograms ]</h2>
+<a name="LoadData2fLoadData2eAddItem"></a>
+<a name="robo128"></a><h2>LoadData/LoadData.AddItem [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Add the selected item to the selected list
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>AddItem</strong><span class="sign">(</span>Path<span class="sign">:</span> String<span class="sign">;</span> List<span class="sign">:</span> <span class="keyword">in</span> <span class="keyword">out</span> <a href="#robo36">Items_Container</a><span class="sign">.</span>Vector<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> AddItem<span class="sign">(</span>Path<span class="sign">:</span> String<span class="sign">;</span> List<span class="sign">:</span> <span class="keyword">in</span> <span class="keyword">out</span> Items_Container<span class="sign">.</span>Vector<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Path - Full path to the file or directory which will be added
@@ -230,26 +245,26 @@
 </pre>
 
 <hr />
-<a name="LoadData2fLoadDirectory"></a>
-<a name="robo133"></a><h2>LoadData/LoadDirectory [ Subprograms ]</h2>
+<a name="LoadData2fLoadData2eLoadDirectory"></a>
+<a name="robo129"></a><h2>LoadData/LoadData.LoadDirectory [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo10">LoadData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Load content of the selected directory to the proper list
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>LoadDirectory</strong><span class="sign">(</span>DirectoryName<span class="sign">:</span> String<span class="sign">;</span> Second<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> LoadDirectory<span class="sign">(</span>DirectoryName<span class="sign">:</span> String<span class="sign">;</span> Second<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> DirectoryName - Full path to the directory which content will be added
                  to the proper list
- Second        - If true, add directory content to the <a href="#robo54">SecondItemsList</a>,
-                 otherwise add to the <a href="#robo53">ItemsList</a>. Default value is false
+ Second        - If true, add directory content to the SecondItemsList,
+                 otherwise add to the ItemsList. Default value is false
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/loaddata.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/loaddata.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

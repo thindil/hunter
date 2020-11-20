@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,30 +22,34 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo22">Hunter/Utils</a></li>
+<li>1. <a href="#robo27">Utils/Utils</a></li>
 <ul>
-<li>1.1. <a href="#robo44">Utils/CreateCommands</a></li>
-<li>1.2. <a href="./utils_adb.html#robo79">Utils/ProgressIndex</a></li>
-<li>1.3. <a href="#robo211">Utils/AddCommand</a></li>
-<li>1.4. <a href="#robo212">Utils/CanBeOpened</a></li>
-<li>1.5. <a href="#robo213">Utils/CountFileSize</a></li>
-<li>1.6. <a href="#robo214">Utils/FindExecutable</a></li>
-<li>1.7. <a href="#robo215">Utils/GetMimeType</a></li>
-<li>1.8. <a href="#robo216">Utils/SetDialog</a></li>
-<li>1.9. <a href="#robo217">Utils/SetProgressBar</a></li>
-<li>1.10. <a href="#robo218">Utils/ToggleToolButtons</a></li>
-<li>1.11. <a href="#robo219">Utils/UpdateProgressBar</a></li>
+<li>1.1. <a href="#robo47">Utils/Utils.CreateCommands</a></li>
+<li>1.2. <a href="#robo48">Utils/Utils.Width_Range</a></li>
+<li>1.3. <a href="./utils_adb.html#robo91">Utils/Utils.ProgressIndex</a></li>
+<li>1.4. <a href="#robo172">Utils/Utils.AddCommand</a></li>
+<li>1.5. <a href="#robo173">Utils/Utils.CanBeOpened</a></li>
+<li>1.6. <a href="#robo174">Utils/Utils.CountFileSize</a></li>
+<li>1.7. <a href="#robo175">Utils/Utils.FindExecutable</a></li>
+<li>1.8. <a href="#robo176">Utils/Utils.GetMimeType</a></li>
+<li>1.9. <a href="#robo177">Utils/Utils.Height_Range</a></li>
+<li>1.10. <a href="#robo178">Utils/Utils.SetDialog</a></li>
+<li>1.11. <a href="#robo179">Utils/Utils.SetProgressBar</a></li>
+<li>1.12. <a href="#robo180">Utils/Utils.ToggleToolButtons</a></li>
+<li>1.13. <a href="#robo181">Utils/Utils.UpdateProgressBar</a></li>
 </ul>
 </ul>
 <hr />
-<a name="Hunter2fUtils"></a>
-<a name="robo22"></a><h2>Hunter/Utils [ Packages ]</h2>
+<a name="Utils2fUtils"></a>
+<a name="robo27"></a><h2>Utils/Utils [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -56,28 +60,40 @@
 </pre>
 
 <hr />
-<a name="Utils2fCreateCommands"></a>
-<a name="robo44"></a><h2>Utils/CreateCommands [ Types ]</h2>
+<a name="Utils2fUtils2eCreateCommands"></a>
+<a name="robo47"></a><h2>Utils/Utils.CreateCommands [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to add new commands to Tcl
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> <strong>CreateCommands</strong> <span class="keyword">is</span> <span class="keyword">new</span> Tcl<span class="sign">.</span>Ada<span class="sign">.</span>Generic_Command<span class="sign">(</span>Integer<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">package</span> CreateCommands <span class="keyword">is</span> <span class="keyword">new</span> Tcl<span class="sign">.</span>Ada<span class="sign">.</span>Generic_Command<span class="sign">(</span>Integer<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Utils2fAddCommand"></a>
-<a name="robo211"></a><h2>Utils/AddCommand [ Subprograms ]</h2>
+<a name="Utils2fUtils2eWidth5fRange"></a>
+<a name="robo48"></a><h2>Utils/Utils.Width_Range [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Used to store the width of the widgets
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">type</span> Width_Range <span class="keyword">is</span> <span class="keyword">new</span> Integer<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Utils2fUtils2eAddCommand"></a>
+<a name="robo172"></a><h2>Utils/Utils.AddCommand [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Add command to the Tcl interpreter
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>AddCommand</strong>
-     <span class="sign">(</span>Name<span class="sign">:</span> String<span class="sign">;</span> AdaCommand<span class="sign">:</span> <span class="keyword">not</span> <span class="keyword">null</span> <a href="#robo44">CreateCommands</a><span class="sign">.</span>Tcl_CmdProc<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> AddCommand
+     <span class="sign">(</span>Name<span class="sign">:</span> String<span class="sign">;</span> AdaCommand<span class="sign">:</span> <span class="keyword">not</span> <span class="keyword">null</span> CreateCommands<span class="sign">.</span>Tcl_CmdProc<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Name       - Name of the Tcl command which will be used to invoke the
@@ -86,15 +102,15 @@
 </pre>
 
 <hr />
-<a name="Utils2fCanBeOpened"></a>
-<a name="robo212"></a><h2>Utils/CanBeOpened [ Subprograms ]</h2>
+<a name="Utils2fUtils2eCanBeOpened"></a>
+<a name="robo173"></a><h2>Utils/Utils.CanBeOpened [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Check if there is application associated to open selected MIME Type
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>CanBeOpened</strong><span class="sign">(</span>MimeType<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">return</span> Boolean<span class="sign">;</span>
+<pre class="source">   <span class="keyword">function</span> CanBeOpened<span class="sign">(</span>MimeType<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">return</span> Boolean<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> MimeType - MIME Type to check
@@ -104,15 +120,15 @@
 </pre>
 
 <hr />
-<a name="Utils2fCountFileSize"></a>
-<a name="robo213"></a><h2>Utils/CountFileSize [ Subprograms ]</h2>
+<a name="Utils2fUtils2eCountFileSize"></a>
+<a name="robo174"></a><h2>Utils/Utils.CountFileSize [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Convert file size to human readable format
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>CountFileSize</strong><span class="sign">(</span>Size<span class="sign">:</span> File_Size<span class="sign">)</span> <span class="keyword">return</span> String<span class="sign">;</span>
+<pre class="source">   <span class="keyword">function</span> CountFileSize<span class="sign">(</span>Size<span class="sign">:</span> File_Size<span class="sign">)</span> <span class="keyword">return</span> String<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Size - Size of file in bytes
@@ -122,16 +138,16 @@
 </pre>
 
 <hr />
-<a name="Utils2fFindExecutable"></a>
-<a name="robo214"></a><h2>Utils/FindExecutable [ Subprograms ]</h2>
+<a name="Utils2fUtils2eFindExecutable"></a>
+<a name="robo175"></a><h2>Utils/Utils.FindExecutable [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Find executable file with selected name in this same directory where
  the program is or in PATH variable
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>FindExecutable</strong>
+<pre class="source">   <span class="keyword">function</span> FindExecutable
      <span class="sign">(</span>Name<span class="sign">:</span> String<span class="sign">;</span> DisplayMessage<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> True<span class="sign">)</span> <span class="keyword">return</span> String<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
@@ -145,15 +161,15 @@
 </pre>
 
 <hr />
-<a name="Utils2fGetMimeType"></a>
-<a name="robo215"></a><h2>Utils/GetMimeType [ Subprograms ]</h2>
+<a name="Utils2fUtils2eGetMimeType"></a>
+<a name="robo176"></a><h2>Utils/Utils.GetMimeType [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Check MIME Type of selected file
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>GetMimeType</strong><span class="sign">(</span>FileName<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">return</span> String<span class="sign">;</span>
+<pre class="source">   <span class="keyword">function</span> GetMimeType<span class="sign">(</span>FileName<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">return</span> String<span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> FileName - full path to the selected file to check MIME Type
@@ -163,16 +179,29 @@
 </pre>
 
 <hr />
-<a name="Utils2fSetDialog"></a>
-<a name="robo216"></a><h2>Utils/SetDialog [ Subprograms ]</h2>
+<a name="Utils2fUtils2eHeight5fRange"></a>
+<a name="robo177"></a><h2>Utils/Utils.Height_Range [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Used to store the height of the widgets
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">type</span> Height_Range <span class="keyword">is</span> <span class="keyword">new</span> Integer<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Utils2fUtils2eSetDialog"></a>
+<a name="robo178"></a><h2>Utils/Utils.SetDialog [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set the selected dialog
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SetDialog</strong>
-     <span class="sign">(</span>Dialog<span class="sign">:</span> Tk_Toplevel<span class="sign">;</span> DialogTitle<span class="sign">:</span> String<span class="sign">;</span> Width<span class="sign">,</span> Height<span class="sign">:</span> Positive<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> SetDialog
+     <span class="sign">(</span>Dialog<span class="sign">:</span> Tk_Toplevel<span class="sign">;</span> DialogTitle<span class="sign">:</span> String<span class="sign">;</span> Width<span class="sign">:</span> Width_Range<span class="sign">;</span>
+      Height<span class="sign">:</span> Height_Range<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Dialog      - Tk_Toplevel dialog to set
@@ -182,32 +211,32 @@
 </pre>
 
 <hr />
-<a name="Utils2fSetProgressBar"></a>
-<a name="robo217"></a><h2>Utils/SetProgressBar [ Subprograms ]</h2>
+<a name="Utils2fUtils2eSetProgressBar"></a>
+<a name="robo179"></a><h2>Utils/Utils.SetProgressBar [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Set values for progress bar and show it to the user
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>SetProgressBar</strong><span class="sign">(</span>Amount<span class="sign">:</span> Positive<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> SetProgressBar<span class="sign">(</span>Amount<span class="sign">:</span> Positive<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Amount - Max amount of items - will be used to count progress
 </pre>
 
 <hr />
-<a name="Utils2fToggleToolButtons"></a>
-<a name="robo218"></a><h2>Utils/ToggleToolButtons [ Subprograms ]</h2>
+<a name="Utils2fUtils2eToggleToolButtons"></a>
+<a name="robo180"></a><h2>Utils/Utils.ToggleToolButtons [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Show or hide other tool bar buttons when user starts any action with
  files or directories
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>ToggleToolButtons</strong>
-     <span class="sign">(</span>Action<span class="sign">:</span> <a href="./mainwindow_ads.html#robo39">ItemActions</a><span class="sign">;</span> Finished<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> ToggleToolButtons
+     <span class="sign">(</span>Action<span class="sign">:</span> ItemActions<span class="sign">;</span> Finished<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Action   - Action on files or directories started or finished.
@@ -215,20 +244,20 @@
 </pre>
 
 <hr />
-<a name="Utils2fUpdateProgressBar"></a>
-<a name="robo219"></a><h2>Utils/UpdateProgressBar [ Subprograms ]</h2>
+<a name="Utils2fUtils2eUpdateProgressBar"></a>
+<a name="robo181"></a><h2>Utils/Utils.UpdateProgressBar [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo22">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo27">Utils</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Update fraction of the progress bar
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>UpdateProgressBar</strong><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> UpdateProgressBar<span class="sign">;</span>
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/utils.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/utils.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>

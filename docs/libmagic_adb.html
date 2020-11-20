@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.4 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
@@ -22,100 +22,102 @@
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
+<a class="menuitem" href="./robo_commands.html#top">Commands</a>
+<a class="menuitem" href="./robo_records.html#top">Records</a>
 <a class="menuitem" href="./robo_types.html#top">Types</a>
 <a class="menuitem" href="./robo_variables.html#top">Variables</a>
 </div> <!-- navigation -->
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo33">LibMagic/magic_set</a></li>
-<li>2. <a href="#robo34">LibMagic/magic_t</a></li>
-<li>3. <a href="#robo51">LibMagic/Initialized</a></li>
-<li>4. <a href="#robo52">LibMagic/MagicData</a></li>
-<li>5. <a href="#robo123">LibMagic/magic_close</a></li>
-<li>6. <a href="#robo124">LibMagic/magic_file</a></li>
-<li>7. <a href="#robo125">LibMagic/magic_load</a></li>
-<li>8. <a href="#robo126">LibMagic/magic_open</a></li>
+<li>1. <a href="#robo34">LibMagic/LibMagic.magic_set</a></li>
+<li>2. <a href="#robo35">LibMagic/LibMagic.magic_t</a></li>
+<li>3. <a href="#robo61">LibMagic/LibMagic.Initialized</a></li>
+<li>4. <a href="#robo62">LibMagic/LibMagic.MagicData</a></li>
+<li>5. <a href="#robo119">LibMagic/LibMagic.magic_close</a></li>
+<li>6. <a href="#robo120">LibMagic/LibMagic.magic_file</a></li>
+<li>7. <a href="#robo121">LibMagic/LibMagic.magic_load</a></li>
+<li>8. <a href="#robo122">LibMagic/LibMagic.magic_open</a></li>
 </ul>
 <hr />
-<a name="LibMagic2fmagic5fset"></a>
-<a name="robo33"></a><h2>LibMagic/magic_set [ Types ]</h2>
+<a name="LibMagic2fLibMagic2emagic5fset"></a>
+<a name="robo34"></a><h2>LibMagic/LibMagic.magic_set [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./libmagic_ads.html#robo9">LibMagic</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store Magic data
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">type</span> <strong>magic_set</strong> <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">record</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">type</span> magic_set <span class="keyword">is</span> <span class="keyword">null</span> <span class="keyword">record</span><span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="LibMagic2fmagic5ft"></a>
-<a name="robo34"></a><h2>LibMagic/magic_t [ Types ]</h2>
+<a name="LibMagic2fLibMagic2emagic5ft"></a>
+<a name="robo35"></a><h2>LibMagic/LibMagic.magic_t [ Types ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./libmagic_ads.html#robo9">LibMagic</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used as pointer to the Magic data
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">type</span> <strong>magic_t</strong> <span class="keyword">is</span> <span class="keyword">access</span> <span class="keyword">all</span> <a href="#robo33">magic_set</a><span class="sign">;</span>
+<pre class="source">   <span class="keyword">type</span> magic_t <span class="keyword">is</span> <span class="keyword">access</span> <span class="keyword">all</span> magic_set<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="LibMagic2fInitialized"></a>
-<a name="robo51"></a><h2>LibMagic/Initialized [ Variables ]</h2>
+<a name="LibMagic2fLibMagic2eInitialized"></a>
+<a name="robo61"></a><h2>LibMagic/LibMagic.Initialized [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./libmagic_ads.html#robo9">LibMagic</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> If true, libmagic was succesfully initialized. Default is false.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>Initialized</strong><span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span>
+<pre class="source">   Initialized<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="LibMagic2fMagicData"></a>
-<a name="robo52"></a><h2>LibMagic/MagicData [ Variables ]</h2>
+<a name="LibMagic2fLibMagic2eMagicData"></a>
+<a name="robo62"></a><h2>LibMagic/LibMagic.MagicData [ Variables ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./libmagic_ads.html#robo9">LibMagic</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Pointer to the Magic data
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <strong>MagicData</strong><span class="sign">:</span> <a href="#robo34">magic_t</a><span class="sign">;</span>
+<pre class="source">   MagicData<span class="sign">:</span> magic_t<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="LibMagic2fmagic5fclose"></a>
-<a name="robo123"></a><h2>LibMagic/magic_close [ Subprograms ]</h2>
+<a name="LibMagic2fLibMagic2emagic5fclose"></a>
+<a name="robo119"></a><h2>LibMagic/LibMagic.magic_close [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./libmagic_ads.html#robo9">LibMagic</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Binding to the C function
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> <strong>magic_close</strong><span class="sign">(</span>arg1<span class="sign">:</span> <a href="#robo34">magic_t</a><span class="sign">)</span> <span class="keyword">with</span>
+<pre class="source">   <span class="keyword">procedure</span> magic_close<span class="sign">(</span>arg1<span class="sign">:</span> magic_t<span class="sign">)</span> <span class="keyword">with</span>
       Import <span class="sign">=</span><span class="sign">&gt;</span> True<span class="sign">,</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">,</span>
-      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"<strong>magic_close</strong>"</span><span class="sign">;</span>
+      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"magic_close"</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> arg1 -  Pointer to the Magic data
 </pre>
 
 <hr />
-<a name="LibMagic2fmagic5ffile"></a>
-<a name="robo124"></a><h2>LibMagic/magic_file [ Subprograms ]</h2>
+<a name="LibMagic2fLibMagic2emagic5ffile"></a>
+<a name="robo120"></a><h2>LibMagic/LibMagic.magic_file [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./libmagic_ads.html#robo9">LibMagic</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Binding to the C function
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>magic_file</strong><span class="sign">(</span>arg1<span class="sign">:</span> <a href="#robo34">magic_t</a><span class="sign">;</span> arg2<span class="sign">:</span> chars_ptr<span class="sign">)</span> <span class="keyword">return</span> chars_ptr <span class="keyword">with</span>
+<pre class="source">   <span class="keyword">function</span> magic_file<span class="sign">(</span>arg1<span class="sign">:</span> magic_t<span class="sign">;</span> arg2<span class="sign">:</span> chars_ptr<span class="sign">)</span> <span class="keyword">return</span> chars_ptr <span class="keyword">with</span>
       Import <span class="sign">=</span><span class="sign">&gt;</span> True<span class="sign">,</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">,</span>
-      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"<strong>magic_file</strong>"</span><span class="sign">;</span>
+      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"magic_file"</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> arg1 - Pointer to the Magic data
@@ -126,18 +128,18 @@
 </pre>
 
 <hr />
-<a name="LibMagic2fmagic5fload"></a>
-<a name="robo125"></a><h2>LibMagic/magic_load [ Subprograms ]</h2>
+<a name="LibMagic2fLibMagic2emagic5fload"></a>
+<a name="robo121"></a><h2>LibMagic/LibMagic.magic_load [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./libmagic_ads.html#robo9">LibMagic</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Binding to the C function
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>magic_load</strong><span class="sign">(</span>arg1<span class="sign">:</span> <a href="#robo34">magic_t</a><span class="sign">;</span> arg2<span class="sign">:</span> chars_ptr<span class="sign">)</span> <span class="keyword">return</span> int <span class="keyword">with</span>
+<pre class="source">   <span class="keyword">function</span> magic_load<span class="sign">(</span>arg1<span class="sign">:</span> magic_t<span class="sign">;</span> arg2<span class="sign">:</span> chars_ptr<span class="sign">)</span> <span class="keyword">return</span> int <span class="keyword">with</span>
       Import <span class="sign">=</span><span class="sign">&gt;</span> True<span class="sign">,</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">,</span>
-      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"<strong>magic_load</strong>"</span><span class="sign">;</span>
+      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"magic_load"</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> arg1 - Pointer to the Magic data
@@ -148,18 +150,18 @@
 </pre>
 
 <hr />
-<a name="LibMagic2fmagic5fopen"></a>
-<a name="robo126"></a><h2>LibMagic/magic_open [ Subprograms ]</h2>
+<a name="LibMagic2fLibMagic2emagic5fopen"></a>
+<a name="robo122"></a><h2>LibMagic/LibMagic.magic_open [ Subprograms ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./libmagic_ads.html#robo9">LibMagic</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Binding to the C function
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> <strong>magic_open</strong><span class="sign">(</span>arg1<span class="sign">:</span> int<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo34">magic_t</a> <span class="keyword">with</span>
+<pre class="source">   <span class="keyword">function</span> magic_open<span class="sign">(</span>arg1<span class="sign">:</span> int<span class="sign">)</span> <span class="keyword">return</span> magic_t <span class="keyword">with</span>
       Import <span class="sign">=</span><span class="sign">&gt;</span> True<span class="sign">,</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">,</span>
-      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"<strong>magic_open</strong>"</span><span class="sign">;</span>
+      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"magic_open"</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> arg1 - Type of data to retrieve
@@ -170,7 +172,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/libmagic.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Wed Aug 19 2020 10:05:13
+<p>Generated from ./src/libmagic.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
 </p>
 </div> <!-- footer -->
 </body>
