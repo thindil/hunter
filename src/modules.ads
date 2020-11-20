@@ -15,7 +15,12 @@
 
 with MainWindow; use MainWindow;
 
+-- ****h* Modules/Modules
+-- FUNCTION
+-- Provide code for manipulating the program's modules
+-- SOURCE
 package Modules is
+-- ****
 
    -- ****v* Modules/Modules.Enabled_Modules
    -- FUNCTION
@@ -24,7 +29,7 @@ package Modules is
    Enabled_Modules: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****t* Modules/Triggers
+   -- ****t* Modules/Modules.Triggers
    -- FUNCTION
    -- The program states on which the selected the program's module code will
    -- be triggered
