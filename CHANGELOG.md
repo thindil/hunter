@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.5] - 2020-11-20
 
 ### Added
 - Option to configure the program keyboard shortcuts
