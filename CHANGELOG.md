@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Fixed
+- Showing preferences button on fresh start
+
 ## [1.5] - 2020-11-20
 
 ### Added
