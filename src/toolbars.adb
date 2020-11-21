@@ -18,6 +18,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.String_Split; use GNAT.String_Split;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
@@ -53,28 +54,7 @@ package body Toolbars is
       Toolbar: Ttk_Frame;
       Button: Ttk_Button;
       Label: Ttk_Label;
-      ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String(MainFrame & ".toolbars.actiontoolbar.quitbutton"),
-         To_Unbounded_String
-           (MainFrame & ".toolbars.actiontoolbar.searchbutton"),
-         To_Unbounded_String
-           (MainFrame & ".toolbars.actiontoolbar.selectbutton"),
-         To_Unbounded_String
-           (MainFrame & ".toolbars.actiontoolbar.renamebutton"),
-         To_Unbounded_String(MainFrame & ".toolbars.actiontoolbar.copybutton"),
-         To_Unbounded_String(MainFrame & ".toolbars.actiontoolbar.movebutton"),
-         To_Unbounded_String
-           (MainFrame & ".toolbars.actiontoolbar.optionsbutton"),
-         To_Unbounded_String(MainFrame & ".toolbars.itemtoolbar.runbutton"),
-         To_Unbounded_String(MainFrame & ".toolbars.itemtoolbar.openbutton"),
-         To_Unbounded_String
-           (MainFrame & ".toolbars.itemtoolbar.openwithbutton"),
-         To_Unbounded_String
-           (MainFrame & ".toolbars.itemtoolbar.previewbutton"),
-         To_Unbounded_String(MainFrame & ".toolbars.itemtoolbar.infobutton"),
-         To_Unbounded_String(MainFrame & ".toolbars.itemtoolbar.addbutton"),
-         To_Unbounded_String
-           (MainFrame & ".toolbars.itemtoolbar.deletebutton"));
+      Tokens: Slice_Set;
       MenuButtonsNames: constant array
         (Positive range <>) of Unbounded_String :=
         (To_Unbounded_String
@@ -102,8 +82,16 @@ package body Toolbars is
          configure(Button, "-direction " & To_String(Direction));
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
       end loop;
-      for Name of ButtonsNames loop
-         Button.Name := New_String(To_String(Name));
+      Toolbar := Get_Widget(MainFrame & ".toolbars.actiontoolbar");
+      Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
+      for I in 1 .. Slice_Count(Tokens) loop
+         Button.Name := New_String(Slice(Tokens, I));
+         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
+      end loop;
+      Toolbar := Get_Widget(MainFrame & ".toolbars.itemtoolbar");
+      Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
+      for I in 1 .. Slice_Count(Tokens) loop
+         Button.Name := New_String(Slice(Tokens, I));
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
       end loop;
       for I in 1 .. 3 loop

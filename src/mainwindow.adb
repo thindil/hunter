@@ -203,7 +203,6 @@ package body MainWindow is
       CreateActionToolbar;
       CreateBookmarkMenu(True);
       CreateItemToolbar;
-      SetToolbars;
       CreateMessagesUI;
       CreateActivateUI;
       CreatePreferencesUI;
@@ -215,6 +214,7 @@ package body MainWindow is
       CreateTrashUI;
       CreateAboutUI;
       LoadModules;
+      SetToolbars;
       Add(Paned, DirectoryFrame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");
