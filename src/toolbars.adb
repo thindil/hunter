@@ -321,7 +321,7 @@ package body Toolbars is
          Mc(Get_Context, "{Show the program preferences }") & " \[" &
          To_String(Accelerators(12)) & "\]",
          "configure");
-      Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
+      Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolMenuButton := Create(Toolbar & ".aboutbutton");
       SetButton
         (ToolMenuButton,
