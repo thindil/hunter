@@ -59,7 +59,7 @@ package body ErrorDialog is
          Create(ErrorFile, Append_File, ErrorFilePath);
       end if;
       Append(ErrorText, Current_Time & LF);
-      Append(ErrorText, "1.5" & LF);
+      Append(ErrorText, "1.6" & LF);
       Append(ErrorText, "Exception: " & Exception_Name(An_Exception) & LF);
       Append(ErrorText, "Message: " & Exception_Message(An_Exception) & LF);
       Append
