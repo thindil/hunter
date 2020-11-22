@@ -97,6 +97,11 @@ namespace eval bob {
          return
       } else {
          pack .mainframe.toolbars.actiontoolbar.bobbutton -after .mainframe.toolbars.actiontoolbar.deletebutton
+         if {[GetConfig toolbarsontop]} {
+            pack configure .mainframe.toolbars.actiontoolbar.bobbutton -side left
+         } else {
+            pack configure .mainframe.toolbars.actiontoolbar.bobbutton -side top
+         }
       }
       .bobmenu delete 0 end
       set bobfile [open $filename]
