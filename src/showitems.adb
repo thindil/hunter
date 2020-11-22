@@ -184,8 +184,15 @@ package body ShowItems is
    begin
       configure(Label, "-text {" & Mc(Get_Context, "{Preview}") & "}");
       if Winfo_Get(Button, "ismapped") = "0" then
-         Tcl.Tk.Ada.Pack.Pack
-           (Button, "-before .mainframe.toolbars.itemtoolbar.infobutton");
+         declare
+            Side: constant String :=
+              (if Settings.ToolbarsOnTop then "left" else "top");
+         begin
+            Tcl.Tk.Ada.Pack.Pack
+              (Button,
+               "-before .mainframe.toolbars.itemtoolbar.infobutton -side " &
+               Side);
+         end;
       end if;
       SetActionsButtons;
       Unautoscroll(PreviewXScroll);
