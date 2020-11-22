@@ -459,6 +459,8 @@ package body Toolbars is
       ActionsMenu: constant Tk_Menu := Get_Widget(".actionsmenu");
       ActionsButton: constant Ttk_MenuButton :=
         Get_Widget(".mainframe.toolbars.actiontoolbar.userbutton");
+      Side: constant String :=
+        (if Settings.ToolbarsOnTop then "left" else "top");
    begin
       Delete(ActionsMenu, "0", "end");
       if UserCommandsList.Is_Empty then
@@ -466,7 +468,8 @@ package body Toolbars is
       else
          Tcl.Tk.Ada.Pack.Pack
            (ActionsButton,
-            "-after .mainframe.toolbars.actiontoolbar.separator2");
+            "-after .mainframe.toolbars.actiontoolbar.separator2 -side " &
+            Side);
       end if;
       for I in UserCommandsList.Iterate loop
          Menu.Add
