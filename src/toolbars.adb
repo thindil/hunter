@@ -48,8 +48,8 @@ with Utils; use Utils;
 package body Toolbars is
 
    procedure SetToolbars is
-      Side, Direction, Orientation: Unbounded_String;
-      Fill: Character;
+      Fill: constant Character :=
+        (if Settings.ToolbarsOnTop then 'y' else 'x');
       MainFrame: constant Ttk_Frame := Get_Widget(".mainframe");
       Toolbar: Ttk_Frame;
       Button: Ttk_Button;
@@ -64,55 +64,47 @@ package body Toolbars is
            (MainFrame & ".toolbars.actiontoolbar.deletebutton"),
          To_Unbounded_String
            (MainFrame & ".toolbars.actiontoolbar.aboutbutton"));
+      Side: constant String :=
+        (if Settings.ToolbarsOnTop then "left" else "top");
+      Direction: constant String :=
+        (if Settings.ToolbarsOnTop then "below" else "right");
+      Orientation: constant String :=
+        (if Settings.ToolbarsOnTop then "vertical" else "horizontal");
    begin
-      if not Settings.ToolbarsOnTop then
-         Side := To_Unbounded_String("top");
-         Fill := 'x';
-         Direction := To_Unbounded_String("right");
-         Orientation := To_Unbounded_String("horizontal");
-      else
-         Side := To_Unbounded_String("left");
-         Fill := 'y';
-         Direction := To_Unbounded_String("below");
-         Orientation := To_Unbounded_String("vertical");
-      end if;
       Button.Interp := Get_Context;
       for Name of MenuButtonsNames loop
          Button.Name := New_String(To_String(Name));
-         configure(Button, "-direction " & To_String(Direction));
-         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
+         configure(Button, "-direction " & Direction);
       end loop;
       Toolbar := Get_Widget(MainFrame & ".toolbars.actiontoolbar");
       Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
       for I in 1 .. Slice_Count(Tokens) loop
          Button.Name := New_String(Slice(Tokens, I));
-         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
+         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & Side);
       end loop;
       Toolbar := Get_Widget(MainFrame & ".toolbars.itemtoolbar");
       Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
       for I in 1 .. Slice_Count(Tokens) loop
          Button.Name := New_String(Slice(Tokens, I));
-         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & To_String(Side));
+         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & Side);
       end loop;
       for I in 1 .. 3 loop
          Button.Name :=
            New_String
              (MainFrame & ".toolbars.actiontoolbar.separator" &
               Trim(Positive'Image(I), Both));
-         configure(Button, "-orient " & To_String(Orientation));
+         configure(Button, "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
-           (Button,
-            "-side " & To_String(Side) & " -pad" & Fill & " 5 -fill " & Fill);
+           (Button, "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
       end loop;
       for I in 1 .. 2 loop
          Button.Name :=
            New_String
              (MainFrame & ".toolbars.itemtoolbar.separator" &
               Trim(Positive'Image(I), Both));
-         configure(Button, "-orient " & To_String(Orientation));
+         configure(Button, "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
-           (Button,
-            "-side " & To_String(Side) & " -pad" & Fill & " 5 -fill " & Fill);
+           (Button, "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
       end loop;
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(MainFrame & ".toolbars.itemtoolbar");
