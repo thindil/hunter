@@ -55,15 +55,6 @@ package body Toolbars is
       Button: Ttk_Button;
       Label: Ttk_Label;
       Tokens: Slice_Set;
-      MenuButtonsNames: constant array
-        (Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String
-           (MainFrame & ".toolbars.actiontoolbar.bookmarksbutton"),
-         To_Unbounded_String(MainFrame & ".toolbars.actiontoolbar.newbutton"),
-         To_Unbounded_String
-           (MainFrame & ".toolbars.actiontoolbar.deletebutton"),
-         To_Unbounded_String
-           (MainFrame & ".toolbars.actiontoolbar.aboutbutton"));
       Side: constant String :=
         (if Settings.ToolbarsOnTop then "left" else "top");
       Direction: constant String :=
@@ -72,20 +63,22 @@ package body Toolbars is
         (if Settings.ToolbarsOnTop then "vertical" else "horizontal");
    begin
       Button.Interp := Get_Context;
-      for Name of MenuButtonsNames loop
-         Button.Name := New_String(To_String(Name));
-         configure(Button, "-direction " & Direction);
-      end loop;
       Toolbar := Get_Widget(MainFrame & ".toolbars.actiontoolbar");
       Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
       for I in 1 .. Slice_Count(Tokens) loop
          Button.Name := New_String(Slice(Tokens, I));
+         if Winfo_Get(Button, "class") = "TMenubutton" then
+            configure(Button, "-direction " & Direction);
+         end if;
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & Side);
       end loop;
       Toolbar := Get_Widget(MainFrame & ".toolbars.itemtoolbar");
       Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
       for I in 1 .. Slice_Count(Tokens) loop
          Button.Name := New_String(Slice(Tokens, I));
+         if Winfo_Get(Button, "class") = "TMenubutton" then
+            configure(Button, "-direction " & Direction);
+         end if;
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & Side);
       end loop;
       for I in 1 .. 3 loop
