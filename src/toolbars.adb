@@ -429,12 +429,15 @@ package body Toolbars is
    procedure SetActionsButtons is
       Button: Ttk_Button :=
         Get_Widget(".mainframe.toolbars.itemtoolbar.runbutton");
+      Side: constant String :=
+        (if Settings.ToolbarsOnTop then "left" else "top");
    begin
       if Is_Executable_File(To_String(CurrentSelected)) then
          if Winfo_Get(Button, "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
               (Button,
-               "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
+               "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
+               Side);
          end if;
       else
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
@@ -444,7 +447,8 @@ package body Toolbars is
          if Winfo_Get(Button, "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
               (Button,
-               "-before .mainframe.toolbars.itemtoolbar.openwithbutton");
+               "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
+               Side);
          end if;
       else
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
