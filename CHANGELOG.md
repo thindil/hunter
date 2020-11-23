@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Changed
+- Updated the program themes
+
 ### Fixed
 - Showing preferences button on fresh start
 
