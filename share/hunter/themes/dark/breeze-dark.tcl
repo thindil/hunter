@@ -318,6 +318,17 @@ namespace eval ttk::theme::hunter-dark {
             -background [list selected $colors(-selectbg)] \
             -foreground [list selected $colors(-selectfg)]
         
+        # Scrollbar 
+        bind TScrollbar <MouseWheel> {
+           [lindex [%W cget -command] 0] [lindex [%W cget -command] 1] scroll [expr (-1 * (%D / 120))] units
+        }
+        bind TScrollbar <Button-4> {
+           [lindex [%W cget -command] 0] [lindex [%W cget -command] 1] scroll -1 units
+        }
+        bind TScrollbar <Button-5> {
+           [lindex [%W cget -command] 0] [lindex [%W cget -command] 1] scroll 1 units
+        }
+
         # Some defaults for non ttk-widgets so that they fit
         # to the Breeze theme, too
         tk_setPalette background [ttk::style lookup . -background] \
