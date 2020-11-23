@@ -96,11 +96,14 @@ namespace eval bob {
          pack forget .mainframe.toolbars.actiontoolbar.bobbutton
          return
       } else {
-         pack .mainframe.toolbars.actiontoolbar.bobbutton -after .mainframe.toolbars.actiontoolbar.deletebutton
+         set bobbutton .mainframe.toolbars.actiontoolbar.bobbutton
+         pack $bobbutton -after .mainframe.toolbars.actiontoolbar.deletebutton
          if {[GetConfig toolbarsontop]} {
-            pack configure .mainframe.toolbars.actiontoolbar.bobbutton -side left
+            $bobbutton configure -direction below
+            pack configure $bobbutton -side left
          } else {
-            pack configure .mainframe.toolbars.actiontoolbar.bobbutton -side top
+            $bobbutton configure -direction right
+            pack configure $bobbutton -side top
          }
       }
       .bobmenu delete 0 end
