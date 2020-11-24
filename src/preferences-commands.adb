@@ -1430,14 +1430,22 @@ package body Preferences.Commands is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
+      use Interfaces.C;
    begin
+      if Close_Preferences_Command(ClientData, Interp, Argc, Argv) =
+        TCL_ERROR then
+         return TCL_ERROR;
+      end if;
       CurrentDirectory :=
         To_Unbounded_String
           (Normalize_Pathname
              (CArgv.Arg(Argv, 1), Containing_Directory(Command_Name)));
       LoadDirectory(To_String(CurrentDirectory));
+      CurrentSelected := CurrentDirectory & "/" & ItemsList(1).Name;
       UpdateDirectoryList(True);
-      return Close_Preferences_Command(ClientData, Interp, Argc, Argv);
+      UpdateWatch(To_String(CurrentDirectory));
+      ShowPreview;
+      return TCL_OK;
    end Show_Module_Command;
 
    procedure AddCommands is
