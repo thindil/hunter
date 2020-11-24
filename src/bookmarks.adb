@@ -83,7 +83,7 @@ package body Bookmarks is
          Delete(BookmarksMenu, "0", "end");
       end if;
       BookmarksList.Clear;
-      BookmarksList.Include("Home", Value("HOME"));
+      BookmarksList.Include(Mc(Get_Context, "{Home}"), Value("HOME"));
       Add
         (BookmarksMenu, "command",
          "-label {" & Mc(Get_Context, "{Home}") &
@@ -159,7 +159,9 @@ package body Bookmarks is
       end if;
       for I in BookmarksList.Iterate loop
          if BookmarksList(I) = CurrentSelected then
-            if Natural'Value(Index(Menu, Bookmarks_Container.Key(I))) < 8 then
+            if Natural'Value
+                (Index(Menu, "{" & Bookmarks_Container.Key(I) & "}")) <
+              8 then
                return;
             end if;
             Tcl.Tk.Ada.Pack.Pack(Button);
