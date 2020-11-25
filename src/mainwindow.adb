@@ -277,7 +277,7 @@ package body MainWindow is
       CreateShowItemsUI;
       SashPos
         (Paned, "0",
-         Positive'Image(Positive'Value(Winfo_Get(Paned, "reqwidth")) / 2));
+         Positive'Image(Positive(Float(Settings.WindowWidth) / 2.5)));
    end CreateMainWindow;
 
    procedure UpdateDirectoryList
