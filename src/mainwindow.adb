@@ -236,8 +236,8 @@ package body MainWindow is
          configure(DirectoryTree, "-displaycolumns [list name size]");
       end if;
       Column(DirectoryTree, "#0", "-stretch false -width 50");
-      Column(DirectoryTree, "modified", "-stretch false");
-      Column(DirectoryTree, "size", "-stretch false");
+      Column(DirectoryTree, "modified", "-stretch false -width 150");
+      Column(DirectoryTree, "size", "-stretch false -width 75");
       Tag_Bind(DirectoryTree, "itemrow", "<Double-1>", "ActivateItem");
       Bind(DirectoryTree, "<Return>", "ActivateItem");
       Bind(DirectoryTree, "<<TreeviewSelect>>", "ShowSelected");
