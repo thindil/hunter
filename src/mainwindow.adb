@@ -275,6 +275,9 @@ package body MainWindow is
       UpdateDirectoryList(True);
       Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
       CreateShowItemsUI;
+      SashPos
+        (Paned, "0",
+         Positive'Image(Positive'Value(Winfo_Get(Paned, "reqwidth")) / 2));
    end CreateMainWindow;
 
    procedure UpdateDirectoryList
