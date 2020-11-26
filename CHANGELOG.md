@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 - Updated the program themes
+- Better default look of the program
 
 ### Fixed
 - Showing preferences button on fresh start
