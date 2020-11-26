@@ -29,10 +29,16 @@ Keywords={
       List={"true", "false"},
       },
     { Id=3,
-      Regex=[[ [\w\)]+('\w+) ]],
-      },
-    { Id=3,
       Regex=[[''']],
+      },
+    { Id=4,
+      List={"aligment", "all_calls_remote", "asynchronous", "atomic", "atomic_components",
+            "attach_handler", "bit_order", "coding", "component_size", "constant_indexing",
+            "convention", "cpu", "default_component_value", "default_iterator", "default_storage_pool",
+            "default_value"}
+      },
+    { Id=4,
+      Regex=[[ [\w\)]+('\w+) ]],
       }
 }
 
