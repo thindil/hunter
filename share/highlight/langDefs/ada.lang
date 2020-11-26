@@ -38,7 +38,10 @@ Keywords={
             "default_value", "discard_names", "dispatching_domain", "dynamic_predicate",
             "elaborate_body", "exclusive_functions", "export", "external_name", "external_tag",
             "implicit_dereference", "improt", "independent", "inline", "input", "interrupt_handler",
-            "interrupt_priority", "iterator_element", "layout", "link_name", "machine_radix"}
+            "interrupt_priority", "iterator_element", "layout", "link_name", "machine_radix",
+            "no_return", "output", "pack", "post", "pre", "predicate_failure", "preelaborate",
+            "priority", "pure", "read", "relative_deadline", "remote_call_interface", "remote_types",
+            "shared_passive", "size", "small", "static_predicate", "storage_pool", "storage_size"}
       },
     { Id=4,
       Regex=[[ [\w\)]+('\w+) ]],
