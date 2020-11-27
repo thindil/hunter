@@ -43,8 +43,14 @@ Keywords={
             "priority", "pure", "read", "relative_deadline", "remote_call_interface", "remote_types",
             "shared_passive", "size", "small", "static_predicate", "storage_pool", "storage_size",
             "steam_size", "synchronization", "type_invariant", "unchecked_union", "variable_indexing",
-            "volatile", "volatile_components", "write"}
+            "volatile", "volatile_components", "write"},
       },
+    { Id=4,
+      List={"assert", "assertion_policy", "default blocking", "elaborate", "elaborate_all",
+            "independed_components", "inspection_point", "linker_options", "list", "locking_policy",
+            "normalize_scalars", "optimize", "page", "partition_elaboration_policy",
+            "preelaborate_initialization"},
+      }
     { Id=4,
       Regex=[[ [\w\)]+('\w+) ]],
       }
