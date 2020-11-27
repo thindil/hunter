@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
 - Updated the program themes
 - Better default look of the program
+- Updated Ada language definition with aspects and pragmas
 
 ### Fixed
 - Showing preferences button on fresh start
