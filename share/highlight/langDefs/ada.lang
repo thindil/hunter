@@ -41,7 +41,9 @@ Keywords={
             "interrupt_priority", "iterator_element", "layout", "link_name", "machine_radix",
             "no_return", "output", "pack", "post", "pre", "predicate_failure", "preelaborate",
             "priority", "pure", "read", "relative_deadline", "remote_call_interface", "remote_types",
-            "shared_passive", "size", "small", "static_predicate", "storage_pool", "storage_size"}
+            "shared_passive", "size", "small", "static_predicate", "storage_pool", "storage_size",
+            "steam_size", "synchronization", "type_invariant", "unchecked_union", "variable_indexing",
+            "volatile", "volatile_components", "write"}
       },
     { Id=4,
       Regex=[[ [\w\)]+('\w+) ]],
