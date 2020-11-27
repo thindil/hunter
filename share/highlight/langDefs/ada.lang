@@ -49,8 +49,9 @@ Keywords={
       List={"assert", "assertion_policy", "default blocking", "elaborate", "elaborate_all",
             "independed_components", "inspection_point", "linker_options", "list", "locking_policy",
             "normalize_scalars", "optimize", "page", "partition_elaboration_policy",
-            "preelaborate_initialization"},
-      }
+            "preelaborate_initialization", "priority_specific_dispatching", "profile", "queuing_policy",
+            "restrictions", "reviewable", "suppress", "task_dispatching_policy", "unsuppress"},
+      },
     { Id=4,
       Regex=[[ [\w\)]+('\w+) ]],
       }
