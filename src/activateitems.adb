@@ -162,7 +162,6 @@ package body ActivateItems is
       Button: Ttk_Button := Get_Widget(TextFrame & ".closebutton");
       TextEntry: constant Ttk_Entry :=
         Get_Widget(TextFrame & ".textentry", Interp);
-      Hunter_Activate_Item_Exception: exception;
    begin
       if Winfo_Get(TextEntry, "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid(Button);
@@ -185,8 +184,7 @@ package body ActivateItems is
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
       else
          if Invoke(Button) /= "" then
-            raise Hunter_Activate_Item_Exception
-              with Mc(Interp, "{Can't hide execute program bar}");
+            return TCL_ERROR;
          end if;
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
