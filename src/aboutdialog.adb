@@ -166,10 +166,9 @@ package body AboutDialog is
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
-      OsName: constant String := Tcl_GetVar(Get_Context, "tcl_platform(os)");
+      OsName: constant String := Tcl_GetVar(Interp, "tcl_platform(os)");
       Command: Unbounded_String;
       ProcessId: Process_Id;
-      Azip_Execute_Error: exception;
    begin
       if OsName = "Windows" then
          Command := To_Unbounded_String(Locate_Exec_On_Path("start").all);
@@ -183,7 +182,7 @@ package body AboutDialog is
           (To_String(Command),
            Argument_String_To_List(CArgv.Arg(Argv, 1)).all);
       if ProcessId = Invalid_Pid then
-         raise Azip_Execute_Error with Mc(Interp, "{Can't open link}");
+         return TCL_ERROR;
       end if;
       return TCL_OK;
    end Open_Link_Command;
