@@ -174,7 +174,6 @@ package body Bookmarks.Commands is
         Get_Widget(".mainframe.textframe.textentry", Interp);
       HideButton: constant Ttk_Button :=
         Get_Widget(".mainframe.textframe.closebutton", Interp);
-      Hunter_Go_To_Destination_Exception: exception;
    begin
       UpdateNewAction;
       if not Ada.Directories.Exists(Get(TextEntry)) then
@@ -185,8 +184,7 @@ package body Bookmarks.Commands is
       end if;
       CurrentDirectory := To_Unbounded_String(Get(TextEntry));
       if Invoke(HideButton) /= "" then
-         raise Hunter_Go_To_Destination_Exception
-           with Mc(Interp, "{Can't hide text entry}");
+         return TCL_ERROR;
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
