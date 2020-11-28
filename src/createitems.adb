@@ -39,13 +39,6 @@ with Utils; use Utils;
 
 package body CreateItems is
 
-   -- ****ie* CreateItems/CreateItems.Hunter_Create_Exception
-   -- FUNCTION
-   -- Raised when any problems with creating items happen
-   -- SOURCE
-   Hunter_Create_Exception: exception;
-   -- ****
-
    -- ****o* CreateItems/CreateItems.Show_Create_Command
    -- FUNCTION
    -- Show text entry to enter a name of the new item
@@ -138,6 +131,7 @@ package body CreateItems is
       File: File_Descriptor;
       DirectoryView: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned.previewframe.directorytree", Interp);
+      Hunter_Create_Exception: exception;
    begin
       NewItemName := CurrentDirectory & "/" & Get(TextEntry);
       if Exists(To_String(NewItemName)) or
@@ -197,8 +191,7 @@ package body CreateItems is
       UpdateDirectoryList(True);
       <<End_Of_Create>>
       if Invoke(Button) /= "" then
-         raise Hunter_Create_Exception
-           with Mc(Interp, "{Can't hide create item bar}");
+         return TCL_ERROR;
       end if;
       ToggleToolButtons(NewAction, True);
       return TCL_OK;
