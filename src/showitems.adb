@@ -772,18 +772,10 @@ package body ShowItems is
       Items := To_Unbounded_String(Selection(DirectoryTree));
       if Items /= Null_Unbounded_String then
          Create(Tokens, To_String(Items), " ");
-         if NewAction /= SHOWTRASH then
-            for I in 1 .. Slice_Count(Tokens) loop
-               SelectedItems.Append
-                 (CurrentDirectory & "/" &
-                  ItemsList(Positive'Value(Slice(Tokens, I))).Name);
-            end loop;
-         else
-            for I in 1 .. Slice_Count(Tokens) loop
-               SelectedItems.Append
-                 (ItemsList(Positive'Value(Slice(Tokens, I))).Path);
-            end loop;
-         end if;
+         for I in 1 .. Slice_Count(Tokens) loop
+            SelectedItems.Append
+               (ItemsList(Positive'Value(Slice(Tokens, I))).Path);
+         end loop;
       else
          SelectedItems.Append(CurrentDirectory);
       end if;
