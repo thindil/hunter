@@ -358,7 +358,7 @@ package body MainWindow is
             if not Settings.ShowHidden and then List(I).IsHidden then
                Detach(DirectoryTree, To_String(ItemIndex));
             elsif SelectedIndex = Null_Unbounded_String or
-              CurrentSelected = CurrentDirectory & "/" & List(I).Name then
+              CurrentSelected = List(I).Path then
                SelectedIndex := To_Unbounded_String(Positive'Image(I));
             end if;
          end loop;
@@ -471,7 +471,7 @@ package body MainWindow is
               not List(I).IsHidden then
                Move(DirectoryTree, Positive'Image(I), "{}", Positive'Image(I));
                if SelectedIndex = Null_Unbounded_String or
-                 CurrentSelected = CurrentDirectory & "/" & List(I).Name then
+                 CurrentSelected = List(I).Path then
                   SelectedIndex := To_Unbounded_String(Positive'Image(I));
                end if;
             end if;
