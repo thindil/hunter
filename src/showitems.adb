@@ -119,14 +119,6 @@ package body ShowItems is
       To_Unbounded_String("write"));
    -- ****
 
-   -- ****ie* ShowItems/ShowItems.Hunter_Show_Items_Exception
-   -- FUNCTION
-   -- Exception raised when any problems with showing item preview
-   -- occurs
-   -- SOURCE
-   Hunter_Show_Items_Exception: exception;
-   -- ****
-
    procedure ScaleImage is
       Image: constant Tk_Photo :=
         Create("previewimage", "-file " & To_String(CurrentSelected));
@@ -181,6 +173,7 @@ package body ShowItems is
       Label: constant Ttk_Label := Get_Widget(PreviewFrame & ".title");
       PathFrame: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned.previewframe.pathframe");
+      Hunter_Show_Items_Exception: exception;
    begin
       configure(Label, "-text {" & Mc(Get_Context, "{Preview}") & "}");
       if Winfo_Get(Button, "ismapped") = "0" then
