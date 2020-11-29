@@ -92,7 +92,7 @@ package body RefreshData is
          end if;
          ItemIndex := ItemsList.First_Index;
          while ItemIndex <= ItemsList.Last_Index loop
-            FileName := CurrentDirectory & "/" & ItemsList(ItemIndex).Name;
+            FileName := ItemsList(ItemIndex).Path;
             if FileName = Event.Path or
               ItemsList(ItemIndex).Name = Event.Target then
                case Event.Event is
