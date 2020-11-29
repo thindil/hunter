@@ -490,7 +490,7 @@ package body MainWindow.Commands is
       LoadDirectory(To_String(CurrentDirectory));
       for I in ItemsList.Iterate loop
          if ItemsList(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
-            CurrentSelected := CurrentDirectory & "/" & ItemsList(I).Name;
+            CurrentSelected := ItemsList(I).Path;
             exit;
          end if;
       end loop;
