@@ -58,7 +58,7 @@ if {[lindex $argv 0] == "generate"} {
       foreach translation $translations {
          regsub {^.+"+\{*} $translation "" translation
          regsub {\}$} $translation "" translation
-         if {[lsearch $translist $translation] == -1} {
+         if {[lsearch -exact $translist $translation] == -1} {
             puts $rootmsg "   \"$translation\" \"$translation\""
             lappend translist $translation
          }
