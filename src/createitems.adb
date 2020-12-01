@@ -75,11 +75,11 @@ package body CreateItems is
       configure(Button, "-command {Create " & CArgv.Arg(Argv, 1) & "}");
       Add
         (Button,
-         Mc(Interp, "{Create a new }") & Mc(Interp, CArgv.Arg(Argv, 1)) &
+         Mc(Interp, "{Create a new}") & " " & Mc(Interp, CArgv.Arg(Argv, 1)) &
          Mc(Interp, "{ with the selected name.}"));
       Add
         (TextEntry,
-         Mc(Interp, "{Enter a name for the newly created }") &
+         Mc(Interp, "{Enter a name for the newly created}") & " " &
          Mc(Interp, CArgv.Arg(Argv, 1)) & ".");
       Tcl.Tk.Ada.Grid.Grid(Button);
       Unbind(TextEntry, "<KeyRelease>");
@@ -138,8 +138,8 @@ package body CreateItems is
         Is_Symbolic_Link(To_String(NewItemName)) then
          ActionString :=
            To_Unbounded_String
-             (Mc(Interp, "{create }") & CArgv.Arg(Argv, 1) &
-              Mc(Interp, "{ with}"));
+             (Mc(Interp, "{create}") & " " & CArgv.Arg(Argv, 1) & " " &
+              Mc(Interp, "{with}"));
          if Is_Directory(To_String(NewItemName)) then
             ActionBlocker := To_Unbounded_String(Mc(Interp, "directory"));
          else
