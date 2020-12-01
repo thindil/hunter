@@ -476,8 +476,8 @@ package body Preferences is
       Label :=
         Create
           (LabelFrame & ".messageslabel",
-           "-text """ & Mc(Get_Context, "{Hide messages after }") &
-           "$messagesinterval" & Mc(Get_Context, "{ seconds}") & """");
+           "-text """ & Mc(Get_Context, "{Hide messages after}") &
+           "$messagesinterval " & Mc(Get_Context, "{seconds}") & """");
       Add
         (Label,
          Mc

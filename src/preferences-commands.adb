@@ -107,7 +107,7 @@ package body Preferences.Commands is
       else
          Tcl.Tk.Ada.Widgets.configure
            (Label,
-            "-text {" & Mc(Interp, "{Hide messages after }") &
+            "-text {" & Mc(Interp, "{Hide messages after}") &
             Natural'Image
               (Natural(Float'Value(Tcl_GetVar(Interp, "messagesinterval")))) &
             Mc(Interp, "{ seconds}") & "}");
