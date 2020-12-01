@@ -111,7 +111,9 @@ if {[lindex $argv 0] == "generate"} {
       close $oldmsg
       if {[llength $translist] > 0} {
          foreach translation $translist {
-            puts $newmsg "   $translation $translation"
+            if {$translation != "\" \""} {
+               puts $newmsg "   $translation $translation"
+            }
          }
       }
       puts $newmsg "}"
