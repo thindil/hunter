@@ -100,10 +100,10 @@ package body Preferences.Commands is
       if CArgv.Arg(Argv, 1) = "directory.interval" then
          Tcl.Tk.Ada.Widgets.configure
            (Label,
-            "-text {" & Mc(Interp, "{Auto refresh every }") &
+            "-text {" & Mc(Interp, "{Auto refresh every}") &
             Natural'Image
               (Natural(Float'Value(Tcl_GetVar(Interp, "updateinterval")))) &
-            Mc(Interp, "{ seconds}") & "}");
+            " " & Mc(Interp, "{seconds}") & "}");
       else
          Tcl.Tk.Ada.Widgets.configure
            (Label,

@@ -346,8 +346,8 @@ package body Preferences is
       Label :=
         Create
           (LabelFrame & ".intervallabel",
-           "-text """ & Mc(Get_Context, "{Auto refresh every }") &
-           "$updateinterval" & Mc(Get_Context, "{ seconds}") & """");
+           "-text """ & Mc(Get_Context, "{Auto refresh every}") &
+           "$updateinterval " & Mc(Get_Context, "{seconds}") & """");
       Add
         (Label,
          Mc

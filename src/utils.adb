@@ -95,7 +95,7 @@ package body Utils is
       if ExecutablePath = null then
          if DisplayMessage then
             ShowMessage
-              (Mc(Get_Context, "{Could not found executable: }") & Name);
+              (Mc(Get_Context, "{Could not found executable:}") & " " & Name);
          end if;
          return "";
       end if;
@@ -162,7 +162,7 @@ package body Utils is
           (Get_Context, Name, AdaCommand, 0, null);
       if Command = null then
          raise Hunter_Add_Command_Exception
-           with Mc(Get_Context, "{Can't add command }") & Name;
+           with Mc(Get_Context, "{Can't add command}") & " " & Name;
       end if;
    end AddCommand;
 
