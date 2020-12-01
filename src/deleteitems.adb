@@ -142,12 +142,12 @@ package body DeleteItems is
          ShowMessage
            (Mc
               (Get_Context,
-               "{Could not delete selected files or directories. Reason: }") &
+               "{Could not delete selected files or directories. Reason:}") & " " &
             Exception_Message(An_Exception));
          raise;
       when An_Exception : Directory_Error =>
          ShowMessage
-           (Mc(Get_Context, "{Can't delete selected directory: }") &
+           (Mc(Get_Context, "{Can't delete selected directory:}") & " " &
             Exception_Message(An_Exception));
          raise;
       when others =>
