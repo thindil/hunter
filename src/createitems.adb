@@ -146,16 +146,16 @@ package body CreateItems is
             ActionBlocker := To_Unbounded_String(Mc(Interp, "file"));
          end if;
          ShowMessage
-           (Mc(Interp, "{You can't }") & To_String(ActionString) &
-            Mc(Interp, "{ name '}") & To_String(NewItemName) &
-            Mc(Interp, "{' because there exists }") &
-            To_String(ActionBlocker) & Mc(Interp, "{ with that name.}"));
+           (Mc(Interp, "{You can't}") & " " & To_String(ActionString) & " " &
+            Mc(Interp, "{name'}") & " " & To_String(NewItemName) & " " &
+            Mc(Interp, "{'because there exists}") & " " &
+            To_String(ActionBlocker) & " " & Mc(Interp, "{with that name.}"));
          goto End_Of_Create;
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewItemName))) then
          ShowMessage
-           (Mc(Interp, "{You don't have permissions to write to }") &
+           (Mc(Interp, "{You don't have permissions to write to}") & " " &
             Containing_Directory(To_String(NewItemName)));
          goto End_Of_Create;
       end if;
