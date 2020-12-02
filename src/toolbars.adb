@@ -177,7 +177,7 @@ package body Toolbars is
       ToolMenuButton := Create(Toolbar & ".bookmarksbutton");
       SetButton
         (ToolMenuButton,
-         Mc(Get_Context, "{Show bookmarks menu }") & " \[" &
+         Mc(Get_Context, "{Show bookmarks menu}") & " \[" &
          To_String(Accelerators(2)) & "\]",
          "bookmarks");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
@@ -185,7 +185,7 @@ package body Toolbars is
         Create(Toolbar & ".searchbutton", "-command ToggleSearch");
       SetButton
         (ToolCheckButton,
-         Mc(Get_Context, "{Search for the file or directory }") & " \[" &
+         Mc(Get_Context, "{Search for the file or directory}") & " \[" &
          To_String(Accelerators(3)) & "\]",
          "edit-find");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
@@ -202,7 +202,7 @@ package body Toolbars is
       ToolMenuButton := Create(Toolbar & ".userbutton");
       SetButton
         (ToolMenuButton,
-         Mc(Get_Context, "{Show user actions menu }") & " \[" &
+         Mc(Get_Context, "{Show user actions menu}") & " \[" &
          To_String(Accelerators(20)) & "\]",
          "run-build");
       ButtonMenu := Create(".actionsmenu", "-tearoff false");
@@ -211,7 +211,7 @@ package body Toolbars is
       ToolMenuButton := Create(Toolbar & ".newbutton");
       SetButton
         (ToolMenuButton,
-         Mc(Get_Context, "{Show add new item menu }") & " \[" &
+         Mc(Get_Context, "{Show add new item menu}") & " \[" &
          To_String(Accelerators(4)) & "\]",
          "document-new");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
@@ -233,14 +233,14 @@ package body Toolbars is
         Create(Toolbar & ".renamebutton", "-command ToggleRename");
       SetButton
         (ToolCheckButton,
-         Mc(Get_Context, "{Rename selected file or directory }") & " \[" &
+         Mc(Get_Context, "{Rename selected file or directory}") & " \[" &
          To_String(Accelerators(9)) & "\]",
          "document-save-as");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton := Create(Toolbar & ".copybutton", "-command CopyData");
       SetButton
         (ToolCheckButton,
-         Mc(Get_Context, "{Copy selected files }") & " \[" &
+         Mc(Get_Context, "{Copy selected files}") & " \[" &
          To_String(Accelerators(10)) &
          "\]. Pressed button means start copying\ncurrently selected files or directories.\nPress again to copy them.",
          "edit-copy");
@@ -248,7 +248,7 @@ package body Toolbars is
       ToolCheckButton := Create(Toolbar & ".movebutton", "-command MoveData");
       SetButton
         (ToolCheckButton,
-         Mc(Get_Context, "{Move selected files }") & " \[" &
+         Mc(Get_Context, "{Move selected files}") & " \[" &
          To_String(Accelerators(11)) &
          "\]. Pressed button means start moving\ncurrently selected files or directories.\nPress again to move them.",
          "edit-cut");
@@ -256,7 +256,7 @@ package body Toolbars is
       ToolMenuButton := Create(Toolbar & ".deletebutton");
       SetButton
         (ToolMenuButton,
-         Mc(Get_Context, "{Show delete menu }") & " \[" &
+         Mc(Get_Context, "{Show delete menu}") & " \[" &
          To_String(Accelerators(5)) & "\]",
          "edit-delete");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
@@ -294,7 +294,7 @@ package body Toolbars is
         (ToolButton,
          Mc
            (Get_Context,
-            "{Restore selected file or directory from the trash }") &
+            "{Restore selected file or directory from the trash}") &
          " \[" & To_String(Accelerators(19)) & "\]",
          "document-revert");
       Separator := Create(Toolbar & ".separator3");
@@ -303,14 +303,14 @@ package body Toolbars is
         Create(Toolbar & ".optionsbutton", "-command ShowPreferences");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Show the program preferences }") & " \[" &
+         Mc(Get_Context, "{Show the program preferences}") & " \[" &
          To_String(Accelerators(12)) & "\]",
          "configure");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolMenuButton := Create(Toolbar & ".aboutbutton");
       SetButton
         (ToolMenuButton,
-         Mc(Get_Context, "{Show menu with information about the program }") &
+         Mc(Get_Context, "{Show menu with information about the program}") &
          " \[" & To_String(Accelerators(6)) & "\]",
          "help-about");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
@@ -350,14 +350,14 @@ package body Toolbars is
       ToolButton := Create(Toolbar & ".runbutton", "-command Execute");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Execute selected program }") & " \[" &
+         Mc(Get_Context, "{Execute selected program}") & " \[" &
          To_String(Accelerators(18)) & "\]",
          "media-playback-start");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolButton := Create(Toolbar & ".openbutton", "-command ActivateItem");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Open selected file or directory }") & " \[" &
+         Mc(Get_Context, "{Open selected file or directory}") & " \[" &
          To_String(Accelerators(7)) & "\]",
          "document-open");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
@@ -365,7 +365,7 @@ package body Toolbars is
         Create(Toolbar & ".openwithbutton", "-command ToggleExecuteWith");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Open selected file or directory with command }") &
+         Mc(Get_Context, "{Open selected file or directory with command}") &
          " \[" & To_String(Accelerators(13)) & "\]",
          "system-run");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
@@ -377,7 +377,7 @@ package body Toolbars is
            "-variable previewtype -value preview -command ShowPreviewOrInfo");
       SetButton
         (ToolRadioButton,
-         Mc(Get_Context, "{Preview file or directory }") & " \[" &
+         Mc(Get_Context, "{Preview file or directory}") & " \[" &
          To_String(Accelerators(15)) & "\]",
          "document-preview");
       Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
@@ -387,7 +387,7 @@ package body Toolbars is
            "-variable previewtype -value info -command ShowPreviewOrInfo");
       SetButton
         (ToolRadioButton,
-         Mc(Get_Context, "{File or directory information }") & " \[" &
+         Mc(Get_Context, "{File or directory information}") & " \[" &
          To_String(Accelerators(14)) & "\]",
          "document-properties");
       Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
@@ -396,7 +396,7 @@ package body Toolbars is
       ToolButton := Create(Toolbar & ".addbutton", "-command AddBookmark");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Add bookmark to this directory }") & " \[" &
+         Mc(Get_Context, "{Add bookmark to this directory}") & " \[" &
          To_String(Accelerators(16)) & "\]",
          "list-add");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
@@ -404,7 +404,7 @@ package body Toolbars is
         Create(Toolbar & ".deletebutton", "-command RemoveBookmark");
       SetButton
         (ToolButton,
-         Mc(Get_Context, "{Remove bookmark from this directory }") & " \[" &
+         Mc(Get_Context, "{Remove bookmark from this directory}") & " \[" &
          To_String(Accelerators(17)) & "\]",
          "list-remove");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
