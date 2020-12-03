@@ -241,16 +241,18 @@ package body Toolbars is
       SetButton
         (ToolCheckButton,
          Mc(Get_Context, "{Copy selected files}") & " \[" &
-         To_String(Accelerators(10)) &
-         "\]. Pressed button means start copying\ncurrently selected files or directories.\nPress again to copy them.",
+         To_String(Accelerators(10)) & "\].\n" &
+         Mc(Get_Context,
+            "{Pressed button means start copying\ncurrently selected files or directories.\nPress again to copy them.}"),
          "edit-copy");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton := Create(Toolbar & ".movebutton", "-command MoveData");
       SetButton
         (ToolCheckButton,
          Mc(Get_Context, "{Move selected files}") & " \[" &
-         To_String(Accelerators(11)) &
-         "\]. Pressed button means start moving\ncurrently selected files or directories.\nPress again to move them.",
+         To_String(Accelerators(11)) & "\].\n" &
+         Mc(Get_Context,
+            "{Pressed button means start moving\ncurrently selected files or directories.\nPress again to move them.}"),
          "edit-cut");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolMenuButton := Create(Toolbar & ".deletebutton");
