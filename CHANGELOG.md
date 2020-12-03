@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Missing translations
+
 ### Changed
 - Updated the program themes
 - Better default look of the program
