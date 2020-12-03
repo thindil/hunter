@@ -526,7 +526,6 @@ package body MainWindow.Commands is
       return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       Button: constant Ttk_Button := Get_Widget(CArgv.Arg(Argv, 1), Interp);
-      Hunter_Button_Exception: exception;
       Menu: Tk_Menu;
    begin
       if Winfo_Get(Button, "ismapped") = "0" then
@@ -574,8 +573,7 @@ package body MainWindow.Commands is
          return TCL_OK;
       end if;
       if Invoke(Button) /= "" then
-         raise Hunter_Button_Exception
-           with Mc(Interp, "{Can't invoke button }") & CArgv.Arg(Argv, 1);
+         return TCL_ERROR;
       end if;
       return TCL_OK;
    end Invoke_Button_Command;
