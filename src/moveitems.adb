@@ -152,7 +152,7 @@ package body MoveItems is
                end if;
             else
                ShowMessage
-                 (Mc(Get_Context, "{Can't move }") &
+                 (Mc(Get_Context, "{Can't move}") & " " &
                   To_String(MoveItemsList(1)) & ".");
                return;
             end if;

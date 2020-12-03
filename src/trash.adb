@@ -227,8 +227,8 @@ package body Trash is
                        To_Unbounded_String(Mc(Interp, "{Directory}"))
                      else To_Unbounded_String(Mc(Interp, "{File}")));
                   ShowMessage
-                    (Mc(Interp, "{Can't restore }") & To_String(Destination) &
-                     " " & To_String(ItemType) & " " &
+                    (Mc(Interp, "{Can't restore}") & " " &
+                     To_String(Destination) & " " & To_String(ItemType) & " " &
                      Mc(Interp, "{with that name exists.}"));
                   Close(FileInfo);
                   return Show_Trash_Command(ClientData, Interp, Argc, Argv);
