@@ -179,7 +179,7 @@ package body Bookmarks.Commands is
       if not Ada.Directories.Exists(Get(TextEntry)) then
          ShowMessage
            (Mc(Interp, "{Directory}") & " '" & Get(TextEntry) & "' " &
-            Mc(Interp, "{doesn't exists.}"));
+            Mc(Interp, "{doesn't exist.}"));
          return TCL_OK;
       end if;
       CurrentDirectory := To_Unbounded_String(Get(TextEntry));

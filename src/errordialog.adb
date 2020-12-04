@@ -93,7 +93,7 @@ package body ErrorDialog is
              (".errorlabel",
               "-text {" &
               Mc(Interp,
-                 "{Oops, something bad happens and progam crashed. Please, remember what you done before crash and report this problem at:}") &
+                 "{Oops, something bad happens and progam crashed. Please, remember what have you done before crash and report this problem at:}") &
               "} -wraplength 800");
          ErrorButton: constant Ttk_Button :=
            Create
