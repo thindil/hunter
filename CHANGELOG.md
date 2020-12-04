@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - Showing preferences button on fresh start
 - Crash when going up from the home directory
 - Update path buttons when showing the selected program's module directory
+- Some typos in UI
 
 ## [1.5] - 2020-11-20
 
