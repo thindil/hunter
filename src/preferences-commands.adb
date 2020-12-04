@@ -110,7 +110,7 @@ package body Preferences.Commands is
             "-text {" & Mc(Interp, "{Hide messages after}") &
             Natural'Image
               (Natural(Float'Value(Tcl_GetVar(Interp, "messagesinterval")))) &
-            Mc(Interp, "{ seconds}") & "}");
+            " " & Mc(Interp, "{seconds}") & "}");
       end if;
       return TCL_OK;
    end Set_Label_Command;

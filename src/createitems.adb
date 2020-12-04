@@ -76,7 +76,7 @@ package body CreateItems is
       Add
         (Button,
          Mc(Interp, "{Create a new}") & " " & Mc(Interp, CArgv.Arg(Argv, 1)) &
-         Mc(Interp, "{ with the selected name.}"));
+         " " & Mc(Interp, "{with the selected name.}"));
       Add
         (TextEntry,
          Mc(Interp, "{Enter a name for the newly created}") & " " &

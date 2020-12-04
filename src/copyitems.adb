@@ -176,8 +176,8 @@ package body CopyItems is
                else To_Unbounded_String(Mc(Get_Context, "{File}")));
             ShowMessage
               (To_String(ItemType) & " " &
-               Simple_Name(To_String(CopyItemsList(1))) &
-               Mc(Get_Context, "{ exists. Do you want to overwrite it?}"),
+               Simple_Name(To_String(CopyItemsList(1))) & " " &
+               Mc(Get_Context, "{exists. Do you want to overwrite it?}"),
                "question");
             return;
          end if;
