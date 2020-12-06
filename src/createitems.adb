@@ -147,8 +147,8 @@ package body CreateItems is
          end if;
          ShowMessage
            (Mc(Interp, "{You can't}") & " " & To_String(ActionString) & " " &
-            Mc(Interp, "{name'}") & " " & To_String(NewItemName) & " " &
-            Mc(Interp, "{'because there exists}") & " " &
+            Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
+            Mc(Interp, "{because there exists}") & " " &
             To_String(ActionBlocker) & " " & Mc(Interp, "{with that name.}"));
          goto End_Of_Create;
       end if;
