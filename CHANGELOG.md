@@ -5,6 +5,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - Missing translations
+- Path buttons in Trash
 
 ### Changed
 - Updated the program themes
