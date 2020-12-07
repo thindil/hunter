@@ -66,6 +66,12 @@ package body Trash is
       ItemsList.Clear;
       CurrentDirectory :=
         To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
+      DestinationDirectory :=
+        Delete
+          (CurrentDirectory, 1,
+           Length
+             (To_Unbounded_String
+                (Value("HOME") & "/.local/share/Trash/files")));
       Open(Directory, Value("HOME") & "/.local/share/Trash/files");
       loop
          Read(Directory, FileName, Last);
@@ -276,11 +282,54 @@ package body Trash is
       return TCL_OK;
    end Clear_Trash_Command;
 
+   -- ****o* Trash/Trash.GoToTrash_Command
+   -- FUNCTION
+   -- Go to the selected directory in Trash
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- GoToTrash path
+   -- Path is the full path to the directory which will be set as current
+   -- directory (and show to the user)
+   -- SOURCE
+   function GoToTrash_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function GoToTrash_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc);
+   begin
+      CurrentDirectory :=
+        To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
+      DestinationDirectory :=
+        Delete
+          (CurrentDirectory, 1,
+           Length
+             (To_Unbounded_String
+                (Value("HOME") & "/.local/share/Trash/files")));
+      LoadDirectory(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
+      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+      return TCL_OK;
+   end GoToTrash_Command;
+
    procedure CreateTrashUI is
    begin
       AddCommand("ShowTrash", Show_Trash_Command'Access);
       AddCommand("RestoreItems", Restore_Item_Command'Access);
       AddCommand("ClearTrash", Clear_Trash_Command'Access);
+      AddCommand("GoToTrash", GoToTrash_Command'Access);
    end CreateTrashUI;
 
 end Trash;

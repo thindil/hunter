@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
@@ -37,6 +38,7 @@ with Messages; use Messages;
 with Modules; use Modules;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body ActivateItems is
@@ -79,6 +81,14 @@ package body ActivateItems is
             ItemsList := SecondItemsList;
          else
             LoadDirectory(To_String(CurrentDirectory));
+         end if;
+         if NewAction = SHOWTRASH then
+            DestinationDirectory :=
+              Delete
+                (CurrentDirectory, 1,
+                 Length
+                   (To_Unbounded_String
+                      (Value("HOME") & "/.local/share/Trash/files")));
          end if;
          UpdateDirectoryList(True);
          UpdateWatch(To_String(CurrentDirectory));
