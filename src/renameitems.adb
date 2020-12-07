@@ -164,7 +164,8 @@ package body RenameItems is
       Rename_File(To_String(CurrentSelected), To_String(NewName), Success);
       if not Success then
          ShowMessage
-           (Mc(Interp, "{Can't rename}") & " " & To_String(CurrentSelected) & ".");
+           (Mc(Interp, "{Can't rename}") & " " & To_String(CurrentSelected) &
+            ".");
          return TCL_OK;
       end if;
       CurrentSelected := NewName;

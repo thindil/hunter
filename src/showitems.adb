@@ -774,7 +774,7 @@ package body ShowItems is
          Create(Tokens, To_String(Items), " ");
          for I in 1 .. Slice_Count(Tokens) loop
             SelectedItems.Append
-               (ItemsList(Positive'Value(Slice(Tokens, I))).Path);
+              (ItemsList(Positive'Value(Slice(Tokens, I))).Path);
          end loop;
       else
          SelectedItems.Append(CurrentDirectory);
