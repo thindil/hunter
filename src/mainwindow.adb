@@ -20,7 +20,6 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.String_Split; use GNAT.String_Split;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 with CHelper; use CHelper;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -295,7 +294,10 @@ package body MainWindow is
    begin
       if FrameName = "directory" then
          List := ItemsList;
-         PathCommand := To_Unbounded_String("GoToBookmark");
+         PathCommand :=
+           (if NewAction not in SHOWTRASH | DELETETRASH then
+              To_Unbounded_String("GoToBookmark")
+            else To_Unbounded_String("GoToTrash"));
          PathShortcut := To_Unbounded_String("Alt");
       else
          List := SecondItemsList;
@@ -367,8 +369,7 @@ package body MainWindow is
             Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
             if Slice(Tokens, 1) /= "" then
                for I in reverse 1 .. Slice_Count(Tokens) loop
-                  PathButton.Interp := PathButtonsFrame.Interp;
-                  PathButton.Name := New_String(Slice(Tokens, I));
+                  PathButton := Get_Widget(Slice(Tokens, I));
                   if I = 1 then
                      Shortcut := PathShortcut & "-r";
                   elsif I = 2 then
@@ -410,7 +411,7 @@ package body MainWindow is
                           "} -command {ShowTrash}");
                      Path :=
                        To_Unbounded_String
-                         (Value("HOME") & "/.local/share/Trash/files");
+                         (Value("HOME") & "/.local/share/Trash/files/");
                   end if;
                else
                   Append(Path, Slice(Tokens, I) & "/");
