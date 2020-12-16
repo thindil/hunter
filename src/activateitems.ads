@@ -20,11 +20,11 @@
 package ActivateItems is
 -- ****
 
-   -- ****f* ActivateItems/ActivateItems.CreateActivateUI
+   -- ****f* ActivateItems/ActivateItems.AddCommands
    -- FUNCTION
-   -- Create activation UI
+   -- Add Tcl commands related to the activation of items
    -- SOURCE
-   procedure CreateActivateUI;
+   procedure AddCommands;
    -- ****
 
 end ActivateItems;

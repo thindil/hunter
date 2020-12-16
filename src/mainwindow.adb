@@ -46,7 +46,7 @@ with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with AboutDialog; use AboutDialog;
-with ActivateItems; use ActivateItems;
+with ActivateItems;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
@@ -203,7 +203,7 @@ package body MainWindow is
       CreateBookmarkMenu(True);
       CreateItemToolbar;
       CreateMessagesUI;
-      CreateActivateUI;
+      ActivateItems.AddCommands;
       CreatePreferencesUI;
       CreateDeleteUI;
       CreateRenameUI;
