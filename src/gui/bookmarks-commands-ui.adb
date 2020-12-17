@@ -20,7 +20,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -34,56 +33,10 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
-with Modules; use Modules;
 with RefreshData; use RefreshData;
 with Utils; use Utils;
 
-package body Bookmarks.Commands is
-
-   -- ****o* Commands/Commands.GoToBookmark_Command
-   -- FUNCTION
-   -- Go to the selected bookmarked directory
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- GoToBookmark path
-   -- Path is the full path to the directory which will be set as current
-   -- directory (and show to the user)
-   -- SOURCE
-   function GoToBookmark_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-      -- ****
-
-   function GoToBookmark_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
-   begin
-      if NewAction /= MOVE then
-         if NewAction = CLEARTRASH then
-            NewAction := SHOWTRASH;
-         end if;
-         if NewAction = SHOWTRASH then
-            ToggleToolButtons(NewAction, True);
-         end if;
-         NewAction := COPY;
-      end if;
-      CurrentDirectory :=
-        To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
-      LoadDirectory(To_String(CurrentDirectory));
-      UpdateDirectoryList(True);
-      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
-      return TCL_OK;
-   end GoToBookmark_Command;
+package body Bookmarks.Commands.UI is
 
    -- ****if* Commands/Commands.UpdateNewAction
    -- FUNCTION
@@ -288,13 +241,12 @@ package body Bookmarks.Commands is
       return TCL_OK;
    end Remove_Bookmark_Command;
 
-   procedure AddCommands is
+   procedure AddUICommands is
    begin
-      AddCommand("GoToBookmark", GoToBookmark_Command'Access);
       AddCommand("SetDestination", SetDestination_Command'Access);
       AddCommand("GoToDestination", GoToDestination_Command'Access);
       AddCommand("AddBookmark", Add_Bookmark_Command'Access);
       AddCommand("RemoveBookmark", Remove_Bookmark_Command'Access);
-   end AddCommands;
+   end AddUICommands;
 
-end Bookmarks.Commands;
+end Bookmarks.Commands.UI;
