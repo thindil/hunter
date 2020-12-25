@@ -111,7 +111,7 @@ package body AboutDialog is
         Create
           (Frame & ".website",
            "-text {" & Mc(Interp, "Website") &
-           "} -command {OpenLink http://thindil.github.io/hunter/} -style Toolbutton");
+           "} -command {OpenLink https://www.laeran.pl/repositories/hunter/} -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(WebsiteButton);
       Tcl.Tk.Ada.Grid.Grid(Frame, "-row 0 -column 1 -sticky nwe");
       Tcl.Tk.Ada.Grid.Grid(Creditsbook, "-columnspan 2 -sticky nwes");
