@@ -98,9 +98,9 @@ package body ErrorDialog is
          ErrorButton: constant Ttk_Button :=
            Create
              (".errorbutton",
-              "-text ""https://github.com/thindil/hunter/issues"" -command {exec " &
+              "-text ""https://www.laeran.pl/repositories/hunter/ticket"" -command {exec " &
               FindExecutable("xdg-open") &
-              " ""https://github.com/thindil/hunter/issues""}");
+              " ""https://www.laeran.pl/repositories/hunter/ticket""}");
          ErrorLabel2: constant Ttk_Label :=
            Create
              (".errorlabel2",
