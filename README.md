@@ -5,6 +5,9 @@ from [XDG MIME Application Specification](https://specifications.freedesktop.org
 
 **Note:** This version of README.md is about development version of the
 program. Some things may be different in released version of Hunter.
+If you read this file on Github: **please don't send pull requests here**.
+All will be automatically closed. Any code propositions should go to
+the [Fossil](https://www.laeran.pl/repositories/hunter) repository.
 
 This is the new version based on Tk library. For the stable version of the
 program please look [here](https://github.com/thindil/hunter/tree/master)
