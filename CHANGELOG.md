@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 - Better default look of the program
 - Updated Ada language definition with aspects and pragmas
 - Updated Polish translation
+- Updated README.md
 
 ### Fixed
 - Showing preferences button on fresh start
