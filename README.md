@@ -10,7 +10,7 @@ All will be automatically closed. Any code propositions should go to
 the [Fossil](https://www.laeran.pl/repositories/hunter) repository.
 
 This is the new version based on Tk library. For the stable version of the
-program please look [here](https://github.com/thindil/hunter/tree/master)
+program please look [here](https://github.com/thindil/hunter/tree/origin/master)
 
 ## Features
 
@@ -28,7 +28,7 @@ program please look [here](https://github.com/thindil/hunter/tree/master)
 
 ### Docker way
 
-You can use Docker image `adabuild` from the project [dockerada](https://github.com/thindil/dockerada).
+You can use Docker image `adabuild` from the project [Docker Ada](https://www.laeran.pl/repositories/dockerada).
 It contains all libraries and compiler needed to build the program.
 
 To build the program, download `adabuild` image and type in console:
@@ -133,7 +133,7 @@ For detailed information about contributing to the project (bugs reporting,
 ideas propositions, code conduct, etc), see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## Licenses
-Hunter is available under [GPLv3](COPYING) license.
+Hunter is available under GPLv3 license.
 
 xdg-mime and xdg-open scripts distributed with the program are part of the
 xdg-utils project and released under MIT license:
