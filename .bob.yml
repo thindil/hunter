@@ -70,3 +70,9 @@
    execute:
       - gnatpp -P hunter.gpr
    description: Pretty print Hunter source code
+- command:
+   name: push
+   execute:
+      - fossil sync
+      - fossil git export
+   description: Update remove Fossil repository and its Git mirror
