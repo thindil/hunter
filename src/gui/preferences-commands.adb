@@ -55,6 +55,7 @@ with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Modules; use Modules;
+with Preferences.UI; use Preferences.UI;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Toolbars; use Toolbars;

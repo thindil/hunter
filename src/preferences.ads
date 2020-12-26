@@ -120,13 +120,6 @@ package Preferences is
    procedure SavePreferences;
    -- ****
 
-   -- ****f* Preferences/Preferences.CreatePreferences
-   -- FUNCTION
-   -- Create preferences UI and fill it with data from the program settings
-   -- SOURCE
-   procedure CreatePreferencesUI;
-   -- ****
-
 private
 
    -- ****f* Preferences/Preferences.SetDefaultSettings
@@ -141,13 +134,6 @@ private
    -- Set default values for the program's keyboard shortcuts
    -- SOURCE
    procedure SetDefaultAccelerators;
-   -- ****
-
-   -- ****f* Preferences/Preferences.Clear_Add_Command
-   -- FUNCTION
-   -- Clear form for edit or add user defined commands
-   -- SOURCE
-   procedure Clear_Add_Command;
    -- ****
 
 end Preferences;
