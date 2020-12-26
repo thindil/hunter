@@ -57,6 +57,7 @@ with Messages; use Messages;
 with Modules; use Modules;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
+with Preferences.UI; use Preferences.UI;
 with RefreshData; use RefreshData;
 with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
