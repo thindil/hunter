@@ -23,6 +23,8 @@ program please look [here](https://github.com/thindil/hunter/tree/origin/master)
   change their permissions, change application associated with them.
 * Written in TK and Ada.
 * Available in English and Polish languages.
+* Extendable with plugins system (plugins can be written theoretically in any
+  language, but mainly in Tcl).
 
 ## Build the program from sources
 
