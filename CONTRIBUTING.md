@@ -1,9 +1,7 @@
 ## Bugs reporting
 
 Bugs are not only problems or the program crashes, but also typos. If you
-find any bug in the program, please report it at
-<https://github.com/thindil/hunter/issues> or if you prefer, on mail
-<thindil@laeran.pl>
+find any bug in the program, please report it at options available at [contact page](https://www.laeran.pl/repositories/hunter/wiki?name=Contact).
 
 ### Some general hints about reporting bugs
 
@@ -95,13 +93,6 @@ documentation. Hunter uses `-- ` for start all documentation lines.
 11 - Documentation footer. Hunter uses `-- ****` for closing documentation.
 
 How to generate the code documentation is described in main *README.md* file.
-
-### Code submission
-
-Preferred way to submit your code is clone repository and then open new pull
-proposal at <https://github.com/thindil/hunter/compare>. But if you prefer,
-you can send your code by mail too (email address is at top of this file). In
-that situation, please append to your mail patch file with changes.
 
 ## Additional debugging options
 
