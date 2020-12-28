@@ -52,13 +52,6 @@ package UserCommands is
    UserCommandsList: Commands_Container.Map;
    -- ****
 
-   -- ****f* UserCommands/UserCommands.UpdateUserCommandsList
-   -- FUNCTION
-   -- Update list of user defined commands
-   -- SOURCE
-   procedure UpdateUserCommandsList;
-   -- ****
-
    -- ****f* UserCommands/UserCommands.AddCommands
    -- FUNCTION
    -- Adds the Ada code to the Tcl interpreter
