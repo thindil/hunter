@@ -29,7 +29,7 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
-with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body Modules.Commands is
 

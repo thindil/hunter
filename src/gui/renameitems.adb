@@ -34,7 +34,7 @@ with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with RefreshData; use RefreshData;
-with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body RenameItems is
 

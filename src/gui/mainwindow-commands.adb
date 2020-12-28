@@ -48,7 +48,7 @@ with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
 with ShowItems; use ShowItems;
-with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body MainWindow.Commands is
 

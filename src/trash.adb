@@ -28,7 +28,7 @@ with Messages; use Messages;
 with Modules; use Modules;
 with ShowItems; use ShowItems;
 with Trash.UI; use Trash.UI;
-with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body Trash is
 

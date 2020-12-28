@@ -25,7 +25,7 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with ShowItems; use ShowItems;
-with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body UserCommands is
 
