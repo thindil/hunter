@@ -13,18 +13,40 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* Trash/Trash
+with Interfaces.C;
+with CArgv;
+with Tcl; use Tcl;
+
+-- ****h* Trash/TUI
 -- FUNCTION
 -- Provide code to manipulate system Trash
 -- SOURCE
-package Trash is
+package Trash.UI is
 -- ****
 
-   -- ****f* Trash/Trash.CreateTras
+   -- ****o* TUI/TUI.Show_Trash_Command
    -- FUNCTION
-   -- Create trash related Tcl commands
+   -- Show content of the Trash
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- COMMANDS
+   -- ShowTrash
    -- SOURCE
-   procedure CreateTrash;
+   function Show_Trash_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   -- ****f* Trash/TUI.CreateTrashUI
+   -- FUNCTION
+   -- Create trash UI
+   -- SOURCE
+   procedure CreateTrashUI;
    -- ****
 
-end Trash;
+end Trash.UI;

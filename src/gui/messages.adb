@@ -34,7 +34,7 @@ with MainWindow; use MainWindow;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
-with Trash; use Trash;
+with Trash.UI; use Trash.UI;
 with Utils; use Utils;
 
 package body Messages is
