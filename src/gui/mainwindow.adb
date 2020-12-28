@@ -211,7 +211,7 @@ package body MainWindow is
       CreateCreateUI;
       CreateCopyUI;
       CreateMoveUI;
-      CreateTrashUI;
+      CreateTrash;
       CreateAboutUI;
       LoadModules;
       SetToolbars;
