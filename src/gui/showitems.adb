@@ -58,6 +58,7 @@ with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body ShowItems is
 

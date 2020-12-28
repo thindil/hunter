@@ -37,6 +37,7 @@ with Bookmarks; use Bookmarks;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body ProgramsMenu is
 

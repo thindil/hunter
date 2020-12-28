@@ -36,6 +36,7 @@ with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body DeleteItems is
 

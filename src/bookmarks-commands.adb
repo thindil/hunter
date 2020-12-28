@@ -22,7 +22,7 @@ with Bookmarks.Commands.UI; use Bookmarks.Commands.UI;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Modules; use Modules;
-with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body Bookmarks.Commands is
 

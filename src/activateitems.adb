@@ -29,6 +29,7 @@ with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body ActivateItems is
 

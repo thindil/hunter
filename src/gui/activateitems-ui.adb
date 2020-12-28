@@ -34,7 +34,7 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
-with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body ActivateItems.UI is
 

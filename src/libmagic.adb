@@ -19,7 +19,7 @@ with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body LibMagic is
 

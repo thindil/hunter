@@ -27,7 +27,7 @@ with DOM.Readers; use DOM.Readers;
 with Input_Sources.File; use Input_Sources.File;
 with Modules; use Modules;
 with UserCommands; use UserCommands;
-with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body Preferences is
 

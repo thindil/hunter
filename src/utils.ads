@@ -14,9 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
-with Tcl.Ada; use Tcl.Ada;
-with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
-with MainWindow; use MainWindow;
+with Tcl.Ada;
 
 -- ****h* Utils/Utils
 -- FUNCTION
@@ -77,76 +75,6 @@ package Utils is
    -- Return formated string with info about file size (in MiB, GiB, etc)
    -- SOURCE
    function CountFileSize(Size: File_Size) return String;
-   -- ****
-
-   -- ****f* Utils/Utils.FindExecutable
-   -- FUNCTION
-   -- Find executable file with selected name in this same directory where
-   -- the program is or in PATH variable
-   -- PARAMETERS
-   -- Name           - Name of executable file to find
-   -- DisplayMessage - If true, show message that executable cannot be found.
-   --                  Default value is true.
-   -- RESULT
-   -- Full path to the executable file or empty string and show message if
-   -- file could not be found.
-   -- SOURCE
-   function FindExecutable
-     (Name: String; DisplayMessage: Boolean := True) return String;
-   -- ****
-
-   -- ****f* Utils/Utils.SetProgressBar
-   -- FUNCTION
-   -- Set values for progress bar and show it to the user
-   -- PARAMETERS
-   -- Amount - Max amount of items - will be used to count progress
-   -- SOURCE
-   procedure SetProgressBar(Amount: Positive);
-   -- ****
-
-   -- ****f* Utils/Utils.UpdateProgressBar
-   -- FUNCTION
-   -- Update fraction of the progress bar
-   -- SOURCE
-   procedure UpdateProgressBar;
-   -- ****
-
-   -- ****f* Utils/Utils.SetDialog
-   -- FUNCTION
-   -- Set the selected dialog
-   -- PARAMETERS
-   -- Dialog      - Tk_Toplevel dialog to set
-   -- DialogTitle - Title for the selected dialog
-   -- Width       - Desired width for the selected dialog
-   -- Height      - Desired height for the selected dialog
-   -- SOURCE
-   procedure SetDialog
-     (Dialog: Tk_Toplevel; DialogTitle: String; Width: Width_Range;
-      Height: Height_Range);
-   -- ****
-
-   -- ****f* Utils/Utils.AddCommand
-   -- FUNCTION
-   -- Add command to the Tcl interpreter
-   -- PARAMETERS
-   -- Name       - Name of the Tcl command which will be used to invoke the
-   --              Ada code
-   -- AdaCommand - Ada function which will be invoked
-   -- SOURCE
-   procedure AddCommand
-     (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc);
-   -- ****
-
-   -- ****f* Utils/Utils.ToggleToolButtons
-   -- FUNCTION
-   -- Show or hide other tool bar buttons when user starts any action with
-   -- files or directories
-   -- PARAMETERS
-   -- Action   - Action on files or directories started or finished.
-   -- Finished - If true, action was finished. Default is False
-   -- SOURCE
-   procedure ToggleToolButtons
-     (Action: ItemActions; Finished: Boolean := False);
    -- ****
 
 end Utils;
