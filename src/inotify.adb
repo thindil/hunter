@@ -131,7 +131,7 @@ package body Inotify is
       Mask: Unsigned_Integer :=
         Unsigned_Integer(Inotify_Events'Enum_Rep(Events(1)));
    begin
-      Create_Mask_Loop:
+      Create_Mask_Loop :
       for I in 2 .. Events'Last loop
          Mask := Mask or Unsigned_Integer(Inotify_Events'Enum_Rep(Events(I)));
       end loop Create_Mask_Loop;
@@ -163,7 +163,7 @@ package body Inotify is
    begin
       AddWatch(Path);
       Open(Directory, Path);
-      Add_Watches_Loop:
+      Add_Watches_Loop :
       loop
          Read(Directory, FileName, Last);
          exit when Last = 0;
@@ -199,7 +199,7 @@ package body Inotify is
    procedure RemoveWatch(Path: String) is
    -- ****
    begin
-      Remove_Watches_Loop:
+      Remove_Watches_Loop :
       for Watch of Watches loop
          if To_String(Watch.Path) = Path then
             if inotify_rm_watch(int(Instance), Watch.Id) = -1 then
@@ -217,39 +217,42 @@ package body Inotify is
       Event: Inotify_Events;
       Added: Boolean;
    begin
-      Read_Events_Loop:
+      Read_Events_Loop :
       loop
          Length := Read(Instance, Buffer'Address, 4096);
-         exit when Length = -1;
+         exit Read_Events_Loop when Length = -1;
          if TemporaryStop then
             goto End_Of_Loop;
          end if;
          Start := 1;
+         Read_Event_Loop :
          loop
+            Read_Watches_Loop :
             for Watch of Watches loop
                if int(Character'Pos(Buffer(Start))) = Watch.Id then
                   Path := Watch.Path;
                   NameLength := Character'Pos(Buffer(Start + 12)) + 15 + Start;
                   Target := Null_Unbounded_String;
                   for I in Start + 16 .. NameLength loop
-                     exit when Character'Pos(Buffer(I)) = 0;
+                     exit Read_Watches_Loop when Character'Pos(Buffer(I)) = 0;
                      Append(Target, Buffer(I));
                   end loop;
-                  exit;
+                  exit Read_Watches_Loop;
                end if;
-            end loop;
+            end loop Read_Watches_Loop;
             Event :=
               (if Character'Pos(Buffer(Start + 4)) > 0 then
                  Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 4)))
                else Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5))));
             Added := False;
+            Check_Added_Loop :
             for Event2 of EventsList loop
                if Event2.Path = Path and Event2.Target = Target then
                   Event2.Event := Event;
                   Added := True;
-                  exit;
+                  exit Check_Added_Loop;
                end if;
-            end loop;
+            end loop Check_Added_Loop;
             if not Added then
                EventsList.Append((Event, Target, Path));
             end if;
@@ -265,9 +268,9 @@ package body Inotify is
                 (To_String(Path & Directory_Separator & Target)) then
                RemoveWatch(To_String(Path & Directory_Separator & Target));
             end if;
-            exit when NameLength >= Length;
+            exit Read_Event_Loop when NameLength >= Length;
             Start := NameLength + 1;
-         end loop;
+         end loop Read_Event_Loop;
          <<End_Of_Loop>>
       end loop Read_Events_Loop;
    end InotifyRead;
