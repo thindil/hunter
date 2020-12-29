@@ -220,9 +220,7 @@ package body Inotify is
       Read_Events_Loop:
       loop
          Length := Read(Instance, Buffer'Address, 4096);
-         if Length = -1 then
-            exit;
-         end if;
+         exit when Length = -1;
          if TemporaryStop then
             goto End_Of_Loop;
          end if;
