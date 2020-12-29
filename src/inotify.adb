@@ -131,9 +131,10 @@ package body Inotify is
       Mask: Unsigned_Integer :=
         Unsigned_Integer(Inotify_Events'Enum_Rep(Events(1)));
    begin
+      Create_Mask_Loop:
       for I in 2 .. Events'Last loop
          Mask := Mask or Unsigned_Integer(Inotify_Events'Enum_Rep(Events(I)));
-      end loop;
+      end loop Create_Mask_Loop;
       return int(Mask);
    end CreateMask;
 
@@ -162,6 +163,7 @@ package body Inotify is
    begin
       AddWatch(Path);
       Open(Directory, Path);
+      Add_Watches_Loop:
       loop
          Read(Directory, FileName, Last);
          exit when Last = 0;
@@ -174,7 +176,7 @@ package body Inotify is
             AddWatch(Path & "/" & FileName(1 .. Last));
          end if;
          <<End_Of_Loop>>
-      end loop;
+      end loop Add_Watches_Loop;
       Close(Directory);
    end AddWatches;
 
@@ -197,6 +199,7 @@ package body Inotify is
    procedure RemoveWatch(Path: String) is
    -- ****
    begin
+      Remove_Watches_Loop:
       for Watch of Watches loop
          if To_String(Watch.Path) = Path then
             if inotify_rm_watch(int(Instance), Watch.Id) = -1 then
@@ -204,7 +207,7 @@ package body Inotify is
             end if;
             exit;
          end if;
-      end loop;
+      end loop Remove_Watches_Loop;
    end RemoveWatch;
 
    procedure InotifyRead is
@@ -214,6 +217,7 @@ package body Inotify is
       Event: Inotify_Events;
       Added: Boolean;
    begin
+      Read_Events_Loop:
       loop
          Length := Read(Instance, Buffer'Address, 4096);
          if Length = -1 then
@@ -267,7 +271,7 @@ package body Inotify is
             Start := NameLength + 1;
          end loop;
          <<End_Of_Loop>>
-      end loop;
+      end loop Read_Events_Loop;
    end InotifyRead;
 
 end Inotify;
