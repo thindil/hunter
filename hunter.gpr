@@ -1,10 +1,19 @@
 with "tashy";
 with "xmlada";
+with "ncursesada";
 
 project hunter is
 
+   type UI_Type is ("graphical", "console");
+   UI : UI_Type := external ("UI", "graphical");
+
    for Main use ("hunter.adb");
-   for Source_Dirs use ("src/**");
+   case UI is
+      when "graphical" =>
+         for Source_Dirs use ("src", "src/gui");
+      when "console" =>
+         for Source_Dirs use ("src", "src/tui");
+   end case;
    for Object_Dir use "obj";
    for Exec_Dir use "bin";
 
