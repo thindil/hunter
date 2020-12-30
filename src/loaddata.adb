@@ -92,9 +92,10 @@ package body LoadData is
             Open(SubDirectory, Path);
             Size := 0;
             HiddenAmount := 0;
+            Count_Directory_Size :
             loop
                Read(SubDirectory, SubFileName, SubLast);
-               exit when SubLast = 0;
+               exit Count_Directory_Size when SubLast = 0;
                if SubFileName(1 .. SubLast) /= "." and
                  SubFileName(1 .. SubLast) /= ".." then
                   if SubFileName(1) = '.' then
@@ -103,7 +104,7 @@ package body LoadData is
                      Size := Size + 1;
                   end if;
                end if;
-            end loop;
+            end loop Count_Directory_Size;
             Close(SubDirectory);
             Item.Size := Item_Size(Size);
             Item.HiddenItems := HiddenAmount;
