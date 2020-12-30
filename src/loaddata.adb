@@ -172,7 +172,7 @@ package body LoadData is
       Read_Directory_Loop :
       loop
          Read(Directory, FileName, Last);
-         exit when Last = 0;
+         exit Read_Directory_Loop when Last = 0;
          if FileName(1 .. Last) /= "." and FileName(1 .. Last) /= ".." then
             if not Second then
                AddItem(DirectoryName & "/" & FileName(1 .. Last), ItemsList);
