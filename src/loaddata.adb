@@ -143,12 +143,11 @@ package body LoadData is
             ItemsList.Append(Item);
             return;
          end if;
-         Item.Size := 0;
-         if Is_Symbolic_Link(Path) then
-            Item.Size := -2;
-         elsif Is_Regular_File(Path) then
-            Item.Size := Item_Size(Ada.Directories.Size(Path));
-         end if;
+         Item.Size :=
+           (if Is_Symbolic_Link(Path) then -2
+            elsif Is_Regular_File(Path) then
+              Item_Size(Ada.Directories.Size(Path))
+            else 0);
       end if;
       List.Append(Item);
    end AddItem;
