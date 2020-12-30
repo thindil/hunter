@@ -169,6 +169,7 @@ package body LoadData is
          return;
       end if;
       Open(Directory, DirectoryName);
+      Read_Directory_Loop :
       loop
          Read(Directory, FileName, Last);
          exit when Last = 0;
@@ -180,7 +181,7 @@ package body LoadData is
                  (DirectoryName & "/" & FileName(1 .. Last), SecondItemsList);
             end if;
          end if;
-      end loop;
+      end loop Read_Directory_Loop;
       Close(Directory);
       if not Second then
          Items_Sorting.Sort(ItemsList);
