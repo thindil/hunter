@@ -233,22 +233,24 @@ package body Modules.Commands is
          Arguments :=
            Argument_String_To_List(Slice(Value, SpaceIndex, Length(Value)));
       end if;
+      Replace_Arguments_Loop :
       for I in Arguments'Range loop
          if Arguments(I).all = "@1" then
             Arguments(I) := new String'(To_String(CurrentDirectory));
          elsif Arguments(I).all = "@2" then
             Arguments(I) := new String'(To_String(CurrentSelected));
          end if;
-      end loop;
+      end loop Replace_Arguments_Loop;
       Non_Blocking_Spawn
         (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
       ShowOutput;
+      Show_Output_Loop :
       loop
          Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 300_000);
-         exit when Result /= 1;
+         exit Show_Output_Loop when Result /= 1;
          UpdateOutput(Expect_Out_Match(ProcessDesc) & LF);
          Success := True;
-      end loop;
+      end loop Show_Output_Loop;
       Close(ProcessDesc);
       if Argc = 3 then
          Set_Directory(CurrentDir);
