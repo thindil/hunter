@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ package body Modules is
    procedure LoadModules is
       FullPath: Unbounded_String;
    begin
+      Load_Modules_Loop :
       for ModulePath of Enabled_Modules loop
          FullPath :=
            To_Unbounded_String
@@ -41,11 +42,12 @@ package body Modules is
             when Tcl_Error_Exception =>
                null;
          end;
-      end loop;
+      end loop Load_Modules_Loop;
    end LoadModules;
 
    procedure Execute_Modules(State: Triggers; Arguments: String := "") is
    begin
+      Execute_Modules_Loop :
       for ModulePath of Enabled_Modules loop
          begin
             Tcl_Eval
@@ -56,7 +58,7 @@ package body Modules is
             when Tcl_Error_Exception =>
                null;
          end;
-      end loop;
+      end loop Execute_Modules_Loop;
    end Execute_Modules;
 
 end Modules;
