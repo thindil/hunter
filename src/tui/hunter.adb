@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Exceptions; use Ada.Exceptions;
@@ -28,12 +29,14 @@ with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
+with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 
 procedure Hunter is
    use type Interfaces.C.int;
 
    Key: Key_Code := Key_None;
+   Visibility: Cursor_Visibility := Invisible;
    ErrorFile: File_Type;
    ErrorFilePath: constant String :=
      Ada.Environment_Variables.Value("HOME") & "/.cache/hunter/error.log";
@@ -81,12 +84,22 @@ begin
    LoadSettings;
 
    -- Initialize ncurses
+   Ada.Environment_Variables.Set("ESCDELAY", "10");
    Init_Screen;
    Start_Color;
    Set_Timeout_Mode(Standard_Window, Blocking, 0);
+   Set_Echo_Mode(False);
+   Set_Cursor_Visibility(Visibility);
 
-   -- Main program loop
-   while Key /= Character'Pos('q') loop
+   -- Create the program main window
+   if Argument_Count < 1 then
+      CreateMainWindow(Ada.Environment_Variables.Value("HOME"));
+   else
+      CreateMainWindow(Full_Name(Argument(1)));
+   end if;
+
+   -- Main program loop, exit on Ctrl+q
+   while Key /= 17 loop
       Key := Get_Keystroke;
    end loop;
 
