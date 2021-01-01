@@ -76,3 +76,8 @@
       - fossil sync
       - fossil git export
    description: Update remove Fossil repository and its Git mirror
+- command:
+   name: debugconsole
+   execute:
+      - gprbuild -P hunter.gpr -XUI=console
+   description: Build Hunter in debug mode with console UI
