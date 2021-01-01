@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -16,21 +16,21 @@
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
--- ****h* MainWindow/MainWindow
+-- ****h* MainWindowTUI/MainWindowTUI
 -- FUNCTION
 -- Provide code to show and manipulate the main program window.
 -- SOURCE
 package MainWindow is
 -- ****
 
-   -- ****v* MainWindow/MainWindow.CurrentDirectory
+   -- ****v* MainWindowTUI/MainWindowTUI.CurrentDirectory
    -- FUNCTION
    -- Currently selected directory to show
    -- SOURCE
    CurrentDirectory: Unbounded_String;
    -- ****
 
-   -- ****t* MainWindow/MainWindow.ItemActions
+   -- ****t* MainWindowTUI/MainWindowTUI.ItemActions
    -- FUNCTION
    -- Types of action on files and directories
    -- OPTIONS
@@ -52,14 +52,14 @@ package MainWindow is
       GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
 
-   -- ****v* MainWindow/MainWindow.NewAction
+   -- ****v* MainWindowTUI/MainWindowTUI.NewAction
    -- FUNCTION
    -- Current performed action on files or directories
    -- SOURCE
    NewAction: ItemActions;
    -- ****
 
-   -- ****t* MainWindow/MainWindow.UnboundedString_Container
+   -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
    -- SOURCE
@@ -67,21 +67,21 @@ package MainWindow is
       Unbounded_String);
    -- ****
 
-   -- ****v* MainWindow/MainWindow.SelectedItems
+   -- ****v* MainWindowTUI/MainWindowTUI.SelectedItems
    -- FUNCTION
    -- List of currently selected files and directories by user
    -- SOURCE
    SelectedItems: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****v* MainWindow/MainWindow.CurrentSelected
+   -- ****v* MainWindowTUI/MainWindowTUI.CurrentSelected
    -- FUNCTION
    -- Full path to currently selected file or directory
    -- SOURCE
    CurrentSelected: Unbounded_String;
    -- ****
 
-   -- ****f* MainWindow/MainWindow.CreateMainWindow
+   -- ****f* MainWindowTUI/MainWindowTUI.CreateMainWindow
    -- FUNCTION
    -- Create main window and show content of selected directory
    -- PARAMETERS
@@ -91,7 +91,7 @@ package MainWindow is
    procedure CreateMainWindow(Directory: String);
    -- ****
 
-   -- ****f* MainWindow/MainWindow.UpdateDirectoryList
+   -- ****f* MainWindowTUI/MainWindowTUI.UpdateDirectoryList
    -- FUNCTION
    -- Update directory list
    -- PARAMETERS

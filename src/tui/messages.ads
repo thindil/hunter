@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -17,14 +17,14 @@ with Interfaces.C; use Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 
--- ****h* Messages/Messages
+-- ****h* MessagesTUI/MessagesTUI
 -- FUNCTION
 -- Provide code to show or hide messages to the user.
 -- SOURCE
 package Messages is
 -- ****
 
-   -- ****v* Messages/Messages.YesToAll
+   -- ****v* MessagesTUI/MessagesTUI.YesToAll
    -- FUNCTION
    -- Set to True if user clicked Yes for All button in response to question,
    -- otherwise False
@@ -32,7 +32,7 @@ package Messages is
    YesForAll: Boolean;
    -- ****
 
-   -- ****o* Messages/Messages.Close_Command
+   -- ****o* MessagesTUI/MessagesTUI.Close_Command
    -- FUNCTION
    -- Hide message frame
    -- PARAMETERS
@@ -52,14 +52,14 @@ package Messages is
       Convention => C;
       -- ****
 
-      -- ****f* Messages/Messages.CreateMessagesUI
+      -- ****f* MessagesTUI/MessagesTUI.CreateMessagesUI
       -- FUNCTION
       -- Create UI related to the program messages
       -- SOURCE
    procedure CreateMessagesUI;
    -- ****
 
-   -- ****f* Messages/Messages.ShowMessage
+   -- ****f* MessagesTUI/MessagesTUI.ShowMessage
    -- FUNCTION
    -- Show selected message with selected type to the user
    -- PARAMETERS

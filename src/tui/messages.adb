@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -24,7 +24,7 @@ with Utils.UI; use Utils.UI;
 
 package body Messages is
 
-   -- ****iv* Messages/Messages.TimerId
+   -- ****iv* MessagesTUI/MessagesTUI.TimerId
    -- FUNCTION
    -- Id of timer for auto close command
    -- SOURCE
@@ -40,7 +40,7 @@ package body Messages is
       return TCL_OK;
    end Close_Command;
 
-   -- ****o* Messages/Messages.Response_Command
+   -- ****o* MessagesTUI/MessagesTUI.Response_Command
    -- FUNCTION
    -- Hide message frame and do action, depends on user response
    -- PARAMETERS
