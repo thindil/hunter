@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@ with Interfaces.C; use Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 
--- ****h* ShowItems/ShowItems
+-- ****h* ShowItems/ShowItemsTUI
 -- FUNCTION
 -- Provide code to show informations and set some settings for selected files
 -- or directories.
@@ -26,7 +26,7 @@ with Tcl; use Tcl;
 package ShowItems is
 -- ****
 
-   -- ****f* ShowItems/ShowItems.DestinationDirectory
+   -- ****f* ShowItemsTUI/ShowItemsTUI.DestinationDirectory
    -- FUNCTION
    -- Current directory previewed. Used during showing destination target for
    -- various commands
@@ -34,7 +34,7 @@ package ShowItems is
    DestinationDirectory: Unbounded_String;
    -- ****
 
-   -- ****f* ShowItems/ShowItems.ShowPreview
+   -- ****f* ShowItemsTUI/ShowItemsTUI.ShowPreview
    -- FUNCTION
    -- Show preview of the currently selected file or directory. If preview is
    -- not available, show information about the selected item.
@@ -42,7 +42,7 @@ package ShowItems is
    procedure ShowPreview;
    -- ****
 
-   -- ****o* ShowItems/ShowItems.Show_Selected_Command
+   -- ****o* ShowItemsTUI/ShowItemsTUI.Show_Selected_Command
    -- FUNCTION
    -- Show preview or information about the currently selected file or
    -- directory after user select it in the directory view
@@ -63,7 +63,7 @@ package ShowItems is
       Convention => C;
       -- ****
 
-      -- ****f* ShowItems/ShowItems.CreateShowItemsUI
+      -- ****f* ShowItemsTUI/ShowItemsTUI.CreateShowItemsUI
       -- FUNCTION
       -- Create UI related to show items and destination for moving/copying
       -- items.
@@ -71,21 +71,21 @@ package ShowItems is
    procedure CreateShowItemsUI;
    -- ****
 
-   -- ****f* ShowItems/ShowItems.ShowDestination
+   -- ****f* ShowItemsTUI/ShowItemsTUI.ShowDestination
    -- FUNCTION
    -- Show destination directory for various commands in the preview widget
    -- SOURCE
    procedure ShowDestination;
    -- ****
 
-   -- ****f* ShowItems/ShowItems.ShowOutput
+   -- ****f* ShowItemsTUI/ShowItemsTUI.ShowOutput
    -- FUNCTION
    -- Show the UI for the output of the user command
    -- SOURCE
    procedure ShowOutput;
    -- ****
 
-   -- ****f* ShowItems/ShowItems.UpdateOutput
+   -- ****f* ShowItemsTUI/ShowItemsTUI.UpdateOutput
    -- FUNCTION
    -- Update UI with the output of the user command
    -- SOURCE
