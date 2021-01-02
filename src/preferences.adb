@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@ package body Preferences is
       Close(DataFile);
       SettingsData := Get_Tree(Reader);
       NodesList := Child_Nodes(First_Child(SettingsData));
+      Load_Settings_Loop :
       for I in 0 .. Length(NodesList) - 1 loop
          DataNode := Item(NodesList, I);
          NodeName := To_Unbounded_String(Node_Name(DataNode));
@@ -145,7 +146,7 @@ package body Preferences is
             Enabled_Modules.Append
               (To_Unbounded_String(Get_Attribute(DataNode, "path")));
          end if;
-      end loop;
+      end loop Load_Settings_Loop;
       if FindExecutable("highlight") = "" then
          Settings.ColorText := False;
       end if;
@@ -210,12 +211,14 @@ package body Preferences is
       SaveString(Settings.UITheme, "UITheme");
       SaveNumber(Settings.ToolbarsSize, "ToolbarsSize");
       SaveBoolean(Settings.MonospaceFont, "MonospaceFont");
+      Save_Accelerators_Loop :
       for I in Accelerators'Range loop
          SettingNode := Create_Element(SettingsData, "accelerator");
          SettingNode := Append_Child(MainNode, SettingNode);
          Set_Attribute(SettingNode, "index", Trim(Positive'Image(I), Left));
          Set_Attribute(SettingNode, "value", To_String(Accelerators(I)));
-      end loop;
+      end loop Save_Accelerators_Loop;
+      Save_User_Commands_Loop :
       for I in UserCommandsList.Iterate loop
          SettingNode := Create_Element(SettingsData, "command");
          SettingNode := Append_Child(MainNode, SettingNode);
@@ -229,12 +232,13 @@ package body Preferences is
            Create_Text_Node
              (SettingsData, To_String(UserCommandsList(I).Command));
          UserCommandNode := Append_Child(SettingNode, UserCommandNode);
-      end loop;
+      end loop Save_User_Commands_Loop;
+      Save_Enabled_Modules_Loop :
       for ModuleName of Enabled_Modules loop
          SettingNode := Create_Element(SettingsData, "module");
          SettingNode := Append_Child(MainNode, SettingNode);
          Set_Attribute(SettingNode, "path", To_String(ModuleName));
-      end loop;
+      end loop Save_Enabled_Modules_Loop;
       Create_Path(Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
       Create
         (ConfigFile, Out_File,
