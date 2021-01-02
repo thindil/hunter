@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ with Utils.UI; use Utils.UI;
 
 package body ShowItems is
 
-   -- ****iv* ShowItems/ShowItems.ButtonNames
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.ButtonNames
    -- FUNCTION
    -- Names of the permissions buttons
    -- SOURCE
@@ -48,7 +48,7 @@ package body ShowItems is
       null;
    end ShowPreview;
 
-   -- ****if* ShowItems/ShowItems.ShowInfo
+   -- ****if* ShowItemsTUI/ShowItemsTUI.ShowInfo
    -- FUNCTION
    -- Show information about the currently selected file or directory.
    -- SOURCE
@@ -58,7 +58,7 @@ package body ShowItems is
       null;
    end ShowInfo;
 
-   -- ****o* ShowItems/ShowItems.Show_Preview_Or_Info_Command
+   -- ****o* ShowItemsTUI/ShowItemsTUI.Show_Preview_Or_Info_Command
    -- FUNCTION
    -- Show preview or information about the currently selected file or
    -- directory, depends which button was clicked
@@ -102,7 +102,7 @@ package body ShowItems is
       return TCL_OK;
    end Show_Selected_Command;
 
-   -- ****o* ShowItems/ShowItems.Set_Permissions_Command
+   -- ****o* ShowItemsTUI/ShowItemsTUI.Set_Permissions_Command
    -- FUNCTION
    -- Set the permissions for the selected file or directory
    -- PARAMETERS
@@ -131,7 +131,7 @@ package body ShowItems is
       return TCL_OK;
    end Set_Permissions_Command;
 
-   -- ****o* Commands/ShowItems.GoToDirectory_Command
+   -- ****o* ShowItemsTUI/ShowItemsTUI.GoToDirectory_Command
    -- FUNCTION
    -- Go to the selected directory in preview
    -- PARAMETERS
