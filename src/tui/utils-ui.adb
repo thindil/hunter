@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 
 package body Utils.UI is
 
-   -- ****iv* Utils/Utils.ProgressIndex
+   -- ****iv* UtilsTUI/UtilsTUI.ProgressIndex
    -- FUNCTION
    -- Currrent index of item
    -- SOURCE
