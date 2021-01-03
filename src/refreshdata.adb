@@ -72,18 +72,20 @@ package body RefreshData is
       if TemporaryStop then
          goto Clear_List;
       end if;
+      Check_Events_Loop :
       for Event of EventsList loop
          if Event.Path = CurrentDirectory
            and then
            ((Event.Event in Moved_To | Metadata | Accessed) and
             Exists(To_String(Event.Path & "/" & Event.Target))) then
             ItemExists := False;
+            Check_If_Item_Exists_Loop :
             for Item of ItemsList loop
                if Item.Name = Event.Target then
                   ItemExists := True;
-                  exit;
+                  exit Check_If_Item_Exists_Loop;
                end if;
-            end loop;
+            end loop Check_If_Item_Exists_Loop;
             if not ItemExists then
                AddItem(To_String(Event.Path & "/" & Event.Target), ItemsList);
                RefreshList := True;
@@ -91,6 +93,7 @@ package body RefreshData is
             end if;
          end if;
          ItemIndex := ItemsList.First_Index;
+         Update_Items_Loop :
          while ItemIndex <= ItemsList.Last_Index loop
             FileName := ItemsList(ItemIndex).Path;
             if FileName = Event.Path or
@@ -114,6 +117,7 @@ package body RefreshData is
                      if Is_Directory(To_String(FileName)) then
                         Open(Directory, To_String(FileName));
                         ItemsList(ItemIndex).Size := 0;
+                        Count_New_Size_Loop :
                         loop
                            Read(Directory, SubFileName, Last);
                            exit when Last = 0;
@@ -122,7 +126,7 @@ package body RefreshData is
                               ItemsList(ItemIndex).Size :=
                                 ItemsList(ItemIndex).Size + 1;
                            end if;
-                        end loop;
+                        end loop Count_New_Size_Loop;
                         Close(Directory);
                      elsif Is_Regular_File(To_String(FileName)) then
                         ItemsList(ItemIndex).Size :=
@@ -137,9 +141,9 @@ package body RefreshData is
                end case;
             end if;
             ItemIndex := ItemIndex + 1;
-         end loop;
+         end loop Update_Items_Loop;
          <<End_Of_Loop>>
-      end loop;
+      end loop Check_Events_Loop;
       if RefreshList then
          Items_Sorting.Sort(ItemsList);
          UpdateDirectoryList(True);
