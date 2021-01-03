@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -15,14 +15,14 @@
 
 with MainWindow; use MainWindow;
 
--- ****h* Utils/Utils
+-- ****h* Utils/UtilsTUI
 -- FUNCTION
 -- Various utility subprograms.
 -- SOURCE
 package Utils.UI is
 -- ****
 
-   -- ****f* Utils/Utils.FindExecutable
+   -- ****f* UtilsTUI/UtilsTUI.FindExecutable
    -- FUNCTION
    -- Find executable file with selected name in this same directory where
    -- the program is or in PATH variable
@@ -38,7 +38,7 @@ package Utils.UI is
      (Name: String; DisplayMessage: Boolean := True) return String;
    -- ****
 
-   -- ****f* Utils/Utils.SetProgressBar
+   -- ****f* UtilsTUI/UtilsTUI.SetProgressBar
    -- FUNCTION
    -- Set values for progress bar and show it to the user
    -- PARAMETERS
@@ -47,14 +47,14 @@ package Utils.UI is
    procedure SetProgressBar(Amount: Positive);
    -- ****
 
-   -- ****f* Utils/Utils.UpdateProgressBar
+   -- ****f* UtilsTUI/UtilsTUI.UpdateProgressBar
    -- FUNCTION
    -- Update fraction of the progress bar
    -- SOURCE
    procedure UpdateProgressBar;
    -- ****
 
-   -- ****f* Utils/Utils.AddCommand
+   -- ****f* UtilsTUI/UtilsTUI.AddCommand
    -- FUNCTION
    -- Add command to the Tcl interpreter
    -- PARAMETERS
@@ -66,7 +66,7 @@ package Utils.UI is
      (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc);
    -- ****
 
-   -- ****f* Utils/Utils.ToggleToolButtons
+   -- ****f* UtilsTUI/UtilsTUI.ToggleToolButtons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with
    -- files or directories
