@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -60,6 +60,7 @@ package body Trash is
       StartIndex: Positive;
       FileInfo: File_Type;
    begin
+      Restore_Items_Loop :
       for Item of SelectedItems loop
          StartIndex := Index(Item, "files");
          RestoreInfo :=
@@ -68,6 +69,7 @@ package body Trash is
            To_Unbounded_String(".trashinfo");
          Open(FileInfo, In_File, To_String(RestoreInfo));
          Skip_Line(FileInfo);
+         Restore_Item_Loop :
          for I in 1 .. 2 loop
             FileLine := To_Unbounded_String(Get_Line(FileInfo));
             if Slice(FileLine, 1, 4) = "Path" then
@@ -86,10 +88,10 @@ package body Trash is
                end if;
                Rename(To_String(Item), Slice(FileLine, 6, Length(FileLine)));
             end if;
-         end loop;
+         end loop Restore_Item_Loop;
          Close(FileInfo);
          Delete_File(To_String(RestoreInfo));
-      end loop;
+      end loop Restore_Items_Loop;
       return Show_Trash_Command(ClientData, Interp, Argc, Argv);
    end Restore_Item_Command;
 
