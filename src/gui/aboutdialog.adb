@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ package body AboutDialog is
       Width := Width + Width_Range'Value(Winfo_Get(Label, "reqwidth"));
       Height := Height_Range'Value(Winfo_Get(Label, "reqheight")) * 17;
       Label :=
-        Create(Frame & ".copyright", "-text {© Bartek Jasicki 2019-2020}");
+        Create(Frame & ".copyright", "-text {© Bartek Jasicki 2019-2021}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Label :=
         Create
