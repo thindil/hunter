@@ -13,22 +13,33 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar.Formatting;
-with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Directories; use Ada.Directories;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with GNAT.String_Split; use GNAT.String_Split;
-with CHelper; use CHelper;
-with Tcl.Ada; use Tcl.Ada;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 
 package body MainWindow is
 
    procedure CreateMainWindow(Directory: String) is
+      Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
+      ProgramMenu: Menu;
+      MenuWindow: Window;
    begin
-      null;
+      Menu_Items.all(1) := New_Item("Quit");
+      Menu_Items.all(2) := New_Item("Bookmarks");
+      Menu_Items.all(3) := New_Item("View");
+      Menu_Items.all(4) := New_Item("Actions");
+      Menu_Items.all(5) := New_Item("About");
+      Menu_Items.all(6) := New_Item("Selected");
+      Menu_Items.all(7) := Null_Item;
+      ProgramMenu := New_Menu(Menu_Items);
+      Set_Format(ProgramMenu, 1, 11);
+      Set_Mark(ProgramMenu, "");
+      MenuWindow := Create(1, Columns, 0, 0);
+      Set_Window(ProgramMenu, MenuWindow);
+      Set_Sub_Window
+        (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+      Post(ProgramMenu);
+      Refresh;
+      Refresh(MenuWindow);
    end CreateMainWindow;
 
    procedure UpdateDirectoryList
