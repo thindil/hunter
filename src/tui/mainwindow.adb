@@ -15,8 +15,12 @@
 
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
+with LoadData; use LoadData;
+with RefreshData; use RefreshData;
 
 package body MainWindow is
+
+   ListWindow: Window;
 
    procedure CreateMainWindow(Directory: String) is
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
@@ -38,12 +42,17 @@ package body MainWindow is
       Set_Sub_Window
         (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
       Post(ProgramMenu);
+      ListWindow := Create(Lines - 3, Columns / 2, 3, 0);
+      Box(ListWindow, Default_Character, Default_Character);
       Refresh;
       Refresh(MenuWindow);
+      Refresh(ListWindow);
+      --LoadDirectory(To_String(CurrentDirectory));
+      StartTimer(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
    end CreateMainWindow;
 
-   procedure UpdateDirectoryList
-     (Clear: Boolean := False; FrameName: String := "directory") is
+   procedure UpdateDirectoryList(Clear: Boolean := False) is
    begin
       null;
    end UpdateDirectoryList;

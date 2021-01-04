@@ -97,8 +97,7 @@ package MainWindow is
    -- PARAMETERS
    -- Clear - Clear current list of items
    -- SOURCE
-   procedure UpdateDirectoryList
-     (Clear: Boolean := False; FrameName: String := "directory");
+   procedure UpdateDirectoryList(Clear: Boolean := False);
    -- ****
 
 end MainWindow;
