@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -52,6 +52,7 @@ with CopyItems; use CopyItems;
 with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
+with LoadData.UI; use LoadData.UI;
 with MainWindow.Commands; use MainWindow.Commands;
 with Messages; use Messages;
 with Modules; use Modules;
