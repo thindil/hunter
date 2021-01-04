@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -147,18 +147,6 @@ package LoadData is
    -- List - The list to which a new item will be added
    -- SOURCE
    procedure AddItem(Path: String; List: in out Items_Container.Vector);
-   -- ****
-
-   -- ****f* LoadData/LoadData.LoadDirectory
-   -- FUNCTION
-   -- Load content of the selected directory to the proper list
-   -- PARAMETERS
-   -- DirectoryName - Full path to the directory which content will be added
-   --                 to the proper list
-   -- Second        - If true, add directory content to the SecondItemsList,
-   --                 otherwise add to the ItemsList. Default value is false
-   -- SOURCE
-   procedure LoadDirectory(DirectoryName: String; Second: Boolean := False);
    -- ****
 
 end LoadData;

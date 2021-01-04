@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@ with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with ActivateItems.UI; use ActivateItems.UI;
 with LoadData; use LoadData;
+with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Modules; use Modules;

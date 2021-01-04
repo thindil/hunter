@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Bookmarks.Commands.UI; use Bookmarks.Commands.UI;
 with LoadData; use LoadData;
+with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
 with Modules; use Modules;
 with Utils.UI; use Utils.UI;

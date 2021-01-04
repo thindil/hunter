@@ -23,6 +23,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
+with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Modules; use Modules;
