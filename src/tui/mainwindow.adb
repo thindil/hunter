@@ -19,6 +19,7 @@ with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
+with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 
 package body MainWindow is
@@ -67,14 +68,22 @@ package body MainWindow is
       Menu_Items: constant Item_Array_Access :=
         new Item_Array(ItemsList.First_Index .. ItemsList.Last_Index + 1);
       DirectoryList: Menu;
+      Index: Positive := ItemsList.First_Index;
    begin
       if Clear then
          Terminal_Interface.Curses.Clear(ListWindow);
          Box(ListWindow, Default_Character, Default_Character);
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            Menu_Items.all(I) := New_Item(To_String(ItemsList(I).Name));
+            if not Settings.ShowHidden and ItemsList(I).IsHidden then
+               goto End_Of_Loop;
+            end if;
+            Menu_Items.all(Index) := New_Item(To_String(ItemsList(I).Name));
+            Index := Index + 1;
+            <<End_Of_Loop>>
          end loop;
-         Menu_Items.all(Menu_Items'Last) := Null_Item;
+         for I in Index .. Menu_Items'Last loop
+            Menu_Items.all(I) := Null_Item;
+         end loop;
          DirectoryList := New_Menu(Menu_Items);
          Set_Format(DirectoryList, Line_Position(ItemsList.Length), 1);
          Set_Mark(DirectoryList, "");
