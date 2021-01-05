@@ -73,6 +73,7 @@ package body MainWindow is
       if Clear then
          Terminal_Interface.Curses.Clear(ListWindow);
          Box(ListWindow, Default_Character, Default_Character);
+         Add(ListWindow, 1, 10, "Name");
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
             if not Settings.ShowHidden and ItemsList(I).IsHidden then
                goto End_Of_Loop;
@@ -90,7 +91,7 @@ package body MainWindow is
          Set_Window(DirectoryList, ListWindow);
          Set_Sub_Window
            (DirectoryList,
-            Derived_Window(ListWindow, Lines - 5, (Columns / 2) - 2, 1, 1));
+            Derived_Window(ListWindow, Lines - 6, (Columns / 2) - 2, 2, 1));
          Post(DirectoryList);
          Refresh;
          Refresh(ListWindow);
