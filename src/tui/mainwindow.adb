@@ -15,6 +15,7 @@
 
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with GNAT.String_Split; use GNAT.String_Split;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with LoadData; use LoadData;
@@ -25,6 +26,7 @@ with RefreshData; use RefreshData;
 package body MainWindow is
 
    ListWindow: Window;
+   PathButtons: Window;
 
    procedure CreateMainWindow(Directory: String) is
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
@@ -46,6 +48,7 @@ package body MainWindow is
       Set_Sub_Window
         (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
       Post(ProgramMenu);
+      PathButtons := Create(1, Columns / 2, 2, 0);
       ListWindow := Create(Lines - 3, Columns / 2, 3, 0);
       Box(ListWindow, Default_Character, Default_Character);
       Refresh;
@@ -68,12 +71,37 @@ package body MainWindow is
       Menu_Items: constant Item_Array_Access :=
         new Item_Array(ItemsList.First_Index .. ItemsList.Last_Index + 1);
       DirectoryList: Menu;
-      Index: Positive := ItemsList.First_Index;
+      Index: Positive;
+      Path_Items: Item_Array_Access;
+      Path: Menu;
+      Tokens: Slice_Set;
    begin
       if Clear then
+         Terminal_Interface.Curses.Clear(PathButtons);
+         if Element(CurrentDirectory, Length(CurrentDirectory)) = '/' then
+            Index := Count(CurrentDirectory, "/");
+         else
+            Index := Count(CurrentDirectory, "/") + 1;
+         end if;
+         Path_Items := new Item_Array(1 .. Index + 1);
+         Path_Items.all(1) := New_Item("/");
+         Create(Tokens, To_String(CurrentDirectory), "/");
+         for I in 2 .. Index loop
+            Path_Items.all(I) := New_Item(Slice(Tokens, Slice_Number(I)));
+         end loop;
+         Path_Items.all(Index + 1) := Null_Item;
+         Path := New_Menu(Path_Items);
+         Set_Format(Path, 1, Column_Position(Index));
+         Set_Mark(Path, "");
+         Set_Window(Path, PathButtons);
+         Set_Sub_Window
+           (Path, Derived_Window(PathButtons, 1, (Columns / 2) - 2, 0, 1));
+         Post(Path);
+         Set_Current(Path, Path_Items.all(Index));
          Terminal_Interface.Curses.Clear(ListWindow);
          Box(ListWindow, Default_Character, Default_Character);
          Add(ListWindow, 1, 10, "Name");
+         Index := ItemsList.First_Index;
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
             if not Settings.ShowHidden and ItemsList(I).IsHidden then
                goto End_Of_Loop;
@@ -94,6 +122,7 @@ package body MainWindow is
             Derived_Window(ListWindow, Lines - 6, (Columns / 2) - 2, 2, 1));
          Post(DirectoryList);
          Refresh;
+         Refresh(PathButtons);
          Refresh(ListWindow);
       end if;
    end UpdateDirectoryList;
