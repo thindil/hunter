@@ -13,9 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with LoadData; use LoadData;
+with LoadData.UI; use LoadData.UI;
 with RefreshData; use RefreshData;
 
 package body MainWindow is
@@ -47,14 +50,42 @@ package body MainWindow is
       Refresh;
       Refresh(MenuWindow);
       Refresh(ListWindow);
-      --LoadDirectory(To_String(CurrentDirectory));
+      if Ada.Directories.Exists(Directory) then
+         CurrentDirectory := To_Unbounded_String(Directory);
+      else
+         CurrentDirectory := To_Unbounded_String(Value("HOME"));
+         if not Ada.Directories.Exists(To_String(CurrentDirectory)) then
+            CurrentDirectory := To_Unbounded_String("/");
+         end if;
+      end if;
+      LoadDirectory(To_String(CurrentDirectory));
       StartTimer(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
    end CreateMainWindow;
 
    procedure UpdateDirectoryList(Clear: Boolean := False) is
+      Menu_Items: constant Item_Array_Access :=
+        new Item_Array(ItemsList.First_Index .. ItemsList.Last_Index + 1);
+      DirectoryList: Menu;
    begin
-      null;
+      if Clear then
+         Terminal_Interface.Curses.Clear(ListWindow);
+         Box(ListWindow, Default_Character, Default_Character);
+         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+            Menu_Items.all(I) := New_Item(To_String(ItemsList(I).Name));
+         end loop;
+         Menu_Items.all(Menu_Items'Last) := Null_Item;
+         DirectoryList := New_Menu(Menu_Items);
+         Set_Format(DirectoryList, Line_Position(ItemsList.Length), 1);
+         Set_Mark(DirectoryList, "");
+         Set_Window(DirectoryList, ListWindow);
+         Set_Sub_Window
+           (DirectoryList,
+            Derived_Window(ListWindow, Lines - 5, (Columns / 2) - 2, 1, 1));
+         Post(DirectoryList);
+         Refresh;
+         Refresh(ListWindow);
+      end if;
    end UpdateDirectoryList;
 
 end MainWindow;
