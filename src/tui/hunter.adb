@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
@@ -128,13 +127,12 @@ exception
       else
          Create(ErrorFile, Append_File, ErrorFilePath);
       end if;
-      Put_Line(ErrorFile, Current_Time & LF);
-      Put_Line(ErrorFile, "1.6" & LF);
-      Put_Line(ErrorFile, "Exception: " & Exception_Name(An_Exception) & LF);
-      Put_Line(ErrorFile, "Message: " & Exception_Message(An_Exception) & LF);
-      Put_Line
-        (ErrorFile, "-------------------------------------------------" & LF);
-      Put_Line(ErrorFile, Symbolic_Traceback(An_Exception) & LF);
+      Put_Line(ErrorFile, Current_Time);
+      Put_Line(ErrorFile, "1.6");
+      Put_Line(ErrorFile, "Exception: " & Exception_Name(An_Exception));
+      Put_Line(ErrorFile, "Message: " & Exception_Message(An_Exception));
+      Put_Line(ErrorFile, "-------------------------------------------------");
+      Put_Line(ErrorFile, Symbolic_Traceback(An_Exception));
       Put_Line(ErrorFile, "-------------------------------------------------");
       Close(ErrorFile);
       Erase;
