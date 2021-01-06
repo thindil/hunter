@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -48,11 +48,12 @@ package body Utils is
    begin
       NewSize := Size;
       Multiplier := 0;
+      Count_Size_Loop :
       while NewSize > 1024 loop
-         exit when Multiplier = 8;
+         exit Count_Size_Loop when Multiplier = 8;
          NewSize := NewSize / 1024;
          Multiplier := Multiplier + 1;
-      end loop;
+      end loop Count_Size_Loop;
       return File_Size'Image(NewSize) & " " & SizeShortcuts(Multiplier);
    end CountFileSize;
 
