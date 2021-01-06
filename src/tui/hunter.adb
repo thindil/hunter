@@ -44,6 +44,8 @@ procedure Hunter is
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
    Interp: Tcl.Tcl_Interp;
+   type UI_Locations is (DIRECTORY_VIEW, PATH_BUTTONS, MENU, PREVIEW);
+   UILocation: UI_Locations := DIRECTORY_VIEW;
    procedure ExitFromProgram is
    begin
       SavePreferences;
@@ -116,6 +118,24 @@ begin
    -- Main program loop, exit on Ctrl+q
    while Key /= 17 loop
       Key := Get_Keystroke;
+      if Key = KEY_STAB then
+         case UILocation is
+            when DIRECTORY_VIEW =>
+               UILocation := PATH_BUTTONS;
+            when PATH_BUTTONS =>
+               UILocation := MENU;
+            when MENU =>
+               UILocation := PREVIEW;
+            when PREVIEW =>
+               UILocation := DIRECTORY_VIEW;
+         end case;
+      end if;
+      case UILocation is
+         when DIRECTORY_VIEW =>
+            Directory_Keys(Key);
+         when others =>
+            null;
+      end case;
    end loop;
 
    ExitFromProgram;

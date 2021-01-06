@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -16,7 +16,6 @@
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.String_Split; use GNAT.String_Split;
-with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
@@ -27,6 +26,7 @@ package body MainWindow is
 
    ListWindow: Window;
    PathButtons: Window;
+   DirectoryList: Menu;
 
    procedure CreateMainWindow(Directory: String) is
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
@@ -70,7 +70,6 @@ package body MainWindow is
    procedure UpdateDirectoryList(Clear: Boolean := False) is
       Menu_Items: constant Item_Array_Access :=
         new Item_Array(ItemsList.First_Index .. ItemsList.Last_Index + 1);
-      DirectoryList: Menu;
       Index: Positive;
       Path_Items: Item_Array_Access;
       Path: Menu;
@@ -126,5 +125,25 @@ package body MainWindow is
          Refresh(ListWindow);
       end if;
    end UpdateDirectoryList;
+
+   procedure Directory_Keys(Key: Key_Code) is
+      Result: Menus.Driver_Result;
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(DirectoryList, M_Up_Item);
+            if Result = Request_Denied then
+               Result := Driver(DirectoryList, M_Last_Item);
+            end if;
+         when 66 | KEY_DOWN =>
+            Result := Driver(DirectoryList, M_Down_Item);
+            if Result = Request_Denied then
+               Result := Driver(DirectoryList, M_First_Item);
+            end if;
+         when others =>
+            null;
+      end case;
+      Refresh(ListWindow);
+   end Directory_Keys;
 
 end MainWindow;
