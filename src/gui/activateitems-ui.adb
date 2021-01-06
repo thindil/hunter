@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -152,11 +152,12 @@ package body ActivateItems.UI is
         (if SpaceIndex > 0 then
            Argument_String_To_List(Value(SpaceIndex .. Value'Length) & " @2")
          else Argument_String_To_List("@2"));
+      Replace_Substitutes_Loop :
       for I in Arguments'Range loop
          if Arguments(I).all = "@2" then
             Arguments(I) := new String'(To_String(CurrentSelected));
          end if;
-      end loop;
+      end loop Replace_Substitutes_Loop;
       Pid :=
         Non_Blocking_Spawn(Full_Name(To_String(CommandName)), Arguments.all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
