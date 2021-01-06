@@ -15,6 +15,7 @@
 
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 
 -- ****h* MainWindowTUI/MainWindowTUI
 -- FUNCTION
@@ -98,6 +99,15 @@ package MainWindow is
    -- Clear - Clear current list of items
    -- SOURCE
    procedure UpdateDirectoryList(Clear: Boolean := False);
+   -- ****
+
+   -- ****f* MainWindowTUI/MainWindowTUI.Directory_Keys
+   -- FUNCTION
+   -- Handles keys events when directory view is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- SOURCE
+   procedure Directory_Keys(Key: Key_Code);
    -- ****
 
 end MainWindow;
