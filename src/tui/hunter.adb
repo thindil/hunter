@@ -27,9 +27,11 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with DeleteItems; use DeleteItems;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;
+with Modules; use Modules;
 with Preferences; use Preferences;
 
 procedure Hunter is
@@ -43,6 +45,20 @@ procedure Hunter is
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
    Interp: Tcl.Tcl_Interp;
+   procedure ExitFromProgram is
+   begin
+      SavePreferences;
+      Execute_Modules(On_Quit);
+      if Settings.ClearTrashOnExit then
+         NewAction := CLEARTRASH;
+         if DeleteSelected(Interp) then
+            null;
+         end if;
+      end if;
+      End_Windows;
+      InotifyClose;
+      MagicClose;
+   end ExitFromProgram;
 begin
    -- Create needed directories
    Create_Path(Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
@@ -103,7 +119,7 @@ begin
       Key := Get_Keystroke;
    end loop;
 
-   End_Windows;
+   ExitFromProgram;
 exception
    when An_Exception : others =>
       Create_Path(Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
@@ -130,5 +146,6 @@ exception
            Ada.Environment_Variables.Value("HOME") &
            "/.cache/hunter' directory.");
       Key := Get_Keystroke;
-      End_Windows;
+      ExitFromProgram;
+      Tcl.Ada.Tcl_Eval(Interp, "exit 1");
 end Hunter;
