@@ -102,6 +102,7 @@ begin
 
    -- Initialize ncurses
    Ada.Environment_Variables.Set("ESCDELAY", "10");
+   Ada.Environment_Variables.Set("TERMINFO", "terminfo");
    Init_Screen;
    Start_Color;
    Set_Timeout_Mode(Standard_Window, Blocking, 0);
@@ -110,9 +111,9 @@ begin
 
    -- Create the program main window
    if Argument_Count < 1 then
-      CreateMainWindow(Ada.Environment_Variables.Value("HOME"));
+      CreateMainWindow(Ada.Environment_Variables.Value("HOME"), Interp);
    else
-      CreateMainWindow(Full_Name(Argument(1)));
+      CreateMainWindow(Full_Name(Argument(1)), Interp);
    end if;
 
    -- Main program loop, exit on Ctrl+q
