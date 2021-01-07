@@ -54,7 +54,13 @@ package body Utils.UI is
       Command: Tcl.Tcl_Command;
       Hunter_Add_Command_Exception: exception;
    begin
-      null;
+      Command :=
+        CreateCommands.Tcl_CreateCommand
+          (Interpreter, Name, AdaCommand, 0, null);
+      if Command = null then
+         raise Hunter_Add_Command_Exception
+           with Mc(Interpreter, "{Can't add command}") & " " & Name;
+      end if;
    end AddCommand;
 
    procedure ToggleToolButtons
