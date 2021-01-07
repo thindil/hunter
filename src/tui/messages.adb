@@ -13,23 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
-with Tcl.Ada;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with MainWindow; use MainWindow;
 with Utils.UI; use Utils.UI;
 
 package body Messages is
-
-   -- ****iv* MessagesTUI/MessagesTUI.TimerId
-   -- FUNCTION
-   -- Id of timer for auto close command
-   -- SOURCE
-   TimerId: Unbounded_String := Null_Unbounded_String;
-   -- ****
 
    function Close_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -65,6 +51,7 @@ package body Messages is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
    begin
       return TCL_OK;
    end Response_Command;
