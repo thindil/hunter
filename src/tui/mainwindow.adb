@@ -17,6 +17,8 @@ with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.String_Split; use GNAT.String_Split;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
+with Tcl.Ada; use Tcl.Ada;
+with ActivateItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Preferences; use Preferences;
@@ -28,11 +30,13 @@ package body MainWindow is
    PathButtons: Window;
    DirectoryList: Menu;
 
-   procedure CreateMainWindow(Directory: String) is
+   procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp) is
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
       ProgramMenu: Menu;
       MenuWindow: Window;
    begin
+      Interpreter := Interp;
+      ActivateItems.AddCommands;
       Menu_Items.all(1) := New_Item("Quit");
       Menu_Items.all(2) := New_Item("Bookmarks");
       Menu_Items.all(3) := New_Item("View");
@@ -135,11 +139,15 @@ package body MainWindow is
             if Result = Request_Denied then
                Result := Driver(DirectoryList, M_Last_Item);
             end if;
+            CurrentSelected := CurrentDirectory & "/" & Name(Current(DirectoryList));
          when 66 | KEY_DOWN =>
             Result := Driver(DirectoryList, M_Down_Item);
             if Result = Request_Denied then
                Result := Driver(DirectoryList, M_First_Item);
             end if;
+            CurrentSelected := CurrentDirectory & "/" & Name(Current(DirectoryList));
+         when 10 =>
+            Tcl_Eval(Interpreter, "ActivateItem");
          when others =>
             null;
       end case;

@@ -16,6 +16,7 @@
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with Tcl; use Tcl;
 
 -- ****h* MainWindowTUI/MainWindowTUI
 -- FUNCTION
@@ -82,14 +83,22 @@ package MainWindow is
    CurrentSelected: Unbounded_String;
    -- ****
 
+   -- ****v* MainWindowTUI/MainWindowTUI.Interpreter
+   -- FUNCTION
+   -- Tcl interpreter to execute various program commands
+   -- SOURCE
+   Interpreter: Tcl_Interp;
+   -- ****
+
    -- ****f* MainWindowTUI/MainWindowTUI.CreateMainWindow
    -- FUNCTION
    -- Create main window and show content of selected directory
    -- PARAMETERS
    -- Directory  - Full path to the directory which will be show at the
    --              program start
+   -- Interp     - Tcl interpreter used by the program
    -- SOURCE
-   procedure CreateMainWindow(Directory: String);
+   procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp);
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.UpdateDirectoryList
