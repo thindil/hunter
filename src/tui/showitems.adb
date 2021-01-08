@@ -13,35 +13,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar.Formatting;
-with Ada.Calendar.Time_Zones;
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Directories; use Ada.Directories;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.Expect; use GNAT.Expect;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.String_Split; use GNAT.String_Split;
-with Tcl.Ada; use Tcl.Ada;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with LoadData; use LoadData;
-with MainWindow; use MainWindow;
-with Messages; use Messages;
+with Ada.Strings;
+with Tcl.Ada;
 with Utils.UI; use Utils.UI;
 
 package body ShowItems is
-
-   -- ****iv* ShowItemsTUI/ShowItemsTUI.ButtonNames
-   -- FUNCTION
-   -- Names of the permissions buttons
-   -- SOURCE
-   ButtonNames: constant array(1 .. 3) of Unbounded_String :=
-     (To_Unbounded_String("execute"), To_Unbounded_String("read"),
-      To_Unbounded_String("write"));
-   -- ****
 
    procedure ShowPreview is
    begin
@@ -97,7 +73,7 @@ package body ShowItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
    begin
       return TCL_OK;
    end Show_Selected_Command;
@@ -126,7 +102,7 @@ package body ShowItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
    begin
       return TCL_OK;
    end Set_Permissions_Command;
@@ -156,7 +132,7 @@ package body ShowItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp);
+      pragma Unreferenced(ClientData, Interp, Argc, Argv);
    begin
       return TCL_OK;
    end GoToDirectory_Command;
