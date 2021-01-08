@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Update path buttons when showing the selected program's module directory
 - Some typos in UI
 - Showing translated info for copy and move buttons
+- Showing preview of empty directories when entering them
 
 ## [1.5] - 2020-11-20
 
