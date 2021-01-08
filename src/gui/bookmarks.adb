@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ package body Bookmarks is
       begin
          if Value(Name, "") = "" then
             Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
-            Load_Bookmarks_Loop:
+            Load_Bookmarks_Loop :
             while not End_Of_File(File) loop
                Line := Get_Line(File);
                EqualIndex := Index(Line, "=");
@@ -89,7 +89,7 @@ package body Bookmarks is
         (BookmarksMenu, "command",
          "-label {" & Mc(Get_Context, "{Home}") &
          "} -command {GoToBookmark {" & Value("HOME") & "}}");
-      Set_XDGBookmarks_List_Loop:
+      Set_XDGBookmarks_List_Loop :
       for I in XDGBookmarks'Range loop
          Path := GetXDGDirectory(To_String(XDGBookmarks(I)));
          if Ada.Directories.Exists(To_String(Path)) then
@@ -109,30 +109,28 @@ package body Bookmarks is
             BookmarkExist: Boolean;
          begin
             Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
-            Load_User_Bookmarks_Loop:
+            Load_User_Bookmarks_Loop :
             while not End_Of_File(File) loop
                Line := Get_Line(File);
-               if Length(Line) < 7 then
+               if Length(Line) < 7 or else Slice(Line, 1, 7) /= "file://" then
                   goto End_Of_Loop;
                end if;
-               if Slice(Line, 1, 7) = "file://" then
-                  Path := Unbounded_Slice(Line, 8, Length(Line));
-                  BookmarkExist := False;
-                  for I in BookmarksList.Iterate loop
-                     if BookmarksList(I) = To_String(Path) then
-                        BookmarkExist := True;
-                        exit;
-                     end if;
-                  end loop;
-                  if not BookmarkExist and
-                    Ada.Directories.Exists(To_String(Path)) then
-                     BookmarksList.Include
-                       (Simple_Name(To_String(Path)), To_String(Path));
-                     Add
-                       (BookmarksMenu, "command",
-                        "-label {" & Simple_Name(To_String(Path)) &
-                        "} -command {GoToBookmark {" & To_String(Path) & "}}");
+               Path := Unbounded_Slice(Line, 8, Length(Line));
+               BookmarkExist := False;
+               for I in BookmarksList.Iterate loop
+                  if BookmarksList(I) = To_String(Path) then
+                     BookmarkExist := True;
+                     exit;
                   end if;
+               end loop;
+               if not BookmarkExist and
+                 Ada.Directories.Exists(To_String(Path)) then
+                  BookmarksList.Include
+                    (Simple_Name(To_String(Path)), To_String(Path));
+                  Add
+                    (BookmarksMenu, "command",
+                     "-label {" & Simple_Name(To_String(Path)) &
+                     "} -command {GoToBookmark {" & To_String(Path) & "}}");
                end if;
                <<End_Of_Loop>>
             end loop Load_User_Bookmarks_Loop;
