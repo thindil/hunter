@@ -491,6 +491,8 @@ package body MainWindow is
          else
             Selection_Set(DirectoryTree, "{}");
          end if;
+      else
+         Selection_Set(DirectoryTree, "{}");
       end if;
    end UpdateDirectoryList;
 
