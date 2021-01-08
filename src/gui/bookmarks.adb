@@ -60,16 +60,17 @@ package body Bookmarks is
       begin
          if Value(Name, "") = "" then
             Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
+            Load_Bookmarks_Loop:
             while not End_Of_File(File) loop
                Line := Get_Line(File);
                EqualIndex := Index(Line, "=");
                if EqualIndex > 0 then
                   if Slice(Line, 1, EqualIndex - 1) = Name then
                      Set(Name, Slice(Line, EqualIndex + 2, Length(Line) - 1));
-                     exit;
+                     exit Load_Bookmarks_Loop;
                   end if;
                end if;
-            end loop;
+            end loop Load_Bookmarks_Loop;
             Close(File);
          end if;
          return To_Unbounded_String(Expand_Path(Value(Name)));
@@ -88,6 +89,7 @@ package body Bookmarks is
         (BookmarksMenu, "command",
          "-label {" & Mc(Get_Context, "{Home}") &
          "} -command {GoToBookmark {" & Value("HOME") & "}}");
+      Set_XDGBookmarks_List_Loop:
       for I in XDGBookmarks'Range loop
          Path := GetXDGDirectory(To_String(XDGBookmarks(I)));
          if Ada.Directories.Exists(To_String(Path)) then
@@ -98,7 +100,7 @@ package body Bookmarks is
                "-label {" & Simple_Name(To_String(Path)) &
                "} -command {GoToBookmark {" & To_String(Path) & "}}");
          end if;
-      end loop;
+      end loop Set_XDGBookmarks_List_Loop;
       if Ada.Directories.Exists
           (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
          declare
@@ -107,6 +109,7 @@ package body Bookmarks is
             BookmarkExist: Boolean;
          begin
             Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+            Load_User_Bookmarks_Loop:
             while not End_Of_File(File) loop
                Line := Get_Line(File);
                if Length(Line) < 7 then
@@ -132,7 +135,7 @@ package body Bookmarks is
                   end if;
                end if;
                <<End_Of_Loop>>
-            end loop;
+            end loop Load_User_Bookmarks_Loop;
             Close(File);
          end;
       end if;
