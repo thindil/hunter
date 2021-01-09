@@ -117,12 +117,13 @@ package body Bookmarks is
                end if;
                Path := Unbounded_Slice(Line, 8, Length(Line));
                BookmarkExist := False;
+               Check_Bookmark_Existence_Loop :
                for I in BookmarksList.Iterate loop
                   if BookmarksList(I) = To_String(Path) then
                      BookmarkExist := True;
-                     exit;
+                     exit Check_Bookmark_Existence_Loop;
                   end if;
-               end loop;
+               end loop Check_Bookmark_Existence_Loop;
                if not BookmarkExist and
                  Ada.Directories.Exists(To_String(Path)) then
                   BookmarksList.Include
@@ -158,6 +159,7 @@ package body Bookmarks is
         or else Kind(To_String(CurrentSelected)) /= Directory then
          return;
       end if;
+      Set_Bookmark_Button_Loop :
       for I in BookmarksList.Iterate loop
          if BookmarksList(I) = CurrentSelected then
             if Natural'Value
@@ -168,7 +170,7 @@ package body Bookmarks is
             Tcl.Tk.Ada.Pack.Pack(Button);
             return;
          end if;
-      end loop;
+      end loop Set_Bookmark_Button_Loop;
       Button.Name := New_String(".mainframe.toolbars.itemtoolbar.addbutton");
       Tcl.Tk.Ada.Pack.Pack(Button);
    end SetBookmarkButton;
