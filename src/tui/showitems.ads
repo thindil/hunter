@@ -14,9 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Interfaces.C;
-with CArgv;
-with Tcl; use Tcl;
 
 -- ****h* ShowItems/ShowItemsTUI
 -- FUNCTION
@@ -42,26 +39,13 @@ package ShowItems is
    procedure ShowPreview;
    -- ****
 
-   -- ****o* ShowItemsTUI/ShowItemsTUI.Show_Selected_Command
+   -- ****f* ShowItemsTUI/ShowItemsTUI.Show_Selected
    -- FUNCTION
    -- Show preview or information about the currently selected file or
    -- directory after user select it in the directory view
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- ShowSelected
    -- SOURCE
-   function Show_Selected_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-      -- ****
+   procedure Show_Selected;
+   -- ****
 
       -- ****f* ShowItemsTUI/ShowItemsTUI.CreateShowItemsUI
       -- FUNCTION

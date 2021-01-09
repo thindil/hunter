@@ -14,7 +14,13 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings;
-with Tcl.Ada;
+with Interfaces.C;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
+with CArgv;
+with Tcl; use Tcl;
+with MainWindow; use MainWindow;
+with Preferences; use Preferences;
 with Utils.UI; use Utils.UI;
 
 package body ShowItems is
@@ -29,54 +35,41 @@ package body ShowItems is
    -- Show information about the currently selected file or directory.
    -- SOURCE
    procedure ShowInfo is
-      -- ****
+   -- ****
    begin
       null;
    end ShowInfo;
 
-   -- ****o* ShowItemsTUI/ShowItemsTUI.Show_Preview_Or_Info_Command
-   -- FUNCTION
-   -- Show preview or information about the currently selected file or
-   -- directory, depends which button was clicked
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- ShowPreviewOrInfo
-   -- SOURCE
-   function Show_Preview_Or_Info_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-      -- ****
-
-   function Show_Preview_Or_Info_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+   procedure Show_Selected is
    begin
-      if Tcl.Ada.Tcl_GetVar(Interp, "previewtype") = "preview" then
+      SelectedItems.Clear;
+      if Item_Count(DirectoryList) > 0 then
+         for I in 1 .. Item_Count(DirectoryList) loop
+            if Value(Items(DirectoryList, I)) or
+              Current(DirectoryList) = Items(DirectoryList, I) then
+               SelectedItems.Append
+                 (To_Unbounded_String(Name(Items(DirectoryList, I))));
+            end if;
+         end loop;
+      else
+         SelectedItems.Append(CurrentDirectory);
+      end if;
+      if not Settings.ShowPreview or
+        (SelectedItems(1) = CurrentSelected and
+         CurrentSelected /= CurrentDirectory) then
+         return;
+      end if;
+      CurrentSelected := CurrentDirectory & "/" & Name(Current(DirectoryList));
+      if NewAction = CREATELINK then
+         return;
+      end if;
+      if Is_Directory(To_String(CurrentSelected)) or
+        Is_Regular_File(To_String(CurrentSelected)) then
          ShowPreview;
       else
          ShowInfo;
       end if;
-      return TCL_OK;
-   end Show_Preview_Or_Info_Command;
-
-   function Show_Selected_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
-   begin
-      return TCL_OK;
-   end Show_Selected_Command;
+   end Show_Selected;
 
    -- ****o* ShowItemsTUI/ShowItemsTUI.Set_Permissions_Command
    -- FUNCTION
@@ -139,8 +132,6 @@ package body ShowItems is
 
    procedure CreateShowItemsUI is
    begin
-      AddCommand("ShowSelected", Show_Selected_Command'Access);
-      AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
       AddCommand("GoToDirectory", GoToDirectory_Command'Access);
    end CreateShowItemsUI;
