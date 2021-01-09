@@ -16,7 +16,6 @@
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.String_Split; use GNAT.String_Split;
-with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
 with LoadData; use LoadData;
@@ -28,7 +27,6 @@ package body MainWindow is
 
    ListWindow: Window;
    PathButtons: Window;
-   DirectoryList: Menu;
 
    procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp) is
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
@@ -117,6 +115,7 @@ package body MainWindow is
             Menu_Items.all(I) := Null_Item;
          end loop;
          DirectoryList := New_Menu(Menu_Items);
+         Switch_Options(DirectoryList, (One_Valued => False, others => <>));
          Set_Format(DirectoryList, Line_Position(ItemsList.Length), 1);
          Set_Mark(DirectoryList, "");
          Set_Window(DirectoryList, ListWindow);
@@ -139,13 +138,17 @@ package body MainWindow is
             if Result = Request_Denied then
                Result := Driver(DirectoryList, M_Last_Item);
             end if;
-            CurrentSelected := CurrentDirectory & "/" & Name(Current(DirectoryList));
          when 66 | KEY_DOWN =>
             Result := Driver(DirectoryList, M_Down_Item);
             if Result = Request_Denied then
                Result := Driver(DirectoryList, M_First_Item);
             end if;
-            CurrentSelected := CurrentDirectory & "/" & Name(Current(DirectoryList));
+         when 32 =>
+            Result := Driver(DirectoryList, M_Toggle_Item);
+            Result := Driver(DirectoryList, M_Down_Item);
+            if Result = Request_Denied then
+               Result := Driver(DirectoryList, M_First_Item);
+            end if;
          when 10 =>
             Tcl_Eval(Interpreter, "ActivateItem");
          when others =>

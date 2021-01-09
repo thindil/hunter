@@ -16,6 +16,7 @@
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Tcl; use Tcl;
 
 -- ****h* MainWindowTUI/MainWindowTUI
@@ -88,6 +89,13 @@ package MainWindow is
    -- Tcl interpreter to execute various program commands
    -- SOURCE
    Interpreter: Tcl_Interp;
+   -- ****
+
+   -- ****v* MainWindowTUI/MainWindowTUI.DirectoryList
+   -- FUNCTION
+   -- Menu with list of all items in the current viewed directory
+   -- SOURCE
+   DirectoryList: Menu;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.CreateMainWindow
