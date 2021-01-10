@@ -111,14 +111,15 @@ package body CopyItems is
             if Settings.OverwriteOnExist then
                Delete_File(To_String(NewName));
             else
+               New_File_Name_Loop :
                loop
                   NewName :=
                     NewPath &
                     To_Unbounded_String
                       ("/" & Base_Name(To_String(NewName)) & "_." &
                        Extension(To_String(NewName)));
-                  exit when not Exists(To_String(NewName));
-               end loop;
+                  exit New_File_Name_Loop when not Exists(To_String(NewName));
+               end loop New_File_Name_Loop;
             end if;
          end if;
          GNAT.OS_Lib.Copy_File
@@ -141,10 +142,12 @@ package body CopyItems is
       if Is_Directory(Name) then
          Append(NewPath, "/" & Simple_Name(Name));
          if Exists(To_String(NewPath)) and not Settings.OverwriteOnExist then
+            New_Directory_Name_Loop :
             loop
                NewPath := NewPath & "_";
-               exit when not Exists(To_String(NewPath));
-            end loop;
+               exit New_Directory_Name_Loop when not Exists
+                   (To_String(NewPath));
+            end loop New_Directory_Name_Loop;
          end if;
          Create_Path(To_String(NewPath));
          Search
@@ -163,6 +166,7 @@ package body CopyItems is
       Path, ItemType: Unbounded_String;
       Success: Boolean := True;
    begin
+      Copy_Items_Loop :
       while CopyItemsList.Length > 0 loop
          Path := DestinationDirectory;
          if Exists
@@ -184,12 +188,12 @@ package body CopyItems is
             return;
          end if;
          CopyItem(To_String(CopyItemsList(1)), Path, Success);
-         exit when not Success;
+         exit Copy_Items_Loop when not Success;
          CopyItemsList.Delete(Index => 1);
          if not YesForAll then
             Overwrite := False;
          end if;
-      end loop;
+      end loop Copy_Items_Loop;
       CopyItemsList.Clear;
       if Settings.ShowFinishedInfo then
          ShowMessage
