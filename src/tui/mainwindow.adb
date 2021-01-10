@@ -51,7 +51,9 @@ package body MainWindow is
         (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
       Post(ProgramMenu);
       PathButtons := Create(1, Columns / 2, 2, 0);
-      ListWindow := Create(Lines - 3, Columns / 2, 3, 0);
+      ListWindow :=
+        (if Settings.ShowPreview then Create(Lines - 3, Columns / 2, 3, 0)
+         else Create(Lines - 3, Columns, 3, 0));
       Box(ListWindow, Default_Character, Default_Character);
       Refresh;
       Refresh(MenuWindow);
