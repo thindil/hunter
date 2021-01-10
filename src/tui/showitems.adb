@@ -16,6 +16,7 @@
 with Ada.Strings;
 with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with CArgv;
 with Tcl; use Tcl;
@@ -24,6 +25,13 @@ with Preferences; use Preferences;
 with Utils.UI; use Utils.UI;
 
 package body ShowItems is
+
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.PreviewWindow
+   -- FUNCTION
+   -- Window used for show preview/info about the selected item
+   -- SOURCE
+   PreviewWindow: Window;
+   -- ****
 
    procedure ShowPreview is
    begin
@@ -63,12 +71,16 @@ package body ShowItems is
       if NewAction = CREATELINK then
          return;
       end if;
+      Terminal_Interface.Curses.Clear(PreviewWindow);
+      Box(PreviewWindow, Default_Character, Default_Character);
       if Is_Directory(To_String(CurrentSelected)) or
         Is_Regular_File(To_String(CurrentSelected)) then
          ShowPreview;
       else
          ShowInfo;
       end if;
+      Refresh;
+      Refresh(PreviewWindow);
    end Show_Selected;
 
    -- ****o* ShowItemsTUI/ShowItemsTUI.Set_Permissions_Command
@@ -134,6 +146,8 @@ package body ShowItems is
    begin
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
       AddCommand("GoToDirectory", GoToDirectory_Command'Access);
+      PreviewWindow := Create(Lines - 3, Columns / 2, 3, 0);
+      Box(PreviewWindow, Default_Character, Default_Character);
    end CreateShowItemsUI;
 
    procedure ShowDestination is
