@@ -81,13 +81,14 @@ package body DeleteItems is
             Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/" &
             SubDirectory,
             "*");
+         Add_Items_To_Trash_Loop :
          while More_Entries(Search) loop
             Get_Next_Entry(Search, Item);
             if Simple_Name(Item) not in "." | ".." then
                SelectedItems.Append
                  (New_Item => To_Unbounded_String(Full_Name(Item)));
             end if;
-         end loop;
+         end loop Add_Items_To_Trash_Loop;
          End_Search(Search);
       end AddTrash;
    begin
@@ -103,6 +104,7 @@ package body DeleteItems is
          AddTrash("info");
          AddTrash("files");
       end if;
+      Delete_Items_Loop :
       for Item of SelectedItems loop
          UpdateProgressBar;
          if Is_Directory(To_String(Item)) then
@@ -131,7 +133,7 @@ package body DeleteItems is
                "/.local/share/Trash/info/" & Simple_Name(To_String(Item)) &
                ".trashinfo");
          end if;
-      end loop;
+      end loop Delete_Items_Loop;
       if NewAction = CLEARTRASH then
          Settings.DeleteFiles := OldSetting;
       end if;
@@ -193,6 +195,7 @@ package body DeleteItems is
         (if Settings.DeleteFiles or NewAction = DELETETRASH then
            To_Unbounded_String(Mc(Interp, "{Delete?}") & LF)
          else To_Unbounded_String(Mc(Interp, "{Move to trash?}") & LF));
+      Add_Items_To_Delete_Loop :
       while I <= SelectedItems.Last_Index loop
          if NewAction = DELETE then
             Append(Message, SelectedItems(I));
@@ -203,6 +206,7 @@ package body DeleteItems is
                "/.local/share/Trash/info/" &
                Simple_Name(To_String(SelectedItems(I))) & ".trashinfo");
             Skip_Line(FileInfo);
+            Get_Item_Name_Loop :
             for I in 1 .. 2 loop
                FileLine := To_Unbounded_String(Get_Line(FileInfo));
                if Slice(FileLine, 1, 4) = "Path" then
@@ -210,7 +214,7 @@ package body DeleteItems is
                     (Message,
                      Simple_Name(Slice(FileLine, 6, Length(FileLine))));
                end if;
-            end loop;
+            end loop Get_Item_Name_Loop;
             Close(FileInfo);
          end if;
          if not Is_Symbolic_Link(To_String(SelectedItems(I)))
@@ -225,7 +229,7 @@ package body DeleteItems is
             Append(Message, Mc(Interp, "{(and more)}"));
             exit;
          end if;
-      end loop;
+      end loop Add_Items_To_Delete_Loop;
       ToggleToolButtons(NewAction);
       ShowMessage(To_String(Message), "question");
       return TCL_OK;
