@@ -141,11 +141,10 @@ package body CreateItems is
            To_Unbounded_String
              (Mc(Interp, "{create}") & " " & CArgv.Arg(Argv, 1) & " " &
               Mc(Interp, "{with}"));
-         if Is_Directory(To_String(NewItemName)) then
-            ActionBlocker := To_Unbounded_String(Mc(Interp, "directory"));
-         else
-            ActionBlocker := To_Unbounded_String(Mc(Interp, "file"));
-         end if;
+         ActionBlocker :=
+           (if Is_Directory(To_String(NewItemName)) then
+              To_Unbounded_String(Mc(Interp, "directory"))
+            else To_Unbounded_String(Mc(Interp, "file")));
          ShowMessage
            (Mc(Interp, "{You can't}") & " " & To_String(ActionString) & " " &
             Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
