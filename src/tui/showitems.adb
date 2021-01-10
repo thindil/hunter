@@ -20,7 +20,11 @@ with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with LoadData; use LoadData;
+with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
+with Messages; use Messages;
 with Preferences; use Preferences;
 with Utils.UI; use Utils.UI;
 
@@ -34,8 +38,29 @@ package body ShowItems is
    -- ****
 
    procedure ShowPreview is
+      Line: Line_Position := 2;
    begin
-      null;
+      if Is_Directory(To_String(CurrentSelected)) then
+         if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
+            ShowMessage
+              (Mc
+                 (Interpreter,
+                  "{You don't have permissions to preview this directory.}"));
+         end if;
+         LoadDirectory(To_String(CurrentSelected), True);
+         Box(PreviewWindow, Default_Character, Default_Character);
+         Add(PreviewWindow, 1, Columns / 4, "Name");
+         for Item of SecondItemsList loop
+            if not Settings.ShowHidden and Item.IsHidden then
+               goto End_Of_Loop;
+            end if;
+            Add(PreviewWindow, Line, 1, To_String(Item.Name));
+            Line := Line + 1;
+            <<End_Of_Loop>>
+         end loop;
+      else
+         null;
+      end if;
    end ShowPreview;
 
    -- ****if* ShowItemsTUI/ShowItemsTUI.ShowInfo
@@ -146,7 +171,7 @@ package body ShowItems is
    begin
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
       AddCommand("GoToDirectory", GoToDirectory_Command'Access);
-      PreviewWindow := Create(Lines - 3, Columns / 2, 3, 0);
+      PreviewWindow := Create(Lines - 3, Columns / 2, 3, Columns / 2);
       Box(PreviewWindow, Default_Character, Default_Character);
    end CreateShowItemsUI;
 

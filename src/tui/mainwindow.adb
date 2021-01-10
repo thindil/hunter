@@ -22,6 +22,7 @@ with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
+with ShowItems; use ShowItems;
 
 package body MainWindow is
 
@@ -58,6 +59,7 @@ package body MainWindow is
       Refresh;
       Refresh(MenuWindow);
       Refresh(ListWindow);
+      CreateShowItemsUI;
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
@@ -128,6 +130,7 @@ package body MainWindow is
          Refresh;
          Refresh(PathButtons);
          Refresh(ListWindow);
+         Show_Selected;
       end if;
    end UpdateDirectoryList;
 
@@ -156,7 +159,10 @@ package body MainWindow is
          when others =>
             null;
       end case;
-      Refresh(ListWindow);
+      if Result = MENU_OK then
+         Refresh(ListWindow);
+         Show_Selected;
+      end if;
    end Directory_Keys;
 
 end MainWindow;
