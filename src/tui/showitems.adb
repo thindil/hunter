@@ -117,8 +117,8 @@ package body ShowItems is
                         LinesAmount := LinesAmount + 1;
                      end loop;
                      Close(File);
-                     PreviewPad := New_Pad(LinesAmount, LineLength + 1);
-                     Add(Win => PreviewPad, Str => To_String(FileText));
+                     PreviewPad := New_Pad(LinesAmount + 1, LineLength + 1);
+                     Add(PreviewPad, To_String(FileText));
                      Refresh(PreviewWindow);
                      Refresh
                        (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2),
