@@ -314,6 +314,7 @@ package body MainWindow.Commands is
       end if;
       Create(Tokens, To_String(Buttons), " ");
       Button.Interp := Interp;
+      Arrange_Buttons_Loop :
       for I in reverse 1 .. Slice_Count(Tokens) loop
          Button.Name := New_String(Slice(Tokens, I));
          Width := Width + Positive'Value(Winfo_Get(Button, "width"));
@@ -326,7 +327,7 @@ package body MainWindow.Commands is
            (Button,
             "-row" & Natural'Image(Row) & " -column" & Natural'Image(Column));
          Column := Column + 1;
-      end loop;
+      end loop Arrange_Buttons_Loop;
       if (Settings.ScaleImages and Settings.ShowPreview)
         and then Winfo_Get(PreviewCanvas, "ismapped") = "1" then
          ScaleImage;
@@ -431,6 +432,7 @@ package body MainWindow.Commands is
    begin
       Delete(FileMenu, "0", "end");
       Button.Interp := Interp;
+      Update_File_Menu_Loop :
       for I in ButtonsNames'Range loop
          Button.Name :=
            New_String(".mainframe.toolbars." & To_String(ButtonsNames(I)));
@@ -447,7 +449,7 @@ package body MainWindow.Commands is
                   "} -command {.deletemenu invoke 0}");
             end if;
          end if;
-      end loop;
+      end loop Update_File_Menu_Loop;
       Tk_Popup(FileMenu, CArgv.Arg(Argv, 1), CArgv.Arg(Argv, 2));
       return TCL_OK;
    end Show_File_Menu_Command;
@@ -489,12 +491,13 @@ package body MainWindow.Commands is
            To_Unbounded_String(Value("APPDIR", "") & "/usr/share/doc/hunter");
       end if;
       LoadDirectory(To_String(CurrentDirectory));
+      Set_Current_Selected_Loop :
       for I in ItemsList.Iterate loop
          if ItemsList(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
             CurrentSelected := ItemsList(I).Path;
             exit;
          end if;
-      end loop;
+      end loop Set_Current_Selected_Loop;
       UpdateDirectoryList(True);
       ShowPreview;
       return TCL_OK;
