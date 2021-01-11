@@ -37,8 +37,15 @@ package body ShowItems is
    PreviewWindow: Window;
    -- ****
 
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.PreviewPad
+   -- FUNCTION
+   -- Window used to store content of preview/info of the selected item
+   -- SOURCE
+   PreviewPad: Window;
+   -- ****
+
    procedure ShowPreview is
-      Line: Line_Position := 2;
+      Line: Line_Position := 1;
    begin
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
@@ -48,16 +55,26 @@ package body ShowItems is
                   "{You don't have permissions to preview this directory.}"));
          end if;
          LoadDirectory(To_String(CurrentSelected), True);
-         Box(PreviewWindow, Default_Character, Default_Character);
-         Add(PreviewWindow, 1, Columns / 4, "Name");
+         if PreviewPad /= Null_Window then
+            Delete(PreviewPad);
+         end if;
+         PreviewPad :=
+           New_Pad
+             (Line_Position(SecondItemsList.Length) + 1, (Columns / 2) - 1);
+         Add(PreviewPad, 0, Columns / 4, "Name");
          for Item of SecondItemsList loop
             if not Settings.ShowHidden and Item.IsHidden then
                goto End_Of_Loop;
             end if;
-            Add(PreviewWindow, Line, 1, To_String(Item.Name));
+            Add(PreviewPad, Line, 1, To_String(Item.Name));
             Line := Line + 1;
             <<End_Of_Loop>>
          end loop;
+         Clear(PreviewWindow);
+         Box(PreviewWindow, Default_Character, Default_Character);
+         Refresh(PreviewWindow);
+         Refresh
+           (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2), Columns - 3);
       else
          null;
       end if;
@@ -96,8 +113,6 @@ package body ShowItems is
       if NewAction = CREATELINK then
          return;
       end if;
-      Terminal_Interface.Curses.Clear(PreviewWindow);
-      Box(PreviewWindow, Default_Character, Default_Character);
       if Is_Directory(To_String(CurrentSelected)) or
         Is_Regular_File(To_String(CurrentSelected)) then
          ShowPreview;
@@ -105,7 +120,6 @@ package body ShowItems is
          ShowInfo;
       end if;
       Refresh;
-      Refresh(PreviewWindow);
    end Show_Selected;
 
    -- ****o* ShowItemsTUI/ShowItemsTUI.Set_Permissions_Command
@@ -173,6 +187,7 @@ package body ShowItems is
       AddCommand("GoToDirectory", GoToDirectory_Command'Access);
       PreviewWindow := Create(Lines - 3, Columns / 2, 3, Columns / 2);
       Box(PreviewWindow, Default_Character, Default_Character);
+      Refresh(PreviewWindow);
    end CreateShowItemsUI;
 
    procedure ShowDestination is
