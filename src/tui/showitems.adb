@@ -13,7 +13,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
+with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
@@ -26,6 +30,7 @@ with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
 package body ShowItems is
@@ -44,9 +49,22 @@ package body ShowItems is
    PreviewPad: Window;
    -- ****
 
+   -- ****if* ShowItemsTUI/ShowItemsTUI.ShowInfo
+   -- FUNCTION
+   -- Show information about the currently selected file or directory.
+   -- SOURCE
+   procedure ShowInfo is
+   -- ****
+   begin
+      null;
+   end ShowInfo;
+
    procedure ShowPreview is
       Line: Line_Position := 1;
    begin
+      if PreviewPad /= Null_Window then
+         Delete(PreviewPad);
+      end if;
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage
@@ -55,9 +73,6 @@ package body ShowItems is
                   "{You don't have permissions to preview this directory.}"));
          end if;
          LoadDirectory(To_String(CurrentSelected), True);
-         if PreviewPad /= Null_Window then
-            Delete(PreviewPad);
-         end if;
          PreviewPad :=
            New_Pad
              (Line_Position(SecondItemsList.Length) + 1, (Columns / 2) - 1);
@@ -76,19 +91,69 @@ package body ShowItems is
          Refresh
            (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2), Columns - 3);
       else
-         null;
+         declare
+            MimeType: constant String :=
+              GetMimeType(To_String(CurrentSelected));
+         begin
+            if MimeType(1 .. 4) = "text" then
+               declare
+                  ExecutableName: constant String :=
+                    FindExecutable("highlight", False);
+                  Success: Boolean;
+                  File: File_Type;
+                  procedure LoadFile is
+                     FileText, FileLine: Unbounded_String :=
+                       Null_Unbounded_String;
+                     LinesAmount: Line_Position := 0;
+                     LineLength: Column_Position := 1;
+                  begin
+                     Open(File, In_File, To_String(CurrentSelected));
+                     while not End_Of_File(File) loop
+                        FileLine := To_Unbounded_String(Get_Line(File));
+                        if Length(FileLine) > Natural(LineLength) then
+                           LineLength := Column_Position(Length(FileLine));
+                        end if;
+                        Append(FileText, FileLine & LF);
+                        LinesAmount := LinesAmount + 1;
+                     end loop;
+                     Close(File);
+                     PreviewPad := New_Pad(LinesAmount, LineLength + 1);
+                     Add(Win => PreviewPad, Str => To_String(FileText));
+                     Refresh(PreviewWindow);
+                     Refresh
+                       (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2),
+                        Columns - 3);
+                  end LoadFile;
+               begin
+                  if not Settings.ColorText or ExecutableName = "" then
+                     LoadFile;
+                     return;
+                  end if;
+                  Spawn
+                    (ExecutableName,
+                     Argument_String_To_List
+                       ("--out-format=truecolor --force --output=" &
+                        Value("HOME") &
+                        "/.cache/hunter/highlight.tmp --base16 --style=" &
+                        To_String(Settings.ColorTheme) & " " &
+                        To_String(CurrentSelected)).all,
+                     Success);
+                  if not Success then
+                     LoadFile;
+                     return;
+                  end if;
+                  Open
+                    (File, In_File,
+                     Value("HOME") & "/.cache/hunter/highlight.tmp");
+                  Close(File);
+                  Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
+               end;
+            else
+               ShowInfo;
+            end if;
+         end;
       end if;
    end ShowPreview;
-
-   -- ****if* ShowItemsTUI/ShowItemsTUI.ShowInfo
-   -- FUNCTION
-   -- Show information about the currently selected file or directory.
-   -- SOURCE
-   procedure ShowInfo is
-   -- ****
-   begin
-      null;
-   end ShowInfo;
 
    procedure Show_Selected is
    begin
