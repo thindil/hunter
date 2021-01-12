@@ -101,11 +101,11 @@ package body ShowItems is
                     FindExecutable("highlight", False);
                   Success: Boolean;
                   File: File_Type;
+                  FileText, FileLine: Unbounded_String :=
+                    Null_Unbounded_String;
+                  LinesAmount: Line_Position := 0;
+                  LineLength: Column_Position := 1;
                   procedure LoadFile is
-                     FileText, FileLine: Unbounded_String :=
-                       Null_Unbounded_String;
-                     LinesAmount: Line_Position := 0;
-                     LineLength: Column_Position := 1;
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
                      while not End_Of_File(File) loop
@@ -145,7 +145,21 @@ package body ShowItems is
                   Open
                     (File, In_File,
                      Value("HOME") & "/.cache/hunter/highlight.tmp");
+                  while not End_Of_File(File) loop
+                     FileLine := To_Unbounded_String(Get_Line(File));
+                     if Length(FileLine) > Natural(LineLength) then
+                        LineLength := Column_Position(Length(FileLine));
+                     end if;
+                     Append(FileText, FileLine & LF);
+                     LinesAmount := LinesAmount + 1;
+                  end loop;
                   Close(File);
+                  PreviewPad := New_Pad(LinesAmount + 4, LineLength + 1);
+                  Add(PreviewPad, To_String(FileText));
+                  Refresh(PreviewWindow);
+                  Refresh
+                    (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2),
+                     Columns - 3);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
                end;
             else
