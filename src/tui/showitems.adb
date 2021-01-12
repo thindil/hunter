@@ -134,7 +134,7 @@ package body ShowItems is
                   Spawn
                     (ExecutableName,
                      Argument_String_To_List
-                       ("--out-format=pango --force --output=" &
+                       ("--out-format=pango --force --quiet --output=" &
                         Value("HOME") &
                         "/.cache/hunter/highlight.tmp --base16 --style=" &
                         To_String(Settings.ColorTheme) & " " &
@@ -220,7 +220,7 @@ package body ShowItems is
                      LinesAmount := LinesAmount + 1;
                   end loop;
                   Close(File);
-                  PreviewPad := New_Pad(LinesAmount + 4, LineLength + 1);
+                  PreviewPad := New_Pad(LinesAmount + 4, LineLength + 10);
                   Add(PreviewPad, To_String(FileText));
                   Refresh(PreviewWindow);
                   Refresh
