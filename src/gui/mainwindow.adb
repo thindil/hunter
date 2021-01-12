@@ -163,13 +163,14 @@ package body MainWindow is
       -- Load translations
       Mc_Load("../share/hunter/translations", Interp);
       -- Set the program images
+      Load_Images_Loop :
       for IconName of IconsNames loop
          Image :=
            Create
              (To_String(IconName),
               "-file {../share/hunter/images/" & To_String(IconName) &
               ".svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
-      end loop;
+      end loop Load_Images_Loop;
       Image :=
         Create
           ("ok",
@@ -189,6 +190,7 @@ package body MainWindow is
          Trim(Positive'Image(Settings.WindowHeight), Both) & "+0+0");
       Icon := Create("logo", "-file """ & To_String(IconName) & """");
       Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
+      Add_Accelerators_Loop :
       for I in ButtonsNames'Range loop
          if ButtonsNames(I) /= Null_Unbounded_String then
             Bind_To_Main_Window
@@ -196,7 +198,7 @@ package body MainWindow is
                "{InvokeButton .mainframe.toolbars." &
                To_String(ButtonsNames(I)) & "}");
          end if;
-      end loop;
+      end loop Add_Accelerators_Loop;
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
       Tcl.Tk.Ada.Grid.Grid(MainFrame, "-sticky nwse");
       Tcl.Tk.Ada.Grid.Row_Configure(MainWindow, MainFrame, "-weight 1");
@@ -307,16 +309,18 @@ package body MainWindow is
          PathShortcut := To_Unbounded_String("Control");
       end if;
       if Clear then
+         Arrange_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
             if Exists(DirectoryTree, Positive'Image(I)) = "1" then
                Move
                  (DirectoryTree, Positive'Image(I), "{}",
                   Natural'Image(I - 1));
             end if;
-         end loop;
+         end loop Arrange_Items_Loop;
          Delete
            (DirectoryTree,
             "[" & Widget_Image(DirectoryTree) & " children {} ]");
+         Add_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
             case List(I).Size is
                when -2 =>
@@ -365,11 +369,12 @@ package body MainWindow is
               CurrentSelected = List(I).Path then
                SelectedIndex := To_Unbounded_String(Positive'Image(I));
             end if;
-         end loop;
+         end loop Add_Items_Loop;
          if Winfo_Get(PathButtonsFrame, "ismapped") = "1" then
             -- Remove old path buttons
             Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
             if Slice(Tokens, 1) /= "" then
+               Remove_Old_Path_Buttons_Loop :
                for I in reverse 1 .. Slice_Count(Tokens) loop
                   PathButton := Get_Widget(Slice(Tokens, I));
                   if I = 1 then
@@ -384,7 +389,7 @@ package body MainWindow is
                     (PathButton.Interp, "<" & To_String(Shortcut) & ">");
                   Grid_Forget(PathButton);
                   Destroy(PathButton);
-               end loop;
+               end loop Remove_Old_Path_Buttons_Loop;
             end if;
             -- Add new path buttons
             if FrameName = "directory"
@@ -393,6 +398,7 @@ package body MainWindow is
             else
                Create(Tokens, To_String(DestinationDirectory), "/");
             end if;
+            Add_Path_Buttons_Loop :
             for I in 1 .. Slice_Count(Tokens) loop
                if Slice(Tokens, I) = "" and I > 1 then
                   goto End_Of_Loop;
@@ -466,9 +472,10 @@ package body MainWindow is
                   Natural'Image(Column));
                Column := Column + 1;
                <<End_Of_Loop>>
-            end loop;
+            end loop Add_Path_Buttons_Loop;
          end if;
       else
+         Rearrange_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
             if (Settings.ShowHidden and List(I).IsHidden) or
               not List(I).IsHidden then
@@ -478,7 +485,7 @@ package body MainWindow is
                   SelectedIndex := To_Unbounded_String(Positive'Image(I));
                end if;
             end if;
-         end loop;
+         end loop Rearrange_Items_Loop;
       end if;
       if not List.Is_Empty then
          if SelectedIndex /= Null_Unbounded_String and
