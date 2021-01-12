@@ -132,7 +132,7 @@ package body ShowItems is
                   Spawn
                     (ExecutableName,
                      Argument_String_To_List
-                       ("--out-format=truecolor --force --output=" &
+                       ("--out-format=pango --force --output=" &
                         Value("HOME") &
                         "/.cache/hunter/highlight.tmp --base16 --style=" &
                         To_String(Settings.ColorTheme) & " " &
