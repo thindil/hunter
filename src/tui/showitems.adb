@@ -99,12 +99,14 @@ package body ShowItems is
                declare
                   ExecutableName: constant String :=
                     FindExecutable("highlight", False);
-                  Success: Boolean;
+                  Success, FirstLine: Boolean;
                   File: File_Type;
                   FileText, FileLine: Unbounded_String :=
                     Null_Unbounded_String;
                   LinesAmount: Line_Position := 0;
                   LineLength: Column_Position := 1;
+                  TagText, TagName: Unbounded_String;
+                  StartIndex, EndIndex, StartColor: Natural;
                   procedure LoadFile is
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
@@ -145,11 +147,75 @@ package body ShowItems is
                   Open
                     (File, In_File,
                      Value("HOME") & "/.cache/hunter/highlight.tmp");
+                  FirstLine := True;
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
                      if Length(FileLine) > Natural(LineLength) then
                         LineLength := Column_Position(Length(FileLine));
                      end if;
+                     if FirstLine then
+                        FileLine :=
+                          Unbounded_Slice
+                            (FileLine, Index(FileLine, ">") + 1,
+                             Length(FileLine));
+                        FirstLine := False;
+                     end if;
+                     exit when End_Of_File(File);
+                     loop
+                        StartIndex := Index(FileLine, "&gt;");
+                        exit when StartIndex = 0;
+                        Replace_Slice
+                          (FileLine, StartIndex, StartIndex + 3, ">");
+                     end loop;
+                     loop
+                        StartIndex := Index(FileLine, "&lt;");
+                        exit when StartIndex = 0;
+                        Replace_Slice
+                          (FileLine, StartIndex, StartIndex + 3, "<");
+                     end loop;
+                     loop
+                        StartIndex := Index(FileLine, "&amp;");
+                        exit when StartIndex = 0;
+                        Replace_Slice
+                          (FileLine, StartIndex, StartIndex + 4, "&");
+                     end loop;
+                     StartIndex := 1;
+                     loop
+                        StartIndex := Index(FileLine, "<span", StartIndex);
+                        exit when StartIndex = 0;
+                        if StartIndex > 1 then
+                           Append
+                             (FileText, Slice(FileLine, 1, StartIndex - 1));
+                        end if;
+                        EndIndex := Index(FileLine, ">", StartIndex);
+                        TagText :=
+                          Unbounded_Slice(FileLine, StartIndex, EndIndex);
+                        StartColor := Index(TagText, "foreground=");
+                        if Index(TagText, "foreground=") > 0 then
+                           TagName :=
+                             Unbounded_Slice
+                               (TagText, StartColor + 12, StartColor + 18);
+                        elsif Index(TagText, "style=""italic""") > 0 then
+                           TagName := To_Unbounded_String("italictag");
+                        elsif Index(TagText, "weight=""bold""") > 0 then
+                           TagName := To_Unbounded_String("boldtag");
+                        end if;
+                        StartIndex := StartIndex + Length(TagText);
+                        EndIndex := Index(FileLine, "</span>", StartIndex) - 1;
+                        -- Bold, italic, color text
+                        if EndIndex > 0 then
+                           Append
+                             (FileText, Slice(FileLine, StartIndex, EndIndex));
+                        else
+                           Append
+                             (FileText,
+                              Slice(FileLine, StartIndex, Length(FileLine)));
+                        end if;
+                        StartIndex := 1;
+                        FileLine :=
+                          Unbounded_Slice
+                            (FileLine, EndIndex + 8, Length(FileLine));
+                     end loop;
                      Append(FileText, FileLine & LF);
                      LinesAmount := LinesAmount + 1;
                   end loop;
