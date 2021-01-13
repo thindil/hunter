@@ -246,10 +246,11 @@ package body Messages is
          return;
       end if;
       Button.Interp := MessageLabel.Interp;
+      Remove_Buttons_Loop :
       for ButtonName of ButtonsNames loop
          Button.Name := New_String(To_String(ButtonName));
          Grid_Remove(Button);
-      end loop;
+      end loop Remove_Buttons_Loop;
       configure
         (MessageLabel,
          "-text {" & Message & "} -style " & MessageType & ".TLabel");
