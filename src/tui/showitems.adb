@@ -65,6 +65,9 @@ package body ShowItems is
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
       end if;
+      Clear(PreviewWindow);
+      Box(PreviewWindow, Default_Character, Default_Character);
+      Refresh(PreviewWindow);
       if Is_Directory(To_String(CurrentSelected)) then
          if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
             ShowMessage
@@ -81,13 +84,10 @@ package body ShowItems is
             if not Settings.ShowHidden and Item.IsHidden then
                goto End_Of_Loop;
             end if;
-            Add(PreviewPad, Line, 1, To_String(Item.Name));
+            Add(PreviewPad, Line, 0, To_String(Item.Name));
             Line := Line + 1;
             <<End_Of_Loop>>
          end loop;
-         Clear(PreviewWindow);
-         Box(PreviewWindow, Default_Character, Default_Character);
-         Refresh(PreviewWindow);
          Refresh
            (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2), Columns - 3);
       else
@@ -147,12 +147,18 @@ package body ShowItems is
                   Open
                     (File, In_File,
                      Value("HOME") & "/.cache/hunter/highlight.tmp");
-                  FirstLine := True;
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
                      if Length(FileLine) > Natural(LineLength) then
                         LineLength := Column_Position(Length(FileLine));
                      end if;
+                     LinesAmount := LinesAmount + 1;
+                  end loop;
+                  FirstLine := True;
+                  Reset(File);
+                  PreviewPad := New_Pad(LinesAmount + 4, LineLength + 10);
+                  while not End_Of_File(File) loop
+                     FileLine := To_Unbounded_String(Get_Line(File));
                      if FirstLine then
                         FileLine :=
                           Unbounded_Slice
@@ -217,12 +223,9 @@ package body ShowItems is
                             (FileLine, EndIndex + 8, Length(FileLine));
                      end loop;
                      Append(FileText, FileLine & LF);
-                     LinesAmount := LinesAmount + 1;
                   end loop;
                   Close(File);
-                  PreviewPad := New_Pad(LinesAmount + 4, LineLength + 10);
                   Add(PreviewPad, To_String(FileText));
-                  Refresh(PreviewWindow);
                   Refresh
                     (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2),
                      Columns - 3);
