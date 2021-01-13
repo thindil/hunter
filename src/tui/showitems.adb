@@ -101,13 +101,13 @@ package body ShowItems is
                     FindExecutable("highlight", False);
                   Success, FirstLine: Boolean;
                   File: File_Type;
-                  FileText, FileLine: Unbounded_String :=
-                    Null_Unbounded_String;
+                  FileLine: Unbounded_String := Null_Unbounded_String;
                   LinesAmount: Line_Position := 0;
                   LineLength: Column_Position := 1;
                   TagText, TagName: Unbounded_String;
                   StartIndex, EndIndex, StartColor: Natural;
                   procedure LoadFile is
+                     FileText: Unbounded_String := Null_Unbounded_String;
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
                      while not End_Of_File(File) loop
@@ -190,8 +190,7 @@ package body ShowItems is
                         StartIndex := Index(FileLine, "<span", StartIndex);
                         exit when StartIndex = 0;
                         if StartIndex > 1 then
-                           Append
-                             (FileText, Slice(FileLine, 1, StartIndex - 1));
+                           Add(PreviewPad, Slice(FileLine, 1, StartIndex - 1));
                         end if;
                         EndIndex := Index(FileLine, ">", StartIndex);
                         TagText :=
@@ -200,21 +199,33 @@ package body ShowItems is
                         if Index(TagText, "foreground=") > 0 then
                            TagName :=
                              Unbounded_Slice
-                               (TagText, StartColor + 12, StartColor + 18);
+                               (TagText, StartColor + 13, StartColor + 18);
                         elsif Index(TagText, "style=""italic""") > 0 then
-                           TagName := To_Unbounded_String("italictag");
+                           TagName := To_Unbounded_String("italic");
                         elsif Index(TagText, "weight=""bold""") > 0 then
-                           TagName := To_Unbounded_String("boldtag");
+                           TagName := To_Unbounded_String("bold");
                         end if;
                         StartIndex := StartIndex + Length(TagText);
                         EndIndex := Index(FileLine, "</span>", StartIndex) - 1;
                         -- Bold, italic, color text
                         if EndIndex > 0 then
-                           Append
-                             (FileText, Slice(FileLine, StartIndex, EndIndex));
+                           if TagName = To_Unbounded_String("bold") then
+                              Switch_Character_Attribute
+                                (PreviewPad,
+                                 (Bold_Character => True, others => False));
+                           elsif TagName = To_Unbounded_String("italic") then
+                              Switch_Character_Attribute
+                                (PreviewPad,
+                                 (Dim_Character => True, others => False));
+                           end if;
+                           Add
+                             (PreviewPad,
+                              Slice(FileLine, StartIndex, EndIndex));
+                           Switch_Character_Attribute
+                             (PreviewPad, Normal_Video, False);
                         else
-                           Append
-                             (FileText,
+                           Add
+                             (PreviewPad,
                               Slice(FileLine, StartIndex, Length(FileLine)));
                         end if;
                         StartIndex := 1;
@@ -222,10 +233,9 @@ package body ShowItems is
                           Unbounded_Slice
                             (FileLine, EndIndex + 8, Length(FileLine));
                      end loop;
-                     Append(FileText, FileLine & LF);
+                     Add(PreviewPad, To_String(FileLine) & LF);
                   end loop;
                   Close(File);
-                  Add(PreviewPad, To_String(FileText));
                   Refresh
                     (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2),
                      Columns - 3);
