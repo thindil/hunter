@@ -105,6 +105,10 @@ begin
    Ada.Environment_Variables.Set("TERMINFO", "terminfo");
    Init_Screen;
    Start_Color;
+   for I in 1 .. 16 loop
+      Init_Color(Color_Number(I + 7), 0, 0, 0);
+      Init_Pair(Color_Pair(I), Color_Number(I + 7), Black);
+   end loop;
    Set_Timeout_Mode(Standard_Window, Blocking, 0);
    Set_Echo_Mode(False);
    Set_Cursor_Visibility(Visibility);

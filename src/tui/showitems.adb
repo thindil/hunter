@@ -106,6 +106,8 @@ package body ShowItems is
                   LineLength: Column_Position := 1;
                   TagText, TagName: Unbounded_String;
                   StartIndex, EndIndex, StartColor: Natural;
+                  Colors: array(1 .. 16) of String(1 .. 6) :=
+                    (others => "      ");
                   procedure LoadFile is
                      FileText: Unbounded_String := Null_Unbounded_String;
                   begin
@@ -217,12 +219,35 @@ package body ShowItems is
                               Switch_Character_Attribute
                                 (PreviewPad,
                                  (Dim_Character => True, others => False));
+                           elsif TagName /= Null_Unbounded_String then
+                              for I in Colors'Range loop
+                                 if Colors(I) = "      " then
+                                    Init_Color
+                                      (Color_Number(I + 7),
+                                       RGB_Value'Value
+                                         ("16#" & Slice(TagName, 1, 2) & "#"),
+                                       RGB_Value'Value
+                                         ("16#" & Slice(TagName, 3, 4) & "#"),
+                                       RGB_Value'Value
+                                         ("16#" & Slice(TagName, 5, 6) & "#"));
+                                    Colors(I) := To_String(TagName);
+                                    Set_Character_Attributes
+                                      (PreviewPad, Normal_Video,
+                                       Color_Pair(I));
+                                    exit;
+                                 elsif Colors(I) = To_String(TagName) then
+                                    Set_Character_Attributes
+                                      (PreviewPad, Normal_Video,
+                                       Color_Pair(I));
+                                    exit;
+                                 end if;
+                              end loop;
                            end if;
                            Add
                              (PreviewPad,
                               Slice(FileLine, StartIndex, EndIndex));
-                           Switch_Character_Attribute
-                             (PreviewPad, Normal_Video, False);
+                           Set_Character_Attributes(PreviewPad);
+                           TagName := Null_Unbounded_String;
                         else
                            Add
                              (PreviewPad,
