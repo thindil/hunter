@@ -96,7 +96,7 @@ package body MainWindow is
          end loop;
          Path_Items.all(Index + 1) := Null_Item;
          Path := New_Menu(Path_Items);
-         Set_Format(Path, 1, Column_Position(Index));
+         Set_Format(Path, 1, 5);
          Set_Mark(Path, "");
          Set_Window(Path, PathButtons);
          Set_Sub_Window
