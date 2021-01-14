@@ -107,6 +107,7 @@ package body MoveItems is
       Success: Boolean := True;
       NewName, FileExtension: Unbounded_String;
    begin
+      Move_Items_Loop :
       while MoveItemsList.Length > 0 loop
          NewName :=
            DestinationDirectory & To_Unbounded_String("/") &
@@ -127,6 +128,7 @@ package body MoveItems is
             if not Settings.OverwriteOnExist then
                FileExtension :=
                  To_Unbounded_String(Extension(To_String(MoveItemsList(1))));
+               New_File_Name_Loop :
                loop
                   NewName :=
                     DestinationDirectory &
@@ -137,8 +139,8 @@ package body MoveItems is
                      NewName :=
                        NewName & To_Unbounded_String(".") & FileExtension;
                   end if;
-                  exit when not Exists(To_String(NewName));
-               end loop;
+                  exit New_File_Name_Loop when not Exists(To_String(NewName));
+               end loop New_File_Name_Loop;
             end if;
          end if;
          Rename_File(To_String(MoveItemsList(1)), To_String(NewName), Success);
@@ -163,7 +165,7 @@ package body MoveItems is
             Overwrite := False;
          end if;
          UpdateProgressBar;
-      end loop;
+      end loop Move_Items_Loop;
       MoveItemsList.Clear;
       if Settings.ShowFinishedInfo then
          ShowMessage
