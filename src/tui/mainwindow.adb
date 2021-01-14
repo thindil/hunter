@@ -120,7 +120,7 @@ package body MainWindow is
          end loop;
          DirectoryList := New_Menu(Menu_Items);
          Switch_Options(DirectoryList, (One_Valued => False, others => <>));
-         Set_Format(DirectoryList, Line_Position(ItemsList.Length), 1);
+         Set_Format(DirectoryList, Lines - 6, 1);
          Set_Mark(DirectoryList, "");
          Set_Window(DirectoryList, ListWindow);
          Set_Sub_Window
