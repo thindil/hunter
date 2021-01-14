@@ -96,6 +96,7 @@ package body ShowItems is
               GetMimeType(To_String(CurrentSelected));
          begin
             if MimeType(1 .. 4) = "text" then
+               PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 1);
                declare
                   ExecutableName: constant String :=
                     FindExecutable("highlight", False);
@@ -109,20 +110,20 @@ package body ShowItems is
                   Colors: array(1 .. 16) of String(1 .. 6) :=
                     (others => "      ");
                   procedure LoadFile is
-                     FileText: Unbounded_String := Null_Unbounded_String;
+                     FileLine: String(1 .. Positive(Columns / 2) - 2);
+                     Amount: Natural;
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
                      while not End_Of_File(File) loop
-                        FileLine := To_Unbounded_String(Get_Line(File));
-                        if Length(FileLine) > Natural(LineLength) then
-                           LineLength := Column_Position(Length(FileLine));
-                        end if;
-                        Append(FileText, FileLine & LF);
+                        Get_Line(File, FileLine, Amount);
+                        Add
+                          (PreviewPad,
+                           FileLine(FileLine'First .. Amount) & LF);
+                        FileLine := (others => ' ');
                         LinesAmount := LinesAmount + 1;
+                        exit when LinesAmount = Lines - 3;
                      end loop;
                      Close(File);
-                     PreviewPad := New_Pad(LinesAmount + 1, LineLength + 1);
-                     Add(PreviewPad, To_String(FileText));
                      Refresh(PreviewWindow);
                      Refresh
                        (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2),
