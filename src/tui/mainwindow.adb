@@ -140,20 +140,11 @@ package body MainWindow is
       case Key is
          when 65 | KEY_UP =>
             Result := Driver(DirectoryList, M_Up_Item);
-            if Result = Request_Denied then
-               Result := Driver(DirectoryList, M_Last_Item);
-            end if;
          when 66 | KEY_DOWN =>
             Result := Driver(DirectoryList, M_Down_Item);
-            if Result = Request_Denied then
-               Result := Driver(DirectoryList, M_First_Item);
-            end if;
          when 32 =>
             Result := Driver(DirectoryList, M_Toggle_Item);
             Result := Driver(DirectoryList, M_Down_Item);
-            if Result = Request_Denied then
-               Result := Driver(DirectoryList, M_First_Item);
-            end if;
          when 10 =>
             Tcl_Eval(Interpreter, "ActivateItem");
          when others =>
