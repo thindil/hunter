@@ -707,9 +707,10 @@ package body Preferences.Commands is
          Button: Ttk_Button;
       begin
          Open(Directory, Path);
+         Read_Modules_Directory_Loop:
          loop
             Read(Directory, FileName, Last);
-            exit when Last = 0;
+            exit Read_Modules_Directory_Loop when Last = 0;
             if FileName(1 .. Last) in "." | ".." then
                goto End_Of_Read_Loop;
             end if;
@@ -744,6 +745,7 @@ package body Preferences.Commands is
             end if;
             Tcl.Tk.Ada.Grid.Grid(CheckButton, "-row" & Positive'Image(Row));
             Open(ConfigFile, In_File, ConfigName.all);
+            Read_Config_File_Loop:
             while not End_Of_File(ConfigFile) loop
                Line := Get_Line(ConfigFile);
                if Length(Line) > 5 and then Index(Line, "Name=") = 1 then
@@ -775,7 +777,7 @@ package body Preferences.Commands is
                   Tcl.Tk.Ada.Grid.Grid
                     (Label, "-column 3 -row" & Positive'Image(Row));
                end if;
-            end loop;
+            end loop Read_Config_File_Loop;
             Close(ConfigFile);
             Button :=
               Create
@@ -789,7 +791,7 @@ package body Preferences.Commands is
               (Button, "-column 4 -row" & Positive'Image(Row));
             Row := Row + 1;
             <<End_Of_Read_Loop>>
-         end loop;
+         end loop Read_Modules_Directory_Loop;
          Close(Directory);
       exception
          when Directory_Error =>
@@ -804,19 +806,21 @@ package body Preferences.Commands is
       -- Remove the old list of the program modules
       Create(Tokens, Tcl.Tk.Ada.Grid.Grid_Size(ModulesFrame), " ");
       Rows := Natural'Value(Slice(Tokens, 2));
+      Remove_Old_Modules_Info_Loop:
       for I in 1 .. (Rows - 1) loop
          Create
            (Tokens,
             Tcl.Tk.Ada.Grid.Grid_Slaves
               (ModulesFrame, "-row" & Positive'Image(I)),
             " ");
+         Remove_Widgets_Loop:
          for J in 1 .. Slice_Count(Tokens) loop
             Item := Get_Widget(Slice(Tokens, J), Interp);
             if Widget_Image(Item) /= ModulesFrame & ".closebutton" then
                Destroy(Item);
             end if;
-         end loop;
-      end loop;
+         end loop Remove_Widgets_Loop;
+      end loop Remove_Old_Modules_Info_Loop;
       -- Load the list of the program modules
       Set_Directory(Containing_Directory(Command_Name));
       LoadModulesInfo("../share/hunter/modules");
@@ -1016,12 +1020,13 @@ package body Preferences.Commands is
             null;
       end case;
       Image.Interp := Interp;
+      Set_Toolbars_Icons_Loop:
       for ImageName of ImagesNames loop
          Image.Name := New_String(To_String(ImageName));
          Widgets.configure
            (Image,
             "-format {svg -scaletoheight" & Positive'Image(ImageSize) & "}");
-      end loop;
+      end loop Set_Toolbars_Icons_Loop;
       Set_Directory(CurrentDir);
       Settings.ToolbarsSize := ImageSize;
       return TCL_OK;
@@ -1159,11 +1164,12 @@ package body Preferences.Commands is
          Widgets.configure(Label, "-text ""$specialkey-""");
          return TCL_OK;
       end if;
+      Find_Existing_Accelerator_Loop:
       for Accelerator of Accelerators loop
          if To_Unbounded_String(Shortcut) = Accelerator then
             return TCL_OK;
          end if;
-      end loop;
+      end loop Find_Existing_Accelerator_Loop;
       Script :=
         To_Unbounded_String
           (Bind_To_Main_Window
@@ -1210,6 +1216,7 @@ package body Preferences.Commands is
    begin
       Label.Interp := Interp;
       SetDefaultAccelerators;
+      Restore_Default_Shortcuts_Loop:
       for I in OldAccelerators'Range loop
          Script :=
            To_Unbounded_String
@@ -1226,7 +1233,7 @@ package body Preferences.Commands is
               Trim(Positive'Image(I), Left));
          Widgets.configure
            (Label, "-text {" & To_String(Accelerators(I)) & "}");
-      end loop;
+      end loop Restore_Default_Shortcuts_Loop;
       return TCL_OK;
    end Restore_Default_Shortcuts_Command;
 
