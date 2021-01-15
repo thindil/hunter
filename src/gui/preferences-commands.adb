@@ -1270,14 +1270,14 @@ package body Preferences.Commands is
       if Command = Null_Unbounded_String then
          return TCL_OK;
       end if;
-      if Tcl_GetVar
-          (Interp,
-           ".preferencesframe.canvas.notebook.actions.addframe.output") =
-        "1" then
-         NeedOutput := True;
-      else
-         NeedOutput := False;
-      end if;
+      NeedOutput :=
+        (if
+           Tcl_GetVar
+             (Interp,
+              ".preferencesframe.canvas.notebook.actions.addframe.output") =
+           "1"
+         then True
+         else False);
       if UserCommandsList.Contains(To_String(MenuEntry)) then
          UserCommandsList(To_String(MenuEntry)) := (NeedOutput, Command);
       else
