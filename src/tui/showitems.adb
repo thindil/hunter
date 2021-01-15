@@ -104,13 +104,13 @@ package body ShowItems is
                   File: File_Type;
                   FileLine: Unbounded_String := Null_Unbounded_String;
                   LinesAmount: Line_Position := 0;
-                  LineLength: Column_Position := 1;
+                  LineLength: constant Positive := (Positive(Columns) / 2) - 2;
                   TagText, TagName: Unbounded_String;
                   StartIndex, EndIndex, StartColor: Natural;
                   Colors: array(1 .. 16) of String(1 .. 6) :=
                     (others => "      ");
                   procedure LoadFile is
-                     FileLine: String(1 .. Positive(Columns / 2) - 2);
+                     FileLine: String(1 .. LineLength);
                      Amount: Natural;
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
@@ -129,6 +129,25 @@ package body ShowItems is
                        (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2),
                         Columns - 3);
                   end LoadFile;
+                  procedure ShowText(Start, EndText: Positive) is
+                     StartText: Positive := Start;
+                     EndPos: Positive := Start + LineLength - 1;
+                  begin
+                     loop
+                        if EndText > EndPos then
+                           Add(PreviewPad, Slice(FileLine, StartText, EndPos) & LF);
+                           StartText := StartText + LineLength;
+                           EndPos := EndPos + LineLength;
+                           LinesAmount := LinesAmount + 1;
+                           exit when LinesAmount = Lines - 3;
+                        elsif StartText <= EndText then
+                           Add(PreviewPad, Slice(FileLine, StartText, EndText));
+                           exit;
+                        else
+                           exit;
+                        end if;
+                     end loop;
+                  end ShowText;
                begin
                   if not Settings.ColorText or ExecutableName = "" then
                      LoadFile;
@@ -150,16 +169,8 @@ package body ShowItems is
                   Open
                     (File, In_File,
                      Value("HOME") & "/.cache/hunter/highlight.tmp");
-                  while not End_Of_File(File) loop
-                     FileLine := To_Unbounded_String(Get_Line(File));
-                     if Length(FileLine) > Natural(LineLength) then
-                        LineLength := Column_Position(Length(FileLine));
-                     end if;
-                     LinesAmount := LinesAmount + 1;
-                  end loop;
                   FirstLine := True;
-                  Reset(File);
-                  PreviewPad := New_Pad(LinesAmount + 4, LineLength + 10);
+                  Read_File_Loop:
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
                      if FirstLine then
@@ -193,7 +204,8 @@ package body ShowItems is
                         StartIndex := Index(FileLine, "<span", StartIndex);
                         exit when StartIndex = 0;
                         if StartIndex > 1 then
-                           Add(PreviewPad, Slice(FileLine, 1, StartIndex - 1));
+                           ShowText(1, StartIndex - 1);
+                           exit Read_File_Loop when LinesAmount = Lines - 3;
                         end if;
                         EndIndex := Index(FileLine, ">", StartIndex);
                         TagText :=
@@ -244,23 +256,27 @@ package body ShowItems is
                                  end if;
                               end loop;
                            end if;
-                           Add
-                             (PreviewPad,
-                              Slice(FileLine, StartIndex, EndIndex));
+                           ShowText(StartIndex, EndIndex);
+                           exit Read_File_Loop when LinesAmount = Lines - 3;
                            Set_Character_Attributes(PreviewPad);
                            TagName := Null_Unbounded_String;
                         else
-                           Add
-                             (PreviewPad,
-                              Slice(FileLine, StartIndex, Length(FileLine)));
+                           ShowText(StartIndex, Length(FileLine));
+                           exit Read_File_Loop when LinesAmount = Lines - 3;
                         end if;
                         StartIndex := 1;
                         FileLine :=
                           Unbounded_Slice
                             (FileLine, EndIndex + 8, Length(FileLine));
                      end loop;
-                     Add(PreviewPad, To_String(FileLine) & LF);
-                  end loop;
+                     if Length(FileLine) > 0 then
+                        ShowText(1, Length(FileLine));
+                        exit Read_File_Loop when LinesAmount = Lines - 3;
+                     end if;
+                     Add(PreviewPad, "" & LF);
+                     LinesAmount := LinesAmount + 1;
+                     exit Read_File_Loop when LinesAmount = Lines - 3;
+                  end loop Read_File_Loop;
                   Close(File);
                   Refresh
                     (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2),
