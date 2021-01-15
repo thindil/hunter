@@ -707,7 +707,7 @@ package body Preferences.Commands is
          Button: Ttk_Button;
       begin
          Open(Directory, Path);
-         Read_Modules_Directory_Loop:
+         Read_Modules_Directory_Loop :
          loop
             Read(Directory, FileName, Last);
             exit Read_Modules_Directory_Loop when Last = 0;
@@ -745,7 +745,7 @@ package body Preferences.Commands is
             end if;
             Tcl.Tk.Ada.Grid.Grid(CheckButton, "-row" & Positive'Image(Row));
             Open(ConfigFile, In_File, ConfigName.all);
-            Read_Config_File_Loop:
+            Read_Config_File_Loop :
             while not End_Of_File(ConfigFile) loop
                Line := Get_Line(ConfigFile);
                if Length(Line) > 5 and then Index(Line, "Name=") = 1 then
@@ -806,14 +806,14 @@ package body Preferences.Commands is
       -- Remove the old list of the program modules
       Create(Tokens, Tcl.Tk.Ada.Grid.Grid_Size(ModulesFrame), " ");
       Rows := Natural'Value(Slice(Tokens, 2));
-      Remove_Old_Modules_Info_Loop:
+      Remove_Old_Modules_Info_Loop :
       for I in 1 .. (Rows - 1) loop
          Create
            (Tokens,
             Tcl.Tk.Ada.Grid.Grid_Slaves
               (ModulesFrame, "-row" & Positive'Image(I)),
             " ");
-         Remove_Widgets_Loop:
+         Remove_Widgets_Loop :
          for J in 1 .. Slice_Count(Tokens) loop
             Item := Get_Widget(Slice(Tokens, J), Interp);
             if Widget_Image(Item) /= ModulesFrame & ".closebutton" then
@@ -1007,20 +1007,11 @@ package body Preferences.Commands is
    begin
       Set_Directory(Containing_Directory(Command_Name));
       ToolbarSize := Natural'Value(Current(ComboBox));
-      case ToolbarSize is
-         when 0 =>
-            ImageSize := 16;
-         when 1 =>
-            ImageSize := 24;
-         when 2 =>
-            ImageSize := 32;
-         when 3 =>
-            ImageSize := 64;
-         when others =>
-            null;
-      end case;
+      ImageSize :=
+        (case ToolbarSize is when 0 => 16, when 1 => 24, when 2 => 32,
+           when 3 => 64, when others => 64);
       Image.Interp := Interp;
-      Set_Toolbars_Icons_Loop:
+      Set_Toolbars_Icons_Loop :
       for ImageName of ImagesNames loop
          Image.Name := New_String(To_String(ImageName));
          Widgets.configure
@@ -1164,7 +1155,7 @@ package body Preferences.Commands is
          Widgets.configure(Label, "-text ""$specialkey-""");
          return TCL_OK;
       end if;
-      Find_Existing_Accelerator_Loop:
+      Find_Existing_Accelerator_Loop :
       for Accelerator of Accelerators loop
          if To_Unbounded_String(Shortcut) = Accelerator then
             return TCL_OK;
@@ -1216,7 +1207,7 @@ package body Preferences.Commands is
    begin
       Label.Interp := Interp;
       SetDefaultAccelerators;
-      Restore_Default_Shortcuts_Loop:
+      Restore_Default_Shortcuts_Loop :
       for I in OldAccelerators'Range loop
          Script :=
            To_Unbounded_String
