@@ -145,6 +145,10 @@ package body MainWindow is
          when 32 =>
             Result := Driver(DirectoryList, M_Toggle_Item);
             Result := Driver(DirectoryList, M_Down_Item);
+         when 72 | KEY_HOME =>
+            Result := Driver(DirectoryList, M_First_Item);
+         when 70 | KEY_END =>
+            Result := Driver(DirectoryList, M_Last_Item);
          when 10 =>
             Tcl_Eval(Interpreter, "ActivateItem");
          when others =>
