@@ -135,13 +135,28 @@ package body ShowItems is
                   begin
                      loop
                         if EndText > EndPos then
-                           Add(PreviewPad, Slice(FileLine, StartText, EndPos) & LF);
+                           begin
+                              Add
+                                (PreviewPad,
+                                 Slice(FileLine, StartText, EndPos) & LF);
+                           exception
+                              when Curses_Exception =>
+                                 LinesAmount := Lines - 3;
+                                 exit;
+                           end;
                            StartText := StartText + LineLength;
                            EndPos := EndPos + LineLength;
                            LinesAmount := LinesAmount + 1;
                            exit when LinesAmount = Lines - 3;
                         elsif StartText <= EndText then
-                           Add(PreviewPad, Slice(FileLine, StartText, EndText));
+                           begin
+                              Add
+                                (PreviewPad,
+                                 Slice(FileLine, StartText, EndText));
+                           exception
+                              when Curses_Exception =>
+                                 LinesAmount := Lines - 3;
+                           end;
                            exit;
                         else
                            exit;
@@ -170,7 +185,7 @@ package body ShowItems is
                     (File, In_File,
                      Value("HOME") & "/.cache/hunter/highlight.tmp");
                   FirstLine := True;
-                  Read_File_Loop:
+                  Read_File_Loop :
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
                      if FirstLine then
@@ -273,7 +288,12 @@ package body ShowItems is
                         ShowText(1, Length(FileLine));
                         exit Read_File_Loop when LinesAmount = Lines - 3;
                      end if;
-                     Add(PreviewPad, "" & LF);
+                     begin
+                        Add(PreviewPad, "" & LF);
+                     exception
+                        when Curses_Exception =>
+                           exit Read_File_Loop;
+                     end;
                      LinesAmount := LinesAmount + 1;
                      exit Read_File_Loop when LinesAmount = Lines - 3;
                   end loop Read_File_Loop;
