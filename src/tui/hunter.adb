@@ -123,7 +123,7 @@ begin
    -- Main program loop, exit on Ctrl+q
    while Key /= 17 loop
       Key := Get_Keystroke;
-      if Key = KEY_STAB then
+      if Key in KEY_STAB | 9 then
          case UILocation is
             when DIRECTORY_VIEW =>
                UILocation := PATH_BUTTONS;
@@ -134,13 +134,14 @@ begin
             when PREVIEW =>
                UILocation := DIRECTORY_VIEW;
          end case;
+      else
+         case UILocation is
+            when DIRECTORY_VIEW =>
+               Directory_Keys(Key);
+            when others =>
+               null;
+         end case;
       end if;
-      case UILocation is
-         when DIRECTORY_VIEW =>
-            Directory_Keys(Key);
-         when others =>
-            null;
-      end case;
    end loop;
 
    ExitFromProgram;
