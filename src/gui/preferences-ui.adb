@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -203,10 +203,11 @@ package body Preferences.UI is
                Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
                "/themes/base16",
                "*.theme");
+            Create_Themes_List_Loop :
             while More_Entries(Search) loop
                Get_Next_Entry(Search, File);
                Append(ThemesName, " " & Base_Name(Simple_Name(File)));
-            end loop;
+            end loop Create_Themes_List_Loop;
             End_Search(Search);
          end if;
          ComboBox :=
@@ -482,6 +483,7 @@ package body Preferences.UI is
              ("refreshicon",
               "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
       begin
+         Create_Shortcuts_UI_Loop :
          for I in KeysLabels'Range loop
             Label :=
               Create
@@ -506,7 +508,7 @@ package body Preferences.UI is
                To_String(KeysLabels(I)));
             Tcl.Tk.Ada.Grid.Grid
               (Button, "-sticky w -column 2 -row" & Natural'Image(I - 1));
-         end loop;
+         end loop Create_Shortcuts_UI_Loop;
          Add
            (RestoreButton,
             Mc
