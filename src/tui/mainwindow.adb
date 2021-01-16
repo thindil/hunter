@@ -149,6 +149,10 @@ package body MainWindow is
             Result := Driver(DirectoryList, M_First_Item);
          when 70 | KEY_END =>
             Result := Driver(DirectoryList, M_Last_Item);
+         when 53 | KEY_NPAGE =>
+            Result := Driver(DirectoryList, M_ScrollUp_Page);
+         when 54 | KEY_PPAGE =>
+            Result := Driver(DirectoryList, M_ScrollDown_Page);
          when 10 =>
             Tcl_Eval(Interpreter, "ActivateItem");
          when others =>
