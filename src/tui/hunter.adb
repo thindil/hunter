@@ -143,6 +143,8 @@ begin
          case UILocation is
             when DIRECTORY_VIEW =>
                Directory_Keys(Key);
+            when PATH_BUTTONS =>
+               Path_Keys(Key);
             when others =>
                null;
          end case;

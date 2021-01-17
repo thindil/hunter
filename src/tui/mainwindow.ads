@@ -127,4 +127,13 @@ package MainWindow is
    procedure Directory_Keys(Key: Key_Code);
    -- ****
 
+   -- ****f* MainWindowTUI/MainWindowTUI.Path_Keys
+   -- FUNCTION
+   -- Handles keys events when path buttons are active elements of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- SOURCE
+   procedure Path_Keys(Key: Key_Code);
+   -- ****
+
 end MainWindow;
