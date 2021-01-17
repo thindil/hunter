@@ -120,9 +120,14 @@ begin
       CreateMainWindow(Full_Name(Argument(1)), Interp);
    end if;
 
-   -- Main program loop, exit on Ctrl+q
-   while Key /= 17 loop
+   -- Main program loop, exit on alt+q
+   Main_Program_Loop:
+   loop
       Key := Get_Keystroke;
+      if Key = 27 then
+         Key := Get_Keystroke;
+         exit when Key = 113;
+      end if;
       if Key in KEY_STAB | 9 then
          case UILocation is
             when DIRECTORY_VIEW =>
@@ -142,9 +147,10 @@ begin
                null;
          end case;
       end if;
-   end loop;
+   end loop Main_Program_Loop;
 
    ExitFromProgram;
+   Tcl.Ada.Tcl_Eval(Interp, "exit");
 exception
    when An_Exception : others =>
       Create_Path(Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
