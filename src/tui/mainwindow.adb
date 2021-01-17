@@ -20,6 +20,7 @@ with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
+with Modules; use Modules;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
@@ -28,6 +29,7 @@ package body MainWindow is
 
    ListWindow: Window;
    PathButtons: Window;
+   Path: Menu;
 
    procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp) is
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
@@ -78,7 +80,6 @@ package body MainWindow is
         new Item_Array(ItemsList.First_Index .. ItemsList.Last_Index + 1);
       Index: Positive;
       Path_Items: Item_Array_Access;
-      Path: Menu;
       Tokens: Slice_Set;
    begin
       if Clear then
@@ -163,5 +164,35 @@ package body MainWindow is
          Show_Selected;
       end if;
    end Directory_Keys;
+
+   procedure Path_Keys(Key: Key_Code) is
+      Result: Menus.Driver_Result := Unknown_Request;
+   begin
+      case Key is
+         when 68 | KEY_LEFT =>
+            Result := Driver(Path, M_Left_Item);
+         when 67 | KEY_RIGHT =>
+            Result := Driver(Path, M_Right_Item);
+         when 72 | KEY_HOME =>
+            Result := Driver(Path, M_First_Item);
+         when 70 | KEY_END =>
+            Result := Driver(Path, M_Last_Item);
+         when 10 =>
+            CurrentDirectory := To_Unbounded_String("/");
+            for I in 2 .. Get_Index(Current(Path)) loop
+               Append(CurrentDirectory, Name(Items(Path, I)) & "/");
+            end loop;
+            LoadDirectory(To_String(CurrentDirectory));
+            UpdateDirectoryList(True);
+            UpdateWatch(To_String(CurrentDirectory));
+            Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+            return;
+         when others =>
+            null;
+      end case;
+      if Result = MENU_OK then
+         Refresh(PathButtons);
+      end if;
+   end Path_Keys;
 
 end MainWindow;
