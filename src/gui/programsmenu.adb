@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -122,6 +122,7 @@ package body ProgramsMenu is
       Selected: Boolean := False;
    begin
       Query := To_Unbounded_String(Get(TextEntry));
+      Search_Program_Loop :
       for I in NamesList.First_Index .. NamesList.Last_Index loop
          if Query /= Null_Unbounded_String
            and then
@@ -137,7 +138,7 @@ package body ProgramsMenu is
                Selected := True;
             end if;
          end if;
-      end loop;
+      end loop Search_Program_Loop;
       return TCL_OK;
    end Search_Program_Command;
 
@@ -184,6 +185,7 @@ package body ProgramsMenu is
       ApplicationName :=
         To_Unbounded_String
           (Item(ApplicationsView, Selection(ApplicationsView), "-text"));
+      Set_New_Application_Loop :
       for I in ApplicationsList.Iterate loop
          if ApplicationsList(I) = ApplicationName then
             Pid :=
@@ -198,9 +200,9 @@ package body ProgramsMenu is
             else
                configure(Button, "-text {" & ApplicationsList(I) & "}");
             end if;
-            exit;
+            exit Set_New_Application_Loop;
          end if;
-      end loop;
+      end loop Set_New_Application_Loop;
       return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
    end Set_Application_Command;
 
@@ -270,11 +272,13 @@ package body ProgramsMenu is
            Widget_Image(ApplicationsView) & " yview]");
    begin
       Autoscroll(ApplicationsYScroll);
+      Create_Programs_Menu_Loop :
       for Path of ApplicationsPaths loop
          if not Ada.Directories.Exists(To_String(Path)) then
             goto End_Of_Loop;
          end if;
          Open(SubDirectory, To_String(Path));
+         Read_Desktop_File_Loop :
          loop
             Read(SubDirectory, SubFileName, SubLast);
             exit when SubLast = 0;
@@ -283,6 +287,7 @@ package body ProgramsMenu is
                  (File, In_File,
                   To_String(Path) & "/" &
                   Simple_Name(SubFileName(1 .. SubLast)));
+               Find_Application_Name_Loop :
                while not End_Of_File(File) loop
                   FileLine := To_Unbounded_String(Get_Line(File));
                   if Length(FileLine) > 5
@@ -295,22 +300,23 @@ package body ProgramsMenu is
                         NamesList.Append
                           (Unbounded_Slice(FileLine, 6, Length(FileLine)));
                      end if;
-                     exit;
+                     exit Find_Application_Name_Loop;
                   end if;
-               end loop;
+               end loop Find_Application_Name_Loop;
                Close(File);
             end if;
-         end loop;
+         end loop Read_Desktop_File_Loop;
          Close(SubDirectory);
          <<End_Of_Loop>>
-      end loop;
+      end loop Create_Programs_Menu_Loop;
       Programs_Sorting.Sort(NamesList);
+      Fill_Applications_List_Loop :
       for I in NamesList.First_Index .. NamesList.Last_Index loop
          Insert
            (ApplicationsView,
             "{} end -id" & Positive'Image(I) & " -text {" &
             To_String(NamesList(I)) & "}");
-      end loop;
+      end loop Fill_Applications_List_Loop;
       Tcl.Tk.Ada.Grid.Grid(SearchEntry, "-columnspan 2 -sticky we");
       Tcl.Tk.Ada.Grid.Grid(ApplicationsView, "-column 0 -row 1 -sticky we");
       Tcl.Tk.Ada.Grid.Grid(ApplicationsYScroll, "-column 1 -row 1 -sticky ns");
