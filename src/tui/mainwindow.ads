@@ -62,6 +62,18 @@ package MainWindow is
    NewAction: ItemActions;
    -- ****
 
+   -- ****t* MainWindow/UI_Locations
+   -- FUNCTION
+   -- Parts of the program UI, used mostly in handling keys events
+   -- OPTION
+   -- DIRECTORY_VIEW - Current directory listing
+   -- PATH_BUTTONS   - Current directory path buttons
+   -- MAIN_MENU      - The main program's menu
+   -- PREVIEW        - The preview window
+   -- SOURCE
+   type UI_Locations is (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW);
+   -- ****
+
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
@@ -132,8 +144,10 @@ package MainWindow is
    -- Handles keys events when path buttons are active elements of UI
    -- PARAMETERS
    -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
    -- SOURCE
-   procedure Path_Keys(Key: Key_Code);
+   function Path_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end MainWindow;

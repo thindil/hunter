@@ -44,7 +44,6 @@ procedure Hunter is
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
    Interp: Tcl.Tcl_Interp;
-   type UI_Locations is (DIRECTORY_VIEW, PATH_BUTTONS, MENU, PREVIEW);
    UILocation: UI_Locations := DIRECTORY_VIEW;
    procedure ExitFromProgram is
    begin
@@ -133,8 +132,8 @@ begin
             when DIRECTORY_VIEW =>
                UILocation := PATH_BUTTONS;
             when PATH_BUTTONS =>
-               UILocation := MENU;
-            when MENU =>
+               UILocation := MAIN_MENU;
+            when MAIN_MENU =>
                UILocation := PREVIEW;
             when PREVIEW =>
                UILocation := DIRECTORY_VIEW;
@@ -144,7 +143,7 @@ begin
             when DIRECTORY_VIEW =>
                Directory_Keys(Key);
             when PATH_BUTTONS =>
-               Path_Keys(Key);
+               UILocation := Path_Keys(Key);
             when others =>
                null;
          end case;

@@ -15,6 +15,7 @@
 
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
@@ -84,18 +85,24 @@ package body MainWindow is
    begin
       if Clear then
          Terminal_Interface.Curses.Clear(PathButtons);
-         if Element(CurrentDirectory, Length(CurrentDirectory)) = '/' then
-            Index := Count(CurrentDirectory, "/");
+         CurrentDirectory :=
+           To_Unbounded_String
+             (Normalize_Pathname(To_String(CurrentDirectory)));
+         Index := Count(CurrentDirectory, "/") + 1;
+         if CurrentDirectory /= To_Unbounded_String("/") then
+            Path_Items := new Item_Array(1 .. Index + 1);
+            Path_Items.all(1) := New_Item("/");
+            Create(Tokens, To_String(CurrentDirectory), "/");
+            for I in 2 .. Slice_Count(Tokens) loop
+               Path_Items.all(Positive(I)) := New_Item(Slice(Tokens, I));
+            end loop;
+            Path_Items.all(Index + 1) := Null_Item;
          else
-            Index := Count(CurrentDirectory, "/") + 1;
+            Path_Items := new Item_Array(1 .. 2);
+            Path_Items.all(1) := New_Item("/");
+            Path_Items.all(2) := Null_Item;
+            Index := 1;
          end if;
-         Path_Items := new Item_Array(1 .. Index + 1);
-         Path_Items.all(1) := New_Item("/");
-         Create(Tokens, To_String(CurrentDirectory), "/");
-         for I in 2 .. Index loop
-            Path_Items.all(I) := New_Item(Slice(Tokens, Slice_Number(I)));
-         end loop;
-         Path_Items.all(Index + 1) := Null_Item;
          Path := New_Menu(Path_Items);
          Set_Format(Path, 1, 5);
          Set_Mark(Path, "");
@@ -165,14 +172,14 @@ package body MainWindow is
       end if;
    end Directory_Keys;
 
-   procedure Path_Keys(Key: Key_Code) is
+   function Path_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
    begin
       case Key is
          when 68 | KEY_LEFT =>
-            Result := Driver(Path, M_Left_Item);
+            Result := Driver(Path, M_Previous_Item);
          when 67 | KEY_RIGHT =>
-            Result := Driver(Path, M_Right_Item);
+            Result := Driver(Path, M_Next_Item);
          when 72 | KEY_HOME =>
             Result := Driver(Path, M_First_Item);
          when 70 | KEY_END =>
@@ -180,19 +187,23 @@ package body MainWindow is
          when 10 =>
             CurrentDirectory := To_Unbounded_String("/");
             for I in 2 .. Get_Index(Current(Path)) loop
-               Append(CurrentDirectory, Name(Items(Path, I)) & "/");
+               Append(CurrentDirectory, Name(Items(Path, I)));
+               if I < Get_Index(Current(Path)) then
+                  Append(CurrentDirectory, "/");
+               end if;
             end loop;
             LoadDirectory(To_String(CurrentDirectory));
             UpdateDirectoryList(True);
             UpdateWatch(To_String(CurrentDirectory));
             Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
-            return;
+            return DIRECTORY_VIEW;
          when others =>
             null;
       end case;
       if Result = MENU_OK then
          Refresh(PathButtons);
       end if;
+      return PATH_BUTTONS;
    end Path_Keys;
 
 end MainWindow;
