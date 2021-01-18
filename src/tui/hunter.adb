@@ -144,6 +144,9 @@ begin
                Directory_Keys(Key);
             when PATH_BUTTONS =>
                UILocation := Path_Keys(Key);
+            when MAIN_MENU =>
+               UILocation := Menu_Keys(Key);
+               exit when UILocation = PATH_BUTTONS;
             when others =>
                null;
          end case;
