@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -135,6 +135,7 @@ package body SearchItems is
          UpdateDirectoryList;
          return TCL_OK;
       end if;
+      Search_Item_Loop :
       for I in ItemsList.First_Index .. ItemsList.Last_Index loop
          if Index
              (To_Lower(To_String(ItemsList(I).Name)),
@@ -149,7 +150,7 @@ package body SearchItems is
                Selected := True;
             end if;
          end if;
-      end loop;
+      end loop Search_Item_Loop;
       return TCL_OK;
    end Search_Command;
 
