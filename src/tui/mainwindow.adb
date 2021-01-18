@@ -31,11 +31,11 @@ package body MainWindow is
    ListWindow: Window;
    PathButtons: Window;
    Path: Menu;
+   ProgramMenu: Menu;
+   MenuWindow: Window;
 
    procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp) is
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
-      ProgramMenu: Menu;
-      MenuWindow: Window;
    begin
       Interpreter := Interp;
       ActivateItems.AddCommands;
@@ -205,5 +205,30 @@ package body MainWindow is
       end if;
       return PATH_BUTTONS;
    end Path_Keys;
+
+   function Menu_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result := Unknown_Request;
+   begin
+      case Key is
+         when 68 | KEY_LEFT =>
+            Result := Driver(ProgramMenu, M_Previous_Item);
+         when 67 | KEY_RIGHT =>
+            Result := Driver(ProgramMenu, M_Next_Item);
+         when 72 | KEY_HOME =>
+            Result := Driver(ProgramMenu, M_First_Item);
+         when 70 | KEY_END =>
+            Result := Driver(ProgramMenu, M_Last_Item);
+         when 10 =>
+            if Get_Index(Current(ProgramMenu)) = 1 then
+               return PATH_BUTTONS;
+            end if;
+         when others =>
+            null;
+      end case;
+      if Result = MENU_OK then
+         Refresh(MenuWindow);
+      end if;
+      return MAIN_MENU;
+   end Menu_Keys;
 
 end MainWindow;
