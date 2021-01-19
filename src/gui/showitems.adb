@@ -238,11 +238,11 @@ package body ShowItems is
                   procedure LoadFile is
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
-                     Load_Simple_File:
+                     Load_Simple_File :
                      while not End_Of_File(File) loop
                         FileLine := To_Unbounded_String(Get_Line(File));
                         StartIndex := 1;
-                        Escape_Entry_Braces_Loop:
+                        Escape_Entry_Braces_Loop :
                         loop
                            StartIndex := Index(FileLine, "{", StartIndex);
                            exit Escape_Entry_Braces_Loop when StartIndex = 0;
@@ -251,7 +251,7 @@ package body ShowItems is
                            StartIndex := StartIndex + 2;
                         end loop Escape_Entry_Braces_Loop;
                         StartIndex := 1;
-                        Escape_Closing_Braces_Loop:
+                        Escape_Closing_Braces_Loop :
                         loop
                            StartIndex := Index(FileLine, "}", StartIndex);
                            exit Escape_Closing_Braces_Loop when StartIndex = 0;
@@ -266,6 +266,29 @@ package body ShowItems is
                      end loop Load_Simple_File;
                      Close(File);
                   end LoadFile;
+                  procedure Replace_Element(Element, New_Element: String) is
+                  begin
+                     Replace_Element_Loop :
+                     loop
+                        StartIndex := Index(FileLine, Element);
+                        exit Replace_Element_Loop when StartIndex = 0;
+                        Replace_Slice
+                          (FileLine, StartIndex,
+                           StartIndex + Element'Length - 1, New_Element);
+                     end loop Replace_Element_Loop;
+                  end Replace_Element;
+                  procedure Escape_Element(Element: String) is
+                  begin
+                     StartIndex := 1;
+                     Escape_Element_Loop :
+                     loop
+                        StartIndex := Index(FileLine, Element, StartIndex);
+                        exit Escape_Element_Loop when StartIndex = 0;
+                        Replace_Slice
+                          (FileLine, StartIndex, StartIndex, "\" & Element);
+                        StartIndex := StartIndex + 2;
+                     end loop Escape_Element_Loop;
+                  end Escape_Element;
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
@@ -301,7 +324,7 @@ package body ShowItems is
                     (File, In_File,
                      Value("HOME") & "/.cache/hunter/highlight.tmp");
                   FirstLine := True;
-                  Load_Highlight_File:
+                  Load_Highlight_File :
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
                      if FirstLine then
@@ -312,45 +335,12 @@ package body ShowItems is
                         FirstLine := False;
                      end if;
                      exit Load_Highlight_File when End_Of_File(File);
-                     loop
-                        StartIndex := Index(FileLine, "&gt;");
-                        exit when StartIndex = 0;
-                        Replace_Slice
-                          (FileLine, StartIndex, StartIndex + 3, ">");
-                     end loop;
-                     loop
-                        StartIndex := Index(FileLine, "&lt;");
-                        exit when StartIndex = 0;
-                        Replace_Slice
-                          (FileLine, StartIndex, StartIndex + 3, "<");
-                     end loop;
-                     loop
-                        StartIndex := Index(FileLine, "&amp;");
-                        exit when StartIndex = 0;
-                        Replace_Slice
-                          (FileLine, StartIndex, StartIndex + 4, "&");
-                     end loop;
-                     StartIndex := 1;
-                     loop
-                        StartIndex := Index(FileLine, "\", StartIndex);
-                        exit when StartIndex = 0;
-                        Replace_Slice(FileLine, StartIndex, StartIndex, "\\");
-                        StartIndex := StartIndex + 2;
-                     end loop;
-                     StartIndex := 1;
-                     loop
-                        StartIndex := Index(FileLine, "{", StartIndex);
-                        exit when StartIndex = 0;
-                        Replace_Slice(FileLine, StartIndex, StartIndex, "\{");
-                        StartIndex := StartIndex + 2;
-                     end loop;
-                     StartIndex := 1;
-                     loop
-                        StartIndex := Index(FileLine, "}", StartIndex);
-                        exit when StartIndex = 0;
-                        Replace_Slice(FileLine, StartIndex, StartIndex, "\}");
-                        StartIndex := StartIndex + 2;
-                     end loop;
+                     Replace_Element("&gt;", ">");
+                     Replace_Element("&lt;", "<");
+                     Replace_Element("&amp;", "&");
+                     Escape_Element("\");
+                     Escape_Element("{");
+                     Escape_Element("}");
                      StartIndex := 1;
                      loop
                         StartIndex := Index(FileLine, "<span", StartIndex);
