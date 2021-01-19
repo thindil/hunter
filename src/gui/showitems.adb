@@ -238,29 +238,32 @@ package body ShowItems is
                   procedure LoadFile is
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
+                     Load_Simple_File:
                      while not End_Of_File(File) loop
                         FileLine := To_Unbounded_String(Get_Line(File));
                         StartIndex := 1;
+                        Escape_Entry_Braces_Loop:
                         loop
                            StartIndex := Index(FileLine, "{", StartIndex);
-                           exit when StartIndex = 0;
+                           exit Escape_Entry_Braces_Loop when StartIndex = 0;
                            Replace_Slice
                              (FileLine, StartIndex, StartIndex, "\{");
                            StartIndex := StartIndex + 2;
-                        end loop;
+                        end loop Escape_Entry_Braces_Loop;
                         StartIndex := 1;
+                        Escape_Closing_Braces_Loop:
                         loop
                            StartIndex := Index(FileLine, "}", StartIndex);
-                           exit when StartIndex = 0;
+                           exit Escape_Closing_Braces_Loop when StartIndex = 0;
                            Replace_Slice
                              (FileLine, StartIndex, StartIndex, "\}");
                            StartIndex := StartIndex + 2;
-                        end loop;
+                        end loop Escape_Closing_Braces_Loop;
                         Insert
                           (PreviewText, "end",
                            "[subst -nocommands -novariables {" &
                            To_String(FileLine) & LF & "}]");
-                     end loop;
+                     end loop Load_Simple_File;
                      Close(File);
                   end LoadFile;
                begin
@@ -298,6 +301,7 @@ package body ShowItems is
                     (File, In_File,
                      Value("HOME") & "/.cache/hunter/highlight.tmp");
                   FirstLine := True;
+                  Load_Highlight_File:
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
                      if FirstLine then
@@ -307,7 +311,7 @@ package body ShowItems is
                              Length(FileLine));
                         FirstLine := False;
                      end if;
-                     exit when End_Of_File(File);
+                     exit Load_Highlight_File when End_Of_File(File);
                      loop
                         StartIndex := Index(FileLine, "&gt;");
                         exit when StartIndex = 0;
@@ -397,7 +401,7 @@ package body ShowItems is
                        (PreviewText, "end",
                         "[subst -nocommands -novariables {" &
                         To_String(FileLine) & LF & "}]");
-                  end loop;
+                  end loop Load_Highlight_File;
                   Close(File);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
                   <<Set_UI>>
