@@ -342,9 +342,10 @@ package body ShowItems is
                      Escape_Element("{");
                      Escape_Element("}");
                      StartIndex := 1;
+                     Highlight_Text_Loop :
                      loop
                         StartIndex := Index(FileLine, "<span", StartIndex);
-                        exit when StartIndex = 0;
+                        exit Highlight_Text_Loop when StartIndex = 0;
                         if StartIndex > 1 then
                            Insert
                              (PreviewText, "end",
@@ -386,7 +387,7 @@ package body ShowItems is
                         FileLine :=
                           Unbounded_Slice
                             (FileLine, EndIndex + 8, Length(FileLine));
-                     end loop;
+                     end loop Highlight_Text_Loop;
                      Insert
                        (PreviewText, "end",
                         "[subst -nocommands -novariables {" &
@@ -542,11 +543,12 @@ package body ShowItems is
                "-text {" & Natural'Image(Natural(SecondItemsList.Length)) &
                "}");
          else
+            Count_Directory_Size_Loop :
             for Item of SecondItemsList loop
                if not Item.IsHidden then
                   DirectorySize := DirectorySize + 1;
                end if;
-            end loop;
+            end loop Count_Directory_Size_Loop;
             configure(Label, "-text {" & Natural'Image(DirectorySize) & "}");
          end if;
       elsif Is_Regular_File(SelectedItem) then
@@ -633,6 +635,7 @@ package body ShowItems is
             CheckButton: Ttk_CheckButton;
          begin
             CheckButton.Interp := Get_Context;
+            Set_Permission_Buttons_Loop :
             for I in ButtonNames'Range loop
                CheckButton.Name :=
                  New_String
@@ -648,7 +651,7 @@ package body ShowItems is
                   end if;
                end if;
                State(CheckButton, ButtonState);
-            end loop;
+            end loop Set_Permission_Buttons_Loop;
             Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "execute", "0");
             Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "0");
             Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "0");
@@ -768,10 +771,11 @@ package body ShowItems is
       Items := To_Unbounded_String(Selection(DirectoryTree));
       if Items /= Null_Unbounded_String then
          Create(Tokens, To_String(Items), " ");
+         Set_Selected_List_Loop :
          for I in 1 .. Slice_Count(Tokens) loop
             SelectedItems.Append
               (ItemsList(Positive'Value(Slice(Tokens, I))).Path);
-         end loop;
+         end loop Set_Selected_List_Loop;
       else
          SelectedItems.Append(CurrentDirectory);
       end if;
@@ -839,6 +843,7 @@ package body ShowItems is
       else
          PermissionsString := To_Unbounded_String("00");
       end if;
+      Set_Permissions_Loop :
       for Name of Names loop
          Permission := 0;
          if Tcl.Ada.Tcl_GetVar(Interp, To_String(Name) & "execute") = "1" then
@@ -851,7 +856,7 @@ package body ShowItems is
             Permission := Permission + 4;
          end if;
          Append(PermissionsString, Trim(Natural'Image(Permission), Both));
-      end loop;
+      end loop Set_Permissions_Loop;
       Tcl.Ada.Tcl_Eval
         (Interp,
          "file attributes {" & SelectedItem & "} -permissions " &
@@ -932,6 +937,7 @@ package body ShowItems is
          Label := Create(".mainframe.paned.previewframe.infoframe." & Name);
          Tcl.Tk.Ada.Grid.Grid
            (Label, "-column 1 -row" & Positive'Image(Row) & " -sticky w");
+         Set_Permission_Buttons_Loop :
          for I in ButtonNames'Range loop
             CheckButton :=
               Create
@@ -940,7 +946,7 @@ package body ShowItems is
                  Name & To_String(ButtonNames(I)) &
                  " -command SetPermissions");
             Tcl.Tk.Ada.Pack.Pack(CheckButton, "-anchor w");
-         end loop;
+         end loop Set_Permission_Buttons_Loop;
          Tcl.Tk.Ada.Grid.Grid
            (Frame, "-column 1 -row" & Positive'Image(Row + 1));
       end CreatePermissionsFrame;
