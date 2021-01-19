@@ -55,8 +55,23 @@ package body ShowItems is
    -- SOURCE
    procedure ShowInfo is
    -- ****
+      SelectedItem: constant String := To_String(CurrentSelected);
    begin
-      null;
+      if PreviewPad /= Null_Window then
+         Delete(PreviewPad);
+      end if;
+      Clear(PreviewWindow);
+      Box(PreviewWindow, Default_Character, Default_Character);
+      Refresh(PreviewWindow);
+      PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 2);
+      Add(PreviewPad, 0, Columns / 4, "Info" & LF);
+      if not Is_Symbolic_Link(SelectedItem) then
+         Add(PreviewPad, "Full path: " & Full_Name(SelectedItem) & LF);
+      else
+         Add(PreviewPad, "Links to: " & Full_Name(SelectedItem) & LF);
+      end if;
+      Refresh
+        (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2), Columns - 3);
    end ShowInfo;
 
    procedure ShowPreview is
