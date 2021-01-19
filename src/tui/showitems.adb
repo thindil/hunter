@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
@@ -56,6 +58,7 @@ package body ShowItems is
    procedure ShowInfo is
    -- ****
       SelectedItem: constant String := To_String(CurrentSelected);
+      DirectorySize: Natural := 0;
    begin
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
@@ -69,6 +72,46 @@ package body ShowItems is
          Add(PreviewPad, "Full path: " & Full_Name(SelectedItem) & LF);
       else
          Add(PreviewPad, "Links to: " & Full_Name(SelectedItem) & LF);
+      end if;
+      if Is_Directory(SelectedItem) then
+         Add(PreviewPad, "Elements:");
+      else
+         Add(PreviewPad, "Size:");
+      end if;
+      if Is_Directory(SelectedItem) then
+         if Settings.ShowHidden then
+            Add
+              (PreviewPad,
+               Natural'Image(Natural(SecondItemsList.Length)) & LF);
+         else
+            Count_Directory_Size_Loop :
+            for Item of SecondItemsList loop
+               if not Item.IsHidden then
+                  DirectorySize := DirectorySize + 1;
+               end if;
+            end loop Count_Directory_Size_Loop;
+            Add(PreviewPad, Natural'Image(DirectorySize) & LF);
+         end if;
+      elsif Is_Regular_File(SelectedItem) then
+         Add(PreviewPad, CountFileSize(Size(SelectedItem)) & LF);
+      else
+         Add(PreviewPad, "Unknown" & LF);
+      end if;
+      if Is_Directory(SelectedItem) or Is_Regular_File(SelectedItem) then
+         Add
+           (PreviewPad,
+            "Last modified: " &
+            Ada.Calendar.Formatting.Image
+              (Modification_Time(SelectedItem), False,
+               Ada.Calendar.Time_Zones.UTC_Time_Offset) &
+            LF);
+      else
+         Add(PreviewPad, "Last modified: Unknown" & LF);
+      end if;
+      if Is_Regular_File(SelectedItem) then
+         Add
+           (PreviewPad,
+            "File type: " & GetMimeType(Full_Name(SelectedItem)) & LF);
       end if;
       Refresh
         (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2), Columns - 3);
