@@ -21,6 +21,7 @@ with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
+with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
@@ -32,6 +33,7 @@ with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with ProgramsMenu; use ProgramsMenu;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
@@ -59,6 +61,7 @@ package body ShowItems is
    -- ****
       SelectedItem: constant String := To_String(CurrentSelected);
       DirectorySize: Natural := 0;
+      MimeType: constant String := GetMimeType(SelectedItem);
    begin
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
@@ -111,7 +114,40 @@ package body ShowItems is
       if Is_Regular_File(SelectedItem) then
          Add
            (PreviewPad,
-            "File type: " & GetMimeType(Full_Name(SelectedItem)) & LF);
+            "File type: " & MimeType & LF);
+         declare
+            ProcessDesc: Process_Descriptor;
+            Result: Expect_Match;
+            ExecutableName: constant String := FindExecutable("xdg-mime");
+            DesktopFile: Unbounded_String;
+         begin
+            if ExecutableName = "" then
+               return;
+            end if;
+            Non_Blocking_Spawn
+              (ProcessDesc, ExecutableName,
+               Argument_String_To_List("query default " & MimeType).all);
+            Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+            if Result = 1 then
+               DesktopFile :=
+                 To_Unbounded_String(Expect_Out_Match(ProcessDesc));
+               DesktopFile :=
+                 To_Unbounded_String(GetProgramName(To_String(DesktopFile)));
+               if Index(DesktopFile, ".desktop") = 0 then
+                  Add
+                    (PreviewPad,
+                     "Associated program: " & To_String(DesktopFile) & LF);
+               else
+                  Add
+                    (PreviewPad,
+                     "Associated program: " & To_String(DesktopFile) & LF);
+               end if;
+            end if;
+            Close(ProcessDesc);
+         exception
+            when Process_Died =>
+               Add(PreviewPad, "Associated program: None" & LF);
+         end;
       end if;
       Refresh
         (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2), Columns - 3);

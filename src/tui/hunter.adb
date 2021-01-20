@@ -32,6 +32,7 @@ with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;
 with Modules; use Modules;
 with Preferences; use Preferences;
+with ProgramsMenu; use ProgramsMenu;
 
 procedure Hunter is
    use type Interfaces.C.int;
@@ -98,6 +99,9 @@ begin
 
    -- Load the program setting
    LoadSettings;
+
+   -- Load the available applications list
+   CreateProgramsMenu;
 
    -- Initialize ncurses
    Ada.Environment_Variables.Set("ESCDELAY", "10");
