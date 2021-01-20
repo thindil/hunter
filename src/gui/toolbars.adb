@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -65,22 +65,25 @@ package body Toolbars is
       Button.Interp := Get_Context;
       Toolbar := Get_Widget(MainFrame & ".toolbars.actiontoolbar");
       Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
+      Set_Actions_Loop :
       for I in 1 .. Slice_Count(Tokens) loop
          Button.Name := New_String(Slice(Tokens, I));
          if Winfo_Get(Button, "class") = "TMenubutton" then
             configure(Button, "-direction " & Direction);
          end if;
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & Side);
-      end loop;
+      end loop Set_Actions_Loop;
       Toolbar := Get_Widget(MainFrame & ".toolbars.itemtoolbar");
       Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
+      Set_Info_Loop :
       for I in 1 .. Slice_Count(Tokens) loop
          Button.Name := New_String(Slice(Tokens, I));
          if Winfo_Get(Button, "class") = "TMenubutton" then
             configure(Button, "-direction " & Direction);
          end if;
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & Side);
-      end loop;
+      end loop Set_Info_Loop;
+      Set_Action_Separators_Loop :
       for I in 1 .. 3 loop
          Button.Name :=
            New_String
@@ -89,7 +92,8 @@ package body Toolbars is
          configure(Button, "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
            (Button, "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
-      end loop;
+      end loop Set_Action_Separators_Loop;
+      Set_Info_Separators_Loop :
       for I in 1 .. 2 loop
          Button.Name :=
            New_String
@@ -98,7 +102,7 @@ package body Toolbars is
          configure(Button, "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
            (Button, "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
-      end loop;
+      end loop Set_Info_Separators_Loop;
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(MainFrame & ".toolbars.itemtoolbar");
       if not Settings.ToolbarsOnTop then
@@ -458,12 +462,13 @@ package body Toolbars is
             "-after .mainframe.toolbars.actiontoolbar.separator2 -side " &
             Side);
       end if;
+      Add_User_Commands_Menu_Loop :
       for I in UserCommandsList.Iterate loop
          Menu.Add
            (ActionsMenu, "command",
             "-label {" & Commands_Container.Key(I) &
             "} -command {ExecuteCommand {" & Commands_Container.Key(I) & "}}");
-      end loop;
+      end loop Add_User_Commands_Menu_Loop;
    end SetUserCommandsMenu;
 
 end Toolbars;
