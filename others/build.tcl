@@ -11,7 +11,11 @@ if {[file exists hunter.gpr] == 0} {
 set releasedir usr
 
 exec gprclean -P hunter.gpr >@stdout
-exec gprbuild -p -P hunter.gpr -XMode=release >@stdout
+if {$argc == 0} {
+   exec gprbuild -p -P hunter.gpr -XMode=release >@stdout
+} else {
+   exec gprbuild -p -P hunter.gpr -XMode=release -XUI=console >@stdout
+}
 puts -nonewline {Copying files and directories ... }
 file mkdir $releasedir/share/doc/hunter
 file mkdir $releasedir/share/metainfo/
