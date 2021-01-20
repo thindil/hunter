@@ -81,3 +81,8 @@
    execute:
       - gprbuild -P hunter.gpr -XUI=console
    description: Build Hunter in debug mode with console UI
+- command:
+   name: releaseconsole
+   execute:
+      - others/build.tcl console
+   description: Build Hunter in release mode with console UI
