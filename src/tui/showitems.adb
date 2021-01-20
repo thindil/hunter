@@ -23,10 +23,12 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.String_Split; use GNAT.String_Split;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
@@ -112,9 +114,7 @@ package body ShowItems is
          Add(PreviewPad, "Last modified: Unknown" & LF);
       end if;
       if Is_Regular_File(SelectedItem) then
-         Add
-           (PreviewPad,
-            "File type: " & MimeType & LF);
+         Add(PreviewPad, "File type: " & MimeType & LF);
          declare
             ProcessDesc: Process_Descriptor;
             Result: Expect_Match;
@@ -149,6 +149,75 @@ package body ShowItems is
                Add(PreviewPad, "Associated program: None" & LF);
          end;
       end if;
+      declare
+         Attributes: Unbounded_String;
+         Tokens: Slice_Set;
+         type Integer_Access is access Integer;
+         Status: constant Integer_Access := new Integer;
+         Arguments: constant Argument_List :=
+           (new String'("-c%a %U %G"), new String'(SelectedItem));
+         procedure SetPermissionsButtons
+           (Name: String; Permission: Character) is
+         begin
+            Tcl.Ada.Tcl_SetVar(Interpreter, Name & "execute", "0");
+            Tcl.Ada.Tcl_SetVar(Interpreter, Name & "read", "0");
+            Tcl.Ada.Tcl_SetVar(Interpreter, Name & "write", "0");
+            case Permission is
+               when '1' =>
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "execute", "1");
+               when '2' =>
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "write", "1");
+               when '3' =>
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "execute", "1");
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "write", "1");
+               when '4' =>
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "read", "1");
+               when '5' =>
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "execute", "1");
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "read", "1");
+               when '6' =>
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "read", "1");
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "write", "1");
+               when '7' =>
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "execute", "1");
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "read", "1");
+                  Tcl.Ada.Tcl_SetVar(Interpreter, Name & "write", "1");
+               when others =>
+                  null;
+            end case;
+            if not Is_Directory(SelectedItem) then
+               if Tcl.Ada.Tcl_GetVar(Interpreter, Name & "execute") = "1" then
+                  Add(PreviewPad, "    Can execute" & LF);
+               else
+                  Add(PreviewPad, "    Can't execute" & LF);
+               end if;
+            end if;
+            if Tcl.Ada.Tcl_GetVar(Interpreter, Name & "write") = "1" then
+               Add(PreviewPad, "    Can write" & LF);
+            else
+               Add(PreviewPad, "    Can't write" & LF);
+            end if;
+            if Tcl.Ada.Tcl_GetVar(Interpreter, Name & "read") = "1" then
+               Add(PreviewPad, "    Can read" & LF);
+            else
+               Add(PreviewPad, "    Can't read" & LF);
+            end if;
+         end SetPermissionsButtons;
+      begin
+         Attributes :=
+           To_Unbounded_String
+             (Get_Command_Output("stat", Arguments, "", Status));
+         Create(Tokens, To_String(Attributes), " ");
+         Add(PreviewPad, "Owner: " & Slice(Tokens, 2) & LF);
+         SetPermissionsButtons
+           ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
+         Add(PreviewPad, "Group: " & Slice(Tokens, 3) & LF);
+         SetPermissionsButtons
+           ("group", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
+         Add(PreviewPad, "Others" & LF);
+         SetPermissionsButtons
+           ("others", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
+      end;
       Refresh
         (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2), Columns - 3);
    end ShowInfo;
