@@ -54,10 +54,10 @@ package body MainWindow is
       Set_Sub_Window
         (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
       Post(ProgramMenu);
-      PathButtons := Create(1, Columns / 2, 2, 0);
+      PathButtons := Create(1, Columns / 2, 1, 0);
       ListWindow :=
-        (if Settings.ShowPreview then Create(Lines - 3, Columns / 2, 3, 0)
-         else Create(Lines - 3, Columns, 3, 0));
+        (if Settings.ShowPreview then Create(Lines - 2, Columns / 2, 2, 0)
+         else Create(Lines - 2, Columns, 2, 0));
       Box(ListWindow, Default_Character, Default_Character);
       Refresh;
       Refresh(MenuWindow);
@@ -128,12 +128,12 @@ package body MainWindow is
          end loop;
          DirectoryList := New_Menu(Menu_Items);
          Switch_Options(DirectoryList, (One_Valued => False, others => <>));
-         Set_Format(DirectoryList, Lines - 6, 1);
+         Set_Format(DirectoryList, Lines - 5, 1);
          Set_Mark(DirectoryList, "");
          Set_Window(DirectoryList, ListWindow);
          Set_Sub_Window
            (DirectoryList,
-            Derived_Window(ListWindow, Lines - 6, (Columns / 2) - 2, 2, 1));
+            Derived_Window(ListWindow, Lines - 5, (Columns / 2) - 2, 2, 1));
          Post(DirectoryList);
          Refresh;
          Refresh(PathButtons);
