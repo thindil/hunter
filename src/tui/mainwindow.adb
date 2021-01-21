@@ -33,6 +33,8 @@ package body MainWindow is
    Path: Menu;
    ProgramMenu: Menu;
    MenuWindow: Window;
+   SubMenuWindow: Window;
+   SubMenu: Menu;
 
    procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp) is
       Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
@@ -207,8 +209,38 @@ package body MainWindow is
       return PATH_BUTTONS;
    end Path_Keys;
 
+   procedure Draw_Menu(Menu_Type: UI_Locations) is
+      Menu_Items: Item_Array_Access;
+      MenuHeight: Line_Position;
+      MenuLength: Column_Position;
+   begin
+      case Menu_Type is
+         when ACTIONS_MENU =>
+            Menu_Items := new Item_Array(1 .. 4);
+            Menu_Items.all(1) := New_Item("Create new directory");
+            Menu_Items.all(2) := New_Item("Create new file");
+            Menu_Items.all(3) := New_Item("Close");
+            Menu_Items.all(4) := Null_Item;
+         when others =>
+            null;
+      end case;
+      SubMenu := New_Menu(Menu_Items);
+      Set_Format(SubMenu, Lines - 5, 1);
+      Set_Mark(SubMenu, "");
+      Scale(SubMenu, MenuHeight, MenuLength);
+      SubMenuWindow := Create(MenuHeight + 2, MenuLength + 2, Lines / 3, Columns / 3);
+      Set_Window(SubMenu, SubMenuWindow);
+      Set_Sub_Window
+        (SubMenu, Derived_Window(SubMenuWindow, MenuHeight, MenuLength, 1, 1));
+      Box(SubMenuWindow, Default_Character, Default_Character);
+      Post(SubMenu);
+      Refresh;
+      Refresh(SubMenuWindow);
+   end Draw_Menu;
+
    function Menu_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
+      CurrentIndex: constant Positive := Get_Index(Current(ProgramMenu));
    begin
       case Key is
          when 68 | KEY_LEFT =>
@@ -220,9 +252,15 @@ package body MainWindow is
          when 70 | KEY_END =>
             Result := Driver(ProgramMenu, M_Last_Item);
          when 10 =>
-            if Get_Index(Current(ProgramMenu)) = 1 then
-               return PATH_BUTTONS;
-            end if;
+            case CurrentIndex is
+               when 1 =>
+                  return PATH_BUTTONS;
+               when 4 =>
+                  Draw_Menu(ACTIONS_MENU);
+                  return ACTIONS_MENU;
+               when others =>
+                  return MAIN_MENU;
+            end case;
          when others =>
             null;
       end case;
