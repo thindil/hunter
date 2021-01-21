@@ -219,7 +219,7 @@ package body ShowItems is
            ("others", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
       end;
       Refresh
-        (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2), Columns - 3);
+        (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
    end ShowInfo;
 
    procedure ShowPreview is
@@ -252,7 +252,7 @@ package body ShowItems is
             <<End_Of_Loop>>
          end loop;
          Refresh
-           (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2), Columns - 3);
+           (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
       else
          declare
             MimeType: constant String :=
@@ -462,7 +462,7 @@ package body ShowItems is
                   end loop Read_File_Loop;
                   Close(File);
                   Refresh
-                    (PreviewPad, 0, 0, 4, (Columns / 2) + 1, (Lines - 2),
+                    (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2),
                      Columns - 3);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
                end;
@@ -568,7 +568,7 @@ package body ShowItems is
    begin
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
       AddCommand("GoToDirectory", GoToDirectory_Command'Access);
-      PreviewWindow := Create(Lines - 3, Columns / 2, 3, Columns / 2);
+      PreviewWindow := Create(Lines - 2, Columns / 2, 2, Columns / 2);
       Box(PreviewWindow, Default_Character, Default_Character);
       Refresh(PreviewWindow);
    end CreateShowItemsUI;
