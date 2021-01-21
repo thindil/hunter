@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -72,9 +72,10 @@ package body Trash.UI is
              (To_Unbounded_String
                 (Value("HOME") & "/.local/share/Trash/files")));
       Open(Directory, Value("HOME") & "/.local/share/Trash/files");
+      Read_Trash_Content_Loop :
       loop
          Read(Directory, FileName, Last);
-         exit when Last = 0;
+         exit Read_Trash_Content_Loop when Last = 0;
          if FileName(1 .. Last) = "." or FileName(1 .. Last) = ".." then
             goto End_Of_Loop;
          end if;
@@ -88,6 +89,7 @@ package body Trash.UI is
             Value("HOME") & "/.local/share/Trash/info/" & FileName(1 .. Last) &
             ".trashinfo");
          Skip_Line(FileInfo);
+         Read_File_Path_Loop :
          for I in 1 .. 2 loop
             FileLine := To_Unbounded_String(Get_Line(FileInfo));
             if Slice(FileLine, 1, 4) = "Path" then
@@ -99,7 +101,7 @@ package body Trash.UI is
                Replace_Slice(FileLine, 11, 11, " ");
                Item.Modified := Value(To_String(FileLine));
             end if;
-         end loop;
+         end loop Read_File_Path_Loop;
          Close(FileInfo);
          Item.IsHidden := (if FileName(1) = '.' then True else False);
          if Is_Directory(To_String(FullName)) then
@@ -111,11 +113,12 @@ package body Trash.UI is
             if Is_Read_Accessible_File(To_String(FullName)) then
                Open(SubDirectory, To_String(FullName));
                Size := 0;
+               Count_Directory_Size_Loop :
                loop
                   Read(SubDirectory, SubFileName, SubLast);
-                  exit when SubLast = 0;
+                  exit Count_Directory_Size_Loop when SubLast = 0;
                   Size := Size + 1;
-               end loop;
+               end loop Count_Directory_Size_Loop;
                Close(SubDirectory);
                Item.Size := Item_Size(Size - 2);
             else
@@ -167,7 +170,7 @@ package body Trash.UI is
          end if;
          ItemsList.Append(Item);
          <<End_Of_Loop>>
-      end loop;
+      end loop Read_Trash_Content_Loop;
       Close(Directory);
       UpdateDirectoryList(True);
       if ItemsList.Length = 0 then
