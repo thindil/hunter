@@ -35,19 +35,20 @@ package body MainWindow is
    MenuWindow: Window;
 
    procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp) is
+      Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
+        (To_Unbounded_String("Quit"), To_Unbounded_String("Bookmarks"),
+         To_Unbounded_String("View"), To_Unbounded_String("Actions"),
+         To_Unbounded_String("About"), To_Unbounded_String("Selected"));
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
    begin
       Interpreter := Interp;
       ActivateItems.AddCommands;
-      Menu_Items.all(1) := New_Item("Quit");
-      Menu_Items.all(2) := New_Item("Bookmarks");
-      Menu_Items.all(3) := New_Item("View");
-      Menu_Items.all(4) := New_Item("Actions");
-      Menu_Items.all(5) := New_Item("About");
-      Menu_Items.all(6) := New_Item("Selected");
+      for I in Main_Menu_Array'Range loop
+         Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
+      end loop;
       Menu_Items.all(7) := Null_Item;
       ProgramMenu := New_Menu(Menu_Items);
-      Set_Format(ProgramMenu, 1, 11);
+      Set_Format(ProgramMenu, 1, 6);
       Set_Mark(ProgramMenu, "");
       MenuWindow := Create(1, Columns, 0, 0);
       Set_Window(ProgramMenu, MenuWindow);
