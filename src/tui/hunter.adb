@@ -141,6 +141,8 @@ begin
                UILocation := PREVIEW;
             when PREVIEW =>
                UILocation := DIRECTORY_VIEW;
+            when others =>
+               null;
          end case;
       else
          case UILocation is

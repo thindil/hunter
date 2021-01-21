@@ -70,8 +70,10 @@ package MainWindow is
    -- PATH_BUTTONS   - Current directory path buttons
    -- MAIN_MENU      - The main program's menu
    -- PREVIEW        - The preview window
+   -- ACTIONS_MENU   - The actions menu
    -- SOURCE
-   type UI_Locations is (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW);
+   type UI_Locations is
+     (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU);
    -- ****
 
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container
