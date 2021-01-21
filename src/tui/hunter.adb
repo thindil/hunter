@@ -153,6 +153,8 @@ begin
             when MAIN_MENU =>
                UILocation := Menu_Keys(Key);
                exit when UILocation = PATH_BUTTONS;
+            when ACTIONS_MENU =>
+               UILocation := Actions_Keys(Key);
             when others =>
                null;
          end case;

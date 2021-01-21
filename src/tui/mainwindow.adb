@@ -270,4 +270,33 @@ package body MainWindow is
       return MAIN_MENU;
    end Menu_Keys;
 
+   function Actions_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result := Unknown_Request;
+      CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(SubMenu, M_Up_Item);
+         when 66 | KEY_DOWN =>
+            Result := Driver(SubMenu, M_Down_Item);
+         when 72 | KEY_HOME =>
+            Result := Driver(SubMenu, M_First_Item);
+         when 70 | KEY_END =>
+            Result := Driver(SubMenu, M_Last_Item);
+         when 10 =>
+            case CurrentIndex is
+               when 3 =>
+                  return DIRECTORY_VIEW;
+               when others =>
+                  return ACTIONS_MENU;
+            end case;
+         when others =>
+            null;
+      end case;
+      if Result = MENU_OK then
+         Refresh(SubMenuWindow);
+      end if;
+      return ACTIONS_MENU;
+   end Actions_Keys;
+
 end MainWindow;

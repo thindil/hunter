@@ -163,4 +163,15 @@ package MainWindow is
    function Menu_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* MainWindowTUI/MainWindowTUI.Actions_Keys
+   -- FUNCTION
+   -- Handles keys events when the actions menu is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Actions_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
 end MainWindow;
