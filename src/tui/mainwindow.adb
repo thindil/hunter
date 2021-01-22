@@ -85,6 +85,8 @@ package body MainWindow is
       Index: Positive;
       Path_Items: Item_Array_Access;
       Tokens: Slice_Set;
+      CurrentIndex: Positive := 1;
+      Item: Unbounded_String;
    begin
       if Clear then
          Terminal_Interface.Curses.Clear(PathButtons);
@@ -123,6 +125,10 @@ package body MainWindow is
                goto End_Of_Loop;
             end if;
             Menu_Items.all(Index) := New_Item(To_String(ItemsList(I).Name));
+            Item := CurrentDirectory & "/" & ItemsList(I).Name;
+            if Item = CurrentSelected then
+               CurrentIndex := Index;
+            end if;
             Index := Index + 1;
             <<End_Of_Loop>>
          end loop;
@@ -138,6 +144,7 @@ package body MainWindow is
            (DirectoryList,
             Derived_Window(ListWindow, Lines - 5, (Columns / 2) - 2, 2, 1));
          Post(DirectoryList);
+         Set_Current(DirectoryList, Menu_Items.all(CurrentIndex));
          Refresh;
          Refresh(PathButtons);
          Refresh(ListWindow);
