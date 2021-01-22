@@ -124,7 +124,7 @@ begin
    end if;
 
    -- Main program loop, exit on alt+q
-   Main_Program_Loop:
+   Main_Program_Loop :
    loop
       Key := Get_Keystroke;
       if Key = 27 then
@@ -155,6 +155,8 @@ begin
                exit when UILocation = PATH_BUTTONS;
             when ACTIONS_MENU =>
                UILocation := Actions_Keys(Key);
+            when CREATE_FORM =>
+               UILocation := Create_Keys(Key);
             when others =>
                null;
          end case;

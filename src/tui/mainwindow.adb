@@ -289,22 +289,23 @@ package body MainWindow is
       FieldOptions: Field_Option_Set;
    begin
       Set_Cursor_Visibility(Visibility);
-      Create_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
-      Set_Buffer(Create_Fields.all(1), 0, "Enter a new " & Create_Type & "name:");
+      Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
+      Set_Buffer
+        (Create_Fields.all(1), 0, "Enter a new " & Create_Type & " name:");
       FieldOptions := Get_Options(Create_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
-      Create_Fields.all(2) := New_Field(1, 12, 0, 18, 0, 0);
+      Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer(Create_Fields.all(2), 0, To_String(CurrentDirectory));
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
-      Create_Fields.all(3) := New_Field(1, 6, 1, 15, 0, 0);
+      Create_Fields.all(3) := New_Field(1, 6, 2, 15, 0, 0);
       Set_Buffer(Create_Fields.all(3), 0, "[Quit]");
       FieldOptions := Get_Options(Create_Fields.all(3));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(3), FieldOptions);
-      Create_Fields.all(4) := New_Field(1, 7, 1, 23, 0, 0);
+      Create_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
       FieldOptions := Get_Options(Create_Fields.all(4));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(4), FieldOptions);
@@ -318,10 +319,10 @@ package body MainWindow is
         Create
           (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
+      Box(FormWindow, Default_Character, Default_Character);
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
-        (DialogForm,
-         Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       Refresh;
       Refresh(FormWindow);
@@ -341,15 +342,19 @@ package body MainWindow is
          when 70 | KEY_END =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
+            Post(SubMenu, False);
+            Delete(SubMenu);
+            UpdateDirectoryList(True);
             case CurrentIndex is
                when 1 =>
+                  NewAction := CREATEDIRECTORY;
                   ShowCreateForm("directory");
+                  return CREATE_FORM;
                when 2 =>
+                  NewAction := CREATEFILE;
                   ShowCreateForm("file");
+                  return CREATE_FORM;
                when 3 =>
-                  Post(SubMenu, False);
-                  Delete(SubMenu);
-                  UpdateDirectoryList(True);
                   return DIRECTORY_VIEW;
                when others =>
                   return ACTIONS_MENU;
@@ -362,5 +367,26 @@ package body MainWindow is
       end if;
       return ACTIONS_MENU;
    end Actions_Keys;
+
+   function Create_Keys(Key: Key_Code) return UI_Locations is
+      Result: Forms.Driver_Result := Unknown_Request;
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(DialogForm, REQ_NEXT_FIELD);
+            Result := Driver(DialogForm, REQ_END_LINE);
+         when 66 | KEY_DOWN =>
+            Result := Driver(DialogForm, REQ_PREV_FIELD);
+            Result := Driver(DialogForm, REQ_END_LINE);
+         when others =>
+            if Key /= 91 then
+               Result := Driver(DialogForm, Key);
+            end if;
+      end case;
+      if Result = Form_OK then
+         Refresh(FormWindow);
+      end if;
+      return CREATE_FORM;
+   end Create_Keys;
 
 end MainWindow;
