@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -41,17 +41,19 @@ package body UserCommands.UI is
       Button: Ttk_Button;
    begin
       Create(Tokens, Tcl.Tk.Ada.Grid.Grid_Size(CommandsFrame), " ");
+      Clear_Commands_List_Loop :
       for I in 0 .. (Natural'Value(Slice(Tokens, 2)) - 1) loop
          Create
            (Tokens,
             Tcl.Tk.Ada.Grid.Grid_Slaves
               (CommandsFrame, "-row" & Positive'Image(I)),
             " ");
+         Delete_Items_Loop :
          for J in 1 .. Slice_Count(Tokens) loop
             Item := Get_Widget(Slice(Tokens, J));
             Destroy(Item);
-         end loop;
-      end loop;
+         end loop Delete_Items_Loop;
+      end loop Clear_Commands_List_Loop;
       if UserCommandsList.Is_Empty then
          return;
       end if;
@@ -65,6 +67,7 @@ package body UserCommands.UI is
       Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
       Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
       Image.Interp := Get_Context;
+      Load_User_Commnads_Loop :
       for I in UserCommandsList.Iterate loop
          Label :=
            Create
@@ -111,7 +114,7 @@ package body UserCommands.UI is
          Tcl.Tk.Ada.Grid.Grid
            (Button, "-row" & Positive'Image(Row) & " -column 4");
          Row := Row + 1;
-      end loop;
+      end loop Load_User_Commnads_Loop;
    end UpdateUserCommandsList;
 
 end UserCommands.UI;
