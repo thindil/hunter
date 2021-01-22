@@ -286,6 +286,9 @@ package body MainWindow is
          when 10 =>
             case CurrentIndex is
                when 3 =>
+                  Post(SubMenu, False);
+                  Delete(SubMenu);
+                  UpdateDirectoryList(True);
                   return DIRECTORY_VIEW;
                when others =>
                   return ACTIONS_MENU;
