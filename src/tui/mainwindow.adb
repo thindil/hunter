@@ -17,6 +17,7 @@ with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
+with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
 with LoadData; use LoadData;
@@ -35,6 +36,8 @@ package body MainWindow is
    MenuWindow: Window;
    SubMenuWindow: Window;
    SubMenu: Menu;
+   DialogForm: Forms.Form;
+   FormWindow: Window;
 
    procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp) is
       Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
@@ -235,7 +238,8 @@ package body MainWindow is
       Set_Format(SubMenu, Lines - 5, 1);
       Set_Mark(SubMenu, "");
       Scale(SubMenu, MenuHeight, MenuLength);
-      SubMenuWindow := Create(MenuHeight + 2, MenuLength + 2, Lines / 3, Columns / 3);
+      SubMenuWindow :=
+        Create(MenuHeight + 2, MenuLength + 2, Lines / 3, Columns / 3);
       Set_Window(SubMenu, SubMenuWindow);
       Set_Sub_Window
         (SubMenu, Derived_Window(SubMenuWindow, MenuHeight, MenuLength, 1, 1));
@@ -277,6 +281,52 @@ package body MainWindow is
       return MAIN_MENU;
    end Menu_Keys;
 
+   procedure ShowCreateForm(Create_Type: String) is
+      Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
+      FormHeight: Line_Position;
+      FormLength: Column_Position;
+      Visibility: Cursor_Visibility := Normal;
+      FieldOptions: Field_Option_Set;
+   begin
+      Set_Cursor_Visibility(Visibility);
+      Create_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
+      Set_Buffer(Create_Fields.all(1), 0, "Enter a new " & Create_Type & "name:");
+      FieldOptions := Get_Options(Create_Fields.all(1));
+      FieldOptions.Active := False;
+      Set_Options(Create_Fields.all(1), FieldOptions);
+      Create_Fields.all(2) := New_Field(1, 12, 0, 18, 0, 0);
+      Set_Buffer(Create_Fields.all(2), 0, To_String(CurrentDirectory));
+      FieldOptions := Get_Options(Create_Fields.all(2));
+      FieldOptions.Auto_Skip := False;
+      Set_Options(Create_Fields.all(2), FieldOptions);
+      Create_Fields.all(3) := New_Field(1, 6, 1, 15, 0, 0);
+      Set_Buffer(Create_Fields.all(3), 0, "[Quit]");
+      FieldOptions := Get_Options(Create_Fields.all(3));
+      FieldOptions.Edit := False;
+      Set_Options(Create_Fields.all(3), FieldOptions);
+      Create_Fields.all(4) := New_Field(1, 7, 1, 23, 0, 0);
+      FieldOptions := Get_Options(Create_Fields.all(4));
+      FieldOptions.Edit := False;
+      Set_Options(Create_Fields.all(4), FieldOptions);
+      Set_Buffer(Create_Fields.all(4), 0, "[Create]");
+      Create_Fields.all(5) := Null_Field;
+      DialogForm := New_Form(Create_Fields);
+      Set_Current(DialogForm, Create_Fields(2));
+      Set_Options(DialogForm, (others => False));
+      Scale(DialogForm, FormHeight, FormLength);
+      FormWindow :=
+        Create
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
+           ((Columns / 2) - (FormLength / 2)));
+      Set_Window(DialogForm, FormWindow);
+      Set_Sub_Window
+        (DialogForm,
+         Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+      Post(DialogForm);
+      Refresh;
+      Refresh(FormWindow);
+   end ShowCreateForm;
+
    function Actions_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
@@ -292,6 +342,10 @@ package body MainWindow is
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
             case CurrentIndex is
+               when 1 =>
+                  ShowCreateForm("directory");
+               when 2 =>
+                  ShowCreateForm("file");
                when 3 =>
                   Post(SubMenu, False);
                   Delete(SubMenu);
