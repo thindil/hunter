@@ -287,6 +287,7 @@ package body MainWindow is
       FormLength: Column_Position;
       Visibility: Cursor_Visibility := Normal;
       FieldOptions: Field_Option_Set;
+      UnusedResult: Forms.Driver_Result := Unknown_Request;
    begin
       Set_Cursor_Visibility(Visibility);
       Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
@@ -300,8 +301,8 @@ package body MainWindow is
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
-      Create_Fields.all(3) := New_Field(1, 6, 2, 15, 0, 0);
-      Set_Buffer(Create_Fields.all(3), 0, "[Quit]");
+      Create_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
+      Set_Buffer(Create_Fields.all(3), 0, "[Cancel]");
       FieldOptions := Get_Options(Create_Fields.all(3));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(3), FieldOptions);
@@ -324,6 +325,7 @@ package body MainWindow is
       Set_Sub_Window
         (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
+      UnusedResult := Driver(DialogForm, REQ_END_LINE);
       Refresh;
       Refresh(FormWindow);
    end ShowCreateForm;
@@ -370,14 +372,26 @@ package body MainWindow is
 
    function Create_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
+      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when 65 | KEY_UP =>
-            Result := Driver(DialogForm, REQ_NEXT_FIELD);
-            Result := Driver(DialogForm, REQ_END_LINE);
+            Result := Driver(DialogForm, F_Previous_Field);
+            Result := Driver(DialogForm, F_End_Line);
          when 66 | KEY_DOWN =>
-            Result := Driver(DialogForm, REQ_PREV_FIELD);
-            Result := Driver(DialogForm, REQ_END_LINE);
+            Result := Driver(DialogForm, F_Next_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when 127 =>
+            Result := Driver(DialogForm, F_Delete_Previous);
+         when 10 =>
+            if FieldIndex = 3 then
+               Set_Cursor_Visibility(Visibility);
+               Post(DialogForm, False);
+               Delete(DialogForm);
+               UpdateDirectoryList(True);
+               return DIRECTORY_VIEW;
+            end if;
          when others =>
             if Key /= 91 then
                Result := Driver(DialogForm, Key);
