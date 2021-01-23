@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -194,6 +194,7 @@ package body Utils.UI is
             Toolbar.Name :=
               New_String(".mainframe.paned.previewframe.pathframe");
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+            Update_Buttons_Loop :
             for I in ButtonsNames'Range loop
                if I < CurrentButton then
                   Toolbar.Name :=
@@ -218,7 +219,7 @@ package body Utils.UI is
                   Tcl.Tk.Ada.Pack.Pack_Configure
                     (Toolbar, "-side " & To_String(Side));
                end if;
-            end loop;
+            end loop Update_Buttons_Loop;
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.separator3");
             Tcl.Tk.Ada.Pack.Pack_Configure
@@ -229,6 +230,7 @@ package body Utils.UI is
               (Toolbar, "-after .mainframe.toolbars.actiontoolbar.movebutton");
             Tcl.Tk.Ada.Pack.Pack_Configure
               (Toolbar, "-side " & To_String(Side));
+            Remove_Buttons_Loop :
             for I in ButtonsNames'Range loop
                if I /= CurrentButton then
                   Toolbar.Name :=
@@ -237,7 +239,7 @@ package body Utils.UI is
                        To_String(ButtonsNames(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
                end if;
-            end loop;
+            end loop Remove_Buttons_Loop;
          end if;
       end if;
       if Action = SHOWTRASH then
@@ -245,6 +247,7 @@ package body Utils.UI is
             Tcl.Tk.Ada.Pack.Pack
               (Toolbar,
                "-after .mainframe.toolbars.actiontoolbar.deletebutton");
+            Remove_Trash_Buttons_Loop :
             for I in ButtonsNames'Range loop
                if I /= CurrentButton then
                   Toolbar.Name :=
@@ -253,7 +256,7 @@ package body Utils.UI is
                        To_String(ButtonsNames(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
                end if;
-            end loop;
+            end loop Remove_Trash_Buttons_Loop;
             Entry_Configure
               (DeleteMenu, "0",
                "-label {" & Mc(Get_Context, "{Delete selected}") & "}");
@@ -263,6 +266,7 @@ package body Utils.UI is
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.separator3");
             if Winfo_Get(Toolbar, "ismapped") = "1" then
+               Update_Trash_Button_Loop :
                for I in ButtonsNames'Range loop
                   if I < CurrentButton then
                      Toolbar.Name :=
@@ -283,7 +287,7 @@ package body Utils.UI is
                         "-after .mainframe.toolbars.actiontoolbar." &
                         To_String(ButtonsNames(I - 1)) & "button");
                   end if;
-               end loop;
+               end loop Update_Trash_Button_Loop;
             else
                if not Settings.ToolbarsOnTop then
                   configure(Toolbar, "-orient horizontal");
@@ -292,6 +296,7 @@ package body Utils.UI is
                   configure(Toolbar, "-orient vertical");
                   Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill y -pady 5 -side left");
                end if;
+               Add_Buttons_Loop :
                for I in ButtonsNames'Range loop
                   Toolbar.Name :=
                     New_String
@@ -300,7 +305,7 @@ package body Utils.UI is
                   Tcl.Tk.Ada.Pack.Pack
                     (Toolbar,
                      "-before .mainframe.toolbars.actiontoolbar.separator3");
-               end loop;
+               end loop Add_Buttons_Loop;
             end if;
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.separator3");
