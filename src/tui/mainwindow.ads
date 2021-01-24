@@ -72,10 +72,11 @@ package MainWindow is
    -- PREVIEW        - The preview window
    -- ACTIONS_MENU   - The actions menu
    -- CREATE_FORM    - The create a new directory or file form
+   -- DELETE_FORM    - The delete files confirmation form
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
-      CREATE_FORM);
+      CREATE_FORM, DELETE_FORM);
    -- ****
 
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container
@@ -185,6 +186,18 @@ package MainWindow is
    -- The currently selected UI element of the program
    -- SOURCE
    function Create_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
+   -- ****f* MainWindowTUI/MainWindowTUI.Delete_Keys
+   -- FUNCTION
+   -- Handles keys events when the delete confirmation form is active element
+   -- of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Delete_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end MainWindow;
