@@ -502,7 +502,6 @@ package body ShowItems is
       else
          ShowInfo;
       end if;
-      Refresh;
    end Show_Selected;
 
    -- ****o* ShowItemsTUI/ShowItemsTUI.Set_Permissions_Command
