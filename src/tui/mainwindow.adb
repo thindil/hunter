@@ -15,11 +15,14 @@
 
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
+with CreateItems; use CreateItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
@@ -297,7 +300,7 @@ package body MainWindow is
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer(Create_Fields.all(2), 0, To_String(CurrentDirectory));
+      Set_Buffer(Create_Fields.all(2), 0, "");
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
@@ -385,7 +388,10 @@ package body MainWindow is
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
          when 10 =>
-            if FieldIndex = 3 then
+            if FieldIndex = 4 then
+               Create_Item(Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+            end if;
+            if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
