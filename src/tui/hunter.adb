@@ -157,6 +157,8 @@ begin
                UILocation := Actions_Keys(Key);
             when CREATE_FORM =>
                UILocation := Create_Keys(Key);
+            when DELETE_FORM =>
+               UILocation := Delete_Keys(Key);
             when others =>
                null;
          end case;

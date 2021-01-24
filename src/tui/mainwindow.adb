@@ -229,11 +229,12 @@ package body MainWindow is
    begin
       case Menu_Type is
          when ACTIONS_MENU =>
-            Menu_Items := new Item_Array(1 .. 4);
+            Menu_Items := new Item_Array(1 .. 5);
             Menu_Items.all(1) := New_Item("Create new directory");
             Menu_Items.all(2) := New_Item("Create new file");
-            Menu_Items.all(3) := New_Item("Close");
-            Menu_Items.all(4) := Null_Item;
+            Menu_Items.all(3) := New_Item("Delete selected");
+            Menu_Items.all(4) := New_Item("Close");
+            Menu_Items.all(5) := Null_Item;
          when others =>
             null;
       end case;
@@ -333,6 +334,58 @@ package body MainWindow is
       Refresh(FormWindow);
    end ShowCreateForm;
 
+   procedure ShowDeleteForm is
+      Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
+      FormHeight: Line_Position;
+      FormLength: Column_Position;
+      Visibility: Cursor_Visibility := Normal;
+      FieldOptions: Field_Option_Set;
+   begin
+      Set_Cursor_Visibility(Visibility);
+      Delete_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
+      if Settings.DeleteFiles or NewAction = DELETETRASH then
+         Set_Buffer
+            (Delete_Fields.all(1), 0, "Delete?");
+      else
+         Set_Buffer
+            (Delete_Fields.all(1), 0, "Move to Trash?");
+      end if;
+      FieldOptions := Get_Options(Delete_Fields.all(1));
+      FieldOptions.Active := False;
+      Set_Options(Delete_Fields.all(1), FieldOptions);
+      Delete_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
+      Set_Buffer(Delete_Fields.all(2), 0, "List of files.");
+      FieldOptions := Get_Options(Delete_Fields.all(2));
+      FieldOptions.Active := False;
+      Set_Options(Delete_Fields.all(2), FieldOptions);
+      Delete_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
+      Set_Buffer(Delete_Fields.all(3), 0, "[Cancel]");
+      FieldOptions := Get_Options(Delete_Fields.all(3));
+      FieldOptions.Edit := False;
+      Set_Options(Delete_Fields.all(3), FieldOptions);
+      Delete_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
+      FieldOptions := Get_Options(Delete_Fields.all(4));
+      FieldOptions.Edit := False;
+      Set_Options(Delete_Fields.all(4), FieldOptions);
+      Set_Buffer(Delete_Fields.all(4), 0, "[Delete]");
+      Delete_Fields.all(5) := Null_Field;
+      DialogForm := New_Form(Delete_Fields);
+      Set_Current(DialogForm, Delete_Fields(3));
+      Set_Options(DialogForm, (others => False));
+      Scale(DialogForm, FormHeight, FormLength);
+      FormWindow :=
+        Create
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
+           ((Columns / 2) - (FormLength / 2)));
+      Box(FormWindow, Default_Character, Default_Character);
+      Set_Window(DialogForm, FormWindow);
+      Set_Sub_Window
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+      Post(DialogForm);
+      Refresh;
+      Refresh(FormWindow);
+   end ShowDeleteForm;
+
    function Actions_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
@@ -360,6 +413,10 @@ package body MainWindow is
                   ShowCreateForm("file");
                   return CREATE_FORM;
                when 3 =>
+                  NewAction := (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
+                  ShowDeleteForm;
+                  return DELETE_FORM;
+               when 4 =>
                   return DIRECTORY_VIEW;
                when others =>
                   return ACTIONS_MENU;
@@ -408,5 +465,30 @@ package body MainWindow is
       end if;
       return CREATE_FORM;
    end Create_Keys;
+
+   function Delete_Keys(Key: Key_Code) return UI_Locations is
+      Result: Forms.Driver_Result := Unknown_Request;
+      --FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      Visibility: Cursor_Visibility := Invisible;
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(DialogForm, F_Previous_Field);
+         when 66 | KEY_DOWN =>
+            Result := Driver(DialogForm, F_Next_Field);
+         when 10 =>
+            Set_Cursor_Visibility(Visibility);
+            Post(DialogForm, False);
+            Delete(DialogForm);
+            UpdateDirectoryList(True);
+            return DIRECTORY_VIEW;
+         when others =>
+            null;
+      end case;
+      if Result = Form_OK then
+         Refresh(FormWindow);
+      end if;
+      return DELETE_FORM;
+   end Delete_Keys;
 
 end MainWindow;
