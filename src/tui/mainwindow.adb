@@ -52,9 +52,10 @@ package body MainWindow is
    begin
       Interpreter := Interp;
       ActivateItems.AddCommands;
+      Create_Program_Menu_Loop:
       for I in Main_Menu_Array'Range loop
          Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
-      end loop;
+      end loop Create_Program_Menu_Loop;
       Menu_Items.all(7) := Null_Item;
       ProgramMenu := New_Menu(Menu_Items);
       Set_Format(ProgramMenu, 1, 6);
@@ -127,6 +128,7 @@ package body MainWindow is
          Box(ListWindow, Default_Character, Default_Character);
          Add(ListWindow, 1, 10, "Name");
          Index := ItemsList.First_Index;
+         Load_Directory_View_Loop:
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
             if not Settings.ShowHidden and ItemsList(I).IsHidden then
                goto End_Of_Loop;
@@ -138,10 +140,11 @@ package body MainWindow is
             end if;
             Index := Index + 1;
             <<End_Of_Loop>>
-         end loop;
+         end loop Load_Directory_View_Loop;
+         Fill_Empty_Entries_Loop:
          for I in Index .. Menu_Items'Last loop
             Menu_Items.all(I) := Null_Item;
-         end loop;
+         end loop Fill_Empty_Entries_Loop;
          DirectoryList := New_Menu(Menu_Items);
          Switch_Options(DirectoryList, (One_Valued => False, others => <>));
          Set_Format(DirectoryList, Lines - 5, 1);
@@ -203,12 +206,13 @@ package body MainWindow is
             Result := Driver(Path, M_Last_Item);
          when 10 =>
             CurrentDirectory := To_Unbounded_String("/");
+            Update_Current_Directory_Loop:
             for I in 2 .. Get_Index(Current(Path)) loop
                Append(CurrentDirectory, Name(Items(Path, I)));
                if I < Get_Index(Current(Path)) then
                   Append(CurrentDirectory, "/");
                end if;
-            end loop;
+            end loop Update_Current_Directory_Loop;
             LoadDirectory(To_String(CurrentDirectory));
             UpdateDirectoryList(True);
             UpdateWatch(To_String(CurrentDirectory));
@@ -361,9 +365,10 @@ package body MainWindow is
       else
          ListLength := Positive(SelectedItems.Length);
       end if;
+      Set_Delete_List_Loop:
       for I in 1 .. ListLength loop
          Append(DeleteList, SelectedItems(I) & LF);
-      end loop;
+      end loop Set_Delete_List_Loop;
       if ListLength = 10 and SelectedItems.Length > 10 then
          ListLength := 11;
          Append(DeleteList, "and more");
