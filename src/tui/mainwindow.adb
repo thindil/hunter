@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
@@ -340,6 +341,8 @@ package body MainWindow is
       FormLength: Column_Position;
       Visibility: Cursor_Visibility := Normal;
       FieldOptions: Field_Option_Set;
+      DeleteList: Unbounded_String;
+      ListLength: Positive;
    begin
       Set_Cursor_Visibility(Visibility);
       Delete_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
@@ -353,8 +356,20 @@ package body MainWindow is
       FieldOptions := Get_Options(Delete_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Delete_Fields.all(1), FieldOptions);
-      Delete_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer(Delete_Fields.all(2), 0, "List of files.");
+      if SelectedItems.Length > 10 then
+         ListLength := 10;
+      else
+         ListLength := Positive(SelectedItems.Length);
+      end if;
+      for I in 1 .. ListLength loop
+         Append(DeleteList, SelectedItems(I) & LF);
+      end loop;
+      if ListLength = 10 and SelectedItems.Length > 10 then
+         ListLength := 11;
+         Append(DeleteList, "and more");
+      end if;
+      Delete_Fields.all(2) := New_Field(Line_Position(ListLength), 40, 1, 0, 0, 0);
+      Set_Buffer(Delete_Fields.all(2), 0, To_String(DeleteList));
       FieldOptions := Get_Options(Delete_Fields.all(2));
       FieldOptions.Active := False;
       Set_Options(Delete_Fields.all(2), FieldOptions);
