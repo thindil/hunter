@@ -146,7 +146,7 @@ package body MainWindow is
             Menu_Items.all(I) := Null_Item;
          end loop Fill_Empty_Entries_Loop;
          DirectoryList := New_Menu(Menu_Items);
-         Switch_Options(DirectoryList, (One_Valued => False, others => <>));
+         Set_Options(DirectoryList, (One_Valued => False, others => <>));
          Set_Format(DirectoryList, Lines - 5, 1);
          Set_Mark(DirectoryList, "");
          Set_Window(DirectoryList, ListWindow);
