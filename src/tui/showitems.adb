@@ -243,6 +243,7 @@ package body ShowItems is
            New_Pad
              (Line_Position(SecondItemsList.Length) + 1, (Columns / 2) - 1);
          Add(PreviewPad, 0, Columns / 4, "Name");
+         Load_Preview_Directory_Loop:
          for Item of SecondItemsList loop
             if not Settings.ShowHidden and Item.IsHidden then
                goto End_Of_Loop;
@@ -250,7 +251,7 @@ package body ShowItems is
             Add(PreviewPad, Line, 0, To_String(Item.Name));
             Line := Line + 1;
             <<End_Of_Loop>>
-         end loop;
+         end loop Load_Preview_Directory_Loop;
          Refresh
            (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
       else
@@ -277,6 +278,7 @@ package body ShowItems is
                      Amount: Natural;
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
+                     Load_Text_File_View_Loop:
                      while not End_Of_File(File) loop
                         Get_Line(File, FileLine, Amount);
                         Add
@@ -284,8 +286,8 @@ package body ShowItems is
                            FileLine(FileLine'First .. Amount) & LF);
                         FileLine := (others => ' ');
                         LinesAmount := LinesAmount + 1;
-                        exit when LinesAmount = Lines - 3;
-                     end loop;
+                        exit Load_Text_File_View_Loop when LinesAmount = Lines - 3;
+                     end loop Load_Text_File_View_Loop;
                      Close(File);
                      Refresh(PreviewWindow);
                      Refresh
@@ -296,6 +298,7 @@ package body ShowItems is
                      StartText: Positive := Start;
                      EndPos: Positive := Start + LineLength - 1;
                   begin
+                     Print_Text_Loop:
                      loop
                         if EndText > EndPos then
                            begin
@@ -310,7 +313,7 @@ package body ShowItems is
                            StartText := StartText + LineLength;
                            EndPos := EndPos + LineLength;
                            LinesAmount := LinesAmount + 1;
-                           exit when LinesAmount = Lines - 3;
+                           exit Print_Text_Loop when LinesAmount = Lines - 3;
                         elsif StartText <= EndText then
                            begin
                               Add
@@ -320,11 +323,11 @@ package body ShowItems is
                               when Curses_Exception =>
                                  LinesAmount := Lines - 3;
                            end;
-                           exit;
+                           exit Print_Text_Loop;
                         else
-                           exit;
+                           exit Print_Text_Loop;
                         end if;
-                     end loop;
+                     end loop Print_Text_Loop;
                   end ShowText;
                begin
                   if not Settings.ColorText or ExecutableName = "" then
@@ -358,29 +361,33 @@ package body ShowItems is
                              Length(FileLine));
                         FirstLine := False;
                      end if;
-                     exit when End_Of_File(File);
+                     exit Read_File_Loop when End_Of_File(File);
+                     Replace_Element_Loop:
                      loop
                         StartIndex := Index(FileLine, "&gt;");
-                        exit when StartIndex = 0;
+                        exit Replace_Element_Loop when StartIndex = 0;
                         Replace_Slice
                           (FileLine, StartIndex, StartIndex + 3, ">");
-                     end loop;
+                     end loop Replace_Element_Loop;
+                     Replace_Element_2_Loop:
                      loop
                         StartIndex := Index(FileLine, "&lt;");
-                        exit when StartIndex = 0;
+                        exit Replace_Element_2_Loop when StartIndex = 0;
                         Replace_Slice
                           (FileLine, StartIndex, StartIndex + 3, "<");
-                     end loop;
+                     end loop Replace_Element_2_Loop;
+                     Replace_Element_3_Loop:
                      loop
                         StartIndex := Index(FileLine, "&amp;");
-                        exit when StartIndex = 0;
+                        exit Replace_Element_3_Loop when StartIndex = 0;
                         Replace_Slice
                           (FileLine, StartIndex, StartIndex + 4, "&");
-                     end loop;
+                     end loop Replace_Element_3_Loop;
                      StartIndex := 1;
+                     Highlight_Text_Loop:
                      loop
                         StartIndex := Index(FileLine, "<span", StartIndex);
-                        exit when StartIndex = 0;
+                        exit Highlight_Text_Loop when StartIndex = 0;
                         if StartIndex > 1 then
                            ShowText(1, StartIndex - 1);
                            exit Read_File_Loop when LinesAmount = Lines - 3;
@@ -411,6 +418,7 @@ package body ShowItems is
                                 (PreviewPad,
                                  (Dim_Character => True, others => False));
                            elsif TagName /= Null_Unbounded_String then
+                              Set_Colors_Loop:
                               for I in Colors'Range loop
                                  if Colors(I) = "      " then
                                     Init_Color
@@ -425,14 +433,14 @@ package body ShowItems is
                                     Set_Character_Attributes
                                       (PreviewPad, Normal_Video,
                                        Color_Pair(I));
-                                    exit;
+                                    exit Set_Colors_Loop;
                                  elsif Colors(I) = To_String(TagName) then
                                     Set_Character_Attributes
                                       (PreviewPad, Normal_Video,
                                        Color_Pair(I));
-                                    exit;
+                                    exit Set_Colors_Loop;
                                  end if;
-                              end loop;
+                              end loop Set_Colors_Loop;
                            end if;
                            ShowText(StartIndex, EndIndex);
                            exit Read_File_Loop when LinesAmount = Lines - 3;
@@ -446,7 +454,7 @@ package body ShowItems is
                         FileLine :=
                           Unbounded_Slice
                             (FileLine, EndIndex + 8, Length(FileLine));
-                     end loop;
+                     end loop Highlight_Text_Loop;
                      if Length(FileLine) > 0 then
                         ShowText(1, Length(FileLine));
                         exit Read_File_Loop when LinesAmount = Lines - 3;
@@ -477,13 +485,14 @@ package body ShowItems is
    begin
       SelectedItems.Clear;
       if Item_Count(DirectoryList) > 0 then
+         Update_Selected_Items_Loop:
          for I in 1 .. Item_Count(DirectoryList) loop
             if Value(Items(DirectoryList, I)) or
               Current(DirectoryList) = Items(DirectoryList, I) then
                SelectedItems.Append
                  (To_Unbounded_String(Name(Items(DirectoryList, I))));
             end if;
-         end loop;
+         end loop Update_Selected_Items_Loop;
       else
          SelectedItems.Append(CurrentDirectory);
       end if;
