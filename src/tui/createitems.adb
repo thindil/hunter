@@ -15,7 +15,9 @@
 
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -26,48 +28,74 @@ with Messages; use Messages;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
+with Utils.UI; use Utils.UI;
 
 package body CreateItems is
 
-   procedure Create_Item(NewName: String) is
+   -- ****o* CreateItemsTUI/CreateItemsTUI.Create_Item_Command
+   -- FUNCTION
+   -- Create the new item of the selected name
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- CreateItem itemname
+   -- ItemName is the name of item to create
+   -- SOURCE
+   function Create_Item_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Create_Item_Command
+     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
+      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
+      return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Argc);
       NewItemName, ActionString, ActionBlocker, Destination: Unbounded_String;
       File: File_Descriptor;
       Hunter_Create_Exception: exception;
    begin
-      NewItemName := CurrentDirectory & "/" & NewName;
+      NewItemName := CurrentDirectory & "/" & CArgv.Arg(Argv, 1);
       if Exists(To_String(NewItemName)) or
         Is_Symbolic_Link(To_String(NewItemName)) then
         if NewAction = CREATEFILE then
          ActionString :=
            To_Unbounded_String
-             (Mc(Interpreter, "{create}") & " file " &
-              Mc(Interpreter, "{with}"));
+             (Mc(Interp, "{create}") & " file " &
+              Mc(Interp, "{with}"));
         elsif NewAction = CREATEDIRECTORY then
          ActionString :=
            To_Unbounded_String
-             (Mc(Interpreter, "{create}") & " directory " &
-              Mc(Interpreter, "{with}"));
+             (Mc(Interp, "{create}") & " directory " &
+              Mc(Interp, "{with}"));
         else
          ActionString :=
            To_Unbounded_String
-             (Mc(Interpreter, "{create}") & " link " &
-              Mc(Interpreter, "{with}"));
+             (Mc(Interp, "{create}") & " link " &
+              Mc(Interp, "{with}"));
         end if;
          ActionBlocker :=
            (if Is_Directory(To_String(NewItemName)) then
-              To_Unbounded_String(Mc(Interpreter, "directory"))
-            else To_Unbounded_String(Mc(Interpreter, "file")));
+              To_Unbounded_String(Mc(Interp, "directory"))
+            else To_Unbounded_String(Mc(Interp, "file")));
          ShowMessage
-           (Mc(Interpreter, "{You can't}") & " " & To_String(ActionString) & " " &
-            Mc(Interpreter, "{name}") & " '" & To_String(NewItemName) & "' " &
-            Mc(Interpreter, "{because there exists}") & " " &
-            To_String(ActionBlocker) & " " & Mc(Interpreter, "{with that name.}"));
+           (Mc(Interp, "{You can't}") & " " & To_String(ActionString) & " " &
+            Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
+            Mc(Interp, "{because there exists}") & " " &
+            To_String(ActionBlocker) & " " & Mc(Interp, "{with that name.}"));
          goto End_Of_Create;
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewItemName))) then
          ShowMessage
-           (Mc(Interpreter, "{You don't have permissions to write to}") & " " &
+           (Mc(Interp, "{You don't have permissions to write to}") & " " &
             Containing_Directory(To_String(NewItemName)));
          goto End_Of_Create;
       end if;
@@ -87,12 +115,12 @@ package body CreateItems is
 --                   .Name;
 --            end if;
             Tcl_Eval
-              (Interpreter,
+              (Interp,
                "file link -symbolic {" & To_String(NewItemName) & "} {" &
                To_String(Destination) & "}");
          when others =>
             raise Hunter_Create_Exception
-              with Mc(Interpreter, "{Invalid action type}");
+              with Mc(Interp, "{Invalid action type}");
       end case;
       if not Settings.StayInOld and then NewAction /= CREATELINK then
          CurrentDirectory :=
@@ -101,6 +129,12 @@ package body CreateItems is
       LoadDirectory(To_String(CurrentDirectory));
       UpdateWatch(To_String(CurrentDirectory));
       <<End_Of_Create>>
-   end Create_Item;
+      return TCL_OK;
+   end Create_Item_Command;
+
+   procedure AddCommands is
+   begin
+      AddCommand("CreateItem", Create_Item_Command'Access);
+   end AddCommands;
 
 end CreateItems;

@@ -20,11 +20,11 @@
 package CreateItems is
 -- ****
 
-   -- ****f* CreateItemsTUI/CreateItemsTUI.Create_Item
+   -- ****f* CreateItemsTUI/CreateItemsTUI.AddCommands
    -- FUNCTION
-   -- Create the selected type of item
+   -- Add Tcl commands related to the creation of items
    -- SOURCE
-   procedure Create_Item(NewName: String);
+   procedure AddCommands;
    -- ****
 
 end CreateItems;

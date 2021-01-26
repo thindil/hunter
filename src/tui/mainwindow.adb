@@ -23,7 +23,7 @@ with GNAT.String_Split; use GNAT.String_Split;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
-with CreateItems; use CreateItems;
+with CreateItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
@@ -52,7 +52,8 @@ package body MainWindow is
    begin
       Interpreter := Interp;
       ActivateItems.AddCommands;
-      Create_Program_Menu_Loop:
+      CreateItems.AddCommands;
+      Create_Program_Menu_Loop :
       for I in Main_Menu_Array'Range loop
          Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
       end loop Create_Program_Menu_Loop;
@@ -128,7 +129,7 @@ package body MainWindow is
          Box(ListWindow, Default_Character, Default_Character);
          Add(ListWindow, 1, 10, "Name");
          Index := ItemsList.First_Index;
-         Load_Directory_View_Loop:
+         Load_Directory_View_Loop :
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
             if not Settings.ShowHidden and ItemsList(I).IsHidden then
                goto End_Of_Loop;
@@ -141,7 +142,7 @@ package body MainWindow is
             Index := Index + 1;
             <<End_Of_Loop>>
          end loop Load_Directory_View_Loop;
-         Fill_Empty_Entries_Loop:
+         Fill_Empty_Entries_Loop :
          for I in Index .. Menu_Items'Last loop
             Menu_Items.all(I) := Null_Item;
          end loop Fill_Empty_Entries_Loop;
@@ -206,7 +207,7 @@ package body MainWindow is
             Result := Driver(Path, M_Last_Item);
          when 10 =>
             CurrentDirectory := To_Unbounded_String("/");
-            Update_Current_Directory_Loop:
+            Update_Current_Directory_Loop :
             for I in 2 .. Get_Index(Current(Path)) loop
                Append(CurrentDirectory, Name(Items(Path, I)));
                if I < Get_Index(Current(Path)) then
@@ -351,11 +352,9 @@ package body MainWindow is
       Set_Cursor_Visibility(Visibility);
       Delete_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
       if Settings.DeleteFiles or NewAction = DELETETRASH then
-         Set_Buffer
-            (Delete_Fields.all(1), 0, "Delete?");
+         Set_Buffer(Delete_Fields.all(1), 0, "Delete?");
       else
-         Set_Buffer
-            (Delete_Fields.all(1), 0, "Move to Trash?");
+         Set_Buffer(Delete_Fields.all(1), 0, "Move to Trash?");
       end if;
       FieldOptions := Get_Options(Delete_Fields.all(1));
       FieldOptions.Active := False;
@@ -365,7 +364,7 @@ package body MainWindow is
       else
          ListLength := Positive(SelectedItems.Length);
       end if;
-      Set_Delete_List_Loop:
+      Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
          Append(DeleteList, SelectedItems(I) & LF);
       end loop Set_Delete_List_Loop;
@@ -373,7 +372,8 @@ package body MainWindow is
          ListLength := 11;
          Append(DeleteList, "and more");
       end if;
-      Delete_Fields.all(2) := New_Field(Line_Position(ListLength), 40, 1, 0, 0, 0);
+      Delete_Fields.all(2) :=
+        New_Field(Line_Position(ListLength), 40, 1, 0, 0, 0);
       Set_Buffer(Delete_Fields.all(2), 0, To_String(DeleteList));
       FieldOptions := Get_Options(Delete_Fields.all(2));
       FieldOptions.Active := False;
@@ -433,7 +433,8 @@ package body MainWindow is
                   ShowCreateForm("file");
                   return CREATE_FORM;
                when 3 =>
-                  NewAction := (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
+                  NewAction :=
+                    (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
                   ShowDeleteForm;
                   return DELETE_FORM;
                when 4 =>
@@ -466,7 +467,10 @@ package body MainWindow is
             Result := Driver(DialogForm, F_Delete_Previous);
          when 10 =>
             if FieldIndex = 4 then
-               Create_Item(Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+               Tcl_Eval
+                 (Interpreter,
+                  "CreateItem " &
+                  Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
             end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
