@@ -97,70 +97,76 @@ package body MainWindow is
       CurrentIndex: Positive := 1;
       Item: Unbounded_String;
    begin
-      if Clear then
-         Terminal_Interface.Curses.Clear(PathButtons);
-         CurrentDirectory :=
-           To_Unbounded_String
-             (Normalize_Pathname(To_String(CurrentDirectory)));
-         Index := Count(CurrentDirectory, "/") + 1;
-         if CurrentDirectory /= To_Unbounded_String("/") then
-            Path_Items := new Item_Array(1 .. Index + 1);
-            Path_Items.all(1) := New_Item("/");
-            Create(Tokens, To_String(CurrentDirectory), "/");
-            for I in 2 .. Slice_Count(Tokens) loop
-               Path_Items.all(Positive(I)) := New_Item(Slice(Tokens, I));
-            end loop;
-            Path_Items.all(Index + 1) := Null_Item;
-         else
-            Path_Items := new Item_Array(1 .. 2);
-            Path_Items.all(1) := New_Item("/");
-            Path_Items.all(2) := Null_Item;
-            Index := 1;
-         end if;
-         Path := New_Menu(Path_Items);
-         Set_Format(Path, 1, 5);
-         Set_Mark(Path, "");
-         Set_Window(Path, PathButtons);
-         Set_Sub_Window
-           (Path, Derived_Window(PathButtons, 1, (Columns / 2) - 2, 0, 1));
-         Post(Path);
-         Set_Current(Path, Path_Items.all(Index));
-         Terminal_Interface.Curses.Clear(ListWindow);
-         Box(ListWindow, Default_Character, Default_Character);
-         Add(ListWindow, 1, 10, "Name");
-         Index := ItemsList.First_Index;
-         Load_Directory_View_Loop :
-         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            if not Settings.ShowHidden and ItemsList(I).IsHidden then
-               goto End_Of_Loop;
-            end if;
-            Menu_Items.all(Index) := New_Item(To_String(ItemsList(I).Name));
-            Item := CurrentDirectory & "/" & ItemsList(I).Name;
-            if Item = CurrentSelected then
-               CurrentIndex := Index;
-            end if;
-            Index := Index + 1;
-            <<End_Of_Loop>>
-         end loop Load_Directory_View_Loop;
-         Fill_Empty_Entries_Loop :
-         for I in Index .. Menu_Items'Last loop
-            Menu_Items.all(I) := Null_Item;
-         end loop Fill_Empty_Entries_Loop;
-         DirectoryList := New_Menu(Menu_Items);
-         Set_Options(DirectoryList, (One_Valued => False, others => <>));
-         Set_Format(DirectoryList, Lines - 5, 1);
-         Set_Mark(DirectoryList, "");
-         Set_Window(DirectoryList, ListWindow);
-         Set_Sub_Window
-           (DirectoryList,
-            Derived_Window(ListWindow, Lines - 5, (Columns / 2) - 2, 2, 1));
-         Post(DirectoryList);
-         Set_Current(DirectoryList, Menu_Items.all(CurrentIndex));
-         Refresh;
-         Refresh(PathButtons);
-         Refresh(ListWindow);
-         Show_Selected;
+      Terminal_Interface.Curses.Clear(PathButtons);
+      CurrentDirectory :=
+        To_Unbounded_String(Normalize_Pathname(To_String(CurrentDirectory)));
+      Index := Count(CurrentDirectory, "/") + 1;
+      if CurrentDirectory /= To_Unbounded_String("/") then
+         Path_Items := new Item_Array(1 .. Index + 1);
+         Path_Items.all(1) := New_Item("/");
+         Create(Tokens, To_String(CurrentDirectory), "/");
+         for I in 2 .. Slice_Count(Tokens) loop
+            Path_Items.all(Positive(I)) := New_Item(Slice(Tokens, I));
+         end loop;
+         Path_Items.all(Index + 1) := Null_Item;
+      else
+         Path_Items := new Item_Array(1 .. 2);
+         Path_Items.all(1) := New_Item("/");
+         Path_Items.all(2) := Null_Item;
+         Index := 1;
       end if;
+      Path := New_Menu(Path_Items);
+      Set_Format(Path, 1, 5);
+      Set_Mark(Path, "");
+      Set_Window(Path, PathButtons);
+      Set_Sub_Window
+        (Path, Derived_Window(PathButtons, 1, (Columns / 2) - 2, 0, 1));
+      Post(Path);
+      Set_Current(Path, Path_Items.all(Index));
+      Terminal_Interface.Curses.Clear(ListWindow);
+      Box(ListWindow, Default_Character, Default_Character);
+      Add(ListWindow, 1, 10, "Name");
+      Index := ItemsList.First_Index;
+      Load_Directory_View_Loop :
+      for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+         if not Settings.ShowHidden and ItemsList(I).IsHidden then
+            goto End_Of_Loop;
+         end if;
+         Menu_Items.all(Index) := New_Item(To_String(ItemsList(I).Name));
+         Item := CurrentDirectory & "/" & ItemsList(I).Name;
+         if Item = CurrentSelected then
+            CurrentIndex := Index;
+         end if;
+         Index := Index + 1;
+         <<End_Of_Loop>>
+      end loop Load_Directory_View_Loop;
+      Fill_Empty_Entries_Loop :
+      for I in Index .. Menu_Items'Last loop
+         Menu_Items.all(I) := Null_Item;
+      end loop Fill_Empty_Entries_Loop;
+      DirectoryList := New_Menu(Menu_Items);
+      Set_Options(DirectoryList, (One_Valued => False, others => <>));
+      Set_Format(DirectoryList, Lines - 5, 1);
+      Set_Mark(DirectoryList, "");
+      Set_Window(DirectoryList, ListWindow);
+      Set_Sub_Window
+        (DirectoryList,
+         Derived_Window(ListWindow, Lines - 5, (Columns / 2) - 2, 2, 1));
+      Post(DirectoryList);
+      Set_Current(DirectoryList, Menu_Items.all(CurrentIndex));
+      if not Clear then
+         Update_Selected_Loop :
+         for I in 1 .. Item_Count(DirectoryList) loop
+            if SelectedItems.Contains
+                (To_Unbounded_String(Name(Items(DirectoryList, I)))) then
+               Set_Value(Items(DirectoryList, I), True);
+            end if;
+         end loop Update_Selected_Loop;
+      end if;
+      Refresh;
+      Refresh(PathButtons);
+      Refresh(ListWindow);
+      Show_Selected;
    end UpdateDirectoryList;
 
    procedure Directory_Keys(Key: Key_Code) is
@@ -422,7 +428,7 @@ package body MainWindow is
          when 10 =>
             Post(SubMenu, False);
             Delete(SubMenu);
-            UpdateDirectoryList(True);
+            UpdateDirectoryList;
             case CurrentIndex is
                when 1 =>
                   NewAction := CREATEDIRECTORY;
