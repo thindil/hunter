@@ -120,9 +120,9 @@ package body DeleteItems is
             end if;
          else
             if Settings.DeleteFiles or NewAction = DELETETRASH then
-               Delete_File(To_String(Item));
+               Delete_File(To_String(CurrentDirectory & "/" & Item));
             else
-               MoveToTrash(Item);
+               MoveToTrash(CurrentDirectory & "/" & Item);
             end if;
          end if;
          if NewAction = DELETETRASH then
