@@ -24,6 +24,7 @@ with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
 with CreateItems;
+with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
@@ -364,8 +365,10 @@ package body MainWindow is
       end if;
       Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
-         if Is_Directory(To_String(CurrentDirectory & "/" & SelectedItems(I))) then
-            Append(DeleteList, "  " & SelectedItems(I) & "(and its content)" & LF);
+         if Is_Directory
+             (To_String(CurrentDirectory & "/" & SelectedItems(I))) then
+            Append
+              (DeleteList, "  " & SelectedItems(I) & "(and its content)" & LF);
          else
             Append(DeleteList, "  " & SelectedItems(I) & LF);
          end if;
@@ -374,12 +377,14 @@ package body MainWindow is
          ListLength := 11;
          Append(DeleteList, "and more");
       end if;
-      Delete_Fields.all(1) := New_Field(1, 8, 1 + Line_Position(ListLength), 7, 0, 0);
+      Delete_Fields.all(1) :=
+        New_Field(1, 8, 1 + Line_Position(ListLength), 7, 0, 0);
       Set_Buffer(Delete_Fields.all(1), 0, "[Cancel]");
       FieldOptions := Get_Options(Delete_Fields.all(1));
       FieldOptions.Edit := False;
       Set_Options(Delete_Fields.all(1), FieldOptions);
-      Delete_Fields.all(2) := New_Field(1, 8, 1 + Line_Position(ListLength), 23, 0, 0);
+      Delete_Fields.all(2) :=
+        New_Field(1, 8, 1 + Line_Position(ListLength), 23, 0, 0);
       FieldOptions := Get_Options(Delete_Fields.all(2));
       FieldOptions.Edit := False;
       Set_Options(Delete_Fields.all(2), FieldOptions);
@@ -494,7 +499,7 @@ package body MainWindow is
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      --FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
@@ -503,6 +508,15 @@ package body MainWindow is
          when 66 | KEY_DOWN =>
             Result := Driver(DialogForm, F_Next_Field);
          when 10 =>
+            if FieldIndex = 2 then
+               if not DeleteSelected(Interpreter) then
+                  LoadDirectory(To_String(CurrentDirectory));
+               else
+                  LoadDirectory
+                    (Ada.Directories.Containing_Directory
+                       (To_String(CurrentDirectory)));
+               end if;
+            end if;
             Set_Cursor_Visibility(Visibility);
             Post(DialogForm, False);
             Delete(DialogForm);
