@@ -509,7 +509,7 @@ package body MainWindow is
             Result := Driver(DialogForm, F_Next_Field);
          when 10 =>
             if FieldIndex = 2 then
-               if not DeleteSelected(Interpreter) then
+               if not DeleteSelected then
                   LoadDirectory(To_String(CurrentDirectory));
                else
                   LoadDirectory
