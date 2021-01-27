@@ -347,24 +347,16 @@ package body MainWindow is
    end ShowCreateForm;
 
    procedure ShowDeleteForm is
-      Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
+      Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
       FormHeight: Line_Position;
-      FormLength: Column_Position;
+      FormLength: constant Column_Position := 32;
       Visibility: Cursor_Visibility := Normal;
       FieldOptions: Field_Option_Set;
       DeleteList: Unbounded_String;
       ListLength: Positive;
+      UnusedResult: Forms.Driver_Result;
    begin
       Set_Cursor_Visibility(Visibility);
-      Delete_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
-      if Settings.DeleteFiles or NewAction = DELETETRASH then
-         Set_Buffer(Delete_Fields.all(1), 0, "Delete?");
-      else
-         Set_Buffer(Delete_Fields.all(1), 0, "Move to Trash?");
-      end if;
-      FieldOptions := Get_Options(Delete_Fields.all(1));
-      FieldOptions.Active := False;
-      Set_Options(Delete_Fields.all(1), FieldOptions);
       if SelectedItems.Length > 10 then
          ListLength := 10;
       else
@@ -372,42 +364,46 @@ package body MainWindow is
       end if;
       Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
-         Append(DeleteList, SelectedItems(I) & LF);
+         if Is_Directory(To_String(CurrentDirectory & "/" & SelectedItems(I))) then
+            Append(DeleteList, "  " & SelectedItems(I) & "(and its content)" & LF);
+         else
+            Append(DeleteList, "  " & SelectedItems(I) & LF);
+         end if;
       end loop Set_Delete_List_Loop;
       if ListLength = 10 and SelectedItems.Length > 10 then
          ListLength := 11;
          Append(DeleteList, "and more");
       end if;
-      Delete_Fields.all(2) :=
-        New_Field(Line_Position(ListLength), 40, 1, 0, 0, 0);
-      Set_Buffer(Delete_Fields.all(2), 0, To_String(DeleteList));
+      Delete_Fields.all(1) := New_Field(1, 8, 1 + Line_Position(ListLength), 7, 0, 0);
+      Set_Buffer(Delete_Fields.all(1), 0, "[Cancel]");
+      FieldOptions := Get_Options(Delete_Fields.all(1));
+      FieldOptions.Edit := False;
+      Set_Options(Delete_Fields.all(1), FieldOptions);
+      Delete_Fields.all(2) := New_Field(1, 8, 1 + Line_Position(ListLength), 23, 0, 0);
       FieldOptions := Get_Options(Delete_Fields.all(2));
-      FieldOptions.Active := False;
+      FieldOptions.Edit := False;
       Set_Options(Delete_Fields.all(2), FieldOptions);
-      Delete_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
-      Set_Buffer(Delete_Fields.all(3), 0, "[Cancel]");
-      FieldOptions := Get_Options(Delete_Fields.all(3));
-      FieldOptions.Edit := False;
-      Set_Options(Delete_Fields.all(3), FieldOptions);
-      Delete_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
-      FieldOptions := Get_Options(Delete_Fields.all(4));
-      FieldOptions.Edit := False;
-      Set_Options(Delete_Fields.all(4), FieldOptions);
-      Set_Buffer(Delete_Fields.all(4), 0, "[Delete]");
-      Delete_Fields.all(5) := Null_Field;
+      Set_Buffer(Delete_Fields.all(2), 0, "[Delete]");
+      Delete_Fields.all(3) := Null_Field;
       DialogForm := New_Form(Delete_Fields);
-      Set_Current(DialogForm, Delete_Fields(3));
       Set_Options(DialogForm, (others => False));
-      Scale(DialogForm, FormHeight, FormLength);
+      FormHeight := Line_Position(ListLength) + 2;
       FormWindow :=
         Create
-          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
+          (FormHeight + 2, 34, ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
-      Box(FormWindow, Default_Character, Default_Character);
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
         (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
+      if Settings.DeleteFiles or NewAction = DELETETRASH then
+         Add(FormWindow, 1, 1, "Delete?");
+      else
+         Add(FormWindow, 1, 1, "Move to Trash?");
+      end if;
+      Add(FormWindow, 2, 0, To_String(DeleteList));
+      UnusedResult := Driver(DialogForm, F_First_Field);
+      Box(FormWindow, Default_Character, Default_Character);
       Refresh;
       Refresh(FormWindow);
    end ShowDeleteForm;
