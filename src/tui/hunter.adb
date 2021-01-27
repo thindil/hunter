@@ -52,7 +52,7 @@ procedure Hunter is
       Execute_Modules(On_Quit);
       if Settings.ClearTrashOnExit then
          NewAction := CLEARTRASH;
-         if DeleteSelected(Interp) then
+         if DeleteSelected then
             null;
          end if;
       end if;

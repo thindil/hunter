@@ -16,7 +16,6 @@
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
@@ -25,10 +24,9 @@ with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces.C;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with CArgv;
+with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
@@ -38,7 +36,7 @@ with Utils.UI; use Utils.UI;
 
 package body DeleteItems is
 
-   function DeleteSelected(Interp: Tcl_Interp) return Boolean is
+   function DeleteSelected return Boolean is
       GoUp, Success: Boolean := False;
       Arguments: Argument_List := (new String'("-rf"), new String'(""));
       OldSetting: Boolean;
@@ -142,99 +140,21 @@ package body DeleteItems is
       when An_Exception : Ada.Directories.Use_Error =>
          ShowMessage
            (Mc
-              (Interp,
+              (Interpreter,
                "{Could not delete selected files or directories. Reason:}") &
             " " & Exception_Message(An_Exception));
          raise;
       when An_Exception : Directory_Error =>
          ShowMessage
-           (Mc(Interp, "{Can't delete selected directory:}") & " " &
+           (Mc(Interpreter, "{Can't delete selected directory:}") & " " &
             Exception_Message(An_Exception));
          raise;
       when others =>
          ShowMessage
            (Mc
-              (Interp,
+              (Interpreter,
                "{Unknown error during deleting files or directories.}"));
          raise;
    end DeleteSelected;
-
-   -- ****o* DeleteItems/DeleteItems.Start_Deleting_Command
-   -- FUNCTION
-   -- Show confirmation to delete the selected files and directories
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- StartDeleting
-   -- SOURCE
-   function Start_Deleting_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
-      Convention => C;
-      -- ****
-
-   function Start_Deleting_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      Message, FileLine: Unbounded_String;
-      FileInfo: File_Type;
-      I: Positive := SelectedItems.First_Index;
-   begin
-      NewAction := (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
-      Message :=
-        (if Settings.DeleteFiles or NewAction = DELETETRASH then
-           To_Unbounded_String(Mc(Interp, "{Delete?}") & LF)
-         else To_Unbounded_String(Mc(Interp, "{Move to trash?}") & LF));
-      Add_Items_To_Delete_Loop :
-      while I <= SelectedItems.Last_Index loop
-         if NewAction = DELETE then
-            Append(Message, SelectedItems(I));
-         else
-            Open
-              (FileInfo, In_File,
-               Ada.Environment_Variables.Value("HOME") &
-               "/.local/share/Trash/info/" &
-               Simple_Name(To_String(SelectedItems(I))) & ".trashinfo");
-            Skip_Line(FileInfo);
-            for I in 1 .. 2 loop
-               FileLine := To_Unbounded_String(Get_Line(FileInfo));
-               if Slice(FileLine, 1, 4) = "Path" then
-                  Append
-                    (Message,
-                     Simple_Name(Slice(FileLine, 6, Length(FileLine))));
-               end if;
-            end loop;
-            Close(FileInfo);
-         end if;
-         if not Is_Symbolic_Link(To_String(SelectedItems(I)))
-           and then Is_Directory(To_String(SelectedItems(I))) then
-            Append(Message, Mc(Interp, "{(and its content)}"));
-         end if;
-         if I /= SelectedItems.Last_Index then
-            Append(Message, LF);
-         end if;
-         I := I + 1;
-         if I = 11 then
-            Append(Message, Mc(Interp, "{(and more)}"));
-            exit;
-         end if;
-      end loop Add_Items_To_Delete_Loop;
-      ToggleToolButtons(NewAction);
-      ShowMessage(To_String(Message), "question");
-      return TCL_OK;
-   end Start_Deleting_Command;
-
-   procedure CreateDeleteUI is
-   begin
-      AddCommand("StartDeleting", Start_Deleting_Command'Access);
-   end CreateDeleteUI;
 
 end DeleteItems;

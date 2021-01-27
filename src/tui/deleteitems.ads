@@ -13,8 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Tcl; use Tcl;
-
 -- ****h* DeleteItems/DeleteItemsTUI
 -- FUNCTION
 -- Provide code to delete files and directories
@@ -25,19 +23,10 @@ package DeleteItems is
    -- ****f* DeleteItemsTUI/DeleteItemsTUI.DeleteSelected
    -- FUNCTION
    -- Delete selected files and directories
-   -- PARAMETERS
-   -- Interp - Tcl interpreter needed for translations
    -- RESULT
    -- True if current directory was deleted too, otherwise false
    -- SOURCE
-   function DeleteSelected(Interp: Tcl_Interp) return Boolean;
-   -- ****
-
-   -- ****f* DeleteItemsTUI/DeleteItemsTUI.CreateDeleteUI
-   -- FUNCTION
-   -- Create UI for deleting items
-   -- SOURCE
-   procedure CreateDeleteUI;
+   function DeleteSelected return Boolean;
    -- ****
 
 end DeleteItems;
