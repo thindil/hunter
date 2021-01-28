@@ -190,6 +190,7 @@ package body MainWindow is
             Result := Driver(DirectoryList, M_ScrollDown_Page);
          when 10 =>
             Tcl_Eval(Interpreter, "ActivateItem");
+            return;
          when others =>
             null;
       end case;
