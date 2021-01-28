@@ -44,14 +44,13 @@ package body MainWindow is
    DialogForm: Forms.Form;
    FormWindow: Window;
 
-   procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp) is
+   procedure CreateMainWindow(Directory: String) is
       Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
         (To_Unbounded_String("Quit"), To_Unbounded_String("Bookmarks"),
          To_Unbounded_String("View"), To_Unbounded_String("Actions"),
          To_Unbounded_String("About"), To_Unbounded_String("Selected"));
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
    begin
-      Interpreter := Interp;
       ActivateItems.AddCommands;
       CreateItems.AddCommands;
       Create_Program_Menu_Loop :

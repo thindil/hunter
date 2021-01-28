@@ -121,9 +121,8 @@ package MainWindow is
    -- PARAMETERS
    -- Directory  - Full path to the directory which will be show at the
    --              program start
-   -- Interp     - Tcl interpreter used by the program
    -- SOURCE
-   procedure CreateMainWindow(Directory: String; Interp: Tcl_Interp);
+   procedure CreateMainWindow(Directory: String);
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.UpdateDirectoryList

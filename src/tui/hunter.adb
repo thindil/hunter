@@ -44,7 +44,6 @@ procedure Hunter is
      Ada.Environment_Variables.Value("HOME") & "/.cache/hunter/error.log";
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
-   Interp: Tcl.Tcl_Interp;
    UILocation: UI_Locations := DIRECTORY_VIEW;
    procedure ExitFromProgram is
    begin
@@ -83,19 +82,19 @@ begin
 
    --  Create one Tcl interpreter
    -----------------------------
-   Interp := Tcl.Tcl_CreateInterp;
+   Interpreter := Tcl.Tcl_CreateInterp;
 
    --  Initialize Tcl
    -----------------
-   if Tcl.Tcl_Init(Interp) = Tcl.TCL_ERROR then
+   if Tcl.Tcl_Init(Interpreter) = Tcl.TCL_ERROR then
       Ada.Text_IO.Put_Line
         ("Hunter: Tcl.Tcl_Init failed: " &
-         Tcl.Ada.Tcl_GetStringResult(Interp));
+         Tcl.Ada.Tcl_GetStringResult(Interpreter));
       return;
    end if;
 
    -- Load required Tcl packages
-   MsgCat_Init(Interp);
+   MsgCat_Init(Interpreter);
 
    -- Load the program setting
    LoadSettings;
@@ -118,9 +117,9 @@ begin
 
    -- Create the program main window
    if Argument_Count < 1 then
-      CreateMainWindow(Ada.Environment_Variables.Value("HOME"), Interp);
+      CreateMainWindow(Ada.Environment_Variables.Value("HOME"));
    else
-      CreateMainWindow(Full_Name(Argument(1)), Interp);
+      CreateMainWindow(Full_Name(Argument(1)));
    end if;
 
    -- Main program loop, exit on alt+q
@@ -166,7 +165,7 @@ begin
    end loop Main_Program_Loop;
 
    ExitFromProgram;
-   Tcl.Ada.Tcl_Eval(Interp, "exit");
+   Tcl.Ada.Tcl_Eval(Interpreter, "exit");
 exception
    when An_Exception : others =>
       Create_Path(Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
@@ -193,5 +192,5 @@ exception
            "/.cache/hunter' directory.");
       Key := Get_Keystroke;
       ExitFromProgram;
-      Tcl.Ada.Tcl_Eval(Interp, "exit 1");
+      Tcl.Ada.Tcl_Eval(Interpreter, "exit 1");
 end Hunter;
