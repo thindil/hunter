@@ -140,33 +140,35 @@ package body MainWindow is
          Index := Index + 1;
          <<End_Of_Loop>>
       end loop Load_Directory_View_Loop;
-      Fill_Empty_Entries_Loop :
-      for I in Index .. Menu_Items'Last loop
-         Menu_Items.all(I) := Null_Item;
-      end loop Fill_Empty_Entries_Loop;
-      DirectoryList := New_Menu(Menu_Items);
-      Set_Options(DirectoryList, (One_Valued => False, others => <>));
-      Set_Format(DirectoryList, Lines - 5, 1);
-      Set_Mark(DirectoryList, "");
-      Set_Window(DirectoryList, ListWindow);
-      Set_Sub_Window
-        (DirectoryList,
-         Derived_Window(ListWindow, Lines - 5, (Columns / 2) - 2, 2, 1));
-      Post(DirectoryList);
-      Set_Current(DirectoryList, Menu_Items.all(CurrentIndex));
-      if not Clear then
-         Update_Selected_Loop :
-         for I in 1 .. Item_Count(DirectoryList) loop
-            if SelectedItems.Contains
-                (To_Unbounded_String(Name(Items(DirectoryList, I)))) then
-               Set_Value(Items(DirectoryList, I), True);
-            end if;
-         end loop Update_Selected_Loop;
+      if Index > ItemsList.First_Index then
+         Fill_Empty_Entries_Loop :
+         for I in Index .. Menu_Items'Last loop
+            Menu_Items.all(I) := Null_Item;
+         end loop Fill_Empty_Entries_Loop;
+         DirectoryList := New_Menu(Menu_Items);
+         Set_Options(DirectoryList, (One_Valued => False, others => <>));
+         Set_Format(DirectoryList, Lines - 5, 1);
+         Set_Mark(DirectoryList, "");
+         Set_Window(DirectoryList, ListWindow);
+         Set_Sub_Window
+           (DirectoryList,
+            Derived_Window(ListWindow, Lines - 5, (Columns / 2) - 2, 2, 1));
+         Post(DirectoryList);
+         Set_Current(DirectoryList, Menu_Items.all(CurrentIndex));
+         if not Clear then
+            Update_Selected_Loop :
+            for I in 1 .. Item_Count(DirectoryList) loop
+               if SelectedItems.Contains
+                   (To_Unbounded_String(Name(Items(DirectoryList, I)))) then
+                  Set_Value(Items(DirectoryList, I), True);
+               end if;
+            end loop Update_Selected_Loop;
+         end if;
+         Show_Selected;
       end if;
       Refresh;
       Refresh(PathButtons);
       Refresh(ListWindow);
-      Show_Selected;
    end UpdateDirectoryList;
 
    procedure Directory_Keys(Key: Key_Code) is
