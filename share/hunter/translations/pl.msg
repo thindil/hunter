@@ -238,10 +238,11 @@
    "Can't move" "Nie można przenieść"
    "You can't rename" "Nie możesz zmienić nazwy"
    "to" "na"
-   "because there exists" "ponieważ istenieje już"
    "with that name" "z taką nazwą"
    "You don't have permissions to rename" "Nie masz uprawnień do zmiany nazwy"
    "Can't rename" "Nie można zmienić nazwy"
    "doesn't exist." "nie istnieje."
    "Can't restore" "Nie można przywrócić"
+   "No for all" "No for all"
+   "Yes for all" "Yes for all"
 }
