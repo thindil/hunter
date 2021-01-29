@@ -2,7 +2,7 @@
 # the next line restarts using tclsh \
 exec tclsh "$0" ${1+"$@"}
 
-# Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+# Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -50,18 +50,20 @@ if {[lindex $argv 0] == "generate"} {
    set rootmsg [open $directory/ROOT.msg w]
    set translist {}
    puts $rootmsg "::msgcat::mcflmset {"
-   foreach filename [glob -directory src *.ad*] {
-      set adafile [open $filename r]
-      set content [read $adafile]
-      close $adafile
-      set translations [regexp -all -inline {Mc+\W*\(\W*\w+,\W* "[^"]+} $content]
-      foreach translation $translations {
-         regsub {^.+"+\{*} $translation "" translation
-         regsub {\}$} $translation "" translation
-         if {[lsearch -exact $translist $translation] == -1} {
-            if {$translation != {}} {
-               puts $rootmsg "   \"$translation\" \"$translation\""
-               lappend translist $translation
+   foreach dir [list src src/tui src/gui] {
+      foreach filename [glob -directory $dir *.ad*] {
+         set adafile [open $filename r]
+         set content [read $adafile]
+         close $adafile
+         set translations [regexp -all -inline {Mc+\W*\(\W*\w+,\W* "[^"]+} $content]
+            foreach translation $translations {
+            regsub {^.+"+\{*} $translation "" translation
+            regsub {\}$} $translation "" translation
+            if {[lsearch -exact $translist $translation] == -1} {
+               if {$translation != {}} {
+                  puts $rootmsg "   \"$translation\" \"$translation\""
+                  lappend translist $translation
+               }
             }
          }
       }
