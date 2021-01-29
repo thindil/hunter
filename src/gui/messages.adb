@@ -199,8 +199,8 @@ package body Messages is
          ResponseButton: constant Ttk_Button :=
            Create
              (ButtonsBox & ".button" & Name,
-              "-text {" & Mc(Get_Context, "{" & Text & "}") &
-              "} -command {MessageResponse " & Response & "}");
+              "-text {" & Text & "} -command {MessageResponse " & Response &
+              "}");
       begin
          Tcl.Tk.Ada.Grid.Grid
            (ResponseButton, "-row 0 -column" & Natural'Image(Column));
@@ -220,10 +220,10 @@ package body Messages is
       MessageFrame := Create(".mainframe.message");
       MessageLabel := Create(MessageFrame & ".label", "-wraplength 800");
       ButtonsBox := Create(MessageFrame & ".buttonsbox");
-      AddButton("no", "No", "no");
-      AddButton("yes", "Yes", "yes", 1);
-      AddButton("noall", "No for all", "noall", 2);
-      AddButton("yesall", "Yes for all", "yesall", 3);
+      AddButton("no", Mc(Get_Context, "{No}"), "no");
+      AddButton("yes", Mc(Get_Context, "{Yes}"), "yes", 1);
+      AddButton("noall", Mc(Get_Context, "{No for all}"), "noall", 2);
+      AddButton("yesall", Mc(Get_Context, "{Yes for all}"), "yesall", 3);
       Button :=
         Create
           (ButtonsBox & ".buttonclose",
