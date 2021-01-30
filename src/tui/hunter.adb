@@ -26,6 +26,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;

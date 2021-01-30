@@ -14,16 +14,18 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
-with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
@@ -65,22 +67,20 @@ package body CreateItems is
       NewItemName := CurrentDirectory & "/" & CArgv.Arg(Argv, 1);
       if Exists(To_String(NewItemName)) or
         Is_Symbolic_Link(To_String(NewItemName)) then
-        if NewAction = CREATEFILE then
-         ActionString :=
-           To_Unbounded_String
-             (Mc(Interp, "{create}") & " file " &
-              Mc(Interp, "{with}"));
-        elsif NewAction = CREATEDIRECTORY then
-         ActionString :=
-           To_Unbounded_String
-             (Mc(Interp, "{create}") & " directory " &
-              Mc(Interp, "{with}"));
-        else
-         ActionString :=
-           To_Unbounded_String
-             (Mc(Interp, "{create}") & " link " &
-              Mc(Interp, "{with}"));
-        end if;
+         if NewAction = CREATEFILE then
+            ActionString :=
+              To_Unbounded_String
+                (Mc(Interp, "{create}") & " file " & Mc(Interp, "{with}"));
+         elsif NewAction = CREATEDIRECTORY then
+            ActionString :=
+              To_Unbounded_String
+                (Mc(Interp, "{create}") & " directory " &
+                 Mc(Interp, "{with}"));
+         else
+            ActionString :=
+              To_Unbounded_String
+                (Mc(Interp, "{create}") & " link " & Mc(Interp, "{with}"));
+         end if;
          ActionBlocker :=
            (if Is_Directory(To_String(NewItemName)) then
               To_Unbounded_String(Mc(Interp, "directory"))
@@ -136,5 +136,96 @@ package body CreateItems is
    begin
       AddCommand("CreateItem", Create_Item_Command'Access);
    end AddCommands;
+
+   DialogForm: Forms.Form;
+   FormWindow: Window;
+
+   procedure ShowCreateForm(Create_Type: String) is
+      Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
+      FormHeight: Line_Position;
+      FormLength: Column_Position;
+      Visibility: Cursor_Visibility := Normal;
+      FieldOptions: Field_Option_Set;
+      UnusedResult: Forms.Driver_Result := Unknown_Request;
+   begin
+      Set_Cursor_Visibility(Visibility);
+      Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
+      Set_Buffer
+        (Create_Fields.all(1), 0, "Enter a new " & Create_Type & " name:");
+      FieldOptions := Get_Options(Create_Fields.all(1));
+      FieldOptions.Active := False;
+      Set_Options(Create_Fields.all(1), FieldOptions);
+      Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
+      Set_Buffer(Create_Fields.all(2), 0, "");
+      FieldOptions := Get_Options(Create_Fields.all(2));
+      FieldOptions.Auto_Skip := False;
+      Set_Options(Create_Fields.all(2), FieldOptions);
+      Create_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
+      Set_Buffer(Create_Fields.all(3), 0, "[Cancel]");
+      FieldOptions := Get_Options(Create_Fields.all(3));
+      FieldOptions.Edit := False;
+      Set_Options(Create_Fields.all(3), FieldOptions);
+      Create_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
+      FieldOptions := Get_Options(Create_Fields.all(4));
+      FieldOptions.Edit := False;
+      Set_Options(Create_Fields.all(4), FieldOptions);
+      Set_Buffer(Create_Fields.all(4), 0, "[Create]");
+      Create_Fields.all(5) := Null_Field;
+      DialogForm := New_Form(Create_Fields);
+      Set_Current(DialogForm, Create_Fields(2));
+      Set_Options(DialogForm, (others => False));
+      Scale(DialogForm, FormHeight, FormLength);
+      FormWindow :=
+        Create
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
+           ((Columns / 2) - (FormLength / 2)));
+      Box(FormWindow, Default_Character, Default_Character);
+      Set_Window(DialogForm, FormWindow);
+      Set_Sub_Window
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+      Post(DialogForm);
+      UnusedResult := Driver(DialogForm, REQ_END_LINE);
+      Refresh;
+      Refresh(FormWindow);
+   end ShowCreateForm;
+
+   function Create_Keys(Key: Key_Code) return UI_Locations is
+      Result: Forms.Driver_Result := Unknown_Request;
+      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      Visibility: Cursor_Visibility := Invisible;
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(DialogForm, F_Previous_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when 66 | KEY_DOWN =>
+            Result := Driver(DialogForm, F_Next_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when 127 =>
+            Result := Driver(DialogForm, F_Delete_Previous);
+         when 10 =>
+            if FieldIndex = 4 then
+               Tcl_Eval
+                 (Interpreter,
+                  "CreateItem " &
+                  Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+            end if;
+            if FieldIndex /= 2 then
+               Set_Cursor_Visibility(Visibility);
+               Post(DialogForm, False);
+               Delete(DialogForm);
+               UpdateDirectoryList(True);
+               return DIRECTORY_VIEW;
+            end if;
+         when others =>
+            if Key /= 91 then
+               Result := Driver(DialogForm, Key);
+            end if;
+      end case;
+      if Result = Form_Ok then
+         Refresh(FormWindow);
+      end if;
+      return CREATE_FORM;
+   end Create_Keys;
 
 end CreateItems;
