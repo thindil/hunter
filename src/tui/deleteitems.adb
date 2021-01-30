@@ -16,6 +16,7 @@
 with Ada.Calendar; use Ada.Calendar;
 with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
@@ -26,9 +27,10 @@ with Ada.Strings.Unbounded.Hash;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with MainWindow; use MainWindow;
+with LoadData.UI; use LoadData.UI;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with Utils; use Utils;
@@ -156,5 +158,108 @@ package body DeleteItems is
                "{Unknown error during deleting files or directories.}"));
          raise;
    end DeleteSelected;
+
+   DialogForm: Forms.Form;
+   FormWindow: Window;
+
+   procedure ShowDeleteForm is
+      Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
+      FormHeight: Line_Position;
+      FormLength: constant Column_Position := 32;
+      Visibility: Cursor_Visibility := Normal;
+      FieldOptions: Field_Option_Set;
+      DeleteList: Unbounded_String;
+      ListLength: Positive;
+      UnusedResult: Forms.Driver_Result;
+   begin
+      Set_Cursor_Visibility(Visibility);
+      if SelectedItems.Length > 10 then
+         ListLength := 10;
+      else
+         ListLength := Positive(SelectedItems.Length);
+      end if;
+      Set_Delete_List_Loop :
+      for I in 1 .. ListLength loop
+         if Is_Directory
+             (To_String(CurrentDirectory & "/" & SelectedItems(I))) then
+            Append
+              (DeleteList, "  " & SelectedItems(I) & "(and its content)" & LF);
+         else
+            Append(DeleteList, "  " & SelectedItems(I) & LF);
+         end if;
+      end loop Set_Delete_List_Loop;
+      if ListLength = 10 and SelectedItems.Length > 10 then
+         ListLength := 11;
+         Append(DeleteList, "and more");
+      end if;
+      Delete_Fields.all(1) :=
+        New_Field(1, 8, 1 + Line_Position(ListLength), 7, 0, 0);
+      Set_Buffer(Delete_Fields.all(1), 0, "[Cancel]");
+      FieldOptions := Get_Options(Delete_Fields.all(1));
+      FieldOptions.Edit := False;
+      Set_Options(Delete_Fields.all(1), FieldOptions);
+      Delete_Fields.all(2) :=
+        New_Field(1, 8, 1 + Line_Position(ListLength), 23, 0, 0);
+      FieldOptions := Get_Options(Delete_Fields.all(2));
+      FieldOptions.Edit := False;
+      Set_Options(Delete_Fields.all(2), FieldOptions);
+      Set_Buffer(Delete_Fields.all(2), 0, "[Delete]");
+      Delete_Fields.all(3) := Null_Field;
+      DialogForm := New_Form(Delete_Fields);
+      Set_Options(DialogForm, (others => False));
+      FormHeight := Line_Position(ListLength) + 2;
+      FormWindow :=
+        Create
+          (FormHeight + 2, 34, ((Lines / 3) - (FormHeight / 2)),
+           ((Columns / 2) - (FormLength / 2)));
+      Set_Window(DialogForm, FormWindow);
+      Set_Sub_Window
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+      Post(DialogForm);
+      if Settings.DeleteFiles or NewAction = DELETETRASH then
+         Add(FormWindow, 1, 1, "Delete?");
+      else
+         Add(FormWindow, 1, 1, "Move to Trash?");
+      end if;
+      Add(FormWindow, 2, 0, To_String(DeleteList));
+      UnusedResult := Driver(DialogForm, F_First_Field);
+      Box(FormWindow, Default_Character, Default_Character);
+      Refresh;
+      Refresh(FormWindow);
+   end ShowDeleteForm;
+
+   function Delete_Keys(Key: Key_Code) return UI_Locations is
+      Result: Forms.Driver_Result := Unknown_Request;
+      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      Visibility: Cursor_Visibility := Invisible;
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(DialogForm, F_Previous_Field);
+         when 66 | KEY_DOWN =>
+            Result := Driver(DialogForm, F_Next_Field);
+         when 10 =>
+            if FieldIndex = 2 then
+               if not DeleteSelected then
+                  LoadDirectory(To_String(CurrentDirectory));
+               else
+                  LoadDirectory
+                    (Ada.Directories.Containing_Directory
+                       (To_String(CurrentDirectory)));
+               end if;
+            end if;
+            Set_Cursor_Visibility(Visibility);
+            Post(DialogForm, False);
+            Delete(DialogForm);
+            UpdateDirectoryList(True);
+            return DIRECTORY_VIEW;
+         when others =>
+            null;
+      end case;
+      if Result = Form_Ok then
+         Refresh(FormWindow);
+      end if;
+      return DELETE_FORM;
+   end Delete_Keys;
 
 end DeleteItems;

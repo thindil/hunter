@@ -13,6 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with MainWindow; use MainWindow;
+
 -- ****h* DeleteItems/DeleteItemsTUI
 -- FUNCTION
 -- Provide code to delete files and directories
@@ -27,6 +30,24 @@ package DeleteItems is
    -- True if current directory was deleted too, otherwise false
    -- SOURCE
    function DeleteSelected return Boolean;
+   -- ****
+
+   -- ****f* DeleteItemsTUI/DeleteItemsTUI.ShowDeleteForm
+   -- FUNCTION
+   -- Show dialog to confirm deletion of items
+   -- SOURCE
+   procedure ShowDeleteForm;
+   -- ****
+
+   -- ****f* DeleteItemsTUI/DeleteItemsTUI.Delete_Keys
+   -- FUNCTION
+   -- Handles keys events when the deletion form is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Delete_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end DeleteItems;
