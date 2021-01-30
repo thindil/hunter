@@ -176,16 +176,4 @@ package MainWindow is
    function Actions_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
-   -- ****f* MainWindowTUI/MainWindowTUI.Delete_Keys
-   -- FUNCTION
-   -- Handles keys events when the delete confirmation form is active element
-   -- of UI
-   -- PARAMETERS
-   -- Key - Key pressed by the user
-   -- RESULT
-   -- The currently selected UI element of the program
-   -- SOURCE
-   function Delete_Keys(Key: Key_Code) return UI_Locations;
-   -- ****
-
 end MainWindow;
