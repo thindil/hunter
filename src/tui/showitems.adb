@@ -243,7 +243,7 @@ package body ShowItems is
            New_Pad
              (Line_Position(SecondItemsList.Length) + 1, (Columns / 2) - 1);
          Add(PreviewPad, 0, Columns / 4, "Name");
-         Load_Preview_Directory_Loop:
+         Load_Preview_Directory_Loop :
          for Item of SecondItemsList loop
             if not Settings.ShowHidden and Item.IsHidden then
                goto End_Of_Loop;
@@ -278,7 +278,7 @@ package body ShowItems is
                      Amount: Natural;
                   begin
                      Open(File, In_File, To_String(CurrentSelected));
-                     Load_Text_File_View_Loop:
+                     Load_Text_File_View_Loop :
                      while not End_Of_File(File) loop
                         Get_Line(File, FileLine, Amount);
                         Add
@@ -286,7 +286,8 @@ package body ShowItems is
                            FileLine(FileLine'First .. Amount) & LF);
                         FileLine := (others => ' ');
                         LinesAmount := LinesAmount + 1;
-                        exit Load_Text_File_View_Loop when LinesAmount = Lines - 3;
+                        exit Load_Text_File_View_Loop when LinesAmount =
+                          Lines - 3;
                      end loop Load_Text_File_View_Loop;
                      Close(File);
                      Refresh(PreviewWindow);
@@ -298,7 +299,7 @@ package body ShowItems is
                      StartText: Positive := Start;
                      EndPos: Positive := Start + LineLength - 1;
                   begin
-                     Print_Text_Loop:
+                     Print_Text_Loop :
                      loop
                         if EndText > EndPos then
                            begin
@@ -362,21 +363,21 @@ package body ShowItems is
                         FirstLine := False;
                      end if;
                      exit Read_File_Loop when End_Of_File(File);
-                     Replace_Element_Loop:
+                     Replace_Element_Loop :
                      loop
                         StartIndex := Index(FileLine, "&gt;");
                         exit Replace_Element_Loop when StartIndex = 0;
                         Replace_Slice
                           (FileLine, StartIndex, StartIndex + 3, ">");
                      end loop Replace_Element_Loop;
-                     Replace_Element_2_Loop:
+                     Replace_Element_2_Loop :
                      loop
                         StartIndex := Index(FileLine, "&lt;");
                         exit Replace_Element_2_Loop when StartIndex = 0;
                         Replace_Slice
                           (FileLine, StartIndex, StartIndex + 3, "<");
                      end loop Replace_Element_2_Loop;
-                     Replace_Element_3_Loop:
+                     Replace_Element_3_Loop :
                      loop
                         StartIndex := Index(FileLine, "&amp;");
                         exit Replace_Element_3_Loop when StartIndex = 0;
@@ -384,7 +385,7 @@ package body ShowItems is
                           (FileLine, StartIndex, StartIndex + 4, "&");
                      end loop Replace_Element_3_Loop;
                      StartIndex := 1;
-                     Highlight_Text_Loop:
+                     Highlight_Text_Loop :
                      loop
                         StartIndex := Index(FileLine, "<span", StartIndex);
                         exit Highlight_Text_Loop when StartIndex = 0;
@@ -418,7 +419,7 @@ package body ShowItems is
                                 (PreviewPad,
                                  (Dim_Character => True, others => False));
                            elsif TagName /= Null_Unbounded_String then
-                              Set_Colors_Loop:
+                              Set_Colors_Loop :
                               for I in Colors'Range loop
                                  if Colors(I) = "      " then
                                     Init_Color
@@ -485,7 +486,7 @@ package body ShowItems is
    begin
       SelectedItems.Clear;
       if Item_Count(DirectoryList) > 0 then
-         Update_Selected_Items_Loop:
+         Update_Selected_Items_Loop :
          for I in 1 .. Item_Count(DirectoryList) loop
             if Value(Items(DirectoryList, I)) or
               Current(DirectoryList) = Items(DirectoryList, I) then
