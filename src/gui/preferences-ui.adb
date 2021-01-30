@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
@@ -107,16 +108,14 @@ package body Preferences.UI is
       AddButton
         (".showhidden", Mc(Get_Context, "{Show hidden files}"),
          Settings.ShowHidden,
-         Mc
-           (Get_Context,
-            "{Show hidden files and directories in directory\nlisting and in directories preview.}"),
+         Mc(Get_Context, "{Show hidden files and directories in directory}") &
+         LF & Mc(Get_Context, "{listing and in directories preview.}"),
          "SetShowHiddenFiles");
       AddButton
         (".showmodificationtime", Mc(Get_Context, "{Show modification time}"),
          Settings.ShowLastModified,
-         Mc
-           (Get_Context,
-            "{Show the column with last modification\ndate for files and directories.}"),
+         Mc(Get_Context, "{Show the column with last modification}") & LF &
+         Mc(Get_Context, "{date for files and directories.}"),
          "SetShowModificationTime");
       Tcl_SetVar
         (Get_Context, "updateinterval",
@@ -128,9 +127,9 @@ package body Preferences.UI is
            "$updateinterval " & Mc(Get_Context, "{seconds}") & """");
       Add
         (Label,
-         Mc
-           (Get_Context,
-            "{How often (in seconds) the program should check\nfor changes in current directory.\nIf set to zero, autorefresh will be disabled.}"));
+         Mc(Get_Context, "{How often (in seconds) the program should check}") &
+         LF & Mc(Get_Context, "{for changes in current directory.}") & LF &
+         Mc(Get_Context, "{If set to zero, autorefresh will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
       Scale :=
         Create
@@ -138,9 +137,9 @@ package body Preferences.UI is
            "-from 0 -to 30 -variable updateinterval -orient horizontal -command {SetLabel directory.interval}");
       Add
         (Scale,
-         Mc
-           (Get_Context,
-            "{How often (in seconds) the program should check\nfor changes in current directory.\nIf set to zero, autorefresh will be disabled.}"));
+         Mc(Get_Context, "{How often (in seconds) the program should check}") &
+         LF & Mc(Get_Context, "{for changes in current directory.}") & LF &
+         Mc(Get_Context, "{If set to zero, autorefresh will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       LabelFrame :=
@@ -152,14 +151,24 @@ package body Preferences.UI is
          Settings.ShowPreview,
          Mc
            (Get_Context,
-            "{Show second panel with preview of files and directories.\nIf you disable this option, second panel will be visible only during\ncopying and moving files or directories and during creating new link.}"),
+            "{Show second panel with preview of files and directories.}") &
+         LF &
+         Mc(Get_Context,
+            "{If you disable this option, second panel will be visible only during}") &
+         LF &
+         Mc(Get_Context,
+            "{copying and moving files or directories and during creating new link.}"),
          "SetShowPreview");
       AddButton
         (".scaleimages", Mc(Get_Context, "{Scale images}"),
          Settings.ScaleImages,
          Mc
            (Get_Context,
-            "{Scale images in preview. When disabled, images shows with\nnatural size. When enabled, images are resized to the size of the\npreview window.}"),
+            "{Scale images in preview. When disabled, images shows with}") &
+         LF &
+         Mc(Get_Context,
+            "{natural size. When enabled, images are resized to the size of the}") &
+         LF & Mc(Get_Context, "{preview window.}"),
          "SetScaleImages");
       CheckButton :=
         Create
@@ -180,7 +189,13 @@ package body Preferences.UI is
         (CheckButton,
          Mc
            (Get_Context,
-            "{Color files syntax in files preview. Not all text (especially source code)\nfiles are supported. You may not be able to enable this\noption if you don't have installed the program 'highlight'.}"));
+            "{Color files syntax in files preview. Not all text (especially source code)}") &
+         LF &
+         Mc(Get_Context,
+            "{files are supported. You may not be able to enable this}") &
+         LF &
+         Mc(Get_Context,
+            "{option if you don't have installed the program 'highlight'.}"));
       Tcl.Tk.Ada.Pack.Pack(CheckButton, "-fill x");
       declare
          Search: Search_Type;
@@ -225,7 +240,11 @@ package body Preferences.UI is
            (ComboBox,
             Mc
               (Get_Context,
-               "{Select color theme for coloring syntax in text files in preview. You may\nnot be able to enable this option if you don't have installed\nthe program 'highlight'.}"));
+               "{Select color theme for coloring syntax in text files in preview. You may}") &
+            LF &
+            Mc(Get_Context,
+               "{not be able to enable this option if you don't have installed}") &
+            LF & Mc(Get_Context, "{the program 'highlight'.}"));
          Label :=
            Create
              (ColorFrame & ".themelabel",
@@ -234,7 +253,11 @@ package body Preferences.UI is
            (Label,
             Mc
               (Get_Context,
-               "{Select color theme for coloring syntax in text files in preview. You may\nnot be able to enable this option if you don't have installed\nthe program 'highlight'.}"));
+               "{Select color theme for coloring syntax in text files in preview. You may}") &
+            LF &
+            Mc(Get_Context,
+               "{not be able to enable this option if you don't have installed}") &
+            LF & Mc(Get_Context, "{the program 'highlight'.}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
          Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
@@ -261,7 +284,10 @@ package body Preferences.UI is
         (Label,
          Mc
            (Get_Context,
-            "{After that amount of seconds, all messages will be automatically closed by the\nprogram. If you set it to 0, this feature will be disabled.}"));
+            "{After that amount of seconds, all messages will be automatically closed by the}") &
+         LF &
+         Mc(Get_Context,
+            "{program. If you set it to 0, this feature will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
       Scale :=
         Create
@@ -271,28 +297,38 @@ package body Preferences.UI is
         (Scale,
          Mc
            (Get_Context,
-            "{After that amount of seconds, all messages will be automatically closed by the\nprogram. If you set it to 0, this feature will be disabled.}"));
+            "{After that amount of seconds, all messages will be automatically closed by the}") &
+         LF &
+         Mc(Get_Context,
+            "{program. If you set it to 0, this feature will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       AddButton
         (".stayinold", Mc(Get_Context, "{Stay in source directory}"),
          Settings.StayInOld,
          Mc
            (Get_Context,
-            "{After copying, moving files and directories or creating new link, stay in old\ndirectory, don't automatically go to destination directory.}"),
+            "{After copying, moving files and directories or creating new link, stay in old}") &
+         LF &
+         Mc(Get_Context,
+            "{directory, don't automatically go to destination directory.}"),
          "SetStayInOld");
       AddButton
         (".showfinished", Mc(Get_Context, "{Show info about finished action}"),
          Settings.ShowFinishedInfo,
          Mc
            (Get_Context,
-            "{Show information about finished copying, moving and\ndeleting files or directories.}"),
+            "{Show information about finished copying, moving and}") &
+         LF & Mc(Get_Context, "{deleting files or directories.}"),
          "SetShowFinishedInfo");
       AddButton
         (".toolbarsontop", Mc(Get_Context, "{Toolbars on top}"),
          Settings.ToolbarsOnTop,
          Mc
            (Get_Context,
-            "{If enabled, show toolbars for actions and information on top of the window.\nOtherwise, they will be at left side of the window.}"),
+            "{If enabled, show toolbars for actions and information on top of the window.}") &
+         LF &
+         Mc(Get_Context,
+            "{Otherwise, they will be at left side of the window.}"),
          "SetToolbarsOnTop");
       declare
          ThemeFrame: constant Ttk_Frame := Create(LabelFrame & ".colorframe");
@@ -313,7 +349,10 @@ package body Preferences.UI is
            (ColorBox,
             Mc
               (Get_Context,
-               "{Select other theme for the program. After selecting a new theme,\nyou will have to restart the program to apply all changes.}"));
+               "{Select other theme for the program. After selecting a new theme,}") &
+            LF &
+            Mc(Get_Context,
+               "{you will have to restart the program to apply all changes.}"));
          Label :=
            Create
              (ThemeFrame & ".themelabel",
@@ -322,7 +361,10 @@ package body Preferences.UI is
            (Label,
             Mc
               (Get_Context,
-               "{Select other theme for the program. After selecting a new theme,\nyou will have to restart the program to apply all changes.}"));
+               "{Select other theme for the program. After selecting a new theme,}") &
+            LF &
+            Mc(Get_Context,
+               "{you will have to restart the program to apply all changes.}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ColorBox, "-column 1 -row 0");
          Set(ColorBox, To_String(Settings.UITheme));
@@ -390,7 +432,17 @@ package body Preferences.UI is
          Settings.OverwriteOnExist,
          Mc
            (Get_Context,
-            "{If enabled, during copying or moving files and directories,\nif in destination directory exists file or directory with that\nsame name, the program will ask if overwrite it. If disabled, the\nprogram will quietly give add underscore to the name of moved or\ncopied file or directory.}"),
+            "{If enabled, during copying or moving files and directories,}") &
+         LF &
+         Mc(Get_Context,
+            "{if in destination directory exists file or directory with that}") &
+         LF &
+         Mc(Get_Context,
+            "{same name, the program will ask if overwrite it. If disabled, the}") &
+         LF &
+         Mc(Get_Context,
+            "{program will quietly give add underscore to the name of moved or}") &
+         LF & Mc(Get_Context, "{copied file or directory.}"),
          "SetOverwrite");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       declare
@@ -411,7 +463,8 @@ package body Preferences.UI is
            (RestoreButton,
             Mc
               (Get_Context,
-               "{Restore default settings for the program. You will have to restart\nthe program to apply all changes}"));
+               "{Restore default settings for the program. You will have to restart}") &
+            LF & Mc(Get_Context, "{the program to apply all changes}"));
          Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
@@ -566,14 +619,24 @@ package body Preferences.UI is
            (Label,
             Mc
               (Get_Context,
-               "{Command to execute. That command must be a program not a shell command.\n@1 will be replaced by current directory\n@2 will be replaced by currently selected item on list.}"));
+               "{Command to execute. That command must be a program not a shell command.}") &
+            LF &
+            Mc(Get_Context, "{@1 will be replaced by current directory}") &
+            LF &
+            Mc(Get_Context,
+               "{@2 will be replaced by currently selected item on list.}"));
          Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
          Tentry := Create(LabelFrame & ".command");
          Add
            (Tentry,
             Mc
               (Get_Context,
-               "{Command to execute. That command must be a program not a shell command.\n@1 will be replaced by current directory\n@2 will be replaced by currently selected item on list.}"));
+               "{Command to execute. That command must be a program not a shell command.}") &
+            LF &
+            Mc(Get_Context, "{@1 will be replaced by current directory}") &
+            LF &
+            Mc(Get_Context,
+               "{@2 will be replaced by currently selected item on list.}"));
          Tcl.Tk.Ada.Grid.Grid(Tentry, "-row 1 -column 1");
          CheckButton :=
            Create
@@ -584,7 +647,10 @@ package body Preferences.UI is
            (CheckButton,
             Mc
               (Get_Context,
-               "{If checked, the command output will be shown in preview window.\nOtherwise, the command output will be ignored.}"));
+               "{If checked, the command output will be shown in preview window.}") &
+            LF &
+            Mc(Get_Context,
+               "{Otherwise, the command output will be ignored.}"));
          Tcl.Tk.Ada.Grid.Grid(CheckButton, "-sticky we -columnspan 2");
          Button :=
            Create
