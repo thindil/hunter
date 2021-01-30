@@ -16,14 +16,12 @@
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
-with CreateItems;
+with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
@@ -182,9 +180,9 @@ package body MainWindow is
          when 32 =>
             Result := Driver(DirectoryList, M_Toggle_Item);
             Result := Driver(DirectoryList, M_Down_Item);
-         when 72 | KEY_HOME =>
+         when 72 | Key_Home =>
             Result := Driver(DirectoryList, M_First_Item);
-         when 70 | KEY_END =>
+         when 70 | Key_End =>
             Result := Driver(DirectoryList, M_Last_Item);
          when 53 | KEY_NPAGE =>
             Result := Driver(DirectoryList, M_ScrollUp_Page);
@@ -196,7 +194,7 @@ package body MainWindow is
          when others =>
             null;
       end case;
-      if Result = MENU_OK then
+      if Result = Menu_Ok then
          Refresh(ListWindow);
          Show_Selected;
       end if;
@@ -210,9 +208,9 @@ package body MainWindow is
             Result := Driver(Path, M_Previous_Item);
          when 67 | KEY_RIGHT =>
             Result := Driver(Path, M_Next_Item);
-         when 72 | KEY_HOME =>
+         when 72 | Key_Home =>
             Result := Driver(Path, M_First_Item);
-         when 70 | KEY_END =>
+         when 70 | Key_End =>
             Result := Driver(Path, M_Last_Item);
          when 10 =>
             CurrentDirectory := To_Unbounded_String("/");
@@ -231,7 +229,7 @@ package body MainWindow is
          when others =>
             null;
       end case;
-      if Result = MENU_OK then
+      if Result = Menu_Ok then
          Refresh(PathButtons);
       end if;
       return PATH_BUTTONS;
@@ -277,9 +275,9 @@ package body MainWindow is
             Result := Driver(ProgramMenu, M_Previous_Item);
          when 67 | KEY_RIGHT =>
             Result := Driver(ProgramMenu, M_Next_Item);
-         when 72 | KEY_HOME =>
+         when 72 | Key_Home =>
             Result := Driver(ProgramMenu, M_First_Item);
-         when 70 | KEY_END =>
+         when 70 | Key_End =>
             Result := Driver(ProgramMenu, M_Last_Item);
          when 10 =>
             case CurrentIndex is
@@ -294,60 +292,11 @@ package body MainWindow is
          when others =>
             null;
       end case;
-      if Result = MENU_OK then
+      if Result = Menu_Ok then
          Refresh(MenuWindow);
       end if;
       return MAIN_MENU;
    end Menu_Keys;
-
-   procedure ShowCreateForm(Create_Type: String) is
-      Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
-      FormHeight: Line_Position;
-      FormLength: Column_Position;
-      Visibility: Cursor_Visibility := Normal;
-      FieldOptions: Field_Option_Set;
-      UnusedResult: Forms.Driver_Result := Unknown_Request;
-   begin
-      Set_Cursor_Visibility(Visibility);
-      Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
-      Set_Buffer
-        (Create_Fields.all(1), 0, "Enter a new " & Create_Type & " name:");
-      FieldOptions := Get_Options(Create_Fields.all(1));
-      FieldOptions.Active := False;
-      Set_Options(Create_Fields.all(1), FieldOptions);
-      Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer(Create_Fields.all(2), 0, "");
-      FieldOptions := Get_Options(Create_Fields.all(2));
-      FieldOptions.Auto_Skip := False;
-      Set_Options(Create_Fields.all(2), FieldOptions);
-      Create_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
-      Set_Buffer(Create_Fields.all(3), 0, "[Cancel]");
-      FieldOptions := Get_Options(Create_Fields.all(3));
-      FieldOptions.Edit := False;
-      Set_Options(Create_Fields.all(3), FieldOptions);
-      Create_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
-      FieldOptions := Get_Options(Create_Fields.all(4));
-      FieldOptions.Edit := False;
-      Set_Options(Create_Fields.all(4), FieldOptions);
-      Set_Buffer(Create_Fields.all(4), 0, "[Create]");
-      Create_Fields.all(5) := Null_Field;
-      DialogForm := New_Form(Create_Fields);
-      Set_Current(DialogForm, Create_Fields(2));
-      Set_Options(DialogForm, (others => False));
-      Scale(DialogForm, FormHeight, FormLength);
-      FormWindow :=
-        Create
-          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
-           ((Columns / 2) - (FormLength / 2)));
-      Box(FormWindow, Default_Character, Default_Character);
-      Set_Window(DialogForm, FormWindow);
-      Set_Sub_Window
-        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
-      Post(DialogForm);
-      UnusedResult := Driver(DialogForm, REQ_END_LINE);
-      Refresh;
-      Refresh(FormWindow);
-   end ShowCreateForm;
 
    procedure ShowDeleteForm is
       Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
@@ -424,9 +373,9 @@ package body MainWindow is
             Result := Driver(SubMenu, M_Up_Item);
          when 66 | KEY_DOWN =>
             Result := Driver(SubMenu, M_Down_Item);
-         when 72 | KEY_HOME =>
+         when 72 | Key_Home =>
             Result := Driver(SubMenu, M_First_Item);
-         when 70 | KEY_END =>
+         when 70 | Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
             Post(SubMenu, False);
@@ -454,50 +403,11 @@ package body MainWindow is
          when others =>
             null;
       end case;
-      if Result = MENU_OK then
+      if Result = Menu_Ok then
          Refresh(SubMenuWindow);
       end if;
       return ACTIONS_MENU;
    end Actions_Keys;
-
-   function Create_Keys(Key: Key_Code) return UI_Locations is
-      Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
-      Visibility: Cursor_Visibility := Invisible;
-   begin
-      case Key is
-         when 65 | KEY_UP =>
-            Result := Driver(DialogForm, F_Previous_Field);
-            Result := Driver(DialogForm, F_End_Line);
-         when 66 | KEY_DOWN =>
-            Result := Driver(DialogForm, F_Next_Field);
-            Result := Driver(DialogForm, F_End_Line);
-         when 127 =>
-            Result := Driver(DialogForm, F_Delete_Previous);
-         when 10 =>
-            if FieldIndex = 4 then
-               Tcl_Eval
-                 (Interpreter,
-                  "CreateItem " &
-                  Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
-            end if;
-            if FieldIndex /= 2 then
-               Set_Cursor_Visibility(Visibility);
-               Post(DialogForm, False);
-               Delete(DialogForm);
-               UpdateDirectoryList(True);
-               return DIRECTORY_VIEW;
-            end if;
-         when others =>
-            if Key /= 91 then
-               Result := Driver(DialogForm, Key);
-            end if;
-      end case;
-      if Result = Form_OK then
-         Refresh(FormWindow);
-      end if;
-      return CREATE_FORM;
-   end Create_Keys;
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
@@ -527,7 +437,7 @@ package body MainWindow is
          when others =>
             null;
       end case;
-      if Result = Form_OK then
+      if Result = Form_Ok then
          Refresh(FormWindow);
       end if;
       return DELETE_FORM;
