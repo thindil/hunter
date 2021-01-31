@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
@@ -246,8 +247,9 @@ package body Toolbars is
         (ToolCheckButton,
          Mc(Get_Context, "{Copy selected files}") & " \[" &
          To_String(Accelerators(10)) & "\].\n" &
-         Mc(Get_Context,
-            """Pressed button means start copying\ncurrently selected files or directories.\nPress again to copy them."""),
+         Mc(Get_Context, "{Pressed button means start copying}") & LF &
+         Mc(Get_Context, "{currently selected files or directories.}") & LF &
+         Mc(Get_Context, "{Press again to copy them.}"),
          "edit-copy");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton := Create(Toolbar & ".movebutton", "-command MoveData");
@@ -255,8 +257,9 @@ package body Toolbars is
         (ToolCheckButton,
          Mc(Get_Context, "{Move selected files}") & " \[" &
          To_String(Accelerators(11)) & "\].\n" &
-         Mc(Get_Context,
-            """Pressed button means start moving\ncurrently selected files or directories.\nPress again to move them."""),
+         Mc(Get_Context, "{Pressed button means start moving}") & LF &
+         Mc(Get_Context, "{currently selected files or directories.}") & LF &
+         Mc(Get_Context, "{Press again to move them.}"),
          "edit-cut");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolMenuButton := Create(Toolbar & ".deletebutton");
