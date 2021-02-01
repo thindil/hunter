@@ -246,7 +246,7 @@ package body Toolbars is
       SetButton
         (ToolCheckButton,
          Mc(Get_Context, "{Copy selected files}") & " \[" &
-         To_String(Accelerators(10)) & "\].\n" &
+         To_String(Accelerators(10)) & "\]." & LF &
          Mc(Get_Context, "{Pressed button means start copying}") & LF &
          Mc(Get_Context, "{currently selected files or directories.}") & LF &
          Mc(Get_Context, "{Press again to copy them.}"),
@@ -256,7 +256,7 @@ package body Toolbars is
       SetButton
         (ToolCheckButton,
          Mc(Get_Context, "{Move selected files}") & " \[" &
-         To_String(Accelerators(11)) & "\].\n" &
+         To_String(Accelerators(11)) & "\]." & LF &
          Mc(Get_Context, "{Pressed button means start moving}") & LF &
          Mc(Get_Context, "{currently selected files or directories.}") & LF &
          Mc(Get_Context, "{Press again to move them.}"),
