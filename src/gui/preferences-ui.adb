@@ -557,7 +557,7 @@ package body Preferences.UI is
                  " -command {StartChangingShortcut" & Positive'Image(I) & "}");
             Add
               (Button,
-               Mc(Get_Context, "{Change keyboard shortcut for}") & ":\n" &
+               Mc(Get_Context, "{Change keyboard shortcut for}") & ":" & LF &
                To_String(KeysLabels(I)));
             Tcl.Tk.Ada.Grid.Grid
               (Button, "-sticky w -column 2 -row" & Natural'Image(I - 1));
