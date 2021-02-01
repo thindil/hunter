@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
@@ -100,7 +101,7 @@ package body UserCommands.UI is
            (Button,
             Mc
               (Get_Context,
-               "{Edit the selected command. If you change the menu label,\na new command will be added.}"));
+               "{Edit the selected command. If you change the menu label,}") & LF & Mc(Get_Context, "{a new command will be added.}"));
          Tcl.Tk.Ada.Grid.Grid
            (Button, "-row" & Positive'Image(Row) & " -column 3");
          Image.Name := New_String("edit-deleteicon");
