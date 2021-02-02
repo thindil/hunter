@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar.Formatting;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
@@ -439,19 +440,19 @@ package body MainWindow is
                      Shortcut := PathShortcut & "-r";
                      Tooltip :=
                        Mc(Get_Context, "{Reload the current directory:}") &
-                       "\n" & To_String(Path) & "\n\[" & Shortcut & "\]";
+                       LF & To_String(Path) & LF & "\[" & Shortcut & "\]";
                   elsif I = Slice_Count(Tokens) - 1 then
                      Shortcut := PathShortcut & "-u";
                      Tooltip :=
-                       Mc(Get_Context, "{Go to directory:}") & "\n" &
-                       To_String(Path) & "\n\[" & Shortcut & "\]";
+                       Mc(Get_Context, "{Go to directory:}") & LF &
+                       To_String(Path) & LF & "\[" & Shortcut & "\]";
                   else
                      Shortcut :=
                        PathShortcut & "-KP_" &
                        Slice_Number'Image(Slice_Count(Tokens) - I - 1)(2);
                      Tooltip :=
-                       Mc(Get_Context, "{Go to directory:}") & "\n" &
-                       To_String(Path) & "\n\[" & Shortcut & "\]";
+                       Mc(Get_Context, "{Go to directory:}") & LF &
+                       To_String(Path) & LF & "\[" & Shortcut & "\]";
                   end if;
                   Bind_To_Main_Window
                     (PathButton.Interp, "<" & To_String(Shortcut) & ">",
