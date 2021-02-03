@@ -73,7 +73,7 @@
 - command:
    name: push
    execute:
-      - fossil sync
+      - fossil push
       - fossil git export --force
    description: Update remove Fossil repository and its Git mirror
 - command:
