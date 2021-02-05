@@ -36,10 +36,10 @@ Body:
 ## Features propositions
 
 If you want to talk/propose changes in any existing the program feature or
-mechanic, feel free to contact me via issues tracker or mail (addresses of
-both you can find at top of this file). General rule about propositions is
-same as for bugs reports - please, try to write that much information as
-possible. This help us all better understand purpose of your changes.
+mechanic, feel free to contact me via options available at [contact page](https://www.laeran.pl/repositories/hunter/wiki?name=Contact).
+General rule about propositions is same as for bugs reports - please,
+try to write that much information as possible. This help us all better
+understand purpose of your changes.
 
 ## Code propositions
 
@@ -47,11 +47,10 @@ possible. This help us all better understand purpose of your changes.
 
 If you want to start help in the program development, please consider starts
 from something easy like fixing bugs. Before you been want to add new feature
-to the program, please contact with me by issues tracker or mail, addresses
-of both are at top of this file. Same as with features proposition - your code
-may "collide" with my work and it this moment you may just lose time by
-working on it. So it is better that we first discuss your proposition. In any
-other case, fell free to fix my code.
+to the program, please contact with me via options available at [contact page](https://www.laeran.pl/repositories/hunter/wiki?name=Contact).
+Same as with features proposition - your code may "collide" with my work and
+it this moment you may just lose time by working on it. So it is better that
+we first discuss your proposition. In any other case, fell free to fix my code.
 
 ### Coding standard
 
@@ -93,6 +92,14 @@ documentation. Hunter uses `-- ` for start all documentation lines.
 11 - Documentation footer. Hunter uses `-- ****` for closing documentation.
 
 How to generate the code documentation is described in main *README.md* file.
+
+### Code submission
+
+A preferred way to submit your code is to use [tickets](https://www.laeran.pl/repositories/hunter/ticket)
+on the project page. Please attach to that ticket file with diff changes, the
+best if done with command `fossil diff`. But any other diff program will work.
+In that situation, please add information which program was used to create the
+diff file. If you prefer you can also use other options from [contact page](https://www.laeran.pl/repositories/hunter/wiki?name=Contact).
 
 ## Additional debugging options
 
@@ -157,3 +164,13 @@ If you have [Bob](https://github.com/thindil/bob) installed, you can also use
 it to update translations:
 
 `bob generatetranslation` and then `bob updatetranslations`
+
+### Translation submission
+
+Same as with the code submission. A preferred way to submit your translation is to
+use [tickets](https://www.laeran.pl/repositories/hunter/ticket) on the project page.
+For existing translations, please attach to that ticket file with diff changes,
+the best if done with command `fossil diff`. But any other diff program will work.
+In that situation, please add information which program was used to create the diff
+file. For the new translations, please attach the proper translation file. If you
+prefer you can also use other options from [contact page](https://www.laeran.pl/repositories/hunter/wiki?name=Contact).
