@@ -13,9 +13,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Utils.UI; use Utils.UI;
 
 package body Messages is
+
+   DialogForm: Forms.Form;
+   FormWindow: Window;
 
    function Close_Command
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
@@ -63,8 +68,39 @@ package body Messages is
    end CreateMessagesUI;
 
    procedure ShowMessage(Message: String; MessageType: String := "error") is
+      Buttons_Fields: constant Field_Array_Access :=
+        (if MessageType /= "error" then new Field_Array(1 .. 5)
+         else new Field_Array(1 .. 2));
+      FormHeight: Line_Position;
+      FormLength: constant Column_Position := 32;
+      Visibility: Cursor_Visibility := Normal;
+      FieldOptions: Field_Option_Set;
+      UnusedResult: Forms.Driver_Result;
    begin
-      null;
+      Set_Cursor_Visibility(Visibility);
+      Buttons_Fields.all(1) :=
+        New_Field(1, 8, 1, 7, 0, 0);
+      Set_Buffer(Buttons_Fields.all(1), 0, "[Close]");
+      FieldOptions := Get_Options(Buttons_Fields.all(1));
+      FieldOptions.Edit := False;
+      Set_Options(Buttons_Fields.all(1), FieldOptions);
+      Buttons_Fields.all(2) := Null_Field;
+      DialogForm := New_Form(Buttons_Fields);
+      Set_Options(DialogForm, (others => False));
+      FormHeight := 3;
+      FormWindow :=
+        Create
+          (FormHeight + 2, 34, ((Lines / 3) - (FormHeight / 2)),
+           ((Columns / 2) - (FormLength / 2)));
+      Set_Window(DialogForm, FormWindow);
+      Set_Sub_Window
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+      Post(DialogForm);
+      Add(FormWindow, 1, 0, Message);
+      UnusedResult := Driver(DialogForm, F_First_Field);
+      Box(FormWindow, Default_Character, Default_Character);
+      Refresh;
+      Refresh(FormWindow);
    end ShowMessage;
 
 end Messages;
