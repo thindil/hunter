@@ -90,14 +90,14 @@ package body CreateItems is
             Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
             Mc(Interp, "{because there exists}") & " " &
             To_String(ActionBlocker) & " " & Mc(Interp, "{with that name.}"));
-         goto End_Of_Create;
+         return TCL_OK;
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewItemName))) then
          ShowMessage
            (Mc(Interp, "{You don't have permissions to write to}") & " " &
             Containing_Directory(To_String(NewItemName)));
-         goto End_Of_Create;
+         return TCL_OK;
       end if;
       case NewAction is
          when CREATEDIRECTORY =>
@@ -128,7 +128,6 @@ package body CreateItems is
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateWatch(To_String(CurrentDirectory));
-      <<End_Of_Create>>
       return TCL_OK;
    end Create_Item_Command;
 
