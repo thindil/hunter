@@ -90,6 +90,7 @@ package body CreateItems is
             Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
             Mc(Interp, "{because there exists}") & " " &
             To_String(ActionBlocker) & " " & Mc(Interp, "{with that name.}"));
+         Tcl_SetResult(Interp, "0");
          return TCL_OK;
       end if;
       if not Is_Write_Accessible_File
@@ -97,6 +98,7 @@ package body CreateItems is
          ShowMessage
            (Mc(Interp, "{You don't have permissions to write to}") & " " &
             Containing_Directory(To_String(NewItemName)));
+         Tcl_SetResult(Interp, "0");
          return TCL_OK;
       end if;
       case NewAction is
@@ -128,6 +130,7 @@ package body CreateItems is
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateWatch(To_String(CurrentDirectory));
+      Tcl_SetResult(Interp, "1");
       return TCL_OK;
    end Create_Item_Command;
 
@@ -208,6 +211,9 @@ package body CreateItems is
                  (Interpreter,
                   "CreateItem " &
                   Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+               if Tcl_GetResult(Interpreter) = "0" then
+                  return MESSAGE_FORM;
+               end if;
             end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
