@@ -31,6 +31,7 @@ with DeleteItems; use DeleteItems;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;
+with Messages; use Messages;
 with Modules; use Modules;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
@@ -159,6 +160,8 @@ begin
                UILocation := Create_Keys(Key);
             when DELETE_FORM =>
                UILocation := Delete_Keys(Key);
+            when MESSAGE_FORM =>
+               UILocation := Message_Keys(Key);
             when others =>
                null;
          end case;

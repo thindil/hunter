@@ -14,8 +14,10 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Interfaces.C;
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with CArgv;
 with Tcl; use Tcl;
+with MainWindow; use MainWindow;
 
 -- ****h* MessagesTUI/MessagesTUI
 -- FUNCTION
@@ -68,6 +70,17 @@ package Messages is
    --               question. Default value is error.
    -- SOURCE
    procedure ShowMessage(Message: String; MessageType: String := "error");
+   -- ****
+
+   -- ****f* MessagesTUI/MessagesTUI.Message_Keys
+   -- FUNCTION
+   -- Handles keys events when the message dialog is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Message_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end Messages;
