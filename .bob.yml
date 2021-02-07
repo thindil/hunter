@@ -75,7 +75,7 @@
    execute:
       - fossil push
       - fossil git export --force
-   description: Update remove Fossil repository and its Git mirror
+   description: Update remote Fossil repository and its Git mirror
 - command:
    name: debugconsole
    execute:
