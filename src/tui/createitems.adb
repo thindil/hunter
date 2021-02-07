@@ -17,7 +17,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Interfaces.C;
+with Interfaces.C; use Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with CArgv;
@@ -40,7 +40,7 @@ package body CreateItems is
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argc       - Number of arguments passed to the command.
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
@@ -59,11 +59,15 @@ package body CreateItems is
      (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
       Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
       return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
+      pragma Unreferenced(ClientData);
       NewItemName, ActionString, ActionBlocker, Destination: Unbounded_String;
       File: File_Descriptor;
       Hunter_Create_Exception: exception;
    begin
+      if Argc = 1 then
+         Tcl_SetResult(Interp, "1");
+         return TCL_OK;
+      end if;
       NewItemName := CurrentDirectory & "/" & CArgv.Arg(Argv, 1);
       if Exists(To_String(NewItemName)) or
         Is_Symbolic_Link(To_String(NewItemName)) then
