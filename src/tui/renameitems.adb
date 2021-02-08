@@ -122,13 +122,13 @@ package body RenameItems is
    begin
       Set_Cursor_Visibility(Visibility);
       Rename_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
-      Set_Buffer
-        (Rename_Fields.all(1), 0, "Enter a new name:");
+      Set_Buffer(Rename_Fields.all(1), 0, "Enter a new name:");
       FieldOptions := Get_Options(Rename_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Rename_Fields.all(1), FieldOptions);
       Rename_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer(Rename_Fields.all(2), 0, "");
+      Set_Buffer
+        (Rename_Fields.all(2), 0, Simple_Name(To_String(CurrentSelected)));
       FieldOptions := Get_Options(Rename_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Rename_Fields.all(2), FieldOptions);
@@ -179,8 +179,7 @@ package body RenameItems is
             if FieldIndex = 4 then
                Tcl_Eval
                  (Interpreter,
-                  "Rename " &
-                  Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+                  "Rename " & Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
                if Tcl_GetResult(Interpreter) = "0" then
                   return MESSAGE_FORM;
                end if;
