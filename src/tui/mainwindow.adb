@@ -26,7 +26,7 @@ with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
-with RenameItems;
+with RenameItems; use RenameItems;
 with ShowItems; use ShowItems;
 
 package body MainWindow is
@@ -240,12 +240,13 @@ package body MainWindow is
    begin
       case Menu_Type is
          when ACTIONS_MENU =>
-            Menu_Items := new Item_Array(1 .. 5);
+            Menu_Items := new Item_Array(1 .. 6);
             Menu_Items.all(1) := New_Item("Create new directory");
             Menu_Items.all(2) := New_Item("Create new file");
-            Menu_Items.all(3) := New_Item("Delete selected");
-            Menu_Items.all(4) := New_Item("Close");
-            Menu_Items.all(5) := Null_Item;
+            Menu_Items.all(3) := New_Item("Rename selected");
+            Menu_Items.all(4) := New_Item("Delete selected");
+            Menu_Items.all(5) := New_Item("Close");
+            Menu_Items.all(6) := Null_Item;
          when others =>
             null;
       end case;
@@ -323,11 +324,15 @@ package body MainWindow is
                   ShowCreateForm("file");
                   return CREATE_FORM;
                when 3 =>
+                  NewAction := RENAME;
+                  ShowRenameForm;
+                  return RENAME_FORM;
+               when 4 =>
                   NewAction :=
                     (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
                   ShowDeleteForm;
                   return DELETE_FORM;
-               when 4 =>
+               when 5 =>
                   return DIRECTORY_VIEW;
                when others =>
                   return ACTIONS_MENU;
