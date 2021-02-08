@@ -74,10 +74,11 @@ package MainWindow is
    -- CREATE_FORM    - The create a new directory or file form
    -- DELETE_FORM    - The delete files confirmation form
    -- MESSAGE_FORM   - The message dialog
+   -- RENAME_FORM    - The rename directory or file form
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
-      CREATE_FORM, DELETE_FORM, MESSAGE_FORM);
+      CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM);
    -- ****
 
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container

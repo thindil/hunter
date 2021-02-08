@@ -26,6 +26,7 @@ with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
+with RenameItems;
 with ShowItems; use ShowItems;
 
 package body MainWindow is
@@ -47,6 +48,7 @@ package body MainWindow is
    begin
       ActivateItems.AddCommands;
       CreateItems.AddCommands;
+      RenameItems.AddCommands;
       Create_Program_Menu_Loop :
       for I in Main_Menu_Array'Range loop
          Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));

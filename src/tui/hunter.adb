@@ -35,6 +35,7 @@ with Messages; use Messages;
 with Modules; use Modules;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
+with RenameItems; use RenameItems;
 
 procedure Hunter is
    use type Interfaces.C.int;
@@ -162,6 +163,8 @@ begin
                UILocation := Delete_Keys(Key);
             when MESSAGE_FORM =>
                UILocation := Message_Keys(Key);
+            when RENAME_FORM =>
+               UILocation := Rename_Keys(Key);
             when others =>
                null;
          end case;
