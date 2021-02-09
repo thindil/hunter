@@ -39,29 +39,68 @@ package body MainWindow is
    SubMenuWindow: Window;
    SubMenu: Menu;
 
+   -- ****if* MainWindow/CreateProgramMenu
+   -- FUNCTION
+   -- Create the main program menu, the menu content depends on the program
+   -- state
+   -- SOURCE
+   procedure CreateProgramMenu is
+      -- ****
+   begin
+      Terminal_Interface.Curses.Clear(MenuWindow);
+      case NewAction is
+         when COPY =>
+            declare
+               Menu_Items: constant Item_Array_Access :=
+                 new Item_Array(1 .. 4);
+            begin
+               Menu_Items.all(1) := New_Item("Quit");
+               Menu_Items.all(2) := New_Item("Copy selected");
+               Menu_Items.all(3) := New_Item("Cancel");
+               Menu_Items.all(4) := Null_Item;
+               ProgramMenu := New_Menu(Menu_Items);
+               Set_Format(ProgramMenu, 1, 3);
+               Set_Mark(ProgramMenu, "");
+               Set_Window(ProgramMenu, MenuWindow);
+               Set_Sub_Window
+                 (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+               Post(ProgramMenu);
+            end;
+         when others =>
+            declare
+               Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
+                 (To_Unbounded_String("Quit"),
+                  To_Unbounded_String("Bookmarks"),
+                  To_Unbounded_String("View"), To_Unbounded_String("Actions"),
+                  To_Unbounded_String("About"),
+                  To_Unbounded_String("Selected"));
+               Menu_Items: constant Item_Array_Access :=
+                 new Item_Array(1 .. 7);
+            begin
+               Create_Program_Menu_Loop :
+               for I in Main_Menu_Array'Range loop
+                  Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
+               end loop Create_Program_Menu_Loop;
+               Menu_Items.all(7) := Null_Item;
+               ProgramMenu := New_Menu(Menu_Items);
+               Set_Format(ProgramMenu, 1, 6);
+               Set_Mark(ProgramMenu, "");
+               MenuWindow := Create(1, Columns, 0, 0);
+               Set_Window(ProgramMenu, MenuWindow);
+               Set_Sub_Window
+                 (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+               Post(ProgramMenu);
+            end;
+      end case;
+   end CreateProgramMenu;
+
    procedure CreateMainWindow(Directory: String) is
-      Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
-        (To_Unbounded_String("Quit"), To_Unbounded_String("Bookmarks"),
-         To_Unbounded_String("View"), To_Unbounded_String("Actions"),
-         To_Unbounded_String("About"), To_Unbounded_String("Selected"));
-      Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 7);
    begin
       ActivateItems.AddCommands;
       CreateItems.AddCommands;
       RenameItems.AddCommands;
-      Create_Program_Menu_Loop :
-      for I in Main_Menu_Array'Range loop
-         Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
-      end loop Create_Program_Menu_Loop;
-      Menu_Items.all(7) := Null_Item;
-      ProgramMenu := New_Menu(Menu_Items);
-      Set_Format(ProgramMenu, 1, 6);
-      Set_Mark(ProgramMenu, "");
       MenuWindow := Create(1, Columns, 0, 0);
-      Set_Window(ProgramMenu, MenuWindow);
-      Set_Sub_Window
-        (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
-      Post(ProgramMenu);
+      CreateProgramMenu;
       PathButtons := Create(1, Columns / 2, 1, 0);
       ListWindow :=
         (if Settings.ShowPreview then Create(Lines - 2, Columns / 2, 2, 0)
@@ -240,13 +279,14 @@ package body MainWindow is
    begin
       case Menu_Type is
          when ACTIONS_MENU =>
-            Menu_Items := new Item_Array(1 .. 6);
+            Menu_Items := new Item_Array(1 .. 7);
             Menu_Items.all(1) := New_Item("Create new directory");
             Menu_Items.all(2) := New_Item("Create new file");
             Menu_Items.all(3) := New_Item("Rename selected");
-            Menu_Items.all(4) := New_Item("Delete selected");
-            Menu_Items.all(5) := New_Item("Close");
-            Menu_Items.all(6) := Null_Item;
+            Menu_Items.all(4) := New_Item("Start copying");
+            Menu_Items.all(5) := New_Item("Delete selected");
+            Menu_Items.all(6) := New_Item("Close");
+            Menu_Items.all(7) := Null_Item;
          when others =>
             null;
       end case;
@@ -282,6 +322,14 @@ package body MainWindow is
             case CurrentIndex is
                when 1 =>
                   return PATH_BUTTONS;
+               when 3 =>
+                  if NewAction = COPY then
+                     NewAction := CREATEFILE;
+                     UpdateDirectoryList;
+                     CreateProgramMenu;
+                     Refresh(MenuWindow);
+                     return DIRECTORY_VIEW;
+                  end if;
                when 4 =>
                   Draw_Menu(ACTIONS_MENU);
                   return ACTIONS_MENU;
@@ -328,11 +376,16 @@ package body MainWindow is
                   ShowRenameForm;
                   return RENAME_FORM;
                when 4 =>
+                  NewAction := COPY;
+                  CreateProgramMenu;
+                  Refresh(MenuWindow);
+                  return DIRECTORY_VIEW;
+               when 5 =>
                   NewAction :=
                     (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
                   ShowDeleteForm;
                   return DELETE_FORM;
-               when 5 =>
+               when 6 =>
                   return DIRECTORY_VIEW;
                when others =>
                   return ACTIONS_MENU;
