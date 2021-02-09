@@ -379,6 +379,8 @@ package body MainWindow is
                   NewAction := COPY;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
+                  DestinationDirectory := CurrentDirectory;
+                  ShowDestination;
                   return DIRECTORY_VIEW;
                when 5 =>
                   NewAction :=
