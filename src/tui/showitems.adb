@@ -60,7 +60,7 @@ package body ShowItems is
    -- Show information about the currently selected file or directory.
    -- SOURCE
    procedure ShowInfo is
-   -- ****
+      -- ****
       SelectedItem: constant String := To_String(CurrentSelected);
       DirectorySize: Natural := 0;
       MimeType: constant String := GetMimeType(SelectedItem);
@@ -583,8 +583,36 @@ package body ShowItems is
    end CreateShowItemsUI;
 
    procedure ShowDestination is
+      Line: Line_Position := 1;
    begin
-      null;
+      if PreviewPad /= Null_Window then
+         Delete(PreviewPad);
+      end if;
+      Clear(PreviewWindow);
+      Box(PreviewWindow, Default_Character, Default_Character);
+      Refresh(PreviewWindow);
+      if not Is_Read_Accessible_File(To_String(DestinationDirectory)) then
+         ShowMessage
+           (Mc
+              (Interpreter,
+               "{You don't have permissions to preview this directory.}"));
+         return;
+      end if;
+      LoadDirectory(To_String(DestinationDirectory), True);
+      PreviewPad :=
+        New_Pad(Line_Position(SecondItemsList.Length) + 1, (Columns / 2) - 1);
+      Add(PreviewPad, 0, Columns / 4, "Name");
+      Load_Destination_Directory_Loop :
+      for Item of SecondItemsList loop
+         if not Settings.ShowHidden and Item.IsHidden then
+            goto End_Of_Loop;
+         end if;
+         Add(PreviewPad, Line, 0, To_String(Item.Name));
+         Line := Line + 1;
+         <<End_Of_Loop>>
+      end loop Load_Destination_Directory_Loop;
+      Refresh
+        (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
    end ShowDestination;
 
    procedure ShowOutput is
