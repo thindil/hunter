@@ -237,6 +237,7 @@ package body ShowItems is
               (Mc
                  (Interpreter,
                   "{You don't have permissions to preview this directory.}"));
+            return;
          end if;
          LoadDirectory(To_String(CurrentSelected), True);
          PreviewPad :=
