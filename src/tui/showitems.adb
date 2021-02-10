@@ -574,21 +574,40 @@ package body ShowItems is
       return TCL_OK;
    end GoToDirectory_Command;
 
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.PathButtons
+   -- FUNCTION
+   -- Path buttons window for destination directory
+   -- SOURCE
+   PathButtons: Window;
+   -- ****
+
    procedure CreateShowItemsUI is
    begin
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
       AddCommand("GoToDirectory", GoToDirectory_Command'Access);
+      PathButtons := Create(1, Columns / 2, 1, 0);
       PreviewWindow := Create(Lines - 2, Columns / 2, 2, Columns / 2);
       Box(PreviewWindow, Default_Character, Default_Character);
       Refresh(PreviewWindow);
    end CreateShowItemsUI;
 
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.Path
+   -- FUNCTION
+   -- Path buttons menu for destination directory
+   -- SOURCE
+   Path: Menu;
+   -- ****
+
    procedure ShowDestination is
       Line: Line_Position := 1;
+      Index: Positive;
+      Path_Items: Item_Array_Access;
+      Tokens: Slice_Set;
    begin
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
       end if;
+      Clear(PathButtons);
       Clear(PreviewWindow);
       Box(PreviewWindow, Default_Character, Default_Character);
       Refresh(PreviewWindow);
@@ -599,6 +618,33 @@ package body ShowItems is
                "{You don't have permissions to preview this directory.}"));
          return;
       end if;
+      DestinationDirectory :=
+        To_Unbounded_String
+          (Normalize_Pathname(To_String(DestinationDirectory)));
+      Index := Ada.Strings.Unbounded.Count(DestinationDirectory, "/") + 1;
+      if DestinationDirectory /= To_Unbounded_String("/") then
+         Path_Items := new Item_Array(1 .. Index + 1);
+         Path_Items.all(1) := New_Item("/");
+         Create(Tokens, To_String(DestinationDirectory), "/");
+         for I in 2 .. Slice_Count(Tokens) loop
+            Path_Items.all(Positive(I)) := New_Item(Slice(Tokens, I));
+         end loop;
+         Path_Items.all(Index + 1) := Null_Item;
+      else
+         Path_Items := new Item_Array(1 .. 2);
+         Path_Items.all(1) := New_Item("/");
+         Path_Items.all(2) := Null_Item;
+         Index := 1;
+      end if;
+      Path := New_Menu(Path_Items);
+      Set_Format(Path, 1, 5);
+      Set_Mark(Path, "");
+      Set_Window(Path, PathButtons);
+      Set_Sub_Window
+        (Path, Derived_Window(PathButtons, 1, (Columns / 2) - 2, 0, 1));
+      Post(Path);
+      Set_Current(Path, Path_Items.all(Index));
+      Move_Window(PathButtons, 1, (Columns / 2));
       LoadDirectory(To_String(DestinationDirectory), True);
       PreviewPad :=
         New_Pad(Line_Position(SecondItemsList.Length) + 1, (Columns / 2) - 1);
@@ -612,6 +658,7 @@ package body ShowItems is
          Line := Line + 1;
          <<End_Of_Loop>>
       end loop Load_Destination_Directory_Loop;
+      Refresh(PathButtons);
       Refresh
         (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
    end ShowDestination;
