@@ -101,7 +101,8 @@ package body UserCommands.UI is
            (Button,
             Mc
               (Get_Context,
-               "{Edit the selected command. If you change the menu label,}") & LF & Mc(Get_Context, "{a new command will be added.}"));
+               "{Edit the selected command. If you change the menu label,}") &
+            LF & Mc(Get_Context, "{a new command will be added.}"));
          Tcl.Tk.Ada.Grid.Grid
            (Button, "-row" & Positive'Image(Row) & " -column 3");
          Image.Name := New_String("edit-deleteicon");

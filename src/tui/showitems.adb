@@ -608,7 +608,8 @@ package body ShowItems is
       Path_Items: Item_Array_Access;
       Tokens: Slice_Set;
       Menu_Items: constant Item_Array_Access :=
-        new Item_Array(SecondItemsList.First_Index .. SecondItemsList.Last_Index + 1);
+        new Item_Array
+          (SecondItemsList.First_Index .. SecondItemsList.Last_Index + 1);
    begin
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
