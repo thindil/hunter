@@ -66,19 +66,20 @@ package MainWindow is
    -- FUNCTION
    -- Parts of the program UI, used mostly in handling keys events
    -- OPTION
-   -- DIRECTORY_VIEW - Current directory listing
-   -- PATH_BUTTONS   - Current directory path buttons
-   -- MAIN_MENU      - The main program's menu
-   -- PREVIEW        - The preview window
-   -- ACTIONS_MENU   - The actions menu
-   -- CREATE_FORM    - The create a new directory or file form
-   -- DELETE_FORM    - The delete files confirmation form
-   -- MESSAGE_FORM   - The message dialog
-   -- RENAME_FORM    - The rename directory or file form
+   -- DIRECTORY_VIEW   - Current directory listing
+   -- PATH_BUTTONS     - Current directory path buttons
+   -- MAIN_MENU        - The main program's menu
+   -- PREVIEW          - The preview window
+   -- ACTIONS_MENU     - The actions menu
+   -- CREATE_FORM      - The create a new directory or file form
+   -- DELETE_FORM      - The delete files confirmation form
+   -- MESSAGE_FORM     - The message dialog
+   -- RENAME_FORM      - The rename directory or file form
+   -- DESTINATION_VIEW - The destination directory for copying/moving items
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
-      CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM);
+      CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW);
    -- ****
 
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container

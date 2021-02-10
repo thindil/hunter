@@ -24,7 +24,6 @@ with Interfaces.C;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
-with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with CArgv;
 with Tcl; use Tcl;
@@ -32,7 +31,6 @@ with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
-with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
@@ -598,11 +596,19 @@ package body ShowItems is
    Path: Menu;
    -- ****
 
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.DestinationList
+   -- FUNCTION
+   -- Current content of the destination directory
+   -- SOURCE
+   DestinationList: Menu;
+   -- ****
+
    procedure ShowDestination is
-      Line: Line_Position := 1;
       Index: Positive;
       Path_Items: Item_Array_Access;
       Tokens: Slice_Set;
+      Menu_Items: constant Item_Array_Access :=
+        new Item_Array(SecondItemsList.First_Index .. SecondItemsList.Last_Index + 1);
    begin
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
@@ -610,7 +616,6 @@ package body ShowItems is
       Clear(PathButtons);
       Clear(PreviewWindow);
       Box(PreviewWindow, Default_Character, Default_Character);
-      Refresh(PreviewWindow);
       if not Is_Read_Accessible_File(To_String(DestinationDirectory)) then
          ShowMessage
            (Mc
@@ -646,21 +651,33 @@ package body ShowItems is
       Set_Current(Path, Path_Items.all(Index));
       Move_Window(PathButtons, 1, (Columns / 2));
       LoadDirectory(To_String(DestinationDirectory), True);
-      PreviewPad :=
-        New_Pad(Line_Position(SecondItemsList.Length) + 1, (Columns / 2) - 1);
-      Add(PreviewPad, 0, Columns / 4, "Name");
-      Load_Destination_Directory_Loop :
-      for Item of SecondItemsList loop
-         if not Settings.ShowHidden and Item.IsHidden then
+      Load_Destination_View_Loop :
+      for I in SecondItemsList.First_Index .. SecondItemsList.Last_Index loop
+         if not Settings.ShowHidden and SecondItemsList(I).IsHidden then
             goto End_Of_Loop;
          end if;
-         Add(PreviewPad, Line, 0, To_String(Item.Name));
-         Line := Line + 1;
+         Menu_Items.all(Index) := New_Item(To_String(SecondItemsList(I).Name));
+         Index := Index + 1;
          <<End_Of_Loop>>
-      end loop Load_Destination_Directory_Loop;
+      end loop Load_Destination_View_Loop;
+      if Index > SecondItemsList.First_Index then
+         Fill_Empty_Entries_Loop :
+         for I in Index .. Menu_Items'Last loop
+            Menu_Items.all(I) := Null_Item;
+         end loop Fill_Empty_Entries_Loop;
+         DestinationList := New_Menu(Menu_Items);
+         Set_Options(DestinationList, (One_Valued => False, others => <>));
+         Set_Format(DestinationList, Lines - 5, 1);
+         Set_Mark(DestinationList, "");
+         Set_Window(DestinationList, PreviewWindow);
+         Set_Sub_Window
+           (DestinationList,
+            Derived_Window(PreviewWindow, Lines - 5, (Columns / 2) - 2, 2, 1));
+         Post(DestinationList);
+         Set_Current(DestinationList, Menu_Items.all(1));
+      end if;
       Refresh(PathButtons);
-      Refresh
-        (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
+      Refresh(PreviewWindow);
    end ShowDestination;
 
    procedure ShowOutput is
@@ -672,5 +689,35 @@ package body ShowItems is
    begin
       null;
    end UpdateOutput;
+
+   function Destination_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result;
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(DirectoryList, M_Up_Item);
+         when 66 | KEY_DOWN =>
+            Result := Driver(DirectoryList, M_Down_Item);
+         when 32 =>
+            Result := Driver(DirectoryList, M_Toggle_Item);
+            Result := Driver(DirectoryList, M_Down_Item);
+         when 72 | Key_Home =>
+            Result := Driver(DirectoryList, M_First_Item);
+         when 70 | Key_End =>
+            Result := Driver(DirectoryList, M_Last_Item);
+         when 53 | KEY_NPAGE =>
+            Result := Driver(DirectoryList, M_ScrollUp_Page);
+         when 54 | KEY_PPAGE =>
+            Result := Driver(DirectoryList, M_ScrollDown_Page);
+         when 10 =>
+            Result := Menu_Ok;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         ShowDestination;
+      end if;
+      return DESTINATION_VIEW;
+   end Destination_Keys;
 
 end ShowItems;
