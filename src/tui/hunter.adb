@@ -36,6 +36,7 @@ with Modules; use Modules;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
 with RenameItems; use RenameItems;
+with ShowItems; use ShowItems;
 
 procedure Hunter is
    use type Interfaces.C.int;
@@ -140,8 +141,12 @@ begin
             when PATH_BUTTONS =>
                UILocation := MAIN_MENU;
             when MAIN_MENU =>
-               UILocation := PREVIEW;
-            when PREVIEW =>
+               if NewAction /= COPY then
+                  UILocation := PREVIEW;
+               else
+                  UILocation := DESTINATION_VIEW;
+               end if;
+            when PREVIEW | DESTINATION_VIEW =>
                UILocation := DIRECTORY_VIEW;
             when others =>
                null;
@@ -165,6 +170,8 @@ begin
                UILocation := Message_Keys(Key);
             when RENAME_FORM =>
                UILocation := Rename_Keys(Key);
+            when DESTINATION_VIEW =>
+               UILocation := Destination_Keys(Key);
             when others =>
                null;
          end case;

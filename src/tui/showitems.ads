@@ -14,6 +14,8 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with MainWindow; use MainWindow;
 
 -- ****h* ShowItems/ShowItemsTUI
 -- FUNCTION
@@ -74,6 +76,17 @@ package ShowItems is
    -- Update UI with the output of the user command
    -- SOURCE
    procedure UpdateOutput(Text: String);
+   -- ****
+
+   -- ****f* ShowItemsTUI/ShowItemsTUI.Destination_Keys
+   -- FUNCTION
+   -- Handles keys events when the destination view is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Destination_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end ShowItems;
