@@ -229,11 +229,13 @@ package body MainWindow is
             Tcl_Eval(Interpreter, "ActivateItem");
             return;
          when others =>
-            null;
+            return;
       end case;
       if Result = Menu_Ok then
          Refresh(ListWindow);
-         Show_Selected;
+         if NewAction /= COPY then
+            Show_Selected;
+         end if;
       end if;
    end Directory_Keys;
 
@@ -380,8 +382,9 @@ package body MainWindow is
                   CreateProgramMenu;
                   Refresh(MenuWindow);
                   DestinationDirectory := CurrentDirectory;
+                  SecondItemsList := ItemsList;
                   ShowDestination;
-                  return DIRECTORY_VIEW;
+                  return DESTINATION_VIEW;
                when 5 =>
                   NewAction :=
                     (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);

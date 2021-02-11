@@ -31,6 +31,7 @@ with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
+with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
@@ -651,7 +652,7 @@ package body ShowItems is
       Post(Path);
       Set_Current(Path, Path_Items.all(Index));
       Move_Window(PathButtons, 1, (Columns / 2));
-      LoadDirectory(To_String(DestinationDirectory), True);
+      Index := SecondItemsList.First_Index;
       Load_Destination_View_Loop :
       for I in SecondItemsList.First_Index .. SecondItemsList.Last_Index loop
          if not Settings.ShowHidden and SecondItemsList(I).IsHidden then
@@ -667,7 +668,6 @@ package body ShowItems is
             Menu_Items.all(I) := Null_Item;
          end loop Fill_Empty_Entries_Loop;
          DestinationList := New_Menu(Menu_Items);
-         Set_Options(DestinationList, (One_Valued => False, others => <>));
          Set_Format(DestinationList, Lines - 5, 1);
          Set_Mark(DestinationList, "");
          Set_Window(DestinationList, PreviewWindow);
@@ -691,34 +691,34 @@ package body ShowItems is
       null;
    end UpdateOutput;
 
-   function Destination_Keys(Key: Key_Code) return UI_Locations is
+   procedure Destination_Keys(Key: Key_Code) is
       Result: Menus.Driver_Result;
    begin
       case Key is
          when 65 | KEY_UP =>
-            Result := Driver(DirectoryList, M_Up_Item);
+            Result := Driver(DestinationList, M_Up_Item);
          when 66 | KEY_DOWN =>
-            Result := Driver(DirectoryList, M_Down_Item);
-         when 32 =>
-            Result := Driver(DirectoryList, M_Toggle_Item);
-            Result := Driver(DirectoryList, M_Down_Item);
+            Result := Driver(DestinationList, M_Down_Item);
          when 72 | Key_Home =>
-            Result := Driver(DirectoryList, M_First_Item);
+            Result := Driver(DestinationList, M_First_Item);
          when 70 | Key_End =>
-            Result := Driver(DirectoryList, M_Last_Item);
+            Result := Driver(DestinationList, M_Last_Item);
          when 53 | KEY_NPAGE =>
-            Result := Driver(DirectoryList, M_ScrollUp_Page);
+            Result := Driver(DestinationList, M_ScrollUp_Page);
          when 54 | KEY_PPAGE =>
-            Result := Driver(DirectoryList, M_ScrollDown_Page);
+            Result := Driver(DestinationList, M_ScrollDown_Page);
          when 10 =>
-            Result := Menu_Ok;
+            DestinationDirectory :=
+              DestinationDirectory & "/" & Name(Current(DestinationList));
+            LoadDirectory(To_String(DestinationDirectory), True);
+            ShowDestination;
+            return;
          when others =>
-            null;
+            return;
       end case;
       if Result = Menu_Ok then
-         ShowDestination;
+         Refresh(PreviewWindow);
       end if;
-      return DESTINATION_VIEW;
    end Destination_Keys;
 
 end ShowItems;
