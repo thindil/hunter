@@ -76,10 +76,12 @@ package MainWindow is
    -- MESSAGE_FORM     - The message dialog
    -- RENAME_FORM      - The rename directory or file form
    -- DESTINATION_VIEW - The destination directory for copying/moving items
+   -- DESTINATION_PATH - The destination directory path buttons
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
-      CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW);
+      CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
+      DESTINATION_PATH);
    -- ****
 
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container

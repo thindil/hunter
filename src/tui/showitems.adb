@@ -31,7 +31,6 @@ with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
-with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
@@ -720,5 +719,38 @@ package body ShowItems is
          Refresh(PreviewWindow);
       end if;
    end Destination_Keys;
+
+   function Destination_Path_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result := Unknown_Request;
+   begin
+      case Key is
+         when 68 | KEY_LEFT =>
+            Result := Driver(Path, M_Previous_Item);
+         when 67 | KEY_RIGHT =>
+            Result := Driver(Path, M_Next_Item);
+         when 72 | Key_Home =>
+            Result := Driver(Path, M_First_Item);
+         when 70 | Key_End =>
+            Result := Driver(Path, M_Last_Item);
+         when 10 =>
+            DestinationDirectory := To_Unbounded_String("/");
+            Update_Destination_Directory_Loop :
+            for I in 2 .. Get_Index(Current(Path)) loop
+               Append(DestinationDirectory, Name(Items(Path, I)));
+               if I < Get_Index(Current(Path)) then
+                  Append(DestinationDirectory, "/");
+               end if;
+            end loop Update_Destination_Directory_Loop;
+            LoadDirectory(To_String(DestinationDirectory), True);
+            ShowDestination;
+            return DESTINATION_VIEW;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(PathButtons);
+      end if;
+      return DESTINATION_PATH;
+   end Destination_Path_Keys;
 
 end ShowItems;

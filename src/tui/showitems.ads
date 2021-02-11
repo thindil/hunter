@@ -15,6 +15,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with MainWindow; use MainWindow;
 
 -- ****h* ShowItems/ShowItemsTUI
 -- FUNCTION
@@ -84,6 +85,18 @@ package ShowItems is
    -- Key - Key pressed by the user
    -- SOURCE
    procedure Destination_Keys(Key: Key_Code);
+   -- ****
+
+   -- ****f* ShowItemsTUI/ShowItemsTUI.Destination_Path_Keys
+   -- FUNCTION
+   -- Handles keys events when destination directory path buttons are active
+   -- elements of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Destination_Path_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end ShowItems;
