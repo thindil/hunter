@@ -171,7 +171,7 @@ begin
             when RENAME_FORM =>
                UILocation := Rename_Keys(Key);
             when DESTINATION_VIEW =>
-               UILocation := Destination_Keys(Key);
+               Destination_Keys(Key);
             when others =>
                null;
          end case;
