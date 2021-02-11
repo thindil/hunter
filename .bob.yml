@@ -69,6 +69,7 @@
    name: pretty
    execute:
       - gnatpp -P hunter.gpr
+      - gnatpp -P hunter.gpr -XUI=console
    description: Pretty print Hunter source code
 - command:
    name: push
