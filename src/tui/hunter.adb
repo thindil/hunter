@@ -146,7 +146,9 @@ begin
                else
                   UILocation := DESTINATION_VIEW;
                end if;
-            when PREVIEW | DESTINATION_VIEW =>
+            when DESTINATION_VIEW =>
+               UILocation := DESTINATION_PATH;
+            when PREVIEW | DESTINATION_PATH =>
                UILocation := DIRECTORY_VIEW;
             when others =>
                null;
@@ -172,6 +174,8 @@ begin
                UILocation := Rename_Keys(Key);
             when DESTINATION_VIEW =>
                Destination_Keys(Key);
+            when DESTINATION_PATH =>
+               UILocation := Destination_Path_Keys(Key);
             when others =>
                null;
          end case;
