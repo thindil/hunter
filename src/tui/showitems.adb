@@ -481,8 +481,17 @@ package body ShowItems is
       end if;
    end ShowPreview;
 
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.PathButtons
+   -- FUNCTION
+   -- Path buttons window for destination directory
+   -- SOURCE
+   PathButtons: Window;
+   -- ****
+
    procedure Show_Selected is
    begin
+      Clear(PathButtons);
+      Refresh(PathButtons);
       SelectedItems.Clear;
       if Item_Count(DirectoryList) > 0 then
          Update_Selected_Items_Loop :
@@ -571,13 +580,6 @@ package body ShowItems is
    begin
       return TCL_OK;
    end GoToDirectory_Command;
-
-   -- ****iv* ShowItemsTUI/ShowItemsTUI.PathButtons
-   -- FUNCTION
-   -- Path buttons window for destination directory
-   -- SOURCE
-   PathButtons: Window;
-   -- ****
 
    procedure CreateShowItemsUI is
    begin
