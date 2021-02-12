@@ -20,6 +20,7 @@ with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
 with CreateItems; use CreateItems;
+with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
@@ -45,7 +46,7 @@ package body MainWindow is
    -- state
    -- SOURCE
    procedure CreateProgramMenu is
-      -- ****
+   -- ****
    begin
       Terminal_Interface.Curses.Clear(MenuWindow);
       case NewAction is
@@ -310,6 +311,7 @@ package body MainWindow is
    function Menu_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(ProgramMenu));
+      OverwriteItem: Boolean := False;
    begin
       case Key is
          when 68 | KEY_LEFT =>
@@ -324,6 +326,23 @@ package body MainWindow is
             case CurrentIndex is
                when 1 =>
                   return PATH_BUTTONS;
+               when 2 =>
+                  if NewAction = COPY then
+                     CopyItemsList.Clear;
+                     if Item_Count(DirectoryList) > 0 then
+                        Update_Copy_Items_Loop :
+                        for I in 1 .. Item_Count(DirectoryList) loop
+                           if Value(Items(DirectoryList, I)) or
+                             Current(DirectoryList) =
+                               Items(DirectoryList, I) then
+                              CopyItemsList.Append
+                                (CurrentDirectory & "/" &
+                                 Name(Items(DirectoryList, I)));
+                           end if;
+                        end loop Update_Copy_Items_Loop;
+                     end if;
+                     CopySelected(OverwriteItem);
+                  end if;
                when 3 =>
                   if NewAction = COPY then
                      NewAction := CREATEFILE;
