@@ -481,6 +481,13 @@ package body ShowItems is
       end if;
    end ShowPreview;
 
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.Path
+   -- FUNCTION
+   -- Path buttons menu for destination directory
+   -- SOURCE
+   Path: Menu;
+   -- ****
+
    -- ****iv* ShowItemsTUI/ShowItemsTUI.PathButtons
    -- FUNCTION
    -- Path buttons window for destination directory
@@ -488,10 +495,20 @@ package body ShowItems is
    PathButtons: Window;
    -- ****
 
+   -- ****iv* ShowItems/Buttons_Visible
+   -- FUNCTION
+   -- If True, destination path buttons are visible
+   -- SOURCE
+   Buttons_Visible: Boolean := False;
+   -- ****
+
    procedure Show_Selected is
    begin
-      Clear(PathButtons);
-      Refresh(PathButtons);
+      if Buttons_Visible then
+         Post(Path, False);
+         Refresh(PathButtons);
+         Buttons_Visible := False;
+      end if;
       SelectedItems.Clear;
       if Item_Count(DirectoryList) > 0 then
          Update_Selected_Items_Loop :
@@ -591,13 +608,6 @@ package body ShowItems is
       Refresh(PreviewWindow);
    end CreateShowItemsUI;
 
-   -- ****iv* ShowItemsTUI/ShowItemsTUI.Path
-   -- FUNCTION
-   -- Path buttons menu for destination directory
-   -- SOURCE
-   Path: Menu;
-   -- ****
-
    -- ****iv* ShowItemsTUI/ShowItemsTUI.DestinationList
    -- FUNCTION
    -- Current content of the destination directory
@@ -651,6 +661,7 @@ package body ShowItems is
       Set_Sub_Window
         (Path, Derived_Window(PathButtons, 1, (Columns / 2) - 2, 0, 1));
       Post(Path);
+      Buttons_Visible := True;
       Set_Current(Path, Path_Items.all(Index));
       Move_Window(PathButtons, 1, (Columns / 2));
       Index := SecondItemsList.First_Index;
