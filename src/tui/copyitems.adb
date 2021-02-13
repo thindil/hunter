@@ -102,6 +102,10 @@ package body CopyItems is
       Path, ItemType: Unbounded_String;
       Success: Boolean := True;
    begin
+      if DestinationDirectory = CurrentDirectory then
+         UpdateDirectoryList(True);
+         return;
+      end if;
       Copy_Items_Loop :
       while CopyItemsList.Length > 0 loop
          Path := DestinationDirectory;
@@ -143,7 +147,6 @@ package body CopyItems is
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
       UpdateWatch(To_String(CurrentDirectory));
-      ShowPreview;
    end CopySelected;
 
    procedure SkipCopying is
