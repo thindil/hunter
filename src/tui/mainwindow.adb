@@ -342,6 +342,10 @@ package body MainWindow is
                         end loop Update_Copy_Items_Loop;
                      end if;
                      CopySelected(OverwriteItem);
+                     NewAction := CREATEFILE;
+                     CreateProgramMenu;
+                     Refresh(MenuWindow);
+                     return DIRECTORY_VIEW;
                   end if;
                when 3 =>
                   if NewAction = COPY then
