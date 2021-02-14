@@ -16,7 +16,6 @@
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with CopyItems; use CopyItems;
 with Utils.UI; use Utils.UI;
-with ada.text_io;
 
 package body Messages is
 
@@ -81,7 +80,7 @@ package body Messages is
    begin
       Set_Cursor_Visibility(Visibility);
       if MessageType /= "question" then
-         Buttons_Fields.all(1) := New_Field(1, 8, (FormHeight - 1), 7, 0, 0);
+         Buttons_Fields.all(1) := New_Field(1, 7, (FormHeight - 1), 7, 0, 0);
          Set_Buffer(Buttons_Fields.all(1), 0, "[Close]");
          FieldOptions := Get_Options(Buttons_Fields.all(1));
          FieldOptions.Edit := False;
@@ -155,7 +154,6 @@ package body Messages is
             Set_Cursor_Visibility(Visibility);
             Post(DialogForm, False);
             Delete(DialogForm);
-            Ada.Text_IO.Put_Line(Ada.Text_IO.Standard_Error, Option);
             if Option in "[Close]" | "[No for all]" then
                UpdateDirectoryList(True);
                return DIRECTORY_VIEW;
