@@ -98,13 +98,13 @@ package body CopyItems is
       UpdateProgressBar;
    end CopyItem;
 
-   procedure CopySelected(Overwrite: in out Boolean) is
+   function CopySelected(Overwrite: in out Boolean) return UI_Locations is
       Path, ItemType: Unbounded_String;
       Success: Boolean := True;
    begin
       if DestinationDirectory = CurrentDirectory then
          UpdateDirectoryList(True);
-         return;
+         return DIRECTORY_VIEW;
       end if;
       Copy_Items_Loop :
       while CopyItemsList.Length > 0 loop
@@ -125,7 +125,7 @@ package body CopyItems is
                Simple_Name(To_String(CopyItemsList(1))) & " " &
                Mc(Interpreter, "{exists. Do you want to overwrite it?}"),
                "question");
-            return;
+            return MESSAGE_FORM;
          end if;
          CopyItem(To_String(CopyItemsList(1)), Path, Success);
          exit Copy_Items_Loop when not Success;
@@ -141,20 +141,22 @@ package body CopyItems is
               (Interpreter,
                "{All selected files and directories have been copied.}"),
             "message");
+         return MESSAGE_FORM;
       end if;
       CurrentDirectory :=
         (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
       UpdateWatch(To_String(CurrentDirectory));
+      return DIRECTORY_VIEW;
    end CopySelected;
 
-   procedure SkipCopying is
+   function SkipCopying return UI_Locations is
       OverwriteItem: Boolean := False;
    begin
       CopyItemsList.Delete(Index => 1);
       UpdateProgressBar;
-      CopySelected(OverwriteItem);
+      return CopySelected(OverwriteItem);
    end SkipCopying;
 
 end CopyItems;

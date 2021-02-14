@@ -14,7 +14,9 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with CopyItems; use CopyItems;
 with Utils.UI; use Utils.UI;
+with ada.text_io;
 
 package body Messages is
 
@@ -70,7 +72,7 @@ package body Messages is
       Buttons_Fields: constant Field_Array_Access :=
         (if MessageType /= "error" then new Field_Array(1 .. 5)
          else new Field_Array(1 .. 2));
-      FormHeight: constant Line_Position := 6;
+      FormHeight: constant Line_Position := 7;
       FormLength: constant Column_Position := 32;
       Visibility: Cursor_Visibility := Normal;
       FieldOptions: Field_Option_Set;
@@ -78,12 +80,36 @@ package body Messages is
       LineNumber: Line_Position := 1;
    begin
       Set_Cursor_Visibility(Visibility);
-      Buttons_Fields.all(1) := New_Field(1, 8, (FormHeight - 1), 7, 0, 0);
-      Set_Buffer(Buttons_Fields.all(1), 0, "[Close]");
-      FieldOptions := Get_Options(Buttons_Fields.all(1));
-      FieldOptions.Edit := False;
-      Set_Options(Buttons_Fields.all(1), FieldOptions);
-      Buttons_Fields.all(2) := Null_Field;
+      if MessageType /= "question" then
+         Buttons_Fields.all(1) := New_Field(1, 8, (FormHeight - 1), 7, 0, 0);
+         Set_Buffer(Buttons_Fields.all(1), 0, "[Close]");
+         FieldOptions := Get_Options(Buttons_Fields.all(1));
+         FieldOptions.Edit := False;
+         Set_Options(Buttons_Fields.all(1), FieldOptions);
+         Buttons_Fields.all(2) := Null_Field;
+      else
+         Buttons_Fields.all(1) := New_Field(1, 5, (FormHeight - 2), 1, 0, 0);
+         Set_Buffer(Buttons_Fields.all(1), 0, "[Yes]");
+         FieldOptions := Get_Options(Buttons_Fields.all(1));
+         FieldOptions.Edit := False;
+         Set_Options(Buttons_Fields.all(1), FieldOptions);
+         Buttons_Fields.all(2) := New_Field(1, 4, (FormHeight - 2), 6, 0, 0);
+         Set_Buffer(Buttons_Fields.all(2), 0, "[No]");
+         FieldOptions := Get_Options(Buttons_Fields.all(2));
+         FieldOptions.Edit := False;
+         Set_Options(Buttons_Fields.all(2), FieldOptions);
+         Buttons_Fields.all(3) := New_Field(1, 13, (FormHeight - 1), 1, 0, 0);
+         Set_Buffer(Buttons_Fields.all(3), 0, "[Yes for all]");
+         FieldOptions := Get_Options(Buttons_Fields.all(3));
+         FieldOptions.Edit := False;
+         Set_Options(Buttons_Fields.all(3), FieldOptions);
+         Buttons_Fields.all(4) := New_Field(1, 12, (FormHeight - 1), 15, 0, 0);
+         Set_Buffer(Buttons_Fields.all(4), 0, "[No for all]");
+         FieldOptions := Get_Options(Buttons_Fields.all(4));
+         FieldOptions.Edit := False;
+         Set_Options(Buttons_Fields.all(4), FieldOptions);
+         Buttons_Fields.all(5) := Null_Field;
+      end if;
       DialogForm := New_Form(Buttons_Fields);
       Set_Options(DialogForm, (others => False));
       FormWindow :=
@@ -110,17 +136,45 @@ package body Messages is
 
    function Message_Keys(Key: Key_Code) return UI_Locations is
       Visibility: Cursor_Visibility := Invisible;
+      Option: constant String := Get_Buffer(Current(DialogForm));
+      Overwrite: Boolean := True;
+      Result: Forms.Driver_Result := Unknown_Request;
    begin
       case Key is
+         when 65 | KEY_UP =>
+            if NewAction = COPY then
+               Result := Driver(DialogForm, F_Previous_Field);
+               Result := Driver(DialogForm, F_End_Line);
+            end if;
+         when 66 | KEY_DOWN =>
+            if NewAction = COPY then
+               Result := Driver(DialogForm, F_Next_Field);
+               Result := Driver(DialogForm, F_End_Line);
+            end if;
          when 10 =>
             Set_Cursor_Visibility(Visibility);
             Post(DialogForm, False);
             Delete(DialogForm);
-            UpdateDirectoryList(True);
-            return DIRECTORY_VIEW;
+            Ada.Text_IO.Put_Line(Ada.Text_IO.Standard_Error, Option);
+            if Option in "[Close]" | "[No for all]" then
+               UpdateDirectoryList(True);
+               return DIRECTORY_VIEW;
+            elsif Option = "[Yes for all]" then
+               YesForAll := True;
+            elsif Option = "[No]" then
+               if NewAction = COPY then
+                  return SkipCopying;
+               end if;
+            end if;
+            if NewAction = COPY then
+               return CopySelected(Overwrite);
+            end if;
          when others =>
             null;
       end case;
+      if Result = Form_Ok then
+         Refresh(FormWindow);
+      end if;
       return MESSAGE_FORM;
    end Message_Keys;
 
