@@ -49,15 +49,23 @@ package CopyItems is
    -- Overwrite - If True, overwrite existing file or directory, otherwise
    --             ask for overwrite permission. Value is set to False if
    --             permission was only for one file or directory
+   -- RESULT
+   -- UI element which will be selected. If copying was finished, it will be
+   -- directory view, if message about overwrite file was shown, it will be
+   -- message form
    -- SOURCE
-   procedure CopySelected(Overwrite: in out Boolean);
+   function CopySelected(Overwrite: in out Boolean) return UI_Locations;
    -- ****
 
    -- ****f* CopyItemsTUI/CopyItemsTUI.SkipCopying
    -- FUNCTION
    -- Skip copying current file and move to next
+   -- RESULT
+   -- UI element which will be selected. If copying was finished, it will be
+   -- directory view, if message about overwrite file was shown, it will be
+   -- message form
    -- SOURCE
-   procedure SkipCopying;
+   function SkipCopying return UI_Locations;
    -- ****
 
 end CopyItems;
