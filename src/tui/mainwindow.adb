@@ -207,7 +207,7 @@ package body MainWindow is
       Refresh(ListWindow);
    end UpdateDirectoryList;
 
-   procedure Directory_Keys(Key: Key_Code) is
+   function Directory_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result;
    begin
       case Key is
@@ -228,9 +228,12 @@ package body MainWindow is
             Result := Driver(DirectoryList, M_ScrollDown_Page);
          when 10 =>
             Tcl_Eval(Interpreter, "ActivateItem");
-            return;
+            if Tcl_GetResult(Interpreter) = "0" then
+               return MESSAGE_FORM;
+            end if;
+            return DIRECTORY_VIEW;
          when others =>
-            return;
+            return DIRECTORY_VIEW;
       end case;
       if Result = Menu_Ok then
          Refresh(ListWindow);
@@ -238,6 +241,7 @@ package body MainWindow is
             Show_Selected;
          end if;
       end if;
+      return DIRECTORY_VIEW;
    end Directory_Keys;
 
    function Path_Keys(Key: Key_Code) return UI_Locations is
