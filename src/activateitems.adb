@@ -19,6 +19,7 @@ with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with ActivateItems.UI; use ActivateItems.UI;
 with LoadData; use LoadData;
@@ -102,6 +103,7 @@ package body ActivateItems is
                     (Mc
                        (Interp,
                         "{I can't open this file. No application associated with this type of files.}"));
+                  Tcl_SetResult(Interp, "0");
                   return TCL_OK;
                end if;
                Pid :=
@@ -110,10 +112,12 @@ package body ActivateItems is
                     Argument_String_To_List("").all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
                   ShowMessage(Mc(Interp, "{I can't execute this file.}"));
+                  Tcl_SetResult(Interp, "0");
                   return TCL_OK;
                end if;
             else
                if ExecutableName = "" then
+                  Tcl_SetResult(Interp, "0");
                   return TCL_OK;
                end if;
                Arguments := Argument_String_To_List("@2");
@@ -121,6 +125,7 @@ package body ActivateItems is
                Pid := Non_Blocking_Spawn(ExecutableName, Arguments.all);
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
+               Tcl_SetResult(Interp, "0");
                ShowMessage
                  (Mc
                     (Interp,
@@ -129,6 +134,7 @@ package body ActivateItems is
          end;
       end if;
       Execute_Modules(On_Activate, "{" & To_String(CurrentSelected) & "}");
+      Tcl_SetResult(Interp, "1");
       return TCL_OK;
    end Activate_Item_Command;
 

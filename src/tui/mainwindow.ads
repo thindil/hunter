@@ -144,8 +144,10 @@ package MainWindow is
    -- Handles keys events when directory view is active element of UI
    -- PARAMETERS
    -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
    -- SOURCE
-   procedure Directory_Keys(Key: Key_Code);
+   function Directory_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Path_Keys

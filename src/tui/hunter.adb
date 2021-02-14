@@ -156,7 +156,7 @@ begin
       else
          case UILocation is
             when DIRECTORY_VIEW =>
-               Directory_Keys(Key);
+               UILocation := Directory_Keys(Key);
             when PATH_BUTTONS =>
                UILocation := Path_Keys(Key);
             when MAIN_MENU =>
