@@ -155,17 +155,31 @@ package body Messages is
             Post(DialogForm, False);
             Delete(DialogForm);
             if Option in "[Close]" | "[No for all]" then
+               NewAction := CREATEFILE;
+               CreateProgramMenu(True);
                UpdateDirectoryList(True);
                return DIRECTORY_VIEW;
             elsif Option = "[Yes for all]" then
                YesForAll := True;
             elsif Option = "[No]" then
                if NewAction = COPY then
-                  return SkipCopying;
+                  if SkipCopying = DIRECTORY_VIEW then
+                     NewAction := CREATEFILE;
+                     CreateProgramMenu(True);
+                     UpdateDirectoryList(True);
+                     return DIRECTORY_VIEW;
+                  end if;
+                  return MESSAGE_FORM;
                end if;
             end if;
             if NewAction = COPY then
-               return CopySelected(Overwrite);
+               if CopySelected(Overwrite) = DIRECTORY_VIEW then
+                  NewAction := CREATEFILE;
+                  CreateProgramMenu(True);
+                  UpdateDirectoryList(True);
+                  return DIRECTORY_VIEW;
+               end if;
+               return MESSAGE_FORM;
             end if;
          when others =>
             null;
