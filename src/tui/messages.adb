@@ -122,7 +122,7 @@ package body Messages is
       Move_Cursor(FormWindow, LineNumber, 1);
       for I in Message'Range loop
          Add(FormWindow, Message(I));
-         if I mod Positive(FormLength - 1) = 0 then
+         if I mod Positive(FormLength) = 0 then
             LineNumber := LineNumber + 1;
             Move_Cursor(FormWindow, LineNumber, 1);
          end if;
