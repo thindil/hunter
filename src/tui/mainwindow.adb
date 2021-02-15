@@ -40,13 +40,7 @@ package body MainWindow is
    SubMenuWindow: Window;
    SubMenu: Menu;
 
-   -- ****if* MainWindow/CreateProgramMenu
-   -- FUNCTION
-   -- Create the main program menu, the menu content depends on the program
-   -- state
-   -- SOURCE
-   procedure CreateProgramMenu is
-   -- ****
+   procedure CreateProgramMenu(Update: Boolean := False) is
    begin
       Terminal_Interface.Curses.Clear(MenuWindow);
       case NewAction is
@@ -93,6 +87,9 @@ package body MainWindow is
                Post(ProgramMenu);
             end;
       end case;
+      if Update then
+         Refresh(MenuWindow);
+      end if;
    end CreateProgramMenu;
 
    procedure CreateMainWindow(Directory: String) is

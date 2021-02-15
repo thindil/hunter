@@ -120,6 +120,16 @@ package MainWindow is
    DirectoryList: Menu;
    -- ****
 
+   -- ****f* MainWindow/CreateProgramMenu
+   -- FUNCTION
+   -- Create the main program menu, the menu content depends on the program
+   -- state
+   -- PARAMETERS
+   -- Update - If True also update the menu window. Default value is False.
+   -- SOURCE
+   procedure CreateProgramMenu(Update: Boolean := False);
+   -- ****
+
    -- ****f* MainWindowTUI/MainWindowTUI.CreateMainWindow
    -- FUNCTION
    -- Create main window and show content of selected directory
