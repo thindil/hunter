@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -166,7 +166,7 @@ package body Inotify is
       Add_Watches_Loop :
       loop
          Read(Directory, FileName, Last);
-         exit when Last = 0;
+         exit Add_Watches_Loop when Last = 0;
          if FileName(1 .. Last) in "." | ".." then
             goto End_Of_Loop;
          end if;
@@ -205,7 +205,7 @@ package body Inotify is
             if inotify_rm_watch(int(Instance), Watch.Id) = -1 then
                null;
             end if;
-            exit;
+            exit Remove_Watches_Loop;
          end if;
       end loop Remove_Watches_Loop;
    end RemoveWatch;
@@ -242,8 +242,8 @@ package body Inotify is
             end loop Read_Watches_Loop;
             Event :=
               (if Character'Pos(Buffer(Start + 4)) > 0 then
-                 Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 4)))
-               else Inotify_Events'Enum_val(Character'Pos(Buffer(Start + 5))));
+                 Inotify_Events'Enum_Val(Character'Pos(Buffer(Start + 4)))
+               else Inotify_Events'Enum_Val(Character'Pos(Buffer(Start + 5))));
             Added := False;
             Check_Added_Loop :
             for Event2 of EventsList loop
