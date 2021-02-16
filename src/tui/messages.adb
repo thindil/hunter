@@ -15,6 +15,7 @@
 
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with CopyItems; use CopyItems;
+with MoveItems; use MoveItems;
 with Utils.UI; use Utils.UI;
 
 package body Messages is
@@ -170,10 +171,26 @@ package body Messages is
                      return DIRECTORY_VIEW;
                   end if;
                   return MESSAGE_FORM;
+               elsif NewAction = MOVE then
+                  if SkipMoving = DIRECTORY_VIEW then
+                     NewAction := CREATEFILE;
+                     CreateProgramMenu(True);
+                     UpdateDirectoryList(True);
+                     return DIRECTORY_VIEW;
+                  end if;
+                  return MESSAGE_FORM;
                end if;
             end if;
             if NewAction = COPY then
                if CopySelected(Overwrite) = DIRECTORY_VIEW then
+                  NewAction := CREATEFILE;
+                  CreateProgramMenu(True);
+                  UpdateDirectoryList(True);
+                  return DIRECTORY_VIEW;
+               end if;
+               return MESSAGE_FORM;
+            elsif NewAction = MOVE then
+               if MoveSelected(Overwrite) = DIRECTORY_VIEW then
                   NewAction := CREATEFILE;
                   CreateProgramMenu(True);
                   UpdateDirectoryList(True);
