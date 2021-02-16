@@ -25,6 +25,7 @@ with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
+with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with RenameItems; use RenameItems;
@@ -44,13 +45,15 @@ package body MainWindow is
    begin
       Terminal_Interface.Curses.Clear(MenuWindow);
       case NewAction is
-         when COPY =>
+         when COPY | MOVE =>
             declare
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 4);
             begin
                Menu_Items.all(1) := New_Item("Quit");
-               Menu_Items.all(2) := New_Item("Copy selected");
+               Menu_Items.all(2) :=
+                 (if NewAction = COPY then New_Item("Copy selected")
+                  else New_Item("Move selected"));
                Menu_Items.all(3) := New_Item("Cancel");
                Menu_Items.all(4) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
@@ -283,14 +286,15 @@ package body MainWindow is
    begin
       case Menu_Type is
          when ACTIONS_MENU =>
-            Menu_Items := new Item_Array(1 .. 7);
+            Menu_Items := new Item_Array(1 .. 8);
             Menu_Items.all(1) := New_Item("Create new directory");
             Menu_Items.all(2) := New_Item("Create new file");
             Menu_Items.all(3) := New_Item("Rename selected");
             Menu_Items.all(4) := New_Item("Start copying");
-            Menu_Items.all(5) := New_Item("Delete selected");
-            Menu_Items.all(6) := New_Item("Close");
-            Menu_Items.all(7) := Null_Item;
+            Menu_Items.all(5) := New_Item("Start moving");
+            Menu_Items.all(6) := New_Item("Delete selected");
+            Menu_Items.all(7) := New_Item("Close");
+            Menu_Items.all(8) := Null_Item;
          when others =>
             null;
       end case;
@@ -350,9 +354,31 @@ package body MainWindow is
                      else
                         return MESSAGE_FORM;
                      end if;
+                  elsif NewAction = MOVE then
+                     MoveItemsList.Clear;
+                     if Item_Count(DirectoryList) > 0 then
+                        Update_Move_Items_Loop :
+                        for I in 1 .. Item_Count(DirectoryList) loop
+                           if Value(Items(DirectoryList, I)) or
+                             Current(DirectoryList) =
+                               Items(DirectoryList, I) then
+                              MoveItemsList.Append
+                                (CurrentDirectory & "/" &
+                                 Name(Items(DirectoryList, I)));
+                           end if;
+                        end loop Update_Move_Items_Loop;
+                     end if;
+                     if MoveSelected(OverwriteItem) = DIRECTORY_VIEW then
+                        NewAction := CREATEFILE;
+                        CreateProgramMenu;
+                        Refresh(MenuWindow);
+                        return DIRECTORY_VIEW;
+                     else
+                        return MESSAGE_FORM;
+                     end if;
                   end if;
                when 3 =>
-                  if NewAction = COPY then
+                  if NewAction in COPY | MOVE then
                      NewAction := CREATEFILE;
                      UpdateDirectoryList;
                      CreateProgramMenu;
@@ -413,11 +439,19 @@ package body MainWindow is
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 5 =>
+                  NewAction := MOVE;
+                  CreateProgramMenu;
+                  Refresh(MenuWindow);
+                  DestinationDirectory := CurrentDirectory;
+                  SecondItemsList := ItemsList;
+                  ShowDestination;
+                  return DESTINATION_VIEW;
+               when 6 =>
                   NewAction :=
                     (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
                   ShowDeleteForm;
                   return DELETE_FORM;
-               when 6 =>
+               when 7 =>
                   return DIRECTORY_VIEW;
                when others =>
                   return ACTIONS_MENU;
