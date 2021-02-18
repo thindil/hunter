@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -101,18 +101,18 @@ package body RefreshData is
                case Event.Event is
                   when Moved_From | Deleted =>
                      RemoveItem;
-                     exit;
+                     exit Update_Items_Loop;
                   when Metadata | Modified | Moved_To | Accessed =>
                      if not Exists(To_String(FileName)) then
                         RemoveItem;
-                        exit;
+                        exit Update_Items_Loop;
                      end if;
                      RefreshList := True;
                      ItemsList(ItemIndex).Modified :=
                        Modification_Time(To_String(FileName));
                      if not Is_Read_Accessible_File(To_String(FileName)) then
                         ItemsList(ItemIndex).Size := -1;
-                        exit;
+                        exit Update_Items_Loop;
                      end if;
                      if Is_Directory(To_String(FileName)) then
                         Open(Directory, To_String(FileName));
@@ -120,7 +120,7 @@ package body RefreshData is
                         Count_New_Size_Loop :
                         loop
                            Read(Directory, SubFileName, Last);
-                           exit when Last = 0;
+                           exit Count_New_Size_Loop when Last = 0;
                            if SubFileName(1 .. Last) /= "." and
                              SubFileName(1 .. Last) /= ".." then
                               ItemsList(ItemIndex).Size :=
@@ -135,7 +135,7 @@ package body RefreshData is
                      if FileName = To_String(CurrentSelected) then
                         ShowPreview;
                      end if;
-                     exit;
+                     exit Update_Items_Loop;
                   when others =>
                      null;
                end case;
