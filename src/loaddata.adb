@@ -20,7 +20,7 @@ with Utils; use Utils;
 
 package body LoadData is
 
-   function "="(Left, Right: Item_Record) return Boolean is
+   overriding function "="(Left, Right: Item_Record) return Boolean is
    begin
       return Left.Name = Right.Name;
    end "=";
