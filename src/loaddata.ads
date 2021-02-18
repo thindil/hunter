@@ -107,7 +107,7 @@ package LoadData is
    -- True if items are equal, otherwise false. Depends on currently selected
    -- sorting order
    -- SOURCE
-   function "="(Left, Right: Item_Record) return Boolean;
+   overriding function "="(Left, Right: Item_Record) return Boolean;
    -- ****
 
    -- ****t* LoadData/LoadData.Items_Container

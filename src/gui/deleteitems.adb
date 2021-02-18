@@ -175,16 +175,14 @@ package body DeleteItems is
    -- StartDeleting
    -- SOURCE
    function Start_Deleting_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Start_Deleting_Command
-     (ClientData: in Integer; Interp: in Tcl.Tcl_Interp;
-      Argc: in Interfaces.C.int; Argv: in CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       Message, FileLine: Unbounded_String;
       FileInfo: File_Type;
@@ -227,7 +225,7 @@ package body DeleteItems is
          I := I + 1;
          if I = 11 then
             Append(Message, Mc(Interp, "{(and more)}"));
-            exit;
+            exit Add_Items_To_Delete_Loop;
          end if;
       end loop Add_Items_To_Delete_Loop;
       ToggleToolButtons(NewAction);
