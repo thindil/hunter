@@ -44,16 +44,14 @@ package body UserCommands is
    -- Menuentry is the menu label of the command which will be executed
    -- SOURCE
    function Execute_Command_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int; Argv: CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int with
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Execute_Command_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int; Argv: CArgv.Chars_Ptr_Ptr)
-      return Interfaces.C.int is
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       Value, CommandName: Unbounded_String;
       SpaceIndex: Natural;
