@@ -15,6 +15,7 @@
 
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
@@ -30,6 +31,7 @@ with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with RenameItems; use RenameItems;
 with ShowItems; use ShowItems;
+with Utils; use Utils;
 
 package body MainWindow is
 
@@ -132,6 +134,8 @@ package body MainWindow is
       Tokens: Slice_Set;
       CurrentIndex: Positive := 1;
       Item: Unbounded_String;
+      Width: Column_Position;
+      Height: Line_Position;
    begin
       Terminal_Interface.Curses.Clear(PathButtons);
       CurrentDirectory :=
@@ -155,27 +159,59 @@ package body MainWindow is
       Set_Format(Path, 1, 5);
       Set_Mark(Path, "");
       Set_Window(Path, PathButtons);
-      Set_Sub_Window
-        (Path, Derived_Window(PathButtons, 1, (Columns / 2) - 2, 0, 1));
+      Get_Size(ListWindow, Height, Width);
+      Set_Sub_Window(Path, Derived_Window(PathButtons, 1, Width - 2, 0, 1));
       Post(Path);
       Set_Current(Path, Path_Items.all(Index));
       Terminal_Interface.Curses.Clear(ListWindow);
       Box(ListWindow, Default_Character, Default_Character);
       Add(ListWindow, 1, 10, "Name");
+      Add(ListWindow, 1, Width - 10, "Size");
       Index := ItemsList.First_Index;
-      Load_Directory_View_Loop :
-      for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-         if not Settings.ShowHidden and ItemsList(I).IsHidden then
-            goto End_Of_Loop;
-         end if;
-         Menu_Items.all(Index) := New_Item(To_String(ItemsList(I).Name));
-         Item := CurrentDirectory & "/" & ItemsList(I).Name;
-         if Item = CurrentSelected then
-            CurrentIndex := Index;
-         end if;
-         Index := Index + 1;
-         <<End_Of_Loop>>
-      end loop Load_Directory_View_Loop;
+      declare
+         Item_Entry: String(1 .. Positive(Width - 2));
+      begin
+         Load_Directory_View_Loop :
+         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+            if not Settings.ShowHidden and ItemsList(I).IsHidden then
+               goto End_Of_Loop;
+            end if;
+            Move(To_String(ItemsList(I).Name), Item_Entry);
+            Item := CurrentDirectory & "/" & ItemsList(I).Name;
+            case ItemsList(I).Size is
+               when -2 =>
+                  Overwrite(Item_Entry, Item_Entry'Last - 8, "->");
+               when -1 =>
+                  Overwrite(Item_Entry, Item_Entry'Last - 8, "unknown");
+               when others =>
+                  if not ItemsList(I).IsDirectory then
+                     Overwrite
+                       (Item_Entry, Item_Entry'Last - 8,
+                        CountFileSize
+                          (Ada.Directories.File_Size(ItemsList(I).Size)));
+                  else
+                     if Settings.ShowHidden then
+                        Overwrite
+                          (Item_Entry, Item_Entry'Last - 8,
+                           Item_Size'Image
+                             (ItemsList(I).Size +
+                              Item_Size(ItemsList(I).HiddenItems)));
+                     else
+                        Overwrite
+                          (Item_Entry, Item_Entry'Last - 8,
+                           Item_Size'Image(ItemsList(I).Size));
+                     end if;
+                  end if;
+            end case;
+            Menu_Items.all(Index) :=
+              New_Item(Item_Entry, To_String(ItemsList(I).Name));
+            if Item = CurrentSelected then
+               CurrentIndex := Index;
+            end if;
+            Index := Index + 1;
+            <<End_Of_Loop>>
+         end loop Load_Directory_View_Loop;
+      end;
       if Index > ItemsList.First_Index then
          Fill_Empty_Entries_Loop :
          for I in Index .. Menu_Items'Last loop

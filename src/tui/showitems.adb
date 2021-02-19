@@ -516,7 +516,7 @@ package body ShowItems is
             if Value(Items(DirectoryList, I)) or
               Current(DirectoryList) = Items(DirectoryList, I) then
                SelectedItems.Append
-                 (To_Unbounded_String(Name(Items(DirectoryList, I))));
+                 (To_Unbounded_String(Description(Items(DirectoryList, I))));
             end if;
          end loop Update_Selected_Items_Loop;
       else
@@ -527,7 +527,8 @@ package body ShowItems is
          CurrentSelected /= CurrentDirectory) then
          return;
       end if;
-      CurrentSelected := CurrentDirectory & "/" & Name(Current(DirectoryList));
+      CurrentSelected :=
+        CurrentDirectory & "/" & Description(Current(DirectoryList));
       if NewAction = CREATELINK then
          return;
       end if;
