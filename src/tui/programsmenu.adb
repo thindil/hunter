@@ -69,7 +69,7 @@ package body ProgramsMenu is
          Read_Desktop_File_Loop :
          loop
             Read(SubDirectory, SubFileName, SubLast);
-            exit when SubLast = 0;
+            exit Read_Desktop_File_Loop when SubLast = 0;
             if Extension(SubFileName(1 .. SubLast)) = "desktop" then
                Open
                  (File, In_File,
