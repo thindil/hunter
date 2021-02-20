@@ -132,7 +132,7 @@ begin
       Key := Get_Keystroke;
       if Key = 27 then
          Key := Get_Keystroke;
-         exit when Key = 113;
+         exit Main_Program_Loop when Key = 113;
       end if;
       if Key in KEY_STAB | 9 then
          case UILocation is
@@ -161,7 +161,7 @@ begin
                UILocation := Path_Keys(Key);
             when MAIN_MENU =>
                UILocation := Menu_Keys(Key);
-               exit when UILocation = PATH_BUTTONS;
+               exit Main_Program_Loop when UILocation = PATH_BUTTONS;
             when ACTIONS_MENU =>
                UILocation := Actions_Keys(Key);
             when CREATE_FORM =>
