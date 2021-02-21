@@ -87,3 +87,12 @@
    execute:
       - others/build.tcl console
    description: Build Hunter in release mode with console UI
+- command:
+   name: check
+   execute:
+      - gprclean -P hunter.gpr
+      - cd obj
+      - adactl -f ../others/rules.aru -p ../hunter.gpr -r hunter-tcl-cargv
+   description: Run AdaControl to check correctness of the code
+   flags:
+      - unixpath
