@@ -16,3 +16,5 @@ Various files which are not necessary needed for development:
 * translations.tcl   - script to manage the program translations. **Important:**
                        run this script from the main project directory, not
                        from here.
+* rules.aru          - configuration file with rules for check code with
+                       AdaControl.
