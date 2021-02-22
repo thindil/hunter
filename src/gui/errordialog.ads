@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ package ErrorDialog is
    -- PARAMETERS
    -- An_Exception    - Exception's data which occured
    -- SOURCE
-   procedure SaveException(An_Exception: Exception_Occurrence);
+   procedure Save_Exception(An_Exception: Exception_Occurrence);
    -- ****
 
 end ErrorDialog;

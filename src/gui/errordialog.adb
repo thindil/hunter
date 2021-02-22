@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ with Utils.UI; use Utils.UI;
 
 package body ErrorDialog is
 
-   procedure SaveException(An_Exception: Exception_Occurrence) is
+   procedure Save_Exception(An_Exception: Exception_Occurrence) is
       use type Interfaces.C.int;
 
       ErrorFile: File_Type;
@@ -141,6 +141,6 @@ package body ErrorDialog is
          configure(ErrorInfo, "-state disabled");
          Tcl.Tk.Tk_MainLoop;
       end;
-   end SaveException;
+   end Save_Exception;
 
 end ErrorDialog;
