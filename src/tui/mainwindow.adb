@@ -378,7 +378,7 @@ package body MainWindow is
                                Items(DirectoryList, I) then
                               CopyItemsList.Append
                                 (CurrentDirectory & "/" &
-                                 Name(Items(DirectoryList, I)));
+                                 Description(Items(DirectoryList, I)));
                            end if;
                         end loop Update_Copy_Items_Loop;
                      end if;
@@ -400,7 +400,7 @@ package body MainWindow is
                                Items(DirectoryList, I) then
                               MoveItemsList.Append
                                 (CurrentDirectory & "/" &
-                                 Name(Items(DirectoryList, I)));
+                                 Description(Items(DirectoryList, I)));
                            end if;
                         end loop Update_Move_Items_Loop;
                      end if;
