@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -39,8 +39,9 @@ procedure Hunter is
    Interp: Tcl.Tcl_Interp;
 begin
    -- Create needed directories
-   Create_Path(Value("HOME") & "/.cache/hunter");
-   Create_Path(Value("HOME") & "/.local/share/hunter/modules");
+   Create_Path(New_Directory => Value(Name => "HOME") & "/.cache/hunter");
+   Create_Path
+     (New_Directory => Value(Name => "HOME") & "/.local/share/hunter/modules");
    -- Start libmagic data
    MagicOpen;
    -- Start inotify
@@ -49,12 +50,12 @@ begin
 
    --  Get command-line arguments and put them into C-style "argv"
    --------------------------------------------------------------
-   CArgv.Create(Argc, Argv);
+   CArgv.Create(Argc => Argc, Argv => Argv);
 
    --  Tcl needs to know the path name of the executable
    --  otherwise Tcl.Tcl_Init below will fail.
    ----------------------------------------------------
-   Tcl.Tcl_FindExecutable(Argv.all);
+   Tcl.Tcl_FindExecutable(argv0 => Argv.all);
 
    --  Create one Tcl interpreter
    -----------------------------
@@ -62,33 +63,35 @@ begin
 
    --  Initialize Tcl
    -----------------
-   if Tcl.Tcl_Init(Interp) = Tcl.TCL_ERROR then
+   if Tcl.Tcl_Init(interp => Interp) = Tcl.TCL_ERROR then
       Ada.Text_IO.Put_Line
-        ("Hunter: Tcl.Tcl_Init failed: " &
-         Tcl.Ada.Tcl_GetStringResult(Interp));
+        (Item =>
+           "Hunter: Tcl.Tcl_Init failed: " &
+           Tcl.Ada.Tcl_GetStringResult(interp => Interp));
       return;
    end if;
 
    --  Initialize Tk
    ----------------
-   if Tcl.Tk.Tk_Init(Interp) = Tcl.TCL_ERROR then
+   if Tcl.Tk.Tk_Init(interp => Interp) = Tcl.TCL_ERROR then
       Ada.Text_IO.Put_Line
-        ("Hunter: Tcl.Tk.Tk_Init failed: " &
-         Tcl.Ada.Tcl_GetStringResult(Interp));
+        (Item =>
+           "Hunter: Tcl.Tk.Tk_Init failed: " &
+           Tcl.Ada.Tcl_GetStringResult(interp => Interp));
       return;
    end if;
 
    --  Set the Tk context so that we may use shortcut Tk
    --  calls that require reference to the interpreter.
    ----------------------------------------------------
-   Set_Context(Interp);
+   Set_Context(Interp => Interp);
 
    -- Load required Tcl packages
-   Tooltip_Init(Interp);
-   Tcl.Ada.Tcl_Eval(Interp, "package require Img");
-   Tcl.Ada.Tcl_Eval(Interp, "package require tksvg");
-   MsgCat_Init(Interp);
-   Autoscroll_Init(Interp);
+   Tooltip_Init(Interp => Interp);
+   Tcl.Ada.Tcl_Eval(interp => Interp, strng => "package require Img");
+   Tcl.Ada.Tcl_Eval(interp => Interp, strng => "package require tksvg");
+   MsgCat_Init(Interp => Interp);
+   Autoscroll_Init(Interp => Interp);
 
    -- Load the program setting
    LoadSettings;
