@@ -98,9 +98,9 @@ begin
 
    -- Create the program main window
    if Argument_Count < 1 then
-      CreateMainWindow(Value("HOME"));
+      CreateMainWindow(Directory => Value(Name => "HOME"));
    else
-      CreateMainWindow(Full_Name(Argument(1)));
+      CreateMainWindow(Directory => Full_Name(Name => Argument(Number => 1)));
    end if;
 
    --  Loop inside Tk, waiting for commands to execute.
@@ -110,5 +110,5 @@ begin
 
 exception
    when An_Exception : others =>
-      SaveException(An_Exception);
+      Save_Exception(An_Exception => An_Exception);
 end Hunter;
