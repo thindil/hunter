@@ -44,31 +44,31 @@ package body ErrorDialog is
    procedure Save_Exception(An_Exception: Exception_Occurrence) is
       use type Interfaces.C.int;
 
-      ErrorFile: File_Type;
-      ErrorText: Unbounded_String;
-      ErrorFilePath: constant String :=
+      Error_File: File_Type;
+      Error_Text: Unbounded_String := Null_Unbounded_String;
+      Error_File_Path: constant String :=
         Value("HOME") & "/.cache/hunter/error.log";
       Interp: Tcl.Tcl_Interp := Get_Context;
-      MainWindow: Tk_Toplevel := Get_Main_Window(Interp);
+      Program_Main_Window: Tk_Toplevel := Get_Main_Window(Interp);
    begin
       Ada.Directories.Create_Path
         (Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
-      if Ada.Directories.Exists(ErrorFilePath) then
-         Open(ErrorFile, Append_File, ErrorFilePath);
+      if Ada.Directories.Exists(Error_File_Path) then
+         Open(Error_File, Append_File, Error_File_Path);
       else
-         Create(ErrorFile, Append_File, ErrorFilePath);
+         Create(Error_File, Append_File, Error_File_Path);
       end if;
-      Append(ErrorText, Current_Time & LF);
-      Append(ErrorText, "1.6" & LF);
-      Append(ErrorText, "Exception: " & Exception_Name(An_Exception) & LF);
-      Append(ErrorText, "Message: " & Exception_Message(An_Exception) & LF);
+      Append(Error_Text, Current_Time & LF);
+      Append(Error_Text, "1.6" & LF);
+      Append(Error_Text, "Exception: " & Exception_Name(An_Exception) & LF);
+      Append(Error_Text, "Message: " & Exception_Message(An_Exception) & LF);
       Append
-        (ErrorText, "-------------------------------------------------" & LF);
-      Append(ErrorText, Symbolic_Traceback(An_Exception) & LF);
-      Append(ErrorText, "-------------------------------------------------");
-      Put_Line(ErrorFile, To_String(ErrorText));
-      Close(ErrorFile);
-      Destroy(MainWindow);
+        (Error_Text, "-------------------------------------------------" & LF);
+      Append(Error_Text, Symbolic_Traceback(An_Exception) & LF);
+      Append(Error_Text, "-------------------------------------------------");
+      Put_Line(Error_File, To_String(Error_Text));
+      Close(Error_File);
+      Destroy(Program_Main_Window);
       Interp := Tcl.Tcl_CreateInterp;
       if Tcl.Tcl_Init(Interp) = Tcl.TCL_ERROR then
          Ada.Text_IO.Put_Line
@@ -125,10 +125,10 @@ package body ErrorDialog is
              (".errorframe.scroll",
               "-orient vertical -command [list .errorframe.errorinfo yview]");
       begin
-         MainWindow := Get_Main_Window(Interp);
-         Wm_Set(MainWindow, "title", "{Hunter - error}");
+         Program_Main_Window := Get_Main_Window(Interp);
+         Wm_Set(Program_Main_Window, "title", "{Hunter - error}");
          Wm_Set
-           (MainWindow, "geometry",
+           (Program_Main_Window, "geometry",
             "800x600+[expr ([winfo vrootwidth .] - 800) / 2]+[expr ([winfo vrootheight .] - 600) / 2]");
          Tcl.Tk.Ada.Pack.Pack(ErrorLabel);
          Tcl.Tk.Ada.Pack.Pack(ErrorButton);
@@ -137,7 +137,7 @@ package body ErrorDialog is
          Tcl.Tk.Ada.Pack.Pack(ErrorFrame, "-fill both -expand true");
          Tcl.Tk.Ada.Pack.Pack(ErrorScroll, "-fill y -side right");
          Tcl.Tk.Ada.Pack.Pack(ErrorInfo, "-side top -fill both -expand true");
-         Insert(ErrorInfo, "end", "{" & To_String(ErrorText) & "}");
+         Insert(ErrorInfo, "end", "{" & To_String(Error_Text) & "}");
          configure(ErrorInfo, "-state disabled");
          Tcl.Tk.Tk_MainLoop;
       end;
