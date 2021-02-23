@@ -47,25 +47,37 @@ package body ErrorDialog is
       Error_File: File_Type;
       Error_Text: Unbounded_String := Null_Unbounded_String;
       Error_File_Path: constant String :=
-        Value("HOME") & "/.cache/hunter/error.log";
+        Value(Name => "HOME") & "/.cache/hunter/error.log";
       Interp: Tcl.Tcl_Interp := Get_Context;
-      Program_Main_Window: Tk_Toplevel := Get_Main_Window(Interp);
+      Program_Main_Window: Tk_Toplevel := Get_Main_Window(Interp => Interp);
    begin
       Ada.Directories.Create_Path
-        (Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
-      if Ada.Directories.Exists(Error_File_Path) then
-         Open(Error_File, Append_File, Error_File_Path);
+        (New_Directory =>
+           Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter");
+      if Ada.Directories.Exists(Name => Error_File_Path) then
+         Open
+           (File => Error_File, Mode => Append_File, Name => Error_File_Path);
       else
-         Create(Error_File, Append_File, Error_File_Path);
+         Create
+           (File => Error_File, Mode => Append_File, Name => Error_File_Path);
       end if;
-      Append(Error_Text, Current_Time & LF);
-      Append(Error_Text, "1.6" & LF);
-      Append(Error_Text, "Exception: " & Exception_Name(An_Exception) & LF);
-      Append(Error_Text, "Message: " & Exception_Message(An_Exception) & LF);
+      Append(Source => Error_Text, New_Item => Current_Time & LF);
+      Append(Source => Error_Text, New_Item => "1.6" & LF);
       Append
-        (Error_Text, "-------------------------------------------------" & LF);
-      Append(Error_Text, Symbolic_Traceback(An_Exception) & LF);
-      Append(Error_Text, "-------------------------------------------------");
+        (Source => Error_Text,
+         New_Item => "Exception: " & Exception_Name(An_Exception) & LF);
+      Append
+        (Source => Error_Text,
+         New_Item => "Message: " & Exception_Message(An_Exception) & LF);
+      Append
+        (Source => Error_Text,
+         New_Item => "-------------------------------------------------" & LF);
+      Append
+        (Source => Error_Text,
+         New_Item => Symbolic_Traceback(E => An_Exception) & LF);
+      Append
+        (Source => Error_Text,
+         New_Item => "-------------------------------------------------");
       Put_Line(Error_File, To_String(Error_Text));
       Close(Error_File);
       Destroy(Program_Main_Window);
