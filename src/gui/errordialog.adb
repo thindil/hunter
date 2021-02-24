@@ -105,28 +105,36 @@ package body ErrorDialog is
       declare
          ErrorLabel: constant Ttk_Label :=
            Create
-             (".errorlabel",
-              "-text {" &
-              Mc(Interp,
-                 "{Oops, something bad happens and progam crashed. Please, remember what have you done before crash and report this problem at:}") &
-              "} -wraplength 800");
+             (pathName => ".errorlabel",
+              options =>
+                "-text {" &
+                Mc(Interp => Interp,
+                   Src_String =>
+                     "{Oops, something bad happens and progam crashed. Please, remember what have you done before crash and report this problem at:}") &
+                "} -wraplength 800");
          ErrorButton: constant Ttk_Button :=
            Create
-             (".errorbutton",
-              "-text ""https://www.laeran.pl/repositories/hunter/ticket"" -command {exec " &
-              FindExecutable("xdg-open") &
-              " ""https://www.laeran.pl/repositories/hunter/ticket""}");
+             (pathName => ".errorbutton",
+              options =>
+                "-text ""https://www.laeran.pl/repositories/hunter/ticket"" -command {exec " &
+                FindExecutable(Name => "xdg-open") &
+                " ""https://www.laeran.pl/repositories/hunter/ticket""}");
          ErrorLabel2: constant Ttk_Label :=
            Create
-             (".errorlabel2",
-              "-text {" &
-              Mc(Interp,
-                 "{and attach (if possible) file 'error.log' from '}") &
-              Value("HOME") & "/.cache/hunter' directory.} -wraplength 800");
+             (pathName => ".errorlabel2",
+              options =>
+                "-text {" &
+                Mc(Interp => Interp,
+                   Src_String =>
+                     "{and attach (if possible) file 'error.log' from '}") &
+                Value(Name => "HOME") &
+                "/.cache/hunter' directory.} -wraplength 800");
          CloseButton: constant Ttk_Button :=
            Create
-             (".closebutton",
-              "-text " & Mc(Interp, "{Close}") & " -command exit");
+             (pathName => ".closebutton",
+              options =>
+                "-text " & Mc(Interp => Interp, Src_String => "{Close}") &
+                " -command exit");
          ErrorFrame: constant Ttk_LabelFrame :=
            Create
              (".errorframe",
