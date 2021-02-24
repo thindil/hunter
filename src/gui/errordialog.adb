@@ -65,10 +65,10 @@ package body ErrorDialog is
       Append(Source => Error_Text, New_Item => "1.6" & LF);
       Append
         (Source => Error_Text,
-         New_Item => "Exception: " & Exception_Name(An_Exception) & LF);
+         New_Item => "Exception: " & Exception_Name(X => An_Exception) & LF);
       Append
         (Source => Error_Text,
-         New_Item => "Message: " & Exception_Message(An_Exception) & LF);
+         New_Item => "Message: " & Exception_Message(X => An_Exception) & LF);
       Append
         (Source => Error_Text,
          New_Item => "-------------------------------------------------" & LF);
@@ -78,27 +78,30 @@ package body ErrorDialog is
       Append
         (Source => Error_Text,
          New_Item => "-------------------------------------------------");
-      Put_Line(Error_File, To_String(Error_Text));
-      Close(Error_File);
-      Destroy(Program_Main_Window);
+      Put_Line(File => Error_File, Item => To_String(Source => Error_Text));
+      Close(File => Error_File);
+      Destroy(Widgt => Program_Main_Window);
       Interp := Tcl.Tcl_CreateInterp;
-      if Tcl.Tcl_Init(Interp) = Tcl.TCL_ERROR then
+      if Tcl.Tcl_Init(interp => Interp) = Tcl.TCL_ERROR then
          Ada.Text_IO.Put_Line
-           ("Hunter: Tcl.Tcl_Init failed: " &
-            Tcl.Ada.Tcl_GetStringResult(Interp));
+           (Item =>
+              "Hunter: Tcl.Tcl_Init failed: " &
+              Tcl.Ada.Tcl_GetStringResult(interp => Interp));
          return;
       end if;
-      if Tcl.Tk.Tk_Init(Interp) = Tcl.TCL_ERROR then
+      if Tcl.Tk.Tk_Init(interp => Interp) = Tcl.TCL_ERROR then
          Ada.Text_IO.Put_Line
-           ("Hunter: Tcl.Tk.Tk_Init failed: " &
-            Tcl.Ada.Tcl_GetStringResult(Interp));
+           (Item =>
+              "Hunter: Tcl.Tk.Tk_Init failed: " &
+              Tcl.Ada.Tcl_GetStringResult(interp => Interp));
          return;
       end if;
-      Set_Context(Interp);
-      MsgCat_Init(Interp);
+      Set_Context(Interp => Interp);
+      MsgCat_Init(Interp => Interp);
       Ada.Directories.Set_Directory
-        (Ada.Directories.Containing_Directory(Command_Name));
-      Mc_Load("../share/hunter/translations", Interp);
+        (Directory =>
+           Ada.Directories.Containing_Directory(Name => Command_Name));
+      Mc_Load(DirName => "../share/hunter/translations", Interp => Interp);
       declare
          ErrorLabel: constant Ttk_Label :=
            Create
