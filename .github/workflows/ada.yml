@@ -5,7 +5,27 @@ on:
     branches: [ tk ]
 
 jobs:
+
+  tests:
+
+    runs-on: ubuntu-latest
+
+    container: ghcr.io/thindil/adabuild
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Style check
+      run: |
+         gprbuild -P hunter.gpr
+         gprclean -P hunter.gpr
+         gprbuild -P hunter.gpr -XUI=console
+         gprclean -P hunter.gpr
+
   build:
+
+    needs: tests
 
     runs-on: ubuntu-latest
 
