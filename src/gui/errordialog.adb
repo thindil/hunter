@@ -32,12 +32,12 @@ with Tcl.Tk.Ada.Widgets.Text; use Tcl.Tk.Ada.Widgets.Text;
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
-with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
-with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
-with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
-with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
-with Utils.UI; use Utils.UI;
+with Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkLabel;
+with Tcl.Tk.Ada.Widgets.TtkLabelFrame;
+with Tcl.Tk.Ada.Widgets.TtkScrollbar;
+with Tcl.Tk.Ada.Wm;
+with Utils.UI;
 
 package body ErrorDialog is
 
@@ -102,8 +102,15 @@ package body ErrorDialog is
         (Directory =>
            Ada.Directories.Containing_Directory(Name => Command_Name));
       Mc_Load(DirName => "../share/hunter/translations", Interp => Interp);
+      Show_Error_Window_Block :
       declare
-         ErrorLabel: constant Ttk_Label :=
+         use Tcl.Tk.Ada.Widgets.TtkButton;
+         use Tcl.Tk.Ada.Widgets.TtkLabel;
+         use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
+         use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+         use Tcl.Tk.Ada.Wm;
+         use Utils.UI;
+         Error_Label: constant Ttk_Label :=
            Create
              (pathName => ".errorlabel",
               options =>
@@ -112,14 +119,14 @@ package body ErrorDialog is
                    Src_String =>
                      "{Oops, something bad happens and progam crashed. Please, remember what have you done before crash and report this problem at:}") &
                 "} -wraplength 800");
-         ErrorButton: constant Ttk_Button :=
+         Error_Button: constant Ttk_Button :=
            Create
              (pathName => ".errorbutton",
               options =>
                 "-text ""https://www.laeran.pl/repositories/hunter/ticket"" -command {exec " &
                 FindExecutable(Name => "xdg-open") &
                 " ""https://www.laeran.pl/repositories/hunter/ticket""}");
-         ErrorLabel2: constant Ttk_Label :=
+         Error_Label2: constant Ttk_Label :=
            Create
              (pathName => ".errorlabel2",
               options =>
@@ -129,25 +136,25 @@ package body ErrorDialog is
                      "{and attach (if possible) file 'error.log' from '}") &
                 Value(Name => "HOME") &
                 "/.cache/hunter' directory.} -wraplength 800");
-         CloseButton: constant Ttk_Button :=
+         Close_Button: constant Ttk_Button :=
            Create
              (pathName => ".closebutton",
               options =>
                 "-text " & Mc(Interp => Interp, Src_String => "{Close}") &
                 " -command exit");
-         ErrorFrame: constant Ttk_LabelFrame :=
+         Error_Frame: constant Ttk_LabelFrame :=
            Create
              (pathName => ".errorframe",
               options =>
                 "-text {" &
                 Mc(Interp => Interp, Src_String => "{Technical information}") &
                 "}");
-         ErrorInfo: constant Tk_Text :=
+         Error_Info: constant Tk_Text :=
            Create
              (pathName => ".errorframe.errorinfo",
               options =>
                 "-wrap word -yscrollcommand [list .errorframe.scroll set]");
-         ErrorScroll: constant Ttk_Scrollbar :=
+         Error_Scroll: constant Ttk_Scrollbar :=
            Create
              (pathName => ".errorframe.scroll",
               options =>
@@ -161,21 +168,23 @@ package body ErrorDialog is
            (Widgt => Program_Main_Window, Action => "geometry",
             Options =>
               "800x600+[expr ([winfo vrootwidth .] - 800) / 2]+[expr ([winfo vrootheight .] - 600) / 2]");
-         Tcl.Tk.Ada.Pack.Pack(Slave => ErrorLabel);
-         Tcl.Tk.Ada.Pack.Pack(Slave => ErrorButton);
-         Tcl.Tk.Ada.Pack.Pack(Slave => ErrorLabel2);
-         Tcl.Tk.Ada.Pack.Pack(Slave => CloseButton);
+         Tcl.Tk.Ada.Pack.Pack(Slave => Error_Label);
+         Tcl.Tk.Ada.Pack.Pack(Slave => Error_Button);
+         Tcl.Tk.Ada.Pack.Pack(Slave => Error_Label2);
+         Tcl.Tk.Ada.Pack.Pack(Slave => Close_Button);
          Tcl.Tk.Ada.Pack.Pack
-           (Slave => ErrorFrame, Options => "-fill both -expand true");
+           (Slave => Error_Frame, Options => "-fill both -expand true");
          Tcl.Tk.Ada.Pack.Pack
-           (Slave => ErrorScroll, Options => "-fill y -side right");
+           (Slave => Error_Scroll, Options => "-fill y -side right");
          Tcl.Tk.Ada.Pack.Pack
-           (Slave => ErrorInfo,
+           (Slave => Error_Info,
             Options => "-side top -fill both -expand true");
-         Insert(ErrorInfo, "end", "{" & To_String(Error_Text) & "}");
-         configure(ErrorInfo, "-state disabled");
+         Insert
+           (TextWidget => Error_Info, Index => "end",
+            Text => "{" & To_String(Error_Text) & "}");
+         configure(Widgt => Error_Info, options => "-state disabled");
          Tcl.Tk.Tk_MainLoop;
-      end;
+      end Show_Error_Window_Block;
    end Save_Exception;
 
 end ErrorDialog;
