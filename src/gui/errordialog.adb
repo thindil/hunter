@@ -137,29 +137,41 @@ package body ErrorDialog is
                 " -command exit");
          ErrorFrame: constant Ttk_LabelFrame :=
            Create
-             (".errorframe",
-              "-text {" & Mc(Interp, "{Technical information}") & "}");
+             (pathName => ".errorframe",
+              options =>
+                "-text {" &
+                Mc(Interp => Interp, Src_String => "{Technical information}") &
+                "}");
          ErrorInfo: constant Tk_Text :=
            Create
-             (".errorframe.errorinfo",
-              "-wrap word -yscrollcommand [list .errorframe.scroll set]");
+             (pathName => ".errorframe.errorinfo",
+              options =>
+                "-wrap word -yscrollcommand [list .errorframe.scroll set]");
          ErrorScroll: constant Ttk_Scrollbar :=
            Create
-             (".errorframe.scroll",
-              "-orient vertical -command [list .errorframe.errorinfo yview]");
+             (pathName => ".errorframe.scroll",
+              options =>
+                "-orient vertical -command [list .errorframe.errorinfo yview]");
       begin
-         Program_Main_Window := Get_Main_Window(Interp);
-         Wm_Set(Program_Main_Window, "title", "{Hunter - error}");
+         Program_Main_Window := Get_Main_Window(Interp => Interp);
          Wm_Set
-           (Program_Main_Window, "geometry",
-            "800x600+[expr ([winfo vrootwidth .] - 800) / 2]+[expr ([winfo vrootheight .] - 600) / 2]");
-         Tcl.Tk.Ada.Pack.Pack(ErrorLabel);
-         Tcl.Tk.Ada.Pack.Pack(ErrorButton);
-         Tcl.Tk.Ada.Pack.Pack(ErrorLabel2);
-         Tcl.Tk.Ada.Pack.Pack(CloseButton);
-         Tcl.Tk.Ada.Pack.Pack(ErrorFrame, "-fill both -expand true");
-         Tcl.Tk.Ada.Pack.Pack(ErrorScroll, "-fill y -side right");
-         Tcl.Tk.Ada.Pack.Pack(ErrorInfo, "-side top -fill both -expand true");
+           (Widgt => Program_Main_Window, Action => "title",
+            Options => "{Hunter - error}");
+         Wm_Set
+           (Widgt => Program_Main_Window, Action => "geometry",
+            Options =>
+              "800x600+[expr ([winfo vrootwidth .] - 800) / 2]+[expr ([winfo vrootheight .] - 600) / 2]");
+         Tcl.Tk.Ada.Pack.Pack(Slave => ErrorLabel);
+         Tcl.Tk.Ada.Pack.Pack(Slave => ErrorButton);
+         Tcl.Tk.Ada.Pack.Pack(Slave => ErrorLabel2);
+         Tcl.Tk.Ada.Pack.Pack(Slave => CloseButton);
+         Tcl.Tk.Ada.Pack.Pack
+           (Slave => ErrorFrame, Options => "-fill both -expand true");
+         Tcl.Tk.Ada.Pack.Pack
+           (Slave => ErrorScroll, Options => "-fill y -side right");
+         Tcl.Tk.Ada.Pack.Pack
+           (Slave => ErrorInfo,
+            Options => "-side top -fill both -expand true");
          Insert(ErrorInfo, "end", "{" & To_String(Error_Text) & "}");
          configure(ErrorInfo, "-state disabled");
          Tcl.Tk.Tk_MainLoop;
