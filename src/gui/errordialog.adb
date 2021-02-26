@@ -13,25 +13,24 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Characters.Latin_1;
+with Ada.Command_Line;
 with Ada.Directories;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Environment_Variables;
+with Ada.Strings.Unbounded;
+with Ada.Text_IO;
 with Interfaces.C;
-with GNAT.Time_Stamp; use GNAT.Time_Stamp;
-with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
+with GNAT.Time_Stamp;
+with GNAT.Traceback.Symbolic;
 with Tcl;
 with Tcl.Ada;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.MsgCat.Ada;
+with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
-with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.Text; use Tcl.Tk.Ada.Widgets.Text;
-with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
+with Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.Text;
+with Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame;
@@ -43,6 +42,18 @@ package body ErrorDialog is
 
    procedure Save_Exception(An_Exception: Exception_Occurrence) is
       use type Interfaces.C.int;
+      use Ada.Characters.Latin_1;
+      use Ada.Command_Line;
+      use Ada.Environment_Variables;
+      use Ada.Strings.Unbounded;
+      use Ada.Text_IO;
+      use GNAT.Time_Stamp;
+      use GNAT.Traceback.Symbolic;
+      use Tcl.MsgCat.Ada;
+      use Tcl.Tk.Ada;
+      use Tcl.Tk.Ada.Widgets;
+      use Tcl.Tk.Ada.Widgets.Toplevel;
+      use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 
       Error_File: File_Type;
       Error_Text: Unbounded_String := Null_Unbounded_String;
@@ -104,12 +115,14 @@ package body ErrorDialog is
       Mc_Load(DirName => "../share/hunter/translations", Interp => Interp);
       Show_Error_Window_Block :
       declare
+         use Tcl.Tk.Ada.Widgets.Text;
          use Tcl.Tk.Ada.Widgets.TtkButton;
          use Tcl.Tk.Ada.Widgets.TtkLabel;
          use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
          use Tcl.Tk.Ada.Widgets.TtkScrollbar;
          use Tcl.Tk.Ada.Wm;
          use Utils.UI;
+
          Error_Label: constant Ttk_Label :=
            Create
              (pathName => ".errorlabel",
@@ -181,7 +194,7 @@ package body ErrorDialog is
             Options => "-side top -fill both -expand true");
          Insert
            (TextWidget => Error_Info, Index => "end",
-            Text => "{" & To_String(Error_Text) & "}");
+            Text => "{" & To_String(Source => Error_Text) & "}");
          configure(Widgt => Error_Info, options => "-state disabled");
          Tcl.Tk.Tk_MainLoop;
       end Show_Error_Window_Block;
