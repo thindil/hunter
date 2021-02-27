@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -28,16 +28,16 @@ package Inotify is
    -- Types of inotify events and values for them
    -- SOURCE
    type Inotify_Events is
-     (Accessed, Modified, Metadata, Closed_Write, Closed_No_Write, Opened,
-      Moved_From, Moved_To, Created, Deleted, Deleted_Self, Moved_Self,
-      Unmounted_Filesystem);
+     (ACCESSED, MODIFIED, METADATA, CLOSED_WRITE, CLOSED_NO_WRITE, OPENED,
+      MOVED_FROM, MOVED_TO, CREATED, DELETED, DELETED_SELF, MOVED_SELF,
+      UNMOUNTED_FILESYSTEM);
 
-   for Inotify_Events use (Accessed => 16#0001#, Modified => 16#0002#,
-      Metadata => 16#0004#, Closed_Write => 16#0008#,
-      Closed_No_Write => 16#0010#, Opened => 16#0020#, Moved_From => 16#0040#,
-      Moved_To => 16#0080#, Created => 16#0100#, Deleted => 16#0200#,
-      Deleted_Self => 16#0400#, Moved_Self => 16#0800#,
-      Unmounted_Filesystem => 16#2000#);
+   for Inotify_Events use (ACCESSED => 16#0001#, MODIFIED => 16#0002#,
+      METADATA => 16#0004#, CLOSED_WRITE => 16#0008#,
+      CLOSED_NO_WRITE => 16#0010#, OPENED => 16#0020#, MOVED_FROM => 16#0040#,
+      MOVED_TO => 16#0080#, CREATED => 16#0100#, DELETED => 16#0200#,
+      DELETED_SELF => 16#0400#, MOVED_SELF => 16#0800#,
+      UNMOUNTED_FILESYSTEM => 16#2000#);
    -- ****
 
    -- ****s* Inotify/Inotify.Event_Data
@@ -59,61 +59,61 @@ package Inotify is
    -- FUNCTION
    -- Used to store data about inotify events
    -- SOURCE
-   package Events_Container is new Vectors(Positive, Event_Data);
+   package Events_Container is new Vectors(Index_Type => Positive, Element_Type => Event_Data);
    -- ****
 
-   -- ****v* Inotify/Inotify.EventsList
+   -- ****v* Inotify/Inotify.Events_List
    -- FUNCTION
    -- List of all caught inotify events
    -- SOURCE
-   EventsList: Events_Container.Vector;
+   Events_List: Events_Container.Vector;
    -- ****
 
-   -- ****v* Inotify/Inotify.TemporaryStop
+   -- ****v* Inotify/Inotify.Temporary_Stop
    -- FUNCTION
    -- If true, temporary stop refreshing directory listing (mainly in trash).
    -- Default is false
    -- SOURCE
-   TemporaryStop: Boolean := False;
+   Temporary_Stop: Boolean := False;
    -- ****
 
-   -- ****f* Inotify/Inotify.InotifyInit
+   -- ****f* Inotify/Inotify.Inotify_Init
    -- FUNCTION
    -- Start inotify instance
    -- SOURCE
-   procedure InotifyInit;
+   procedure Inotify_Init;
    -- ****
 
-   -- ****f* Inotify/Inotify.InotifyClose
+   -- ****f* Inotify/Inotify.Inotify_Close
    -- FUNCTION
    -- Close inotify instance
    -- SOURCE
-   procedure InotifyClose;
+   procedure Inotify_Close;
    -- ****
 
-   -- ****f* Inotify/Inotify.AddWatches
+   -- ****f* Inotify/Inotify.Add_Watches
    -- FUNCTION
    -- Add inotify watches for selected path and all subdirectories inside it,
    -- but not deeper.
    -- PARAMETERS
    -- Path - Full path to which inotify watches will be added
    -- SOURCE
-   procedure AddWatches(Path: String);
+   procedure Add_Watches(Path: String);
    -- ****
 
-   -- ****f* Inotify/Inotify.RemoveWatches
+   -- ****f* Inotify/Inotify.Remove_Watches
    -- FUNCTION
    -- Remove all inotify watches
    -- SOURCE
-   procedure RemoveWatches;
+   procedure Remove_Watches;
    -- ****
 
-   -- ****f* Inotify/Inotify.InotifyRead
+   -- ****f* Inotify/Inotify.Inotify_Read
    -- FUNCTION
    -- Read all caught and waiting inotify events and store them in EventsList.
    -- If need, remove and add new watches also.
    -- SOURCE
-   procedure InotifyRead;
+   procedure Inotify_Read;
    -- ****
 
 end Inotify;
