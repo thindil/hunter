@@ -165,7 +165,7 @@ package body MainWindow.Commands is
             null;
          end if;
       end if;
-      InotifyClose;
+      Inotify_Close;
       MagicClose;
    end Quit_Command;
 

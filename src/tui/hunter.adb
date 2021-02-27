@@ -60,7 +60,7 @@ procedure Hunter is
          end if;
       end if;
       End_Windows;
-      InotifyClose;
+      Inotify_Close;
       MagicClose;
    end ExitFromProgram;
 begin
@@ -72,7 +72,7 @@ begin
    -- Start libmagic data
    MagicOpen;
    -- Start inotify
-   InotifyInit;
+   Inotify_Init;
    -- Start Tcl/Tk
 
    --  Get command-line arguments and put them into C-style "argv"

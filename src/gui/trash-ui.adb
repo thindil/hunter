@@ -52,7 +52,7 @@ package body Trash.UI is
       Button: Ttk_Button :=
         Get_Widget(".mainframe.toolbars.actiontoolbar.restorebutton");
    begin
-      TemporaryStop := True;
+      Temporary_Stop := True;
       Create_Path
         (Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/info");
       Create_Path

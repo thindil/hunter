@@ -32,7 +32,7 @@ package body RefreshData is
    task body InotifyTask is
    begin
       accept Start;
-      InotifyRead;
+      Inotify_Read;
    end InotifyTask;
 
    -- ****iv* RefreshData/RefreshData.Timer_Token
@@ -69,14 +69,14 @@ package body RefreshData is
          RefreshList := True;
       end RemoveItem;
    begin
-      if TemporaryStop then
+      if Temporary_Stop then
          goto Clear_List;
       end if;
       Check_Events_Loop :
-      for Event of EventsList loop
+      for Event of Events_List loop
          if Event.Path = CurrentDirectory
            and then
-           ((Event.Event in Moved_To | Metadata | Accessed) and
+           ((Event.Event in MOVED_TO | METADATA | ACCESSED) and
             Exists(To_String(Event.Path & "/" & Event.Target))) then
             ItemExists := False;
             Check_If_Item_Exists_Loop :
@@ -99,10 +99,10 @@ package body RefreshData is
             if FileName = Event.Path or
               ItemsList(ItemIndex).Name = Event.Target then
                case Event.Event is
-                  when Moved_From | Deleted =>
+                  when MOVED_FROM | DELETED =>
                      RemoveItem;
                      exit Update_Items_Loop;
-                  when Metadata | Modified | Moved_To | Accessed =>
+                  when METADATA | MODIFIED | MOVED_TO | ACCESSED =>
                      if not Exists(To_String(FileName)) then
                         RemoveItem;
                         exit Update_Items_Loop;
@@ -150,7 +150,7 @@ package body RefreshData is
          RefreshList := False;
       end if;
       <<Clear_List>>
-      EventsList.Clear;
+      Events_List.Clear;
       Timer_Token :=
         Tcl_CreateTimerHandler
           (int(Settings.AutoRefreshInterval) * 1_000, CheckItems'Access,
@@ -163,7 +163,7 @@ package body RefreshData is
          Tcl_DeleteTimerHandler(Timer_Token);
       end if;
       if Path /= "" then
-         AddWatches(Path);
+         Add_Watches(Path);
          InotifyTask.Start;
       end if;
       if Settings.AutoRefreshInterval > 0 then
@@ -176,11 +176,11 @@ package body RefreshData is
 
    procedure UpdateWatch(Path: String) is
    begin
-      TemporaryStop := True;
-      EventsList.Clear;
-      RemoveWatches;
-      AddWatches(Path);
-      TemporaryStop := False;
+      Temporary_Stop := True;
+      Events_List.Clear;
+      Remove_Watches;
+      Add_Watches(Path);
+      Temporary_Stop := False;
    end UpdateWatch;
 
 end RefreshData;
