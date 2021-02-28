@@ -45,7 +45,8 @@ package body Inotify is
    -- FUNCTION
    -- Used to store information about inotify watches
    -- SOURCE
-   package Watches_Container is new Vectors(Positive, Watch_Data);
+   package Watches_Container is new Vectors(Index_Type => Positive,
+      Element_Type => Watch_Data);
    -- ****
 
    -- ****iv* Inotify/Inotify.Watches
@@ -62,46 +63,46 @@ package body Inotify is
    type Mask_Array is array(Positive range <>) of Inotify_Events;
    -- ****
 
-   -- ****if* Inotify/Inotify.inotify_init
+   -- ****if* Inotify/Inotify.Inotify_Init_C
    -- FUNCTION
    -- Binding to the C function
    -- RESULT
    -- File descriptor used for a newly created inotify instance
    -- SOURCE
-   function inotify_init return int with
+   function Inotify_Init_C return int with
       Import => True,
       Convention => C,
       External_Name => "inotify_init";
       -- ****
 
-      -- ****if* Inotify/Inotify.inotify_add_watch
+      -- ****if* Inotify/Inotify.Inotify_Add_Watch_C
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
-      -- fd       - inotify instance to which add a new watch
-      -- pathname - full path to which a new inotify watch will be added
-      -- mask     - list of inotify events to listen
+      -- Fd       - inotify instance to which add a new watch
+      -- Pathname - full path to which a new inotify watch will be added
+      -- Mask     - list of inotify events to listen
       -- RESULT
       -- -1 if inotify watch cannot be added, 0 if exists, otherwise index of
       -- newly created watch
       -- SOURCE
-   function inotify_add_watch
-     (fd: int; pathname: chars_ptr; mask: int) return int with
+   function Inotify_Add_Watch_C
+     (Fd: int; Pathname: chars_ptr; Mask: int) return int with
       Import => True,
       Convention => C,
       External_Name => "inotify_add_watch";
       -- ****
 
-      -- ****if* Inotify/Inotify.inotify_rm_watch
+      -- ****if* Inotify/Inotify.Inotify_Rm_Watch_C
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
-      -- fd - inotify instance from which selected watch will be removed
-      -- wd - inotify watch index to remove
+      -- Fd - inotify instance from which selected watch will be removed
+      -- Wd - inotify watch index to remove
       -- RESULT
       -- 0 if inotify watch was succesfully removed, -1 when error occurs
       -- SOURCE
-   function inotify_rm_watch(fd, wd: int) return int with
+   function Inotify_Rm_Watch_C(Fd, Wd: int) return int with
       Import => True,
       Convention => C,
       External_Name => "inotify_rm_watch";
@@ -109,7 +110,7 @@ package body Inotify is
 
    procedure Inotify_Init is
    begin
-      Instance := File_Descriptor(inotify_init);
+      Instance := File_Descriptor(Inotify_Init_C);
    end Inotify_Init;
 
    procedure Inotify_Close is
@@ -117,7 +118,7 @@ package body Inotify is
       Close(Instance);
    end Inotify_Close;
 
-   -- ****if* Inotify/Inotify.CreateMask
+   -- ****if* Inotify/Inotify.Create_Mask
    -- FUNCTION
    -- Convert list of inotify events to mask value for C
    -- PARAMETERS
@@ -125,7 +126,7 @@ package body Inotify is
    -- RESULT
    -- Mask value for C
    -- SOURCE
-   function CreateMask(Events: Mask_Array) return int is
+   function Create_Mask(Events: Mask_Array) return int is
       -- ****
       type Unsigned_Integer is mod 2**Integer'Size;
       Mask: Unsigned_Integer :=
@@ -136,32 +137,32 @@ package body Inotify is
          Mask := Mask or Unsigned_Integer(Inotify_Events'Enum_Rep(Events(I)));
       end loop Create_Mask_Loop;
       return int(Mask);
-   end CreateMask;
+   end Create_Mask;
 
-   -- ****if* Inotify/Inotify.AddWatch
+   -- ****if* Inotify/Inotify.Add_Watch
    -- FUNCTION
    -- Add inotify watch to selected path
    -- PARAMETERS
    -- Path - Full path to which new inotify watch will be added
    -- SOURCE
-   procedure AddWatch(Path: String) is
+   procedure Add_Watch(Path: String) is
       -- ****
       Watch: int;
       Mask: constant int :=
-        CreateMask((METADATA, MOVED_FROM, MOVED_TO, DELETED, CREATED));
+        Create_Mask((METADATA, MOVED_FROM, MOVED_TO, DELETED, CREATED));
    begin
-      Watch := inotify_add_watch(int(Instance), New_String(Path), Mask);
+      Watch := Inotify_Add_Watch_C(int(Instance), New_String(Path), Mask);
       if Watch > 0 then
          Watches.Append((Watch, To_Unbounded_String(Path)));
       end if;
-   end AddWatch;
+   end Add_Watch;
 
    procedure Add_Watches(Path: String) is
       Directory: Dir_Type;
       Last: Natural;
       FileName: String(1 .. 1024);
    begin
-      AddWatch(Path);
+      Add_Watch(Path);
       Open(Directory, Path);
       Add_Watches_Loop :
       loop
@@ -173,7 +174,7 @@ package body Inotify is
          if Is_Directory(Path & Directory_Separator & FileName(1 .. Last))
            and then Is_Read_Accessible_File
              (Path & Directory_Separator & FileName(1 .. Last)) then
-            AddWatch(Path & "/" & FileName(1 .. Last));
+            Add_Watch(Path & "/" & FileName(1 .. Last));
          end if;
          <<End_Of_Loop>>
       end loop Add_Watches_Loop;
@@ -183,7 +184,7 @@ package body Inotify is
    procedure Remove_Watches is
    begin
       for Watch of Watches loop
-         if inotify_rm_watch(int(Instance), Watch.Id) = -1 then
+         if Inotify_Rm_Watch_C(int(Instance), Watch.Id) = -1 then
             null;
          end if;
       end loop;
@@ -202,7 +203,7 @@ package body Inotify is
       Remove_Watches_Loop :
       for Watch of Watches loop
          if To_String(Watch.Path) = Path then
-            if inotify_rm_watch(int(Instance), Watch.Id) = -1 then
+            if Inotify_Rm_Watch_C(int(Instance), Watch.Id) = -1 then
                null;
             end if;
             exit Remove_Watches_Loop;
@@ -259,7 +260,7 @@ package body Inotify is
             if Event in ACCESSED | MOVED_TO
               and then Is_Directory
                 (To_String(Path & Directory_Separator & Target)) then
-               AddWatch(To_String(Path & Directory_Separator & Target));
+               Add_Watch(To_String(Path & Directory_Separator & Target));
             end if;
             if Event in MODIFIED | MOVED_FROM
               and then Is_Directory
