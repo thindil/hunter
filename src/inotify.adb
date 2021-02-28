@@ -156,7 +156,8 @@ package body Inotify is
    begin
       Watch :=
         Inotify_Add_Watch_C
-          (Fd => int(Instance), Pathname => New_String(Str => Path), Mask => Mask);
+          (Fd => int(Instance), Pathname => New_String(Str => Path),
+           Mask => Mask);
       if Watch > 0 then
          Watches.Append
            (New_Item =>
@@ -169,32 +170,34 @@ package body Inotify is
       Last: Natural;
       FileName: String(1 .. 1024);
    begin
-      Add_Watch(Path);
-      Open(Directory, Path);
+      Add_Watch(Path => Path);
+      Open(Dir => Directory, Dir_Name => Path);
       Add_Watches_Loop :
       loop
-         Read(Directory, FileName, Last);
+         Read(Dir => Directory, Str => FileName, Last => Last);
          exit Add_Watches_Loop when Last = 0;
          if FileName(1 .. Last) in "." | ".." then
             goto End_Of_Loop;
          end if;
-         if Is_Directory(Path & Directory_Separator & FileName(1 .. Last))
+         if Is_Directory
+             (Name => Path & Directory_Separator & FileName(1 .. Last))
            and then Is_Read_Accessible_File
-             (Path & Directory_Separator & FileName(1 .. Last)) then
-            Add_Watch(Path & "/" & FileName(1 .. Last));
+             (Name => Path & Directory_Separator & FileName(1 .. Last)) then
+            Add_Watch(Path => Path & "/" & FileName(1 .. Last));
          end if;
          <<End_Of_Loop>>
       end loop Add_Watches_Loop;
-      Close(Directory);
+      Close(Dir => Directory);
    end Add_Watches;
 
    procedure Remove_Watches is
    begin
+      Remove_Watches_Loop :
       for Watch of Watches loop
          if Inotify_Rm_Watch_C(int(Instance), Watch.Id) = -1 then
             null;
          end if;
-      end loop;
+      end loop Remove_Watches_Loop;
       Watches.Clear;
    end Remove_Watches;
 
