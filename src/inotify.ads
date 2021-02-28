@@ -40,6 +40,13 @@ package Inotify is
       UNMOUNTED_FILESYSTEM => 16#2000#);
    -- ****
 
+   -- ****d* Inotify/Inotify.Accesed_Event
+   -- FUNCTION
+   -- Default Inotify event
+   -- SOURCE
+   Accessed_Event: constant Inotify_Events := ACCESSED;
+   -- ****
+
    -- ****s* Inotify/Inotify.Event_Data
    -- FUNCTION
    -- Data structure used to store information about inotify event
@@ -55,11 +62,19 @@ package Inotify is
    end record;
    -- ****
 
+   -- ****d* Inotify/Inotify.Empty_Event_Data
+   -- FUNCTION
+   -- Empty event data record
+   -- SOURCE
+   Empty_Event_Data: constant Event_Data := Event_Data'(others => <>);
+   -- ****
+
    -- ****t* Inotify/Inotify.Events_Container
    -- FUNCTION
    -- Used to store data about inotify events
    -- SOURCE
-   package Events_Container is new Vectors(Index_Type => Positive, Element_Type => Event_Data);
+   package Events_Container is new Vectors(Index_Type => Positive,
+      Element_Type => Event_Data);
    -- ****
 
    -- ****v* Inotify/Inotify.Events_List
