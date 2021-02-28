@@ -115,7 +115,7 @@ package body Inotify is
 
    procedure Inotify_Close is
    begin
-      Close(Instance);
+      Close(FD => Instance);
    end Inotify_Close;
 
    -- ****if* Inotify/Inotify.Create_Mask
@@ -149,11 +149,18 @@ package body Inotify is
       -- ****
       Watch: int;
       Mask: constant int :=
-        Create_Mask((METADATA, MOVED_FROM, MOVED_TO, DELETED, CREATED));
+        Create_Mask
+          (Events =>
+             (1 => METADATA, 2 => MOVED_FROM, 3 => MOVED_TO, 4 => DELETED,
+              5 => CREATED));
    begin
-      Watch := Inotify_Add_Watch_C(int(Instance), New_String(Path), Mask);
+      Watch :=
+        Inotify_Add_Watch_C
+          (Fd => int(Instance), Pathname => New_String(Str => Path), Mask => Mask);
       if Watch > 0 then
-         Watches.Append((Watch, To_Unbounded_String(Path)));
+         Watches.Append
+           (New_Item =>
+              (Id => Watch, Path => To_Unbounded_String(Source => Path)));
       end if;
    end Add_Watch;
 
