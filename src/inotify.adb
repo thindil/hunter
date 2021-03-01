@@ -63,6 +63,18 @@ package body Inotify is
    type Mask_Array is array(Positive range <>) of Inotify_Events;
    -- ****
 
+   -- ****if* Inotify/Inotify.Get_Instance
+   -- FUNCTION
+   -- Get the current instance of inotify converted to C int type
+   -- RESULT
+   -- The current inotify instance converted to C int type
+   -- SOURCE
+   function Get_Instance return int is
+      -- ****
+   begin
+      return int(Instance);
+   end Get_Instance;
+
    -- ****if* Inotify/Inotify.Inotify_Init_C
    -- FUNCTION
    -- Binding to the C function
@@ -129,12 +141,12 @@ package body Inotify is
    function Create_Mask(Events: Mask_Array) return int is
       -- ****
       type Unsigned_Integer is mod 2**Integer'Size;
-      Mask: Unsigned_Integer :=
-        Unsigned_Integer(Inotify_Events'Enum_Rep(Events(1)));
+      Initial_Value: constant Unsigned_Integer := 0;
+      Mask: Unsigned_Integer := Initial_Value;
    begin
       Create_Mask_Loop :
-      for I in 2 .. Events'Last loop
-         Mask := Mask or Unsigned_Integer(Inotify_Events'Enum_Rep(Events(I)));
+      for Event_Mask of Events loop
+         Mask := Mask or Inotify_Events'Enum_Rep(Event_Mask);
       end loop Create_Mask_Loop;
       return int(Mask);
    end Create_Mask;
@@ -156,7 +168,7 @@ package body Inotify is
    begin
       Watch :=
         Inotify_Add_Watch_C
-          (Fd => int(Instance), Pathname => New_String(Str => Path),
+          (Fd => Get_Instance, Pathname => New_String(Str => Path),
            Mask => Mask);
       if Watch > 0 then
          Watches.Append
@@ -194,7 +206,7 @@ package body Inotify is
    begin
       Remove_Watches_Loop :
       for Watch of Watches loop
-         if Inotify_Rm_Watch_C(Fd => int(Instance), Wd => Watch.Id) = -1 then
+         if Inotify_Rm_Watch_C(Fd => Get_Instance, Wd => Watch.Id) = -1 then
             null;
          end if;
       end loop Remove_Watches_Loop;
@@ -213,8 +225,7 @@ package body Inotify is
       Remove_Watches_Loop :
       for Watch of Watches loop
          if To_String(Source => Watch.Path) = Path then
-            if Inotify_Rm_Watch_C(Fd => int(Instance), Wd => Watch.Id) =
-              -1 then
+            if Inotify_Rm_Watch_C(Fd => Get_Instance, Wd => Watch.Id) = -1 then
                null;
             end if;
             exit Remove_Watches_Loop;
@@ -231,7 +242,7 @@ package body Inotify is
    begin
       Read_Events_Loop :
       loop
-         Length := Read(Instance, Buffer'Address, 4096);
+         Length := Read(File_Descriptor(Get_Instance), Buffer'Address, 4096);
          exit Read_Events_Loop when Length = -1;
          if Temporary_Stop then
             goto End_Of_Loop;
