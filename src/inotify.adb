@@ -194,7 +194,7 @@ package body Inotify is
    begin
       Remove_Watches_Loop :
       for Watch of Watches loop
-         if Inotify_Rm_Watch_C(int(Instance), Watch.Id) = -1 then
+         if Inotify_Rm_Watch_C(Fd => int(Instance), Wd => Watch.Id) = -1 then
             null;
          end if;
       end loop Remove_Watches_Loop;
@@ -212,8 +212,9 @@ package body Inotify is
    begin
       Remove_Watches_Loop :
       for Watch of Watches loop
-         if To_String(Watch.Path) = Path then
-            if Inotify_Rm_Watch_C(int(Instance), Watch.Id) = -1 then
+         if To_String(Source => Watch.Path) = Path then
+            if Inotify_Rm_Watch_C(Fd => int(Instance), Wd => Watch.Id) =
+              -1 then
                null;
             end if;
             exit Remove_Watches_Loop;
