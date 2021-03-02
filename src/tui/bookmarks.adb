@@ -32,7 +32,7 @@ package body Bookmarks is
    BookmarksList: Bookmarks_Container.Map;
    -- ****
 
-   procedure Show_Bookmarks_Menu is
+   function Show_Bookmarks_Menu return Item_Array_Access is
       XDGBookmarks: constant array(1 .. 7) of Unbounded_String :=
         (To_Unbounded_String("XDG_DESKTOP_DIR"),
          To_Unbounded_String("XDG_DOWNLOAD_DIR"),
@@ -42,6 +42,8 @@ package body Bookmarks is
          To_Unbounded_String("XDG_PICTURES_DIR"),
          To_Unbounded_String("XDG_VIDEOS_DIR"));
       Path: Unbounded_String;
+      Menu_Items: Item_Array_Access;
+      MenuIndex: Positive := 1;
       function GetXDGDirectory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String;
@@ -72,21 +74,23 @@ package body Bookmarks is
             Path := GetXDGDirectory(To_String(XDGBookmarks(I)));
             if Ada.Directories.Exists(To_String(Path)) then
                BookmarksList.Include
-                  (Simple_Name(To_String(Path)), To_String(Path));
+                 (Simple_Name(To_String(Path)), To_String(Path));
             end if;
          end loop Set_XDGBookmarks_List_Loop;
          if Ada.Directories.Exists
-            (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
+             (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
             declare
                File: File_Type;
                Line, Path: Unbounded_String;
                BookmarkExist: Boolean;
             begin
-               Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+               Open
+                 (File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
                Load_User_Bookmarks_Loop :
                while not End_Of_File(File) loop
                   Line := Get_Line(File);
-                  if Length(Line) < 7 or else Slice(Line, 1, 7) /= "file://" then
+                  if Length(Line) < 7
+                    or else Slice(Line, 1, 7) /= "file://" then
                      goto End_Of_Loop;
                   end if;
                   Path := Unbounded_Slice(Line, 8, Length(Line));
@@ -99,9 +103,9 @@ package body Bookmarks is
                      end if;
                   end loop Check_Bookmark_Existence_Loop;
                   if not BookmarkExist and
-                     Ada.Directories.Exists(To_String(Path)) then
+                    Ada.Directories.Exists(To_String(Path)) then
                      BookmarksList.Include
-                        (Simple_Name(To_String(Path)), To_String(Path));
+                       (Simple_Name(To_String(Path)), To_String(Path));
                   end if;
                   <<End_Of_Loop>>
                end loop Load_User_Bookmarks_Loop;
@@ -110,6 +114,15 @@ package body Bookmarks is
          end if;
          BookmarksList.Include(Mc(Interpreter, "{Enter destination}"), "");
       end if;
+      Menu_Items := new Item_Array(1 .. Positive(BookmarksList.Length) + 2);
+      for I in BookmarksList.Iterate loop
+         Menu_Items.all(MenuIndex) := New_Item(Bookmarks_Container.Key(I));
+         MenuIndex := MenuIndex + 1;
+      end loop;
+      Menu_Items.all(MenuIndex) := New_Item("Close");
+      MenuIndex := MenuIndex + 1;
+      Menu_Items.all(MenuIndex) := Null_Item;
+      return Menu_Items;
    end Show_Bookmarks_Menu;
 
 end Bookmarks;
