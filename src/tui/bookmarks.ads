@@ -15,6 +15,7 @@
 
 with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Strings.Hash;
+with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 
 -- ****h* BookmarksTUI/BookmarksTUI
 -- FUNCTION
@@ -34,8 +35,10 @@ package Bookmarks is
    -- ****f* BookmarksTUI/BookmarksTUI.Show_Bookmarks_Menu
    -- FUNCTION
    -- Show the bookmarks menu to the user
+   -- RESULT
+   -- The list of bookmarks as menu options
    -- SOURCE
-   procedure Show_Bookmarks_Menu;
+   function Show_Bookmarks_Menu return Item_Array_Access;
    -- ****
 
 end Bookmarks;

@@ -333,7 +333,7 @@ package body MainWindow is
             Menu_Items.all(7) := New_Item("Close");
             Menu_Items.all(8) := Null_Item;
          when BOOKMARKS_MENU =>
-            Show_Bookmarks_Menu;
+            Menu_Items := Show_Bookmarks_Menu;
          when others =>
             null;
       end case;
