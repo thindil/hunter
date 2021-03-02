@@ -20,6 +20,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
+with Bookmarks; use Bookmarks;
 with CreateItems; use CreateItems;
 with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
@@ -331,6 +332,8 @@ package body MainWindow is
             Menu_Items.all(6) := New_Item("Delete selected");
             Menu_Items.all(7) := New_Item("Close");
             Menu_Items.all(8) := Null_Item;
+         when BOOKMARKS_MENU =>
+            Show_Bookmarks_Menu;
          when others =>
             null;
       end case;
@@ -412,6 +415,9 @@ package body MainWindow is
                      else
                         return MESSAGE_FORM;
                      end if;
+                  else
+                     Draw_Menu(BOOKMARKS_MENU);
+                     return BOOKMARKS_MENU;
                   end if;
                when 3 =>
                   if NewAction in COPY | MOVE then

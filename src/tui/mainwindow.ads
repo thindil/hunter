@@ -77,11 +77,12 @@ package MainWindow is
    -- RENAME_FORM      - The rename directory or file form
    -- DESTINATION_VIEW - The destination directory for copying/moving items
    -- DESTINATION_PATH - The destination directory path buttons
+   -- BOOKMARKS_MENU   - The user's bookmarks menu
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
       CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
-      DESTINATION_PATH);
+      DESTINATION_PATH, BOOKMARKS_MENU);
    -- ****
 
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container
