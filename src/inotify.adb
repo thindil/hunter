@@ -56,6 +56,18 @@ package body Inotify is
    Watches: Watches_Container.Vector;
    -- ****
 
+   -- ****if* Inotify/Inotify.Get_Watches
+   -- FUNCTION
+   -- Get the list of currently active inotify watches
+   -- RESULT
+   -- The vector with list of current inotify active watches
+   -- SOURCE
+   function Get_Watches return Watches_Container.Vector is
+      -- ****
+   begin
+      return Watches;
+   end Get_Watches;
+
    -- ****it* Inotify/Inotify.Mask_Array
    -- FUNCTION
    -- Array of inotify events to catch
@@ -127,7 +139,7 @@ package body Inotify is
 
    procedure Inotify_Close is
    begin
-      Close(FD => Instance);
+      Close(FD => File_Descriptor(Get_Instance));
    end Inotify_Close;
 
    -- ****if* Inotify/Inotify.Create_Mask
@@ -179,23 +191,23 @@ package body Inotify is
 
    procedure Add_Watches(Path: String) is
       Directory: Dir_Type;
-      Last: Natural;
-      FileName: String(1 .. 1024);
+      Last: Natural := 0;
+      File_Name: String(1 .. 1024);
    begin
       Add_Watch(Path => Path);
       Open(Dir => Directory, Dir_Name => Path);
       Add_Watches_Loop :
       loop
-         Read(Dir => Directory, Str => FileName, Last => Last);
+         Read(Dir => Directory, Str => File_Name, Last => Last);
          exit Add_Watches_Loop when Last = 0;
-         if FileName(1 .. Last) in "." | ".." then
+         if File_Name(1 .. Last) in "." | ".." then
             goto End_Of_Loop;
          end if;
          if Is_Directory
-             (Name => Path & Directory_Separator & FileName(1 .. Last))
+             (Name => Path & Directory_Separator & File_Name(1 .. Last))
            and then Is_Read_Accessible_File
-             (Name => Path & Directory_Separator & FileName(1 .. Last)) then
-            Add_Watch(Path => Path & "/" & FileName(1 .. Last));
+             (Name => Path & Directory_Separator & File_Name(1 .. Last)) then
+            Add_Watch(Path => Path & "/" & File_Name(1 .. Last));
          end if;
          <<End_Of_Loop>>
       end loop Add_Watches_Loop;
@@ -205,7 +217,7 @@ package body Inotify is
    procedure Remove_Watches is
    begin
       Remove_Watches_Loop :
-      for Watch of Watches loop
+      for Watch of Get_Watches loop
          if Inotify_Rm_Watch_C(Fd => Get_Instance, Wd => Watch.Id) = -1 then
             null;
          end if;
@@ -223,7 +235,7 @@ package body Inotify is
    -- ****
    begin
       Remove_Watches_Loop :
-      for Watch of Watches loop
+      for Watch of Get_Watches loop
          if To_String(Source => Watch.Path) = Path then
             if Inotify_Rm_Watch_C(Fd => Get_Instance, Wd => Watch.Id) = -1 then
                null;
@@ -251,7 +263,7 @@ package body Inotify is
          Read_Event_Loop :
          loop
             Read_Watches_Loop :
-            for Watch of Watches loop
+            for Watch of Get_Watches loop
                if int(Character'Pos(Buffer(Start))) = Watch.Id then
                   Path := Watch.Path;
                   NameLength := Character'Pos(Buffer(Start + 12)) + 15 + Start;
