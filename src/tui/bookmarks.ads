@@ -32,6 +32,13 @@ package Bookmarks is
       Ada.Strings.Hash, "=");
    -- ****
 
+   -- ****f* BookmarksTUI/BookmarksTUI.Create_Bookmarks_List
+   -- FUNCTION
+   -- Create the user's bookmarks list
+   -- SOURCE
+   procedure Create_Bookmarks_List;
+   -- ****
+
    -- ****f* BookmarksTUI/BookmarksTUI.Show_Bookmarks_Menu
    -- FUNCTION
    -- Show the bookmarks menu to the user

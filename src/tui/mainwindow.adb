@@ -114,6 +114,7 @@ package body MainWindow is
       Refresh(MenuWindow);
       Refresh(ListWindow);
       CreateShowItemsUI;
+      Create_Bookmarks_List;
       if Ada.Directories.Exists(Directory) then
          CurrentDirectory := To_Unbounded_String(Directory);
       else
