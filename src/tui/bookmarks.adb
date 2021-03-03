@@ -68,7 +68,6 @@ package body Bookmarks is
       end GetXDGDirectory;
    begin
       if BookmarksList.Length = 0 then
-         BookmarksList.Include(Mc(Interpreter, "{Home}"), Value("HOME"));
          Set_XDGBookmarks_List_Loop :
          for I in XDGBookmarks'Range loop
             Path := GetXDGDirectory(To_String(XDGBookmarks(I)));
@@ -112,13 +111,16 @@ package body Bookmarks is
                Close(File);
             end;
          end if;
-         BookmarksList.Include(Mc(Interpreter, "{Enter destination}"), "");
       end if;
-      Menu_Items := new Item_Array(1 .. Positive(BookmarksList.Length) + 2);
+      Menu_Items := new Item_Array(1 .. Positive(BookmarksList.Length) + 4);
+      Menu_Items.all(MenuIndex) := New_Item(Mc(Interpreter, "{Home}"));
+      MenuIndex := MenuIndex + 1;
       for I in BookmarksList.Iterate loop
          Menu_Items.all(MenuIndex) := New_Item(Bookmarks_Container.Key(I));
          MenuIndex := MenuIndex + 1;
       end loop;
+      Menu_Items.all(MenuIndex) := New_Item("Enter destination");
+      MenuIndex := MenuIndex + 1;
       Menu_Items.all(MenuIndex) := New_Item("Close");
       MenuIndex := MenuIndex + 1;
       Menu_Items.all(MenuIndex) := Null_Item;
