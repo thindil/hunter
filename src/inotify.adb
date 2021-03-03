@@ -254,7 +254,10 @@ package body Inotify is
    begin
       Read_Events_Loop :
       loop
-         Length := Read(File_Descriptor(Get_Instance), Buffer'Address, 4096);
+         Length :=
+           Read
+             (FD => File_Descriptor(Get_Instance), A => Buffer'Address,
+              N => 4096);
          exit Read_Events_Loop when Length = -1;
          if Temporary_Stop then
             goto End_Of_Loop;
@@ -270,7 +273,7 @@ package body Inotify is
                   Target := Null_Unbounded_String;
                   for I in Start + 16 .. NameLength loop
                      exit Read_Watches_Loop when Character'Pos(Buffer(I)) = 0;
-                     Append(Target, Buffer(I));
+                     Append(Source => Target, New_Item => Buffer(I));
                   end loop;
                   exit Read_Watches_Loop;
                end if;
@@ -289,19 +292,25 @@ package body Inotify is
                end if;
             end loop Check_Added_Loop;
             if not Added then
-               Events_List.Append((Event, Target, Path));
+               Events_List.Append
+                 (New_Item =>
+                    (Event => Event, Target => Target, Path => Path));
             end if;
             if Event in ACCESSED | MOVED_TO
               and then Is_Directory
-                (To_String(Path & Directory_Separator & Target)) then
-               Add_Watch(To_String(Path & Directory_Separator & Target));
+                (To_String(Source => Path & Directory_Separator & Target)) then
+               Add_Watch
+                 (Path =>
+                    To_String(Source => Path & Directory_Separator & Target));
             end if;
             if Event in MODIFIED | MOVED_FROM
               and then Is_Directory
-                (To_String(Path & Directory_Separator & Target))
+                (To_String(Source => Path & Directory_Separator & Target))
               and then not Exists
-                (To_String(Path & Directory_Separator & Target)) then
-               RemoveWatch(To_String(Path & Directory_Separator & Target));
+                (To_String(Source => Path & Directory_Separator & Target)) then
+               RemoveWatch
+                 (Path =>
+                    To_String(Source => Path & Directory_Separator & Target));
             end if;
             exit Read_Event_Loop when NameLength >= Length;
             Start := NameLength + 1;
