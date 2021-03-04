@@ -192,7 +192,7 @@ package body Inotify is
    procedure Add_Watches(Path: String) is
       Directory: Dir_Type;
       Last: Natural := 0;
-      File_Name: String(1 .. 1024);
+      File_Name: String(1 .. 1024) := (others => ' ');
    begin
       Add_Watch(Path => Path);
       Open(Dir => Directory, Dir_Name => Path);
@@ -225,13 +225,13 @@ package body Inotify is
       Watches.Clear;
    end Remove_Watches;
 
-   -- ****if* Inotify/Inotify.RemoveWatch
+   -- ****if* Inotify/Inotify.Remove_Watch
    -- FUNCTION
    -- Remove selected watch
    -- PARAMETERS
    -- Path - Full path from which inotify watch will be removed
    -- SOURCE
-   procedure RemoveWatch(Path: String) is
+   procedure Remove_Watch(Path: String) is
    -- ****
    begin
       Remove_Watches_Loop :
@@ -243,14 +243,14 @@ package body Inotify is
             exit Remove_Watches_Loop;
          end if;
       end loop Remove_Watches_Loop;
-   end RemoveWatch;
+   end Remove_Watch;
 
    procedure Inotify_Read is
-      Buffer: array(1 .. 4096) of Character;
-      Length, NameLength, Start: Integer;
-      Path, Target: Unbounded_String;
-      Event: Inotify_Events;
-      Added: Boolean;
+      Buffer: array(1 .. 4096) of Character := (others => ' ');
+      Length, Name_Length, Start: Integer := 0;
+      Path, Target: Unbounded_String := Null_Unbounded_String;
+      Event: Inotify_Events := Accessed_Event;
+      Added: Boolean := False;
    begin
       Read_Events_Loop :
       loop
@@ -269,9 +269,10 @@ package body Inotify is
             for Watch of Get_Watches loop
                if int(Character'Pos(Buffer(Start))) = Watch.Id then
                   Path := Watch.Path;
-                  NameLength := Character'Pos(Buffer(Start + 12)) + 15 + Start;
+                  Name_Length :=
+                    Character'Pos(Buffer(Start + 12)) + 15 + Start;
                   Target := Null_Unbounded_String;
-                  for I in Start + 16 .. NameLength loop
+                  for I in Start + 16 .. Name_Length loop
                      exit Read_Watches_Loop when Character'Pos(Buffer(I)) = 0;
                      Append(Source => Target, New_Item => Buffer(I));
                   end loop;
@@ -298,22 +299,27 @@ package body Inotify is
             end if;
             if Event in ACCESSED | MOVED_TO
               and then Is_Directory
-                (To_String(Source => Path & Directory_Separator & Target)) then
+                (Name =>
+                   To_String
+                     (Source => Path & Directory_Separator & Target)) then
                Add_Watch
                  (Path =>
                     To_String(Source => Path & Directory_Separator & Target));
             end if;
             if Event in MODIFIED | MOVED_FROM
               and then Is_Directory
-                (To_String(Source => Path & Directory_Separator & Target))
+                (Name =>
+                   To_String(Source => Path & Directory_Separator & Target))
               and then not Exists
-                (To_String(Source => Path & Directory_Separator & Target)) then
-               RemoveWatch
+                (Name =>
+                   To_String
+                     (Source => Path & Directory_Separator & Target)) then
+               Remove_Watch
                  (Path =>
                     To_String(Source => Path & Directory_Separator & Target));
             end if;
-            exit Read_Event_Loop when NameLength >= Length;
-            Start := NameLength + 1;
+            exit Read_Event_Loop when Name_Length >= Length;
+            Start := Name_Length + 1;
          end loop Read_Event_Loop;
          <<End_Of_Loop>>
       end loop Read_Events_Loop;
