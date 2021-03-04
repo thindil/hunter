@@ -508,4 +508,31 @@ package body MainWindow is
       return ACTIONS_MENU;
    end Actions_Keys;
 
+   function Bookmarks_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result := Unknown_Request;
+      -- Bookmark: constant String := Name(Current(SubMenu));
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(SubMenu, M_Up_Item);
+         when 66 | KEY_DOWN =>
+            Result := Driver(SubMenu, M_Down_Item);
+         when 72 | Key_Home =>
+            Result := Driver(SubMenu, M_First_Item);
+         when 70 | Key_End =>
+            Result := Driver(SubMenu, M_Last_Item);
+         when 10 =>
+            Post(SubMenu, False);
+            Delete(SubMenu);
+            UpdateDirectoryList;
+            return DIRECTORY_VIEW;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(SubMenuWindow);
+      end if;
+      return BOOKMARKS_MENU;
+   end Bookmarks_Keys;
+
 end MainWindow;
