@@ -194,4 +194,15 @@ package MainWindow is
    function Actions_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* MainWindowTUI/MainWindowTUI.Bookmarks_Keys
+   -- FUNCTION
+   -- Handles keys events when the bookmarks menu is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Bookmarks_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
 end MainWindow;

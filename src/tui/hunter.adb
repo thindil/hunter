@@ -176,6 +176,8 @@ begin
                Destination_Keys(Key);
             when DESTINATION_PATH =>
                UILocation := Destination_Path_Keys(Key);
+            when BOOKMARKS_MENU =>
+               UILocation := Bookmarks_Keys(Key);
             when others =>
                null;
          end case;
