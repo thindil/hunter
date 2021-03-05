@@ -21,7 +21,9 @@ with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with MainWindow; use MainWindow;
+with LoadData.UI; use LoadData.UI;
+with Modules; use Modules;
+with RefreshData; use RefreshData;
 
 package body Bookmarks is
 
@@ -126,5 +128,22 @@ package body Bookmarks is
       Menu_Items.all(MenuIndex) := Null_Item;
       return Menu_Items;
    end Show_Bookmarks_Menu;
+
+   function Go_To_Bookmark(Bookmark: String) return UI_Locations is
+   begin
+      if Bookmark = "Cancel" then
+         return DIRECTORY_VIEW;
+      end if;
+      if BookmarksList.Contains(Bookmark) then
+         CurrentDirectory := To_Unbounded_String(BookmarksList(Bookmark));
+      elsif Bookmark = Mc(Interpreter, "{Home}") then
+         CurrentDirectory := To_Unbounded_String(Value("HOME"));
+      end if;
+      LoadDirectory(To_String(CurrentDirectory));
+      UpdateDirectoryList(True);
+      UpdateWatch(To_String(CurrentDirectory));
+      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+      return DIRECTORY_VIEW;
+   end Go_To_Bookmark;
 
 end Bookmarks;

@@ -17,6 +17,7 @@ with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Strings.Hash;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
+with MainWindow; use MainWindow;
 
 -- ****h* BookmarksTUI/BookmarksTUI
 -- FUNCTION
@@ -47,6 +48,17 @@ package Bookmarks is
    -- The list of bookmarks as menu options
    -- SOURCE
    function Show_Bookmarks_Menu return Item_Array_Access;
+   -- ****
+
+   -- ****f* BookmarksTUI/BookmarksTUI.Go_To_Bookmark
+   -- FUNCTION
+   -- Change currently viewed directory to the selected bookmark
+   -- PARAMETERS
+   -- Bookmark - The name of the bookmark to the which will be view switched
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Go_To_Bookmark(Bookmark: String) return UI_Locations;
    -- ****
 
 end Bookmarks;
