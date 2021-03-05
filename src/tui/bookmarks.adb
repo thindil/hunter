@@ -15,10 +15,13 @@
 
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData.UI; use LoadData.UI;
@@ -129,6 +132,62 @@ package body Bookmarks is
       return Menu_Items;
    end Show_Bookmarks_Menu;
 
+   DialogForm: Forms.Form;
+   FormWindow: Window;
+
+   -- ****if* BookmarksTUI/BookmarksTUI.ShowBookmarksForm
+   -- FUNCTION
+   -- Show dialog to enter the destination directory
+   -- SOURCE
+   procedure ShowBookmarksForm is
+      -- ****
+      Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
+      FormHeight: Line_Position;
+      FormLength: Column_Position;
+      Visibility: Cursor_Visibility := Normal;
+      FieldOptions: Field_Option_Set;
+      UnusedResult: Forms.Driver_Result := Unknown_Request;
+   begin
+      Set_Cursor_Visibility(Visibility);
+      Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
+      Set_Buffer(Create_Fields.all(1), 0, "Enter the destination directory:");
+      FieldOptions := Get_Options(Create_Fields.all(1));
+      FieldOptions.Active := False;
+      Set_Options(Create_Fields.all(1), FieldOptions);
+      Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
+      Set_Buffer(Create_Fields.all(2), 0, To_String(CurrentDirectory));
+      FieldOptions := Get_Options(Create_Fields.all(2));
+      FieldOptions.Auto_Skip := False;
+      Set_Options(Create_Fields.all(2), FieldOptions);
+      Create_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
+      Set_Buffer(Create_Fields.all(3), 0, "[Cancel]");
+      FieldOptions := Get_Options(Create_Fields.all(3));
+      FieldOptions.Edit := False;
+      Set_Options(Create_Fields.all(3), FieldOptions);
+      Create_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
+      FieldOptions := Get_Options(Create_Fields.all(4));
+      FieldOptions.Edit := False;
+      Set_Options(Create_Fields.all(4), FieldOptions);
+      Set_Buffer(Create_Fields.all(4), 0, "[Create]");
+      Create_Fields.all(5) := Null_Field;
+      DialogForm := New_Form(Create_Fields);
+      Set_Current(DialogForm, Create_Fields(2));
+      Set_Options(DialogForm, (others => False));
+      Scale(DialogForm, FormHeight, FormLength);
+      FormWindow :=
+        Create
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
+           ((Columns / 2) - (FormLength / 2)));
+      Box(FormWindow, Default_Character, Default_Character);
+      Set_Window(DialogForm, FormWindow);
+      Set_Sub_Window
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+      Post(DialogForm);
+      UnusedResult := Driver(DialogForm, REQ_END_LINE);
+      Refresh;
+      Refresh(FormWindow);
+   end ShowBookmarksForm;
+
    function Go_To_Bookmark(Bookmark: String) return UI_Locations is
    begin
       if Bookmark = "Cancel" then
@@ -138,6 +197,9 @@ package body Bookmarks is
          CurrentDirectory := To_Unbounded_String(BookmarksList(Bookmark));
       elsif Bookmark = Mc(Interpreter, "{Home}") then
          CurrentDirectory := To_Unbounded_String(Value("HOME"));
+      else
+         ShowBookmarksForm;
+         return BOOKMARKS_FORM;
       end if;
       LoadDirectory(To_String(CurrentDirectory));
       UpdateDirectoryList(True);
@@ -145,5 +207,47 @@ package body Bookmarks is
       Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
       return DIRECTORY_VIEW;
    end Go_To_Bookmark;
+
+   function Bookmarks_Form_Keys(Key: Key_Code) return UI_Locations is
+      Result: Forms.Driver_Result := Unknown_Request;
+      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      Visibility: Cursor_Visibility := Invisible;
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(DialogForm, F_Previous_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when 66 | KEY_DOWN =>
+            Result := Driver(DialogForm, F_Next_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when 127 =>
+            Result := Driver(DialogForm, F_Delete_Previous);
+         when 10 =>
+            if FieldIndex = 4 then
+               CurrentDirectory :=
+                 To_Unbounded_String
+                   (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+               LoadDirectory(To_String(CurrentDirectory));
+               UpdateWatch(To_String(CurrentDirectory));
+               Execute_Modules
+                 (On_Enter, "{" & To_String(CurrentDirectory) & "}");
+            end if;
+            if FieldIndex /= 2 then
+               Set_Cursor_Visibility(Visibility);
+               Post(DialogForm, False);
+               Delete(DialogForm);
+               UpdateDirectoryList(True);
+               return DIRECTORY_VIEW;
+            end if;
+         when others =>
+            if Key /= 91 then
+               Result := Driver(DialogForm, Key);
+            end if;
+      end case;
+      if Result = Form_Ok then
+         Refresh(FormWindow);
+      end if;
+      return CREATE_FORM;
+   end Bookmarks_Form_Keys;
 
 end Bookmarks;

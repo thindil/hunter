@@ -26,6 +26,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Bookmarks; use Bookmarks;
 with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
 with Inotify; use Inotify;
@@ -178,6 +179,8 @@ begin
                UILocation := Destination_Path_Keys(Key);
             when BOOKMARKS_MENU =>
                UILocation := Bookmarks_Keys(Key);
+            when BOOKMARKS_FORM =>
+               UILocation := Bookmarks_Form_Keys(Key);
             when others =>
                null;
          end case;

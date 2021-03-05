@@ -78,11 +78,12 @@ package MainWindow is
    -- DESTINATION_VIEW - The destination directory for copying/moving items
    -- DESTINATION_PATH - The destination directory path buttons
    -- BOOKMARKS_MENU   - The user's bookmarks menu
+   -- BOOKMARKS_FORM   - The enter desitnation directory form
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
       CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
-      DESTINATION_PATH, BOOKMARKS_MENU);
+      DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM);
    -- ****
 
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container
