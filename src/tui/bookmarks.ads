@@ -61,4 +61,16 @@ package Bookmarks is
    function Go_To_Bookmark(Bookmark: String) return UI_Locations;
    -- ****
 
+   -- ****f* BookmarksTUI/BookmarksTUI.Bookmarks_Form_Keys
+   -- FUNCTION
+   -- Handles keys events when the enter destination form is active element of
+   -- UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Bookmarks_Form_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
 end Bookmarks;
