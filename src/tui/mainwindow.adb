@@ -510,7 +510,7 @@ package body MainWindow is
 
    function Bookmarks_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
-      -- Bookmark: constant String := Name(Current(SubMenu));
+      Bookmark: constant String := Name(Current(SubMenu));
    begin
       case Key is
          when 65 | KEY_UP =>
@@ -524,8 +524,7 @@ package body MainWindow is
          when 10 =>
             Post(SubMenu, False);
             Delete(SubMenu);
-            UpdateDirectoryList;
-            return DIRECTORY_VIEW;
+            return Go_To_Bookmark(Bookmark);
          when others =>
             null;
       end case;
