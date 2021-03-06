@@ -57,12 +57,14 @@ package body Inotify is
       Element_Type => Watch_Data);
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****iv* Inotify/Inotify.Watches
    -- FUNCTION
    -- Stores information about all active inotify watches
    -- SOURCE
    Watches: Watches_Container.Vector;
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
    -- ****if* Inotify/Inotify.Watches_List
    -- FUNCTION
