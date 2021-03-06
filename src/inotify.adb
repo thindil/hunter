@@ -41,6 +41,14 @@ package body Inotify is
    end record;
    -- ****
 
+   -- ****id* Inotify/Empty_Watch
+   -- FUNCTION
+   -- Empty inotify watch data
+   -- SOURCE
+   Empty_Watch: constant Watch_Data :=
+     (Id => 0, Path => Null_Unbounded_String);
+   -- ****
+
    -- ****it* Inotify/Inotify.Watches_Container
    -- FUNCTION
    -- Used to store information about inotify watches
@@ -56,17 +64,36 @@ package body Inotify is
    Watches: Watches_Container.Vector;
    -- ****
 
-   -- ****if* Inotify/Inotify.Get_Watches
+   -- ****if* Inotify/Inotify.Watches_List
    -- FUNCTION
-   -- Get the list of currently active inotify watches
+   -- Manipulate the list of currently active inotify watches
+   -- PARAMETERS
+   -- New_Watch - A new inotify watch to add to the list. Can be empty.
+   --             Default value is Empty_Watch
+   -- Clear     - If true, clear the list
    -- RESULT
    -- The vector with list of current inotify active watches
    -- SOURCE
-   function Get_Watches return Watches_Container.Vector is
+   function Watches_List
+     (New_Watch: Watch_Data := Empty_Watch; Clear: Boolean := False)
+      return Watches_Container.Vector is
       -- ****
    begin
+      if New_Watch /= Empty_Watch then
+         Watches.Append(New_Item => New_Watch);
+      end if;
+      if Clear then
+         Watches.Clear;
+      end if;
       return Watches;
-   end Get_Watches;
+   end Watches_List;
+
+   -- ****ie* Inotify/Inotify_Error
+   -- FUNCTION
+   -- Exception raised by problems during manipulating watches list
+   -- SOURCE
+   Inotify_Error: exception;
+   -- ****
 
    -- ****it* Inotify/Inotify.Mask_Array
    -- FUNCTION
@@ -146,15 +173,20 @@ package body Inotify is
           (Events =>
              (1 => METADATA, 2 => MOVED_FROM, 3 => MOVED_TO, 4 => DELETED,
               5 => CREATED));
+      Amount: constant Natural := Natural(Watches_List.Length);
    begin
       Watch :=
         Inotify_Add_Watch_C
           (Fd => Get_Instance, Pathname => New_String(Str => Path),
            Mask => Mask);
-      if Watch > 0 then
-         Watches.Append
-           (New_Item =>
-              (Id => Watch, Path => To_Unbounded_String(Source => Path)));
+      if Watch > 0
+        and then Amount =
+          Natural
+            (Watches_List
+               (New_Watch =>
+                  (Id => Watch, Path => To_Unbounded_String(Source => Path)))
+               .Length) then
+         raise Inotify_Error with "Can't add a new watch";
       end if;
    end Add_Watch;
 
@@ -186,12 +218,14 @@ package body Inotify is
    procedure Remove_Watches is
    begin
       Remove_Watches_Loop :
-      for Watch of Get_Watches loop
+      for Watch of Watches_List loop
          if Inotify_Rm_Watch_C(Fd => Get_Instance, Wd => Watch.Id) = -1 then
             null;
          end if;
       end loop Remove_Watches_Loop;
-      Watches.Clear;
+      if Watches_List(Clear => True).Length > 0 then
+         raise Inotify_Error with "Can't clear watches list";
+      end if;
    end Remove_Watches;
 
    procedure Inotify_Read is
@@ -203,7 +237,7 @@ package body Inotify is
       procedure Remove_Watch(Path: String) is
       begin
          Remove_Watches_Loop :
-         for Watch of Get_Watches loop
+         for Watch of Watches_List loop
             if To_String(Source => Watch.Path) = Path then
                if Inotify_Rm_Watch_C(Fd => Get_Instance, Wd => Watch.Id) =
                  -1 then
@@ -228,7 +262,7 @@ package body Inotify is
          Read_Event_Loop :
          loop
             Read_Watches_Loop :
-            for Watch of Get_Watches loop
+            for Watch of Watches_List loop
                if int(Character'Pos(Buffer(Start))) = Watch.Id then
                   Path := Watch.Path;
                   Name_Length :=
