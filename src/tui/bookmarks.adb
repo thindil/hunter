@@ -164,11 +164,11 @@ package body Bookmarks is
       FieldOptions := Get_Options(Create_Fields.all(3));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(3), FieldOptions);
-      Create_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
+      Create_Fields.all(4) := New_Field(1, 7, 2, 23, 0, 0);
       FieldOptions := Get_Options(Create_Fields.all(4));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(4), FieldOptions);
-      Set_Buffer(Create_Fields.all(4), 0, "[Create]");
+      Set_Buffer(Create_Fields.all(4), 0, "[Enter]");
       Create_Fields.all(5) := Null_Field;
       DialogForm := New_Form(Create_Fields);
       Set_Current(DialogForm, Create_Fields(2));
@@ -247,7 +247,7 @@ package body Bookmarks is
       if Result = Form_Ok then
          Refresh(FormWindow);
       end if;
-      return CREATE_FORM;
+      return BOOKMARKS_FORM;
    end Bookmarks_Form_Keys;
 
 end Bookmarks;
