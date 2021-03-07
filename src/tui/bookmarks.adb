@@ -25,6 +25,7 @@ with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData.UI; use LoadData.UI;
+with Messages; use Messages;
 with Modules; use Modules;
 with RefreshData; use RefreshData;
 
@@ -224,6 +225,14 @@ package body Bookmarks is
             Result := Driver(DialogForm, F_Delete_Previous);
          when 10 =>
             if FieldIndex = 4 then
+               if not Ada.Directories.Exists
+                   (Trim(Get_Buffer(Fields(DialogForm, 2)), Both)) then
+                  ShowMessage
+                    (Mc(Interpreter, "{Directory}") & " " &
+                     Trim(Get_Buffer(Fields(DialogForm, 2)), Both) &
+                     " doesn't exists.");
+                  return MESSAGE_FORM;
+               end if;
                CurrentDirectory :=
                  To_Unbounded_String
                    (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
