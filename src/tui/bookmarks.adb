@@ -191,7 +191,8 @@ package body Bookmarks is
 
    function Go_To_Bookmark(Bookmark: String) return UI_Locations is
    begin
-      if Bookmark = "Cancel" then
+      if Bookmark = "Close" then
+         UpdateDirectoryList;
          return DIRECTORY_VIEW;
       end if;
       if BookmarksList.Contains(Bookmark) then
