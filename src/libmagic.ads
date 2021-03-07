@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,14 +20,14 @@
 package LibMagic is
 -- ****
 
-   -- ****f* LibMagic/LibMagic.MagicOpen
+   -- ****f* LibMagic/LibMagic.Magic_Open
    -- FUNCTION
    -- Initialize magic data
    -- SOURCE
-   procedure MagicOpen;
+   procedure Magic_Open;
    -- ****
 
-   -- ****f* LibMagic/LibMagic.MagicFile
+   -- ****f* LibMagic/LibMagic.Magic_File
    -- FUNCTION
    -- Get mime type of selected file if libmagic is not initialized, it
    -- fallback to the xdg-mime program.
@@ -37,14 +37,14 @@ package LibMagic is
    -- MIME type of selected file or "unknown" if libmagic is not initialized
    -- and xdg-mime program don't exists.
    -- SOURCE
-   function MagicFile(Name: String) return String;
+   function Magic_File(Name: String) return String;
    -- ****
 
-   -- ****f* LibMagic/LibMagic.MagicClose
+   -- ****f* LibMagic/LibMagic.Magic_Close
    -- FUNCTION
    -- Close and release all magic data
    -- SOURCE
-   procedure MagicClose;
+   procedure Magic_Close;
    -- ****
 
 end LibMagic;

@@ -166,7 +166,7 @@ package body MainWindow.Commands is
          end if;
       end if;
       Inotify_Close;
-      MagicClose;
+      Magic_Close;
    end Quit_Command;
 
    -- ****o* MCommands/MCommands.Hide_Widget_Command

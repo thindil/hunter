@@ -107,7 +107,7 @@ package body LibMagic is
       External_Name => "magic_file";
       -- ****
 
-   procedure MagicOpen is
+   procedure Magic_Open is
    begin
       MagicData := magic_open(16#0000010#);
       if magic_load
@@ -116,9 +116,9 @@ package body LibMagic is
         -1 then
          Initialized := True;
       end if;
-   end MagicOpen;
+   end Magic_Open;
 
-   function MagicFile(Name: String) return String is
+   function Magic_File(Name: String) return String is
    begin
       if Initialized then
          return Value(magic_file(MagicData, New_String(Name)));
@@ -147,13 +147,13 @@ package body LibMagic is
                return "unknown";
          end;
       end if;
-   end MagicFile;
+   end Magic_File;
 
-   procedure MagicClose is
+   procedure Magic_Close is
    begin
       if Initialized then
          magic_close(MagicData);
       end if;
-   end MagicClose;
+   end Magic_Close;
 
 end LibMagic;
