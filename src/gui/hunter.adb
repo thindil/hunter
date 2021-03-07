@@ -43,7 +43,7 @@ begin
    Create_Path
      (New_Directory => Value(Name => "HOME") & "/.local/share/hunter/modules");
    -- Start libmagic data
-   MagicOpen;
+   Magic_Open;
    -- Start inotify
    Inotify_Init;
    -- Start Tcl/Tk

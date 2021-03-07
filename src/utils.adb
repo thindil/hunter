@@ -21,7 +21,7 @@ package body Utils is
 
    function GetMimeType(FileName: String) return String is
    begin
-      return MagicFile(FileName);
+      return Magic_File(FileName);
    end GetMimeType;
 
    function CanBeOpened(MimeType: String) return Boolean is

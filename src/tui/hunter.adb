@@ -62,7 +62,7 @@ procedure Hunter is
       end if;
       End_Windows;
       Inotify_Close;
-      MagicClose;
+      Magic_Close;
    end ExitFromProgram;
 begin
    -- Create needed directories
@@ -71,7 +71,7 @@ begin
      (Ada.Environment_Variables.Value("HOME") &
       "/.local/share/hunter/modules");
    -- Start libmagic data
-   MagicOpen;
+   Magic_Open;
    -- Start inotify
    Inotify_Init;
    -- Start Tcl/Tk
