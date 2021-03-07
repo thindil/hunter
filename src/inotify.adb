@@ -13,10 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Interfaces.C; use Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with Interfaces.C.Strings;
+with GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 
 package body Inotify is
@@ -97,13 +97,6 @@ package body Inotify is
    Inotify_Error: exception;
    -- ****
 
-   -- ****it* Inotify/Inotify.Mask_Array
-   -- FUNCTION
-   -- Array of inotify events to catch
-   -- SOURCE
-   type Mask_Array is array(Positive range <>) of Inotify_Events;
-   -- ****
-
    -- ****if* Inotify/Inotify.Get_Instance
    -- FUNCTION
    -- Get the current instance of inotify converted to C int type
@@ -153,6 +146,9 @@ package body Inotify is
    -- SOURCE
    procedure Add_Watch(Path: String) is
       -- ****
+      use Interfaces.C.Strings;
+
+      type Mask_Array is array(Positive range <>) of Inotify_Events;
       function Create_Mask(Events: Mask_Array) return int is
          type Unsigned_Integer is mod 2**Integer'Size;
          Initial_Value: constant Unsigned_Integer := 0;
@@ -193,6 +189,8 @@ package body Inotify is
    end Add_Watch;
 
    procedure Add_Watches(Path: String) is
+      use GNAT.Directory_Operations;
+
       Directory: Dir_Type;
       Last: Natural := 0;
       File_Name: String(1 .. 1024) := (others => ' ');
@@ -231,16 +229,18 @@ package body Inotify is
    end Remove_Watches;
 
    procedure Inotify_Read is
+      use Ada.Directories;
+
       Buffer: array(1 .. 4096) of Character := (others => ' ');
       Length, Name_Length, Start: Integer := 0;
       Path, Target: Unbounded_String := Null_Unbounded_String;
       Event: Inotify_Events := Accessed_Event;
       Added: Boolean := False;
-      procedure Remove_Watch(Path: String) is
+      procedure Remove_Watch(Watch_Path: String) is
       begin
          Remove_Watches_Loop :
          for Watch of Watches_List loop
-            if To_String(Source => Watch.Path) = Path then
+            if To_String(Source => Watch.Path) = Watch_Path then
                if Inotify_Rm_Watch_C(Fd => Get_Instance, Wd => Watch.Id) =
                  -1 then
                   null;
@@ -270,10 +270,13 @@ package body Inotify is
                   Name_Length :=
                     Character'Pos(Buffer(Start + 12)) + 15 + Start;
                   Target := Null_Unbounded_String;
+                  --## rule off SIMPLIFIABLE_STATEMENTS
+                  Read_Buffer_Loop :
                   for I in Start + 16 .. Name_Length loop
                      exit Read_Watches_Loop when Character'Pos(Buffer(I)) = 0;
                      Append(Source => Target, New_Item => Buffer(I));
-                  end loop;
+                  end loop Read_Buffer_Loop;
+                  --## rule on SIMPLIFIABLE_STATEMENTS
                   exit Read_Watches_Loop;
                end if;
             end loop Read_Watches_Loop;
@@ -313,7 +316,7 @@ package body Inotify is
                    To_String
                      (Source => Path & Directory_Separator & Target)) then
                Remove_Watch
-                 (Path =>
+                 (Watch_Path =>
                     To_String(Source => Path & Directory_Separator & Target));
             end if;
             exit Read_Event_Loop when Name_Length >= Length;
