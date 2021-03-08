@@ -148,35 +148,28 @@ package body Inotify is
       -- ****
       use Interfaces.C.Strings;
 
-      type Mask_Array is array(Positive range <>) of Inotify_Events;
-      function Create_Mask(Events: Mask_Array) return int is
-         type Unsigned_Integer is mod 2**Integer'Size;
-         Initial_Value: constant Unsigned_Integer := 0;
-         Mask: Unsigned_Integer := Initial_Value;
-      begin
-         Create_Mask_Loop :
-         for Event_Mask of Events loop
-            Mask := Mask or Inotify_Events'Enum_Rep(Event_Mask);
-         end loop Create_Mask_Loop;
-         return int(Mask);
-      end Create_Mask;
+      type Unsigned_Integer is mod 2**Integer'Size;
+      Initial_Value: constant Unsigned_Integer := 0;
+      Mask: Unsigned_Integer := Initial_Value;
+      Default_Masks: constant array(1 .. 5) of Inotify_Events :=
+        (1 => METADATA, 2 => MOVED_FROM, 3 => MOVED_TO, 4 => DELETED,
+         5 => CREATED);
+      Watch: int;
+      Amount: constant Natural := Natural(Watches_List.Length);
       function Inotify_Add_Watch_C
         (Fd: int; Pathname: chars_ptr; Mask: int) return int with
          Import => True,
          Convention => C,
          External_Name => "inotify_add_watch";
-      Watch: int;
-      Mask: constant int :=
-        Create_Mask
-          (Events =>
-             (1 => METADATA, 2 => MOVED_FROM, 3 => MOVED_TO, 4 => DELETED,
-              5 => CREATED));
-      Amount: constant Natural := Natural(Watches_List.Length);
    begin
+      Create_Mask_Loop :
+      for Event_Mask of Default_Masks loop
+         Mask := Mask or Inotify_Events'Enum_Rep(Event_Mask);
+      end loop Create_Mask_Loop;
       Watch :=
         Inotify_Add_Watch_C
           (Fd => Get_Instance, Pathname => New_String(Str => Path),
-           Mask => Mask);
+           Mask => int(Mask));
       if Watch > 0
         and then Amount =
           Natural
