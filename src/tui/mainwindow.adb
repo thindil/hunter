@@ -48,7 +48,7 @@ package body MainWindow is
    begin
       Terminal_Interface.Curses.Clear(MenuWindow);
       case NewAction is
-         when COPY | MOVE =>
+         when COPY | MOVE | CREATELINK =>
             declare
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 4);
@@ -56,7 +56,8 @@ package body MainWindow is
                Menu_Items.all(1) := New_Item("Quit");
                Menu_Items.all(2) :=
                  (if NewAction = COPY then New_Item("Copy selected")
-                  else New_Item("Move selected"));
+                  elsif NewAction = MOVE then New_Item("Move selected")
+                  else New_Item("Create link"));
                Menu_Items.all(3) := New_Item("Cancel");
                Menu_Items.all(4) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
@@ -324,15 +325,16 @@ package body MainWindow is
    begin
       case Menu_Type is
          when ACTIONS_MENU =>
-            Menu_Items := new Item_Array(1 .. 8);
+            Menu_Items := new Item_Array(1 .. 9);
             Menu_Items.all(1) := New_Item("Create new directory");
             Menu_Items.all(2) := New_Item("Create new file");
-            Menu_Items.all(3) := New_Item("Rename selected");
-            Menu_Items.all(4) := New_Item("Start copying");
-            Menu_Items.all(5) := New_Item("Start moving");
-            Menu_Items.all(6) := New_Item("Delete selected");
-            Menu_Items.all(7) := New_Item("Close");
-            Menu_Items.all(8) := Null_Item;
+            Menu_Items.all(3) := New_Item("Create new link");
+            Menu_Items.all(4) := New_Item("Rename selected");
+            Menu_Items.all(5) := New_Item("Start copying");
+            Menu_Items.all(6) := New_Item("Start moving");
+            Menu_Items.all(7) := New_Item("Delete selected");
+            Menu_Items.all(8) := New_Item("Close");
+            Menu_Items.all(9) := Null_Item;
          when BOOKMARKS_MENU =>
             Menu_Items := Show_Bookmarks_Menu;
          when others =>
@@ -421,7 +423,7 @@ package body MainWindow is
                      return BOOKMARKS_MENU;
                   end if;
                when 3 =>
-                  if NewAction in COPY | MOVE then
+                  if NewAction in COPY | MOVE | CREATELINK then
                      NewAction := CREATEFILE;
                      UpdateDirectoryList;
                      CreateProgramMenu;
@@ -470,10 +472,18 @@ package body MainWindow is
                   ShowCreateForm("file");
                   return CREATE_FORM;
                when 3 =>
+                  NewAction := CREATELINK;
+                  CreateProgramMenu;
+                  Refresh(MenuWindow);
+                  DestinationDirectory := CurrentDirectory;
+                  SecondItemsList := ItemsList;
+                  ShowDestination;
+                  return DESTINATION_VIEW;
+               when 4 =>
                   NewAction := RENAME;
                   ShowRenameForm;
                   return RENAME_FORM;
-               when 4 =>
+               when 5 =>
                   NewAction := COPY;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
@@ -481,7 +491,7 @@ package body MainWindow is
                   SecondItemsList := ItemsList;
                   ShowDestination;
                   return DESTINATION_VIEW;
-               when 5 =>
+               when 6 =>
                   NewAction := MOVE;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
@@ -489,12 +499,12 @@ package body MainWindow is
                   SecondItemsList := ItemsList;
                   ShowDestination;
                   return DESTINATION_VIEW;
-               when 6 =>
+               when 7 =>
                   NewAction :=
                     (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
                   ShowDeleteForm;
                   return DELETE_FORM;
-               when 7 =>
+               when 8 =>
                   return DIRECTORY_VIEW;
                when others =>
                   return ACTIONS_MENU;
