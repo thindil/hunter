@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -23,25 +23,25 @@ with Utils.UI; use Utils.UI;
 
 package body LibMagic is
 
-   -- ****it* LibMagic/LibMagic.magic_set
+   -- ****it* LibMagic/LibMagic.Magic_Set
    -- FUNCTION
    -- Used to store Magic data
    -- SOURCE
-   type magic_set is null record;
+   type Magic_Set is null record;
    -- ****
 
-   -- ****it* LibMagic/LibMagic.magic_t
+   -- ****it* LibMagic/LibMagic.Magic_T
    -- FUNCTION
    -- Used as pointer to the Magic data
    -- SOURCE
-   type magic_t is access all magic_set;
+   type Magic_T is access all Magic_Set;
    -- ****
 
-   -- ****iv* LibMagic/LibMagic.MagicData
+   -- ****iv* LibMagic/LibMagic.Magic_Data
    -- FUNCTION
    -- Pointer to the Magic data
    -- SOURCE
-   MagicData: magic_t;
+   Magic_Data: Magic_T;
    -- ****
 
    -- ****iv* LibMagic/LibMagic.Initialized
@@ -51,57 +51,57 @@ package body LibMagic is
    Initialized: Boolean := False;
    -- ****
 
-   -- ****if* LibMagic/LibMagic.magic_open
+   -- ****if* LibMagic/LibMagic.Magic_Open_C
    -- FUNCTION
    -- Binding to the C function
    -- PARAMETERS
-   -- arg1 - Type of data to retrieve
+   -- Arg1 - Type of data to retrieve
    -- RESULT
    -- New pointer to the magic data
    -- SOURCE
-   function magic_open(arg1: int) return magic_t with
+   function Magic_Open_C(Arg1: int) return Magic_T with
       Import => True,
       Convention => C,
       External_Name => "magic_open";
       -- ****
 
-      -- ****if* LibMagic/LibMagic.magic_load
+      -- ****if* LibMagic/LibMagic.Magic_Load_C
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
-      -- arg1 - Pointer to the Magic data
-      -- arg2 - unused, set to Null_Ptr
+      -- Arg1 - Pointer to the Magic data
+      -- Arg2 - unused, set to Null_Ptr
       -- RESULT
       -- 0 if data was loaded
       -- SOURCE
-   function magic_load(arg1: magic_t; arg2: chars_ptr) return int with
+   function Magic_Load_C(Arg1: Magic_T; Arg2: chars_ptr) return int with
       Import => True,
       Convention => C,
       External_Name => "magic_load";
       -- ****
 
-      -- ****if* LibMagic/LibMagic.magic_close
+      -- ****if* LibMagic/LibMagic.Magic_Close_C
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
-      -- arg1 -  Pointer to the Magic data
+      -- Arg1 -  Pointer to the Magic data
       -- SOURCE
-   procedure magic_close(arg1: magic_t) with
+   procedure Magic_Close_C(Arg1: Magic_T) with
       Import => True,
       Convention => C,
       External_Name => "magic_close";
       -- ****
 
-      -- ****if* LibMagic/LibMagic.magic_file
+      -- ****if* LibMagic/LibMagic.Magic_File_C
       -- FUNCTION
       -- Binding to the C function
       -- PARAMETERS
-      -- arg1 - Pointer to the Magic data
-      -- arg2 - Full path the the file which will be checked
+      -- Arg1 - Pointer to the Magic data
+      -- Arg2 - Full path the the file which will be checked
       -- RESULT
       -- MIME Type of selected file
       -- SOURCE
-   function magic_file(arg1: magic_t; arg2: chars_ptr) return chars_ptr with
+   function Magic_File_C(Arg1: Magic_T; Arg2: chars_ptr) return chars_ptr with
       Import => True,
       Convention => C,
       External_Name => "magic_file";
@@ -109,9 +109,9 @@ package body LibMagic is
 
    procedure Magic_Open is
    begin
-      MagicData := magic_open(16#0000010#);
-      if magic_load
-          (MagicData,
+      Magic_Data := Magic_Open_C(16#0000010#);
+      if Magic_Load_C
+          (Magic_Data,
            New_String(Value("APPDIR", "") & "/usr/share/file/magic")) /=
         -1 then
          Initialized := True;
@@ -121,7 +121,7 @@ package body LibMagic is
    function Magic_File(Name: String) return String is
    begin
       if Initialized then
-         return Value(magic_file(MagicData, New_String(Name)));
+         return Value(Magic_File_C(Magic_Data, New_String(Name)));
       else
          declare
             ProcessDesc: Process_Descriptor;
@@ -152,7 +152,7 @@ package body LibMagic is
    procedure Magic_Close is
    begin
       if Initialized then
-         magic_close(MagicData);
+         Magic_Close_C(Magic_Data);
       end if;
    end Magic_Close;
 
