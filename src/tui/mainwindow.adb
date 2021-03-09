@@ -418,6 +418,9 @@ package body MainWindow is
                      else
                         return MESSAGE_FORM;
                      end if;
+                  elsif NewAction = CREATELINK then
+                     Show_Create_Link_Form;
+                     return CREATELINK_FORM;
                   else
                      Draw_Menu(BOOKMARKS_MENU);
                      return BOOKMARKS_MENU;

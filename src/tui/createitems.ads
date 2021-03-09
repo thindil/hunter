@@ -51,4 +51,11 @@ package CreateItems is
    function Create_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* CreateItemsTUI/CreateItemsTUI.Show_Create_Link_Form
+   -- FUNCTION
+   -- Show dialog to set name for newly created link
+   -- SOURCE
+   procedure Show_Create_Link_Form;
+   -- ****
+
 end CreateItems;

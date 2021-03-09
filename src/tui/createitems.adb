@@ -235,4 +235,53 @@ package body CreateItems is
       return CREATE_FORM;
    end Create_Keys;
 
+   procedure Show_Create_Link_Form is
+      Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
+      FormHeight: Line_Position;
+      FormLength: Column_Position;
+      Visibility: Cursor_Visibility := Normal;
+      FieldOptions: Field_Option_Set;
+      UnusedResult: Forms.Driver_Result := Unknown_Request;
+   begin
+      Set_Cursor_Visibility(Visibility);
+      Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
+      Set_Buffer(Create_Fields.all(1), 0, "Enter a new name for link:");
+      FieldOptions := Get_Options(Create_Fields.all(1));
+      FieldOptions.Active := False;
+      Set_Options(Create_Fields.all(1), FieldOptions);
+      Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
+      Set_Buffer
+        (Create_Fields.all(2), 0, Simple_Name(To_String(CurrentSelected)));
+      FieldOptions := Get_Options(Create_Fields.all(2));
+      FieldOptions.Auto_Skip := False;
+      Set_Options(Create_Fields.all(2), FieldOptions);
+      Create_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
+      Set_Buffer(Create_Fields.all(3), 0, "[Cancel]");
+      FieldOptions := Get_Options(Create_Fields.all(3));
+      FieldOptions.Edit := False;
+      Set_Options(Create_Fields.all(3), FieldOptions);
+      Create_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
+      FieldOptions := Get_Options(Create_Fields.all(4));
+      FieldOptions.Edit := False;
+      Set_Options(Create_Fields.all(4), FieldOptions);
+      Set_Buffer(Create_Fields.all(4), 0, "[Create]");
+      Create_Fields.all(5) := Null_Field;
+      DialogForm := New_Form(Create_Fields);
+      Set_Current(DialogForm, Create_Fields(2));
+      Set_Options(DialogForm, (others => False));
+      Scale(DialogForm, FormHeight, FormLength);
+      FormWindow :=
+        Create
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
+           ((Columns / 2) - (FormLength / 2)));
+      Box(FormWindow, Default_Character, Default_Character);
+      Set_Window(DialogForm, FormWindow);
+      Set_Sub_Window
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+      Post(DialogForm);
+      UnusedResult := Driver(DialogForm, REQ_END_LINE);
+      Refresh;
+      Refresh(FormWindow);
+   end Show_Create_Link_Form;
+
 end CreateItems;
