@@ -109,10 +109,14 @@ package body LibMagic is
 
    procedure Magic_Open is
    begin
-      Magic_Data := Magic_Open_C(16#0000010#);
+      Magic_Data := Magic_Open_C(Arg1 => 16#0000010#);
       if Magic_Load_C
-          (Magic_Data,
-           New_String(Value("APPDIR", "") & "/usr/share/file/magic")) /=
+          (Arg1 => Magic_Data,
+           Arg2 =>
+             New_String
+               (Str =>
+                  Value(Name => "APPDIR", Default => "") &
+                  "/usr/share/file/magic")) /=
         -1 then
          Initialized := True;
       end if;
@@ -121,32 +125,36 @@ package body LibMagic is
    function Magic_File(Name: String) return String is
    begin
       if Initialized then
-         return Value(Magic_File_C(Magic_Data, New_String(Name)));
-      else
-         declare
-            ProcessDesc: Process_Descriptor;
-            Result: Expect_Match;
-            ExecutableName: constant String := FindExecutable("xdg-mime");
-            MimeType: Unbounded_String;
-         begin
-            if ExecutableName = "" then
-               return "unknown";
-            end if;
-            Non_Blocking_Spawn
-              (ProcessDesc, ExecutableName,
-               Argument_String_To_List("query filetype " & Name).all);
-            Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
-            MimeType :=
-              (if Result = 1 then
-                 To_Unbounded_String(Expect_Out_Match(ProcessDesc))
-               else To_Unbounded_String("unknown"));
-            Close(ProcessDesc);
-            return To_String(MimeType);
-         exception
-            when Process_Died =>
-               return "unknown";
-         end;
+         return Value
+             (Item =>
+                Magic_File_C
+                  (Arg1 => Magic_Data, Arg2 => New_String(Str => Name)));
       end if;
+      Get_Mime_Type_Block :
+      declare
+         Process_Desc: Process_Descriptor;
+         Result: Expect_Match;
+         Executable_Name: constant String :=
+           FindExecutable(Name => "xdg-mime");
+         Mime_Type: Unbounded_String;
+      begin
+         if Executable_Name = "" then
+            return "unknown";
+         end if;
+         Non_Blocking_Spawn
+           (Descriptor => Process_Desc, Command => Executable_Name,
+            Args => Argument_String_To_List("query filetype " & Name).all);
+         Expect(Process_Desc, Result, Regexp => ".+", Timeout => 1_000);
+         Mime_Type :=
+           (if Result = 1 then
+              To_Unbounded_String(Expect_Out_Match(Process_Desc))
+            else To_Unbounded_String("unknown"));
+         Close(Process_Desc);
+         return To_String(Mime_Type);
+      exception
+         when Process_Died =>
+            return "unknown";
+      end Get_Mime_Type_Block;
    end Magic_File;
 
    procedure Magic_Close is
