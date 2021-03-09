@@ -154,10 +154,10 @@ package body Inotify is
       Default_Masks: constant array(1 .. 5) of Inotify_Events :=
         (1 => METADATA, 2 => MOVED_FROM, 3 => MOVED_TO, 4 => DELETED,
          5 => CREATED);
-      Watch: int;
+      Watch: int := 0;
       Amount: constant Natural := Natural(Watches_List.Length);
       function Inotify_Add_Watch_C
-        (Fd: int; Pathname: chars_ptr; Mask: int) return int with
+        (Fd: int; Pathname: chars_ptr; Mask_C: int) return int with
          Import => True,
          Convention => C,
          External_Name => "inotify_add_watch";
@@ -169,7 +169,7 @@ package body Inotify is
       Watch :=
         Inotify_Add_Watch_C
           (Fd => Get_Instance, Pathname => New_String(Str => Path),
-           Mask => int(Mask));
+           Mask_C => int(Mask));
       if Watch > 0
         and then Amount =
           Natural
