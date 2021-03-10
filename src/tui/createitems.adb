@@ -250,8 +250,7 @@ package body CreateItems is
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer
-        (Create_Fields.all(2), 0, Simple_Name(To_String(CurrentSelected)));
+      Set_Buffer(Create_Fields.all(2), 0, "");
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
@@ -302,7 +301,8 @@ package body CreateItems is
             if FieldIndex = 4 then
                Tcl_Eval
                  (Interpreter,
-                  "CreateItem " & Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+                  "CreateItem {" &
+                  Trim(Get_Buffer(Fields(DialogForm, 2)), Both) & "}");
                if Tcl_GetResult(Interpreter) = "0" then
                   return MESSAGE_FORM;
                end if;
