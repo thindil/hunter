@@ -51,63 +51,15 @@ package body LibMagic is
    Initialized: Boolean := False;
    -- ****
 
-   -- ****if* LibMagic/LibMagic.Magic_Open_C
-   -- FUNCTION
-   -- Binding to the C function
-   -- PARAMETERS
-   -- Arg1 - Type of data to retrieve
-   -- RESULT
-   -- New pointer to the magic data
-   -- SOURCE
-   function Magic_Open_C(Arg1: int) return Magic_T with
-      Import => True,
-      Convention => C,
-      External_Name => "magic_open";
-      -- ****
-
-      -- ****if* LibMagic/LibMagic.Magic_Load_C
-      -- FUNCTION
-      -- Binding to the C function
-      -- PARAMETERS
-      -- Arg1 - Pointer to the Magic data
-      -- Arg2 - unused, set to Null_Ptr
-      -- RESULT
-      -- 0 if data was loaded
-      -- SOURCE
-   function Magic_Load_C(Arg1: Magic_T; Arg2: chars_ptr) return int with
-      Import => True,
-      Convention => C,
-      External_Name => "magic_load";
-      -- ****
-
-      -- ****if* LibMagic/LibMagic.Magic_Close_C
-      -- FUNCTION
-      -- Binding to the C function
-      -- PARAMETERS
-      -- Arg1 -  Pointer to the Magic data
-      -- SOURCE
-   procedure Magic_Close_C(Arg1: Magic_T) with
-      Import => True,
-      Convention => C,
-      External_Name => "magic_close";
-      -- ****
-
-      -- ****if* LibMagic/LibMagic.Magic_File_C
-      -- FUNCTION
-      -- Binding to the C function
-      -- PARAMETERS
-      -- Arg1 - Pointer to the Magic data
-      -- Arg2 - Full path the the file which will be checked
-      -- RESULT
-      -- MIME Type of selected file
-      -- SOURCE
-   function Magic_File_C(Arg1: Magic_T; Arg2: chars_ptr) return chars_ptr with
-      Import => True,
-      Convention => C,
-      External_Name => "magic_file";
-      -- ****
-
    procedure Magic_Open is
+      function Magic_Load_C(Arg1: Magic_T; Arg2: chars_ptr) return int with
+         Import => True,
+         Convention => C,
+         External_Name => "magic_load";
+      function Magic_Open_C(Arg1: int) return Magic_T with
+         Import => True,
+         Convention => C,
+         External_Name => "magic_open";
    begin
       Magic_Data := Magic_Open_C(Arg1 => 16#0000010#);
       if Magic_Load_C
@@ -123,6 +75,11 @@ package body LibMagic is
    end Magic_Open;
 
    function Magic_File(Name: String) return String is
+      function Magic_File_C
+        (Arg1: Magic_T; Arg2: chars_ptr) return chars_ptr with
+         Import => True,
+         Convention => C,
+         External_Name => "magic_file";
    begin
       if Initialized then
          return Value
@@ -143,14 +100,19 @@ package body LibMagic is
          end if;
          Non_Blocking_Spawn
            (Descriptor => Process_Desc, Command => Executable_Name,
-            Args => Argument_String_To_List("query filetype " & Name).all);
-         Expect(Process_Desc, Result, Regexp => ".+", Timeout => 1_000);
+            Args =>
+              Argument_String_To_List
+                (Arg_String => "query filetype " & Name).all);
+         Expect
+           (Descriptor => Process_Desc, Result => Result, Regexp => ".+",
+            Timeout => 1_000);
          Mime_Type :=
            (if Result = 1 then
-              To_Unbounded_String(Expect_Out_Match(Process_Desc))
-            else To_Unbounded_String("unknown"));
-         Close(Process_Desc);
-         return To_String(Mime_Type);
+              To_Unbounded_String
+                (Source => Expect_Out_Match(Descriptor => Process_Desc))
+            else To_Unbounded_String(Source => "unknown"));
+         Close(Descriptor => Process_Desc);
+         return To_String(Source => Mime_Type);
       exception
          when Process_Died =>
             return "unknown";
@@ -158,9 +120,13 @@ package body LibMagic is
    end Magic_File;
 
    procedure Magic_Close is
+      procedure Magic_Close_C(Arg1: Magic_T) with
+         Import => True,
+         Convention => C,
+         External_Name => "magic_close";
    begin
       if Initialized then
-         Magic_Close_C(Magic_Data);
+         Magic_Close_C(Arg1 => Magic_Data);
       end if;
    end Magic_Close;
 
