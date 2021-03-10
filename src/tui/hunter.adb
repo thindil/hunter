@@ -181,6 +181,8 @@ begin
                UILocation := Bookmarks_Keys(Key);
             when BOOKMARKS_FORM =>
                UILocation := Bookmarks_Form_Keys(Key);
+            when CREATELINK_FORM =>
+               UILocation := Create_Link_Keys(Key);
             when others =>
                null;
          end case;

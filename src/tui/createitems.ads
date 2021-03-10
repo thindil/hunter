@@ -58,4 +58,15 @@ package CreateItems is
    procedure Show_Create_Link_Form;
    -- ****
 
+   -- ****f* CreateItemsTUI/CreateItemsTUI.Rename_Keys
+   -- FUNCTION
+   -- Handles keys events when the create link form is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Create_Link_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
 end CreateItems;

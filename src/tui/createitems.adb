@@ -284,4 +284,45 @@ package body CreateItems is
       Refresh(FormWindow);
    end Show_Create_Link_Form;
 
+   function Create_Link_Keys(Key: Key_Code) return UI_Locations is
+      Result: Forms.Driver_Result := Unknown_Request;
+      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      Visibility: Cursor_Visibility := Invisible;
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(DialogForm, F_Previous_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when 66 | KEY_DOWN =>
+            Result := Driver(DialogForm, F_Next_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when 127 =>
+            Result := Driver(DialogForm, F_Delete_Previous);
+         when 10 =>
+            if FieldIndex = 4 then
+               Tcl_Eval
+                 (Interpreter,
+                  "CreateItem " & Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+               if Tcl_GetResult(Interpreter) = "0" then
+                  return MESSAGE_FORM;
+               end if;
+            end if;
+            if FieldIndex /= 2 then
+               Set_Cursor_Visibility(Visibility);
+               Post(DialogForm, False);
+               Delete(DialogForm);
+               UpdateDirectoryList(True);
+               return DIRECTORY_VIEW;
+            end if;
+         when others =>
+            if Key /= 91 then
+               Result := Driver(DialogForm, Key);
+            end if;
+      end case;
+      if Result = Form_Ok then
+         Refresh(FormWindow);
+      end if;
+      return CREATELINK_FORM;
+   end Create_Link_Keys;
+
 end CreateItems;
