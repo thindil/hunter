@@ -20,6 +20,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C; use Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
@@ -111,13 +112,9 @@ package body CreateItems is
             File := Create_File(To_String(NewItemName), Binary);
             Close(File);
          when CREATELINK =>
-            Destination := DestinationDirectory;
---            if Selection(DirectoryView)'Length > 0 then
---               Destination :=
---                 DestinationDirectory &
---                 SecondItemsList(Positive'Value(Selection(DirectoryView)))
---                   .Name;
---            end if;
+            Destination :=
+              DestinationDirectory & "/" &
+              To_Unbounded_String(Menus.Name(Current(DestinationList)));
             Tcl_Eval
               (Interp,
                "file link -symbolic {" & To_String(NewItemName) & "} {" &
