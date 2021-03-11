@@ -24,7 +24,6 @@ with Interfaces.C;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
-with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
@@ -604,13 +603,6 @@ package body ShowItems is
       Box(PreviewWindow, Default_Character, Default_Character);
       Refresh(PreviewWindow);
    end CreateShowItemsUI;
-
-   -- ****iv* ShowItemsTUI/ShowItemsTUI.DestinationList
-   -- FUNCTION
-   -- Current content of the destination directory
-   -- SOURCE
-   DestinationList: Menu;
-   -- ****
 
    procedure ShowDestination is
       Index: Positive;

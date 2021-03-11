@@ -15,6 +15,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with MainWindow; use MainWindow;
 
 -- ****h* ShowItems/ShowItemsTUI
@@ -31,6 +32,13 @@ package ShowItems is
    -- various commands
    -- SOURCE
    DestinationDirectory: Unbounded_String;
+   -- ****
+
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.DestinationList
+   -- FUNCTION
+   -- Current content of the destination directory
+   -- SOURCE
+   DestinationList: Menu;
    -- ****
 
    -- ****f* ShowItemsTUI/ShowItemsTUI.ShowPreview
