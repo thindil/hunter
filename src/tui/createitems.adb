@@ -112,9 +112,13 @@ package body CreateItems is
             File := Create_File(To_String(NewItemName), Binary);
             Close(File);
          when CREATELINK =>
-            Destination :=
-              DestinationDirectory & "/" &
-              To_Unbounded_String(Menus.Name(Current(DestinationList)));
+            Destination := DestinationDirectory;
+            if Name(Current(DestinationList)) /=
+              Simple_Name(To_String(Destination)) then
+               Destination :=
+                 Destination & "/" &
+                 To_Unbounded_String(Name(Current(DestinationList)));
+            end if;
             Tcl_Eval
               (Interp,
                "file link -symbolic {" & To_String(NewItemName) & "} {" &
