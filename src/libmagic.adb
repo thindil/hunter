@@ -44,12 +44,36 @@ package body LibMagic is
    Magic_Data: Magic_T;
    -- ****
 
+   -- ****if* LibMagic/LibMagic.Get_Magic_Instance
+   -- FUNCTION
+   -- Get the instance of libmagic
+   -- RESULT
+   -- Currently set instance of libmagic
+   -- SOURCE
+   function Get_Magic_Instance return Magic_T is
+      -- ****
+   begin
+      return Magic_Data;
+   end Get_Magic_Instance;
+
    -- ****iv* LibMagic/LibMagic.Initialized
    -- FUNCTION
    -- If true, libmagic was succesfully initialized. Default is false.
    -- SOURCE
    Initialized: Boolean := False;
    -- ****
+
+   -- ****if* LibMagic/LibMagic.Is_Initialized
+   -- FUNCTION
+   -- Check if libmagic instance is initialized
+   -- RESULT
+   -- True, if libmagic instance was properly initialized, otherwise False
+   -- SOURCE
+   function Is_Initialized return Boolean is
+      -- ****
+   begin
+      return Initialized;
+   end Is_Initialized;
 
    procedure Magic_Open is
       function Magic_Load_C(Arg1: Magic_T; Arg2: chars_ptr) return int with
@@ -63,7 +87,7 @@ package body LibMagic is
    begin
       Magic_Data := Magic_Open_C(Arg1 => 16#0000010#);
       if Magic_Load_C
-          (Arg1 => Magic_Data,
+          (Arg1 => Get_Magic_Instance,
            Arg2 =>
              New_String
                (Str =>
@@ -81,11 +105,12 @@ package body LibMagic is
          Convention => C,
          External_Name => "magic_file";
    begin
-      if Initialized then
+      if Is_Initialized then
          return Value
              (Item =>
                 Magic_File_C
-                  (Arg1 => Magic_Data, Arg2 => New_String(Str => Name)));
+                  (Arg1 => Get_Magic_Instance,
+                   Arg2 => New_String(Str => Name)));
       end if;
       Get_Mime_Type_Block :
       declare
@@ -125,8 +150,8 @@ package body LibMagic is
          Convention => C,
          External_Name => "magic_close";
    begin
-      if Initialized then
-         Magic_Close_C(Arg1 => Magic_Data);
+      if Is_Initialized then
+         Magic_Close_C(Arg1 => Get_Magic_Instance);
       end if;
    end Magic_Close;
 
