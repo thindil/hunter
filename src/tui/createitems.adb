@@ -309,10 +309,13 @@ package body CreateItems is
                end if;
             end if;
             if FieldIndex /= 2 then
+               NewAction := CREATEFILE;
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
                UpdateDirectoryList(True);
+               ShowPreview;
+               CreateProgramMenu(True);
                return DIRECTORY_VIEW;
             end if;
          when others =>
