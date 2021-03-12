@@ -15,6 +15,7 @@
 
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with System;
 with Interfaces.C; use Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Expect; use GNAT.Expect;
@@ -23,25 +24,11 @@ with Utils.UI; use Utils.UI;
 
 package body LibMagic is
 
-   -- ****it* LibMagic/LibMagic.Magic_Set
-   -- FUNCTION
-   -- Used to store Magic data
-   -- SOURCE
-   type Magic_Set is null record;
-   -- ****
-
-   -- ****it* LibMagic/LibMagic.Magic_T
-   -- FUNCTION
-   -- Used as pointer to the Magic data
-   -- SOURCE
-   type Magic_T is access all Magic_Set;
-   -- ****
-
    -- ****iv* LibMagic/LibMagic.Magic_Data
    -- FUNCTION
    -- Pointer to the Magic data
    -- SOURCE
-   Magic_Data: Magic_T;
+   Magic_Data: System.Address;
    -- ****
 
    -- ****if* LibMagic/LibMagic.Get_Magic_Instance
@@ -50,7 +37,7 @@ package body LibMagic is
    -- RESULT
    -- Currently set instance of libmagic
    -- SOURCE
-   function Get_Magic_Instance return Magic_T is
+   function Get_Magic_Instance return System.Address is
       -- ****
    begin
       return Magic_Data;
@@ -76,11 +63,12 @@ package body LibMagic is
    end Is_Initialized;
 
    procedure Magic_Open is
-      function Magic_Load_C(Arg1: Magic_T; Arg2: chars_ptr) return int with
+      function Magic_Load_C
+        (Arg1: System.Address; Arg2: chars_ptr) return int with
          Import => True,
          Convention => C,
          External_Name => "magic_load";
-      function Magic_Open_C(Arg1: int) return Magic_T with
+      function Magic_Open_C(Arg1: int) return System.Address with
          Import => True,
          Convention => C,
          External_Name => "magic_open";
@@ -100,7 +88,7 @@ package body LibMagic is
 
    function Magic_File(Name: String) return String is
       function Magic_File_C
-        (Arg1: Magic_T; Arg2: chars_ptr) return chars_ptr with
+        (Arg1: System.Address; Arg2: chars_ptr) return chars_ptr with
          Import => True,
          Convention => C,
          External_Name => "magic_file";
@@ -145,7 +133,7 @@ package body LibMagic is
    end Magic_File;
 
    procedure Magic_Close is
-      procedure Magic_Close_C(Arg1: Magic_T) with
+      procedure Magic_Close_C(Arg1: System.Address) with
          Import => True,
          Convention => C,
          External_Name => "magic_close";
