@@ -13,14 +13,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Environment_Variables;
+with Ada.Strings.Unbounded;
 with System;
-with Interfaces.C; use Interfaces.C;
+with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.Expect; use GNAT.Expect;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Utils.UI; use Utils.UI;
+with GNAT.Expect;
+with GNAT.OS_Lib;
+with Utils.UI;
 
 package body LibMagic is
 
@@ -63,6 +63,9 @@ package body LibMagic is
    end Is_Initialized;
 
    procedure Magic_Open is
+      use Ada.Environment_Variables;
+      use Interfaces.C;
+
       function Magic_Load_C
         (Arg1: System.Address; Arg2: chars_ptr) return int with
          Import => True,
@@ -102,6 +105,11 @@ package body LibMagic is
       end if;
       Get_Mime_Type_Block :
       declare
+         use Ada.Strings.Unbounded;
+         use GNAT.Expect;
+         use GNAT.OS_Lib;
+         use Utils.UI;
+
          Process_Desc: Process_Descriptor;
          Result: Expect_Match;
          Executable_Name: constant String :=
