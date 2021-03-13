@@ -71,28 +71,28 @@ package body CopyItems is
           To_String(DestinationDirectory) then
          CopyItemsList.Clear;
          ShowPreview;
-         ToggleToolButtons(NewAction, True);
+         ToggleToolButtons(New_Action, True);
          return TCL_OK;
       end if;
       if CopyItemsList.Length = 0 then
-         CopyItemsList := SelectedItems;
-         SourceDirectory := CurrentDirectory;
-         NewAction := COPY;
-         ToggleToolButtons(NewAction);
+         CopyItemsList := Selected_Items;
+         SourceDirectory := MainWindow.Current_Directory;
+         New_Action := COPY;
+         ToggleToolButtons(New_Action);
          ShowDestination;
          Bind_To_Main_Window
            (Interp, "<Escape>",
             "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
          return TCL_OK;
       end if;
-      if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
+      if not Is_Write_Accessible_File(To_String(MainWindow.Current_Directory)) then
          ShowMessage
            (Mc
               (Interp,
                "{You don't have permissions to copy selected items here.}"));
          return TCL_OK;
       end if;
-      NewAction := COPY;
+      New_Action := COPY;
       SetProgressBar(Positive(CopyItemsList.Length));
       CopySelected(OverwriteItem);
       return TCL_OK;
@@ -200,13 +200,13 @@ package body CopyItems is
                "{All selected files and directories have been copied.}"),
             "message");
       end if;
-      CurrentDirectory :=
+      MainWindow.Current_Directory :=
         (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
-      LoadDirectory(To_String(CurrentDirectory));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
-      UpdateWatch(To_String(CurrentDirectory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;
-      ToggleToolButtons(NewAction, True);
+      ToggleToolButtons(New_Action, True);
    end CopySelected;
 
    procedure SkipCopying is

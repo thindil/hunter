@@ -60,7 +60,7 @@ package body Trash is
       FileInfo: File_Type;
    begin
       Restore_Items_Loop :
-      for Item of SelectedItems loop
+      for Item of Selected_Items loop
          StartIndex := Index(Item, "files");
          RestoreInfo :=
            Unbounded_Slice(Item, 1, StartIndex - 1) & "info" &
@@ -118,8 +118,8 @@ package body Trash is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      NewAction := CLEARTRASH;
-      ToggleToolButtons(NewAction);
+      New_Action := CLEARTRASH;
+      ToggleToolButtons(New_Action);
       ShowMessage
         (Mc(Interp, "{Remove all files and directories from Trash?}"),
          "question");
@@ -152,17 +152,17 @@ package body Trash is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
    begin
-      CurrentDirectory :=
+      MainWindow.Current_Directory :=
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
       DestinationDirectory :=
         Delete
-          (CurrentDirectory, 1,
+          (MainWindow.Current_Directory, 1,
            Length
              (To_Unbounded_String
                 (Value("HOME") & "/.local/share/Trash/files")));
-      LoadDirectory(To_String(CurrentDirectory));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
-      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+      Execute_Modules(On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
       return TCL_OK;
    end GoToTrash_Command;
 

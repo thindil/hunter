@@ -73,28 +73,28 @@ package body MoveItems is
           To_String(DestinationDirectory) then
          MoveItemsList.Clear;
          ShowPreview;
-         ToggleToolButtons(NewAction, True);
+         ToggleToolButtons(New_Action, True);
          return TCL_OK;
       end if;
       if MoveItemsList.Length = 0 then
-         MoveItemsList := SelectedItems;
-         SourceDirectory := CurrentDirectory;
-         NewAction := MOVE;
-         ToggleToolButtons(NewAction);
+         MoveItemsList := Selected_Items;
+         SourceDirectory := MainWindow.Current_Directory;
+         New_Action := MOVE;
+         ToggleToolButtons(New_Action);
          ShowDestination;
          Bind_To_Main_Window
            (Interp, "<Escape>",
             "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
          return TCL_OK;
       end if;
-      if not Is_Write_Accessible_File(To_String(CurrentDirectory)) then
+      if not Is_Write_Accessible_File(To_String(MainWindow.Current_Directory)) then
          ShowMessage
            (Mc
               (Interp,
                "{You don't have permissions to move selected items here.}"));
          return TCL_OK;
       end if;
-      NewAction := MOVE;
+      New_Action := MOVE;
       SetProgressBar(Positive(MoveItemsList.Length));
       MoveSelected(OverwriteItem);
       return TCL_OK;
@@ -172,15 +172,15 @@ package body MoveItems is
                "{All selected files and directories have been moved.}"),
             "message");
       end if;
-      CurrentDirectory :=
+      MainWindow.Current_Directory :=
         (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
-      CurrentSelected :=
-        CurrentDirectory & "/" & Simple_Name(To_String(CurrentSelected));
-      LoadDirectory(To_String(CurrentDirectory));
+      Current_Selected :=
+        MainWindow.Current_Directory & "/" & Simple_Name(To_String(Current_Selected));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
-      UpdateWatch(To_String(CurrentDirectory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;
-      ToggleToolButtons(NewAction, True);
+      ToggleToolButtons(New_Action, True);
    end MoveSelected;
 
    procedure SkipMoving is

@@ -61,32 +61,32 @@ package body ActivateItems is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      if Is_Directory(To_String(CurrentSelected)) then
-         if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
+      if Is_Directory(To_String(Current_Selected)) then
+         if not Is_Read_Accessible_File(To_String(Current_Selected)) then
             ShowMessage(Mc(Interp, "{You can't enter this directory.}"));
             return TCL_OK;
          end if;
-         CurrentDirectory := CurrentSelected;
+         Current_Directory := Current_Selected;
          if Settings.ShowPreview then
             ItemsList := SecondItemsList;
          else
-            LoadDirectory(To_String(CurrentDirectory));
+            LoadDirectory(To_String(Current_Directory));
          end if;
-         if NewAction = SHOWTRASH then
+         if New_Action = SHOWTRASH then
             DestinationDirectory :=
               Delete
-                (CurrentDirectory, 1,
+                (Current_Directory, 1,
                  Length
                    (To_Unbounded_String
                       (Value("HOME") & "/.local/share/Trash/files")));
          end if;
          UpdateDirectoryList(True);
-         UpdateWatch(To_String(CurrentDirectory));
-         Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+         UpdateWatch(To_String(Current_Directory));
+         Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
       else
          declare
             MimeType: constant String :=
-              GetMimeType(To_String(CurrentSelected));
+              GetMimeType(To_String(Current_Selected));
             Pid: GNAT.OS_Lib.Process_Id;
             Openable: Boolean := CanBeOpened(MimeType);
             ExecutableName: constant String := FindExecutable("xdg-open");
@@ -96,7 +96,7 @@ package body ActivateItems is
                Openable := CanBeOpened("text/plain");
             end if;
             if not Openable then
-               if not Is_Executable_File(To_String(CurrentSelected)) then
+               if not Is_Executable_File(To_String(Current_Selected)) then
                   ShowMessage
                     (Mc
                        (Interp,
@@ -106,7 +106,7 @@ package body ActivateItems is
                end if;
                Pid :=
                  Non_Blocking_Spawn
-                   (To_String(CurrentSelected),
+                   (To_String(Current_Selected),
                     Argument_String_To_List("").all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
                   ShowMessage(Mc(Interp, "{I can't execute this file.}"));
@@ -119,7 +119,7 @@ package body ActivateItems is
                   return TCL_OK;
                end if;
                Arguments := Argument_String_To_List("@2");
-               Arguments(1) := new String'(To_String(CurrentSelected));
+               Arguments(1) := new String'(To_String(Current_Selected));
                Pid := Non_Blocking_Spawn(ExecutableName, Arguments.all);
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
@@ -131,7 +131,7 @@ package body ActivateItems is
             end if;
          end;
       end if;
-      Execute_Modules(On_Activate, "{" & To_String(CurrentSelected) & "}");
+      Execute_Modules(On_Activate, "{" & To_String(Current_Selected) & "}");
       Tcl_SetResult(Interp, "1");
       return TCL_OK;
    end Activate_Item_Command;
@@ -163,7 +163,7 @@ package body ActivateItems is
    begin
       Pid :=
         Non_Blocking_Spawn
-          (To_String(CurrentSelected), Argument_String_To_List("").all);
+          (To_String(Current_Selected), Argument_String_To_List("").all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage(Mc(Interp, "{Can't execute this command}"));
       end if;

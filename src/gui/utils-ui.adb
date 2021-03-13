@@ -130,7 +130,7 @@ package body Utils.UI is
    end AddCommand;
 
    procedure ToggleToolButtons
-     (Action: ItemActions; Finished: Boolean := False) is
+     (Action: Item_Actions; Finished: Boolean := False) is
       Toolbar: Ttk_Frame := Get_Widget(".mainframe.toolbars");
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
       HeaderLabel: constant Ttk_Label := Get_Widget(".mainframe.headerlabel");

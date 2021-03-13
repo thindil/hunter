@@ -74,7 +74,7 @@ package body MainWindow is
    procedure CreateMainWindow(Directory: String) is
       Interp: constant Tcl.Tcl_Interp := Get_Context;
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Interp);
-      CurrentDir: constant String := Current_Directory;
+      CurrentDir: constant String := Ada.Directories.Current_Directory;
       MainFrame: constant Ttk_Frame := Create(".mainframe");
       Paned: constant Ttk_PanedWindow :=
         Create(".mainframe.paned", "-orient horizontal");
@@ -183,7 +183,7 @@ package body MainWindow is
              (Value("APPDIR", "") & "/usr/share/doc/hunter")
          then To_Unbounded_String(Value("APPDIR", "") & "/hunter-icon.png")
          else To_Unbounded_String
-             (Containing_Directory(Current_Directory) &
+             (Containing_Directory(Ada.Directories.Current_Directory) &
               "/others/hunter-icon.png"));
       Wm_Set
         (MainWindow, "geometry",
@@ -267,17 +267,17 @@ package body MainWindow is
       Bind(TextEntry, "<Return>", "{.mainframe.textframe.okbutton invoke}");
       Column_Configure(TextFrame, TextEntry, "-weight 1");
       if Ada.Directories.Exists(Directory) then
-         CurrentDirectory := To_Unbounded_String(Directory);
+         Current_Directory := To_Unbounded_String(Directory);
       else
-         CurrentDirectory := To_Unbounded_String(Value("HOME"));
-         if not Ada.Directories.Exists(To_String(CurrentDirectory)) then
-            CurrentDirectory := To_Unbounded_String("/");
+         Current_Directory := To_Unbounded_String(Value("HOME"));
+         if not Ada.Directories.Exists(To_String(Current_Directory)) then
+            Current_Directory := To_Unbounded_String("/");
          end if;
       end if;
-      LoadDirectory(To_String(CurrentDirectory));
-      StartTimer(To_String(CurrentDirectory));
+      LoadDirectory(To_String(Current_Directory));
+      StartTimer(To_String(Current_Directory));
       UpdateDirectoryList(True);
-      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+      Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
       CreateShowItemsUI;
       SashPos
         (Paned, "0",
@@ -300,7 +300,7 @@ package body MainWindow is
       if FrameName = "directory" then
          List := ItemsList;
          PathCommand :=
-           (if NewAction not in SHOWTRASH | DELETETRASH then
+           (if New_Action not in SHOWTRASH | DELETETRASH then
               To_Unbounded_String("GoToBookmark")
             else To_Unbounded_String("GoToTrash"));
          PathShortcut := To_Unbounded_String("Alt");
@@ -367,7 +367,7 @@ package body MainWindow is
             if not Settings.ShowHidden and then List(I).IsHidden then
                Detach(DirectoryTree, To_String(ItemIndex));
             elsif SelectedIndex = Null_Unbounded_String or
-              CurrentSelected = List(I).Path then
+              Current_Selected = List(I).Path then
                SelectedIndex := To_Unbounded_String(Positive'Image(I));
             end if;
          end loop Add_Items_Loop;
@@ -394,8 +394,8 @@ package body MainWindow is
             end if;
             -- Add new path buttons
             if FrameName = "directory"
-              and then NewAction not in SHOWTRASH | DELETETRASH then
-               Create(Tokens, To_String(CurrentDirectory), "/");
+              and then New_Action not in SHOWTRASH | DELETETRASH then
+               Create(Tokens, To_String(Current_Directory), "/");
             else
                Create(Tokens, To_String(DestinationDirectory), "/");
             end if;
@@ -405,7 +405,7 @@ package body MainWindow is
                   goto End_Of_Loop;
                end if;
                if I = 1 then
-                  if NewAction /= SHOWTRASH then
+                  if New_Action /= SHOWTRASH then
                      PathButton :=
                        Create
                          (Widget_Image(PathButtonsFrame) & ".button1",
@@ -482,7 +482,7 @@ package body MainWindow is
               not List(I).IsHidden then
                Move(DirectoryTree, Positive'Image(I), "{}", Positive'Image(I));
                if SelectedIndex = Null_Unbounded_String or
-                 CurrentSelected = List(I).Path then
+                 Current_Selected = List(I).Path then
                   SelectedIndex := To_Unbounded_String(Positive'Image(I));
                end if;
             end if;

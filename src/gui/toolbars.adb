@@ -129,7 +129,7 @@ package body Toolbars is
          Column_Configure(Toolbar, Label, "-weight 1");
          Row_Configure(Toolbar, Label, "-weight 0");
       end if;
-      if CurrentSelected /= Null_Unbounded_String then
+      if Current_Selected /= Null_Unbounded_String then
          SetActionsButtons;
          SetBookmarkButton;
       end if;
@@ -426,7 +426,7 @@ package body Toolbars is
       Side: constant String :=
         (if Settings.ToolbarsOnTop then "left" else "top");
    begin
-      if Is_Executable_File(To_String(CurrentSelected)) then
+      if Is_Executable_File(To_String(Current_Selected)) then
          if Winfo_Get(Button, "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
               (Button,
@@ -437,7 +437,7 @@ package body Toolbars is
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       end if;
       Button.Name := New_String(".mainframe.toolbars.itemtoolbar.openbutton");
-      if CanBeOpened(GetMimeType(To_String(CurrentSelected))) then
+      if CanBeOpened(GetMimeType(To_String(Current_Selected))) then
          if Winfo_Get(Button, "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
               (Button,

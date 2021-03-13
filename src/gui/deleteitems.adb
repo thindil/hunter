@@ -85,7 +85,7 @@ package body DeleteItems is
          while More_Entries(Search) loop
             Get_Next_Entry(Search, Item);
             if Simple_Name(Item) not in "." | ".." then
-               SelectedItems.Append
+               Selected_Items.Append
                  (New_Item => To_Unbounded_String(Full_Name(Item)));
             end if;
          end loop Add_Items_To_Trash_Loop;
@@ -97,19 +97,19 @@ package body DeleteItems is
       Create_Path
         (Ada.Environment_Variables.Value("HOME") &
          "/.local/share/Trash/files");
-      if NewAction = CLEARTRASH then
+      if New_Action = CLEARTRASH then
          OldSetting := Settings.DeleteFiles;
          Settings.DeleteFiles := True;
-         SelectedItems.Clear;
+         Selected_Items.Clear;
          AddTrash("info");
          AddTrash("files");
       end if;
       Delete_Items_Loop :
-      for Item of SelectedItems loop
+      for Item of Selected_Items loop
          UpdateProgressBar;
          if Is_Directory(To_String(Item)) then
             Arguments(2) := new String'(To_String(Item));
-            if Settings.DeleteFiles or NewAction = DELETETRASH then
+            if Settings.DeleteFiles or New_Action = DELETETRASH then
                Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
                if not Success then
                   raise Directory_Error with To_String(Item);
@@ -117,28 +117,28 @@ package body DeleteItems is
             else
                MoveToTrash(Item);
             end if;
-            if Item = CurrentDirectory then
+            if Item = MainWindow.Current_Directory then
                GoUp := True;
             end if;
          else
-            if Settings.DeleteFiles or NewAction = DELETETRASH then
+            if Settings.DeleteFiles or New_Action = DELETETRASH then
                Delete_File(To_String(Item));
             else
                MoveToTrash(Item);
             end if;
          end if;
-         if NewAction = DELETETRASH then
+         if New_Action = DELETETRASH then
             Delete_File
               (Ada.Environment_Variables.Value("HOME") &
                "/.local/share/Trash/info/" & Simple_Name(To_String(Item)) &
                ".trashinfo");
          end if;
       end loop Delete_Items_Loop;
-      if NewAction = CLEARTRASH then
+      if New_Action = CLEARTRASH then
          Settings.DeleteFiles := OldSetting;
       end if;
-      SelectedItems.Clear;
-      CurrentSelected := CurrentDirectory;
+      Selected_Items.Clear;
+      Current_Selected := MainWindow.Current_Directory;
       return GoUp;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
@@ -186,23 +186,23 @@ package body DeleteItems is
       pragma Unreferenced(ClientData, Argc, Argv);
       Message, FileLine: Unbounded_String;
       FileInfo: File_Type;
-      I: Positive := SelectedItems.First_Index;
+      I: Positive := Selected_Items.First_Index;
    begin
-      NewAction := (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
+      New_Action := (if New_Action /= SHOWTRASH then DELETE else DELETETRASH);
       Message :=
-        (if Settings.DeleteFiles or NewAction = DELETETRASH then
+        (if Settings.DeleteFiles or New_Action = DELETETRASH then
            To_Unbounded_String(Mc(Interp, "{Delete?}") & LF)
          else To_Unbounded_String(Mc(Interp, "{Move to trash?}") & LF));
       Add_Items_To_Delete_Loop :
-      while I <= SelectedItems.Last_Index loop
-         if NewAction = DELETE then
-            Append(Message, SelectedItems(I));
+      while I <= Selected_Items.Last_Index loop
+         if New_Action = DELETE then
+            Append(Message, Selected_Items(I));
          else
             Open
               (FileInfo, In_File,
                Ada.Environment_Variables.Value("HOME") &
                "/.local/share/Trash/info/" &
-               Simple_Name(To_String(SelectedItems(I))) & ".trashinfo");
+               Simple_Name(To_String(Selected_Items(I))) & ".trashinfo");
             Skip_Line(FileInfo);
             Get_Item_Name_Loop :
             for I in 1 .. 2 loop
@@ -215,11 +215,11 @@ package body DeleteItems is
             end loop Get_Item_Name_Loop;
             Close(FileInfo);
          end if;
-         if not Is_Symbolic_Link(To_String(SelectedItems(I)))
-           and then Is_Directory(To_String(SelectedItems(I))) then
+         if not Is_Symbolic_Link(To_String(Selected_Items(I)))
+           and then Is_Directory(To_String(Selected_Items(I))) then
             Append(Message, Mc(Interp, "{(and its content)}"));
          end if;
-         if I /= SelectedItems.Last_Index then
+         if I /= Selected_Items.Last_Index then
             Append(Message, LF);
          end if;
          I := I + 1;
@@ -228,7 +228,7 @@ package body DeleteItems is
             exit Add_Items_To_Delete_Loop;
          end if;
       end loop Add_Items_To_Delete_Loop;
-      ToggleToolButtons(NewAction);
+      ToggleToolButtons(New_Action);
       ShowMessage(To_String(Message), "question");
       return TCL_OK;
    end Start_Deleting_Command;
