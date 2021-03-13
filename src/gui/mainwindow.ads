@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -23,14 +23,14 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package MainWindow is
 -- ****
 
-   -- ****v* MainWindow/MainWindow.CurrentDirectory
+   -- ****v* MainWindow/MainWindow.Current_Directory
    -- FUNCTION
    -- Currently selected directory to show
    -- SOURCE
-   CurrentDirectory: Unbounded_String;
+   Current_Directory: Unbounded_String;
    -- ****
 
-   -- ****t* MainWindow/MainWindow.ItemActions
+   -- ****t* MainWindow/MainWindow.Item_Actions
    -- FUNCTION
    -- Types of action on files and directories
    -- OPTIONS
@@ -47,16 +47,16 @@ package MainWindow is
    -- SHOWTRASH       - show content of the trash
    -- DELETETRASH     - delete file or directory from trash
    -- SOURCE
-   type ItemActions is
+   type Item_Actions is
      (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
       GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
 
-   -- ****v* MainWindow/MainWindow.NewAction
+   -- ****v* MainWindow/MainWindow.New_Action
    -- FUNCTION
    -- Current performed action on files or directories
    -- SOURCE
-   NewAction: ItemActions;
+   New_Action: Item_Actions;
    -- ****
 
    -- ****t* MainWindow/MainWindow.UnboundedString_Container
@@ -67,18 +67,18 @@ package MainWindow is
       Unbounded_String);
    -- ****
 
-   -- ****v* MainWindow/MainWindow.SelectedItems
+   -- ****v* MainWindow/MainWindow.Selected_Items
    -- FUNCTION
    -- List of currently selected files and directories by user
    -- SOURCE
-   SelectedItems: UnboundedString_Container.Vector;
+   Selected_Items: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****v* MainWindow/MainWindow.CurrentSelected
+   -- ****v* MainWindow/MainWindow.Current_Selected
    -- FUNCTION
    -- Full path to currently selected file or directory
    -- SOURCE
-   CurrentSelected: Unbounded_String;
+   Current_Selected: Unbounded_String;
    -- ****
 
    -- ****f* MainWindow/MainWindow.CreateMainWindow
