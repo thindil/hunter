@@ -39,20 +39,20 @@ with Utils.UI; use Utils.UI;
 
 package body Bookmarks.Commands.UI is
 
-   -- ****if* Commands/Commands.UpdateNewAction
+   -- ****if* Commands/Commands.UpdateNew_Action
    -- FUNCTION
-   -- Update NewAction and toolbars if needed
+   -- Update New_Action and toolbars if needed
    -- SOURCE
-   procedure UpdateNewAction is
+   procedure UpdateNew_Action is
       -- ****
    begin
-      if NewAction /= MOVE then
-         if NewAction = SHOWTRASH then
-            ToggleToolButtons(NewAction, True);
+      if New_Action /= MOVE then
+         if New_Action = SHOWTRASH then
+            ToggleToolButtons(New_Action, True);
          end if;
-         NewAction := COPY;
+         New_Action := COPY;
       end if;
-   end UpdateNewAction;
+   end UpdateNew_Action;
 
    -- ****o* Commands/Commands.SetDestination_Command
    -- FUNCTION
@@ -83,11 +83,11 @@ package body Bookmarks.Commands.UI is
       TextEntry: constant Ttk_Entry :=
         Get_Widget(TextFrame & ".textentry", Interp);
    begin
-      UpdateNewAction;
+      UpdateNew_Action;
       configure(Button, "-command GoToDestination");
       Add(Button, Mc(Interp, "{Go to the selected destination}"));
       Focus(TextEntry);
-      Insert(TextEntry, "0", To_String(CurrentDirectory));
+      Insert(TextEntry, "0", To_String(MainWindow.Current_Directory));
       Add(TextEntry, Mc(Interp, "{Enter the selected destination}"));
       Unbind(TextEntry, "<KeyRelease>");
       Tcl.Tk.Ada.Grid.Grid(Button);
@@ -125,20 +125,20 @@ package body Bookmarks.Commands.UI is
       HideButton: constant Ttk_Button :=
         Get_Widget(".mainframe.textframe.closebutton", Interp);
    begin
-      UpdateNewAction;
+      UpdateNew_Action;
       if not Ada.Directories.Exists(Get(TextEntry)) then
          ShowMessage
            (Mc(Interp, "{Directory}") & " '" & Get(TextEntry) & "' " &
             Mc(Interp, "{doesn't exist.}"));
          return TCL_OK;
       end if;
-      CurrentDirectory := To_Unbounded_String(Get(TextEntry));
+      MainWindow.Current_Directory := To_Unbounded_String(Get(TextEntry));
       if Invoke(HideButton) /= "" then
          return TCL_ERROR;
       end if;
-      LoadDirectory(To_String(CurrentDirectory));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
-      UpdateWatch(To_String(CurrentDirectory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       return TCL_OK;
    end GoToDestination_Command;
 
@@ -174,7 +174,7 @@ package body Bookmarks.Commands.UI is
          Create
            (File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
       end if;
-      Put_Line(File, "file://" & CurrentSelected);
+      Put_Line(File, "file://" & Current_Selected);
       Close(File);
       CreateBookmarkMenu;
       SetBookmarkButton;
@@ -218,7 +218,7 @@ package body Bookmarks.Commands.UI is
          Line := Get_Line(OldFile);
          if Length(Line) > 7 and then Slice(Line, 1, 7) = "file://" then
             Path := Unbounded_Slice(Line, 8, Length(Line));
-            if Path /= CurrentSelected then
+            if Path /= Current_Selected then
                Put_Line(NewFile, Line);
                Added := True;
             end if;

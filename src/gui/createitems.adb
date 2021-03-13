@@ -85,14 +85,14 @@ package body CreateItems is
       Focus(TextEntry);
       Tcl.Tk.Ada.Grid.Grid(Frame, "-row 1 -columnspan 2 -sticky we");
       if CArgv.Arg(Argv, 1) = "file" then
-         NewAction := CREATEFILE;
+         New_Action := CREATEFILE;
       elsif CArgv.Arg(Argv, 1) = "directory" then
-         NewAction := CREATEDIRECTORY;
+         New_Action := CREATEDIRECTORY;
       else
-         NewAction := CREATELINK;
+         New_Action := CREATELINK;
          ShowDestination;
       end if;
-      ToggleToolButtons(NewAction);
+      ToggleToolButtons(New_Action);
       return TCL_OK;
    end Show_Create_Command;
 
@@ -130,7 +130,7 @@ package body CreateItems is
         Get_Widget(".mainframe.paned.previewframe.directorytree", Interp);
       Hunter_Create_Exception: exception;
    begin
-      NewItemName := CurrentDirectory & "/" & Get(TextEntry);
+      NewItemName := MainWindow.Current_Directory & "/" & Get(TextEntry);
       if Exists(To_String(NewItemName)) or
         Is_Symbolic_Link(To_String(NewItemName)) then
          ActionString :=
@@ -155,7 +155,7 @@ package body CreateItems is
             Containing_Directory(To_String(NewItemName)));
          goto End_Of_Create;
       end if;
-      case NewAction is
+      case New_Action is
          when CREATEDIRECTORY =>
             Create_Path(To_String(NewItemName));
          when CREATEFILE =>
@@ -178,18 +178,18 @@ package body CreateItems is
             raise Hunter_Create_Exception
               with Mc(Interp, "{Invalid action type}");
       end case;
-      if not Settings.StayInOld and then NewAction /= CREATELINK then
-         CurrentDirectory :=
+      if not Settings.StayInOld and then New_Action /= CREATELINK then
+         MainWindow.Current_Directory :=
            To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
       end if;
-      LoadDirectory(To_String(CurrentDirectory));
-      UpdateWatch(To_String(CurrentDirectory));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
       <<End_Of_Create>>
       if Invoke(Button) /= "" then
          return TCL_ERROR;
       end if;
-      ToggleToolButtons(NewAction, True);
+      ToggleToolButtons(New_Action, True);
       return TCL_OK;
    end Create_Command;
 

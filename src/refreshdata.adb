@@ -64,7 +64,7 @@ package body RefreshData is
       begin
          ItemsList.Delete(ItemIndex);
          if ItemsList.Length = 0 then
-            CurrentSelected := CurrentDirectory;
+            Current_Selected := MainWindow.Current_Directory;
          end if;
          RefreshList := True;
       end RemoveItem;
@@ -74,7 +74,7 @@ package body RefreshData is
       end if;
       Check_Events_Loop :
       for Event of Events_List loop
-         if Event.Path = CurrentDirectory
+         if Event.Path = MainWindow.Current_Directory
            and then
            ((Event.Event in MOVED_TO | METADATA | ACCESSED) and
             Exists(To_String(Event.Path & "/" & Event.Target))) then
@@ -132,7 +132,7 @@ package body RefreshData is
                         ItemsList(ItemIndex).Size :=
                           Item_Size(Ada.Directories.Size(To_String(FileName)));
                      end if;
-                     if FileName = To_String(CurrentSelected) then
+                     if FileName = To_String(Current_Selected) then
                         ShowPreview;
                      end if;
                      exit Update_Items_Loop;

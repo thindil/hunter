@@ -57,16 +57,16 @@ package body Trash.UI is
       Create_Path
         (Ada.Environment_Variables.Value("HOME") &
          "/.local/share/Trash/files");
-      if NewAction /= SHOWTRASH then
-         NewAction := SHOWTRASH;
+      if New_Action /= SHOWTRASH then
+         New_Action := SHOWTRASH;
          ToggleToolButtons(SHOWTRASH);
       end if;
       ItemsList.Clear;
-      CurrentDirectory :=
+      MainWindow.Current_Directory :=
         To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
       DestinationDirectory :=
         Delete
-          (CurrentDirectory, 1,
+          (MainWindow.Current_Directory, 1,
            Length
              (To_Unbounded_String
                 (Value("HOME") & "/.local/share/Trash/files")));
@@ -184,7 +184,7 @@ package body Trash.UI is
       Bind_To_Main_Window
         (Interp, "<" & To_String(Accelerators(19)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.restorebutton}");
-      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+      Execute_Modules(On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 

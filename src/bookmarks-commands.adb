@@ -53,20 +53,20 @@ package body Bookmarks.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
    begin
-      if NewAction /= MOVE then
-         if NewAction = CLEARTRASH then
-            NewAction := SHOWTRASH;
+      if New_Action /= MOVE then
+         if New_Action = CLEARTRASH then
+            New_Action := SHOWTRASH;
          end if;
-         if NewAction = SHOWTRASH then
-            ToggleToolButtons(NewAction, True);
+         if New_Action = SHOWTRASH then
+            ToggleToolButtons(New_Action, True);
          end if;
-         NewAction := COPY;
+         New_Action := COPY;
       end if;
-      CurrentDirectory :=
+      Current_Directory :=
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
-      LoadDirectory(To_String(CurrentDirectory));
+      LoadDirectory(To_String(Current_Directory));
       UpdateDirectoryList(True);
-      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+      Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
       return TCL_OK;
    end GoToBookmark_Command;
 

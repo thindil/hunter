@@ -151,7 +151,7 @@ package body ActivateItems.UI is
       Replace_Substitutes_Loop :
       for I in Arguments'Range loop
          if Arguments(I).all = "@2" then
-            Arguments(I) := new String'(To_String(CurrentSelected));
+            Arguments(I) := new String'(To_String(Current_Selected));
          end if;
       end loop Replace_Substitutes_Loop;
       Pid :=

@@ -123,7 +123,7 @@ package body ShowItems is
 
    procedure ScaleImage is
       Image: constant Tk_Photo :=
-        Create("previewimage", "-file " & To_String(CurrentSelected));
+        Create("previewimage", "-file " & To_String(Current_Selected));
       TempImage: Tk_Photo := Create("tempimage");
       FrameWidth, FrameHeight, ImageWidth, ImageHeight, StartX,
       StartY: Natural;
@@ -194,14 +194,14 @@ package body ShowItems is
       Set(PreviewXScroll, "0.0", "1.0");
       Unautoscroll(PreviewYScroll);
       Set(PreviewYScroll, "0.0", "1.0");
-      if Is_Directory(To_String(CurrentSelected)) then
-         if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
+      if Is_Directory(To_String(Current_Selected)) then
+         if not Is_Read_Accessible_File(To_String(Current_Selected)) then
             ShowMessage
               (Mc
                  (Get_Context,
                   "{You don't have permissions to preview this directory.}"));
          end if;
-         LoadDirectory(To_String(CurrentSelected), True);
+         LoadDirectory(To_String(Current_Selected), True);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
@@ -225,7 +225,7 @@ package body ShowItems is
       else
          declare
             MimeType: constant String :=
-              GetMimeType(To_String(CurrentSelected));
+              GetMimeType(To_String(Current_Selected));
          begin
             if MimeType(1 .. 4) = "text" then
                declare
@@ -237,7 +237,7 @@ package body ShowItems is
                   StartIndex, EndIndex, StartColor: Natural;
                   procedure LoadFile is
                   begin
-                     Open(File, In_File, To_String(CurrentSelected));
+                     Open(File, In_File, To_String(Current_Selected));
                      Load_Simple_File :
                      while not End_Of_File(File) loop
                         FileLine := To_Unbounded_String(Get_Line(File));
@@ -314,7 +314,7 @@ package body ShowItems is
                         Value("HOME") &
                         "/.cache/hunter/highlight.tmp --base16 --style=" &
                         To_String(Settings.ColorTheme) & " " &
-                        To_String(CurrentSelected)).all,
+                        To_String(Current_Selected)).all,
                      Success);
                   if not Success then
                      LoadFile;
@@ -405,7 +405,7 @@ package body ShowItems is
                declare
                   Image: constant Tk_Photo :=
                     Create
-                      ("previewimage", "-file " & To_String(CurrentSelected));
+                      ("previewimage", "-file " & To_String(Current_Selected));
                   StartX, StartY, ImageWidth, ImageHeight: Natural;
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
@@ -497,7 +497,7 @@ package body ShowItems is
    procedure ShowInfo is
       -- ****
       Label: Ttk_Label := Get_Widget(PreviewFrame & ".title");
-      SelectedItem: constant String := To_String(CurrentSelected);
+      SelectedItem: constant String := To_String(Current_Selected);
       Button: Ttk_Button;
       MimeType: constant String := GetMimeType(SelectedItem);
       DirectorySize: Natural := 0;
@@ -764,31 +764,31 @@ package body ShowItems is
       Items: Unbounded_String;
       ActionButton: Ttk_RadioButton;
    begin
-      SelectedItems.Clear;
+      Selected_Items.Clear;
       Items := To_Unbounded_String(Selection(DirectoryTree));
       if Items /= Null_Unbounded_String then
          Create(Tokens, To_String(Items), " ");
          Set_Selected_List_Loop :
          for I in 1 .. Slice_Count(Tokens) loop
-            SelectedItems.Append
+            Selected_Items.Append
               (ItemsList(Positive'Value(Slice(Tokens, I))).Path);
          end loop Set_Selected_List_Loop;
       else
-         SelectedItems.Append(CurrentDirectory);
+         Selected_Items.Append(MainWindow.Current_Directory);
       end if;
       if not Settings.ShowPreview or
-        (SelectedItems(1) = CurrentSelected and
-         CurrentSelected /= CurrentDirectory) then
+        (Selected_Items(1) = Current_Selected and
+         Current_Selected /= MainWindow.Current_Directory) then
          return TCL_OK;
       end if;
-      CurrentSelected := SelectedItems(1);
-      if NewAction = CREATELINK then
+      Current_Selected := Selected_Items(1);
+      if New_Action = CREATELINK then
          return TCL_OK;
       end if;
       SetActionsButtons;
       ActionButton.Interp := Interp;
-      if Is_Directory(To_String(CurrentSelected)) or
-        Is_Regular_File(To_String(CurrentSelected)) then
+      if Is_Directory(To_String(Current_Selected)) or
+        Is_Regular_File(To_String(Current_Selected)) then
          ActionButton.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
       else
@@ -826,7 +826,7 @@ package body ShowItems is
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      SelectedItem: constant String := Full_Name(To_String(CurrentSelected));
+      SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       PermissionsString: Unbounded_String;
       Permission: Natural range 0 .. 7;
       Names: constant array(1 .. 3) of Unbounded_String :=
@@ -1060,7 +1060,7 @@ package body ShowItems is
       Frame.Name := New_String(PreviewFrame & ".title");
       configure
         (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
-      DestinationDirectory := CurrentDirectory;
+      DestinationDirectory := MainWindow.Current_Directory;
       LoadDirectory(To_String(DestinationDirectory), True);
       UpdateDirectoryList(True, "preview");
       Autoscroll(PreviewXScroll);

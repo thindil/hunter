@@ -188,7 +188,7 @@ package body ProgramsMenu is
                 (ExecutableName,
                  Argument_String_To_List
                    ("default " & Bookmarks_Container.Key(I) & " " &
-                    GetMimeType(To_String(CurrentSelected))).all);
+                    GetMimeType(To_String(Current_Selected))).all);
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                ShowMessage
                  (Mc(Interp, "{Could not set new associated program.}"));

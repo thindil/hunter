@@ -160,7 +160,7 @@ package body MainWindow.Commands is
       SavePreferences;
       Execute_Modules(On_Quit);
       if Settings.ClearTrashOnExit then
-         NewAction := CLEARTRASH;
+         New_Action := CLEARTRASH;
          if DeleteSelected then
             null;
          end if;
@@ -208,14 +208,14 @@ package body MainWindow.Commands is
          State(Button, "!selected");
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
-         ToggleToolButtons(NewAction, True);
-         if NewAction = CREATELINK then
-            NewAction := COPY;
+         ToggleToolButtons(New_Action, True);
+         if New_Action = CREATELINK then
+            New_Action := COPY;
             ShowPreview;
          end if;
          if State(Button) = "selected" then
             State(Button, "!selected");
-            NewAction := COPY;
+            New_Action := COPY;
          end if;
          Delete(TextEntry, "0", "end");
          Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
@@ -352,14 +352,14 @@ package body MainWindow.Commands is
       pragma Unreferenced(ClientData, Argc, Argv);
       ActionButton: Ttk_Button;
    begin
-      ToggleToolButtons(NewAction, True);
+      ToggleToolButtons(New_Action, True);
       ActionButton.Interp := Interp;
-      if NewAction = COPY then
+      if New_Action = COPY then
          CopyItemsList.Clear;
          ActionButton.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.copybutton");
          ShowPreview;
-      elsif NewAction = MOVE then
+      elsif New_Action = MOVE then
          MoveItemsList.Clear;
          ActionButton.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.movebutton");
@@ -467,20 +467,20 @@ package body MainWindow.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
    begin
-      CurrentDirectory :=
+      Current_Directory :=
         To_Unbounded_String
           (Normalize_Pathname
              (Containing_Directory(Containing_Directory(Command_Name))));
       if Ada.Directories.Exists
           (Value("APPDIR", "") & "/usr/share/doc/hunter") then
-         CurrentDirectory :=
+         Current_Directory :=
            To_Unbounded_String(Value("APPDIR", "") & "/usr/share/doc/hunter");
       end if;
-      LoadDirectory(To_String(CurrentDirectory));
+      LoadDirectory(To_String(Current_Directory));
       Set_Current_Selected_Loop :
       for I in ItemsList.Iterate loop
          if ItemsList(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
-            CurrentSelected := ItemsList(I).Path;
+            Current_Selected := ItemsList(I).Path;
             exit Set_Current_Selected_Loop;
          end if;
       end loop Set_Current_Selected_Loop;

@@ -101,51 +101,51 @@ package body Messages is
       Response: constant String := CArgv.Arg(Argv, 1);
    begin
       YesForAll := (if Response = "yesall" then True else False);
-      case NewAction is
+      case New_Action is
          when DELETE | CLEARTRASH | DELETETRASH =>
-            if NewAction /= CLEARTRASH then
-               SetProgressBar(Positive(SelectedItems.Length));
+            if New_Action /= CLEARTRASH then
+               SetProgressBar(Positive(Selected_Items.Length));
             end if;
             if Response = "yes" then
                begin
                   if DeleteSelected then
-                     CurrentDirectory :=
+                     Current_Directory :=
                        To_Unbounded_String
                          (Normalize_Pathname
-                            (To_String(CurrentDirectory) & "/.."));
+                            (To_String(Current_Directory) & "/.."));
                   end if;
                exception
                   when others =>
-                     LoadDirectory(To_String(CurrentDirectory));
+                     LoadDirectory(To_String(Current_Directory));
                      UpdateDirectoryList(True);
                      return TCL_OK;
                end;
-               if NewAction = CLEARTRASH then
+               if New_Action = CLEARTRASH then
                   Tcl.Ada.Tcl_Eval
                     (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
-               elsif NewAction = DELETETRASH then
-                  ToggleToolButtons(NewAction, True);
+               elsif New_Action = DELETETRASH then
+                  ToggleToolButtons(New_Action, True);
                   if Close_Command(ClientData, Interp, Argc, Argv) =
                     TCL_OK then
                      return Show_Trash_Command(ClientData, Interp, Argc, Argv);
                   end if;
                else
-                  LoadDirectory(To_String(CurrentDirectory));
+                  LoadDirectory(To_String(Current_Directory));
                   UpdateDirectoryList(True);
-                  UpdateWatch(To_String(CurrentDirectory));
+                  UpdateWatch(To_String(Current_Directory));
                   Tcl.Ada.Tcl_Eval(Get_Context, "ShowSelected");
                   Tcl.Ada.Tcl_Eval(Get_Context, "update");
                end if;
             end if;
-            ToggleToolButtons(NewAction, True);
+            ToggleToolButtons(New_Action, True);
             if Settings.ShowFinishedInfo then
-               if NewAction = DELETE and not Settings.DeleteFiles then
+               if New_Action = DELETE and not Settings.DeleteFiles then
                   ShowMessage
                     (Mc
                        (Interp,
                         "{All selected files and directories have been moved to Trash.}"),
                      "message");
-               elsif NewAction = CLEARTRASH then
+               elsif New_Action = CLEARTRASH then
                   ShowMessage
                     (Mc(Interp, "{Trash have been cleared.}"), "message");
                else
@@ -160,8 +160,8 @@ package body Messages is
             end if;
          when COPY =>
             if Response = "noall" then
-               ToggleToolButtons(NewAction, True);
-               LoadDirectory(To_String(CurrentDirectory));
+               ToggleToolButtons(New_Action, True);
+               LoadDirectory(To_String(Current_Directory));
                UpdateDirectoryList(True);
                return Close_Command(ClientData, Interp, Argc, Argv);
             elsif Response = "no" then
@@ -172,8 +172,8 @@ package body Messages is
             return Close_Command(ClientData, Interp, Argc, Argv);
          when MOVE =>
             if Response = "noall" then
-               ToggleToolButtons(NewAction, True);
-               LoadDirectory(To_String(CurrentDirectory));
+               ToggleToolButtons(New_Action, True);
+               LoadDirectory(To_String(Current_Directory));
                UpdateDirectoryList(True);
                return Close_Command(ClientData, Interp, Argc, Argv);
             elsif Response = "no" then
@@ -260,7 +260,7 @@ package body Messages is
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name := New_String(To_String(ButtonsNames(2)));
          Tcl.Tk.Ada.Grid.Grid(Button);
-         if NewAction not in DELETE | CLEARTRASH | DELETETRASH then
+         if New_Action not in DELETE | CLEARTRASH | DELETETRASH then
             Button.Name := New_String(To_String(ButtonsNames(3)));
             Tcl.Tk.Ada.Grid.Grid(Button);
             Button.Name := New_String(To_String(ButtonsNames(4)));

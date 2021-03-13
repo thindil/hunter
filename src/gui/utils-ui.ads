@@ -90,7 +90,7 @@ package Utils.UI is
    -- Finished - If true, action was finished. Default is False
    -- SOURCE
    procedure ToggleToolButtons
-     (Action: ItemActions; Finished: Boolean := False);
+     (Action: Item_Actions; Finished: Boolean := False);
    -- ****
 
 end Utils.UI;

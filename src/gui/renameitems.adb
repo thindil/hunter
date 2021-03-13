@@ -73,7 +73,7 @@ package body RenameItems is
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name := New_String(TextFrame & ".okbutton");
          configure(Button, "-command Rename");
-         if Is_Directory(To_String(CurrentSelected)) then
+         if Is_Directory(To_String(Current_Selected)) then
             Add
               (Button,
                Mc(Interp, "{Set a new name for the selected directory.}"));
@@ -91,11 +91,11 @@ package body RenameItems is
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
          State(Button, "selected");
          Unbind(TextEntry, "<KeyRelease>");
-         Insert(TextEntry, "end", Simple_Name(To_String(CurrentSelected)));
+         Insert(TextEntry, "end", Simple_Name(To_String(Current_Selected)));
          Focus(TextEntry);
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
-         NewAction := RENAME;
-         ToggleToolButtons(NewAction);
+         New_Action := RENAME;
+         ToggleToolButtons(New_Action);
       else
          if Invoke(Button) /= "" then
             raise Hunter_Rename_Exception
@@ -136,7 +136,7 @@ package body RenameItems is
       NewName, ActionBlocker: Unbounded_String;
       Success: Boolean;
    begin
-      NewName := CurrentDirectory & "/" & To_Unbounded_String(Get(TextEntry));
+      NewName := MainWindow.Current_Directory & "/" & To_Unbounded_String(Get(TextEntry));
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
          ActionBlocker :=
@@ -145,7 +145,7 @@ package body RenameItems is
             else To_Unbounded_String(Mc(Interp, "{file}")));
          ShowMessage
            (Mc(Interp, "{You can't rename}") & " " &
-            To_String(CurrentSelected) & " " & Mc(Interp, "{to}") & " " &
+            To_String(Current_Selected) & " " & Mc(Interp, "{to}") & " " &
             To_String(NewName) & " " & Mc(Interp, "{because there exists}") &
             " " & To_String(ActionBlocker) & " " &
             Mc(Interp, "{with that name}"));
@@ -158,17 +158,17 @@ package body RenameItems is
             To_String(NewName));
          return TCL_OK;
       end if;
-      Rename_File(To_String(CurrentSelected), To_String(NewName), Success);
+      Rename_File(To_String(Current_Selected), To_String(NewName), Success);
       if not Success then
          ShowMessage
-           (Mc(Interp, "{Can't rename}") & " " & To_String(CurrentSelected) &
+           (Mc(Interp, "{Can't rename}") & " " & To_String(Current_Selected) &
             ".");
          return TCL_OK;
       end if;
-      CurrentSelected := NewName;
-      LoadDirectory(To_String(CurrentDirectory));
+      Current_Selected := NewName;
+      LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
-      UpdateWatch(To_String(CurrentDirectory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       return Toggle_Rename_Command(ClientData, Interp, Argc, Argv);
    end Rename_Command;
 

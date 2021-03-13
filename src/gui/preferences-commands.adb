@@ -260,7 +260,7 @@ package body Preferences.Commands is
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      MimeType: constant String := GetMimeType(To_String(CurrentSelected));
+      MimeType: constant String := GetMimeType(To_String(Current_Selected));
    begin
       Settings.ScaleImages :=
         (if
@@ -304,7 +304,7 @@ package body Preferences.Commands is
         Get_Widget
           (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme",
            Interp);
-      MimeType: constant String := GetMimeType(To_String(CurrentSelected));
+      MimeType: constant String := GetMimeType(To_String(Current_Selected));
    begin
       if Tcl_GetVar
           (Interp,
@@ -350,7 +350,7 @@ package body Preferences.Commands is
         Get_Widget
           (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme",
            Interp);
-      MimeType: constant String := GetMimeType(To_String(CurrentSelected));
+      MimeType: constant String := GetMimeType(To_String(Current_Selected));
    begin
       Settings.ColorTheme := To_Unbounded_String(Get(ComboBox));
       if MimeType(1 .. 4) = "text" then
@@ -656,7 +656,7 @@ package body Preferences.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       Frame: Ttk_Frame := Get_Widget(".mainframe", Interp);
-      CurrentDir: constant String := Current_Directory;
+      CurrentDir: constant String := Ada.Directories.Current_Directory;
       Row: Positive := 1;
       Label: Ttk_Label;
       ModulesFrame: constant Ttk_Frame :=
@@ -877,7 +877,7 @@ package body Preferences.Commands is
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".mainframe");
       Tcl.Tk.Ada.Grid.Grid(Frame);
-      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+      Execute_Modules(On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
       return TCL_OK;
    end Close_Preferences_Command;
 
@@ -965,7 +965,7 @@ package body Preferences.Commands is
          To_Unbounded_String("list-addicon"),
          To_Unbounded_String("list-removeicon"), To_Unbounded_String("ok"));
       Image: Ttk_Frame;
-      CurrentDir: constant String := Current_Directory;
+      CurrentDir: constant String := Ada.Directories.Current_Directory;
    begin
       Set_Directory(Containing_Directory(Command_Name));
       ToolbarSize := Natural'Value(Current(ComboBox));
@@ -1382,14 +1382,14 @@ package body Preferences.Commands is
         TCL_ERROR then
          return TCL_ERROR;
       end if;
-      CurrentDirectory :=
+      MainWindow.Current_Directory :=
         To_Unbounded_String
           (Normalize_Pathname
              (CArgv.Arg(Argv, 1), Containing_Directory(Command_Name)));
-      LoadDirectory(To_String(CurrentDirectory));
-      CurrentSelected := CurrentDirectory & "/" & ItemsList(1).Name;
+      LoadDirectory(To_String(MainWindow.Current_Directory));
+      Current_Selected := MainWindow.Current_Directory & "/" & ItemsList(1).Name;
       UpdateDirectoryList(True);
-      UpdateWatch(To_String(CurrentDirectory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;
       return TCL_OK;
    end Show_Module_Command;
