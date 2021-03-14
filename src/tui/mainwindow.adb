@@ -120,7 +120,8 @@ package body MainWindow is
          MainWindow.Current_Directory := To_Unbounded_String(Directory);
       else
          MainWindow.Current_Directory := To_Unbounded_String(Value("HOME"));
-         if not Ada.Directories.Exists(To_String(MainWindow.Current_Directory)) then
+         if not Ada.Directories.Exists
+             (To_String(MainWindow.Current_Directory)) then
             MainWindow.Current_Directory := To_Unbounded_String("/");
          end if;
       end if;
@@ -142,7 +143,8 @@ package body MainWindow is
    begin
       Terminal_Interface.Curses.Clear(PathButtons);
       MainWindow.Current_Directory :=
-        To_Unbounded_String(Normalize_Pathname(To_String(MainWindow.Current_Directory)));
+        To_Unbounded_String
+          (Normalize_Pathname(To_String(MainWindow.Current_Directory)));
       Index := Count(MainWindow.Current_Directory, "/") + 1;
       if MainWindow.Current_Directory /= To_Unbounded_String("/") then
          Path_Items := new Item_Array(1 .. Index + 1);
@@ -307,7 +309,8 @@ package body MainWindow is
             LoadDirectory(To_String(MainWindow.Current_Directory));
             UpdateDirectoryList(True);
             UpdateWatch(To_String(MainWindow.Current_Directory));
-            Execute_Modules(On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+            Execute_Modules
+              (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
             return DIRECTORY_VIEW;
          when others =>
             null;
