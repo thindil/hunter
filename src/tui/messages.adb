@@ -139,12 +139,12 @@ package body Messages is
    begin
       case Key is
          when 65 | KEY_UP =>
-            if NewAction = COPY then
+            if New_Action = COPY then
                Result := Driver(DialogForm, F_Previous_Field);
                Result := Driver(DialogForm, F_End_Line);
             end if;
          when 66 | KEY_DOWN =>
-            if NewAction = COPY then
+            if New_Action = COPY then
                Result := Driver(DialogForm, F_Next_Field);
                Result := Driver(DialogForm, F_End_Line);
             end if;
@@ -153,24 +153,24 @@ package body Messages is
             Post(DialogForm, False);
             Delete(DialogForm);
             if Option in "[Close]" | "[No for all]" then
-               NewAction := CREATEFILE;
+               New_Action := CREATEFILE;
                CreateProgramMenu(True);
                UpdateDirectoryList(True);
                return DIRECTORY_VIEW;
             elsif Option = "[Yes for all]" then
                YesForAll := True;
             elsif Option = "[No]" then
-               if NewAction = COPY then
+               if New_Action = COPY then
                   if SkipCopying = DIRECTORY_VIEW then
-                     NewAction := CREATEFILE;
+                     New_Action := CREATEFILE;
                      CreateProgramMenu(True);
                      UpdateDirectoryList(True);
                      return DIRECTORY_VIEW;
                   end if;
                   return MESSAGE_FORM;
-               elsif NewAction = MOVE then
+               elsif New_Action = MOVE then
                   if SkipMoving = DIRECTORY_VIEW then
-                     NewAction := CREATEFILE;
+                     New_Action := CREATEFILE;
                      CreateProgramMenu(True);
                      UpdateDirectoryList(True);
                      return DIRECTORY_VIEW;
@@ -178,17 +178,17 @@ package body Messages is
                   return MESSAGE_FORM;
                end if;
             end if;
-            if NewAction = COPY then
+            if New_Action = COPY then
                if CopySelected(Overwrite) = DIRECTORY_VIEW then
-                  NewAction := CREATEFILE;
+                  New_Action := CREATEFILE;
                   CreateProgramMenu(True);
                   UpdateDirectoryList(True);
                   return DIRECTORY_VIEW;
                end if;
                return MESSAGE_FORM;
-            elsif NewAction = MOVE then
+            elsif New_Action = MOVE then
                if MoveSelected(Overwrite) = DIRECTORY_VIEW then
-                  NewAction := CREATEFILE;
+                  New_Action := CREATEFILE;
                   CreateProgramMenu(True);
                   UpdateDirectoryList(True);
                   return DIRECTORY_VIEW;

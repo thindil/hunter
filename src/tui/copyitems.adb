@@ -102,7 +102,7 @@ package body CopyItems is
       Path, ItemType: Unbounded_String;
       Success: Boolean := True;
    begin
-      if DestinationDirectory = CurrentDirectory then
+      if DestinationDirectory = MainWindow.Current_Directory then
          UpdateDirectoryList(True);
          return DIRECTORY_VIEW;
       end if;
@@ -143,11 +143,11 @@ package body CopyItems is
             "message");
          return MESSAGE_FORM;
       end if;
-      CurrentDirectory :=
+      MainWindow.Current_Directory :=
         (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
-      LoadDirectory(To_String(CurrentDirectory));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
-      UpdateWatch(To_String(CurrentDirectory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       return DIRECTORY_VIEW;
    end CopySelected;
 

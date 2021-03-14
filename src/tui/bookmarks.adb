@@ -156,7 +156,7 @@ package body Bookmarks is
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer(Create_Fields.all(2), 0, To_String(CurrentDirectory));
+      Set_Buffer(Create_Fields.all(2), 0, To_String(MainWindow.Current_Directory));
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
@@ -196,17 +196,17 @@ package body Bookmarks is
          return DIRECTORY_VIEW;
       end if;
       if BookmarksList.Contains(Bookmark) then
-         CurrentDirectory := To_Unbounded_String(BookmarksList(Bookmark));
+         MainWindow.Current_Directory := To_Unbounded_String(BookmarksList(Bookmark));
       elsif Bookmark = Mc(Interpreter, "{Home}") then
-         CurrentDirectory := To_Unbounded_String(Value("HOME"));
+         MainWindow.Current_Directory := To_Unbounded_String(Value("HOME"));
       else
          ShowBookmarksForm;
          return BOOKMARKS_FORM;
       end if;
-      LoadDirectory(To_String(CurrentDirectory));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
-      UpdateWatch(To_String(CurrentDirectory));
-      Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+      UpdateWatch(To_String(MainWindow.Current_Directory));
+      Execute_Modules(On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
       return DIRECTORY_VIEW;
    end Go_To_Bookmark;
 
@@ -234,13 +234,13 @@ package body Bookmarks is
                      " doesn't exists.");
                   return MESSAGE_FORM;
                end if;
-               CurrentDirectory :=
+               MainWindow.Current_Directory :=
                  To_Unbounded_String
                    (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
-               LoadDirectory(To_String(CurrentDirectory));
-               UpdateWatch(To_String(CurrentDirectory));
+               LoadDirectory(To_String(MainWindow.Current_Directory));
+               UpdateWatch(To_String(MainWindow.Current_Directory));
                Execute_Modules
-                 (On_Enter, "{" & To_String(CurrentDirectory) & "}");
+                 (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
             end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);

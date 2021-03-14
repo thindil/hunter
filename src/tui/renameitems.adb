@@ -63,7 +63,7 @@ package body RenameItems is
          Tcl_SetResult(Interp, "1");
          return TCL_OK;
       end if;
-      NewName := CurrentDirectory & "/" & CArgv.Arg(Argv, 1);
+      NewName := MainWindow.Current_Directory & "/" & CArgv.Arg(Argv, 1);
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
          ActionBlocker :=
@@ -72,7 +72,7 @@ package body RenameItems is
             else To_Unbounded_String(Mc(Interp, "{file}")));
          ShowMessage
            (Mc(Interp, "{You can't rename}") & " " &
-            To_String(CurrentSelected) & " " & Mc(Interp, "{to}") & " " &
+            To_String(Current_Selected) & " " & Mc(Interp, "{to}") & " " &
             To_String(NewName) & " " & Mc(Interp, "{because there exists}") &
             " " & To_String(ActionBlocker) & " " &
             Mc(Interp, "{with that name}"));
@@ -87,17 +87,17 @@ package body RenameItems is
          Tcl_SetResult(Interp, "0");
          return TCL_OK;
       end if;
-      Rename_File(To_String(CurrentSelected), To_String(NewName), Success);
+      Rename_File(To_String(Current_Selected), To_String(NewName), Success);
       if not Success then
          ShowMessage
-           (Mc(Interp, "{Can't rename}") & " " & To_String(CurrentSelected) &
+           (Mc(Interp, "{Can't rename}") & " " & To_String(Current_Selected) &
             ".");
          return TCL_OK;
       end if;
-      CurrentSelected := NewName;
-      LoadDirectory(To_String(CurrentDirectory));
+      Current_Selected := NewName;
+      LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
-      UpdateWatch(To_String(CurrentDirectory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       Tcl_SetResult(Interp, "1");
       return TCL_OK;
    end Rename_Command;
@@ -126,7 +126,7 @@ package body RenameItems is
       Set_Options(Rename_Fields.all(1), FieldOptions);
       Rename_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer
-        (Rename_Fields.all(2), 0, Simple_Name(To_String(CurrentSelected)));
+        (Rename_Fields.all(2), 0, Simple_Name(To_String(Current_Selected)));
       FieldOptions := Get_Options(Rename_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Rename_Fields.all(2), FieldOptions);

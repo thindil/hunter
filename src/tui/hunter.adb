@@ -55,7 +55,7 @@ procedure Hunter is
       SavePreferences;
       Execute_Modules(On_Quit);
       if Settings.ClearTrashOnExit then
-         NewAction := CLEARTRASH;
+         New_Action := CLEARTRASH;
          if DeleteSelected then
             null;
          end if;
@@ -142,7 +142,7 @@ begin
             when PATH_BUTTONS =>
                UILocation := MAIN_MENU;
             when MAIN_MENU =>
-               if NewAction /= COPY then
+               if New_Action /= COPY then
                   UILocation := PREVIEW;
                else
                   UILocation := DESTINATION_VIEW;

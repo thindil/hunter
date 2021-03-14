@@ -58,7 +58,7 @@ package body ShowItems is
    -- SOURCE
    procedure ShowInfo is
       -- ****
-      SelectedItem: constant String := To_String(CurrentSelected);
+      SelectedItem: constant String := To_String(Current_Selected);
       DirectorySize: Natural := 0;
       MimeType: constant String := GetMimeType(SelectedItem);
    begin
@@ -228,15 +228,15 @@ package body ShowItems is
       Clear(PreviewWindow);
       Box(PreviewWindow, Default_Character, Default_Character);
       Refresh(PreviewWindow);
-      if Is_Directory(To_String(CurrentSelected)) then
-         if not Is_Read_Accessible_File(To_String(CurrentSelected)) then
+      if Is_Directory(To_String(Current_Selected)) then
+         if not Is_Read_Accessible_File(To_String(Current_Selected)) then
             ShowMessage
               (Mc
                  (Interpreter,
                   "{You don't have permissions to preview this directory.}"));
             return;
          end if;
-         LoadDirectory(To_String(CurrentSelected), True);
+         LoadDirectory(To_String(Current_Selected), True);
          PreviewPad :=
            New_Pad
              (Line_Position(SecondItemsList.Length) + 1, (Columns / 2) - 1);
@@ -255,7 +255,7 @@ package body ShowItems is
       else
          declare
             MimeType: constant String :=
-              GetMimeType(To_String(CurrentSelected));
+              GetMimeType(To_String(Current_Selected));
          begin
             if MimeType(1 .. 4) = "text" then
                PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 1);
@@ -275,7 +275,7 @@ package body ShowItems is
                      FileLine: String(1 .. LineLength);
                      Amount: Natural;
                   begin
-                     Open(File, In_File, To_String(CurrentSelected));
+                     Open(File, In_File, To_String(Current_Selected));
                      Load_Text_File_View_Loop :
                      while not End_Of_File(File) loop
                         Get_Line(File, FileLine, Amount);
@@ -340,7 +340,7 @@ package body ShowItems is
                         Value("HOME") &
                         "/.cache/hunter/highlight.tmp --base16 --style=" &
                         To_String(Settings.ColorTheme) & " " &
-                        To_String(CurrentSelected)).all,
+                        To_String(Current_Selected)).all,
                      Success);
                   if not Success then
                      LoadFile;
@@ -519,20 +519,20 @@ package body ShowItems is
             end if;
          end loop Update_Selected_Items_Loop;
       else
-         SelectedItems.Append(CurrentDirectory);
+         SelectedItems.Append(MainWindow.Current_Directory);
       end if;
       if not Settings.ShowPreview or
-        (SelectedItems(1) = CurrentSelected and
-         CurrentSelected /= CurrentDirectory) then
+        (SelectedItems(1) = Current_Selected and
+         Current_Selected /= MainWindow.Current_Directory) then
          return;
       end if;
-      CurrentSelected :=
-        CurrentDirectory & "/" & Description(Current(DirectoryList));
-      if NewAction = CREATELINK then
+      Current_Selected :=
+        MainWindow.Current_Directory & "/" & Description(Current(DirectoryList));
+      if New_Action = CREATELINK then
          return;
       end if;
-      if Is_Directory(To_String(CurrentSelected)) or
-        Is_Regular_File(To_String(CurrentSelected)) then
+      if Is_Directory(To_String(Current_Selected)) or
+        Is_Regular_File(To_String(Current_Selected)) then
          ShowPreview;
       else
          ShowInfo;
