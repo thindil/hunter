@@ -100,7 +100,8 @@ begin
    if Argument_Count < 1 then
       Create_Main_Window(Directory => Value(Name => "HOME"));
    else
-      Create_Main_Window(Directory => Full_Name(Name => Argument(Number => 1)));
+      Create_Main_Window
+        (Directory => Full_Name(Name => Argument(Number => 1)));
    end if;
 
    --  Loop inside Tk, waiting for commands to execute.
