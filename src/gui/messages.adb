@@ -117,7 +117,7 @@ package body Messages is
                exception
                   when others =>
                      LoadDirectory(To_String(Current_Directory));
-                     UpdateDirectoryList(True);
+                     Update_Directory_List(True);
                      return TCL_OK;
                end;
                if New_Action = CLEARTRASH then
@@ -131,7 +131,7 @@ package body Messages is
                   end if;
                else
                   LoadDirectory(To_String(Current_Directory));
-                  UpdateDirectoryList(True);
+                  Update_Directory_List(True);
                   UpdateWatch(To_String(Current_Directory));
                   Tcl.Ada.Tcl_Eval(Get_Context, "ShowSelected");
                   Tcl.Ada.Tcl_Eval(Get_Context, "update");
@@ -162,7 +162,7 @@ package body Messages is
             if Response = "noall" then
                ToggleToolButtons(New_Action, True);
                LoadDirectory(To_String(Current_Directory));
-               UpdateDirectoryList(True);
+               Update_Directory_List(True);
                return Close_Command(ClientData, Interp, Argc, Argv);
             elsif Response = "no" then
                SkipCopying;
@@ -174,7 +174,7 @@ package body Messages is
             if Response = "noall" then
                ToggleToolButtons(New_Action, True);
                LoadDirectory(To_String(Current_Directory));
-               UpdateDirectoryList(True);
+               Update_Directory_List(True);
                return Close_Command(ClientData, Interp, Argc, Argv);
             elsif Response = "no" then
                SkipMoving;

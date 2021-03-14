@@ -71,7 +71,7 @@ with Utils; use Utils;
 
 package body MainWindow is
 
-   procedure CreateMainWindow(Directory: String) is
+   procedure Create_Main_Window(Directory: String) is
       Interp: constant Tcl.Tcl_Interp := Get_Context;
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Interp);
       CurrentDir: constant String := Ada.Directories.Current_Directory;
@@ -276,28 +276,28 @@ package body MainWindow is
       end if;
       LoadDirectory(To_String(Current_Directory));
       StartTimer(To_String(Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
       CreateShowItemsUI;
       SashPos
         (Paned, "0",
          Positive'Image(Positive(Float(Settings.WindowWidth) / 2.5)));
-   end CreateMainWindow;
+   end Create_Main_Window;
 
-   procedure UpdateDirectoryList
-     (Clear: Boolean := False; FrameName: String := "directory") is
+   procedure Update_Directory_List
+     (Clear: Boolean := False; Frame_Name: String := "directory") is
       SizeString, ItemIndex, SelectedIndex, Path, TimeString, PathCommand,
       PathShortcut, Shortcut, Tooltip, ButtonLabel: Unbounded_String;
       DirectoryTree: constant Ttk_Tree_View :=
-        Get_Widget(".mainframe.paned." & FrameName & "frame.directorytree");
+        Get_Widget(".mainframe.paned." & Frame_Name & "frame.directorytree");
       PathButtonsFrame: constant Ttk_Frame :=
-        Get_Widget(".mainframe.paned." & FrameName & "frame.pathframe");
+        Get_Widget(".mainframe.paned." & Frame_Name & "frame.pathframe");
       Tokens: Slice_Set;
       PathButton: Ttk_Button;
       Row, Width, Column: Natural := 0;
       List: Items_Container.Vector;
    begin
-      if FrameName = "directory" then
+      if Frame_Name = "directory" then
          List := ItemsList;
          PathCommand :=
            (if New_Action not in SHOWTRASH | DELETETRASH then
@@ -393,7 +393,7 @@ package body MainWindow is
                end loop Remove_Old_Path_Buttons_Loop;
             end if;
             -- Add new path buttons
-            if FrameName = "directory"
+            if Frame_Name = "directory"
               and then New_Action not in SHOWTRASH | DELETETRASH then
                Create(Tokens, To_String(Current_Directory), "/");
             else
@@ -502,6 +502,6 @@ package body MainWindow is
       else
          Selection_Set(DirectoryTree, "{}");
       end if;
-   end UpdateDirectoryList;
+   end Update_Directory_List;
 
 end MainWindow;

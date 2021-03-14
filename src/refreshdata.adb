@@ -146,7 +146,7 @@ package body RefreshData is
       end loop Check_Events_Loop;
       if RefreshList then
          Items_Sorting.Sort(ItemsList);
-         UpdateDirectoryList(True);
+         Update_Directory_List(True);
          RefreshList := False;
       end if;
       <<Clear_List>>

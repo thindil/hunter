@@ -169,7 +169,7 @@ package body RenameItems is
       end if;
       Current_Selected := NewName;
       LoadDirectory(To_String(MainWindow.Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       return Toggle_Rename_Command(ClientData, Interp, Argc, Argv);
    end Rename_Command;

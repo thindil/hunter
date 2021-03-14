@@ -150,7 +150,7 @@ package body Preferences.Commands is
            "0"
          then False
          else True);
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       return TCL_OK;
    end Set_Show_Hidden_Files_Command;
 
@@ -1390,7 +1390,7 @@ package body Preferences.Commands is
       LoadDirectory(To_String(MainWindow.Current_Directory));
       Current_Selected :=
         MainWindow.Current_Directory & "/" & ItemsList(1).Name;
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;
       return TCL_OK;

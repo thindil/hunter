@@ -126,11 +126,11 @@ package body MainWindow.Commands is
             Heading(DirectoryTree, "name", "-image {arrow-down}");
          end if;
          Items_Sorting.Sort(SecondItemsList);
-         UpdateDirectoryList(True, "preview");
+         Update_Directory_List(True, "preview");
          return TCL_OK;
       end if;
       Items_Sorting.Sort(ItemsList);
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       return TCL_OK;
    end Sort_Command;
 
@@ -257,7 +257,7 @@ package body MainWindow.Commands is
         Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
    begin
       if Selection(DirectoryTree) = Children(DirectoryTree, "{}") then
-         UpdateDirectoryList;
+         Update_Directory_List;
       else
          Selection_Set
            (DirectoryTree, "[list " & Children(DirectoryTree, "{}") & " ]");
@@ -484,7 +484,7 @@ package body MainWindow.Commands is
             exit Set_Current_Selected_Loop;
          end if;
       end loop Set_Current_Selected_Loop;
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       ShowPreview;
       return TCL_OK;
    end Show_File_Command;
