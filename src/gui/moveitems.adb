@@ -87,7 +87,8 @@ package body MoveItems is
             "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
          return TCL_OK;
       end if;
-      if not Is_Write_Accessible_File(To_String(MainWindow.Current_Directory)) then
+      if not Is_Write_Accessible_File
+          (To_String(MainWindow.Current_Directory)) then
          ShowMessage
            (Mc
               (Interp,
@@ -175,7 +176,8 @@ package body MoveItems is
       MainWindow.Current_Directory :=
         (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
       Current_Selected :=
-        MainWindow.Current_Directory & "/" & Simple_Name(To_String(Current_Selected));
+        MainWindow.Current_Directory & "/" &
+        Simple_Name(To_String(Current_Selected));
       LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));

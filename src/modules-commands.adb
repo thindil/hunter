@@ -230,7 +230,8 @@ package body Modules.Commands is
       Replace_Arguments_Loop :
       for I in Arguments'Range loop
          if Arguments(I).all = "@1" then
-            Arguments(I) := new String'(To_String(MainWindow.Current_Directory));
+            Arguments(I) :=
+              new String'(To_String(MainWindow.Current_Directory));
          elsif Arguments(I).all = "@2" then
             Arguments(I) := new String'(To_String(Current_Selected));
          end if;

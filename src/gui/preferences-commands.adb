@@ -877,7 +877,8 @@ package body Preferences.Commands is
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".mainframe");
       Tcl.Tk.Ada.Grid.Grid(Frame);
-      Execute_Modules(On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+      Execute_Modules
+        (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
       return TCL_OK;
    end Close_Preferences_Command;
 
@@ -1387,7 +1388,8 @@ package body Preferences.Commands is
           (Normalize_Pathname
              (CArgv.Arg(Argv, 1), Containing_Directory(Command_Name)));
       LoadDirectory(To_String(MainWindow.Current_Directory));
-      Current_Selected := MainWindow.Current_Directory & "/" & ItemsList(1).Name;
+      Current_Selected :=
+        MainWindow.Current_Directory & "/" & ItemsList(1).Name;
       UpdateDirectoryList(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;

@@ -120,7 +120,8 @@ package body DeleteItems is
             end if;
          else
             if Settings.DeleteFiles or New_Action = DELETETRASH then
-               Delete_File(To_String(MainWindow.Current_Directory & "/" & Item));
+               Delete_File
+                 (To_String(MainWindow.Current_Directory & "/" & Item));
             else
                MoveToTrash(MainWindow.Current_Directory & "/" & Item);
             end if;
@@ -181,7 +182,8 @@ package body DeleteItems is
       Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
          if Is_Directory
-             (To_String(MainWindow.Current_Directory & "/" & SelectedItems(I))) then
+             (To_String
+                (MainWindow.Current_Directory & "/" & SelectedItems(I))) then
             Append
               (DeleteList, "  " & SelectedItems(I) & "(and its content)" & LF);
          else

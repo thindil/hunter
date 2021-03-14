@@ -136,7 +136,9 @@ package body RenameItems is
       NewName, ActionBlocker: Unbounded_String;
       Success: Boolean;
    begin
-      NewName := MainWindow.Current_Directory & "/" & To_Unbounded_String(Get(TextEntry));
+      NewName :=
+        MainWindow.Current_Directory & "/" &
+        To_Unbounded_String(Get(TextEntry));
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
          ActionBlocker :=

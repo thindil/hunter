@@ -156,7 +156,8 @@ package body Bookmarks is
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer(Create_Fields.all(2), 0, To_String(MainWindow.Current_Directory));
+      Set_Buffer
+        (Create_Fields.all(2), 0, To_String(MainWindow.Current_Directory));
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
@@ -196,7 +197,8 @@ package body Bookmarks is
          return DIRECTORY_VIEW;
       end if;
       if BookmarksList.Contains(Bookmark) then
-         MainWindow.Current_Directory := To_Unbounded_String(BookmarksList(Bookmark));
+         MainWindow.Current_Directory :=
+           To_Unbounded_String(BookmarksList(Bookmark));
       elsif Bookmark = Mc(Interpreter, "{Home}") then
          MainWindow.Current_Directory := To_Unbounded_String(Value("HOME"));
       else
@@ -206,7 +208,8 @@ package body Bookmarks is
       LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
-      Execute_Modules(On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+      Execute_Modules
+        (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
       return DIRECTORY_VIEW;
    end Go_To_Bookmark;
 
@@ -240,7 +243,8 @@ package body Bookmarks is
                LoadDirectory(To_String(MainWindow.Current_Directory));
                UpdateWatch(To_String(MainWindow.Current_Directory));
                Execute_Modules
-                 (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+                 (On_Enter,
+                  "{" & To_String(MainWindow.Current_Directory) & "}");
             end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
