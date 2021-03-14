@@ -96,7 +96,7 @@ package body RenameItems is
       end if;
       Current_Selected := NewName;
       LoadDirectory(To_String(MainWindow.Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       Tcl_SetResult(Interp, "1");
       return TCL_OK;
@@ -186,7 +186,7 @@ package body RenameItems is
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
-               UpdateDirectoryList(True);
+               Update_Directory_List(True);
                return DIRECTORY_VIEW;
             end if;
          when others =>
