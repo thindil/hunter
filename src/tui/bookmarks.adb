@@ -193,7 +193,7 @@ package body Bookmarks is
    function Go_To_Bookmark(Bookmark: String) return UI_Locations is
    begin
       if Bookmark = "Close" then
-         UpdateDirectoryList;
+         Update_Directory_List;
          return DIRECTORY_VIEW;
       end if;
       if BookmarksList.Contains(Bookmark) then
@@ -206,7 +206,7 @@ package body Bookmarks is
          return BOOKMARKS_FORM;
       end if;
       LoadDirectory(To_String(MainWindow.Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       Execute_Modules
         (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
@@ -250,7 +250,7 @@ package body Bookmarks is
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
-               UpdateDirectoryList(True);
+               Update_Directory_List(True);
                return DIRECTORY_VIEW;
             end if;
          when others =>

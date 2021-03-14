@@ -127,10 +127,10 @@ package body MainWindow is
       end if;
       LoadDirectory(To_String(MainWindow.Current_Directory));
       StartTimer(To_String(MainWindow.Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
    end CreateMainWindow;
 
-   procedure UpdateDirectoryList(Clear: Boolean := False) is
+   procedure Update_Directory_List(Clear: Boolean := False) is
       Menu_Items: constant Item_Array_Access :=
         new Item_Array(ItemsList.First_Index .. ItemsList.Last_Index + 1);
       Index: Positive;
@@ -246,7 +246,7 @@ package body MainWindow is
       Refresh;
       Refresh(PathButtons);
       Refresh(ListWindow);
-   end UpdateDirectoryList;
+   end Update_Directory_List;
 
    function Directory_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result;
@@ -307,7 +307,7 @@ package body MainWindow is
                end if;
             end loop Update_Current_Directory_Loop;
             LoadDirectory(To_String(MainWindow.Current_Directory));
-            UpdateDirectoryList(True);
+            Update_Directory_List(True);
             UpdateWatch(To_String(MainWindow.Current_Directory));
             Execute_Modules
               (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
@@ -431,7 +431,7 @@ package body MainWindow is
                when 3 =>
                   if New_Action in COPY | MOVE | CREATELINK then
                      New_Action := CREATEFILE;
-                     UpdateDirectoryList;
+                     Update_Directory_List;
                      CreateProgramMenu;
                      Refresh(MenuWindow);
                      return DIRECTORY_VIEW;
@@ -467,7 +467,7 @@ package body MainWindow is
          when 10 =>
             Post(SubMenu, False);
             Delete(SubMenu);
-            UpdateDirectoryList;
+            Update_Directory_List;
             case CurrentIndex is
                when 1 =>
                   New_Action := CREATEDIRECTORY;

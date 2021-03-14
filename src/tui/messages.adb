@@ -155,7 +155,7 @@ package body Messages is
             if Option in "[Close]" | "[No for all]" then
                New_Action := CREATEFILE;
                CreateProgramMenu(True);
-               UpdateDirectoryList(True);
+               Update_Directory_List(True);
                return DIRECTORY_VIEW;
             elsif Option = "[Yes for all]" then
                YesForAll := True;
@@ -164,7 +164,7 @@ package body Messages is
                   if SkipCopying = DIRECTORY_VIEW then
                      New_Action := CREATEFILE;
                      CreateProgramMenu(True);
-                     UpdateDirectoryList(True);
+                     Update_Directory_List(True);
                      return DIRECTORY_VIEW;
                   end if;
                   return MESSAGE_FORM;
@@ -172,7 +172,7 @@ package body Messages is
                   if SkipMoving = DIRECTORY_VIEW then
                      New_Action := CREATEFILE;
                      CreateProgramMenu(True);
-                     UpdateDirectoryList(True);
+                     Update_Directory_List(True);
                      return DIRECTORY_VIEW;
                   end if;
                   return MESSAGE_FORM;
@@ -182,7 +182,7 @@ package body Messages is
                if CopySelected(Overwrite) = DIRECTORY_VIEW then
                   New_Action := CREATEFILE;
                   CreateProgramMenu(True);
-                  UpdateDirectoryList(True);
+                  Update_Directory_List(True);
                   return DIRECTORY_VIEW;
                end if;
                return MESSAGE_FORM;
@@ -190,7 +190,7 @@ package body Messages is
                if MoveSelected(Overwrite) = DIRECTORY_VIEW then
                   New_Action := CREATEFILE;
                   CreateProgramMenu(True);
-                  UpdateDirectoryList(True);
+                  Update_Directory_List(True);
                   return DIRECTORY_VIEW;
                end if;
                return MESSAGE_FORM;

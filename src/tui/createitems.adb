@@ -222,7 +222,7 @@ package body CreateItems is
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
-               UpdateDirectoryList(True);
+               Update_Directory_List(True);
                return DIRECTORY_VIEW;
             end if;
          when others =>
@@ -313,7 +313,7 @@ package body CreateItems is
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
-               UpdateDirectoryList(True);
+               Update_Directory_List(True);
                ShowPreview;
                CreateProgramMenu(True);
                return DIRECTORY_VIEW;

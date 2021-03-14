@@ -103,7 +103,7 @@ package body CopyItems is
       Success: Boolean := True;
    begin
       if DestinationDirectory = MainWindow.Current_Directory then
-         UpdateDirectoryList(True);
+         Update_Directory_List(True);
          return DIRECTORY_VIEW;
       end if;
       Copy_Items_Loop :
@@ -146,7 +146,7 @@ package body CopyItems is
       MainWindow.Current_Directory :=
         (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
       LoadDirectory(To_String(MainWindow.Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       return DIRECTORY_VIEW;
    end CopySelected;

@@ -143,13 +143,13 @@ package MainWindow is
    procedure CreateMainWindow(Directory: String);
    -- ****
 
-   -- ****f* MainWindowTUI/MainWindowTUI.UpdateDirectoryList
+   -- ****f* MainWindowTUI/MainWindowTUI.Update_Directory_List
    -- FUNCTION
    -- Update directory list
    -- PARAMETERS
    -- Clear - Clear current list of items
    -- SOURCE
-   procedure UpdateDirectoryList(Clear: Boolean := False);
+   procedure Update_Directory_List(Clear: Boolean := False);
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Directory_Keys
