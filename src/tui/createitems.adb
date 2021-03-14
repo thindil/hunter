@@ -67,14 +67,14 @@ package body CreateItems is
          Tcl_SetResult(Interp, "1");
          return TCL_OK;
       end if;
-      NewItemName := CurrentDirectory & "/" & CArgv.Arg(Argv, 1);
+      NewItemName := MainWindow.Current_Directory & "/" & CArgv.Arg(Argv, 1);
       if Exists(To_String(NewItemName)) or
         Is_Symbolic_Link(To_String(NewItemName)) then
-         if NewAction = CREATEFILE then
+         if New_Action = CREATEFILE then
             ActionString :=
               To_Unbounded_String
                 (Mc(Interp, "{create}") & " file " & Mc(Interp, "{with}"));
-         elsif NewAction = CREATEDIRECTORY then
+         elsif New_Action = CREATEDIRECTORY then
             ActionString :=
               To_Unbounded_String
                 (Mc(Interp, "{create}") & " directory " &
@@ -104,7 +104,7 @@ package body CreateItems is
          Tcl_SetResult(Interp, "0");
          return TCL_OK;
       end if;
-      case NewAction is
+      case New_Action is
          when CREATEDIRECTORY =>
             Create_Path(To_String(NewItemName));
          when CREATEFILE =>
@@ -127,12 +127,12 @@ package body CreateItems is
             raise Hunter_Create_Exception
               with Mc(Interp, "{Invalid action type}");
       end case;
-      if not Settings.StayInOld and then NewAction /= CREATELINK then
-         CurrentDirectory :=
+      if not Settings.StayInOld and then New_Action /= CREATELINK then
+         MainWindow.Current_Directory :=
            To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
       end if;
-      LoadDirectory(To_String(CurrentDirectory));
-      UpdateWatch(To_String(CurrentDirectory));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       Tcl_SetResult(Interp, "1");
       return TCL_OK;
    end Create_Item_Command;
@@ -309,7 +309,7 @@ package body CreateItems is
                end if;
             end if;
             if FieldIndex /= 2 then
-               NewAction := CREATEFILE;
+               New_Action := CREATEFILE;
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);

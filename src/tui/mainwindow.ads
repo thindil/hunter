@@ -26,11 +26,11 @@ with Tcl; use Tcl;
 package MainWindow is
 -- ****
 
-   -- ****v* MainWindowTUI/MainWindowTUI.CurrentDirectory
+   -- ****v* MainWindowTUI/MainWindowTUI.Current_Directory
    -- FUNCTION
    -- Currently selected directory to show
    -- SOURCE
-   CurrentDirectory: Unbounded_String;
+   Current_Directory: Unbounded_String;
    -- ****
 
    -- ****t* MainWindowTUI/MainWindowTUI.ItemActions
@@ -55,11 +55,11 @@ package MainWindow is
       GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
 
-   -- ****v* MainWindowTUI/MainWindowTUI.NewAction
+   -- ****v* MainWindowTUI/MainWindowTUI.New_Action
    -- FUNCTION
    -- Current performed action on files or directories
    -- SOURCE
-   NewAction: ItemActions;
+   New_Action: ItemActions;
    -- ****
 
    -- ****t* MainWindow/UI_Locations
@@ -102,11 +102,11 @@ package MainWindow is
    SelectedItems: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****v* MainWindowTUI/MainWindowTUI.CurrentSelected
+   -- ****v* MainWindowTUI/MainWindowTUI.Current_Selected
    -- FUNCTION
    -- Full path to currently selected file or directory
    -- SOURCE
-   CurrentSelected: Unbounded_String;
+   Current_Selected: Unbounded_String;
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.Interpreter

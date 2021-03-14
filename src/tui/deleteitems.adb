@@ -95,7 +95,7 @@ package body DeleteItems is
       Create_Path
         (Ada.Environment_Variables.Value("HOME") &
          "/.local/share/Trash/files");
-      if NewAction = CLEARTRASH then
+      if New_Action = CLEARTRASH then
          OldSetting := Settings.DeleteFiles;
          Settings.DeleteFiles := True;
          SelectedItems.Clear;
@@ -107,7 +107,7 @@ package body DeleteItems is
          UpdateProgressBar;
          if Is_Directory(To_String(Item)) then
             Arguments(2) := new String'(To_String(Item));
-            if Settings.DeleteFiles or NewAction = DELETETRASH then
+            if Settings.DeleteFiles or New_Action = DELETETRASH then
                Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
                if not Success then
                   raise Directory_Error with To_String(Item);
@@ -115,28 +115,28 @@ package body DeleteItems is
             else
                MoveToTrash(Item);
             end if;
-            if Item = CurrentDirectory then
+            if Item = MainWindow.Current_Directory then
                GoUp := True;
             end if;
          else
-            if Settings.DeleteFiles or NewAction = DELETETRASH then
-               Delete_File(To_String(CurrentDirectory & "/" & Item));
+            if Settings.DeleteFiles or New_Action = DELETETRASH then
+               Delete_File(To_String(MainWindow.Current_Directory & "/" & Item));
             else
-               MoveToTrash(CurrentDirectory & "/" & Item);
+               MoveToTrash(MainWindow.Current_Directory & "/" & Item);
             end if;
          end if;
-         if NewAction = DELETETRASH then
+         if New_Action = DELETETRASH then
             Delete_File
               (Ada.Environment_Variables.Value("HOME") &
                "/.local/share/Trash/info/" & Simple_Name(To_String(Item)) &
                ".trashinfo");
          end if;
       end loop Delete_Items_Loop;
-      if NewAction = CLEARTRASH then
+      if New_Action = CLEARTRASH then
          Settings.DeleteFiles := OldSetting;
       end if;
       SelectedItems.Clear;
-      CurrentSelected := CurrentDirectory;
+      Current_Selected := MainWindow.Current_Directory;
       return GoUp;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
@@ -181,7 +181,7 @@ package body DeleteItems is
       Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
          if Is_Directory
-             (To_String(CurrentDirectory & "/" & SelectedItems(I))) then
+             (To_String(MainWindow.Current_Directory & "/" & SelectedItems(I))) then
             Append
               (DeleteList, "  " & SelectedItems(I) & "(and its content)" & LF);
          else
@@ -216,7 +216,7 @@ package body DeleteItems is
       Set_Sub_Window
         (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
-      if Settings.DeleteFiles or NewAction = DELETETRASH then
+      if Settings.DeleteFiles or New_Action = DELETETRASH then
          Add(FormWindow, 1, 1, "Delete?");
       else
          Add(FormWindow, 1, 1, "Move to Trash?");
@@ -241,11 +241,11 @@ package body DeleteItems is
          when 10 =>
             if FieldIndex = 2 then
                if not DeleteSelected then
-                  LoadDirectory(To_String(CurrentDirectory));
+                  LoadDirectory(To_String(MainWindow.Current_Directory));
                else
                   LoadDirectory
                     (Ada.Directories.Containing_Directory
-                       (To_String(CurrentDirectory)));
+                       (To_String(MainWindow.Current_Directory)));
                end if;
             end if;
             Set_Cursor_Visibility(Visibility);

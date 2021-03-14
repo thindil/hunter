@@ -47,7 +47,7 @@ package body MainWindow is
    procedure CreateProgramMenu(Update: Boolean := False) is
    begin
       Terminal_Interface.Curses.Clear(MenuWindow);
-      case NewAction is
+      case New_Action is
          when COPY | MOVE | CREATELINK =>
             declare
                Menu_Items: constant Item_Array_Access :=
@@ -55,8 +55,8 @@ package body MainWindow is
             begin
                Menu_Items.all(1) := New_Item("Quit");
                Menu_Items.all(2) :=
-                 (if NewAction = COPY then New_Item("Copy selected")
-                  elsif NewAction = MOVE then New_Item("Move selected")
+                 (if New_Action = COPY then New_Item("Copy selected")
+                  elsif New_Action = MOVE then New_Item("Move selected")
                   else New_Item("Create link"));
                Menu_Items.all(3) := New_Item("Cancel");
                Menu_Items.all(4) := Null_Item;
@@ -117,15 +117,15 @@ package body MainWindow is
       CreateShowItemsUI;
       Create_Bookmarks_List;
       if Ada.Directories.Exists(Directory) then
-         CurrentDirectory := To_Unbounded_String(Directory);
+         MainWindow.Current_Directory := To_Unbounded_String(Directory);
       else
-         CurrentDirectory := To_Unbounded_String(Value("HOME"));
-         if not Ada.Directories.Exists(To_String(CurrentDirectory)) then
-            CurrentDirectory := To_Unbounded_String("/");
+         MainWindow.Current_Directory := To_Unbounded_String(Value("HOME"));
+         if not Ada.Directories.Exists(To_String(MainWindow.Current_Directory)) then
+            MainWindow.Current_Directory := To_Unbounded_String("/");
          end if;
       end if;
-      LoadDirectory(To_String(CurrentDirectory));
-      StartTimer(To_String(CurrentDirectory));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
+      StartTimer(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
    end CreateMainWindow;
 
@@ -141,13 +141,13 @@ package body MainWindow is
       Height: Line_Position;
    begin
       Terminal_Interface.Curses.Clear(PathButtons);
-      CurrentDirectory :=
-        To_Unbounded_String(Normalize_Pathname(To_String(CurrentDirectory)));
-      Index := Count(CurrentDirectory, "/") + 1;
-      if CurrentDirectory /= To_Unbounded_String("/") then
+      MainWindow.Current_Directory :=
+        To_Unbounded_String(Normalize_Pathname(To_String(MainWindow.Current_Directory)));
+      Index := Count(MainWindow.Current_Directory, "/") + 1;
+      if MainWindow.Current_Directory /= To_Unbounded_String("/") then
          Path_Items := new Item_Array(1 .. Index + 1);
          Path_Items.all(1) := New_Item("/");
-         Create(Tokens, To_String(CurrentDirectory), "/");
+         Create(Tokens, To_String(MainWindow.Current_Directory), "/");
          for I in 2 .. Slice_Count(Tokens) loop
             Path_Items.all(Positive(I)) := New_Item(Slice(Tokens, I));
          end loop;
@@ -180,7 +180,7 @@ package body MainWindow is
                goto End_Of_Loop;
             end if;
             Move(To_String(ItemsList(I).Name), Item_Entry);
-            Item := CurrentDirectory & "/" & ItemsList(I).Name;
+            Item := MainWindow.Current_Directory & "/" & ItemsList(I).Name;
             case ItemsList(I).Size is
                when -2 =>
                   Overwrite(Item_Entry, Item_Entry'Last - 8, "->");
@@ -208,7 +208,7 @@ package body MainWindow is
             end case;
             Menu_Items.all(Index) :=
               New_Item(Item_Entry, To_String(ItemsList(I).Name));
-            if Item = CurrentSelected then
+            if Item = Current_Selected then
                CurrentIndex := Index;
             end if;
             Index := Index + 1;
@@ -276,7 +276,7 @@ package body MainWindow is
       end case;
       if Result = Menu_Ok then
          Refresh(ListWindow);
-         if NewAction /= COPY then
+         if New_Action /= COPY then
             Show_Selected;
          end if;
       end if;
@@ -296,18 +296,18 @@ package body MainWindow is
          when 70 | Key_End =>
             Result := Driver(Path, M_Last_Item);
          when 10 =>
-            CurrentDirectory := To_Unbounded_String("/");
+            MainWindow.Current_Directory := To_Unbounded_String("/");
             Update_Current_Directory_Loop :
             for I in 2 .. Get_Index(Current(Path)) loop
-               Append(CurrentDirectory, Name(Items(Path, I)));
+               Append(MainWindow.Current_Directory, Name(Items(Path, I)));
                if I < Get_Index(Current(Path)) then
-                  Append(CurrentDirectory, "/");
+                  Append(MainWindow.Current_Directory, "/");
                end if;
             end loop Update_Current_Directory_Loop;
-            LoadDirectory(To_String(CurrentDirectory));
+            LoadDirectory(To_String(MainWindow.Current_Directory));
             UpdateDirectoryList(True);
-            UpdateWatch(To_String(CurrentDirectory));
-            Execute_Modules(On_Enter, "{" & To_String(CurrentDirectory) & "}");
+            UpdateWatch(To_String(MainWindow.Current_Directory));
+            Execute_Modules(On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
             return DIRECTORY_VIEW;
          when others =>
             null;
@@ -374,7 +374,7 @@ package body MainWindow is
                when 1 =>
                   return PATH_BUTTONS;
                when 2 =>
-                  if NewAction = COPY then
+                  if New_Action = COPY then
                      CopyItemsList.Clear;
                      if Item_Count(DirectoryList) > 0 then
                         Update_Copy_Items_Loop :
@@ -383,20 +383,20 @@ package body MainWindow is
                              Current(DirectoryList) =
                                Items(DirectoryList, I) then
                               CopyItemsList.Append
-                                (CurrentDirectory & "/" &
+                                (MainWindow.Current_Directory & "/" &
                                  Description(Items(DirectoryList, I)));
                            end if;
                         end loop Update_Copy_Items_Loop;
                      end if;
                      if CopySelected(OverwriteItem) = DIRECTORY_VIEW then
-                        NewAction := CREATEFILE;
+                        New_Action := CREATEFILE;
                         CreateProgramMenu;
                         Refresh(MenuWindow);
                         return DIRECTORY_VIEW;
                      else
                         return MESSAGE_FORM;
                      end if;
-                  elsif NewAction = MOVE then
+                  elsif New_Action = MOVE then
                      MoveItemsList.Clear;
                      if Item_Count(DirectoryList) > 0 then
                         Update_Move_Items_Loop :
@@ -405,20 +405,20 @@ package body MainWindow is
                              Current(DirectoryList) =
                                Items(DirectoryList, I) then
                               MoveItemsList.Append
-                                (CurrentDirectory & "/" &
+                                (MainWindow.Current_Directory & "/" &
                                  Description(Items(DirectoryList, I)));
                            end if;
                         end loop Update_Move_Items_Loop;
                      end if;
                      if MoveSelected(OverwriteItem) = DIRECTORY_VIEW then
-                        NewAction := CREATEFILE;
+                        New_Action := CREATEFILE;
                         CreateProgramMenu;
                         Refresh(MenuWindow);
                         return DIRECTORY_VIEW;
                      else
                         return MESSAGE_FORM;
                      end if;
-                  elsif NewAction = CREATELINK then
+                  elsif New_Action = CREATELINK then
                      Show_Create_Link_Form;
                      return CREATELINK_FORM;
                   else
@@ -426,8 +426,8 @@ package body MainWindow is
                      return BOOKMARKS_MENU;
                   end if;
                when 3 =>
-                  if NewAction in COPY | MOVE | CREATELINK then
-                     NewAction := CREATEFILE;
+                  if New_Action in COPY | MOVE | CREATELINK then
+                     New_Action := CREATEFILE;
                      UpdateDirectoryList;
                      CreateProgramMenu;
                      Refresh(MenuWindow);
@@ -467,44 +467,44 @@ package body MainWindow is
             UpdateDirectoryList;
             case CurrentIndex is
                when 1 =>
-                  NewAction := CREATEDIRECTORY;
+                  New_Action := CREATEDIRECTORY;
                   ShowCreateForm("directory");
                   return CREATE_FORM;
                when 2 =>
-                  NewAction := CREATEFILE;
+                  New_Action := CREATEFILE;
                   ShowCreateForm("file");
                   return CREATE_FORM;
                when 3 =>
-                  NewAction := CREATELINK;
+                  New_Action := CREATELINK;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
-                  DestinationDirectory := CurrentDirectory;
+                  DestinationDirectory := MainWindow.Current_Directory;
                   SecondItemsList := ItemsList;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 4 =>
-                  NewAction := RENAME;
+                  New_Action := RENAME;
                   ShowRenameForm;
                   return RENAME_FORM;
                when 5 =>
-                  NewAction := COPY;
+                  New_Action := COPY;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
-                  DestinationDirectory := CurrentDirectory;
+                  DestinationDirectory := MainWindow.Current_Directory;
                   SecondItemsList := ItemsList;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 6 =>
-                  NewAction := MOVE;
+                  New_Action := MOVE;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
-                  DestinationDirectory := CurrentDirectory;
+                  DestinationDirectory := MainWindow.Current_Directory;
                   SecondItemsList := ItemsList;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 7 =>
-                  NewAction :=
-                    (if NewAction /= SHOWTRASH then DELETE else DELETETRASH);
+                  New_Action :=
+                    (if New_Action /= SHOWTRASH then DELETE else DELETETRASH);
                   ShowDeleteForm;
                   return DELETE_FORM;
                when 8 =>

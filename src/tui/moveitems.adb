@@ -111,13 +111,13 @@ package body MoveItems is
             "message");
          return MESSAGE_FORM;
       end if;
-      CurrentDirectory :=
+      MainWindow.Current_Directory :=
         (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
-      CurrentSelected :=
-        CurrentDirectory & "/" & Simple_Name(To_String(CurrentSelected));
-      LoadDirectory(To_String(CurrentDirectory));
+      Current_Selected :=
+        MainWindow.Current_Directory & "/" & Simple_Name(To_String(Current_Selected));
+      LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateDirectoryList(True);
-      UpdateWatch(To_String(CurrentDirectory));
+      UpdateWatch(To_String(MainWindow.Current_Directory));
       return DIRECTORY_VIEW;
    end MoveSelected;
 
