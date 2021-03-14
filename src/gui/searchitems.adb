@@ -90,7 +90,7 @@ package body SearchItems is
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
          State(Button, "!selected");
-         UpdateDirectoryList;
+         Update_Directory_List;
       end if;
       return TCL_OK;
    end Toggle_Search_Command;
@@ -128,7 +128,7 @@ package body SearchItems is
    begin
       Query := To_Unbounded_String(Get(TextEntry));
       if Length(Query) = 0 then
-         UpdateDirectoryList;
+         Update_Directory_List;
          return TCL_OK;
       end if;
       Search_Item_Loop :

@@ -171,7 +171,7 @@ package body Trash.UI is
          <<End_Of_Loop>>
       end loop Read_Trash_Content_Loop;
       Close(Directory);
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       if ItemsList.Length = 0 then
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
          Button.Name :=

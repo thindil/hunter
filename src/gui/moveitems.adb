@@ -179,7 +179,7 @@ package body MoveItems is
         MainWindow.Current_Directory & "/" &
         Simple_Name(To_String(Current_Selected));
       LoadDirectory(To_String(MainWindow.Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;
       ToggleToolButtons(New_Action, True);

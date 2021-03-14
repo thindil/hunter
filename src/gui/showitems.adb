@@ -219,7 +219,7 @@ package body ShowItems is
            (PreviewTree, "-side top -fill both -expand true");
          Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
          Tcl_Eval(Get_Context, "update");
-         UpdateDirectoryList(True, "preview");
+         Update_Directory_List(True, "preview");
          Autoscroll(PreviewXScroll);
          Autoscroll(PreviewYScroll);
       else
@@ -901,7 +901,7 @@ package body ShowItems is
       end if;
       DestinationDirectory := SelectedItem;
       LoadDirectory(To_String(SelectedItem), True);
-      UpdateDirectoryList(True, "preview");
+      Update_Directory_List(True, "preview");
       Execute_Modules(On_Enter, "{" & To_String(DestinationDirectory) & "}");
       return TCL_OK;
    end GoToDirectory_Command;
@@ -1062,7 +1062,7 @@ package body ShowItems is
         (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
       DestinationDirectory := MainWindow.Current_Directory;
       LoadDirectory(To_String(DestinationDirectory), True);
-      UpdateDirectoryList(True, "preview");
+      Update_Directory_List(True, "preview");
       Autoscroll(PreviewXScroll);
       Autoscroll(PreviewYScroll);
    end ShowDestination;

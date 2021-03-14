@@ -137,7 +137,7 @@ package body Bookmarks.Commands.UI is
          return TCL_ERROR;
       end if;
       LoadDirectory(To_String(MainWindow.Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       return TCL_OK;
    end GoToDestination_Command;

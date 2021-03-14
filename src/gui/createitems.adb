@@ -184,7 +184,7 @@ package body CreateItems is
       end if;
       LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateWatch(To_String(MainWindow.Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       <<End_Of_Create>>
       if Invoke(Button) /= "" then
          return TCL_ERROR;

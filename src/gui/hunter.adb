@@ -98,9 +98,9 @@ begin
 
    -- Create the program main window
    if Argument_Count < 1 then
-      CreateMainWindow(Directory => Value(Name => "HOME"));
+      Create_Main_Window(Directory => Value(Name => "HOME"));
    else
-      CreateMainWindow(Directory => Full_Name(Name => Argument(Number => 1)));
+      Create_Main_Window(Directory => Full_Name(Name => Argument(Number => 1)));
    end if;
 
    --  Loop inside Tk, waiting for commands to execute.

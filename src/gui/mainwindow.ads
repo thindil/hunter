@@ -81,24 +81,27 @@ package MainWindow is
    Current_Selected: Unbounded_String;
    -- ****
 
-   -- ****f* MainWindow/MainWindow.CreateMainWindow
+   -- ****f* MainWindow/MainWindow.Create_Main_Window
    -- FUNCTION
    -- Create main window and show content of selected directory
    -- PARAMETERS
    -- Directory  - Full path to the directory which will be show at the
    --              program start
    -- SOURCE
-   procedure CreateMainWindow(Directory: String);
+   procedure Create_Main_Window(Directory: String);
    -- ****
 
-   -- ****f* MainWindow/MainWindow.UpdateDirectoryList
+   -- ****f* MainWindow/MainWindow.Update_Directory_List
    -- FUNCTION
    -- Update directory list
    -- PARAMETERS
-   -- Clear - Clear current list of items
+   -- Clear      - Clear current list of items
+   -- Frame_Name - The name of the frame to update. Default value is
+   --              "directory" which mean the frame with preview of the
+   --              current directory
    -- SOURCE
-   procedure UpdateDirectoryList
-     (Clear: Boolean := False; FrameName: String := "directory");
+   procedure Update_Directory_List
+     (Clear: Boolean := False; Frame_Name: String := "directory");
    -- ****
 
 end MainWindow;

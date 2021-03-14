@@ -80,7 +80,7 @@ package body ActivateItems is
                    (To_Unbounded_String
                       (Value("HOME") & "/.local/share/Trash/files")));
          end if;
-         UpdateDirectoryList(True);
+         Update_Directory_List(True);
          UpdateWatch(To_String(Current_Directory));
          Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
       else

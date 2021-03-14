@@ -161,7 +161,7 @@ package body Trash is
              (To_Unbounded_String
                 (Value("HOME") & "/.local/share/Trash/files")));
       LoadDirectory(To_String(MainWindow.Current_Directory));
-      UpdateDirectoryList(True);
+      Update_Directory_List(True);
       Execute_Modules
         (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
       return TCL_OK;
