@@ -52,6 +52,13 @@ package MainWindow is
       GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
 
+   -- ****d* MainWindow/MainWindow.Default_Item_Action
+   -- FUNCTION
+   -- Default action type for files and directories
+   -- SOURCE
+   Default_Item_Action: constant Item_Actions := CREATEFILE;
+   -- ****
+
    -- ****v* MainWindow/MainWindow.New_Action
    -- FUNCTION
    -- Current performed action on files or directories
@@ -63,8 +70,8 @@ package MainWindow is
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
    -- SOURCE
-   package UnboundedString_Container is new Vectors(Positive,
-      Unbounded_String);
+   package UnboundedString_Container is new Vectors(Index_Type => Positive,
+      Element_Type => Unbounded_String);
    -- ****
 
    -- ****v* MainWindow/MainWindow.Selected_Items
