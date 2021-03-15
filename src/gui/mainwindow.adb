@@ -96,8 +96,7 @@ package body MainWindow is
            DirectoryXScroll & " set} -yscrollcommand {" & DirectoryYScroll &
            " set}");
       HeaderLabel: constant Ttk_Label := Create(MainFrame & ".headerlabel");
-      IconName: Unbounded_String;
-      Icon, Image: Tk_Photo;
+      Image: Tk_Photo;
       IconsNames: constant array(1 .. 14) of Unbounded_String :=
         (To_Unbounded_String("emblem-symbolic-link"),
          To_Unbounded_String("application-x-executable"),
@@ -116,7 +115,7 @@ package body MainWindow is
         Create(MainFrame & ".progressbar", "-orient horizontal");
       TextFrame: constant Ttk_Frame := Create(MainFrame & ".textframe");
       TextEntry: constant Ttk_Entry := Create(TextFrame & ".textentry");
-      Button: Ttk_Button;
+      Button: Ttk_Button := Create(TextFrame & ".closebutton");
       PathButtonsFrame: constant Ttk_Frame :=
         Create(MainFrame & ".paned.directoryframe.pathframe");
       FileMenu: constant Tk_Menu := Create(".filemenu", "-tearoff false");
@@ -177,20 +176,22 @@ package body MainWindow is
           ("ok",
            "-file {../share/hunter/images/ok.svg} -format {svg -scaletoheight" &
            Natural'Image(Settings.ToolbarsSize) & "}");
-      IconName :=
-        (if
-           Ada.Directories.Exists
-             (Value("APPDIR", "") & "/usr/share/doc/hunter")
-         then To_Unbounded_String(Value("APPDIR", "") & "/hunter-icon.png")
-         else To_Unbounded_String
-             (Containing_Directory(Ada.Directories.Current_Directory) &
-              "/others/hunter-icon.png"));
       Wm_Set
         (MainWindow, "geometry",
          Trim(Positive'Image(Settings.WindowWidth), Both) & "x" &
          Trim(Positive'Image(Settings.WindowHeight), Both) & "+0+0");
-      Icon := Create("logo", "-file """ & To_String(IconName) & """");
-      Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
+      declare
+         IconName: constant String :=
+           (if
+              Ada.Directories.Exists
+                (Value("APPDIR", "") & "/usr/share/doc/hunter")
+            then Value("APPDIR", "") & "/hunter-icon.png"
+            else Containing_Directory(CurrentDir) & "/others/hunter-icon.png");
+         Icon: constant Tk_Photo :=
+           Create("logo", "-file """ & IconName & """");
+      begin
+         Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
+      end;
       Add_Accelerators_Loop :
       for I in ButtonsNames'Range loop
          if ButtonsNames(I) /= Null_Unbounded_String then
@@ -254,10 +255,9 @@ package body MainWindow is
       end if;
       Row_Configure(MainFrame, Paned, "-weight 1");
       Column_Configure(MainFrame, Paned, "-weight 1");
-      Button :=
-        Create
-          (TextFrame & ".closebutton",
-           "-image dialog-cancelicon -style Toolbutton -command HideWidget");
+      configure
+        (Button,
+         "-image dialog-cancelicon -style Toolbutton -command HideWidget");
       Add
         (Button, Mc(Get_Context, "{Hide entry without entering any changes}"));
       Tcl.Tk.Ada.Grid.Grid(Button);
