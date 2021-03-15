@@ -59,7 +59,9 @@ package body DeleteItems is
             Ada.Environment_Variables.Value("HOME") &
             "/.local/share/Trash/info/" & To_String(NewName) & ".trashinfo");
          Put_Line(TrashFile, "[Trash Info]");
-         Put_Line(TrashFile, "Path=" & To_String(Name));
+         Put_Line
+           (TrashFile,
+            "Path=" & To_String(MainWindow.Current_Directory & "/" & Name));
          DeleteTime := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
          DeleteTime(11) := 'T';
          Put_Line(TrashFile, "DeletionDate=" & DeleteTime);
@@ -105,15 +107,19 @@ package body DeleteItems is
       Delete_Items_Loop :
       for Item of SelectedItems loop
          UpdateProgressBar;
-         if Is_Directory(To_String(Item)) then
-            Arguments(2) := new String'(To_String(Item));
+         if Is_Directory
+             (To_String(MainWindow.Current_Directory & "/" & Item)) then
+            Arguments(2) :=
+              new String'
+                (To_String(MainWindow.Current_Directory & "/" & Item));
             if Settings.DeleteFiles or New_Action = DELETETRASH then
                Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
                if not Success then
-                  raise Directory_Error with To_String(Item);
+                  raise Directory_Error
+                    with To_String(MainWindow.Current_Directory & "/" & Item);
                end if;
             else
-               MoveToTrash(Item);
+               MoveToTrash(MainWindow.Current_Directory & "/" & Item);
             end if;
             if Item = MainWindow.Current_Directory then
                GoUp := True;
