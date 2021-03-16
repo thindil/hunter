@@ -73,30 +73,30 @@ package body MainWindow is
 
    procedure Create_Main_Window(Directory: String) is
       Interp: constant Tcl.Tcl_Interp := Get_Context;
-      MainWindow: constant Tk_Toplevel := Get_Main_Window(Interp);
-      CurrentDir: constant String := Ada.Directories.Current_Directory;
-      MainFrame: constant Ttk_Frame := Create(".mainframe");
+      Main_Window: constant Tk_Toplevel := Get_Main_Window(Interp);
+      Current_Dir: constant String := Ada.Directories.Current_Directory;
+      Main_Frame: constant Ttk_Frame := Create(".mainframe");
       Paned: constant Ttk_PanedWindow :=
         Create(".mainframe.paned", "-orient horizontal");
-      DirectoryFrame: constant Ttk_Frame := Create(Paned & ".directoryframe");
-      DirectoryXScroll: constant Ttk_Scrollbar :=
+      Directory_Frame: constant Ttk_Frame :=
+        Create(Paned & ".Directory_Frame");
+      Directory_X_Scroll: constant Ttk_Scrollbar :=
         Create
-          (DirectoryFrame & ".scrollx",
-           "-orient horizontal -command [list " & DirectoryFrame &
+          (Directory_Frame & ".scrollx",
+           "-orient horizontal -command [list " & Directory_Frame &
            ".directorytree xview]");
-      DirectoryYScroll: constant Ttk_Scrollbar :=
+      Directory_Y_Scroll: constant Ttk_Scrollbar :=
         Create
-          (DirectoryFrame & ".scrolly",
-           "-orient vertical -command [list " & DirectoryFrame &
+          (Directory_Frame & ".scrolly",
+           "-orient vertical -command [list " & Directory_Frame &
            ".directorytree yview]");
       DirectoryTree: constant Ttk_Tree_View :=
         Create
-          (DirectoryFrame & ".directorytree",
+          (Directory_Frame & ".directorytree",
            "-columns [list name modified size] -xscrollcommand {" &
-           DirectoryXScroll & " set} -yscrollcommand {" & DirectoryYScroll &
-           " set}");
-      HeaderLabel: constant Ttk_Label := Create(MainFrame & ".headerlabel");
-      Image: Tk_Photo;
+           Directory_X_Scroll & " set} -yscrollcommand {" &
+           Directory_Y_Scroll & " set}");
+      HeaderLabel: constant Ttk_Label := Create(Main_Frame & ".headerlabel");
       IconsNames: constant array(1 .. 14) of Unbounded_String :=
         (To_Unbounded_String("emblem-symbolic-link"),
          To_Unbounded_String("application-x-executable"),
@@ -112,12 +112,12 @@ package body MainWindow is
          To_Unbounded_String("folder"), To_Unbounded_String("arrow-down"),
          To_Unbounded_String("arrow-up"));
       ProgressBar: constant Ttk_ProgressBar :=
-        Create(MainFrame & ".progressbar", "-orient horizontal");
-      TextFrame: constant Ttk_Frame := Create(MainFrame & ".textframe");
+        Create(Main_Frame & ".progressbar", "-orient horizontal");
+      TextFrame: constant Ttk_Frame := Create(Main_Frame & ".textframe");
       TextEntry: constant Ttk_Entry := Create(TextFrame & ".textentry");
       Button: Ttk_Button := Create(TextFrame & ".closebutton");
       PathButtonsFrame: constant Ttk_Frame :=
-        Create(MainFrame & ".paned.directoryframe.pathframe");
+        Create(Main_Frame & ".paned.Directory_Frame.pathframe");
       FileMenu: constant Tk_Menu := Create(".filemenu", "-tearoff false");
       ButtonsNames: constant array
         (Accelerators_Array'Range) of Unbounded_String :=
@@ -140,10 +140,11 @@ package body MainWindow is
          To_Unbounded_String("itemtoolbar.deletebutton"),
          To_Unbounded_String("itemtoolbar.runbutton"), Null_Unbounded_String,
          To_Unbounded_String("actiontoolbar.userbutton"));
-      pragma Unreferenced(Image, ProgressBar, HeaderLabel, FileMenu);
+      Hunter_Initialization_Error: exception;
+      pragma Unreferenced(ProgressBar, HeaderLabel, FileMenu);
    begin
-      Autoscroll(DirectoryYScroll);
-      Autoscroll(DirectoryXScroll);
+      Autoscroll(Directory_Y_Scroll);
+      Autoscroll(Directory_X_Scroll);
       AddCommands;
       UserCommands.AddCommands;
       CreateSearchUI;
@@ -163,21 +164,31 @@ package body MainWindow is
       -- Load translations
       Mc_Load("../share/hunter/translations", Interp);
       -- Set the program images
-      Load_Images_Loop :
-      for IconName of IconsNames loop
-         Image :=
+      declare
+         Image: Tk_Photo :=
            Create
-             (To_String(IconName),
-              "-file {../share/hunter/images/" & To_String(IconName) &
-              ".svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
-      end loop Load_Images_Loop;
-      Image :=
-        Create
-          ("ok",
-           "-file {../share/hunter/images/ok.svg} -format {svg -scaletoheight" &
-           Natural'Image(Settings.ToolbarsSize) & "}");
+             ("ok",
+              "-file {../share/hunter/images/ok.svg} -format {svg -scaletoheight" &
+              Natural'Image(Settings.ToolbarsSize) & "}");
+      begin
+         if Widget_Image(Image) /= "ok" then
+            raise Hunter_Initialization_Error with "Can't load ok.svg image";
+         end if;
+         Load_Images_Loop :
+         for IconName of IconsNames loop
+            Image :=
+              Create
+                (To_String(IconName),
+                 "-file {../share/hunter/images/" & To_String(IconName) &
+                 ".svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
+            if Widget_Image(Image) /= To_String(IconName) then
+               raise Hunter_Initialization_Error
+                 with "Can't load " & To_String(IconName) & ".svg image";
+            end if;
+         end loop Load_Images_Loop;
+      end;
       Wm_Set
-        (MainWindow, "geometry",
+        (Main_Window, "geometry",
          Trim(Positive'Image(Settings.WindowWidth), Both) & "x" &
          Trim(Positive'Image(Settings.WindowHeight), Both) & "+0+0");
       declare
@@ -186,11 +197,12 @@ package body MainWindow is
               Ada.Directories.Exists
                 (Value("APPDIR", "") & "/usr/share/doc/hunter")
             then Value("APPDIR", "") & "/hunter-icon.png"
-            else Containing_Directory(CurrentDir) & "/others/hunter-icon.png");
+            else Containing_Directory(Current_Dir) &
+              "/others/hunter-icon.png");
          Icon: constant Tk_Photo :=
            Create("logo", "-file """ & IconName & """");
       begin
-         Wm_Set(MainWindow, "iconphoto", "-default " & Icon.Name);
+         Wm_Set(Main_Window, "iconphoto", "-default " & Icon.Name);
       end;
       Add_Accelerators_Loop :
       for I in ButtonsNames'Range loop
@@ -202,9 +214,9 @@ package body MainWindow is
          end if;
       end loop Add_Accelerators_Loop;
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
-      Tcl.Tk.Ada.Grid.Grid(MainFrame, "-sticky nwse");
-      Tcl.Tk.Ada.Grid.Row_Configure(MainWindow, MainFrame, "-weight 1");
-      Tcl.Tk.Ada.Grid.Column_Configure(MainWindow, MainFrame, "-weight 1");
+      Tcl.Tk.Ada.Grid.Grid(Main_Frame, "-sticky nwse");
+      Tcl.Tk.Ada.Grid.Row_Configure(Main_Window, Main_Frame, "-weight 1");
+      Tcl.Tk.Ada.Grid.Column_Configure(Main_Window, Main_Frame, "-weight 1");
       CreateActionToolbar;
       CreateBookmarkMenu(True);
       CreateItemToolbar;
@@ -220,16 +232,16 @@ package body MainWindow is
       CreateAboutUI;
       LoadModules;
       SetToolbars;
-      Add(Paned, DirectoryFrame);
+      Add(Paned, Directory_Frame);
       Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
       Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");
-      Tcl.Tk.Ada.Pack.Pack(DirectoryXScroll, "-side bottom -fill x");
-      Tcl.Tk.Ada.Pack.Pack(DirectoryYScroll, "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack(Directory_X_Scroll, "-side bottom -fill x");
+      Tcl.Tk.Ada.Pack.Pack(Directory_Y_Scroll, "-side right -fill y");
       Heading
         (DirectoryTree, "name",
          "-text {" & Mc(Get_Context, "Name") &
          "} -image arrow-down -command {Sort name}");
-      Set_Directory(CurrentDir);
+      Set_Directory(Current_Dir);
       Heading
         (DirectoryTree, "modified",
          "-text {" & Mc(Get_Context, "Modified") &
@@ -253,8 +265,8 @@ package body MainWindow is
       else
          Tcl.Tk.Ada.Grid.Grid(Paned, "-column 0 -row 3 -sticky nswe");
       end if;
-      Row_Configure(MainFrame, Paned, "-weight 1");
-      Column_Configure(MainFrame, Paned, "-weight 1");
+      Row_Configure(Main_Frame, Paned, "-weight 1");
+      Column_Configure(Main_Frame, Paned, "-weight 1");
       configure
         (Button,
          "-image dialog-cancelicon -style Toolbutton -command HideWidget");
