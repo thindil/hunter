@@ -80,11 +80,13 @@ package MainWindow is
    -- BOOKMARKS_MENU   - The user's bookmarks menu
    -- BOOKMARKS_FORM   - The enter destination directory form
    -- CREATELINK_FORM  - The creating of new link
+   -- SELECTED_MENU    - The selected file or directory menu
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
       CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
-      DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM);
+      DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM,
+      SELECTED_MENU);
    -- ****
 
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container
@@ -205,6 +207,17 @@ package MainWindow is
    -- The currently selected UI element of the program
    -- SOURCE
    function Bookmarks_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
+   -- ****f* MainWindowTUI/MainWindowTUI.Selected_Keys
+   -- FUNCTION
+   -- Handles keys events when the selected item menu is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Selected_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end MainWindow;

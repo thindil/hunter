@@ -41,6 +41,13 @@ package ShowItems is
    DestinationList: Menu;
    -- ****
 
+   -- ****f* ShowItemsTUI/ShowItemsTUI.ShowInfo
+   -- FUNCTION
+   -- Show information about the currently selected file or directory.
+   -- SOURCE
+   procedure ShowInfo;
+   -- ****
+
    -- ****f* ShowItemsTUI/ShowItemsTUI.ShowPreview
    -- FUNCTION
    -- Show preview of the currently selected file or directory. If preview is

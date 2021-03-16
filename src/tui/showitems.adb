@@ -52,12 +52,7 @@ package body ShowItems is
    PreviewPad: Window;
    -- ****
 
-   -- ****if* ShowItemsTUI/ShowItemsTUI.ShowInfo
-   -- FUNCTION
-   -- Show information about the currently selected file or directory.
-   -- SOURCE
    procedure ShowInfo is
-      -- ****
       SelectedItem: constant String := To_String(Current_Selected);
       DirectorySize: Natural := 0;
       MimeType: constant String := GetMimeType(SelectedItem);

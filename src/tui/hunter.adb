@@ -183,6 +183,8 @@ begin
                UILocation := Bookmarks_Form_Keys(Key);
             when CREATELINK_FORM =>
                UILocation := Create_Link_Keys(Key);
+            when SELECTED_MENU =>
+               UILocation := Selected_Keys(Key);
             when others =>
                null;
          end case;

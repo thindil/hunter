@@ -340,6 +340,12 @@ package body MainWindow is
             Menu_Items.all(9) := Null_Item;
          when BOOKMARKS_MENU =>
             Menu_Items := Show_Bookmarks_Menu;
+         when SELECTED_MENU =>
+            Menu_Items := new Item_Array(1 .. 4);
+            Menu_Items.all(1) := New_Item("Preview");
+            Menu_Items.all(2) := New_Item("Information");
+            Menu_Items.all(3) := New_Item("Close");
+            Menu_Items.all(4) := Null_Item;
          when others =>
             null;
       end case;
@@ -439,6 +445,9 @@ package body MainWindow is
                when 4 =>
                   Draw_Menu(ACTIONS_MENU);
                   return ACTIONS_MENU;
+               when 6 =>
+                  Draw_Menu(SELECTED_MENU);
+                  return SELECTED_MENU;
                when others =>
                   return MAIN_MENU;
             end case;
@@ -549,5 +558,39 @@ package body MainWindow is
       end if;
       return BOOKMARKS_MENU;
    end Bookmarks_Keys;
+
+   function Selected_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result := Unknown_Request;
+   begin
+      case Key is
+         when 65 | KEY_UP =>
+            Result := Driver(SubMenu, M_Up_Item);
+         when 66 | KEY_DOWN =>
+            Result := Driver(SubMenu, M_Down_Item);
+         when 72 | Key_Home =>
+            Result := Driver(SubMenu, M_First_Item);
+         when 70 | Key_End =>
+            Result := Driver(SubMenu, M_Last_Item);
+         when 10 =>
+            Update_Directory_List;
+            case Get_Index(Current(SubMenu)) is
+               when 1 =>
+                  ShowPreview;
+               when 2 =>
+                  ShowInfo;
+               when others =>
+                  null;
+            end case;
+            Post(SubMenu, False);
+            Delete(SubMenu);
+            return DIRECTORY_VIEW;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(SubMenuWindow);
+      end if;
+      return SELECTED_MENU;
+   end Selected_Keys;
 
 end MainWindow;
