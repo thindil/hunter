@@ -139,12 +139,12 @@ package body Messages is
    begin
       case Key is
          when 65 | KEY_UP =>
-            if New_Action = COPY then
+            if New_Action in COPY | MOVE then
                Result := Driver(DialogForm, F_Previous_Field);
                Result := Driver(DialogForm, F_End_Line);
             end if;
          when 66 | KEY_DOWN =>
-            if New_Action = COPY then
+            if New_Action in COPY | MOVE then
                Result := Driver(DialogForm, F_Next_Field);
                Result := Driver(DialogForm, F_End_Line);
             end if;
