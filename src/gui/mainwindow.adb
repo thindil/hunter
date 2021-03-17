@@ -73,75 +73,82 @@ package body MainWindow is
 
    procedure Create_Main_Window(Directory: String) is
       Interp: constant Tcl.Tcl_Interp := Get_Context;
-      Main_Window: constant Tk_Toplevel := Get_Main_Window(Interp);
+      Main_Window: constant Tk_Toplevel := Get_Main_Window(Interp => Interp);
       Current_Dir: constant String := Ada.Directories.Current_Directory;
-      Main_Frame: constant Ttk_Frame := Create(".mainframe");
+      Main_Frame: constant Ttk_Frame := Create(pathName => ".mainframe");
       Paned: constant Ttk_PanedWindow :=
-        Create(".mainframe.paned", "-orient horizontal");
+        Create
+          (pathName => ".mainframe.paned", options => "-orient horizontal");
       Directory_Frame: constant Ttk_Frame :=
-        Create(Paned & ".Directory_Frame");
+        Create(pathName => Paned & ".directoryframe");
       Directory_X_Scroll: constant Ttk_Scrollbar :=
         Create
-          (Directory_Frame & ".scrollx",
-           "-orient horizontal -command [list " & Directory_Frame &
-           ".directorytree xview]");
+          (pathName => Directory_Frame & ".scrollx",
+           options =>
+             "-orient horizontal -command [list " & Directory_Frame &
+             ".directorytree xview]");
       Directory_Y_Scroll: constant Ttk_Scrollbar :=
         Create
-          (Directory_Frame & ".scrolly",
-           "-orient vertical -command [list " & Directory_Frame &
-           ".directorytree yview]");
-      DirectoryTree: constant Ttk_Tree_View :=
+          (pathName => Directory_Frame & ".scrolly",
+           options =>
+             "-orient vertical -command [list " & Directory_Frame &
+             ".directorytree yview]");
+      Directory_Tree: constant Ttk_Tree_View :=
         Create
-          (Directory_Frame & ".directorytree",
-           "-columns [list name modified size] -xscrollcommand {" &
-           Directory_X_Scroll & " set} -yscrollcommand {" &
-           Directory_Y_Scroll & " set}");
-      HeaderLabel: constant Ttk_Label := Create(Main_Frame & ".headerlabel");
-      IconsNames: constant array(1 .. 14) of Unbounded_String :=
-        (To_Unbounded_String("emblem-symbolic-link"),
-         To_Unbounded_String("application-x-executable"),
-         To_Unbounded_String("audio-x-generic"),
-         To_Unbounded_String("font-x-generic"),
-         To_Unbounded_String("image-x-generic"),
-         To_Unbounded_String("video-x-generic"),
-         To_Unbounded_String("text-x-generic"),
-         To_Unbounded_String("text-html"),
-         To_Unbounded_String("package-x-generic"),
-         To_Unbounded_String("text-x-generic"),
-         To_Unbounded_String("text-x-generic-template"),
-         To_Unbounded_String("folder"), To_Unbounded_String("arrow-down"),
-         To_Unbounded_String("arrow-up"));
+          (pathName => Directory_Frame & ".directorytree",
+           options =>
+             "-columns [list name modified size] -xscrollcommand {" &
+             Directory_X_Scroll & " set} -yscrollcommand {" &
+             Directory_Y_Scroll & " set}");
+      Header_Label: constant Ttk_Label :=
+        Create(pathName => Main_Frame & ".headerlabel");
+      Icons_Names: constant array(1 .. 14) of Unbounded_String :=
+        (To_Unbounded_String(Source => "emblem-symbolic-link"),
+         To_Unbounded_String(Source => "application-x-executable"),
+         To_Unbounded_String(Source => "audio-x-generic"),
+         To_Unbounded_String(Source => "font-x-generic"),
+         To_Unbounded_String(Source => "image-x-generic"),
+         To_Unbounded_String(Source => "video-x-generic"),
+         To_Unbounded_String(Source => "text-x-generic"),
+         To_Unbounded_String(Source => "text-html"),
+         To_Unbounded_String(Source => "package-x-generic"),
+         To_Unbounded_String(Source => "text-x-generic"),
+         To_Unbounded_String(Source => "text-x-generic-template"),
+         To_Unbounded_String(Source => "folder"),
+         To_Unbounded_String(Source => "arrow-down"),
+         To_Unbounded_String(Source => "arrow-up"));
       ProgressBar: constant Ttk_ProgressBar :=
         Create(Main_Frame & ".progressbar", "-orient horizontal");
       TextFrame: constant Ttk_Frame := Create(Main_Frame & ".textframe");
       TextEntry: constant Ttk_Entry := Create(TextFrame & ".textentry");
       Button: Ttk_Button := Create(TextFrame & ".closebutton");
       PathButtonsFrame: constant Ttk_Frame :=
-        Create(Main_Frame & ".paned.Directory_Frame.pathframe");
+        Create(Main_Frame & ".paned.directoryframe.pathframe");
       FileMenu: constant Tk_Menu := Create(".filemenu", "-tearoff false");
       ButtonsNames: constant array
         (Accelerators_Array'Range) of Unbounded_String :=
-        (To_Unbounded_String("actiontoolbar.quitbutton"),
-         To_Unbounded_String("actiontoolbar.bookmarksbutton"),
-         To_Unbounded_String("actiontoolbar.searchbutton"),
-         To_Unbounded_String("actiontoolbar.newbutton"),
-         To_Unbounded_String("actiontoolbar.deletebutton"),
-         To_Unbounded_String("actiontoolbar.aboutbutton"),
-         To_Unbounded_String("itemtoolbar.openbutton"),
-         To_Unbounded_String("actiontoolbar.selectbutton"),
-         To_Unbounded_String("actiontoolbar.renamebutton"),
-         To_Unbounded_String("actiontoolbar.copybutton"),
-         To_Unbounded_String("actiontoolbar.movebutton"),
-         To_Unbounded_String("actiontoolbar.optionsbutton"),
-         To_Unbounded_String("itemtoolbar.openwithbutton"),
-         To_Unbounded_String("itemtoolbar.infobutton"),
-         To_Unbounded_String("itemtoolbar.previewbutton"),
-         To_Unbounded_String("itemtoolbar.addbutton"),
-         To_Unbounded_String("itemtoolbar.deletebutton"),
-         To_Unbounded_String("itemtoolbar.runbutton"), Null_Unbounded_String,
-         To_Unbounded_String("actiontoolbar.userbutton"));
+        (To_Unbounded_String(Source => "actiontoolbar.quitbutton"),
+         To_Unbounded_String(Source => "actiontoolbar.bookmarksbutton"),
+         To_Unbounded_String(Source => "actiontoolbar.searchbutton"),
+         To_Unbounded_String(Source => "actiontoolbar.newbutton"),
+         To_Unbounded_String(Source => "actiontoolbar.deletebutton"),
+         To_Unbounded_String(Source => "actiontoolbar.aboutbutton"),
+         To_Unbounded_String(Source => "itemtoolbar.openbutton"),
+         To_Unbounded_String(Source => "actiontoolbar.selectbutton"),
+         To_Unbounded_String(Source => "actiontoolbar.renamebutton"),
+         To_Unbounded_String(Source => "actiontoolbar.copybutton"),
+         To_Unbounded_String(Source => "actiontoolbar.movebutton"),
+         To_Unbounded_String(Source => "actiontoolbar.optionsbutton"),
+         To_Unbounded_String(Source => "itemtoolbar.openwithbutton"),
+         To_Unbounded_String(Source => "itemtoolbar.infobutton"),
+         To_Unbounded_String(Source => "itemtoolbar.previewbutton"),
+         To_Unbounded_String(Source => "itemtoolbar.addbutton"),
+         To_Unbounded_String(Source => "itemtoolbar.deletebutton"),
+         To_Unbounded_String(Source => "itemtoolbar.runbutton"),
+         Null_Unbounded_String,
+         To_Unbounded_String(Source => "actiontoolbar.userbutton"));
       Hunter_Initialization_Error: exception;
-      pragma Unreferenced(ProgressBar, HeaderLabel, FileMenu);
+      pragma Unreferenced(ProgressBar, Header_Label, FileMenu);
    begin
       Autoscroll(Directory_Y_Scroll);
       Autoscroll(Directory_X_Scroll);
@@ -150,14 +157,15 @@ package body MainWindow is
       CreateSearchUI;
       Set_Directory(Containing_Directory(Command_Name));
       -- Load the program Tk themes
-      if Settings.UITheme = To_Unbounded_String("hunter-light") then
+      if Settings.UITheme = To_Unbounded_String(Source => "hunter-light") then
          Tcl_EvalFile(Interp, "../share/hunter/themes/light/breeze.tcl");
-      elsif Settings.UITheme = To_Unbounded_String("hunter-dark") then
+      elsif Settings.UITheme =
+        To_Unbounded_String(Source => "hunter-dark") then
          Tcl_EvalFile
            (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
       end if;
       if Index(Theme_Names, To_String(Settings.UITheme)) = 0 then
-         Settings.UITheme := To_Unbounded_String("hunter-light");
+         Settings.UITheme := To_Unbounded_String(Source => "hunter-light");
          Tcl_EvalFile(Interp, "../share/hunter/themes/light/breeze.tcl");
       end if;
       Theme_Use(To_String(Settings.UITheme));
@@ -175,7 +183,7 @@ package body MainWindow is
             raise Hunter_Initialization_Error with "Can't load ok.svg image";
          end if;
          Load_Images_Loop :
-         for IconName of IconsNames loop
+         for IconName of Icons_Names loop
             Image :=
               Create
                 (To_String(IconName),
@@ -238,28 +246,29 @@ package body MainWindow is
       Tcl.Tk.Ada.Pack.Pack(Directory_X_Scroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(Directory_Y_Scroll, "-side right -fill y");
       Heading
-        (DirectoryTree, "name",
+        (Directory_Tree, "name",
          "-text {" & Mc(Get_Context, "Name") &
          "} -image arrow-down -command {Sort name}");
       Set_Directory(Current_Dir);
       Heading
-        (DirectoryTree, "modified",
+        (Directory_Tree, "modified",
          "-text {" & Mc(Get_Context, "Modified") &
          "} -command {Sort modified}");
       Heading
-        (DirectoryTree, "size",
+        (Directory_Tree, "size",
          "-text {" & Mc(Get_Context, "Size") & "} -command {Sort size}");
       if not Settings.ShowLastModified then
-         configure(DirectoryTree, "-displaycolumns [list name size]");
+         configure(Directory_Tree, "-displaycolumns [list name size]");
       end if;
-      Column(DirectoryTree, "#0", "-stretch false -width 50");
-      Column(DirectoryTree, "modified", "-stretch false -width 150");
-      Column(DirectoryTree, "size", "-stretch false -width 75");
-      Tag_Bind(DirectoryTree, "itemrow", "<Double-1>", "ActivateItem");
-      Bind(DirectoryTree, "<Return>", "ActivateItem");
-      Bind(DirectoryTree, "<<TreeviewSelect>>", "ShowSelected");
-      Bind(DirectoryTree, "<3>", "{ShowFileMenu %X %Y}");
-      Tcl.Tk.Ada.Pack.Pack(DirectoryTree, "-side top -fill both -expand true");
+      Column(Directory_Tree, "#0", "-stretch false -width 50");
+      Column(Directory_Tree, "modified", "-stretch false -width 150");
+      Column(Directory_Tree, "size", "-stretch false -width 75");
+      Tag_Bind(Directory_Tree, "itemrow", "<Double-1>", "ActivateItem");
+      Bind(Directory_Tree, "<Return>", "ActivateItem");
+      Bind(Directory_Tree, "<<TreeviewSelect>>", "ShowSelected");
+      Bind(Directory_Tree, "<3>", "{ShowFileMenu %X %Y}");
+      Tcl.Tk.Ada.Pack.Pack
+        (Directory_Tree, "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 3 -sticky nswe");
       else
@@ -283,7 +292,7 @@ package body MainWindow is
       else
          Current_Directory := To_Unbounded_String(Value("HOME"));
          if not Ada.Directories.Exists(To_String(Current_Directory)) then
-            Current_Directory := To_Unbounded_String("/");
+            Current_Directory := To_Unbounded_String(Source => "/");
          end if;
       end if;
       LoadDirectory(To_String(Current_Directory));
@@ -300,7 +309,7 @@ package body MainWindow is
      (Clear: Boolean := False; Frame_Name: String := "directory") is
       SizeString, ItemIndex, SelectedIndex, Path, TimeString, PathCommand,
       PathShortcut, Shortcut, Tooltip, ButtonLabel: Unbounded_String;
-      DirectoryTree: constant Ttk_Tree_View :=
+      Directory_Tree: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned." & Frame_Name & "frame.directorytree");
       PathButtonsFrame: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned." & Frame_Name & "frame.pathframe");
@@ -313,31 +322,31 @@ package body MainWindow is
          List := ItemsList;
          PathCommand :=
            (if New_Action not in SHOWTRASH | DELETETRASH then
-              To_Unbounded_String("GoToBookmark")
-            else To_Unbounded_String("GoToTrash"));
-         PathShortcut := To_Unbounded_String("Alt");
+              To_Unbounded_String(Source => "GoToBookmark")
+            else To_Unbounded_String(Source => "GoToTrash"));
+         PathShortcut := To_Unbounded_String(Source => "Alt");
       else
          List := SecondItemsList;
-         PathCommand := To_Unbounded_String("GoToDirectory");
-         PathShortcut := To_Unbounded_String("Control");
+         PathCommand := To_Unbounded_String(Source => "GoToDirectory");
+         PathShortcut := To_Unbounded_String(Source => "Control");
       end if;
       if Clear then
          Arrange_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
-            if Exists(DirectoryTree, Positive'Image(I)) = "1" then
+            if Exists(Directory_Tree, Positive'Image(I)) = "1" then
                Move
-                 (DirectoryTree, Positive'Image(I), "{}",
+                 (Directory_Tree, Positive'Image(I), "{}",
                   Natural'Image(I - 1));
             end if;
          end loop Arrange_Items_Loop;
          Delete
-           (DirectoryTree,
-            "[" & Widget_Image(DirectoryTree) & " children {} ]");
+           (Directory_Tree,
+            "[" & Widget_Image(Directory_Tree) & " children {} ]");
          Add_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
             case List(I).Size is
                when -2 =>
-                  SizeString := To_Unbounded_String("->");
+                  SizeString := To_Unbounded_String(Source => "->");
                when -1 =>
                   SizeString :=
                     To_Unbounded_String(Mc(Get_Context, "unknown"));
@@ -371,13 +380,13 @@ package body MainWindow is
             ItemIndex :=
               To_Unbounded_String
                 (Insert
-                   (DirectoryTree,
+                   (Directory_Tree,
                     "{} end -id" & Positive'Image(I) & " -values [list {" &
                     To_String(List(I).Name) & "} {" & To_String(TimeString) &
                     "} {" & To_String(SizeString) & "}] -image {" &
                     To_String(List(I).Image) & "} -tags [list itemrow]"));
             if not Settings.ShowHidden and then List(I).IsHidden then
-               Detach(DirectoryTree, To_String(ItemIndex));
+               Detach(Directory_Tree, To_String(ItemIndex));
             elsif SelectedIndex = Null_Unbounded_String or
               Current_Selected = List(I).Path then
                SelectedIndex := To_Unbounded_String(Positive'Image(I));
@@ -423,7 +432,7 @@ package body MainWindow is
                          (Widget_Image(PathButtonsFrame) & ".button1",
                           "-text {/} -command {" & To_String(PathCommand) &
                           " {/}}");
-                     Path := To_Unbounded_String("/");
+                     Path := To_Unbounded_String(Source => "/");
                   else
                      PathButton :=
                        Create
@@ -492,7 +501,8 @@ package body MainWindow is
          for I in List.First_Index .. List.Last_Index loop
             if (Settings.ShowHidden and List(I).IsHidden) or
               not List(I).IsHidden then
-               Move(DirectoryTree, Positive'Image(I), "{}", Positive'Image(I));
+               Move
+                 (Directory_Tree, Positive'Image(I), "{}", Positive'Image(I));
                if SelectedIndex = Null_Unbounded_String or
                  Current_Selected = List(I).Path then
                   SelectedIndex := To_Unbounded_String(Positive'Image(I));
@@ -502,17 +512,17 @@ package body MainWindow is
       end if;
       if not List.Is_Empty then
          if SelectedIndex /= Null_Unbounded_String and
-           cget(DirectoryTree, "-selectmode") /= "none" then
+           cget(Directory_Tree, "-selectmode") /= "none" then
             Selection_Set
-              (DirectoryTree, "[list " & To_String(SelectedIndex) & "]");
-            Tcl.Tk.Ada.Widgets.Focus(DirectoryTree);
+              (Directory_Tree, "[list " & To_String(SelectedIndex) & "]");
+            Tcl.Tk.Ada.Widgets.Focus(Directory_Tree);
             Tcl.Tk.Ada.Widgets.TtkTreeView.Focus
-              (DirectoryTree, To_String(SelectedIndex));
+              (Directory_Tree, To_String(SelectedIndex));
          else
-            Selection_Set(DirectoryTree, "{}");
+            Selection_Set(Directory_Tree, "{}");
          end if;
       else
-         Selection_Set(DirectoryTree, "{}");
+         Selection_Set(Directory_Tree, "{}");
       end if;
    end Update_Directory_List;
 
