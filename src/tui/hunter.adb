@@ -131,8 +131,21 @@ begin
    Main_Program_Loop :
    loop
       Key := Get_Keystroke;
+      -- Escape key pressed
       if Key = 27 then
          Key := Get_Keystroke;
+         -- Check if pressed key was arrow key
+         if Key = 91 then
+            Key := Get_Keystroke;
+            case Key is
+               when 67 =>
+                  Key := KEY_RIGHT;
+               when 68 =>
+                  Key := KEY_LEFT;
+               when others =>
+                  null;
+            end case;
+         end if;
          exit Main_Program_Loop when Key = 113;
       end if;
       if Key in KEY_STAB | 9 then
