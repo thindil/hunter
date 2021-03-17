@@ -289,9 +289,9 @@ package body MainWindow is
       Result: Menus.Driver_Result := Unknown_Request;
    begin
       case Key is
-         when 68 | KEY_LEFT =>
+         when KEY_LEFT =>
             Result := Driver(Path, M_Previous_Item);
-         when 67 | KEY_RIGHT =>
+         when KEY_RIGHT =>
             Result := Driver(Path, M_Next_Item);
          when 72 | Key_Home =>
             Result := Driver(Path, M_First_Item);
@@ -370,9 +370,9 @@ package body MainWindow is
       OverwriteItem: Boolean := False;
    begin
       case Key is
-         when 68 | KEY_LEFT =>
+         when KEY_LEFT =>
             Result := Driver(ProgramMenu, M_Previous_Item);
-         when 67 | KEY_RIGHT =>
+         when KEY_RIGHT =>
             Result := Driver(ProgramMenu, M_Next_Item);
          when 72 | Key_Home =>
             Result := Driver(ProgramMenu, M_First_Item);
