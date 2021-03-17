@@ -171,6 +171,10 @@ package body RenameItems is
          when 66 | KEY_DOWN =>
             Result := Driver(DialogForm, F_Next_Field);
             Result := Driver(DialogForm, F_End_Line);
+         when KEY_LEFT =>
+            Result := Driver(DialogForm, F_Previous_Char);
+         when KEY_RIGHT =>
+            Result := Driver(DialogForm, F_Next_Char);
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
          when 10 =>
