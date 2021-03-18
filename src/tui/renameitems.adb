@@ -165,16 +165,20 @@ package body RenameItems is
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
-         when 65 | KEY_UP =>
+         when KEY_UP =>
             Result := Driver(DialogForm, F_Previous_Field);
             Result := Driver(DialogForm, F_End_Line);
-         when 66 | KEY_DOWN =>
+         when KEY_DOWN =>
             Result := Driver(DialogForm, F_Next_Field);
             Result := Driver(DialogForm, F_End_Line);
          when KEY_LEFT =>
-            Result := Driver(DialogForm, F_Previous_Char);
+            if FieldIndex = 2 then
+               Result := Driver(DialogForm, F_Previous_Char);
+            end if;
          when KEY_RIGHT =>
-            Result := Driver(DialogForm, F_Next_Char);
+            if FieldIndex = 2 then
+               Result := Driver(DialogForm, F_Next_Char);
+            end if;
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
          when 10 =>
