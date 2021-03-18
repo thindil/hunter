@@ -103,25 +103,29 @@ package body MainWindow is
       Header_Label: constant Ttk_Label :=
         Create(pathName => Main_Frame & ".headerlabel");
       Icons_Names: constant array(1 .. 14) of Unbounded_String :=
-        (To_Unbounded_String(Source => "emblem-symbolic-link"),
-         To_Unbounded_String(Source => "application-x-executable"),
-         To_Unbounded_String(Source => "audio-x-generic"),
-         To_Unbounded_String(Source => "font-x-generic"),
-         To_Unbounded_String(Source => "image-x-generic"),
-         To_Unbounded_String(Source => "video-x-generic"),
-         To_Unbounded_String(Source => "text-x-generic"),
-         To_Unbounded_String(Source => "text-html"),
-         To_Unbounded_String(Source => "package-x-generic"),
-         To_Unbounded_String(Source => "text-x-generic"),
-         To_Unbounded_String(Source => "text-x-generic-template"),
-         To_Unbounded_String(Source => "folder"),
-         To_Unbounded_String(Source => "arrow-down"),
-         To_Unbounded_String(Source => "arrow-up"));
-      ProgressBar: constant Ttk_ProgressBar :=
-        Create(Main_Frame & ".progressbar", "-orient horizontal");
-      TextFrame: constant Ttk_Frame := Create(Main_Frame & ".textframe");
-      TextEntry: constant Ttk_Entry := Create(TextFrame & ".textentry");
-      Button: Ttk_Button := Create(TextFrame & ".closebutton");
+        (1 => To_Unbounded_String(Source => "emblem-symbolic-link"),
+         2 => To_Unbounded_String(Source => "application-x-executable"),
+         3 => To_Unbounded_String(Source => "audio-x-generic"),
+         4 => To_Unbounded_String(Source => "font-x-generic"),
+         5 => To_Unbounded_String(Source => "image-x-generic"),
+         6 => To_Unbounded_String(Source => "video-x-generic"),
+         7 => To_Unbounded_String(Source => "text-x-generic"),
+         8 => To_Unbounded_String(Source => "text-html"),
+         9 => To_Unbounded_String(Source => "package-x-generic"),
+         10 => To_Unbounded_String(Source => "text-x-generic"),
+         11 => To_Unbounded_String(Source => "text-x-generic-template"),
+         12 => To_Unbounded_String(Source => "folder"),
+         13 => To_Unbounded_String(Source => "arrow-down"),
+         14 => To_Unbounded_String(Source => "arrow-up"));
+      Progress_Bar: constant Ttk_ProgressBar :=
+        Create
+          (pathName => Main_Frame & ".progressbar",
+           options => "-orient horizontal");
+      Text_Frame: constant Ttk_Frame :=
+        Create(pathName => Main_Frame & ".textframe");
+      Text_Entry: constant Ttk_Entry :=
+        Create(pathName => Text_Frame & ".textentry");
+      Button: Ttk_Button := Create(Text_Frame & ".closebutton");
       PathButtonsFrame: constant Ttk_Frame :=
         Create(Main_Frame & ".paned.directoryframe.pathframe");
       FileMenu: constant Tk_Menu := Create(".filemenu", "-tearoff false");
@@ -148,7 +152,7 @@ package body MainWindow is
          Null_Unbounded_String,
          To_Unbounded_String(Source => "actiontoolbar.userbutton"));
       Hunter_Initialization_Error: exception;
-      pragma Unreferenced(ProgressBar, Header_Label, FileMenu);
+      pragma Unreferenced(Progress_Bar, Header_Label, FileMenu);
    begin
       Autoscroll(Directory_Y_Scroll);
       Autoscroll(Directory_X_Scroll);
@@ -282,11 +286,12 @@ package body MainWindow is
       Add
         (Button, Mc(Get_Context, "{Hide entry without entering any changes}"));
       Tcl.Tk.Ada.Grid.Grid(Button);
-      Tcl.Tk.Ada.Grid.Grid(TextEntry, "-column 1 -row 0 -sticky we");
-      Button := Create(TextFrame & ".okbutton", "-image ok -style Toolbutton");
+      Tcl.Tk.Ada.Grid.Grid(Text_Entry, "-column 1 -row 0 -sticky we");
+      Button :=
+        Create(Text_Frame & ".okbutton", "-image ok -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
-      Bind(TextEntry, "<Return>", "{.mainframe.textframe.okbutton invoke}");
-      Column_Configure(TextFrame, TextEntry, "-weight 1");
+      Bind(Text_Entry, "<Return>", "{.mainframe.textframe.okbutton invoke}");
+      Column_Configure(Text_Frame, Text_Entry, "-weight 1");
       if Ada.Directories.Exists(Directory) then
          Current_Directory := To_Unbounded_String(Directory);
       else
