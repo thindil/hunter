@@ -138,6 +138,10 @@ begin
          if Key = 91 then
             Key := Get_Keystroke;
             case Key is
+               when 65 =>
+                  Key := KEY_UP;
+               when 66 =>
+                  Key := KEY_DOWN;
                when 67 =>
                   Key := KEY_RIGHT;
                when 68 =>

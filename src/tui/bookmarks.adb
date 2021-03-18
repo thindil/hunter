@@ -219,10 +219,10 @@ package body Bookmarks is
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
-         when 65 | KEY_UP =>
+         when KEY_UP =>
             Result := Driver(DialogForm, F_Previous_Field);
             Result := Driver(DialogForm, F_End_Line);
-         when 66 | KEY_DOWN =>
+         when KEY_DOWN =>
             Result := Driver(DialogForm, F_Next_Field);
             Result := Driver(DialogForm, F_End_Line);
          when 127 =>

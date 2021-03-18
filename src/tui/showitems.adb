@@ -692,9 +692,9 @@ package body ShowItems is
       Result: Menus.Driver_Result;
    begin
       case Key is
-         when 65 | KEY_UP =>
+         when KEY_UP =>
             Result := Driver(DestinationList, M_Up_Item);
-         when 66 | KEY_DOWN =>
+         when KEY_DOWN =>
             Result := Driver(DestinationList, M_Down_Item);
          when 72 | Key_Home =>
             Result := Driver(DestinationList, M_First_Item);
