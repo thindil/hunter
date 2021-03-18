@@ -242,9 +242,9 @@ package body DeleteItems is
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
-         when 65 | KEY_UP =>
+         when KEY_UP =>
             Result := Driver(DialogForm, F_Previous_Field);
-         when 66 | KEY_DOWN =>
+         when KEY_DOWN =>
             Result := Driver(DialogForm, F_Next_Field);
          when 10 =>
             if FieldIndex = 2 then

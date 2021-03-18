@@ -252,9 +252,9 @@ package body MainWindow is
       Result: Menus.Driver_Result;
    begin
       case Key is
-         when 65 | KEY_UP =>
+         when KEY_UP =>
             Result := Driver(DirectoryList, M_Up_Item);
-         when 66 | KEY_DOWN =>
+         when KEY_DOWN =>
             Result := Driver(DirectoryList, M_Down_Item);
          when 32 =>
             Result := Driver(DirectoryList, M_Toggle_Item);
@@ -465,9 +465,9 @@ package body MainWindow is
       CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
    begin
       case Key is
-         when 65 | KEY_UP =>
+         when KEY_UP =>
             Result := Driver(SubMenu, M_Up_Item);
-         when 66 | KEY_DOWN =>
+         when KEY_DOWN =>
             Result := Driver(SubMenu, M_Down_Item);
          when 72 | Key_Home =>
             Result := Driver(SubMenu, M_First_Item);
@@ -538,9 +538,9 @@ package body MainWindow is
       Bookmark: constant String := Name(Current(SubMenu));
    begin
       case Key is
-         when 65 | KEY_UP =>
+         when KEY_UP =>
             Result := Driver(SubMenu, M_Up_Item);
-         when 66 | KEY_DOWN =>
+         when KEY_DOWN =>
             Result := Driver(SubMenu, M_Down_Item);
          when 72 | Key_Home =>
             Result := Driver(SubMenu, M_First_Item);
@@ -563,9 +563,9 @@ package body MainWindow is
       Result: Menus.Driver_Result := Unknown_Request;
    begin
       case Key is
-         when 65 | KEY_UP =>
+         when KEY_UP =>
             Result := Driver(SubMenu, M_Up_Item);
-         when 66 | KEY_DOWN =>
+         when KEY_DOWN =>
             Result := Driver(SubMenu, M_Down_Item);
          when 72 | Key_Home =>
             Result := Driver(SubMenu, M_First_Item);
