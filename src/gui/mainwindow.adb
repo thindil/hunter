@@ -125,34 +125,35 @@ package body MainWindow is
         Create(pathName => Main_Frame & ".textframe");
       Text_Entry: constant Ttk_Entry :=
         Create(pathName => Text_Frame & ".textentry");
-      Button: Ttk_Button := Create(Text_Frame & ".closebutton");
-      PathButtonsFrame: constant Ttk_Frame :=
-        Create(Main_Frame & ".paned.directoryframe.pathframe");
-      FileMenu: constant Tk_Menu := Create(".filemenu", "-tearoff false");
-      ButtonsNames: constant array
+      Button: Ttk_Button := Create(pathName => Text_Frame & ".closebutton");
+      Path_Buttons_Frame: constant Ttk_Frame :=
+        Create(pathName => Main_Frame & ".paned.directoryframe.pathframe");
+      File_Menu: constant Tk_Menu :=
+        Create(pathName => ".filemenu", options => "-tearoff false");
+      Buttons_Names: constant array
         (Accelerators_Array'Range) of Unbounded_String :=
-        (To_Unbounded_String(Source => "actiontoolbar.quitbutton"),
-         To_Unbounded_String(Source => "actiontoolbar.bookmarksbutton"),
-         To_Unbounded_String(Source => "actiontoolbar.searchbutton"),
-         To_Unbounded_String(Source => "actiontoolbar.newbutton"),
-         To_Unbounded_String(Source => "actiontoolbar.deletebutton"),
-         To_Unbounded_String(Source => "actiontoolbar.aboutbutton"),
-         To_Unbounded_String(Source => "itemtoolbar.openbutton"),
-         To_Unbounded_String(Source => "actiontoolbar.selectbutton"),
-         To_Unbounded_String(Source => "actiontoolbar.renamebutton"),
-         To_Unbounded_String(Source => "actiontoolbar.copybutton"),
-         To_Unbounded_String(Source => "actiontoolbar.movebutton"),
-         To_Unbounded_String(Source => "actiontoolbar.optionsbutton"),
-         To_Unbounded_String(Source => "itemtoolbar.openwithbutton"),
-         To_Unbounded_String(Source => "itemtoolbar.infobutton"),
-         To_Unbounded_String(Source => "itemtoolbar.previewbutton"),
-         To_Unbounded_String(Source => "itemtoolbar.addbutton"),
-         To_Unbounded_String(Source => "itemtoolbar.deletebutton"),
-         To_Unbounded_String(Source => "itemtoolbar.runbutton"),
-         Null_Unbounded_String,
-         To_Unbounded_String(Source => "actiontoolbar.userbutton"));
+        (1 => To_Unbounded_String(Source => "actiontoolbar.quitbutton"),
+         2 => To_Unbounded_String(Source => "actiontoolbar.bookmarksbutton"),
+         3 => To_Unbounded_String(Source => "actiontoolbar.searchbutton"),
+         4 => To_Unbounded_String(Source => "actiontoolbar.newbutton"),
+         5 => To_Unbounded_String(Source => "actiontoolbar.deletebutton"),
+         6 => To_Unbounded_String(Source => "actiontoolbar.aboutbutton"),
+         7 => To_Unbounded_String(Source => "itemtoolbar.openbutton"),
+         8 => To_Unbounded_String(Source => "actiontoolbar.selectbutton"),
+         9 => To_Unbounded_String(Source => "actiontoolbar.renamebutton"),
+         10 => To_Unbounded_String(Source => "actiontoolbar.copybutton"),
+         11 => To_Unbounded_String(Source => "actiontoolbar.movebutton"),
+         12 => To_Unbounded_String(Source => "actiontoolbar.optionsbutton"),
+         13 => To_Unbounded_String(Source => "itemtoolbar.openwithbutton"),
+         14 => To_Unbounded_String(Source => "itemtoolbar.infobutton"),
+         15 => To_Unbounded_String(Source => "itemtoolbar.previewbutton"),
+         16 => To_Unbounded_String(Source => "itemtoolbar.addbutton"),
+         17 => To_Unbounded_String(Source => "itemtoolbar.deletebutton"),
+         18 => To_Unbounded_String(Source => "itemtoolbar.runbutton"),
+         19 => Null_Unbounded_String,
+         20 => To_Unbounded_String(Source => "actiontoolbar.userbutton"));
       Hunter_Initialization_Error: exception;
-      pragma Unreferenced(Progress_Bar, Header_Label, FileMenu);
+      pragma Unreferenced(Progress_Bar, Header_Label, File_Menu);
    begin
       Autoscroll(Directory_Y_Scroll);
       Autoscroll(Directory_X_Scroll);
@@ -217,12 +218,12 @@ package body MainWindow is
          Wm_Set(Main_Window, "iconphoto", "-default " & Icon.Name);
       end;
       Add_Accelerators_Loop :
-      for I in ButtonsNames'Range loop
-         if ButtonsNames(I) /= Null_Unbounded_String then
+      for I in Buttons_Names'Range loop
+         if Buttons_Names(I) /= Null_Unbounded_String then
             Bind_To_Main_Window
               (Interp, "<" & To_String(Accelerators(I)) & ">",
                "{InvokeButton .mainframe.toolbars." &
-               To_String(ButtonsNames(I)) & "}");
+               To_String(Buttons_Names(I)) & "}");
          end if;
       end loop Add_Accelerators_Loop;
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
@@ -245,8 +246,8 @@ package body MainWindow is
       LoadModules;
       SetToolbars;
       Add(Paned, Directory_Frame);
-      Bind(PathButtonsFrame, "<Configure>", "{ArrangePath %W %w}");
-      Tcl.Tk.Ada.Pack.Pack(PathButtonsFrame, "-side top -fill x");
+      Bind(Path_Buttons_Frame, "<Configure>", "{ArrangePath %W %w}");
+      Tcl.Tk.Ada.Pack.Pack(Path_Buttons_Frame, "-side top -fill x");
       Tcl.Tk.Ada.Pack.Pack(Directory_X_Scroll, "-side bottom -fill x");
       Tcl.Tk.Ada.Pack.Pack(Directory_Y_Scroll, "-side right -fill y");
       Heading
@@ -316,7 +317,7 @@ package body MainWindow is
       PathShortcut, Shortcut, Tooltip, ButtonLabel: Unbounded_String;
       Directory_Tree: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned." & Frame_Name & "frame.directorytree");
-      PathButtonsFrame: constant Ttk_Frame :=
+      Path_Buttons_Frame: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned." & Frame_Name & "frame.pathframe");
       Tokens: Slice_Set;
       PathButton: Ttk_Button;
@@ -397,9 +398,9 @@ package body MainWindow is
                SelectedIndex := To_Unbounded_String(Positive'Image(I));
             end if;
          end loop Add_Items_Loop;
-         if Winfo_Get(PathButtonsFrame, "ismapped") = "1" then
+         if Winfo_Get(Path_Buttons_Frame, "ismapped") = "1" then
             -- Remove old path buttons
-            Create(Tokens, Grid_Slaves(PathButtonsFrame), " ");
+            Create(Tokens, Grid_Slaves(Path_Buttons_Frame), " ");
             if Slice(Tokens, 1) /= "" then
                Remove_Old_Path_Buttons_Loop :
                for I in reverse 1 .. Slice_Count(Tokens) loop
@@ -434,14 +435,14 @@ package body MainWindow is
                   if New_Action /= SHOWTRASH then
                      PathButton :=
                        Create
-                         (Widget_Image(PathButtonsFrame) & ".button1",
+                         (Widget_Image(Path_Buttons_Frame) & ".button1",
                           "-text {/} -command {" & To_String(PathCommand) &
                           " {/}}");
                      Path := To_Unbounded_String(Source => "/");
                   else
                      PathButton :=
                        Create
-                         (Widget_Image(PathButtonsFrame) & ".button1",
+                         (Widget_Image(Path_Buttons_Frame) & ".button1",
                           "-text {" & Mc(Get_Context, "{Trash}") &
                           "} -command {ShowTrash}");
                      Path :=
@@ -456,7 +457,7 @@ package body MainWindow is
                   end if;
                   PathButton :=
                     Create
-                      (Widget_Image(PathButtonsFrame) & ".button" &
+                      (Widget_Image(Path_Buttons_Frame) & ".button" &
                        Trim(Slice_Number'Image(I), Both),
                        "-text {" & To_String(ButtonLabel) & "} -command {" &
                        To_String(PathCommand) & " {" & To_String(Path) & "}}");
@@ -488,7 +489,7 @@ package body MainWindow is
                Width :=
                  Width + Positive'Value(Winfo_Get(PathButton, "reqwidth"));
                if Width >
-                 Positive'Value(Winfo_Get(PathButtonsFrame, "width")) then
+                 Positive'Value(Winfo_Get(Path_Buttons_Frame, "width")) then
                   Row := Row + 1;
                   Width := 0;
                   Column := 0;
