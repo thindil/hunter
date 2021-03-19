@@ -225,6 +225,14 @@ package body Bookmarks is
          when KEY_DOWN =>
             Result := Driver(DialogForm, F_Next_Field);
             Result := Driver(DialogForm, F_End_Line);
+         when KEY_LEFT =>
+            if FieldIndex = 2 then
+               Result := Driver(DialogForm, F_Previous_Char);
+            end if;
+         when KEY_RIGHT =>
+            if FieldIndex = 2 then
+               Result := Driver(DialogForm, F_Next_Char);
+            end if;
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
          when 10 =>
