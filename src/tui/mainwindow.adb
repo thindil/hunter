@@ -259,9 +259,9 @@ package body MainWindow is
          when 32 =>
             Result := Driver(DirectoryList, M_Toggle_Item);
             Result := Driver(DirectoryList, M_Down_Item);
-         when 72 | Key_Home =>
+         when Key_Home =>
             Result := Driver(DirectoryList, M_First_Item);
-         when 70 | Key_End =>
+         when Key_End =>
             Result := Driver(DirectoryList, M_Last_Item);
          when 53 | KEY_NPAGE =>
             Result := Driver(DirectoryList, M_ScrollUp_Page);
@@ -293,9 +293,9 @@ package body MainWindow is
             Result := Driver(Path, M_Previous_Item);
          when KEY_RIGHT =>
             Result := Driver(Path, M_Next_Item);
-         when 72 | Key_Home =>
+         when Key_Home =>
             Result := Driver(Path, M_First_Item);
-         when 70 | Key_End =>
+         when Key_End =>
             Result := Driver(Path, M_Last_Item);
          when 10 =>
             MainWindow.Current_Directory := To_Unbounded_String("/");
@@ -374,9 +374,9 @@ package body MainWindow is
             Result := Driver(ProgramMenu, M_Previous_Item);
          when KEY_RIGHT =>
             Result := Driver(ProgramMenu, M_Next_Item);
-         when 72 | Key_Home =>
+         when Key_Home =>
             Result := Driver(ProgramMenu, M_First_Item);
-         when 70 | Key_End =>
+         when Key_End =>
             Result := Driver(ProgramMenu, M_Last_Item);
          when 10 =>
             case CurrentIndex is
@@ -469,9 +469,9 @@ package body MainWindow is
             Result := Driver(SubMenu, M_Up_Item);
          when KEY_DOWN =>
             Result := Driver(SubMenu, M_Down_Item);
-         when 72 | Key_Home =>
+         when Key_Home =>
             Result := Driver(SubMenu, M_First_Item);
-         when 70 | Key_End =>
+         when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
             Post(SubMenu, False);
@@ -542,9 +542,9 @@ package body MainWindow is
             Result := Driver(SubMenu, M_Up_Item);
          when KEY_DOWN =>
             Result := Driver(SubMenu, M_Down_Item);
-         when 72 | Key_Home =>
+         when Key_Home =>
             Result := Driver(SubMenu, M_First_Item);
-         when 70 | Key_End =>
+         when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
             Post(SubMenu, False);
@@ -567,9 +567,9 @@ package body MainWindow is
             Result := Driver(SubMenu, M_Up_Item);
          when KEY_DOWN =>
             Result := Driver(SubMenu, M_Down_Item);
-         when 72 | Key_Home =>
+         when Key_Home =>
             Result := Driver(SubMenu, M_First_Item);
-         when 70 | Key_End =>
+         when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
             Update_Directory_List;
