@@ -146,6 +146,10 @@ begin
                   Key := KEY_RIGHT;
                when 68 =>
                   Key := KEY_LEFT;
+               when 70 =>
+                  Key := Key_End;
+               when 72 =>
+                  Key := Key_Home;
                when others =>
                   null;
             end case;

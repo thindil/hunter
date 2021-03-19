@@ -696,9 +696,9 @@ package body ShowItems is
             Result := Driver(DestinationList, M_Up_Item);
          when KEY_DOWN =>
             Result := Driver(DestinationList, M_Down_Item);
-         when 72 | Key_Home =>
+         when Key_Home =>
             Result := Driver(DestinationList, M_First_Item);
-         when 70 | Key_End =>
+         when Key_End =>
             Result := Driver(DestinationList, M_Last_Item);
          when 53 | KEY_NPAGE =>
             Result := Driver(DestinationList, M_ScrollUp_Page);
@@ -726,9 +726,9 @@ package body ShowItems is
             Result := Driver(Path, M_Previous_Item);
          when KEY_RIGHT =>
             Result := Driver(Path, M_Next_Item);
-         when 72 | Key_Home =>
+         when Key_Home =>
             Result := Driver(Path, M_First_Item);
-         when 70 | Key_End =>
+         when Key_End =>
             Result := Driver(Path, M_Last_Item);
          when 10 =>
             DestinationDirectory := To_Unbounded_String("/");
