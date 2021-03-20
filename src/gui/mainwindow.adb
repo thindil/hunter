@@ -153,29 +153,39 @@ package body MainWindow is
          19 => Null_Unbounded_String,
          20 => To_Unbounded_String(Source => "actiontoolbar.userbutton"));
       Hunter_Initialization_Error: exception;
-      pragma Unreferenced(Progress_Bar, Header_Label, File_Menu);
+      pragma Unreferenced(Progress_Bar);
+      pragma Unreferenced(Header_Label);
+      pragma Unreferenced(File_Menu);
    begin
-      Autoscroll(Directory_Y_Scroll);
-      Autoscroll(Directory_X_Scroll);
+      Autoscroll(Scroll => Directory_Y_Scroll);
+      Autoscroll(Scroll => Directory_X_Scroll);
       AddCommands;
       UserCommands.AddCommands;
       CreateSearchUI;
-      Set_Directory(Containing_Directory(Command_Name));
+      Set_Directory(Directory => Containing_Directory(Name => Command_Name));
       -- Load the program Tk themes
       if Settings.UITheme = To_Unbounded_String(Source => "hunter-light") then
-         Tcl_EvalFile(Interp, "../share/hunter/themes/light/breeze.tcl");
+         Tcl_EvalFile
+           (interp => Interp,
+            fileName => "../share/hunter/themes/light/breeze.tcl");
       elsif Settings.UITheme =
         To_Unbounded_String(Source => "hunter-dark") then
          Tcl_EvalFile
-           (Get_Context, "../share/hunter/themes/dark/breeze-dark.tcl");
+           (interp => Interp,
+            fileName => "../share/hunter/themes/dark/breeze-dark.tcl");
       end if;
-      if Index(Theme_Names, To_String(Settings.UITheme)) = 0 then
+      if Index
+          (Source => Theme_Names,
+           Pattern => To_String(Source => Settings.UITheme)) =
+        0 then
          Settings.UITheme := To_Unbounded_String(Source => "hunter-light");
-         Tcl_EvalFile(Interp, "../share/hunter/themes/light/breeze.tcl");
+         Tcl_EvalFile
+           (interp => Interp,
+            fileName => "../share/hunter/themes/light/breeze.tcl");
       end if;
-      Theme_Use(To_String(Settings.UITheme));
+      Theme_Use(ThemeName => To_String(Source => Settings.UITheme));
       -- Load translations
-      Mc_Load("../share/hunter/translations", Interp);
+      Mc_Load(DirName => "../share/hunter/translations", Interp => Interp);
       -- Set the program images
       declare
          Image: Tk_Photo :=
