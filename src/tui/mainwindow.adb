@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Calendar.Formatting;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
@@ -137,7 +138,7 @@ package body MainWindow is
       Path_Items: Item_Array_Access;
       Tokens: Slice_Set;
       CurrentIndex: Positive := 1;
-      Item: Unbounded_String;
+      Item, TimeString: Unbounded_String;
       Width: Column_Position;
       Height: Line_Position;
    begin
@@ -171,6 +172,9 @@ package body MainWindow is
       Terminal_Interface.Curses.Clear(ListWindow);
       Box(ListWindow, Default_Character, Default_Character);
       Add(ListWindow, 1, 10, "Name");
+      if Settings.ShowLastModified then
+         Add(ListWindow, 1, Width - 27, "Modified");
+      end if;
       Add(ListWindow, 1, Width - 10, "Size");
       Index := ItemsList.First_Index;
       declare
@@ -183,6 +187,18 @@ package body MainWindow is
             end if;
             Move(To_String(ItemsList(I).Name), Item_Entry);
             Item := MainWindow.Current_Directory & "/" & ItemsList(I).Name;
+            if Settings.ShowLastModified then
+               begin
+                  TimeString :=
+                    To_Unbounded_String
+                      (Ada.Calendar.Formatting.Image(ItemsList(I).Modified));
+               exception
+                  when Ada.Calendar.Time_Error =>
+                     TimeString := To_Unbounded_String("unknown");
+               end;
+               Overwrite
+                 (Item_Entry, Item_Entry'Last - 27, To_String(TimeString));
+            end if;
             case ItemsList(I).Size is
                when -2 =>
                   Overwrite(Item_Entry, Item_Entry'Last - 8, "->");
