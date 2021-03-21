@@ -153,14 +153,16 @@ package body ShowItems is
          Arguments: constant Argument_List :=
            (new String'("-c%a %U %G"), new String'(SelectedItem));
          Permissions_Fields: constant Field_Array_Access :=
-           new Field_Array(1 .. 10);
+           (if Is_Directory(SelectedItem) then new Field_Array(1 .. 10)
+            else new Field_Array(1 .. 13));
          FormHeight: Line_Position;
          FormLength: Column_Position;
          Visibility: Cursor_Visibility := Normal;
          FieldOptions: Field_Option_Set;
          UnusedResult: Forms.Driver_Result := Unknown_Request;
          procedure SetPermissionsButtons
-           (Name: String; Permission: Character) is
+           (Name: String; Permission: Character; FieldNumber: Positive) is
+            NewFieldNumber: Positive := FieldNumber;
          begin
             Tcl.Ada.Tcl_SetVar(Interpreter, Name & "execute", "0");
             Tcl.Ada.Tcl_SetVar(Interpreter, Name & "read", "0");
@@ -190,20 +192,29 @@ package body ShowItems is
             end case;
             if not Is_Directory(SelectedItem) then
                if Tcl.Ada.Tcl_GetVar(Interpreter, Name & "execute") = "1" then
-                  Add(PreviewPad, "    Can execute" & LF);
+                  Set_Buffer
+                    (Permissions_Fields.all(NewFieldNumber), 0, "Can execute");
                else
-                  Add(PreviewPad, "    Can't execute" & LF);
+                  Set_Buffer
+                    (Permissions_Fields.all(NewFieldNumber), 0,
+                     "Can't execute");
                end if;
+               NewFieldNumber := NewFieldNumber + 1;
             end if;
             if Tcl.Ada.Tcl_GetVar(Interpreter, Name & "write") = "1" then
-               Add(PreviewPad, "    Can write" & LF);
+               Set_Buffer
+                 (Permissions_Fields.all(NewFieldNumber), 0, "Can write");
             else
-               Add(PreviewPad, "    Can't write" & LF);
+               Set_Buffer
+                 (Permissions_Fields.all(NewFieldNumber), 0, "Can't write");
             end if;
+            NewFieldNumber := NewFieldNumber + 1;
             if Tcl.Ada.Tcl_GetVar(Interpreter, Name & "read") = "1" then
-               Add(PreviewPad, "    Can read" & LF);
+               Set_Buffer
+                 (Permissions_Fields.all(NewFieldNumber), 0, "Can read");
             else
-               Add(PreviewPad, "    Can't read" & LF);
+               Set_Buffer
+                 (Permissions_Fields.all(NewFieldNumber), 0, "Can't read");
             end if;
          end SetPermissionsButtons;
       begin
@@ -218,35 +229,71 @@ package body ShowItems is
          FieldOptions := Get_Options(Permissions_Fields.all(1));
          FieldOptions.Active := False;
          Set_Options(Permissions_Fields.all(1), FieldOptions);
-         Permissions_Fields.all(2) := New_Field(1, 30, 1, 0, 0, 0);
-         Permissions_Fields.all(3) := New_Field(1, 30, 2, 0, 0, 0);
-         Permissions_Fields.all(4) := New_Field(1, 30, 3, 0, 0, 0);
-         Permissions_Fields.all(5) := New_Field(1, 30, 4, 0, 0, 0);
-         Permissions_Fields.all(6) := New_Field(1, 30, 5, 0, 0, 0);
-         Permissions_Fields.all(7) := New_Field(1, 30, 6, 0, 0, 0);
-         Permissions_Fields.all(8) := New_Field(1, 30, 7, 0, 0, 0);
-         Permissions_Fields.all(9) := New_Field(1, 30, 8, 0, 0, 0);
-         Permissions_Fields.all(10) := Null_Field;
+         Permissions_Fields.all(2) := New_Field(1, 30, 1, 4, 0, 0);
+         Permissions_Fields.all(3) := New_Field(1, 30, 2, 4, 0, 0);
+         if Is_Directory(SelectedItem) then
+            Permissions_Fields.all(4) := New_Field(1, 30, 3, 0, 0, 0);
+            Set_Buffer
+              (Permissions_Fields.all(4), 0, "Group: " & Slice(Tokens, 3));
+            FieldOptions := Get_Options(Permissions_Fields.all(4));
+            FieldOptions.Active := False;
+            Set_Options(Permissions_Fields.all(4), FieldOptions);
+            Permissions_Fields.all(5) := New_Field(1, 30, 4, 4, 0, 0);
+            Permissions_Fields.all(6) := New_Field(1, 30, 5, 4, 0, 0);
+            Permissions_Fields.all(7) := New_Field(1, 30, 6, 0, 0, 0);
+            Set_Buffer(Permissions_Fields.all(7), 0, "Others:");
+            FieldOptions := Get_Options(Permissions_Fields.all(7));
+            FieldOptions.Active := False;
+            Set_Options(Permissions_Fields.all(7), FieldOptions);
+            Permissions_Fields.all(8) := New_Field(1, 30, 7, 4, 0, 0);
+            Permissions_Fields.all(9) := New_Field(1, 30, 8, 4, 0, 0);
+            Permissions_Fields.all(10) := Null_Field;
+            SetPermissionsButtons
+              ("group", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1), 5);
+            SetPermissionsButtons
+              ("others", Slice(Tokens, 1)(Slice(Tokens, 1)'Last), 8);
+         else
+            Permissions_Fields.all(4) := New_Field(1, 30, 3, 4, 0, 0);
+            Permissions_Fields.all(5) := New_Field(1, 30, 4, 0, 0, 0);
+            Set_Buffer
+              (Permissions_Fields.all(5), 0, "Group: " & Slice(Tokens, 3));
+            FieldOptions := Get_Options(Permissions_Fields.all(5));
+            FieldOptions.Active := False;
+            Set_Options(Permissions_Fields.all(5), FieldOptions);
+            Permissions_Fields.all(6) := New_Field(1, 30, 5, 4, 0, 0);
+            Permissions_Fields.all(7) := New_Field(1, 30, 6, 4, 0, 0);
+            Permissions_Fields.all(8) := New_Field(1, 30, 7, 4, 0, 0);
+            Permissions_Fields.all(9) := New_Field(1, 30, 8, 0, 0, 0);
+            Set_Buffer(Permissions_Fields.all(9), 0, "Others:");
+            FieldOptions := Get_Options(Permissions_Fields.all(9));
+            FieldOptions.Active := False;
+            Set_Options(Permissions_Fields.all(9), FieldOptions);
+            Permissions_Fields.all(10) := New_Field(1, 30, 9, 4, 0, 0);
+            Permissions_Fields.all(11) := New_Field(1, 30, 10, 4, 0, 0);
+            Permissions_Fields.all(12) := New_Field(1, 30, 11, 4, 0, 0);
+            Permissions_Fields.all(13) := Null_Field;
+            SetPermissionsButtons
+              ("group", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1), 6);
+            SetPermissionsButtons
+              ("others", Slice(Tokens, 1)(Slice(Tokens, 1)'Last), 10);
+         end if;
+         SetPermissionsButtons
+           ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2), 2);
          DialogForm := New_Form(Permissions_Fields);
          Set_Current(DialogForm, Permissions_Fields(2));
          Set_Options(DialogForm, (others => False));
          Scale(DialogForm, FormHeight, FormLength);
          FormWindow :=
-           Create(FormHeight + 2, FormLength + 2, 10, (Columns / 2) + 1);
+           (if Is_Directory(SelectedItem) then
+              Create(FormHeight + 2, FormLength + 2, 7, (Columns / 2) + 1)
+            else Create
+                (FormHeight + 2, FormLength + 2, 10, (Columns / 2) + 1));
          Set_Window(DialogForm, FormWindow);
          Set_Sub_Window
            (DialogForm,
             Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
          Post(DialogForm);
          UnusedResult := Driver(DialogForm, REQ_END_LINE);
-         SetPermissionsButtons
-           ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
-         Add(PreviewPad, "Group: " & Slice(Tokens, 3) & LF);
-         SetPermissionsButtons
-           ("group", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
-         Add(PreviewPad, "Others" & LF);
-         SetPermissionsButtons
-           ("others", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
       end;
       Refresh
         (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
