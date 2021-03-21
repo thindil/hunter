@@ -153,9 +153,9 @@ package body MainWindow is
          19 => Null_Unbounded_String,
          20 => To_Unbounded_String(Source => "actiontoolbar.userbutton"));
       Hunter_Initialization_Error: exception;
-      pragma Unreferenced(Progress_Bar);
-      pragma Unreferenced(Header_Label);
-      pragma Unreferenced(File_Menu);
+      --## rule off POSITIONAL_ASSOCIATIONS
+      pragma Unreferenced(Progress_Bar, Header_Label, File_Menu);
+      --## rule on POSITIONAL_ASSOCIATIONS
    begin
       Autoscroll(Scroll => Directory_Y_Scroll);
       Autoscroll(Scroll => Directory_X_Scroll);
@@ -187,33 +187,43 @@ package body MainWindow is
       -- Load translations
       Mc_Load(DirName => "../share/hunter/translations", Interp => Interp);
       -- Set the program images
+      Load_Images_Block :
       declare
-         Image: Tk_Photo :=
+         Program_Image: Tk_Photo :=
            Create
-             ("ok",
-              "-file {../share/hunter/images/ok.svg} -format {svg -scaletoheight" &
-              Natural'Image(Settings.ToolbarsSize) & "}");
+             (pathName => "ok",
+              options =>
+                "-file {../share/hunter/images/ok.svg} -format {svg -scaletoheight" &
+                Natural'Image(Settings.ToolbarsSize) & "}");
       begin
-         if Widget_Image(Image) /= "ok" then
+         if Widget_Image(Win => Program_Image) /= "ok" then
             raise Hunter_Initialization_Error with "Can't load ok.svg image";
          end if;
          Load_Images_Loop :
          for IconName of Icons_Names loop
-            Image :=
+            Program_Image :=
               Create
-                (To_String(IconName),
-                 "-file {../share/hunter/images/" & To_String(IconName) &
-                 ".svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
-            if Widget_Image(Image) /= To_String(IconName) then
+                (pathName => To_String(Source => IconName),
+                 options =>
+                   "-file {../share/hunter/images/" &
+                   To_String(Source => IconName) &
+                   ".svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
+            if Widget_Image(Win => Program_Image) /=
+              To_String(Source => IconName) then
                raise Hunter_Initialization_Error
-                 with "Can't load " & To_String(IconName) & ".svg image";
+                 with "Can't load " & To_String(Source => IconName) &
+                 ".svg image";
             end if;
          end loop Load_Images_Loop;
-      end;
+      end Load_Images_Block;
       Wm_Set
-        (Main_Window, "geometry",
-         Trim(Positive'Image(Settings.WindowWidth), Both) & "x" &
-         Trim(Positive'Image(Settings.WindowHeight), Both) & "+0+0");
+        (Widgt => Main_Window, Action => "geometry",
+         Options =>
+           Trim(Source => Positive'Image(Settings.WindowWidth), Side => Both) &
+           "x" &
+           Trim
+             (Source => Positive'Image(Settings.WindowHeight), Side => Both) &
+           "+0+0");
       declare
          IconName: constant String :=
            (if
