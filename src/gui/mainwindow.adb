@@ -200,18 +200,18 @@ package body MainWindow is
             raise Hunter_Initialization_Error with "Can't load ok.svg image";
          end if;
          Load_Images_Loop :
-         for IconName of Icons_Names loop
+         for Icon_Name of Icons_Names loop
             Program_Image :=
               Create
-                (pathName => To_String(Source => IconName),
+                (pathName => To_String(Source => Icon_Name),
                  options =>
                    "-file {../share/hunter/images/" &
-                   To_String(Source => IconName) &
+                   To_String(Source => Icon_Name) &
                    ".svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
             if Widget_Image(Win => Program_Image) /=
-              To_String(Source => IconName) then
+              To_String(Source => Icon_Name) then
                raise Hunter_Initialization_Error
-                 with "Can't load " & To_String(Source => IconName) &
+                 with "Can't load " & To_String(Source => Icon_Name) &
                  ".svg image";
             end if;
          end loop Load_Images_Loop;
@@ -224,29 +224,38 @@ package body MainWindow is
            Trim
              (Source => Positive'Image(Settings.WindowHeight), Side => Both) &
            "+0+0");
+      Set_Program_Icon_Block :
       declare
-         IconName: constant String :=
+         Icon_Name: constant String :=
            (if
               Ada.Directories.Exists
-                (Value("APPDIR", "") & "/usr/share/doc/hunter")
-            then Value("APPDIR", "") & "/hunter-icon.png"
-            else Containing_Directory(Current_Dir) &
+                (Name =>
+                   Value(Name => "APPDIR", Default => "") &
+                   "/usr/share/doc/hunter")
+            then Value(Name => "APPDIR", Default => "") & "/hunter-icon.png"
+            else Containing_Directory(Name => Current_Dir) &
               "/others/hunter-icon.png");
          Icon: constant Tk_Photo :=
-           Create("logo", "-file """ & IconName & """");
+           Create
+             (pathName => "logo", options => "-file """ & Icon_Name & """");
       begin
-         Wm_Set(Main_Window, "iconphoto", "-default " & Icon.Name);
-      end;
+         Wm_Set
+           (Widgt => Main_Window, Action => "iconphoto",
+            Options => "-default " & Icon.Name);
+      end Set_Program_Icon_Block;
       Add_Accelerators_Loop :
       for I in Buttons_Names'Range loop
          if Buttons_Names(I) /= Null_Unbounded_String then
             Bind_To_Main_Window
-              (Interp, "<" & To_String(Accelerators(I)) & ">",
-               "{InvokeButton .mainframe.toolbars." &
-               To_String(Buttons_Names(I)) & "}");
+              (Interp => Interp,
+               Sequence => "<" & To_String(Source => Accelerators(I)) & ">",
+               Script =>
+                 "{InvokeButton .mainframe.toolbars." &
+                 To_String(Source => Buttons_Names(I)) & "}");
          end if;
       end loop Add_Accelerators_Loop;
-      Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
+      Bind_To_Main_Window
+        (Interp => Interp, Sequence => "<Escape>", Script => "{HideWidget}");
       Tcl.Tk.Ada.Grid.Grid(Main_Frame, "-sticky nwse");
       Tcl.Tk.Ada.Grid.Row_Configure(Main_Window, Main_Frame, "-weight 1");
       Tcl.Tk.Ada.Grid.Column_Configure(Main_Window, Main_Frame, "-weight 1");
