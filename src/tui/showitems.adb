@@ -648,38 +648,9 @@ package body ShowItems is
       return TCL_OK;
    end Set_Permissions_Command;
 
-   -- ****o* ShowItemsTUI/ShowItemsTUI.GoToDirectory_Command
-   -- FUNCTION
-   -- Go to the selected directory in preview
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- GoToDirectory ?selecteditem?
-   -- Selecteditem is full path to the currently selected file or directory
-   -- SOURCE
-   function GoToDirectory_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
-      Convention => C;
-      -- ****
-
-   function GoToDirectory_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
-   begin
-      return TCL_OK;
-   end GoToDirectory_Command;
-
    procedure CreateShowItemsUI is
    begin
       AddCommand("SetPermissions", Set_Permissions_Command'Access);
-      AddCommand("GoToDirectory", GoToDirectory_Command'Access);
       PathButtons := Create(1, Columns / 2, 1, 0);
       PreviewWindow := Create(Lines - 2, Columns / 2, 2, Columns / 2);
       Box(PreviewWindow, Default_Character, Default_Character);
