@@ -256,11 +256,13 @@ package body MainWindow is
       end loop Add_Accelerators_Loop;
       Bind_To_Main_Window
         (Interp => Interp, Sequence => "<Escape>", Script => "{HideWidget}");
-      Tcl.Tk.Ada.Grid.Grid(Main_Frame, "-sticky nwse");
-      Tcl.Tk.Ada.Grid.Row_Configure(Main_Window, Main_Frame, "-weight 1");
-      Tcl.Tk.Ada.Grid.Column_Configure(Main_Window, Main_Frame, "-weight 1");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Main_Frame, Options => "-sticky nwse");
+      Tcl.Tk.Ada.Grid.Row_Configure
+        (Master => Main_Window, Slave => Main_Frame, Options => "-weight 1");
+      Tcl.Tk.Ada.Grid.Column_Configure
+        (Master => Main_Window, Slave => Main_Frame, Options => "-weight 1");
       CreateActionToolbar;
-      CreateBookmarkMenu(True);
+      CreateBookmarkMenu(CreateNew => True);
       CreateItemToolbar;
       CreateMessagesUI;
       ActivateItems.AddCommands;
@@ -274,11 +276,16 @@ package body MainWindow is
       CreateAboutUI;
       LoadModules;
       SetToolbars;
-      Add(Paned, Directory_Frame);
-      Bind(Path_Buttons_Frame, "<Configure>", "{ArrangePath %W %w}");
-      Tcl.Tk.Ada.Pack.Pack(Path_Buttons_Frame, "-side top -fill x");
-      Tcl.Tk.Ada.Pack.Pack(Directory_X_Scroll, "-side bottom -fill x");
-      Tcl.Tk.Ada.Pack.Pack(Directory_Y_Scroll, "-side right -fill y");
+      Add(Paned => Paned, SubWindow => Directory_Frame);
+      Bind
+        (Widgt => Path_Buttons_Frame, Sequence => "<Configure>",
+         Script => "{ArrangePath %W %w}");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Path_Buttons_Frame, Options => "-side top -fill x");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Directory_X_Scroll, Options => "-side bottom -fill x");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Directory_Y_Scroll, Options => "-side right -fill y");
       Heading
         (Directory_Tree, "name",
          "-text {" & Mc(Get_Context, "Name") &
