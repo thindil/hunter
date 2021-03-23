@@ -114,4 +114,13 @@ package ShowItems is
    function Destination_Path_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* ShowItemsTUI/ShowItemsTUI.Preview_Keys
+   -- FUNCTION
+   -- Handles keys events when the preview window is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- SOURCE
+   procedure Preview_Keys(Key: Key_Code);
+   -- ****
+
 end ShowItems;

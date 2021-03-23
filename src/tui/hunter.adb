@@ -210,8 +210,8 @@ begin
                UILocation := Create_Link_Keys(Key);
             when SELECTED_MENU =>
                UILocation := Selected_Keys(Key);
-            when others =>
-               null;
+            when PREVIEW =>
+               Preview_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;
