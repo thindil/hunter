@@ -599,7 +599,7 @@ package body MainWindow is
             end case;
             Post(SubMenu, False);
             Delete(SubMenu);
-            return DIRECTORY_VIEW;
+            return PREVIEW;
          when others =>
             null;
       end case;
