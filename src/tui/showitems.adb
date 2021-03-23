@@ -831,4 +831,23 @@ package body ShowItems is
       return DESTINATION_PATH;
    end Destination_Path_Keys;
 
+   procedure Preview_Keys(Key: Key_Code) is
+      Result: Forms.Driver_Result := Unknown_Request;
+      -- FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+   begin
+      case Key is
+         when KEY_UP =>
+            Result := Driver(DialogForm, F_Previous_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when KEY_DOWN =>
+            Result := Driver(DialogForm, F_Next_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when others =>
+            return;
+      end case;
+      if Result = Form_Ok then
+         Refresh(FormWindow);
+      end if;
+   end Preview_Keys;
+
 end ShowItems;
