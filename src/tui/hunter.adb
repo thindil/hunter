@@ -169,6 +169,8 @@ begin
             when MAIN_MENU =>
                if New_Action /= COPY then
                   UILocation := PREVIEW;
+                  Visibility := Normal;
+                  Set_Cursor_Visibility(Visibility);
                else
                   UILocation := DESTINATION_VIEW;
                end if;

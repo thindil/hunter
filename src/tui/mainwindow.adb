@@ -577,6 +577,7 @@ package body MainWindow is
 
    function Selected_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
+      Visibility: Cursor_Visibility := Normal;
    begin
       case Key is
          when KEY_UP =>
@@ -593,6 +594,7 @@ package body MainWindow is
                when 1 =>
                   ShowPreview;
                when 2 =>
+                  Set_Cursor_Visibility(Visibility);
                   ShowInfo;
                when others =>
                   null;
