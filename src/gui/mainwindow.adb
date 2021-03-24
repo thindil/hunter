@@ -287,21 +287,29 @@ package body MainWindow is
       Tcl.Tk.Ada.Pack.Pack
         (Slave => Directory_Y_Scroll, Options => "-side right -fill y");
       Heading
-        (Directory_Tree, "name",
-         "-text {" & Mc(Get_Context, "Name") &
-         "} -image arrow-down -command {Sort name}");
-      Set_Directory(Current_Dir);
+        (TreeViewWidget => Directory_Tree, Column => "name",
+         Options =>
+           "-text {" & Mc(Interp => Get_Context, Src_String => "Name") &
+           "} -image arrow-down -command {Sort name}");
+      Set_Directory(Directory => Current_Dir);
       Heading
-        (Directory_Tree, "modified",
-         "-text {" & Mc(Get_Context, "Modified") &
-         "} -command {Sort modified}");
+        (TreeViewWidget => Directory_Tree, Column => "modified",
+         Options =>
+           "-text {" & Mc(Interp => Get_Context, Src_String => "Modified") &
+           "} -command {Sort modified}");
       Heading
-        (Directory_Tree, "size",
-         "-text {" & Mc(Get_Context, "Size") & "} -command {Sort size}");
+        (TreeViewWidget => Directory_Tree, Column => "size",
+         Options =>
+           "-text {" & Mc(Interp => Get_Context, Src_String => "Size") &
+           "} -command {Sort size}");
       if not Settings.ShowLastModified then
-         configure(Directory_Tree, "-displaycolumns [list name size]");
+         configure
+           (Widgt => Directory_Tree,
+            options => "-displaycolumns [list name size]");
       end if;
-      Column(Directory_Tree, "#0", "-stretch false -width 50");
+      Column
+        (TreeViewWidget => Directory_Tree, Col => "#0",
+         Options => "-stretch false -width 50");
       Column(Directory_Tree, "modified", "-stretch false -width 150");
       Column(Directory_Tree, "size", "-stretch false -width 75");
       Tag_Bind(Directory_Tree, "itemrow", "<Double-1>", "ActivateItem");
