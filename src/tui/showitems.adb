@@ -124,7 +124,6 @@ package body ShowItems is
             else new Field_Array(1 .. 15));
          FormHeight: Line_Position;
          FormLength: Column_Position;
-         Visibility: Cursor_Visibility := Normal;
          FieldOptions: Field_Option_Set;
          UnusedResult: Forms.Driver_Result := Unknown_Request;
          procedure SetPermissionsButtons
@@ -189,7 +188,6 @@ package body ShowItems is
            To_Unbounded_String
              (Get_Command_Output("stat", Arguments, "", Status));
          Create(Tokens, To_String(Attributes), " ");
-         Set_Cursor_Visibility(Visibility);
          if Is_Directory(SelectedItem) then
             Permissions_Fields.all(1) := New_Field(1, 30, 0, 0, 0, 0);
             Set_Buffer
