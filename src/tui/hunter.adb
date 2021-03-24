@@ -174,7 +174,11 @@ begin
                end if;
             when DESTINATION_VIEW =>
                UILocation := DESTINATION_PATH;
-            when PREVIEW | DESTINATION_PATH =>
+            when PREVIEW =>
+               UILocation := DIRECTORY_VIEW;
+               Visibility := Invisible;
+               Set_Cursor_Visibility(Visibility);
+            when DESTINATION_PATH =>
                UILocation := DIRECTORY_VIEW;
             when others =>
                null;
