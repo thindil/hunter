@@ -24,7 +24,7 @@ package ActivateItems.UI is
    -- FUNCTION
    -- Create activation UI
    -- SOURCE
-   procedure CreateActivateUI;
+   procedure CreateActivateUI is null;
    -- ****
 
 end ActivateItems.UI;
