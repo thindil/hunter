@@ -176,7 +176,7 @@ package body MainWindow is
          Add(ListWindow, 1, Width - 27, "Modified");
       end if;
       Add(ListWindow, 1, Width - 10, "Size");
-      Index := ItemsList.First_Index;
+      Index := 1;
       declare
          Item_Entry: String(1 .. Positive(Width - 2));
       begin
@@ -233,12 +233,12 @@ package body MainWindow is
             <<End_Of_Loop>>
          end loop Load_Directory_View_Loop;
       end;
-      if Index > ItemsList.First_Index then
-         Fill_Empty_Entries_Loop :
-         for I in Index .. Menu_Items'Last loop
-            Menu_Items.all(I) := Null_Item;
-         end loop Fill_Empty_Entries_Loop;
-         DirectoryList := New_Menu(Menu_Items);
+      Fill_Empty_Entries_Loop :
+      for I in Index .. Menu_Items'Last loop
+         Menu_Items.all(I) := Null_Item;
+      end loop Fill_Empty_Entries_Loop;
+      DirectoryList := New_Menu(Menu_Items);
+      if Index > 1 then
          Set_Options(DirectoryList, (One_Valued => False, others => <>));
          Set_Format(DirectoryList, Lines - 5, 1);
          Set_Mark(DirectoryList, "");
@@ -267,6 +267,9 @@ package body MainWindow is
    function Directory_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result;
    begin
+      if Item_Count(DirectoryList) = 0 then
+         return DIRECTORY_VIEW;
+      end if;
       case Key is
          when KEY_UP =>
             Result := Driver(DirectoryList, M_Up_Item);
