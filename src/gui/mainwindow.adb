@@ -310,14 +310,27 @@ package body MainWindow is
       Column
         (TreeViewWidget => Directory_Tree, Col => "#0",
          Options => "-stretch false -width 50");
-      Column(Directory_Tree, "modified", "-stretch false -width 150");
-      Column(Directory_Tree, "size", "-stretch false -width 75");
-      Tag_Bind(Directory_Tree, "itemrow", "<Double-1>", "ActivateItem");
-      Bind(Directory_Tree, "<Return>", "ActivateItem");
-      Bind(Directory_Tree, "<<TreeviewSelect>>", "ShowSelected");
-      Bind(Directory_Tree, "<3>", "{ShowFileMenu %X %Y}");
+      Column
+        (TreeViewWidget => Directory_Tree, Col => "modified",
+         Options => "-stretch false -width 150");
+      Column
+        (TreeViewWidget => Directory_Tree, Col => "size",
+         Options => "-stretch false -width 75");
+      Tag_Bind
+        (TreeViewWidget => Directory_Tree, TagName => "itemrow",
+         Sequence => "<Double-1>", Script => "ActivateItem");
+      Bind
+        (Widgt => Directory_Tree, Sequence => "<Return>",
+         Script => "ActivateItem");
+      Bind
+        (Widgt => Directory_Tree, Sequence => "<<TreeviewSelect>>",
+         Script => "ShowSelected");
+      Bind
+        (Widgt => Directory_Tree, Sequence => "<3>",
+         Script => "{ShowFileMenu %X %Y}");
       Tcl.Tk.Ada.Pack.Pack
-        (Directory_Tree, "-side top -fill both -expand true");
+        (Slave => Directory_Tree,
+         Options => "-side top -fill both -expand true");
       if not Settings.ToolbarsOnTop then
          Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 3 -sticky nswe");
       else
