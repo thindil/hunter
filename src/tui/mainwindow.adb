@@ -239,7 +239,9 @@ package body MainWindow is
       end loop Fill_Empty_Entries_Loop;
       DirectoryList := New_Menu(Menu_Items);
       if Index > 1 then
-         Set_Options(DirectoryList, (One_Valued => False, others => <>));
+         Set_Options
+           (DirectoryList,
+            (One_Valued => False, Non_Cyclic => True, others => <>));
          Set_Format(DirectoryList, Lines - 5, 1);
          Set_Mark(DirectoryList, "");
          Set_Window(DirectoryList, ListWindow);
