@@ -331,20 +331,30 @@ package body MainWindow is
       Tcl.Tk.Ada.Pack.Pack
         (Slave => Directory_Tree,
          Options => "-side top -fill both -expand true");
-      if not Settings.ToolbarsOnTop then
-         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 1 -row 3 -sticky nswe");
+      if Settings.ToolbarsOnTop then
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Paned, Options => "-column 0 -row 3 -sticky nswe");
       else
-         Tcl.Tk.Ada.Grid.Grid(Paned, "-column 0 -row 3 -sticky nswe");
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Paned, Options => "-column 1 -row 3 -sticky nswe");
       end if;
-      Row_Configure(Main_Frame, Paned, "-weight 1");
-      Column_Configure(Main_Frame, Paned, "-weight 1");
+      Row_Configure
+        (Master => Main_Frame, Slave => Paned, Options => "-weight 1");
+      Column_Configure
+        (Master => Main_Frame, Slave => Paned, Options => "-weight 1");
       configure
-        (Button,
-         "-image dialog-cancelicon -style Toolbutton -command HideWidget");
+        (Widgt => Button,
+         options =>
+           "-image dialog-cancelicon -style Toolbutton -command HideWidget");
       Add
-        (Button, Mc(Get_Context, "{Hide entry without entering any changes}"));
-      Tcl.Tk.Ada.Grid.Grid(Button);
-      Tcl.Tk.Ada.Grid.Grid(Text_Entry, "-column 1 -row 0 -sticky we");
+        (Widget => Button,
+         Message =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Hide entry without entering any changes}"));
+      Tcl.Tk.Ada.Grid.Grid(Slave => Button);
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Text_Entry, Options => "-column 1 -row 0 -sticky we");
       Button :=
         Create(Text_Frame & ".okbutton", "-image ok -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
