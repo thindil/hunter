@@ -356,20 +356,27 @@ package body MainWindow is
       Tcl.Tk.Ada.Grid.Grid
         (Slave => Text_Entry, Options => "-column 1 -row 0 -sticky we");
       Button :=
-        Create(Text_Frame & ".okbutton", "-image ok -style Toolbutton");
-      Tcl.Tk.Ada.Grid.Grid(Button, "-column 2 -row 0");
-      Bind(Text_Entry, "<Return>", "{.mainframe.textframe.okbutton invoke}");
-      Column_Configure(Text_Frame, Text_Entry, "-weight 1");
-      if Ada.Directories.Exists(Directory) then
-         Current_Directory := To_Unbounded_String(Directory);
+        Create
+          (pathName => Text_Frame & ".okbutton",
+           options => "-image ok -style Toolbutton");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Button, Options => "-column 2 -row 0");
+      Bind
+        (Widgt => Text_Entry, Sequence => "<Return>",
+         Script => "{.mainframe.textframe.okbutton invoke}");
+      Column_Configure
+        (Master => Text_Frame, Slave => Text_Entry, Options => "-weight 1");
+      if Ada.Directories.Exists(Name => Directory) then
+         Current_Directory := To_Unbounded_String(Source => Directory);
       else
-         Current_Directory := To_Unbounded_String(Value("HOME"));
-         if not Ada.Directories.Exists(To_String(Current_Directory)) then
+         Current_Directory :=
+           To_Unbounded_String(Source => Value(Name => "HOME"));
+         if not Ada.Directories.Exists
+             (Name => To_String(Source => Current_Directory)) then
             Current_Directory := To_Unbounded_String(Source => "/");
          end if;
       end if;
-      LoadDirectory(To_String(Current_Directory));
-      StartTimer(To_String(Current_Directory));
+      LoadDirectory(DirectoryName => To_String(Source => Current_Directory));
+      StartTimer(Path => To_String(Source => Current_Directory));
       Update_Directory_List(True);
       Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
       CreateShowItemsUI;
