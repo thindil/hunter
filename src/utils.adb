@@ -26,15 +26,19 @@ package body Utils is
 
    function CanBeOpened(MimeType: String) return Boolean is
       ExecutableName: constant String := FindExecutable("xdg-mime");
-      Success: Boolean;
+      Return_Code: Integer;
+      Output_File: File_Descriptor;
    begin
       if ExecutableName = "" then
          return False;
       end if;
+      Output_File := Open_Append("/dev/null", Text);
       Spawn
         (ExecutableName,
-         Argument_String_To_List("query default " & MimeType).all, Success);
-      if not Success then
+         Argument_String_To_List("query default " & MimeType).all, Output_File,
+         Return_Code, True);
+      Close(Output_File);
+      if Return_Code /= 0 then
          return False;
       end if;
       return True;
