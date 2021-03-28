@@ -89,6 +89,13 @@ package MainWindow is
       SELECTED_MENU);
    -- ****
 
+   -- ****v* MainWindowTUI/MainWindowTUI.UILocation
+   -- FUNCTION
+   -- Currently active element of UI
+   -- SOURCE
+   UILocation: UI_Locations := DIRECTORY_VIEW;
+   -- ****
+
    -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
