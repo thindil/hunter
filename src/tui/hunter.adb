@@ -49,7 +49,6 @@ procedure Hunter is
      Ada.Environment_Variables.Value("HOME") & "/.cache/hunter/error.log";
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
-   UILocation: UI_Locations := DIRECTORY_VIEW;
    procedure ExitFromProgram is
    begin
       SavePreferences;

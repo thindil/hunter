@@ -610,6 +610,9 @@ package body ShowItems is
          Refresh(PathButtons);
          Buttons_Visible := False;
       end if;
+      if UILocation /= DIRECTORY_VIEW then
+         return;
+      end if;
       SelectedItems.Clear;
       if Item_Count(DirectoryList) > 0 then
          Update_Selected_Items_Loop :
