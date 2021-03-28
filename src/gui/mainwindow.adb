@@ -152,7 +152,6 @@ package body MainWindow is
          18 => To_Unbounded_String(Source => "itemtoolbar.runbutton"),
          19 => Null_Unbounded_String,
          20 => To_Unbounded_String(Source => "actiontoolbar.userbutton"));
-      Hunter_Initialization_Error: exception;
       --## rule off POSITIONAL_ASSOCIATIONS
       pragma Unreferenced(Progress_Bar, Header_Label, File_Menu);
       --## rule on POSITIONAL_ASSOCIATIONS
@@ -195,6 +194,7 @@ package body MainWindow is
               options =>
                 "-file {../share/hunter/images/ok.svg} -format {svg -scaletoheight" &
                 Natural'Image(Settings.ToolbarsSize) & "}");
+         Hunter_Initialization_Error: exception;
       begin
          if Widget_Image(Win => Program_Image) /= "ok" then
             raise Hunter_Initialization_Error with "Can't load ok.svg image";
@@ -377,18 +377,22 @@ package body MainWindow is
       end if;
       LoadDirectory(DirectoryName => To_String(Source => Current_Directory));
       StartTimer(Path => To_String(Source => Current_Directory));
-      Update_Directory_List(True);
-      Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
+      Update_Directory_List(Clear => True);
+      Execute_Modules
+        (State => On_Enter,
+         Arguments => "{" & To_String(Source => Current_Directory) & "}");
       CreateShowItemsUI;
       SashPos
-        (Paned, "0",
-         Positive'Image(Positive(Float(Settings.WindowWidth) / 2.5)));
+        (Paned => Paned, Index => "0",
+         NewPos =>
+           Positive'Image(Positive(Float(Settings.WindowWidth) / 2.5)));
    end Create_Main_Window;
 
    procedure Update_Directory_List
      (Clear: Boolean := False; Frame_Name: String := "directory") is
       SizeString, ItemIndex, SelectedIndex, Path, TimeString, PathCommand,
-      PathShortcut, Shortcut, Tooltip, ButtonLabel: Unbounded_String;
+      PathShortcut, Shortcut, Tooltip, ButtonLabel: Unbounded_String :=
+        Null_Unbounded_String;
       Directory_Tree: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned." & Frame_Name & "frame.directorytree");
       Path_Buttons_Frame: constant Ttk_Frame :=
