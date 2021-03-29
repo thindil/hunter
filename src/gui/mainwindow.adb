@@ -390,29 +390,29 @@ package body MainWindow is
 
    procedure Update_Directory_List
      (Clear: Boolean := False; Frame_Name: String := "directory") is
-      SizeString, ItemIndex, SelectedIndex, Path, TimeString, PathCommand,
-      PathShortcut, Shortcut, Tooltip, ButtonLabel: Unbounded_String :=
-        Null_Unbounded_String;
+      Path_Command, Path_Shortcut: Unbounded_String;
+      Size_String, Item_Index, Selected_Index, Path, Time_String, Shortcut,
+      Tooltip_Text, Button_Label: Unbounded_String := Null_Unbounded_String;
       Directory_Tree: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned." & Frame_Name & "frame.directorytree");
       Path_Buttons_Frame: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned." & Frame_Name & "frame.pathframe");
-      Tokens: Slice_Set;
-      PathButton: Ttk_Button;
+      Tokens: Slice_Set; --## rule line off IMPROPER_INITIALIZATION
+      Path_Button: Ttk_Button := Get_Widget(".mainframe");
       Row, Width, Column: Natural := 0;
       List: Items_Container.Vector;
    begin
       if Frame_Name = "directory" then
          List := ItemsList;
-         PathCommand :=
+         Path_Command :=
            (if New_Action not in SHOWTRASH | DELETETRASH then
               To_Unbounded_String(Source => "GoToBookmark")
             else To_Unbounded_String(Source => "GoToTrash"));
-         PathShortcut := To_Unbounded_String(Source => "Alt");
+         Path_Shortcut := To_Unbounded_String(Source => "Alt");
       else
          List := SecondItemsList;
-         PathCommand := To_Unbounded_String(Source => "GoToDirectory");
-         PathShortcut := To_Unbounded_String(Source => "Control");
+         Path_Command := To_Unbounded_String(Source => "GoToDirectory");
+         Path_Shortcut := To_Unbounded_String(Source => "Control");
       end if;
       if Clear then
          Arrange_Items_Loop :
@@ -430,50 +430,50 @@ package body MainWindow is
          for I in List.First_Index .. List.Last_Index loop
             case List(I).Size is
                when -2 =>
-                  SizeString := To_Unbounded_String(Source => "->");
+                  Size_String := To_Unbounded_String(Source => "->");
                when -1 =>
-                  SizeString :=
+                  Size_String :=
                     To_Unbounded_String(Mc(Get_Context, "unknown"));
                when others =>
                   if not List(I).IsDirectory then
-                     SizeString :=
+                     Size_String :=
                        To_Unbounded_String
                          (CountFileSize(File_Size(List(I).Size)));
                   else
                      if Settings.ShowHidden then
-                        SizeString :=
+                        Size_String :=
                           To_Unbounded_String
                             (Item_Size'Image
                                (List(I).Size +
                                 Item_Size(List(I).HiddenItems)));
                      else
-                        SizeString :=
+                        Size_String :=
                           To_Unbounded_String(Item_Size'Image(List(I).Size));
                      end if;
                   end if;
             end case;
             begin
-               TimeString :=
+               Time_String :=
                  To_Unbounded_String
                    (Ada.Calendar.Formatting.Image(List(I).Modified));
             exception
                when Ada.Calendar.Time_Error =>
-                  TimeString :=
+                  Time_String :=
                     To_Unbounded_String(Mc(Get_Context, "unknown"));
             end;
-            ItemIndex :=
+            Item_Index :=
               To_Unbounded_String
                 (Insert
                    (Directory_Tree,
                     "{} end -id" & Positive'Image(I) & " -values [list {" &
-                    To_String(List(I).Name) & "} {" & To_String(TimeString) &
-                    "} {" & To_String(SizeString) & "}] -image {" &
+                    To_String(List(I).Name) & "} {" & To_String(Time_String) &
+                    "} {" & To_String(Size_String) & "}] -image {" &
                     To_String(List(I).Image) & "} -tags [list itemrow]"));
             if not Settings.ShowHidden and then List(I).IsHidden then
-               Detach(Directory_Tree, To_String(ItemIndex));
-            elsif SelectedIndex = Null_Unbounded_String or
+               Detach(Directory_Tree, To_String(Item_Index));
+            elsif Selected_Index = Null_Unbounded_String or
               Current_Selected = List(I).Path then
-               SelectedIndex := To_Unbounded_String(Positive'Image(I));
+               Selected_Index := To_Unbounded_String(Positive'Image(I));
             end if;
          end loop Add_Items_Loop;
          if Winfo_Get(Path_Buttons_Frame, "ismapped") = "1" then
@@ -482,19 +482,19 @@ package body MainWindow is
             if Slice(Tokens, 1) /= "" then
                Remove_Old_Path_Buttons_Loop :
                for I in reverse 1 .. Slice_Count(Tokens) loop
-                  PathButton := Get_Widget(Slice(Tokens, I));
+                  Path_Button := Get_Widget(Slice(Tokens, I));
                   if I = 1 then
-                     Shortcut := PathShortcut & "-r";
+                     Shortcut := Path_Shortcut & "-r";
                   elsif I = 2 then
-                     Shortcut := PathShortcut & "-u";
+                     Shortcut := Path_Shortcut & "-u";
                   elsif I < 11 then
                      Shortcut :=
-                       PathShortcut & "-KP_" & Slice_Number'Image(I - 2)(2);
+                       Path_Shortcut & "-KP_" & Slice_Number'Image(I - 2)(2);
                   end if;
                   Unbind_From_Main_Window
-                    (PathButton.Interp, "<" & To_String(Shortcut) & ">");
-                  Grid_Forget(PathButton);
-                  Destroy(PathButton);
+                    (Path_Button.Interp, "<" & To_String(Shortcut) & ">");
+                  Grid_Forget(Path_Button);
+                  Destroy(Path_Button);
                end loop Remove_Old_Path_Buttons_Loop;
             end if;
             -- Add new path buttons
@@ -511,14 +511,14 @@ package body MainWindow is
                end if;
                if I = 1 then
                   if New_Action /= SHOWTRASH then
-                     PathButton :=
+                     Path_Button :=
                        Create
                          (Widget_Image(Path_Buttons_Frame) & ".button1",
-                          "-text {/} -command {" & To_String(PathCommand) &
+                          "-text {/} -command {" & To_String(Path_Command) &
                           " {/}}");
                      Path := To_Unbounded_String(Source => "/");
                   else
-                     PathButton :=
+                     Path_Button :=
                        Create
                          (Widget_Image(Path_Buttons_Frame) & ".button1",
                           "-text {" & Mc(Get_Context, "{Trash}") &
@@ -529,43 +529,45 @@ package body MainWindow is
                   end if;
                else
                   Append(Path, Slice(Tokens, I) & "/");
-                  ButtonLabel := To_Unbounded_String(Slice(Tokens, I));
-                  if Length(ButtonLabel) > 7 then
-                     ButtonLabel := Unbounded_Slice(ButtonLabel, 1, 7) & "...";
+                  Button_Label := To_Unbounded_String(Slice(Tokens, I));
+                  if Length(Button_Label) > 7 then
+                     Button_Label :=
+                       Unbounded_Slice(Button_Label, 1, 7) & "...";
                   end if;
-                  PathButton :=
+                  Path_Button :=
                     Create
                       (Widget_Image(Path_Buttons_Frame) & ".button" &
                        Trim(Slice_Number'Image(I), Both),
-                       "-text {" & To_String(ButtonLabel) & "} -command {" &
-                       To_String(PathCommand) & " {" & To_String(Path) & "}}");
+                       "-text {" & To_String(Button_Label) & "} -command {" &
+                       To_String(Path_Command) & " {" & To_String(Path) &
+                       "}}");
                end if;
                if I + 11 > Slice_Count(Tokens) then
                   if I = Slice_Count(Tokens) then
-                     Shortcut := PathShortcut & "-r";
-                     Tooltip :=
+                     Shortcut := Path_Shortcut & "-r";
+                     Tooltip_Text :=
                        Mc(Get_Context, "{Reload the current directory:}") &
                        LF & To_String(Path) & LF & "\[" & Shortcut & "\]";
                   elsif I = Slice_Count(Tokens) - 1 then
-                     Shortcut := PathShortcut & "-u";
-                     Tooltip :=
+                     Shortcut := Path_Shortcut & "-u";
+                     Tooltip_Text :=
                        Mc(Get_Context, "{Go to directory:}") & LF &
                        To_String(Path) & LF & "\[" & Shortcut & "\]";
                   else
                      Shortcut :=
-                       PathShortcut & "-KP_" &
+                       Path_Shortcut & "-KP_" &
                        Slice_Number'Image(Slice_Count(Tokens) - I - 1)(2);
-                     Tooltip :=
+                     Tooltip_Text :=
                        Mc(Get_Context, "{Go to directory:}") & LF &
                        To_String(Path) & LF & "\[" & Shortcut & "\]";
                   end if;
                   Bind_To_Main_Window
-                    (PathButton.Interp, "<" & To_String(Shortcut) & ">",
-                     "{" & Widget_Image(PathButton) & " invoke}");
-                  Add(PathButton, To_String(Tooltip));
+                    (Path_Button.Interp, "<" & To_String(Shortcut) & ">",
+                     "{" & Widget_Image(Path_Button) & " invoke}");
+                  Add(Path_Button, To_String(Tooltip_Text));
                end if;
                Width :=
-                 Width + Positive'Value(Winfo_Get(PathButton, "reqwidth"));
+                 Width + Positive'Value(Winfo_Get(Path_Button, "reqwidth"));
                if Width >
                  Positive'Value(Winfo_Get(Path_Buttons_Frame, "width")) then
                   Row := Row + 1;
@@ -573,7 +575,7 @@ package body MainWindow is
                   Column := 0;
                end if;
                Tcl.Tk.Ada.Grid.Grid
-                 (PathButton,
+                 (Path_Button,
                   "-row" & Natural'Image(Row) & " -column" &
                   Natural'Image(Column));
                Column := Column + 1;
@@ -587,21 +589,21 @@ package body MainWindow is
               not List(I).IsHidden then
                Move
                  (Directory_Tree, Positive'Image(I), "{}", Positive'Image(I));
-               if SelectedIndex = Null_Unbounded_String or
+               if Selected_Index = Null_Unbounded_String or
                  Current_Selected = List(I).Path then
-                  SelectedIndex := To_Unbounded_String(Positive'Image(I));
+                  Selected_Index := To_Unbounded_String(Positive'Image(I));
                end if;
             end if;
          end loop Rearrange_Items_Loop;
       end if;
       if not List.Is_Empty then
-         if SelectedIndex /= Null_Unbounded_String and
+         if Selected_Index /= Null_Unbounded_String and
            cget(Directory_Tree, "-selectmode") /= "none" then
             Selection_Set
-              (Directory_Tree, "[list " & To_String(SelectedIndex) & "]");
+              (Directory_Tree, "[list " & To_String(Selected_Index) & "]");
             Tcl.Tk.Ada.Widgets.Focus(Directory_Tree);
             Tcl.Tk.Ada.Widgets.TtkTreeView.Focus
-              (Directory_Tree, To_String(SelectedIndex));
+              (Directory_Tree, To_String(Selected_Index));
          else
             Selection_Set(Directory_Tree, "{}");
          end if;
