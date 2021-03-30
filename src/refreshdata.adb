@@ -42,6 +42,13 @@ package body RefreshData is
    Timer_Token: Tcl_TimerToken;
    -- ****
 
+   -- ****iv* RefreshData/Is_Checking
+   -- FUNCTION
+   -- If True, checking events is on
+   -- SOURCE
+   Is_Checking: Boolean := False;
+   -- ****
+
    -- ****if* RefreshData/RefreshData.CheckItems
    -- FUNCTION
    -- Check all inotify events and update directory listing if needed
@@ -69,11 +76,15 @@ package body RefreshData is
          RefreshList := True;
       end RemoveItem;
    begin
-      if Temporary_Stop then
-         goto Clear_List;
+      if Is_Checking then
+         return;
       end if;
+      Is_Checking := True;
       Check_Events_Loop :
       for Event of Events_List loop
+         if Temporary_Stop then
+            goto Clear_List;
+         end if;
          if Event.Path = MainWindow.Current_Directory
            and then
            ((Event.Event in MOVED_TO | METADATA | ACCESSED) and
@@ -155,6 +166,7 @@ package body RefreshData is
         Tcl_CreateTimerHandler
           (int(Settings.AutoRefreshInterval) * 1_000, CheckItems'Access,
            Null_ClientData);
+      Is_Checking := False;
    end CheckItems;
 
    procedure StartTimer(Path: String := "") is
@@ -177,7 +189,7 @@ package body RefreshData is
    procedure UpdateWatch(Path: String) is
    begin
       Temporary_Stop := True;
-      Events_List.Clear;
+      CheckItems(Null_ClientData);
       Remove_Watches;
       Add_Watches(Path);
       Temporary_Stop := False;
