@@ -394,11 +394,14 @@ package body MainWindow is
       Size_String, Item_Index, Selected_Index, Path, Time_String, Shortcut,
       Tooltip_Text, Button_Label: Unbounded_String := Null_Unbounded_String;
       Directory_Tree: constant Ttk_Tree_View :=
-        Get_Widget(".mainframe.paned." & Frame_Name & "frame.directorytree");
+        Get_Widget
+          (pathName =>
+             ".mainframe.paned." & Frame_Name & "frame.directorytree");
       Path_Buttons_Frame: constant Ttk_Frame :=
-        Get_Widget(".mainframe.paned." & Frame_Name & "frame.pathframe");
+        Get_Widget
+          (pathName => ".mainframe.paned." & Frame_Name & "frame.pathframe");
       Tokens: Slice_Set; --## rule line off IMPROPER_INITIALIZATION
-      Path_Button: Ttk_Button := Get_Widget(".mainframe");
+      Path_Button: Ttk_Button := Get_Widget(pathName => ".mainframe");
       Row, Width, Column: Natural := 0;
       List: Items_Container.Vector;
    begin
@@ -417,15 +420,18 @@ package body MainWindow is
       if Clear then
          Arrange_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
-            if Exists(Directory_Tree, Positive'Image(I)) = "1" then
+            if Exists
+                (TreeViewWidget => Directory_Tree, Item => Positive'Image(I)) =
+              "1" then
                Move
-                 (Directory_Tree, Positive'Image(I), "{}",
-                  Natural'Image(I - 1));
+                 (TreeViewWidget => Directory_Tree, Item => Positive'Image(I),
+                  Parent => "{}", Index => Natural'Image(I - 1));
             end if;
          end loop Arrange_Items_Loop;
          Delete
-           (Directory_Tree,
-            "[" & Widget_Image(Directory_Tree) & " children {} ]");
+           (TreeViewWidget => Directory_Tree,
+            ItemsList =>
+              "[" & Widget_Image(Win => Directory_Tree) & " children {} ]");
          Add_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
             case List(I).Size is
@@ -433,13 +439,11 @@ package body MainWindow is
                   Size_String := To_Unbounded_String(Source => "->");
                when -1 =>
                   Size_String :=
-                    To_Unbounded_String(Mc(Get_Context, "unknown"));
+                    To_Unbounded_String
+                      (Source =>
+                         Mc(Interp => Get_Context, Src_String => "unknown"));
                when others =>
-                  if not List(I).IsDirectory then
-                     Size_String :=
-                       To_Unbounded_String
-                         (CountFileSize(File_Size(List(I).Size)));
-                  else
+                  if List(I).IsDirectory then
                      if Settings.ShowHidden then
                         Size_String :=
                           To_Unbounded_String
@@ -450,6 +454,10 @@ package body MainWindow is
                         Size_String :=
                           To_Unbounded_String(Item_Size'Image(List(I).Size));
                      end if;
+                  else
+                     Size_String :=
+                       To_Unbounded_String
+                         (CountFileSize(File_Size(List(I).Size)));
                   end if;
             end case;
             begin
