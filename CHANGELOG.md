@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Some typos in UI
 - Showing translated info for copy and move buttons
 - Showing preview of empty directories when entering them
+- Possible crash on auto refresh directory listing
 
 ## [1.5] - 2020-11-20
 
