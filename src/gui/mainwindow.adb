@@ -447,36 +447,47 @@ package body MainWindow is
                      if Settings.ShowHidden then
                         Size_String :=
                           To_Unbounded_String
-                            (Item_Size'Image
-                               (List(I).Size +
-                                Item_Size(List(I).HiddenItems)));
+                            (Source =>
+                               Item_Size'Image
+                                 (List(I).Size +
+                                  Item_Size(List(I).HiddenItems)));
                      else
                         Size_String :=
-                          To_Unbounded_String(Item_Size'Image(List(I).Size));
+                          To_Unbounded_String
+                            (Source => Item_Size'Image(List(I).Size));
                      end if;
                   else
                      Size_String :=
                        To_Unbounded_String
-                         (CountFileSize(File_Size(List(I).Size)));
+                         (Source =>
+                            CountFileSize(Size => File_Size(List(I).Size)));
                   end if;
             end case;
+            Set_Modified_Block :
             begin
                Time_String :=
                  To_Unbounded_String
-                   (Ada.Calendar.Formatting.Image(List(I).Modified));
+                   (Source =>
+                      Ada.Calendar.Formatting.Image(Date => List(I).Modified));
             exception
                when Ada.Calendar.Time_Error =>
                   Time_String :=
-                    To_Unbounded_String(Mc(Get_Context, "unknown"));
-            end;
+                    To_Unbounded_String
+                      (Source =>
+                         Mc(Interp => Get_Context, Src_String => "unknown"));
+            end Set_Modified_Block;
             Item_Index :=
               To_Unbounded_String
-                (Insert
-                   (Directory_Tree,
-                    "{} end -id" & Positive'Image(I) & " -values [list {" &
-                    To_String(List(I).Name) & "} {" & To_String(Time_String) &
-                    "} {" & To_String(Size_String) & "}] -image {" &
-                    To_String(List(I).Image) & "} -tags [list itemrow]"));
+                (Source =>
+                   Insert
+                     (TreeViewWidget => Directory_Tree,
+                      Options =>
+                        "{} end -id" & Positive'Image(I) & " -values [list {" &
+                        To_String(Source => List(I).Name) & "} {" &
+                        To_String(Source => Time_String) & "} {" &
+                        To_String(Source => Size_String) & "}] -image {" &
+                        To_String(Source => List(I).Image) &
+                        "} -tags [list itemrow]"));
             if not Settings.ShowHidden and then List(I).IsHidden then
                Detach(Directory_Tree, To_String(Item_Index));
             elsif Selected_Index = Null_Unbounded_String or
