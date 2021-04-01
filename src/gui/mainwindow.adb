@@ -489,29 +489,41 @@ package body MainWindow is
                         To_String(Source => List(I).Image) &
                         "} -tags [list itemrow]"));
             if not Settings.ShowHidden and then List(I).IsHidden then
-               Detach(Directory_Tree, To_String(Item_Index));
+               Detach
+                 (TreeViewWidget => Directory_Tree,
+                  ItemsList => To_String(Source => Item_Index));
             elsif Selected_Index = Null_Unbounded_String or
               Current_Selected = List(I).Path then
-               Selected_Index := To_Unbounded_String(Positive'Image(I));
+               Selected_Index :=
+                 To_Unbounded_String(Source => Positive'Image(I));
             end if;
          end loop Add_Items_Loop;
-         if Winfo_Get(Path_Buttons_Frame, "ismapped") = "1" then
+         if Winfo_Get(Widgt => Path_Buttons_Frame, Info => "ismapped") =
+           "1" then
             -- Remove old path buttons
-            Create(Tokens, Grid_Slaves(Path_Buttons_Frame), " ");
-            if Slice(Tokens, 1) /= "" then
+            Create
+              (S => Tokens, From => Grid_Slaves(Master => Path_Buttons_Frame),
+               Separators => " ");
+            if Slice(S => Tokens, Index => 1) /= "" then
                Remove_Old_Path_Buttons_Loop :
-               for I in reverse 1 .. Slice_Count(Tokens) loop
-                  Path_Button := Get_Widget(Slice(Tokens, I));
-                  if I = 1 then
-                     Shortcut := Path_Shortcut & "-r";
-                  elsif I = 2 then
-                     Shortcut := Path_Shortcut & "-u";
-                  elsif I < 11 then
-                     Shortcut :=
-                       Path_Shortcut & "-KP_" & Slice_Number'Image(I - 2)(2);
-                  end if;
+               for I in reverse 1 .. Slice_Count(S => Tokens) loop
+                  Path_Button :=
+                    Get_Widget(pathName => Slice(S => Tokens, Index => I));
+                  case I is
+                     when 1 =>
+                        Shortcut := Path_Shortcut & "-r";
+                     when 2 =>
+                        Shortcut := Path_Shortcut & "-u";
+                     when 3 .. 10 =>
+                        Shortcut :=
+                          Path_Shortcut & "-KP_" &
+                          Slice_Number'Image(I - 2)(2);
+                     when others =>
+                        null;
+                  end case;
                   Unbind_From_Main_Window
-                    (Path_Button.Interp, "<" & To_String(Shortcut) & ">");
+                    (Interp => Path_Button.Interp,
+                     Sequence => "<" & To_String(Source => Shortcut) & ">");
                   Grid_Forget(Path_Button);
                   Destroy(Path_Button);
                end loop Remove_Old_Path_Buttons_Loop;
