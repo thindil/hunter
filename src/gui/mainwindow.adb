@@ -524,31 +524,29 @@ package body MainWindow is
                   Unbind_From_Main_Window
                     (Interp => Path_Button.Interp,
                      Sequence => "<" & To_String(Source => Shortcut) & ">");
-                  Grid_Forget(Path_Button);
-                  Destroy(Path_Button);
+                  Grid_Forget(Slave => Path_Button);
+                  Destroy(Widgt => Path_Button);
                end loop Remove_Old_Path_Buttons_Loop;
             end if;
             -- Add new path buttons
             if Frame_Name = "directory"
               and then New_Action not in SHOWTRASH | DELETETRASH then
-               Create(Tokens, To_String(Current_Directory), "/");
+               Create
+                 (S => Tokens, From => To_String(Source => Current_Directory),
+                  Separators => "/");
             else
-               Create(Tokens, To_String(DestinationDirectory), "/");
+               Create
+                 (S => Tokens,
+                  From => To_String(Source => DestinationDirectory),
+                  Separators => "/");
             end if;
             Add_Path_Buttons_Loop :
-            for I in 1 .. Slice_Count(Tokens) loop
-               if Slice(Tokens, I) = "" and I > 1 then
+            for I in 1 .. Slice_Count(S => Tokens) loop
+               if Slice(S => Tokens, Index => I) = "" and I > 1 then
                   goto End_Of_Loop;
                end if;
                if I = 1 then
-                  if New_Action /= SHOWTRASH then
-                     Path_Button :=
-                       Create
-                         (Widget_Image(Path_Buttons_Frame) & ".button1",
-                          "-text {/} -command {" & To_String(Path_Command) &
-                          " {/}}");
-                     Path := To_Unbounded_String(Source => "/");
-                  else
+                  if New_Action = SHOWTRASH then
                      Path_Button :=
                        Create
                          (Widget_Image(Path_Buttons_Frame) & ".button1",
@@ -557,6 +555,13 @@ package body MainWindow is
                      Path :=
                        To_Unbounded_String
                          (Value("HOME") & "/.local/share/Trash/files/");
+                  else
+                     Path_Button :=
+                       Create
+                         (Widget_Image(Path_Buttons_Frame) & ".button1",
+                          "-text {/} -command {" & To_String(Path_Command) &
+                          " {/}}");
+                     Path := To_Unbounded_String(Source => "/");
                   end if;
                else
                   Append(Path, Slice(Tokens, I) & "/");
