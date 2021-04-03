@@ -30,9 +30,11 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Messages; use Messages;
 with Preferences; use Preferences;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
@@ -143,7 +145,6 @@ package body DeleteItems is
          Settings.DeleteFiles := OldSetting;
       end if;
       SelectedItems.Clear;
-      Current_Selected := MainWindow.Current_Directory;
       return GoUp;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
@@ -255,6 +256,11 @@ package body DeleteItems is
                     (Ada.Directories.Containing_Directory
                        (To_String(MainWindow.Current_Directory)));
                end if;
+               Current_Selected := MainWindow.Current_Directory;
+               if ItemsList.Length > 0 then
+                  Current_Selected := Current_Selected & "/" & ItemsList(1).Name;
+               end if;
+               ShowPreview;
             end if;
             Set_Cursor_Visibility(Visibility);
             Post(DialogForm, False);
