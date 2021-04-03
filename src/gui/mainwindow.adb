@@ -549,26 +549,38 @@ package body MainWindow is
                   if New_Action = SHOWTRASH then
                      Path_Button :=
                        Create
-                         (Widget_Image(Path_Buttons_Frame) & ".button1",
-                          "-text {" & Mc(Get_Context, "{Trash}") &
-                          "} -command {ShowTrash}");
+                         (pathName => Path_Buttons_Frame & ".button1",
+                          options =>
+                            "-text {" &
+                            Mc(Interp => Get_Context,
+                               Src_String => "{Trash}") &
+                            "} -command {ShowTrash}");
                      Path :=
                        To_Unbounded_String
-                         (Value("HOME") & "/.local/share/Trash/files/");
+                         (Source =>
+                            Value(Name => "HOME") &
+                            "/.local/share/Trash/files/");
                   else
                      Path_Button :=
                        Create
-                         (Widget_Image(Path_Buttons_Frame) & ".button1",
-                          "-text {/} -command {" & To_String(Path_Command) &
-                          " {/}}");
+                         (pathName => Path_Buttons_Frame & ".button1",
+                          options =>
+                            "-text {/} -command {" &
+                            To_String(Source => Path_Command) & " {/}}");
                      Path := To_Unbounded_String(Source => "/");
                   end if;
                else
-                  Append(Path, Slice(Tokens, I) & "/");
-                  Button_Label := To_Unbounded_String(Slice(Tokens, I));
-                  if Length(Button_Label) > 7 then
+                  Append
+                    (Source => Path,
+                     New_Item => Slice(S => Tokens, Index => I) & "/");
+                  Button_Label :=
+                    To_Unbounded_String
+                      (Source => Slice(S => Tokens, Index => I));
+                  if Length(Source => Button_Label) > 7 then
                      Button_Label :=
-                       Unbounded_Slice(Button_Label, 1, 7) & "...";
+                       Unbounded_Slice
+                         (Source => Button_Label, Low => 1, High => 7) &
+                       "...";
                   end if;
                   Path_Button :=
                     Create
