@@ -584,30 +584,41 @@ package body MainWindow is
                   end if;
                   Path_Button :=
                     Create
-                      (Widget_Image(Path_Buttons_Frame) & ".button" &
-                       Trim(Slice_Number'Image(I), Both),
-                       "-text {" & To_String(Button_Label) & "} -command {" &
-                       To_String(Path_Command) & " {" & To_String(Path) &
-                       "}}");
+                      (pathName =>
+                         Widget_Image(Win => Path_Buttons_Frame) & ".button" &
+                         Trim(Source => Slice_Number'Image(I), Side => Both),
+                       options =>
+                         "-text {" & To_String(Source => Button_Label) &
+                         "} -command {" & To_String(Source => Path_Command) &
+                         " {" & To_String(Source => Path) & "}}");
                end if;
-               if I + 11 > Slice_Count(Tokens) then
-                  if I = Slice_Count(Tokens) then
+               if I + 11 > Slice_Count(S => Tokens) then
+                  if I = Slice_Count(S => Tokens) then
                      Shortcut := Path_Shortcut & "-r";
                      Tooltip_Text :=
-                       Mc(Get_Context, "{Reload the current directory:}") &
-                       LF & To_String(Path) & LF & "\[" & Shortcut & "\]";
-                  elsif I = Slice_Count(Tokens) - 1 then
+                       Mc
+                         (Interp => Get_Context,
+                          Src_String => "{Reload the current directory:}") &
+                       LF & To_String(Source => Path) & LF & "\[" & Shortcut &
+                       "\]";
+                  elsif I = Slice_Count(S => Tokens) - 1 then
                      Shortcut := Path_Shortcut & "-u";
                      Tooltip_Text :=
-                       Mc(Get_Context, "{Go to directory:}") & LF &
-                       To_String(Path) & LF & "\[" & Shortcut & "\]";
+                       Mc
+                         (Interp => Get_Context,
+                          Src_String => "{Go to directory:}") &
+                       LF & To_String(Source => Path) & LF & "\[" & Shortcut &
+                       "\]";
                   else
                      Shortcut :=
                        Path_Shortcut & "-KP_" &
-                       Slice_Number'Image(Slice_Count(Tokens) - I - 1)(2);
+                       Slice_Number'Image(Slice_Count(S => Tokens) - I - 1)(2);
                      Tooltip_Text :=
-                       Mc(Get_Context, "{Go to directory:}") & LF &
-                       To_String(Path) & LF & "\[" & Shortcut & "\]";
+                       Mc
+                         (Interp => Get_Context,
+                          Src_String => "{Go to directory:}") &
+                       LF & To_String(Source => Path) & LF & "\[" & Shortcut &
+                       "\]";
                   end if;
                   Bind_To_Main_Window
                     (Path_Button.Interp, "<" & To_String(Shortcut) & ">",
