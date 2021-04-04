@@ -20,12 +20,10 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
-with Interfaces.C;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
-with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -645,36 +643,8 @@ package body ShowItems is
       end if;
    end Show_Selected;
 
-   -- ****o* ShowItemsTUI/ShowItemsTUI.Set_Permissions_Command
-   -- FUNCTION
-   -- Set the permissions for the selected file or directory
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- SetPermissions
-   -- SOURCE
-   function Set_Permissions_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
-      Convention => C;
-      -- ****
-
-   function Set_Permissions_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
-   begin
-      return TCL_OK;
-   end Set_Permissions_Command;
-
    procedure CreateShowItemsUI is
    begin
-      AddCommand("SetPermissions", Set_Permissions_Command'Access);
       PathButtons := Create(1, Columns / 2, 1, 0);
       PreviewWindow := Create(Lines - 2, Columns / 2, 2, Columns / 2);
       Box(PreviewWindow, Default_Character, Default_Character);
