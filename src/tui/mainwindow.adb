@@ -459,6 +459,7 @@ package body MainWindow is
                when 3 =>
                   if New_Action in COPY | MOVE | CREATELINK then
                      New_Action := CREATEFILE;
+                     UILocation := DIRECTORY_VIEW;
                      Update_Directory_List;
                      CreateProgramMenu;
                      Refresh(MenuWindow);
