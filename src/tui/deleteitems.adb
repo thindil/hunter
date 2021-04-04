@@ -180,6 +180,9 @@ package body DeleteItems is
       ListLength: Positive;
       UnusedResult: Forms.Driver_Result;
    begin
+      if SelectedItems.Length = 0 then
+         return;
+      end if;
       Set_Cursor_Visibility(Visibility);
       if SelectedItems.Length > 10 then
          ListLength := 10;
