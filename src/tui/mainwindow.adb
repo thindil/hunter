@@ -254,7 +254,8 @@ package body MainWindow is
             Update_Selected_Loop :
             for I in 1 .. Item_Count(DirectoryList) loop
                if SelectedItems.Contains
-                   (To_Unbounded_String(Name(Items(DirectoryList, I)))) then
+                   (To_Unbounded_String
+                      (Description(Items(DirectoryList, I)))) then
                   Set_Value(Items(DirectoryList, I), True);
                end if;
             end loop Update_Selected_Loop;
