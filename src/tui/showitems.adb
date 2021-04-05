@@ -804,7 +804,23 @@ package body ShowItems is
 
    procedure Preview_Keys(Key: Key_Code) is
       Result: Forms.Driver_Result := Unknown_Request;
-      -- FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      SelectedItem: constant String :=
+         Full_Name(To_String(Current_Selected));
+      procedure Set_Permission(Group, Permission: String) is
+         PermissionsString: Unbounded_String;
+      begin
+         if Get_Buffer(Current(DialogForm))(1 .. 5) = "Can't" then
+            PermissionsString := To_Unbounded_String(Group & "+" & Permission);
+         else
+            PermissionsString := To_Unbounded_String(Group & "-" & Permission);
+         end if;
+         Ada.Text_IO.Put_Line(Standard_Error, "here");
+         Tcl.Ada.Tcl_Eval
+           (Interpreter,
+            "file attributes {" & SelectedItem & "} -permissions " &
+            To_String(PermissionsString));
+      end Set_Permission;
    begin
       case Key is
          when KEY_UP =>
@@ -813,6 +829,27 @@ package body ShowItems is
          when KEY_DOWN =>
             Result := Driver(DialogForm, F_Next_Field);
             Result := Driver(DialogForm, F_End_Line);
+         when 10 =>
+            if Is_Directory(SelectedItem) then
+               case FieldIndex is
+                  when 2 =>
+                     Set_Permission("u", "w");
+                  when 3 =>
+                     Set_Permission("u", "r");
+                  when 5 =>
+                     Set_Permission("g", "w");
+                  when 6 =>
+                     Set_Permission("g", "r");
+                  when 8 =>
+                     Set_Permission("o", "w");
+                  when 9 =>
+                     Set_Permission("o", "r");
+                  when others =>
+                     null;
+               end case;
+            end if;
+            ShowInfo;
+            return;
          when others =>
             return;
       end case;
