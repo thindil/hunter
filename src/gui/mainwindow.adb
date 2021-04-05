@@ -621,22 +621,30 @@ package body MainWindow is
                        "\]";
                   end if;
                   Bind_To_Main_Window
-                    (Path_Button.Interp, "<" & To_String(Shortcut) & ">",
-                     "{" & Widget_Image(Path_Button) & " invoke}");
-                  Add(Path_Button, To_String(Tooltip_Text));
+                    (Interp => Path_Button.Interp,
+                     Sequence => "<" & To_String(Source => Shortcut) & ">",
+                     Script => "{" & Path_Button & " invoke}");
+                  Add
+                    (Widget => Path_Button,
+                     Message => To_String(Source => Tooltip_Text));
                end if;
                Width :=
-                 Width + Positive'Value(Winfo_Get(Path_Button, "reqwidth"));
+                 Width +
+                 Positive'Value
+                   (Winfo_Get(Widgt => Path_Button, Info => "reqwidth"));
                if Width >
-                 Positive'Value(Winfo_Get(Path_Buttons_Frame, "width")) then
+                 Positive'Value
+                   (Winfo_Get
+                      (Widgt => Path_Buttons_Frame, Info => "width")) then
                   Row := Row + 1;
                   Width := 0;
                   Column := 0;
                end if;
                Tcl.Tk.Ada.Grid.Grid
-                 (Path_Button,
-                  "-row" & Natural'Image(Row) & " -column" &
-                  Natural'Image(Column));
+                 (Slave => Path_Button,
+                  Options =>
+                    "-row" & Natural'Image(Row) & " -column" &
+                    Natural'Image(Column));
                Column := Column + 1;
                <<End_Of_Loop>>
             end loop Add_Path_Buttons_Loop;
@@ -647,17 +655,19 @@ package body MainWindow is
             if (Settings.ShowHidden and List(I).IsHidden) or
               not List(I).IsHidden then
                Move
-                 (Directory_Tree, Positive'Image(I), "{}", Positive'Image(I));
+                 (TreeViewWidget => Directory_Tree, Item => Positive'Image(I),
+                  Parent => "{}", Index => Positive'Image(I));
                if Selected_Index = Null_Unbounded_String or
                  Current_Selected = List(I).Path then
-                  Selected_Index := To_Unbounded_String(Positive'Image(I));
+                  Selected_Index :=
+                    To_Unbounded_String(Source => Positive'Image(I));
                end if;
             end if;
          end loop Rearrange_Items_Loop;
       end if;
       if not List.Is_Empty then
-         if Selected_Index /= Null_Unbounded_String and
-           cget(Directory_Tree, "-selectmode") /= "none" then
+         if Length(Selected_Index) > 0 and
+           cget(Directory_Tree, "-selectmode") in "browse" | "extended" then
             Selection_Set
               (Directory_Tree, "[list " & To_String(Selected_Index) & "]");
             Tcl.Tk.Ada.Widgets.Focus(Directory_Tree);
