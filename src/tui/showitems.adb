@@ -847,6 +847,29 @@ package body ShowItems is
                   when others =>
                      null;
                end case;
+            else
+               case FieldIndex is
+                  when 4 =>
+                     Set_Permission("u", "x");
+                  when 5 =>
+                     Set_Permission("u", "w");
+                  when 6 =>
+                     Set_Permission("u", "r");
+                  when 8 =>
+                     Set_Permission("g", "x");
+                  when 9 =>
+                     Set_Permission("g", "w");
+                  when 10 =>
+                     Set_Permission("g", "r");
+                  when 12 =>
+                     Set_Permission("o", "x");
+                  when 13 =>
+                     Set_Permission("o", "w");
+                  when 14 =>
+                     Set_Permission("o", "r");
+                  when others =>
+                     null;
+               end case;
             end if;
             ShowInfo;
             return;
