@@ -61,17 +61,22 @@ with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with Preferences.UI; use Preferences.UI;
 with RefreshData; use RefreshData;
-with RenameItems; use RenameItems;
-with SearchItems; use SearchItems;
+with RenameItems;
+with SearchItems;
 with ShowItems; use ShowItems;
-with Toolbars; use Toolbars;
-with Trash; use Trash;
+with Toolbars;
+with Trash;
 with UserCommands;
-with Utils; use Utils;
+with Utils;
 
 package body MainWindow is
 
    procedure Create_Main_Window(Directory: String) is
+      use RenameItems;
+      use SearchItems;
+      use Toolbars;
+      use Trash;
+
       Interp: constant Tcl.Tcl_Interp := Get_Context;
       Main_Window: constant Tk_Toplevel := Get_Main_Window(Interp => Interp);
       Current_Dir: constant String := Ada.Directories.Current_Directory;
@@ -390,6 +395,8 @@ package body MainWindow is
 
    procedure Update_Directory_List
      (Clear: Boolean := False; Frame_Name: String := "directory") is
+      use Utils;
+
       Path_Command, Path_Shortcut: Unbounded_String;
       Size_String, Item_Index, Selected_Index, Path, Time_String, Shortcut,
       Tooltip_Text, Button_Label: Unbounded_String := Null_Unbounded_String;
@@ -665,19 +672,22 @@ package body MainWindow is
             end if;
          end loop Rearrange_Items_Loop;
       end if;
-      if not List.Is_Empty then
-         if Length(Selected_Index) > 0 and
-           cget(Directory_Tree, "-selectmode") in "browse" | "extended" then
-            Selection_Set
-              (Directory_Tree, "[list " & To_String(Selected_Index) & "]");
-            Tcl.Tk.Ada.Widgets.Focus(Directory_Tree);
-            Tcl.Tk.Ada.Widgets.TtkTreeView.Focus
-              (Directory_Tree, To_String(Selected_Index));
-         else
-            Selection_Set(Directory_Tree, "{}");
-         end if;
+      if List.Is_Empty then
+         Selection_Set(TreeViewWidget => Directory_Tree, Items => "{}");
       else
-         Selection_Set(Directory_Tree, "{}");
+         if Length(Source => Selected_Index) > 0 and
+           cget(Widgt => Directory_Tree, option => "-selectmode") in "browse" |
+               "extended" then
+            Selection_Set
+              (TreeViewWidget => Directory_Tree,
+               Items => "[list " & To_String(Source => Selected_Index) & "]");
+            Tcl.Tk.Ada.Widgets.Focus(Widgt => Directory_Tree);
+            Tcl.Tk.Ada.Widgets.TtkTreeView.Focus
+              (TreeViewWidget => Directory_Tree,
+               Item => To_String(Source => Selected_Index));
+         else
+            Selection_Set(TreeViewWidget => Directory_Tree, Items => "{}");
+         end if;
       end if;
    end Update_Directory_List;
 
