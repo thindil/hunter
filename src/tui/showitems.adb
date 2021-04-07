@@ -261,7 +261,6 @@ package body ShowItems is
                   Close(ProcessDesc);
                exception
                   when Process_Died =>
-                     Add(PreviewPad, "Associated program: None" & LF);
                      Set_Buffer(Permissions_Fields.all(2), 0, "None");
                end;
             end if;
