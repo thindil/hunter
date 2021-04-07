@@ -37,30 +37,30 @@ use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
-with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
-with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
-with Tcl.Tk.Ada.Widgets.TtkProgressBar; use Tcl.Tk.Ada.Widgets.TtkProgressBar;
-with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+with Tcl.Tk.Ada.Widgets.TtkLabel;
+with Tcl.Tk.Ada.Widgets.TtkPanedWindow;
+with Tcl.Tk.Ada.Widgets.TtkProgressBar;
+with Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
-with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
-with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
-with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
+with Tcl.Tk.Ada.Winfo;
+with Tcl.Tk.Ada.Wm;
+with Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with AboutDialog; use AboutDialog;
+with AboutDialog;
 with ActivateItems;
-with Bookmarks; use Bookmarks;
-with CopyItems; use CopyItems;
-with CreateItems; use CreateItems;
-with DeleteItems; use DeleteItems;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
-with MainWindow.Commands; use MainWindow.Commands;
-with Messages; use Messages;
-with Modules; use Modules;
-with MoveItems; use MoveItems;
+with Bookmarks;
+with CopyItems;
+with CreateItems;
+with DeleteItems;
+with LoadData;
+with LoadData.UI;
+with MainWindow.Commands;
+with Messages;
+with Modules;
+with MoveItems;
 with Preferences; use Preferences;
-with Preferences.UI; use Preferences.UI;
-with RefreshData; use RefreshData;
+with Preferences.UI;
+with RefreshData;
 with RenameItems;
 with SearchItems;
 with ShowItems; use ShowItems;
@@ -72,6 +72,24 @@ with Utils;
 package body MainWindow is
 
    procedure Create_Main_Window(Directory: String) is
+      use Tcl.Tk.Ada.Widgets.TtkLabel;
+      use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
+      use Tcl.Tk.Ada.Widgets.TtkProgressBar;
+      use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+      use Tcl.Tk.Ada.Wm;
+      use Tcl.Tklib.Ada.Autoscroll;
+      use AboutDialog;
+      use Bookmarks;
+      use CopyItems;
+      use CreateItems;
+      use DeleteItems;
+      use LoadData.UI;
+      use MainWindow.Commands;
+      use Messages;
+      use Modules;
+      use MoveItems;
+      use Preferences.UI;
+      use RefreshData;
       use RenameItems;
       use SearchItems;
       use Toolbars;
@@ -395,6 +413,8 @@ package body MainWindow is
 
    procedure Update_Directory_List
      (Clear: Boolean := False; Frame_Name: String := "directory") is
+      use Tcl.Tk.Ada.Winfo;
+      use LoadData;
       use Utils;
 
       Path_Command, Path_Shortcut: Unbounded_String;
