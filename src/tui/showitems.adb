@@ -224,7 +224,6 @@ package body ShowItems is
             Set_Options(Permissions_Fields.all(1), FieldOptions);
             Permissions_Fields.all(2) := New_Field(1, 20, 0, 20, 0, 0);
             if Is_Regular_File(SelectedItem) then
-               Add(PreviewPad, "File type: " & MimeType & LF);
                Set_Buffer
                  (Permissions_Fields.all(1), 0, "Associated program: ");
                declare
