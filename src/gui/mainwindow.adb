@@ -14,28 +14,28 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar.Formatting;
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Characters.Latin_1;
+with Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with GNAT.String_Split; use GNAT.String_Split;
-with CHelper; use CHelper;
-with Tcl.Ada; use Tcl.Ada;
+with GNAT.String_Split;
+with CHelper;
+with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
-with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
+with Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
-with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
+with Tcl.Tk.Ada.TtkStyle;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
-with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
+with Tcl.Tk.Ada.Widgets.Menu;
+with Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
-with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
+with Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow;
@@ -72,6 +72,13 @@ with Utils;
 package body MainWindow is
 
    procedure Create_Main_Window(Directory: String) is
+      use Ada.Command_Line;
+      use Tcl.Ada;
+      use Tcl.Tk.Ada.Image.Photo;
+      use Tcl.Tk.Ada.TtkStyle;
+      use Tcl.Tk.Ada.Widgets.Menu;
+      use Tcl.Tk.Ada.Widgets.Toplevel;
+      use Tcl.Tk.Ada.Widgets.TtkEntry;
       use Tcl.Tk.Ada.Widgets.TtkLabel;
       use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
       use Tcl.Tk.Ada.Widgets.TtkProgressBar;
@@ -249,6 +256,8 @@ package body MainWindow is
            "+0+0");
       Set_Program_Icon_Block :
       declare
+         use CHelper;
+
          Icon_Name: constant String :=
            (if
               Ada.Directories.Exists
@@ -413,6 +422,8 @@ package body MainWindow is
 
    procedure Update_Directory_List
      (Clear: Boolean := False; Frame_Name: String := "directory") is
+      use Ada.Characters.Latin_1;
+      use GNAT.String_Split;
       use Tcl.Tk.Ada.Winfo;
       use LoadData;
       use Utils;
