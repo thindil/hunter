@@ -118,7 +118,7 @@ package body ShowItems is
          Arguments: constant Argument_List :=
            (new String'("-c%a %U %G"), new String'(SelectedItem));
          Permissions_Fields: constant Field_Array_Access :=
-           (if Is_Directory(SelectedItem) then new Field_Array(1 .. 10)
+           (if Is_Directory(SelectedItem) then new Field_Array(1 .. 12)
             else new Field_Array(1 .. 15));
          FormHeight: Line_Position;
          FormLength: Column_Position;
@@ -186,91 +186,78 @@ package body ShowItems is
            To_Unbounded_String
              (Get_Command_Output("stat", Arguments, "", Status));
          Create(Tokens, To_String(Attributes), " ");
+         Permissions_Fields.all(1) := New_Field(1, 30, 0, 0, 0, 0);
+         FieldOptions := Get_Options(Permissions_Fields.all(1));
+         FieldOptions.Active := False;
+         Set_Options(Permissions_Fields.all(1), FieldOptions);
+         Permissions_Fields.all(2) := New_Field(1, 20, 0, 20, 0, 0);
+         if Is_Regular_File(SelectedItem) or Is_Directory(SelectedItem) then
+            Set_Buffer(Permissions_Fields.all(1), 0, "Associated program: ");
+            declare
+               ProcessDesc: Process_Descriptor;
+               Result: Expect_Match;
+               ExecutableName: constant String := FindExecutable("xdg-mime");
+               DesktopFile: Unbounded_String;
+            begin
+               if ExecutableName = "" then
+                  return;
+               end if;
+               Non_Blocking_Spawn
+                 (ProcessDesc, ExecutableName,
+                  Argument_String_To_List("query default " & MimeType).all);
+               Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+               if Result = 1 then
+                  DesktopFile :=
+                    To_Unbounded_String(Expect_Out_Match(ProcessDesc));
+                  DesktopFile :=
+                    To_Unbounded_String
+                      (GetProgramName(To_String(DesktopFile)));
+                  if Index(DesktopFile, ".desktop") = 0 then
+                     Set_Buffer
+                       (Permissions_Fields.all(2), 0, To_String(DesktopFile));
+                  else
+                     Set_Buffer
+                       (Permissions_Fields.all(2), 0, To_String(DesktopFile));
+                  end if;
+               end if;
+               Close(ProcessDesc);
+            exception
+               when Process_Died =>
+                  Set_Buffer(Permissions_Fields.all(2), 0, "None");
+            end;
+         end if;
+         Permissions_Fields.all(3) := New_Field(1, 30, 2, 0, 0, 0);
+         Set_Buffer
+           (Permissions_Fields.all(3), 0, "Owner: " & Slice(Tokens, 2));
+         FieldOptions := Get_Options(Permissions_Fields.all(3));
+         FieldOptions.Active := False;
+         Set_Options(Permissions_Fields.all(3), FieldOptions);
+         Permissions_Fields.all(4) := New_Field(1, 30, 3, 4, 0, 0);
+         Permissions_Fields.all(5) := New_Field(1, 30, 4, 4, 0, 0);
+         SetPermissionsButtons
+            ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2), 4);
          if Is_Directory(SelectedItem) then
-            Permissions_Fields.all(1) := New_Field(1, 30, 0, 0, 0, 0);
+            Permissions_Fields.all(6) := New_Field(1, 30, 5, 0, 0, 0);
             Set_Buffer
-              (Permissions_Fields.all(1), 0, "Owner: " & Slice(Tokens, 2));
-            FieldOptions := Get_Options(Permissions_Fields.all(1));
+              (Permissions_Fields.all(6), 0, "Group: " & Slice(Tokens, 3));
+            FieldOptions := Get_Options(Permissions_Fields.all(6));
             FieldOptions.Active := False;
-            Set_Options(Permissions_Fields.all(1), FieldOptions);
-            Permissions_Fields.all(2) := New_Field(1, 30, 1, 4, 0, 0);
-            Permissions_Fields.all(3) := New_Field(1, 30, 2, 4, 0, 0);
-            SetPermissionsButtons
-              ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2), 2);
-            Permissions_Fields.all(4) := New_Field(1, 30, 3, 0, 0, 0);
-            Set_Buffer
-              (Permissions_Fields.all(4), 0, "Group: " & Slice(Tokens, 3));
-            FieldOptions := Get_Options(Permissions_Fields.all(4));
-            FieldOptions.Active := False;
-            Set_Options(Permissions_Fields.all(4), FieldOptions);
-            Permissions_Fields.all(5) := New_Field(1, 30, 4, 4, 0, 0);
-            Permissions_Fields.all(6) := New_Field(1, 30, 5, 4, 0, 0);
-            Permissions_Fields.all(7) := New_Field(1, 30, 6, 0, 0, 0);
-            Set_Buffer(Permissions_Fields.all(7), 0, "Others:");
-            FieldOptions := Get_Options(Permissions_Fields.all(7));
-            FieldOptions.Active := False;
-            Set_Options(Permissions_Fields.all(7), FieldOptions);
+            Set_Options(Permissions_Fields.all(6), FieldOptions);
+            Permissions_Fields.all(7) := New_Field(1, 30, 6, 4, 0, 0);
             Permissions_Fields.all(8) := New_Field(1, 30, 7, 4, 0, 0);
-            Permissions_Fields.all(9) := New_Field(1, 30, 8, 4, 0, 0);
-            Permissions_Fields.all(10) := Null_Field;
+            Permissions_Fields.all(9) := New_Field(1, 30, 8, 0, 0, 0);
+            Set_Buffer(Permissions_Fields.all(9), 0, "Others:");
+            FieldOptions := Get_Options(Permissions_Fields.all(9));
+            FieldOptions.Active := False;
+            Set_Options(Permissions_Fields.all(9), FieldOptions);
+            Permissions_Fields.all(10) := New_Field(1, 30, 9, 4, 0, 0);
+            Permissions_Fields.all(11) := New_Field(1, 30, 10, 4, 0, 0);
+            Permissions_Fields.all(12) := Null_Field;
             SetPermissionsButtons
-              ("group", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1), 5);
+              ("group", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1), 7);
             SetPermissionsButtons
-              ("others", Slice(Tokens, 1)(Slice(Tokens, 1)'Last), 8);
+              ("others", Slice(Tokens, 1)(Slice(Tokens, 1)'Last), 10);
          else
-            Permissions_Fields.all(1) := New_Field(1, 20, 0, 0, 0, 0);
-            FieldOptions := Get_Options(Permissions_Fields.all(1));
-            FieldOptions.Active := False;
-            Set_Options(Permissions_Fields.all(1), FieldOptions);
-            Permissions_Fields.all(2) := New_Field(1, 20, 0, 20, 0, 0);
-            if Is_Regular_File(SelectedItem) then
-               Set_Buffer
-                 (Permissions_Fields.all(1), 0, "Associated program: ");
-               declare
-                  ProcessDesc: Process_Descriptor;
-                  Result: Expect_Match;
-                  ExecutableName: constant String :=
-                    FindExecutable("xdg-mime");
-                  DesktopFile: Unbounded_String;
-               begin
-                  if ExecutableName = "" then
-                     return;
-                  end if;
-                  Non_Blocking_Spawn
-                    (ProcessDesc, ExecutableName,
-                     Argument_String_To_List("query default " & MimeType).all);
-                  Expect
-                    (ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
-                  if Result = 1 then
-                     DesktopFile :=
-                       To_Unbounded_String(Expect_Out_Match(ProcessDesc));
-                     DesktopFile :=
-                       To_Unbounded_String
-                         (GetProgramName(To_String(DesktopFile)));
-                     if Index(DesktopFile, ".desktop") = 0 then
-                        Set_Buffer
-                          (Permissions_Fields.all(2), 0,
-                           To_String(DesktopFile));
-                     else
-                        Set_Buffer
-                          (Permissions_Fields.all(2), 0,
-                           To_String(DesktopFile));
-                     end if;
-                  end if;
-                  Close(ProcessDesc);
-               exception
-                  when Process_Died =>
-                     Set_Buffer(Permissions_Fields.all(2), 0, "None");
-               end;
-            end if;
-            Permissions_Fields.all(3) := New_Field(1, 30, 2, 0, 0, 0);
-            Set_Buffer
-              (Permissions_Fields.all(3), 0, "Owner: " & Slice(Tokens, 2));
-            FieldOptions := Get_Options(Permissions_Fields.all(3));
-            FieldOptions.Active := False;
-            Set_Options(Permissions_Fields.all(3), FieldOptions);
-            Permissions_Fields.all(4) := New_Field(1, 30, 3, 4, 0, 0);
-            Permissions_Fields.all(5) := New_Field(1, 30, 4, 4, 0, 0);
             Permissions_Fields.all(6) := New_Field(1, 30, 5, 4, 0, 0);
             SetPermissionsButtons
               ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2), 4);
@@ -803,8 +790,7 @@ package body ShowItems is
    procedure Preview_Keys(Key: Key_Code) is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Positive := Get_Index(Current(DialogForm));
-      SelectedItem: constant String :=
-         Full_Name(To_String(Current_Selected));
+      SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       procedure Set_Permission(Group, Permission: String) is
          PermissionsString: Unbounded_String;
       begin
@@ -830,17 +816,17 @@ package body ShowItems is
          when 10 =>
             if Is_Directory(SelectedItem) then
                case FieldIndex is
-                  when 2 =>
+                  when 4 =>
                      Set_Permission("u", "w");
-                  when 3 =>
-                     Set_Permission("u", "r");
                   when 5 =>
+                     Set_Permission("u", "r");
+                  when 7 =>
                      Set_Permission("g", "w");
-                  when 6 =>
-                     Set_Permission("g", "r");
                   when 8 =>
+                     Set_Permission("g", "r");
+                  when 10 =>
                      Set_Permission("o", "w");
-                  when 9 =>
+                  when 11 =>
                      Set_Permission("o", "r");
                   when others =>
                      null;
