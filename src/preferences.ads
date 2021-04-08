@@ -26,24 +26,24 @@ package Preferences is
    -- FUNCTION
    -- Data structure to the program settings
    -- OPTIONS
-   -- ShowHidden            - If true, show hidden files
-   -- ShowLastModified      - If true, show column with last modification time
-   --                         on files list
-   -- ScaleImages           - If true, scale images in preview
-   -- AutoCloseMessagesTime - Amount of seconds after which current message
-   --                         will be auto hidden
-   -- WindowWidth           - Width of the main window in pixels
-   -- WindowHeight          - Height of the main window in pixels
-   -- ShowPreview           - If true, show preview panel for files and
-   --                         directories
-   -- StayInOld             - If true, after copying, moving files and
-   --                         directories or creating new link, stay in old
-   --                         directory instead of going to the destination
-   --                         directory.
-   -- ColorText             - If true, try color syntax in text files in
-   --                         preview
-   -- ColorTheme            - Selected by user color theme for coloring syntax
-   --                         in text files in preview
+   -- Show_Hidden             - If true, show hidden files
+   -- Show_Last_Modified      - If true, show column with last modification time
+   --                           on files list
+   -- Scale_Images            - If true, scale images in preview
+   -- Auto_CloseMessages_Time - Amount of seconds after which current message
+   --                           will be auto hidden
+   -- Window_Width            - Width of the main window in pixels
+   -- Window_Height           - Height of the main window in pixels
+   -- Show_Preview            - If true, show preview panel for files and
+   --                           directories
+   -- Stay_In_Old             - If true, after copying, moving files and
+   --                           directories or creating new link, stay in old
+   --                           directory instead of going to the destination
+   --                           directory.
+   -- Color_Text              - If true, try color syntax in text files in
+   --                           preview
+   -- Color_Theme             - Selected by user color theme for coloring syntax
+   --                           in text files in preview
    -- DeleteFiles           - If true, delete file and directories instead of
    --                         moving them to trash
    -- ClearTrashOnExit      - Clear trash on quit from the program
@@ -62,16 +62,16 @@ package Preferences is
    -- MonospaceFont         - If true, use monospace font in text files preview
    -- SOURCE
    type Settings_Data is record
-      ShowHidden: Boolean;
-      ShowLastModified: Boolean;
-      ScaleImages: Boolean;
-      AutoCloseMessagesTime: Natural range 0 .. 60;
-      WindowWidth: Positive;
-      WindowHeight: Positive;
-      ShowPreview: Boolean;
-      StayInOld: Boolean;
-      ColorText: Boolean;
-      ColorTheme: Unbounded_String;
+      Show_Hidden: Boolean;
+      Show_Last_Modified: Boolean;
+      Scale_Images: Boolean;
+      Auto_Close_Messages_Time: Natural range 0 .. 60;
+      Window_Width: Positive;
+      Window_Height: Positive;
+      Show_Preview: Boolean;
+      Stay_In_Old: Boolean;
+      Color_Text: Boolean;
+      Color_Theme: Unbounded_String;
       DeleteFiles: Boolean;
       ClearTrashOnExit: Boolean;
       ShowFinishedInfo: Boolean;
