@@ -142,7 +142,7 @@ package body Preferences.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      Settings.ShowHidden :=
+      Settings.Show_Hidden :=
         (if
            Tcl_GetVar
              (Interp,
@@ -185,11 +185,11 @@ package body Preferences.Commands is
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.directory.showmodificationtime") =
         "0" then
-         Settings.ShowLastModified := False;
+         Settings.Show_Last_Modified := False;
          Tcl.Tk.Ada.Widgets.configure
            (DirectoryTree, "-displaycolumns [list name size]");
       else
-         Settings.ShowLastModified := True;
+         Settings.Show_Last_Modified := True;
          Tcl.Tk.Ada.Widgets.configure(DirectoryTree, "-displaycolumns #all");
       end if;
       return TCL_OK;
@@ -227,11 +227,11 @@ package body Preferences.Commands is
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.preview.showpreview") =
         "0" then
-         Settings.ShowPreview := False;
+         Settings.Show_Preview := False;
          Forget(Paned, PreviewFrame);
          return TCL_OK;
       end if;
-      Settings.ShowPreview := True;
+      Settings.Show_Preview := True;
       Add(Paned, PreviewFrame, "-weight 20");
       return TCL_OK;
    end Set_Show_Preview_Command;
@@ -262,7 +262,7 @@ package body Preferences.Commands is
       pragma Unreferenced(ClientData, Argc, Argv);
       MimeType: constant String := GetMimeType(To_String(Current_Selected));
    begin
-      Settings.ScaleImages :=
+      Settings.Scale_Images :=
         (if
            Tcl_GetVar
              (Interp,
@@ -310,10 +310,10 @@ package body Preferences.Commands is
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.preview.syntaxhighlightning") =
         "0" then
-         Settings.ColorText := False;
+         Settings.Color_Text := False;
          State(ComboBox, "disabled");
       else
-         Settings.ColorText := True;
+         Settings.Color_Text := True;
          State(ComboBox, "!disabled");
       end if;
       if MimeType(1 .. 4) = "text" then
@@ -352,7 +352,7 @@ package body Preferences.Commands is
            Interp);
       MimeType: constant String := GetMimeType(To_String(Current_Selected));
    begin
-      Settings.ColorTheme := To_Unbounded_String(Get(ComboBox));
+      Settings.Color_Theme := To_Unbounded_String(Get(ComboBox));
       if MimeType(1 .. 4) = "text" then
          ShowPreview;
       end if;
@@ -424,7 +424,7 @@ package body Preferences.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      Settings.StayInOld :=
+      Settings.Stay_In_Old :=
         (if
            Tcl_GetVar
              (Interp,
@@ -872,7 +872,7 @@ package body Preferences.Commands is
       Scale.Name :=
         New_String
           (".preferencesframe.canvas.notebook.preferences.interface.messagesscale");
-      Settings.AutoCloseMessagesTime := Natural(Float'Value(Get(Scale)));
+      Settings.Auto_Close_Messages_Time := Natural(Float'Value(Get(Scale)));
       StartTimer;
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".mainframe");

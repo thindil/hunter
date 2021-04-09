@@ -303,7 +303,7 @@ package body ShowItems is
                     (PreviewText, "-side top -fill both -expand true");
                   configure(PreviewText, "-state normal");
                   Delete(PreviewText, "1.0", "end");
-                  if not Settings.ColorText or ExecutableName = "" then
+                  if not Settings.Color_Text or ExecutableName = "" then
                      LoadFile;
                      goto Set_UI;
                   end if;
@@ -313,7 +313,7 @@ package body ShowItems is
                        ("--out-format=pango --force --quiet --output=" &
                         Value("HOME") &
                         "/.cache/hunter/highlight.tmp --base16 --style=" &
-                        To_String(Settings.ColorTheme) & " " &
+                        To_String(Settings.Color_Theme) & " " &
                         To_String(Current_Selected)).all,
                      Success);
                   if not Success then
@@ -411,7 +411,7 @@ package body ShowItems is
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
-                  if Settings.ScaleImages then
+                  if Settings.Scale_Images then
                      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
                      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
                      ScaleImage;
@@ -537,7 +537,7 @@ package body ShowItems is
       end if;
       Label.Name := New_String(InfoFrame & ".size");
       if Is_Directory(SelectedItem) then
-         if Settings.ShowHidden then
+         if Settings.Show_Hidden then
             configure
               (Label,
                "-text {" & Natural'Image(Natural(SecondItemsList.Length)) &
@@ -776,7 +776,7 @@ package body ShowItems is
       else
          Selected_Items.Append(MainWindow.Current_Directory);
       end if;
-      if not Settings.ShowPreview or
+      if not Settings.Show_Preview or
         (Selected_Items(1) = Current_Selected and
          Current_Selected /= MainWindow.Current_Directory) then
          return TCL_OK;
@@ -1032,7 +1032,7 @@ package body ShowItems is
          Mc
            (Get_Context,
             "{Select new associated program with that type of file or directory.}"));
-      if Settings.ShowPreview then
+      if Settings.Show_Preview then
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
       CreateProgramsMenu;
@@ -1042,7 +1042,7 @@ package body ShowItems is
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
       Frame: Ttk_Frame := Get_Widget(PreviewFrame & ".pathframe");
    begin
-      if not Settings.ShowPreview then
+      if not Settings.Show_Preview then
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
       Unautoscroll(PreviewXScroll);
@@ -1072,7 +1072,7 @@ package body ShowItems is
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
    begin
       Frame.Interp := Get_Context;
-      if not Settings.ShowPreview then
+      if not Settings.Show_Preview then
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
       Unautoscroll(PreviewYScroll);

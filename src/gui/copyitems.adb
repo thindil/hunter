@@ -202,7 +202,8 @@ package body CopyItems is
             "message");
       end if;
       MainWindow.Current_Directory :=
-        (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
+        (if Settings.Stay_In_Old then SourceDirectory
+         else DestinationDirectory);
       LoadDirectory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
