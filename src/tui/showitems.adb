@@ -235,7 +235,7 @@ package body ShowItems is
          Permissions_Fields.all(4) := New_Field(1, 30, 3, 4, 0, 0);
          Permissions_Fields.all(5) := New_Field(1, 30, 4, 4, 0, 0);
          SetPermissionsButtons
-            ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2), 4);
+           ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2), 4);
          if Is_Directory(SelectedItem) then
             Permissions_Fields.all(6) := New_Field(1, 30, 5, 0, 0, 0);
             Set_Buffer
