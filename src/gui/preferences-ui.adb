@@ -107,13 +107,13 @@ package body Preferences.UI is
            "-text {" & Mc(Get_Context, "{Directory Listing}") & "}");
       AddButton
         (".showhidden", Mc(Get_Context, "{Show hidden files}"),
-         Settings.ShowHidden,
+         Settings.Show_Hidden,
          Mc(Get_Context, "{Show hidden files and directories in directory}") &
          LF & Mc(Get_Context, "{listing and in directories preview.}"),
          "SetShowHiddenFiles");
       AddButton
         (".showmodificationtime", Mc(Get_Context, "{Show modification time}"),
-         Settings.ShowLastModified,
+         Settings.Show_Last_Modified,
          Mc(Get_Context, "{Show the column with last modification}") & LF &
          Mc(Get_Context, "{date for files and directories.}"),
          "SetShowModificationTime");
@@ -148,7 +148,7 @@ package body Preferences.UI is
            "-text {" & Mc(Get_Context, "{Preview}") & "}");
       AddButton
         (".showpreview", Mc(Get_Context, "{Show preview}"),
-         Settings.ShowPreview,
+         Settings.Show_Preview,
          Mc
            (Get_Context,
             "{Show second panel with preview of files and directories.}") &
@@ -161,7 +161,7 @@ package body Preferences.UI is
          "SetShowPreview");
       AddButton
         (".scaleimages", Mc(Get_Context, "{Scale images}"),
-         Settings.ScaleImages,
+         Settings.Scale_Images,
          Mc
            (Get_Context,
             "{Scale images in preview. When disabled, images shows with}") &
@@ -175,7 +175,7 @@ package body Preferences.UI is
           (LabelFrame & ".syntaxhighlightning",
            "-text {" & Mc(Get_Context, "{Syntax highlightning}") &
            "} -command {SetColorText}");
-      if Settings.ColorText then
+      if Settings.Color_Text then
          Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
       else
          Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "0");
@@ -234,7 +234,7 @@ package body Preferences.UI is
          else
             State(ComboBox, "disabled");
          end if;
-         Set(ComboBox, "{" & To_String(Settings.ColorTheme) & "}");
+         Set(ComboBox, "{" & To_String(Settings.Color_Theme) & "}");
          Bind(ComboBox, "<<ComboboxSelected>>", "SetColorTheme");
          Add
            (ComboBox,
@@ -274,7 +274,7 @@ package body Preferences.UI is
            "-text {" & Mc(Get_Context, "{Interface}") & "}");
       Tcl_SetVar
         (CheckButton.Interp, "messagesinterval",
-         Natural'Image(Settings.AutoCloseMessagesTime));
+         Natural'Image(Settings.Auto_Close_Messages_Time));
       Label :=
         Create
           (LabelFrame & ".messageslabel",
@@ -304,7 +304,7 @@ package body Preferences.UI is
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       AddButton
         (".stayinold", Mc(Get_Context, "{Stay in source directory}"),
-         Settings.StayInOld,
+         Settings.Stay_In_Old,
          Mc
            (Get_Context,
             "{After copying, moving files and directories or creating new link, stay in old}") &

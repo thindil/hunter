@@ -138,7 +138,7 @@ package body SearchItems is
               To_Lower(To_String(Query))) =
            0 then
             Detach(DirectoryTree, Positive'Image(I));
-         elsif (Settings.ShowHidden and ItemsList(I).IsHidden) or
+         elsif (Settings.Show_Hidden and ItemsList(I).IsHidden) or
            not ItemsList(I).IsHidden then
             Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
             if not Selected then

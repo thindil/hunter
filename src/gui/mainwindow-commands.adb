@@ -152,9 +152,9 @@ package body MainWindow.Commands is
       ErrorButton: constant Ttk_Button := Get_Widget(".errorbutton");
    begin
       if Winfo_Get(ErrorButton, "exists") = "0" then
-         Settings.WindowWidth :=
+         Settings.Window_Width :=
            Positive'Value(Winfo_Get(MainWindow, "width"));
-         Settings.WindowHeight :=
+         Settings.Window_Height :=
            Positive'Value(Winfo_Get(MainWindow, "height"));
       end if;
       SavePreferences;
@@ -320,7 +320,7 @@ package body MainWindow.Commands is
             "-row" & Natural'Image(Row) & " -column" & Natural'Image(Column));
          Column := Column + 1;
       end loop Arrange_Buttons_Loop;
-      if (Settings.ScaleImages and Settings.ShowPreview)
+      if (Settings.Scale_Images and Settings.Show_Preview)
         and then Winfo_Get(PreviewCanvas, "ismapped") = "1" then
          ScaleImage;
       end if;

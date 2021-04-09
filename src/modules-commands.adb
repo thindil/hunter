@@ -119,28 +119,29 @@ package body Modules.Commands is
          return TCL_ERROR;
       end if;
       if CArgv.Arg(Argv, 1) = "showhidden" then
-         GetBoolean(Settings.ShowHidden);
+         GetBoolean(Settings.Show_Hidden);
       elsif CArgv.Arg(Argv, 1) = "showlastmodified" then
-         GetBoolean(Settings.ShowLastModified);
+         GetBoolean(Settings.Show_Last_Modified);
       elsif CArgv.Arg(Argv, 1) = "scaleimages" then
-         GetBoolean(Settings.ScaleImages);
+         GetBoolean(Settings.Scale_Images);
       elsif CArgv.Arg(Argv, 1) = "autoclosemessagestime" then
          Tcl_SetResult
-           (Interp, Trim(Natural'Image(Settings.AutoCloseMessagesTime), Left));
+           (Interp,
+            Trim(Natural'Image(Settings.Auto_Close_Messages_Time), Left));
       elsif CArgv.Arg(Argv, 1) = "windowwidth" then
          Tcl_SetResult
-           (Interp, Trim(Positive'Image(Settings.WindowWidth), Left));
+           (Interp, Trim(Positive'Image(Settings.Window_Width), Left));
       elsif CArgv.Arg(Argv, 1) = "windowheight" then
          Tcl_SetResult
-           (Interp, Trim(Positive'Image(Settings.WindowHeight), Left));
+           (Interp, Trim(Positive'Image(Settings.Window_Height), Left));
       elsif CArgv.Arg(Argv, 1) = "showpreview" then
-         GetBoolean(Settings.ShowPreview);
+         GetBoolean(Settings.Show_Preview);
       elsif CArgv.Arg(Argv, 1) = "stayinold" then
-         GetBoolean(Settings.StayInOld);
+         GetBoolean(Settings.Stay_In_Old);
       elsif CArgv.Arg(Argv, 1) = "colortext" then
-         GetBoolean(Settings.ColorText);
+         GetBoolean(Settings.Color_Text);
       elsif CArgv.Arg(Argv, 1) = "colortheme" then
-         Tcl_SetResult(Interp, To_String(Settings.ColorTheme));
+         Tcl_SetResult(Interp, To_String(Settings.Color_Theme));
       elsif CArgv.Arg(Argv, 1) = "deletefiles" then
          GetBoolean(Settings.DeleteFiles);
       elsif CArgv.Arg(Argv, 1) = "cleartrashonexit" then

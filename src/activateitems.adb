@@ -67,7 +67,7 @@ package body ActivateItems is
             return TCL_OK;
          end if;
          Current_Directory := Current_Selected;
-         if Settings.ShowPreview then
+         if Settings.Show_Preview then
             ItemsList := SecondItemsList;
          else
             LoadDirectory(To_String(Current_Directory));

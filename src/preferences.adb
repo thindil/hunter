@@ -64,35 +64,35 @@ package body Preferences is
          -- The program settings
          if NodeName = To_Unbounded_String("setting") then
             if Get_Attribute(DataNode, "name") = "ShowHidden" then
-               Settings.ShowHidden :=
+               Settings.Show_Hidden :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ShowLastModified" then
-               Settings.ShowLastModified :=
+               Settings.Show_Last_Modified :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ScaleImages" then
-               Settings.ScaleImages :=
+               Settings.Scale_Images :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") =
               "AutoCloseMessagesTime" then
-               Settings.AutoCloseMessagesTime :=
+               Settings.Auto_Close_Messages_Time :=
                  Natural'Value(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "WindowWidth" then
-               Settings.WindowWidth :=
+               Settings.Window_Width :=
                  Positive'Value(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "WindowHeight" then
-               Settings.WindowHeight :=
+               Settings.Window_Height :=
                  Positive'Value(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ShowPreview" then
-               Settings.ShowPreview :=
+               Settings.Show_Preview :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "StayInOld" then
-               Settings.StayInOld :=
+               Settings.Stay_In_Old :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ColorText" then
-               Settings.ColorText :=
+               Settings.Color_Text :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ColorTheme" then
-               Settings.ColorTheme :=
+               Settings.Color_Theme :=
                  To_Unbounded_String(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "DeleteFiles" then
                Settings.DeleteFiles :=
@@ -148,7 +148,7 @@ package body Preferences is
          end if;
       end loop Load_Settings_Loop;
       if FindExecutable("highlight") = "" then
-         Settings.ColorText := False;
+         Settings.Color_Text := False;
       end if;
    exception
       when Ada.Directories.Name_Error =>
@@ -192,16 +192,16 @@ package body Preferences is
       SettingsData := Create_Document(Configuration);
       MainNode := Create_Element(SettingsData, "hunter");
       MainNode := Append_Child(SettingsData, MainNode);
-      SaveBoolean(Settings.ShowHidden, "ShowHidden");
-      SaveBoolean(Settings.ShowLastModified, "ShowLastModified");
-      SaveBoolean(Settings.ScaleImages, "ScaleImages");
-      SaveNumber(Settings.AutoCloseMessagesTime, "AutoCloseMessagesTime");
-      SaveNumber(Settings.WindowWidth, "WindowWidth");
-      SaveNumber(Settings.WindowHeight, "WindowHeight");
-      SaveBoolean(Settings.ShowPreview, "ShowPreview");
-      SaveBoolean(Settings.StayInOld, "StayInOld");
-      SaveBoolean(Settings.ColorText, "ColorText");
-      SaveString(Settings.ColorTheme, "ColorTheme");
+      SaveBoolean(Settings.Show_Hidden, "ShowHidden");
+      SaveBoolean(Settings.Show_Last_Modified, "ShowLastModified");
+      SaveBoolean(Settings.Scale_Images, "ScaleImages");
+      SaveNumber(Settings.Auto_Close_Messages_Time, "AutoCloseMessagesTime");
+      SaveNumber(Settings.Window_Width, "WindowWidth");
+      SaveNumber(Settings.Window_Height, "WindowHeight");
+      SaveBoolean(Settings.Show_Preview, "ShowPreview");
+      SaveBoolean(Settings.Stay_In_Old, "StayInOld");
+      SaveBoolean(Settings.Color_Text, "ColorText");
+      SaveString(Settings.Color_Theme, "ColorTheme");
       SaveBoolean(Settings.DeleteFiles, "DeleteFiles");
       SaveBoolean(Settings.ClearTrashOnExit, "ClearTrashOnExit");
       SaveBoolean(Settings.ShowFinishedInfo, "ShowFinishedInfo");
@@ -253,10 +253,11 @@ package body Preferences is
    procedure SetDefaultSettings is
    begin
       Settings :=
-        (ShowHidden => True, ShowLastModified => False, ScaleImages => False,
-         AutoCloseMessagesTime => 10, WindowWidth => 800, WindowHeight => 600,
-         ShowPreview => True, StayInOld => False, ColorText => True,
-         ColorTheme => To_Unbounded_String("gruvbox-light-soft"),
+        (Show_Hidden => True, Show_Last_Modified => False,
+         Scale_Images => False, Auto_Close_Messages_Time => 10,
+         Window_Width => 800, Window_Height => 600, Show_Preview => True,
+         Stay_In_Old => False, Color_Text => True,
+         Color_Theme => To_Unbounded_String("gruvbox-light-soft"),
          DeleteFiles => True, ClearTrashOnExit => False,
          ShowFinishedInfo => False, OverwriteOnExist => True,
          ToolbarsOnTop => True, AutoRefreshInterval => 10,

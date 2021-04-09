@@ -249,10 +249,11 @@ package body MainWindow is
       Wm_Set
         (Widgt => Main_Window, Action => "geometry",
          Options =>
-           Trim(Source => Positive'Image(Settings.WindowWidth), Side => Both) &
+           Trim
+             (Source => Positive'Image(Settings.Window_Width), Side => Both) &
            "x" &
            Trim
-             (Source => Positive'Image(Settings.WindowHeight), Side => Both) &
+             (Source => Positive'Image(Settings.Window_Height), Side => Both) &
            "+0+0");
       Set_Program_Icon_Block :
       declare
@@ -334,7 +335,7 @@ package body MainWindow is
          Options =>
            "-text {" & Mc(Interp => Get_Context, Src_String => "Size") &
            "} -command {Sort size}");
-      if not Settings.ShowLastModified then
+      if not Settings.Show_Last_Modified then
          configure
            (Widgt => Directory_Tree,
             options => "-displaycolumns [list name size]");
@@ -417,7 +418,7 @@ package body MainWindow is
       SashPos
         (Paned => Paned, Index => "0",
          NewPos =>
-           Positive'Image(Positive(Float(Settings.WindowWidth) / 2.5)));
+           Positive'Image(Positive(Float(Settings.Window_Width) / 2.5)));
    end Create_Main_Window;
 
    procedure Update_Directory_List
@@ -482,7 +483,7 @@ package body MainWindow is
                          Mc(Interp => Get_Context, Src_String => "unknown"));
                when others =>
                   if List(I).IsDirectory then
-                     if Settings.ShowHidden then
+                     if Settings.Show_Hidden then
                         Size_String :=
                           To_Unbounded_String
                             (Source =>
@@ -526,7 +527,7 @@ package body MainWindow is
                         To_String(Source => Size_String) & "}] -image {" &
                         To_String(Source => List(I).Image) &
                         "} -tags [list itemrow]"));
-            if not Settings.ShowHidden and then List(I).IsHidden then
+            if not Settings.Show_Hidden and then List(I).IsHidden then
                Detach
                  (TreeViewWidget => Directory_Tree,
                   ItemsList => To_String(Source => Item_Index));
@@ -690,7 +691,7 @@ package body MainWindow is
       else
          Rearrange_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
-            if (Settings.ShowHidden and List(I).IsHidden) or
+            if (Settings.Show_Hidden and List(I).IsHidden) or
               not List(I).IsHidden then
                Move
                  (TreeViewWidget => Directory_Tree, Item => Positive'Image(I),

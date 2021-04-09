@@ -333,7 +333,7 @@ package body Utils.UI is
       if Finished then
          Grid_Remove(HeaderLabel);
          Tcl.Tk.Ada.Grid.Grid(Toolbar);
-         if not Settings.ShowPreview then
+         if not Settings.Show_Preview then
             Toolbar.Name := New_String(".mainframe.paned.previewframe");
             Forget(Paned, Toolbar);
          else
