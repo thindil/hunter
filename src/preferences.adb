@@ -95,31 +95,31 @@ package body Preferences is
                Settings.Color_Theme :=
                  To_Unbounded_String(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "DeleteFiles" then
-               Settings.DeleteFiles :=
+               Settings.Delete_Files :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ClearTrashOnExit" then
-               Settings.ClearTrashOnExit :=
+               Settings.Clear_Trash_On_Exit :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ShowFinishedInfo" then
-               Settings.ShowFinishedInfo :=
+               Settings.Show_Finished_Info :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "OverwriteOnExist" then
-               Settings.OverwriteOnExist :=
+               Settings.Overwrite_On_Exist :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ToolbarsOnTop" then
-               Settings.ToolbarsOnTop :=
+               Settings.Toolbars_On_Top :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "AutoRefreshInterval" then
-               Settings.AutoRefreshInterval :=
+               Settings.Auto_Refresh_Interval :=
                  Natural'Value(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "UITheme" then
-               Settings.UITheme :=
+               Settings.UI_Theme :=
                  To_Unbounded_String(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ToolbarsSize" then
-               Settings.ToolbarsSize :=
+               Settings.Toolbars_Size :=
                  Positive'Value(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "MonospaceFont" then
-               Settings.MonospaceFont :=
+               Settings.Monospace_Font :=
                  LoadBoolean(Get_Attribute(DataNode, "value"));
             end if;
          -- The keyboard shortcuts
@@ -202,15 +202,15 @@ package body Preferences is
       SaveBoolean(Settings.Stay_In_Old, "StayInOld");
       SaveBoolean(Settings.Color_Text, "ColorText");
       SaveString(Settings.Color_Theme, "ColorTheme");
-      SaveBoolean(Settings.DeleteFiles, "DeleteFiles");
-      SaveBoolean(Settings.ClearTrashOnExit, "ClearTrashOnExit");
-      SaveBoolean(Settings.ShowFinishedInfo, "ShowFinishedInfo");
-      SaveBoolean(Settings.OverwriteOnExist, "OverwriteOnExist");
-      SaveBoolean(Settings.ToolbarsOnTop, "ToolbarsOnTop");
-      SaveNumber(Settings.AutoRefreshInterval, "AutoRefreshInterval");
-      SaveString(Settings.UITheme, "UITheme");
-      SaveNumber(Settings.ToolbarsSize, "ToolbarsSize");
-      SaveBoolean(Settings.MonospaceFont, "MonospaceFont");
+      SaveBoolean(Settings.Delete_Files, "DeleteFiles");
+      SaveBoolean(Settings.Clear_Trash_On_Exit, "ClearTrashOnExit");
+      SaveBoolean(Settings.Show_Finished_Info, "ShowFinishedInfo");
+      SaveBoolean(Settings.Overwrite_On_Exist, "OverwriteOnExist");
+      SaveBoolean(Settings.Toolbars_On_Top, "ToolbarsOnTop");
+      SaveNumber(Settings.Auto_Refresh_Interval, "AutoRefreshInterval");
+      SaveString(Settings.UI_Theme, "UITheme");
+      SaveNumber(Settings.Toolbars_Size, "ToolbarsSize");
+      SaveBoolean(Settings.Monospace_Font, "MonospaceFont");
       Save_Accelerators_Loop :
       for I in Accelerators'Range loop
          SettingNode := Create_Element(SettingsData, "accelerator");
@@ -258,11 +258,11 @@ package body Preferences is
          Window_Width => 800, Window_Height => 600, Show_Preview => True,
          Stay_In_Old => False, Color_Text => True,
          Color_Theme => To_Unbounded_String("gruvbox-light-soft"),
-         DeleteFiles => True, ClearTrashOnExit => False,
-         ShowFinishedInfo => False, OverwriteOnExist => True,
-         ToolbarsOnTop => True, AutoRefreshInterval => 10,
-         UITheme => To_Unbounded_String("hunter-light"), ToolbarsSize => 24,
-         MonospaceFont => False);
+         Delete_Files => True, Clear_Trash_On_Exit => False,
+         Show_Finished_Info => False, Overwrite_On_Exist => True,
+         Toolbars_On_Top => True, Auto_Refresh_Interval => 10,
+         UI_Theme => To_Unbounded_String("hunter-light"), Toolbars_Size => 24,
+         Monospace_Font => False);
    end SetDefaultSettings;
 
    procedure SetDefaultAccelerators is

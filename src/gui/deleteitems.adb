@@ -98,8 +98,8 @@ package body DeleteItems is
         (Ada.Environment_Variables.Value("HOME") &
          "/.local/share/Trash/files");
       if New_Action = CLEARTRASH then
-         OldSetting := Settings.DeleteFiles;
-         Settings.DeleteFiles := True;
+         OldSetting := Settings.Delete_Files;
+         Settings.Delete_Files := True;
          Selected_Items.Clear;
          AddTrash("info");
          AddTrash("files");
@@ -109,7 +109,7 @@ package body DeleteItems is
          UpdateProgressBar;
          if Is_Directory(To_String(Item)) then
             Arguments(2) := new String'(To_String(Item));
-            if Settings.DeleteFiles or New_Action = DELETETRASH then
+            if Settings.Delete_Files or New_Action = DELETETRASH then
                Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
                if not Success then
                   raise Directory_Error with To_String(Item);
@@ -121,7 +121,7 @@ package body DeleteItems is
                GoUp := True;
             end if;
          else
-            if Settings.DeleteFiles or New_Action = DELETETRASH then
+            if Settings.Delete_Files or New_Action = DELETETRASH then
                Delete_File(To_String(Item));
             else
                MoveToTrash(Item);
@@ -135,7 +135,7 @@ package body DeleteItems is
          end if;
       end loop Delete_Items_Loop;
       if New_Action = CLEARTRASH then
-         Settings.DeleteFiles := OldSetting;
+         Settings.Delete_Files := OldSetting;
       end if;
       Selected_Items.Clear;
       Current_Selected := MainWindow.Current_Directory;
@@ -190,7 +190,7 @@ package body DeleteItems is
    begin
       New_Action := (if New_Action /= SHOWTRASH then DELETE else DELETETRASH);
       Message :=
-        (if Settings.DeleteFiles or New_Action = DELETETRASH then
+        (if Settings.Delete_Files or New_Action = DELETETRASH then
            To_Unbounded_String(Mc(Interp, "{Delete?}") & LF)
          else To_Unbounded_String(Mc(Interp, "{Move to trash?}") & LF));
       Add_Items_To_Delete_Loop :

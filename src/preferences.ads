@@ -44,22 +44,22 @@ package Preferences is
    --                           preview
    -- Color_Theme             - Selected by user color theme for coloring syntax
    --                           in text files in preview
-   -- DeleteFiles           - If true, delete file and directories instead of
-   --                         moving them to trash
-   -- ClearTrashOnExit      - Clear trash on quit from the program
-   -- ShowFinishedInfo      - If true, show info about finished copying, moving
-   --                         deleting files and directories
-   -- OverwriteOnExist      - If true, copied or moved file or directory will
-   --                         be overwritting existing with that same name
-   -- ToolbarsOnTop         - If true, toolbars for actions and information
-   --                         will be show on the top of the window. Otherwise
-   --                         toolbar action will be on the left and toolbar
-   --                         with information will be on the right
-   -- AutoRefreshInterval   - How often, in seconds, auto refresh should be
-   --                         triggered
-   -- UITheme               - Tk theme used by the program
-   -- ToolbarsSize          - Size of the toolbars icons
-   -- MonospaceFont         - If true, use monospace font in text files preview
+   -- Delete_Files            - If true, delete file and directories instead of
+   --                           moving them to trash
+   -- Clear_Trash_On_Exit     - Clear trash on quit from the program
+   -- Show_Finished_Info      - If true, show info about finished copying, moving
+   --                           deleting files and directories
+   -- Overwrite_On_Exist      - If true, copied or moved file or directory will
+   --                           be overwritting existing with that same name
+   -- Toolbars_On_Top         - If true, toolbars for actions and information
+   --                           will be show on the top of the window. Otherwise
+   --                           toolbar action will be on the left and toolbar
+   --                           with information will be on the right
+   -- Auto_Refresh_Interval   - How often, in seconds, auto refresh should be
+   --                           triggered
+   -- UI_Theme                - Tk theme used by the program
+   -- Toolbars_Size           - Size of the toolbars icons
+   -- Monospace_Font          - If true, use monospace font in text files preview
    -- SOURCE
    type Settings_Data is record
       Show_Hidden: Boolean;
@@ -72,15 +72,15 @@ package Preferences is
       Stay_In_Old: Boolean;
       Color_Text: Boolean;
       Color_Theme: Unbounded_String;
-      DeleteFiles: Boolean;
-      ClearTrashOnExit: Boolean;
-      ShowFinishedInfo: Boolean;
-      OverwriteOnExist: Boolean;
-      ToolbarsOnTop: Boolean;
-      AutoRefreshInterval: Natural range 0 .. 30;
-      UITheme: Unbounded_String;
-      ToolbarsSize: Positive range 8 .. 128;
-      MonospaceFont: Boolean;
+      Delete_Files: Boolean;
+      Clear_Trash_On_Exit: Boolean;
+      Show_Finished_Info: Boolean;
+      Overwrite_On_Exist: Boolean;
+      Toolbars_On_Top: Boolean;
+      Auto_Refresh_Interval: Natural range 0 .. 30;
+      UI_Theme: Unbounded_String;
+      Toolbars_Size: Positive range 8 .. 128;
+      Monospace_Font: Boolean;
    end record;
    -- ****
 

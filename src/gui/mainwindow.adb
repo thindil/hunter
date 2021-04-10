@@ -193,11 +193,11 @@ package body MainWindow is
       CreateSearchUI;
       Set_Directory(Directory => Containing_Directory(Name => Command_Name));
       -- Load the program Tk themes
-      if Settings.UITheme = To_Unbounded_String(Source => "hunter-light") then
+      if Settings.UI_Theme = To_Unbounded_String(Source => "hunter-light") then
          Tcl_EvalFile
            (interp => Interp,
             fileName => "../share/hunter/themes/light/breeze.tcl");
-      elsif Settings.UITheme =
+      elsif Settings.UI_Theme =
         To_Unbounded_String(Source => "hunter-dark") then
          Tcl_EvalFile
            (interp => Interp,
@@ -205,14 +205,14 @@ package body MainWindow is
       end if;
       if Index
           (Source => Theme_Names,
-           Pattern => To_String(Source => Settings.UITheme)) =
+           Pattern => To_String(Source => Settings.UI_Theme)) =
         0 then
-         Settings.UITheme := To_Unbounded_String(Source => "hunter-light");
+         Settings.UI_Theme := To_Unbounded_String(Source => "hunter-light");
          Tcl_EvalFile
            (interp => Interp,
             fileName => "../share/hunter/themes/light/breeze.tcl");
       end if;
-      Theme_Use(ThemeName => To_String(Source => Settings.UITheme));
+      Theme_Use(ThemeName => To_String(Source => Settings.UI_Theme));
       -- Load translations
       Mc_Load(DirName => "../share/hunter/translations", Interp => Interp);
       -- Set the program images
@@ -223,7 +223,7 @@ package body MainWindow is
              (pathName => "ok",
               options =>
                 "-file {../share/hunter/images/ok.svg} -format {svg -scaletoheight" &
-                Natural'Image(Settings.ToolbarsSize) & "}");
+                Natural'Image(Settings.Toolbars_Size) & "}");
          Hunter_Initialization_Error: exception;
       begin
          if Widget_Image(Win => Program_Image) /= "ok" then
@@ -364,7 +364,7 @@ package body MainWindow is
       Tcl.Tk.Ada.Pack.Pack
         (Slave => Directory_Tree,
          Options => "-side top -fill both -expand true");
-      if Settings.ToolbarsOnTop then
+      if Settings.Toolbars_On_Top then
          Tcl.Tk.Ada.Grid.Grid
            (Slave => Paned, Options => "-column 0 -row 3 -sticky nswe");
       else
