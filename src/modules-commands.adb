@@ -143,25 +143,25 @@ package body Modules.Commands is
       elsif CArgv.Arg(Argv, 1) = "colortheme" then
          Tcl_SetResult(Interp, To_String(Settings.Color_Theme));
       elsif CArgv.Arg(Argv, 1) = "deletefiles" then
-         GetBoolean(Settings.DeleteFiles);
+         GetBoolean(Settings.Delete_Files);
       elsif CArgv.Arg(Argv, 1) = "cleartrashonexit" then
-         GetBoolean(Settings.ClearTrashOnExit);
+         GetBoolean(Settings.Clear_Trash_On_Exit);
       elsif CArgv.Arg(Argv, 1) = "showfinishedinfo" then
-         GetBoolean(Settings.ShowFinishedInfo);
+         GetBoolean(Settings.Show_Finished_Info);
       elsif CArgv.Arg(Argv, 1) = "overwriteonexist" then
-         GetBoolean(Settings.OverwriteOnExist);
+         GetBoolean(Settings.Overwrite_On_Exist);
       elsif CArgv.Arg(Argv, 1) = "toolbarsontop" then
-         GetBoolean(Settings.ToolbarsOnTop);
+         GetBoolean(Settings.Toolbars_On_Top);
       elsif CArgv.Arg(Argv, 1) = "autorefreshinterval" then
          Tcl_SetResult
-           (Interp, Trim(Natural'Image(Settings.AutoRefreshInterval), Left));
+           (Interp, Trim(Natural'Image(Settings.Auto_Refresh_Interval), Left));
       elsif CArgv.Arg(Argv, 1) = "uitheme" then
-         Tcl_SetResult(Interp, To_String(Settings.UITheme));
+         Tcl_SetResult(Interp, To_String(Settings.UI_Theme));
       elsif CArgv.Arg(Argv, 1) = "toolbarssize" then
          Tcl_SetResult
-           (Interp, Trim(Positive'Image(Settings.ToolbarsSize), Left));
+           (Interp, Trim(Positive'Image(Settings.Toolbars_Size), Left));
       elsif CArgv.Arg(Argv, 1) = "monospacefont" then
-         GetBoolean(Settings.MonospaceFont);
+         GetBoolean(Settings.Monospace_Font);
       else
          Tcl_AddErrorInfo
            (Interp,

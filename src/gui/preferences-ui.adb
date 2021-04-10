@@ -119,7 +119,7 @@ package body Preferences.UI is
          "SetShowModificationTime");
       Tcl_SetVar
         (Get_Context, "updateinterval",
-         Natural'Image(Settings.AutoRefreshInterval));
+         Natural'Image(Settings.Auto_Refresh_Interval));
       Label :=
         Create
           (LabelFrame & ".intervallabel",
@@ -264,7 +264,7 @@ package body Preferences.UI is
       end;
       AddButton
         (".monospacefont", Mc(Get_Context, "{Use monospace font}"),
-         Settings.MonospaceFont,
+         Settings.Monospace_Font,
          Mc(Get_Context, "{Use monospace font in the preview of text files.}"),
          "SetMonospaceFont");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
@@ -314,7 +314,7 @@ package body Preferences.UI is
          "SetStayInOld");
       AddButton
         (".showfinished", Mc(Get_Context, "{Show info about finished action}"),
-         Settings.ShowFinishedInfo,
+         Settings.Show_Finished_Info,
          Mc
            (Get_Context,
             "{Show information about finished copying, moving and}") &
@@ -322,7 +322,7 @@ package body Preferences.UI is
          "SetShowFinishedInfo");
       AddButton
         (".toolbarsontop", Mc(Get_Context, "{Toolbars on top}"),
-         Settings.ToolbarsOnTop,
+         Settings.Toolbars_On_Top,
          Mc
            (Get_Context,
             "{If enabled, show toolbars for actions and information on top of the window.}") &
@@ -367,7 +367,7 @@ package body Preferences.UI is
                "{you will have to restart the program to apply all changes.}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ColorBox, "-column 1 -row 0");
-         Set(ColorBox, To_String(Settings.UITheme));
+         Set(ColorBox, To_String(Settings.UI_Theme));
          Tcl.Tk.Ada.Pack.Pack(ThemeFrame, "-fill x");
       end;
       declare
@@ -381,7 +381,7 @@ package body Preferences.UI is
               Mc(Get_Context, "{large}") & "} {" & Mc(Get_Context, "{huge}") &
               "}]");
       begin
-         Bind(ToolbarBox, "<<ComboboxSelected>>", "SetToolbarsSize");
+         Bind(ToolbarBox, "<<ComboboxSelected>>", "SetToolbars_Size");
          Add
            (ToolbarBox,
             Mc(Get_Context, "{Set the size of icons in toolbars}"));
@@ -392,11 +392,11 @@ package body Preferences.UI is
          Add(Label, Mc(Get_Context, "{Set the size of icons in toolbars}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ToolbarBox, "-column 1 -row 0");
-         if Settings.ToolbarsSize < 24 then
+         if Settings.Toolbars_Size < 24 then
             Set(ToolbarBox, Mc(Get_Context, "{small}"));
-         elsif Settings.ToolbarsSize < 32 then
+         elsif Settings.Toolbars_Size < 32 then
             Set(ToolbarBox, Mc(Get_Context, "{medium}"));
-         elsif Settings.ToolbarsSize < 64 then
+         elsif Settings.Toolbars_Size < 64 then
             Set(ToolbarBox, Mc(Get_Context, "{large}"));
          else
             Set(ToolbarBox, Mc(Get_Context, "{huge}"));
@@ -410,14 +410,14 @@ package body Preferences.UI is
            "-text {" & Mc(Get_Context, "{Deleting}") & "}");
       AddButton
         (".deletefiles", Mc(Get_Context, "{Delete files}"),
-         Settings.DeleteFiles,
+         Settings.Delete_Files,
          Mc
            (Get_Context,
             "{Delete selected files and directories instead of moving them to Trash.}"),
          "SetDeleteFiles");
       AddButton
         (".cleartrash", Mc(Get_Context, "{Clear Trash on exit}"),
-         Settings.ClearTrashOnExit,
+         Settings.Clear_Trash_On_Exit,
          Mc
            (Get_Context,
             "{Automatically clear Trash on exit from the program.}"),
@@ -429,7 +429,7 @@ package body Preferences.UI is
            "-text {" & Mc(Get_Context, "{Copying or moving}") & "}");
       AddButton
         (".overwrite", Mc(Get_Context, "{Overwrite existing}"),
-         Settings.OverwriteOnExist,
+         Settings.Overwrite_On_Exist,
          Mc
            (Get_Context,
             "{If enabled, during copying or moving files and directories,}") &

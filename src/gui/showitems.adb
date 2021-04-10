@@ -181,7 +181,7 @@ package body ShowItems is
       if Winfo_Get(Button, "ismapped") = "0" then
          declare
             Side: constant String :=
-              (if Settings.ToolbarsOnTop then "left" else "top");
+              (if Settings.Toolbars_On_Top then "left" else "top");
          begin
             Tcl.Tk.Ada.Pack.Pack
               (Button,
@@ -917,7 +917,7 @@ package body ShowItems is
       PathButtonsFrame: Ttk_Frame;
       pragma Unreferenced(PathButtonsFrame);
       Font: constant String :=
-        (if Settings.MonospaceFont then "TkFixedFont" else "TkDefaultFont");
+        (if Settings.Monospace_Font then "TkFixedFont" else "TkDefaultFont");
       procedure CreatePermissionsFrame(Name: String; Row: Positive) is
          Frame: constant Ttk_Frame :=
            Create(".mainframe.paned.previewframe.infoframe." & Name & "frame");
