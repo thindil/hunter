@@ -187,7 +187,7 @@ package body Utils.UI is
       end case;
       if Action in COPY | MOVE then
          Side :=
-           (if not Settings.ToolbarsOnTop then To_Unbounded_String("top")
+           (if not Settings.Toolbars_On_Top then To_Unbounded_String("top")
             else To_Unbounded_String("left"));
          if Finished then
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
@@ -289,7 +289,7 @@ package body Utils.UI is
                   end if;
                end loop Update_Trash_Button_Loop;
             else
-               if not Settings.ToolbarsOnTop then
+               if not Settings.Toolbars_On_Top then
                   configure(Toolbar, "-orient horizontal");
                   Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill x -padx 5 -side top");
                else
@@ -313,7 +313,7 @@ package body Utils.UI is
               (Toolbar,
                "-after .mainframe.toolbars.actiontoolbar.deletebutton");
             Delete(DeleteMenu, "1", "end");
-            if not Settings.DeleteFiles then
+            if not Settings.Delete_Files then
                Entry_Configure
                  (DeleteMenu, "0",
                   "-label {" & Mc(Get_Context, "{Move selected to Trash}") &
@@ -373,7 +373,7 @@ package body Utils.UI is
                   "-text {" &
                   Mc(Get_Context, "{Moving files and directories}") & "}");
             when DELETE | DELETETRASH =>
-               if Settings.DeleteFiles or Action = DELETETRASH then
+               if Settings.Delete_Files or Action = DELETETRASH then
                   configure
                     (HeaderLabel,
                      "-text {" &

@@ -138,8 +138,8 @@ package body Messages is
                end if;
             end if;
             ToggleToolButtons(New_Action, True);
-            if Settings.ShowFinishedInfo then
-               if New_Action = DELETE and not Settings.DeleteFiles then
+            if Settings.Show_Finished_Info then
+               if New_Action = DELETE and not Settings.Delete_Files then
                   ShowMessage
                     (Mc
                        (Interp,

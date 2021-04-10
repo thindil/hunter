@@ -159,7 +159,7 @@ package body MainWindow.Commands is
       end if;
       SavePreferences;
       Execute_Modules(On_Quit);
-      if Settings.ClearTrashOnExit then
+      if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
          if DeleteSelected then
             null;
