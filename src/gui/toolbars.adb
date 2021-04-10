@@ -50,18 +50,18 @@ package body Toolbars is
 
    procedure SetToolbars is
       Fill: constant Character :=
-        (if Settings.ToolbarsOnTop then 'y' else 'x');
+        (if Settings.Toolbars_On_Top then 'y' else 'x');
       MainFrame: constant Ttk_Frame := Get_Widget(".mainframe");
       Toolbar: Ttk_Frame;
       Button: Ttk_Button;
       Label: Ttk_Label;
       Tokens: Slice_Set;
       Side: constant String :=
-        (if Settings.ToolbarsOnTop then "left" else "top");
+        (if Settings.Toolbars_On_Top then "left" else "top");
       Direction: constant String :=
-        (if Settings.ToolbarsOnTop then "below" else "right");
+        (if Settings.Toolbars_On_Top then "below" else "right");
       Orientation: constant String :=
-        (if Settings.ToolbarsOnTop then "vertical" else "horizontal");
+        (if Settings.Toolbars_On_Top then "vertical" else "horizontal");
    begin
       Button.Interp := Get_Context;
       Toolbar := Get_Widget(MainFrame & ".toolbars.actiontoolbar");
@@ -106,13 +106,13 @@ package body Toolbars is
       end loop Set_Info_Separators_Loop;
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(MainFrame & ".toolbars.itemtoolbar");
-      if not Settings.ToolbarsOnTop then
+      if not Settings.Toolbars_On_Top then
          Grid_Configure(Toolbar, "-column 0 -row 2 -sticky s");
       else
          Grid_Configure(Toolbar, "-column 2 -row 0 -sticky e");
       end if;
       Toolbar.Name := New_String(MainFrame & ".toolbars");
-      if not Settings.ToolbarsOnTop then
+      if not Settings.Toolbars_On_Top then
          Grid_Configure(Toolbar, "-sticky ns -row 3 -column 0 -columnspan 1");
          Column_Configure(MainFrame, Toolbar, "-weight 0");
          Row_Configure(MainFrame, Toolbar, "-weight 0");
@@ -122,7 +122,7 @@ package body Toolbars is
       Label.Interp := Get_Context;
       Label.Name := New_String(MainFrame & ".toolbars.label");
       Toolbar.Name := New_String(MainFrame & ".toolbars");
-      if not Settings.ToolbarsOnTop then
+      if not Settings.Toolbars_On_Top then
          Column_Configure(Toolbar, Label, "-weight 0");
          Row_Configure(Toolbar, Label, "-weight 1");
       else
@@ -150,7 +150,7 @@ package body Toolbars is
           (ImageName & "icon",
            "-file {../share/hunter/images/" & ImageName &
            ".svg} -format {svg -scaletoheight" &
-           Natural'Image(Settings.ToolbarsSize) & "}");
+           Natural'Image(Settings.Toolbars_Size) & "}");
       pragma Unreferenced(Image);
       -- ****
    begin
@@ -270,7 +270,7 @@ package body Toolbars is
          "edit-delete");
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ButtonMenu := Create(".deletemenu", "-tearoff false");
-      if Settings.DeleteFiles then
+      if Settings.Delete_Files then
          Menu.Add
            (ButtonMenu, "command",
             "-label {" & Mc(Get_Context, "{Delete selected}") &
@@ -424,7 +424,7 @@ package body Toolbars is
       Button: Ttk_Button :=
         Get_Widget(".mainframe.toolbars.itemtoolbar.runbutton");
       Side: constant String :=
-        (if Settings.ToolbarsOnTop then "left" else "top");
+        (if Settings.Toolbars_On_Top then "left" else "top");
    begin
       if Is_Executable_File(To_String(Current_Selected)) then
          if Winfo_Get(Button, "ismapped") = "0" then
@@ -454,7 +454,7 @@ package body Toolbars is
       ActionsButton: constant Ttk_MenuButton :=
         Get_Widget(".mainframe.toolbars.actiontoolbar.userbutton");
       Side: constant String :=
-        (if Settings.ToolbarsOnTop then "left" else "top");
+        (if Settings.Toolbars_On_Top then "left" else "top");
    begin
       Delete(ActionsMenu, "0", "end");
       if UserCommandsList.Is_Empty then

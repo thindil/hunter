@@ -164,7 +164,7 @@ package body RefreshData is
       Events_List.Clear;
       Timer_Token :=
         Tcl_CreateTimerHandler
-          (int(Settings.AutoRefreshInterval) * 1_000, CheckItems'Access,
+          (int(Settings.Auto_Refresh_Interval) * 1_000, CheckItems'Access,
            Null_ClientData);
       Is_Checking := False;
    end CheckItems;
@@ -178,10 +178,10 @@ package body RefreshData is
          Add_Watches(Path);
          InotifyTask.Start;
       end if;
-      if Settings.AutoRefreshInterval > 0 then
+      if Settings.Auto_Refresh_Interval > 0 then
          Timer_Token :=
            Tcl_CreateTimerHandler
-             (int(Settings.AutoRefreshInterval) * 1_000, CheckItems'Access,
+             (int(Settings.Auto_Refresh_Interval) * 1_000, CheckItems'Access,
               Null_ClientData);
       end if;
    end StartTimer;
