@@ -112,7 +112,8 @@ package body MoveItems is
          return MESSAGE_FORM;
       end if;
       MainWindow.Current_Directory :=
-        (if Settings.Stay_In_Old then SourceDirectory else DestinationDirectory);
+        (if Settings.Stay_In_Old then SourceDirectory
+         else DestinationDirectory);
       Current_Selected :=
         MainWindow.Current_Directory & "/" &
         Simple_Name(To_String(Current_Selected));
