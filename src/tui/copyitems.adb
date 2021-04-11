@@ -44,7 +44,7 @@ package body CopyItems is
            NewPath & To_Unbounded_String("/" & Simple_Name(FileName));
       begin
          if Exists(To_String(NewName)) then
-            if Settings.OverwriteOnExist then
+            if Settings.Overwrite_On_Exist then
                Delete_File(To_String(NewName));
             else
                New_File_Name_Loop :
@@ -77,7 +77,7 @@ package body CopyItems is
    begin
       if Is_Directory(Name) then
          Append(NewPath, "/" & Simple_Name(Name));
-         if Exists(To_String(NewPath)) and not Settings.OverwriteOnExist then
+         if Exists(To_String(NewPath)) and not Settings.Overwrite_On_Exist then
             New_Directory_Name_Loop :
             loop
                NewPath := NewPath & "_";
@@ -112,7 +112,7 @@ package body CopyItems is
          if Exists
              (To_String(Path) & "/" &
               Simple_Name(To_String(CopyItemsList(1)))) and
-           not Overwrite and Settings.OverwriteOnExist then
+           not Overwrite and Settings.Overwrite_On_Exist then
             ItemType :=
               (if
                  Is_Directory
@@ -135,7 +135,7 @@ package body CopyItems is
          end if;
       end loop Copy_Items_Loop;
       CopyItemsList.Clear;
-      if Settings.ShowFinishedInfo then
+      if Settings.Show_Finished_Info then
          ShowMessage
            (Mc
               (Interpreter,
@@ -144,7 +144,7 @@ package body CopyItems is
          return MESSAGE_FORM;
       end if;
       MainWindow.Current_Directory :=
-        (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
+        (if Settings.Stay_In_Old then SourceDirectory else DestinationDirectory);
       LoadDirectory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));

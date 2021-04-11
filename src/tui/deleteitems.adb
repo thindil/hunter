@@ -100,8 +100,8 @@ package body DeleteItems is
         (Ada.Environment_Variables.Value("HOME") &
          "/.local/share/Trash/files");
       if New_Action = CLEARTRASH then
-         OldSetting := Settings.DeleteFiles;
-         Settings.DeleteFiles := True;
+         OldSetting := Settings.Delete_Files;
+         Settings.Delete_Files := True;
          SelectedItems.Clear;
          AddTrash("info");
          AddTrash("files");
@@ -114,7 +114,7 @@ package body DeleteItems is
             Arguments(2) :=
               new String'
                 (To_String(MainWindow.Current_Directory & "/" & Item));
-            if Settings.DeleteFiles or New_Action = DELETETRASH then
+            if Settings.Delete_Files or New_Action = DELETETRASH then
                Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
                if not Success then
                   raise Directory_Error
@@ -127,7 +127,7 @@ package body DeleteItems is
                GoUp := True;
             end if;
          else
-            if Settings.DeleteFiles or New_Action = DELETETRASH then
+            if Settings.Delete_Files or New_Action = DELETETRASH then
                Delete_File
                  (To_String(MainWindow.Current_Directory & "/" & Item));
             else
@@ -142,7 +142,7 @@ package body DeleteItems is
          end if;
       end loop Delete_Items_Loop;
       if New_Action = CLEARTRASH then
-         Settings.DeleteFiles := OldSetting;
+         Settings.Delete_Files := OldSetting;
       end if;
       SelectedItems.Clear;
       return GoUp;
@@ -228,7 +228,7 @@ package body DeleteItems is
       Set_Sub_Window
         (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
-      if Settings.DeleteFiles or New_Action = DELETETRASH then
+      if Settings.Delete_Files or New_Action = DELETETRASH then
          Add(FormWindow, 1, 1, "Delete?");
       else
          Add(FormWindow, 1, 1, "Move to Trash?");
