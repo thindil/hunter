@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -57,7 +57,7 @@ package Preferences is
    --                           with information will be on the right
    -- Auto_Refresh_Interval   - How often, in seconds, auto refresh should be
    --                           triggered
-   -- UI_Theme                - Tk theme used by the program
+   -- Ui_Theme                - Tk theme used by the program
    -- Toolbars_Size           - Size of the toolbars icons
    -- Monospace_Font          - If true, use monospace font in text files preview
    -- SOURCE
@@ -78,7 +78,7 @@ package Preferences is
       Overwrite_On_Exist: Boolean;
       Toolbars_On_Top: Boolean;
       Auto_Refresh_Interval: Natural range 0 .. 30;
-      UI_Theme: Unbounded_String;
+      Ui_Theme: Unbounded_String;
       Toolbars_Size: Positive range 8 .. 128;
       Monospace_Font: Boolean;
    end record;
