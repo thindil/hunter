@@ -367,7 +367,7 @@ package body Preferences.UI is
                "{you will have to restart the program to apply all changes.}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ColorBox, "-column 1 -row 0");
-         Set(ColorBox, To_String(Settings.UI_Theme));
+         Set(ColorBox, To_String(Settings.Ui_Theme));
          Tcl.Tk.Ada.Pack.Pack(ThemeFrame, "-fill x");
       end;
       declare

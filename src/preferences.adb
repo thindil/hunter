@@ -113,7 +113,7 @@ package body Preferences is
                Settings.Auto_Refresh_Interval :=
                  Natural'Value(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "UITheme" then
-               Settings.UI_Theme :=
+               Settings.Ui_Theme :=
                  To_Unbounded_String(Get_Attribute(DataNode, "value"));
             elsif Get_Attribute(DataNode, "name") = "ToolbarsSize" then
                Settings.Toolbars_Size :=
@@ -208,7 +208,7 @@ package body Preferences is
       SaveBoolean(Settings.Overwrite_On_Exist, "OverwriteOnExist");
       SaveBoolean(Settings.Toolbars_On_Top, "ToolbarsOnTop");
       SaveNumber(Settings.Auto_Refresh_Interval, "AutoRefreshInterval");
-      SaveString(Settings.UI_Theme, "UITheme");
+      SaveString(Settings.Ui_Theme, "UITheme");
       SaveNumber(Settings.Toolbars_Size, "ToolbarsSize");
       SaveBoolean(Settings.Monospace_Font, "MonospaceFont");
       Save_Accelerators_Loop :
@@ -261,7 +261,7 @@ package body Preferences is
          Delete_Files => True, Clear_Trash_On_Exit => False,
          Show_Finished_Info => False, Overwrite_On_Exist => True,
          Toolbars_On_Top => True, Auto_Refresh_Interval => 10,
-         UI_Theme => To_Unbounded_String("hunter-light"), Toolbars_Size => 24,
+         Ui_Theme => To_Unbounded_String("hunter-light"), Toolbars_Size => 24,
          Monospace_Font => False);
    end SetDefaultSettings;
 
