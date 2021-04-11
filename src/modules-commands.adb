@@ -156,7 +156,7 @@ package body Modules.Commands is
          Tcl_SetResult
            (Interp, Trim(Natural'Image(Settings.Auto_Refresh_Interval), Left));
       elsif CArgv.Arg(Argv, 1) = "uitheme" then
-         Tcl_SetResult(Interp, To_String(Settings.UI_Theme));
+         Tcl_SetResult(Interp, To_String(Settings.Ui_Theme));
       elsif CArgv.Arg(Argv, 1) = "toolbarssize" then
          Tcl_SetResult
            (Interp, Trim(Positive'Image(Settings.Toolbars_Size), Left));

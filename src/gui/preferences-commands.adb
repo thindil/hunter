@@ -909,7 +909,7 @@ package body Preferences.Commands is
           (".preferencesframe.canvas.notebook.preferences.interface.colorframe.uitheme",
            Interp);
    begin
-      Settings.UI_Theme := To_Unbounded_String(Get(ComboBox));
+      Settings.Ui_Theme := To_Unbounded_String(Get(ComboBox));
       ShowMessage
         (Mc(Interp, "{To use the new UI theme, please restart the program.}"),
          "message");

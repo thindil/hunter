@@ -193,11 +193,11 @@ package body MainWindow is
       CreateSearchUI;
       Set_Directory(Directory => Containing_Directory(Name => Command_Name));
       -- Load the program Tk themes
-      if Settings.UI_Theme = To_Unbounded_String(Source => "hunter-light") then
+      if Settings.Ui_Theme = To_Unbounded_String(Source => "hunter-light") then
          Tcl_EvalFile
            (interp => Interp,
             fileName => "../share/hunter/themes/light/breeze.tcl");
-      elsif Settings.UI_Theme =
+      elsif Settings.Ui_Theme =
         To_Unbounded_String(Source => "hunter-dark") then
          Tcl_EvalFile
            (interp => Interp,
@@ -205,14 +205,14 @@ package body MainWindow is
       end if;
       if Index
           (Source => Theme_Names,
-           Pattern => To_String(Source => Settings.UI_Theme)) =
+           Pattern => To_String(Source => Settings.Ui_Theme)) =
         0 then
-         Settings.UI_Theme := To_Unbounded_String(Source => "hunter-light");
+         Settings.Ui_Theme := To_Unbounded_String(Source => "hunter-light");
          Tcl_EvalFile
            (interp => Interp,
             fileName => "../share/hunter/themes/light/breeze.tcl");
       end if;
-      Theme_Use(ThemeName => To_String(Source => Settings.UI_Theme));
+      Theme_Use(ThemeName => To_String(Source => Settings.Ui_Theme));
       -- Load translations
       Mc_Load(DirName => "../share/hunter/translations", Interp => Interp);
       -- Set the program images
