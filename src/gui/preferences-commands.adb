@@ -390,10 +390,10 @@ package body Preferences.Commands is
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.preview.monospacefont") =
         "0" then
-         Settings.MonospaceFont := False;
+         Settings.Monospace_Font := False;
          Widgets.configure(PreviewText, "-font TkDefaultFont");
       else
-         Settings.MonospaceFont := True;
+         Settings.Monospace_Font := True;
          Widgets.configure(PreviewText, "-font TkFixedFont");
       end if;
       return TCL_OK;
@@ -460,7 +460,7 @@ package body Preferences.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      Settings.ShowFinishedInfo :=
+      Settings.Show_Finished_Info :=
         (if
            Tcl_GetVar
              (Interp,
@@ -498,7 +498,7 @@ package body Preferences.Commands is
       MainFrame: constant Ttk_Frame := Get_Widget(".mainframe", Interp);
       Paned: constant Ttk_Frame := Get_Widget(MainFrame & ".paned", Interp);
    begin
-      Settings.ToolbarsOnTop :=
+      Settings.Toolbars_On_Top :=
         (if
            Tcl_GetVar
              (Interp,
@@ -507,7 +507,7 @@ package body Preferences.Commands is
          then False
          else True);
       SetToolbars;
-      if not Settings.ToolbarsOnTop then
+      if not Settings.Toolbars_On_Top then
          Tcl.Tk.Ada.Grid.Grid_Configure
            (Paned, "-column 1 -row 3 -sticky nswe");
          Grid.Column_Configure(MainFrame, Paned, "-weight 1");
@@ -548,12 +548,12 @@ package body Preferences.Commands is
           (Interp,
            ".preferencesframe.canvas.notebook.preferences.deleting.deletefiles") =
         "0" then
-         Settings.DeleteFiles := False;
+         Settings.Delete_Files := False;
          Entry_Configure
            (ButtonMenu, "0",
             "-label {" & Mc(Interp, "{Move selected to Trash}") & "}");
       else
-         Settings.DeleteFiles := True;
+         Settings.Delete_Files := True;
          Entry_Configure
            (ButtonMenu, "0",
             "-label {" & Mc(Interp, "{Delete selected}") & "}");
@@ -585,7 +585,7 @@ package body Preferences.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      Settings.ClearTrashOnExit :=
+      Settings.Clear_Trash_On_Exit :=
         (if
            Tcl_GetVar
              (Interp,
@@ -621,7 +621,7 @@ package body Preferences.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
-      Settings.OverwriteOnExist :=
+      Settings.Overwrite_On_Exist :=
         (if
            Tcl_GetVar
              (Interp,
@@ -868,7 +868,7 @@ package body Preferences.Commands is
            Interp);
    begin
       Bind_To_Main_Window(Interp, "<Escape>", "{HideWidget}");
-      Settings.AutoRefreshInterval := Natural(Float'Value(Get(Scale)));
+      Settings.Auto_Refresh_Interval := Natural(Float'Value(Get(Scale)));
       Scale.Name :=
         New_String
           (".preferencesframe.canvas.notebook.preferences.interface.messagesscale");
@@ -909,7 +909,7 @@ package body Preferences.Commands is
           (".preferencesframe.canvas.notebook.preferences.interface.colorframe.uitheme",
            Interp);
    begin
-      Settings.UITheme := To_Unbounded_String(Get(ComboBox));
+      Settings.UI_Theme := To_Unbounded_String(Get(ComboBox));
       ShowMessage
         (Mc(Interp, "{To use the new UI theme, please restart the program.}"),
          "message");
@@ -982,7 +982,7 @@ package body Preferences.Commands is
             "-format {svg -scaletoheight" & Positive'Image(ImageSize) & "}");
       end loop Set_Toolbars_Icons_Loop;
       Set_Directory(CurrentDir);
-      Settings.ToolbarsSize := ImageSize;
+      Settings.Toolbars_Size := ImageSize;
       return TCL_OK;
    end Set_Toolbars_Size_Command;
 

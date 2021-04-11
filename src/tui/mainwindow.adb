@@ -109,7 +109,7 @@ package body MainWindow is
       CreateProgramMenu;
       PathButtons := Create(1, Columns / 2, 1, 0);
       ListWindow :=
-        (if Settings.ShowPreview then Create(Lines - 2, Columns / 2, 2, 0)
+        (if Settings.Show_Preview then Create(Lines - 2, Columns / 2, 2, 0)
          else Create(Lines - 2, Columns, 2, 0));
       Box(ListWindow, Default_Character, Default_Character);
       Refresh;
@@ -172,7 +172,7 @@ package body MainWindow is
       Terminal_Interface.Curses.Clear(ListWindow);
       Box(ListWindow, Default_Character, Default_Character);
       Add(ListWindow, 1, 10, "Name");
-      if Settings.ShowLastModified then
+      if Settings.Show_Last_Modified then
          Add(ListWindow, 1, Width - 27, "Modified");
       end if;
       Add(ListWindow, 1, Width - 10, "Size");
@@ -182,12 +182,12 @@ package body MainWindow is
       begin
          Load_Directory_View_Loop :
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            if not Settings.ShowHidden and ItemsList(I).IsHidden then
+            if not Settings.Show_Hidden and ItemsList(I).IsHidden then
                goto End_Of_Loop;
             end if;
             Move(To_String(ItemsList(I).Name), Item_Entry);
             Item := MainWindow.Current_Directory & "/" & ItemsList(I).Name;
-            if Settings.ShowLastModified then
+            if Settings.Show_Last_Modified then
                begin
                   TimeString :=
                     To_Unbounded_String
@@ -211,7 +211,7 @@ package body MainWindow is
                         CountFileSize
                           (Ada.Directories.File_Size(ItemsList(I).Size)));
                   else
-                     if Settings.ShowHidden then
+                     if Settings.Show_Hidden then
                         Overwrite
                           (Item_Entry, Item_Entry'Last - 8,
                            Item_Size'Image

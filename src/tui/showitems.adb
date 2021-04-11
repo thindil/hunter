@@ -78,7 +78,7 @@ package body ShowItems is
          Add(PreviewPad, "Size:");
       end if;
       if Is_Directory(SelectedItem) then
-         if Settings.ShowHidden then
+         if Settings.Show_Hidden then
             Add
               (PreviewPad,
                Natural'Image(Natural(SecondItemsList.Length)) & LF);
@@ -328,7 +328,7 @@ package body ShowItems is
          Add(PreviewPad, 0, Columns / 4, "Name");
          Load_Preview_Directory_Loop :
          for Item of SecondItemsList loop
-            if not Settings.ShowHidden and Item.IsHidden then
+            if not Settings.Show_Hidden and Item.IsHidden then
                goto End_Of_Loop;
             end if;
             Add(PreviewPad, Line, 0, To_String(Item.Name));
@@ -414,7 +414,7 @@ package body ShowItems is
                      end loop Print_Text_Loop;
                   end ShowText;
                begin
-                  if not Settings.ColorText or ExecutableName = "" then
+                  if not Settings.Color_Text or ExecutableName = "" then
                      LoadFile;
                      return;
                   end if;
@@ -424,7 +424,7 @@ package body ShowItems is
                        ("--out-format=pango --force --quiet --output=" &
                         Value("HOME") &
                         "/.cache/hunter/highlight.tmp --base16 --style=" &
-                        To_String(Settings.ColorTheme) & " " &
+                        To_String(Settings.Color_Theme) & " " &
                         To_String(Current_Selected)).all,
                      Success);
                   if not Success then
@@ -609,7 +609,7 @@ package body ShowItems is
       else
          SelectedItems.Append(MainWindow.Current_Directory);
       end if;
-      if not Settings.ShowPreview or
+      if not Settings.Show_Preview or
         (SelectedItems(1) = Current_Selected and
          Current_Selected /= MainWindow.Current_Directory) then
          return;
@@ -688,7 +688,7 @@ package body ShowItems is
       Index := SecondItemsList.First_Index;
       Load_Destination_View_Loop :
       for I in SecondItemsList.First_Index .. SecondItemsList.Last_Index loop
-         if not Settings.ShowHidden and SecondItemsList(I).IsHidden then
+         if not Settings.Show_Hidden and SecondItemsList(I).IsHidden then
             goto End_Of_Loop;
          end if;
          Menu_Items.all(Index) := New_Item(To_String(SecondItemsList(I).Name));
