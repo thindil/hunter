@@ -49,7 +49,7 @@ package body MoveItems is
            DestinationDirectory & To_Unbounded_String("/") &
            Simple_Name(To_String(MoveItemsList(1)));
          if Exists(To_String(NewName)) then
-            if not Overwrite and Settings.OverwriteOnExist then
+            if not Overwrite and Settings.Overwrite_On_Exist then
                ItemType :=
                  (if Is_Directory(To_String(NewName)) then
                     To_Unbounded_String(Mc(Interpreter, "{Directory}"))
@@ -61,7 +61,7 @@ package body MoveItems is
                   "question");
                return MESSAGE_FORM;
             end if;
-            if not Settings.OverwriteOnExist then
+            if not Settings.Overwrite_On_Exist then
                FileExtension :=
                  To_Unbounded_String(Extension(To_String(MoveItemsList(1))));
                New_File_Name_Loop :
@@ -103,7 +103,7 @@ package body MoveItems is
          UpdateProgressBar;
       end loop Move_Items_Loop;
       MoveItemsList.Clear;
-      if Settings.ShowFinishedInfo then
+      if Settings.Show_Finished_Info then
          ShowMessage
            (Mc
               (Interpreter,
@@ -112,7 +112,7 @@ package body MoveItems is
          return MESSAGE_FORM;
       end if;
       MainWindow.Current_Directory :=
-        (if Settings.StayInOld then SourceDirectory else DestinationDirectory);
+        (if Settings.Stay_In_Old then SourceDirectory else DestinationDirectory);
       Current_Selected :=
         MainWindow.Current_Directory & "/" &
         Simple_Name(To_String(Current_Selected));
