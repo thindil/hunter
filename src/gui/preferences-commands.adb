@@ -1009,7 +1009,7 @@ package body Preferences.Commands is
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
    begin
-      SetDefaultSettings;
+      Settings := Default_Settings;
       ShowMessage
         (Mc
            (Interp,
@@ -1161,7 +1161,7 @@ package body Preferences.Commands is
       Label: Ttk_Label;
    begin
       Label.Interp := Interp;
-      SetDefaultAccelerators;
+      Accelerators := Default_Accelerators;
       Restore_Default_Shortcuts_Loop :
       for I in OldAccelerators'Range loop
          Script :=

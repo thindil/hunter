@@ -31,7 +31,7 @@ with Utils.UI; use Utils.UI;
 
 package body Preferences is
 
-   procedure LoadSettings is
+   procedure Load_Settings is
       Reader: Tree_Reader;
       DataFile: File_Input;
       SettingsData: Document;
@@ -47,8 +47,6 @@ package body Preferences is
          end if;
       end LoadBoolean;
    begin
-      SetDefaultSettings;
-      SetDefaultAccelerators;
       Open
         (Ada.Environment_Variables.Value("HOME") &
          "/.config/hunter/hunter.xml",
@@ -153,9 +151,9 @@ package body Preferences is
    exception
       when Ada.Directories.Name_Error =>
          null;
-   end LoadSettings;
+   end Load_Settings;
 
-   procedure SavePreferences is
+   procedure Save_Preferences is
       ConfigFile: File_Type;
       Configuration: DOM_Implementation;
       SettingNode, MainNode: DOM.Core.Element;
@@ -248,36 +246,6 @@ package body Preferences is
         (Stream => Stream(ConfigFile), N => SettingsData,
          Pretty_Print => True);
       Close(ConfigFile);
-   end SavePreferences;
-
-   procedure SetDefaultSettings is
-   begin
-      Settings :=
-        (Show_Hidden => True, Show_Last_Modified => False,
-         Scale_Images => False, Auto_Close_Messages_Time => 10,
-         Window_Width => 800, Window_Height => 600, Show_Preview => True,
-         Stay_In_Old => False, Color_Text => True,
-         Color_Theme => To_Unbounded_String("gruvbox-light-soft"),
-         Delete_Files => True, Clear_Trash_On_Exit => False,
-         Show_Finished_Info => False, Overwrite_On_Exist => True,
-         Toolbars_On_Top => True, Auto_Refresh_Interval => 10,
-         Ui_Theme => To_Unbounded_String("hunter-light"), Toolbars_Size => 24,
-         Monospace_Font => False);
-   end SetDefaultSettings;
-
-   procedure SetDefaultAccelerators is
-   begin
-      Accelerators :=
-        (To_Unbounded_String("Control-q"), To_Unbounded_String("Alt-h"),
-         To_Unbounded_String("Alt-f"), To_Unbounded_String("Alt-n"),
-         To_Unbounded_String("Control-Delete"), To_Unbounded_String("Alt-a"),
-         To_Unbounded_String("Alt-o"), To_Unbounded_String("Control-a"),
-         To_Unbounded_String("Control-r"), To_Unbounded_String("Alt-c"),
-         To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
-         To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
-         To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
-         To_Unbounded_String("Alt-d"), To_Unbounded_String("Alt-e"),
-         To_Unbounded_String("Alt-s"), To_Unbounded_String("Alt-t"));
-   end SetDefaultAccelerators;
+   end Save_Preferences;
 
 end Preferences;

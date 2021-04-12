@@ -51,7 +51,7 @@ procedure Hunter is
    Argv: CArgv.Chars_Ptr_Ptr;
    procedure ExitFromProgram is
    begin
-      SavePreferences;
+      Save_Preferences;
       Execute_Modules(On_Quit);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
@@ -101,7 +101,7 @@ begin
    MsgCat_Init(Interpreter);
 
    -- Load the program setting
-   LoadSettings;
+   Load_Settings;
 
    -- Load the available applications list
    CreateProgramsMenu;

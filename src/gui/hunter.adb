@@ -94,7 +94,7 @@ begin
    Autoscroll_Init(Interp => Interp);
 
    -- Load the program setting
-   LoadSettings;
+   Load_Settings;
 
    -- Create the program main window
    if Argument_Count < 1 then
