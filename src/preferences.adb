@@ -33,11 +33,11 @@ package body Preferences is
 
    procedure Load_Settings is
       Reader: Tree_Reader;
-      DataFile: File_Input;
-      SettingsData: Document;
-      NodesList: Node_List;
-      NodeName: Unbounded_String;
-      DataNode: Node;
+      Data_File: File_Input;
+      Settings_Data: Document;
+      Nodes_List: Node_List;
+      Data_Node_Name: Unbounded_String;
+      Data_Node: Node;
       function LoadBoolean(Value: String) return Boolean is
       begin
          if Value = "Yes" then
@@ -50,99 +50,99 @@ package body Preferences is
       Open
         (Ada.Environment_Variables.Value("HOME") &
          "/.config/hunter/hunter.xml",
-         DataFile);
-      Parse(Reader, DataFile);
-      Close(DataFile);
-      SettingsData := Get_Tree(Reader);
-      NodesList := Child_Nodes(First_Child(SettingsData));
+         Data_File);
+      Parse(Reader, Data_File);
+      Close(Data_File);
+      Settings_Data := Get_Tree(Reader);
+      Nodes_List := Child_Nodes(First_Child(Settings_Data));
       Load_Settings_Loop :
-      for I in 0 .. Length(NodesList) - 1 loop
-         DataNode := Item(NodesList, I);
-         NodeName := To_Unbounded_String(Node_Name(DataNode));
+      for I in 0 .. Length(Nodes_List) - 1 loop
+         Data_Node := Item(Nodes_List, I);
+         Data_Node_Name := To_Unbounded_String(Node_Name(Data_Node));
          -- The program settings
-         if NodeName = To_Unbounded_String("setting") then
-            if Get_Attribute(DataNode, "name") = "ShowHidden" then
+         if Data_Node_Name = To_Unbounded_String("setting") then
+            if Get_Attribute(Data_Node, "name") = "ShowHidden" then
                Settings.Show_Hidden :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ShowLastModified" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "ShowLastModified" then
                Settings.Show_Last_Modified :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ScaleImages" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "ScaleImages" then
                Settings.Scale_Images :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") =
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") =
               "AutoCloseMessagesTime" then
                Settings.Auto_Close_Messages_Time :=
-                 Natural'Value(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "WindowWidth" then
+                 Natural'Value(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "WindowWidth" then
                Settings.Window_Width :=
-                 Positive'Value(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "WindowHeight" then
+                 Positive'Value(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "WindowHeight" then
                Settings.Window_Height :=
-                 Positive'Value(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ShowPreview" then
+                 Positive'Value(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "ShowPreview" then
                Settings.Show_Preview :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "StayInOld" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "StayInOld" then
                Settings.Stay_In_Old :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ColorText" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "ColorText" then
                Settings.Color_Text :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ColorTheme" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "ColorTheme" then
                Settings.Color_Theme :=
-                 To_Unbounded_String(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "DeleteFiles" then
+                 To_Unbounded_String(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "DeleteFiles" then
                Settings.Delete_Files :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ClearTrashOnExit" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "ClearTrashOnExit" then
                Settings.Clear_Trash_On_Exit :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ShowFinishedInfo" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "ShowFinishedInfo" then
                Settings.Show_Finished_Info :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "OverwriteOnExist" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "OverwriteOnExist" then
                Settings.Overwrite_On_Exist :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ToolbarsOnTop" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "ToolbarsOnTop" then
                Settings.Toolbars_On_Top :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "AutoRefreshInterval" then
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "AutoRefreshInterval" then
                Settings.Auto_Refresh_Interval :=
-                 Natural'Value(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "UITheme" then
+                 Natural'Value(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "UITheme" then
                Settings.Ui_Theme :=
-                 To_Unbounded_String(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "ToolbarsSize" then
+                 To_Unbounded_String(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "ToolbarsSize" then
                Settings.Toolbars_Size :=
-                 Positive'Value(Get_Attribute(DataNode, "value"));
-            elsif Get_Attribute(DataNode, "name") = "MonospaceFont" then
+                 Positive'Value(Get_Attribute(Data_Node, "value"));
+            elsif Get_Attribute(Data_Node, "name") = "MonospaceFont" then
                Settings.Monospace_Font :=
-                 LoadBoolean(Get_Attribute(DataNode, "value"));
+                 LoadBoolean(Get_Attribute(Data_Node, "value"));
             end if;
          -- The keyboard shortcuts
-         elsif NodeName = To_Unbounded_String("accelerator") then
-            Accelerators(Positive'Value(Get_Attribute(DataNode, "index"))) :=
-              To_Unbounded_String(Get_Attribute(DataNode, "value"));
+         elsif Data_Node_Name = To_Unbounded_String("accelerator") then
+            Accelerators(Positive'Value(Get_Attribute(Data_Node, "index"))) :=
+              To_Unbounded_String(Get_Attribute(Data_Node, "value"));
          -- The user defined commands
-         elsif NodeName = To_Unbounded_String("command") then
-            if Get_Attribute(DataNode, "needoutput") = "Yes" then
+         elsif Data_Node_Name = To_Unbounded_String("command") then
+            if Get_Attribute(Data_Node, "needoutput") = "Yes" then
                UserCommandsList.Include
-                 (Get_Attribute(DataNode, "menuentry"),
+                 (Get_Attribute(Data_Node, "menuentry"),
                   (NeedOutput => True,
                    Command =>
-                     To_Unbounded_String(Node_Value(First_Child(DataNode)))));
+                     To_Unbounded_String(Node_Value(First_Child(Data_Node)))));
             else
                UserCommandsList.Include
-                 (Get_Attribute(DataNode, "menuentry"),
+                 (Get_Attribute(Data_Node, "menuentry"),
                   (NeedOutput => False,
                    Command =>
-                     To_Unbounded_String(Node_Value(First_Child(DataNode)))));
+                     To_Unbounded_String(Node_Value(First_Child(Data_Node)))));
             end if;
          -- The program modules
-         elsif NodeName = To_Unbounded_String("module") then
+         elsif Data_Node_Name = To_Unbounded_String("module") then
             Enabled_Modules.Append
-              (To_Unbounded_String(Get_Attribute(DataNode, "path")));
+              (To_Unbounded_String(Get_Attribute(Data_Node, "path")));
          end if;
       end loop Load_Settings_Loop;
       if FindExecutable("highlight") = "" then
@@ -157,11 +157,11 @@ package body Preferences is
       ConfigFile: File_Type;
       Configuration: DOM_Implementation;
       SettingNode, MainNode: DOM.Core.Element;
-      SettingsData: Document;
+      Settings_Data: Document;
       UserCommandNode: Text;
       procedure SaveBoolean(Value: Boolean; Name: String) is
       begin
-         SettingNode := Create_Element(SettingsData, "setting");
+         SettingNode := Create_Element(Settings_Data, "setting");
          SettingNode := Append_Child(MainNode, SettingNode);
          Set_Attribute(SettingNode, "name", Name);
          if Value then
@@ -174,22 +174,22 @@ package body Preferences is
          RawValue: constant String :=
            Trim(Natural'Image(Value), Ada.Strings.Left);
       begin
-         SettingNode := Create_Element(SettingsData, "setting");
+         SettingNode := Create_Element(Settings_Data, "setting");
          SettingNode := Append_Child(MainNode, SettingNode);
          Set_Attribute(SettingNode, "name", Name);
          Set_Attribute(SettingNode, "value", RawValue);
       end SaveNumber;
       procedure SaveString(Value: Unbounded_String; Name: String) is
       begin
-         SettingNode := Create_Element(SettingsData, "setting");
+         SettingNode := Create_Element(Settings_Data, "setting");
          SettingNode := Append_Child(MainNode, SettingNode);
          Set_Attribute(SettingNode, "name", Name);
          Set_Attribute(SettingNode, "value", To_String(Value));
       end SaveString;
    begin
-      SettingsData := Create_Document(Configuration);
-      MainNode := Create_Element(SettingsData, "hunter");
-      MainNode := Append_Child(SettingsData, MainNode);
+      Settings_Data := Create_Document(Configuration);
+      MainNode := Create_Element(Settings_Data, "hunter");
+      MainNode := Append_Child(Settings_Data, MainNode);
       SaveBoolean(Settings.Show_Hidden, "ShowHidden");
       SaveBoolean(Settings.Show_Last_Modified, "ShowLastModified");
       SaveBoolean(Settings.Scale_Images, "ScaleImages");
@@ -211,14 +211,14 @@ package body Preferences is
       SaveBoolean(Settings.Monospace_Font, "MonospaceFont");
       Save_Accelerators_Loop :
       for I in Accelerators'Range loop
-         SettingNode := Create_Element(SettingsData, "accelerator");
+         SettingNode := Create_Element(Settings_Data, "accelerator");
          SettingNode := Append_Child(MainNode, SettingNode);
          Set_Attribute(SettingNode, "index", Trim(Positive'Image(I), Left));
          Set_Attribute(SettingNode, "value", To_String(Accelerators(I)));
       end loop Save_Accelerators_Loop;
       Save_User_Commands_Loop :
       for I in UserCommandsList.Iterate loop
-         SettingNode := Create_Element(SettingsData, "command");
+         SettingNode := Create_Element(Settings_Data, "command");
          SettingNode := Append_Child(MainNode, SettingNode);
          Set_Attribute(SettingNode, "menuentry", Commands_Container.Key(I));
          if UserCommandsList(I).NeedOutput then
@@ -228,12 +228,12 @@ package body Preferences is
          end if;
          UserCommandNode :=
            Create_Text_Node
-             (SettingsData, To_String(UserCommandsList(I).Command));
+             (Settings_Data, To_String(UserCommandsList(I).Command));
          UserCommandNode := Append_Child(SettingNode, UserCommandNode);
       end loop Save_User_Commands_Loop;
       Save_Enabled_Modules_Loop :
       for ModuleName of Enabled_Modules loop
-         SettingNode := Create_Element(SettingsData, "module");
+         SettingNode := Create_Element(Settings_Data, "module");
          SettingNode := Append_Child(MainNode, SettingNode);
          Set_Attribute(SettingNode, "path", To_String(ModuleName));
       end loop Save_Enabled_Modules_Loop;
@@ -243,7 +243,7 @@ package body Preferences is
          Ada.Environment_Variables.Value("HOME") &
          "/.config/hunter/hunter.xml");
       Write
-        (Stream => Stream(ConfigFile), N => SettingsData,
+        (Stream => Stream(ConfigFile), N => Settings_Data,
          Pretty_Print => True);
       Close(ConfigFile);
    end Save_Preferences;
