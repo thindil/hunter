@@ -84,11 +84,28 @@ package Preferences is
    end record;
    -- ****
 
+   -- ****d* Preferences/Preferenes.Default_Settings
+   -- FUNCTION
+   -- Default the program settings
+   -- SOURCE
+   Default_Settings: constant Settings_Data :=
+     (Show_Hidden => True, Show_Last_Modified => False, Scale_Images => False,
+      Auto_Close_Messages_Time => 10, Window_Width => 800,
+      Window_Height => 600, Show_Preview => True, Stay_In_Old => False,
+      Color_Text => True,
+      Color_Theme => To_Unbounded_String("gruvbox-light-soft"),
+      Delete_Files => True, Clear_Trash_On_Exit => False,
+      Show_Finished_Info => False, Overwrite_On_Exist => True,
+      Toolbars_On_Top => True, Auto_Refresh_Interval => 10,
+      Ui_Theme => To_Unbounded_String("hunter-light"), Toolbars_Size => 24,
+      Monospace_Font => False);
+   -- ****
+
    -- ****v* Preferences/Preferences.Settings
    -- FUNCTION
    -- The program settings
    -- SOURCE
-   Settings: Settings_Data;
+   Settings: Settings_Data := Default_Settings;
    -- ****
 
    -- ****t* Preferences/Preferences.Accelerators_Array
@@ -98,42 +115,43 @@ package Preferences is
    type Accelerators_Array is array(1 .. 20) of Unbounded_String;
    -- ****
 
+   -- ****d* Preferences/Preferences.Default_Accelerators
+   -- FUNCTION
+   -- Default the program keyboard shortcuts
+   -- SOURCE
+   Default_Accelerators: constant Accelerators_Array :=
+     (To_Unbounded_String("Control-q"), To_Unbounded_String("Alt-h"),
+      To_Unbounded_String("Alt-f"), To_Unbounded_String("Alt-n"),
+      To_Unbounded_String("Control-Delete"), To_Unbounded_String("Alt-a"),
+      To_Unbounded_String("Alt-o"), To_Unbounded_String("Control-a"),
+      To_Unbounded_String("Control-r"), To_Unbounded_String("Alt-c"),
+      To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
+      To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
+      To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
+      To_Unbounded_String("Alt-d"), To_Unbounded_String("Alt-e"),
+      To_Unbounded_String("Alt-s"), To_Unbounded_String("Alt-t"));
+   -- ****
+
    -- ****v* Preferences/Preferences.Accelerators
    -- FUNCTION
    -- Array with keyboard shortcuts used by the program
    -- SOURCE
-   Accelerators: Accelerators_Array;
+   Accelerators: Accelerators_Array := Default_Accelerators;
    -- ****
 
-   -- ****f* Preferences/Preferences.LoadSettings
+   -- ****f* Preferences/Preferences.Load_Settings
    -- FUNCTION
    -- Load the program settings from file. If file not exists, load default
    -- settings.
    -- SOURCE
-   procedure LoadSettings;
+   procedure Load_Settings;
    -- ****
 
-   -- ****f* Preferences/Preferences.SavePreferences
+   -- ****f* Preferences/Preferences.Save_Preferences
    -- FUNCTION
    -- Save the program preferences to the file.
    -- SOURCE
-   procedure SavePreferences;
-   -- ****
-
-private
-
-   -- ****f* Preferences/Preferences.SetDefaultSettings
-   -- FUNCTION
-   -- Set default values for the program's settings
-   -- SOURCE
-   procedure SetDefaultSettings;
-   -- ****
-
-   -- ****f* Preferences/Preferences.SetDefaultAccelerators
-   -- FUNCTION
-   -- Set default values for the program's keyboard shortcuts
-   -- SOURCE
-   procedure SetDefaultAccelerators;
+   procedure Save_Preferences;
    -- ****
 
 end Preferences;
