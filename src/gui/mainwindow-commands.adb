@@ -157,7 +157,7 @@ package body MainWindow.Commands is
          Settings.Window_Height :=
            Positive'Value(Winfo_Get(MainWindow, "height"));
       end if;
-      SavePreferences;
+      Save_Preferences;
       Execute_Modules(On_Quit);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
