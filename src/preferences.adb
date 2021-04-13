@@ -32,20 +32,19 @@ with Utils.UI; use Utils.UI;
 package body Preferences is
 
    procedure Load_Settings is
-      Reader: Tree_Reader;
+      Reader: Tree_Reader; --## rule line off IMPROPER_INITIALIZATION
       Data_File: File_Input;
       Settings_Data: Document;
       Nodes_List: Node_List;
-      Data_Node_Name: Unbounded_String;
+      Data_Node_Name: Unbounded_String := Null_Unbounded_String;
       Data_Node: Node;
-      function LoadBoolean(Value: String) return Boolean is
+      function Load_Boolean(Value: String) return Boolean is
       begin
          if Value = "Yes" then
             return True;
-         else
-            return False;
          end if;
-      end LoadBoolean;
+         return False;
+      end Load_Boolean;
    begin
       Open
         (Ada.Environment_Variables.Value("HOME") &
@@ -63,13 +62,13 @@ package body Preferences is
          if Data_Node_Name = To_Unbounded_String("setting") then
             if Get_Attribute(Data_Node, "name") = "ShowHidden" then
                Settings.Show_Hidden :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ShowLastModified" then
                Settings.Show_Last_Modified :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ScaleImages" then
                Settings.Scale_Images :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") =
               "AutoCloseMessagesTime" then
                Settings.Auto_Close_Messages_Time :=
@@ -82,31 +81,31 @@ package body Preferences is
                  Positive'Value(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ShowPreview" then
                Settings.Show_Preview :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "StayInOld" then
                Settings.Stay_In_Old :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ColorText" then
                Settings.Color_Text :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ColorTheme" then
                Settings.Color_Theme :=
                  To_Unbounded_String(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "DeleteFiles" then
                Settings.Delete_Files :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ClearTrashOnExit" then
                Settings.Clear_Trash_On_Exit :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ShowFinishedInfo" then
                Settings.Show_Finished_Info :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "OverwriteOnExist" then
                Settings.Overwrite_On_Exist :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ToolbarsOnTop" then
                Settings.Toolbars_On_Top :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "AutoRefreshInterval" then
                Settings.Auto_Refresh_Interval :=
                  Natural'Value(Get_Attribute(Data_Node, "value"));
@@ -118,7 +117,7 @@ package body Preferences is
                  Positive'Value(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "MonospaceFont" then
                Settings.Monospace_Font :=
-                 LoadBoolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean(Get_Attribute(Data_Node, "value"));
             end if;
          -- The keyboard shortcuts
          elsif Data_Node_Name = To_Unbounded_String("accelerator") then
