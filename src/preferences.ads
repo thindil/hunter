@@ -93,12 +93,12 @@ package Preferences is
       Auto_Close_Messages_Time => 10, Window_Width => 800,
       Window_Height => 600, Show_Preview => True, Stay_In_Old => False,
       Color_Text => True,
-      Color_Theme => To_Unbounded_String("gruvbox-light-soft"),
+      Color_Theme => To_Unbounded_String(Source => "gruvbox-light-soft"),
       Delete_Files => True, Clear_Trash_On_Exit => False,
       Show_Finished_Info => False, Overwrite_On_Exist => True,
       Toolbars_On_Top => True, Auto_Refresh_Interval => 10,
-      Ui_Theme => To_Unbounded_String("hunter-light"), Toolbars_Size => 24,
-      Monospace_Font => False);
+      Ui_Theme => To_Unbounded_String(Source => "hunter-light"),
+      Toolbars_Size => 24, Monospace_Font => False);
    -- ****
 
    -- ****v* Preferences/Preferences.Settings
@@ -120,16 +120,26 @@ package Preferences is
    -- Default the program keyboard shortcuts
    -- SOURCE
    Default_Accelerators: constant Accelerators_Array :=
-     (To_Unbounded_String("Control-q"), To_Unbounded_String("Alt-h"),
-      To_Unbounded_String("Alt-f"), To_Unbounded_String("Alt-n"),
-      To_Unbounded_String("Control-Delete"), To_Unbounded_String("Alt-a"),
-      To_Unbounded_String("Alt-o"), To_Unbounded_String("Control-a"),
-      To_Unbounded_String("Control-r"), To_Unbounded_String("Alt-c"),
-      To_Unbounded_String("Alt-m"), To_Unbounded_String("Alt-p"),
-      To_Unbounded_String("Alt-w"), To_Unbounded_String("Alt-i"),
-      To_Unbounded_String("Alt-v"), To_Unbounded_String("Alt-b"),
-      To_Unbounded_String("Alt-d"), To_Unbounded_String("Alt-e"),
-      To_Unbounded_String("Alt-s"), To_Unbounded_String("Alt-t"));
+     (1 => To_Unbounded_String(Source => "Control-q"),
+      2 => To_Unbounded_String(Source => "Alt-h"),
+      3 => To_Unbounded_String(Source => "Alt-f"),
+      4 => To_Unbounded_String(Source => "Alt-n"),
+      5 => To_Unbounded_String(Source => "Control-Delete"),
+      6 => To_Unbounded_String(Source => "Alt-a"),
+      7 => To_Unbounded_String(Source => "Alt-o"),
+      8 => To_Unbounded_String(Source => "Control-a"),
+      9 => To_Unbounded_String(Source => "Control-r"),
+      10 => To_Unbounded_String(Source => "Alt-c"),
+      11 => To_Unbounded_String(Source => "Alt-m"),
+      12 => To_Unbounded_String(Source => "Alt-p"),
+      13 => To_Unbounded_String(Source => "Alt-w"),
+      14 => To_Unbounded_String(Source => "Alt-i"),
+      15 => To_Unbounded_String(Source => "Alt-v"),
+      16 => To_Unbounded_String(Source => "Alt-b"),
+      17 => To_Unbounded_String(Source => "Alt-d"),
+      18 => To_Unbounded_String(Source => "Alt-e"),
+      19 => To_Unbounded_String(Source => "Alt-s"),
+      20 => To_Unbounded_String(Source => "Alt-t"));
    -- ****
 
    -- ****v* Preferences/Preferences.Accelerators
