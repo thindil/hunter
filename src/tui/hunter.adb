@@ -217,6 +217,8 @@ begin
                UILocation := Selected_Keys(Key);
             when PREVIEW =>
                Preview_Keys(Key);
+            when PROGRAMS_MENU =>
+               UILocation := Programs_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;
