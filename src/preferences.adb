@@ -34,7 +34,7 @@ package body Preferences is
    procedure Load_Settings is
       Reader: Tree_Reader; --## rule line off IMPROPER_INITIALIZATION
       Data_File: File_Input;
-      Settings_Data: Document;
+      Saved_Settings_Data: Document;
       Nodes_List: Node_List;
       Data_Node_Name: Unbounded_String := Null_Unbounded_String;
       Data_Node: Node;
@@ -50,10 +50,11 @@ package body Preferences is
         (Ada.Environment_Variables.Value("HOME") &
          "/.config/hunter/hunter.xml",
          Data_File);
-      Parse(Reader, Data_File);
+      Parse(Reader, Data_File); --## rule line off IMPROPER_INITIALIZATION
       Close(Data_File);
-      Settings_Data := Get_Tree(Reader);
-      Nodes_List := Child_Nodes(First_Child(Settings_Data));
+      Saved_Settings_Data :=
+        Get_Tree(Reader); --## rule line off IMPROPER_INITIALIZATION
+      Nodes_List := Child_Nodes(First_Child(Saved_Settings_Data));
       Load_Settings_Loop :
       for I in 0 .. Length(Nodes_List) - 1 loop
          Data_Node := Item(Nodes_List, I);
