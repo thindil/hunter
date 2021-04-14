@@ -81,12 +81,13 @@ package MainWindow is
    -- BOOKMARKS_FORM   - The enter destination directory form
    -- CREATELINK_FORM  - The creating of new link
    -- SELECTED_MENU    - The selected file or directory menu
+   -- PROGRAMS_MENU    - The list of applications to use with item
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
       CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
       DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM,
-      SELECTED_MENU);
+      SELECTED_MENU, PROGRAMS_MENU);
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.UILocation

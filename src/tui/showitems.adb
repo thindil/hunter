@@ -814,6 +814,11 @@ package body ShowItems is
             Result := Driver(DialogForm, F_Next_Field);
             Result := Driver(DialogForm, F_End_Line);
          when 10 =>
+            if FieldIndex = 2 then
+               ShowProgramsMenu;
+               UILocation := PROGRAMS_MENU;
+               return;
+            end if;
             if Is_Directory(SelectedItem) then
                case FieldIndex is
                   when 4 =>

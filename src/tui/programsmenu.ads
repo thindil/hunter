@@ -13,6 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with MainWindow; use MainWindow;
+
 -- ****h* ProgramsMenuTUI/ProgramsMenuTUI
 -- FUNCTION
 -- Provides code for manipulate associated programs with files.
@@ -37,6 +40,24 @@ package ProgramsMenu is
    -- DesktopFile if application was not found
    -- SOURCE
    function GetProgramName(DesktopFile: String) return String;
+   -- ****
+
+   -- ****f* ProgramsMenuTUI/ProgramsMenuTUI.ShowProgramsMenu
+   -- FUNCTION
+   -- Show list of applications available for use with the selected item
+   -- SOURCE
+   procedure ShowProgramsMenu;
+   -- ****
+
+   -- ****f* ProgramsMenuTUI/ProgramsMenuTUI.Programs_Keys
+   -- FUNCTION
+   -- Handles keys events when the programs menu is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Programs_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end ProgramsMenu;

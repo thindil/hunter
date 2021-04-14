@@ -17,9 +17,9 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
+with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Bookmarks; use Bookmarks;
-with MainWindow; use MainWindow;
 
 package body ProgramsMenu is
 
@@ -107,5 +107,27 @@ package body ProgramsMenu is
       end if;
       return ApplicationsList(DesktopFile);
    end GetProgramName;
+
+   -- ProgramsWindow: Window;
+   -- ProgramsMenu: Menu;
+
+   procedure ShowProgramsMenu is
+      Menu_Items: constant Item_Array_Access :=
+        new Item_Array(1 .. Natural(ApplicationsList.Length) + 2);
+      Index: Positive := 1;
+   begin
+      for Application of ApplicationsList loop
+         Menu_Items.all(Index) := New_Item(Application);
+         Index := Index + 1;
+      end loop;
+      Menu_Items.all(Index) := New_Item("Close");
+      Menu_Items.all(Index) := Null_Item;
+   end ShowProgramsMenu;
+
+   function Programs_Keys(Key: Key_Code) return UI_Locations is
+      pragma Unreferenced(Key);
+   begin
+      return PROGRAMS_MENU;
+   end Programs_Keys;
 
 end ProgramsMenu;
