@@ -329,6 +329,7 @@ package body MainWindow is
                end if;
             end loop Update_Current_Directory_Loop;
             LoadDirectory(To_String(MainWindow.Current_Directory));
+            UILocation := DIRECTORY_VIEW;
             Update_Directory_List(True);
             UpdateWatch(To_String(MainWindow.Current_Directory));
             Execute_Modules
