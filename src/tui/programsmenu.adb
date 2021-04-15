@@ -149,6 +149,10 @@ package body ProgramsMenu is
             Result := Driver(ProgramsMenu, M_First_Item);
          when Key_End =>
             Result := Driver(ProgramsMenu, M_Last_Item);
+         when KEY_NPAGE =>
+            Result := Driver(ProgramsMenu, M_ScrollUp_Page);
+         when KEY_PPAGE =>
+            Result := Driver(ProgramsMenu, M_ScrollDown_Page);
          when others =>
             null;
       end case;
