@@ -108,8 +108,8 @@ package body ProgramsMenu is
       return ApplicationsList(DesktopFile);
    end GetProgramName;
 
-   -- ProgramsWindow: Window;
-   -- ProgramsMenu: Menu;
+   ProgramsWindow: Window;
+   ProgramsMenu: Menu;
 
    procedure ShowProgramsMenu is
       Menu_Items: constant Item_Array_Access :=
@@ -121,12 +121,40 @@ package body ProgramsMenu is
          Index := Index + 1;
       end loop;
       Menu_Items.all(Index) := New_Item("Close");
-      Menu_Items.all(Index) := Null_Item;
+      Menu_Items.all(Index + 1) := Null_Item;
+      ProgramsMenu := New_Menu(Menu_Items);
+      Set_Format(ProgramsMenu, 15, 1);
+      Set_Mark(ProgramsMenu, "");
+      ProgramsWindow :=
+        Create(17, 27, Lines / 3, Columns / 3);
+      Set_Window(ProgramsMenu, ProgramsWindow);
+      Set_Sub_Window
+        (ProgramsMenu,
+         Derived_Window(ProgramsWindow, 15, 25, 1, 1));
+      Box(ProgramsWindow, Default_Character, Default_Character);
+      Post(ProgramsMenu);
+      Refresh;
+      Refresh(ProgramsWindow);
    end ShowProgramsMenu;
 
    function Programs_Keys(Key: Key_Code) return UI_Locations is
-      pragma Unreferenced(Key);
+      Result: Menus.Driver_Result := Unknown_Request;
    begin
+      case Key is
+         when KEY_UP =>
+            Result := Driver(ProgramsMenu, M_Up_Item);
+         when KEY_DOWN =>
+            Result := Driver(ProgramsMenu, M_Down_Item);
+         when Key_Home =>
+            Result := Driver(ProgramsMenu, M_First_Item);
+         when Key_End =>
+            Result := Driver(ProgramsMenu, M_Last_Item);
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(ProgramsWindow);
+      end if;
       return PROGRAMS_MENU;
    end Programs_Keys;
 
