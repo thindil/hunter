@@ -47,20 +47,24 @@ package body Preferences is
       end Load_Boolean;
    begin
       Open
-        (Ada.Environment_Variables.Value("HOME") &
-         "/.config/hunter/hunter.xml",
-         Data_File);
-      Parse(Reader, Data_File); --## rule line off IMPROPER_INITIALIZATION
-      Close(Data_File);
+        (Filename =>
+           Ada.Environment_Variables.Value(Name => "HOME") &
+           "/.config/hunter/hunter.xml",
+         Input => Data_File);
+      Parse
+        (Parser => Reader,
+         Input => Data_File); --## rule line off IMPROPER_INITIALIZATION
+      Close(Input => Data_File);
       Saved_Settings_Data :=
-        Get_Tree(Reader); --## rule line off IMPROPER_INITIALIZATION
-      Nodes_List := Child_Nodes(First_Child(Saved_Settings_Data));
+        Get_Tree(Read => Reader); --## rule line off IMPROPER_INITIALIZATION
+      Nodes_List := Child_Nodes(N => First_Child(N => Saved_Settings_Data));
       Load_Settings_Loop :
-      for I in 0 .. Length(Nodes_List) - 1 loop
-         Data_Node := Item(Nodes_List, I);
-         Data_Node_Name := To_Unbounded_String(Node_Name(Data_Node));
+      for I in 0 .. Length(List => Nodes_List) - 1 loop
+         Data_Node := Item(List => Nodes_List, Index => I);
+         Data_Node_Name :=
+           To_Unbounded_String(Source => Node_Name(N => Data_Node));
          -- The program settings
-         if Data_Node_Name = To_Unbounded_String("setting") then
+         if Data_Node_Name = To_Unbounded_String(Source => "setting") then
             if Get_Attribute(Data_Node, "name") = "ShowHidden" then
                Settings.Show_Hidden :=
                  Load_Boolean(Get_Attribute(Data_Node, "value"));
@@ -91,7 +95,8 @@ package body Preferences is
                  Load_Boolean(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ColorTheme" then
                Settings.Color_Theme :=
-                 To_Unbounded_String(Get_Attribute(Data_Node, "value"));
+                 To_Unbounded_String
+                   (Source => Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "DeleteFiles" then
                Settings.Delete_Files :=
                  Load_Boolean(Get_Attribute(Data_Node, "value"));
@@ -112,7 +117,8 @@ package body Preferences is
                  Natural'Value(Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "UITheme" then
                Settings.Ui_Theme :=
-                 To_Unbounded_String(Get_Attribute(Data_Node, "value"));
+                 To_Unbounded_String
+                   (Source => Get_Attribute(Data_Node, "value"));
             elsif Get_Attribute(Data_Node, "name") = "ToolbarsSize" then
                Settings.Toolbars_Size :=
                  Positive'Value(Get_Attribute(Data_Node, "value"));
@@ -121,28 +127,32 @@ package body Preferences is
                  Load_Boolean(Get_Attribute(Data_Node, "value"));
             end if;
          -- The keyboard shortcuts
-         elsif Data_Node_Name = To_Unbounded_String("accelerator") then
+         elsif Data_Node_Name =
+           To_Unbounded_String(Source => "accelerator") then
             Accelerators(Positive'Value(Get_Attribute(Data_Node, "index"))) :=
-              To_Unbounded_String(Get_Attribute(Data_Node, "value"));
+              To_Unbounded_String(Source => Get_Attribute(Data_Node, "value"));
          -- The user defined commands
-         elsif Data_Node_Name = To_Unbounded_String("command") then
+         elsif Data_Node_Name = To_Unbounded_String(Source => "command") then
             if Get_Attribute(Data_Node, "needoutput") = "Yes" then
                UserCommandsList.Include
                  (Get_Attribute(Data_Node, "menuentry"),
                   (NeedOutput => True,
                    Command =>
-                     To_Unbounded_String(Node_Value(First_Child(Data_Node)))));
+                     To_Unbounded_String
+                       (Source => Node_Value(First_Child(Data_Node)))));
             else
                UserCommandsList.Include
                  (Get_Attribute(Data_Node, "menuentry"),
                   (NeedOutput => False,
                    Command =>
-                     To_Unbounded_String(Node_Value(First_Child(Data_Node)))));
+                     To_Unbounded_String
+                       (Source => Node_Value(First_Child(Data_Node)))));
             end if;
          -- The program modules
-         elsif Data_Node_Name = To_Unbounded_String("module") then
+         elsif Data_Node_Name = To_Unbounded_String(Source => "module") then
             Enabled_Modules.Append
-              (To_Unbounded_String(Get_Attribute(Data_Node, "path")));
+              (To_Unbounded_String
+                 (Source => Get_Attribute(Data_Node, "path")));
          end if;
       end loop Load_Settings_Loop;
       if FindExecutable("highlight") = "" then
