@@ -51,12 +51,14 @@ package body Preferences is
            Ada.Environment_Variables.Value(Name => "HOME") &
            "/.config/hunter/hunter.xml",
          Input => Data_File);
+      --## rule off IMPROPER_INITIALIZATION
       Parse
         (Parser => Reader,
-         Input => Data_File); --## rule line off IMPROPER_INITIALIZATION
+         Input => Data_File);
       Close(Input => Data_File);
       Saved_Settings_Data :=
-        Get_Tree(Read => Reader); --## rule line off IMPROPER_INITIALIZATION
+        Get_Tree(Read => Reader);
+      --## rule on IMPROPER_INITIALIZATION
       Nodes_List := Child_Nodes(N => First_Child(N => Saved_Settings_Data));
       Load_Settings_Loop :
       for I in 0 .. Length(List => Nodes_List) - 1 loop
