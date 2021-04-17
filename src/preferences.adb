@@ -52,12 +52,9 @@ package body Preferences is
            "/.config/hunter/hunter.xml",
          Input => Data_File);
       --## rule off IMPROPER_INITIALIZATION
-      Parse
-        (Parser => Reader,
-         Input => Data_File);
+      Parse(Parser => Reader, Input => Data_File);
       Close(Input => Data_File);
-      Saved_Settings_Data :=
-        Get_Tree(Read => Reader);
+      Saved_Settings_Data := Get_Tree(Read => Reader);
       --## rule on IMPROPER_INITIALIZATION
       Nodes_List := Child_Nodes(N => First_Child(N => Saved_Settings_Data));
       Load_Settings_Loop :
@@ -67,22 +64,34 @@ package body Preferences is
            To_Unbounded_String(Source => Node_Name(N => Data_Node));
          -- The program settings
          if Data_Node_Name = To_Unbounded_String(Source => "setting") then
-            if Get_Attribute(Data_Node, "name") = "ShowHidden" then
+            if Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ShowHidden" then
                Settings.Show_Hidden :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "ShowLastModified" then
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ShowLastModified" then
                Settings.Show_Last_Modified :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "ScaleImages" then
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ScaleImages" then
                Settings.Scale_Images :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") =
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
               "AutoCloseMessagesTime" then
                Settings.Auto_Close_Messages_Time :=
-                 Natural'Value(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "WindowWidth" then
+                 Natural'Value
+                   (Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "WindowWidth" then
                Settings.Window_Width :=
-                 Positive'Value(Get_Attribute(Data_Node, "value"));
+                 Positive'Value
+                   (Get_Attribute(Elem => Data_Node, Name => "value"));
             elsif Get_Attribute(Data_Node, "name") = "WindowHeight" then
                Settings.Window_Height :=
                  Positive'Value(Get_Attribute(Data_Node, "value"));
