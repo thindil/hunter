@@ -153,6 +153,12 @@ package body ProgramsMenu is
             Result := Driver(ProgramsMenu, M_ScrollUp_Page);
          when KEY_PPAGE =>
             Result := Driver(ProgramsMenu, M_ScrollDown_Page);
+         when 10 =>
+            if Name(Current(ProgramsMenu)) = "Close" then
+               UILocation := DIRECTORY_VIEW;
+               Update_Directory_List;
+               return DIRECTORY_VIEW;
+            end if;
          when others =>
             null;
       end case;
