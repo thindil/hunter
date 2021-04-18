@@ -115,7 +115,9 @@ package body ProgramsMenu is
       Menu_Items: constant Item_Array_Access :=
         new Item_Array(1 .. Natural(ApplicationsList.Length) + 2);
       Index: Positive := 1;
+      Visibility: Cursor_Visibility := Invisible;
    begin
+      Set_Cursor_Visibility(Visibility);
       for Application of ApplicationsList loop
          Menu_Items.all(Index) := New_Item(Application);
          Index := Index + 1;
