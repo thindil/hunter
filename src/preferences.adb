@@ -92,22 +92,35 @@ package body Preferences is
                Settings.Window_Width :=
                  Positive'Value
                    (Get_Attribute(Elem => Data_Node, Name => "value"));
-            elsif Get_Attribute(Data_Node, "name") = "WindowHeight" then
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "WindowHeight" then
                Settings.Window_Height :=
-                 Positive'Value(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "ShowPreview" then
+                 Positive'Value
+                   (Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ShowPreview" then
                Settings.Show_Preview :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "StayInOld" then
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "StayInOld" then
                Settings.Stay_In_Old :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "ColorText" then
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ColorText" then
                Settings.Color_Text :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "ColorTheme" then
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ColorTheme" then
                Settings.Color_Theme :=
                  To_Unbounded_String
-                   (Source => Get_Attribute(Data_Node, "value"));
+                   (Source =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
             elsif Get_Attribute(Data_Node, "name") = "DeleteFiles" then
                Settings.Delete_Files :=
                  Load_Boolean(Get_Attribute(Data_Node, "value"));
