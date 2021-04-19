@@ -121,18 +121,30 @@ package body Preferences is
                  To_Unbounded_String
                    (Source =>
                       Get_Attribute(Elem => Data_Node, Name => "value"));
-            elsif Get_Attribute(Data_Node, "name") = "DeleteFiles" then
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "DeleteFiles" then
                Settings.Delete_Files :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "ClearTrashOnExit" then
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ClearTrashOnExit" then
                Settings.Clear_Trash_On_Exit :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "ShowFinishedInfo" then
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ShowFinishedInfo" then
                Settings.Show_Finished_Info :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "OverwriteOnExist" then
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "OverwriteOnExist" then
                Settings.Overwrite_On_Exist :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
             elsif Get_Attribute(Data_Node, "name") = "ToolbarsOnTop" then
                Settings.Toolbars_On_Top :=
                  Load_Boolean(Get_Attribute(Data_Node, "value"));
