@@ -19,7 +19,11 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Bookmarks; use Bookmarks;
+with Messages; use Messages;
+with Utils; use Utils;
+with Utils.UI; use Utils.UI;
 
 package body ProgramsMenu is
 
@@ -127,12 +131,10 @@ package body ProgramsMenu is
       ProgramsMenu := New_Menu(Menu_Items);
       Set_Format(ProgramsMenu, 15, 1);
       Set_Mark(ProgramsMenu, "");
-      ProgramsWindow :=
-        Create(17, 27, Lines / 3, Columns / 3);
+      ProgramsWindow := Create(17, 27, Lines / 3, Columns / 3);
       Set_Window(ProgramsMenu, ProgramsWindow);
       Set_Sub_Window
-        (ProgramsMenu,
-         Derived_Window(ProgramsWindow, 15, 25, 1, 1));
+        (ProgramsMenu, Derived_Window(ProgramsWindow, 15, 25, 1, 1));
       Box(ProgramsWindow, Default_Character, Default_Character);
       Post(ProgramsMenu);
       Refresh;
@@ -156,11 +158,35 @@ package body ProgramsMenu is
          when KEY_PPAGE =>
             Result := Driver(ProgramsMenu, M_ScrollDown_Page);
          when 10 =>
-            if Name(Current(ProgramsMenu)) = "Close" then
-               UILocation := DIRECTORY_VIEW;
-               Update_Directory_List;
-               return DIRECTORY_VIEW;
+            if Name(Current(ProgramsMenu)) /= "Close" then
+               declare
+                  Pid: Process_Id;
+                  ExecutableName: constant String :=
+                    FindExecutable("xdg-mime");
+                  ApplicationName: constant Unbounded_String :=
+                    To_Unbounded_String(Name(Current(ProgramsMenu)));
+               begin
+                  Set_New_Application_Loop :
+                  for I in ApplicationsList.Iterate loop
+                     if ApplicationsList(I) = ApplicationName then
+                        Pid :=
+                          Non_Blocking_Spawn
+                            (ExecutableName,
+                             Argument_String_To_List
+                               ("default " & Bookmarks_Container.Key(I) & " " &
+                                GetMimeType(To_String(Current_Selected))).all);
+                        if Pid = GNAT.OS_Lib.Invalid_Pid then
+                           ShowMessage
+                             ("Could not set new associated program.");
+                        end if;
+                        exit Set_New_Application_Loop;
+                     end if;
+                  end loop Set_New_Application_Loop;
+               end;
             end if;
+            UILocation := DIRECTORY_VIEW;
+            Update_Directory_List;
+            return DIRECTORY_VIEW;
          when others =>
             null;
       end case;
