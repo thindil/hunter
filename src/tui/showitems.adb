@@ -252,7 +252,7 @@ package body ShowItems is
             Permissions_Fields.all(11) := New_Field(1, 30, 10, 4, 0, 0);
             Permissions_Fields.all(12) := Null_Field;
             SetPermissionsButtons
-               ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2), 4);
+              ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2), 4);
             SetPermissionsButtons
               ("group", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1), 7);
             SetPermissionsButtons
@@ -789,7 +789,9 @@ package body ShowItems is
 
    procedure Preview_Keys(Key: Key_Code) is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      FieldIndex: constant Natural :=
+        (if FormWindow /= Null_Window then Get_Index(Current(DialogForm))
+         else 0);
       SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       procedure Set_Permission(Group, Permission: String) is
          PermissionsString: Unbounded_String;
@@ -806,6 +808,9 @@ package body ShowItems is
             To_String(PermissionsString));
       end Set_Permission;
    begin
+      if FieldIndex = 0 then
+         return;
+      end if;
       case Key is
          when KEY_UP =>
             Result := Driver(DialogForm, F_Previous_Field);
