@@ -22,6 +22,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Bookmarks; use Bookmarks;
 with Messages; use Messages;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
@@ -186,6 +187,7 @@ package body ProgramsMenu is
             end if;
             UILocation := DIRECTORY_VIEW;
             Update_Directory_List;
+            ShowInfo;
             return DIRECTORY_VIEW;
          when others =>
             null;
