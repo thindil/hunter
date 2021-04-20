@@ -166,12 +166,12 @@ begin
             when PATH_BUTTONS =>
                UILocation := MAIN_MENU;
             when MAIN_MENU =>
-               if New_Action /= COPY then
+               if New_Action in COPY | MOVE | CREATELINK then
+                  UILocation := DESTINATION_VIEW;
+               else
                   UILocation := PREVIEW;
                   Visibility := Normal;
                   Set_Cursor_Visibility(Visibility);
-               else
-                  UILocation := DESTINATION_VIEW;
                end if;
             when DESTINATION_VIEW =>
                UILocation := DESTINATION_PATH;
