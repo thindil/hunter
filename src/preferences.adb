@@ -145,22 +145,34 @@ package body Preferences is
                  Load_Boolean
                    (Value =>
                       Get_Attribute(Elem => Data_Node, Name => "value"));
-            elsif Get_Attribute(Data_Node, "name") = "ToolbarsOnTop" then
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ToolbarsOnTop" then
                Settings.Toolbars_On_Top :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "AutoRefreshInterval" then
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "AutoRefreshInterval" then
                Settings.Auto_Refresh_Interval :=
-                 Natural'Value(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "UITheme" then
+                 Natural'Value
+                   (Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "UITheme" then
                Settings.Ui_Theme :=
                  To_Unbounded_String
-                   (Source => Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "ToolbarsSize" then
+                   (Source =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "ToolbarsSize" then
                Settings.Toolbars_Size :=
-                 Positive'Value(Get_Attribute(Data_Node, "value"));
-            elsif Get_Attribute(Data_Node, "name") = "MonospaceFont" then
+                 Positive'Value
+                   (Get_Attribute(Elem => Data_Node, Name => "value"));
+            elsif Get_Attribute(Elem => Data_Node, Name => "name") =
+              "MonospaceFont" then
                Settings.Monospace_Font :=
-                 Load_Boolean(Get_Attribute(Data_Node, "value"));
+                 Load_Boolean
+                   (Value =>
+                      Get_Attribute(Elem => Data_Node, Name => "value"));
             end if;
          -- The keyboard shortcuts
          elsif Data_Node_Name =
