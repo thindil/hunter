@@ -58,7 +58,9 @@ package body ShowItems is
       SelectedItem: constant String := To_String(Current_Selected);
       DirectorySize: Natural := 0;
       MimeType: constant String := GetMimeType(SelectedItem);
+      Visibility: Cursor_Visibility := Normal;
    begin
+      Set_Cursor_Visibility(Visibility);
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
       end if;
