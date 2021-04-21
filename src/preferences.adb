@@ -177,30 +177,40 @@ package body Preferences is
          -- The keyboard shortcuts
          elsif Data_Node_Name =
            To_Unbounded_String(Source => "accelerator") then
-            Accelerators(Positive'Value(Get_Attribute(Data_Node, "index"))) :=
-              To_Unbounded_String(Source => Get_Attribute(Data_Node, "value"));
+            Accelerators
+              (Positive'Value
+                 (Get_Attribute(Elem => Data_Node, Name => "index"))) :=
+              To_Unbounded_String
+                (Source => Get_Attribute(Elem => Data_Node, Name => "value"));
          -- The user defined commands
          elsif Data_Node_Name = To_Unbounded_String(Source => "command") then
-            if Get_Attribute(Data_Node, "needoutput") = "Yes" then
+            if Get_Attribute(Elem => Data_Node, Name => "needoutput") =
+              "Yes" then
                UserCommandsList.Include
-                 (Get_Attribute(Data_Node, "menuentry"),
-                  (NeedOutput => True,
-                   Command =>
-                     To_Unbounded_String
-                       (Source => Node_Value(First_Child(Data_Node)))));
+                 (Key => Get_Attribute(Elem => Data_Node, Name => "menuentry"),
+                  New_Item =>
+                    (NeedOutput => True,
+                     Command =>
+                       To_Unbounded_String
+                         (Source =>
+                            Node_Value(N => First_Child(N => Data_Node)))));
             else
                UserCommandsList.Include
-                 (Get_Attribute(Data_Node, "menuentry"),
-                  (NeedOutput => False,
-                   Command =>
-                     To_Unbounded_String
-                       (Source => Node_Value(First_Child(Data_Node)))));
+                 (Key => Get_Attribute(Elem => Data_Node, Name => "menuentry"),
+                  New_Item =>
+                    (NeedOutput => False,
+                     Command =>
+                       To_Unbounded_String
+                         (Source =>
+                            Node_Value(N => First_Child(N => Data_Node)))));
             end if;
          -- The program modules
          elsif Data_Node_Name = To_Unbounded_String(Source => "module") then
             Enabled_Modules.Append
-              (To_Unbounded_String
-                 (Source => Get_Attribute(Data_Node, "path")));
+              (New_Item =>
+                 To_Unbounded_String
+                   (Source =>
+                      Get_Attribute(Elem => Data_Node, Name => "path")));
          end if;
       end loop Load_Settings_Loop;
       if FindExecutable("highlight") = "" then
