@@ -170,8 +170,6 @@ begin
                   UILocation := DESTINATION_VIEW;
                else
                   UILocation := PREVIEW;
-                  Visibility := Normal;
-                  Set_Cursor_Visibility(Visibility);
                end if;
             when DESTINATION_VIEW =>
                UILocation := DESTINATION_PATH;
