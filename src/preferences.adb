@@ -34,7 +34,7 @@ package body Preferences is
    procedure Load_Settings is
       Reader: Tree_Reader; --## rule line off IMPROPER_INITIALIZATION
       Data_File: File_Input;
-      Saved_Settings_Data: Document;
+      Save_Settings_Data: Document;
       Nodes_List: Node_List;
       Data_Node_Name: Unbounded_String := Null_Unbounded_String;
       Data_Node: Node;
@@ -54,9 +54,9 @@ package body Preferences is
       --## rule off IMPROPER_INITIALIZATION
       Parse(Parser => Reader, Input => Data_File);
       Close(Input => Data_File);
-      Saved_Settings_Data := Get_Tree(Read => Reader);
+      Save_Settings_Data := Get_Tree(Read => Reader);
       --## rule on IMPROPER_INITIALIZATION
-      Nodes_List := Child_Nodes(N => First_Child(N => Saved_Settings_Data));
+      Nodes_List := Child_Nodes(N => First_Child(N => Save_Settings_Data));
       Load_Settings_Loop :
       for I in 0 .. Length(List => Nodes_List) - 1 loop
          Data_Node := Item(List => Nodes_List, Index => I);
@@ -213,7 +213,7 @@ package body Preferences is
                       Get_Attribute(Elem => Data_Node, Name => "path")));
          end if;
       end loop Load_Settings_Loop;
-      if FindExecutable("highlight") = "" then
+      if FindExecutable(Name => "highlight") = "" then
          Settings.Color_Text := False;
       end if;
    exception
@@ -222,98 +222,100 @@ package body Preferences is
    end Load_Settings;
 
    procedure Save_Preferences is
-      ConfigFile: File_Type;
-      Configuration: DOM_Implementation;
-      SettingNode, MainNode: DOM.Core.Element;
-      Settings_Data: Document;
-      UserCommandNode: Text;
-      procedure SaveBoolean(Value: Boolean; Name: String) is
+      Config_File: File_Type;
+      Configuration: DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
+      Setting_Node, Main_Node: DOM.Core.Element;
+      Save_Settings_Data: Document;
+      User_Command_Node: Text;
+      procedure Save_Boolean(Value: Boolean; Name: String) is
       begin
-         SettingNode := Create_Element(Settings_Data, "setting");
-         SettingNode := Append_Child(MainNode, SettingNode);
-         Set_Attribute(SettingNode, "name", Name);
+         Setting_Node := Create_Element(Save_Settings_Data, "setting");
+         Setting_Node := Append_Child(Main_Node, Setting_Node);
+         Set_Attribute(Setting_Node, "name", Name);
          if Value then
-            Set_Attribute(SettingNode, "value", "Yes");
+            Set_Attribute(Setting_Node, "value", "Yes");
          else
-            Set_Attribute(SettingNode, "value", "No");
+            Set_Attribute(Setting_Node, "value", "No");
          end if;
-      end SaveBoolean;
+      end Save_Boolean;
       procedure SaveNumber(Value: Natural; Name: String) is
          RawValue: constant String :=
            Trim(Natural'Image(Value), Ada.Strings.Left);
       begin
-         SettingNode := Create_Element(Settings_Data, "setting");
-         SettingNode := Append_Child(MainNode, SettingNode);
-         Set_Attribute(SettingNode, "name", Name);
-         Set_Attribute(SettingNode, "value", RawValue);
+         Setting_Node := Create_Element(Save_Settings_Data, "setting");
+         Setting_Node := Append_Child(Main_Node, Setting_Node);
+         Set_Attribute(Setting_Node, "name", Name);
+         Set_Attribute(Setting_Node, "value", RawValue);
       end SaveNumber;
       procedure SaveString(Value: Unbounded_String; Name: String) is
       begin
-         SettingNode := Create_Element(Settings_Data, "setting");
-         SettingNode := Append_Child(MainNode, SettingNode);
-         Set_Attribute(SettingNode, "name", Name);
-         Set_Attribute(SettingNode, "value", To_String(Value));
+         Setting_Node := Create_Element(Save_Settings_Data, "setting");
+         Setting_Node := Append_Child(Main_Node, Setting_Node);
+         Set_Attribute(Setting_Node, "name", Name);
+         Set_Attribute(Setting_Node, "value", To_String(Value));
       end SaveString;
    begin
-      Settings_Data := Create_Document(Configuration);
-      MainNode := Create_Element(Settings_Data, "hunter");
-      MainNode := Append_Child(Settings_Data, MainNode);
-      SaveBoolean(Settings.Show_Hidden, "ShowHidden");
-      SaveBoolean(Settings.Show_Last_Modified, "ShowLastModified");
-      SaveBoolean(Settings.Scale_Images, "ScaleImages");
+      Save_Settings_Data :=
+        Create_Document
+          (Configuration); --## rule line off IMPROPER_INITIALIZATION
+      Main_Node := Create_Element(Save_Settings_Data, "hunter");
+      Main_Node := Append_Child(Save_Settings_Data, Main_Node);
+      Save_Boolean(Settings.Show_Hidden, "ShowHidden");
+      Save_Boolean(Settings.Show_Last_Modified, "ShowLastModified");
+      Save_Boolean(Settings.Scale_Images, "ScaleImages");
       SaveNumber(Settings.Auto_Close_Messages_Time, "AutoCloseMessagesTime");
       SaveNumber(Settings.Window_Width, "WindowWidth");
       SaveNumber(Settings.Window_Height, "WindowHeight");
-      SaveBoolean(Settings.Show_Preview, "ShowPreview");
-      SaveBoolean(Settings.Stay_In_Old, "StayInOld");
-      SaveBoolean(Settings.Color_Text, "ColorText");
+      Save_Boolean(Settings.Show_Preview, "ShowPreview");
+      Save_Boolean(Settings.Stay_In_Old, "StayInOld");
+      Save_Boolean(Settings.Color_Text, "ColorText");
       SaveString(Settings.Color_Theme, "ColorTheme");
-      SaveBoolean(Settings.Delete_Files, "DeleteFiles");
-      SaveBoolean(Settings.Clear_Trash_On_Exit, "ClearTrashOnExit");
-      SaveBoolean(Settings.Show_Finished_Info, "ShowFinishedInfo");
-      SaveBoolean(Settings.Overwrite_On_Exist, "OverwriteOnExist");
-      SaveBoolean(Settings.Toolbars_On_Top, "ToolbarsOnTop");
+      Save_Boolean(Settings.Delete_Files, "DeleteFiles");
+      Save_Boolean(Settings.Clear_Trash_On_Exit, "ClearTrashOnExit");
+      Save_Boolean(Settings.Show_Finished_Info, "ShowFinishedInfo");
+      Save_Boolean(Settings.Overwrite_On_Exist, "OverwriteOnExist");
+      Save_Boolean(Settings.Toolbars_On_Top, "ToolbarsOnTop");
       SaveNumber(Settings.Auto_Refresh_Interval, "AutoRefreshInterval");
       SaveString(Settings.Ui_Theme, "UITheme");
       SaveNumber(Settings.Toolbars_Size, "ToolbarsSize");
-      SaveBoolean(Settings.Monospace_Font, "MonospaceFont");
+      Save_Boolean(Settings.Monospace_Font, "MonospaceFont");
       Save_Accelerators_Loop :
       for I in Accelerators'Range loop
-         SettingNode := Create_Element(Settings_Data, "accelerator");
-         SettingNode := Append_Child(MainNode, SettingNode);
-         Set_Attribute(SettingNode, "index", Trim(Positive'Image(I), Left));
-         Set_Attribute(SettingNode, "value", To_String(Accelerators(I)));
+         Setting_Node := Create_Element(Save_Settings_Data, "accelerator");
+         Setting_Node := Append_Child(Main_Node, Setting_Node);
+         Set_Attribute(Setting_Node, "index", Trim(Positive'Image(I), Left));
+         Set_Attribute(Setting_Node, "value", To_String(Accelerators(I)));
       end loop Save_Accelerators_Loop;
       Save_User_Commands_Loop :
       for I in UserCommandsList.Iterate loop
-         SettingNode := Create_Element(Settings_Data, "command");
-         SettingNode := Append_Child(MainNode, SettingNode);
-         Set_Attribute(SettingNode, "menuentry", Commands_Container.Key(I));
+         Setting_Node := Create_Element(Save_Settings_Data, "command");
+         Setting_Node := Append_Child(Main_Node, Setting_Node);
+         Set_Attribute(Setting_Node, "menuentry", Commands_Container.Key(I));
          if UserCommandsList(I).NeedOutput then
-            Set_Attribute(SettingNode, "needoutput", "Yes");
+            Set_Attribute(Setting_Node, "needoutput", "Yes");
          else
-            Set_Attribute(SettingNode, "needoutput", "No");
+            Set_Attribute(Setting_Node, "needoutput", "No");
          end if;
-         UserCommandNode :=
+         User_Command_Node :=
            Create_Text_Node
-             (Settings_Data, To_String(UserCommandsList(I).Command));
-         UserCommandNode := Append_Child(SettingNode, UserCommandNode);
+             (Save_Settings_Data, To_String(UserCommandsList(I).Command));
+         User_Command_Node := Append_Child(Setting_Node, User_Command_Node);
       end loop Save_User_Commands_Loop;
       Save_Enabled_Modules_Loop :
       for ModuleName of Enabled_Modules loop
-         SettingNode := Create_Element(Settings_Data, "module");
-         SettingNode := Append_Child(MainNode, SettingNode);
-         Set_Attribute(SettingNode, "path", To_String(ModuleName));
+         Setting_Node := Create_Element(Save_Settings_Data, "module");
+         Setting_Node := Append_Child(Main_Node, Setting_Node);
+         Set_Attribute(Setting_Node, "path", To_String(ModuleName));
       end loop Save_Enabled_Modules_Loop;
       Create_Path(Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
       Create
-        (ConfigFile, Out_File,
+        (Config_File, Out_File,
          Ada.Environment_Variables.Value("HOME") &
          "/.config/hunter/hunter.xml");
       Write
-        (Stream => Stream(ConfigFile), N => Settings_Data,
+        (Stream => Stream(Config_File), N => Save_Settings_Data,
          Pretty_Print => True);
-      Close(ConfigFile);
+      Close(Config_File);
    end Save_Preferences;
 
 end Preferences;
