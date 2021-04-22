@@ -420,18 +420,22 @@ package body ShowItems is
                      LoadFile;
                      return;
                   end if;
-                  Spawn
-                    (ExecutableName,
-                     Argument_String_To_List
-                       ("--out-format=pango --force --quiet --output=" &
-                        Value("HOME") &
-                        "/.cache/hunter/highlight.tmp --base16 --style=" &
-                        To_String(Settings.Color_Theme) & " " &
-                        To_String(Current_Selected)).all,
-                     Success);
-                  if not Success then
-                     LoadFile;
-                     return;
+                  if not Ada.Directories.Exists
+                      (Value("HOME") & "/.cache/hunter/highlight.tmp") or
+                    UILocation /= PREVIEW then
+                     Spawn
+                       (ExecutableName,
+                        Argument_String_To_List
+                          ("--out-format=pango --force --quiet --output=" &
+                           Value("HOME") &
+                           "/.cache/hunter/highlight.tmp --base16 --style=" &
+                           To_String(Settings.Color_Theme) & " " &
+                           To_String(Current_Selected)).all,
+                        Success);
+                     if not Success then
+                        LoadFile;
+                        return;
+                     end if;
                   end if;
                   Open
                     (File, In_File,
@@ -558,7 +562,10 @@ package body ShowItems is
                   Refresh
                     (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2),
                      Columns - 3);
-                  Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
+                  if UILocation /= PREVIEW then
+                     Delete_File
+                       (Value("HOME") & "/.cache/hunter/highlight.tmp");
+                  end if;
                end;
             else
                ShowInfo;
