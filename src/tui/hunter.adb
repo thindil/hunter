@@ -177,6 +177,14 @@ begin
                UILocation := DIRECTORY_VIEW;
                Visibility := Invisible;
                Set_Cursor_Visibility(Visibility);
+               begin
+                  Delete_File
+                    ((Ada.Environment_Variables.Value("HOME") &
+                      "/.cache/hunter/highlight.tmp"));
+               exception
+                  when Ada.Directories.Name_Error =>
+                     null;
+               end;
             when DESTINATION_PATH =>
                UILocation := DIRECTORY_VIEW;
             when others =>
