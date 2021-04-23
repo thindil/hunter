@@ -52,8 +52,11 @@ package ShowItems is
    -- FUNCTION
    -- Show preview of the currently selected file or directory. If preview is
    -- not available, show information about the selected item.
+   -- PARAMETERS
+   -- Reset_Preview - If True, reset the first line in preview text file. Can
+   --                 be empty. Default value is True
    -- SOURCE
-   procedure ShowPreview;
+   procedure ShowPreview(Reset_Preview: Boolean := True);
    -- ****
 
    -- ****f* ShowItemsTUI/ShowItemsTUI.Show_Selected
