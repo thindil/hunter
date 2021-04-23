@@ -304,10 +304,20 @@ package body ShowItems is
       Refresh(FormWindow);
    end ShowInfo;
 
-   procedure ShowPreview is
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.Current_Line
+   -- FUNCTION
+   -- The starting line for showing the selected file preview
+   -- SOURCE
+   Start_Line: Positive := 1;
+   -- ****
+
+   procedure ShowPreview(Reset_Preview: Boolean := True) is
       Line: Line_Position := 1;
       Visibility: Cursor_Visibility := Normal;
    begin
+      if Reset_Preview then
+         Start_Line := 1;
+      end if;
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
       end if;
@@ -357,6 +367,7 @@ package body ShowItems is
                   StartIndex, EndIndex, StartColor: Natural;
                   Colors: array(1 .. 16) of String(1 .. 6) :=
                     (others => "      ");
+                  Current_Line: Natural := 0;
                   procedure LoadFile is
                      FileLine: String(1 .. LineLength);
                      Amount: Natural;
@@ -365,6 +376,10 @@ package body ShowItems is
                      Load_Text_File_View_Loop :
                      while not End_Of_File(File) loop
                         Get_Line(File, FileLine, Amount);
+                        Current_Line := Current_Line + 1;
+                        if Current_Line < Start_Line then
+                           goto End_Of_Load_Text_File_View_Loop;
+                        end if;
                         Add
                           (PreviewPad,
                            FileLine(FileLine'First .. Amount) & LF);
@@ -372,7 +387,9 @@ package body ShowItems is
                         LinesAmount := LinesAmount + 1;
                         exit Load_Text_File_View_Loop when LinesAmount =
                           Lines - 3;
+                        <<End_Of_Load_Text_File_View_Loop>>
                      end loop Load_Text_File_View_Loop;
+                     Start_Line := Current_Line;
                      Close(File);
                      Refresh(PreviewWindow);
                      Refresh
@@ -443,6 +460,10 @@ package body ShowItems is
                   Read_File_Loop :
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
+                     Current_Line := Current_Line + 1;
+                     if Current_Line < Start_Line then
+                        goto End_Of_Read_File_Loop;
+                     end if;
                      if FirstLine then
                         FileLine :=
                           Unbounded_Slice
@@ -556,7 +577,9 @@ package body ShowItems is
                      end;
                      LinesAmount := LinesAmount + 1;
                      exit Read_File_Loop when LinesAmount = Lines - 3;
+                     <<End_Of_Read_File_Loop>>
                   end loop Read_File_Loop;
+                  Start_Line := Current_Line;
                   Close(File);
                   Refresh
                     (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2),
@@ -588,7 +611,7 @@ package body ShowItems is
    PathButtons: Window;
    -- ****
 
-   -- ****iv* ShowItems/Buttons_Visible
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.Buttons_Visible
    -- FUNCTION
    -- If True, destination path buttons are visible
    -- SOURCE
