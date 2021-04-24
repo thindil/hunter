@@ -231,22 +231,30 @@ package body Preferences is
       begin
          Setting_Node :=
            Append_Child
-             (Main_Node, Create_Element(Save_Settings_Data, "setting"));
-         Set_Attribute(Setting_Node, "name", Name);
+             (N => Main_Node,
+              New_Child =>
+                Create_Element
+                  (Doc => Save_Settings_Data, Tag_Name => "setting"));
+         Set_Attribute(Elem => Setting_Node, Name => "name", Value => Name);
          if Value then
-            Set_Attribute(Setting_Node, "value", "Yes");
+            Set_Attribute
+              (Elem => Setting_Node, Name => "value", Value => "Yes");
          else
-            Set_Attribute(Setting_Node, "value", "No");
+            Set_Attribute
+              (Elem => Setting_Node, Name => "value", Value => "No");
          end if;
       end Save_Boolean;
       procedure Save_Number(Value: Natural; Name: String) is
          Raw_Value: constant String :=
-           Trim(Natural'Image(Value), Ada.Strings.Left);
+           Trim(Source => Natural'Image(Value), Side => Ada.Strings.Left);
       begin
          Setting_Node :=
            Append_Child
-             (Main_Node, Create_Element(Save_Settings_Data, "setting"));
-         Set_Attribute(Setting_Node, "name", Name);
+             (N => Main_Node,
+              New_Child =>
+                Create_Element
+                  (Doc => Save_Settings_Data, Tag_Name => "setting"));
+         Set_Attribute(Elem => Setting_Node, Name => "name", Value => Name);
          Set_Attribute(Setting_Node, "value", Raw_Value);
       end Save_Number;
       procedure SaveString(Value: Unbounded_String; Name: String) is
