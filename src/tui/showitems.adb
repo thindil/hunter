@@ -389,7 +389,6 @@ package body ShowItems is
                           Lines - 3;
                         <<End_Of_Load_Text_File_View_Loop>>
                      end loop Load_Text_File_View_Loop;
-                     Start_Line := Current_Line;
                      Close(File);
                      Refresh(PreviewWindow);
                      Refresh
@@ -579,7 +578,6 @@ package body ShowItems is
                      exit Read_File_Loop when LinesAmount = Lines - 3;
                      <<End_Of_Read_File_Loop>>
                   end loop Read_File_Loop;
-                  Start_Line := Current_Line;
                   Close(File);
                   Refresh
                     (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2),
@@ -843,6 +841,18 @@ package body ShowItems is
       end Set_Permission;
    begin
       if FieldIndex = 0 then
+         case Key is
+            when KEY_UP =>
+               if Start_Line > 1 then
+                  Start_Line := Start_Line - 1;
+               end if;
+               ShowPreview(False);
+            when KEY_DOWN =>
+               Start_Line := Start_Line + 1;
+               ShowPreview(False);
+            when others =>
+               null;
+         end case;
          return;
       end if;
       case Key is
