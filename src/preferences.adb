@@ -255,23 +255,32 @@ package body Preferences is
                 Create_Element
                   (Doc => Save_Settings_Data, Tag_Name => "setting"));
          Set_Attribute(Elem => Setting_Node, Name => "name", Value => Name);
-         Set_Attribute(Setting_Node, "value", Raw_Value);
+         Set_Attribute
+           (Elem => Setting_Node, Name => "value", Value => Raw_Value);
       end Save_Number;
-      procedure SaveString(Value: Unbounded_String; Name: String) is
+      procedure Save_String(Value: Unbounded_String; Name: String) is
       begin
          Setting_Node :=
            Append_Child
-             (Main_Node, Create_Element(Save_Settings_Data, "setting"));
-         Set_Attribute(Setting_Node, "name", Name);
-         Set_Attribute(Setting_Node, "value", To_String(Value));
-      end SaveString;
+             (N => Main_Node,
+              New_Child =>
+                Create_Element
+                  (Doc => Save_Settings_Data, Tag_Name => "setting"));
+         Set_Attribute(Elem => Setting_Node, Name => "name", Value => Name);
+         Set_Attribute
+           (Elem => Setting_Node, Name => "value",
+            Value => To_String(Source => Value));
+      end Save_String;
    begin
       Save_Settings_Data :=
         Create_Document
-          (Configuration); --## rule line off IMPROPER_INITIALIZATION
+          (Implementation =>
+             Configuration); --## rule line off IMPROPER_INITIALIZATION
       Main_Node :=
         Append_Child
-          (Save_Settings_Data, Create_Element(Save_Settings_Data, "hunter"));
+          (N => Save_Settings_Data,
+           New_Child =>
+             Create_Element(Doc => Save_Settings_Data, Tag_Name => "hunter"));
       Save_Boolean(Settings.Show_Hidden, "ShowHidden");
       Save_Boolean(Settings.Show_Last_Modified, "ShowLastModified");
       Save_Boolean(Settings.Scale_Images, "ScaleImages");
@@ -281,14 +290,14 @@ package body Preferences is
       Save_Boolean(Settings.Show_Preview, "ShowPreview");
       Save_Boolean(Settings.Stay_In_Old, "StayInOld");
       Save_Boolean(Settings.Color_Text, "ColorText");
-      SaveString(Settings.Color_Theme, "ColorTheme");
+      Save_String(Settings.Color_Theme, "ColorTheme");
       Save_Boolean(Settings.Delete_Files, "DeleteFiles");
       Save_Boolean(Settings.Clear_Trash_On_Exit, "ClearTrashOnExit");
       Save_Boolean(Settings.Show_Finished_Info, "ShowFinishedInfo");
       Save_Boolean(Settings.Overwrite_On_Exist, "OverwriteOnExist");
       Save_Boolean(Settings.Toolbars_On_Top, "ToolbarsOnTop");
       Save_Number(Settings.Auto_Refresh_Interval, "AutoRefreshInterval");
-      SaveString(Settings.Ui_Theme, "UITheme");
+      Save_String(Settings.Ui_Theme, "UITheme");
       Save_Number(Settings.Toolbars_Size, "ToolbarsSize");
       Save_Boolean(Settings.Monospace_Font, "MonospaceFont");
       Save_Accelerators_Loop :
