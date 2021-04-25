@@ -850,6 +850,9 @@ package body ShowItems is
             when KEY_DOWN =>
                Start_Line := Start_Line + 1;
                ShowPreview(False);
+            when Key_Home =>
+               Start_Line := 1;
+               ShowPreview(False);
             when others =>
                null;
          end case;
