@@ -853,6 +853,16 @@ package body ShowItems is
             when Key_Home =>
                Start_Line := 1;
                ShowPreview(False);
+            when KEY_NPAGE =>
+               if Start_Line > Positive(Lines - 6) then
+                  Start_Line := Start_Line - Positive(Lines - 6);
+               else
+                  Start_Line := 1;
+               end if;
+               ShowPreview(False);
+            when KEY_PPAGE =>
+               Start_Line := Start_Line + Positive(Lines - 6);
+               ShowPreview(False);
             when others =>
                null;
          end case;
