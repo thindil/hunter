@@ -281,16 +281,19 @@ package body Preferences is
           (N => Save_Settings_Data,
            New_Child =>
              Create_Element(Doc => Save_Settings_Data, Tag_Name => "hunter"));
-      Save_Boolean(Settings.Show_Hidden, "ShowHidden");
-      Save_Boolean(Settings.Show_Last_Modified, "ShowLastModified");
-      Save_Boolean(Settings.Scale_Images, "ScaleImages");
-      Save_Number(Settings.Auto_Close_Messages_Time, "AutoCloseMessagesTime");
-      Save_Number(Settings.Window_Width, "WindowWidth");
-      Save_Number(Settings.Window_Height, "WindowHeight");
-      Save_Boolean(Settings.Show_Preview, "ShowPreview");
-      Save_Boolean(Settings.Stay_In_Old, "StayInOld");
-      Save_Boolean(Settings.Color_Text, "ColorText");
-      Save_String(Settings.Color_Theme, "ColorTheme");
+      Save_Boolean(Value => Settings.Show_Hidden, Name => "ShowHidden");
+      Save_Boolean
+        (Value => Settings.Show_Last_Modified, Name => "ShowLastModified");
+      Save_Boolean(Value => Settings.Scale_Images, Name => "ScaleImages");
+      Save_Number
+        (Value => Settings.Auto_Close_Messages_Time,
+         Name => "AutoCloseMessagesTime");
+      Save_Number(Value => Settings.Window_Width, Name => "WindowWidth");
+      Save_Number(Value => Settings.Window_Height, Name => "WindowHeight");
+      Save_Boolean(Value => Settings.Show_Preview, Name => "ShowPreview");
+      Save_Boolean(Value => Settings.Stay_In_Old, Name => "StayInOld");
+      Save_Boolean(Value => Settings.Color_Text, Name => "ColorText");
+      Save_String(Value => Settings.Color_Theme, Name => "ColorTheme");
       Save_Boolean(Settings.Delete_Files, "DeleteFiles");
       Save_Boolean(Settings.Clear_Trash_On_Exit, "ClearTrashOnExit");
       Save_Boolean(Settings.Show_Finished_Info, "ShowFinishedInfo");
