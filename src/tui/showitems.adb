@@ -469,6 +469,11 @@ package body ShowItems is
                             (FileLine, Index(FileLine, ">") + 1,
                              Length(FileLine));
                         FirstLine := False;
+                        StartIndex := Index(FileLine, "<span");
+                        EndIndex := Index(FileLine, "</span");
+                        if EndIndex > 0 and then (StartIndex = 0 or StartIndex > EndIndex) then
+                           Delete(FileLine, EndIndex, EndIndex + 6);
+                        end if;
                      end if;
                      exit Read_File_Loop when End_Of_File(File);
                      Replace_Element_Loop :
