@@ -62,6 +62,12 @@ procedure Hunter is
       End_Windows;
       Inotify_Close;
       Magic_Close;
+      Delete_File
+        (Ada.Environment_Variables.Value("HOME") &
+         "/.cache/hunter/highlight.tmp");
+   exception
+      when Ada.Directories.Name_Error =>
+         null;
    end ExitFromProgram;
 begin
    -- Create needed directories
