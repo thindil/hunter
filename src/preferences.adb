@@ -294,26 +294,33 @@ package body Preferences is
       Save_Boolean(Value => Settings.Stay_In_Old, Name => "StayInOld");
       Save_Boolean(Value => Settings.Color_Text, Name => "ColorText");
       Save_String(Value => Settings.Color_Theme, Name => "ColorTheme");
-      Save_Boolean(Settings.Delete_Files, "DeleteFiles");
-      Save_Boolean(Settings.Clear_Trash_On_Exit, "ClearTrashOnExit");
-      Save_Boolean(Settings.Show_Finished_Info, "ShowFinishedInfo");
-      Save_Boolean(Settings.Overwrite_On_Exist, "OverwriteOnExist");
-      Save_Boolean(Settings.Toolbars_On_Top, "ToolbarsOnTop");
-      Save_Number(Settings.Auto_Refresh_Interval, "AutoRefreshInterval");
-      Save_String(Settings.Ui_Theme, "UITheme");
-      Save_Number(Settings.Toolbars_Size, "ToolbarsSize");
-      Save_Boolean(Settings.Monospace_Font, "MonospaceFont");
+      Save_Boolean(Value => Settings.Delete_Files, Name => "DeleteFiles");
+      Save_Boolean
+        (Value => Settings.Clear_Trash_On_Exit, Name => "ClearTrashOnExit");
+      Save_Boolean
+        (Value => Settings.Show_Finished_Info, Name => "ShowFinishedInfo");
+      Save_Boolean
+        (Value => Settings.Overwrite_On_Exist, Name => "OverwriteOnExist");
+      Save_Boolean(Value => Settings.Toolbars_On_Top, Name => "ToolbarsOnTop");
+      Save_Number
+        (Value => Settings.Auto_Refresh_Interval,
+         Name => "AutoRefreshInterval");
+      Save_String(Value => Settings.Ui_Theme, Name => "UITheme");
+      Save_Number(Value => Settings.Toolbars_Size, Name => "ToolbarsSize");
+      Save_Boolean(Value => Settings.Monospace_Font, Name => "MonospaceFont");
       Save_Accelerators_Loop :
       for I in Accelerators'Range loop
-         Setting_Node := Create_Element(Save_Settings_Data, "accelerator");
-         Setting_Node := Append_Child(Main_Node, Setting_Node);
+         Setting_Node :=
+           Append_Child
+             (Main_Node, Create_Element(Save_Settings_Data, "accelerator"));
          Set_Attribute(Setting_Node, "index", Trim(Positive'Image(I), Left));
          Set_Attribute(Setting_Node, "value", To_String(Accelerators(I)));
       end loop Save_Accelerators_Loop;
       Save_User_Commands_Loop :
       for I in UserCommandsList.Iterate loop
-         Setting_Node := Create_Element(Save_Settings_Data, "command");
-         Setting_Node := Append_Child(Main_Node, Setting_Node);
+         Setting_Node :=
+           Append_Child
+             (Main_Node, Create_Element(Save_Settings_Data, "command"));
          Set_Attribute(Setting_Node, "menuentry", Commands_Container.Key(I));
          if UserCommandsList(I).NeedOutput then
             Set_Attribute(Setting_Node, "needoutput", "Yes");
@@ -327,8 +334,9 @@ package body Preferences is
       end loop Save_User_Commands_Loop;
       Save_Enabled_Modules_Loop :
       for ModuleName of Enabled_Modules loop
-         Setting_Node := Create_Element(Save_Settings_Data, "module");
-         Setting_Node := Append_Child(Main_Node, Setting_Node);
+         Setting_Node :=
+           Append_Child
+             (Main_Node, Create_Element(Save_Settings_Data, "module"));
          Set_Attribute(Setting_Node, "path", To_String(ModuleName));
       end loop Save_Enabled_Modules_Loop;
       Create_Path(Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
