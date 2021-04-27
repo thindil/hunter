@@ -269,7 +269,9 @@ package body MainWindow is
 
    function Directory_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result;
+      Visibility: Cursor_Visibility := Invisible;
    begin
+      Set_Cursor_Visibility(Visibility);
       if Item_Count(DirectoryList) = 0 then
          return DIRECTORY_VIEW;
       end if;
