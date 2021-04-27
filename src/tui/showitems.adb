@@ -321,6 +321,10 @@ package body ShowItems is
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
       end if;
+      if DialogForm /= Null_Form then
+         Post(DialogForm, False);
+         Delete(DialogForm);
+      end if;
       Clear(PreviewWindow);
       Box(PreviewWindow, Default_Character, Default_Character);
       Refresh(PreviewWindow);
@@ -471,7 +475,9 @@ package body ShowItems is
                         FirstLine := False;
                         StartIndex := Index(FileLine, "<span");
                         EndIndex := Index(FileLine, "</span");
-                        if EndIndex > 0 and then (StartIndex = 0 or StartIndex > EndIndex) then
+                        if EndIndex > 0
+                          and then
+                          (StartIndex = 0 or StartIndex > EndIndex) then
                            Delete(FileLine, EndIndex, EndIndex + 6);
                         end if;
                      end if;
@@ -827,7 +833,7 @@ package body ShowItems is
    procedure Preview_Keys(Key: Key_Code) is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Natural :=
-        (if FormWindow /= Null_Window then Get_Index(Current(DialogForm))
+        (if DialogForm /= Null_Form then Get_Index(Current(DialogForm))
          else 0);
       SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       procedure Set_Permission(Group, Permission: String) is
