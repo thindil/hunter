@@ -103,6 +103,7 @@ package body CopyItems is
       Success: Boolean := True;
    begin
       if DestinationDirectory = MainWindow.Current_Directory then
+         UILocation := DIRECTORY_VIEW;
          Update_Directory_List(True);
          return DIRECTORY_VIEW;
       end if;
@@ -143,6 +144,7 @@ package body CopyItems is
             "message");
          return MESSAGE_FORM;
       end if;
+      UILocation := DIRECTORY_VIEW;
       MainWindow.Current_Directory :=
         (if Settings.Stay_In_Old then SourceDirectory
          else DestinationDirectory);
