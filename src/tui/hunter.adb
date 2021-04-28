@@ -22,6 +22,7 @@ with Interfaces.C;
 with GNAT.Time_Stamp; use GNAT.Time_Stamp;
 with GNAT.Traceback.Symbolic; use GNAT.Traceback.Symbolic;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
@@ -175,6 +176,10 @@ begin
                if New_Action in COPY | MOVE | CREATELINK then
                   UILocation := DESTINATION_VIEW;
                else
+                  if Info_Form /= Null_Form then
+                     Visibility := Normal;
+                     Set_Cursor_Visibility(Visibility);
+                  end if;
                   UILocation := PREVIEW;
                end if;
             when DESTINATION_VIEW =>

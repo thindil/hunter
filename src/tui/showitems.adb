@@ -23,7 +23,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
-with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -51,7 +50,6 @@ package body ShowItems is
    PreviewPad: Window;
    -- ****
 
-   DialogForm: Forms.Form;
    FormWindow: Window;
 
    procedure ShowInfo is
@@ -284,20 +282,20 @@ package body ShowItems is
             SetPermissionsButtons
               ("others", Slice(Tokens, 1)(Slice(Tokens, 1)'Last), 12);
          end if;
-         DialogForm := New_Form(Permissions_Fields);
-         Set_Current(DialogForm, Permissions_Fields(2));
-         Set_Options(DialogForm, (others => False));
-         Scale(DialogForm, FormHeight, FormLength);
+         Info_Form := New_Form(Permissions_Fields);
+         Set_Current(Info_Form, Permissions_Fields(2));
+         Set_Options(Info_Form, (others => False));
+         Scale(Info_Form, FormHeight, FormLength);
          FormWindow :=
            (if Is_Directory(SelectedItem) then
               Create(FormHeight + 2, FormLength + 2, 7, (Columns / 2) + 1)
             else Create(FormHeight + 2, FormLength + 2, 9, (Columns / 2) + 1));
-         Set_Window(DialogForm, FormWindow);
+         Set_Window(Info_Form, FormWindow);
          Set_Sub_Window
-           (DialogForm,
+           (Info_Form,
             Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
-         Post(DialogForm);
-         UnusedResult := Driver(DialogForm, REQ_END_LINE);
+         Post(Info_Form);
+         UnusedResult := Driver(Info_Form, REQ_END_LINE);
       end;
       Refresh
         (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
@@ -313,7 +311,6 @@ package body ShowItems is
 
    procedure ShowPreview(Reset_Preview: Boolean := True) is
       Line: Line_Position := 1;
-      Visibility: Cursor_Visibility := Normal;
    begin
       if Reset_Preview then
          Start_Line := 1;
@@ -321,9 +318,9 @@ package body ShowItems is
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
       end if;
-      if DialogForm /= Null_Form then
-         Post(DialogForm, False);
-         Delete(DialogForm);
+      if Info_Form /= Null_Form then
+         Post(Info_Form, False);
+         Delete(Info_Form);
       end if;
       Clear(PreviewWindow);
       Box(PreviewWindow, Default_Character, Default_Character);
@@ -599,7 +596,6 @@ package body ShowItems is
                   end if;
                end;
             else
-               Set_Cursor_Visibility(Visibility);
                ShowInfo;
             end if;
          end;
@@ -628,7 +624,6 @@ package body ShowItems is
    -- ****
 
    procedure Show_Selected is
-      Visibility: Cursor_Visibility := Normal;
    begin
       if Buttons_Visible then
          Post(Path, False);
@@ -666,7 +661,6 @@ package body ShowItems is
         Is_Regular_File(To_String(Current_Selected)) then
          ShowPreview;
       else
-         Set_Cursor_Visibility(Visibility);
          ShowInfo;
       end if;
    end Show_Selected;
@@ -833,13 +827,12 @@ package body ShowItems is
    procedure Preview_Keys(Key: Key_Code) is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Natural :=
-        (if DialogForm /= Null_Form then Get_Index(Current(DialogForm))
-         else 0);
+        (if Info_Form /= Null_Form then Get_Index(Current(Info_Form)) else 0);
       SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       procedure Set_Permission(Group, Permission: String) is
          PermissionsString: Unbounded_String;
       begin
-         if Get_Buffer(Current(DialogForm))(1 .. 5) = "Can't" then
+         if Get_Buffer(Current(Info_Form))(1 .. 5) = "Can't" then
             PermissionsString := To_Unbounded_String(Group & "+" & Permission);
          else
             PermissionsString := To_Unbounded_String(Group & "-" & Permission);
@@ -881,11 +874,11 @@ package body ShowItems is
       end if;
       case Key is
          when KEY_UP =>
-            Result := Driver(DialogForm, F_Previous_Field);
-            Result := Driver(DialogForm, F_End_Line);
+            Result := Driver(Info_Form, F_Previous_Field);
+            Result := Driver(Info_Form, F_End_Line);
          when KEY_DOWN =>
-            Result := Driver(DialogForm, F_Next_Field);
-            Result := Driver(DialogForm, F_End_Line);
+            Result := Driver(Info_Form, F_Next_Field);
+            Result := Driver(Info_Form, F_End_Line);
          when 10 =>
             if FieldIndex = 2 then
                ShowProgramsMenu;

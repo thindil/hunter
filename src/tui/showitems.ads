@@ -15,6 +15,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with MainWindow; use MainWindow;
 
@@ -34,11 +35,18 @@ package ShowItems is
    DestinationDirectory: Unbounded_String;
    -- ****
 
-   -- ****iv* ShowItemsTUI/ShowItemsTUI.DestinationList
+   -- ****v* ShowItemsTUI/ShowItemsTUI.DestinationList
    -- FUNCTION
    -- Current content of the destination directory
    -- SOURCE
    DestinationList: Menu;
+   -- ****
+
+   -- ****v* ShowItems/Default_Program_Form
+   -- FUNCTION
+   -- Form to set default program and item permissions
+   -- SOURCE
+   Info_Form: Forms.Form;
    -- ****
 
    -- ****f* ShowItemsTUI/ShowItemsTUI.ShowInfo
