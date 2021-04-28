@@ -111,6 +111,7 @@ package body MoveItems is
             "message");
          return MESSAGE_FORM;
       end if;
+      UILocation := DIRECTORY_VIEW;
       MainWindow.Current_Directory :=
         (if Settings.Stay_In_Old then SourceDirectory
          else DestinationDirectory);
