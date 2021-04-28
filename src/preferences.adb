@@ -226,7 +226,7 @@ package body Preferences is
       Configuration: DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
       Setting_Node, Main_Node: DOM.Core.Element;
       Save_Settings_Data: Document;
-      User_Command_Node: Text;
+      Unused_Node: Text;
       procedure Save_Boolean(Value: Boolean; Name: String) is
       begin
          Setting_Node :=
@@ -312,9 +312,16 @@ package body Preferences is
       for I in Accelerators'Range loop
          Setting_Node :=
            Append_Child
-             (Main_Node, Create_Element(Save_Settings_Data, "accelerator"));
-         Set_Attribute(Setting_Node, "index", Trim(Positive'Image(I), Left));
-         Set_Attribute(Setting_Node, "value", To_String(Accelerators(I)));
+             (N => Main_Node,
+              New_Child =>
+                Create_Element
+                  (Doc => Save_Settings_Data, Tag_Name => "accelerator"));
+         Set_Attribute
+           (Elem => Setting_Node, Name => "index",
+            Value => Trim(Source => Positive'Image(I), Side => Left));
+         Set_Attribute
+           (Elem => Setting_Node, Name => "value",
+            Value => To_String(Source => Accelerators(I)));
       end loop Save_Accelerators_Loop;
       Save_User_Commands_Loop :
       for I in UserCommandsList.Iterate loop
@@ -327,10 +334,11 @@ package body Preferences is
          else
             Set_Attribute(Setting_Node, "needoutput", "No");
          end if;
-         User_Command_Node :=
-           Create_Text_Node
-             (Save_Settings_Data, To_String(UserCommandsList(I).Command));
-         User_Command_Node := Append_Child(Setting_Node, User_Command_Node);
+         Unused_Node :=
+           Append_Child
+             (Setting_Node,
+              Create_Text_Node
+                (Save_Settings_Data, To_String(UserCommandsList(I).Command)));
       end loop Save_User_Commands_Loop;
       Save_Enabled_Modules_Loop :
       for ModuleName of Enabled_Modules loop
