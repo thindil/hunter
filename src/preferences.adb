@@ -327,24 +327,36 @@ package body Preferences is
       for I in UserCommandsList.Iterate loop
          Setting_Node :=
            Append_Child
-             (Main_Node, Create_Element(Save_Settings_Data, "command"));
-         Set_Attribute(Setting_Node, "menuentry", Commands_Container.Key(I));
+             (N => Main_Node,
+              New_Child =>
+                Create_Element
+                  (Doc => Save_Settings_Data, Tag_Name => "command"));
+         Set_Attribute
+           (Elem => Setting_Node, Name => "menuentry",
+            Value => Commands_Container.Key(Position => I));
          if UserCommandsList(I).NeedOutput then
-            Set_Attribute(Setting_Node, "needoutput", "Yes");
+            Set_Attribute
+              (Elem => Setting_Node, Name => "needoutput", Value => "Yes");
          else
-            Set_Attribute(Setting_Node, "needoutput", "No");
+            Set_Attribute
+              (Elem => Setting_Node, Name => "needoutput", Value => "No");
          end if;
          Unused_Node :=
            Append_Child
-             (Setting_Node,
-              Create_Text_Node
-                (Save_Settings_Data, To_String(UserCommandsList(I).Command)));
+             (N => Setting_Node,
+              New_Child =>
+                Create_Text_Node
+                  (Doc => Save_Settings_Data,
+                   Data => To_String(Source => UserCommandsList(I).Command)));
       end loop Save_User_Commands_Loop;
       Save_Enabled_Modules_Loop :
       for ModuleName of Enabled_Modules loop
          Setting_Node :=
            Append_Child
-             (Main_Node, Create_Element(Save_Settings_Data, "module"));
+             (N => Main_Node,
+              New_Child =>
+                Create_Element
+                  (Doc => Save_Settings_Data, Tag_Name => "module"));
          Set_Attribute(Setting_Node, "path", To_String(ModuleName));
       end loop Save_Enabled_Modules_Loop;
       Create_Path(Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
