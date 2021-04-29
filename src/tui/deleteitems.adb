@@ -176,7 +176,7 @@ package body DeleteItems is
       FormLength: constant Column_Position := 32;
       Visibility: Cursor_Visibility := Normal;
       FieldOptions: Field_Option_Set;
-      DeleteList: Unbounded_String;
+      DeleteList, ItemName: Unbounded_String;
       ListLength: Positive;
       UnusedResult: Forms.Driver_Result;
    begin
@@ -191,13 +191,17 @@ package body DeleteItems is
       end if;
       Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
+         if Length(SelectedItems(I)) > 27 then
+            ItemName := Unbounded_Slice(SelectedItems(I), 1, 27) & "...";
+         else
+            ItemName := SelectedItems(I);
+         end if;
          if Is_Directory
              (To_String
                 (MainWindow.Current_Directory & "/" & SelectedItems(I))) then
-            Append
-              (DeleteList, "  " & SelectedItems(I) & "(and its content)" & LF);
+            Append(DeleteList, "  " & ItemName & "(and its content)" & LF);
          else
-            Append(DeleteList, "  " & SelectedItems(I) & LF);
+            Append(DeleteList, "  " & ItemName & LF);
          end if;
       end loop Set_Delete_List_Loop;
       if ListLength = 10 and SelectedItems.Length > 10 then
