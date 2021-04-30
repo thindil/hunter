@@ -258,6 +258,7 @@ package body Bookmarks is
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
+               UILocation := DIRECTORY_VIEW;
                Update_Directory_List(True);
                return DIRECTORY_VIEW;
             end if;
