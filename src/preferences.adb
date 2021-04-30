@@ -357,17 +357,23 @@ package body Preferences is
               New_Child =>
                 Create_Element
                   (Doc => Save_Settings_Data, Tag_Name => "module"));
-         Set_Attribute(Setting_Node, "path", To_String(ModuleName));
+         Set_Attribute
+           (Elem => Setting_Node, Name => "path",
+            Value => To_String(Source => ModuleName));
       end loop Save_Enabled_Modules_Loop;
-      Create_Path(Ada.Environment_Variables.Value("HOME") & "/.config/hunter");
+      Create_Path
+        (New_Directory =>
+           Ada.Environment_Variables.Value(Name => "HOME") &
+           "/.config/hunter");
       Create
-        (Config_File, Out_File,
-         Ada.Environment_Variables.Value("HOME") &
-         "/.config/hunter/hunter.xml");
+        (File => Config_File, Mode => Out_File,
+         Name =>
+           Ada.Environment_Variables.Value(Name => "HOME") &
+           "/.config/hunter/hunter.xml");
       Write
-        (Stream => Stream(Config_File), N => Save_Settings_Data,
+        (Stream => Stream(File => Config_File), N => Save_Settings_Data,
          Pretty_Print => True);
-      Close(Config_File);
+      Close(File => Config_File);
    end Save_Preferences;
 
 end Preferences;
