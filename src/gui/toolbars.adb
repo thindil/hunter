@@ -437,7 +437,7 @@ package body Toolbars is
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       end if;
       Button.Name := New_String(".mainframe.toolbars.itemtoolbar.openbutton");
-      if CanBeOpened(GetMimeType(To_String(Current_Selected))) then
+      if Can_Be_Opened(Get_Mime_Type(To_String(Current_Selected))) then
          if Winfo_Get(Button, "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
               (Button,

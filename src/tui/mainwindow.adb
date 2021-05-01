@@ -208,7 +208,7 @@ package body MainWindow is
                   if not ItemsList(I).IsDirectory then
                      Overwrite
                        (Item_Entry, Item_Entry'Last - 8,
-                        CountFileSize
+                        Count_File_Size
                           (Ada.Directories.File_Size(ItemsList(I).Size)));
                   else
                      if Settings.Show_Hidden then

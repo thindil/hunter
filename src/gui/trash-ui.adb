@@ -131,7 +131,7 @@ package body Trash.UI is
                Item.Image := To_Unbounded_String("application-x-executable");
             else
                MimeType :=
-                 To_Unbounded_String(GetMimeType(To_String(FullName)));
+                 To_Unbounded_String(Get_Mime_Type(To_String(FullName)));
                if Index(MimeType, "audio") > 0 then
                   Item.Image := To_Unbounded_String("audio-x-generic");
                elsif Index(MimeType, "font") > 0 then

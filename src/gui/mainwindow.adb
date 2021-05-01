@@ -499,7 +499,7 @@ package body MainWindow is
                      Size_String :=
                        To_Unbounded_String
                          (Source =>
-                            CountFileSize(Size => File_Size(List(I).Size)));
+                            Count_File_Size(Size => File_Size(List(I).Size)));
                   end if;
             end case;
             Set_Modified_Block :

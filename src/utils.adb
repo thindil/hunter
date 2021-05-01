@@ -19,12 +19,12 @@ with Utils.UI; use Utils.UI;
 
 package body Utils is
 
-   function GetMimeType(FileName: String) return String is
+   function Get_Mime_Type(File_Name: String) return String is
    begin
-      return Magic_File(FileName);
-   end GetMimeType;
+      return Magic_File(File_Name);
+   end Get_Mime_Type;
 
-   function CanBeOpened(MimeType: String) return Boolean is
+   function Can_Be_Opened(Mime_Type: String) return Boolean is
       ExecutableName: constant String := FindExecutable("xdg-mime");
       Return_Code: Integer;
       Output_File: File_Descriptor;
@@ -35,16 +35,16 @@ package body Utils is
       Output_File := Open_Append("/dev/null", Text);
       Spawn
         (ExecutableName,
-         Argument_String_To_List("query default " & MimeType).all, Output_File,
-         Return_Code, True);
+         Argument_String_To_List("query default " & Mime_Type).all,
+         Output_File, Return_Code, True);
       Close(Output_File);
       if Return_Code /= 0 then
          return False;
       end if;
       return True;
-   end CanBeOpened;
+   end Can_Be_Opened;
 
-   function CountFileSize(Size: File_Size) return String is
+   function Count_File_Size(Size: File_Size) return String is
       Multiplier: Natural range 0 .. 8;
       NewSize: File_Size;
       SizeShortcuts: constant array(Natural range 0 .. 8) of String(1 .. 3) :=
@@ -59,6 +59,6 @@ package body Utils is
          Multiplier := Multiplier + 1;
       end loop Count_Size_Loop;
       return File_Size'Image(NewSize) & " " & SizeShortcuts(Multiplier);
-   end CountFileSize;
+   end Count_File_Size;
 
 end Utils;
