@@ -225,7 +225,7 @@ package body ShowItems is
       else
          declare
             MimeType: constant String :=
-              GetMimeType(To_String(Current_Selected));
+              Get_Mime_Type(To_String(Current_Selected));
          begin
             if MimeType(1 .. 4) = "text" then
                declare
@@ -499,7 +499,7 @@ package body ShowItems is
       Label: Ttk_Label := Get_Widget(PreviewFrame & ".title");
       SelectedItem: constant String := To_String(Current_Selected);
       Button: Ttk_Button;
-      MimeType: constant String := GetMimeType(SelectedItem);
+      MimeType: constant String := Get_Mime_Type(SelectedItem);
       DirectorySize: Natural := 0;
       PathFrame: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned.previewframe.pathframe");
@@ -552,7 +552,8 @@ package body ShowItems is
             configure(Label, "-text {" & Natural'Image(DirectorySize) & "}");
          end if;
       elsif Is_Regular_File(SelectedItem) then
-         configure(Label, "-text {" & CountFileSize(Size(SelectedItem)) & "}");
+         configure
+           (Label, "-text {" & Count_File_Size(Size(SelectedItem)) & "}");
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
       end if;
@@ -577,7 +578,7 @@ package body ShowItems is
          Tcl.Tk.Ada.Grid.Grid(Label);
          Label.Name := New_String(InfoFrame & ".filetype");
          configure
-           (Label, "-text {" & GetMimeType(Full_Name(SelectedItem)) & "}");
+           (Label, "-text {" & Get_Mime_Type(Full_Name(SelectedItem)) & "}");
          Tcl.Tk.Ada.Grid.Grid(Label);
       end if;
       Label.Name := New_String(InfoFrame & ".associatedprogramtext");

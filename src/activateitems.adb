@@ -86,14 +86,14 @@ package body ActivateItems is
       else
          declare
             MimeType: constant String :=
-              GetMimeType(To_String(Current_Selected));
+              Get_Mime_Type(To_String(Current_Selected));
             Pid: GNAT.OS_Lib.Process_Id;
-            Openable: Boolean := CanBeOpened(MimeType);
+            Openable: Boolean := Can_Be_Opened(MimeType);
             ExecutableName: constant String := FindExecutable("xdg-open");
             Arguments: Argument_List_Access;
          begin
             if MimeType(1 .. 4) = "text" and not Openable then
-               Openable := CanBeOpened("text/plain");
+               Openable := Can_Be_Opened("text/plain");
             end if;
             if not Openable then
                if not Is_Executable_File(To_String(Current_Selected)) then

@@ -55,7 +55,7 @@ package body ShowItems is
    procedure ShowInfo is
       SelectedItem: constant String := To_String(Current_Selected);
       DirectorySize: Natural := 0;
-      MimeType: constant String := GetMimeType(SelectedItem);
+      MimeType: constant String := Get_Mime_Type(SelectedItem);
    begin
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
@@ -90,7 +90,7 @@ package body ShowItems is
             Add(PreviewPad, Natural'Image(DirectorySize) & LF);
          end if;
       elsif Is_Regular_File(SelectedItem) then
-         Add(PreviewPad, CountFileSize(Size(SelectedItem)) & LF);
+         Add(PreviewPad, Count_File_Size(Size(SelectedItem)) & LF);
       else
          Add(PreviewPad, "Unknown" & LF);
       end if;
@@ -352,7 +352,7 @@ package body ShowItems is
       else
          declare
             MimeType: constant String :=
-              GetMimeType(To_String(Current_Selected));
+              Get_Mime_Type(To_String(Current_Selected));
          begin
             if MimeType(1 .. 4) = "text" then
                PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 1);

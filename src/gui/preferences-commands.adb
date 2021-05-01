@@ -260,7 +260,7 @@ package body Preferences.Commands is
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      MimeType: constant String := GetMimeType(To_String(Current_Selected));
+      MimeType: constant String := Get_Mime_Type(To_String(Current_Selected));
    begin
       Settings.Scale_Images :=
         (if
@@ -304,7 +304,7 @@ package body Preferences.Commands is
         Get_Widget
           (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme",
            Interp);
-      MimeType: constant String := GetMimeType(To_String(Current_Selected));
+      MimeType: constant String := Get_Mime_Type(To_String(Current_Selected));
    begin
       if Tcl_GetVar
           (Interp,
@@ -350,7 +350,7 @@ package body Preferences.Commands is
         Get_Widget
           (".preferencesframe.canvas.notebook.preferences.preview.colorframe.highlighttheme",
            Interp);
-      MimeType: constant String := GetMimeType(To_String(Current_Selected));
+      MimeType: constant String := Get_Mime_Type(To_String(Current_Selected));
    begin
       Settings.Color_Theme := To_Unbounded_String(Get(ComboBox));
       if MimeType(1 .. 4) = "text" then
