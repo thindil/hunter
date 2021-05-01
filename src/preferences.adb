@@ -15,23 +15,27 @@
 
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Text_IO.Text_Streams; use Ada.Text_IO.Text_Streams;
+with Ada.Strings;
+with Ada.Strings.Fixed;
+with Ada.Text_IO;
+with Ada.Text_IO.Text_Streams;
 with DOM.Core; use DOM.Core;
-with DOM.Core.Documents; use DOM.Core.Documents;
+with DOM.Core.Documents;
 with DOM.Core.Nodes; use DOM.Core.Nodes;
 with DOM.Core.Elements; use DOM.Core.Elements;
-with DOM.Readers; use DOM.Readers;
-with Input_Sources.File; use Input_Sources.File;
+with DOM.Readers;
+with Input_Sources.File;
 with Modules; use Modules;
 with UserCommands; use UserCommands;
-with Utils.UI; use Utils.UI;
+with Utils.UI;
 
 package body Preferences is
 
    procedure Load_Settings is
+      use DOM.Readers;
+      use Input_Sources.File;
+      use Utils.UI;
+
       Reader: Tree_Reader; --## rule line off IMPROPER_INITIALIZATION
       Data_File: File_Input;
       Save_Settings_Data: Document;
@@ -222,6 +226,12 @@ package body Preferences is
    end Load_Settings;
 
    procedure Save_Preferences is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+      use Ada.Text_IO;
+      use Ada.Text_IO.Text_Streams;
+      use DOM.Core.Documents;
+
       Config_File: File_Type;
       Configuration: DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
       Setting_Node, Main_Node: DOM.Core.Element;
