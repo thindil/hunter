@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -44,29 +44,29 @@ package Utils is
    package CreateCommands is new Tcl.Ada.Generic_Command(Integer);
    -- ****
 
-   -- ****f* Utils/Utils.GetMimeType
+   -- ****f* Utils/Utils.Get_Mime_Type
    -- FUNCTION
    -- Check MIME Type of selected file
    -- PARAMETERS
-   -- FileName - full path to the selected file to check MIME Type
+   -- File_Name - full path to the selected file to check MIME Type
    -- RESULT
    -- String with MIME Type of selected file
    -- SOURCE
-   function GetMimeType(FileName: String) return String;
+   function Get_Mime_Type(File_Name: String) return String;
    -- ****
 
-   -- ****f* Utils/Utils.CanBeOpened
+   -- ****f* Utils/Utils.Can_Be_Opened
    -- FUNCTION
    -- Check if there is application associated to open selected MIME Type
    -- PARAMETERS
-   -- MimeType - MIME Type to check
+   -- Mime_Type - MIME Type to check
    -- RESULT
    -- Return True if there is application associated with selected MIME Type, otherwise False
    -- SOURCE
-   function CanBeOpened(MimeType: String) return Boolean;
+   function Can_Be_Opened(Mime_Type: String) return Boolean;
    -- ****
 
-   -- ****f* Utils/Utils.CountFileSize
+   -- ****f* Utils/Utils.Count_File_Size
    -- FUNCTION
    -- Convert file size to human readable format
    -- PARAMETERS
@@ -74,7 +74,7 @@ package Utils is
    -- RESULT
    -- Return formated string with info about file size (in MiB, GiB, etc)
    -- SOURCE
-   function CountFileSize(Size: File_Size) return String;
+   function Count_File_Size(Size: File_Size) return String;
    -- ****
 
 end Utils;
