@@ -350,6 +350,7 @@ package body MainWindow is
       Menu_Items: Item_Array_Access;
       MenuHeight: Line_Position;
       MenuLength: Column_Position;
+      Selected_Amount: Natural := 0;
    begin
       case Menu_Type is
          when ACTIONS_MENU =>
@@ -373,7 +374,19 @@ package body MainWindow is
             Menu_Items.all(4) := Null_Item;
          when VIEW_MENU =>
             Menu_Items := new Item_Array(1 .. 4);
-            Menu_Items.all(1) := New_Item("Select all");
+            Count_Selected_Loop :
+            for I in 1 .. Item_Count(DirectoryList) loop
+               if SelectedItems.Contains
+                   (To_Unbounded_String
+                      (Description(Items(DirectoryList, I)))) then
+                  Selected_Amount := Selected_Amount + 1;
+               end if;
+            end loop Count_Selected_Loop;
+            if Selected_Amount < Item_Count(DirectoryList) then
+               Menu_Items.all(1) := New_Item("Select all");
+            else
+               Menu_Items.all(1) := New_Item("Deselect all");
+            end if;
             Menu_Items.all(2) := New_Item("Search for");
             Menu_Items.all(3) := New_Item("Close");
             Menu_Items.all(4) := Null_Item;
