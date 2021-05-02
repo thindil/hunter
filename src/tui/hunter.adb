@@ -236,6 +236,8 @@ begin
                Preview_Keys(Key);
             when PROGRAMS_MENU =>
                UILocation := Programs_Keys(Key);
+            when VIEW_MENU =>
+               UILocation := View_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;

@@ -371,6 +371,12 @@ package body MainWindow is
             Menu_Items.all(2) := New_Item("Information");
             Menu_Items.all(3) := New_Item("Close");
             Menu_Items.all(4) := Null_Item;
+         when VIEW_MENU =>
+            Menu_Items := new Item_Array(1 .. 4);
+            Menu_Items.all(1) := New_Item("Select all");
+            Menu_Items.all(2) := New_Item("Search for");
+            Menu_Items.all(3) := New_Item("Close");
+            Menu_Items.all(4) := Null_Item;
          when others =>
             null;
       end case;
@@ -467,6 +473,9 @@ package body MainWindow is
                      CreateProgramMenu;
                      Refresh(MenuWindow);
                      return DIRECTORY_VIEW;
+                  else
+                     Draw_Menu(VIEW_MENU);
+                     return VIEW_MENU;
                   end if;
                when 4 =>
                   Draw_Menu(ACTIONS_MENU);
@@ -620,5 +629,31 @@ package body MainWindow is
       end if;
       return SELECTED_MENU;
    end Selected_Keys;
+
+   function View_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result := Unknown_Request;
+   begin
+      case Key is
+         when KEY_UP =>
+            Result := Driver(SubMenu, M_Up_Item);
+         when KEY_DOWN =>
+            Result := Driver(SubMenu, M_Down_Item);
+         when Key_Home =>
+            Result := Driver(SubMenu, M_First_Item);
+         when Key_End =>
+            Result := Driver(SubMenu, M_Last_Item);
+         when 10 =>
+            Update_Directory_List;
+            Post(SubMenu, False);
+            Delete(SubMenu);
+            return PREVIEW;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(SubMenuWindow);
+      end if;
+      return VIEW_MENU;
+   end View_Keys;
 
 end MainWindow;
