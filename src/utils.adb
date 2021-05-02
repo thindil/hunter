@@ -25,16 +25,16 @@ package body Utils is
    end Get_Mime_Type;
 
    function Can_Be_Opened(Mime_Type: String) return Boolean is
-      ExecutableName: constant String := FindExecutable("xdg-mime");
+      Executable_Name: constant String := FindExecutable("xdg-mime");
       Return_Code: Integer;
       Output_File: File_Descriptor;
    begin
-      if ExecutableName = "" then
+      if Executable_Name = "" then
          return False;
       end if;
       Output_File := Open_Append("/dev/null", Text);
       Spawn
-        (ExecutableName,
+        (Executable_Name,
          Argument_String_To_List("query default " & Mime_Type).all,
          Output_File, Return_Code, True);
       Close(Output_File);
@@ -46,19 +46,19 @@ package body Utils is
 
    function Count_File_Size(Size: File_Size) return String is
       Multiplier: Natural range 0 .. 8;
-      NewSize: File_Size;
-      SizeShortcuts: constant array(Natural range 0 .. 8) of String(1 .. 3) :=
+      New_Size: File_Size;
+      Size_Shortcuts: constant array(Natural range 0 .. 8) of String(1 .. 3) :=
         ("B  ", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
    begin
-      NewSize := Size;
+      New_Size := Size;
       Multiplier := 0;
       Count_Size_Loop :
-      while NewSize > 1024 loop
+      while New_Size > 1024 loop
          exit Count_Size_Loop when Multiplier = 8;
-         NewSize := NewSize / 1024;
+         New_Size := New_Size / 1024;
          Multiplier := Multiplier + 1;
       end loop Count_Size_Loop;
-      return File_Size'Image(NewSize) & " " & SizeShortcuts(Multiplier);
+      return File_Size'Image(New_Size) & " " & Size_Shortcuts(Multiplier);
    end Count_File_Size;
 
 end Utils;
