@@ -32,6 +32,7 @@ with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with RenameItems; use RenameItems;
+with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 
@@ -669,6 +670,12 @@ package body MainWindow is
                else
                   SelectedItems.Clear;
                end if;
+            elsif Current_Selected in "Search for" then
+               Update_Directory_List;
+               Post(SubMenu, False);
+               Delete(SubMenu);
+               ShowSearchForm;
+               return SEARCH_FORM;
             end if;
             Update_Directory_List;
             Post(SubMenu, False);
