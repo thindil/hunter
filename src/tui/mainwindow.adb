@@ -645,6 +645,7 @@ package body MainWindow is
 
    function View_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
+      Current_Selected: constant String := Name(Current(SubMenu));
    begin
       case Key is
          when KEY_UP =>
@@ -656,10 +657,23 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
+            UILocation := DIRECTORY_VIEW;
+            if Current_Selected in "Select all" | "Deselect all" then
+               if Current_Selected = "Select all" then
+                  Update_Selected_Items_Loop :
+                  for I in 1 .. Item_Count(DirectoryList) loop
+                     SelectedItems.Append
+                       (To_Unbounded_String
+                          (Description(Items(DirectoryList, I))));
+                  end loop Update_Selected_Items_Loop;
+               else
+                  SelectedItems.Clear;
+               end if;
+            end if;
             Update_Directory_List;
             Post(SubMenu, False);
             Delete(SubMenu);
-            return PREVIEW;
+            return DIRECTORY_VIEW;
          when others =>
             null;
       end case;
