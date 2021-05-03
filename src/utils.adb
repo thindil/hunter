@@ -21,23 +21,26 @@ package body Utils is
 
    function Get_Mime_Type(File_Name: String) return String is
    begin
-      return Magic_File(File_Name);
+      return Magic_File(Name => File_Name);
    end Get_Mime_Type;
 
    function Can_Be_Opened(Mime_Type: String) return Boolean is
-      Executable_Name: constant String := FindExecutable("xdg-mime");
+      Executable_Name: constant String := FindExecutable(Name => "xdg-mime");
       Return_Code: Integer;
       Output_File: File_Descriptor;
    begin
       if Executable_Name = "" then
          return False;
       end if;
-      Output_File := Open_Append("/dev/null", Text);
+      Output_File := Open_Append(Name => "/dev/null", Fmode => Text);
       Spawn
-        (Executable_Name,
-         Argument_String_To_List("query default " & Mime_Type).all,
-         Output_File, Return_Code, True);
-      Close(Output_File);
+        (Program_Name => Executable_Name,
+         Args =>
+           Argument_String_To_List
+             (Arg_String => "query default " & Mime_Type).all,
+         Output_File_Descriptor => Output_File, Return_Code => Return_Code,
+         Err_To_Out => True);
+      Close(FD => Output_File);
       if Return_Code /= 0 then
          return False;
       end if;
@@ -48,7 +51,8 @@ package body Utils is
       Multiplier: Natural range 0 .. 8;
       New_Size: File_Size;
       Size_Shortcuts: constant array(Natural range 0 .. 8) of String(1 .. 3) :=
-        ("B  ", "KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB");
+        (0 => "B  ", 1 => "KiB", 2 => "MiB", 3 => "GiB", 4 => "TiB",
+         5 => "PiB", 6 => "EiB", 7 => "ZiB", 8 => "YiB");
    begin
       New_Size := Size;
       Multiplier := 0;
