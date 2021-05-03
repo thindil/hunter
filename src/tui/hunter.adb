@@ -38,6 +38,7 @@ with Modules; use Modules;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
 with RenameItems; use RenameItems;
+with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 
 procedure Hunter is
@@ -238,6 +239,8 @@ begin
                UILocation := Programs_Keys(Key);
             when VIEW_MENU =>
                UILocation := View_Keys(Key);
+            when SEARCH_FORM =>
+               UILocation := Search_Form_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;
