@@ -13,19 +13,24 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with LibMagic; use LibMagic;
-with Utils.UI; use Utils.UI;
+with GNAT.OS_Lib;
+with LibMagic;
+with Utils.UI;
 
 package body Utils is
 
    function Get_Mime_Type(File_Name: String) return String is
+      use LibMagic;
+
    begin
       return Magic_File(Name => File_Name);
    end Get_Mime_Type;
 
    function Can_Be_Opened(Mime_Type: String) return Boolean is
-      Executable_Name: constant String := FindExecutable(Name => "xdg-mime");
+      use GNAT.OS_Lib;
+      use Utils.UI;
+
+      Executable_Name: constant String := Find_Executable(Name => "xdg-mime");
       Return_Code: Integer;
       Output_File: File_Descriptor;
    begin
