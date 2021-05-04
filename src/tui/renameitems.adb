@@ -104,7 +104,7 @@ package body RenameItems is
 
    procedure AddCommands is
    begin
-      AddCommand("Rename", Rename_Command'Access);
+      Add_Command("Rename", Rename_Command'Access);
    end AddCommands;
 
    DialogForm: Forms.Form;

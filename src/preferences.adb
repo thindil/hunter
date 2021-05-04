@@ -217,7 +217,7 @@ package body Preferences is
                       Get_Attribute(Elem => Data_Node, Name => "path")));
          end if;
       end loop Load_Settings_Loop;
-      if FindExecutable(Name => "highlight") = "" then
+      if Find_Executable(Name => "highlight") = "" then
          Settings.Color_Text := False;
       end if;
    exception

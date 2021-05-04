@@ -59,7 +59,7 @@ package body Trash.UI is
          "/.local/share/Trash/files");
       if New_Action /= SHOWTRASH then
          New_Action := SHOWTRASH;
-         ToggleToolButtons(SHOWTRASH);
+         Toggle_Tool_Buttons(SHOWTRASH);
       end if;
       ItemsList.Clear;
       MainWindow.Current_Directory :=
@@ -191,7 +191,7 @@ package body Trash.UI is
 
    procedure CreateTrashUI is
    begin
-      AddCommand("ShowTrash", Show_Trash_Command'Access);
+      Add_Command("ShowTrash", Show_Trash_Command'Access);
    end CreateTrashUI;
 
 end Trash.UI;

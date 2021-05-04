@@ -159,9 +159,12 @@ package MainWindow is
    -- FUNCTION
    -- Update directory list
    -- PARAMETERS
-   -- Clear - Clear current list of items
+   -- Clear      - Clear current list of items
+   -- Search_For - If not empty, show only items which contains the selected
+   --              string. Otherwise show everything. Default value is empty.
    -- SOURCE
-   procedure Update_Directory_List(Clear: Boolean := False);
+   procedure Update_Directory_List
+     (Clear: Boolean := False; Search_For: String := "");
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Directory_Keys

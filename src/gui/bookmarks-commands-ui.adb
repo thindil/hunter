@@ -48,7 +48,7 @@ package body Bookmarks.Commands.UI is
    begin
       if New_Action /= MOVE then
          if New_Action = SHOWTRASH then
-            ToggleToolButtons(New_Action, True);
+            Toggle_Tool_Buttons(New_Action, True);
          end if;
          New_Action := COPY;
       end if;
@@ -237,10 +237,10 @@ package body Bookmarks.Commands.UI is
 
    procedure AddUICommands is
    begin
-      AddCommand("SetDestination", SetDestination_Command'Access);
-      AddCommand("GoToDestination", GoToDestination_Command'Access);
-      AddCommand("AddBookmark", Add_Bookmark_Command'Access);
-      AddCommand("RemoveBookmark", Remove_Bookmark_Command'Access);
+      Add_Command("SetDestination", SetDestination_Command'Access);
+      Add_Command("GoToDestination", GoToDestination_Command'Access);
+      Add_Command("AddBookmark", Add_Bookmark_Command'Access);
+      Add_Command("RemoveBookmark", Remove_Bookmark_Command'Access);
    end AddUICommands;
 
 end Bookmarks.Commands.UI;

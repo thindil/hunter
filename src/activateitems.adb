@@ -89,7 +89,7 @@ package body ActivateItems is
               Get_Mime_Type(To_String(Current_Selected));
             Pid: GNAT.OS_Lib.Process_Id;
             Openable: Boolean := Can_Be_Opened(MimeType);
-            ExecutableName: constant String := FindExecutable("xdg-open");
+            ExecutableName: constant String := Find_Executable("xdg-open");
             Arguments: Argument_List_Access;
          begin
             if MimeType(1 .. 4) = "text" and not Openable then
@@ -172,8 +172,8 @@ package body ActivateItems is
 
    procedure AddCommands is
    begin
-      AddCommand("ActivateItem", Activate_Item_Command'Access);
-      AddCommand("Execute", Execute_Command'Access);
+      Add_Command("ActivateItem", Activate_Item_Command'Access);
+      Add_Command("Execute", Execute_Command'Access);
       CreateActivateUI;
    end AddCommands;
 

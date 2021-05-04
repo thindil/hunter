@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 
 package body SearchItems is
@@ -91,15 +93,17 @@ package body SearchItems is
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
          when 10 =>
---            if FieldIndex = 4 then
---               null;
---            end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
+               UILocation := DIRECTORY_VIEW;
+               if FieldIndex = 4 then
+                  Update_Directory_List
+                    (True, Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+               else
+                  Update_Directory_List(True);
+               end if;
                Post(DialogForm, False);
                Delete(DialogForm);
-               UILocation := DIRECTORY_VIEW;
-               Update_Directory_List(True);
                return DIRECTORY_VIEW;
             end if;
          when others =>

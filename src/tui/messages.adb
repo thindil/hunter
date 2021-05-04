@@ -61,8 +61,8 @@ package body Messages is
 
    procedure CreateMessagesUI is
    begin
-      AddCommand("CloseMessage", Close_Command'Access);
-      AddCommand("MessageResponse", Response_Command'Access);
+      Add_Command("CloseMessage", Close_Command'Access);
+      Add_Command("MessageResponse", Response_Command'Access);
    end CreateMessagesUI;
 
    procedure ShowMessage(Message: String; MessageType: String := "error") is

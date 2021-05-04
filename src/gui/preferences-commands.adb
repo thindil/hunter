@@ -1194,7 +1194,7 @@ package body Preferences.Commands is
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
-   -- AddCommand
+   -- Add_Command
    -- SOURCE
    function Add_Command_Command
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
@@ -1398,37 +1398,38 @@ package body Preferences.Commands is
 
    procedure AddCommands is
    begin
-      AddCommand("ShowPreferences", Show_Preferences_Command'Access);
-      AddCommand("CloseDialog", Close_Dialog_Command'Access);
-      AddCommand("SetLabel", Set_Label_Command'Access);
-      AddCommand("SetShowHiddenFiles", Set_Show_Hidden_Files_Command'Access);
-      AddCommand
+      Add_Command("ShowPreferences", Show_Preferences_Command'Access);
+      Add_Command("CloseDialog", Close_Dialog_Command'Access);
+      Add_Command("SetLabel", Set_Label_Command'Access);
+      Add_Command("SetShowHiddenFiles", Set_Show_Hidden_Files_Command'Access);
+      Add_Command
         ("SetShowModificationTime", Set_Show_Modification_Time_Command'Access);
-      AddCommand("SetShowPreview", Set_Show_Preview_Command'Access);
-      AddCommand("SetScaleImages", Set_Scale_Images_Command'Access);
-      AddCommand("SetColorText", Set_Color_Text_Command'Access);
-      AddCommand("SetColorTheme", Set_Color_Theme_Command'Access);
-      AddCommand("SetMonospaceFont", Set_Monospace_Font_Command'Access);
-      AddCommand("SetStayInOld", Set_Stay_In_Old_Command'Access);
-      AddCommand("SetShowFinishedInfo", Set_Show_Finished_Info_Command'Access);
-      AddCommand("SetToolbarsOnTop", Set_Toolbars_On_Top_Command'Access);
-      AddCommand("SetDeleteFiles", Set_Delete_Files_Command'Access);
-      AddCommand("SetClearTrash", Set_Clear_Trash_Command'Access);
-      AddCommand("SetOverwrite", Set_Overwrite_Command'Access);
-      AddCommand("ClosePreferences", Close_Preferences_Command'Access);
-      AddCommand("SetUITheme", Set_UI_Theme_Command'Access);
-      AddCommand("SetToolbarsSize", Set_Toolbars_Size_Command'Access);
-      AddCommand("RestoreDefaults", Restore_Defaults_Command'Access);
-      AddCommand
+      Add_Command("SetShowPreview", Set_Show_Preview_Command'Access);
+      Add_Command("SetScaleImages", Set_Scale_Images_Command'Access);
+      Add_Command("SetColorText", Set_Color_Text_Command'Access);
+      Add_Command("SetColorTheme", Set_Color_Theme_Command'Access);
+      Add_Command("SetMonospaceFont", Set_Monospace_Font_Command'Access);
+      Add_Command("SetStayInOld", Set_Stay_In_Old_Command'Access);
+      Add_Command
+        ("SetShowFinishedInfo", Set_Show_Finished_Info_Command'Access);
+      Add_Command("SetToolbarsOnTop", Set_Toolbars_On_Top_Command'Access);
+      Add_Command("SetDeleteFiles", Set_Delete_Files_Command'Access);
+      Add_Command("SetClearTrash", Set_Clear_Trash_Command'Access);
+      Add_Command("SetOverwrite", Set_Overwrite_Command'Access);
+      Add_Command("ClosePreferences", Close_Preferences_Command'Access);
+      Add_Command("SetUITheme", Set_UI_Theme_Command'Access);
+      Add_Command("SetToolbarsSize", Set_Toolbars_Size_Command'Access);
+      Add_Command("RestoreDefaults", Restore_Defaults_Command'Access);
+      Add_Command
         ("StartChangingShortcut", Start_Changing_Shortcut_Command'Access);
-      AddCommand("ChangeShortcut", Change_Shortcut_Command'Access);
-      AddCommand
+      Add_Command("ChangeShortcut", Change_Shortcut_Command'Access);
+      Add_Command
         ("RestoreDefaultShortcuts", Restore_Default_Shortcuts_Command'Access);
-      AddCommand("AddCommand", Add_Command_Command'Access);
-      AddCommand("EditCommand", Edit_Command_Command'Access);
-      AddCommand("DeleteCommand", Delete_Command_Command'Access);
-      AddCommand("ResetCommand", Reset_Command_Command'Access);
-      AddCommand("ShowModule", Show_Module_Command'Access);
+      Add_Command("Add_Command", Add_Command_Command'Access);
+      Add_Command("EditCommand", Edit_Command_Command'Access);
+      Add_Command("DeleteCommand", Delete_Command_Command'Access);
+      Add_Command("ResetCommand", Reset_Command_Command'Access);
+      Add_Command("ShowModule", Show_Module_Command'Access);
    end AddCommands;
 
 end Preferences.Commands;

@@ -137,7 +137,7 @@ package body ErrorDialog is
              (pathName => ".errorbutton",
               options =>
                 "-text ""https://www.laeran.pl/repositories/hunter/ticket"" -command {exec " &
-                FindExecutable(Name => "xdg-open") &
+                Find_Executable(Name => "xdg-open") &
                 " ""https://www.laeran.pl/repositories/hunter/ticket""}");
          Error_Label2: constant Ttk_Label :=
            Create

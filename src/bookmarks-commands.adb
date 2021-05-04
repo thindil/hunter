@@ -58,7 +58,7 @@ package body Bookmarks.Commands is
             New_Action := SHOWTRASH;
          end if;
          if New_Action = SHOWTRASH then
-            ToggleToolButtons(New_Action, True);
+            Toggle_Tool_Buttons(New_Action, True);
          end if;
          New_Action := COPY;
       end if;
@@ -72,7 +72,7 @@ package body Bookmarks.Commands is
 
    procedure AddCommands is
    begin
-      AddCommand("GoToBookmark", GoToBookmark_Command'Access);
+      Add_Command("GoToBookmark", GoToBookmark_Command'Access);
       AddUICommands;
    end AddCommands;
 

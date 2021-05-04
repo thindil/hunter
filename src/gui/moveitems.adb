@@ -73,14 +73,14 @@ package body MoveItems is
           To_String(DestinationDirectory) then
          MoveItemsList.Clear;
          ShowPreview;
-         ToggleToolButtons(New_Action, True);
+         Toggle_Tool_Buttons(New_Action, True);
          return TCL_OK;
       end if;
       if MoveItemsList.Length = 0 then
          MoveItemsList := Selected_Items;
          SourceDirectory := MainWindow.Current_Directory;
          New_Action := MOVE;
-         ToggleToolButtons(New_Action);
+         Toggle_Tool_Buttons(New_Action);
          ShowDestination;
          Bind_To_Main_Window
            (Interp, "<Escape>",
@@ -96,7 +96,7 @@ package body MoveItems is
          return TCL_OK;
       end if;
       New_Action := MOVE;
-      SetProgressBar(Positive(MoveItemsList.Length));
+      Set_Progress_Bar(Positive(MoveItemsList.Length));
       MoveSelected(OverwriteItem);
       return TCL_OK;
    end Move_Data_Command;
@@ -163,7 +163,7 @@ package body MoveItems is
          if not YesForAll then
             Overwrite := False;
          end if;
-         UpdateProgressBar;
+         Update_Progress_Bar;
       end loop Move_Items_Loop;
       MoveItemsList.Clear;
       if Settings.Show_Finished_Info then
@@ -183,20 +183,20 @@ package body MoveItems is
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;
-      ToggleToolButtons(New_Action, True);
+      Toggle_Tool_Buttons(New_Action, True);
    end MoveSelected;
 
    procedure SkipMoving is
       OverwriteItem: Boolean := False;
    begin
       MoveItemsList.Delete(Index => 1);
-      UpdateProgressBar;
+      Update_Progress_Bar;
       MoveSelected(OverwriteItem);
    end SkipMoving;
 
    procedure CreateMoveUI is
    begin
-      AddCommand("MoveData", Move_Data_Command'Access);
+      Add_Command("MoveData", Move_Data_Command'Access);
    end CreateMoveUI;
 
 end MoveItems;

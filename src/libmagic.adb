@@ -113,7 +113,7 @@ package body LibMagic is
          Process_Desc: Process_Descriptor;
          Result: Expect_Match;
          Executable_Name: constant String :=
-           FindExecutable(Name => "xdg-mime");
+           Find_Executable(Name => "xdg-mime");
          Mime_Type: Unbounded_String;
       begin
          if Executable_Name = "" then

@@ -104,7 +104,7 @@ package body Messages is
       case New_Action is
          when DELETE | CLEARTRASH | DELETETRASH =>
             if New_Action /= CLEARTRASH then
-               SetProgressBar(Positive(Selected_Items.Length));
+               Set_Progress_Bar(Positive(Selected_Items.Length));
             end if;
             if Response = "yes" then
                begin
@@ -124,7 +124,7 @@ package body Messages is
                   Tcl.Ada.Tcl_Eval
                     (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
                elsif New_Action = DELETETRASH then
-                  ToggleToolButtons(New_Action, True);
+                  Toggle_Tool_Buttons(New_Action, True);
                   if Close_Command(ClientData, Interp, Argc, Argv) =
                     TCL_OK then
                      return Show_Trash_Command(ClientData, Interp, Argc, Argv);
@@ -137,7 +137,7 @@ package body Messages is
                   Tcl.Ada.Tcl_Eval(Get_Context, "update");
                end if;
             end if;
-            ToggleToolButtons(New_Action, True);
+            Toggle_Tool_Buttons(New_Action, True);
             if Settings.Show_Finished_Info then
                if New_Action = DELETE and not Settings.Delete_Files then
                   ShowMessage
@@ -160,7 +160,7 @@ package body Messages is
             end if;
          when COPY =>
             if Response = "noall" then
-               ToggleToolButtons(New_Action, True);
+               Toggle_Tool_Buttons(New_Action, True);
                LoadDirectory(To_String(Current_Directory));
                Update_Directory_List(True);
                return Close_Command(ClientData, Interp, Argc, Argv);
@@ -172,7 +172,7 @@ package body Messages is
             return Close_Command(ClientData, Interp, Argc, Argv);
          when MOVE =>
             if Response = "noall" then
-               ToggleToolButtons(New_Action, True);
+               Toggle_Tool_Buttons(New_Action, True);
                LoadDirectory(To_String(Current_Directory));
                Update_Directory_List(True);
                return Close_Command(ClientData, Interp, Argc, Argv);
@@ -203,8 +203,8 @@ package body Messages is
            (ResponseButton, "-row 0 -column" & Natural'Image(Column));
       end AddButton;
    begin
-      AddCommand("CloseMessage", Close_Command'Access);
-      AddCommand("MessageResponse", Response_Command'Access);
+      Add_Command("CloseMessage", Close_Command'Access);
+      Add_Command("MessageResponse", Response_Command'Access);
       Style_Configure("message.TFrame", "-background #27ae60");
       Style_Configure
         ("message.TLabel", "-background #27ae60 -foreground #ffffff");

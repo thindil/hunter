@@ -66,7 +66,7 @@ package body UserCommands is
         (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex - 1)
          else Value);
       CommandName :=
-        To_Unbounded_String(FindExecutable(To_String(CommandName)));
+        To_Unbounded_String(Find_Executable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
          ShowMessage
            (Mc(Interp, "{Can't find command:}") & " " &
@@ -112,7 +112,7 @@ package body UserCommands is
 
    procedure AddCommands is
    begin
-      AddCommand("ExecuteCommand", Execute_Command_Command'Access);
+      Add_Command("ExecuteCommand", Execute_Command_Command'Access);
    end AddCommands;
 
 end UserCommands;

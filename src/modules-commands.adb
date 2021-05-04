@@ -214,7 +214,7 @@ package body Modules.Commands is
         (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex - 1)
          else Value);
       CommandName :=
-        To_Unbounded_String(FindExecutable(To_String(CommandName)));
+        To_Unbounded_String(Find_Executable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
          ShowMessage
            (Mc(Interp, "{Can't find command:}") & " " &
@@ -267,9 +267,9 @@ package body Modules.Commands is
 
    procedure AddCommands is
    begin
-      AddCommand("ToggleModule", Toggle_Module_Command'Access);
-      AddCommand("GetConfig", Get_Config_Command'Access);
-      AddCommand
+      Add_Command("ToggleModule", Toggle_Module_Command'Access);
+      Add_Command("GetConfig", Get_Config_Command'Access);
+      Add_Command
         ("ExecuteModuleCommand", Execute_Module_Command_Command'Access);
    end AddCommands;
 

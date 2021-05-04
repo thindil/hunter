@@ -119,7 +119,7 @@ package body Trash is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
       New_Action := CLEARTRASH;
-      ToggleToolButtons(New_Action);
+      Toggle_Tool_Buttons(New_Action);
       ShowMessage
         (Mc(Interp, "{Remove all files and directories from Trash?}"),
          "question");
@@ -169,9 +169,9 @@ package body Trash is
 
    procedure CreateTrash is
    begin
-      AddCommand("RestoreItems", Restore_Item_Command'Access);
-      AddCommand("ClearTrash", Clear_Trash_Command'Access);
-      AddCommand("GoToTrash", GoToTrash_Command'Access);
+      Add_Command("RestoreItems", Restore_Item_Command'Access);
+      Add_Command("ClearTrash", Clear_Trash_Command'Access);
+      Add_Command("GoToTrash", GoToTrash_Command'Access);
       CreateTrashUI;
    end CreateTrash;
 

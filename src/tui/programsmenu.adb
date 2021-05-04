@@ -163,7 +163,7 @@ package body ProgramsMenu is
                declare
                   Pid: Process_Id;
                   ExecutableName: constant String :=
-                    FindExecutable("xdg-mime");
+                    Find_Executable("xdg-mime");
                   ApplicationName: constant Unbounded_String :=
                     To_Unbounded_String(Name(Current(ProgramsMenu)));
                begin

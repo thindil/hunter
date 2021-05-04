@@ -71,14 +71,14 @@ package body CopyItems is
           To_String(DestinationDirectory) then
          CopyItemsList.Clear;
          ShowPreview;
-         ToggleToolButtons(New_Action, True);
+         Toggle_Tool_Buttons(New_Action, True);
          return TCL_OK;
       end if;
       if CopyItemsList.Length = 0 then
          CopyItemsList := Selected_Items;
          SourceDirectory := MainWindow.Current_Directory;
          New_Action := COPY;
-         ToggleToolButtons(New_Action);
+         Toggle_Tool_Buttons(New_Action);
          ShowDestination;
          Bind_To_Main_Window
            (Interp, "<Escape>",
@@ -94,7 +94,7 @@ package body CopyItems is
          return TCL_OK;
       end if;
       New_Action := COPY;
-      SetProgressBar(Positive(CopyItemsList.Length));
+      Set_Progress_Bar(Positive(CopyItemsList.Length));
       CopySelected(OverwriteItem);
       return TCL_OK;
    end Copy_Data_Command;
@@ -158,7 +158,7 @@ package body CopyItems is
       else
          CopyFile(Name);
       end if;
-      UpdateProgressBar;
+      Update_Progress_Bar;
    end CopyItem;
 
    procedure CopySelected(Overwrite: in out Boolean) is
@@ -208,20 +208,20 @@ package body CopyItems is
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;
-      ToggleToolButtons(New_Action, True);
+      Toggle_Tool_Buttons(New_Action, True);
    end CopySelected;
 
    procedure SkipCopying is
       OverwriteItem: Boolean := False;
    begin
       CopyItemsList.Delete(Index => 1);
-      UpdateProgressBar;
+      Update_Progress_Bar;
       CopySelected(OverwriteItem);
    end SkipCopying;
 
    procedure CreateCopyUI is
    begin
-      AddCommand("CopyData", Copy_Data_Command'Access);
+      Add_Command("CopyData", Copy_Data_Command'Access);
    end CreateCopyUI;
 
 end CopyItems;

@@ -137,7 +137,7 @@ package body ActivateItems.UI is
         (if SpaceIndex > 0 then To_Unbounded_String(Value(1 .. SpaceIndex - 1))
          else To_Unbounded_String(Value));
       CommandName :=
-        To_Unbounded_String(FindExecutable(To_String(CommandName)));
+        To_Unbounded_String(Find_Executable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
          ShowMessage
            (Mc(Interp, "{Can't find command:}") & " " &
@@ -165,8 +165,8 @@ package body ActivateItems.UI is
 
    procedure CreateActivateUI is
    begin
-      AddCommand("ToggleExecuteWith", Toggle_Execute_With_Command'Access);
-      AddCommand("ExecuteWith", Execute_With_Command'Access);
+      Add_Command("ToggleExecuteWith", Toggle_Execute_With_Command'Access);
+      Add_Command("ExecuteWith", Execute_With_Command'Access);
    end CreateActivateUI;
 
 end ActivateItems.UI;

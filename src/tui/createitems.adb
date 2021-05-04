@@ -139,7 +139,7 @@ package body CreateItems is
 
    procedure AddCommands is
    begin
-      AddCommand("CreateItem", Create_Item_Command'Access);
+      Add_Command("CreateItem", Create_Item_Command'Access);
    end AddCommands;
 
    DialogForm: Forms.Form;
