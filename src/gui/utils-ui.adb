@@ -47,8 +47,8 @@ package body Utils.UI is
    ProgressIndex: Natural;
    -- ****
 
-   function FindExecutable
-     (Name: String; DisplayMessage: Boolean := True) return String is
+   function Find_Executable
+     (Name: String; Display_Message: Boolean := True) return String is
       ExecutablePath: GNAT.OS_Lib.String_Access;
    begin
       if Exists(Containing_Directory(Command_Name) & "/" & Name) then
@@ -56,16 +56,16 @@ package body Utils.UI is
       end if;
       ExecutablePath := Locate_Exec_On_Path(Name);
       if ExecutablePath = null then
-         if DisplayMessage then
+         if Display_Message then
             ShowMessage
               (Mc(Get_Context, "{Could not found executable:}") & " " & Name);
          end if;
          return "";
       end if;
       return ExecutablePath.all;
-   end FindExecutable;
+   end Find_Executable;
 
-   procedure SetProgressBar(Amount: Positive) is
+   procedure Set_Progress_Bar(Amount: Positive) is
       ProgressBar: constant Ttk_ProgressBar :=
         Get_Widget(".mainframe.progressbar");
    begin
@@ -74,9 +74,9 @@ package body Utils.UI is
       ProgressIndex := 0;
       Tcl.Tk.Ada.Grid.Grid
         (ProgressBar, "-column 0 -row 1 -sticky we -columnspan 2");
-   end SetProgressBar;
+   end Set_Progress_Bar;
 
-   procedure UpdateProgressBar is
+   procedure Update_Progress_Bar is
       ProgressBar: constant Ttk_ProgressBar :=
         Get_Widget(".mainframe.progressbar");
    begin
@@ -85,15 +85,15 @@ package body Utils.UI is
       if cget(ProgressBar, "-value") = cget(ProgressBar, "-maximum") then
          Grid_Remove(ProgressBar);
       end if;
-   end UpdateProgressBar;
+   end Update_Progress_Bar;
 
-   procedure SetDialog
-     (Dialog: Tk_Toplevel; DialogTitle: String; Width: Width_Range;
+   procedure Set_Dialog
+     (Dialog: Tk_Toplevel; Dialog_Title: String; Width: Width_Range;
       Height: Height_Range) is
       X: Width_Range;
       Y: Height_Range;
    begin
-      Wm_Set(Dialog, "title", "{" & DialogTitle & "}");
+      Wm_Set(Dialog, "title", "{" & Dialog_Title & "}");
       Wm_Set(Dialog, "transient", ".");
       if Tcl_GetVar(Get_Context, "tcl_platform(os)") = "Linux" then
          Wm_Set(Dialog, "attributes", "-type dialog");
@@ -113,23 +113,23 @@ package body Utils.UI is
          Trim(Width_Range'Image(X), Both) & "+" &
          Trim(Height_Range'Image(Y), Both));
       Bind(Dialog, "<Destroy>", "{CloseDialog " & Value(Dialog.Name) & "}");
-   end SetDialog;
+   end Set_Dialog;
 
-   procedure AddCommand
-     (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
+   procedure Add_Command
+     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc) is
       Command: Tcl.Tcl_Command;
       Hunter_Add_Command_Exception: exception;
    begin
       Command :=
         CreateCommands.Tcl_CreateCommand
-          (Get_Context, Name, AdaCommand, 0, null);
+          (Get_Context, Name, Ada_Command, 0, null);
       if Command = null then
          raise Hunter_Add_Command_Exception
            with Mc(Get_Context, "{Can't add command}") & " " & Name;
       end if;
-   end AddCommand;
+   end Add_Command;
 
-   procedure ToggleToolButtons
+   procedure Toggle_Tool_Buttons
      (Action: Item_Actions; Finished: Boolean := False) is
       Toolbar: Ttk_Frame := Get_Widget(".mainframe.toolbars");
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
@@ -396,6 +396,6 @@ package body Utils.UI is
          end case;
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 0 -row 0 -columnspan 2");
       end if;
-   end ToggleToolButtons;
+   end Toggle_Tool_Buttons;
 
 end Utils.UI;
