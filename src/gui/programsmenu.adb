@@ -167,7 +167,7 @@ package body ProgramsMenu is
           (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree",
            Interp);
       Pid: Process_Id;
-      ExecutableName: constant String := FindExecutable("xdg-mime");
+      ExecutableName: constant String := Find_Executable("xdg-mime");
       ApplicationName: Unbounded_String;
       Button: constant Ttk_Button :=
         Get_Widget
@@ -314,11 +314,11 @@ package body ProgramsMenu is
       Tcl.Tk.Ada.Grid.Grid(ApplicationsView, "-column 0 -row 1 -sticky we");
       Tcl.Tk.Ada.Grid.Grid(ApplicationsYScroll, "-column 1 -row 1 -sticky ns");
       Row_Configure(ApplicationsFrame, ApplicationsView, "-weight 1");
-      AddCommand
+      Add_Command
         ("ToggleApplicationsMenu", Toggle_Applications_Menu_Command'Access);
-      AddCommand("SearchProgram", Search_Program_Command'Access);
-      AddCommand("SetApplication", Set_Application_Command'Access);
-      AddCommand("HideOnFocusOut", Hide_On_Focus_Out_Command'Access);
+      Add_Command("SearchProgram", Search_Program_Command'Access);
+      Add_Command("SetApplication", Set_Application_Command'Access);
+      Add_Command("HideOnFocusOut", Hide_On_Focus_Out_Command'Access);
       Bind(SearchEntry, "<KeyRelease>", "{SearchProgram}");
       Bind(SearchEntry, "<FocusOut>", "{HideOnFocusOut}");
       Bind(ApplicationsView, "<Double-1>", "{SetApplication}");

@@ -100,7 +100,7 @@ package body MoveItems is
          if not YesForAll then
             Overwrite := False;
          end if;
-         UpdateProgressBar;
+         Update_Progress_Bar;
       end loop Move_Items_Loop;
       MoveItemsList.Clear;
       if Settings.Show_Finished_Info then
@@ -128,7 +128,7 @@ package body MoveItems is
       OverwriteItem: Boolean := False;
    begin
       MoveItemsList.Delete(Index => 1);
-      UpdateProgressBar;
+      Update_Progress_Bar;
       return MoveSelected(OverwriteItem);
    end SkipMoving;
 

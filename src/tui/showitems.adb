@@ -194,7 +194,7 @@ package body ShowItems is
             declare
                ProcessDesc: Process_Descriptor;
                Result: Expect_Match;
-               ExecutableName: constant String := FindExecutable("xdg-mime");
+               ExecutableName: constant String := Find_Executable("xdg-mime");
                DesktopFile: Unbounded_String;
             begin
                if ExecutableName = "" then
@@ -358,7 +358,7 @@ package body ShowItems is
                PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 1);
                declare
                   ExecutableName: constant String :=
-                    FindExecutable("highlight", False);
+                    Find_Executable("highlight", False);
                   Success, FirstLine: Boolean;
                   File: File_Type;
                   FileLine: Unbounded_String := Null_Unbounded_String;

@@ -230,7 +230,7 @@ package body ShowItems is
             if MimeType(1 .. 4) = "text" then
                declare
                   ExecutableName: constant String :=
-                    FindExecutable("highlight", False);
+                    Find_Executable("highlight", False);
                   Success, FirstLine: Boolean;
                   File: File_Type;
                   FileLine, TagText, TagName: Unbounded_String;
@@ -593,7 +593,7 @@ package body ShowItems is
          declare
             ProcessDesc: Process_Descriptor;
             Result: Expect_Match;
-            ExecutableName: constant String := FindExecutable("xdg-mime");
+            ExecutableName: constant String := Find_Executable("xdg-mime");
             DesktopFile: Unbounded_String;
          begin
             if ExecutableName = "" then
@@ -1024,10 +1024,10 @@ package body ShowItems is
       CreatePermissionsFrame("owner", 5);
       CreatePermissionsFrame("group", 7);
       CreatePermissionsFrame("others", 9);
-      AddCommand("ShowSelected", Show_Selected_Command'Access);
-      AddCommand("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
-      AddCommand("SetPermissions", Set_Permissions_Command'Access);
-      AddCommand("GoToDirectory", GoToDirectory_Command'Access);
+      Add_Command("ShowSelected", Show_Selected_Command'Access);
+      Add_Command("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
+      Add_Command("SetPermissions", Set_Permissions_Command'Access);
+      Add_Command("GoToDirectory", GoToDirectory_Command'Access);
       Add
         (Button,
          Mc

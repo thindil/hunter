@@ -106,7 +106,7 @@ package body DeleteItems is
       end if;
       Delete_Items_Loop :
       for Item of Selected_Items loop
-         UpdateProgressBar;
+         Update_Progress_Bar;
          if Is_Directory(To_String(Item)) then
             Arguments(2) := new String'(To_String(Item));
             if Settings.Delete_Files or New_Action = DELETETRASH then
@@ -228,14 +228,14 @@ package body DeleteItems is
             exit Add_Items_To_Delete_Loop;
          end if;
       end loop Add_Items_To_Delete_Loop;
-      ToggleToolButtons(New_Action);
+      Toggle_Tool_Buttons(New_Action);
       ShowMessage(To_String(Message), "question");
       return TCL_OK;
    end Start_Deleting_Command;
 
    procedure CreateDeleteUI is
    begin
-      AddCommand("StartDeleting", Start_Deleting_Command'Access);
+      Add_Command("StartDeleting", Start_Deleting_Command'Access);
    end CreateDeleteUI;
 
 end DeleteItems;

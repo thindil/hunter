@@ -108,7 +108,7 @@ package body DeleteItems is
       end if;
       Delete_Items_Loop :
       for Item of SelectedItems loop
-         UpdateProgressBar;
+         Update_Progress_Bar;
          if Is_Directory
              (To_String(MainWindow.Current_Directory & "/" & Item)) then
             Arguments(2) :=

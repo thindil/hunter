@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -23,65 +23,65 @@ with MainWindow; use MainWindow;
 package Utils.UI is
 -- ****
 
-   -- ****f* Utils/Utils.FindExecutable
+   -- ****f* Utils/Utils.Find_Executable
    -- FUNCTION
    -- Find executable file with selected name in this same directory where
    -- the program is or in PATH variable
    -- PARAMETERS
-   -- Name           - Name of executable file to find
-   -- DisplayMessage - If true, show message that executable cannot be found.
-   --                  Default value is true.
+   -- Name            - Name of executable file to find
+   -- Display_Message - If true, show message that executable cannot be found.
+   --                   Default value is true.
    -- RESULT
    -- Full path to the executable file or empty string and show message if
    -- file could not be found.
    -- SOURCE
-   function FindExecutable
-     (Name: String; DisplayMessage: Boolean := True) return String;
+   function Find_Executable
+     (Name: String; Display_Message: Boolean := True) return String;
    -- ****
 
-   -- ****f* Utils/Utils.SetProgressBar
+   -- ****f* Utils/Utils.Set_Progress_Bar
    -- FUNCTION
    -- Set values for progress bar and show it to the user
    -- PARAMETERS
    -- Amount - Max amount of items - will be used to count progress
    -- SOURCE
-   procedure SetProgressBar(Amount: Positive);
+   procedure Set_Progress_Bar(Amount: Positive);
    -- ****
 
-   -- ****f* Utils/Utils.UpdateProgressBar
+   -- ****f* Utils/Utils.Update_Progress_Bar
    -- FUNCTION
    -- Update fraction of the progress bar
    -- SOURCE
-   procedure UpdateProgressBar;
+   procedure Update_Progress_Bar;
    -- ****
 
-   -- ****f* Utils/Utils.SetDialog
+   -- ****f* Utils/Utils.Set_Dialog
    -- FUNCTION
    -- Set the selected dialog
    -- PARAMETERS
-   -- Dialog      - Tk_Toplevel dialog to set
-   -- DialogTitle - Title for the selected dialog
-   -- Width       - Desired width for the selected dialog
-   -- Height      - Desired height for the selected dialog
+   -- Dialog       - Tk_Toplevel dialog to set
+   -- Dialog_Title - Title for the selected dialog
+   -- Width        - Desired width for the selected dialog
+   -- Height       - Desired height for the selected dialog
    -- SOURCE
-   procedure SetDialog
-     (Dialog: Tk_Toplevel; DialogTitle: String; Width: Width_Range;
+   procedure Set_Dialog
+     (Dialog: Tk_Toplevel; Dialog_Title: String; Width: Width_Range;
       Height: Height_Range);
    -- ****
 
-   -- ****f* Utils/Utils.AddCommand
+   -- ****f* Utils/Utils.Add_Command
    -- FUNCTION
    -- Add command to the Tcl interpreter
    -- PARAMETERS
-   -- Name       - Name of the Tcl command which will be used to invoke the
-   --              Ada code
-   -- AdaCommand - Ada function which will be invoked
+   -- Name        - Name of the Tcl command which will be used to invoke the
+   --               Ada code
+   -- Ada_Command - Ada function which will be invoked
    -- SOURCE
-   procedure AddCommand
-     (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc);
+   procedure Add_Command
+     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc);
    -- ****
 
-   -- ****f* Utils/Utils.ToggleToolButtons
+   -- ****f* Utils/Utils.Toggle_Tool_Buttons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with
    -- files or directories
@@ -89,7 +89,7 @@ package Utils.UI is
    -- Action   - Action on files or directories started or finished.
    -- Finished - If true, action was finished. Default is False
    -- SOURCE
-   procedure ToggleToolButtons
+   procedure Toggle_Tool_Buttons
      (Action: Item_Actions; Finished: Boolean := False);
    -- ****
 

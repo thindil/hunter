@@ -152,8 +152,8 @@ package body SearchItems is
 
    procedure CreateSearchUI is
    begin
-      AddCommand("ToggleSearch", Toggle_Search_Command'Access);
-      AddCommand("Search", Search_Command'Access);
+      Add_Command("ToggleSearch", Toggle_Search_Command'Access);
+      Add_Command("Search", Search_Command'Access);
    end CreateSearchUI;
 
 end SearchItems;

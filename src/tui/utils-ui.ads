@@ -22,7 +22,7 @@ with MainWindow; use MainWindow;
 package Utils.UI is
 -- ****
 
-   -- ****f* UtilsTUI/UtilsTUI.FindExecutable
+   -- ****f* UtilsTUI/UtilsTUI.Find_Executable
    -- FUNCTION
    -- Find executable file with selected name in this same directory where
    -- the program is or in PATH variable
@@ -34,39 +34,39 @@ package Utils.UI is
    -- Full path to the executable file or empty string and show message if
    -- file could not be found.
    -- SOURCE
-   function FindExecutable
-     (Name: String; DisplayMessage: Boolean := True) return String;
+   function Find_Executable
+     (Name: String; Display_Message: Boolean := True) return String;
    -- ****
 
-   -- ****f* UtilsTUI/UtilsTUI.SetProgressBar
+   -- ****f* UtilsTUI/UtilsTUI.Set_ProgressBar
    -- FUNCTION
    -- Set values for progress bar and show it to the user
    -- PARAMETERS
    -- Amount - Max amount of items - will be used to count progress
    -- SOURCE
-   procedure SetProgressBar(Amount: Positive);
+   procedure Set_Progress_Bar(Amount: Positive);
    -- ****
 
-   -- ****f* UtilsTUI/UtilsTUI.UpdateProgressBar
+   -- ****f* UtilsTUI/UtilsTUI.Update_Progress_Bar
    -- FUNCTION
    -- Update fraction of the progress bar
    -- SOURCE
-   procedure UpdateProgressBar;
+   procedure Update_Progress_Bar;
    -- ****
 
-   -- ****f* UtilsTUI/UtilsTUI.AddCommand
+   -- ****f* UtilsTUI/UtilsTUI.Add_Command
    -- FUNCTION
    -- Add command to the Tcl interpreter
    -- PARAMETERS
-   -- Name       - Name of the Tcl command which will be used to invoke the
-   --              Ada code
-   -- AdaCommand - Ada function which will be invoked
+   -- Name        - Name of the Tcl command which will be used to invoke the
+   --               Ada code
+   -- Ada_Command - Ada function which will be invoked
    -- SOURCE
-   procedure AddCommand
-     (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc);
+   procedure Add_Command
+     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc);
    -- ****
 
-   -- ****f* UtilsTUI/UtilsTUI.ToggleToolButtons
+   -- ****f* UtilsTUI/UtilsTUI.Toggle_Tool_Buttons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with
    -- files or directories
@@ -74,7 +74,7 @@ package Utils.UI is
    -- Action   - Action on files or directories started or finished.
    -- Finished - If true, action was finished. Default is False
    -- SOURCE
-   procedure ToggleToolButtons
+   procedure Toggle_Tool_Buttons
      (Action: ItemActions; Finished: Boolean := False);
    -- ****
 

@@ -95,7 +95,7 @@ package body RenameItems is
          Focus(TextEntry);
          Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
          New_Action := RENAME;
-         ToggleToolButtons(New_Action);
+         Toggle_Tool_Buttons(New_Action);
       else
          if Invoke(Button) /= "" then
             raise Hunter_Rename_Exception
@@ -176,8 +176,8 @@ package body RenameItems is
 
    procedure CreateRenameUI is
    begin
-      AddCommand("ToggleRename", Toggle_Rename_Command'Access);
-      AddCommand("Rename", Rename_Command'Access);
+      Add_Command("ToggleRename", Toggle_Rename_Command'Access);
+      Add_Command("Rename", Rename_Command'Access);
    end CreateRenameUI;
 
 end RenameItems;

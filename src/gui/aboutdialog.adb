@@ -135,7 +135,7 @@ package body AboutDialog is
          "-text {" & Mc(Interp, "Translators") & "}");
       Tcl.Tk.Ada.Grid.Grid(CloseButton, "-columnspan 2");
       Bind(AboutDialog, "<Alt-c>", "{CloseDialog " & AboutDialog & "}");
-      SetDialog(AboutDialog, Mc(Interp, "{Hunter - About}"), Width, Height);
+      Set_Dialog(AboutDialog, Mc(Interp, "{Hunter - About}"), Width, Height);
       return TCL_OK;
    end Show_About_Command;
 
@@ -186,8 +186,8 @@ package body AboutDialog is
 
    procedure CreateAboutUI is
    begin
-      AddCommand("ShowAbout", Show_About_Command'Access);
-      AddCommand("OpenLink", Open_Link_Command'Access);
+      Add_Command("ShowAbout", Show_About_Command'Access);
+      Add_Command("OpenLink", Open_Link_Command'Access);
    end CreateAboutUI;
 
 end AboutDialog;

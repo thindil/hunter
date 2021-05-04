@@ -208,7 +208,7 @@ package body MainWindow.Commands is
          State(Button, "!selected");
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
-         ToggleToolButtons(New_Action, True);
+         Toggle_Tool_Buttons(New_Action, True);
          if New_Action = CREATELINK then
             New_Action := COPY;
             ShowPreview;
@@ -352,7 +352,7 @@ package body MainWindow.Commands is
       pragma Unreferenced(ClientData, Argc, Argv);
       ActionButton: Ttk_Button;
    begin
-      ToggleToolButtons(New_Action, True);
+      Toggle_Tool_Buttons(New_Action, True);
       ActionButton.Interp := Interp;
       if New_Action = COPY then
          CopyItemsList.Clear;
@@ -568,14 +568,14 @@ package body MainWindow.Commands is
 
    procedure AddCommands is
    begin
-      AddCommand("Sort", Sort_Command'Access);
-      AddCommand("HideWidget", Hide_Widget_Command'Access);
-      AddCommand("ToggleSelection", Toggle_Selection_Command'Access);
-      AddCommand("ArrangePath", Arrange_Path_Command'Access);
-      AddCommand("CancelAction", Cancel_Action_Command'Access);
-      AddCommand("ShowFileMenu", Show_File_Menu_Command'Access);
-      AddCommand("ShowFile", Show_File_Command'Access);
-      AddCommand("InvokeButton", Invoke_Button_Command'Access);
+      Add_Command("Sort", Sort_Command'Access);
+      Add_Command("HideWidget", Hide_Widget_Command'Access);
+      Add_Command("ToggleSelection", Toggle_Selection_Command'Access);
+      Add_Command("ArrangePath", Arrange_Path_Command'Access);
+      Add_Command("CancelAction", Cancel_Action_Command'Access);
+      Add_Command("ShowFileMenu", Show_File_Menu_Command'Access);
+      Add_Command("ShowFile", Show_File_Command'Access);
+      Add_Command("InvokeButton", Invoke_Button_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
    end AddCommands;
 

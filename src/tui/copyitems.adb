@@ -95,7 +95,7 @@ package body CopyItems is
       else
          CopyFile(Name);
       end if;
-      UpdateProgressBar;
+      Update_Progress_Bar;
    end CopyItem;
 
    function CopySelected(Overwrite: in out Boolean) return UI_Locations is
@@ -158,7 +158,7 @@ package body CopyItems is
       OverwriteItem: Boolean := False;
    begin
       CopyItemsList.Delete(Index => 1);
-      UpdateProgressBar;
+      Update_Progress_Bar;
       return CopySelected(OverwriteItem);
    end SkipCopying;
 

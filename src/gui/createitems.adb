@@ -92,7 +92,7 @@ package body CreateItems is
          New_Action := CREATELINK;
          ShowDestination;
       end if;
-      ToggleToolButtons(New_Action);
+      Toggle_Tool_Buttons(New_Action);
       return TCL_OK;
    end Show_Create_Command;
 
@@ -189,14 +189,14 @@ package body CreateItems is
       if Invoke(Button) /= "" then
          return TCL_ERROR;
       end if;
-      ToggleToolButtons(New_Action, True);
+      Toggle_Tool_Buttons(New_Action, True);
       return TCL_OK;
    end Create_Command;
 
    procedure CreateCreateUI is
    begin
-      AddCommand("ShowCreate", Show_Create_Command'Access);
-      AddCommand("Create", Create_Command'Access);
+      Add_Command("ShowCreate", Show_Create_Command'Access);
+      Add_Command("Create", Create_Command'Access);
    end CreateCreateUI;
 
 end CreateItems;

@@ -132,7 +132,9 @@ package body MainWindow is
       Update_Directory_List(True);
    end CreateMainWindow;
 
-   procedure Update_Directory_List(Clear: Boolean := False) is
+   procedure Update_Directory_List
+     (Clear: Boolean := False; Search_For: String := "") is
+      pragma Unreferenced(Search_For);
       Menu_Items: constant Item_Array_Access :=
         new Item_Array(ItemsList.First_Index .. ItemsList.Last_Index + 1);
       Index: Positive;

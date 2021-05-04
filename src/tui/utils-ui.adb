@@ -30,8 +30,8 @@ package body Utils.UI is
    ProgressIndex: Natural;
    -- ****
 
-   function FindExecutable
-     (Name: String; DisplayMessage: Boolean := True) return String is
+   function Find_Executable
+     (Name: String; Display_Message: Boolean := True) return String is
       ExecutablePath: GNAT.OS_Lib.String_Access;
    begin
       if Exists(Containing_Directory(Command_Name) & "/" & Name) then
@@ -39,44 +39,44 @@ package body Utils.UI is
       end if;
       ExecutablePath := Locate_Exec_On_Path(Name);
       if ExecutablePath = null then
-         if DisplayMessage then
+         if Display_Message then
             ShowMessage
               (Mc(Interpreter, "{Could not found executable:}") & " " & Name);
          end if;
          return "";
       end if;
       return ExecutablePath.all;
-   end FindExecutable;
+   end Find_Executable;
 
-   procedure SetProgressBar(Amount: Positive) is
+   procedure Set_Progress_Bar(Amount: Positive) is
       pragma Unreferenced(Amount);
    begin
       ProgressIndex := 0;
-   end SetProgressBar;
+   end Set_Progress_Bar;
 
-   procedure UpdateProgressBar is
+   procedure Update_Progress_Bar is
    begin
       ProgressIndex := ProgressIndex + 1;
-   end UpdateProgressBar;
+   end Update_Progress_Bar;
 
-   procedure AddCommand
-     (Name: String; AdaCommand: not null CreateCommands.Tcl_CmdProc) is
+   procedure Add_Command
+     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc) is
       Command: Tcl.Tcl_Command;
       Hunter_Add_Command_Exception: exception;
    begin
       Command :=
         CreateCommands.Tcl_CreateCommand
-          (Interpreter, Name, AdaCommand, 0, null);
+          (Interpreter, Name, Ada_Command, 0, null);
       if Command = null then
          raise Hunter_Add_Command_Exception
            with Mc(Interpreter, "{Can't add command}") & " " & Name;
       end if;
-   end AddCommand;
+   end Add_Command;
 
-   procedure ToggleToolButtons
+   procedure Toggle_Tool_Buttons
      (Action: ItemActions; Finished: Boolean := False) is
    begin
       null;
-   end ToggleToolButtons;
+   end Toggle_Tool_Buttons;
 
 end Utils.UI;
