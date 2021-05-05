@@ -40,50 +40,50 @@ with Preferences; use Preferences;
 
 package body Utils.UI is
 
-   -- ****iv* Utils/Utils.ProgressIndex
+   -- ****iv* Utils/Utils.Progress_Index
    -- FUNCTION
    -- Currrent index of item
    -- SOURCE
-   ProgressIndex: Natural;
+   Progress_Index: Natural;
    -- ****
 
    function Find_Executable
      (Name: String; Display_Message: Boolean := True) return String is
-      ExecutablePath: GNAT.OS_Lib.String_Access;
+      Executable_Path: GNAT.OS_Lib.String_Access;
    begin
       if Exists(Containing_Directory(Command_Name) & "/" & Name) then
          return Containing_Directory(Command_Name) & "/" & Name;
       end if;
-      ExecutablePath := Locate_Exec_On_Path(Name);
-      if ExecutablePath = null then
+      Executable_Path := Locate_Exec_On_Path(Name);
+      if Executable_Path = null then
          if Display_Message then
             ShowMessage
               (Mc(Get_Context, "{Could not found executable:}") & " " & Name);
          end if;
          return "";
       end if;
-      return ExecutablePath.all;
+      return Executable_Path.all;
    end Find_Executable;
 
    procedure Set_Progress_Bar(Amount: Positive) is
-      ProgressBar: constant Ttk_ProgressBar :=
-        Get_Widget(".mainframe.progressbar");
+      Progress_Bar: constant Ttk_ProgressBar :=
+        Get_Widget(".mainframe.Progress_Bar");
    begin
       configure
-        (ProgressBar, "-maximum" & Positive'Image(Amount) & " -value 0");
-      ProgressIndex := 0;
+        (Progress_Bar, "-maximum" & Positive'Image(Amount) & " -value 0");
+      Progress_Index := 0;
       Tcl.Tk.Ada.Grid.Grid
-        (ProgressBar, "-column 0 -row 1 -sticky we -columnspan 2");
+        (Progress_Bar, "-column 0 -row 1 -sticky we -columnspan 2");
    end Set_Progress_Bar;
 
    procedure Update_Progress_Bar is
-      ProgressBar: constant Ttk_ProgressBar :=
-        Get_Widget(".mainframe.progressbar");
+      Progress_Bar: constant Ttk_ProgressBar :=
+        Get_Widget(".mainframe.Progress_Bar");
    begin
-      ProgressIndex := ProgressIndex + 1;
-      configure(ProgressBar, "-value" & Natural'Image(ProgressIndex));
-      if cget(ProgressBar, "-value") = cget(ProgressBar, "-maximum") then
-         Grid_Remove(ProgressBar);
+      Progress_Index := Progress_Index + 1;
+      configure(Progress_Bar, "-value" & Natural'Image(Progress_Index));
+      if cget(Progress_Bar, "-value") = cget(Progress_Bar, "-maximum") then
+         Grid_Remove(Progress_Bar);
       end if;
    end Update_Progress_Bar;
 
