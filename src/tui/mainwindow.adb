@@ -134,7 +134,6 @@ package body MainWindow is
 
    procedure Update_Directory_List
      (Clear: Boolean := False; Search_For: String := "") is
-      pragma Unreferenced(Search_For);
       Menu_Items: constant Item_Array_Access :=
         new Item_Array(ItemsList.First_Index .. ItemsList.Last_Index + 1);
       Index: Positive;
@@ -185,7 +184,13 @@ package body MainWindow is
       begin
          Load_Directory_View_Loop :
          for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            if not Settings.Show_Hidden and ItemsList(I).IsHidden then
+            if not Settings.Show_Hidden and then ItemsList(I).IsHidden then
+               goto End_Of_Loop;
+            end if;
+            if Search_For'Length > 0
+              and then
+                Ada.Strings.Unbounded.Index(ItemsList(I).Name, Search_For) =
+                0 then
                goto End_Of_Loop;
             end if;
             Move(To_String(ItemsList(I).Name), Item_Entry);
