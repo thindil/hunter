@@ -31,13 +31,6 @@ with RefreshData; use RefreshData;
 
 package body Bookmarks is
 
-   -- ****iv* BookmarksTUI/BookmarksTUI.BookmarksList
-   -- FUNCTION
-   -- List of all bookmarked locations
-   -- SOURCE
-   BookmarksList: Bookmarks_Container.Map;
-   -- ****
-
    procedure Create_Bookmarks_List is
       XDGBookmarks: constant array(1 .. 7) of Unbounded_String :=
         (To_Unbounded_String("XDG_DESKTOP_DIR"),
