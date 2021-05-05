@@ -359,6 +359,7 @@ package body MainWindow is
       MenuHeight: Line_Position;
       MenuLength: Column_Position;
       Selected_Amount: Natural := 0;
+      Bookmark_Exists: Boolean := False;
    begin
       case Menu_Type is
          when ACTIONS_MENU =>
@@ -375,11 +376,26 @@ package body MainWindow is
          when BOOKMARKS_MENU =>
             Menu_Items := Show_Bookmarks_Menu;
          when SELECTED_MENU =>
-            Menu_Items := new Item_Array(1 .. 4);
+            if Is_Directory(To_String(Current_Selected)) then
+               Menu_Items := new Item_Array(1 .. 5);
+            else
+               Menu_Items := new Item_Array(1 .. 4);
+            end if;
             Menu_Items.all(1) := New_Item("Preview");
             Menu_Items.all(2) := New_Item("Information");
-            Menu_Items.all(3) := New_Item("Close");
-            Menu_Items.all(4) := Null_Item;
+            for Bookmark of BookmarksList loop
+               if Bookmark = Current_Selected then
+                  Bookmark_Exists := True;
+                  exit;
+               end if;
+            end loop;
+            if Bookmark_Exists then
+               Menu_Items.all(3) := New_Item("Remove bookmark");
+            elsif Is_Directory(To_String(Current_Selected)) then
+               Menu_Items.all(3) := New_Item("Add bookmark");
+            end if;
+            Menu_Items.all(Menu_Items'Last - 1) := New_Item("Close");
+            Menu_Items.all(Menu_Items'Last) := Null_Item;
          when VIEW_MENU =>
             Menu_Items := new Item_Array(1 .. 4);
             Count_Selected_Loop :
