@@ -634,6 +634,7 @@ package body MainWindow is
    function Selected_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       Visibility: Cursor_Visibility := Normal;
+      New_Location: UI_Locations := PREVIEW;
    begin
       case Key is
          when KEY_UP =>
@@ -653,11 +654,11 @@ package body MainWindow is
                   Set_Cursor_Visibility(Visibility);
                   ShowInfo;
                when others =>
-                  null;
+                  New_Location := DIRECTORY_VIEW;
             end case;
             Post(SubMenu, False);
             Delete(SubMenu);
-            return PREVIEW;
+            return New_Location;
          when others =>
             null;
       end case;
