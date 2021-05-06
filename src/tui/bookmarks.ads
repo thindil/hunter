@@ -80,4 +80,18 @@ package Bookmarks is
    function Bookmarks_Form_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* BookmarksTUI/BookmarksTUI.Add_Bookmark
+   -- FUNCTION
+   -- Add the currently selected directory as a new the program's bookmark
+   -- SOURCE
+   procedure Add_Bookmark;
+   -- ****
+
+   -- ****f* BookmarksTUI/BookmarksTUI.Remove_Bookmark
+   -- FUNCTION
+   -- Remove the currently selected directory from the program's booksmark list
+   -- SOURCE
+   procedure Remove_Bookmark;
+   -- ****
+
 end Bookmarks;
