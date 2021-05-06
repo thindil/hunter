@@ -266,4 +266,49 @@ package body Bookmarks is
       return BOOKMARKS_FORM;
    end Bookmarks_Form_Keys;
 
+   procedure Add_Bookmark is
+      File: File_Type;
+   begin
+      if Ada.Directories.Exists
+          (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
+         Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      else
+         Create
+           (File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      end if;
+      Put_Line(File, "file://" & Current_Selected);
+      Close(File);
+      Create_Bookmarks_List;
+   end Add_Bookmark;
+
+   procedure Remove_Bookmark is
+      NewFile, OldFile: File_Type;
+      Line, Path: Unbounded_String;
+      Added: Boolean := False;
+   begin
+      Rename
+        (Value("HOME") & "/.config/gtk-3.0/bookmarks",
+         Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Open(OldFile, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Create(NewFile, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      Update_Bookmarks_Loop :
+      while not End_Of_File(OldFile) loop
+         Line := Get_Line(OldFile);
+         if Length(Line) > 7 and then Slice(Line, 1, 7) = "file://" then
+            Path := Unbounded_Slice(Line, 8, Length(Line));
+            if Path /= Current_Selected then
+               Put_Line(NewFile, Line);
+               Added := True;
+            end if;
+         end if;
+      end loop Update_Bookmarks_Loop;
+      Close(NewFile);
+      Close(OldFile);
+      Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      if not Added then
+         Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      end if;
+      Create_Bookmarks_List;
+   end Remove_Bookmark;
+
 end Bookmarks;
