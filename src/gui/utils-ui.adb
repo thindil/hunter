@@ -51,14 +51,20 @@ package body Utils.UI is
      (Name: String; Display_Message: Boolean := True) return String is
       Executable_Path: GNAT.OS_Lib.String_Access;
    begin
-      if Exists(Containing_Directory(Command_Name) & "/" & Name) then
-         return Containing_Directory(Command_Name) & "/" & Name;
+      if Exists
+          (Name =>
+             Containing_Directory(Name => Command_Name) & "/" & Name) then
+         return Containing_Directory(Name => Command_Name) & "/" & Name;
       end if;
-      Executable_Path := Locate_Exec_On_Path(Name);
+      Executable_Path := Locate_Exec_On_Path(Exec_Name => Name);
       if Executable_Path = null then
          if Display_Message then
             ShowMessage
-              (Mc(Get_Context, "{Could not found executable:}") & " " & Name);
+              (Message =>
+                 Mc
+                   (Interp => Get_Context,
+                    Src_String => "{Could not found executable:}") &
+                 " " & Name);
          end if;
          return "";
       end if;
@@ -67,18 +73,20 @@ package body Utils.UI is
 
    procedure Set_Progress_Bar(Amount: Positive) is
       Progress_Bar: constant Ttk_ProgressBar :=
-        Get_Widget(".mainframe.Progress_Bar");
+        Get_Widget(pathName => ".mainframe.Progress_Bar");
    begin
       configure
-        (Progress_Bar, "-maximum" & Positive'Image(Amount) & " -value 0");
+        (Widgt => Progress_Bar,
+         options => "-maximum" & Positive'Image(Amount) & " -value 0");
       Progress_Index := 0;
       Tcl.Tk.Ada.Grid.Grid
-        (Progress_Bar, "-column 0 -row 1 -sticky we -columnspan 2");
+        (Slave => Progress_Bar,
+         Options => "-column 0 -row 1 -sticky we -columnspan 2");
    end Set_Progress_Bar;
 
    procedure Update_Progress_Bar is
       Progress_Bar: constant Ttk_ProgressBar :=
-        Get_Widget(".mainframe.Progress_Bar");
+        Get_Widget(pathName => ".mainframe.Progress_Bar");
    begin
       Progress_Index := Progress_Index + 1;
       configure(Progress_Bar, "-value" & Natural'Image(Progress_Index));
