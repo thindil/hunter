@@ -653,6 +653,13 @@ package body MainWindow is
                when 2 =>
                   Set_Cursor_Visibility(Visibility);
                   ShowInfo;
+               when 3 =>
+                  if Name(Current(SubMenu)) = "Add bookmark" then
+                     Add_Bookmark;
+                  else
+                     Remove_Bookmark;
+                  end if;
+                  New_Location := DIRECTORY_VIEW;
                when others =>
                   New_Location := DIRECTORY_VIEW;
             end case;
