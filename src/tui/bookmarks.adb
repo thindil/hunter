@@ -64,6 +64,7 @@ package body Bookmarks is
          return To_Unbounded_String(Expand_Path(Value(Name)));
       end GetXDGDirectory;
    begin
+      BookmarksList.Clear;
       Set_XDGBookmarks_List_Loop :
       for I in XDGBookmarks'Range loop
          Path := GetXDGDirectory(To_String(XDGBookmarks(I)));
