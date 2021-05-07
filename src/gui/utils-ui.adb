@@ -71,23 +71,20 @@ package body Utils.UI is
       return Executable_Path.all;
    end Find_Executable;
 
-   procedure Set_Progress_Bar(Amount: Positive) is
+   procedure Update_Progress_Bar(Amount: Natural := 0) is
       Progress_Bar: constant Ttk_ProgressBar :=
         Get_Widget(pathName => ".mainframe.Progress_Bar");
    begin
-      configure
-        (Widgt => Progress_Bar,
-         options => "-maximum" & Positive'Image(Amount) & " -value 0");
-      Progress_Index := 0;
-      Tcl.Tk.Ada.Grid.Grid
-        (Slave => Progress_Bar,
-         Options => "-column 0 -row 1 -sticky we -columnspan 2");
-   end Set_Progress_Bar;
-
-   procedure Update_Progress_Bar is
-      Progress_Bar: constant Ttk_ProgressBar :=
-        Get_Widget(pathName => ".mainframe.Progress_Bar");
-   begin
+      if Amount > 0 then
+         configure
+            (Widgt => Progress_Bar,
+            options => "-maximum" & Positive'Image(Amount) & " -value 0");
+         Progress_Index := 0;
+         Tcl.Tk.Ada.Grid.Grid
+            (Slave => Progress_Bar,
+            Options => "-column 0 -row 1 -sticky we -columnspan 2");
+         return;
+      end if;
       Progress_Index := Progress_Index + 1;
       configure(Progress_Bar, "-value" & Natural'Image(Progress_Index));
       if cget(Progress_Bar, "-value") = cget(Progress_Bar, "-maximum") then

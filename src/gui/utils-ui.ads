@@ -37,22 +37,17 @@ package Utils.UI is
    -- SOURCE
    function Find_Executable
      (Name: String; Display_Message: Boolean := True) return String;
-   -- ****
+     -- ****
 
-   -- ****f* Utils/Utils.Set_Progress_Bar
-   -- FUNCTION
-   -- Set values for progress bar and show it to the user
-   -- PARAMETERS
-   -- Amount - Max amount of items - will be used to count progress
-   -- SOURCE
-   procedure Set_Progress_Bar(Amount: Positive);
-   -- ****
-
-   -- ****f* Utils/Utils.Update_Progress_Bar
-   -- FUNCTION
-   -- Update fraction of the progress bar
-   -- SOURCE
-   procedure Update_Progress_Bar;
+     -- ****f* Utils/Utils.Update_Progress_Bar
+     -- FUNCTION
+     -- Update fraction of the progress bar or set it maximum value and show it
+     -- to the user
+     -- PARAMETERS
+     -- Amount - The maximum value for the progress bar. Will be used to count
+     --          the progress
+     -- SOURCE
+   procedure Update_Progress_Bar(Amount: Natural := 0);
    -- ****
 
    -- ****f* Utils/Utils.Set_Dialog

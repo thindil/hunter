@@ -96,7 +96,7 @@ package body MoveItems is
          return TCL_OK;
       end if;
       New_Action := MOVE;
-      Set_Progress_Bar(Positive(MoveItemsList.Length));
+      Update_Progress_Bar(Positive(MoveItemsList.Length));
       MoveSelected(OverwriteItem);
       return TCL_OK;
    end Move_Data_Command;
