@@ -104,7 +104,7 @@ package body Messages is
       case New_Action is
          when DELETE | CLEARTRASH | DELETETRASH =>
             if New_Action /= CLEARTRASH then
-               Set_Progress_Bar(Positive(Selected_Items.Length));
+               Update_Progress_Bar(Positive(Selected_Items.Length));
             end if;
             if Response = "yes" then
                begin

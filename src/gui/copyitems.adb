@@ -94,7 +94,7 @@ package body CopyItems is
          return TCL_OK;
       end if;
       New_Action := COPY;
-      Set_Progress_Bar(Positive(CopyItemsList.Length));
+      Update_Progress_Bar(Positive(CopyItemsList.Length));
       CopySelected(OverwriteItem);
       return TCL_OK;
    end Copy_Data_Command;
