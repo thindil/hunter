@@ -200,6 +200,7 @@ package body Bookmarks is
          return BOOKMARKS_FORM;
       end if;
       LoadDirectory(To_String(MainWindow.Current_Directory));
+      UILocation := DIRECTORY_VIEW;
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       Execute_Modules
