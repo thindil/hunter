@@ -77,18 +77,21 @@ package body Utils.UI is
    begin
       if Amount > 0 then
          configure
-            (Widgt => Progress_Bar,
+           (Widgt => Progress_Bar,
             options => "-maximum" & Positive'Image(Amount) & " -value 0");
          Progress_Index := 0;
          Tcl.Tk.Ada.Grid.Grid
-            (Slave => Progress_Bar,
+           (Slave => Progress_Bar,
             Options => "-column 0 -row 1 -sticky we -columnspan 2");
          return;
       end if;
       Progress_Index := Progress_Index + 1;
-      configure(Progress_Bar, "-value" & Natural'Image(Progress_Index));
-      if cget(Progress_Bar, "-value") = cget(Progress_Bar, "-maximum") then
-         Grid_Remove(Progress_Bar);
+      configure
+        (Widgt => Progress_Bar,
+         options => "-value" & Natural'Image(Progress_Index));
+      if cget(Widgt => Progress_Bar, option => "-value") =
+        cget(Widgt => Progress_Bar, option => "-maximum") then
+         Grid_Remove(Slave => Progress_Bar);
       end if;
    end Update_Progress_Bar;
 
@@ -98,12 +101,20 @@ package body Utils.UI is
       X: Width_Range;
       Y: Height_Range;
    begin
-      Wm_Set(Dialog, "title", "{" & Dialog_Title & "}");
-      Wm_Set(Dialog, "transient", ".");
-      if Tcl_GetVar(Get_Context, "tcl_platform(os)") = "Linux" then
-         Wm_Set(Dialog, "attributes", "-type dialog");
+      Wm_Set
+        (Widgt => Dialog, Action => "title",
+         Options => "{" & Dialog_Title & "}");
+      Wm_Set(Widgt => Dialog, Action => "transient", Options => ".");
+      if Tcl_GetVar(interp => Get_Context, varName => "tcl_platform(os)") =
+        "Linux" then
+         Wm_Set
+           (Widgt => Dialog, Action => "attributes",
+            Options => "-type dialog");
       end if;
-      X := (Width_Range'Value(Winfo_Get(Dialog, "vrootwidth")) - Width) / 2;
+      X :=
+        (Width_Range'Value(Winfo_Get(Widgt => Dialog, Info => "vrootwidth")) -
+         Width) /
+        2;
       if X < 0 then
          X := 0;
       end if;
