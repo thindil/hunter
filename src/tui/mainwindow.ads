@@ -84,12 +84,13 @@ package MainWindow is
    -- PROGRAMS_MENU    - The list of applications to use with item
    -- VIEW_MENU        - Select/deselect/search items in the directory view
    -- SEARCH_FORM      - The search entry form
+   -- EXECUTE_FORM     - The execute item with command form
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
       CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
       DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM,
-      SELECTED_MENU, PROGRAMS_MENU, VIEW_MENU, SEARCH_FORM);
+      SELECTED_MENU, PROGRAMS_MENU, VIEW_MENU, SEARCH_FORM, EXECUTE_FORM);
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.UILocation
