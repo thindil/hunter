@@ -21,6 +21,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
 with ActivateItems;
+with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
 with CreateItems; use CreateItems;
 with CopyItems; use CopyItems;
@@ -377,12 +378,13 @@ package body MainWindow is
             Menu_Items := Show_Bookmarks_Menu;
          when SELECTED_MENU =>
             if Is_Directory(To_String(Current_Selected)) then
-               Menu_Items := new Item_Array(1 .. 5);
+               Menu_Items := new Item_Array(1 .. 6);
             else
-               Menu_Items := new Item_Array(1 .. 4);
+               Menu_Items := new Item_Array(1 .. 5);
             end if;
             Menu_Items.all(1) := New_Item("Preview");
             Menu_Items.all(2) := New_Item("Information");
+            Menu_Items.all(3) := New_Item("Execute with");
             for Bookmark of BookmarksList loop
                if Bookmark = Current_Selected then
                   Bookmark_Exists := True;
@@ -390,9 +392,9 @@ package body MainWindow is
                end if;
             end loop;
             if Bookmark_Exists then
-               Menu_Items.all(3) := New_Item("Remove bookmark");
+               Menu_Items.all(4) := New_Item("Remove bookmark");
             elsif Is_Directory(To_String(Current_Selected)) then
-               Menu_Items.all(3) := New_Item("Add bookmark");
+               Menu_Items.all(4) := New_Item("Add bookmark");
             end if;
             Menu_Items.all(Menu_Items'Last - 1) := New_Item("Close");
             Menu_Items.all(Menu_Items'Last) := Null_Item;
@@ -654,6 +656,9 @@ package body MainWindow is
                   Set_Cursor_Visibility(Visibility);
                   ShowInfo;
                when 3 =>
+                  Show_Execute_With_Dialog;
+                  New_Location := EXECUTE_FORM;
+               when 4 =>
                   if Name(Current(SubMenu)) = "Add bookmark" then
                      Add_Bookmark;
                   else

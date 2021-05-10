@@ -27,6 +27,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
 with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
@@ -241,6 +242,8 @@ begin
                UILocation := View_Keys(Key);
             when SEARCH_FORM =>
                UILocation := Search_Form_Keys(Key);
+            when EXECUTE_FORM =>
+               UILocation := Execute_Form_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;
