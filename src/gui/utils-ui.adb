@@ -118,17 +118,24 @@ package body Utils.UI is
       if X < 0 then
          X := 0;
       end if;
-      Y := (Height_Range'Value(Winfo_Get(Dialog, "vrootheight")) - Height) / 2;
+      Y :=
+        (Height_Range'Value
+           (Winfo_Get(Widgt => Dialog, Info => "vrootheight")) -
+         Height) /
+        2;
       if Y < 0 then
          Y := 0;
       end if;
       Wm_Set
-        (Dialog, "geometry",
-         Trim(Width_Range'Image(Width), Both) & "x" &
-         Trim(Height_Range'Image(Height), Both) & "+" &
-         Trim(Width_Range'Image(X), Both) & "+" &
-         Trim(Height_Range'Image(Y), Both));
-      Bind(Dialog, "<Destroy>", "{CloseDialog " & Value(Dialog.Name) & "}");
+        (Widgt => Dialog, Action => "geometry",
+         Options =>
+           Trim(Source => Width_Range'Image(Width), Side => Both) & "x" &
+           Trim(Source => Height_Range'Image(Height), Side => Both) & "+" &
+           Trim(Source => Width_Range'Image(X), Side => Both) & "+" &
+           Trim(Source => Height_Range'Image(Y), Side => Both));
+      Bind
+        (Widgt => Dialog, Sequence => "<Destroy>",
+         Script => "{CloseDialog " & Value(Item => Dialog.Name) & "}");
    end Set_Dialog;
 
    procedure Add_Command
@@ -138,7 +145,8 @@ package body Utils.UI is
    begin
       Command :=
         CreateCommands.Tcl_CreateCommand
-          (Get_Context, Name, Ada_Command, 0, null);
+          (interp => Get_Context, cmdName => Name, proc => Ada_Command,
+           data => 0, deleteProc => null);
       if Command = null then
          raise Hunter_Add_Command_Exception
            with Mc(Get_Context, "{Can't add command}") & " " & Name;
