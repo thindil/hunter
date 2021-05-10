@@ -84,11 +84,18 @@ package body MoveItems is
             CopyItem
               (To_String(MoveItemsList(1)), DestinationDirectory, Success);
             if Success then
-               if Is_Directory(To_String(MoveItemsList(1))) then
-                  Remove_Dir(To_String(MoveItemsList(1)), True);
-               else
-                  Delete_File(To_String(MoveItemsList(1)));
-               end if;
+               begin
+                  if Is_Directory(To_String(MoveItemsList(1))) then
+                     Remove_Dir(To_String(MoveItemsList(1)), True);
+                  else
+                     Delete_File(To_String(MoveItemsList(1)));
+                  end if;
+               exception
+                  when Use_Error =>
+                     ShowMessage
+                       ("Can't delete " & To_String(MoveItemsList(1)) & ".");
+                     return MESSAGE_FORM;
+               end;
             else
                ShowMessage
                  (Mc(Interpreter, "{Can't move}") & " " &
