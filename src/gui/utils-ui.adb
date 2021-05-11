@@ -73,7 +73,7 @@ package body Utils.UI is
 
    procedure Update_Progress_Bar(Amount: Natural := 0) is
       Progress_Bar: constant Ttk_ProgressBar :=
-        Get_Widget(pathName => ".mainframe.Progress_Bar");
+        Get_Widget(pathName => ".mainframe.progressbar");
    begin
       if Amount > 0 then
          configure
@@ -157,14 +157,15 @@ package body Utils.UI is
      (Action: Item_Actions; Finished: Boolean := False) is
       Toolbar: Ttk_Frame := Get_Widget(".mainframe.toolbars");
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
-      HeaderLabel: constant Ttk_Label := Get_Widget(".mainframe.headerlabel");
-      ButtonsNames: constant array(1 .. 7) of Unbounded_String :=
+      Header_Label: constant Ttk_Label :=
+        Get_Widget(".mainframe.headerlabel");
+      Buttons_Names: constant array(1 .. 7) of Unbounded_String :=
         (To_Unbounded_String("new"), To_Unbounded_String("rename"),
          To_Unbounded_String("copy"), To_Unbounded_String("move"),
          To_Unbounded_String("delete"), To_Unbounded_String("about"),
          To_Unbounded_String("options"));
-      CurrentButton: Positive;
-      DeleteMenu: constant Tk_Menu := Get_Widget(".deletemenu");
+      Current_Button: Positive;
+      Delete_Menu: constant Tk_Menu := Get_Widget(".deletemenu");
       Side: Unbounded_String;
    begin
       case Action is
@@ -190,7 +191,7 @@ package body Utils.UI is
                     (Get_Context,
                      "{Stop copying files and directories \[Escape\]}"));
             end if;
-            CurrentButton := 3;
+            Current_Button := 3;
          when MOVE =>
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.cancelbutton");
@@ -201,11 +202,11 @@ package body Utils.UI is
                     (Get_Context,
                      "{Stop moving files and directories \[Escape\]}"));
             end if;
-            CurrentButton := 4;
+            Current_Button := 4;
          when SHOWTRASH =>
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.restorebutton");
-            CurrentButton := 5;
+            Current_Button := 5;
          when others =>
             return;
       end case;
@@ -219,27 +220,27 @@ package body Utils.UI is
               New_String(".mainframe.paned.previewframe.pathframe");
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
             Update_Buttons_Loop :
-            for I in ButtonsNames'Range loop
-               if I < CurrentButton then
+            for I in Buttons_Names'Range loop
+               if I < Current_Button then
                   Toolbar.Name :=
                     New_String
                       (".mainframe.toolbars.actiontoolbar." &
-                       To_String(ButtonsNames(I)) & "button");
+                       To_String(Buttons_Names(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack
                     (Toolbar,
                      "-before .mainframe.toolbars.actiontoolbar." &
-                     To_String(ButtonsNames(CurrentButton)) & "button");
+                     To_String(Buttons_Names(Current_Button)) & "button");
                   Tcl.Tk.Ada.Pack.Pack_Configure
                     (Toolbar, "-side " & To_String(Side));
-               elsif I > CurrentButton then
+               elsif I > Current_Button then
                   Toolbar.Name :=
                     New_String
                       (".mainframe.toolbars.actiontoolbar." &
-                       To_String(ButtonsNames(I)) & "button");
+                       To_String(Buttons_Names(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack
                     (Toolbar,
                      "-after .mainframe.toolbars.actiontoolbar." &
-                     To_String(ButtonsNames(I - 1)) & "button");
+                     To_String(Buttons_Names(I - 1)) & "button");
                   Tcl.Tk.Ada.Pack.Pack_Configure
                     (Toolbar, "-side " & To_String(Side));
                end if;
@@ -255,12 +256,12 @@ package body Utils.UI is
             Tcl.Tk.Ada.Pack.Pack_Configure
               (Toolbar, "-side " & To_String(Side));
             Remove_Buttons_Loop :
-            for I in ButtonsNames'Range loop
-               if I /= CurrentButton then
+            for I in Buttons_Names'Range loop
+               if I /= Current_Button then
                   Toolbar.Name :=
                     New_String
                       (".mainframe.toolbars.actiontoolbar." &
-                       To_String(ButtonsNames(I)) & "button");
+                       To_String(Buttons_Names(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
                end if;
             end loop Remove_Buttons_Loop;
@@ -272,44 +273,44 @@ package body Utils.UI is
               (Toolbar,
                "-after .mainframe.toolbars.actiontoolbar.deletebutton");
             Remove_Trash_Buttons_Loop :
-            for I in ButtonsNames'Range loop
-               if I /= CurrentButton then
+            for I in Buttons_Names'Range loop
+               if I /= Current_Button then
                   Toolbar.Name :=
                     New_String
                       (".mainframe.toolbars.actiontoolbar." &
-                       To_String(ButtonsNames(I)) & "button");
+                       To_String(Buttons_Names(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
                end if;
             end loop Remove_Trash_Buttons_Loop;
             Entry_Configure
-              (DeleteMenu, "0",
+              (Delete_Menu, "0",
                "-label {" & Mc(Get_Context, "{Delete selected}") & "}");
-            Delete(DeleteMenu, "1");
+            Delete(Delete_Menu, "1");
          else
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.separator3");
             if Winfo_Get(Toolbar, "ismapped") = "1" then
                Update_Trash_Button_Loop :
-               for I in ButtonsNames'Range loop
-                  if I < CurrentButton then
+               for I in Buttons_Names'Range loop
+                  if I < Current_Button then
                      Toolbar.Name :=
                        New_String
                          (".mainframe.toolbars.actiontoolbar." &
-                          To_String(ButtonsNames(I)) & "button");
+                          To_String(Buttons_Names(I)) & "button");
                      Tcl.Tk.Ada.Pack.Pack
                        (Toolbar,
                         "-before .mainframe.toolbars.actiontoolbar." &
-                        To_String(ButtonsNames(CurrentButton)) & "button");
-                  elsif I > CurrentButton then
+                        To_String(Buttons_Names(Current_Button)) & "button");
+                  elsif I > Current_Button then
                      Toolbar.Name :=
                        New_String
                          (".mainframe.toolbars.actiontoolbar." &
-                          To_String(ButtonsNames(I)) & "button");
+                          To_String(Buttons_Names(I)) & "button");
                      Tcl.Tk.Ada.Pack.Pack
                        (Toolbar,
                         "-after .mainframe.toolbars.actiontoolbar." &
-                        To_String(ButtonsNames(I - 1)) & "button");
+                        To_String(Buttons_Names(I - 1)) & "button");
                   end if;
                end loop Update_Trash_Button_Loop;
             else
@@ -321,11 +322,11 @@ package body Utils.UI is
                   Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill y -pady 5 -side left");
                end if;
                Add_Buttons_Loop :
-               for I in ButtonsNames'Range loop
+               for I in Buttons_Names'Range loop
                   Toolbar.Name :=
                     New_String
                       (".mainframe.toolbars.actiontoolbar." &
-                       To_String(ButtonsNames(I)) & "button");
+                       To_String(Buttons_Names(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack
                     (Toolbar,
                      "-before .mainframe.toolbars.actiontoolbar.separator3");
@@ -336,26 +337,26 @@ package body Utils.UI is
             Tcl.Tk.Ada.Pack.Pack_Configure
               (Toolbar,
                "-after .mainframe.toolbars.actiontoolbar.deletebutton");
-            Delete(DeleteMenu, "1", "end");
+            Delete(Delete_Menu, "1", "end");
             if not Settings.Delete_Files then
                Entry_Configure
-                 (DeleteMenu, "0",
+                 (Delete_Menu, "0",
                   "-label {" & Mc(Get_Context, "{Move selected to Trash}") &
                   "}");
             end if;
             Menu.Add
-              (DeleteMenu, "command",
+              (Delete_Menu, "command",
                "-label {" & Mc(Get_Context, "{Show Trash}") &
                "} -command ShowTrash");
             Menu.Add
-              (DeleteMenu, "command",
+              (Delete_Menu, "command",
                "-label {" & Mc(Get_Context, "{Empty Trash}") &
                "} -command ClearTrash");
          end if;
       end if;
       Toolbar.Name := New_String(".mainframe.toolbars.itemtoolbar");
       if Finished then
-         Grid_Remove(HeaderLabel);
+         Grid_Remove(Header_Label);
          Tcl.Tk.Ada.Grid.Grid(Toolbar);
          if not Settings.Show_Preview then
             Toolbar.Name := New_String(".mainframe.paned.previewframe");
@@ -370,42 +371,42 @@ package body Utils.UI is
          case Action is
             when CREATEFILE =>
                configure
-                 (HeaderLabel,
+                 (Header_Label,
                   "-text {" & Mc(Get_Context, "{Creating empty file}") & "}");
             when CREATEDIRECTORY =>
                configure
-                 (HeaderLabel,
+                 (Header_Label,
                   "-text {" & Mc(Get_Context, "{Creating new directory}") &
                   "}");
             when CREATELINK =>
                configure
-                 (HeaderLabel,
+                 (Header_Label,
                   "-text {" & Mc(Get_Context, "{Creating new link}") & "}");
             when RENAME =>
                configure
-                 (HeaderLabel,
+                 (Header_Label,
                   "-text {" & Mc(Get_Context, "{Renaming file or directory}") &
                   "}");
             when COPY =>
                configure
-                 (HeaderLabel,
+                 (Header_Label,
                   "-text {" &
                   Mc(Get_Context, "{Copying files and directories}") & "}");
             when MOVE =>
                configure
-                 (HeaderLabel,
+                 (Header_Label,
                   "-text {" &
                   Mc(Get_Context, "{Moving files and directories}") & "}");
             when DELETE | DELETETRASH =>
                if Settings.Delete_Files or Action = DELETETRASH then
                   configure
-                    (HeaderLabel,
+                    (Header_Label,
                      "-text {" &
                      Mc(Get_Context, "{Deleting files and directories}") &
                      "}");
                else
                   configure
-                    (HeaderLabel,
+                    (Header_Label,
                      "-text {" &
                      Mc(Get_Context,
                         "{Moving files and directories to trash}") &
@@ -413,12 +414,12 @@ package body Utils.UI is
                end if;
             when SHOWTRASH =>
                configure
-                 (HeaderLabel,
+                 (Header_Label,
                   "-text {" & Mc(Get_Context, "{Trash can}") & "}");
             when others =>
                null;
          end case;
-         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 0 -row 0 -columnspan 2");
+         Tcl.Tk.Ada.Grid.Grid(Header_Label, "-column 0 -row 0 -columnspan 2");
       end if;
    end Toggle_Tool_Buttons;
 
