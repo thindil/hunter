@@ -70,8 +70,47 @@ package body ActivateItems.UI is
    end Show_Execute_With_Dialog;
 
    function Execute_Form_Keys(Key: Key_Code) return UI_Locations is
-      pragma Unreferenced(Key);
+      Result: Forms.Driver_Result := Unknown_Request;
+      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      Visibility: Cursor_Visibility := Invisible;
    begin
+      case Key is
+         when KEY_UP =>
+            Result := Driver(DialogForm, F_Previous_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when KEY_DOWN =>
+            Result := Driver(DialogForm, F_Next_Field);
+            Result := Driver(DialogForm, F_End_Line);
+         when KEY_LEFT =>
+            if FieldIndex = 2 then
+               Result := Driver(DialogForm, F_Previous_Char);
+            end if;
+         when KEY_RIGHT =>
+            if FieldIndex = 2 then
+               Result := Driver(DialogForm, F_Next_Char);
+            end if;
+         when 127 =>
+            Result := Driver(DialogForm, F_Delete_Previous);
+         when 10 =>
+--            if FieldIndex = 4 then
+--               null;
+--            end if;
+            if FieldIndex /= 2 then
+               Set_Cursor_Visibility(Visibility);
+               Post(DialogForm, False);
+               Delete(DialogForm);
+               UILocation := DIRECTORY_VIEW;
+               Update_Directory_List(True);
+               return DIRECTORY_VIEW;
+            end if;
+         when others =>
+            if Key /= 91 then
+               Result := Driver(DialogForm, Key);
+            end if;
+      end case;
+      if Result = Form_Ok then
+         Refresh(FormWindow);
+      end if;
       return EXECUTE_FORM;
    end Execute_Form_Keys;
 
