@@ -149,7 +149,9 @@ package body Utils.UI is
            data => 0, deleteProc => null);
       if Command = null then
          raise Hunter_Add_Command_Exception
-           with Mc(Get_Context, "{Can't add command}") & " " & Name;
+           with Mc
+             (Interp => Get_Context, Src_String => "{Can't add command}") &
+           " " & Name;
       end if;
    end Add_Command;
 
@@ -157,16 +159,15 @@ package body Utils.UI is
      (Action: Item_Actions; Finished: Boolean := False) is
       Toolbar: Ttk_Frame := Get_Widget(".mainframe.toolbars");
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
-      Header_Label: constant Ttk_Label :=
-        Get_Widget(".mainframe.headerlabel");
+      Header_Label: constant Ttk_Label := Get_Widget(".mainframe.headerlabel");
       Buttons_Names: constant array(1 .. 7) of Unbounded_String :=
         (To_Unbounded_String("new"), To_Unbounded_String("rename"),
          To_Unbounded_String("copy"), To_Unbounded_String("move"),
          To_Unbounded_String("delete"), To_Unbounded_String("about"),
          To_Unbounded_String("options"));
-      Current_Button: Positive;
+      Current_Button: Positive := 1;
       Delete_Menu: constant Tk_Menu := Get_Widget(".deletemenu");
-      Side: Unbounded_String;
+      Side: Unbounded_String := Null_Unbounded_String;
    begin
       case Action is
          when CREATEFILE | CREATEDIRECTORY | CREATELINK | RENAME | DELETE |
