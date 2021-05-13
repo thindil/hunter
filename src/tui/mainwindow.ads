@@ -85,12 +85,14 @@ package MainWindow is
    -- VIEW_MENU        - Select/deselect/search items in the directory view
    -- SEARCH_FORM      - The search entry form
    -- EXECUTE_FORM     - The execute item with command form
+   -- ABOUT_MENU       - The menu about the program
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
       CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
       DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM,
-      SELECTED_MENU, PROGRAMS_MENU, VIEW_MENU, SEARCH_FORM, EXECUTE_FORM);
+      SELECTED_MENU, PROGRAMS_MENU, VIEW_MENU, SEARCH_FORM, EXECUTE_FORM,
+      ABOUT_MENU);
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.UILocation
@@ -243,6 +245,17 @@ package MainWindow is
    -- The currently selected UI element of the program
    -- SOURCE
    function View_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
+   -- ****f* MainWindowTUI/MainWindowTUI.About_Keys
+   -- FUNCTION
+   -- Handles keys events when the about menu is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function About_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end MainWindow;

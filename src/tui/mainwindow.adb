@@ -416,6 +416,15 @@ package body MainWindow is
             Menu_Items.all(2) := New_Item("Search for");
             Menu_Items.all(3) := New_Item("Close");
             Menu_Items.all(4) := Null_Item;
+         when ABOUT_MENU =>
+            Menu_Items := new Item_Array(1 .. 7);
+            Menu_Items.all(1) := New_Item("About the program");
+            Menu_Items.all(2) := New_Item("Show README");
+            Menu_Items.all(3) := New_Item("Show list of changes");
+            Menu_Items.all(4) := New_Item("Get involved");
+            Menu_Items.all(5) := New_Item("Show modding guide");
+            Menu_Items.all(6) := New_Item("Close");
+            Menu_Items.all(7) := Null_Item;
          when others =>
             null;
       end case;
@@ -519,6 +528,9 @@ package body MainWindow is
                when 4 =>
                   Draw_Menu(ACTIONS_MENU);
                   return ACTIONS_MENU;
+               when 5 =>
+                  Draw_Menu(ABOUT_MENU);
+                  return ABOUT_MENU;
                when 6 =>
                   Draw_Menu(SELECTED_MENU);
                   return SELECTED_MENU;
@@ -725,5 +737,11 @@ package body MainWindow is
       end if;
       return VIEW_MENU;
    end View_Keys;
+
+   function About_Keys(Key: Key_Code) return UI_Locations is
+      pragma Unreferenced(Key);
+   begin
+      return ABOUT_MENU;
+   end About_Keys;
 
 end MainWindow;
