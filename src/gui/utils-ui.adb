@@ -157,16 +157,21 @@ package body Utils.UI is
 
    procedure Toggle_Tool_Buttons
      (Action: Item_Actions; Finished: Boolean := False) is
-      Toolbar: Ttk_Frame := Get_Widget(".mainframe.toolbars");
-      Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
-      Header_Label: constant Ttk_Label := Get_Widget(".mainframe.headerlabel");
+      Toolbar: Ttk_Frame := Get_Widget(pathName => ".mainframe.toolbars");
+      Paned: constant Ttk_PanedWindow :=
+        Get_Widget(pathName => ".mainframe.paned");
+      Header_Label: constant Ttk_Label :=
+        Get_Widget(pathName => ".mainframe.headerlabel");
       Buttons_Names: constant array(1 .. 7) of Unbounded_String :=
-        (To_Unbounded_String("new"), To_Unbounded_String("rename"),
-         To_Unbounded_String("copy"), To_Unbounded_String("move"),
-         To_Unbounded_String("delete"), To_Unbounded_String("about"),
-         To_Unbounded_String("options"));
+        (1 => To_Unbounded_String(Source => "new"),
+         2 => To_Unbounded_String(Source => "rename"),
+         3 => To_Unbounded_String(Source => "copy"),
+         4 => To_Unbounded_String(Source => "move"),
+         5 => To_Unbounded_String(Source => "delete"),
+         6 => To_Unbounded_String(Source => "about"),
+         7 => To_Unbounded_String(Source => "options"));
       Current_Button: Positive := 1;
-      Delete_Menu: constant Tk_Menu := Get_Widget(".deletemenu");
+      Delete_Menu: constant Tk_Menu := Get_Widget(pathName => ".deletemenu");
       Side: Unbounded_String := Null_Unbounded_String;
    begin
       case Action is
