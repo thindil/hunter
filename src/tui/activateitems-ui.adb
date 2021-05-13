@@ -13,8 +13,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with Messages; use Messages;
+with Utils.UI; use Utils.UI;
 
 package body ActivateItems.UI is
 
@@ -72,7 +78,26 @@ package body ActivateItems.UI is
    function Execute_Form_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Positive := Get_Index(Current(DialogForm));
-      Visibility: Cursor_Visibility := Invisible;
+      Value: constant String := Trim(Get_Buffer(Fields(DialogForm, 2)), Both);
+      CommandName: Unbounded_String;
+      Pid: GNAT.OS_Lib.Process_Id;
+      SpaceIndex: Natural range 0 .. Value'Length;
+      Arguments: Argument_List_Access;
+      function Hide_Dialog
+        (With_Message: Boolean := False) return UI_Locations is
+         Visibility: Cursor_Visibility := Invisible;
+      begin
+         Set_Cursor_Visibility(Visibility);
+         Post(DialogForm, False);
+         Delete(DialogForm);
+         if With_Message then
+            UILocation := MESSAGE_FORM;
+         else
+            UILocation := DIRECTORY_VIEW;
+         end if;
+         Update_Directory_List(not With_Message);
+         return UILocation;
+      end Hide_Dialog;
    begin
       case Key is
          when KEY_UP =>
@@ -92,16 +117,40 @@ package body ActivateItems.UI is
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
          when 10 =>
---            if FieldIndex = 4 then
---               null;
---            end if;
+            if FieldIndex = 4 then
+               SpaceIndex := Index(Value, " ");
+               CommandName :=
+                 (if SpaceIndex > 0 then
+                    To_Unbounded_String(Value(1 .. SpaceIndex - 1))
+                  else To_Unbounded_String(Value));
+               CommandName :=
+                 To_Unbounded_String(Find_Executable(To_String(CommandName)));
+               if CommandName = Null_Unbounded_String then
+                  ShowMessage
+                    ("{Can't find command:}" & " " & Value(1 .. SpaceIndex));
+                  return Hide_Dialog(True);
+               end if;
+               Arguments :=
+                 (if SpaceIndex > 0 then
+                    Argument_String_To_List
+                      (Value(SpaceIndex .. Value'Length) & " @2")
+                  else Argument_String_To_List("@2"));
+               Replace_Substitutes_Loop :
+               for I in Arguments'Range loop
+                  if Arguments(I).all = "@2" then
+                     Arguments(I) := new String'(To_String(Current_Selected));
+                  end if;
+               end loop Replace_Substitutes_Loop;
+               Pid :=
+                 Non_Blocking_Spawn
+                   (Full_Name(To_String(CommandName)), Arguments.all);
+               if Pid = GNAT.OS_Lib.Invalid_Pid then
+                  ShowMessage("{Can't execute this command}");
+                  return Hide_Dialog(True);
+               end if;
+            end if;
             if FieldIndex /= 2 then
-               Set_Cursor_Visibility(Visibility);
-               Post(DialogForm, False);
-               Delete(DialogForm);
-               UILocation := DIRECTORY_VIEW;
-               Update_Directory_List(True);
-               return DIRECTORY_VIEW;
+               return Hide_Dialog;
             end if;
          when others =>
             if Key /= 91 then
