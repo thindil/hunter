@@ -244,6 +244,8 @@ begin
                UILocation := Search_Form_Keys(Key);
             when EXECUTE_FORM =>
                UILocation := Execute_Form_Keys(Key);
+            when ABOUT_MENU =>
+               UILocation := About_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;
