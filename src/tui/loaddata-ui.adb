@@ -32,7 +32,7 @@ package body LoadData.UI is
          return;
       end if;
       Open(Directory, DirectoryName);
-      Read_Directory_Loop :
+      Read_Directory_Loop:
       loop
          Read(Directory, FileName, Last);
          exit Read_Directory_Loop when Last = 0;
@@ -41,7 +41,8 @@ package body LoadData.UI is
                AddItem(DirectoryName & "/" & FileName(1 .. Last), ItemsList);
             else
                AddItem
-                 (DirectoryName & "/" & FileName(1 .. Last), SecondItemsList);
+                 (DirectoryName & "/" & FileName(1 .. Last),
+                  SecondItemsList);
             end if;
          end if;
       end loop Read_Directory_Loop;

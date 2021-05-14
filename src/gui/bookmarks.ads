@@ -27,8 +27,11 @@ package Bookmarks is
    -- FUNCTION
    -- Used to store all bookmarks
    -- SOURCE
-   package Bookmarks_Container is new Indefinite_Hashed_Maps(String, String,
-      Ada.Strings.Hash, "=");
+   package Bookmarks_Container is new Indefinite_Hashed_Maps
+     (String,
+      String,
+      Ada.Strings.Hash,
+      "=");
    -- ****
 
    -- ****f* Bookmarks/Bookmarks.CreateBookmarkMenu

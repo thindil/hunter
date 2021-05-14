@@ -78,7 +78,9 @@ package body LoadData is
       if Is_Directory(Path) then
          Item.IsDirectory := True;
          Item.Image :=
-           (if Is_Symbolic_Link(Path) then
+           (if
+              Is_Symbolic_Link(Path)
+            then
               To_Unbounded_String("emblem-symbolic-link")
             else To_Unbounded_String("folder"));
          Item.Size := -1;
@@ -86,7 +88,7 @@ package body LoadData is
             Open(SubDirectory, Path);
             Size := 0;
             HiddenAmount := 0;
-            Count_Directory_Size :
+            Count_Directory_Size:
             loop
                Read(SubDirectory, SubFileName, SubLast);
                exit Count_Directory_Size when SubLast = 0;
@@ -139,7 +141,9 @@ package body LoadData is
          end if;
          Item.Size :=
            (if Is_Symbolic_Link(Path) then -2
-            elsif Is_Regular_File(Path) then
+            elsif
+              Is_Regular_File(Path)
+            then
               Item_Size(Ada.Directories.Size(Path))
             else 0);
       end if;

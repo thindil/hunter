@@ -48,8 +48,18 @@ package MainWindow is
    -- DELETETRASH     - delete file or directory from trash
    -- SOURCE
    type Item_Actions is
-     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
-      GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
+     (CREATEFILE,
+      CREATEDIRECTORY,
+      RENAME,
+      DELETE,
+      COPY,
+      MOVE,
+      OPENWITH,
+      GOTOPATH,
+      CREATELINK,
+      CLEARTRASH,
+      SHOWTRASH,
+      DELETETRASH);
    -- ****
 
    -- ****d* MainWindow/MainWindow.Default_Item_Action
@@ -70,7 +80,8 @@ package MainWindow is
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
    -- SOURCE
-   package UnboundedString_Container is new Vectors(Index_Type => Positive,
+   package UnboundedString_Container is new Vectors
+     (Index_Type => Positive,
       Element_Type => Unbounded_String);
    -- ****
 
@@ -108,7 +119,8 @@ package MainWindow is
    --              current directory
    -- SOURCE
    procedure Update_Directory_List
-     (Clear: Boolean := False; Frame_Name: String := "directory");
+     (Clear: Boolean := False;
+      Frame_Name: String := "directory");
    -- ****
 
 end MainWindow;

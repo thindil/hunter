@@ -53,13 +53,17 @@ package body ActivateItems.UI is
    -- ToggleExecuteWith
    -- SOURCE
    function Toggle_Execute_With_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Toggle_Execute_With_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       TextFrame: constant Ttk_Frame :=
@@ -113,13 +117,17 @@ package body ActivateItems.UI is
    -- ExecuteWith
    -- SOURCE
    function Execute_With_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Execute_With_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       TextEntry: constant Ttk_Entry :=
         Get_Widget(".mainframe.textframe.textentry", Interp);
@@ -140,15 +148,18 @@ package body ActivateItems.UI is
         To_Unbounded_String(Find_Executable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
          ShowMessage
-           (Mc(Interp, "{Can't find command:}") & " " &
+           (Mc(Interp, "{Can't find command:}") &
+            " " &
             Value(1 .. SpaceIndex));
          return TCL_OK;
       end if;
       Arguments :=
-        (if SpaceIndex > 0 then
+        (if
+           SpaceIndex > 0
+         then
            Argument_String_To_List(Value(SpaceIndex .. Value'Length) & " @2")
          else Argument_String_To_List("@2"));
-      Replace_Substitutes_Loop :
+      Replace_Substitutes_Loop:
       for I in Arguments'Range loop
          if Arguments(I).all = "@2" then
             Arguments(I) := new String'(To_String(Current_Selected));

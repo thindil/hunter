@@ -46,13 +46,17 @@ package body RenameItems is
    -- Rename
    -- SOURCE
    function Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData);
       -- ****
@@ -67,14 +71,24 @@ package body RenameItems is
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
          ActionBlocker :=
-           (if Is_Directory(To_String(NewName)) then
+           (if
+              Is_Directory(To_String(NewName))
+            then
               To_Unbounded_String(Mc(Interp, "{directory}"))
             else To_Unbounded_String(Mc(Interp, "{file}")));
          ShowMessage
-           (Mc(Interp, "{You can't rename}") & " " &
-            To_String(Current_Selected) & " " & Mc(Interp, "{to}") & " " &
-            To_String(NewName) & " " & Mc(Interp, "{because there exists}") &
-            " " & To_String(ActionBlocker) & " " &
+           (Mc(Interp, "{You can't rename}") &
+            " " &
+            To_String(Current_Selected) &
+            " " &
+            Mc(Interp, "{to}") &
+            " " &
+            To_String(NewName) &
+            " " &
+            Mc(Interp, "{because there exists}") &
+            " " &
+            To_String(ActionBlocker) &
+            " " &
             Mc(Interp, "{with that name}"));
          Tcl_SetResult(Interp, "0");
          return TCL_OK;
@@ -82,7 +96,8 @@ package body RenameItems is
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewName))) then
          ShowMessage
-           (Mc(Interp, "{You don't have permissions to rename}") & " " &
+           (Mc(Interp, "{You don't have permissions to rename}") &
+            " " &
             To_String(NewName));
          Tcl_SetResult(Interp, "0");
          return TCL_OK;
@@ -90,7 +105,9 @@ package body RenameItems is
       Rename_File(To_String(Current_Selected), To_String(NewName), Success);
       if not Success then
          ShowMessage
-           (Mc(Interp, "{Can't rename}") & " " & To_String(Current_Selected) &
+           (Mc(Interp, "{Can't rename}") &
+            " " &
+            To_String(Current_Selected) &
             ".");
          return TCL_OK;
       end if;
@@ -126,7 +143,9 @@ package body RenameItems is
       Set_Options(Rename_Fields.all(1), FieldOptions);
       Rename_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer
-        (Rename_Fields.all(2), 0, Simple_Name(To_String(Current_Selected)));
+        (Rename_Fields.all(2),
+         0,
+         Simple_Name(To_String(Current_Selected)));
       FieldOptions := Get_Options(Rename_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Rename_Fields.all(2), FieldOptions);
@@ -147,12 +166,15 @@ package body RenameItems is
       Scale(DialogForm, FormHeight, FormLength);
       FormWindow :=
         Create
-          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
+          (FormHeight + 2,
+           FormLength + 2,
+           ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
       Box(FormWindow, Default_Character, Default_Character);
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
-        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+        (DialogForm,
+         Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       UnusedResult := Driver(DialogForm, REQ_END_LINE);
       Refresh;

@@ -51,8 +51,18 @@ package MainWindow is
    -- DELETETRASH     - delete file or directory from trash
    -- SOURCE
    type ItemActions is
-     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
-      GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
+     (CREATEFILE,
+      CREATEDIRECTORY,
+      RENAME,
+      DELETE,
+      COPY,
+      MOVE,
+      OPENWITH,
+      GOTOPATH,
+      CREATELINK,
+      CLEARTRASH,
+      SHOWTRASH,
+      DELETETRASH);
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.New_Action
@@ -88,10 +98,25 @@ package MainWindow is
    -- ABOUT_MENU       - The menu about the program
    -- SOURCE
    type UI_Locations is
-     (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
-      CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
-      DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM,
-      SELECTED_MENU, PROGRAMS_MENU, VIEW_MENU, SEARCH_FORM, EXECUTE_FORM,
+     (DIRECTORY_VIEW,
+      PATH_BUTTONS,
+      MAIN_MENU,
+      PREVIEW,
+      ACTIONS_MENU,
+      CREATE_FORM,
+      DELETE_FORM,
+      MESSAGE_FORM,
+      RENAME_FORM,
+      DESTINATION_VIEW,
+      DESTINATION_PATH,
+      BOOKMARKS_MENU,
+      BOOKMARKS_FORM,
+      CREATELINK_FORM,
+      SELECTED_MENU,
+      PROGRAMS_MENU,
+      VIEW_MENU,
+      SEARCH_FORM,
+      EXECUTE_FORM,
       ABOUT_MENU);
    -- ****
 
@@ -106,7 +131,8 @@ package MainWindow is
    -- FUNCTION
    -- Used to store various Unbounded_String data in list.
    -- SOURCE
-   package UnboundedString_Container is new Vectors(Positive,
+   package UnboundedString_Container is new Vectors
+     (Positive,
       Unbounded_String);
    -- ****
 
@@ -167,7 +193,8 @@ package MainWindow is
    --              string. Otherwise show everything. Default value is empty.
    -- SOURCE
    procedure Update_Directory_List
-     (Clear: Boolean := False; Search_For: String := "");
+     (Clear: Boolean := False;
+      Search_For: String := "");
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Directory_Keys

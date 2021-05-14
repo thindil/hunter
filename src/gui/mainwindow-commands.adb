@@ -76,13 +76,17 @@ package body MainWindow.Commands is
    -- values are name, modified, size and previewname
    -- SOURCE
    function Sort_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Sort_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       DirectoryTree: Ttk_Tree_View :=
@@ -183,13 +187,17 @@ package body MainWindow.Commands is
    -- HideWidget
    -- SOURCE
    function Hide_Widget_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Hide_Widget_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       Frame: Ttk_Frame := Get_Widget(".mainframe.message", Interp);
       Button: Ttk_Button :=
@@ -225,7 +233,10 @@ package body MainWindow.Commands is
         New_String(".mainframe.paned.previewframe.infoframe.applicationsmenu");
       if Winfo_Get(Frame, "ismapped") = "1" then
          return Toggle_Applications_Menu_Command
-             (ClientData, Interp, Argc, Argv);
+             (ClientData,
+              Interp,
+              Argc,
+              Argv);
       end if;
       return TCL_OK;
    end Hide_Widget_Command;
@@ -244,13 +255,17 @@ package body MainWindow.Commands is
    -- ToggleSelection
    -- SOURCE
    function Toggle_Selection_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Toggle_Selection_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       DirectoryTree: constant Ttk_Tree_View :=
@@ -260,7 +275,8 @@ package body MainWindow.Commands is
          Update_Directory_List;
       else
          Selection_Set
-           (DirectoryTree, "[list " & Children(DirectoryTree, "{}") & " ]");
+           (DirectoryTree,
+            "[list " & Children(DirectoryTree, "{}") & " ]");
       end if;
       return TCL_OK;
    end Toggle_Selection_Command;
@@ -281,13 +297,17 @@ package body MainWindow.Commands is
    -- be resized. Width is the new width for the buttonsframe
    -- SOURCE
    function Arrange_Path_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Arrange_Path_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       PathButtonsFrame: constant Ttk_Frame :=
@@ -306,7 +326,7 @@ package body MainWindow.Commands is
       end if;
       Create(Tokens, To_String(Buttons), " ");
       Button.Interp := Interp;
-      Arrange_Buttons_Loop :
+      Arrange_Buttons_Loop:
       for I in reverse 1 .. Slice_Count(Tokens) loop
          Button.Name := New_String(Slice(Tokens, I));
          Width := Width + Positive'Value(Winfo_Get(Button, "width"));
@@ -341,13 +361,17 @@ package body MainWindow.Commands is
    -- CancelAction
    -- SOURCE
    function Cancel_Action_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Cancel_Action_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       ActionButton: Ttk_Button;
@@ -388,13 +412,17 @@ package body MainWindow.Commands is
    -- will be show
    -- SOURCE
    function Show_File_Menu_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_File_Menu_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       FileMenu: constant Tk_Menu := Get_Widget(".filemenu", Interp);
@@ -420,20 +448,26 @@ package body MainWindow.Commands is
    begin
       Delete(FileMenu, "0", "end");
       Button.Interp := Interp;
-      Update_File_Menu_Loop :
+      Update_File_Menu_Loop:
       for I in ButtonsNames'Range loop
          Button.Name :=
            New_String(".mainframe.toolbars." & To_String(ButtonsNames(I)));
          if Winfo_Get(Button, "ismapped") = "1" then
             if I /= 7 then
                Add
-                 (FileMenu, "command",
-                  "-label {" & To_String(MenuLabels(I)) & "} -command {" &
-                  Widget_Image(Button) & " invoke}");
+                 (FileMenu,
+                  "command",
+                  "-label {" &
+                  To_String(MenuLabels(I)) &
+                  "} -command {" &
+                  Widget_Image(Button) &
+                  " invoke}");
             else
                Add
-                 (FileMenu, "command",
-                  "-label {" & To_String(MenuLabels(I)) &
+                 (FileMenu,
+                  "command",
+                  "-label {" &
+                  To_String(MenuLabels(I)) &
                   "} -command {.deletemenu invoke 0}");
             end if;
          end if;
@@ -457,13 +491,17 @@ package body MainWindow.Commands is
    -- Filename is the name of the file which preview will be show
    -- SOURCE
    function Show_File_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_File_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
    begin
@@ -477,7 +515,7 @@ package body MainWindow.Commands is
            To_Unbounded_String(Value("APPDIR", "") & "/usr/share/doc/hunter");
       end if;
       LoadDirectory(To_String(Current_Directory));
-      Set_Current_Selected_Loop :
+      Set_Current_Selected_Loop:
       for I in ItemsList.Iterate loop
          if ItemsList(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
             Current_Selected := ItemsList(I).Path;
@@ -504,13 +542,17 @@ package body MainWindow.Commands is
    -- Buttonname is pathname of the button which will be invoked
    -- SOURCE
    function Invoke_Button_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Invoke_Button_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       Button: constant Ttk_Button := Get_Widget(CArgv.Arg(Argv, 1), Interp);
@@ -524,7 +566,8 @@ package body MainWindow.Commands is
         ".mainframe.toolbars.actiontoolbar.bookmarksbutton" then
          Menu.Name := New_String(".bookmarksmenu");
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Menu,
+            Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
@@ -532,7 +575,8 @@ package body MainWindow.Commands is
         ".mainframe.toolbars.actiontoolbar.newbutton" then
          Menu.Name := New_String(".newmenu");
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Menu,
+            Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
@@ -540,7 +584,8 @@ package body MainWindow.Commands is
         ".mainframe.toolbars.actiontoolbar.deletebutton" then
          Menu.Name := New_String(".deletemenu");
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Menu,
+            Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
@@ -548,7 +593,8 @@ package body MainWindow.Commands is
         ".mainframe.toolbars.actiontoolbar.aboutbutton" then
          Menu.Name := New_String(".aboutmenu");
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Menu,
+            Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
@@ -556,7 +602,8 @@ package body MainWindow.Commands is
         ".mainframe.toolbars.actiontoolbar.userbutton" then
          Menu.Name := New_String(".actionsmenu");
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Menu,
+            Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;

@@ -24,7 +24,9 @@ package body Messages is
    FormWindow: Window;
 
    function Close_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
    begin
@@ -46,13 +48,17 @@ package body Messages is
    -- Answer is the answer which the user selected by clicking in button
    -- SOURCE
    function Response_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Response_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
    begin
@@ -111,11 +117,14 @@ package body Messages is
       Set_Options(DialogForm, (others => False));
       FormWindow :=
         Create
-          (FormHeight + 2, 34, ((Lines / 3) - (FormHeight / 2)),
+          (FormHeight + 2,
+           34,
+           ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
-        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+        (DialogForm,
+         Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       Move_Cursor(FormWindow, LineNumber, 1);
       for I in Message'Range loop
