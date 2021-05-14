@@ -61,7 +61,8 @@ package body Preferences.UI is
       ScrollX: constant Ttk_Scrollbar :=
         Create
           (MainFrame & ".scrollx",
-           "-orient horizontal -command [list " & MainFrame &
+           "-orient horizontal -command [list " &
+           MainFrame &
            ".canvas xview]");
       ScrollY: constant Ttk_Scrollbar :=
         Create
@@ -70,8 +71,11 @@ package body Preferences.UI is
       Canvas: constant Tk_Canvas :=
         Create
           (MainFrame & ".canvas",
-           "-xscrollcommand {" & ScrollX & " set} -yscrollcommand {" &
-           ScrollY & " set}");
+           "-xscrollcommand {" &
+           ScrollX &
+           " set} -yscrollcommand {" &
+           ScrollY &
+           " set}");
       Notebook: constant Ttk_Notebook := Create(Canvas & ".notebook");
       PreferencesFrame: constant Ttk_Frame :=
         Create(Notebook & ".preferences");
@@ -82,10 +86,13 @@ package body Preferences.UI is
       ActionsFrame: constant Ttk_Frame := Create(Notebook & ".actions");
       ModulesFrame: constant Ttk_Frame := Create(Notebook & ".modules");
       procedure AddButton
-        (Name, Text: String; Value: Boolean; TooltipText, Command: String) is
+        (Name, Text: String;
+         Value: Boolean;
+         TooltipText, Command: String) is
          CheckButton: constant Ttk_CheckButton :=
            Create
-             (LabelFrame & Name, "-text {" & Text & "} -command " & Command);
+             (LabelFrame & Name,
+              "-text {" & Text & "} -command " & Command);
       begin
          if Value then
             Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
@@ -106,29 +113,39 @@ package body Preferences.UI is
           (PreferencesFrame & ".directory",
            "-text {" & Mc(Get_Context, "{Directory Listing}") & "}");
       AddButton
-        (".showhidden", Mc(Get_Context, "{Show hidden files}"),
+        (".showhidden",
+         Mc(Get_Context, "{Show hidden files}"),
          Settings.Show_Hidden,
          Mc(Get_Context, "{Show hidden files and directories in directory}") &
-         LF & Mc(Get_Context, "{listing and in directories preview.}"),
+         LF &
+         Mc(Get_Context, "{listing and in directories preview.}"),
          "SetShowHiddenFiles");
       AddButton
-        (".showmodificationtime", Mc(Get_Context, "{Show modification time}"),
+        (".showmodificationtime",
+         Mc(Get_Context, "{Show modification time}"),
          Settings.Show_Last_Modified,
-         Mc(Get_Context, "{Show the column with last modification}") & LF &
+         Mc(Get_Context, "{Show the column with last modification}") &
+         LF &
          Mc(Get_Context, "{date for files and directories.}"),
          "SetShowModificationTime");
       Tcl_SetVar
-        (Get_Context, "updateinterval",
+        (Get_Context,
+         "updateinterval",
          Natural'Image(Settings.Auto_Refresh_Interval));
       Label :=
         Create
           (LabelFrame & ".intervallabel",
-           "-text """ & Mc(Get_Context, "{Auto refresh every}") &
-           "$updateinterval " & Mc(Get_Context, "{seconds}") & """");
+           "-text """ &
+           Mc(Get_Context, "{Auto refresh every}") &
+           "$updateinterval " &
+           Mc(Get_Context, "{seconds}") &
+           """");
       Add
         (Label,
          Mc(Get_Context, "{How often (in seconds) the program should check}") &
-         LF & Mc(Get_Context, "{for changes in current directory.}") & LF &
+         LF &
+         Mc(Get_Context, "{for changes in current directory.}") &
+         LF &
          Mc(Get_Context, "{If set to zero, autorefresh will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
       Scale :=
@@ -138,7 +155,9 @@ package body Preferences.UI is
       Add
         (Scale,
          Mc(Get_Context, "{How often (in seconds) the program should check}") &
-         LF & Mc(Get_Context, "{for changes in current directory.}") & LF &
+         LF &
+         Mc(Get_Context, "{for changes in current directory.}") &
+         LF &
          Mc(Get_Context, "{If set to zero, autorefresh will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
@@ -147,7 +166,8 @@ package body Preferences.UI is
           (PreferencesFrame & ".preview",
            "-text {" & Mc(Get_Context, "{Preview}") & "}");
       AddButton
-        (".showpreview", Mc(Get_Context, "{Show preview}"),
+        (".showpreview",
+         Mc(Get_Context, "{Show preview}"),
          Settings.Show_Preview,
          Mc
            (Get_Context,
@@ -160,7 +180,8 @@ package body Preferences.UI is
             "{copying and moving files or directories and during creating new link.}"),
          "SetShowPreview");
       AddButton
-        (".scaleimages", Mc(Get_Context, "{Scale images}"),
+        (".scaleimages",
+         Mc(Get_Context, "{Scale images}"),
          Settings.Scale_Images,
          Mc
            (Get_Context,
@@ -168,12 +189,14 @@ package body Preferences.UI is
          LF &
          Mc(Get_Context,
             "{natural size. When enabled, images are resized to the size of the}") &
-         LF & Mc(Get_Context, "{preview window.}"),
+         LF &
+         Mc(Get_Context, "{preview window.}"),
          "SetScaleImages");
       CheckButton :=
         Create
           (LabelFrame & ".syntaxhighlightning",
-           "-text {" & Mc(Get_Context, "{Syntax highlightning}") &
+           "-text {" &
+           Mc(Get_Context, "{Syntax highlightning}") &
            "} -command {SetColorText}");
       if Settings.Color_Text then
          Tcl_SetVar(CheckButton.Interp, Widget_Image(CheckButton), "1");
@@ -218,7 +241,7 @@ package body Preferences.UI is
                Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
                "/themes/base16",
                "*.theme");
-            Create_Themes_List_Loop :
+            Create_Themes_List_Loop:
             while More_Entries(Search) loop
                Get_Next_Entry(Search, File);
                Append(ThemesName, " " & Base_Name(Simple_Name(File)));
@@ -244,7 +267,8 @@ package body Preferences.UI is
             LF &
             Mc(Get_Context,
                "{not be able to enable this option if you don't have installed}") &
-            LF & Mc(Get_Context, "{the program 'highlight'.}"));
+            LF &
+            Mc(Get_Context, "{the program 'highlight'.}"));
          Label :=
            Create
              (ColorFrame & ".themelabel",
@@ -257,13 +281,15 @@ package body Preferences.UI is
             LF &
             Mc(Get_Context,
                "{not be able to enable this option if you don't have installed}") &
-            LF & Mc(Get_Context, "{the program 'highlight'.}"));
+            LF &
+            Mc(Get_Context, "{the program 'highlight'.}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
          Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
       end;
       AddButton
-        (".monospacefont", Mc(Get_Context, "{Use monospace font}"),
+        (".monospacefont",
+         Mc(Get_Context, "{Use monospace font}"),
          Settings.Monospace_Font,
          Mc(Get_Context, "{Use monospace font in the preview of text files.}"),
          "SetMonospaceFont");
@@ -273,13 +299,17 @@ package body Preferences.UI is
           (PreferencesFrame & ".interface",
            "-text {" & Mc(Get_Context, "{Interface}") & "}");
       Tcl_SetVar
-        (CheckButton.Interp, "messagesinterval",
+        (CheckButton.Interp,
+         "messagesinterval",
          Natural'Image(Settings.Auto_Close_Messages_Time));
       Label :=
         Create
           (LabelFrame & ".messageslabel",
-           "-text """ & Mc(Get_Context, "{Hide messages after}") &
-           "$messagesinterval " & Mc(Get_Context, "{seconds}") & """");
+           "-text """ &
+           Mc(Get_Context, "{Hide messages after}") &
+           "$messagesinterval " &
+           Mc(Get_Context, "{seconds}") &
+           """");
       Add
         (Label,
          Mc
@@ -303,7 +333,8 @@ package body Preferences.UI is
             "{program. If you set it to 0, this feature will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       AddButton
-        (".stayinold", Mc(Get_Context, "{Stay in source directory}"),
+        (".stayinold",
+         Mc(Get_Context, "{Stay in source directory}"),
          Settings.Stay_In_Old,
          Mc
            (Get_Context,
@@ -313,15 +344,18 @@ package body Preferences.UI is
             "{directory, don't automatically go to destination directory.}"),
          "SetStayInOld");
       AddButton
-        (".showfinished", Mc(Get_Context, "{Show info about finished action}"),
+        (".showfinished",
+         Mc(Get_Context, "{Show info about finished action}"),
          Settings.Show_Finished_Info,
          Mc
            (Get_Context,
             "{Show information about finished copying, moving and}") &
-         LF & Mc(Get_Context, "{deleting files or directories.}"),
+         LF &
+         Mc(Get_Context, "{deleting files or directories.}"),
          "SetShowFinishedInfo");
       AddButton
-        (".toolbarsontop", Mc(Get_Context, "{Toolbars on top}"),
+        (".toolbarsontop",
+         Mc(Get_Context, "{Toolbars on top}"),
          Settings.Toolbars_On_Top,
          Mc
            (Get_Context,
@@ -343,7 +377,8 @@ package body Preferences.UI is
             Append(ThemesNames, " hunter-light");
          end if;
          Widgets.configure
-           (ColorBox, "-values [list " & To_String(ThemesNames) & "]");
+           (ColorBox,
+            "-values [list " & To_String(ThemesNames) & "]");
          Bind(ColorBox, "<<ComboboxSelected>>", "SetUITheme");
          Add
            (ColorBox,
@@ -376,9 +411,14 @@ package body Preferences.UI is
          ToolbarBox: constant Ttk_ComboBox :=
            Create
              (ToolbarFrame & ".toolbarsize",
-              "-state readonly -values [list {" & Mc(Get_Context, "{small}") &
-              "} {" & Mc(Get_Context, "{medium}") & "} {" &
-              Mc(Get_Context, "{large}") & "} {" & Mc(Get_Context, "{huge}") &
+              "-state readonly -values [list {" &
+              Mc(Get_Context, "{small}") &
+              "} {" &
+              Mc(Get_Context, "{medium}") &
+              "} {" &
+              Mc(Get_Context, "{large}") &
+              "} {" &
+              Mc(Get_Context, "{huge}") &
               "}]");
       begin
          Bind(ToolbarBox, "<<ComboboxSelected>>", "SetToolbars_Size");
@@ -409,14 +449,16 @@ package body Preferences.UI is
           (PreferencesFrame & ".deleting",
            "-text {" & Mc(Get_Context, "{Deleting}") & "}");
       AddButton
-        (".deletefiles", Mc(Get_Context, "{Delete files}"),
+        (".deletefiles",
+         Mc(Get_Context, "{Delete files}"),
          Settings.Delete_Files,
          Mc
            (Get_Context,
             "{Delete selected files and directories instead of moving them to Trash.}"),
          "SetDeleteFiles");
       AddButton
-        (".cleartrash", Mc(Get_Context, "{Clear Trash on exit}"),
+        (".cleartrash",
+         Mc(Get_Context, "{Clear Trash on exit}"),
          Settings.Clear_Trash_On_Exit,
          Mc
            (Get_Context,
@@ -428,7 +470,8 @@ package body Preferences.UI is
           (PreferencesFrame & ".copying",
            "-text {" & Mc(Get_Context, "{Copying or moving}") & "}");
       AddButton
-        (".overwrite", Mc(Get_Context, "{Overwrite existing}"),
+        (".overwrite",
+         Mc(Get_Context, "{Overwrite existing}"),
          Settings.Overwrite_On_Exist,
          Mc
            (Get_Context,
@@ -442,7 +485,8 @@ package body Preferences.UI is
          LF &
          Mc(Get_Context,
             "{program will quietly give add underscore to the name of moved or}") &
-         LF & Mc(Get_Context, "{copied file or directory.}"),
+         LF &
+         Mc(Get_Context, "{copied file or directory.}"),
          "SetOverwrite");
       Tcl.Tk.Ada.Pack.Pack(LabelFrame, "-fill x");
       declare
@@ -451,12 +495,16 @@ package body Preferences.UI is
          CloseButton: constant Ttk_Button :=
            Create
              (ButtonsFrame & ".closebutton",
-              "-text {" & Mc(Get_Context, "{Close}") &
-              "} -command {ClosePreferences " & PreferencesFrame & "}");
+              "-text {" &
+              Mc(Get_Context, "{Close}") &
+              "} -command {ClosePreferences " &
+              PreferencesFrame &
+              "}");
          RestoreButton: constant Ttk_Button :=
            Create
              (ButtonsFrame & ".restorebutton",
-              "-text {" & Mc(Get_Context, "{Restore defaults}") &
+              "-text {" &
+              Mc(Get_Context, "{Restore defaults}") &
               "} -command RestoreDefaults");
       begin
          Add
@@ -464,14 +512,16 @@ package body Preferences.UI is
             Mc
               (Get_Context,
                "{Restore default settings for the program. You will have to restart}") &
-            LF & Mc(Get_Context, "{the program to apply all changes}"));
+            LF &
+            Mc(Get_Context, "{the program to apply all changes}"));
          Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
          Tcl.Tk.Ada.Pack.Pack(ButtonsFrame, "-fill x");
       end;
       TtkNotebook.Add
-        (Notebook, Widget_Image(PreferencesFrame),
+        (Notebook,
+         Widget_Image(PreferencesFrame),
          "-text {" & Mc(Get_Context, "{Preferences}") & "}");
       -- Keyboard shortcuts settings
       declare
@@ -480,12 +530,16 @@ package body Preferences.UI is
          CloseButton: constant Ttk_Button :=
            Create
              (ButtonsFrame & ".closebutton",
-              "-text {" & Mc(Get_Context, "{Close}") &
-              "} -command {ClosePreferences " & PreferencesFrame & "}");
+              "-text {" &
+              Mc(Get_Context, "{Close}") &
+              "} -command {ClosePreferences " &
+              PreferencesFrame &
+              "}");
          RestoreButton: constant Ttk_Button :=
            Create
              (ButtonsFrame & ".restorebutton",
-              "-text {" & Mc(Get_Context, "{Restore defaults}") &
+              "-text {" &
+              Mc(Get_Context, "{Restore defaults}") &
               "} -command RestoreDefaultShortcuts");
          KeysLabels: constant array(Accelerators'Range) of Unbounded_String :=
            (To_Unbounded_String(Mc(Get_Context, "{Quit from the program}")),
@@ -536,7 +590,7 @@ package body Preferences.UI is
              ("refreshicon",
               "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
       begin
-         Create_Shortcuts_UI_Loop :
+         Create_Shortcuts_UI_Loop:
          for I in KeysLabels'Range loop
             Label :=
               Create
@@ -545,22 +599,30 @@ package body Preferences.UI is
             Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
             Label :=
               Create
-                (ShortcutsFrame & ".labelshortcut" &
+                (ShortcutsFrame &
+                 ".labelshortcut" &
                  Trim(Positive'Image(I), Left),
                  "-text {" & To_String(Accelerators(I)) & "} -wraplength 150");
             Tcl.Tk.Ada.Grid.Grid
-              (Label, "-sticky w -column 1 -row" & Natural'Image(I - 1));
+              (Label,
+               "-sticky w -column 1 -row" & Natural'Image(I - 1));
             Button :=
               Create
                 (ShortcutsFrame & ".button" & Trim(Positive'Image(I), Left),
-                 "-style Toolbutton -image " & Widget_Image(Image) &
-                 " -command {StartChangingShortcut" & Positive'Image(I) & "}");
+                 "-style Toolbutton -image " &
+                 Widget_Image(Image) &
+                 " -command {StartChangingShortcut" &
+                 Positive'Image(I) &
+                 "}");
             Add
               (Button,
-               Mc(Get_Context, "{Change keyboard shortcut for}") & ":" & LF &
+               Mc(Get_Context, "{Change keyboard shortcut for}") &
+               ":" &
+               LF &
                To_String(KeysLabels(I)));
             Tcl.Tk.Ada.Grid.Grid
-              (Button, "-sticky w -column 2 -row" & Natural'Image(I - 1));
+              (Button,
+               "-sticky w -column 2 -row" & Natural'Image(I - 1));
          end loop Create_Shortcuts_UI_Loop;
          Add
            (RestoreButton,
@@ -572,20 +634,28 @@ package body Preferences.UI is
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
          Tcl.Tk.Ada.Grid.Grid(ButtonsFrame, "-sticky we -columnspan 3");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (ShortcutsFrame, ButtonsFrame, "-weight 1");
+           (ShortcutsFrame,
+            ButtonsFrame,
+            "-weight 1");
          Tcl.Tk.Ada.Grid.Row_Configure
-           (ShortcutsFrame, ButtonsFrame, "-weight 1");
+           (ShortcutsFrame,
+            ButtonsFrame,
+            "-weight 1");
       end;
       TtkNotebook.Add
-        (Notebook, Widget_Image(ShortcutsFrame),
+        (Notebook,
+         Widget_Image(ShortcutsFrame),
          "-text {" & Mc(Get_Context, "{Keyboard shortcuts}") & "}");
       -- Actions settings
       declare
          CloseButton: constant Ttk_Button :=
            Create
              (ActionsFrame & ".closebutton",
-              "-text {" & Mc(Get_Context, "{Close}") &
-              "} -command {ClosePreferences " & PreferencesFrame & "}");
+              "-text {" &
+              Mc(Get_Context, "{Close}") &
+              "} -command {ClosePreferences " &
+              PreferencesFrame &
+              "}");
          Button: Ttk_Button;
          Label: Ttk_Label;
          Tentry: Ttk_Entry;
@@ -641,7 +711,8 @@ package body Preferences.UI is
          CheckButton :=
            Create
              (LabelFrame & ".output",
-              "-text {" & Mc(Get_Context, "{Show command output in preview}") &
+              "-text {" &
+              Mc(Get_Context, "{Show command output in preview}") &
               "}");
          Add
            (CheckButton,
@@ -655,7 +726,8 @@ package body Preferences.UI is
          Button :=
            Create
              (LabelFrame & ".add",
-              "-text {" & Mc(Get_Context, "{Add command}") &
+              "-text {" &
+              Mc(Get_Context, "{Add command}") &
               "} -command AddCommand");
          Add
            (Button,
@@ -666,7 +738,8 @@ package body Preferences.UI is
          Button :=
            Create
              (LabelFrame & ".reset",
-              "-text {" & Mc(Get_Context, "{Reset}") &
+              "-text {" &
+              Mc(Get_Context, "{Reset}") &
               "} -command ResetCommand");
          Add(Button, Mc(Get_Context, "{Clear all settings.}"));
          Tcl.Tk.Ada.Grid.Grid(Button, "-sticky e -row 3 -column 1");
@@ -681,15 +754,19 @@ package body Preferences.UI is
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right -anchor s");
       end;
       TtkNotebook.Add
-        (Notebook, Widget_Image(ActionsFrame),
+        (Notebook,
+         Widget_Image(ActionsFrame),
          "-text {" & Mc(Get_Context, "{User commands}") & "}");
       -- The program modules settings
       declare
          CloseButton: constant Ttk_Button :=
            Create
              (ModulesFrame & ".closebutton",
-              "-text {" & Mc(Get_Context, "{Close}") &
-              "} -command {ClosePreferences " & PreferencesFrame & "}");
+              "-text {" &
+              Mc(Get_Context, "{Close}") &
+              "} -command {ClosePreferences " &
+              PreferencesFrame &
+              "}");
          HeaderLabel: Ttk_Label;
       begin
          HeaderLabel :=
@@ -698,40 +775,51 @@ package body Preferences.UI is
               "-text {" & Mc(Get_Context, "{Enabled}") & "}");
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel);
          Tcl.Tk.Ada.Grid.Column_Configure
-           (ModulesFrame, HeaderLabel, "-weight 1");
+           (ModulesFrame,
+            HeaderLabel,
+            "-weight 1");
          HeaderLabel :=
            Create
              (ModulesFrame & ".name",
               "-text {" & Mc(Get_Context, "{Name}") & "}");
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 1 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (ModulesFrame, HeaderLabel, "-weight 1");
+           (ModulesFrame,
+            HeaderLabel,
+            "-weight 1");
          HeaderLabel :=
            Create
              (ModulesFrame & ".version",
               "-text {" & Mc(Get_Context, "{Version}") & "}");
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 2 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (ModulesFrame, HeaderLabel, "-weight 1");
+           (ModulesFrame,
+            HeaderLabel,
+            "-weight 1");
          HeaderLabel :=
            Create
              (ModulesFrame & ".description",
               "-text {" & Mc(Get_Context, "{Description}") & "}");
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 3 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (ModulesFrame, HeaderLabel, "-weight 1");
+           (ModulesFrame,
+            HeaderLabel,
+            "-weight 1");
          HeaderLabel :=
            Create
              (ModulesFrame & ".show",
               "-text {" & Mc(Get_Context, "{Show}") & "}");
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 4 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (ModulesFrame, HeaderLabel, "-weight 1");
+           (ModulesFrame,
+            HeaderLabel,
+            "-weight 1");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Grid.Grid(CloseButton, "-sticky se -columnspan 5");
       end;
       TtkNotebook.Add
-        (Notebook, Widget_Image(ModulesFrame),
+        (Notebook,
+         Widget_Image(ModulesFrame),
          "-text {" & Mc(Get_Context, "{Modules}") & "}");
       Canvas_Create(Canvas, "window", "0 0 -anchor nw -window " & Notebook);
       Tcl_Eval(Get_Context, "update");
@@ -753,9 +841,11 @@ package body Preferences.UI is
       Delete(Tentry, "0", "end");
       Tcl_SetVar
         (Get_Context,
-         ".preferencesframe.canvas.notebook.actions.addframe.output", "0");
+         ".preferencesframe.canvas.notebook.actions.addframe.output",
+         "0");
       Widgets.configure
-        (Button, "-text {" & Mc(Get_Context, "{Add command}") & "}");
+        (Button,
+         "-text {" & Mc(Get_Context, "{Add command}") & "}");
    end Clear_Add_Command;
 
 end Preferences.UI;

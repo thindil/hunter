@@ -28,15 +28,33 @@ package Inotify is
    -- Types of inotify events and values for them
    -- SOURCE
    type Inotify_Events is
-     (ACCESSED, MODIFIED, METADATA, CLOSED_WRITE, CLOSED_NO_WRITE, OPENED,
-      MOVED_FROM, MOVED_TO, CREATED, DELETED, DELETED_SELF, MOVED_SELF,
+     (ACCESSED,
+      MODIFIED,
+      METADATA,
+      CLOSED_WRITE,
+      CLOSED_NO_WRITE,
+      OPENED,
+      MOVED_FROM,
+      MOVED_TO,
+      CREATED,
+      DELETED,
+      DELETED_SELF,
+      MOVED_SELF,
       UNMOUNTED_FILESYSTEM);
 
-   for Inotify_Events use (ACCESSED => 16#0001#, MODIFIED => 16#0002#,
-      METADATA => 16#0004#, CLOSED_WRITE => 16#0008#,
-      CLOSED_NO_WRITE => 16#0010#, OPENED => 16#0020#, MOVED_FROM => 16#0040#,
-      MOVED_TO => 16#0080#, CREATED => 16#0100#, DELETED => 16#0200#,
-      DELETED_SELF => 16#0400#, MOVED_SELF => 16#0800#,
+   for Inotify_Events use
+     (ACCESSED => 16#0001#,
+      MODIFIED => 16#0002#,
+      METADATA => 16#0004#,
+      CLOSED_WRITE => 16#0008#,
+      CLOSED_NO_WRITE => 16#0010#,
+      OPENED => 16#0020#,
+      MOVED_FROM => 16#0040#,
+      MOVED_TO => 16#0080#,
+      CREATED => 16#0100#,
+      DELETED => 16#0200#,
+      DELETED_SELF => 16#0400#,
+      MOVED_SELF => 16#0800#,
       UNMOUNTED_FILESYSTEM => 16#2000#);
    -- ****
 
@@ -73,7 +91,8 @@ package Inotify is
    -- FUNCTION
    -- Used to store data about inotify events
    -- SOURCE
-   package Events_Container is new Vectors(Index_Type => Positive,
+   package Events_Container is new Vectors
+     (Index_Type => Positive,
       Element_Type => Event_Data);
    -- ****
 

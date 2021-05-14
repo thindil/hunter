@@ -53,13 +53,17 @@ package body RenameItems is
    -- ToggleRename
    -- SOURCE
    function Toggle_Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Toggle_Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       TextFrame: constant Ttk_Frame :=
@@ -122,13 +126,17 @@ package body RenameItems is
    -- Rename
    -- SOURCE
    function Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       -- ****
       TextEntry: constant Ttk_Entry :=
@@ -137,33 +145,47 @@ package body RenameItems is
       Success: Boolean;
    begin
       NewName :=
-        MainWindow.Current_Directory & "/" &
+        MainWindow.Current_Directory &
+        "/" &
         To_Unbounded_String(Get(TextEntry));
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
          ActionBlocker :=
-           (if Is_Directory(To_String(NewName)) then
+           (if
+              Is_Directory(To_String(NewName))
+            then
               To_Unbounded_String(Mc(Interp, "{directory}"))
             else To_Unbounded_String(Mc(Interp, "{file}")));
          ShowMessage
-           (Mc(Interp, "{You can't rename}") & " " &
-            To_String(Current_Selected) & " " & Mc(Interp, "{to}") & " " &
-            To_String(NewName) & " " & Mc(Interp, "{because there exists}") &
-            " " & To_String(ActionBlocker) & " " &
+           (Mc(Interp, "{You can't rename}") &
+            " " &
+            To_String(Current_Selected) &
+            " " &
+            Mc(Interp, "{to}") &
+            " " &
+            To_String(NewName) &
+            " " &
+            Mc(Interp, "{because there exists}") &
+            " " &
+            To_String(ActionBlocker) &
+            " " &
             Mc(Interp, "{with that name}"));
          return TCL_OK;
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewName))) then
          ShowMessage
-           (Mc(Interp, "{You don't have permissions to rename}") & " " &
+           (Mc(Interp, "{You don't have permissions to rename}") &
+            " " &
             To_String(NewName));
          return TCL_OK;
       end if;
       Rename_File(To_String(Current_Selected), To_String(NewName), Success);
       if not Success then
          ShowMessage
-           (Mc(Interp, "{Can't rename}") & " " & To_String(Current_Selected) &
+           (Mc(Interp, "{Can't rename}") &
+            " " &
+            To_String(Current_Selected) &
             ".");
          return TCL_OK;
       end if;

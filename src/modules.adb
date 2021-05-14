@@ -26,18 +26,21 @@ package body Modules is
    procedure LoadModules is
       FullPath: Unbounded_String;
    begin
-      Load_Modules_Loop :
+      Load_Modules_Loop:
       for ModulePath of Enabled_Modules loop
          FullPath :=
            To_Unbounded_String
              (Normalize_Pathname
-                (To_String(ModulePath), Containing_Directory(Command_Name)));
+                (To_String(ModulePath),
+                 Containing_Directory(Command_Name)));
          begin
             Tcl_EvalFile(Get_Context, To_String(FullPath) & "/module.tcl");
             Tcl_Eval
               (Get_Context,
-               Simple_Name(To_String(ModulePath)) & "::on_start {" &
-               To_String(FullPath) & "}");
+               Simple_Name(To_String(ModulePath)) &
+               "::on_start {" &
+               To_String(FullPath) &
+               "}");
          exception
             when Tcl_Error_Exception =>
                null;
@@ -47,13 +50,16 @@ package body Modules is
 
    procedure Execute_Modules(State: Triggers; Arguments: String := "") is
    begin
-      Execute_Modules_Loop :
+      Execute_Modules_Loop:
       for ModulePath of Enabled_Modules loop
          begin
             Tcl_Eval
               (Get_Context,
-               Simple_Name(To_String(ModulePath)) & "::" &
-               To_Lower(Triggers'Image(State)) & " " & Arguments);
+               Simple_Name(To_String(ModulePath)) &
+               "::" &
+               To_Lower(Triggers'Image(State)) &
+               " " &
+               Arguments);
          exception
             when Tcl_Error_Exception =>
                null;

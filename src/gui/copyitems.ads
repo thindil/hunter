@@ -39,7 +39,9 @@ package CopyItems is
    -- Success   - True if item was successfully copied, otherwise False
    -- SOURCE
    procedure CopyItem
-     (Name: String; Path: Unbounded_String; Success: in out Boolean);
+     (Name: String;
+      Path: Unbounded_String;
+      Success: in out Boolean);
    -- ****
 
    -- ****f* CopyItems/CopyItems.CopySelected

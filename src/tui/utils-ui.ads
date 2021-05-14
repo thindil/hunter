@@ -35,7 +35,8 @@ package Utils.UI is
    -- file could not be found.
    -- SOURCE
    function Find_Executable
-     (Name: String; Display_Message: Boolean := True) return String;
+     (Name: String;
+      Display_Message: Boolean := True) return String;
    -- ****
 
    -- ****f* UtilsTUI/UtilsTUI.Set_ProgressBar
@@ -63,7 +64,8 @@ package Utils.UI is
    -- Ada_Command - Ada function which will be invoked
    -- SOURCE
    procedure Add_Command
-     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc);
+     (Name: String;
+      Ada_Command: not null CreateCommands.Tcl_CmdProc);
    -- ****
 
    -- ****f* UtilsTUI/UtilsTUI.Toggle_Tool_Buttons
@@ -75,7 +77,8 @@ package Utils.UI is
    -- Finished - If true, action was finished. Default is False
    -- SOURCE
    procedure Toggle_Tool_Buttons
-     (Action: ItemActions; Finished: Boolean := False);
+     (Action: ItemActions;
+      Finished: Boolean := False);
    -- ****
 
 end Utils.UI;

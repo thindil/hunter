@@ -43,7 +43,8 @@ package body Utils is
          Args =>
            Argument_String_To_List
              (Arg_String => "query default " & Mime_Type).all,
-         Output_File_Descriptor => Output_File, Return_Code => Return_Code,
+         Output_File_Descriptor => Output_File,
+         Return_Code => Return_Code,
          Err_To_Out => True);
       Close(FD => Output_File);
       if Return_Code /= 0 then
@@ -56,12 +57,19 @@ package body Utils is
       Multiplier: Natural range 0 .. 8;
       New_Size: File_Size;
       Size_Shortcuts: constant array(Natural range 0 .. 8) of String(1 .. 3) :=
-        (0 => "B  ", 1 => "KiB", 2 => "MiB", 3 => "GiB", 4 => "TiB",
-         5 => "PiB", 6 => "EiB", 7 => "ZiB", 8 => "YiB");
+        (0 => "B  ",
+         1 => "KiB",
+         2 => "MiB",
+         3 => "GiB",
+         4 => "TiB",
+         5 => "PiB",
+         6 => "EiB",
+         7 => "ZiB",
+         8 => "YiB");
    begin
       New_Size := Size;
       Multiplier := 0;
-      Count_Size_Loop :
+      Count_Size_Loop:
       while New_Size > 1024 loop
          exit Count_Size_Loop when Multiplier = 8;
          New_Size := New_Size / 1024;

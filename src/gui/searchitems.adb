@@ -52,13 +52,17 @@ package body SearchItems is
    -- ToggleSearch
    -- SOURCE
    function Toggle_Search_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Toggle_Search_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       TextFrame: constant Ttk_Frame :=
@@ -110,13 +114,17 @@ package body SearchItems is
    -- Search
    -- SOURCE
    function Search_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Search_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       TextEntry: constant Ttk_Entry :=
@@ -131,7 +139,7 @@ package body SearchItems is
          Update_Directory_List;
          return TCL_OK;
       end if;
-      Search_Item_Loop :
+      Search_Item_Loop:
       for I in ItemsList.First_Index .. ItemsList.Last_Index loop
          if Index
              (To_Lower(To_String(ItemsList(I).Name)),

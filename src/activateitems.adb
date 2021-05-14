@@ -51,13 +51,17 @@ package body ActivateItems is
    -- ActivateItem
    -- SOURCE
    function Activate_Item_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Activate_Item_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
@@ -75,7 +79,8 @@ package body ActivateItems is
          if New_Action = SHOWTRASH then
             DestinationDirectory :=
               Delete
-                (Current_Directory, 1,
+                (Current_Directory,
+                 1,
                  Length
                    (To_Unbounded_String
                       (Value("HOME") & "/.local/share/Trash/files")));
@@ -150,20 +155,25 @@ package body ActivateItems is
    -- Execute
    -- SOURCE
    function Execute_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Execute_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       Pid: GNAT.OS_Lib.Process_Id;
    begin
       Pid :=
         Non_Blocking_Spawn
-          (To_String(Current_Selected), Argument_String_To_List("").all);
+          (To_String(Current_Selected),
+           Argument_String_To_List("").all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
          ShowMessage(Mc(Interp, "{Can't execute this command}"));
       end if;

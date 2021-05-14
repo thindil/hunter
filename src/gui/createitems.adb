@@ -55,13 +55,17 @@ package body CreateItems is
    -- Itemtype is an item type which will be created. Can be file or directory
    -- SOURCE
    function Show_Create_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_Create_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       Frame: constant Ttk_Frame := Get_Widget(".mainframe.textframe", Interp);
@@ -74,12 +78,17 @@ package body CreateItems is
       configure(Button, "-command {Create " & CArgv.Arg(Argv, 1) & "}");
       Add
         (Button,
-         Mc(Interp, "{Create a new}") & " " & Mc(Interp, CArgv.Arg(Argv, 1)) &
-         " " & Mc(Interp, "{with the selected name.}"));
+         Mc(Interp, "{Create a new}") &
+         " " &
+         Mc(Interp, CArgv.Arg(Argv, 1)) &
+         " " &
+         Mc(Interp, "{with the selected name.}"));
       Add
         (TextEntry,
-         Mc(Interp, "{Enter a name for the newly created}") & " " &
-         Mc(Interp, CArgv.Arg(Argv, 1)) & ".");
+         Mc(Interp, "{Enter a name for the newly created}") &
+         " " &
+         Mc(Interp, CArgv.Arg(Argv, 1)) &
+         ".");
       Tcl.Tk.Ada.Grid.Grid(Button);
       Unbind(TextEntry, "<KeyRelease>");
       Focus(TextEntry);
@@ -111,13 +120,17 @@ package body CreateItems is
    -- Itemtype is an item type which will be created. Can be file or directory
    -- SOURCE
    function Create_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Create_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       TextEntry: constant Ttk_Entry :=
@@ -135,23 +148,38 @@ package body CreateItems is
         Is_Symbolic_Link(To_String(NewItemName)) then
          ActionString :=
            To_Unbounded_String
-             (Mc(Interp, "{create}") & " " & CArgv.Arg(Argv, 1) & " " &
+             (Mc(Interp, "{create}") &
+              " " &
+              CArgv.Arg(Argv, 1) &
+              " " &
               Mc(Interp, "{with}"));
          ActionBlocker :=
-           (if Is_Directory(To_String(NewItemName)) then
+           (if
+              Is_Directory(To_String(NewItemName))
+            then
               To_Unbounded_String(Mc(Interp, "directory"))
             else To_Unbounded_String(Mc(Interp, "file")));
          ShowMessage
-           (Mc(Interp, "{You can't}") & " " & To_String(ActionString) & " " &
-            Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
-            Mc(Interp, "{because there exists}") & " " &
-            To_String(ActionBlocker) & " " & Mc(Interp, "{with that name.}"));
+           (Mc(Interp, "{You can't}") &
+            " " &
+            To_String(ActionString) &
+            " " &
+            Mc(Interp, "{name}") &
+            " '" &
+            To_String(NewItemName) &
+            "' " &
+            Mc(Interp, "{because there exists}") &
+            " " &
+            To_String(ActionBlocker) &
+            " " &
+            Mc(Interp, "{with that name.}"));
          goto End_Of_Create;
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewItemName))) then
          ShowMessage
-           (Mc(Interp, "{You don't have permissions to write to}") & " " &
+           (Mc(Interp, "{You don't have permissions to write to}") &
+            " " &
             Containing_Directory(To_String(NewItemName)));
          goto End_Of_Create;
       end if;
@@ -172,8 +200,11 @@ package body CreateItems is
             end if;
             Tcl_Eval
               (Interp,
-               "file link -symbolic {" & To_String(NewItemName) & "} {" &
-               To_String(Destination) & "}");
+               "file link -symbolic {" &
+               To_String(NewItemName) &
+               "} {" &
+               To_String(Destination) &
+               "}");
          when others =>
             raise Hunter_Create_Exception
               with Mc(Interp, "{Invalid action type}");

@@ -36,7 +36,8 @@ package Utils.UI is
    -- file could not be found.
    -- SOURCE
    function Find_Executable
-     (Name: String; Display_Message: Boolean := True) return String;
+     (Name: String;
+      Display_Message: Boolean := True) return String;
      -- ****
 
      -- ****f* Utils/Utils.Update_Progress_Bar
@@ -60,7 +61,9 @@ package Utils.UI is
    -- Height       - Desired height for the selected dialog
    -- SOURCE
    procedure Set_Dialog
-     (Dialog: Tk_Toplevel; Dialog_Title: String; Width: Width_Range;
+     (Dialog: Tk_Toplevel;
+      Dialog_Title: String;
+      Width: Width_Range;
       Height: Height_Range);
    -- ****
 
@@ -73,7 +76,8 @@ package Utils.UI is
    -- Ada_Command - Ada function which will be invoked
    -- SOURCE
    procedure Add_Command
-     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc);
+     (Name: String;
+      Ada_Command: not null CreateCommands.Tcl_CmdProc);
    -- ****
 
    -- ****f* Utils/Utils.Toggle_Tool_Buttons
@@ -85,7 +89,8 @@ package Utils.UI is
    -- Finished - If true, action was finished. Default is False
    -- SOURCE
    procedure Toggle_Tool_Buttons
-     (Action: Item_Actions; Finished: Boolean := False);
+     (Action: Item_Actions;
+      Finished: Boolean := False);
    -- ****
 
 end Utils.UI;

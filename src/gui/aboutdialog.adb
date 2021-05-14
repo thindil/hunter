@@ -52,13 +52,17 @@ package body AboutDialog is
    -- ShowAbout
    -- SOURCE
    function Show_About_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_About_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       AboutDialog: constant Tk_Toplevel :=
@@ -66,8 +70,11 @@ package body AboutDialog is
       CloseButton: constant Ttk_Button :=
         Create
           (AboutDialog & ".closebutton",
-           "-text {" & Mc(Interp, "Close") & "} -command {CloseDialog " &
-           AboutDialog & "} -underline 0");
+           "-text {" &
+           Mc(Interp, "Close") &
+           "} -command {CloseDialog " &
+           AboutDialog &
+           "} -underline 0");
       MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
       Label: Ttk_Label;
       Frame: Ttk_Frame;
@@ -88,7 +95,8 @@ package body AboutDialog is
         Create
           (Frame & ".info",
            "-text {" &
-           Mc(Interp, "{Hunter - Graphical file manager for Linux}") & "}");
+           Mc(Interp, "{Hunter - Graphical file manager for Linux}") &
+           "}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Width := Width + Width_Range'Value(Winfo_Get(Label, "reqwidth"));
       Height := Height_Range'Value(Winfo_Get(Label, "reqheight")) * 17;
@@ -103,13 +111,17 @@ package body AboutDialog is
       Label :=
         Create
           (Frame & ".version",
-           "-text {" & Mc(Interp, "{Version:}") & " 1.6 (" &
-           Mc(Interp, "{development}") & ")}");
+           "-text {" &
+           Mc(Interp, "{Version:}") &
+           " 1.6 (" &
+           Mc(Interp, "{development}") &
+           ")}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       WebsiteButton :=
         Create
           (Frame & ".website",
-           "-text {" & Mc(Interp, "Website") &
+           "-text {" &
+           Mc(Interp, "Website") &
            "} -command {OpenLink https://www.laeran.pl/repositories/hunter/} -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(WebsiteButton);
       Tcl.Tk.Ada.Grid.Grid(Frame, "-row 0 -column 1 -sticky nwe");
@@ -117,21 +129,28 @@ package body AboutDialog is
       Frame := Create(Creditsbook & ".programmers");
       View := Create(Frame & ".view", "-show tree -selectmode none -height 5");
       Column
-        (View, "#0", "-stretch true -width" & Width_Range'Image(Width - 50));
+        (View,
+         "#0",
+         "-stretch true -width" & Width_Range'Image(Width - 50));
       Insert(View, "{} end -text {Bartek Jasicki <thindil@laeran.pl>}");
       Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
       Add
-        (Creditsbook, Widget_Image(Frame),
+        (Creditsbook,
+         Widget_Image(Frame),
          "-text {" & Mc(Interp, "Programmers") & "}");
       Frame := Create(Creditsbook & ".translators");
       View := Create(Frame & ".view", "-show tree -selectmode none -height 5");
       Column
-        (View, "#0", "-stretch true -width" & Width_Range'Image(Width - 50));
+        (View,
+         "#0",
+         "-stretch true -width" & Width_Range'Image(Width - 50));
       Insert
-        (View, "{} end -text {Polski - Bartek Jasicki <thindil@laeran.pl>}");
+        (View,
+         "{} end -text {Polski - Bartek Jasicki <thindil@laeran.pl>}");
       Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
       Add
-        (Creditsbook, Widget_Image(Frame),
+        (Creditsbook,
+         Widget_Image(Frame),
          "-text {" & Mc(Interp, "Translators") & "}");
       Tcl.Tk.Ada.Grid.Grid(CloseButton, "-columnspan 2");
       Bind(AboutDialog, "<Alt-c>", "{CloseDialog " & AboutDialog & "}");
@@ -154,13 +173,17 @@ package body AboutDialog is
    -- URL is the full URL (with http(s)://) to open
    -- SOURCE
    function Open_Link_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Open_Link_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       OsName: constant String := Tcl_GetVar(Interp, "tcl_platform(os)");

@@ -47,40 +47,51 @@ package body Trash is
    -- RestoreItem
    -- SOURCE
    function Restore_Item_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Restore_Item_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       RestoreInfo, FileLine, Destination, ItemType: Unbounded_String;
       StartIndex: Positive;
       FileInfo: File_Type;
    begin
-      Restore_Items_Loop :
+      Restore_Items_Loop:
       for Item of Selected_Items loop
          StartIndex := Index(Item, "files");
          RestoreInfo :=
-           Unbounded_Slice(Item, 1, StartIndex - 1) & "info" &
+           Unbounded_Slice(Item, 1, StartIndex - 1) &
+           "info" &
            Unbounded_Slice(Item, StartIndex + 5, Length(Item)) &
            To_Unbounded_String(".trashinfo");
          Open(FileInfo, In_File, To_String(RestoreInfo));
          Skip_Line(FileInfo);
-         Restore_Item_Loop :
+         Restore_Item_Loop:
          for I in 1 .. 2 loop
             FileLine := To_Unbounded_String(Get_Line(FileInfo));
             if Slice(FileLine, 1, 4) = "Path" then
                Destination := Unbounded_Slice(FileLine, 6, Length(FileLine));
                if Ada.Directories.Exists(To_String(Destination)) then
                   ItemType :=
-                    (if Is_Directory(To_String(Destination)) then
+                    (if
+                       Is_Directory(To_String(Destination))
+                     then
                        To_Unbounded_String(Mc(Interp, "{Directory}"))
                      else To_Unbounded_String(Mc(Interp, "{File}")));
                   ShowMessage
-                    (Mc(Interp, "{Can't restore}") & " " &
-                     To_String(Destination) & " " & To_String(ItemType) & " " &
+                    (Mc(Interp, "{Can't restore}") &
+                     " " &
+                     To_String(Destination) &
+                     " " &
+                     To_String(ItemType) &
+                     " " &
                      Mc(Interp, "{with that name exists.}"));
                   Close(FileInfo);
                   return Show_Trash_Command(ClientData, Interp, Argc, Argv);
@@ -108,13 +119,17 @@ package body Trash is
    -- ClearTrash
    -- SOURCE
    function Clear_Trash_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Clear_Trash_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
@@ -142,13 +157,17 @@ package body Trash is
    -- directory (and show to the user)
    -- SOURCE
    function GoToTrash_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function GoToTrash_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
    begin
@@ -156,14 +175,16 @@ package body Trash is
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
       DestinationDirectory :=
         Delete
-          (MainWindow.Current_Directory, 1,
+          (MainWindow.Current_Directory,
+           1,
            Length
              (To_Unbounded_String
                 (Value("HOME") & "/.local/share/Trash/files")));
       LoadDirectory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
       Execute_Modules
-        (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+        (On_Enter,
+         "{" & To_String(MainWindow.Current_Directory) & "}");
       return TCL_OK;
    end GoToTrash_Command;
 

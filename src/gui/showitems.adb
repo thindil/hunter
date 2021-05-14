@@ -117,7 +117,8 @@ package body ShowItems is
    -- Names of the permissions buttons
    -- SOURCE
    ButtonNames: constant array(1 .. 3) of Unbounded_String :=
-     (To_Unbounded_String("execute"), To_Unbounded_String("read"),
+     (To_Unbounded_String("execute"),
+      To_Unbounded_String("read"),
       To_Unbounded_String("write"));
    -- ****
 
@@ -125,7 +126,11 @@ package body ShowItems is
       Image: constant Tk_Photo :=
         Create("previewimage", "-file " & To_String(Current_Selected));
       TempImage: Tk_Photo := Create("tempimage");
-      FrameWidth, FrameHeight, ImageWidth, ImageHeight, StartX,
+      FrameWidth,
+      FrameHeight,
+      ImageWidth,
+      ImageHeight,
+      StartX,
       StartY: Natural;
       ScaleMode: Unbounded_String := To_Unbounded_String("-subsample");
       Scale: Natural;
@@ -139,19 +144,24 @@ package body ShowItems is
       FrameWidth := Natural'Value(Winfo_Get(PreviewFrame, "width"));
       if ImageWidth > FrameWidth or ImageHeight > FrameHeight then
          Scale :=
-           (if ImageWidth / FrameWidth > ImageHeight / FrameHeight then
+           (if
+              ImageWidth / FrameWidth > ImageHeight / FrameHeight
+            then
               ImageWidth / FrameWidth
             else ImageHeight / FrameHeight);
          Scale := Scale + 1;
       elsif FrameWidth > ImageWidth or FrameHeight > ImageHeight then
          ScaleMode := To_Unbounded_String("-zoom");
          Scale :=
-           (if FrameWidth / ImageWidth > FrameHeight / ImageHeight then
+           (if
+              FrameWidth / ImageWidth > FrameHeight / ImageHeight
+            then
               FrameWidth / ImageWidth
             else FrameHeight / ImageHeight);
       end if;
       Copy
-        (TempImage, Image,
+        (TempImage,
+         Image,
          "-shrink " & To_String(ScaleMode) & Natural'Image(Scale));
       Delete(TempImage);
       ImageWidth := Natural'Value(Width(Image));
@@ -162,7 +172,8 @@ package body ShowItems is
       StartX := ImageWidth / 2;
       StartY := ImageHeight / 2;
       Canvas_Create
-        (PreviewCanvas, "image",
+        (PreviewCanvas,
+         "image",
          Natural'Image(StartX) & Natural'Image(StartY) & " -image " & Image);
       configure
         (PreviewCanvas,
@@ -209,14 +220,17 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
          Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
          configure
-           (PreviewYScroll, "-command [list " & PreviewTree & " yview]");
+           (PreviewYScroll,
+            "-command [list " & PreviewTree & " yview]");
          configure
-           (PreviewXScroll, "-command [list " & PreviewTree & " xview]");
+           (PreviewXScroll,
+            "-command [list " & PreviewTree & " xview]");
          configure(PreviewTree, "-selectmode none");
          Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
          Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
-           (PreviewTree, "-side top -fill both -expand true");
+           (PreviewTree,
+            "-side top -fill both -expand true");
          Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
          Tcl_Eval(Get_Context, "update");
          Update_Directory_List(True, "preview");
@@ -238,54 +252,68 @@ package body ShowItems is
                   procedure LoadFile is
                   begin
                      Open(File, In_File, To_String(Current_Selected));
-                     Load_Simple_File :
+                     Load_Simple_File:
                      while not End_Of_File(File) loop
                         FileLine := To_Unbounded_String(Get_Line(File));
                         StartIndex := 1;
-                        Escape_Entry_Braces_Loop :
+                        Escape_Entry_Braces_Loop:
                         loop
                            StartIndex := Index(FileLine, "{", StartIndex);
                            exit Escape_Entry_Braces_Loop when StartIndex = 0;
                            Replace_Slice
-                             (FileLine, StartIndex, StartIndex, "\{");
+                             (FileLine,
+                              StartIndex,
+                              StartIndex,
+                              "\{");
                            StartIndex := StartIndex + 2;
                         end loop Escape_Entry_Braces_Loop;
                         StartIndex := 1;
-                        Escape_Closing_Braces_Loop :
+                        Escape_Closing_Braces_Loop:
                         loop
                            StartIndex := Index(FileLine, "}", StartIndex);
                            exit Escape_Closing_Braces_Loop when StartIndex = 0;
                            Replace_Slice
-                             (FileLine, StartIndex, StartIndex, "\}");
+                             (FileLine,
+                              StartIndex,
+                              StartIndex,
+                              "\}");
                            StartIndex := StartIndex + 2;
                         end loop Escape_Closing_Braces_Loop;
                         Insert
-                          (PreviewText, "end",
+                          (PreviewText,
+                           "end",
                            "[subst -nocommands -novariables {" &
-                           To_String(FileLine) & LF & "}]");
+                           To_String(FileLine) &
+                           LF &
+                           "}]");
                      end loop Load_Simple_File;
                      Close(File);
                   end LoadFile;
                   procedure Replace_Element(Element, New_Element: String) is
                   begin
-                     Replace_Element_Loop :
+                     Replace_Element_Loop:
                      loop
                         StartIndex := Index(FileLine, Element);
                         exit Replace_Element_Loop when StartIndex = 0;
                         Replace_Slice
-                          (FileLine, StartIndex,
-                           StartIndex + Element'Length - 1, New_Element);
+                          (FileLine,
+                           StartIndex,
+                           StartIndex + Element'Length - 1,
+                           New_Element);
                      end loop Replace_Element_Loop;
                   end Replace_Element;
                   procedure Escape_Element(Element: String) is
                   begin
                      StartIndex := 1;
-                     Escape_Element_Loop :
+                     Escape_Element_Loop:
                      loop
                         StartIndex := Index(FileLine, Element, StartIndex);
                         exit Escape_Element_Loop when StartIndex = 0;
                         Replace_Slice
-                          (FileLine, StartIndex, StartIndex, "\" & Element);
+                          (FileLine,
+                           StartIndex,
+                           StartIndex,
+                           "\" & Element);
                         StartIndex := StartIndex + 2;
                      end loop Escape_Element_Loop;
                   end Escape_Element;
@@ -300,7 +328,8 @@ package body ShowItems is
                      "-command [list " & PreviewText & " yview]");
                   Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
                   Tcl.Tk.Ada.Pack.Pack
-                    (PreviewText, "-side top -fill both -expand true");
+                    (PreviewText,
+                     "-side top -fill both -expand true");
                   configure(PreviewText, "-state normal");
                   Delete(PreviewText, "1.0", "end");
                   if not Settings.Color_Text or ExecutableName = "" then
@@ -313,7 +342,8 @@ package body ShowItems is
                        ("--out-format=pango --force --quiet --output=" &
                         Value("HOME") &
                         "/.cache/hunter/highlight.tmp --base16 --style=" &
-                        To_String(Settings.Color_Theme) & " " &
+                        To_String(Settings.Color_Theme) &
+                        " " &
                         To_String(Current_Selected)).all,
                      Success);
                   if not Success then
@@ -321,16 +351,18 @@ package body ShowItems is
                      goto Set_UI;
                   end if;
                   Open
-                    (File, In_File,
+                    (File,
+                     In_File,
                      Value("HOME") & "/.cache/hunter/highlight.tmp");
                   FirstLine := True;
-                  Load_Highlight_File :
+                  Load_Highlight_File:
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
                      if FirstLine then
                         FileLine :=
                           Unbounded_Slice
-                            (FileLine, Index(FileLine, ">") + 1,
+                            (FileLine,
+                             Index(FileLine, ">") + 1,
                              Length(FileLine));
                         FirstLine := False;
                      end if;
@@ -342,15 +374,17 @@ package body ShowItems is
                      Escape_Element("{");
                      Escape_Element("}");
                      StartIndex := 1;
-                     Highlight_Text_Loop :
+                     Highlight_Text_Loop:
                      loop
                         StartIndex := Index(FileLine, "<span", StartIndex);
                         exit Highlight_Text_Loop when StartIndex = 0;
                         if StartIndex > 1 then
                            Insert
-                             (PreviewText, "end",
+                             (PreviewText,
+                              "end",
                               "[subst -nocommands -novariables {" &
-                              Slice(FileLine, 1, StartIndex - 1) & "}]");
+                              Slice(FileLine, 1, StartIndex - 1) &
+                              "}]");
                         end if;
                         EndIndex := Index(FileLine, ">", StartIndex);
                         TagText :=
@@ -359,9 +393,12 @@ package body ShowItems is
                         if Index(TagText, "foreground=") > 0 then
                            TagName :=
                              Unbounded_Slice
-                               (TagText, StartColor + 12, StartColor + 18);
+                               (TagText,
+                                StartColor + 12,
+                                StartColor + 18);
                            Tag_Configure
-                             (PreviewText, To_String(TagName),
+                             (PreviewText,
+                              To_String(TagName),
                               "-foreground " & To_String(TagName));
                         elsif Index(TagText, "style=""italic""") > 0 then
                            TagName := To_Unbounded_String("italictag");
@@ -372,13 +409,17 @@ package body ShowItems is
                         EndIndex := Index(FileLine, "</span>", StartIndex) - 1;
                         if EndIndex > 0 then
                            Insert
-                             (PreviewText, "end",
+                             (PreviewText,
+                              "end",
                               "[subst -nocommands -novariables {" &
                               Slice(FileLine, StartIndex, EndIndex) &
-                              "}] [list " & To_String(TagName) & "]");
+                              "}] [list " &
+                              To_String(TagName) &
+                              "]");
                         else
                            Insert
-                             (PreviewText, "end",
+                             (PreviewText,
+                              "end",
                               "[subst -nocommands -novariables {" &
                               Slice(FileLine, StartIndex, Length(FileLine)) &
                               "}]");
@@ -386,12 +427,17 @@ package body ShowItems is
                         StartIndex := 1;
                         FileLine :=
                           Unbounded_Slice
-                            (FileLine, EndIndex + 8, Length(FileLine));
+                            (FileLine,
+                             EndIndex + 8,
+                             Length(FileLine));
                      end loop Highlight_Text_Loop;
                      Insert
-                       (PreviewText, "end",
+                       (PreviewText,
+                        "end",
                         "[subst -nocommands -novariables {" &
-                        To_String(FileLine) & LF & "}]");
+                        To_String(FileLine) &
+                        LF &
+                        "}]");
                   end loop Load_Highlight_File;
                   Close(File);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
@@ -405,7 +451,8 @@ package body ShowItems is
                declare
                   Image: constant Tk_Photo :=
                     Create
-                      ("previewimage", "-file " & To_String(Current_Selected));
+                      ("previewimage",
+                       "-file " & To_String(Current_Selected));
                   StartX, StartY, ImageWidth, ImageHeight: Natural;
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
@@ -427,14 +474,21 @@ package body ShowItems is
                      StartX := ImageWidth / 2;
                      StartY := ImageHeight / 2;
                      Canvas_Create
-                       (PreviewCanvas, "image",
-                        Natural'Image(StartX) & Natural'Image(StartY) &
-                        " -image " & Image);
+                       (PreviewCanvas,
+                        "image",
+                        Natural'Image(StartX) &
+                        Natural'Image(StartY) &
+                        " -image " &
+                        Image);
                      configure
                        (PreviewCanvas,
-                        "-width " & Width(Image) & " -height" &
-                        Natural'Image(ImageHeight) & " -scrollregion [list " &
-                        BBox(PreviewCanvas, "all") & "]");
+                        "-width " &
+                        Width(Image) &
+                        " -height" &
+                        Natural'Image(ImageHeight) &
+                        " -scrollregion [list " &
+                        BBox(PreviewCanvas, "all") &
+                        "]");
                      configure
                        (PreviewYScroll,
                         "-command [list " & PreviewCanvas & " yview]");
@@ -442,9 +496,11 @@ package body ShowItems is
                        (PreviewXScroll,
                         "-command [list " & PreviewCanvas & " xview]");
                      Tcl.Tk.Ada.Pack.Pack
-                       (PreviewXScroll, "-side bottom -fill x");
+                       (PreviewXScroll,
+                        "-side bottom -fill x");
                      Tcl.Tk.Ada.Pack.Pack
-                       (PreviewYScroll, "-side right -fill y");
+                       (PreviewYScroll,
+                        "-side right -fill y");
                   end if;
                   Tcl.Tk.Ada.Pack.Pack(PreviewCanvas, "-side top");
                exception
@@ -482,7 +538,8 @@ package body ShowItems is
                   if Invoke(ActionButton) /= "" then
                      raise Hunter_Show_Items_Exception
                        with Mc
-                         (Get_Context, "{Can't show file or directory info}");
+                         (Get_Context,
+                          "{Can't show file or directory info}");
                   end if;
                end;
             end if;
@@ -540,10 +597,11 @@ package body ShowItems is
          if Settings.Show_Hidden then
             configure
               (Label,
-               "-text {" & Natural'Image(Natural(SecondItemsList.Length)) &
+               "-text {" &
+               Natural'Image(Natural(SecondItemsList.Length)) &
                "}");
          else
-            Count_Directory_Size_Loop :
+            Count_Directory_Size_Loop:
             for Item of SecondItemsList loop
                if not Item.IsHidden then
                   DirectorySize := DirectorySize + 1;
@@ -553,7 +611,8 @@ package body ShowItems is
          end if;
       elsif Is_Regular_File(SelectedItem) then
          configure
-           (Label, "-text {" & Count_File_Size(Size(SelectedItem)) & "}");
+           (Label,
+            "-text {" & Count_File_Size(Size(SelectedItem)) & "}");
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
       end if;
@@ -563,7 +622,8 @@ package body ShowItems is
            (Label,
             "-text {" &
             Ada.Calendar.Formatting.Image
-              (Modification_Time(SelectedItem), False,
+              (Modification_Time(SelectedItem),
+               False,
                Ada.Calendar.Time_Zones.UTC_Time_Offset) &
             "}");
       else
@@ -578,7 +638,8 @@ package body ShowItems is
          Tcl.Tk.Ada.Grid.Grid(Label);
          Label.Name := New_String(InfoFrame & ".filetype");
          configure
-           (Label, "-text {" & Get_Mime_Type(Full_Name(SelectedItem)) & "}");
+           (Label,
+            "-text {" & Get_Mime_Type(Full_Name(SelectedItem)) & "}");
          Tcl.Tk.Ada.Grid.Grid(Label);
       end if;
       Label.Name := New_String(InfoFrame & ".associatedprogramtext");
@@ -600,7 +661,8 @@ package body ShowItems is
                return;
             end if;
             Non_Blocking_Spawn
-              (ProcessDesc, ExecutableName,
+              (ProcessDesc,
+               ExecutableName,
                Argument_String_To_List("query default " & MimeType).all);
             Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
             if Result = 1 then
@@ -613,8 +675,11 @@ package body ShowItems is
                else
                   configure
                     (Button,
-                     "-text {" & To_String(DesktopFile) & " (" &
-                     Mc(Get_Context, "{not installed}") & ")}");
+                     "-text {" &
+                     To_String(DesktopFile) &
+                     " (" &
+                     Mc(Get_Context, "{not installed}") &
+                     ")}");
                end if;
             end if;
             Close(ProcessDesc);
@@ -632,15 +697,19 @@ package body ShowItems is
          Arguments: constant Argument_List :=
            (new String'("-c%a %U %G"), new String'(SelectedItem));
          procedure SetPermissionsButtons
-           (Name, ButtonState: String; Permission: Character) is
+           (Name, ButtonState: String;
+            Permission: Character) is
             CheckButton: Ttk_CheckButton;
          begin
             CheckButton.Interp := Get_Context;
-            Set_Permission_Buttons_Loop :
+            Set_Permission_Buttons_Loop:
             for I in ButtonNames'Range loop
                CheckButton.Name :=
                  New_String
-                   (InfoFrame & "." & Name & "frame." &
+                   (InfoFrame &
+                    "." &
+                    Name &
+                    "frame." &
                     To_String(ButtonNames(I)));
                if I = 1 then
                   if Is_Directory(SelectedItem) then
@@ -659,25 +728,33 @@ package body ShowItems is
             case Permission is
                when '1' =>
                   Tcl.Ada.Tcl_SetVar
-                    (CheckButton.Interp, Name & "execute", "1");
+                    (CheckButton.Interp,
+                     Name & "execute",
+                     "1");
                when '2' =>
                   Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "1");
                when '3' =>
                   Tcl.Ada.Tcl_SetVar
-                    (CheckButton.Interp, Name & "execute", "1");
+                    (CheckButton.Interp,
+                     Name & "execute",
+                     "1");
                   Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "1");
                when '4' =>
                   Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "1");
                when '5' =>
                   Tcl.Ada.Tcl_SetVar
-                    (CheckButton.Interp, Name & "execute", "1");
+                    (CheckButton.Interp,
+                     Name & "execute",
+                     "1");
                   Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "1");
                when '6' =>
                   Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "1");
                   Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "1");
                when '7' =>
                   Tcl.Ada.Tcl_SetVar
-                    (CheckButton.Interp, Name & "execute", "1");
+                    (CheckButton.Interp,
+                     Name & "execute",
+                     "1");
                   Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "read", "1");
                   Tcl.Ada.Tcl_SetVar(CheckButton.Interp, Name & "write", "1");
                when others =>
@@ -701,22 +778,30 @@ package body ShowItems is
          configure(Label, "-text {" & Mc(Get_Context, "{Others}") & ":}");
          if Value("USER") /= Slice(Tokens, 2) then
             SetPermissionsButtons
-              ("owner", "disabled",
+              ("owner",
+               "disabled",
                Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
             SetPermissionsButtons
-              ("group", "disabled",
+              ("group",
+               "disabled",
                Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
             SetPermissionsButtons
-              ("others", "disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
+              ("others",
+               "disabled",
+               Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
          else
             SetPermissionsButtons
-              ("owner", "!disabled",
+              ("owner",
+               "!disabled",
                Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
             SetPermissionsButtons
-              ("group", "!disabled",
+              ("group",
+               "!disabled",
                Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
             SetPermissionsButtons
-              ("others", "!disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
+              ("others",
+               "!disabled",
+               Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
          end if;
       end;
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
@@ -737,13 +822,17 @@ package body ShowItems is
    -- ShowPreviewOrInfo
    -- SOURCE
    function Show_Preview_Or_Info_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_Preview_Or_Info_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
@@ -756,7 +845,9 @@ package body ShowItems is
    end Show_Preview_Or_Info_Command;
 
    function Show_Selected_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       DirectoryTree: constant Ttk_Tree_View :=
@@ -769,10 +860,10 @@ package body ShowItems is
       Items := To_Unbounded_String(Selection(DirectoryTree));
       if Items /= Null_Unbounded_String then
          Create(Tokens, To_String(Items), " ");
-         Set_Selected_List_Loop :
+         Set_Selected_List_Loop:
          for I in 1 .. Slice_Count(Tokens) loop
             Selected_Items.Append
-              (ItemsList(Positive'Value(Slice(Tokens, I))).Path);
+            (ItemsList(Positive'Value(Slice(Tokens, I))).Path);
          end loop Set_Selected_List_Loop;
       else
          Selected_Items.Append(MainWindow.Current_Directory);
@@ -818,20 +909,25 @@ package body ShowItems is
    -- SetPermissions
    -- SOURCE
    function Set_Permissions_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Set_Permissions_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       PermissionsString: Unbounded_String;
       Permission: Natural range 0 .. 7;
       Names: constant array(1 .. 3) of Unbounded_String :=
-        (To_Unbounded_String("owner"), To_Unbounded_String("group"),
+        (To_Unbounded_String("owner"),
+         To_Unbounded_String("group"),
          To_Unbounded_String("others"));
    begin
       if Is_Directory(SelectedItem) then
@@ -839,7 +935,7 @@ package body ShowItems is
       else
          PermissionsString := To_Unbounded_String("00");
       end if;
-      Set_Permissions_Loop :
+      Set_Permissions_Loop:
       for Name of Names loop
          Permission := 0;
          if Tcl.Ada.Tcl_GetVar(Interp, To_String(Name) & "execute") = "1" then
@@ -855,7 +951,9 @@ package body ShowItems is
       end loop Set_Permissions_Loop;
       Tcl.Ada.Tcl_Eval
         (Interp,
-         "file attributes {" & SelectedItem & "} -permissions " &
+         "file attributes {" &
+         SelectedItem &
+         "} -permissions " &
          To_String(PermissionsString));
       return TCL_OK;
    end Set_Permissions_Command;
@@ -875,13 +973,17 @@ package body ShowItems is
    -- Selecteditem is full path to the currently selected file or directory
    -- SOURCE
    function GoToDirectory_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function GoToDirectory_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (ClientData: Integer;
+      Interp: Tcl.Tcl_Interp;
+      Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp);
       SelectedItem: Unbounded_String;
@@ -893,7 +995,8 @@ package body ShowItems is
             return TCL_OK;
          end if;
          SelectedItem :=
-           DestinationDirectory & "/" &
+           DestinationDirectory &
+           "/" &
            To_Unbounded_String
              (Set(PreviewTree, Selection(PreviewTree), "name"));
          if not Is_Directory(To_String(SelectedItem)) then
@@ -927,22 +1030,28 @@ package body ShowItems is
          Label :=
            Create(".mainframe.paned.previewframe.infoframe." & Name & "text");
          Tcl.Tk.Ada.Grid.Grid
-           (Label, "-column 0 -row" & Positive'Image(Row) & " -sticky w");
+           (Label,
+            "-column 0 -row" & Positive'Image(Row) & " -sticky w");
          Label := Create(".mainframe.paned.previewframe.infoframe." & Name);
          Tcl.Tk.Ada.Grid.Grid
-           (Label, "-column 1 -row" & Positive'Image(Row) & " -sticky w");
-         Set_Permission_Buttons_Loop :
+           (Label,
+            "-column 1 -row" & Positive'Image(Row) & " -sticky w");
+         Set_Permission_Buttons_Loop:
          for I in ButtonNames'Range loop
             CheckButton :=
               Create
                 (Frame & "." & To_String(ButtonNames(I)),
-                 "-text {" & To_String(ButtonTexts(I)) & "} -variable " &
-                 Name & To_String(ButtonNames(I)) &
+                 "-text {" &
+                 To_String(ButtonTexts(I)) &
+                 "} -variable " &
+                 Name &
+                 To_String(ButtonNames(I)) &
                  " -command SetPermissions");
             Tcl.Tk.Ada.Pack.Pack(CheckButton, "-anchor w");
          end loop Set_Permission_Buttons_Loop;
          Tcl.Tk.Ada.Grid.Grid
-           (Frame, "-column 1 -row" & Positive'Image(Row + 1));
+           (Frame,
+            "-column 1 -row" & Positive'Image(Row + 1));
       end CreatePermissionsFrame;
    begin
       PreviewFrame := Create(Paned & ".previewframe");
@@ -952,22 +1061,28 @@ package body ShowItems is
       PreviewXScroll :=
         Create
           (PreviewFrame & ".scrollx",
-           "-orient horizontal -command [list " & PreviewFrame &
+           "-orient horizontal -command [list " &
+           PreviewFrame &
            ".directorytree xview]");
       PreviewYScroll :=
         Create
           (PreviewFrame & ".scrolly",
-           "-orient vertical -command [list " & PreviewFrame &
+           "-orient vertical -command [list " &
+           PreviewFrame &
            ".directorytree yview]");
       PreviewTree :=
         Create
           (PreviewFrame & ".directorytree",
-           "-columns [list name] -xscrollcommand {" & PreviewXScroll &
-           " set} -yscrollcommand {" & PreviewYScroll &
+           "-columns [list name] -xscrollcommand {" &
+           PreviewXScroll &
+           " set} -yscrollcommand {" &
+           PreviewYScroll &
            " set} -selectmode none ");
       Heading
-        (PreviewTree, "name",
-         "-text {" & Mc(Get_Context, "{Name}") &
+        (PreviewTree,
+         "name",
+         "-text {" &
+         Mc(Get_Context, "{Name}") &
          "} -image {arrow-down} -command {Sort previewname}");
       Column(PreviewTree, "#0", "-stretch false -width 50");
       Tag_Bind(PreviewTree, "itemrow", "<Double-1>", "GoToDirectory");
@@ -975,15 +1090,20 @@ package body ShowItems is
       PreviewText :=
         Create
           (PreviewFrame & ".previewtext",
-           "-wrap char -yscrollcommand {" & PreviewYScroll & " set} -font " &
+           "-wrap char -yscrollcommand {" &
+           PreviewYScroll &
+           " set} -font " &
            Font);
       Tag_Configure(PreviewText, "boldtag", "-font bold");
       Tag_Configure(PreviewText, "italictag", "-font italic");
       PreviewCanvas :=
         Create
           (PreviewFrame & ".previewcanvas",
-           "-xscrollcommand {" & PreviewXScroll & " set} -yscrollcommand {" &
-           PreviewYScroll & " set}");
+           "-xscrollcommand {" &
+           PreviewXScroll &
+           " set} -yscrollcommand {" &
+           PreviewYScroll &
+           " set}");
       InfoFrame := Create(PreviewFrame & ".infoframe");
       Label := Create(InfoFrame & ".fullpathtext");
       Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
@@ -1060,7 +1180,8 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
       Frame.Name := New_String(PreviewFrame & ".title");
       configure
-        (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
+        (Frame,
+         "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
       DestinationDirectory := MainWindow.Current_Directory;
       LoadDirectory(To_String(DestinationDirectory), True);
       Update_Directory_List(True, "preview");
