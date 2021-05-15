@@ -257,44 +257,50 @@ package body Utils.UI is
             Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Toolbar);
             Toolbar.Name :=
               New_String(Str => ".mainframe.paned.previewframe.pathframe");
-            Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+            Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Toolbar);
             Update_Buttons_Loop:
             for I in Buttons_Names'Range loop
                if I < Current_Button then
                   Toolbar.Name :=
                     New_String
-                      (".mainframe.toolbars.actiontoolbar." &
-                       To_String(Buttons_Names(I)) &
-                       "button");
+                      (Str =>
+                         ".mainframe.toolbars.actiontoolbar." &
+                         To_String(Source => Buttons_Names(I)) &
+                         "button");
                   Tcl.Tk.Ada.Pack.Pack
-                    (Toolbar,
-                     "-before .mainframe.toolbars.actiontoolbar." &
-                     To_String(Buttons_Names(Current_Button)) &
-                     "button");
+                    (Slave => Toolbar,
+                     Options =>
+                       "-before .mainframe.toolbars.actiontoolbar." &
+                       To_String(Source => Buttons_Names(Current_Button)) &
+                       "button");
                   Tcl.Tk.Ada.Pack.Pack_Configure
-                    (Toolbar,
-                     "-side " & To_String(Side));
+                    (Slave => Toolbar,
+                     Options => "-side " & To_String(Source => Side));
                elsif I > Current_Button then
                   Toolbar.Name :=
                     New_String
-                      (".mainframe.toolbars.actiontoolbar." &
-                       To_String(Buttons_Names(I)) &
-                       "button");
+                      (Str =>
+                         ".mainframe.toolbars.actiontoolbar." &
+                         To_String(Source => Buttons_Names(I)) &
+                         "button");
                   Tcl.Tk.Ada.Pack.Pack
-                    (Toolbar,
-                     "-after .mainframe.toolbars.actiontoolbar." &
-                     To_String(Buttons_Names(I - 1)) &
-                     "button");
+                    (Slave => Toolbar,
+                     Options =>
+                       "-after .mainframe.toolbars.actiontoolbar." &
+                       To_String(Source => Buttons_Names(I - 1)) &
+                       "button");
                   Tcl.Tk.Ada.Pack.Pack_Configure
-                    (Toolbar,
-                     "-side " & To_String(Side));
+                    (Slave => Toolbar,
+                     Options => "-side " & To_String(Source => Side));
                end if;
             end loop Update_Buttons_Loop;
             Toolbar.Name :=
-              New_String(".mainframe.toolbars.actiontoolbar.separator3");
+              New_String
+                (Str => ".mainframe.toolbars.actiontoolbar.separator3");
             Tcl.Tk.Ada.Pack.Pack_Configure
-              (Toolbar,
-               "-after .mainframe.toolbars.actiontoolbar.deletebutton");
+              (Slave => Toolbar,
+               Options =>
+                 "-after .mainframe.toolbars.actiontoolbar.deletebutton");
          else
             Tcl.Tk.Ada.Pack.Pack
               (Toolbar,
