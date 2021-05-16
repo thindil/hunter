@@ -24,6 +24,7 @@ All notable changes to this project will be documented in this file.
 - Showing preview of empty directories when entering them
 - Possible crash on auto refresh directory listing
 - Possible crash on loading preview when excutable script is there
+- Showing preview for some types of text files
 
 ## [1.5] - 2020-11-20
 
