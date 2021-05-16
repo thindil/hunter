@@ -354,7 +354,7 @@ package body ShowItems is
             MimeType: constant String :=
               Get_Mime_Type(To_String(Current_Selected));
          begin
-            if MimeType(1 .. 4) = "text" then
+            if Is_Text(MimeType) then
                PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 1);
                declare
                   ExecutableName: constant String :=

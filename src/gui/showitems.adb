@@ -241,7 +241,7 @@ package body ShowItems is
             MimeType: constant String :=
               Get_Mime_Type(To_String(Current_Selected));
          begin
-            if MimeType(1 .. 4) = "text" then
+            if Is_Text(MimeType) then
                declare
                   ExecutableName: constant String :=
                     Find_Executable("highlight", False);
@@ -572,7 +572,9 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
       configure(Label, "-text {" & Mc(Get_Context, "{Information}") & "}");
       Button.Interp := Label.Interp;
-      if (MimeType'Length > 4 and MimeType(1 .. 4) not in "text" | "imag") and
+      if
+        (MimeType'Length > 4 and
+         (MimeType(1 .. 4) /= "imag" and not Is_Text(MimeType))) and
         not Is_Directory(SelectedItem) then
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
