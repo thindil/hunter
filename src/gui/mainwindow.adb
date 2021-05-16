@@ -139,7 +139,7 @@ package body MainWindow is
          4 => To_Unbounded_String(Source => "font-x-generic"),
          5 => To_Unbounded_String(Source => "image-x-generic"),
          6 => To_Unbounded_String(Source => "video-x-generic"),
-         7 => To_Unbounded_String(Source => "text-x-generic"),
+         7 => To_Unbounded_String(Source => "text-x-script"),
          8 => To_Unbounded_String(Source => "text-html"),
          9 => To_Unbounded_String(Source => "package-x-generic"),
          10 => To_Unbounded_String(Source => "text-x-generic"),
