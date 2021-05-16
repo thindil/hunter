@@ -303,21 +303,25 @@ package body Utils.UI is
                  "-after .mainframe.toolbars.actiontoolbar.deletebutton");
          else
             Tcl.Tk.Ada.Pack.Pack
-              (Toolbar,
-               "-after .mainframe.toolbars.actiontoolbar.movebutton");
+              (Slave => Toolbar,
+               Options =>
+                 "-after .mainframe.toolbars.actiontoolbar.movebutton");
             Tcl.Tk.Ada.Pack.Pack_Configure
-              (Toolbar,
-               "-side " & To_String(Side));
+              (Slave => Toolbar,
+               Options => "-side " & To_String(Source => Side));
             Remove_Buttons_Loop:
             for I in Buttons_Names'Range loop
-               if I /= Current_Button then
-                  Toolbar.Name :=
-                    New_String
-                      (".mainframe.toolbars.actiontoolbar." &
-                       To_String(Buttons_Names(I)) &
-                       "button");
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+               if I = Current_Button then
+                  goto End_Of_Remove_Buttons_Loop;
                end if;
+               Toolbar.Name :=
+                 New_String
+                   (Str =>
+                      ".mainframe.toolbars.actiontoolbar." &
+                      To_String(Source => Buttons_Names(I)) &
+                      "button");
+               Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Toolbar);
+               <<End_Of_Remove_Buttons_Loop>>
             end loop Remove_Buttons_Loop;
          end if;
       end if;
