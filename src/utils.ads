@@ -92,4 +92,15 @@ package Utils is
    function Count_File_Size(Size: File_Size) return String;
    -- ****
 
+   -- ****f* Utils/Utils.Is_Text
+   -- FUNCTION
+   -- Check if the selected MimeType is text so it can be previewed
+   -- PARAMTERS
+   -- MimeType - MIME Type to check
+   -- RESULT
+   -- Return True if the selected MIME Type is text type, otherwise False
+   -- SOURCE
+   function Is_Text(MimeType: String) return Boolean;
+   -- ****
+
 end Utils;
