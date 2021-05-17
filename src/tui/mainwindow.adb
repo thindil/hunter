@@ -379,12 +379,18 @@ package body MainWindow is
          when SELECTED_MENU =>
             if Is_Directory(To_String(Current_Selected)) then
                Menu_Items := new Item_Array(1 .. 6);
-            else
+            elsif Is_Text(Get_Mime_Type(To_String(Current_Selected))) then
                Menu_Items := new Item_Array(1 .. 5);
+            else
+               Menu_Items := new Item_Array(1 .. 3);
             end if;
-            Menu_Items.all(1) := New_Item("Preview");
-            Menu_Items.all(2) := New_Item("Information");
-            Menu_Items.all(3) := New_Item("Execute with");
+            if Menu_Items'Length > 3 then
+               Menu_Items.all(1) := New_Item("Preview");
+               Menu_Items.all(2) := New_Item("Information");
+               Menu_Items.all(3) := New_Item("Execute with");
+            else
+               Menu_Items.all(1) := New_Item("Execute with");
+            end if;
             for Bookmark of BookmarksList loop
                if Bookmark = Current_Selected then
                   Bookmark_Exists := True;
