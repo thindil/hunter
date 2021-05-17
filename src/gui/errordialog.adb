@@ -67,14 +67,10 @@ package body ErrorDialog is
            Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter");
       if Ada.Directories.Exists(Name => Error_File_Path) then
          Open
-           (File => Error_File,
-            Mode => Append_File,
-            Name => Error_File_Path);
+           (File => Error_File, Mode => Append_File, Name => Error_File_Path);
       else
          Create
-           (File => Error_File,
-            Mode => Append_File,
-            Name => Error_File_Path);
+           (File => Error_File, Mode => Append_File, Name => Error_File_Path);
       end if;
       Append(Source => Error_Text, New_Item => Current_Time & LF);
       Append(Source => Error_Text, New_Item => "1.6" & LF);
@@ -117,7 +113,8 @@ package body ErrorDialog is
         (Directory =>
            Ada.Directories.Containing_Directory(Name => Command_Name));
       Mc_Load(DirName => "../share/hunter/translations", Interp => Interp);
-      Show_Error_Window_Block: declare
+      Show_Error_Window_Block :
+      declare
          use Tcl.Tk.Ada.Widgets.Text;
          use Tcl.Tk.Ada.Widgets.TtkButton;
          use Tcl.Tk.Ada.Widgets.TtkLabel;
@@ -156,8 +153,7 @@ package body ErrorDialog is
            Create
              (pathName => ".closebutton",
               options =>
-                "-text " &
-                Mc(Interp => Interp, Src_String => "{Close}") &
+                "-text " & Mc(Interp => Interp, Src_String => "{Close}") &
                 " -command exit");
          Error_Frame: constant Ttk_LabelFrame :=
            Create
@@ -179,12 +175,10 @@ package body ErrorDialog is
       begin
          Program_Main_Window := Get_Main_Window(Interp => Interp);
          Wm_Set
-           (Widgt => Program_Main_Window,
-            Action => "title",
+           (Widgt => Program_Main_Window, Action => "title",
             Options => "{Hunter - error}");
          Wm_Set
-           (Widgt => Program_Main_Window,
-            Action => "geometry",
+           (Widgt => Program_Main_Window, Action => "geometry",
             Options =>
               "800x600+[expr ([winfo vrootwidth .] - 800) / 2]+[expr ([winfo vrootheight .] - 600) / 2]");
          Tcl.Tk.Ada.Pack.Pack(Slave => Error_Label);
@@ -192,17 +186,14 @@ package body ErrorDialog is
          Tcl.Tk.Ada.Pack.Pack(Slave => Error_Label2);
          Tcl.Tk.Ada.Pack.Pack(Slave => Close_Button);
          Tcl.Tk.Ada.Pack.Pack
-           (Slave => Error_Frame,
-            Options => "-fill both -expand true");
+           (Slave => Error_Frame, Options => "-fill both -expand true");
          Tcl.Tk.Ada.Pack.Pack
-           (Slave => Error_Scroll,
-            Options => "-fill y -side right");
+           (Slave => Error_Scroll, Options => "-fill y -side right");
          Tcl.Tk.Ada.Pack.Pack
            (Slave => Error_Info,
             Options => "-side top -fill both -expand true");
          Insert
-           (TextWidget => Error_Info,
-            Index => "end",
+           (TextWidget => Error_Info, Index => "end",
             Text => "{" & To_String(Source => Error_Text) & "}");
          configure(Widgt => Error_Info, options => "-state disabled");
          Tcl.Tk.Tk_MainLoop;

@@ -42,10 +42,7 @@ package UserCommands is
    -- Used to store all bookmarks
    -- SOURCE
    package Commands_Container is new Indefinite_Hashed_Maps
-     (String,
-      UserCommand,
-      Ada.Strings.Hash,
-      "=");
+     (String, UserCommand, Ada.Strings.Hash, "=");
    -- ****
 
    -- ****v* UserCommands/UserCommands.UserCommandsList

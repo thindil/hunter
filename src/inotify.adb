@@ -53,8 +53,8 @@ package body Inotify is
    -- FUNCTION
    -- Used to store information about inotify watches
    -- SOURCE
-   package Watches_Container is new Vectors(Index_Type => Positive,
-      Element_Type => Watch_Data);
+   package Watches_Container is new Vectors
+     (Index_Type => Positive, Element_Type => Watch_Data);
    -- ****
 
    --## rule off REDUCEABLE_SCOPE
@@ -186,7 +186,7 @@ package body Inotify is
 
       Directory: Dir_Type;
       Last: Natural := 0;
-      File_Name: String(1 .. 1024) := (others => ' ');
+      File_Name: String(1 .. 1_024) := (others => ' ');
    begin
       Add_Watch(Path => Path);
       Open(Dir => Directory, Dir_Name => Path);
@@ -224,7 +224,7 @@ package body Inotify is
    procedure Inotify_Read is
       use Ada.Directories;
 
-      Buffer: array(1 .. 4096) of Character := (others => ' ');
+      Buffer: array(1 .. 4_096) of Character := (others => ' ');
       Length, Name_Length, Start: Integer := 0;
       Path, Target: Unbounded_String := Null_Unbounded_String;
       Event: Inotify_Events := Accessed_Event;
@@ -248,7 +248,7 @@ package body Inotify is
          Length :=
            Read
              (FD => File_Descriptor(Get_Instance), A => Buffer'Address,
-              N => 4096);
+              N => 4_096);
          exit Read_Events_Loop when Length = -1;
          if Temporary_Stop then
             goto End_Of_Loop;

@@ -42,15 +42,14 @@ package body UserCommands.UI is
       Button: Ttk_Button;
    begin
       Create(Tokens, Tcl.Tk.Ada.Grid.Grid_Size(CommandsFrame), " ");
-      Clear_Commands_List_Loop:
+      Clear_Commands_List_Loop :
       for I in 0 .. (Natural'Value(Slice(Tokens, 2)) - 1) loop
          Create
            (Tokens,
             Tcl.Tk.Ada.Grid.Grid_Slaves
-              (CommandsFrame,
-               "-row" & Positive'Image(I)),
+              (CommandsFrame, "-row" & Positive'Image(I)),
             " ");
-         Delete_Items_Loop:
+         Delete_Items_Loop :
          for J in 1 .. Slice_Count(Tokens) loop
             Item := Get_Widget(Slice(Tokens, J));
             Destroy(Item);
@@ -69,7 +68,7 @@ package body UserCommands.UI is
       Tcl.Tk.Ada.Grid.Grid(Label, "-row 0 -column 2");
       Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
       Image.Interp := Get_Context;
-      Load_User_Commnads_Loop:
+      Load_User_Commnads_Loop :
       for I in UserCommandsList.Iterate loop
          Label :=
            Create
@@ -81,56 +80,41 @@ package body UserCommands.UI is
              (CommandsFrame & ".command" & Trim(Positive'Image(Row), Left),
               "-text {" & To_String(UserCommandsList(I).Command) & "}");
          Tcl.Tk.Ada.Grid.Grid
-           (Label,
-            "-row" & Positive'Image(Row) & " -column 1");
+           (Label, "-row" & Positive'Image(Row) & " -column 1");
          Label :=
-           (if
-              UserCommandsList(I).NeedOutput
-            then
+           (if UserCommandsList(I).NeedOutput then
               Create
                 (CommandsFrame & ".output" & Trim(Positive'Image(Row), Left),
                  "-text {" & Mc(Get_Context, "{Yes}") & "}")
-            else
-              Create
+            else Create
                 (CommandsFrame & ".output" & Trim(Positive'Image(Row), Left),
                  "-text {" & Mc(Get_Context, "{No}") & "}"));
          Tcl.Tk.Ada.Grid.Grid
-           (Label,
-            "-row" & Positive'Image(Row) & " -column 2");
+           (Label, "-row" & Positive'Image(Row) & " -column 2");
          Image.Name := New_String("refreshicon");
          Button :=
            Create
              (CommandsFrame & ".editbutton" & Trim(Positive'Image(Row), Left),
-              "-style Toolbutton -image " &
-              Image &
-              " -command {EditCommand {" &
-              Commands_Container.Key(I) &
-              "}}");
+              "-style Toolbutton -image " & Image &
+              " -command {EditCommand {" & Commands_Container.Key(I) & "}}");
          Add
            (Button,
             Mc
               (Get_Context,
                "{Edit the selected command. If you change the menu label,}") &
-            LF &
-            Mc(Get_Context, "{a new command will be added.}"));
+            LF & Mc(Get_Context, "{a new command will be added.}"));
          Tcl.Tk.Ada.Grid.Grid
-           (Button,
-            "-row" & Positive'Image(Row) & " -column 3");
+           (Button, "-row" & Positive'Image(Row) & " -column 3");
          Image.Name := New_String("edit-deleteicon");
          Button :=
            Create
-             (CommandsFrame &
-              ".deletebutton" &
+             (CommandsFrame & ".deletebutton" &
               Trim(Positive'Image(Row), Left),
-              "-style Toolbutton -image " &
-              Image &
-              " -command {DeleteCommand {" &
-              Commands_Container.Key(I) &
-              "}}");
+              "-style Toolbutton -image " & Image &
+              " -command {DeleteCommand {" & Commands_Container.Key(I) & "}}");
          Add(Button, Mc(Get_Context, "{Delete the selected command.}"));
          Tcl.Tk.Ada.Grid.Grid
-           (Button,
-            "-row" & Positive'Image(Row) & " -column 4");
+           (Button, "-row" & Positive'Image(Row) & " -column 4");
          Row := Row + 1;
       end loop Load_User_Commnads_Loop;
    end UpdateUserCommandsList;

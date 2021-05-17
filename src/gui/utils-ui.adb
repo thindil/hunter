@@ -48,8 +48,7 @@ package body Utils.UI is
    -- ****
 
    function Find_Executable
-     (Name: String;
-      Display_Message: Boolean := True) return String is
+     (Name: String; Display_Message: Boolean := True) return String is
       Executable_Path: GNAT.OS_Lib.String_Access;
    begin
       if Exists
@@ -65,8 +64,7 @@ package body Utils.UI is
                  Mc
                    (Interp => Get_Context,
                     Src_String => "{Could not found executable:}") &
-                 " " &
-                 Name);
+                 " " & Name);
          end if;
          return "";
       end if;
@@ -98,23 +96,19 @@ package body Utils.UI is
    end Update_Progress_Bar;
 
    procedure Set_Dialog
-     (Dialog: Tk_Toplevel;
-      Dialog_Title: String;
-      Width: Width_Range;
+     (Dialog: Tk_Toplevel; Dialog_Title: String; Width: Width_Range;
       Height: Height_Range) is
       X: Width_Range;
       Y: Height_Range;
    begin
       Wm_Set
-        (Widgt => Dialog,
-         Action => "title",
+        (Widgt => Dialog, Action => "title",
          Options => "{" & Dialog_Title & "}");
       Wm_Set(Widgt => Dialog, Action => "transient", Options => ".");
       if Tcl_GetVar(interp => Get_Context, varName => "tcl_platform(os)") =
         "Linux" then
          Wm_Set
-           (Widgt => Dialog,
-            Action => "attributes",
+           (Widgt => Dialog, Action => "attributes",
             Options => "-type dialog");
       end if;
       X :=
@@ -133,48 +127,36 @@ package body Utils.UI is
          Y := 0;
       end if;
       Wm_Set
-        (Widgt => Dialog,
-         Action => "geometry",
+        (Widgt => Dialog, Action => "geometry",
          Options =>
-           Trim(Source => Width_Range'Image(Width), Side => Both) &
-           "x" &
-           Trim(Source => Height_Range'Image(Height), Side => Both) &
-           "+" &
-           Trim(Source => Width_Range'Image(X), Side => Both) &
-           "+" &
+           Trim(Source => Width_Range'Image(Width), Side => Both) & "x" &
+           Trim(Source => Height_Range'Image(Height), Side => Both) & "+" &
+           Trim(Source => Width_Range'Image(X), Side => Both) & "+" &
            Trim(Source => Height_Range'Image(Y), Side => Both));
       Bind
-        (Widgt => Dialog,
-         Sequence => "<Destroy>",
+        (Widgt => Dialog, Sequence => "<Destroy>",
          Script => "{CloseDialog " & Value(Item => Dialog.Name) & "}");
    end Set_Dialog;
 
    procedure Add_Command
-     (Name: String;
-      Ada_Command: not null CreateCommands.Tcl_CmdProc) is
+     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc) is
       Command: Tcl.Tcl_Command;
       Hunter_Add_Command_Exception: exception;
    begin
       Command :=
         CreateCommands.Tcl_CreateCommand
-          (interp => Get_Context,
-           cmdName => Name,
-           proc => Ada_Command,
-           data => 0,
-           deleteProc => null);
+          (interp => Get_Context, cmdName => Name, proc => Ada_Command,
+           data => 0, deleteProc => null);
       if Command = null then
          raise Hunter_Add_Command_Exception
            with Mc
-             (Interp => Get_Context,
-              Src_String => "{Can't add command}") &
-           " " &
-           Name;
+             (Interp => Get_Context, Src_String => "{Can't add command}") &
+           " " & Name;
       end if;
    end Add_Command;
 
    procedure Toggle_Tool_Buttons
-     (Action: Item_Actions;
-      Finished: Boolean := False) is
+     (Action: Item_Actions; Finished: Boolean := False) is
       Toolbar: Ttk_Frame := Get_Widget(pathName => ".mainframe.toolbars");
       Paned: constant Ttk_PanedWindow :=
         Get_Widget(pathName => ".mainframe.paned");
@@ -193,11 +175,7 @@ package body Utils.UI is
       Side: Unbounded_String := Null_Unbounded_String;
    begin
       case Action is
-         when CREATEFILE |
-           CREATEDIRECTORY |
-           CREATELINK |
-           RENAME |
-           DELETE |
+         when CREATEFILE | CREATEDIRECTORY | CREATELINK | RENAME | DELETE |
            DELETETRASH =>
             if Finished then
                Tcl.Tk.Ada.Grid.Grid(Slave => Toolbar);
@@ -248,9 +226,7 @@ package body Utils.UI is
       end case;
       if Action in COPY | MOVE then
          Side :=
-           (if
-              not Settings.Toolbars_On_Top
-            then
+           (if not Settings.Toolbars_On_Top then
               To_Unbounded_String(Source => "top")
             else To_Unbounded_String(Source => "left"));
          if Finished then
@@ -258,15 +234,14 @@ package body Utils.UI is
             Toolbar.Name :=
               New_String(Str => ".mainframe.paned.previewframe.pathframe");
             Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Toolbar);
-            Update_Buttons_Loop:
+            Update_Buttons_Loop :
             for I in Buttons_Names'Range loop
                if I < Current_Button then
                   Toolbar.Name :=
                     New_String
                       (Str =>
                          ".mainframe.toolbars.actiontoolbar." &
-                         To_String(Source => Buttons_Names(I)) &
-                         "button");
+                         To_String(Source => Buttons_Names(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack
                     (Slave => Toolbar,
                      Options =>
@@ -281,14 +256,12 @@ package body Utils.UI is
                     New_String
                       (Str =>
                          ".mainframe.toolbars.actiontoolbar." &
-                         To_String(Source => Buttons_Names(I)) &
-                         "button");
+                         To_String(Source => Buttons_Names(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack
                     (Slave => Toolbar,
                      Options =>
                        "-after .mainframe.toolbars.actiontoolbar." &
-                       To_String(Source => Buttons_Names(I - 1)) &
-                       "button");
+                       To_String(Source => Buttons_Names(I - 1)) & "button");
                   Tcl.Tk.Ada.Pack.Pack_Configure
                     (Slave => Toolbar,
                      Options => "-side " & To_String(Source => Side));
@@ -309,7 +282,7 @@ package body Utils.UI is
             Tcl.Tk.Ada.Pack.Pack_Configure
               (Slave => Toolbar,
                Options => "-side " & To_String(Source => Side));
-            Remove_Buttons_Loop:
+            Remove_Buttons_Loop :
             for I in Buttons_Names'Range loop
                if I = Current_Button then
                   goto End_Of_Remove_Buttons_Loop;
@@ -318,8 +291,7 @@ package body Utils.UI is
                  New_String
                    (Str =>
                       ".mainframe.toolbars.actiontoolbar." &
-                      To_String(Source => Buttons_Names(I)) &
-                      "button");
+                      To_String(Source => Buttons_Names(I)) & "button");
                Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Toolbar);
                <<End_Of_Remove_Buttons_Loop>>
             end loop Remove_Buttons_Loop;
@@ -330,20 +302,18 @@ package body Utils.UI is
             Tcl.Tk.Ada.Pack.Pack
               (Toolbar,
                "-after .mainframe.toolbars.actiontoolbar.deletebutton");
-            Remove_Trash_Buttons_Loop:
+            Remove_Trash_Buttons_Loop :
             for I in Buttons_Names'Range loop
                if I /= Current_Button then
                   Toolbar.Name :=
                     New_String
                       (".mainframe.toolbars.actiontoolbar." &
-                       To_String(Buttons_Names(I)) &
-                       "button");
+                       To_String(Buttons_Names(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
                end if;
             end loop Remove_Trash_Buttons_Loop;
             Entry_Configure
-              (Delete_Menu,
-               "0",
+              (Delete_Menu, "0",
                "-label {" & Mc(Get_Context, "{Delete selected}") & "}");
             Delete(Delete_Menu, "1");
          else
@@ -351,30 +321,26 @@ package body Utils.UI is
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.separator3");
             if Winfo_Get(Toolbar, "ismapped") = "1" then
-               Update_Trash_Button_Loop:
+               Update_Trash_Button_Loop :
                for I in Buttons_Names'Range loop
                   if I < Current_Button then
                      Toolbar.Name :=
                        New_String
                          (".mainframe.toolbars.actiontoolbar." &
-                          To_String(Buttons_Names(I)) &
-                          "button");
+                          To_String(Buttons_Names(I)) & "button");
                      Tcl.Tk.Ada.Pack.Pack
                        (Toolbar,
                         "-before .mainframe.toolbars.actiontoolbar." &
-                        To_String(Buttons_Names(Current_Button)) &
-                        "button");
+                        To_String(Buttons_Names(Current_Button)) & "button");
                   elsif I > Current_Button then
                      Toolbar.Name :=
                        New_String
                          (".mainframe.toolbars.actiontoolbar." &
-                          To_String(Buttons_Names(I)) &
-                          "button");
+                          To_String(Buttons_Names(I)) & "button");
                      Tcl.Tk.Ada.Pack.Pack
                        (Toolbar,
                         "-after .mainframe.toolbars.actiontoolbar." &
-                        To_String(Buttons_Names(I - 1)) &
-                        "button");
+                        To_String(Buttons_Names(I - 1)) & "button");
                   end if;
                end loop Update_Trash_Button_Loop;
             else
@@ -385,13 +351,12 @@ package body Utils.UI is
                   configure(Toolbar, "-orient vertical");
                   Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill y -pady 5 -side left");
                end if;
-               Add_Buttons_Loop:
+               Add_Buttons_Loop :
                for I in Buttons_Names'Range loop
                   Toolbar.Name :=
                     New_String
                       (".mainframe.toolbars.actiontoolbar." &
-                       To_String(Buttons_Names(I)) &
-                       "button");
+                       To_String(Buttons_Names(I)) & "button");
                   Tcl.Tk.Ada.Pack.Pack
                     (Toolbar,
                      "-before .mainframe.toolbars.actiontoolbar.separator3");
@@ -405,23 +370,17 @@ package body Utils.UI is
             Delete(Delete_Menu, "1", "end");
             if not Settings.Delete_Files then
                Entry_Configure
-                 (Delete_Menu,
-                  "0",
-                  "-label {" &
-                  Mc(Get_Context, "{Move selected to Trash}") &
+                 (Delete_Menu, "0",
+                  "-label {" & Mc(Get_Context, "{Move selected to Trash}") &
                   "}");
             end if;
             Menu.Add
-              (Delete_Menu,
-               "command",
-               "-label {" &
-               Mc(Get_Context, "{Show Trash}") &
+              (Delete_Menu, "command",
+               "-label {" & Mc(Get_Context, "{Show Trash}") &
                "} -command ShowTrash");
             Menu.Add
-              (Delete_Menu,
-               "command",
-               "-label {" &
-               Mc(Get_Context, "{Empty Trash}") &
+              (Delete_Menu, "command",
+               "-label {" & Mc(Get_Context, "{Empty Trash}") &
                "} -command ClearTrash");
          end if;
       end if;
@@ -447,8 +406,7 @@ package body Utils.UI is
             when CREATEDIRECTORY =>
                configure
                  (Header_Label,
-                  "-text {" &
-                  Mc(Get_Context, "{Creating new directory}") &
+                  "-text {" & Mc(Get_Context, "{Creating new directory}") &
                   "}");
             when CREATELINK =>
                configure
@@ -457,21 +415,18 @@ package body Utils.UI is
             when RENAME =>
                configure
                  (Header_Label,
-                  "-text {" &
-                  Mc(Get_Context, "{Renaming file or directory}") &
+                  "-text {" & Mc(Get_Context, "{Renaming file or directory}") &
                   "}");
             when COPY =>
                configure
                  (Header_Label,
                   "-text {" &
-                  Mc(Get_Context, "{Copying files and directories}") &
-                  "}");
+                  Mc(Get_Context, "{Copying files and directories}") & "}");
             when MOVE =>
                configure
                  (Header_Label,
                   "-text {" &
-                  Mc(Get_Context, "{Moving files and directories}") &
-                  "}");
+                  Mc(Get_Context, "{Moving files and directories}") & "}");
             when DELETE | DELETETRASH =>
                if Settings.Delete_Files or Action = DELETETRASH then
                   configure

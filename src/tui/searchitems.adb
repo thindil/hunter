@@ -58,15 +58,12 @@ package body SearchItems is
       Scale(DialogForm, FormHeight, FormLength);
       FormWindow :=
         Create
-          (FormHeight + 2,
-           FormLength + 2,
-           ((Lines / 3) - (FormHeight / 2)),
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
       Box(FormWindow, Default_Character, Default_Character);
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
-        (DialogForm,
-         Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       UnusedResult := Driver(DialogForm, REQ_END_LINE);
       Refresh;
@@ -101,8 +98,7 @@ package body SearchItems is
                UILocation := DIRECTORY_VIEW;
                if FieldIndex = 4 then
                   Update_Directory_List
-                    (True,
-                     Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+                    (True, Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
                else
                   Update_Directory_List(True);
                end if;

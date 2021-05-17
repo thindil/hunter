@@ -61,7 +61,7 @@ package body Preferences is
       Save_Settings_Data := Get_Tree(Read => Reader);
       --## rule on IMPROPER_INITIALIZATION
       Nodes_List := Child_Nodes(N => First_Child(N => Save_Settings_Data));
-      Load_Settings_Loop:
+      Load_Settings_Loop :
       for I in 0 .. Length(List => Nodes_List) - 1 loop
          Data_Node := Item(List => Nodes_List, Index => I);
          Data_Node_Name :=
@@ -191,33 +191,30 @@ package body Preferences is
             if Get_Attribute(Elem => Data_Node, Name => "needoutput") =
               "Yes" then
                UserCommandsList.Include
-               (Key =>
-                  Get_Attribute
-                    (Elem => Data_Node,
-                     Name => "menuentry"), New_Item =>
-                  (NeedOutput => True,
-                   Command =>
-                     To_Unbounded_String
-                       (Source =>
-                          Node_Value(N => First_Child(N => Data_Node)))));
+                 (Key => Get_Attribute(Elem => Data_Node, Name => "menuentry"),
+                  New_Item =>
+                    (NeedOutput => True,
+                     Command =>
+                       To_Unbounded_String
+                         (Source =>
+                            Node_Value(N => First_Child(N => Data_Node)))));
             else
                UserCommandsList.Include
-               (Key =>
-                  Get_Attribute
-                    (Elem => Data_Node,
-                     Name => "menuentry"), New_Item =>
-                  (NeedOutput => False,
-                   Command =>
-                     To_Unbounded_String
-                       (Source =>
-                          Node_Value(N => First_Child(N => Data_Node)))));
+                 (Key => Get_Attribute(Elem => Data_Node, Name => "menuentry"),
+                  New_Item =>
+                    (NeedOutput => False,
+                     Command =>
+                       To_Unbounded_String
+                         (Source =>
+                            Node_Value(N => First_Child(N => Data_Node)))));
             end if;
          -- The program modules
          elsif Data_Node_Name = To_Unbounded_String(Source => "module") then
             Enabled_Modules.Append
-            (New_Item =>
-               To_Unbounded_String
-                 (Source => Get_Attribute(Elem => Data_Node, Name => "path")));
+              (New_Item =>
+                 To_Unbounded_String
+                   (Source =>
+                      Get_Attribute(Elem => Data_Node, Name => "path")));
          end if;
       end loop Load_Settings_Loop;
       if Find_Executable(Name => "highlight") = "" then
@@ -247,19 +244,14 @@ package body Preferences is
              (N => Main_Node,
               New_Child =>
                 Create_Element
-                  (Doc => Save_Settings_Data,
-                   Tag_Name => "setting"));
+                  (Doc => Save_Settings_Data, Tag_Name => "setting"));
          Set_Attribute(Elem => Setting_Node, Name => "name", Value => Name);
          if Value then
             Set_Attribute
-              (Elem => Setting_Node,
-               Name => "value",
-               Value => "Yes");
+              (Elem => Setting_Node, Name => "value", Value => "Yes");
          else
             Set_Attribute
-              (Elem => Setting_Node,
-               Name => "value",
-               Value => "No");
+              (Elem => Setting_Node, Name => "value", Value => "No");
          end if;
       end Save_Boolean;
       procedure Save_Number(Value: Natural; Name: String) is
@@ -271,13 +263,10 @@ package body Preferences is
              (N => Main_Node,
               New_Child =>
                 Create_Element
-                  (Doc => Save_Settings_Data,
-                   Tag_Name => "setting"));
+                  (Doc => Save_Settings_Data, Tag_Name => "setting"));
          Set_Attribute(Elem => Setting_Node, Name => "name", Value => Name);
          Set_Attribute
-           (Elem => Setting_Node,
-            Name => "value",
-            Value => Raw_Value);
+           (Elem => Setting_Node, Name => "value", Value => Raw_Value);
       end Save_Number;
       procedure Save_String(Value: Unbounded_String; Name: String) is
       begin
@@ -286,12 +275,10 @@ package body Preferences is
              (N => Main_Node,
               New_Child =>
                 Create_Element
-                  (Doc => Save_Settings_Data,
-                   Tag_Name => "setting"));
+                  (Doc => Save_Settings_Data, Tag_Name => "setting"));
          Set_Attribute(Elem => Setting_Node, Name => "name", Value => Name);
          Set_Attribute
-           (Elem => Setting_Node,
-            Name => "value",
+           (Elem => Setting_Node, Name => "value",
             Value => To_String(Source => Value));
       end Save_String;
    begin
@@ -306,8 +293,7 @@ package body Preferences is
              Create_Element(Doc => Save_Settings_Data, Tag_Name => "hunter"));
       Save_Boolean(Value => Settings.Show_Hidden, Name => "ShowHidden");
       Save_Boolean
-        (Value => Settings.Show_Last_Modified,
-         Name => "ShowLastModified");
+        (Value => Settings.Show_Last_Modified, Name => "ShowLastModified");
       Save_Boolean(Value => Settings.Scale_Images, Name => "ScaleImages");
       Save_Number
         (Value => Settings.Auto_Close_Messages_Time,
@@ -320,14 +306,11 @@ package body Preferences is
       Save_String(Value => Settings.Color_Theme, Name => "ColorTheme");
       Save_Boolean(Value => Settings.Delete_Files, Name => "DeleteFiles");
       Save_Boolean
-        (Value => Settings.Clear_Trash_On_Exit,
-         Name => "ClearTrashOnExit");
+        (Value => Settings.Clear_Trash_On_Exit, Name => "ClearTrashOnExit");
       Save_Boolean
-        (Value => Settings.Show_Finished_Info,
-         Name => "ShowFinishedInfo");
+        (Value => Settings.Show_Finished_Info, Name => "ShowFinishedInfo");
       Save_Boolean
-        (Value => Settings.Overwrite_On_Exist,
-         Name => "OverwriteOnExist");
+        (Value => Settings.Overwrite_On_Exist, Name => "OverwriteOnExist");
       Save_Boolean(Value => Settings.Toolbars_On_Top, Name => "ToolbarsOnTop");
       Save_Number
         (Value => Settings.Auto_Refresh_Interval,
@@ -335,47 +318,38 @@ package body Preferences is
       Save_String(Value => Settings.Ui_Theme, Name => "UITheme");
       Save_Number(Value => Settings.Toolbars_Size, Name => "ToolbarsSize");
       Save_Boolean(Value => Settings.Monospace_Font, Name => "MonospaceFont");
-      Save_Accelerators_Loop:
+      Save_Accelerators_Loop :
       for I in Accelerators'Range loop
          Setting_Node :=
            Append_Child
              (N => Main_Node,
               New_Child =>
                 Create_Element
-                  (Doc => Save_Settings_Data,
-                   Tag_Name => "accelerator"));
+                  (Doc => Save_Settings_Data, Tag_Name => "accelerator"));
          Set_Attribute
-           (Elem => Setting_Node,
-            Name => "index",
+           (Elem => Setting_Node, Name => "index",
             Value => Trim(Source => Positive'Image(I), Side => Left));
          Set_Attribute
-           (Elem => Setting_Node,
-            Name => "value",
+           (Elem => Setting_Node, Name => "value",
             Value => To_String(Source => Accelerators(I)));
       end loop Save_Accelerators_Loop;
-      Save_User_Commands_Loop:
+      Save_User_Commands_Loop :
       for I in UserCommandsList.Iterate loop
          Setting_Node :=
            Append_Child
              (N => Main_Node,
               New_Child =>
                 Create_Element
-                  (Doc => Save_Settings_Data,
-                   Tag_Name => "command"));
+                  (Doc => Save_Settings_Data, Tag_Name => "command"));
          Set_Attribute
-           (Elem => Setting_Node,
-            Name => "menuentry",
+           (Elem => Setting_Node, Name => "menuentry",
             Value => Commands_Container.Key(Position => I));
          if UserCommandsList(I).NeedOutput then
             Set_Attribute
-              (Elem => Setting_Node,
-               Name => "needoutput",
-               Value => "Yes");
+              (Elem => Setting_Node, Name => "needoutput", Value => "Yes");
          else
             Set_Attribute
-              (Elem => Setting_Node,
-               Name => "needoutput",
-               Value => "No");
+              (Elem => Setting_Node, Name => "needoutput", Value => "No");
          end if;
          Unused_Node :=
            Append_Child
@@ -385,18 +359,16 @@ package body Preferences is
                   (Doc => Save_Settings_Data,
                    Data => To_String(Source => UserCommandsList(I).Command)));
       end loop Save_User_Commands_Loop;
-      Save_Enabled_Modules_Loop:
+      Save_Enabled_Modules_Loop :
       for ModuleName of Enabled_Modules loop
          Setting_Node :=
            Append_Child
              (N => Main_Node,
               New_Child =>
                 Create_Element
-                  (Doc => Save_Settings_Data,
-                   Tag_Name => "module"));
+                  (Doc => Save_Settings_Data, Tag_Name => "module"));
          Set_Attribute
-           (Elem => Setting_Node,
-            Name => "path",
+           (Elem => Setting_Node, Name => "path",
             Value => To_String(Source => ModuleName));
       end loop Save_Enabled_Modules_Loop;
       Create_Path
@@ -404,14 +376,12 @@ package body Preferences is
            Ada.Environment_Variables.Value(Name => "HOME") &
            "/.config/hunter");
       Create
-        (File => Config_File,
-         Mode => Out_File,
+        (File => Config_File, Mode => Out_File,
          Name =>
            Ada.Environment_Variables.Value(Name => "HOME") &
            "/.config/hunter/hunter.xml");
       Write
-        (Stream => Stream(File => Config_File),
-         N => Save_Settings_Data,
+        (Stream => Stream(File => Config_File), N => Save_Settings_Data,
          Pretty_Print => True);
       Close(File => Config_File);
    end Save_Preferences;

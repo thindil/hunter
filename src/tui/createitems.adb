@@ -50,17 +50,13 @@ package body CreateItems is
    -- ItemName is the name of item to create
    -- SOURCE
    function Create_Item_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Create_Item_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData);
       NewItemName, ActionString, ActionBlocker, Destination: Unbounded_String;
@@ -81,8 +77,7 @@ package body CreateItems is
          elsif New_Action = CREATEDIRECTORY then
             ActionString :=
               To_Unbounded_String
-                (Mc(Interp, "{create}") &
-                 " directory " &
+                (Mc(Interp, "{create}") & " directory " &
                  Mc(Interp, "{with}"));
          else
             ActionString :=
@@ -90,33 +85,21 @@ package body CreateItems is
                 (Mc(Interp, "{create}") & " link " & Mc(Interp, "{with}"));
          end if;
          ActionBlocker :=
-           (if
-              Is_Directory(To_String(NewItemName))
-            then
+           (if Is_Directory(To_String(NewItemName)) then
               To_Unbounded_String(Mc(Interp, "directory"))
             else To_Unbounded_String(Mc(Interp, "file")));
          ShowMessage
-           (Mc(Interp, "{You can't}") &
-            " " &
-            To_String(ActionString) &
-            " " &
-            Mc(Interp, "{name}") &
-            " '" &
-            To_String(NewItemName) &
-            "' " &
-            Mc(Interp, "{because there exists}") &
-            " " &
-            To_String(ActionBlocker) &
-            " " &
-            Mc(Interp, "{with that name.}"));
+           (Mc(Interp, "{You can't}") & " " & To_String(ActionString) & " " &
+            Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
+            Mc(Interp, "{because there exists}") & " " &
+            To_String(ActionBlocker) & " " & Mc(Interp, "{with that name.}"));
          Tcl_SetResult(Interp, "0");
          return TCL_OK;
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewItemName))) then
          ShowMessage
-           (Mc(Interp, "{You don't have permissions to write to}") &
-            " " &
+           (Mc(Interp, "{You don't have permissions to write to}") & " " &
             Containing_Directory(To_String(NewItemName)));
          Tcl_SetResult(Interp, "0");
          return TCL_OK;
@@ -133,17 +116,13 @@ package body CreateItems is
             if Name(Current(DestinationList)) /=
               Simple_Name(To_String(Destination)) then
                Destination :=
-                 Destination &
-                 "/" &
+                 Destination & "/" &
                  To_Unbounded_String(Name(Current(DestinationList)));
             end if;
             Tcl_Eval
               (Interp,
-               "file link -symbolic {" &
-               To_String(NewItemName) &
-               "} {" &
-               To_String(Destination) &
-               "}");
+               "file link -symbolic {" & To_String(NewItemName) & "} {" &
+               To_String(Destination) & "}");
          when others =>
             raise Hunter_Create_Exception
               with Mc(Interp, "{Invalid action type}");
@@ -177,9 +156,7 @@ package body CreateItems is
       Set_Cursor_Visibility(Visibility);
       Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
       Set_Buffer
-        (Create_Fields.all(1),
-         0,
-         "Enter a new " & Create_Type & " name:");
+        (Create_Fields.all(1), 0, "Enter a new " & Create_Type & " name:");
       FieldOptions := Get_Options(Create_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
@@ -205,15 +182,12 @@ package body CreateItems is
       Scale(DialogForm, FormHeight, FormLength);
       FormWindow :=
         Create
-          (FormHeight + 2,
-           FormLength + 2,
-           ((Lines / 3) - (FormHeight / 2)),
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
       Box(FormWindow, Default_Character, Default_Character);
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
-        (DialogForm,
-         Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       UnusedResult := Driver(DialogForm, REQ_END_LINE);
       Refresh;
@@ -307,15 +281,12 @@ package body CreateItems is
       Scale(DialogForm, FormHeight, FormLength);
       FormWindow :=
         Create
-          (FormHeight + 2,
-           FormLength + 2,
-           ((Lines / 3) - (FormHeight / 2)),
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
       Box(FormWindow, Default_Character, Default_Character);
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
-        (DialogForm,
-         Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       UnusedResult := Driver(DialogForm, REQ_END_LINE);
       Refresh;
@@ -349,8 +320,7 @@ package body CreateItems is
                Tcl_Eval
                  (Interpreter,
                   "CreateItem {" &
-                  Trim(Get_Buffer(Fields(DialogForm, 2)), Both) &
-                  "}");
+                  Trim(Get_Buffer(Fields(DialogForm, 2)), Both) & "}");
                if Tcl_GetResult(Interpreter) = "0" then
                   return MESSAGE_FORM;
                end if;

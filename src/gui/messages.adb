@@ -62,9 +62,7 @@ package body Messages is
    -- ****
 
    function Close_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc, Argv);
    begin
@@ -91,17 +89,13 @@ package body Messages is
    -- Answer is the answer which the user selected by clicking in button
    -- SOURCE
    function Response_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Response_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       OverwriteItem: Boolean := True;
       Response: constant String := CArgv.Arg(Argv, 1);
@@ -128,8 +122,7 @@ package body Messages is
                end;
                if New_Action = CLEARTRASH then
                   Tcl.Ada.Tcl_Eval
-                    (Get_Context,
-                     "GoToBookmark {" & Value("HOME") & "}");
+                    (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
                elsif New_Action = DELETETRASH then
                   Toggle_Tool_Buttons(New_Action, True);
                   if Close_Command(ClientData, Interp, Argc, Argv) =
@@ -154,8 +147,7 @@ package body Messages is
                      "message");
                elsif New_Action = CLEARTRASH then
                   ShowMessage
-                    (Mc(Interp, "{Trash have been cleared.}"),
-                     "message");
+                    (Mc(Interp, "{Trash have been cleared.}"), "message");
                else
                   ShowMessage
                     (Mc
@@ -200,36 +192,28 @@ package body Messages is
       ButtonsBox: Ttk_Frame;
       Button: Ttk_Button;
       procedure AddButton
-        (Name, Text, Response: String;
-         Column: Natural := 0) is
+        (Name, Text, Response: String; Column: Natural := 0) is
          ResponseButton: constant Ttk_Button :=
            Create
              (ButtonsBox & ".button" & Name,
-              "-text {" &
-              Text &
-              "} -command {MessageResponse " &
-              Response &
+              "-text {" & Text & "} -command {MessageResponse " & Response &
               "}");
       begin
          Tcl.Tk.Ada.Grid.Grid
-           (ResponseButton,
-            "-row 0 -column" & Natural'Image(Column));
+           (ResponseButton, "-row 0 -column" & Natural'Image(Column));
       end AddButton;
    begin
       Add_Command("CloseMessage", Close_Command'Access);
       Add_Command("MessageResponse", Response_Command'Access);
       Style_Configure("message.TFrame", "-background #27ae60");
       Style_Configure
-        ("message.TLabel",
-         "-background #27ae60 -foreground #ffffff");
+        ("message.TLabel", "-background #27ae60 -foreground #ffffff");
       Style_Configure("error.TFrame", "-background #da4453");
       Style_Configure
-        ("error.TLabel",
-         "-background #da4453 -foreground #ffffff");
+        ("error.TLabel", "-background #da4453 -foreground #ffffff");
       Style_Configure("question.TFrame", "-background #3daee9");
       Style_Configure
-        ("question.TLabel",
-         "-background #3daee9 -foreground #ffffff");
+        ("question.TLabel", "-background #3daee9 -foreground #ffffff");
       MessageFrame := Create(".mainframe.message");
       MessageLabel := Create(MessageFrame & ".label", "-wraplength 800");
       ButtonsBox := Create(MessageFrame & ".buttonsbox");
@@ -259,7 +243,7 @@ package body Messages is
          return;
       end if;
       Button.Interp := MessageLabel.Interp;
-      Remove_Buttons_Loop:
+      Remove_Buttons_Loop :
       for ButtonName of ButtonsNames loop
          Button.Name := New_String(To_String(ButtonName));
          Grid_Remove(Button);
@@ -284,8 +268,7 @@ package body Messages is
          end if;
       end if;
       Tcl.Tk.Ada.Grid.Grid
-        (MessageFrame,
-         "-column 0 -row 2 -sticky we -columnspan 2");
+        (MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
       TimerId :=
         To_Unbounded_String
           (After(Settings.Auto_Close_Messages_Time * 1_000, "CloseMessage"));

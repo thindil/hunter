@@ -44,17 +44,13 @@ package body UserCommands is
    -- Menuentry is the menu label of the command which will be executed
    -- SOURCE
    function Execute_Command_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Execute_Command_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       Value, CommandName: Unbounded_String;
@@ -73,8 +69,7 @@ package body UserCommands is
         To_Unbounded_String(Find_Executable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
          ShowMessage
-           (Mc(Interp, "{Can't find command:}") &
-            " " &
+           (Mc(Interp, "{Can't find command:}") & " " &
             Slice(Value, 1, SpaceIndex));
          return TCL_OK;
       end if;
@@ -82,7 +77,7 @@ package body UserCommands is
          Arguments :=
            Argument_String_To_List(Slice(Value, SpaceIndex, Length(Value)));
       end if;
-      Replace_Substitutes_Loop:
+      Replace_Substitutes_Loop :
       for I in Arguments'Range loop
          if Arguments(I).all = "@1" then
             Arguments(I) :=
@@ -92,12 +87,10 @@ package body UserCommands is
          end if;
       end loop Replace_Substitutes_Loop;
       Non_Blocking_Spawn
-        (ProcessDesc,
-         Full_Name(To_String(CommandName)),
-         Arguments.all);
+        (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
       if UserCommandsList(CArgv.Arg(Argv, 1)).NeedOutput then
          ShowOutput;
-         Update_Output_Loop:
+         Update_Output_Loop :
          loop
             Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 300_000);
             exit Update_Output_Loop when Result /= 1;
@@ -111,8 +104,7 @@ package body UserCommands is
       when Process_Died =>
          if not Success then
             ShowMessage
-              (Mc(Interp, "{Can't execute command:}") &
-               " " &
+              (Mc(Interp, "{Can't execute command:}") & " " &
                Slice(Value, 1, SpaceIndex));
          end if;
          return TCL_OK;
