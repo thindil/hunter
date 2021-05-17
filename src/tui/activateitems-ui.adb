@@ -63,15 +63,12 @@ package body ActivateItems.UI is
       Scale(DialogForm, FormHeight, FormLength);
       FormWindow :=
         Create
-          (FormHeight + 2,
-           FormLength + 2,
-           ((Lines / 3) - (FormHeight / 2)),
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
       Box(FormWindow, Default_Character, Default_Character);
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
-        (DialogForm,
-         Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       UnusedResult := Driver(DialogForm, REQ_END_LINE);
       Refresh;
@@ -123,9 +120,7 @@ package body ActivateItems.UI is
             if FieldIndex = 4 then
                SpaceIndex := Index(Value, " ");
                CommandName :=
-                 (if
-                    SpaceIndex > 0
-                  then
+                 (if SpaceIndex > 0 then
                     To_Unbounded_String(Value(1 .. SpaceIndex - 1))
                   else To_Unbounded_String(Value));
                CommandName :=
@@ -136,13 +131,11 @@ package body ActivateItems.UI is
                   return Hide_Dialog(True);
                end if;
                Arguments :=
-                 (if
-                    SpaceIndex > 0
-                  then
+                 (if SpaceIndex > 0 then
                     Argument_String_To_List
                       (Value(SpaceIndex .. Value'Length) & " @2")
                   else Argument_String_To_List("@2"));
-               Replace_Substitutes_Loop:
+               Replace_Substitutes_Loop :
                for I in Arguments'Range loop
                   if Arguments(I).all = "@2" then
                      Arguments(I) := new String'(To_String(Current_Selected));
@@ -150,8 +143,7 @@ package body ActivateItems.UI is
                end loop Replace_Substitutes_Loop;
                Pid :=
                  Non_Blocking_Spawn
-                   (Full_Name(To_String(CommandName)),
-                    Arguments.all);
+                   (Full_Name(To_String(CommandName)), Arguments.all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
                   ShowMessage("{Can't execute this command}");
                   return Hide_Dialog(True);

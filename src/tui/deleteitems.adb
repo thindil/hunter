@@ -57,12 +57,9 @@ package body DeleteItems is
                       (Name & To_Unbounded_String(Image(Clock))))),
               Both);
          Create
-           (TrashFile,
-            Out_File,
+           (TrashFile, Out_File,
             Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/info/" &
-            To_String(NewName) &
-            ".trashinfo");
+            "/.local/share/Trash/info/" & To_String(NewName) & ".trashinfo");
          Put_Line(TrashFile, "[Trash Info]");
          Put_Line
            (TrashFile,
@@ -74,8 +71,7 @@ package body DeleteItems is
          Rename_File
            (To_String(Name),
             Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/files/" &
-            To_String(NewName),
+            "/.local/share/Trash/files/" & To_String(NewName),
             Success);
       end MoveToTrash;
       procedure AddTrash(SubDirectory: String) is
@@ -84,16 +80,15 @@ package body DeleteItems is
       begin
          Start_Search
            (Search,
-            Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/" &
+            Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/" &
             SubDirectory,
             "*");
-         Add_Items_To_Trash_Loop:
+         Add_Items_To_Trash_Loop :
          while More_Entries(Search) loop
             Get_Next_Entry(Search, Item);
             if Simple_Name(Item) /= "." and Simple_Name(Item) /= ".." then
                SelectedItems.Append
-               (New_Item => To_Unbounded_String(Full_Name(Item)));
+                 (New_Item => To_Unbounded_String(Full_Name(Item)));
             end if;
          end loop Add_Items_To_Trash_Loop;
          End_Search(Search);
@@ -111,7 +106,7 @@ package body DeleteItems is
          AddTrash("info");
          AddTrash("files");
       end if;
-      Delete_Items_Loop:
+      Delete_Items_Loop :
       for Item of SelectedItems loop
          Update_Progress_Bar;
          if Is_Directory
@@ -142,8 +137,7 @@ package body DeleteItems is
          if New_Action = DELETETRASH then
             Delete_File
               (Ada.Environment_Variables.Value("HOME") &
-               "/.local/share/Trash/info/" &
-               Simple_Name(To_String(Item)) &
+               "/.local/share/Trash/info/" & Simple_Name(To_String(Item)) &
                ".trashinfo");
          end if;
       end loop Delete_Items_Loop;
@@ -158,13 +152,11 @@ package body DeleteItems is
            (Mc
               (Interpreter,
                "{Could not delete selected files or directories. Reason:}") &
-            " " &
-            Exception_Message(An_Exception));
+            " " & Exception_Message(An_Exception));
          raise;
       when An_Exception : Directory_Error =>
          ShowMessage
-           (Mc(Interpreter, "{Can't delete selected directory:}") &
-            " " &
+           (Mc(Interpreter, "{Can't delete selected directory:}") & " " &
             Exception_Message(An_Exception));
          raise;
       when others =>
@@ -197,7 +189,7 @@ package body DeleteItems is
       else
          ListLength := Positive(SelectedItems.Length);
       end if;
-      Set_Delete_List_Loop:
+      Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
          if Length(SelectedItems(I)) > 27 then
             ItemName := Unbounded_Slice(SelectedItems(I), 1, 27) & "...";
@@ -234,14 +226,11 @@ package body DeleteItems is
       FormHeight := Line_Position(ListLength) + 2;
       FormWindow :=
         Create
-          (FormHeight + 2,
-           34,
-           ((Lines / 3) - (FormHeight / 2)),
+          (FormHeight + 2, 34, ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
-        (DialogForm,
-         Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       if Settings.Delete_Files or New_Action = DELETETRASH then
          Add(FormWindow, 1, 1, "Delete?");

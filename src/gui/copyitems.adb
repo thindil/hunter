@@ -55,24 +55,19 @@ package body CopyItems is
    -- CopyData
    -- SOURCE
    function Copy_Data_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Copy_Data_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       OverwriteItem: Boolean := False;
    begin
       if CopyItemsList.Length > 0
-        and then
-          Containing_Directory(To_String(CopyItemsList(1))) =
+        and then Containing_Directory(To_String(CopyItemsList(1))) =
           To_String(DestinationDirectory) then
          CopyItemsList.Clear;
          ShowPreview;
@@ -86,8 +81,7 @@ package body CopyItems is
          Toggle_Tool_Buttons(New_Action);
          ShowDestination;
          Bind_To_Main_Window
-           (Interp,
-            "<Escape>",
+           (Interp, "<Escape>",
             "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
          return TCL_OK;
       end if;
@@ -106,9 +100,7 @@ package body CopyItems is
    end Copy_Data_Command;
 
    procedure CopyItem
-     (Name: String;
-      Path: Unbounded_String;
-      Success: in out Boolean) is
+     (Name: String; Path: Unbounded_String; Success: in out Boolean) is
       NewPath: Unbounded_String := Path;
       procedure CopyFile(FileName: String) is
          NewName: Unbounded_String :=
@@ -118,25 +110,19 @@ package body CopyItems is
             if Settings.Overwrite_On_Exist then
                Delete_File(To_String(NewName));
             else
-               New_File_Name_Loop:
+               New_File_Name_Loop :
                loop
                   NewName :=
                     NewPath &
                     To_Unbounded_String
-                      ("/" &
-                       Base_Name(To_String(NewName)) &
-                       "_." &
+                      ("/" & Base_Name(To_String(NewName)) & "_." &
                        Extension(To_String(NewName)));
                   exit New_File_Name_Loop when not Exists(To_String(NewName));
                end loop New_File_Name_Loop;
             end if;
          end if;
          GNAT.OS_Lib.Copy_File
-           (FileName,
-            To_String(NewName),
-            Success,
-            Copy,
-            Full);
+           (FileName, To_String(NewName), Success, Copy, Full);
       end CopyFile;
       procedure ProcessFile(Item: Directory_Entry_Type) is
       begin
@@ -155,7 +141,7 @@ package body CopyItems is
       if Is_Directory(Name) then
          Append(NewPath, "/" & Simple_Name(Name));
          if Exists(To_String(NewPath)) and not Settings.Overwrite_On_Exist then
-            New_Directory_Name_Loop:
+            New_Directory_Name_Loop :
             loop
                NewPath := NewPath & "_";
                exit New_Directory_Name_Loop when not Exists
@@ -164,14 +150,10 @@ package body CopyItems is
          end if;
          Create_Path(To_String(NewPath));
          Search
-           (Name,
-            "",
-            (Directory => False, others => True),
+           (Name, "", (Directory => False, others => True),
             ProcessFile'Access);
          Search
-           (Name,
-            "",
-            (Directory => True, others => False),
+           (Name, "", (Directory => True, others => False),
             ProcessDirectory'Access);
       else
          CopyFile(Name);
@@ -183,29 +165,23 @@ package body CopyItems is
       Path, ItemType: Unbounded_String;
       Success: Boolean := True;
    begin
-      Copy_Items_Loop:
+      Copy_Items_Loop :
       while CopyItemsList.Length > 0 loop
          Path := DestinationDirectory;
          if Exists
-             (To_String(Path) &
-              "/" &
+             (To_String(Path) & "/" &
               Simple_Name(To_String(CopyItemsList(1)))) and
-           not Overwrite and
-           Settings.Overwrite_On_Exist then
+           not Overwrite and Settings.Overwrite_On_Exist then
             ItemType :=
               (if
                  Is_Directory
-                   (To_String(Path) &
-                    "/" &
+                   (To_String(Path) & "/" &
                     Simple_Name(To_String(CopyItemsList(1))))
-               then
-                 To_Unbounded_String(Mc(Get_Context, "{Directory}"))
+               then To_Unbounded_String(Mc(Get_Context, "{Directory}"))
                else To_Unbounded_String(Mc(Get_Context, "{File}")));
             ShowMessage
-              (To_String(ItemType) &
-               " " &
-               Simple_Name(To_String(CopyItemsList(1))) &
-               " " &
+              (To_String(ItemType) & " " &
+               Simple_Name(To_String(CopyItemsList(1))) & " " &
                Mc(Get_Context, "{exists. Do you want to overwrite it?}"),
                "question");
             return;

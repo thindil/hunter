@@ -61,7 +61,7 @@ package body ProgramsMenu is
          To_Unbounded_String(Value("HOME") & "/.local/share/applnk"));
       SubDirectory: Dir_Type;
       SubLast: Natural;
-      SubFileName: String(1 .. 1024);
+      SubFileName: String(1 .. 1_024);
       File: File_Type;
       FileLine: Unbounded_String;
    begin

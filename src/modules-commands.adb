@@ -48,17 +48,13 @@ package body Modules.Commands is
    -- Path is the path to the module which will be enabled or disabled
    -- SOURCE
    function Toggle_Module_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Toggle_Module_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
       ModulePath: constant Unbounded_String :=
@@ -68,17 +64,14 @@ package body Modules.Commands is
          Enabled_Modules.Delete(Enabled_Modules.Find_Index(ModulePath));
          Tcl_Eval(Interp, Simple_Name(To_String(ModulePath)) & "::on_disable");
          Tcl_Eval
-           (Interp,
-            "namespace delete " & Simple_Name(To_String(ModulePath)));
+           (Interp, "namespace delete " & Simple_Name(To_String(ModulePath)));
       else
          Enabled_Modules.Append(ModulePath);
          Tcl_EvalFile(Interp, To_String(ModulePath) & "/module.tcl");
          Tcl_Eval
            (Interp,
-            Simple_Name(To_String(ModulePath)) &
-            "::on_enable {" &
-            To_String(ModulePath) &
-            "}");
+            Simple_Name(To_String(ModulePath)) & "::on_enable {" &
+            To_String(ModulePath) & "}");
       end if;
       return TCL_OK;
    exception
@@ -101,17 +94,13 @@ package body Modules.Commands is
    -- Optionname is the name of the program's option which value will be get
    -- SOURCE
    function Get_Config_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Get_Config_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData);
       procedure GetBoolean(Value: Boolean) is
@@ -141,12 +130,10 @@ package body Modules.Commands is
             Trim(Natural'Image(Settings.Auto_Close_Messages_Time), Left));
       elsif CArgv.Arg(Argv, 1) = "windowwidth" then
          Tcl_SetResult
-           (Interp,
-            Trim(Positive'Image(Settings.Window_Width), Left));
+           (Interp, Trim(Positive'Image(Settings.Window_Width), Left));
       elsif CArgv.Arg(Argv, 1) = "windowheight" then
          Tcl_SetResult
-           (Interp,
-            Trim(Positive'Image(Settings.Window_Height), Left));
+           (Interp, Trim(Positive'Image(Settings.Window_Height), Left));
       elsif CArgv.Arg(Argv, 1) = "showpreview" then
          GetBoolean(Settings.Show_Preview);
       elsif CArgv.Arg(Argv, 1) = "stayinold" then
@@ -167,14 +154,12 @@ package body Modules.Commands is
          GetBoolean(Settings.Toolbars_On_Top);
       elsif CArgv.Arg(Argv, 1) = "autorefreshinterval" then
          Tcl_SetResult
-           (Interp,
-            Trim(Natural'Image(Settings.Auto_Refresh_Interval), Left));
+           (Interp, Trim(Natural'Image(Settings.Auto_Refresh_Interval), Left));
       elsif CArgv.Arg(Argv, 1) = "uitheme" then
          Tcl_SetResult(Interp, To_String(Settings.Ui_Theme));
       elsif CArgv.Arg(Argv, 1) = "toolbarssize" then
          Tcl_SetResult
-           (Interp,
-            Trim(Positive'Image(Settings.Toolbars_Size), Left));
+           (Interp, Trim(Positive'Image(Settings.Toolbars_Size), Left));
       elsif CArgv.Arg(Argv, 1) = "monospacefont" then
          GetBoolean(Settings.Monospace_Font);
       else
@@ -203,17 +188,13 @@ package body Modules.Commands is
    -- directory in which the command should be executed
    -- SOURCE
    function Execute_Module_Command_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Execute_Module_Command_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData);
       Value, CommandName: Unbounded_String;
@@ -236,8 +217,7 @@ package body Modules.Commands is
         To_Unbounded_String(Find_Executable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
          ShowMessage
-           (Mc(Interp, "{Can't find command:}") &
-            " " &
+           (Mc(Interp, "{Can't find command:}") & " " &
             Slice(Value, 1, SpaceIndex));
          if Argc = 3 then
             Set_Directory(CurrentDir);
@@ -248,7 +228,7 @@ package body Modules.Commands is
          Arguments :=
            Argument_String_To_List(Slice(Value, SpaceIndex, Length(Value)));
       end if;
-      Replace_Arguments_Loop:
+      Replace_Arguments_Loop :
       for I in Arguments'Range loop
          if Arguments(I).all = "@1" then
             Arguments(I) :=
@@ -258,11 +238,9 @@ package body Modules.Commands is
          end if;
       end loop Replace_Arguments_Loop;
       Non_Blocking_Spawn
-        (ProcessDesc,
-         Full_Name(To_String(CommandName)),
-         Arguments.all);
+        (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
       ShowOutput;
-      Show_Output_Loop:
+      Show_Output_Loop :
       loop
          Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 300_000);
          exit Show_Output_Loop when Result /= 1;
@@ -278,8 +256,7 @@ package body Modules.Commands is
       when Process_Died =>
          if not Success then
             ShowMessage
-              (Mc(Interp, "{Can't execute command:}") &
-               " " &
+              (Mc(Interp, "{Can't execute command:}") & " " &
                Slice(Value, 1, SpaceIndex));
          end if;
          if Argc = 3 then
@@ -293,8 +270,7 @@ package body Modules.Commands is
       Add_Command("ToggleModule", Toggle_Module_Command'Access);
       Add_Command("GetConfig", Get_Config_Command'Access);
       Add_Command
-        ("ExecuteModuleCommand",
-         Execute_Module_Command_Command'Access);
+        ("ExecuteModuleCommand", Execute_Module_Command_Command'Access);
    end AddCommands;
 
 end Modules.Commands;

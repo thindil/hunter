@@ -57,24 +57,19 @@ package body MoveItems is
    -- MoveData
    -- SOURCE
    function Move_Data_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Move_Data_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       OverwriteItem: Boolean := False;
    begin
       if MoveItemsList.Length > 0
-        and then
-          Containing_Directory(To_String(MoveItemsList(1))) =
+        and then Containing_Directory(To_String(MoveItemsList(1))) =
           To_String(DestinationDirectory) then
          MoveItemsList.Clear;
          ShowPreview;
@@ -88,8 +83,7 @@ package body MoveItems is
          Toggle_Tool_Buttons(New_Action);
          ShowDestination;
          Bind_To_Main_Window
-           (Interp,
-            "<Escape>",
+           (Interp, "<Escape>",
             "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
          return TCL_OK;
       end if;
@@ -112,25 +106,20 @@ package body MoveItems is
       Success: Boolean := True;
       NewName, FileExtension: Unbounded_String;
    begin
-      Move_Items_Loop:
+      Move_Items_Loop :
       while MoveItemsList.Length > 0 loop
          NewName :=
-           DestinationDirectory &
-           To_Unbounded_String("/") &
+           DestinationDirectory & To_Unbounded_String("/") &
            Simple_Name(To_String(MoveItemsList(1)));
          if Exists(To_String(NewName)) then
             if not Overwrite and Settings.Overwrite_On_Exist then
                ItemType :=
-                 (if
-                    Is_Directory(To_String(NewName))
-                  then
+                 (if Is_Directory(To_String(NewName)) then
                     To_Unbounded_String(Mc(Get_Context, "{Directory}"))
                   else To_Unbounded_String(Mc(Get_Context, "{File}")));
                ShowMessage
-                 (To_String(ItemType) &
-                  " " &
-                  Simple_Name(To_String(MoveItemsList(1))) &
-                  " " &
+                 (To_String(ItemType) & " " &
+                  Simple_Name(To_String(MoveItemsList(1))) & " " &
                   Mc(Get_Context, "{exists. Do you want to overwrite it?}"),
                   "question");
                return;
@@ -138,13 +127,12 @@ package body MoveItems is
             if not Settings.Overwrite_On_Exist then
                FileExtension :=
                  To_Unbounded_String(Extension(To_String(MoveItemsList(1))));
-               New_File_Name_Loop:
+               New_File_Name_Loop :
                loop
                   NewName :=
                     DestinationDirectory &
                     To_Unbounded_String
-                      ("/" &
-                       Ada.Directories.Base_Name(To_String(NewName)) &
+                      ("/" & Ada.Directories.Base_Name(To_String(NewName)) &
                        "_");
                   if Length(FileExtension) > 0 then
                      NewName :=
@@ -157,9 +145,7 @@ package body MoveItems is
          Rename_File(To_String(MoveItemsList(1)), To_String(NewName), Success);
          if not Success then
             CopyItem
-              (To_String(MoveItemsList(1)),
-               DestinationDirectory,
-               Success);
+              (To_String(MoveItemsList(1)), DestinationDirectory, Success);
             if Success then
                if Is_Directory(To_String(MoveItemsList(1))) then
                   Remove_Dir(To_String(MoveItemsList(1)), True);
@@ -168,10 +154,8 @@ package body MoveItems is
                end if;
             else
                ShowMessage
-                 (Mc(Get_Context, "{Can't move}") &
-                  " " &
-                  To_String(MoveItemsList(1)) &
-                  ".");
+                 (Mc(Get_Context, "{Can't move}") & " " &
+                  To_String(MoveItemsList(1)) & ".");
                return;
             end if;
          end if;
@@ -193,8 +177,7 @@ package body MoveItems is
         (if Settings.Stay_In_Old then SourceDirectory
          else DestinationDirectory);
       Current_Selected :=
-        MainWindow.Current_Directory &
-        "/" &
+        MainWindow.Current_Directory & "/" &
         Simple_Name(To_String(Current_Selected));
       LoadDirectory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);

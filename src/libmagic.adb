@@ -67,8 +67,7 @@ package body LibMagic is
       use Interfaces.C;
 
       function Magic_Load_C
-        (Arg1: System.Address;
-         Arg2: chars_ptr) return int with
+        (Arg1: System.Address; Arg2: chars_ptr) return int with
          Import => True,
          Convention => C,
          External_Name => "magic_load";
@@ -77,7 +76,7 @@ package body LibMagic is
          Convention => C,
          External_Name => "magic_open";
    begin
-      Magic_Data := Magic_Open_C(Arg1 => 16#0000010#);
+      Magic_Data := Magic_Open_C(Arg1 => 16#000_0010#);
       if Magic_Load_C
           (Arg1 => Get_Magic_Instance,
            Arg2 =>
@@ -92,20 +91,21 @@ package body LibMagic is
 
    function Magic_File(Name: String) return String is
       function Magic_File_C
-        (Arg1: System.Address;
-         Arg2: chars_ptr) return chars_ptr with
+        (Arg1: System.Address; Arg2: chars_ptr) return chars_ptr with
          Import => True,
          Convention => C,
          External_Name => "magic_file";
    begin
       if Is_Initialized then
-         return Value
+         return
+           Value
              (Item =>
                 Magic_File_C
                   (Arg1 => Get_Magic_Instance,
                    Arg2 => New_String(Str => Name)));
       end if;
-      Get_Mime_Type_Block: declare
+      Get_Mime_Type_Block :
+      declare
          use Ada.Strings.Unbounded;
          use GNAT.Expect;
          use GNAT.OS_Lib;
@@ -121,20 +121,15 @@ package body LibMagic is
             return "unknown";
          end if;
          Non_Blocking_Spawn
-           (Descriptor => Process_Desc,
-            Command => Executable_Name,
+           (Descriptor => Process_Desc, Command => Executable_Name,
             Args =>
               Argument_String_To_List
                 (Arg_String => "query filetype " & Name).all);
          Expect
-           (Descriptor => Process_Desc,
-            Result => Result,
-            Regexp => ".+",
+           (Descriptor => Process_Desc, Result => Result, Regexp => ".+",
             Timeout => 1_000);
          Mime_Type :=
-           (if
-              Result = 1
-            then
+           (if Result = 1 then
               To_Unbounded_String
                 (Source => Expect_Out_Match(Descriptor => Process_Desc))
             else To_Unbounded_String(Source => "unknown"));

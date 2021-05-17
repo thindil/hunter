@@ -31,8 +31,7 @@ package body Utils.UI is
    -- ****
 
    function Find_Executable
-     (Name: String;
-      Display_Message: Boolean := True) return String is
+     (Name: String; Display_Message: Boolean := True) return String is
       ExecutablePath: GNAT.OS_Lib.String_Access;
    begin
       if Exists(Containing_Directory(Command_Name) & "/" & Name) then
@@ -61,18 +60,13 @@ package body Utils.UI is
    end Update_Progress_Bar;
 
    procedure Add_Command
-     (Name: String;
-      Ada_Command: not null CreateCommands.Tcl_CmdProc) is
+     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc) is
       Command: Tcl.Tcl_Command;
       Hunter_Add_Command_Exception: exception;
    begin
       Command :=
         CreateCommands.Tcl_CreateCommand
-          (Interpreter,
-           Name,
-           Ada_Command,
-           0,
-           null);
+          (Interpreter, Name, Ada_Command, 0, null);
       if Command = null then
          raise Hunter_Add_Command_Exception
            with Mc(Interpreter, "{Can't add command}") & " " & Name;
@@ -80,8 +74,7 @@ package body Utils.UI is
    end Add_Command;
 
    procedure Toggle_Tool_Buttons
-     (Action: ItemActions;
-      Finished: Boolean := False) is
+     (Action: ItemActions; Finished: Boolean := False) is
    begin
       null;
    end Toggle_Tool_Buttons;

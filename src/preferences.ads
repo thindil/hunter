@@ -89,25 +89,16 @@ package Preferences is
    -- Default the program settings
    -- SOURCE
    Default_Settings: constant Settings_Data :=
-     (Show_Hidden => True,
-      Show_Last_Modified => False,
-      Scale_Images => False,
-      Auto_Close_Messages_Time => 10,
-      Window_Width => 800,
-      Window_Height => 600,
-      Show_Preview => True,
-      Stay_In_Old => False,
+     (Show_Hidden => True, Show_Last_Modified => False, Scale_Images => False,
+      Auto_Close_Messages_Time => 10, Window_Width => 800,
+      Window_Height => 600, Show_Preview => True, Stay_In_Old => False,
       Color_Text => True,
       Color_Theme => To_Unbounded_String(Source => "gruvbox-light-soft"),
-      Delete_Files => True,
-      Clear_Trash_On_Exit => False,
-      Show_Finished_Info => False,
-      Overwrite_On_Exist => True,
-      Toolbars_On_Top => True,
-      Auto_Refresh_Interval => 10,
+      Delete_Files => True, Clear_Trash_On_Exit => False,
+      Show_Finished_Info => False, Overwrite_On_Exist => True,
+      Toolbars_On_Top => True, Auto_Refresh_Interval => 10,
       Ui_Theme => To_Unbounded_String(Source => "hunter-light"),
-      Toolbars_Size => 24,
-      Monospace_Font => False);
+      Toolbars_Size => 24, Monospace_Font => False);
    -- ****
 
    -- ****v* Preferences/Preferences.Settings

@@ -41,7 +41,7 @@ package body Trash.UI is
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       Directory, SubDirectory: Dir_Type;
-      FileName, SubFileName: String(1 .. 1024);
+      FileName, SubFileName: String(1 .. 1_024);
       Last: Natural range 0 .. FileName'Last;
       SubLast: Natural range 0 .. SubFileName'Last;
       FileInfo: File_Type;

@@ -136,7 +136,7 @@ begin
    end if;
 
    -- Main program loop, exit on alt+q
-   Main_Program_Loop:
+   Main_Program_Loop :
    loop
       Key := Get_Keystroke;
       -- Escape key pressed

@@ -57,12 +57,9 @@ package body DeleteItems is
                       (Name & To_Unbounded_String(Image(Clock))))),
               Both);
          Create
-           (TrashFile,
-            Out_File,
+           (TrashFile, Out_File,
             Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/info/" &
-            To_String(NewName) &
-            ".trashinfo");
+            "/.local/share/Trash/info/" & To_String(NewName) & ".trashinfo");
          Put_Line(TrashFile, "[Trash Info]");
          Put_Line(TrashFile, "Path=" & To_String(Name));
          DeleteTime := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
@@ -72,8 +69,7 @@ package body DeleteItems is
          Rename_File
            (To_String(Name),
             Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/files/" &
-            To_String(NewName),
+            "/.local/share/Trash/files/" & To_String(NewName),
             Success);
       end MoveToTrash;
       procedure AddTrash(SubDirectory: String) is
@@ -82,16 +78,15 @@ package body DeleteItems is
       begin
          Start_Search
            (Search,
-            Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/" &
+            Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/" &
             SubDirectory,
             "*");
-         Add_Items_To_Trash_Loop:
+         Add_Items_To_Trash_Loop :
          while More_Entries(Search) loop
             Get_Next_Entry(Search, Item);
             if Simple_Name(Item) not in "." | ".." then
                Selected_Items.Append
-               (New_Item => To_Unbounded_String(Full_Name(Item)));
+                 (New_Item => To_Unbounded_String(Full_Name(Item)));
             end if;
          end loop Add_Items_To_Trash_Loop;
          End_Search(Search);
@@ -109,7 +104,7 @@ package body DeleteItems is
          AddTrash("info");
          AddTrash("files");
       end if;
-      Delete_Items_Loop:
+      Delete_Items_Loop :
       for Item of Selected_Items loop
          Update_Progress_Bar;
          if Is_Directory(To_String(Item)) then
@@ -135,8 +130,7 @@ package body DeleteItems is
          if New_Action = DELETETRASH then
             Delete_File
               (Ada.Environment_Variables.Value("HOME") &
-               "/.local/share/Trash/info/" &
-               Simple_Name(To_String(Item)) &
+               "/.local/share/Trash/info/" & Simple_Name(To_String(Item)) &
                ".trashinfo");
          end if;
       end loop Delete_Items_Loop;
@@ -152,13 +146,11 @@ package body DeleteItems is
            (Mc
               (Get_Context,
                "{Could not delete selected files or directories. Reason:}") &
-            " " &
-            Exception_Message(An_Exception));
+            " " & Exception_Message(An_Exception));
          raise;
       when An_Exception : Directory_Error =>
          ShowMessage
-           (Mc(Get_Context, "{Can't delete selected directory:}") &
-            " " &
+           (Mc(Get_Context, "{Can't delete selected directory:}") & " " &
             Exception_Message(An_Exception));
          raise;
       when others =>
@@ -183,17 +175,13 @@ package body DeleteItems is
    -- StartDeleting
    -- SOURCE
    function Start_Deleting_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Start_Deleting_Command
-     (ClientData: Integer;
-      Interp: Tcl.Tcl_Interp;
-      Argc: Interfaces.C.int;
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
       Message, FileLine: Unbounded_String;
@@ -202,25 +190,21 @@ package body DeleteItems is
    begin
       New_Action := (if New_Action /= SHOWTRASH then DELETE else DELETETRASH);
       Message :=
-        (if
-           Settings.Delete_Files or New_Action = DELETETRASH
-         then
+        (if Settings.Delete_Files or New_Action = DELETETRASH then
            To_Unbounded_String(Mc(Interp, "{Delete?}") & LF)
          else To_Unbounded_String(Mc(Interp, "{Move to trash?}") & LF));
-      Add_Items_To_Delete_Loop:
+      Add_Items_To_Delete_Loop :
       while I <= Selected_Items.Last_Index loop
          if New_Action = DELETE then
             Append(Message, Selected_Items(I));
          else
             Open
-              (FileInfo,
-               In_File,
+              (FileInfo, In_File,
                Ada.Environment_Variables.Value("HOME") &
                "/.local/share/Trash/info/" &
-               Simple_Name(To_String(Selected_Items(I))) &
-               ".trashinfo");
+               Simple_Name(To_String(Selected_Items(I))) & ".trashinfo");
             Skip_Line(FileInfo);
-            Get_Item_Name_Loop:
+            Get_Item_Name_Loop :
             for I in 1 .. 2 loop
                FileLine := To_Unbounded_String(Get_Line(FileInfo));
                if Slice(FileLine, 1, 4) = "Path" then
