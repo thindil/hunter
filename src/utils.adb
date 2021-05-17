@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;
 with GNAT.OS_Lib;
 with LibMagic;
 with Utils.UI;
@@ -79,18 +79,21 @@ package body Utils is
       return File_Size'Image(New_Size) & " " & Size_Shortcuts(Multiplier);
    end Count_File_Size;
 
-   function Is_Text(MimeType: String) return Boolean is
-      TextMimes: constant array(1 .. 3) of Unbounded_String :=
+   function Is_Text(Mime_Type: String) return Boolean is
+      use Ada.Strings.Unbounded;
+
+      Text_Mimes: constant array(1 .. 3) of Unbounded_String :=
         (1 => To_Unbounded_String(Source => "application/x-shellscript"),
          2 => To_Unbounded_String(Source => "application/x-desktop"),
          3 => To_Unbounded_String(Source => "application/xml"));
    begin
-      for Mime of TextMimes loop
-         if MimeType = To_String(Source => Mime) then
+      Check_Mime_Loop:
+      for Mime of Text_Mimes loop
+         if Mime_Type = To_String(Source => Mime) then
             return True;
          end if;
-      end loop;
-      if MimeType(MimeType'First .. MimeType'First + 3) = "text" then
+      end loop Check_Mime_Loop;
+      if Mime_Type(Mime_Type'First .. Mime_Type'First + 3) = "text" then
          return True;
       end if;
       return False;
