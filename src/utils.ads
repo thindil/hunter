@@ -96,11 +96,11 @@ package Utils is
    -- FUNCTION
    -- Check if the selected MimeType is text so it can be previewed
    -- PARAMTERS
-   -- MimeType - MIME Type to check
+   -- Mime_Type - MIME Type to check
    -- RESULT
    -- Return True if the selected MIME Type is text type, otherwise False
    -- SOURCE
-   function Is_Text(MimeType: String) return Boolean;
+   function Is_Text(Mime_Type: String) return Boolean;
    -- ****
 
 end Utils;
