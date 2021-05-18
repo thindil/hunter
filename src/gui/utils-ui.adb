@@ -298,25 +298,7 @@ package body Utils.UI is
          end if;
       end if;
       if Action = SHOWTRASH then
-         if not Finished then
-            Tcl.Tk.Ada.Pack.Pack
-              (Toolbar,
-               "-after .mainframe.toolbars.actiontoolbar.deletebutton");
-            Remove_Trash_Buttons_Loop :
-            for I in Buttons_Names'Range loop
-               if I /= Current_Button then
-                  Toolbar.Name :=
-                    New_String
-                      (".mainframe.toolbars.actiontoolbar." &
-                       To_String(Buttons_Names(I)) & "button");
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
-               end if;
-            end loop Remove_Trash_Buttons_Loop;
-            Entry_Configure
-              (Delete_Menu, "0",
-               "-label {" & Mc(Get_Context, "{Delete selected}") & "}");
-            Delete(Delete_Menu, "1");
-         else
+         if Finished then
             Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
             Toolbar.Name :=
               New_String(".mainframe.toolbars.actiontoolbar.separator3");
@@ -382,6 +364,24 @@ package body Utils.UI is
               (Delete_Menu, "command",
                "-label {" & Mc(Get_Context, "{Empty Trash}") &
                "} -command ClearTrash");
+         else
+            Tcl.Tk.Ada.Pack.Pack
+              (Toolbar,
+               "-after .mainframe.toolbars.actiontoolbar.deletebutton");
+            Remove_Trash_Buttons_Loop :
+            for I in Buttons_Names'Range loop
+               if I /= Current_Button then
+                  Toolbar.Name :=
+                    New_String
+                      (".mainframe.toolbars.actiontoolbar." &
+                       To_String(Buttons_Names(I)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+               end if;
+            end loop Remove_Trash_Buttons_Loop;
+            Entry_Configure
+              (Delete_Menu, "0",
+               "-label {" & Mc(Get_Context, "{Delete selected}") & "}");
+            Delete(Delete_Menu, "1");
          end if;
       end if;
       Toolbar.Name := New_String(".mainframe.toolbars.itemtoolbar");
