@@ -16,6 +16,7 @@
 with Ada.Calendar.Formatting;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
@@ -194,7 +195,9 @@ package body MainWindow is
                 0 then
                goto End_Of_Loop;
             end if;
-            Move(To_String(ItemsList(I).Name), Item_Entry);
+            Move
+              (Source => To_String(ItemsList(I).Name), Target => Item_Entry,
+               Drop => Right);
             Item := MainWindow.Current_Directory & "/" & ItemsList(I).Name;
             if Settings.Show_Last_Modified then
                begin
