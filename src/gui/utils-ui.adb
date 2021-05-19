@@ -299,39 +299,46 @@ package body Utils.UI is
       end if;
       if Action = SHOWTRASH then
          if Finished then
-            Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+            Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Toolbar);
             Toolbar.Name :=
-              New_String(".mainframe.toolbars.actiontoolbar.separator3");
-            if Winfo_Get(Toolbar, "ismapped") = "1" then
+              New_String
+                (Str => ".mainframe.toolbars.actiontoolbar.separator3");
+            if Winfo_Get(Widgt => Toolbar, Info => "ismapped") = "1" then
                Update_Trash_Button_Loop :
                for I in Buttons_Names'Range loop
                   if I < Current_Button then
                      Toolbar.Name :=
                        New_String
-                         (".mainframe.toolbars.actiontoolbar." &
-                          To_String(Buttons_Names(I)) & "button");
+                         (Str =>
+                            ".mainframe.toolbars.actiontoolbar." &
+                            To_String(Source => Buttons_Names(I)) & "button");
                      Tcl.Tk.Ada.Pack.Pack
-                       (Toolbar,
-                        "-before .mainframe.toolbars.actiontoolbar." &
-                        To_String(Buttons_Names(Current_Button)) & "button");
+                       (Slave => Toolbar,
+                        Options =>
+                          "-before .mainframe.toolbars.actiontoolbar." &
+                          To_String(Source => Buttons_Names(Current_Button)) &
+                          "button");
                   elsif I > Current_Button then
                      Toolbar.Name :=
                        New_String
-                         (".mainframe.toolbars.actiontoolbar." &
-                          To_String(Buttons_Names(I)) & "button");
+                         (Str =>
+                            ".mainframe.toolbars.actiontoolbar." &
+                            To_String(Source => Buttons_Names(I)) & "button");
                      Tcl.Tk.Ada.Pack.Pack
-                       (Toolbar,
-                        "-after .mainframe.toolbars.actiontoolbar." &
-                        To_String(Buttons_Names(I - 1)) & "button");
+                       (Slave => Toolbar,
+                        Options =>
+                          "-after .mainframe.toolbars.actiontoolbar." &
+                          To_String(Source => Buttons_Names(I - 1)) &
+                          "button");
                   end if;
                end loop Update_Trash_Button_Loop;
             else
-               if not Settings.Toolbars_On_Top then
-                  configure(Toolbar, "-orient horizontal");
-                  Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill x -padx 5 -side top");
-               else
+               if Settings.Toolbars_On_Top then
                   configure(Toolbar, "-orient vertical");
                   Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill y -pady 5 -side left");
+               else
+                  configure(Toolbar, "-orient horizontal");
+                  Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill x -padx 5 -side top");
                end if;
                Add_Buttons_Loop :
                for I in Buttons_Names'Range loop
