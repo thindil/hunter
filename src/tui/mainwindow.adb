@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Calendar.Formatting;
+with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
@@ -749,6 +750,8 @@ package body MainWindow is
 
    function About_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
+      CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
+      FileName: Unbounded_String := Null_Unbounded_String;
    begin
       case Key is
          when KEY_UP =>
@@ -760,8 +763,42 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
+            case CurrentIndex is
+               when 2 =>
+                  FileName := To_Unbounded_String("README.md");
+               when 3 =>
+                  FileName := To_Unbounded_String("CHANGELOG.md");
+               when 4 =>
+                  FileName := To_Unbounded_String("CONTRIBUTING.md");
+               when 5 =>
+                  FileName := To_Unbounded_String("MODDING.md");
+               when others =>
+                  null;
+            end case;
+            if FileName /= Null_Unbounded_String then
+               Current_Directory :=
+                 To_Unbounded_String
+                   (Normalize_Pathname
+                      (Ada.Directories.Containing_Directory
+                         (Ada.Directories.Containing_Directory
+                            (Command_Name))));
+               if Ada.Directories.Exists
+                   (Value("APPDIR", "") & "/usr/share/doc/hunter") then
+                  Current_Directory :=
+                    To_Unbounded_String
+                      (Value("APPDIR", "") & "/usr/share/doc/hunter");
+               end if;
+               LoadDirectory(To_String(Current_Directory));
+               Set_Current_Selected_Loop :
+               for I in ItemsList.Iterate loop
+                  if ItemsList(I).Name = FileName then
+                     Current_Selected := ItemsList(I).Path;
+                     exit Set_Current_Selected_Loop;
+                  end if;
+               end loop Set_Current_Selected_Loop;
+            end if;
             UILocation := DIRECTORY_VIEW;
-            Update_Directory_List;
+            Update_Directory_List(True);
             Post(SubMenu, False);
             Delete(SubMenu);
             return DIRECTORY_VIEW;
