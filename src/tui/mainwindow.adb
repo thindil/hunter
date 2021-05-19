@@ -748,8 +748,29 @@ package body MainWindow is
    end View_Keys;
 
    function About_Keys(Key: Key_Code) return UI_Locations is
-      pragma Unreferenced(Key);
+      Result: Menus.Driver_Result := Unknown_Request;
    begin
+      case Key is
+         when KEY_UP =>
+            Result := Driver(SubMenu, M_Up_Item);
+         when KEY_DOWN =>
+            Result := Driver(SubMenu, M_Down_Item);
+         when Key_Home =>
+            Result := Driver(SubMenu, M_First_Item);
+         when Key_End =>
+            Result := Driver(SubMenu, M_Last_Item);
+         when 10 =>
+            UILocation := DIRECTORY_VIEW;
+            Update_Directory_List;
+            Post(SubMenu, False);
+            Delete(SubMenu);
+            return DIRECTORY_VIEW;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(SubMenuWindow);
+      end if;
       return ABOUT_MENU;
    end About_Keys;
 
