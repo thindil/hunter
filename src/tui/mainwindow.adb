@@ -776,17 +776,18 @@ package body MainWindow is
                   null;
             end case;
             if FileName /= Null_Unbounded_String then
-               Current_Directory :=
-                 To_Unbounded_String
-                   (Normalize_Pathname
-                      (Ada.Directories.Containing_Directory
-                         (Ada.Directories.Containing_Directory
-                            (Command_Name))));
                if Ada.Directories.Exists
                    (Value("APPDIR", "") & "/usr/share/doc/hunter") then
                   Current_Directory :=
                     To_Unbounded_String
                       (Value("APPDIR", "") & "/usr/share/doc/hunter");
+               else
+                  Current_Directory :=
+                    To_Unbounded_String
+                      (Normalize_Pathname
+                         (Ada.Directories.Containing_Directory
+                            (Ada.Directories.Containing_Directory
+                               (Command_Name))));
                end if;
                LoadDirectory(To_String(Current_Directory));
                Set_Current_Selected_Loop :
