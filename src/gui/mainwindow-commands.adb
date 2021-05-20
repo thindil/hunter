@@ -467,14 +467,15 @@ package body MainWindow.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
    begin
-      Current_Directory :=
-        To_Unbounded_String
-          (Normalize_Pathname
-             (Containing_Directory(Containing_Directory(Command_Name))));
       if Ada.Directories.Exists
           (Value("APPDIR", "") & "/usr/share/doc/hunter") then
          Current_Directory :=
            To_Unbounded_String(Value("APPDIR", "") & "/usr/share/doc/hunter");
+      else
+         Current_Directory :=
+           To_Unbounded_String
+             (Normalize_Pathname
+                (Containing_Directory(Containing_Directory(Command_Name))));
       end if;
       LoadDirectory(To_String(Current_Directory));
       Set_Current_Selected_Loop :
