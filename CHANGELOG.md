@@ -25,6 +25,7 @@ All notable changes to this project will be documented in this file.
 - Possible crash on auto refresh directory listing
 - Possible crash on loading preview when excutable script is there
 - Showing preview for some types of text files
+- Crash on showing files in About menu
 
 ## [1.5] - 2020-11-20
 
