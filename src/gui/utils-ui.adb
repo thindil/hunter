@@ -334,18 +334,21 @@ package body Utils.UI is
                end loop Update_Trash_Button_Loop;
             else
                if Settings.Toolbars_On_Top then
-                  configure(Toolbar, "-orient vertical");
-                  Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill y -pady 5 -side left");
+                  configure(Widgt => Toolbar, options => "-orient vertical");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Slave => Toolbar,
+                     Options => "-fill y -pady 5 -side left");
                else
-                  configure(Toolbar, "-orient horizontal");
-                  Tcl.Tk.Ada.Pack.Pack(Toolbar, "-fill x -padx 5 -side top");
+                  configure(Widgt => Toolbar, options => "-orient horizontal");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Slave => Toolbar, Options => "-fill x -padx 5 -side top");
                end if;
                Add_Buttons_Loop :
-               for I in Buttons_Names'Range loop
+               for Button_Name of Buttons_Names loop
                   Toolbar.Name :=
                     New_String
                       (".mainframe.toolbars.actiontoolbar." &
-                       To_String(Buttons_Names(I)) & "button");
+                       To_String(Button_Name) & "button");
                   Tcl.Tk.Ada.Pack.Pack
                     (Toolbar,
                      "-before .mainframe.toolbars.actiontoolbar.separator3");
