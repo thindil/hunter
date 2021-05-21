@@ -22,6 +22,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
+with AboutDialog; use AboutDialog;
 with ActivateItems;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
@@ -764,6 +765,13 @@ package body MainWindow is
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
             case CurrentIndex is
+               when 1 =>
+                  UILocation := DIRECTORY_VIEW;
+                  Update_Directory_List;
+                  Post(SubMenu, False);
+                  Delete(SubMenu);
+                  Show_About_Dialog;
+                  return ABOUT_FORM;
                when 2 =>
                   FileName := To_Unbounded_String("README.md");
                when 3 =>
