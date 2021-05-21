@@ -65,7 +65,7 @@ package MainWindow is
    -- ****t* MainWindow/UI_Locations
    -- FUNCTION
    -- Parts of the program UI, used mostly in handling keys events
-   -- OPTION
+   -- OPTIONS
    -- DIRECTORY_VIEW   - Current directory listing
    -- PATH_BUTTONS     - Current directory path buttons
    -- MAIN_MENU        - The main program's menu
@@ -86,13 +86,14 @@ package MainWindow is
    -- SEARCH_FORM      - The search entry form
    -- EXECUTE_FORM     - The execute item with command form
    -- ABOUT_MENU       - The menu about the program
+   -- ABOUT_FORM       - The about widget
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
       CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
       DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM,
       SELECTED_MENU, PROGRAMS_MENU, VIEW_MENU, SEARCH_FORM, EXECUTE_FORM,
-      ABOUT_MENU);
+      ABOUT_MENU, ABOUT_FORM);
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.UILocation

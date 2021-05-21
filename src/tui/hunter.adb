@@ -27,6 +27,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with AboutDialog; use AboutDialog;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
 with CreateItems; use CreateItems;
@@ -246,6 +247,8 @@ begin
                UILocation := Execute_Form_Keys(Key);
             when ABOUT_MENU =>
                UILocation := About_Keys(Key);
+            when ABOUT_FORM =>
+               UILocation := About_View_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;
