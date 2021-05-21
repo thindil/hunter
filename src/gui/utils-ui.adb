@@ -347,29 +347,40 @@ package body Utils.UI is
                for Button_Name of Buttons_Names loop
                   Toolbar.Name :=
                     New_String
-                      (".mainframe.toolbars.actiontoolbar." &
-                       To_String(Button_Name) & "button");
+                      (Str =>
+                         ".mainframe.toolbars.actiontoolbar." &
+                         To_String(Source => Button_Name) & "button");
                   Tcl.Tk.Ada.Pack.Pack
-                    (Toolbar,
-                     "-before .mainframe.toolbars.actiontoolbar.separator3");
+                    (Slave => Toolbar,
+                     Options =>
+                       "-before .mainframe.toolbars.actiontoolbar.separator3");
                end loop Add_Buttons_Loop;
             end if;
             Toolbar.Name :=
-              New_String(".mainframe.toolbars.actiontoolbar.separator3");
+              New_String
+                (Str => ".mainframe.toolbars.actiontoolbar.separator3");
             Tcl.Tk.Ada.Pack.Pack_Configure
-              (Toolbar,
-               "-after .mainframe.toolbars.actiontoolbar.deletebutton");
-            Delete(Delete_Menu, "1", "end");
+              (Slave => Toolbar,
+               Options =>
+                 "-after .mainframe.toolbars.actiontoolbar.deletebutton");
+            Delete
+              (MenuWidget => Delete_Menu, StartIndex => "1",
+               EndIndex => "end");
             if not Settings.Delete_Files then
                Entry_Configure
-                 (Delete_Menu, "0",
-                  "-label {" & Mc(Get_Context, "{Move selected to Trash}") &
-                  "}");
+                 (MenuWidget => Delete_Menu, Index => "0",
+                  Options =>
+                    "-label {" &
+                    Mc(Interp => Get_Context,
+                       Src_String => "{Move selected to Trash}") &
+                    "}");
             end if;
             Menu.Add
-              (Delete_Menu, "command",
-               "-label {" & Mc(Get_Context, "{Show Trash}") &
-               "} -command ShowTrash");
+              (MenuWidget => Delete_Menu, EntryType => "command",
+               Options =>
+                 "-label {" &
+                 Mc(Interp => Get_Context, Src_String => "{Show Trash}") &
+                 "} -command ShowTrash");
             Menu.Add
               (Delete_Menu, "command",
                "-label {" & Mc(Get_Context, "{Empty Trash}") &
