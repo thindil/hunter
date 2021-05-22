@@ -21,7 +21,7 @@ package body AboutDialog is
    FormWindow: Window;
 
    procedure Show_About_Dialog is
-      About_Fields: constant Field_Array_Access := new Field_Array(1 .. 7);
+      About_Fields: constant Field_Array_Access := new Field_Array(1 .. 9);
       FormHeight: Line_Position;
       FormLength: Column_Position;
       Visibility: Cursor_Visibility := Normal;
@@ -33,18 +33,32 @@ package body AboutDialog is
       FieldOptions := Get_Options(About_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(About_Fields.all(1), FieldOptions);
-      About_Fields.all(2) := New_Field(1, 30, 1, 8, 0, 0);
-      About_Fields.all(3) := New_Field(1, 30, 2, 8, 0, 0);
-      About_Fields.all(4) := New_Field(1, 30, 3, 8, 0, 0);
-      About_Fields.all(5) := New_Field(1, 30, 4, 8, 0, 0);
-      About_Fields.all(6) := New_Field(1, 7, 5, 3, 0, 0);
-      Set_Buffer(About_Fields.all(6), 0, "[Close]");
-      FieldOptions := Get_Options(About_Fields.all(6));
+      About_Fields.all(2) := New_Field(1, 26, 1, 4, 0, 0);
+      Set_Buffer(About_Fields.all(2), 0, "© Bartek Jasicki 2019-2021");
+      Set_Options(About_Fields.all(2), FieldOptions);
+      About_Fields.all(3) := New_Field(1, 18, 2, 8, 0, 0);
+      Set_Buffer(About_Fields.all(3), 0, "License: GNU GPLv3");
+      Set_Options(About_Fields.all(3), FieldOptions);
+      About_Fields.all(4) := New_Field(1, 26, 3, 4, 0, 0);
+      Set_Buffer(About_Fields.all(4), 0, "Version: 1.6 (development)");
+      Set_Options(About_Fields.all(4), FieldOptions);
+      About_Fields.all(5) := New_Field(1, 9, 5, 0, 0, 0);
+      Set_Buffer(About_Fields.all(5), 0, "[Website]");
+      FieldOptions := Get_Options(About_Fields.all(5));
       FieldOptions.Edit := False;
+      Set_Options(About_Fields.all(5), FieldOptions);
+      About_Fields.all(6) := New_Field(1, 13, 5, 9, 0, 0);
+      Set_Buffer(About_Fields.all(6), 0, "[Programmers]");
       Set_Options(About_Fields.all(6), FieldOptions);
-      About_Fields.all(7) := Null_Field;
+      About_Fields.all(7) := New_Field(1, 13, 5, 22, 0, 0);
+      Set_Buffer(About_Fields.all(7), 0, "[Translators]");
+      Set_Options(About_Fields.all(7), FieldOptions);
+      About_Fields.all(8) := New_Field(1, 7, 5, 35, 0, 0);
+      Set_Buffer(About_Fields.all(8), 0, "[Close]");
+      Set_Options(About_Fields.all(8), FieldOptions);
+      About_Fields.all(9) := Null_Field;
       DialogForm := New_Form(About_Fields);
-      Set_Current(DialogForm, About_Fields(6));
+      Set_Current(DialogForm, About_Fields(5));
       Set_Options(DialogForm, (others => False));
       Scale(DialogForm, FormHeight, FormLength);
       FormWindow :=
