@@ -382,33 +382,40 @@ package body Utils.UI is
                  Mc(Interp => Get_Context, Src_String => "{Show Trash}") &
                  "} -command ShowTrash");
             Menu.Add
-              (Delete_Menu, "command",
-               "-label {" & Mc(Get_Context, "{Empty Trash}") &
-               "} -command ClearTrash");
+              (MenuWidget => Delete_Menu, EntryType => "command",
+               Options =>
+                 "-label {" &
+                 Mc(Interp => Get_Context, Src_String => "{Empty Trash}") &
+                 "} -command ClearTrash");
          else
             Tcl.Tk.Ada.Pack.Pack
-              (Toolbar,
-               "-after .mainframe.toolbars.actiontoolbar.deletebutton");
+              (Slave => Toolbar,
+               Options =>
+                 "-after .mainframe.toolbars.actiontoolbar.deletebutton");
             Remove_Trash_Buttons_Loop :
             for I in Buttons_Names'Range loop
                if I /= Current_Button then
                   Toolbar.Name :=
                     New_String
-                      (".mainframe.toolbars.actiontoolbar." &
-                       To_String(Buttons_Names(I)) & "button");
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Toolbar);
+                      (Str =>
+                         ".mainframe.toolbars.actiontoolbar." &
+                         To_String(Source => Buttons_Names(I)) & "button");
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Toolbar);
                end if;
             end loop Remove_Trash_Buttons_Loop;
             Entry_Configure
-              (Delete_Menu, "0",
-               "-label {" & Mc(Get_Context, "{Delete selected}") & "}");
-            Delete(Delete_Menu, "1");
+              (MenuWidget => Delete_Menu, Index => "0",
+               Options =>
+                 "-label {" &
+                 Mc(Interp => Get_Context, Src_String => "{Delete selected}") &
+                 "}");
+            Delete(MenuWidget => Delete_Menu, StartIndex => "1");
          end if;
       end if;
-      Toolbar.Name := New_String(".mainframe.toolbars.itemtoolbar");
+      Toolbar.Name := New_String(Str => ".mainframe.toolbars.itemtoolbar");
       if Finished then
-         Grid_Remove(Header_Label);
-         Tcl.Tk.Ada.Grid.Grid(Toolbar);
+         Grid_Remove(Slave => Header_Label);
+         Tcl.Tk.Ada.Grid.Grid(Slave => Toolbar);
          if not Settings.Show_Preview then
             Toolbar.Name := New_String(".mainframe.paned.previewframe");
             Forget(Paned, Toolbar);
