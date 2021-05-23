@@ -416,15 +416,15 @@ package body Utils.UI is
       if Finished then
          Grid_Remove(Slave => Header_Label);
          Tcl.Tk.Ada.Grid.Grid(Slave => Toolbar);
-         if not Settings.Show_Preview then
-            Toolbar.Name := New_String(".mainframe.paned.previewframe");
-            Forget(Paned, Toolbar);
-         else
+         if Settings.Show_Preview then
             SetBookmarkButton;
+         else
+            Toolbar.Name := New_String(Str => ".mainframe.paned.previewframe");
+            Forget(Paned => Paned, SubWindow => Toolbar);
          end if;
       else
          if Action /= SHOWTRASH then
-            Grid_Remove(Toolbar);
+            Grid_Remove(Slave => Toolbar);
          end if;
          case Action is
             when CREATEFILE =>
@@ -477,7 +477,9 @@ package body Utils.UI is
             when others =>
                null;
          end case;
-         Tcl.Tk.Ada.Grid.Grid(Header_Label, "-column 0 -row 0 -columnspan 2");
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Header_Label,
+            Options => "-column 0 -row 0 -columnspan 2");
       end if;
    end Toggle_Tool_Buttons;
 
