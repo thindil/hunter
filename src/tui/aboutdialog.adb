@@ -75,8 +75,30 @@ package body AboutDialog is
    end Show_About_Dialog;
 
    function About_View_Keys(Key: Key_Code) return UI_Locations is
-      pragma Unreferenced(Key);
+      Result: Forms.Driver_Result := Unknown_Request;
+      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      Visibility: Cursor_Visibility := Invisible;
    begin
+      case Key is
+         when KEY_UP =>
+            Result := Driver(DialogForm, F_Previous_Field);
+         when KEY_DOWN =>
+            Result := Driver(DialogForm, F_Next_Field);
+         when 10 =>
+            if FieldIndex = 8 then
+               Set_Cursor_Visibility(Visibility);
+               Post(DialogForm, False);
+               Delete(DialogForm);
+               UILocation := DIRECTORY_VIEW;
+               Update_Directory_List;
+               return DIRECTORY_VIEW;
+            end if;
+         when others =>
+            null;
+      end case;
+      if Result = Form_Ok then
+         Refresh(FormWindow);
+      end if;
       return ABOUT_FORM;
    end About_View_Keys;
 
