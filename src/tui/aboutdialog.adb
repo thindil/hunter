@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 
 package body AboutDialog is
@@ -29,7 +30,8 @@ package body AboutDialog is
    begin
       Set_Cursor_Visibility(Visibility);
       About_Fields.all(1) := New_Field(1, 36, 0, 1, 0, 0);
-      Set_Buffer(About_Fields.all(1), 0, "Hunter - Text file manager for Linux");
+      Set_Buffer
+        (About_Fields.all(1), 0, "Hunter - Text file manager for Linux");
       FieldOptions := Get_Options(About_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(About_Fields.all(1), FieldOptions);
@@ -85,14 +87,30 @@ package body AboutDialog is
          when KEY_DOWN =>
             Result := Driver(DialogForm, F_Next_Field);
          when 10 =>
-            if FieldIndex = 8 then
-               Set_Cursor_Visibility(Visibility);
-               Post(DialogForm, False);
-               Delete(DialogForm);
-               UILocation := DIRECTORY_VIEW;
-               Update_Directory_List;
-               return DIRECTORY_VIEW;
-            end if;
+            case FieldIndex is
+               when 5 =>
+                  declare
+                     ProcessId: Process_Id;
+                  begin
+                     ProcessId :=
+                       Non_Blocking_Spawn
+                         (Locate_Exec_On_Path("xdg-open").all,
+                          Argument_String_To_List
+                            ("https://www.laeran.pl/repositories/hunter/").all);
+                     if ProcessId = Invalid_Pid then
+                        return ABOUT_FORM;
+                     end if;
+                  end;
+               when 8 =>
+                  Set_Cursor_Visibility(Visibility);
+                  Post(DialogForm, False);
+                  Delete(DialogForm);
+                  UILocation := DIRECTORY_VIEW;
+                  Update_Directory_List;
+                  return DIRECTORY_VIEW;
+               when others =>
+                  null;
+            end case;
          when others =>
             null;
       end case;
