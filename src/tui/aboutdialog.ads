@@ -41,4 +41,14 @@ package AboutDialog is
    function About_View_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* AboutDialogTUI/AboutDialogTUI.Developers_Keys
+   -- FUNCTION
+   -- Handles keys events when the dialog with developers or translators is
+   -- active element of UI
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Developers_Keys return UI_Locations;
+   -- ****
+
 end AboutDialog;

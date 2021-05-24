@@ -249,6 +249,8 @@ begin
                UILocation := About_Keys(Key);
             when ABOUT_FORM =>
                UILocation := About_View_Keys(Key);
+            when DEVELOPERS_VIEW =>
+               UILocation := Developers_Keys;
          end case;
       end if;
    end loop Main_Program_Loop;

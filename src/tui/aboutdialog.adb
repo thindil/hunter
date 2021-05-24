@@ -101,6 +101,12 @@ package body AboutDialog is
                         return ABOUT_FORM;
                      end if;
                   end;
+               when 6 | 7 =>
+                  Post(DialogForm, False);
+                  Delete(DialogForm);
+                  UILocation := DIRECTORY_VIEW;
+                  Update_Directory_List;
+                  return DEVELOPERS_VIEW;
                when 8 =>
                   Set_Cursor_Visibility(Visibility);
                   Post(DialogForm, False);
@@ -119,5 +125,16 @@ package body AboutDialog is
       end if;
       return ABOUT_FORM;
    end About_View_Keys;
+
+   function Developers_Keys return UI_Locations is
+      Visibility: Cursor_Visibility := Invisible;
+   begin
+      Set_Cursor_Visibility(Visibility);
+      -- Post(DialogForm, False);
+      -- Delete(DialogForm);
+      UILocation := DIRECTORY_VIEW;
+      Update_Directory_List;
+      return DIRECTORY_VIEW;
+   end Developers_Keys;
 
 end AboutDialog;
