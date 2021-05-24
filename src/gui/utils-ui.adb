@@ -429,27 +429,44 @@ package body Utils.UI is
          case Action is
             when CREATEFILE =>
                configure
-                 (Header_Label,
-                  "-text {" & Mc(Get_Context, "{Creating empty file}") & "}");
+                 (Widgt => Header_Label,
+                  options =>
+                    "-text {" &
+                    Mc(Interp => Get_Context,
+                       Src_String => "{Creating empty file}") &
+                    "}");
             when CREATEDIRECTORY =>
                configure
-                 (Header_Label,
-                  "-text {" & Mc(Get_Context, "{Creating new directory}") &
-                  "}");
+                 (Widgt => Header_Label,
+                  options =>
+                    "-text {" &
+                    Mc(Interp => Get_Context,
+                       Src_String => "{Creating new directory}") &
+                    "}");
             when CREATELINK =>
                configure
-                 (Header_Label,
-                  "-text {" & Mc(Get_Context, "{Creating new link}") & "}");
+                 (Widgt => Header_Label,
+                  options =>
+                    "-text {" &
+                    Mc(Interp => Get_Context,
+                       Src_String => "{Creating new link}") &
+                    "}");
             when RENAME =>
                configure
-                 (Header_Label,
-                  "-text {" & Mc(Get_Context, "{Renaming file or directory}") &
-                  "}");
+                 (Widgt => Header_Label,
+                  options =>
+                    "-text {" &
+                    Mc(Interp => Get_Context,
+                       Src_String => "{Renaming file or directory}") &
+                    "}");
             when COPY =>
                configure
-                 (Header_Label,
-                  "-text {" &
-                  Mc(Get_Context, "{Copying files and directories}") & "}");
+                 (Widgt => Header_Label,
+                  options =>
+                    "-text {" &
+                    Mc(Interp => Get_Context,
+                       Src_String => "{Copying files and directories}") &
+                    "}");
             when MOVE =>
                configure
                  (Header_Label,
