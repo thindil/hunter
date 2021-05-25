@@ -469,28 +469,38 @@ package body Utils.UI is
                     "}");
             when MOVE =>
                configure
-                 (Header_Label,
-                  "-text {" &
-                  Mc(Get_Context, "{Moving files and directories}") & "}");
+                 (Widgt => Header_Label,
+                  options =>
+                    "-text {" &
+                    Mc(Interp => Get_Context,
+                       Src_String => "{Moving files and directories}") &
+                    "}");
             when DELETE | DELETETRASH =>
                if Settings.Delete_Files or Action = DELETETRASH then
                   configure
-                    (Header_Label,
-                     "-text {" &
-                     Mc(Get_Context, "{Deleting files and directories}") &
-                     "}");
+                    (Widgt => Header_Label,
+                     options =>
+                       "-text {" &
+                       Mc(Interp => Get_Context,
+                          Src_String => "{Deleting files and directories}") &
+                       "}");
                else
                   configure
-                    (Header_Label,
-                     "-text {" &
-                     Mc(Get_Context,
-                        "{Moving files and directories to trash}") &
-                     "}");
+                    (Widgt => Header_Label,
+                     options =>
+                       "-text {" &
+                       Mc(Interp => Get_Context,
+                          Src_String =>
+                            "{Moving files and directories to trash}") &
+                       "}");
                end if;
             when SHOWTRASH =>
                configure
-                 (Header_Label,
-                  "-text {" & Mc(Get_Context, "{Trash can}") & "}");
+                 (Widgt => Header_Label,
+                  options =>
+                    "-text {" &
+                    Mc(Interp => Get_Context, Src_String => "{Trash can}") &
+                    "}");
             when others =>
                null;
          end case;
