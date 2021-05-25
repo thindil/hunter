@@ -82,10 +82,13 @@ package body AboutDialog is
       FormLength: Column_Position;
       FieldOptions: Field_Option_Set;
    begin
-      About_Fields.all(1) := New_Field(1, 36, 0, 1, 0, 0);
+      About_Fields.all(1) := New_Field(1, 44, 0, 1, 0, 0);
       if Developers then
          Set_Buffer
            (About_Fields.all(1), 0, "Bartek Jasicki <thindil@laeran.pl>");
+      else
+         Set_Buffer
+           (About_Fields.all(1), 0, "Polski - Bartek Jasicki <thindil@laeran.pl>");
       end if;
       FieldOptions := Get_Options(About_Fields.all(1));
       FieldOptions.Active := False;
