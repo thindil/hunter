@@ -250,7 +250,7 @@ begin
             when ABOUT_FORM =>
                UILocation := About_View_Keys(Key);
             when DEVELOPERS_VIEW =>
-               UILocation := Developers_Keys;
+               UILocation := Developers_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;

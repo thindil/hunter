@@ -45,10 +45,12 @@ package AboutDialog is
    -- FUNCTION
    -- Handles keys events when the dialog with developers or translators is
    -- active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Developers_Keys return UI_Locations;
+   function Developers_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end AboutDialog;
