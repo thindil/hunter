@@ -76,6 +76,43 @@ package body AboutDialog is
       Refresh(FormWindow);
    end Show_About_Dialog;
 
+   procedure Show_Developers_Dialog(Developers: Boolean := True) is
+      About_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
+      FormHeight: Line_Position;
+      FormLength: Column_Position;
+      FieldOptions: Field_Option_Set;
+   begin
+      About_Fields.all(1) := New_Field(1, 36, 0, 1, 0, 0);
+      if Developers then
+         Set_Buffer
+           (About_Fields.all(1), 0, "Bartek Jasicki <thindil@laeran.pl>");
+      end if;
+      FieldOptions := Get_Options(About_Fields.all(1));
+      FieldOptions.Active := False;
+      Set_Options(About_Fields.all(1), FieldOptions);
+      About_Fields.all(2) := New_Field(1, 7, 2, 10, 0, 0);
+      FieldOptions := Get_Options(About_Fields.all(2));
+      FieldOptions.Edit := False;
+      Set_Buffer(About_Fields.all(2), 0, "[Close]");
+      Set_Options(About_Fields.all(2), FieldOptions);
+      About_Fields.all(3) := Null_Field;
+      DialogForm := New_Form(About_Fields);
+      Set_Current(DialogForm, About_Fields(2));
+      Set_Options(DialogForm, (others => False));
+      Scale(DialogForm, FormHeight, FormLength);
+      FormWindow :=
+        Create
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
+           ((Columns / 2) - (FormLength / 2)));
+      Box(FormWindow, Default_Character, Default_Character);
+      Set_Window(DialogForm, FormWindow);
+      Set_Sub_Window
+        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
+      Post(DialogForm);
+      Refresh;
+      Refresh(FormWindow);
+   end Show_Developers_Dialog;
+
    function About_View_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Positive := Get_Index(Current(DialogForm));
@@ -106,6 +143,11 @@ package body AboutDialog is
                   Delete(DialogForm);
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List;
+                  if FieldIndex = 6 then
+                     Show_Developers_Dialog;
+                  else
+                     Show_Developers_Dialog(False);
+                  end if;
                   return DEVELOPERS_VIEW;
                when 8 =>
                   Set_Cursor_Visibility(Visibility);
@@ -126,15 +168,18 @@ package body AboutDialog is
       return ABOUT_FORM;
    end About_View_Keys;
 
-   function Developers_Keys return UI_Locations is
+   function Developers_Keys(Key: Key_Code) return UI_Locations is
       Visibility: Cursor_Visibility := Invisible;
    begin
-      Set_Cursor_Visibility(Visibility);
-      -- Post(DialogForm, False);
-      -- Delete(DialogForm);
-      UILocation := DIRECTORY_VIEW;
-      Update_Directory_List;
-      return DIRECTORY_VIEW;
+      if Key = 10 then
+         Set_Cursor_Visibility(Visibility);
+         Post(DialogForm, False);
+         Delete(DialogForm);
+         UILocation := DIRECTORY_VIEW;
+         Update_Directory_List;
+         return DIRECTORY_VIEW;
+      end if;
+      return DEVELOPERS_VIEW;
    end Developers_Keys;
 
 end AboutDialog;
