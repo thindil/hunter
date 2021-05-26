@@ -13,30 +13,30 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Command_Line;
+with Ada.Strings;
+with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.OS_Lib;
 with Tcl; use Tcl;
-with Tcl.Ada; use Tcl.Ada;
+with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
-with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
-with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
-with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
-with Tcl.Tk.Ada.Widgets.TtkProgressBar; use Tcl.Tk.Ada.Widgets.TtkProgressBar;
+with Tcl.Tk.Ada.Widgets.Menu;
+with Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkLabel;
+with Tcl.Tk.Ada.Widgets.TtkPanedWindow;
+with Tcl.Tk.Ada.Widgets.TtkProgressBar;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
-with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
-with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Bookmarks; use Bookmarks;
-with Messages; use Messages;
-with Preferences; use Preferences;
+with Tcl.Tk.Ada.Wm;
+with Tcl.Tklib.Ada.Tooltip;
+with Bookmarks;
+with Messages;
+with Preferences;
 
 package body Utils.UI is
 
@@ -44,11 +44,15 @@ package body Utils.UI is
    -- FUNCTION
    -- Currrent index of item
    -- SOURCE
-   Progress_Index: Natural;
+   Progress_Index: Natural; --## rule line off REDUCEABLE_SCOPE
    -- ****
 
    function Find_Executable
      (Name: String; Display_Message: Boolean := True) return String is
+      use Ada.Command_Line;
+      use GNAT.OS_Lib;
+      use Messages;
+
       Executable_Path: GNAT.OS_Lib.String_Access;
    begin
       if Exists
@@ -72,6 +76,8 @@ package body Utils.UI is
    end Find_Executable;
 
    procedure Update_Progress_Bar(Amount: Natural := 0) is
+      use Tcl.Tk.Ada.Widgets.TtkProgressBar;
+
       Progress_Bar: constant Ttk_ProgressBar :=
         Get_Widget(pathName => ".mainframe.progressbar");
    begin
@@ -98,6 +104,11 @@ package body Utils.UI is
    procedure Set_Dialog
      (Dialog: Tk_Toplevel; Dialog_Title: String; Width: Width_Range;
       Height: Height_Range) is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+      use Tcl.Ada;
+      use Tcl.Tk.Ada.Wm;
+
       X: Width_Range;
       Y: Height_Range;
    begin
@@ -157,6 +168,15 @@ package body Utils.UI is
 
    procedure Toggle_Tool_Buttons
      (Action: Item_Actions; Finished: Boolean := False) is
+      use Ada.Strings.Unbounded;
+      use Tcl.Tk.Ada.Widgets.Menu;
+      use Tcl.Tk.Ada.Widgets.TtkFrame;
+      use Tcl.Tk.Ada.Widgets.TtkLabel;
+      use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
+      use Tcl.Tklib.Ada.Tooltip;
+      use Bookmarks;
+      use Preferences;
+
       Toolbar: Ttk_Frame := Get_Widget(pathName => ".mainframe.toolbars");
       Paned: constant Ttk_PanedWindow :=
         Get_Widget(pathName => ".mainframe.paned");
