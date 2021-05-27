@@ -184,10 +184,10 @@ package body AboutDialog is
       return TCL_OK;
    end Open_Link_Command;
 
-   procedure CreateAboutUI is
+   procedure Create_About_Ui is
    begin
       Add_Command("ShowAbout", Show_About_Command'Access);
       Add_Command("OpenLink", Open_Link_Command'Access);
-   end CreateAboutUI;
+   end Create_About_Ui;
 
 end AboutDialog;

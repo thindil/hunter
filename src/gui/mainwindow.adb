@@ -306,7 +306,7 @@ package body MainWindow is
       CreateCopyUI;
       CreateMoveUI;
       CreateTrash;
-      CreateAboutUI;
+      Create_About_Ui;
       LoadModules;
       SetToolbars;
       Add(Paned => Paned, SubWindow => Directory_Frame);
