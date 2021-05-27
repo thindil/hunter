@@ -13,6 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Containers; use Ada.Containers;
+with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
@@ -22,6 +24,7 @@ with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with ActivateItems.UI; use ActivateItems.UI;
+with Inotify; use Inotify;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
@@ -66,9 +69,17 @@ package body ActivateItems is
             ShowMessage(Mc(Interp, "{You can't enter this directory.}"));
             return TCL_OK;
          end if;
+         Temporary_Stop := True;
          Current_Directory := Current_Selected;
          if Settings.Show_Preview then
             ItemsList := SecondItemsList;
+            if SecondItemsList.Length > 0 then
+               if Ada.Directories.Containing_Directory
+                   (To_String(SecondItemsList(1).Path)) /=
+                 Current_Directory then
+                  LoadDirectory(To_String(Current_Directory));
+               end if;
+            end if;
          else
             LoadDirectory(To_String(Current_Directory));
          end if;
