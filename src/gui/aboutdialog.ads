@@ -20,11 +20,11 @@
 package AboutDialog is
 -- ****
 
-   -- ****f* AboutDialog/AboutDialog.CreateAboutUI
+   -- ****f* AboutDialog/AboutDialog.Create_About_Ui
    -- FUNCTION
    -- Create about UI
    -- SOURCE
-   procedure CreateAboutUI;
+   procedure Create_About_Ui;
    -- ****
 
 end AboutDialog;
