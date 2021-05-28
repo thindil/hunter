@@ -161,7 +161,12 @@ package body RefreshData is
          RefreshList := False;
       end if;
       <<Clear_List>>
-      Events_List.Clear;
+      begin
+         Events_List.Clear;
+      exception
+         when others =>
+            null;
+      end;
       Timer_Token :=
         Tcl_CreateTimerHandler
           (int(Settings.Auto_Refresh_Interval) * 1_000, CheckItems'Access,
