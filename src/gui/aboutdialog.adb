@@ -52,33 +52,33 @@ package body AboutDialog is
    -- ShowAbout
    -- SOURCE
    function Show_About_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_About_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      AboutDialog: constant Tk_Toplevel :=
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      About_Dialog: constant Tk_Toplevel :=
         Create(".aboutdialog", "-class Dialog");
-      CloseButton: constant Ttk_Button :=
+      Close_Button: constant Ttk_Button :=
         Create
-          (AboutDialog & ".closebutton",
+          (About_Dialog & ".closebutton",
            "-text {" & Mc(Interp, "Close") & "} -command {CloseDialog " &
-           AboutDialog & "} -underline 0");
-      MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
+           About_Dialog & "} -underline 0");
+      Main_Window: constant Tk_Toplevel := Get_Main_Window(Get_Context);
       Label: Ttk_Label;
       Frame: Ttk_Frame;
       Width: Width_Range;
       Height: Height_Range;
-      WebsiteButton: Ttk_Button;
+      Website_Button: Ttk_Button;
       Creditsbook: constant Ttk_Notebook := Create(".aboutdialog.credits");
       View: Ttk_Tree_View;
    begin
-      if Tcl.Tk.Ada.Busy.Status(MainWindow) = "0" then
-         Tcl.Tk.Ada.Busy.Busy(MainWindow);
+      if Tcl.Tk.Ada.Busy.Status(Main_Window) = "0" then
+         Tcl.Tk.Ada.Busy.Busy(Main_Window);
       end if;
       Label := Create(".aboutdialog.logo", "-image logo");
       Tcl.Tk.Ada.Grid.Grid(Label);
@@ -106,12 +106,12 @@ package body AboutDialog is
            "-text {" & Mc(Interp, "{Version:}") & " 1.6 (" &
            Mc(Interp, "{development}") & ")}");
       Tcl.Tk.Ada.Grid.Grid(Label);
-      WebsiteButton :=
+      Website_Button :=
         Create
           (Frame & ".website",
            "-text {" & Mc(Interp, "Website") &
            "} -command {OpenLink https://www.laeran.pl/repositories/hunter/} -style Toolbutton");
-      Tcl.Tk.Ada.Grid.Grid(WebsiteButton);
+      Tcl.Tk.Ada.Grid.Grid(Website_Button);
       Tcl.Tk.Ada.Grid.Grid(Frame, "-row 0 -column 1 -sticky nwe");
       Tcl.Tk.Ada.Grid.Grid(Creditsbook, "-columnspan 2 -sticky nwes");
       Frame := Create(Creditsbook & ".programmers");
@@ -133,9 +133,9 @@ package body AboutDialog is
       Add
         (Creditsbook, Widget_Image(Frame),
          "-text {" & Mc(Interp, "Translators") & "}");
-      Tcl.Tk.Ada.Grid.Grid(CloseButton, "-columnspan 2");
-      Bind(AboutDialog, "<Alt-c>", "{CloseDialog " & AboutDialog & "}");
-      Set_Dialog(AboutDialog, Mc(Interp, "{Hunter - About}"), Width, Height);
+      Tcl.Tk.Ada.Grid.Grid(Close_Button, "-columnspan 2");
+      Bind(About_Dialog, "<Alt-c>", "{CloseDialog " & About_Dialog & "}");
+      Set_Dialog(About_Dialog, Mc(Interp, "{Hunter - About}"), Width, Height);
       return TCL_OK;
    end Show_About_Command;
 
