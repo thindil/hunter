@@ -80,8 +80,8 @@ package body MainWindow is
                  (To_Unbounded_String("Quit"),
                   To_Unbounded_String("Bookmarks"),
                   To_Unbounded_String("View"), To_Unbounded_String("Actions"),
-                  To_Unbounded_String("About"),
-                  To_Unbounded_String("Selected"));
+                  To_Unbounded_String("Selected"),
+                  To_Unbounded_String("About"));
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 7);
             begin
@@ -540,11 +540,11 @@ package body MainWindow is
                   Draw_Menu(ACTIONS_MENU);
                   return ACTIONS_MENU;
                when 5 =>
-                  Draw_Menu(ABOUT_MENU);
-                  return ABOUT_MENU;
-               when 6 =>
                   Draw_Menu(SELECTED_MENU);
                   return SELECTED_MENU;
+               when 6 =>
+                  Draw_Menu(ABOUT_MENU);
+                  return ABOUT_MENU;
                when others =>
                   return MAIN_MENU;
             end case;
