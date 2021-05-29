@@ -38,6 +38,7 @@ with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Modules; use Modules;
 with Preferences; use Preferences;
+with Preferences.UI; use Preferences.UI;
 with ProgramsMenu; use ProgramsMenu;
 with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
@@ -251,6 +252,8 @@ begin
                UILocation := About_View_Keys(Key);
             when DEVELOPERS_VIEW =>
                UILocation := Developers_Keys(Key);
+            when OPTIONS_VIEW =>
+               UILocation := Preferences_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;

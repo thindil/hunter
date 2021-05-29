@@ -34,6 +34,7 @@ with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
+with Preferences.UI; use Preferences.UI;
 with RefreshData; use RefreshData;
 with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
@@ -76,22 +77,23 @@ package body MainWindow is
             end;
          when others =>
             declare
-               Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
+               Main_Menu_Array: constant array(1 .. 7) of Unbounded_String :=
                  (To_Unbounded_String("Quit"),
                   To_Unbounded_String("Bookmarks"),
                   To_Unbounded_String("View"), To_Unbounded_String("Actions"),
                   To_Unbounded_String("Selected"),
-                  To_Unbounded_String("About"));
+                  To_Unbounded_String("About"),
+                  To_Unbounded_String("Options"));
                Menu_Items: constant Item_Array_Access :=
-                 new Item_Array(1 .. 7);
+                 new Item_Array(1 .. 8);
             begin
                Create_Program_Menu_Loop :
                for I in Main_Menu_Array'Range loop
                   Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
                end loop Create_Program_Menu_Loop;
-               Menu_Items.all(7) := Null_Item;
+               Menu_Items.all(8) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
-               Set_Format(ProgramMenu, 1, 6);
+               Set_Format(ProgramMenu, 1, 7);
                Set_Mark(ProgramMenu, "");
                MenuWindow := Create(1, Columns, 0, 0);
                Set_Window(ProgramMenu, MenuWindow);
@@ -545,6 +547,9 @@ package body MainWindow is
                when 6 =>
                   Draw_Menu(ABOUT_MENU);
                   return ABOUT_MENU;
+               when 7 =>
+                  Show_Options;
+                  return OPTIONS_VIEW;
                when others =>
                   return MAIN_MENU;
             end case;
