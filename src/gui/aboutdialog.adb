@@ -60,9 +60,7 @@ package body AboutDialog is
    function Show_About_Command
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(Client_Data);
-      pragma Unreferenced(Argc);
-      pragma Unreferenced(Argv);
+      pragma Unreferenced(Client_Data, Argc, Argv);
       About_Dialog: constant Tk_Toplevel :=
         Create(".aboutdialog", "-class Dialog");
       Close_Button: constant Ttk_Button :=
