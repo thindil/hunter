@@ -62,33 +62,41 @@ package body AboutDialog is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
       About_Dialog: constant Tk_Toplevel :=
-        Create(".aboutdialog", "-class Dialog");
+        Create(pathName => ".aboutdialog", options => "-class Dialog");
       Close_Button: constant Ttk_Button :=
         Create
-          (About_Dialog & ".closebutton",
-           "-text {" & Mc(Interp, "Close") & "} -command {CloseDialog " &
-           About_Dialog & "} -underline 0");
-      Main_Window: constant Tk_Toplevel := Get_Main_Window(Get_Context);
+          (pathName => About_Dialog & ".closebutton",
+           options =>
+             "-text {" & Mc(Interp => Interp, Src_String => "Close") &
+             "} -command {CloseDialog " & About_Dialog & "} -underline 0");
+      Main_Window: constant Tk_Toplevel :=
+        Get_Main_Window(Interp => Get_Context);
       Label: Ttk_Label;
       Frame: Ttk_Frame;
       Width: Width_Range;
       Height: Height_Range;
       Website_Button: Ttk_Button;
-      Creditsbook: constant Ttk_Notebook := Create(".aboutdialog.credits");
+      Creditsbook: constant Ttk_Notebook :=
+        Create(pathName => ".aboutdialog.credits");
       View: Ttk_Tree_View;
    begin
-      if Tcl.Tk.Ada.Busy.Status(Main_Window) = "0" then
-         Tcl.Tk.Ada.Busy.Busy(Main_Window);
+      if Tcl.Tk.Ada.Busy.Status(Window => Main_Window) = "0" then
+         Tcl.Tk.Ada.Busy.Busy(Window => Main_Window);
       end if;
-      Label := Create(".aboutdialog.logo", "-image logo");
-      Tcl.Tk.Ada.Grid.Grid(Label);
-      Width := Width_Range'Value(Winfo_Get(Label, "reqwidth"));
-      Frame := Create(".aboutdialog.general");
+      Label :=
+        Create(pathName => ".aboutdialog.logo", options => "-image logo");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+      Width :=
+        Width_Range'Value(Winfo_Get(Widgt => Label, Info => "reqwidth"));
+      Frame := Create(pathName => ".aboutdialog.general");
       Label :=
         Create
-          (Frame & ".info",
-           "-text {" &
-           Mc(Interp, "{Hunter - Graphical file manager for Linux}") & "}");
+          (pathName => Frame & ".info",
+           options =>
+             "-text {" &
+             Mc(Interp => Interp,
+                Src_String => "{Hunter - Graphical file manager for Linux}") &
+             "}");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Width := Width + Width_Range'Value(Winfo_Get(Label, "reqwidth"));
       Height := Height_Range'Value(Winfo_Get(Label, "reqheight")) * 17;
