@@ -261,4 +261,11 @@ package MainWindow is
    function About_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* MainWindowTUI/MainWindowTUI.Show_Main_Window
+   -- FUNCTION
+   -- Show the main window of the program to the user
+   -- SOURCE
+   procedure Show_Main_Window;
+   -- ****
+
 end MainWindow;

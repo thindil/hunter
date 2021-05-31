@@ -112,17 +112,6 @@ package body MainWindow is
       ActivateItems.AddCommands;
       CreateItems.AddCommands;
       RenameItems.AddCommands;
-      MenuWindow := Create(1, Columns, 0, 0);
-      CreateProgramMenu;
-      PathButtons := Create(1, Columns / 2, 1, 0);
-      ListWindow :=
-        (if Settings.Show_Preview then Create(Lines - 2, Columns / 2, 2, 0)
-         else Create(Lines - 2, Columns, 2, 0));
-      Box(ListWindow, Default_Character, Default_Character);
-      Refresh;
-      Refresh(MenuWindow);
-      Refresh(ListWindow);
-      CreateShowItemsUI;
       Create_Bookmarks_List;
       if Ada.Directories.Exists(Directory) then
          MainWindow.Current_Directory := To_Unbounded_String(Directory);
@@ -135,7 +124,7 @@ package body MainWindow is
       end if;
       LoadDirectory(To_String(MainWindow.Current_Directory));
       StartTimer(To_String(MainWindow.Current_Directory));
-      Update_Directory_List(True);
+      Show_Main_Window;
    end CreateMainWindow;
 
    procedure Update_Directory_List
@@ -824,5 +813,21 @@ package body MainWindow is
       end if;
       return ABOUT_MENU;
    end About_Keys;
+
+   procedure Show_Main_Window is
+   begin
+      MenuWindow := Create(1, Columns, 0, 0);
+      CreateProgramMenu;
+      PathButtons := Create(1, Columns / 2, 1, 0);
+      ListWindow :=
+        (if Settings.Show_Preview then Create(Lines - 2, Columns / 2, 2, 0)
+         else Create(Lines - 2, Columns, 2, 0));
+      Box(ListWindow, Default_Character, Default_Character);
+      Refresh;
+      Refresh(MenuWindow);
+      Refresh(ListWindow);
+      CreateShowItemsUI;
+      Update_Directory_List(True);
+   end Show_Main_Window;
 
 end MainWindow;
