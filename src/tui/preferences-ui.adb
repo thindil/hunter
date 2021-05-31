@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
+with Inotify; use Inotify;
 
 package body Preferences.UI is
 
@@ -27,6 +28,7 @@ package body Preferences.UI is
          To_Unbounded_String("Close"));
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 6);
    begin
+      Temporary_Stop := True;
       Clear;
       Create_Program_Menu_Loop :
       for I in Main_Menu_Array'Range loop
@@ -41,12 +43,37 @@ package body Preferences.UI is
       Set_Sub_Window
         (OptionsMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
       Post(OptionsMenu);
+      Refresh;
       Refresh(MenuWindow);
    end Show_Options;
 
    function Preferences_Keys(Key: Key_Code) return UI_Locations is
-      pragma Unreferenced(Key);
+      Result: Menus.Driver_Result := Unknown_Request;
+      CurrentIndex: constant Positive := Get_Index(Current(OptionsMenu));
    begin
+      case Key is
+         when KEY_LEFT =>
+            Result := Driver(OptionsMenu, M_Previous_Item);
+         when KEY_RIGHT =>
+            Result := Driver(OptionsMenu, M_Next_Item);
+         when Key_Home =>
+            Result := Driver(OptionsMenu, M_First_Item);
+         when Key_End =>
+            Result := Driver(OptionsMenu, M_Last_Item);
+         when 10 =>
+            if CurrentIndex = 5 then
+               Temporary_Stop := False;
+               Clear;
+               UILocation := DIRECTORY_VIEW;
+               Show_Main_Window;
+               return DIRECTORY_VIEW;
+            end if;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(MenuWindow);
+      end if;
       return OPTIONS_VIEW;
    end Preferences_Keys;
 
