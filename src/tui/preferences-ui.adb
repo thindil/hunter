@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Inotify; use Inotify;
 
@@ -20,6 +21,57 @@ package body Preferences.UI is
 
    OptionsMenu: Menu;
    MenuWindow: Window;
+   OptionsWindow: Window;
+   DialogForm: Forms.Form;
+
+   procedure Show_Options_Tab(Tab: Positive) is
+      FormHeight: Line_Position;
+      FormLength: Column_Position;
+      Visibility: Cursor_Visibility := Normal;
+      FieldOptions: Field_Option_Set;
+   begin
+      Clear(OptionsWindow);
+      Set_Cursor_Visibility(Visibility);
+      case Tab is
+         when 1 =>
+            declare
+               Options_Fields: constant Field_Array_Access :=
+                 new Field_Array(1 .. 4);
+            begin
+               Options_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
+               Set_Buffer(Options_Fields.all(1), 0, "Directory Listing");
+               FieldOptions := Get_Options(Options_Fields.all(1));
+               Set_Options(Options_Fields.all(1), FieldOptions);
+               Options_Fields.all(2) := New_Field(1, 36, 1, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(2), 0,
+                  (if Settings.Show_Hidden then "X " else " ") &
+                  "Show hidden files");
+               FieldOptions := Get_Options(Options_Fields.all(2));
+               Set_Options(Options_Fields.all(2), FieldOptions);
+               Options_Fields.all(3) := New_Field(1, 36, 2, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(3), 0,
+                  (if Settings.Show_Last_Modified then "X " else " ") &
+                  "Show modification time");
+               FieldOptions := Get_Options(Options_Fields.all(3));
+               Set_Options(Options_Fields.all(3), FieldOptions);
+               Options_Fields.all(4) := Null_Field;
+               DialogForm := New_Form(Options_Fields);
+               Set_Current(DialogForm, Options_Fields(2));
+            end;
+         when others =>
+            null;
+      end case;
+      Set_Options(DialogForm, (others => False));
+      Scale(DialogForm, FormHeight, FormLength);
+      Set_Window(DialogForm, OptionsWindow);
+      Set_Sub_Window
+        (DialogForm,
+         Derived_Window(OptionsWindow, FormHeight, FormLength, 1, 1));
+      Post(DialogForm);
+      Refresh(OptionsWindow);
+   end Show_Options_Tab;
 
    procedure Show_Options is
       Main_Menu_Array: constant array(1 .. 5) of Unbounded_String :=
@@ -45,6 +97,8 @@ package body Preferences.UI is
       Post(OptionsMenu);
       Refresh;
       Refresh(MenuWindow);
+      OptionsWindow := Create(Lines - 1, Columns, 1, 0);
+      Show_Options_Tab(1);
    end Show_Options;
 
    function Preferences_Keys(Key: Key_Code) return UI_Locations is
@@ -67,6 +121,8 @@ package body Preferences.UI is
                UILocation := DIRECTORY_VIEW;
                Show_Main_Window;
                return DIRECTORY_VIEW;
+            else
+               Show_Options_Tab(CurrentIndex);
             end if;
          when others =>
             null;
