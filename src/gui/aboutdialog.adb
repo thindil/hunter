@@ -97,23 +97,33 @@ package body AboutDialog is
              Mc(Interp => Interp,
                 Src_String => "{Hunter - Graphical file manager for Linux}") &
              "}");
-      Tcl.Tk.Ada.Grid.Grid(Label);
-      Width := Width + Width_Range'Value(Winfo_Get(Label, "reqwidth"));
-      Height := Height_Range'Value(Winfo_Get(Label, "reqheight")) * 17;
-      Label :=
-        Create(Frame & ".copyright", "-text {© Bartek Jasicki 2019-2021}");
-      Tcl.Tk.Ada.Grid.Grid(Label);
-      Label :=
-        Create
-          (Frame & ".license",
-           "-text {" & Mc(Interp, "{License:}") & " GNU GPLv3}");
-      Tcl.Tk.Ada.Grid.Grid(Label);
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+      Width :=
+        Width +
+        Width_Range'Value(Winfo_Get(Widgt => Label, Info => "reqwidth"));
+      Height :=
+        Height_Range'Value(Winfo_Get(Widgt => Label, Info => "reqheight")) *
+        17;
       Label :=
         Create
-          (Frame & ".version",
-           "-text {" & Mc(Interp, "{Version:}") & " 1.6 (" &
-           Mc(Interp, "{development}") & ")}");
-      Tcl.Tk.Ada.Grid.Grid(Label);
+          (pathName => Frame & ".copyright",
+           options => "-text {© Bartek Jasicki 2019-2021}");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+      Label :=
+        Create
+          (pathName => Frame & ".license",
+           options =>
+             "-text {" & Mc(Interp => Interp, Src_String => "{License:}") &
+             " GNU GPLv3}");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+      Label :=
+        Create
+          (pathName => Frame & ".version",
+           options =>
+             "-text {" & Mc(Interp => Interp, Src_String => "{Version:}") &
+             " 1.6 (" & Mc(Interp => Interp, Src_String => "{development}") &
+             ")}");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       Website_Button :=
         Create
           (Frame & ".website",
