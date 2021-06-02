@@ -36,7 +36,7 @@ package body Preferences.UI is
          when 1 =>
             declare
                Options_Fields: constant Field_Array_Access :=
-                 new Field_Array(1 .. 4);
+                 new Field_Array(1 .. 8);
             begin
                Options_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
                Set_Buffer(Options_Fields.all(1), 0, "Directory Listing");
@@ -45,18 +45,44 @@ package body Preferences.UI is
                Options_Fields.all(2) := New_Field(1, 36, 1, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(2), 0,
-                  (if Settings.Show_Hidden then "X " else " ") &
-                  "Show hidden files");
+                  (if Settings.Show_Hidden then "Show " else "Don't show ") &
+                  "hidden files");
                FieldOptions := Get_Options(Options_Fields.all(2));
                Set_Options(Options_Fields.all(2), FieldOptions);
                Options_Fields.all(3) := New_Field(1, 36, 2, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(3), 0,
-                  (if Settings.Show_Last_Modified then "X " else " ") &
-                  "Show modification time");
+                  (if Settings.Show_Last_Modified then "Show "
+                   else "Don't show ") &
+                  "modification time");
                FieldOptions := Get_Options(Options_Fields.all(3));
                Set_Options(Options_Fields.all(3), FieldOptions);
-               Options_Fields.all(4) := Null_Field;
+               Options_Fields.all(4) := New_Field(1, 36, 3, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(4), 0,
+                  "Auto refresh every" &
+                  Natural'Image(Settings.Auto_Refresh_Interval) & " seconds");
+               FieldOptions := Get_Options(Options_Fields.all(4));
+               Set_Options(Options_Fields.all(4), FieldOptions);
+               Options_Fields.all(5) := New_Field(1, 18, 4, 0, 0, 0);
+               Set_Buffer(Options_Fields.all(5), 0, "Preview");
+               FieldOptions := Get_Options(Options_Fields.all(5));
+               Set_Options(Options_Fields.all(5), FieldOptions);
+               Options_Fields.all(6) := New_Field(1, 36, 5, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(6), 0,
+                  (if Settings.Show_Preview then "Show " else "Don't show ") &
+                  "preview");
+               FieldOptions := Get_Options(Options_Fields.all(6));
+               Set_Options(Options_Fields.all(6), FieldOptions);
+               Options_Fields.all(7) := New_Field(1, 36, 6, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(7), 0,
+                  (if Settings.Color_Text then "Enable " else "Disable ") &
+                  "syntax highlightning");
+               FieldOptions := Get_Options(Options_Fields.all(7));
+               Set_Options(Options_Fields.all(7), FieldOptions);
+               Options_Fields.all(8) := Null_Field;
                DialogForm := New_Form(Options_Fields);
                Set_Current(DialogForm, Options_Fields(2));
             end;
