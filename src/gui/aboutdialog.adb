@@ -126,21 +126,32 @@ package body AboutDialog is
       Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       Website_Button :=
         Create
-          (Frame & ".website",
-           "-text {" & Mc(Interp, "Website") &
-           "} -command {OpenLink https://www.laeran.pl/repositories/hunter/} -style Toolbutton");
-      Tcl.Tk.Ada.Grid.Grid(Website_Button);
-      Tcl.Tk.Ada.Grid.Grid(Frame, "-row 0 -column 1 -sticky nwe");
-      Tcl.Tk.Ada.Grid.Grid(Creditsbook, "-columnspan 2 -sticky nwes");
-      Frame := Create(Creditsbook & ".programmers");
-      View := Create(Frame & ".view", "-show tree -selectmode none -height 5");
+          (pathName => Frame & ".website",
+           options =>
+             "-text {" & Mc(Interp => Interp, Src_String => "Website") &
+             "} -command {OpenLink https://www.laeran.pl/repositories/hunter/} -style Toolbutton");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Website_Button);
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Frame, Options => "-row 0 -column 1 -sticky nwe");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Creditsbook, Options => "-columnspan 2 -sticky nwes");
+      Frame := Create(pathName => Creditsbook & ".programmers");
+      View :=
+        Create
+          (pathName => Frame & ".view",
+           options => "-show tree -selectmode none -height 5");
       Column
-        (View, "#0", "-stretch true -width" & Width_Range'Image(Width - 50));
-      Insert(View, "{} end -text {Bartek Jasicki <thindil@laeran.pl>}");
-      Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
+        (TreeViewWidget => View, Col => "#0",
+         Options => "-stretch true -width" & Width_Range'Image(Width - 50));
+      Insert
+        (TreeViewWidget => View,
+         Options => "{} end -text {Bartek Jasicki <thindil@laeran.pl>}");
+      Tcl.Tk.Ada.Grid.Grid(Slave => View, Options => "-sticky nwes");
       Add
-        (Creditsbook, Widget_Image(Frame),
-         "-text {" & Mc(Interp, "Programmers") & "}");
+        (Notebook => Creditsbook, WindowName => Widget_Image(Win => Frame),
+         Options =>
+           "-text {" & Mc(Interp => Interp, Src_String => "Programmers") &
+           "}");
       Frame := Create(Creditsbook & ".translators");
       View := Create(Frame & ".view", "-show tree -selectmode none -height 5");
       Column
