@@ -152,19 +152,31 @@ package body AboutDialog is
          Options =>
            "-text {" & Mc(Interp => Interp, Src_String => "Programmers") &
            "}");
-      Frame := Create(Creditsbook & ".translators");
-      View := Create(Frame & ".view", "-show tree -selectmode none -height 5");
+      Frame := Create(pathName => Creditsbook & ".translators");
+      View :=
+        Create
+          (pathName => Frame & ".view",
+           options => "-show tree -selectmode none -height 5");
       Column
-        (View, "#0", "-stretch true -width" & Width_Range'Image(Width - 50));
+        (TreeViewWidget => View, Col => "#0",
+         Options => "-stretch true -width" & Width_Range'Image(Width - 50));
       Insert
-        (View, "{} end -text {Polski - Bartek Jasicki <thindil@laeran.pl>}");
-      Tcl.Tk.Ada.Grid.Grid(View, "-sticky nwes");
+        (TreeViewWidget => View,
+         Options =>
+           "{} end -text {Polski - Bartek Jasicki <thindil@laeran.pl>}");
+      Tcl.Tk.Ada.Grid.Grid(Slave => View, Options => "-sticky nwes");
       Add
-        (Creditsbook, Widget_Image(Frame),
-         "-text {" & Mc(Interp, "Translators") & "}");
-      Tcl.Tk.Ada.Grid.Grid(Close_Button, "-columnspan 2");
-      Bind(About_Dialog, "<Alt-c>", "{CloseDialog " & About_Dialog & "}");
-      Set_Dialog(About_Dialog, Mc(Interp, "{Hunter - About}"), Width, Height);
+        (Notebook => Creditsbook, WindowName => Widget_Image(Win => Frame),
+         Options => "-text {" & Mc(Interp, "Translators") & "}");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Close_Button, Options => "-columnspan 2");
+      Bind
+        (Widgt => About_Dialog, Sequence => "<Alt-c>",
+         Script => "{CloseDialog " & About_Dialog & "}");
+      Set_Dialog
+        (Dialog => About_Dialog,
+         Dialog_Title =>
+           Mc(Interp => Interp, Src_String => "{Hunter - About}"),
+         Width => Width, Height => Height);
       return TCL_OK;
    end Show_About_Command;
 
