@@ -36,7 +36,7 @@ package body Preferences.UI is
          when 1 =>
             declare
                Options_Fields: constant Field_Array_Access :=
-                 new Field_Array(1 .. 8);
+                 new Field_Array(1 .. 13);
             begin
                Options_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
                Set_Buffer(Options_Fields.all(1), 0, "Directory Listing");
@@ -82,7 +82,34 @@ package body Preferences.UI is
                   "syntax highlightning");
                FieldOptions := Get_Options(Options_Fields.all(7));
                Set_Options(Options_Fields.all(7), FieldOptions);
-               Options_Fields.all(8) := Null_Field;
+               Options_Fields.all(8) := New_Field(1, 36, 7, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(8), 0, To_String(Settings.Color_Theme));
+               FieldOptions := Get_Options(Options_Fields.all(8));
+               Set_Options(Options_Fields.all(8), FieldOptions);
+               Options_Fields.all(9) := New_Field(1, 18, 8, 0, 0, 0);
+               Set_Buffer(Options_Fields.all(9), 0, "Interface");
+               FieldOptions := Get_Options(Options_Fields.all(9));
+               Set_Options(Options_Fields.all(9), FieldOptions);
+               Options_Fields.all(10) := New_Field(1, 36, 9, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(10), 0,
+                  (if Settings.Stay_In_Old then "Stay in source directory"
+                   else "Go to destination"));
+               FieldOptions := Get_Options(Options_Fields.all(10));
+               Set_Options(Options_Fields.all(10), FieldOptions);
+               Options_Fields.all(11) := New_Field(1, 38, 10, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(11), 0,
+                  (if Settings.Show_Preview then "Show " else "Don't show ") &
+                  "information about finished action");
+               FieldOptions := Get_Options(Options_Fields.all(11));
+               Set_Options(Options_Fields.all(11), FieldOptions);
+               Options_Fields.all(12) := New_Field(1, 18, 11, 0, 0, 0);
+               Set_Buffer(Options_Fields.all(12), 0, "Deleting");
+               FieldOptions := Get_Options(Options_Fields.all(12));
+               Set_Options(Options_Fields.all(12), FieldOptions);
+               Options_Fields.all(13) := Null_Field;
                DialogForm := New_Form(Options_Fields);
                Set_Current(DialogForm, Options_Fields(2));
             end;
