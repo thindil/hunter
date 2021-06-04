@@ -167,7 +167,7 @@ package body AboutDialog is
       Tcl.Tk.Ada.Grid.Grid(Slave => View, Options => "-sticky nwes");
       Add
         (Notebook => Creditsbook, WindowName => Widget_Image(Win => Frame),
-         Options => "-text {" & Mc(Interp, "Translators") & "}");
+         Options => "-text {" & Mc(Interp => Interp, Src_String => "Translators") & "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Close_Button, Options => "-columnspan 2");
       Bind
         (Widgt => About_Dialog, Sequence => "<Alt-c>",
@@ -184,10 +184,10 @@ package body AboutDialog is
    -- FUNCTION
    -- Open the selected link in the default web browser
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -195,15 +195,15 @@ package body AboutDialog is
    -- URL is the full URL (with http(s)://) to open
    -- SOURCE
    function Open_Link_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Open_Link_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
+      pragma Unreferenced(Client_Data, Argc);
       OsName: constant String := Tcl_GetVar(Interp, "tcl_platform(os)");
       Command: Unbounded_String;
       ProcessId: Process_Id;
