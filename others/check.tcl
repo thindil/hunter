@@ -8,19 +8,20 @@ if {![file exists hunter.gpr]} {
 }
 
 set rootdir [pwd]
+set logfile "[file join $rootdir adacontrol.log]"
 
 exec gprclean -P hunter.gpr >@stdout
-file delete [file join $rootdir adacontrol.log]
+file delete $logfile
 cd [file join obj]
 if {$argc == 0} {
    set adaoptions "-r hunter-tcl-cargv-chelper-unicode-sax-dom-input_sources"
 } else {
    set adaoptions "[file join $rootdir src [lindex $argv 0]]"
 }
-if {[catch {exec adactl -f [file join $rootdir others rules.aru] -p [file join $rootdir hunter.gpr] -o [file join $rootdir adacontrol.log] -w $adaoptions} results options]} {
-   if {[file size [file join $rootdir adacontrol.log]] > 1} {
+if {[catch {exec adactl -f [file join $rootdir others rules.aru] -p [file join $rootdir hunter.gpr] -o $logfile -w $adaoptions} results options]} {
+   if {[file size $logfile] > 1} {
       return -options $options -level 0 $results
    } else {
-      file delete [file join $rootdir adacontrol.log]
+      file delete $logfile
    }
 }
