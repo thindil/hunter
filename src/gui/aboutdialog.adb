@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
@@ -167,7 +166,9 @@ package body AboutDialog is
       Tcl.Tk.Ada.Grid.Grid(Slave => View, Options => "-sticky nwes");
       Add
         (Notebook => Creditsbook, WindowName => Widget_Image(Win => Frame),
-         Options => "-text {" & Mc(Interp => Interp, Src_String => "Translators") & "}");
+         Options =>
+           "-text {" & Mc(Interp => Interp, Src_String => "Translators") &
+           "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Close_Button, Options => "-columnspan 2");
       Bind
         (Widgt => About_Dialog, Sequence => "<Alt-c>",
@@ -204,22 +205,17 @@ package body AboutDialog is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
-      OsName: constant String := Tcl_GetVar(Interp, "tcl_platform(os)");
-      Command: Unbounded_String;
-      ProcessId: Process_Id;
+      Os_Name: constant String := Tcl_GetVar(Interp, "tcl_platform(os)");
+      Command: constant String :=
+        (if Os_Name = "Windows" then Locate_Exec_On_Path("start").all
+         elsif Os_Name = "Darwin" then Locate_Exec_On_Path("open").all
+         else Locate_Exec_On_Path("xdg-open").all);
+      Pid: Process_Id;
    begin
-      if OsName = "Windows" then
-         Command := To_Unbounded_String(Locate_Exec_On_Path("start").all);
-      elsif OsName = "Linux" then
-         Command := To_Unbounded_String(Locate_Exec_On_Path("xdg-open").all);
-      elsif OsName = "Darwin" then
-         Command := To_Unbounded_String(Locate_Exec_On_Path("open").all);
-      end if;
-      ProcessId :=
+      Pid :=
         Non_Blocking_Spawn
-          (To_String(Command),
-           Argument_String_To_List(CArgv.Arg(Argv, 1)).all);
-      if ProcessId = Invalid_Pid then
+          (Command, Argument_String_To_List(CArgv.Arg(Argv, 1)).all);
+      if Pid = Invalid_Pid then
          return TCL_ERROR;
       end if;
       return TCL_OK;
