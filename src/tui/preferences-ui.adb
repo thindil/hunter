@@ -36,7 +36,7 @@ package body Preferences.UI is
          when 1 =>
             declare
                Options_Fields: constant Field_Array_Access :=
-                 new Field_Array(1 .. 13);
+                 new Field_Array(1 .. 17);
             begin
                Options_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
                Set_Buffer(Options_Fields.all(1), 0, "Directory Listing");
@@ -109,7 +109,34 @@ package body Preferences.UI is
                Set_Buffer(Options_Fields.all(12), 0, "Deleting");
                FieldOptions := Get_Options(Options_Fields.all(12));
                Set_Options(Options_Fields.all(12), FieldOptions);
-               Options_Fields.all(13) := Null_Field;
+               Options_Fields.all(13) := New_Field(1, 38, 12, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(13), 0,
+                  (if Settings.Delete_Files then "Delete files"
+                   else "Move files to Trash"));
+               FieldOptions := Get_Options(Options_Fields.all(13));
+               Set_Options(Options_Fields.all(13), FieldOptions);
+               Options_Fields.all(14) := New_Field(1, 38, 13, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(14), 0,
+                  (if Settings.Clear_Trash_On_Exit then "Clear "
+                   else "Don't clear ") &
+                  "Trash on exit");
+               FieldOptions := Get_Options(Options_Fields.all(14));
+               Set_Options(Options_Fields.all(14), FieldOptions);
+               Options_Fields.all(15) := New_Field(1, 18, 14, 0, 0, 0);
+               Set_Buffer(Options_Fields.all(15), 0, "Copying or moving");
+               FieldOptions := Get_Options(Options_Fields.all(15));
+               Set_Options(Options_Fields.all(15), FieldOptions);
+               Options_Fields.all(16) := New_Field(1, 38, 15, 2, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(16), 0,
+                  (if Settings.Overwrite_On_Exist then "Overwrite "
+                   else "Don't overwrite ") &
+                  "existing");
+               FieldOptions := Get_Options(Options_Fields.all(16));
+               Set_Options(Options_Fields.all(16), FieldOptions);
+               Options_Fields.all(17) := Null_Field;
                DialogForm := New_Form(Options_Fields);
                Set_Current(DialogForm, Options_Fields(2));
             end;
