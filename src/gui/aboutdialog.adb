@@ -205,16 +205,22 @@ package body AboutDialog is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
-      Os_Name: constant String := Tcl_GetVar(Interp, "tcl_platform(os)");
+      Os_Name: constant String :=
+        Tcl_GetVar(interp => Interp, varName => "tcl_platform(os)");
       Command: constant String :=
-        (if Os_Name = "Windows" then Locate_Exec_On_Path("start").all
-         elsif Os_Name = "Darwin" then Locate_Exec_On_Path("open").all
-         else Locate_Exec_On_Path("xdg-open").all);
+        (if Os_Name = "Windows" then
+           Locate_Exec_On_Path(Exec_Name => "start").all
+         elsif Os_Name = "Darwin" then
+           Locate_Exec_On_Path(Exec_Name => "open").all
+         else Locate_Exec_On_Path(Exec_Name => "xdg-open").all);
       Pid: Process_Id;
    begin
       Pid :=
         Non_Blocking_Spawn
-          (Command, Argument_String_To_List(CArgv.Arg(Argv, 1)).all);
+          (Program_Name => Command,
+           Args =>
+             Argument_String_To_List
+               (Arg_String => CArgv.Arg(Argv => Argv, N => 1)).all);
       if Pid = Invalid_Pid then
          return TCL_ERROR;
       end if;
@@ -223,8 +229,9 @@ package body AboutDialog is
 
    procedure Create_About_Ui is
    begin
-      Add_Command("ShowAbout", Show_About_Command'Access);
-      Add_Command("OpenLink", Open_Link_Command'Access);
+      Add_Command
+        (Name => "ShowAbout", Ada_Command => Show_About_Command'Access);
+      Add_Command(Name => "OpenLink", Ada_Command => Open_Link_Command'Access);
    end Create_About_Ui;
 
 end AboutDialog;
