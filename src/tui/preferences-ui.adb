@@ -181,19 +181,23 @@ package body Preferences.UI is
       Show_Options_Tab(1);
    end Show_Options;
 
-   function Preferences_Keys(Key: Key_Code) return UI_Locations is
+   function Select_Preferences_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(OptionsMenu));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_LEFT =>
+            Set_Cursor_Visibility(Visibility);
             Result := Driver(OptionsMenu, M_Previous_Item);
          when KEY_RIGHT =>
+            Set_Cursor_Visibility(Visibility);
             Result := Driver(OptionsMenu, M_Next_Item);
          when Key_Home =>
+            Set_Cursor_Visibility(Visibility);
             Result := Driver(OptionsMenu, M_First_Item);
          when Key_End =>
+            Set_Cursor_Visibility(Visibility);
             Result := Driver(OptionsMenu, M_Last_Item);
          when 10 =>
             if CurrentIndex = 5 then
@@ -213,6 +217,6 @@ package body Preferences.UI is
          Refresh(MenuWindow);
       end if;
       return OPTIONS_VIEW;
-   end Preferences_Keys;
+   end Select_Preferences_Keys;
 
 end Preferences.UI;

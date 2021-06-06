@@ -253,7 +253,7 @@ begin
             when DEVELOPERS_VIEW =>
                UILocation := Developers_Keys(Key);
             when OPTIONS_VIEW =>
-               UILocation := Preferences_Keys(Key);
+               UILocation := Select_Preferences_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;
