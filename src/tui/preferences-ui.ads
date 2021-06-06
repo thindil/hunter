@@ -30,15 +30,16 @@ package Preferences.UI is
    procedure Show_Options;
    -- ****
 
-   -- ****f* PreferencesUITUI/PreferencesUITUI.Preferences_Keys
+   -- ****f* PreferencesUITUI/PreferencesUITUI.Select_Preferences_Keys
    -- FUNCTION
-   -- Handles keys events when the preferences view is active element of UI
+   -- Handles keys events when the preferences view menu is active element of
+   -- UI
    -- PARAMETERS
    -- Key - Key pressed by the user
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Preferences_Keys(Key: Key_Code) return UI_Locations;
+   function Select_Preferences_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end Preferences.UI;
