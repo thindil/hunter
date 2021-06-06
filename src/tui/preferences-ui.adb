@@ -184,6 +184,7 @@ package body Preferences.UI is
    function Preferences_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(OptionsMenu));
+      Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_LEFT =>
@@ -196,6 +197,7 @@ package body Preferences.UI is
             Result := Driver(OptionsMenu, M_Last_Item);
          when 10 =>
             if CurrentIndex = 5 then
+               Set_Cursor_Visibility(Visibility);
                Temporary_Stop := False;
                Clear;
                UILocation := DIRECTORY_VIEW;
