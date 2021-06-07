@@ -183,6 +183,7 @@ package body Preferences.UI is
 
    function Select_Preferences_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
+      Result2: Forms.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(OptionsMenu));
       Visibility: Cursor_Visibility := Invisible;
    begin
@@ -199,6 +200,14 @@ package body Preferences.UI is
          when Key_End =>
             Set_Cursor_Visibility(Visibility);
             Result := Driver(OptionsMenu, M_Last_Item);
+         when KEY_UP =>
+            Visibility := Normal;
+            Set_Cursor_Visibility(Visibility);
+            Result2 := Driver(DialogForm, F_Previous_Field);
+         when KEY_DOWN =>
+            Visibility := Normal;
+            Set_Cursor_Visibility(Visibility);
+            Result2 := Driver(DialogForm, F_Next_Field);
          when 10 =>
             if CurrentIndex = 5 then
                Set_Cursor_Visibility(Visibility);
@@ -215,6 +224,9 @@ package body Preferences.UI is
       end case;
       if Result = Menu_Ok then
          Refresh(MenuWindow);
+      end if;
+      if Result2 = Form_Ok then
+         Refresh(OptionsWindow);
       end if;
       return OPTIONS_VIEW;
    end Select_Preferences_Keys;
