@@ -23,6 +23,7 @@ package body Preferences.UI is
    MenuWindow: Window;
    OptionsWindow: Window;
    DialogForm: Forms.Form;
+   Option_Selected: Boolean := True;
 
    procedure Show_Options_Tab(Tab: Positive) is
       FormHeight: Line_Position;
@@ -41,6 +42,8 @@ package body Preferences.UI is
                Options_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
                Set_Buffer(Options_Fields.all(1), 0, "Directory Listing");
                FieldOptions := Get_Options(Options_Fields.all(1));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
                Set_Options(Options_Fields.all(1), FieldOptions);
                Options_Fields.all(2) := New_Field(1, 36, 1, 2, 0, 0);
                Set_Buffer
@@ -48,6 +51,7 @@ package body Preferences.UI is
                   (if Settings.Show_Hidden then "Show " else "Don't show ") &
                   "hidden files");
                FieldOptions := Get_Options(Options_Fields.all(2));
+               FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(2), FieldOptions);
                Options_Fields.all(3) := New_Field(1, 36, 2, 2, 0, 0);
                Set_Buffer
@@ -56,6 +60,7 @@ package body Preferences.UI is
                    else "Don't show ") &
                   "modification time");
                FieldOptions := Get_Options(Options_Fields.all(3));
+               FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(3), FieldOptions);
                Options_Fields.all(4) := New_Field(1, 36, 3, 2, 0, 0);
                Set_Buffer
@@ -63,10 +68,13 @@ package body Preferences.UI is
                   "Auto refresh every" &
                   Natural'Image(Settings.Auto_Refresh_Interval) & " seconds");
                FieldOptions := Get_Options(Options_Fields.all(4));
+               FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(4), FieldOptions);
                Options_Fields.all(5) := New_Field(1, 18, 4, 0, 0, 0);
                Set_Buffer(Options_Fields.all(5), 0, "Preview");
                FieldOptions := Get_Options(Options_Fields.all(5));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
                Set_Options(Options_Fields.all(5), FieldOptions);
                Options_Fields.all(6) := New_Field(1, 36, 5, 2, 0, 0);
                Set_Buffer
@@ -74,6 +82,7 @@ package body Preferences.UI is
                   (if Settings.Show_Preview then "Show " else "Don't show ") &
                   "preview");
                FieldOptions := Get_Options(Options_Fields.all(6));
+               FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(6), FieldOptions);
                Options_Fields.all(7) := New_Field(1, 36, 6, 2, 0, 0);
                Set_Buffer
@@ -81,15 +90,19 @@ package body Preferences.UI is
                   (if Settings.Color_Text then "Enable " else "Disable ") &
                   "syntax highlightning");
                FieldOptions := Get_Options(Options_Fields.all(7));
+               FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(7), FieldOptions);
                Options_Fields.all(8) := New_Field(1, 36, 7, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(8), 0, To_String(Settings.Color_Theme));
                FieldOptions := Get_Options(Options_Fields.all(8));
+               FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(8), FieldOptions);
                Options_Fields.all(9) := New_Field(1, 18, 8, 0, 0, 0);
                Set_Buffer(Options_Fields.all(9), 0, "Interface");
                FieldOptions := Get_Options(Options_Fields.all(9));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
                Set_Options(Options_Fields.all(9), FieldOptions);
                Options_Fields.all(10) := New_Field(1, 36, 9, 2, 0, 0);
                Set_Buffer
@@ -97,6 +110,7 @@ package body Preferences.UI is
                   (if Settings.Stay_In_Old then "Stay in source directory"
                    else "Go to destination"));
                FieldOptions := Get_Options(Options_Fields.all(10));
+               FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(10), FieldOptions);
                Options_Fields.all(11) := New_Field(1, 38, 10, 2, 0, 0);
                Set_Buffer
@@ -108,6 +122,8 @@ package body Preferences.UI is
                Options_Fields.all(12) := New_Field(1, 18, 11, 0, 0, 0);
                Set_Buffer(Options_Fields.all(12), 0, "Deleting");
                FieldOptions := Get_Options(Options_Fields.all(12));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
                Set_Options(Options_Fields.all(12), FieldOptions);
                Options_Fields.all(13) := New_Field(1, 38, 12, 2, 0, 0);
                Set_Buffer
@@ -115,6 +131,7 @@ package body Preferences.UI is
                   (if Settings.Delete_Files then "Delete files"
                    else "Move files to Trash"));
                FieldOptions := Get_Options(Options_Fields.all(13));
+               FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(13), FieldOptions);
                Options_Fields.all(14) := New_Field(1, 38, 13, 2, 0, 0);
                Set_Buffer
@@ -127,6 +144,8 @@ package body Preferences.UI is
                Options_Fields.all(15) := New_Field(1, 18, 14, 0, 0, 0);
                Set_Buffer(Options_Fields.all(15), 0, "Copying or moving");
                FieldOptions := Get_Options(Options_Fields.all(15));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
                Set_Options(Options_Fields.all(15), FieldOptions);
                Options_Fields.all(16) := New_Field(1, 38, 15, 2, 0, 0);
                Set_Buffer
@@ -135,6 +154,7 @@ package body Preferences.UI is
                    else "Don't overwrite ") &
                   "existing");
                FieldOptions := Get_Options(Options_Fields.all(16));
+               FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(16), FieldOptions);
                Options_Fields.all(17) := Null_Field;
                DialogForm := New_Form(Options_Fields);
@@ -151,6 +171,7 @@ package body Preferences.UI is
          Derived_Window(OptionsWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       Refresh(OptionsWindow);
+      Option_Selected := True;
    end Show_Options_Tab;
 
    procedure Show_Options is
@@ -191,33 +212,43 @@ package body Preferences.UI is
          when KEY_LEFT =>
             Set_Cursor_Visibility(Visibility);
             Result := Driver(OptionsMenu, M_Previous_Item);
+            Option_Selected := False;
          when KEY_RIGHT =>
             Set_Cursor_Visibility(Visibility);
             Result := Driver(OptionsMenu, M_Next_Item);
+            Option_Selected := False;
          when Key_Home =>
+            Visibility := Normal;
             Set_Cursor_Visibility(Visibility);
-            Result := Driver(OptionsMenu, M_First_Item);
+            Result2 := Driver(DialogForm, F_First_Field);
+            Option_Selected := True;
          when Key_End =>
+            Visibility := Normal;
             Set_Cursor_Visibility(Visibility);
-            Result := Driver(OptionsMenu, M_Last_Item);
+            Result2 := Driver(DialogForm, F_Last_Field);
+            Option_Selected := True;
          when KEY_UP =>
             Visibility := Normal;
             Set_Cursor_Visibility(Visibility);
             Result2 := Driver(DialogForm, F_Previous_Field);
+            Option_Selected := True;
          when KEY_DOWN =>
             Visibility := Normal;
             Set_Cursor_Visibility(Visibility);
             Result2 := Driver(DialogForm, F_Next_Field);
+            Option_Selected := True;
          when 10 =>
-            if CurrentIndex = 5 then
-               Set_Cursor_Visibility(Visibility);
-               Temporary_Stop := False;
-               Clear;
-               UILocation := DIRECTORY_VIEW;
-               Show_Main_Window;
-               return DIRECTORY_VIEW;
-            else
-               Show_Options_Tab(CurrentIndex);
+            if not Option_Selected then
+               if CurrentIndex = 5 then
+                  Set_Cursor_Visibility(Visibility);
+                  Temporary_Stop := False;
+                  Clear;
+                  UILocation := DIRECTORY_VIEW;
+                  Show_Main_Window;
+                  return DIRECTORY_VIEW;
+               else
+                  Show_Options_Tab(CurrentIndex);
+               end if;
             end if;
          when others =>
             null;
