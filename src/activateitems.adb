@@ -181,11 +181,11 @@ package body ActivateItems is
       return TCL_OK;
    end Execute_Command;
 
-   procedure AddCommands is
+   procedure Add_Commands is
    begin
       Add_Command("ActivateItem", Activate_Item_Command'Access);
       Add_Command("Execute", Execute_Command'Access);
       CreateActivateUI;
-   end AddCommands;
+   end Add_Commands;
 
 end ActivateItems;

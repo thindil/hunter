@@ -298,7 +298,7 @@ package body MainWindow is
       CreateBookmarkMenu(CreateNew => True);
       CreateItemToolbar;
       CreateMessagesUI;
-      ActivateItems.AddCommands;
+      ActivateItems.Add_Commands;
       CreatePreferencesUI;
       CreateDeleteUI;
       CreateRenameUI;

@@ -109,7 +109,7 @@ package body MainWindow is
 
    procedure CreateMainWindow(Directory: String) is
    begin
-      ActivateItems.AddCommands;
+      ActivateItems.Add_Commands;
       CreateItems.AddCommands;
       RenameItems.AddCommands;
       Create_Bookmarks_List;
