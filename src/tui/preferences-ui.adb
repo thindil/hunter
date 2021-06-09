@@ -16,6 +16,7 @@
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Inotify; use Inotify;
+with Modules; use Modules;
 
 package body Preferences.UI is
 
@@ -202,10 +203,30 @@ package body Preferences.UI is
       Show_Options_Tab(1);
    end Show_Options;
 
+   procedure Set_Option(TabIndex, OptionIndex: Positive) is
+   begin
+      case TabIndex is
+         when 1 =>
+            case OptionIndex is
+               when 2 =>
+                  Settings.Show_Hidden := not Settings.Show_Hidden;
+               when 3 =>
+                  Settings.Show_Last_Modified :=
+                    not Settings.Show_Last_Modified;
+               when others =>
+                  null;
+            end case;
+         when others =>
+            null;
+      end case;
+      Show_Options_Tab(TabIndex);
+   end Set_Option;
+
    function Select_Preferences_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       Result2: Forms.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(OptionsMenu));
+      CurrentOption: constant Positive := Get_Index(Current(DialogForm));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
@@ -245,10 +266,15 @@ package body Preferences.UI is
                   Clear;
                   UILocation := DIRECTORY_VIEW;
                   Show_Main_Window;
+                  Execute_Modules
+                    (On_Enter,
+                     "{" & To_String(MainWindow.Current_Directory) & "}");
                   return DIRECTORY_VIEW;
                else
                   Show_Options_Tab(CurrentIndex);
                end if;
+            else
+               Set_Option(CurrentIndex, CurrentOption);
             end if;
          when others =>
             null;
