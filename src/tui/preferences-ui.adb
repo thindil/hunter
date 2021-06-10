@@ -20,8 +20,8 @@ with Modules; use Modules;
 
 package body Preferences.UI is
 
-   OptionsMenu: Menu;
-   MenuWindow: Window;
+   OptionsMenu, TimeMenu: Menu;
+   MenuWindow, MenuWindow2: Window;
    OptionsWindow: Window;
    DialogForm: Forms.Form;
    Option_Selected: Boolean := True;
@@ -203,9 +203,34 @@ package body Preferences.UI is
       Show_Options_Tab(1);
    end Show_Options;
 
-   procedure Show_Seconds_Menu is
+   procedure Show_Seconds_Menu(Max: Positive := 30) is
+      Menu_Items: constant Item_Array_Access := new Item_Array(1 .. Max + 2);
+      Visibility: Cursor_Visibility := Invisible;
+      MenuHeight: Line_Position;
+      MenuLength: Column_Position;
    begin
-      null;
+      Set_Cursor_Visibility(Visibility);
+      Menu_Items.all(1) := New_Item("Disable");
+      Create_Time_Menu_Loop :
+      for I in 2 .. Max loop
+         Menu_Items.all(I) :=
+           New_Item("every" & Natural'Image(I - 1) & " second(s)");
+      end loop Create_Time_Menu_Loop;
+      Menu_Items.all(Max + 1) := New_Item("Close");
+      Menu_Items.all(Max + 2) := Null_Item;
+      TimeMenu := New_Menu(Menu_Items);
+      Set_Format(TimeMenu, 10, 1);
+      Set_Mark(TimeMenu, "");
+      Scale(TimeMenu, MenuHeight, MenuLength);
+      MenuWindow2 :=
+        Create(MenuHeight + 2, MenuLength + 2, Lines / 3, Columns / 3);
+      Set_Window(TimeMenu, MenuWindow2);
+      Set_Sub_Window
+        (TimeMenu, Derived_Window(MenuWindow2, MenuHeight, MenuLength, 1, 1));
+      Box(MenuWindow2, Default_Character, Default_Character);
+      Post(TimeMenu);
+      Refresh;
+      Refresh(MenuWindow2);
    end Show_Seconds_Menu;
 
    function Set_Option(TabIndex, OptionIndex: Positive) return UI_Locations is
