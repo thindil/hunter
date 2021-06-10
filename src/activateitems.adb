@@ -64,9 +64,14 @@ package body ActivateItems is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
    begin
-      if Is_Directory(To_String(Current_Selected)) then
-         if not Is_Read_Accessible_File(To_String(Current_Selected)) then
-            ShowMessage(Mc(Interp, "{You can't enter this directory.}"));
+      if Is_Directory(Name => To_String(Source => Current_Selected)) then
+         if not Is_Read_Accessible_File
+             (Name => To_String(Source => Current_Selected)) then
+            ShowMessage
+              (Message =>
+                 Mc
+                   (Interp => Interp,
+                    Src_String => "{You can't enter this directory.}"));
             return TCL_OK;
          end if;
          Temporary_Stop := True;
@@ -75,23 +80,29 @@ package body ActivateItems is
             ItemsList := SecondItemsList;
             if SecondItemsList.Length > 0 then
                if Ada.Directories.Containing_Directory
-                   (To_String(SecondItemsList(1).Path)) /=
+                   (Name => To_String(Source => SecondItemsList(1).Path)) /=
                  Current_Directory then
-                  LoadDirectory(To_String(Current_Directory));
+                  LoadDirectory
+                    (DirectoryName => To_String(Source => Current_Directory));
                end if;
             end if;
          else
-            LoadDirectory(To_String(Current_Directory));
+            LoadDirectory
+              (DirectoryName => To_String(Source => Current_Directory));
          end if;
          if New_Action = SHOWTRASH then
             DestinationDirectory :=
               Delete
-                (Current_Directory, 1,
-                 Length
-                   (To_Unbounded_String
-                      (Value("HOME") & "/.local/share/Trash/files")));
+                (Source => Current_Directory, From => 1,
+                 Through =>
+                   Length
+                     (Source =>
+                        To_Unbounded_String
+                          (Source =>
+                             Value(Name => "HOME") &
+                             "/.local/share/Trash/files")));
          end if;
-         Update_Directory_List(True);
+         Update_Directory_List(Clear => True);
          UpdateWatch(To_String(Current_Directory));
          Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
       else
