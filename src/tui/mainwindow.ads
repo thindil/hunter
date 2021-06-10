@@ -89,13 +89,14 @@ package MainWindow is
    -- ABOUT_FORM       - The about widget
    -- DEVELOPERS_VIEW  - The lists of the program's programmers and translators
    -- OPTIONS_VIEW     - The view of the program's options settings
+   -- SECONDS_MENU     - The menu with list of values to set as time interval
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
       CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
       DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM,
       SELECTED_MENU, PROGRAMS_MENU, VIEW_MENU, SEARCH_FORM, EXECUTE_FORM,
-      ABOUT_MENU, ABOUT_FORM, DEVELOPERS_VIEW, OPTIONS_VIEW);
+      ABOUT_MENU, ABOUT_FORM, DEVELOPERS_VIEW, OPTIONS_VIEW, SECONDS_MENU);
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.UILocation
