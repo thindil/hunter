@@ -254,6 +254,8 @@ begin
                UILocation := Developers_Keys(Key);
             when OPTIONS_VIEW =>
                UILocation := Select_Preferences_Keys(Key);
+            when SECONDS_MENU =>
+               UILocation := Select_Seconds_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;

@@ -203,7 +203,12 @@ package body Preferences.UI is
       Show_Options_Tab(1);
    end Show_Options;
 
-   procedure Set_Option(TabIndex, OptionIndex: Positive) is
+   procedure Show_Seconds_Menu is
+   begin
+      null;
+   end Show_Seconds_Menu;
+
+   function Set_Option(TabIndex, OptionIndex: Positive) return UI_Locations is
    begin
       case TabIndex is
          when 1 =>
@@ -213,6 +218,9 @@ package body Preferences.UI is
                when 3 =>
                   Settings.Show_Last_Modified :=
                     not Settings.Show_Last_Modified;
+               when 4 =>
+                  Show_Seconds_Menu;
+                  return SECONDS_MENU;
                when others =>
                   null;
             end case;
@@ -220,6 +228,7 @@ package body Preferences.UI is
             null;
       end case;
       Show_Options_Tab(TabIndex);
+      return OPTIONS_VIEW;
    end Set_Option;
 
    function Select_Preferences_Keys(Key: Key_Code) return UI_Locations is
@@ -274,7 +283,7 @@ package body Preferences.UI is
                   Show_Options_Tab(CurrentIndex);
                end if;
             else
-               Set_Option(CurrentIndex, CurrentOption);
+               return Set_Option(CurrentIndex, CurrentOption);
             end if;
          when others =>
             null;
@@ -287,5 +296,11 @@ package body Preferences.UI is
       end if;
       return OPTIONS_VIEW;
    end Select_Preferences_Keys;
+
+   function Select_Seconds_Keys(Key: Key_Code) return UI_Locations is
+      pragma Unreferenced(Key);
+   begin
+      return SECONDS_MENU;
+   end Select_Seconds_Keys;
 
 end Preferences.UI;
