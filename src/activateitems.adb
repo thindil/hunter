@@ -106,18 +106,27 @@ package body ActivateItems is
          UpdateWatch(To_String(Current_Directory));
          Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
       else
+         Execute_File_Block:
          declare
-            MimeType: constant String :=
+            Mime_Type: constant String :=
               Get_Mime_Type(To_String(Current_Selected));
             Pid: GNAT.OS_Lib.Process_Id;
-            Openable: Boolean := Can_Be_Opened(MimeType);
-            ExecutableName: constant String := Find_Executable("xdg-open");
+            Openable: Boolean := Can_Be_Opened(Mime_Type);
+            Executable_Name: constant String := Find_Executable("xdg-open");
             Arguments: Argument_List_Access;
          begin
-            if MimeType(1 .. 4) = "text" and not Openable then
+            if Mime_Type(1 .. 4) = "text" and not Openable then
                Openable := Can_Be_Opened("text/plain");
             end if;
-            if not Openable then
+            if Openable then
+               if Executable_Name = "" then
+                  Tcl_SetResult(Interp, "0");
+                  return TCL_OK;
+               end if;
+               Arguments := Argument_String_To_List("@2");
+               Arguments(1) := new String'(To_String(Current_Selected));
+               Pid := Non_Blocking_Spawn(Executable_Name, Arguments.all);
+            else
                if not Is_Executable_File(To_String(Current_Selected)) then
                   ShowMessage
                     (Mc
@@ -135,14 +144,6 @@ package body ActivateItems is
                   Tcl_SetResult(Interp, "0");
                   return TCL_OK;
                end if;
-            else
-               if ExecutableName = "" then
-                  Tcl_SetResult(Interp, "0");
-                  return TCL_OK;
-               end if;
-               Arguments := Argument_String_To_List("@2");
-               Arguments(1) := new String'(To_String(Current_Selected));
-               Pid := Non_Blocking_Spawn(ExecutableName, Arguments.all);
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                Tcl_SetResult(Interp, "0");
@@ -151,7 +152,7 @@ package body ActivateItems is
                     (Interp,
                      "{I can't open this file. Can't start application asociated with this type of files.}"));
             end if;
-         end;
+         end Execute_File_Block;
       end if;
       Execute_Modules(On_Activate, "{" & To_String(Current_Selected) & "}");
       Tcl_SetResult(Interp, "1");
