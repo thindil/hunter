@@ -204,7 +204,7 @@ package body Preferences.UI is
    end Show_Options;
 
    procedure Show_Seconds_Menu(Max: Positive := 30) is
-      Menu_Items: constant Item_Array_Access := new Item_Array(1 .. Max + 2);
+      Menu_Items: constant Item_Array_Access := new Item_Array(1 .. Max + 3);
       Visibility: Cursor_Visibility := Invisible;
       MenuHeight: Line_Position;
       MenuLength: Column_Position;
@@ -212,12 +212,12 @@ package body Preferences.UI is
       Set_Cursor_Visibility(Visibility);
       Menu_Items.all(1) := New_Item("Disable");
       Create_Time_Menu_Loop :
-      for I in 2 .. Max loop
+      for I in 2 .. Max + 1 loop
          Menu_Items.all(I) :=
            New_Item("every" & Natural'Image(I - 1) & " second(s)");
       end loop Create_Time_Menu_Loop;
-      Menu_Items.all(Max + 1) := New_Item("Close");
-      Menu_Items.all(Max + 2) := Null_Item;
+      Menu_Items.all(Max + 2) := New_Item("Close");
+      Menu_Items.all(Max + 3) := Null_Item;
       TimeMenu := New_Menu(Menu_Items);
       Set_Format(TimeMenu, 10, 1);
       Set_Mark(TimeMenu, "");
@@ -323,8 +323,25 @@ package body Preferences.UI is
    end Select_Preferences_Keys;
 
    function Select_Seconds_Keys(Key: Key_Code) return UI_Locations is
-      pragma Unreferenced(Key);
+      Result: Menus.Driver_Result := Unknown_Request;
    begin
+      case Key is
+         when Key_Home =>
+            Result := Driver(TimeMenu, M_First_Item);
+         when Key_End =>
+            Result := Driver(TimeMenu, M_Last_Item);
+         when KEY_UP =>
+            Result := Driver(TimeMenu, M_Previous_Item);
+         when KEY_DOWN =>
+            Result := Driver(TimeMenu, M_Next_Item);
+         when 10 =>
+            null;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(MenuWindow2);
+      end if;
       return SECONDS_MENU;
    end Select_Seconds_Keys;
 
