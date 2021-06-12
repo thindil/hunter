@@ -103,35 +103,45 @@ package body ActivateItems is
                              "/.local/share/Trash/files")));
          end if;
          Update_Directory_List(Clear => True);
-         UpdateWatch(To_String(Current_Directory));
-         Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
+         UpdateWatch(Path => To_String(Source => Current_Directory));
+         Execute_Modules
+           (State => On_Enter,
+            Arguments => "{" & To_String(Source => Current_Directory) & "}");
       else
-         Execute_File_Block:
+         Execute_File_Block :
          declare
             Mime_Type: constant String :=
-              Get_Mime_Type(To_String(Current_Selected));
+              Get_Mime_Type
+                (File_Name => To_String(Source => Current_Selected));
             Pid: GNAT.OS_Lib.Process_Id;
-            Openable: Boolean := Can_Be_Opened(Mime_Type);
-            Executable_Name: constant String := Find_Executable("xdg-open");
+            Openable: Boolean := Can_Be_Opened(Mime_Type => Mime_Type);
+            Executable_Name: constant String :=
+              Find_Executable(Name => "xdg-open");
             Arguments: Argument_List_Access;
          begin
             if Mime_Type(1 .. 4) = "text" and not Openable then
-               Openable := Can_Be_Opened("text/plain");
+               Openable := Can_Be_Opened(Mime_Type => "text/plain");
             end if;
             if Openable then
                if Executable_Name = "" then
-                  Tcl_SetResult(Interp, "0");
+                  Tcl_SetResult(interp => Interp, str => "0");
                   return TCL_OK;
                end if;
-               Arguments := Argument_String_To_List("@2");
-               Arguments(1) := new String'(To_String(Current_Selected));
-               Pid := Non_Blocking_Spawn(Executable_Name, Arguments.all);
+               Arguments := Argument_String_To_List(Arg_String => "@2");
+               Arguments(1) :=
+                 new String'(To_String(Source => Current_Selected));
+               Pid :=
+                 Non_Blocking_Spawn
+                   (Program_Name => Executable_Name, Args => Arguments.all);
             else
-               if not Is_Executable_File(To_String(Current_Selected)) then
+               if not Is_Executable_File
+                   (Name => To_String(Source => Current_Selected)) then
                   ShowMessage
-                    (Mc
-                       (Interp,
-                        "{I can't open this file. No application associated with this type of files.}"));
+                    (Message =>
+                       Mc
+                         (Interp => Interp,
+                          Src_String =>
+                            "{I can't open this file. No application associated with this type of files.}"));
                   Tcl_SetResult(Interp, "0");
                   return TCL_OK;
                end if;
