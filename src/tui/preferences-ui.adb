@@ -335,7 +335,14 @@ package body Preferences.UI is
          when KEY_DOWN =>
             Result := Driver(TimeMenu, M_Next_Item);
          when 10 =>
-            null;
+            if Name(Current(TimeMenu)) /= "Close" then
+               if Get_Index(Current(DialogForm)) = 4 then
+                  Settings.Auto_Refresh_Interval :=
+                    Get_Index(Current(TimeMenu)) - 1;
+               end if;
+            end if;
+            Show_Options_Tab(1);
+            return OPTIONS_VIEW;
          when others =>
             null;
       end case;
