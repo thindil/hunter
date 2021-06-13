@@ -26,40 +26,40 @@ package Preferences is
    -- FUNCTION
    -- Data structure to the program settings
    -- OPTIONS
-   -- Show_Hidden             - If true, show hidden files
-   -- Show_Last_Modified      - If true, show column with last modification time
-   --                           on files list
-   -- Scale_Images            - If true, scale images in preview
-   -- Auto_CloseMessages_Time - Amount of seconds after which current message
-   --                           will be auto hidden
-   -- Window_Width            - Width of the main window in pixels
-   -- Window_Height           - Height of the main window in pixels
-   -- Show_Preview            - If true, show preview panel for files and
-   --                           directories
-   -- Stay_In_Old             - If true, after copying, moving files and
-   --                           directories or creating new link, stay in old
-   --                           directory instead of going to the destination
-   --                           directory.
-   -- Color_Text              - If true, try color syntax in text files in
-   --                           preview
-   -- Color_Theme             - Selected by user color theme for coloring syntax
-   --                           in text files in preview
-   -- Delete_Files            - If true, delete file and directories instead of
-   --                           moving them to trash
-   -- Clear_Trash_On_Exit     - Clear trash on quit from the program
-   -- Show_Finished_Info      - If true, show info about finished copying, moving
-   --                           deleting files and directories
-   -- Overwrite_On_Exist      - If true, copied or moved file or directory will
-   --                           be overwritting existing with that same name
-   -- Toolbars_On_Top         - If true, toolbars for actions and information
-   --                           will be show on the top of the window. Otherwise
-   --                           toolbar action will be on the left and toolbar
-   --                           with information will be on the right
-   -- Auto_Refresh_Interval   - How often, in seconds, auto refresh should be
-   --                           triggered
-   -- Ui_Theme                - Tk theme used by the program
-   -- Toolbars_Size           - Size of the toolbars icons
-   -- Monospace_Font          - If true, use monospace font in text files preview
+   -- Show_Hidden              - If true, show hidden files
+   -- Show_Last_Modifi ed      - If true, show column with last modification time
+   --                            on files list
+   -- Scale_Images             - If true, scale images in preview
+   -- Auto_Close Messages_Time - Amount of seconds after which current message
+   --                            will be auto hidden
+   -- Window_Width             - Width of the main window in pixels
+   -- Window_Height            - Height of the main window in pixels
+   -- Show_Preview             - If true, show preview panel for files and
+   --                            directories
+   -- Stay_In_Old              - If true, after copying, moving files and
+   --                            directories or creating new link, stay in old
+   --                            directory instead of going to the destination
+   --                            directory.
+   -- Color_Text               - If true, try color syntax in text files in
+   --                            preview
+   -- Color_Theme              - Selected by user color theme for coloring syntax
+   --                            in text files in preview
+   -- Delete_Files             - If true, delete file and directories instead of
+   --                            moving them to trash
+   -- Clear_Trash_On_Exit      - Clear trash on quit from the program
+   -- Show_Finished_Info       - If true, show info about finished copying, moving
+   --                            deleting files and directories
+   -- Overwrite_On_Exist       - If true, copied or moved file or directory will
+   --                            be overwritting existing with that same name
+   -- Toolbars_On_Top          - If true, toolbars for actions and information
+   --                            will be show on the top of the window. Otherwise
+   --                            toolbar action will be on the left and toolbar
+   --                            with information will be on the right
+   -- Auto_Refresh_Interval    - How often, in seconds, auto refresh should be
+   --                            triggered
+   -- Ui_Theme                 - Tk theme used by the program
+   -- Toolbars_Size            - Size of the toolbars icons
+   -- Monospace_Font           - If true, use monospace font in text files preview
    -- SOURCE
    type Settings_Data is record
       Show_Hidden: Boolean;
