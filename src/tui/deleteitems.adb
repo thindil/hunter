@@ -199,7 +199,7 @@ package body DeleteItems is
          if Is_Directory
              (To_String
                 (MainWindow.Current_Directory & "/" & SelectedItems(I))) then
-            Append(DeleteList, "  " & ItemName & "(and its content)" & LF);
+            Append(DeleteList, "  " & ItemName & " (and its content)" & LF);
          else
             Append(DeleteList, "  " & ItemName & LF);
          end if;
