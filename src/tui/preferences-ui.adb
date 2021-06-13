@@ -334,6 +334,10 @@ package body Preferences.UI is
             Result := Driver(TimeMenu, M_Previous_Item);
          when KEY_DOWN =>
             Result := Driver(TimeMenu, M_Next_Item);
+         when KEY_NPAGE =>
+            Result := Driver(TimeMenu, M_ScrollUp_Page);
+         when KEY_PPAGE =>
+            Result := Driver(TimeMenu, M_ScrollDown_Page);
          when 10 =>
             if Name(Current(TimeMenu)) /= "Close" then
                if Get_Index(Current(DialogForm)) = 4 then
