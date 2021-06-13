@@ -142,30 +142,38 @@ package body ActivateItems is
                          (Interp => Interp,
                           Src_String =>
                             "{I can't open this file. No application associated with this type of files.}"));
-                  Tcl_SetResult(Interp, "0");
+                  Tcl_SetResult(interp => Interp, str => "0");
                   return TCL_OK;
                end if;
                Pid :=
                  Non_Blocking_Spawn
-                   (To_String(Current_Selected),
-                    Argument_String_To_List("").all);
+                   (Program_Name => To_String(Source => Current_Selected),
+                    Args => Argument_String_To_List(Arg_String => "").all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
-                  ShowMessage(Mc(Interp, "{I can't execute this file.}"));
-                  Tcl_SetResult(Interp, "0");
+                  ShowMessage
+                    (Message =>
+                       Mc
+                         (Interp => Interp,
+                          Src_String => "{I can't execute this file.}"));
+                  Tcl_SetResult(interp => Interp, str => "0");
                   return TCL_OK;
                end if;
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
-               Tcl_SetResult(Interp, "0");
+               Tcl_SetResult(interp => Interp, str => "0");
                ShowMessage
-                 (Mc
-                    (Interp,
-                     "{I can't open this file. Can't start application asociated with this type of files.}"));
+                 (Message =>
+                    Mc
+                      (Interp => Interp,
+                       Src_String =>
+                         "{I can't open this file. Can't start application asociated with this type of files.}"));
             end if;
          end Execute_File_Block;
       end if;
-      Execute_Modules(On_Activate, "{" & To_String(Current_Selected) & "}");
-      Tcl_SetResult(Interp, "1");
+      Execute_Modules
+        (State => On_Activate,
+         Arguments => "{" & To_String(Source => Current_Selected) & "}");
+      Tcl_SetResult(interp => Interp, str => "1");
       return TCL_OK;
    end Activate_Item_Command;
 
