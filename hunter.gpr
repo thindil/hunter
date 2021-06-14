@@ -71,7 +71,7 @@ project hunter is
          when "release" =>
             for Default_Switches ("ada") use ("-Wl,--gc-sections",
                "-lmagic",
-               "-Wl,-rpath,$ORIGIN/lib",
+               "-Wl,-rpath,$ORIGIN/../lib",
                "-s",
                "-O2");
          when "analyze" =>
