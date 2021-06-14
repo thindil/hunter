@@ -204,17 +204,23 @@ package body ActivateItems is
    begin
       Pid :=
         Non_Blocking_Spawn
-          (To_String(Current_Selected), Argument_String_To_List("").all);
+          (Program_Name => To_String(Source => Current_Selected),
+           Args => Argument_String_To_List(Arg_String => "").all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
-         ShowMessage(Mc(Interp, "{Can't execute this command}"));
+         ShowMessage
+           (Message =>
+              Mc
+                (Interp => Interp,
+                 Src_String => "{Can't execute this command}"));
       end if;
       return TCL_OK;
    end Execute_Command;
 
    procedure Add_Commands is
    begin
-      Add_Command("ActivateItem", Activate_Item_Command'Access);
-      Add_Command("Execute", Execute_Command'Access);
+      Add_Command
+        (Name => "ActivateItem", Ada_Command => Activate_Item_Command'Access);
+      Add_Command(Name => "Execute", Ada_Command => Execute_Command'Access);
       CreateActivateUI;
    end Add_Commands;
 
