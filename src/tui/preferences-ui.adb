@@ -93,9 +93,10 @@ package body Preferences.UI is
                FieldOptions := Get_Options(Options_Fields.all(7));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(7), FieldOptions);
-               Options_Fields.all(8) := New_Field(1, 36, 7, 2, 0, 0);
+               Options_Fields.all(8) := New_Field(1, 40, 7, 2, 0, 0);
                Set_Buffer
-                 (Options_Fields.all(8), 0, To_String(Settings.Color_Theme));
+                 (Options_Fields.all(8), 0,
+                  "Current theme: " & To_String(Settings.Color_Theme));
                FieldOptions := Get_Options(Options_Fields.all(8));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(8), FieldOptions);
@@ -116,7 +117,8 @@ package body Preferences.UI is
                Options_Fields.all(11) := New_Field(1, 38, 10, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(11), 0,
-                  (if Settings.Show_Preview then "Show " else "Don't show ") &
+                  (if Settings.Show_Finished_Info then "Show "
+                   else "Don't show ") &
                   "information about finished action");
                FieldOptions := Get_Options(Options_Fields.all(11));
                Set_Options(Options_Fields.all(11), FieldOptions);
@@ -246,6 +248,10 @@ package body Preferences.UI is
                when 4 =>
                   Show_Seconds_Menu;
                   return SECONDS_MENU;
+               when 6 =>
+                  Settings.Show_Preview := not Settings.Show_Preview;
+               when 7 =>
+                  Settings.Color_Text := not Settings.Color_Text;
                when others =>
                   null;
             end case;
