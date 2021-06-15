@@ -54,4 +54,16 @@ package Preferences.UI is
    function Select_Seconds_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* PreferencesUITUI/PreferencesUITUI.Select_Colors_Keys
+   -- FUNCTION
+   -- Handles keys events when the selecting text colors menu is active
+   -- element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Select_Colors_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
 end Preferences.UI;
