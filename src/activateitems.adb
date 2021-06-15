@@ -13,27 +13,27 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers; use Ada.Containers;
+with Ada.Containers;
 with Ada.Directories;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
-with Tcl.Ada; use Tcl.Ada;
+with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with ActivateItems.UI; use ActivateItems.UI;
-with Inotify; use Inotify;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
+with ActivateItems.UI;
+with Inotify;
+with LoadData;
+with LoadData.UI;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
-with Modules; use Modules;
-with Preferences; use Preferences;
-with RefreshData; use RefreshData;
-with ShowItems; use ShowItems;
-with Utils; use Utils;
+with Modules;
+with Preferences;
+with RefreshData;
+with ShowItems;
+with Utils;
 with Utils.UI; use Utils.UI;
 
 package body ActivateItems is
@@ -63,6 +63,17 @@ package body ActivateItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Ada.Containers;
+      use Ada.Environment_Variables;
+      use Tcl.Ada;
+      use Inotify;
+      use LoadData;
+      use LoadData.UI;
+      use Modules;
+      use Preferences;
+      use RefreshData;
+      use ShowItems;
+
    begin
       if Is_Directory(Name => To_String(Source => Current_Selected)) then
          if not Is_Read_Accessible_File
@@ -110,6 +121,8 @@ package body ActivateItems is
       else
          Execute_File_Block :
          declare
+            use Utils;
+
             Mime_Type: constant String :=
               Get_Mime_Type
                 (File_Name => To_String(Source => Current_Selected));
@@ -217,6 +230,7 @@ package body ActivateItems is
    end Execute_Command;
 
    procedure Add_Commands is
+      use ActivateItems.UI;
    begin
       Add_Command
         (Name => "ActivateItem", Ada_Command => Activate_Item_Command'Access);
