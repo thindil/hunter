@@ -13,6 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Directories; use Ada.Directories;
+with Ada.Environment_Variables;
+with GNAT.String_Split; use GNAT.String_Split;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Inotify; use Inotify;
@@ -236,14 +239,45 @@ package body Preferences.UI is
    end Show_Seconds_Menu;
 
    procedure Show_Colors_Menu is
-      Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 2);
+      Menu_Items: Item_Array_Access;
       Visibility: Cursor_Visibility := Invisible;
       MenuHeight: Line_Position;
       MenuLength: Column_Position;
+      ThemesName: Unbounded_String;
+      Tokens: Slice_Set;
+      Search: Search_Type;
+      File: Directory_Entry_Type;
    begin
       Set_Cursor_Visibility(Visibility);
-      Menu_Items.all(1) := New_Item("Close");
-      Menu_Items.all(2) := Null_Item;
+      if not Ada.Environment_Variables.Exists("HIGHLIGHT_DATADIR") then
+         Ada.Environment_Variables.Set
+           ("HIGHLIGHT_DATADIR",
+            Ada.Environment_Variables.Value("APPDIR", "") &
+            "/usr/share/highlight");
+      end if;
+      if Exists
+          (Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+           "/themes/base16") then
+         Start_Search
+           (Search,
+            Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+            "/themes/base16",
+            "*.theme");
+         Create_Themes_List_Loop :
+         while More_Entries(Search) loop
+            Get_Next_Entry(Search, File);
+            Append(ThemesName, " " & Base_Name(Simple_Name(File)));
+         end loop Create_Themes_List_Loop;
+         End_Search(Search);
+      end if;
+      Create(Tokens, To_String(ThemesName), " ");
+      Menu_Items := new Item_Array(1 .. Integer(Slice_Count(Tokens)) + 1);
+      Set_Menu_Loop :
+      for I in 1 .. Integer(Slice_Count(Tokens)) - 1 loop
+         Menu_Items.all(I) := New_Item(Slice(Tokens, Slice_Number(I + 1)));
+      end loop Set_Menu_Loop;
+      Menu_Items.all(Menu_Items'Last - 1) := New_Item("Close");
+      Menu_Items.all(Menu_Items'Last) := Null_Item;
       SubMenu := New_Menu(Menu_Items);
       Set_Format(SubMenu, 10, 1);
       Set_Mark(SubMenu, "");
