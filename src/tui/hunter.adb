@@ -256,6 +256,8 @@ begin
                UILocation := Select_Preferences_Keys(Key);
             when SECONDS_MENU =>
                UILocation := Select_Seconds_Keys(Key);
+            when COLORS_MENU =>
+               UILocation := Select_Colors_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;

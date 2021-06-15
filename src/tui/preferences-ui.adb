@@ -20,7 +20,7 @@ with Modules; use Modules;
 
 package body Preferences.UI is
 
-   OptionsMenu, TimeMenu: Menu;
+   OptionsMenu, SubMenu: Menu;
    MenuWindow, MenuWindow2: Window;
    OptionsWindow: Window;
    DialogForm: Forms.Form;
@@ -220,20 +220,44 @@ package body Preferences.UI is
       end loop Create_Time_Menu_Loop;
       Menu_Items.all(Max + 2) := New_Item("Close");
       Menu_Items.all(Max + 3) := Null_Item;
-      TimeMenu := New_Menu(Menu_Items);
-      Set_Format(TimeMenu, 10, 1);
-      Set_Mark(TimeMenu, "");
-      Scale(TimeMenu, MenuHeight, MenuLength);
+      SubMenu := New_Menu(Menu_Items);
+      Set_Format(SubMenu, 10, 1);
+      Set_Mark(SubMenu, "");
+      Scale(SubMenu, MenuHeight, MenuLength);
       MenuWindow2 :=
         Create(MenuHeight + 2, MenuLength + 2, Lines / 3, Columns / 3);
-      Set_Window(TimeMenu, MenuWindow2);
+      Set_Window(SubMenu, MenuWindow2);
       Set_Sub_Window
-        (TimeMenu, Derived_Window(MenuWindow2, MenuHeight, MenuLength, 1, 1));
+        (SubMenu, Derived_Window(MenuWindow2, MenuHeight, MenuLength, 1, 1));
       Box(MenuWindow2, Default_Character, Default_Character);
-      Post(TimeMenu);
+      Post(SubMenu);
       Refresh;
       Refresh(MenuWindow2);
    end Show_Seconds_Menu;
+
+   procedure Show_Colors_Menu is
+      Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 2);
+      Visibility: Cursor_Visibility := Invisible;
+      MenuHeight: Line_Position;
+      MenuLength: Column_Position;
+   begin
+      Set_Cursor_Visibility(Visibility);
+      Menu_Items.all(1) := New_Item("Close");
+      Menu_Items.all(2) := Null_Item;
+      SubMenu := New_Menu(Menu_Items);
+      Set_Format(SubMenu, 10, 1);
+      Set_Mark(SubMenu, "");
+      Scale(SubMenu, MenuHeight, MenuLength);
+      MenuWindow2 :=
+        Create(MenuHeight + 2, MenuLength + 2, Lines / 3, Columns / 3);
+      Set_Window(SubMenu, MenuWindow2);
+      Set_Sub_Window
+        (SubMenu, Derived_Window(MenuWindow2, MenuHeight, MenuLength, 1, 1));
+      Box(MenuWindow2, Default_Character, Default_Character);
+      Post(SubMenu);
+      Refresh;
+      Refresh(MenuWindow2);
+   end Show_Colors_Menu;
 
    function Set_Option(TabIndex, OptionIndex: Positive) return UI_Locations is
    begin
@@ -252,6 +276,9 @@ package body Preferences.UI is
                   Settings.Show_Preview := not Settings.Show_Preview;
                when 7 =>
                   Settings.Color_Text := not Settings.Color_Text;
+               when 8 =>
+                  Show_Colors_Menu;
+                  return COLORS_MENU;
                when others =>
                   null;
             end case;
@@ -333,22 +360,22 @@ package body Preferences.UI is
    begin
       case Key is
          when Key_Home =>
-            Result := Driver(TimeMenu, M_First_Item);
+            Result := Driver(SubMenu, M_First_Item);
          when Key_End =>
-            Result := Driver(TimeMenu, M_Last_Item);
+            Result := Driver(SubMenu, M_Last_Item);
          when KEY_UP =>
-            Result := Driver(TimeMenu, M_Previous_Item);
+            Result := Driver(SubMenu, M_Previous_Item);
          when KEY_DOWN =>
-            Result := Driver(TimeMenu, M_Next_Item);
+            Result := Driver(SubMenu, M_Next_Item);
          when KEY_NPAGE =>
-            Result := Driver(TimeMenu, M_ScrollUp_Page);
+            Result := Driver(SubMenu, M_ScrollUp_Page);
          when KEY_PPAGE =>
-            Result := Driver(TimeMenu, M_ScrollDown_Page);
+            Result := Driver(SubMenu, M_ScrollDown_Page);
          when 10 =>
-            if Name(Current(TimeMenu)) /= "Close" then
+            if Name(Current(SubMenu)) /= "Close" then
                if Get_Index(Current(DialogForm)) = 4 then
                   Settings.Auto_Refresh_Interval :=
-                    Get_Index(Current(TimeMenu)) - 1;
+                    Get_Index(Current(SubMenu)) - 1;
                end if;
             end if;
             Show_Options_Tab(1);
@@ -361,5 +388,33 @@ package body Preferences.UI is
       end if;
       return SECONDS_MENU;
    end Select_Seconds_Keys;
+
+   function Select_Colors_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result := Unknown_Request;
+   begin
+      case Key is
+         when Key_Home =>
+            Result := Driver(SubMenu, M_First_Item);
+         when Key_End =>
+            Result := Driver(SubMenu, M_Last_Item);
+         when KEY_UP =>
+            Result := Driver(SubMenu, M_Previous_Item);
+         when KEY_DOWN =>
+            Result := Driver(SubMenu, M_Next_Item);
+         when KEY_NPAGE =>
+            Result := Driver(SubMenu, M_ScrollUp_Page);
+         when KEY_PPAGE =>
+            Result := Driver(SubMenu, M_ScrollDown_Page);
+         when 10 =>
+            Show_Options_Tab(1);
+            return OPTIONS_VIEW;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(MenuWindow2);
+      end if;
+      return SECONDS_MENU;
+   end Select_Colors_Keys;
 
 end Preferences.UI;
