@@ -437,7 +437,7 @@ package body Utils.UI is
          Grid_Remove(Slave => Header_Label);
          Tcl.Tk.Ada.Grid.Grid(Slave => Toolbar);
          if Settings.Show_Preview then
-            SetBookmarkButton;
+            Set_Bookmark_Button;
          else
             Toolbar.Name := New_String(Str => ".mainframe.paned.previewframe");
             Forget(Paned => Paned, SubWindow => Toolbar);

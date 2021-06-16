@@ -176,8 +176,8 @@ package body Bookmarks.Commands.UI is
       end if;
       Put_Line(File, "file://" & Current_Selected);
       Close(File);
-      CreateBookmarkMenu;
-      SetBookmarkButton;
+      Create_Bookmark_Menu;
+      Set_Bookmark_Button;
       return TCL_OK;
    end Add_Bookmark_Command;
 
@@ -230,8 +230,8 @@ package body Bookmarks.Commands.UI is
       if not Added then
          Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks");
       end if;
-      CreateBookmarkMenu;
-      SetBookmarkButton;
+      Create_Bookmark_Menu;
+      Set_Bookmark_Button;
       return TCL_OK;
    end Remove_Bookmark_Command;
 

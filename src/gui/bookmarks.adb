@@ -40,7 +40,7 @@ package body Bookmarks is
    BookmarksList: Bookmarks_Container.Map;
    -- ****
 
-   procedure CreateBookmarkMenu(CreateNew: Boolean := False) is
+   procedure Create_Bookmark_Menu(Create_New: Boolean := False) is
       XDGBookmarks: constant array(1 .. 7) of Unbounded_String :=
         (To_Unbounded_String("XDG_DESKTOP_DIR"),
          To_Unbounded_String("XDG_DOWNLOAD_DIR"),
@@ -76,7 +76,7 @@ package body Bookmarks is
          return To_Unbounded_String(Expand_Path(Value(Name)));
       end GetXDGDirectory;
    begin
-      if CreateNew then
+      if Create_New then
          BookmarksMenu := Create(".bookmarksmenu", "-tearoff false");
          AddCommands;
       else
@@ -144,9 +144,9 @@ package body Bookmarks is
          "-label {" & Mc(Get_Context, "{Enter destination}") &
          "} -command SetDestination");
       configure(MenuButton, "-menu .bookmarksmenu");
-   end CreateBookmarkMenu;
+   end Create_Bookmark_Menu;
 
-   procedure SetBookmarkButton is
+   procedure Set_Bookmark_Button is
       Button: Ttk_Button :=
         Get_Widget(".mainframe.toolbars.itemtoolbar.addbutton");
       Menu: constant Tk_Menu := Get_Widget(".bookmarksmenu");
@@ -173,6 +173,6 @@ package body Bookmarks is
       end loop Set_Bookmark_Button_Loop;
       Button.Name := New_String(".mainframe.toolbars.itemtoolbar.addbutton");
       Tcl.Tk.Ada.Pack.Pack(Button);
-   end SetBookmarkButton;
+   end Set_Bookmark_Button;
 
 end Bookmarks;

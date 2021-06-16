@@ -799,10 +799,10 @@ package body ShowItems is
            New_String(".mainframe.toolbars.itemtoolbar.infobutton");
       end if;
       if Invoke(ActionButton) /= "" and Invoke(ActionButton) /= "0" then
-         SetBookmarkButton;
+         Set_Bookmark_Button;
          return TCL_OK;
       end if;
-      SetBookmarkButton;
+      Set_Bookmark_Button;
       return TCL_OK;
    end Show_Selected_Command;
 

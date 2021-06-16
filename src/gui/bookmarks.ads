@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -31,20 +31,20 @@ package Bookmarks is
      (String, String, Ada.Strings.Hash, "=");
    -- ****
 
-   -- ****f* Bookmarks/Bookmarks.CreateBookmarkMenu
+   -- ****f* Bookmarks/Bookmarks.Create_Bookmark_Menu
    -- FUNCTION
    -- Create bookmarks menu - show only existing bookmarks
    -- PARAMETERS
-   -- CreateNew - If True, create new menu, otherwise use existing menu
+   -- Create_New - If True, create new menu, otherwise use existing menu
    -- SOURCE
-   procedure CreateBookmarkMenu(CreateNew: Boolean := False);
+   procedure Create_Bookmark_Menu(Create_New: Boolean := False);
    -- ****
 
-   -- ****f* Bookmarks/Bookmarks.SetBookmarkButton
+   -- ****f* Bookmarks/Bookmarks.Set_Bookmark_Button
    -- FUNCTION
    -- Show proper bookmark button for directories
    -- SOURCE
-   procedure SetBookmarkButton;
+   procedure Set_Bookmark_Button;
    -- ****
 
 end Bookmarks;
