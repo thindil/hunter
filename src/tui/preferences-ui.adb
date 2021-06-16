@@ -313,6 +313,11 @@ package body Preferences.UI is
                when 8 =>
                   Show_Colors_Menu;
                   return COLORS_MENU;
+               when 10 =>
+                  Settings.Stay_In_Old := not Settings.Stay_In_Old;
+               when 11 =>
+                  Settings.Show_Finished_Info :=
+                    not Settings.Show_Finished_Info;
                when others =>
                   null;
             end case;
