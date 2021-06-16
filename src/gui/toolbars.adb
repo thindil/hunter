@@ -131,7 +131,7 @@ package body Toolbars is
       end if;
       if Current_Selected /= Null_Unbounded_String then
          SetActionsButtons;
-         SetBookmarkButton;
+         Set_Bookmark_Button;
       end if;
    end SetToolbars;
 

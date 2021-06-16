@@ -295,7 +295,7 @@ package body MainWindow is
       Tcl.Tk.Ada.Grid.Column_Configure
         (Master => Main_Window, Slave => Main_Frame, Options => "-weight 1");
       CreateActionToolbar;
-      CreateBookmarkMenu(CreateNew => True);
+      Create_Bookmark_Menu(Create_New => True);
       CreateItemToolbar;
       CreateMessagesUI;
       ActivateItems.Add_Commands;
