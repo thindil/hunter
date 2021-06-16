@@ -425,6 +425,7 @@ package body Preferences.UI is
 
    function Select_Colors_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
+      ThemeName: constant String := Name(Current(SubMenu));
    begin
       case Key is
          when Key_Home =>
@@ -440,6 +441,9 @@ package body Preferences.UI is
          when KEY_PPAGE =>
             Result := Driver(SubMenu, M_ScrollDown_Page);
          when 10 =>
+            if ThemeName /= "Close" then
+               Settings.Color_Theme := To_Unbounded_String(ThemeName);
+            end if;
             Show_Options_Tab(1);
             return OPTIONS_VIEW;
          when others =>
@@ -448,7 +452,7 @@ package body Preferences.UI is
       if Result = Menu_Ok then
          Refresh(MenuWindow2);
       end if;
-      return SECONDS_MENU;
+      return COLORS_MENU;
    end Select_Colors_Keys;
 
 end Preferences.UI;
