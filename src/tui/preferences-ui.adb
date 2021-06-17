@@ -318,6 +318,11 @@ package body Preferences.UI is
                when 11 =>
                   Settings.Show_Finished_Info :=
                     not Settings.Show_Finished_Info;
+               when 13 =>
+                  Settings.Delete_Files := not Settings.Delete_Files;
+               when 14 =>
+                  Settings.Clear_Trash_On_Exit :=
+                    not Settings.Clear_Trash_On_Exit;
                when others =>
                   null;
             end case;
