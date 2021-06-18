@@ -323,6 +323,9 @@ package body Preferences.UI is
                when 14 =>
                   Settings.Clear_Trash_On_Exit :=
                     not Settings.Clear_Trash_On_Exit;
+               when 16 =>
+                  Settings.Overwrite_On_Exist :=
+                    not Settings.Overwrite_On_Exist;
                when others =>
                   null;
             end case;
