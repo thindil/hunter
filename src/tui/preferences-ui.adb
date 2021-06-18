@@ -166,6 +166,52 @@ package body Preferences.UI is
                DialogForm := New_Form(Options_Fields);
                Set_Current(DialogForm, Options_Fields(2));
             end;
+         when 2 =>
+            declare
+               Options_Fields: constant Field_Array_Access :=
+                 new Field_Array(1 .. 39);
+               KeysLabels: constant array(1 .. 19) of Unbounded_String :=
+                 (To_Unbounded_String("Show bookmarks menu"),
+                  To_Unbounded_String("Search for the file or directory"),
+                  To_Unbounded_String("Show add new item menu"),
+                  To_Unbounded_String("Show delete menu"),
+                  To_Unbounded_String
+                    ("Show menu with information about the program"),
+                  To_Unbounded_String("Open selected file or directory"),
+                  To_Unbounded_String
+                    ("Select or unselect all files and directories"),
+                  To_Unbounded_String("Rename selected file or directory"),
+                  To_Unbounded_String("Copy selected files"),
+                  To_Unbounded_String("Move selected files"),
+                  To_Unbounded_String("Show the program preferences"),
+                  To_Unbounded_String
+                    ("Open selected file or directory with command"),
+                  To_Unbounded_String("File or directory information"),
+                  To_Unbounded_String("Preview file or directory"),
+                  To_Unbounded_String("Add bookmark to this directory"),
+                  To_Unbounded_String("Remove bookmark from this directory"),
+                  To_Unbounded_String("Execute selected program"),
+                  To_Unbounded_String
+                    ("Restore deleted file or directory from Trash"),
+                  To_Unbounded_String("Show the user defined actions"));
+            begin
+               for I in Options_Fields'First .. Options_Fields'Last - 1 loop
+                  if I mod 2 /= 0 then
+                     Options_Fields.all(I) := New_Field(1, 18, Line_Position(I / 2), 0, 0, 0);
+                     Set_Buffer(Options_Fields.all(I), 0, To_String(KeysLabels((I / 2) + 1)));
+                     FieldOptions := Get_Options(Options_Fields.all(I));
+                     FieldOptions.Edit := False;
+                     FieldOptions.Active := False;
+                     Set_Options(Options_Fields.all(I), FieldOptions);
+                  else
+                     Options_Fields.all(I) := New_Field(1, 18, Line_Position((I / 2) - 1), 20, 0, 0);
+                     Set_Buffer(Options_Fields.all(I), 0, "Test");
+                  end if;
+               end loop;
+               Options_Fields.all(39) := Null_Field;
+               DialogForm := New_Form(Options_Fields);
+               Set_Current(DialogForm, Options_Fields(2));
+            end;
          when others =>
             null;
       end case;
