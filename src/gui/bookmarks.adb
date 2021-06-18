@@ -33,15 +33,15 @@ with MainWindow; use MainWindow;
 
 package body Bookmarks is
 
-   -- ****iv* Bookmarks/Bookmarks.BookmarksList
+   -- ****iv* Bookmarks/Bookmarks.Bookmarks_List
    -- FUNCTION
    -- List of all bookmarked locations
    -- SOURCE
-   BookmarksList: Bookmarks_Container.Map;
+   Bookmarks_List: Bookmarks_Container.Map;
    -- ****
 
    procedure Create_Bookmark_Menu(Create_New: Boolean := False) is
-      XDGBookmarks: constant array(1 .. 7) of Unbounded_String :=
+      Xdg_Bookmarks: constant array(1 .. 7) of Unbounded_String :=
         (To_Unbounded_String("XDG_DESKTOP_DIR"),
          To_Unbounded_String("XDG_DOWNLOAD_DIR"),
          To_Unbounded_String("XDG_PUBLICSHARE_DIR"),
@@ -49,8 +49,8 @@ package body Bookmarks is
          To_Unbounded_String("XDG_MUSIC_DIR"),
          To_Unbounded_String("XDG_PICTURES_DIR"),
          To_Unbounded_String("XDG_VIDEOS_DIR"));
-      BookmarksMenu: Tk_Menu;
-      MenuButton: constant Ttk_MenuButton :=
+      Bookmarks_Menu: Tk_Menu;
+      Menu_Button: constant Ttk_MenuButton :=
         Get_Widget(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       Path: Unbounded_String;
       function GetXDGDirectory(Name: String) return Unbounded_String is
@@ -77,30 +77,30 @@ package body Bookmarks is
       end GetXDGDirectory;
    begin
       if Create_New then
-         BookmarksMenu := Create(".bookmarksmenu", "-tearoff false");
+         Bookmarks_Menu := Create(".bookmarksmenu", "-tearoff false");
          AddCommands;
       else
-         BookmarksMenu := Get_Widget(".bookmarksmenu");
-         Delete(BookmarksMenu, "0", "end");
+         Bookmarks_Menu := Get_Widget(".bookmarksmenu");
+         Delete(Bookmarks_Menu, "0", "end");
       end if;
-      BookmarksList.Clear;
-      BookmarksList.Include(Mc(Get_Context, "{Home}"), Value("HOME"));
+      Bookmarks_List.Clear;
+      Bookmarks_List.Include(Mc(Get_Context, "{Home}"), Value("HOME"));
       Add
-        (BookmarksMenu, "command",
+        (Bookmarks_Menu, "command",
          "-label {" & Mc(Get_Context, "{Home}") &
          "} -command {GoToBookmark {" & Value("HOME") & "}}");
-      Set_XDGBookmarks_List_Loop :
-      for I in XDGBookmarks'Range loop
-         Path := GetXDGDirectory(To_String(XDGBookmarks(I)));
+      Set_Xdg_Bookmarks_List_Loop :
+      for I in Xdg_Bookmarks'Range loop
+         Path := GetXDGDirectory(To_String(Xdg_Bookmarks(I)));
          if Ada.Directories.Exists(To_String(Path)) then
-            BookmarksList.Include
+            Bookmarks_List.Include
               (Simple_Name(To_String(Path)), To_String(Path));
             Add
-              (BookmarksMenu, "command",
+              (Bookmarks_Menu, "command",
                "-label {" & Simple_Name(To_String(Path)) &
                "} -command {GoToBookmark {" & To_String(Path) & "}}");
          end if;
-      end loop Set_XDGBookmarks_List_Loop;
+      end loop Set_Xdg_Bookmarks_List_Loop;
       if Ada.Directories.Exists
           (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
          declare
@@ -118,18 +118,18 @@ package body Bookmarks is
                Path := Unbounded_Slice(Line, 8, Length(Line));
                BookmarkExist := False;
                Check_Bookmark_Existence_Loop :
-               for I in BookmarksList.Iterate loop
-                  if BookmarksList(I) = To_String(Path) then
+               for I in Bookmarks_List.Iterate loop
+                  if Bookmarks_List(I) = To_String(Path) then
                      BookmarkExist := True;
                      exit Check_Bookmark_Existence_Loop;
                   end if;
                end loop Check_Bookmark_Existence_Loop;
                if not BookmarkExist and
                  Ada.Directories.Exists(To_String(Path)) then
-                  BookmarksList.Include
+                  Bookmarks_List.Include
                     (Simple_Name(To_String(Path)), To_String(Path));
                   Add
-                    (BookmarksMenu, "command",
+                    (Bookmarks_Menu, "command",
                      "-label {" & Simple_Name(To_String(Path)) &
                      "} -command {GoToBookmark {" & To_String(Path) & "}}");
                end if;
@@ -138,12 +138,12 @@ package body Bookmarks is
             Close(File);
          end;
       end if;
-      BookmarksList.Include(Mc(Get_Context, "{Enter destination}"), "");
+      Bookmarks_List.Include(Mc(Get_Context, "{Enter destination}"), "");
       Add
-        (BookmarksMenu, "command",
+        (Bookmarks_Menu, "command",
          "-label {" & Mc(Get_Context, "{Enter destination}") &
          "} -command SetDestination");
-      configure(MenuButton, "-menu .bookmarksmenu");
+      configure(Menu_Button, "-menu .bookmarksmenu");
    end Create_Bookmark_Menu;
 
    procedure Set_Bookmark_Button is
@@ -160,8 +160,8 @@ package body Bookmarks is
          return;
       end if;
       Set_Bookmark_Button_Loop :
-      for I in BookmarksList.Iterate loop
-         if BookmarksList(I) = Current_Selected then
+      for I in Bookmarks_List.Iterate loop
+         if Bookmarks_List(I) = Current_Selected then
             if Natural'Value
                 (Index(Menu, "{" & Bookmarks_Container.Key(I) & "}")) <
               8 then
