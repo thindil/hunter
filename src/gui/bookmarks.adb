@@ -53,20 +53,20 @@ package body Bookmarks is
       Menu_Button: constant Ttk_MenuButton :=
         Get_Widget(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       Path: Unbounded_String;
-      function GetXDGDirectory(Name: String) return Unbounded_String is
+      function Get_Xdg_Directory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String;
-         EqualIndex: Natural;
+         Equal_Index: Natural;
       begin
          if Value(Name, "") = "" then
             Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
             Load_Bookmarks_Loop :
             while not End_Of_File(File) loop
                Line := Get_Line(File);
-               EqualIndex := Index(Line, "=");
-               if EqualIndex > 0 then
-                  if Slice(Line, 1, EqualIndex - 1) = Name then
-                     Set(Name, Slice(Line, EqualIndex + 2, Length(Line) - 1));
+               Equal_Index := Index(Line, "=");
+               if Equal_Index > 0 then
+                  if Slice(Line, 1, Equal_Index - 1) = Name then
+                     Set(Name, Slice(Line, Equal_Index + 2, Length(Line) - 1));
                      exit Load_Bookmarks_Loop;
                   end if;
                end if;
@@ -74,7 +74,7 @@ package body Bookmarks is
             Close(File);
          end if;
          return To_Unbounded_String(Expand_Path(Value(Name)));
-      end GetXDGDirectory;
+      end Get_Xdg_Directory;
    begin
       if Create_New then
          Bookmarks_Menu := Create(".bookmarksmenu", "-tearoff false");
@@ -91,7 +91,7 @@ package body Bookmarks is
          "} -command {GoToBookmark {" & Value("HOME") & "}}");
       Set_Xdg_Bookmarks_List_Loop :
       for I in Xdg_Bookmarks'Range loop
-         Path := GetXDGDirectory(To_String(Xdg_Bookmarks(I)));
+         Path := Get_Xdg_Directory(To_String(Xdg_Bookmarks(I)));
          if Ada.Directories.Exists(To_String(Path)) then
             Bookmarks_List.Include
               (Simple_Name(To_String(Path)), To_String(Path));
