@@ -197,15 +197,24 @@ package body Preferences.UI is
             begin
                for I in Options_Fields'First .. Options_Fields'Last - 1 loop
                   if I mod 2 /= 0 then
-                     Options_Fields.all(I) := New_Field(1, 18, Line_Position(I / 2), 0, 0, 0);
-                     Set_Buffer(Options_Fields.all(I), 0, To_String(KeysLabels((I / 2) + 1)));
+                     Options_Fields.all(I) :=
+                       New_Field(1, 44, Line_Position(I / 2), 0, 0, 0);
+                     Set_Buffer
+                       (Options_Fields.all(I), 0,
+                        To_String(KeysLabels((I / 2) + 1)));
                      FieldOptions := Get_Options(Options_Fields.all(I));
                      FieldOptions.Edit := False;
                      FieldOptions.Active := False;
                      Set_Options(Options_Fields.all(I), FieldOptions);
                   else
-                     Options_Fields.all(I) := New_Field(1, 18, Line_Position((I / 2) - 1), 20, 0, 0);
-                     Set_Buffer(Options_Fields.all(I), 0, "Test");
+                     Options_Fields.all(I) :=
+                       New_Field(1, 18, Line_Position((I / 2) - 1), 46, 0, 0);
+                     Set_Buffer
+                       (Options_Fields.all(I), 0,
+                        To_String(Accelerators((I / 2) + 1)));
+                     FieldOptions := Get_Options(Options_Fields.all(I));
+                     FieldOptions.Edit := False;
+                     Set_Options(Options_Fields.all(I), FieldOptions);
                   end if;
                end loop;
                Options_Fields.all(39) := Null_Field;
