@@ -349,8 +349,10 @@ package body Preferences.UI is
    end Show_Colors_Menu;
 
    function Set_Option(TabIndex, OptionIndex: Positive) return UI_Locations is
+      Visibility: Cursor_Visibility := Invisible;
    begin
       case TabIndex is
+         -- The general preferences of the program
          when 1 =>
             case OptionIndex is
                when 2 =>
@@ -384,6 +386,18 @@ package body Preferences.UI is
                when others =>
                   null;
             end case;
+         -- Keyboard shortcuts for the program
+         when 2 =>
+            Set_Cursor_Visibility(Visibility);
+            MenuWindow2 := Create(5, 44, Lines / 3, Columns / 3);
+            Move_Cursor(MenuWindow2, 1, 1);
+            Add(MenuWindow2, "Press a key which will be set as shortcut.");
+            Move_Cursor(MenuWindow2, 2, 1);
+            Add(MenuWindow2, "Press Escape twice for cancel.");
+            Box(MenuWindow2, Default_Character, Default_Character);
+            Refresh;
+            Refresh(MenuWindow2);
+            return SHORTCUT_FORM;
          when others =>
             null;
       end case;
@@ -524,8 +538,11 @@ package body Preferences.UI is
    end Select_Colors_Keys;
 
    function Set_Shortcut_Keys(Key: Key_Code) return UI_Locations is
-      pragma Unreferenced(Key);
    begin
+      if Key = 27 then
+         Show_Options_Tab(2);
+         return OPTIONS_VIEW;
+      end if;
       Show_Options_Tab(2);
       return OPTIONS_VIEW;
    end Set_Shortcut_Keys;
