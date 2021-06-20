@@ -66,4 +66,16 @@ package Preferences.UI is
    function Select_Colors_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* PreferencesUITUI/PreferencesUITUI.Set_Shortcut_Keys
+   -- FUNCTION
+   -- Handles keys events when the selecting the program shortcut form is
+   -- active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Set_Shortcut_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
 end Preferences.UI;

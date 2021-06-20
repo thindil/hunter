@@ -523,4 +523,11 @@ package body Preferences.UI is
       return COLORS_MENU;
    end Select_Colors_Keys;
 
+   function Set_Shortcut_Keys(Key: Key_Code) return UI_Locations is
+      pragma Unreferenced(Key);
+   begin
+      Show_Options_Tab(2);
+      return OPTIONS_VIEW;
+   end Set_Shortcut_Keys;
+
 end Preferences.UI;
