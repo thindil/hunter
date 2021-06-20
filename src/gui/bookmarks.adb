@@ -52,11 +52,11 @@ package body Bookmarks is
       Bookmarks_Menu: Tk_Menu;
       Menu_Button: constant Ttk_MenuButton :=
         Get_Widget(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
-      Path: Unbounded_String;
+      Path: Unbounded_String := Null_Unbounded_String;
       function Get_Xdg_Directory(Name: String) return Unbounded_String is
          File: File_Type;
-         Line: Unbounded_String;
-         Equal_Index: Natural;
+         Line: Unbounded_String := Null_Unbounded_String;
+         Equal_Index: Natural := 0;
       begin
          if Value(Name, "") = "" then
             Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
