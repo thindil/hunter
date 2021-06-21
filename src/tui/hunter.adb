@@ -54,6 +54,7 @@ procedure Hunter is
      Ada.Environment_Variables.Value("HOME") & "/.cache/hunter/error.log";
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
+   AltKey: Boolean;
    procedure ExitFromProgram is
    begin
       Save_Preferences;
@@ -141,6 +142,7 @@ begin
    Main_Program_Loop :
    loop
       Key := Get_Keystroke;
+      AltKey := False;
       -- Escape key pressed
       if Key = 27 then
          Key := Get_Keystroke;
@@ -167,6 +169,8 @@ begin
                when others =>
                   null;
             end case;
+         elsif Key > 1 then
+            AltKey := True;
          end if;
          exit Main_Program_Loop when Key = 113;
       end if;
@@ -259,7 +263,7 @@ begin
             when COLORS_MENU =>
                UILocation := Select_Colors_Keys(Key);
             when SHORTCUT_FORM =>
-               UILocation := Set_Shortcut_Keys(Key);
+               UILocation := Set_Shortcut_Keys(Key, AltKey);
          end case;
       end if;
    end loop Main_Program_Loop;
