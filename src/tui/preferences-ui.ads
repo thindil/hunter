@@ -71,11 +71,12 @@ package Preferences.UI is
    -- Handles keys events when the selecting the program shortcut form is
    -- active element of UI
    -- PARAMETERS
-   -- Key - Key pressed by the user
+   -- Key    - Key pressed by the user
+   -- AltKey - If True, ALT key was pressed too
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Set_Shortcut_Keys(Key: Key_Code) return UI_Locations;
+   function Set_Shortcut_Keys(Key: Key_Code; AltKey: Boolean) return UI_Locations;
    -- ****
 
 end Preferences.UI;
