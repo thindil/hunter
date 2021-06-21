@@ -42,24 +42,27 @@ package body Bookmarks is
 
    procedure Create_Bookmark_Menu(Create_New: Boolean := False) is
       Xdg_Bookmarks: constant array(1 .. 7) of Unbounded_String :=
-        (To_Unbounded_String("XDG_DESKTOP_DIR"),
-         To_Unbounded_String("XDG_DOWNLOAD_DIR"),
-         To_Unbounded_String("XDG_PUBLICSHARE_DIR"),
-         To_Unbounded_String("XDG_DOCUMENTS_DIR"),
-         To_Unbounded_String("XDG_MUSIC_DIR"),
-         To_Unbounded_String("XDG_PICTURES_DIR"),
-         To_Unbounded_String("XDG_VIDEOS_DIR"));
+        (1 => To_Unbounded_String(Source => "XDG_DESKTOP_DIR"),
+         2 => To_Unbounded_String(Source => "XDG_DOWNLOAD_DIR"),
+         3 => To_Unbounded_String(Source => "XDG_PUBLICSHARE_DIR"),
+         4 => To_Unbounded_String(Source => "XDG_DOCUMENTS_DIR"),
+         5 => To_Unbounded_String(Source => "XDG_MUSIC_DIR"),
+         6 => To_Unbounded_String(Source => "XDG_PICTURES_DIR"),
+         7 => To_Unbounded_String(Source => "XDG_VIDEOS_DIR"));
       Bookmarks_Menu: Tk_Menu;
       Menu_Button: constant Ttk_MenuButton :=
-        Get_Widget(".mainframe.toolbars.actiontoolbar.bookmarksbutton");
+        Get_Widget
+          (pathName => ".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       Path: Unbounded_String := Null_Unbounded_String;
       function Get_Xdg_Directory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String := Null_Unbounded_String;
          Equal_Index: Natural := 0;
       begin
-         if Value(Name, "") = "" then
-            Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
+         if Value(Name => Name, Default => "") = "" then
+            Open
+              (File => File, Mode => In_File,
+               Name => Value(Name => "HOME") & "/.config/user-dirs.dirs");
             Load_Bookmarks_Loop :
             while not End_Of_File(File) loop
                Line := Get_Line(File);
