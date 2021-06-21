@@ -20,6 +20,7 @@ with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Inotify; use Inotify;
 with Modules; use Modules;
+with Ada.Text_IO; use Ada.Text_IO;
 
 package body Preferences.UI is
 
@@ -537,11 +538,17 @@ package body Preferences.UI is
       return COLORS_MENU;
    end Select_Colors_Keys;
 
-   function Set_Shortcut_Keys(Key: Key_Code) return UI_Locations is
+   function Set_Shortcut_Keys(Key: Key_Code; AltKey: Boolean) return UI_Locations is
+      -- CurrentOption: constant Positive := Get_Index(Current(DialogForm));
    begin
       if Key = 27 then
          Show_Options_Tab(2);
          return OPTIONS_VIEW;
+      end if;
+      if AltKey then
+         Ada.Text_IO.Put_Line(Standard_Error, "Alt+" & Key_Code'Image(Key));
+      else
+         Ada.Text_IO.Put_Line(Standard_Error, Key_Code'Image(Key));
       end if;
       Show_Options_Tab(2);
       return OPTIONS_VIEW;
