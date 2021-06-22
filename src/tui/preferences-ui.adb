@@ -540,7 +540,7 @@ package body Preferences.UI is
 
    function Set_Shortcut_Keys
      (Key: Key_Code; AltKey: Boolean) return UI_Locations is
-      -- CurrentOption: constant Positive := Get_Index(Current(DialogForm));
+      CurrentOption: constant Positive := Get_Index(Current(DialogForm));
       Key_Value: constant String := Key_Name(Key);
       New_Key: Unbounded_String := Null_Unbounded_String;
    begin
@@ -559,6 +559,13 @@ package body Preferences.UI is
                 ("Control-" & To_Lower(Key_Value(Key_Value'Last)));
          end if;
       end if;
+      for Accelerator of Accelerators loop
+         if Accelerator = New_Key then
+            Show_Options_Tab(2);
+            return OPTIONS_VIEW;
+         end if;
+      end loop;
+      Accelerators((CurrentOption / 2) + 1) := New_Key;
       Show_Options_Tab(2);
       return OPTIONS_VIEW;
    end Set_Shortcut_Keys;
