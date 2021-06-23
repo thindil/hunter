@@ -1425,7 +1425,7 @@ package body Preferences.Commands is
       Add_Command("ChangeShortcut", Change_Shortcut_Command'Access);
       Add_Command
         ("RestoreDefaultShortcuts", Restore_Default_Shortcuts_Command'Access);
-      Add_Command("Add_Command", Add_Command_Command'Access);
+      Add_Command("AddCommand", Add_Command_Command'Access);
       Add_Command("EditCommand", Edit_Command_Command'Access);
       Add_Command("DeleteCommand", Delete_Command_Command'Access);
       Add_Command("ResetCommand", Reset_Command_Command'Access);
