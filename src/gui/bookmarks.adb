@@ -93,17 +93,22 @@ package body Bookmarks is
          AddCommands;
       else
          Bookmarks_Menu := Get_Widget(pathName => ".bookmarksmenu");
-         Delete(Bookmarks_Menu, "0", "end");
+         Delete
+           (MenuWidget => Bookmarks_Menu, StartIndex => "0",
+            EndIndex => "end");
       end if;
       Bookmarks_List.Clear;
-      Bookmarks_List.Include(Mc(Get_Context, "{Home}"), Value("HOME"));
+      Bookmarks_List.Include
+        (Key => Mc(Interp => Get_Context, Src_String => "{Home}"),
+         New_Item => Value(Name => "HOME"));
       Add
-        (Bookmarks_Menu, "command",
-         "-label {" & Mc(Get_Context, "{Home}") &
-         "} -command {GoToBookmark {" & Value("HOME") & "}}");
+        (MenuWidget => Bookmarks_Menu, EntryType => "command",
+         Options =>
+           "-label {" & Mc(Interp => Get_Context, Src_String => "{Home}") &
+           "} -command {GoToBookmark {" & Value(Name => "HOME") & "}}");
       Set_Xdg_Bookmarks_List_Loop :
-      for I in Xdg_Bookmarks'Range loop
-         Path := Get_Xdg_Directory(To_String(Xdg_Bookmarks(I)));
+      for Bookmark of Xdg_Bookmarks loop
+         Path := Get_Xdg_Directory(To_String(Bookmark));
          if Ada.Directories.Exists(To_String(Path)) then
             Bookmarks_List.Include
               (Simple_Name(To_String(Path)), To_String(Path));
