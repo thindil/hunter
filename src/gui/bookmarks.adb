@@ -108,18 +108,22 @@ package body Bookmarks is
            "} -command {GoToBookmark {" & Value(Name => "HOME") & "}}");
       Set_Xdg_Bookmarks_List_Loop :
       for Bookmark of Xdg_Bookmarks loop
-         Path := Get_Xdg_Directory(To_String(Bookmark));
-         if Ada.Directories.Exists(To_String(Path)) then
+         Path := Get_Xdg_Directory(Name => To_String(Source => Bookmark));
+         if Ada.Directories.Exists(Name => To_String(Source => Path)) then
             Bookmarks_List.Include
-              (Simple_Name(To_String(Path)), To_String(Path));
+              (Key => Simple_Name(Name => To_String(Source => Path)),
+               New_Item => To_String(Source => Path));
             Add
-              (Bookmarks_Menu, "command",
-               "-label {" & Simple_Name(To_String(Path)) &
-               "} -command {GoToBookmark {" & To_String(Path) & "}}");
+              (MenuWidget => Bookmarks_Menu, EntryType => "command",
+               Options =>
+                 "-label {" & Simple_Name(Name => To_String(Source => Path)) &
+                 "} -command {GoToBookmark {" & To_String(Source => Path) &
+                 "}}");
          end if;
       end loop Set_Xdg_Bookmarks_List_Loop;
       if Ada.Directories.Exists
-          (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
+          (Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks") then
+         Add_User_Bookmarks_Block :
          declare
             File: File_Type;
             Line, Path: Unbounded_String;
@@ -153,7 +157,7 @@ package body Bookmarks is
                <<End_Of_Loop>>
             end loop Load_User_Bookmarks_Loop;
             Close(File);
-         end;
+         end Add_User_Bookmarks_Block;
       end if;
       Bookmarks_List.Include(Mc(Get_Context, "{Enter destination}"), "");
       Add
