@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Characters.Handling; use Ada.Characters.Handling;
+with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with GNAT.String_Split; use GNAT.String_Split;
@@ -21,6 +22,7 @@ with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Inotify; use Inotify;
 with Modules; use Modules;
+with UserCommands; use UserCommands;
 
 package body Preferences.UI is
 
@@ -221,6 +223,23 @@ package body Preferences.UI is
                Options_Fields.all(39) := Null_Field;
                DialogForm := New_Form(Options_Fields);
                Set_Current(DialogForm, Options_Fields(2));
+            end;
+         when 3 =>
+            declare
+               Options_Fields: constant Field_Array_Access :=
+                 new Field_Array
+                   (1 .. Positive((UserCommandsList.Length * 3) + 2));
+            begin
+               Options_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
+               Set_Buffer(Options_Fields.all(1), 0, "Add new command");
+               FieldOptions := Get_Options(Options_Fields.all(1));
+               FieldOptions.Edit := False;
+               Set_Options(Options_Fields.all(1), FieldOptions);
+               for I in 2 .. Options_Fields'Last loop
+                  Options_Fields.all(I) := Null_Field;
+               end loop;
+               DialogForm := New_Form(Options_Fields);
+               Set_Current(DialogForm, Options_Fields(1));
             end;
          when others =>
             null;
