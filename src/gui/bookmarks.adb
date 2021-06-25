@@ -126,8 +126,8 @@ package body Bookmarks is
          Add_User_Bookmarks_Block :
          declare
             File: File_Type;
-            Line, Path: Unbounded_String;
-            BookmarkExist: Boolean;
+            Line, Bookmark_Path: Unbounded_String;
+            Bookmark_Exist: Boolean;
          begin
             Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
             Load_User_Bookmarks_Loop :
@@ -136,23 +136,25 @@ package body Bookmarks is
                if Length(Line) < 7 or else Slice(Line, 1, 7) /= "file://" then
                   goto End_Of_Loop;
                end if;
-               Path := Unbounded_Slice(Line, 8, Length(Line));
-               BookmarkExist := False;
+               Bookmark_Path := Unbounded_Slice(Line, 8, Length(Line));
+               Bookmark_Exist := False;
                Check_Bookmark_Existence_Loop :
                for I in Bookmarks_List.Iterate loop
-                  if Bookmarks_List(I) = To_String(Path) then
-                     BookmarkExist := True;
+                  if Bookmarks_List(I) = To_String(Bookmark_Path) then
+                     Bookmark_Exist := True;
                      exit Check_Bookmark_Existence_Loop;
                   end if;
                end loop Check_Bookmark_Existence_Loop;
-               if not BookmarkExist and
-                 Ada.Directories.Exists(To_String(Path)) then
+               if not Bookmark_Exist and
+                 Ada.Directories.Exists(To_String(Bookmark_Path)) then
                   Bookmarks_List.Include
-                    (Simple_Name(To_String(Path)), To_String(Path));
+                    (Simple_Name(To_String(Bookmark_Path)),
+                     To_String(Bookmark_Path));
                   Add
                     (Bookmarks_Menu, "command",
-                     "-label {" & Simple_Name(To_String(Path)) &
-                     "} -command {GoToBookmark {" & To_String(Path) & "}}");
+                     "-label {" & Simple_Name(To_String(Bookmark_Path)) &
+                     "} -command {GoToBookmark {" & To_String(Bookmark_Path) &
+                     "}}");
                end if;
                <<End_Of_Loop>>
             end loop Load_User_Bookmarks_Loop;
