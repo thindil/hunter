@@ -228,8 +228,9 @@ package body Preferences.UI is
             declare
                Options_Fields: constant Field_Array_Access :=
                  new Field_Array
-                   (1 .. Positive((UserCommandsList.Length * 3) + 6));
+                   (1 .. Positive((UserCommandsList.Length * 5) + 6));
                Index: Positive := 6;
+               Line: Line_Position := 3;
             begin
                Options_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
                Set_Buffer(Options_Fields.all(1), 0, "Add new command");
@@ -260,11 +261,46 @@ package body Preferences.UI is
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(5), FieldOptions);
-               for Command of UserCommandsList loop
-                  Options_Fields.all(Index) := Null_Field;
-                  Options_Fields.all(Index + 1) := Null_Field;
-                  Options_Fields.all(Index + 2) := Null_Field;
-                  Index := Index + 3;
+               for I in UserCommandsList.Iterate loop
+                  Options_Fields.all(Index) := New_Field(1, 20, Line, 0, 0, 0);
+                  Set_Buffer
+                    (Options_Fields.all(Index), 0, Commands_Container.Key(I));
+                  FieldOptions := Get_Options(Options_Fields.all(Index));
+                  FieldOptions.Edit := False;
+                  FieldOptions.Active := False;
+                  Set_Options(Options_Fields.all(Index), FieldOptions);
+                  Options_Fields.all(Index + 1) :=
+                    New_Field(1, 20, Line, 20, 0, 0);
+                  Set_Buffer
+                    (Options_Fields.all(Index + 1), 0,
+                     To_String(UserCommandsList(I).Command));
+                  FieldOptions := Get_Options(Options_Fields.all(Index));
+                  FieldOptions.Edit := False;
+                  FieldOptions.Active := False;
+                  Set_Options(Options_Fields.all(Index + 1), FieldOptions);
+                  Options_Fields.all(Index + 2) :=
+                    New_Field(1, 20, Line, 40, 0, 0);
+                  Set_Buffer
+                    (Options_Fields.all(Index + 2), 0,
+                     (if UserCommandsList(I).NeedOutput then "Yes" else "No"));
+                  FieldOptions := Get_Options(Options_Fields.all(Index));
+                  FieldOptions.Edit := False;
+                  FieldOptions.Active := False;
+                  Set_Options(Options_Fields.all(Index + 2), FieldOptions);
+                  Options_Fields.all(Index + 3) :=
+                    New_Field(1, 5, Line, 50, 0, 0);
+                  Set_Buffer(Options_Fields.all(Index + 3), 0, "Edit");
+                  FieldOptions := Get_Options(Options_Fields.all(Index + 3));
+                  FieldOptions.Edit := False;
+                  Set_Options(Options_Fields.all(Index + 3), FieldOptions);
+                  Options_Fields.all(Index + 4) :=
+                    New_Field(1, 6, Line, 57, 0, 0);
+                  Set_Buffer(Options_Fields.all(Index + 4), 0, "Delete");
+                  FieldOptions := Get_Options(Options_Fields.all(Index + 4));
+                  FieldOptions.Edit := False;
+                  Set_Options(Options_Fields.all(Index + 4), FieldOptions);
+                  Index := Index + 5;
+                  Line := Line + 1;
                end loop;
                Options_Fields.all(Options_Fields'Last) := Null_Field;
                DialogForm := New_Form(Options_Fields);
