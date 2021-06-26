@@ -126,8 +126,8 @@ package body Bookmarks is
          Add_User_Bookmarks_Block :
          declare
             File: File_Type;
-            Line, Bookmark_Path: Unbounded_String;
-            Bookmark_Exist: Boolean;
+            Line, Bookmark_Path: Unbounded_String := Null_Unbounded_String;
+            Bookmark_Exist: Boolean := False;
          begin
             Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
             Load_User_Bookmarks_Loop :
