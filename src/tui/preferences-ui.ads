@@ -76,7 +76,20 @@ package Preferences.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Set_Shortcut_Keys(Key: Key_Code; AltKey: Boolean) return UI_Locations;
+   function Set_Shortcut_Keys
+     (Key: Key_Code; AltKey: Boolean) return UI_Locations;
+   -- ****
+
+   -- ****f* PreferencesUITUI/PreferencesUITUI.Add_Command_Keys
+   -- FUNCTION
+   -- Handles keys events when the adding the new user command form is active
+   -- element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Add_Command_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end Preferences.UI;
