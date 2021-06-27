@@ -29,7 +29,7 @@ package body Preferences.UI is
    OptionsMenu, SubMenu: Menu;
    MenuWindow, MenuWindow2: Window;
    OptionsWindow: Window;
-   DialogForm: Forms.Form;
+   DialogForm, CommandForm: Forms.Form;
    Option_Selected: Boolean := True;
 
    procedure Show_Options_Tab(Tab: Positive) is
@@ -435,6 +435,39 @@ package body Preferences.UI is
 
    function Set_Option(TabIndex, OptionIndex: Positive) return UI_Locations is
       Visibility: Cursor_Visibility := Invisible;
+      procedure Show_Command_Form is
+         Command_Fields: constant Field_Array_Access :=
+            new Field_Array(1 .. 8);
+         FormHeight: Line_Position;
+         FormLength: Column_Position;
+         FieldOptions: Field_Option_Set;
+      begin
+         Command_Fields.all(1) := New_Field(1, 12, 0, 0, 0, 0);
+         Set_Buffer(Command_Fields.all(1), 0, "Menu label:");
+         FieldOptions := Get_Options(Command_Fields.all(1));
+         FieldOptions.Edit := False;
+         FieldOptions.Active := False;
+         Set_Options(Command_Fields.all(1), FieldOptions);
+         Command_Fields.all(2) := Null_Field;
+         Command_Fields.all(3) := Null_Field;
+         Command_Fields.all(4) := Null_Field;
+         Command_Fields.all(5) := Null_Field;
+         Command_Fields.all(6) := Null_Field;
+         Command_Fields.all(7) := Null_Field;
+         Command_Fields.all(8) := Null_Field;
+         CommandForm := New_Form(Command_Fields);
+         Set_Options(CommandForm, (others => False));
+         Scale(CommandForm, FormHeight, FormLength);
+         MenuWindow2 :=
+            Create(FormHeight + 2, FormLength + 2, Lines / 3, Columns / 3);
+         Set_Window(CommandForm, MenuWindow2);
+         Set_Sub_Window
+            (CommandForm,
+            Derived_Window(MenuWindow2, FormHeight, FormLength, 1, 1));
+         Box(MenuWindow2, Default_Character, Default_Character);
+         Post(CommandForm);
+         Refresh(MenuWindow2);
+      end Show_Command_Form;
    begin
       case TabIndex is
          -- The general preferences of the program
@@ -483,6 +516,15 @@ package body Preferences.UI is
             Refresh;
             Refresh(MenuWindow2);
             return SHORTCUT_FORM;
+         -- The user defined commands
+         when 3 =>
+            case OptionIndex is
+               when 1 =>
+                  Show_Command_Form;
+                  return COMMAND_FORM;
+               when others =>
+                  null;
+            end case;
          when others =>
             null;
       end case;
