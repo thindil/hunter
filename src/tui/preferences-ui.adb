@@ -654,4 +654,10 @@ package body Preferences.UI is
       return OPTIONS_VIEW;
    end Set_Shortcut_Keys;
 
+   function Add_Command_Keys(Key: Key_Code) return UI_Locations is
+      pragma Unreferenced(Key);
+   begin
+      return COMMAND_FORM;
+   end Add_Command_Keys;
+
 end Preferences.UI;

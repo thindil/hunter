@@ -202,7 +202,7 @@ package body DeleteItems is
             else
                Append
                  (DeleteList,
-                  "  " & SelectedItems(I) & "...(and its content)" & LF);
+                  "  " & SelectedItems(I) & " (and its content)" & LF);
             end if;
          elsif Length(SelectedItems(I)) > 27 then
             Append
