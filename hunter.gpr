@@ -56,7 +56,8 @@ project hunter is
             for Default_Switches ("ada") use ("-O2",
                "-ffunction-sections",
                "-fdata-sections",
-               "-s");
+               "-s",
+               "-flto");
          when "analyze" =>
             for Default_Switches ("ada") use ("-pg",
                "-fprofile-arcs",
@@ -73,7 +74,8 @@ project hunter is
                "-lmagic",
                "-Wl,-rpath,$ORIGIN/../lib",
                "-s",
-               "-O2");
+               "-O2",
+               "-flto");
          when "analyze" =>
             for Default_Switches ("ada") use ("-no-pie",
                "-pg",
