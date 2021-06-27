@@ -448,9 +448,14 @@ package body Preferences.UI is
          FieldOptions.Edit := False;
          FieldOptions.Active := False;
          Set_Options(Command_Fields.all(1), FieldOptions);
-         Command_Fields.all(2) := Null_Field;
-         Command_Fields.all(3) := Null_Field;
-         Command_Fields.all(4) := Null_Field;
+         Command_Fields.all(2) := New_Field(1, 20, 1, 0, 0, 0);
+         Command_Fields.all(3) := New_Field(1, 19, 2, 0, 0, 0);
+         Set_Buffer(Command_Fields.all(3), 0, "Command to execute:");
+         FieldOptions := Get_Options(Command_Fields.all(3));
+         FieldOptions.Edit := False;
+         FieldOptions.Active := False;
+         Set_Options(Command_Fields.all(3), FieldOptions);
+         Command_Fields.all(4) := New_Field(1, 30, 3, 0, 0, 0);
          Command_Fields.all(5) := Null_Field;
          Command_Fields.all(6) := Null_Field;
          Command_Fields.all(7) := Null_Field;
