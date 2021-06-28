@@ -274,7 +274,7 @@ package body Preferences.UI is
                   Set_Buffer
                     (Options_Fields.all(Index + 1), 0,
                      To_String(UserCommandsList(I).Command));
-                  FieldOptions := Get_Options(Options_Fields.all(Index));
+                  FieldOptions := Get_Options(Options_Fields.all(Index + 1));
                   FieldOptions.Edit := False;
                   FieldOptions.Active := False;
                   Set_Options(Options_Fields.all(Index + 1), FieldOptions);
@@ -283,7 +283,7 @@ package body Preferences.UI is
                   Set_Buffer
                     (Options_Fields.all(Index + 2), 0,
                      (if UserCommandsList(I).NeedOutput then "Yes" else "No"));
-                  FieldOptions := Get_Options(Options_Fields.all(Index));
+                  FieldOptions := Get_Options(Options_Fields.all(Index + 2));
                   FieldOptions.Edit := False;
                   FieldOptions.Active := False;
                   Set_Options(Options_Fields.all(Index + 2), FieldOptions);
@@ -437,7 +437,7 @@ package body Preferences.UI is
       Visibility: Cursor_Visibility := Invisible;
       procedure Show_Command_Form is
          Command_Fields: constant Field_Array_Access :=
-            new Field_Array(1 .. 8);
+           new Field_Array(1 .. 8);
          FormHeight: Line_Position;
          FormLength: Column_Position;
          FieldOptions: Field_Option_Set;
@@ -464,10 +464,10 @@ package body Preferences.UI is
          Set_Options(CommandForm, (others => False));
          Scale(CommandForm, FormHeight, FormLength);
          MenuWindow2 :=
-            Create(FormHeight + 2, FormLength + 2, Lines / 3, Columns / 3);
+           Create(FormHeight + 2, FormLength + 2, Lines / 3, Columns / 3);
          Set_Window(CommandForm, MenuWindow2);
          Set_Sub_Window
-            (CommandForm,
+           (CommandForm,
             Derived_Window(MenuWindow2, FormHeight, FormLength, 1, 1));
          Box(MenuWindow2, Default_Character, Default_Character);
          Post(CommandForm);
