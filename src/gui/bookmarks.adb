@@ -160,28 +160,35 @@ package body Bookmarks is
                        Simple_Name(Name => To_String(Source => Bookmark_Path)),
                      New_Item => To_String(Source => Bookmark_Path));
                   Add
-                    (Bookmarks_Menu, "command",
-                     "-label {" & Simple_Name(To_String(Bookmark_Path)) &
-                     "} -command {GoToBookmark {" & To_String(Bookmark_Path) &
-                     "}}");
+                    (MenuWidget => Bookmarks_Menu, EntryType => "command",
+                     Options =>
+                       "-label {" &
+                       Simple_Name
+                         (Name => To_String(Source => Bookmark_Path)) &
+                       "} -command {GoToBookmark {" &
+                       To_String(Source => Bookmark_Path) & "}}");
                end if;
                <<End_Of_Loop>>
             end loop Load_User_Bookmarks_Loop;
-            Close(File);
+            Close(File => File);
          end Add_User_Bookmarks_Block;
       end if;
-      Bookmarks_List.Include(Mc(Get_Context, "{Enter destination}"), "");
+      Bookmarks_List.Include
+        (Key => Mc(Interp => Get_Context, Src_String => "{Enter destination}"),
+         New_Item => "");
       Add
-        (Bookmarks_Menu, "command",
-         "-label {" & Mc(Get_Context, "{Enter destination}") &
-         "} -command SetDestination");
-      configure(Menu_Button, "-menu .bookmarksmenu");
+        (MenuWidget => Bookmarks_Menu, EntryType => "command",
+         Options =>
+           "-label {" &
+           Mc(Interp => Get_Context, Src_String => "{Enter destination}") &
+           "} -command SetDestination");
+      configure(Widgt => Menu_Button, options => "-menu .bookmarksmenu");
    end Create_Bookmark_Menu;
 
    procedure Set_Bookmark_Button is
       Button: Ttk_Button :=
-        Get_Widget(".mainframe.toolbars.itemtoolbar.addbutton");
-      Menu: constant Tk_Menu := Get_Widget(".bookmarksmenu");
+        Get_Widget(pathName => ".mainframe.toolbars.itemtoolbar.addbutton");
+      Menu: constant Tk_Menu := Get_Widget(pathName => ".bookmarksmenu");
    begin
       Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       Button.Name :=
