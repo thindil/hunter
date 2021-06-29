@@ -26,10 +26,10 @@ with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
-with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
-with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
-with Bookmarks.Commands; use Bookmarks.Commands;
-with MainWindow; use MainWindow;
+with Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkMenuButton;
+with Bookmarks.Commands;
+with MainWindow;
 
 package body Bookmarks is
 
@@ -40,7 +40,22 @@ package body Bookmarks is
    Bookmarks_List: Bookmarks_Container.Map;
    -- ****
 
+   -- ****if* Bookmarks/Bookmarks.Get_Bookmarks_List
+   -- FUNCTION
+   -- Get the list of the all bookmarked locations
+   -- RESULT
+   -- The list of all bookmarked locations
+   -- SOURCE
+   function Get_Bookmarks_List return Bookmarks_Container.Map is
+      -- ****
+   begin
+      return Bookmarks_List;
+   end Get_Bookmarks_List;
+
    procedure Create_Bookmark_Menu(Create_New: Boolean := False) is
+      use Tcl.Tk.Ada.Widgets.TtkMenuButton;
+      use Bookmarks.Commands;
+
       Xdg_Bookmarks: constant array(1 .. 7) of Unbounded_String :=
         (1 => To_Unbounded_String(Source => "XDG_DESKTOP_DIR"),
          2 => To_Unbounded_String(Source => "XDG_DOWNLOAD_DIR"),
@@ -54,6 +69,7 @@ package body Bookmarks is
         Get_Widget
           (pathName => ".mainframe.toolbars.actiontoolbar.bookmarksbutton");
       Path: Unbounded_String := Null_Unbounded_String;
+      Local_Bookmarks_List: Bookmarks_Container.Map := Get_Bookmarks_List;
       function Get_Xdg_Directory(Name: String) return Unbounded_String is
          File: File_Type;
          Line: Unbounded_String := Null_Unbounded_String;
@@ -97,8 +113,8 @@ package body Bookmarks is
            (MenuWidget => Bookmarks_Menu, StartIndex => "0",
             EndIndex => "end");
       end if;
-      Bookmarks_List.Clear;
-      Bookmarks_List.Include
+      Local_Bookmarks_List.Clear;
+      Local_Bookmarks_List.Include
         (Key => Mc(Interp => Get_Context, Src_String => "{Home}"),
          New_Item => Value(Name => "HOME"));
       Add
@@ -110,7 +126,7 @@ package body Bookmarks is
       for Bookmark of Xdg_Bookmarks loop
          Path := Get_Xdg_Directory(Name => To_String(Source => Bookmark));
          if Ada.Directories.Exists(Name => To_String(Source => Path)) then
-            Bookmarks_List.Include
+            Local_Bookmarks_List.Include
               (Key => Simple_Name(Name => To_String(Source => Path)),
                New_Item => To_String(Source => Path));
             Add
@@ -145,8 +161,8 @@ package body Bookmarks is
                    (Source => Line, Low => 8, High => Length(Source => Line));
                Bookmark_Exist := False;
                Check_Bookmark_Existence_Loop :
-               for I in Bookmarks_List.Iterate loop
-                  if Bookmarks_List(I) =
+               for I in Local_Bookmarks_List.Iterate loop
+                  if Local_Bookmarks_List(I) =
                     To_String(Source => Bookmark_Path) then
                      Bookmark_Exist := True;
                      exit Check_Bookmark_Existence_Loop;
@@ -155,7 +171,7 @@ package body Bookmarks is
                if not Bookmark_Exist and
                  Ada.Directories.Exists
                    (Name => To_String(Source => Bookmark_Path)) then
-                  Bookmarks_List.Include
+                  Local_Bookmarks_List.Include
                     (Key =>
                        Simple_Name(Name => To_String(Source => Bookmark_Path)),
                      New_Item => To_String(Source => Bookmark_Path));
@@ -173,7 +189,7 @@ package body Bookmarks is
             Close(File => File);
          end Add_User_Bookmarks_Block;
       end if;
-      Bookmarks_List.Include
+      Local_Bookmarks_List.Include
         (Key => Mc(Interp => Get_Context, Src_String => "{Enter destination}"),
          New_Item => "");
       Add
@@ -183,12 +199,19 @@ package body Bookmarks is
            Mc(Interp => Get_Context, Src_String => "{Enter destination}") &
            "} -command SetDestination");
       configure(Widgt => Menu_Button, options => "-menu .bookmarksmenu");
+      Bookmarks_List := Local_Bookmarks_List;
    end Create_Bookmark_Menu;
 
    procedure Set_Bookmark_Button is
+      use Tcl.Tk.Ada.Widgets.TtkButton;
+      use MainWindow;
+
       Button: Ttk_Button :=
         Get_Widget(pathName => ".mainframe.toolbars.itemtoolbar.addbutton");
-      Menu: constant Tk_Menu := Get_Widget(pathName => ".bookmarksmenu");
+      Bookmarks_Menu: constant Tk_Menu :=
+        Get_Widget(pathName => ".bookmarksmenu");
+      Local_Bookmarks_List: constant Bookmarks_Container.Map :=
+        Get_Bookmarks_List;
    begin
       Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       Button.Name :=
@@ -199,10 +222,11 @@ package body Bookmarks is
          return;
       end if;
       Set_Bookmark_Button_Loop :
-      for I in Bookmarks_List.Iterate loop
-         if Bookmarks_List(I) = Current_Selected then
+      for I in Local_Bookmarks_List.Iterate loop
+         if Local_Bookmarks_List(I) = Current_Selected then
             if Natural'Value
-                (Index(Menu, "{" & Bookmarks_Container.Key(I) & "}")) <
+                (Index
+                   (Bookmarks_Menu, "{" & Bookmarks_Container.Key(I) & "}")) <
               8 then
                return;
             end if;
