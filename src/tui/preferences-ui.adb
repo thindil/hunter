@@ -715,8 +715,25 @@ package body Preferences.UI is
    end Set_Shortcut_Keys;
 
    function Add_Command_Keys(Key: Key_Code) return UI_Locations is
-      pragma Unreferenced(Key);
+      Result: Forms.Driver_Result := Unknown_Request;
+      CurrentField: constant Positive := Get_Index(Current(CommandForm));
    begin
+      case Key is
+         when KEY_UP =>
+            Result := Driver(CommandForm, F_Previous_Field);
+         when KEY_DOWN =>
+            Result := Driver(CommandForm, F_Next_Field);
+         when 10 =>
+            if CurrentField in 6 | 7 then
+               Show_Options_Tab(3);
+               return OPTIONS_VIEW;
+            end if;
+         when others =>
+            null;
+      end case;
+      if Result = Form_Ok then
+         Refresh(MenuWindow2);
+      end if;
       return COMMAND_FORM;
    end Add_Command_Keys;
 
