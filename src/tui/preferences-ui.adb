@@ -723,13 +723,27 @@ package body Preferences.UI is
             Result := Driver(CommandForm, F_Previous_Field);
          when KEY_DOWN =>
             Result := Driver(CommandForm, F_Next_Field);
+         when KEY_LEFT =>
+            if CurrentField in 2 | 4 then
+               Result := Driver(CommandForm, F_Previous_Char);
+            end if;
+         when KEY_RIGHT =>
+            if CurrentField in 2 | 4 then
+               Result := Driver(CommandForm, F_Next_Char);
+            end if;
+         when 127 =>
+            if CurrentField in 2 | 4 then
+               Result := Driver(CommandForm, F_Delete_Previous);
+            end if;
          when 10 =>
             if CurrentField in 6 | 7 then
                Show_Options_Tab(3);
                return OPTIONS_VIEW;
             end if;
          when others =>
-            null;
+            if Key /= 91 and CurrentField in 2 | 4 then
+               Result := Driver(CommandForm, Key);
+            end if;
       end case;
       if Result = Form_Ok then
          Refresh(MenuWindow2);
