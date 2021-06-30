@@ -736,6 +736,14 @@ package body Preferences.UI is
                Result := Driver(CommandForm, F_Delete_Previous);
             end if;
          when 10 =>
+            if CurrentField = 5 then
+               if Get_Buffer(Fields(CommandForm, 5))(1 .. 5) = "Don't" then
+                  Set_Buffer(Fields(CommandForm, 5), 0, "Use output");
+               else
+                  Set_Buffer(Fields(CommandForm, 5), 0, "Don't use output");
+               end if;
+               Refresh(MenuWindow2);
+            end if;
             if CurrentField in 6 | 7 then
                Show_Options_Tab(3);
                return OPTIONS_VIEW;
