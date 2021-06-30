@@ -213,12 +213,14 @@ package body Bookmarks is
       Local_Bookmarks_List: constant Bookmarks_Container.Map :=
         Get_Bookmarks_List;
    begin
-      Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
       Button.Name :=
-        New_String(".mainframe.toolbars.itemtoolbar.deletebutton");
-      Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-      if not Ada.Directories.Exists(To_String(Current_Selected))
-        or else Kind(To_String(Current_Selected)) /= Directory then
+        New_String(Str => ".mainframe.toolbars.itemtoolbar.deletebutton");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
+      if not Ada.Directories.Exists
+          (Name => To_String(Source => Current_Selected))
+        or else Kind(Name => To_String(Source => Current_Selected)) /=
+          Directory then
          return;
       end if;
       Set_Bookmark_Button_Loop :
@@ -226,16 +228,18 @@ package body Bookmarks is
          if Local_Bookmarks_List(I) = Current_Selected then
             if Natural'Value
                 (Index
-                   (Bookmarks_Menu, "{" & Bookmarks_Container.Key(I) & "}")) <
+                   (MenuWidget => Bookmarks_Menu,
+                    Index => "{" & Bookmarks_Container.Key(I) & "}")) <
               8 then
                return;
             end if;
-            Tcl.Tk.Ada.Pack.Pack(Button);
+            Tcl.Tk.Ada.Pack.Pack(Slave => Button);
             return;
          end if;
       end loop Set_Bookmark_Button_Loop;
-      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.addbutton");
-      Tcl.Tk.Ada.Pack.Pack(Button);
+      Button.Name :=
+        New_String(Str => ".mainframe.toolbars.itemtoolbar.addbutton");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Button);
    end Set_Bookmark_Button;
 
 end Bookmarks;
