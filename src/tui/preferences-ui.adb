@@ -437,7 +437,7 @@ package body Preferences.UI is
 
    function Set_Option(TabIndex, OptionIndex: Positive) return UI_Locations is
       Visibility: Cursor_Visibility := Invisible;
-      procedure Show_Command_Form is
+      procedure Show_Command_Form(Index: Natural := 0) is
          Command_Fields: constant Field_Array_Access :=
            new Field_Array(1 .. 8);
          FormHeight: Line_Position;
@@ -451,6 +451,11 @@ package body Preferences.UI is
          FieldOptions.Active := False;
          Set_Options(Command_Fields.all(1), FieldOptions);
          Command_Fields.all(2) := New_Field(1, 20, 1, 0, 0, 0);
+         if Index > 0 then
+            Set_Buffer
+              (Command_Fields.all(2), 0,
+               Trim(Get_Buffer(Fields(DialogForm, Index - 3)), Both));
+         end if;
          Command_Fields.all(3) := New_Field(1, 19, 2, 0, 0, 0);
          Set_Buffer(Command_Fields.all(3), 0, "Command to execute:");
          FieldOptions := Get_Options(Command_Fields.all(3));
@@ -458,8 +463,22 @@ package body Preferences.UI is
          FieldOptions.Active := False;
          Set_Options(Command_Fields.all(3), FieldOptions);
          Command_Fields.all(4) := New_Field(1, 30, 3, 0, 0, 0);
+         if Index > 0 then
+            Set_Buffer
+              (Command_Fields.all(4), 0,
+               Trim(Get_Buffer(Fields(DialogForm, Index - 2)), Both));
+         end if;
          Command_Fields.all(5) := New_Field(1, 20, 4, 0, 0, 0);
-         Set_Buffer(Command_Fields.all(5), 0, "Don't use output");
+         if Index = 0 then
+            Set_Buffer(Command_Fields.all(5), 0, "Don't use output");
+         else
+            Set_Buffer
+              (Command_Fields.all(5), 0,
+               (if Trim(Get_Buffer(Fields(DialogForm, Index - 1)), Both) = "No"
+                then "Don't u"
+                else "U") &
+               "se output");
+         end if;
          FieldOptions := Get_Options(Command_Fields.all(5));
          FieldOptions.Edit := False;
          Set_Options(Command_Fields.all(5), FieldOptions);
@@ -469,8 +488,10 @@ package body Preferences.UI is
          FieldOptions.Edit := False;
          Set_Options(Command_Fields.all(6), FieldOptions);
          Command_Fields.all(7) := Null_Field;
-         Command_Fields.all(7) := New_Field(1, 5, 5, 15, 0, 0);
-         Set_Buffer(Command_Fields.all(7), 0, "[Add]");
+         Command_Fields.all(7) := New_Field(1, 6, 5, 15, 0, 0);
+         Set_Buffer
+           (Command_Fields.all(7), 0,
+            (if Index = 0 then "[Add]" else "[Edit]"));
          FieldOptions := Get_Options(Command_Fields.all(7));
          FieldOptions.Edit := False;
          Set_Options(Command_Fields.all(7), FieldOptions);
@@ -543,7 +564,15 @@ package body Preferences.UI is
                   Show_Command_Form;
                   return COMMAND_FORM;
                when others =>
-                  null;
+                  declare
+                     CurrentOption: constant String :=
+                       Trim(Get_Buffer(Fields(DialogForm, OptionIndex)), Both);
+                  begin
+                     if CurrentOption = "Edit" then
+                        Show_Command_Form(OptionIndex);
+                        return COMMAND_FORM;
+                     end if;
+                  end;
             end case;
          when others =>
             null;
