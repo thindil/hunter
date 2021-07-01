@@ -14,14 +14,14 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO;
+with Interfaces.C.Strings;
+with GNAT.Directory_Operations;
 with Tcl; use Tcl;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
@@ -53,6 +53,10 @@ package body Bookmarks is
    end Get_Bookmarks_List;
 
    procedure Create_Bookmark_Menu(Create_New: Boolean := False) is
+      use Ada.Environment_Variables;
+      use Ada.Text_IO;
+      use Ada.Text_IO.Unbounded_IO;
+      use Tcl.MsgCat.Ada;
       use Tcl.Tk.Ada.Widgets.TtkMenuButton;
       use Bookmarks.Commands;
 
@@ -71,6 +75,8 @@ package body Bookmarks is
       Path: Unbounded_String := Null_Unbounded_String;
       Local_Bookmarks_List: Bookmarks_Container.Map := Get_Bookmarks_List;
       function Get_Xdg_Directory(Name: String) return Unbounded_String is
+         use GNAT.Directory_Operations;
+
          File: File_Type;
          Line: Unbounded_String := Null_Unbounded_String;
          Equal_Index: Natural := 0;
@@ -203,6 +209,7 @@ package body Bookmarks is
    end Create_Bookmark_Menu;
 
    procedure Set_Bookmark_Button is
+      use Interfaces.C.Strings;
       use Tcl.Tk.Ada.Widgets.TtkButton;
       use MainWindow;
 
@@ -229,7 +236,7 @@ package body Bookmarks is
             if Natural'Value
                 (Index
                    (MenuWidget => Bookmarks_Menu,
-                    Index => "{" & Bookmarks_Container.Key(I) & "}")) <
+                    Index => "{" & Bookmarks_Container.Key(Position => I) & "}")) <
               8 then
                return;
             end if;
