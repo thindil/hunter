@@ -17,6 +17,8 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with GNAT.String_Split; use GNAT.String_Split;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
@@ -745,6 +747,29 @@ package body Preferences.UI is
                Refresh(MenuWindow2);
             end if;
             if CurrentField in 6 | 7 then
+               if CurrentField = 7 then
+                  declare
+                     MenuEntry: constant String :=
+                       Trim(Get_Buffer(Fields(CommandForm, 2)), Both);
+                     Command: constant String :=
+                       Trim(Get_Buffer(Fields(CommandForm, 4)), Both);
+                     NeedOutput: constant Boolean :=
+                       (if Get_Buffer(Fields(CommandForm, 5))(1 .. 3) = "Use"
+                        then True
+                        else False);
+                  begin
+                     if MenuEntry'Length > 0 and Command'Length > 0 then
+                        if UserCommandsList.Contains(MenuEntry) then
+                           UserCommandsList(MenuEntry) :=
+                             (NeedOutput, To_Unbounded_String(Command));
+                        else
+                           UserCommandsList.Include
+                             (MenuEntry,
+                              (NeedOutput, To_Unbounded_String(Command)));
+                        end if;
+                     end if;
+                  end;
+               end if;
                Show_Options_Tab(3);
                return OPTIONS_VIEW;
             end if;
