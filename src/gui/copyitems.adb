@@ -66,16 +66,16 @@ package body CopyItems is
       pragma Unreferenced(ClientData, Argc, Argv);
       OverwriteItem: Boolean := False;
    begin
-      if CopyItemsList.Length > 0
-        and then Containing_Directory(To_String(CopyItemsList(1))) =
+      if Copy_Items_List.Length > 0
+        and then Containing_Directory(To_String(Copy_Items_List(1))) =
           To_String(DestinationDirectory) then
-         CopyItemsList.Clear;
+         Copy_Items_List.Clear;
          ShowPreview;
          Toggle_Tool_Buttons(New_Action, True);
          return TCL_OK;
       end if;
-      if CopyItemsList.Length = 0 then
-         CopyItemsList := Selected_Items;
+      if Copy_Items_List.Length = 0 then
+         Copy_Items_List := Selected_Items;
          SourceDirectory := MainWindow.Current_Directory;
          New_Action := COPY;
          Toggle_Tool_Buttons(New_Action);
@@ -94,12 +94,12 @@ package body CopyItems is
          return TCL_OK;
       end if;
       New_Action := COPY;
-      Update_Progress_Bar(Positive(CopyItemsList.Length));
-      CopySelected(OverwriteItem);
+      Update_Progress_Bar(Positive(Copy_Items_List.Length));
+      Copy_Selected(OverwriteItem);
       return TCL_OK;
    end Copy_Data_Command;
 
-   procedure CopyItem
+   procedure Copy_Item
      (Name: String; Path: Unbounded_String; Success: in out Boolean) is
       NewPath: Unbounded_String := Path;
       procedure CopyFile(FileName: String) is
@@ -131,7 +131,7 @@ package body CopyItems is
       procedure ProcessDirectory(Item: Directory_Entry_Type) is
       begin
          if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
-            CopyItem(Full_Name(Item), NewPath, Success);
+            Copy_Item(Full_Name(Item), NewPath, Success);
          end if;
       exception
          when Ada.Directories.Name_Error =>
@@ -159,41 +159,41 @@ package body CopyItems is
          CopyFile(Name);
       end if;
       Update_Progress_Bar;
-   end CopyItem;
+   end Copy_Item;
 
-   procedure CopySelected(Overwrite: in out Boolean) is
+   procedure Copy_Selected(Overwrite: in out Boolean) is
       Path, ItemType: Unbounded_String;
       Success: Boolean := True;
    begin
       Copy_Items_Loop :
-      while CopyItemsList.Length > 0 loop
+      while Copy_Items_List.Length > 0 loop
          Path := DestinationDirectory;
          if Exists
              (To_String(Path) & "/" &
-              Simple_Name(To_String(CopyItemsList(1)))) and
+              Simple_Name(To_String(Copy_Items_List(1)))) and
            not Overwrite and Settings.Overwrite_On_Exist then
             ItemType :=
               (if
                  Is_Directory
                    (To_String(Path) & "/" &
-                    Simple_Name(To_String(CopyItemsList(1))))
+                    Simple_Name(To_String(Copy_Items_List(1))))
                then To_Unbounded_String(Mc(Get_Context, "{Directory}"))
                else To_Unbounded_String(Mc(Get_Context, "{File}")));
             ShowMessage
               (To_String(ItemType) & " " &
-               Simple_Name(To_String(CopyItemsList(1))) & " " &
+               Simple_Name(To_String(Copy_Items_List(1))) & " " &
                Mc(Get_Context, "{exists. Do you want to overwrite it?}"),
                "question");
             return;
          end if;
-         CopyItem(To_String(CopyItemsList(1)), Path, Success);
+         Copy_Item(To_String(Copy_Items_List(1)), Path, Success);
          exit Copy_Items_Loop when not Success;
-         CopyItemsList.Delete(Index => 1);
+         Copy_Items_List.Delete(Index => 1);
          if not YesForAll then
             Overwrite := False;
          end if;
       end loop Copy_Items_Loop;
-      CopyItemsList.Clear;
+      Copy_Items_List.Clear;
       if Settings.Show_Finished_Info then
          ShowMessage
            (Mc
@@ -209,19 +209,19 @@ package body CopyItems is
       UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;
       Toggle_Tool_Buttons(New_Action, True);
-   end CopySelected;
+   end Copy_Selected;
 
-   procedure SkipCopying is
+   procedure Skip_Copying is
       OverwriteItem: Boolean := False;
    begin
-      CopyItemsList.Delete(Index => 1);
+      Copy_Items_List.Delete(Index => 1);
       Update_Progress_Bar;
-      CopySelected(OverwriteItem);
-   end SkipCopying;
+      Copy_Selected(OverwriteItem);
+   end Skip_Copying;
 
-   procedure CreateCopyUI is
+   procedure Create_Copy_UI is
    begin
       Add_Command("CopyData", Copy_Data_Command'Access);
-   end CreateCopyUI;
+   end Create_Copy_UI;
 
 end CopyItems;
