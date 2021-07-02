@@ -236,7 +236,8 @@ package body Bookmarks is
             if Natural'Value
                 (Index
                    (MenuWidget => Bookmarks_Menu,
-                    Index => "{" & Bookmarks_Container.Key(Position => I) & "}")) <
+                    Index =>
+                      "{" & Bookmarks_Container.Key(Position => I) & "}")) <
               8 then
                return;
             end if;

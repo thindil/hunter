@@ -355,7 +355,7 @@ package body MainWindow.Commands is
       Toggle_Tool_Buttons(New_Action, True);
       ActionButton.Interp := Interp;
       if New_Action = COPY then
-         CopyItemsList.Clear;
+         Copy_Items_List.Clear;
          ActionButton.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.copybutton");
          ShowPreview;

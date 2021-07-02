@@ -165,10 +165,10 @@ package body Messages is
                Update_Directory_List(True);
                return Close_Command(ClientData, Interp, Argc, Argv);
             elsif Response = "no" then
-               SkipCopying;
+               Skip_Copying;
                return Close_Command(ClientData, Interp, Argc, Argv);
             end if;
-            CopySelected(OverwriteItem);
+            Copy_Selected(OverwriteItem);
             return Close_Command(ClientData, Interp, Argc, Argv);
          when MOVE =>
             if Response = "noall" then
