@@ -88,7 +88,8 @@ package body AboutDialog is
            (About_Fields.all(1), 0, "Bartek Jasicki <thindil@laeran.pl>");
       else
          Set_Buffer
-           (About_Fields.all(1), 0, "Polski - Bartek Jasicki <thindil@laeran.pl>");
+           (About_Fields.all(1), 0,
+            "Polski - Bartek Jasicki <thindil@laeran.pl>");
       end if;
       FieldOptions := Get_Options(About_Fields.all(1));
       FieldOptions.Active := False;
