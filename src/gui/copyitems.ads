@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -23,14 +23,14 @@ with MainWindow; use MainWindow;
 package CopyItems is
 -- ****
 
-   -- ****v* CopyItems/CopyItems.CopyItemsList
+   -- ****v* CopyItems/CopyItems.Copy_Items_List
    -- FUNCTION
    -- Stores names of all selected to copy files and directories
    -- SOURCE
-   CopyItemsList: UnboundedString_Container.Vector;
+   Copy_Items_List: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****f* CopyItems/CopyItems.CopyItem
+   -- ****f* CopyItems/CopyItems.Copy_Item
    -- FUNCTION
    -- Copy selected file or directory to new location
    -- PARAMETERS
@@ -38,11 +38,11 @@ package CopyItems is
    -- Path      - Full path to new home location of file or directory
    -- Success   - True if item was successfully copied, otherwise False
    -- SOURCE
-   procedure CopyItem
+   procedure Copy_Item
      (Name: String; Path: Unbounded_String; Success: in out Boolean);
    -- ****
 
-   -- ****f* CopyItems/CopyItems.CopySelected
+   -- ****f* CopyItems/CopyItems.Copy_Selected
    -- FUNCTION
    -- Copy selected files and directories
    -- PARAMETERS
@@ -50,21 +50,21 @@ package CopyItems is
    --             ask for overwrite permission. Value is set to False if
    --             permission was only for one file or directory
    -- SOURCE
-   procedure CopySelected(Overwrite: in out Boolean);
+   procedure Copy_Selected(Overwrite: in out Boolean);
    -- ****
 
-   -- ****f* CopyItems/CopyItems.SkipCopying
+   -- ****f* CopyItems/CopyItems.Skip_Copying
    -- FUNCTION
    -- Skip copying current file and move to next
    -- SOURCE
-   procedure SkipCopying;
+   procedure Skip_Copying;
    -- ****
 
-   -- ****f* CopyItems/CopyItems.CreateCopyUI
+   -- ****f* CopyItems/CopyItems.Create_Copy_UI
    -- FUNCTION
    -- Create UI for copying items
    -- SOURCE
-   procedure CreateCopyUI;
+   procedure Create_Copy_UI;
    -- ****
 
 end CopyItems;
