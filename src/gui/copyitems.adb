@@ -219,9 +219,9 @@ package body CopyItems is
       Copy_Selected(OverwriteItem);
    end Skip_Copying;
 
-   procedure Create_Copy_UI is
+   procedure Create_Copy_Ui is
    begin
       Add_Command("CopyData", Copy_Data_Command'Access);
-   end Create_Copy_UI;
+   end Create_Copy_Ui;
 
 end CopyItems;
