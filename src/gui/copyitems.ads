@@ -60,11 +60,11 @@ package CopyItems is
    procedure Skip_Copying;
    -- ****
 
-   -- ****f* CopyItems/CopyItems.Create_Copy_UI
+   -- ****f* CopyItems/CopyItems.Create_Copy_Ui
    -- FUNCTION
    -- Create UI for copying items
    -- SOURCE
-   procedure Create_Copy_UI;
+   procedure Create_Copy_Ui;
    -- ****
 
 end CopyItems;
