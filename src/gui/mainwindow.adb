@@ -303,7 +303,7 @@ package body MainWindow is
       CreateDeleteUI;
       CreateRenameUI;
       CreateCreateUI;
-      Create_Copy_UI;
+      Create_Copy_Ui;
       CreateMoveUI;
       CreateTrash;
       Create_About_Ui;
