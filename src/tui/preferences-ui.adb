@@ -571,6 +571,11 @@ package body Preferences.UI is
                      if CurrentOption = "Edit" then
                         Show_Command_Form(OptionIndex);
                         return COMMAND_FORM;
+                     elsif CurrentOption = "Delete" then
+                        UserCommandsList.Delete
+                          (Trim
+                             (Get_Buffer(Fields(DialogForm, OptionIndex - 4)),
+                              Both));
                      end if;
                   end;
             end case;
