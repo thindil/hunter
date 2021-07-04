@@ -308,6 +308,44 @@ package body Preferences.UI is
                DialogForm := New_Form(Options_Fields);
                Set_Current(DialogForm, Options_Fields(1));
             end;
+         when 4 =>
+            declare
+               Options_Fields: constant Field_Array_Access :=
+                 new Field_Array(1 .. 6);
+            begin
+               Options_Fields.all(1) := New_Field(1, 7, 0, 0, 0, 0);
+               Set_Buffer(Options_Fields.all(1), 0, "Enabled");
+               FieldOptions := Get_Options(Options_Fields.all(1));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
+               Set_Options(Options_Fields.all(1), FieldOptions);
+               Options_Fields.all(2) := New_Field(1, 4, 0, 10, 0, 0);
+               Set_Buffer(Options_Fields.all(2), 0, "Name");
+               FieldOptions := Get_Options(Options_Fields.all(2));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
+               Set_Options(Options_Fields.all(2), FieldOptions);
+               Options_Fields.all(3) := New_Field(1, 7, 0, 17, 0, 0);
+               Set_Buffer(Options_Fields.all(3), 0, "Version");
+               FieldOptions := Get_Options(Options_Fields.all(3));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
+               Set_Options(Options_Fields.all(3), FieldOptions);
+               Options_Fields.all(4) := New_Field(1, 11, 0, 27, 0, 0);
+               Set_Buffer(Options_Fields.all(4), 0, "Description");
+               FieldOptions := Get_Options(Options_Fields.all(4));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
+               Set_Options(Options_Fields.all(4), FieldOptions);
+               Options_Fields.all(5) := New_Field(1, 4, 0, 50, 0, 0);
+               Set_Buffer(Options_Fields.all(5), 0, "Show");
+               FieldOptions := Get_Options(Options_Fields.all(5));
+               FieldOptions.Edit := False;
+               FieldOptions.Active := False;
+               Set_Options(Options_Fields.all(5), FieldOptions);
+               Options_Fields.all(Options_Fields'Last) := Null_Field;
+               DialogForm := New_Form(Options_Fields);
+            end;
          when others =>
             null;
       end case;
