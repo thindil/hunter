@@ -34,18 +34,18 @@ with Utils.UI; use Utils.UI;
 
 package body CopyItems is
 
-   -- ****iv* CopyItems/CopyItems.SourceDirectory
+   -- ****iv* CopyItems/CopyItems.Source_Directory
    -- FUNCTION
    -- Full path to the source directory of copied files and directories
    -- SOURCE
-   SourceDirectory: Unbounded_String;
+   Source_Directory: Unbounded_String;
    -- ****
 
    -- ****o* CopyItems/CopyItems.Copy_Data_Command
    -- FUNCTION
    -- Enter or quit copying items mode
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
@@ -55,16 +55,16 @@ package body CopyItems is
    -- CopyData
    -- SOURCE
    function Copy_Data_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Copy_Data_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      OverwriteItem: Boolean := False;
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      Overwrite_Item: Boolean := False;
    begin
       if Copy_Items_List.Length > 0
         and then Containing_Directory(To_String(Copy_Items_List(1))) =
@@ -76,7 +76,7 @@ package body CopyItems is
       end if;
       if Copy_Items_List.Length = 0 then
          Copy_Items_List := Selected_Items;
-         SourceDirectory := MainWindow.Current_Directory;
+         Source_Directory := MainWindow.Current_Directory;
          New_Action := COPY;
          Toggle_Tool_Buttons(New_Action);
          ShowDestination;
@@ -95,16 +95,16 @@ package body CopyItems is
       end if;
       New_Action := COPY;
       Update_Progress_Bar(Positive(Copy_Items_List.Length));
-      Copy_Selected(OverwriteItem);
+      Copy_Selected(Overwrite_Item);
       return TCL_OK;
    end Copy_Data_Command;
 
    procedure Copy_Item
      (Name: String; Path: Unbounded_String; Success: in out Boolean) is
-      NewPath: Unbounded_String := Path;
+      New_Path: Unbounded_String := Path;
       procedure CopyFile(FileName: String) is
          NewName: Unbounded_String :=
-           NewPath & To_Unbounded_String("/" & Simple_Name(FileName));
+           New_Path & To_Unbounded_String("/" & Simple_Name(FileName));
       begin
          if Exists(To_String(NewName)) then
             if Settings.Overwrite_On_Exist then
@@ -113,7 +113,7 @@ package body CopyItems is
                New_File_Name_Loop :
                loop
                   NewName :=
-                    NewPath &
+                    New_Path &
                     To_Unbounded_String
                       ("/" & Base_Name(To_String(NewName)) & "_." &
                        Extension(To_String(NewName)));
@@ -131,7 +131,7 @@ package body CopyItems is
       procedure ProcessDirectory(Item: Directory_Entry_Type) is
       begin
          if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
-            Copy_Item(Full_Name(Item), NewPath, Success);
+            Copy_Item(Full_Name(Item), New_Path, Success);
          end if;
       exception
          when Ada.Directories.Name_Error =>
@@ -139,16 +139,17 @@ package body CopyItems is
       end ProcessDirectory;
    begin
       if Is_Directory(Name) then
-         Append(NewPath, "/" & Simple_Name(Name));
-         if Exists(To_String(NewPath)) and not Settings.Overwrite_On_Exist then
+         Append(New_Path, "/" & Simple_Name(Name));
+         if Exists(To_String(New_Path)) and
+           not Settings.Overwrite_On_Exist then
             New_Directory_Name_Loop :
             loop
-               NewPath := NewPath & "_";
+               New_Path := New_Path & "_";
                exit New_Directory_Name_Loop when not Exists
-                   (To_String(NewPath));
+                   (To_String(New_Path));
             end loop New_Directory_Name_Loop;
          end if;
-         Create_Path(To_String(NewPath));
+         Create_Path(To_String(New_Path));
          Search
            (Name, "", (Directory => False, others => True),
             ProcessFile'Access);
@@ -202,7 +203,7 @@ package body CopyItems is
             "message");
       end if;
       MainWindow.Current_Directory :=
-        (if Settings.Stay_In_Old then SourceDirectory
+        (if Settings.Stay_In_Old then Source_Directory
          else DestinationDirectory);
       LoadDirectory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
@@ -212,11 +213,11 @@ package body CopyItems is
    end Copy_Selected;
 
    procedure Skip_Copying is
-      OverwriteItem: Boolean := False;
+      Overwrite_Item: Boolean := False;
    begin
       Copy_Items_List.Delete(Index => 1);
       Update_Progress_Bar;
-      Copy_Selected(OverwriteItem);
+      Copy_Selected(Overwrite_Item);
    end Skip_Copying;
 
    procedure Create_Copy_Ui is
