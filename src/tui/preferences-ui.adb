@@ -14,12 +14,17 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Characters.Handling; use Ada.Characters.Handling;
+with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.String_Split; use GNAT.String_Split;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Inotify; use Inotify;
@@ -313,16 +318,16 @@ package body Preferences.UI is
                Options_Fields: Field_Array_Access := new Field_Array(1 .. 6);
                Line: Line_Position := 1;
                Amount: Natural := 0;
-               Index: Positive := 6;
+               FormIndex: Positive := 6;
+               CurrentDir: constant String :=
+                 Ada.Directories.Current_Directory;
                procedure LoadModulesInfo(Path: String) is
                   Directory: Dir_Type;
                   FileName: String(1 .. 1_024);
                   Last: Natural range 0 .. FileName'Last;
                   ConfigName: GNAT.OS_Lib.String_Access;
                   ConfigFile: File_Type;
-                  Line, CheckButtonName: Unbounded_String;
-                  CheckButton: Ttk_CheckButton;
-                  Button: Ttk_Button;
+                  FileLine: Unbounded_String;
                begin
                   Open(Directory, Path);
                   Read_Modules_Directory_Loop :
@@ -344,63 +349,76 @@ package body Preferences.UI is
                          null then
                         goto End_Of_Read_Loop;
                      end if;
-                     Options_Fields.all(Index) :=
+                     Options_Fields.all(FormIndex) :=
                        New_Field(1, 7, Line, 0, 0, 0);
                      Set_Buffer
-                       (Options_Fields.all(Index), 0,
+                       (Options_Fields.all(FormIndex), 0,
                         (if
                            Enabled_Modules.Contains
                              (To_Unbounded_String
                                 (Path & "/" & FileName(1 .. Last)))
                          then "Yes"
                          else "No"));
-                     FieldOptions := Get_Options(Options_Fields.all(Index));
+                     FieldOptions :=
+                       Get_Options(Options_Fields.all(FormIndex));
                      FieldOptions.Edit := False;
-                     Set_Options(Options_Fields.all(Index), FieldOptions);
+                     Set_Options(Options_Fields.all(FormIndex), FieldOptions);
                      Open(ConfigFile, In_File, ConfigName.all);
                      Read_Config_File_Loop :
                      while not End_Of_File(ConfigFile) loop
                         FileLine := Get_Line(ConfigFile);
                         if Length(FileLine) > 5
                           and then Index(FileLine, "Name=") = 1 then
-                           Options_Fields.all(Index + 1) :=
+                           Options_Fields.all(FormIndex + 1) :=
                              New_Field(1, 10, Line, 10, 0, 0);
-                           Set_Buffer(Options_Fields.all(Index + 1), 0, Slice(FileLine, 6, Length(FileLine));
-                           FieldOptions := Get_Options(Options_Fields.all(Index + 1));
+                           Set_Buffer
+                             (Options_Fields.all(FormIndex + 1), 0,
+                              Slice(FileLine, 6, Length(FileLine)));
+                           FieldOptions :=
+                             Get_Options(Options_Fields.all(FormIndex + 1));
                            FieldOptions.Edit := False;
                            FieldOptions.Active := False;
-                           Set_Options(Options_Fields.all(Index + 1), FieldOptions);
+                           Set_Options
+                             (Options_Fields.all(FormIndex + 1), FieldOptions);
                         elsif Length(FileLine) > 8
                           and then Index(FileLine, "Version=") = 1 then
-                           Options_Fields.all(Index + 2) :=
+                           Options_Fields.all(FormIndex + 2) :=
                              New_Field(1, 5, Line, 17, 0, 0);
-                           Set_Buffer(Options_Fields.all(Index + 2), 0, Slice(FileLine, 9, Length(FileLine));
-                           FieldOptions := Get_Options(Options_Fields.all(Index + 2));
+                           Set_Buffer
+                             (Options_Fields.all(FormIndex + 2), 0,
+                              Slice(FileLine, 9, Length(FileLine)));
+                           FieldOptions :=
+                             Get_Options(Options_Fields.all(FormIndex + 2));
                            FieldOptions.Edit := False;
                            FieldOptions.Active := False;
-                           Set_Options(Options_Fields.all(Index + 2), FieldOptions);
+                           Set_Options
+                             (Options_Fields.all(FormIndex + 2), FieldOptions);
                         elsif Length(FileLine) > 12
                           and then Index(FileLine, "Description=") = 1 then
-                           Options_Fields.all(Index + 3) :=
+                           Options_Fields.all(FormIndex + 3) :=
                              New_Field(2, 22, Line, 27, 0, 0);
-                           Set_Buffer(Options_Fields.all(Index + 3), 0, Slice(FileLine, 13, Length(FileLine));
-                           FieldOptions := Get_Options(Options_Fields.all(Index + 3));
+                           Set_Buffer
+                             (Options_Fields.all(FormIndex + 3), 0,
+                              Slice(FileLine, 13, Length(FileLine)));
+                           FieldOptions :=
+                             Get_Options(Options_Fields.all(FormIndex + 3));
                            FieldOptions.Edit := False;
                            FieldOptions.Active := False;
-                           Set_Options(Options_Fields.all(Index + 3), FieldOptions);
+                           Set_Options
+                             (Options_Fields.all(FormIndex + 3), FieldOptions);
                         end if;
                      end loop Read_Config_File_Loop;
                      Close(ConfigFile);
-                     Options_Fields.all(Index + 4) :=
+                     Options_Fields.all(FormIndex + 4) :=
                        New_Field(1, 7, Line, 50, 0, 0);
-                     Set_Buffer
-                       (Options_Fields.all(Index), 0,
-                        "Show");
-                     FieldOptions := Get_Options(Options_Fields.all(Index + 4));
+                     Set_Buffer(Options_Fields.all(FormIndex), 0, "Show");
+                     FieldOptions :=
+                       Get_Options(Options_Fields.all(FormIndex + 4));
                      FieldOptions.Edit := False;
-                     Set_Options(Options_Fields.all(Index + 4), FieldOptions);
+                     Set_Options
+                       (Options_Fields.all(FormIndex + 4), FieldOptions);
                      Line := Line + 2;
-                     Index := Index + 5;
+                     FormIndex := FormIndex + 5;
                      <<End_Of_Read_Loop>>
                   end loop Read_Modules_Directory_Loop;
                   Close(Directory);
@@ -408,21 +426,30 @@ package body Preferences.UI is
                   when Directory_Error =>
                      null;
                end LoadModulesInfo;
+               function CountModules(Path: String) return Natural is
+                  ModulesAmount: Natural := 0;
+                  Directory: Dir_Type;
+                  FileName: String(1 .. 1_024);
+                  Last: Natural range 0 .. FileName'Last;
+               begin
+                  Open(Directory, Path);
+                  Count_Modules_Loop :
+                  loop
+                     Read(Directory, FileName, Last);
+                     exit Count_Modules_Loop when Last = 0;
+                     if FileName(1 .. Last) in "." | ".." then
+                        goto End_Of_Count_Loop;
+                     end if;
+                     if not Is_Directory(Path & "/" & FileName(1 .. Last)) then
+                        goto End_Of_Count_Loop;
+                     end if;
+                     ModulesAmount := ModulesAmount + 1;
+                     <<End_Of_Count_Loop>>
+                  end loop Count_Modules_Loop;
+                  return ModulesAmount;
+               end CountModules;
             begin
-               Open(Directory, Path);
-               Count_Modules_Loop :
-               loop
-                  Read(Directory, FileName, Last);
-                  exit Read_Modules_Directory_Loop when Last = 0;
-                  if FileName(1 .. Last) in "." | ".." then
-                     goto End_Of_Count_Loop;
-                  end if;
-                  if not Is_Directory(Path & "/" & FileName(1 .. Last)) then
-                     goto End_Of_Count_Loop;
-                  end if;
-                  Amount := Amount + 1;
-                  <<End_Of_Count_Loop>>
-               end loop Count_Modules_Loop;
+               Amount := CountModules("../share/hunter/modules");
                Options_Fields := new Field_Array(1 .. 6 + Amount);
                Options_Fields.all(1) := New_Field(1, 7, 0, 0, 0, 0);
                Set_Buffer(Options_Fields.all(1), 0, "Enabled");
@@ -458,9 +485,9 @@ package body Preferences.UI is
                -- Load the list of the program modules
                Set_Directory(Containing_Directory(Command_Name));
                LoadModulesInfo("../share/hunter/modules");
-               LoadModulesInfo(Value("HOME") & "/.local/share/hunter/modules");
-               Tcl.Tk.Ada.Grid.Grid_Configure
-                  (CloseButton, "-row" & Positive'Image(Row));
+               LoadModulesInfo
+                 (Ada.Environment_Variables.Value("HOME") &
+                  "/.local/share/hunter/modules");
                Set_Directory(CurrentDir);
                DialogForm := New_Form(Options_Fields);
                if Amount > 0 then
@@ -567,7 +594,8 @@ package body Preferences.UI is
          Create_Themes_List_Loop :
          while More_Entries(Search) loop
             Get_Next_Entry(Search, File);
-            Append(ThemesName, " " & Base_Name(Simple_Name(File)));
+            Append
+              (ThemesName, " " & Ada.Directories.Base_Name(Simple_Name(File)));
          end loop Create_Themes_List_Loop;
          End_Search(Search);
       end if;
