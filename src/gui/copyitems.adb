@@ -67,66 +67,71 @@ package body CopyItems is
       Overwrite_Item: Boolean := False;
    begin
       if Copy_Items_List.Length > 0
-        and then Containing_Directory(To_String(Copy_Items_List(1))) =
-          To_String(DestinationDirectory) then
+        and then
+          Containing_Directory
+            (Name => To_String(Source => Copy_Items_List(1))) =
+          To_String(Source => DestinationDirectory) then
          Copy_Items_List.Clear;
          ShowPreview;
-         Toggle_Tool_Buttons(New_Action, True);
+         Toggle_Tool_Buttons(Action => New_Action, Finished => True);
          return TCL_OK;
       end if;
       if Copy_Items_List.Length = 0 then
          Copy_Items_List := Selected_Items;
          Source_Directory := MainWindow.Current_Directory;
          New_Action := COPY;
-         Toggle_Tool_Buttons(New_Action);
+         Toggle_Tool_Buttons(Action => New_Action);
          ShowDestination;
          Bind_To_Main_Window
-           (Interp, "<Escape>",
-            "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
+           (Interp => Interp, Sequence => "<Escape>",
+            Script =>
+              "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
          return TCL_OK;
       end if;
       if not Is_Write_Accessible_File
-          (To_String(MainWindow.Current_Directory)) then
+          (Name => To_String(Source => MainWindow.Current_Directory)) then
          ShowMessage
-           (Mc
-              (Interp,
-               "{You don't have permissions to copy selected items here.}"));
+           (Message =>
+              Mc
+                (Interp => Interp,
+                 Src_String =>
+                   "{You don't have permissions to copy selected items here.}"));
          return TCL_OK;
       end if;
       New_Action := COPY;
-      Update_Progress_Bar(Positive(Copy_Items_List.Length));
-      Copy_Selected(Overwrite_Item);
+      Update_Progress_Bar(Amount => Positive(Copy_Items_List.Length));
+      Copy_Selected(Overwrite => Overwrite_Item);
       return TCL_OK;
    end Copy_Data_Command;
 
    procedure Copy_Item
      (Name: String; Path: Unbounded_String; Success: in out Boolean) is
       New_Path: Unbounded_String := Path;
-      procedure CopyFile(FileName: String) is
-         NewName: Unbounded_String :=
-           New_Path & To_Unbounded_String("/" & Simple_Name(FileName));
+      procedure Copy_File(File_Name: String) is
+         New_Name: Unbounded_String :=
+           New_Path & To_Unbounded_String("/" & Simple_Name(File_Name));
       begin
-         if Exists(To_String(NewName)) then
+         if Exists(To_String(New_Name)) then
             if Settings.Overwrite_On_Exist then
-               Delete_File(To_String(NewName));
+               Delete_File(To_String(New_Name));
             else
                New_File_Name_Loop :
                loop
-                  NewName :=
+                  New_Name :=
                     New_Path &
                     To_Unbounded_String
-                      ("/" & Base_Name(To_String(NewName)) & "_." &
-                       Extension(To_String(NewName)));
-                  exit New_File_Name_Loop when not Exists(To_String(NewName));
+                      ("/" & Base_Name(To_String(New_Name)) & "_." &
+                       Extension(To_String(New_Name)));
+                  exit New_File_Name_Loop when not Exists(To_String(New_Name));
                end loop New_File_Name_Loop;
             end if;
          end if;
          GNAT.OS_Lib.Copy_File
-           (FileName, To_String(NewName), Success, Copy, Full);
-      end CopyFile;
+           (File_Name, To_String(New_Name), Success, Copy, Full);
+      end Copy_File;
       procedure ProcessFile(Item: Directory_Entry_Type) is
       begin
-         CopyFile(Full_Name(Item));
+         Copy_File(Full_Name(Item));
       end ProcessFile;
       procedure ProcessDirectory(Item: Directory_Entry_Type) is
       begin
@@ -157,7 +162,7 @@ package body CopyItems is
            (Name, "", (Directory => True, others => False),
             ProcessDirectory'Access);
       else
-         CopyFile(Name);
+         Copy_File(Name);
       end if;
       Update_Progress_Bar;
    end Copy_Item;
