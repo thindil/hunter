@@ -28,7 +28,9 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Inotify; use Inotify;
+with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
+with RefreshData; use RefreshData;
 with UserCommands; use UserCommands;
 
 package body Preferences.UI is
@@ -38,6 +40,7 @@ package body Preferences.UI is
    OptionsWindow: Window;
    DialogForm, CommandForm: Forms.Form;
    Option_Selected: Boolean := True;
+   Modules_List: UnboundedString_Container.Vector;
 
    procedure Show_Options_Tab(Tab: Positive) is
       FormHeight: Line_Position;
@@ -444,11 +447,14 @@ package body Preferences.UI is
                         goto End_Of_Count_Loop;
                      end if;
                      ModulesAmount := ModulesAmount + 1;
+                     Modules_List.Append
+                       (To_Unbounded_String(Path & "/" & FileName(1 .. Last)));
                      <<End_Of_Count_Loop>>
                   end loop Count_Modules_Loop;
                   return ModulesAmount;
                end CountModules;
             begin
+               Modules_List.Clear;
                Amount := (CountModules("../share/hunter/modules") * 5);
                Options_Fields := new Field_Array(1 .. 6 + Amount);
                Options_Fields.all(1) := New_Field(1, 7, 0, 0, 0, 0);
@@ -765,6 +771,23 @@ package body Preferences.UI is
                               Both));
                      end if;
                   end;
+            end case;
+         -- The program's modules
+         when 4 =>
+            case OptionIndex mod 5 is
+               when 1 =>
+                  null;
+               when 0 =>
+                  MainWindow.Current_Directory := Modules_List(OptionIndex / 5);
+                  LoadDirectory(To_String(MainWindow.Current_Directory));
+                  UILocation := DIRECTORY_VIEW;
+                  Update_Directory_List(True);
+                  UpdateWatch(To_String(MainWindow.Current_Directory));
+                  Execute_Modules
+                     (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+                  return DIRECTORY_VIEW;
+               when others =>
+                  null;
             end case;
          when others =>
             null;
