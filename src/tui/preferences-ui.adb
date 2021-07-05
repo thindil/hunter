@@ -370,7 +370,7 @@ package body Preferences.UI is
                         if Length(FileLine) > 5
                           and then Index(FileLine, "Name=") = 1 then
                            Options_Fields.all(FormIndex + 1) :=
-                             New_Field(1, 10, Line, 10, 0, 0);
+                             New_Field(1, 8, Line, 10, 0, 0);
                            Set_Buffer
                              (Options_Fields.all(FormIndex + 1), 0,
                               Slice(FileLine, 6, Length(FileLine)));
@@ -383,7 +383,7 @@ package body Preferences.UI is
                         elsif Length(FileLine) > 8
                           and then Index(FileLine, "Version=") = 1 then
                            Options_Fields.all(FormIndex + 2) :=
-                             New_Field(1, 5, Line, 17, 0, 0);
+                             New_Field(1, 5, Line, 20, 0, 0);
                            Set_Buffer
                              (Options_Fields.all(FormIndex + 2), 0,
                               Slice(FileLine, 9, Length(FileLine)));
@@ -411,7 +411,7 @@ package body Preferences.UI is
                      Close(ConfigFile);
                      Options_Fields.all(FormIndex + 4) :=
                        New_Field(1, 7, Line, 50, 0, 0);
-                     Set_Buffer(Options_Fields.all(FormIndex), 0, "Show");
+                     Set_Buffer(Options_Fields.all(FormIndex + 4), 0, "Show");
                      FieldOptions :=
                        Get_Options(Options_Fields.all(FormIndex + 4));
                      FieldOptions.Edit := False;
@@ -449,7 +449,7 @@ package body Preferences.UI is
                   return ModulesAmount;
                end CountModules;
             begin
-               Amount := CountModules("../share/hunter/modules");
+               Amount := (CountModules("../share/hunter/modules") * 5);
                Options_Fields := new Field_Array(1 .. 6 + Amount);
                Options_Fields.all(1) := New_Field(1, 7, 0, 0, 0, 0);
                Set_Buffer(Options_Fields.all(1), 0, "Enabled");
