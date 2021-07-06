@@ -27,6 +27,7 @@ with GNAT.String_Split; use GNAT.String_Split;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
+with Tcl.Ada; use Tcl.Ada;
 with Inotify; use Inotify;
 with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
@@ -787,7 +788,10 @@ package body Preferences.UI is
                      "{" & To_String(MainWindow.Current_Directory) & "}");
                   return DIRECTORY_VIEW;
                when 1 =>
-                  null;
+                  Tcl_Eval
+                    (Interpreter,
+                     "ToggleModule {" &
+                     To_String(Modules_List(OptionIndex / 5)) & "}");
                when others =>
                   null;
             end case;
