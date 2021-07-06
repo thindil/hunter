@@ -109,30 +109,36 @@ package body CopyItems is
       New_Path: Unbounded_String := Path;
       procedure Copy_File(File_Name: String) is
          New_Name: Unbounded_String :=
-           New_Path & To_Unbounded_String("/" & Simple_Name(File_Name));
+           New_Path &
+           To_Unbounded_String(Source => "/" & Simple_Name(Name => File_Name));
       begin
-         if Exists(To_String(New_Name)) then
+         if Exists(Name => To_String(Source => New_Name)) then
             if Settings.Overwrite_On_Exist then
-               Delete_File(To_String(New_Name));
+               Delete_File(Name => To_String(Source => New_Name));
             else
                New_File_Name_Loop :
                loop
                   New_Name :=
                     New_Path &
                     To_Unbounded_String
-                      ("/" & Base_Name(To_String(New_Name)) & "_." &
-                       Extension(To_String(New_Name)));
-                  exit New_File_Name_Loop when not Exists(To_String(New_Name));
+                      (Source =>
+                         "/" &
+                         Base_Name(Name => To_String(Source => New_Name)) &
+                         "_." &
+                         Extension(Name => To_String(Source => New_Name)));
+                  exit New_File_Name_Loop when not Exists
+                      (Name => To_String(Source => New_Name));
                end loop New_File_Name_Loop;
             end if;
          end if;
          GNAT.OS_Lib.Copy_File
-           (File_Name, To_String(New_Name), Success, Copy, Full);
+           (Name => File_Name, Pathname => To_String(New_Name),
+            Success => Success, Mode => Copy, Preserve => Full);
       end Copy_File;
-      procedure ProcessFile(Item: Directory_Entry_Type) is
+      procedure Process_File(Item: Directory_Entry_Type) is
       begin
          Copy_File(Full_Name(Item));
-      end ProcessFile;
+      end Process_File;
       procedure ProcessDirectory(Item: Directory_Entry_Type) is
       begin
          if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
@@ -157,7 +163,7 @@ package body CopyItems is
          Create_Path(To_String(New_Path));
          Search
            (Name, "", (Directory => False, others => True),
-            ProcessFile'Access);
+            Process_File'Access);
          Search
            (Name, "", (Directory => True, others => False),
             ProcessDirectory'Access);
