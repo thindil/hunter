@@ -32,6 +32,7 @@ with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
+with Modules.Commands;
 with MoveItems; use MoveItems;
 with Preferences; use Preferences;
 with Preferences.UI; use Preferences.UI;
@@ -113,6 +114,7 @@ package body MainWindow is
       CreateItems.AddCommands;
       RenameItems.AddCommands;
       Create_Bookmarks_List;
+      Modules.Commands.AddCommands;
       if Ada.Directories.Exists(Directory) then
          MainWindow.Current_Directory := To_Unbounded_String(Directory);
       else
