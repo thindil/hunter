@@ -775,17 +775,19 @@ package body Preferences.UI is
          -- The program's modules
          when 4 =>
             case OptionIndex mod 5 is
-               when 1 =>
-                  null;
                when 0 =>
-                  MainWindow.Current_Directory := Modules_List(OptionIndex / 5);
+                  MainWindow.Current_Directory :=
+                    Modules_List((OptionIndex / 5) - 1);
                   LoadDirectory(To_String(MainWindow.Current_Directory));
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
                   UpdateWatch(To_String(MainWindow.Current_Directory));
                   Execute_Modules
-                     (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+                    (On_Enter,
+                     "{" & To_String(MainWindow.Current_Directory) & "}");
                   return DIRECTORY_VIEW;
+               when 1 =>
+                  null;
                when others =>
                   null;
             end case;
