@@ -94,6 +94,7 @@ package MainWindow is
    --                    highlightning
    -- SHORTCUT_FORM    - The form for set the program keyboard shortcut
    -- COMMAND_FORM     - The form for add or edit the user defined commands
+   -- COMMANDS_MENU    - The menu with user defined commands
    -- SOURCE
    type UI_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
@@ -101,7 +102,7 @@ package MainWindow is
       DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM,
       SELECTED_MENU, PROGRAMS_MENU, VIEW_MENU, SEARCH_FORM, EXECUTE_FORM,
       ABOUT_MENU, ABOUT_FORM, DEVELOPERS_VIEW, OPTIONS_VIEW, SECONDS_MENU,
-      COLORS_MENU, SHORTCUT_FORM, COMMAND_FORM);
+      COLORS_MENU, SHORTCUT_FORM, COMMAND_FORM, COMMANDS_MENU);
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.UILocation
@@ -272,6 +273,17 @@ package MainWindow is
    -- Show the main window of the program to the user
    -- SOURCE
    procedure Show_Main_Window;
+   -- ****
+
+   -- ****f* MainWindowTUI/MainWindowTUI.User_Commands_Keys
+   -- FUNCTION
+   -- Handles keys events when the user commands menu is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function User_Commands_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
 end MainWindow;

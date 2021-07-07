@@ -266,6 +266,8 @@ begin
                UILocation := Set_Shortcut_Keys(Key, AltKey);
             when COMMAND_FORM =>
                UILocation := Add_Command_Keys(Key);
+            when COMMANDS_MENU =>
+               UILocation := User_Commands_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;
