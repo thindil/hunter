@@ -40,6 +40,7 @@ with RefreshData; use RefreshData;
 with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
+with UserCommands; use UserCommands;
 with Utils; use Utils;
 
 package body MainWindow is
@@ -362,7 +363,16 @@ package body MainWindow is
    begin
       case Menu_Type is
          when ACTIONS_MENU =>
-            Menu_Items := new Item_Array(1 .. 9);
+            if UserCommandsList.Length = 0 then
+               Menu_Items := new Item_Array(1 .. 9);
+               Menu_Items.all(8) := New_Item("Close");
+               Menu_Items.all(9) := Null_Item;
+            else
+               Menu_Items := new Item_Array(1 .. 10);
+               Menu_Items.all(8) := New_Item("User commands");
+               Menu_Items.all(9) := New_Item("Close");
+               Menu_Items.all(10) := Null_Item;
+            end if;
             Menu_Items.all(1) := New_Item("Create new directory");
             Menu_Items.all(2) := New_Item("Create new file");
             Menu_Items.all(3) := New_Item("Create new link");
@@ -370,8 +380,6 @@ package body MainWindow is
             Menu_Items.all(5) := New_Item("Start copying");
             Menu_Items.all(6) := New_Item("Start moving");
             Menu_Items.all(7) := New_Item("Delete selected");
-            Menu_Items.all(8) := New_Item("Close");
-            Menu_Items.all(9) := Null_Item;
          when BOOKMARKS_MENU =>
             Menu_Items := Show_Bookmarks_Menu;
          when SELECTED_MENU =>
@@ -612,10 +620,8 @@ package body MainWindow is
                     (if New_Action /= SHOWTRASH then DELETE else DELETETRASH);
                   ShowDeleteForm;
                   return DELETE_FORM;
-               when 8 =>
-                  return DIRECTORY_VIEW;
                when others =>
-                  return ACTIONS_MENU;
+                  return DIRECTORY_VIEW;
             end case;
          when others =>
             null;
