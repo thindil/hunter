@@ -41,6 +41,7 @@ with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 with UserCommands; use UserCommands;
+with UserCommands.UI; use UserCommands.UI;
 with Utils; use Utils;
 
 package body MainWindow is
@@ -564,6 +565,7 @@ package body MainWindow is
    function Actions_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
+      CurrentName: constant String := Name(Current(SubMenu));
    begin
       case Key is
          when KEY_UP =>
@@ -621,7 +623,11 @@ package body MainWindow is
                   ShowDeleteForm;
                   return DELETE_FORM;
                when others =>
-                  return DIRECTORY_VIEW;
+                  if CurrentName = "Close" then
+                     return DIRECTORY_VIEW;
+                  end if;
+                  ShowCommandsMenu;
+                  return COMMANDS_MENU;
             end case;
          when others =>
             null;
@@ -837,5 +843,32 @@ package body MainWindow is
       CreateShowItemsUI;
       Update_Directory_List(True);
    end Show_Main_Window;
+
+   function User_Commands_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result := Unknown_Request;
+   begin
+      case Key is
+         when KEY_UP =>
+            Result := Driver(SubMenu, M_Up_Item);
+         when KEY_DOWN =>
+            Result := Driver(SubMenu, M_Down_Item);
+         when Key_Home =>
+            Result := Driver(SubMenu, M_First_Item);
+         when Key_End =>
+            Result := Driver(SubMenu, M_Last_Item);
+         when 10 =>
+            UILocation := DIRECTORY_VIEW;
+            Update_Directory_List(True);
+            Post(SubMenu, False);
+            Delete(SubMenu);
+            return DIRECTORY_VIEW;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(SubMenuWindow);
+      end if;
+      return COMMANDS_MENU;
+   end User_Commands_Keys;
 
 end MainWindow;
