@@ -132,41 +132,44 @@ package body CopyItems is
             end if;
          end if;
          GNAT.OS_Lib.Copy_File
-           (Name => File_Name, Pathname => To_String(New_Name),
+           (Name => File_Name, Pathname => To_String(Source => New_Name),
             Success => Success, Mode => Copy, Preserve => Full);
       end Copy_File;
       procedure Process_File(Item: Directory_Entry_Type) is
       begin
-         Copy_File(Full_Name(Item));
+         Copy_File(File_Name => Full_Name(Directory_Entry => Item));
       end Process_File;
-      procedure ProcessDirectory(Item: Directory_Entry_Type) is
+      procedure Process_Directory(Item: Directory_Entry_Type) is
       begin
-         if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
-            Copy_Item(Full_Name(Item), New_Path, Success);
+         if Simple_Name(Directory_Entry => Item) not in "." | ".." then
+            Copy_Item
+              (Name => Full_Name(Directory_Entry => Item), Path => New_Path,
+               Success => Success);
          end if;
       exception
          when Ada.Directories.Name_Error =>
             null;
-      end ProcessDirectory;
+      end Process_Directory;
    begin
-      if Is_Directory(Name) then
-         Append(New_Path, "/" & Simple_Name(Name));
-         if Exists(To_String(New_Path)) and
+      if Is_Directory(Name => Name) then
+         Append
+           (Source => New_Path, New_Item => "/" & Simple_Name(Name => Name));
+         if Exists(Name => To_String(Source => New_Path)) and
            not Settings.Overwrite_On_Exist then
             New_Directory_Name_Loop :
             loop
                New_Path := New_Path & "_";
                exit New_Directory_Name_Loop when not Exists
-                   (To_String(New_Path));
+                   (Name => To_String(Source => New_Path));
             end loop New_Directory_Name_Loop;
          end if;
-         Create_Path(To_String(New_Path));
+         Create_Path(New_Directory => To_String(Source => New_Path));
          Search
            (Name, "", (Directory => False, others => True),
             Process_File'Access);
          Search
            (Name, "", (Directory => True, others => False),
-            ProcessDirectory'Access);
+            Process_Directory'Access);
       else
          Copy_File(Name);
       end if;
