@@ -165,37 +165,48 @@ package body CopyItems is
          end if;
          Create_Path(New_Directory => To_String(Source => New_Path));
          Search
-           (Name, "", (Directory => False, others => True),
-            Process_File'Access);
+           (Directory => Name, Pattern => "",
+            Filter => (Directory => False, others => True),
+            Process => Process_File'Access);
          Search
-           (Name, "", (Directory => True, others => False),
-            Process_Directory'Access);
+           (Directory => Name, Pattern => "",
+            Filter => (Directory => True, others => False),
+            Process => Process_Directory'Access);
       else
-         Copy_File(Name);
+         Copy_File(File_Name => Name);
       end if;
       Update_Progress_Bar;
    end Copy_Item;
 
    procedure Copy_Selected(Overwrite: in out Boolean) is
-      Path, ItemType: Unbounded_String;
+      Path, Item_Type: Unbounded_String := Null_Unbounded_String;
       Success: Boolean := True;
    begin
       Copy_Items_Loop :
       while Copy_Items_List.Length > 0 loop
          Path := DestinationDirectory;
          if Exists
-             (To_String(Path) & "/" &
-              Simple_Name(To_String(Copy_Items_List(1)))) and
+             (Name =>
+                To_String(Source => Path) & "/" &
+                Simple_Name
+                  (Name => To_String(Source => Copy_Items_List(1)))) and
            not Overwrite and Settings.Overwrite_On_Exist then
-            ItemType :=
+            Item_Type :=
               (if
                  Is_Directory
-                   (To_String(Path) & "/" &
-                    Simple_Name(To_String(Copy_Items_List(1))))
-               then To_Unbounded_String(Mc(Get_Context, "{Directory}"))
-               else To_Unbounded_String(Mc(Get_Context, "{File}")));
+                   (Name =>
+                      To_String(Source => Path) & "/" &
+                      Simple_Name
+                        (Name => To_String(Source => Copy_Items_List(1))))
+               then
+                 To_Unbounded_String
+                   (Source =>
+                      Mc(Interp => Get_Context, Src_String => "{Directory}"))
+               else To_Unbounded_String
+                   (Source =>
+                      Mc(Interp => Get_Context, Src_String => "{File}")));
             ShowMessage
-              (To_String(ItemType) & " " &
+              (To_String(Item_Type) & " " &
                Simple_Name(To_String(Copy_Items_List(1))) & " " &
                Mc(Get_Context, "{exists. Do you want to overwrite it?}"),
                "question");
