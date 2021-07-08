@@ -366,13 +366,9 @@ package body MainWindow is
          when ACTIONS_MENU =>
             if UserCommandsList.Length = 0 then
                Menu_Items := new Item_Array(1 .. 9);
-               Menu_Items.all(8) := New_Item("Close");
-               Menu_Items.all(9) := Null_Item;
             else
                Menu_Items := new Item_Array(1 .. 10);
                Menu_Items.all(8) := New_Item("User commands");
-               Menu_Items.all(9) := New_Item("Close");
-               Menu_Items.all(10) := Null_Item;
             end if;
             Menu_Items.all(1) := New_Item("Create new directory");
             Menu_Items.all(2) := New_Item("Create new file");
@@ -409,8 +405,6 @@ package body MainWindow is
             elsif Is_Directory(To_String(Current_Selected)) then
                Menu_Items.all(4) := New_Item("Add bookmark");
             end if;
-            Menu_Items.all(Menu_Items'Last - 1) := New_Item("Close");
-            Menu_Items.all(Menu_Items'Last) := Null_Item;
          when VIEW_MENU =>
             Menu_Items := new Item_Array(1 .. 4);
             Count_Selected_Loop :
@@ -427,8 +421,6 @@ package body MainWindow is
                Menu_Items.all(1) := New_Item("Deselect all");
             end if;
             Menu_Items.all(2) := New_Item("Search for");
-            Menu_Items.all(3) := New_Item("Close");
-            Menu_Items.all(4) := Null_Item;
          when ABOUT_MENU =>
             Menu_Items := new Item_Array(1 .. 7);
             Menu_Items.all(1) := New_Item("About the program");
@@ -436,11 +428,11 @@ package body MainWindow is
             Menu_Items.all(3) := New_Item("Show list of changes");
             Menu_Items.all(4) := New_Item("Get involved");
             Menu_Items.all(5) := New_Item("Show modding guide");
-            Menu_Items.all(6) := New_Item("Close");
-            Menu_Items.all(7) := Null_Item;
          when others =>
             null;
       end case;
+      Menu_Items.all(Menu_Items'Last - 1) := New_Item("Close");
+      Menu_Items.all(Menu_Items'Last) := Null_Item;
       SubMenu := New_Menu(Menu_Items);
       Set_Format(SubMenu, Lines - 5, 1);
       Set_Mark(SubMenu, "");
