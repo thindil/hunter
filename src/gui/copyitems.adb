@@ -206,13 +206,18 @@ package body CopyItems is
                    (Source =>
                       Mc(Interp => Get_Context, Src_String => "{File}")));
             ShowMessage
-              (To_String(Item_Type) & " " &
-               Simple_Name(To_String(Copy_Items_List(1))) & " " &
-               Mc(Get_Context, "{exists. Do you want to overwrite it?}"),
-               "question");
+              (Message =>
+                 To_String(Source => Item_Type) & " " &
+                 Simple_Name(Name => To_String(Source => Copy_Items_List(1))) &
+                 " " &
+                 Mc(Interp => Get_Context,
+                    Src_String => "{exists. Do you want to overwrite it?}"),
+               MessageType => "question");
             return;
          end if;
-         Copy_Item(To_String(Copy_Items_List(1)), Path, Success);
+         Copy_Item
+           (Name => To_String(Source => Copy_Items_List(1)), Path => Path,
+            Success => Success);
          exit Copy_Items_Loop when not Success;
          Copy_Items_List.Delete(Index => 1);
          if not YesForAll then
@@ -222,17 +227,20 @@ package body CopyItems is
       Copy_Items_List.Clear;
       if Settings.Show_Finished_Info then
          ShowMessage
-           (Mc
-              (Get_Context,
-               "{All selected files and directories have been copied.}"),
-            "message");
+           (Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{All selected files and directories have been copied.}"),
+            MessageType => "message");
       end if;
       MainWindow.Current_Directory :=
         (if Settings.Stay_In_Old then Source_Directory
          else DestinationDirectory);
-      LoadDirectory(To_String(MainWindow.Current_Directory));
-      Update_Directory_List(True);
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      LoadDirectory
+        (DirectoryName => To_String(Source => MainWindow.Current_Directory));
+      Update_Directory_List(Clear => True);
+      UpdateWatch(Path => To_String(Source => MainWindow.Current_Directory));
       ShowPreview;
       Toggle_Tool_Buttons(New_Action, True);
    end Copy_Selected;
