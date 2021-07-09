@@ -41,7 +41,6 @@ with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 with UserCommands; use UserCommands;
-with UserCommands.UI; use UserCommands.UI;
 with Utils; use Utils;
 
 package body MainWindow is
@@ -428,6 +427,17 @@ package body MainWindow is
             Menu_Items.all(3) := New_Item("Show list of changes");
             Menu_Items.all(4) := New_Item("Get involved");
             Menu_Items.all(5) := New_Item("Show modding guide");
+         when COMMANDS_MENU =>
+            Menu_Items :=
+              new Item_Array(1 .. Natural(UserCommandsList.Length) + 2);
+            declare
+               Index: Positive := 1;
+            begin
+               for I in UserCommandsList.Iterate loop
+                  Menu_Items.all(Index) := New_Item(Commands_Container.Key(I));
+                  Index := Index + 1;
+               end loop;
+            end;
          when others =>
             null;
       end case;
@@ -618,7 +628,7 @@ package body MainWindow is
                   if CurrentName = "Close" then
                      return DIRECTORY_VIEW;
                   end if;
-                  ShowCommandsMenu;
+                  Draw_Menu(COMMANDS_MENU);
                   return COMMANDS_MENU;
             end case;
          when others =>
