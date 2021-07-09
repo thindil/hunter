@@ -739,7 +739,7 @@ package body MainWindow is
                else
                   SelectedItems.Clear;
                end if;
-            elsif Current_Selected in "Search for" then
+            elsif Current_Selected = "Search for" then
                Update_Directory_List;
                Post(SubMenu, False);
                Delete(SubMenu);
