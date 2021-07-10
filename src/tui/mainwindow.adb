@@ -114,6 +114,7 @@ package body MainWindow is
       ActivateItems.Add_Commands;
       CreateItems.AddCommands;
       RenameItems.AddCommands;
+      UserCommands.AddCommands;
       Create_Bookmarks_List;
       Modules.Commands.AddCommands;
       if Ada.Directories.Exists(Directory) then
@@ -848,6 +849,7 @@ package body MainWindow is
 
    function User_Commands_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
+      Current_Option: constant String := Name(Current(SubMenu));
    begin
       case Key is
          when KEY_UP =>
@@ -859,6 +861,9 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
+            if Current_Option /= "Close" then
+               Tcl_Eval(Interpreter, "ExecuteCommand " & Current_Option);
+            end if;
             UILocation := DIRECTORY_VIEW;
             Update_Directory_List(True);
             Post(SubMenu, False);
