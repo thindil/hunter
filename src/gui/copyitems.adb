@@ -18,18 +18,17 @@ with Ada.Directories; use Ada.Directories;
 with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
-with Tcl; use Tcl;
+with Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
+with LoadData;
+with LoadData.UI;
 with Messages; use Messages;
 with Preferences; use Preferences;
-with RefreshData; use RefreshData;
+with RefreshData;
 with ShowItems; use ShowItems;
-with Utils; use Utils;
+with Utils;
 with Utils.UI; use Utils.UI;
 
 package body CopyItems is
@@ -64,6 +63,9 @@ package body CopyItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Tcl;
+      use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+
       Overwrite_Item: Boolean := False;
    begin
       if Copy_Items_List.Length > 0
@@ -179,6 +181,10 @@ package body CopyItems is
    end Copy_Item;
 
    procedure Copy_Selected(Overwrite: in out Boolean) is
+      use Tcl.Tk.Ada;
+      use LoadData.UI;
+      use RefreshData;
+
       Path, Item_Type: Unbounded_String := Null_Unbounded_String;
       Success: Boolean := True;
    begin
@@ -242,7 +248,7 @@ package body CopyItems is
       Update_Directory_List(Clear => True);
       UpdateWatch(Path => To_String(Source => MainWindow.Current_Directory));
       ShowPreview;
-      Toggle_Tool_Buttons(New_Action, True);
+      Toggle_Tool_Buttons(Action => New_Action, Finished => True);
    end Copy_Selected;
 
    procedure Skip_Copying is
@@ -250,12 +256,12 @@ package body CopyItems is
    begin
       Copy_Items_List.Delete(Index => 1);
       Update_Progress_Bar;
-      Copy_Selected(Overwrite_Item);
+      Copy_Selected(Overwrite => Overwrite_Item);
    end Skip_Copying;
 
    procedure Create_Copy_Ui is
    begin
-      Add_Command("CopyData", Copy_Data_Command'Access);
+      Add_Command(Name => "CopyData", Ada_Command => Copy_Data_Command'Access);
    end Create_Copy_Ui;
 
 end CopyItems;
