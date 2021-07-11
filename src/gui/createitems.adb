@@ -193,10 +193,10 @@ package body CreateItems is
       return TCL_OK;
    end Create_Command;
 
-   procedure CreateCreateUI is
+   procedure Create_Create_Ui is
    begin
       Add_Command("ShowCreate", Show_Create_Command'Access);
       Add_Command("Create", Create_Command'Access);
-   end CreateCreateUI;
+   end Create_Create_Ui;
 
 end CreateItems;
