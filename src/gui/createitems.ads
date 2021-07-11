@@ -20,11 +20,11 @@
 package CreateItems is
 -- ****
 
-   -- ****f* CreateItems/CreateItems.CreateCreateUI
+   -- ****f* CreateItems/CreateItems.Create_Create_UI
    -- FUNCTION
    -- Create creating new items UI
    -- SOURCE
-   procedure CreateCreateUI;
+   procedure Create_Create_Ui;
    -- ****
 
 end CreateItems;
