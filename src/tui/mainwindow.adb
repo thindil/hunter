@@ -861,13 +861,13 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
+            UILocation := DIRECTORY_VIEW;
+            Update_Directory_List;
+            Post(SubMenu, False);
+            Delete(SubMenu);
             if Current_Option /= "Close" then
                Tcl_Eval(Interpreter, "ExecuteCommand " & Current_Option);
             end if;
-            UILocation := DIRECTORY_VIEW;
-            Update_Directory_List(True);
-            Post(SubMenu, False);
-            Delete(SubMenu);
             return DIRECTORY_VIEW;
          when others =>
             null;

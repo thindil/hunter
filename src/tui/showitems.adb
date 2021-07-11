@@ -753,12 +753,22 @@ package body ShowItems is
 
    procedure ShowOutput is
    begin
-      null;
+      if PreviewPad /= Null_Window then
+         Delete(PreviewPad);
+      end if;
+      Clear(PreviewWindow);
+      Box(PreviewWindow, Default_Character, Default_Character);
+      Refresh(PreviewWindow);
+      PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 2);
+      Refresh
+        (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
    end ShowOutput;
 
    procedure UpdateOutput(Text: String) is
    begin
-      null;
+      Add(PreviewPad, Text);
+      Refresh
+        (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
    end UpdateOutput;
 
    procedure Destination_Keys(Key: Key_Code) is
