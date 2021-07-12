@@ -120,11 +120,11 @@ package MainWindow is
      (Positive, Unbounded_String);
    -- ****
 
-   -- ****v* MainWindowTUI/MainWindowTUI.SelectedItems
+   -- ****v* MainWindowTUI/MainWindowTUI.Selected_Items
    -- FUNCTION
    -- List of currently selected files and directories by user
    -- SOURCE
-   SelectedItems: UnboundedString_Container.Vector;
+   Selected_Items: UnboundedString_Container.Vector;
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.Current_Selected

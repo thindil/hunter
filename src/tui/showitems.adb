@@ -633,21 +633,21 @@ package body ShowItems is
       if UILocation /= DIRECTORY_VIEW then
          return;
       end if;
-      SelectedItems.Clear;
+      Selected_Items.Clear;
       if Item_Count(DirectoryList) > 0 then
          Update_Selected_Items_Loop :
          for I in 1 .. Item_Count(DirectoryList) loop
             if Value(Items(DirectoryList, I)) or
               Current(DirectoryList) = Items(DirectoryList, I) then
-               SelectedItems.Append
+               Selected_Items.Append
                  (To_Unbounded_String(Description(Items(DirectoryList, I))));
             end if;
          end loop Update_Selected_Items_Loop;
       else
-         SelectedItems.Append(MainWindow.Current_Directory);
+         Selected_Items.Append(MainWindow.Current_Directory);
       end if;
       if not Settings.Show_Preview or
-        (SelectedItems(1) = Current_Selected and
+        (Selected_Items(1) = Current_Selected and
          Current_Selected /= MainWindow.Current_Directory) then
          return;
       end if;
