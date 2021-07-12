@@ -264,7 +264,7 @@ package body MainWindow is
          if not Clear then
             Update_Selected_Loop :
             for I in 1 .. Item_Count(DirectoryList) loop
-               if SelectedItems.Contains
+               if Selected_Items.Contains
                    (To_Unbounded_String
                       (Description(Items(DirectoryList, I)))) then
                   Set_Value(Items(DirectoryList, I), True);
@@ -412,7 +412,7 @@ package body MainWindow is
             Menu_Items := new Item_Array(1 .. 4);
             Count_Selected_Loop :
             for I in 1 .. Item_Count(DirectoryList) loop
-               if SelectedItems.Contains
+               if Selected_Items.Contains
                    (To_Unbounded_String
                       (Description(Items(DirectoryList, I)))) then
                   Selected_Amount := Selected_Amount + 1;
@@ -738,12 +738,12 @@ package body MainWindow is
                if Current_Selected = "Select all" then
                   Update_Selected_Items_Loop :
                   for I in 1 .. Item_Count(DirectoryList) loop
-                     SelectedItems.Append
+                     Selected_Items.Append
                        (To_Unbounded_String
                           (Description(Items(DirectoryList, I))));
                   end loop Update_Selected_Items_Loop;
                else
-                  SelectedItems.Clear;
+                  Selected_Items.Clear;
                end if;
             elsif Current_Selected = "Search for" then
                Update_Directory_List;

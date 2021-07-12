@@ -87,7 +87,7 @@ package body DeleteItems is
          while More_Entries(Search) loop
             Get_Next_Entry(Search, Item);
             if Simple_Name(Item) /= "." and Simple_Name(Item) /= ".." then
-               SelectedItems.Append
+               Selected_Items.Append
                  (New_Item => To_Unbounded_String(Full_Name(Item)));
             end if;
          end loop Add_Items_To_Trash_Loop;
@@ -102,12 +102,12 @@ package body DeleteItems is
       if New_Action = CLEARTRASH then
          OldSetting := Settings.Delete_Files;
          Settings.Delete_Files := True;
-         SelectedItems.Clear;
+         Selected_Items.Clear;
          AddTrash("info");
          AddTrash("files");
       end if;
       Delete_Items_Loop :
-      for Item of SelectedItems loop
+      for Item of Selected_Items loop
          Update_Progress_Bar;
          if Is_Directory
              (To_String(MainWindow.Current_Directory & "/" & Item)) then
@@ -144,7 +144,7 @@ package body DeleteItems is
       if New_Action = CLEARTRASH then
          Settings.Delete_Files := OldSetting;
       end if;
-      SelectedItems.Clear;
+      Selected_Items.Clear;
       return GoUp;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
@@ -180,38 +180,39 @@ package body DeleteItems is
       ListLength: Positive;
       UnusedResult: Forms.Driver_Result;
    begin
-      if SelectedItems.Length = 0 then
+      if Selected_Items.Length = 0 then
          return;
       end if;
       Set_Cursor_Visibility(Visibility);
-      if SelectedItems.Length > 10 then
+      if Selected_Items.Length > 10 then
          ListLength := 10;
       else
-         ListLength := Positive(SelectedItems.Length);
+         ListLength := Positive(Selected_Items.Length);
       end if;
       Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
          if Is_Directory
              (To_String
-                (MainWindow.Current_Directory & "/" & SelectedItems(I))) then
-            if Length(SelectedItems(I)) > 11 then
+                (MainWindow.Current_Directory & "/" & Selected_Items(I))) then
+            if Length(Selected_Items(I)) > 11 then
                Append
                  (DeleteList,
-                  "  " & Slice(SelectedItems(I), 1, 11) &
+                  "  " & Slice(Selected_Items(I), 1, 11) &
                   "...(and its content)" & LF);
             else
                Append
                  (DeleteList,
-                  "  " & SelectedItems(I) & " (and its content)" & LF);
+                  "  " & Selected_Items(I) & " (and its content)" & LF);
             end if;
-         elsif Length(SelectedItems(I)) > 27 then
+         elsif Length(Selected_Items(I)) > 27 then
             Append
-              (DeleteList, "  " & Slice(SelectedItems(I), 1, 27) & "..." & LF);
+              (DeleteList,
+               "  " & Slice(Selected_Items(I), 1, 27) & "..." & LF);
          else
-            Append(DeleteList, "  " & SelectedItems(I) & LF);
+            Append(DeleteList, "  " & Selected_Items(I) & LF);
          end if;
       end loop Set_Delete_List_Loop;
-      if ListLength = 10 and SelectedItems.Length > 10 then
+      if ListLength = 10 and Selected_Items.Length > 10 then
          ListLength := 11;
          Append(DeleteList, "  and more");
       end if;
