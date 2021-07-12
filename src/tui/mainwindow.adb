@@ -40,6 +40,7 @@ with RefreshData; use RefreshData;
 with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
+with Trash; use Trash;
 with UserCommands; use UserCommands;
 with Utils; use Utils;
 
@@ -117,6 +118,7 @@ package body MainWindow is
       UserCommands.AddCommands;
       Create_Bookmarks_List;
       Modules.Commands.AddCommands;
+      CreateTrash;
       if Ada.Directories.Exists(Directory) then
          MainWindow.Current_Directory := To_Unbounded_String(Directory);
       else
@@ -365,10 +367,10 @@ package body MainWindow is
       case Menu_Type is
          when ACTIONS_MENU =>
             if UserCommandsList.Length = 0 then
-               Menu_Items := new Item_Array(1 .. 9);
-            else
                Menu_Items := new Item_Array(1 .. 10);
-               Menu_Items.all(8) := New_Item("User commands");
+            else
+               Menu_Items := new Item_Array(1 .. 11);
+               Menu_Items.all(9) := New_Item("User commands");
             end if;
             Menu_Items.all(1) := New_Item("Create new directory");
             Menu_Items.all(2) := New_Item("Create new file");
@@ -377,6 +379,7 @@ package body MainWindow is
             Menu_Items.all(5) := New_Item("Start copying");
             Menu_Items.all(6) := New_Item("Start moving");
             Menu_Items.all(7) := New_Item("Delete selected");
+            Menu_Items.all(8) := New_Item("Clear the Trash");
          when BOOKMARKS_MENU =>
             Menu_Items := Show_Bookmarks_Menu;
          when SELECTED_MENU =>
@@ -625,6 +628,8 @@ package body MainWindow is
                     (if New_Action /= SHOWTRASH then DELETE else DELETETRASH);
                   ShowDeleteForm;
                   return DELETE_FORM;
+               when 8 =>
+                  Tcl_Eval(Interpreter, "ClearTrash");
                when others =>
                   if CurrentName = "Close" then
                      return DIRECTORY_VIEW;
