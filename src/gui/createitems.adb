@@ -44,7 +44,7 @@ package body CreateItems is
    -- FUNCTION
    -- Show text entry to enter a name of the new item
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command.
@@ -55,18 +55,18 @@ package body CreateItems is
    -- Itemtype is an item type which will be created. Can be file or directory
    -- SOURCE
    function Show_Create_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_Create_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
+      pragma Unreferenced(Client_Data, Argc);
       Frame: constant Ttk_Frame := Get_Widget(".mainframe.textframe", Interp);
       Button: Ttk_Button := Get_Widget(Frame & ".closebutton", Interp);
-      TextEntry: constant Ttk_Entry :=
+      Text_Entry: constant Ttk_Entry :=
         Get_Widget(Frame & ".textentry", Interp);
    begin
       Tcl.Tk.Ada.Grid.Grid(Button);
@@ -77,12 +77,12 @@ package body CreateItems is
          Mc(Interp, "{Create a new}") & " " & Mc(Interp, CArgv.Arg(Argv, 1)) &
          " " & Mc(Interp, "{with the selected name.}"));
       Add
-        (TextEntry,
+        (Text_Entry,
          Mc(Interp, "{Enter a name for the newly created}") & " " &
          Mc(Interp, CArgv.Arg(Argv, 1)) & ".");
       Tcl.Tk.Ada.Grid.Grid(Button);
-      Unbind(TextEntry, "<KeyRelease>");
-      Focus(TextEntry);
+      Unbind(Text_Entry, "<KeyRelease>");
+      Focus(Text_Entry);
       Tcl.Tk.Ada.Grid.Grid(Frame, "-row 1 -columnspan 2 -sticky we");
       if CArgv.Arg(Argv, 1) = "file" then
          New_Action := CREATEFILE;
@@ -100,7 +100,7 @@ package body CreateItems is
    -- FUNCTION
    -- Show text entry to enter a name of the new item
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command.
@@ -111,16 +111,16 @@ package body CreateItems is
    -- Itemtype is an item type which will be created. Can be file or directory
    -- SOURCE
    function Create_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Create_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
-      TextEntry: constant Ttk_Entry :=
+      pragma Unreferenced(Client_Data, Argc);
+      Text_Entry: constant Ttk_Entry :=
         Get_Widget(".mainframe.textframe.textentry", Interp);
       NewItemName, ActionString, ActionBlocker, Destination: Unbounded_String;
       Button: constant Ttk_Button :=
@@ -130,7 +130,7 @@ package body CreateItems is
         Get_Widget(".mainframe.paned.previewframe.directorytree", Interp);
       Hunter_Create_Exception: exception;
    begin
-      NewItemName := MainWindow.Current_Directory & "/" & Get(TextEntry);
+      NewItemName := MainWindow.Current_Directory & "/" & Get(Text_Entry);
       if Exists(To_String(NewItemName)) or
         Is_Symbolic_Link(To_String(NewItemName)) then
          ActionString :=
