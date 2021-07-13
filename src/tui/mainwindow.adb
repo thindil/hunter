@@ -630,6 +630,7 @@ package body MainWindow is
                   return DELETE_FORM;
                when 8 =>
                   Tcl_Eval(Interpreter, "ClearTrash");
+                  return MESSAGE_FORM;
                when others =>
                   if CurrentName = "Close" then
                      return DIRECTORY_VIEW;

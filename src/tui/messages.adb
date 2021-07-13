@@ -13,8 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with CopyItems; use CopyItems;
+with DeleteItems; use DeleteItems;
+with LoadData.UI; use LoadData.UI;
 with MoveItems; use MoveItems;
 with Utils.UI; use Utils.UI;
 
@@ -95,16 +99,23 @@ package body Messages is
          FieldOptions := Get_Options(Buttons_Fields.all(2));
          FieldOptions.Edit := False;
          Set_Options(Buttons_Fields.all(2), FieldOptions);
-         Buttons_Fields.all(3) := New_Field(1, 13, (FormHeight - 1), 1, 0, 0);
-         Set_Buffer(Buttons_Fields.all(3), 0, "[Yes for all]");
-         FieldOptions := Get_Options(Buttons_Fields.all(3));
-         FieldOptions.Edit := False;
-         Set_Options(Buttons_Fields.all(3), FieldOptions);
-         Buttons_Fields.all(4) := New_Field(1, 12, (FormHeight - 1), 15, 0, 0);
-         Set_Buffer(Buttons_Fields.all(4), 0, "[No for all]");
-         FieldOptions := Get_Options(Buttons_Fields.all(4));
-         FieldOptions.Edit := False;
-         Set_Options(Buttons_Fields.all(4), FieldOptions);
+         if New_Action = CLEARTRASH then
+            Buttons_Fields.all(3) := Null_Field;
+            Buttons_Fields.all(4) := Null_Field;
+         else
+            Buttons_Fields.all(3) :=
+              New_Field(1, 13, (FormHeight - 1), 1, 0, 0);
+            Set_Buffer(Buttons_Fields.all(3), 0, "[Yes for all]");
+            FieldOptions := Get_Options(Buttons_Fields.all(3));
+            FieldOptions.Edit := False;
+            Set_Options(Buttons_Fields.all(3), FieldOptions);
+            Buttons_Fields.all(4) :=
+              New_Field(1, 12, (FormHeight - 1), 15, 0, 0);
+            Set_Buffer(Buttons_Fields.all(4), 0, "[No for all]");
+            FieldOptions := Get_Options(Buttons_Fields.all(4));
+            FieldOptions.Edit := False;
+            Set_Options(Buttons_Fields.all(4), FieldOptions);
+         end if;
          Buttons_Fields.all(5) := Null_Field;
       end if;
       DialogForm := New_Form(Buttons_Fields);
@@ -139,12 +150,12 @@ package body Messages is
    begin
       case Key is
          when KEY_UP =>
-            if New_Action in COPY | MOVE then
+            if New_Action in COPY | MOVE | CLEARTRASH then
                Result := Driver(DialogForm, F_Previous_Field);
                Result := Driver(DialogForm, F_End_Line);
             end if;
          when KEY_DOWN =>
-            if New_Action in COPY | MOVE then
+            if New_Action in COPY | MOVE | CLEARTRASH then
                Result := Driver(DialogForm, F_Next_Field);
                Result := Driver(DialogForm, F_End_Line);
             end if;
@@ -176,6 +187,11 @@ package body Messages is
                      return DIRECTORY_VIEW;
                   end if;
                   return MESSAGE_FORM;
+               elsif New_Action = CLEARTRASH then
+                  New_Action := CREATEFILE;
+                  UILocation := DIRECTORY_VIEW;
+                  Update_Directory_List(True);
+                  return DIRECTORY_VIEW;
                end if;
             end if;
             if New_Action = COPY then
@@ -194,6 +210,26 @@ package body Messages is
                   return DIRECTORY_VIEW;
                end if;
                return MESSAGE_FORM;
+            elsif New_Action = CLEARTRASH then
+               begin
+                  if DeleteSelected then
+                     Current_Directory :=
+                       To_Unbounded_String
+                         (Normalize_Pathname
+                            (To_String(Current_Directory) & "/.."));
+                  end if;
+               exception
+                  when others =>
+                     New_Action := CREATEFILE;
+                     UILocation := DIRECTORY_VIEW;
+                     LoadDirectory(To_String(Current_Directory));
+                     Update_Directory_List(True);
+                     return DIRECTORY_VIEW;
+               end;
+               New_Action := CREATEFILE;
+               UILocation := DIRECTORY_VIEW;
+               Update_Directory_List(True);
+               return DIRECTORY_VIEW;
             end if;
          when others =>
             null;
