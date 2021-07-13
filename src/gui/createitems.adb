@@ -64,18 +64,27 @@ package body CreateItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
-      Frame: constant Ttk_Frame := Get_Widget(".mainframe.textframe", Interp);
-      Button: Ttk_Button := Get_Widget(Frame & ".closebutton", Interp);
+      Frame: constant Ttk_Frame :=
+        Get_Widget(pathName => ".mainframe.textframe", Interp => Interp);
+      Button: Ttk_Button :=
+        Get_Widget(pathName => Frame & ".closebutton", Interp => Interp);
       Text_Entry: constant Ttk_Entry :=
-        Get_Widget(Frame & ".textentry", Interp);
+        Get_Widget(pathName => Frame & ".textentry", Interp => Interp);
    begin
-      Tcl.Tk.Ada.Grid.Grid(Button);
-      Button.Name := New_String(Frame & ".okbutton");
-      configure(Button, "-command {Create " & CArgv.Arg(Argv, 1) & "}");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Button);
+      Button.Name := New_String(Str => Frame & ".okbutton");
+      configure
+        (Widgt => Button,
+         options =>
+           "-command {Create " & CArgv.Arg(Argv => Argv, N => 1) & "}");
       Add
-        (Button,
-         Mc(Interp, "{Create a new}") & " " & Mc(Interp, CArgv.Arg(Argv, 1)) &
-         " " & Mc(Interp, "{with the selected name.}"));
+        (Widget => Button,
+         Message =>
+           Mc(Interp => Interp, Src_String => "{Create a new}") & " " &
+           Mc(Interp => Interp,
+              Src_String => CArgv.Arg(Argv => Argv, N => 1)) &
+           " " &
+           Mc(Interp => Interp, Src_String => "{with the selected name.}"));
       Add
         (Text_Entry,
          Mc(Interp, "{Enter a name for the newly created}") & " " &
