@@ -409,7 +409,7 @@ package body MainWindow is
                Menu_Items.all(4) := New_Item("Add bookmark");
             end if;
          when VIEW_MENU =>
-            Menu_Items := new Item_Array(1 .. 4);
+            Menu_Items := new Item_Array(1 .. 5);
             Count_Selected_Loop :
             for I in 1 .. Item_Count(DirectoryList) loop
                if Selected_Items.Contains
@@ -424,6 +424,7 @@ package body MainWindow is
                Menu_Items.all(1) := New_Item("Deselect all");
             end if;
             Menu_Items.all(2) := New_Item("Search for");
+            Menu_Items.all(3) := New_Item("Show Trash");
          when ABOUT_MENU =>
             Menu_Items := new Item_Array(1 .. 7);
             Menu_Items.all(1) := New_Item("About the program");
@@ -752,6 +753,13 @@ package body MainWindow is
                Delete(SubMenu);
                ShowSearchForm;
                return SEARCH_FORM;
+            elsif Current_Selected = "Show Trash" then
+               New_Action := SHOWTRASH;
+               CreateProgramMenu;
+               Post(SubMenu, False);
+               Delete(SubMenu);
+               Tcl_Eval(Interpreter, "ShowTrash");
+               return DIRECTORY_VIEW;
             end if;
             Update_Directory_List;
             Post(SubMenu, False);
