@@ -759,6 +759,7 @@ package body MainWindow is
                Post(SubMenu, False);
                Delete(SubMenu);
                Tcl_Eval(Interpreter, "ShowTrash");
+               Update_Directory_List(True);
                return DIRECTORY_VIEW;
             end if;
             Update_Directory_List;
