@@ -86,22 +86,29 @@ package body CreateItems is
            " " &
            Mc(Interp => Interp, Src_String => "{with the selected name.}"));
       Add
-        (Text_Entry,
-         Mc(Interp, "{Enter a name for the newly created}") & " " &
-         Mc(Interp, CArgv.Arg(Argv, 1)) & ".");
-      Tcl.Tk.Ada.Grid.Grid(Button);
-      Unbind(Text_Entry, "<KeyRelease>");
-      Focus(Text_Entry);
-      Tcl.Tk.Ada.Grid.Grid(Frame, "-row 1 -columnspan 2 -sticky we");
-      if CArgv.Arg(Argv, 1) = "file" then
+        (Widget => Text_Entry,
+         Message =>
+           Mc
+             (Interp => Interp,
+              Src_String => "{Enter a name for the newly created}") &
+           " " &
+           Mc(Interp => Interp,
+              Src_String => CArgv.Arg(Argv => Argv, N => 1)) &
+           ".");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Button);
+      Unbind(Widgt => Text_Entry, Sequence => "<KeyRelease>");
+      Focus(Widgt => Text_Entry);
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Frame, Options => "-row 1 -columnspan 2 -sticky we");
+      if CArgv.Arg(Argv => Argv, N => 1) = "file" then
          New_Action := CREATEFILE;
-      elsif CArgv.Arg(Argv, 1) = "directory" then
+      elsif CArgv.Arg(Argv => Argv, N => 1) = "directory" then
          New_Action := CREATEDIRECTORY;
       else
          New_Action := CREATELINK;
          ShowDestination;
       end if;
-      Toggle_Tool_Buttons(New_Action);
+      Toggle_Tool_Buttons(Action => New_Action);
       return TCL_OK;
    end Show_Create_Command;
 
