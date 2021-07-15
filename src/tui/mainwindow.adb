@@ -723,7 +723,7 @@ package body MainWindow is
 
    function View_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
-      Current_Selected: constant String := Name(Current(SubMenu));
+      Current_Menu: constant String := Name(Current(SubMenu));
    begin
       case Key is
          when KEY_UP =>
@@ -736,8 +736,8 @@ package body MainWindow is
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
             UILocation := DIRECTORY_VIEW;
-            if Current_Selected in "Select all" | "Deselect all" then
-               if Current_Selected = "Select all" then
+            if Current_Menu in "Select all" | "Deselect all" then
+               if Current_Menu = "Select all" then
                   Update_Selected_Items_Loop :
                   for I in 1 .. Item_Count(DirectoryList) loop
                      Selected_Items.Append
@@ -747,13 +747,13 @@ package body MainWindow is
                else
                   Selected_Items.Clear;
                end if;
-            elsif Current_Selected = "Search for" then
+            elsif Current_Menu = "Search for" then
                Update_Directory_List;
                Post(SubMenu, False);
                Delete(SubMenu);
                ShowSearchForm;
                return SEARCH_FORM;
-            elsif Current_Selected = "Show Trash" then
+            elsif Current_Menu = "Show Trash" then
                New_Action := SHOWTRASH;
                CreateProgramMenu;
                Post(SubMenu, False);
