@@ -138,57 +138,58 @@ package body CreateItems is
       pragma Unreferenced(Client_Data, Argc);
       Text_Entry: constant Ttk_Entry :=
         Get_Widget(".mainframe.textframe.textentry", Interp);
-      NewItemName, ActionString, ActionBlocker, Destination: Unbounded_String;
+      New_Item_Name, Action_String, Action_Blocker,
+      Destination: Unbounded_String := Null_Unbounded_String;
       Button: constant Ttk_Button :=
         Get_Widget(".mainframe.textframe.closebutton", Interp);
       File: File_Descriptor;
-      DirectoryView: constant Ttk_Tree_View :=
+      Directory_View: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned.previewframe.directorytree", Interp);
       Hunter_Create_Exception: exception;
    begin
-      NewItemName := MainWindow.Current_Directory & "/" & Get(Text_Entry);
-      if Exists(To_String(NewItemName)) or
-        Is_Symbolic_Link(To_String(NewItemName)) then
-         ActionString :=
+      New_Item_Name := MainWindow.Current_Directory & "/" & Get(Text_Entry);
+      if Exists(To_String(New_Item_Name)) or
+        Is_Symbolic_Link(To_String(New_Item_Name)) then
+         Action_String :=
            To_Unbounded_String
              (Mc(Interp, "{create}") & " " & CArgv.Arg(Argv, 1) & " " &
               Mc(Interp, "{with}"));
-         ActionBlocker :=
-           (if Is_Directory(To_String(NewItemName)) then
+         Action_Blocker :=
+           (if Is_Directory(To_String(New_Item_Name)) then
               To_Unbounded_String(Mc(Interp, "directory"))
             else To_Unbounded_String(Mc(Interp, "file")));
          ShowMessage
-           (Mc(Interp, "{You can't}") & " " & To_String(ActionString) & " " &
-            Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
+           (Mc(Interp, "{You can't}") & " " & To_String(Action_String) & " " &
+            Mc(Interp, "{name}") & " '" & To_String(New_Item_Name) & "' " &
             Mc(Interp, "{because there exists}") & " " &
-            To_String(ActionBlocker) & " " & Mc(Interp, "{with that name.}"));
+            To_String(Action_Blocker) & " " & Mc(Interp, "{with that name.}"));
          goto End_Of_Create;
       end if;
       if not Is_Write_Accessible_File
-          (Containing_Directory(To_String(NewItemName))) then
+          (Containing_Directory(To_String(New_Item_Name))) then
          ShowMessage
            (Mc(Interp, "{You don't have permissions to write to}") & " " &
-            Containing_Directory(To_String(NewItemName)));
+            Containing_Directory(To_String(New_Item_Name)));
          goto End_Of_Create;
       end if;
       case New_Action is
          when CREATEDIRECTORY =>
-            Create_Path(To_String(NewItemName));
+            Create_Path(To_String(New_Item_Name));
          when CREATEFILE =>
-            Create_Path(Containing_Directory(To_String(NewItemName)));
-            File := Create_File(To_String(NewItemName), Binary);
+            Create_Path(Containing_Directory(To_String(New_Item_Name)));
+            File := Create_File(To_String(New_Item_Name), Binary);
             Close(File);
          when CREATELINK =>
             Destination := DestinationDirectory;
-            if Selection(DirectoryView)'Length > 0 then
+            if Selection(Directory_View)'Length > 0 then
                Destination :=
                  DestinationDirectory &
-                 SecondItemsList(Positive'Value(Selection(DirectoryView)))
+                 SecondItemsList(Positive'Value(Selection(Directory_View)))
                    .Name;
             end if;
             Tcl_Eval
               (Interp,
-               "file link -symbolic {" & To_String(NewItemName) & "} {" &
+               "file link -symbolic {" & To_String(New_Item_Name) & "} {" &
                To_String(Destination) & "}");
          when others =>
             raise Hunter_Create_Exception
@@ -196,7 +197,7 @@ package body CreateItems is
       end case;
       if not Settings.Stay_In_Old and then New_Action /= CREATELINK then
          MainWindow.Current_Directory :=
-           To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
+           To_Unbounded_String(Containing_Directory(To_String(New_Item_Name)));
       end if;
       LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateWatch(To_String(MainWindow.Current_Directory));
