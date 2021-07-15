@@ -151,9 +151,18 @@ package body MainWindow is
           (Normalize_Pathname(To_String(MainWindow.Current_Directory)));
       Index := Count(MainWindow.Current_Directory, "/") + 1;
       if MainWindow.Current_Directory /= To_Unbounded_String("/") then
-         Path_Items := new Item_Array(1 .. Index + 1);
-         Path_Items.all(1) := New_Item("/");
-         Create(Tokens, To_String(MainWindow.Current_Directory), "/");
+         if New_Action in SHOWTRASH | DELETETRASH then
+            Index := Count(DestinationDirectory, "/") + 1;
+            Create
+              (S => Tokens, From => To_String(Source => DestinationDirectory),
+               Separators => "/");
+            Path_Items := new Item_Array(1 .. Index + 1);
+            Path_Items.all(1) := New_Item("Trash");
+         else
+            Create(Tokens, To_String(MainWindow.Current_Directory), "/");
+            Path_Items := new Item_Array(1 .. Index + 1);
+            Path_Items.all(1) := New_Item("/");
+         end if;
          for I in 2 .. Slice_Count(Tokens) loop
             Path_Items.all(Positive(I)) := New_Item(Slice(Tokens, I));
          end loop;
@@ -333,20 +342,37 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(Path, M_Last_Item);
          when 10 =>
-            MainWindow.Current_Directory := To_Unbounded_String("/");
-            Update_Current_Directory_Loop :
-            for I in 2 .. Get_Index(Current(Path)) loop
-               Append(MainWindow.Current_Directory, Name(Items(Path, I)));
-               if I < Get_Index(Current(Path)) then
-                  Append(MainWindow.Current_Directory, "/");
-               end if;
-            end loop Update_Current_Directory_Loop;
-            LoadDirectory(To_String(MainWindow.Current_Directory));
             UILocation := DIRECTORY_VIEW;
-            Update_Directory_List(True);
-            UpdateWatch(To_String(MainWindow.Current_Directory));
-            Execute_Modules
-              (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+            if New_Action in SHOWTRASH | DELETETRASH then
+               MainWindow.Current_Directory :=
+                 To_Unbounded_String
+                   (Value("HOME") & "/.local/share/Trash/files");
+               Update_Trash_Directory_Loop :
+               for I in 2 .. Get_Index(Current(Path)) loop
+                  Append(MainWindow.Current_Directory, Name(Items(Path, I)));
+                  if I < Get_Index(Current(Path)) then
+                     Append(MainWindow.Current_Directory, "/");
+                  end if;
+               end loop Update_Trash_Directory_Loop;
+               Tcl_Eval
+                 (Interpreter,
+                  "GoToTrash " & To_String(MainWindow.Current_Directory));
+            else
+               MainWindow.Current_Directory := To_Unbounded_String("/");
+               Update_Current_Directory_Loop :
+               for I in 2 .. Get_Index(Current(Path)) loop
+                  Append(MainWindow.Current_Directory, Name(Items(Path, I)));
+                  if I < Get_Index(Current(Path)) then
+                     Append(MainWindow.Current_Directory, "/");
+                  end if;
+               end loop Update_Current_Directory_Loop;
+               LoadDirectory(To_String(MainWindow.Current_Directory));
+               Update_Directory_List(True);
+               UpdateWatch(To_String(MainWindow.Current_Directory));
+               Execute_Modules
+                 (On_Enter,
+                  "{" & To_String(MainWindow.Current_Directory) & "}");
+            end if;
             return DIRECTORY_VIEW;
          when others =>
             null;
