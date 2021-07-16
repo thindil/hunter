@@ -141,7 +141,7 @@ package body MainWindow is
       Path_Items: Item_Array_Access;
       Tokens: Slice_Set;
       CurrentIndex: Positive := 1;
-      Item, TimeString: Unbounded_String;
+      TimeString: Unbounded_String;
       Width: Column_Position;
       Height: Line_Position;
    begin
@@ -206,7 +206,6 @@ package body MainWindow is
             Move
               (Source => To_String(ItemsList(I).Name), Target => Item_Entry,
                Drop => Right);
-            Item := MainWindow.Current_Directory & "/" & ItemsList(I).Name;
             if Settings.Show_Last_Modified then
                begin
                   TimeString :=
@@ -246,7 +245,7 @@ package body MainWindow is
             end case;
             Menu_Items.all(Index) :=
               New_Item(Item_Entry, To_String(ItemsList(I).Name));
-            if Item = Current_Selected then
+            if ItemsList(I).Path = Current_Selected then
                CurrentIndex := Index;
             end if;
             Index := Index + 1;
