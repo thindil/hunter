@@ -138,11 +138,12 @@ package body CreateItems is
       pragma Unreferenced(Client_Data, Argc);
       Text_Entry: constant Ttk_Entry :=
         Get_Widget(".mainframe.textframe.textentry", Interp);
-      New_Item_Name, Action_String, Action_Blocker,
-      Destination: Unbounded_String := Null_Unbounded_String;
+      New_Item_Name: Unbounded_String;
+      Action_String, Action_Blocker, Destination: Unbounded_String :=
+        Null_Unbounded_String;
       Button: constant Ttk_Button :=
         Get_Widget(".mainframe.textframe.closebutton", Interp);
-      File: File_Descriptor;
+      File: File_Descriptor := Null_FD;
       Directory_View: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned.previewframe.directorytree", Interp);
       Hunter_Create_Exception: exception;
