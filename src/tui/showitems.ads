@@ -134,4 +134,11 @@ package ShowItems is
    procedure Preview_Keys(Key: Key_Code);
    -- ****
 
+   -- ****f* ShowItemsTUI/ShowItemsTUI.Clear_Preview_Window
+   -- FUNCTION
+   -- Clear the preview window
+   -- SOURCE
+   procedure Clear_Preview_Window;
+   -- ****
+
 end ShowItems;

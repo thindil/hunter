@@ -322,9 +322,7 @@ package body ShowItems is
          Post(Info_Form, False);
          Delete(Info_Form);
       end if;
-      Clear(PreviewWindow);
-      Box(PreviewWindow, Default_Character, Default_Character);
-      Refresh(PreviewWindow);
+      Clear_Preview_Window;
       if Is_Directory(To_String(Current_Selected)) then
          if not Is_Read_Accessible_File(To_String(Current_Selected)) then
             ShowMessage
@@ -945,5 +943,12 @@ package body ShowItems is
          Refresh(FormWindow);
       end if;
    end Preview_Keys;
+
+   procedure Clear_Preview_Window is
+   begin
+      Clear(PreviewWindow);
+      Box(PreviewWindow, Default_Character, Default_Character);
+      Refresh(PreviewWindow);
+   end Clear_Preview_Window;
 
 end ShowItems;

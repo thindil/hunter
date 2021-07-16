@@ -28,6 +28,7 @@ with LoadData.UI; use LoadData.UI;
 with Messages; use Messages;
 with Modules; use Modules;
 with RefreshData; use RefreshData;
+with ShowItems; use ShowItems;
 
 package body Bookmarks is
 
@@ -201,6 +202,7 @@ package body Bookmarks is
       end if;
       LoadDirectory(To_String(MainWindow.Current_Directory));
       UILocation := DIRECTORY_VIEW;
+      Clear_Preview_Window;
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       Execute_Modules
