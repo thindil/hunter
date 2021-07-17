@@ -783,6 +783,7 @@ package body MainWindow is
                CreateProgramMenu;
                Post(SubMenu, False);
                Delete(SubMenu);
+               Clear_Preview_Window;
                Tcl_Eval(Interpreter, "ShowTrash");
                Update_Directory_List(True);
                return DIRECTORY_VIEW;
