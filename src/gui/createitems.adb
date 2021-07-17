@@ -137,28 +137,37 @@ package body CreateItems is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
       Text_Entry: constant Ttk_Entry :=
-        Get_Widget(".mainframe.textframe.textentry", Interp);
+        Get_Widget
+          (pathName => ".mainframe.textframe.textentry", Interp => Interp);
       New_Item_Name: Unbounded_String;
       Action_String, Action_Blocker, Destination: Unbounded_String :=
         Null_Unbounded_String;
       Button: constant Ttk_Button :=
-        Get_Widget(".mainframe.textframe.closebutton", Interp);
+        Get_Widget
+          (pathName => ".mainframe.textframe.closebutton", Interp => Interp);
       File: File_Descriptor := Null_FD;
       Directory_View: constant Ttk_Tree_View :=
-        Get_Widget(".mainframe.paned.previewframe.directorytree", Interp);
+        Get_Widget
+          (pathName => ".mainframe.paned.previewframe.directorytree",
+           Interp => Interp);
       Hunter_Create_Exception: exception;
    begin
-      New_Item_Name := MainWindow.Current_Directory & "/" & Get(Text_Entry);
-      if Exists(To_String(New_Item_Name)) or
-        Is_Symbolic_Link(To_String(New_Item_Name)) then
+      New_Item_Name :=
+        MainWindow.Current_Directory & "/" & Get(Widgt => Text_Entry);
+      if Exists(Name => To_String(Source => New_Item_Name)) or
+        Is_Symbolic_Link(Name => To_String(Source => New_Item_Name)) then
          Action_String :=
            To_Unbounded_String
-             (Mc(Interp, "{create}") & " " & CArgv.Arg(Argv, 1) & " " &
-              Mc(Interp, "{with}"));
+             (Source =>
+                Mc(Interp => Interp, Src_String => "{create}") & " " &
+                CArgv.Arg(Argv => Argv, N => 1) & " " &
+                Mc(Interp => Interp, Src_String => "{with}"));
          Action_Blocker :=
-           (if Is_Directory(To_String(New_Item_Name)) then
-              To_Unbounded_String(Mc(Interp, "directory"))
-            else To_Unbounded_String(Mc(Interp, "file")));
+           (if Is_Directory(Name => To_String(Source => New_Item_Name)) then
+              To_Unbounded_String
+                (Source => Mc(Interp => Interp, Src_String => "directory"))
+            else To_Unbounded_String
+                (Source => Mc(Interp => Interp, Src_String => "file")));
          ShowMessage
            (Mc(Interp, "{You can't}") & " " & To_String(Action_String) & " " &
             Mc(Interp, "{name}") & " '" & To_String(New_Item_Name) & "' " &
