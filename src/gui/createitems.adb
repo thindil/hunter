@@ -169,17 +169,28 @@ package body CreateItems is
             else To_Unbounded_String
                 (Source => Mc(Interp => Interp, Src_String => "file")));
          ShowMessage
-           (Mc(Interp, "{You can't}") & " " & To_String(Action_String) & " " &
-            Mc(Interp, "{name}") & " '" & To_String(New_Item_Name) & "' " &
-            Mc(Interp, "{because there exists}") & " " &
-            To_String(Action_Blocker) & " " & Mc(Interp, "{with that name.}"));
+           (Message =>
+              Mc(Interp => Interp, Src_String => "{You can't}") & " " &
+              To_String(Source => Action_String) & " " &
+              Mc(Interp => Interp, Src_String => "{name}") & " '" &
+              To_String(Source => New_Item_Name) & "' " &
+              Mc(Interp => Interp, Src_String => "{because there exists}") &
+              " " & To_String(Source => Action_Blocker) & " " &
+              Mc(Interp => Interp, Src_String => "{with that name.}"));
          goto End_Of_Create;
       end if;
       if not Is_Write_Accessible_File
-          (Containing_Directory(To_String(New_Item_Name))) then
+          (Name =>
+             Containing_Directory
+               (Name => To_String(Source => New_Item_Name))) then
          ShowMessage
-           (Mc(Interp, "{You don't have permissions to write to}") & " " &
-            Containing_Directory(To_String(New_Item_Name)));
+           (Message =>
+              Mc
+                (Interp => Interp,
+                 Src_String => "{You don't have permissions to write to}") &
+              " " &
+              Containing_Directory
+                (Name => To_String(Source => New_Item_Name)));
          goto End_Of_Create;
       end if;
       case New_Action is
