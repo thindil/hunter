@@ -244,7 +244,7 @@ package body MainWindow is
                   end if;
             end case;
             Menu_Items.all(Index) :=
-              New_Item(Item_Entry, To_String(ItemsList(I).Name));
+              New_Item(Item_Entry, To_String(ItemsList(I).Path));
             if ItemsList(I).Path = Current_Selected then
                CurrentIndex := Index;
             end if;

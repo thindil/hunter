@@ -650,8 +650,7 @@ package body ShowItems is
          return;
       end if;
       Current_Selected :=
-        MainWindow.Current_Directory & "/" &
-        Description(Current(DirectoryList));
+        To_Unbounded_String(Description(Current(DirectoryList)));
       if New_Action = CREATELINK then
          return;
       end if;
