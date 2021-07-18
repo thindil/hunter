@@ -20,6 +20,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.String_Split;
 with CHelper;
 with Tcl.Ada;
@@ -612,9 +613,42 @@ package body MainWindow is
                   Append
                     (Source => Path,
                      New_Item => Slice(S => Tokens, Index => I) & "/");
-                  Button_Label :=
-                    To_Unbounded_String
-                      (Source => Slice(S => Tokens, Index => I));
+                  if New_Action = SHOWTRASH and I = 2 then
+                     declare
+                        File_Info: File_Type;
+                        File_Line: Unbounded_String;
+                     begin
+                        Open
+                          (File => File_Info, Mode => In_File,
+                           Name =>
+                             Value(Name => "HOME") &
+                             "/.local/share/Trash/info/" &
+                             Slice(S => Tokens, Index => I) & ".trashinfo");
+                        Skip_Line(File => File_Info);
+                        Read_File_Path_Loop :
+                        for I in 1 .. 2 loop
+                           File_Line :=
+                             To_Unbounded_String
+                               (Source => Get_Line(File => File_Info));
+                           if Slice(Source => File_Line, Low => 1, High => 4) =
+                             "Path" then
+                              Button_Label :=
+                                To_Unbounded_String
+                                  (Simple_Name
+                                     (Name =>
+                                        Slice
+                                          (Source => File_Line, Low => 6,
+                                           High =>
+                                             Length(Source => File_Line))));
+                           end if;
+                        end loop Read_File_Path_Loop;
+                        Close(File => File_Info);
+                     end;
+                  else
+                     Button_Label :=
+                       To_Unbounded_String
+                         (Source => Slice(S => Tokens, Index => I));
+                  end if;
                   if Length(Source => Button_Label) > 7 then
                      Button_Label :=
                        Unbounded_Slice
