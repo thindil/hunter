@@ -19,6 +19,7 @@ with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
@@ -149,10 +150,12 @@ package body MainWindow is
       MainWindow.Current_Directory :=
         To_Unbounded_String
           (Normalize_Pathname(To_String(MainWindow.Current_Directory)));
-      Index := Count(MainWindow.Current_Directory, "/") + 1;
+      Index :=
+        Ada.Strings.Unbounded.Count(MainWindow.Current_Directory, "/") + 1;
       if MainWindow.Current_Directory /= To_Unbounded_String("/") then
          if New_Action in SHOWTRASH | DELETETRASH then
-            Index := Count(DestinationDirectory, "/") + 1;
+            Index :=
+              Ada.Strings.Unbounded.Count(DestinationDirectory, "/") + 1;
             Create
               (S => Tokens, From => To_String(Source => DestinationDirectory),
                Separators => "/");
@@ -164,7 +167,38 @@ package body MainWindow is
             Path_Items.all(1) := New_Item("/");
          end if;
          for I in 2 .. Slice_Count(Tokens) loop
-            Path_Items.all(Positive(I)) := New_Item(Slice(Tokens, I));
+            if New_Action = SHOWTRASH and I = 2 then
+               declare
+                  File_Info: File_Type;
+                  File_Line: Unbounded_String;
+               begin
+                  Open
+                    (File => File_Info, Mode => In_File,
+                     Name =>
+                       Value(Name => "HOME") & "/.local/share/Trash/info/" &
+                       Slice(S => Tokens, Index => I) & ".trashinfo");
+                  Skip_Line(File => File_Info);
+                  Read_File_Path_Loop :
+                  for I in 1 .. 2 loop
+                     File_Line :=
+                       To_Unbounded_String
+                         (Source => Get_Line(File => File_Info));
+                     if Slice(Source => File_Line, Low => 1, High => 4) =
+                       "Path" then
+                        Path_Items.all(I) :=
+                          New_Item
+                            (Ada.Directories.Simple_Name
+                               (Name =>
+                                  Slice
+                                    (Source => File_Line, Low => 6,
+                                     High => Length(Source => File_Line))));
+                     end if;
+                  end loop Read_File_Path_Loop;
+                  Close(File => File_Info);
+               end;
+            else
+               Path_Items.all(Positive(I)) := New_Item(Slice(Tokens, I));
+            end if;
          end loop;
          Path_Items.all(Index + 1) := Null_Item;
       else
