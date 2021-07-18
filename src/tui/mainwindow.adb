@@ -179,13 +179,13 @@ package body MainWindow is
                        Slice(S => Tokens, Index => I) & ".trashinfo");
                   Skip_Line(File => File_Info);
                   Read_File_Path_Loop :
-                  for I in 1 .. 2 loop
+                  for J in 1 .. 2 loop
                      File_Line :=
                        To_Unbounded_String
                          (Source => Get_Line(File => File_Info));
                      if Slice(Source => File_Line, Low => 1, High => 4) =
                        "Path" then
-                        Path_Items.all(I) :=
+                        Path_Items.all(Positive(I)) :=
                           New_Item
                             (Ada.Directories.Simple_Name
                                (Name =>
