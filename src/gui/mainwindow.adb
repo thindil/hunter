@@ -20,7 +20,7 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Text_IO;
 with GNAT.String_Split;
 with CHelper;
 with Tcl.Ada;
@@ -614,9 +614,12 @@ package body MainWindow is
                     (Source => Path,
                      New_Item => Slice(S => Tokens, Index => I) & "/");
                   if New_Action = SHOWTRASH and I = 2 then
+                     Set_Path_Button_Block :
                      declare
+                        use Ada.Text_IO;
+
                         File_Info: File_Type;
-                        File_Line: Unbounded_String;
+                        File_Line: Unbounded_String := Null_Unbounded_String;
                      begin
                         Open
                           (File => File_Info, Mode => In_File,
@@ -626,7 +629,7 @@ package body MainWindow is
                              Slice(S => Tokens, Index => I) & ".trashinfo");
                         Skip_Line(File => File_Info);
                         Read_File_Path_Loop :
-                        for I in 1 .. 2 loop
+                        for J in 1 .. 2 loop
                            File_Line :=
                              To_Unbounded_String
                                (Source => Get_Line(File => File_Info));
@@ -634,7 +637,7 @@ package body MainWindow is
                              "Path" then
                               Button_Label :=
                                 To_Unbounded_String
-                                  (Simple_Name
+                                  (Source => Simple_Name
                                      (Name =>
                                         Slice
                                           (Source => File_Line, Low => 6,
@@ -643,7 +646,7 @@ package body MainWindow is
                            end if;
                         end loop Read_File_Path_Loop;
                         Close(File => File_Info);
-                     end;
+                     end Set_Path_Button_Block;
                   else
                      Button_Label :=
                        To_Unbounded_String
