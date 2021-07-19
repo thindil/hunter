@@ -192,9 +192,11 @@ package body Bookmarks is
          return DIRECTORY_VIEW;
       end if;
       if BookmarksList.Contains(Bookmark) then
+         New_Action := CREATEFILE;
          MainWindow.Current_Directory :=
            To_Unbounded_String(BookmarksList(Bookmark));
       elsif Bookmark = Mc(Interpreter, "{Home}") then
+         New_Action := CREATEFILE;
          MainWindow.Current_Directory := To_Unbounded_String(Value("HOME"));
       else
          ShowBookmarksForm;
@@ -242,6 +244,7 @@ package body Bookmarks is
                      " doesn't exists.");
                   return MESSAGE_FORM;
                end if;
+               New_Action := CREATEFILE;
                MainWindow.Current_Directory :=
                  To_Unbounded_String
                    (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
