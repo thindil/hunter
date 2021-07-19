@@ -191,7 +191,8 @@ package body MainWindow is
                                (Name =>
                                   Slice
                                     (Source => File_Line, Low => 6,
-                                     High => Length(Source => File_Line))));
+                                     High => Length(Source => File_Line))),
+                             Slice(S => Tokens, Index => I));
                      end if;
                   end loop Read_File_Path_Loop;
                   Close(File => File_Info);
@@ -208,6 +209,7 @@ package body MainWindow is
          Index := 1;
       end if;
       Path := New_Menu(Path_Items);
+      Set_Options(Path, (Show_Descriptions => False, others => <>));
       Set_Format(Path, 1, 5);
       Set_Mark(Path, "");
       Set_Window(Path, PathButtons);
@@ -379,17 +381,29 @@ package body MainWindow is
             if New_Action in SHOWTRASH | DELETETRASH then
                MainWindow.Current_Directory :=
                  To_Unbounded_String
-                   (Value("HOME") & "/.local/share/Trash/files");
+                   (Value("HOME") & "/.local/share/Trash/files/");
                Update_Trash_Directory_Loop :
                for I in 2 .. Get_Index(Current(Path)) loop
-                  Append(MainWindow.Current_Directory, Name(Items(Path, I)));
+                  if I = 2 then
+                     Append
+                       (MainWindow.Current_Directory,
+                        Description(Items(Path, I)));
+                  else
+                     Append
+                       (MainWindow.Current_Directory, Name(Items(Path, I)));
+                  end if;
                   if I < Get_Index(Current(Path)) then
                      Append(MainWindow.Current_Directory, "/");
                   end if;
                end loop Update_Trash_Directory_Loop;
-               Tcl_Eval
-                 (Interpreter,
-                  "GoToTrash " & To_String(MainWindow.Current_Directory));
+               if Get_Index(Current(Path)) = 1 then
+                  Tcl_Eval(Interpreter, "ShowTrash");
+                  Update_Directory_List(True);
+               else
+                  Tcl_Eval
+                     (Interpreter,
+                     "GoToTrash " & To_String(MainWindow.Current_Directory));
+               end if;
             else
                MainWindow.Current_Directory := To_Unbounded_String("/");
                Update_Current_Directory_Loop :
