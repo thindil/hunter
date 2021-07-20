@@ -195,30 +195,41 @@ package body CreateItems is
       end if;
       case New_Action is
          when CREATEDIRECTORY =>
-            Create_Path(To_String(New_Item_Name));
+            Create_Path(New_Directory => To_String(Source => New_Item_Name));
          when CREATEFILE =>
-            Create_Path(Containing_Directory(To_String(New_Item_Name)));
-            File := Create_File(To_String(New_Item_Name), Binary);
+            Create_Path
+              (New_Directory =>
+                 Containing_Directory
+                   (Name => To_String(Source => New_Item_Name)));
+            File :=
+              Create_File
+                (Name => To_String(Source => New_Item_Name), Fmode => Binary);
             Close(File);
          when CREATELINK =>
             Destination := DestinationDirectory;
-            if Selection(Directory_View)'Length > 0 then
+            if Selection(TreeViewWidget => Directory_View)'Length > 0 then
                Destination :=
                  DestinationDirectory &
-                 SecondItemsList(Positive'Value(Selection(Directory_View)))
+                 SecondItemsList
+                   (Positive'Value
+                      (Selection(TreeViewWidget => Directory_View)))
                    .Name;
             end if;
             Tcl_Eval
-              (Interp,
-               "file link -symbolic {" & To_String(New_Item_Name) & "} {" &
-               To_String(Destination) & "}");
+              (interp => Interp,
+               strng =>
+                 "file link -symbolic {" & To_String(Source => New_Item_Name) &
+                 "} {" & To_String(Source => Destination) & "}");
          when others =>
             raise Hunter_Create_Exception
-              with Mc(Interp, "{Invalid action type}");
+              with Mc(Interp => Interp, Src_String => "{Invalid action type}");
       end case;
       if not Settings.Stay_In_Old and then New_Action /= CREATELINK then
          MainWindow.Current_Directory :=
-           To_Unbounded_String(Containing_Directory(To_String(New_Item_Name)));
+           To_Unbounded_String
+             (Source =>
+                Containing_Directory
+                  (Name => To_String(Source => New_Item_Name)));
       end if;
       LoadDirectory(To_String(MainWindow.Current_Directory));
       UpdateWatch(To_String(MainWindow.Current_Directory));
