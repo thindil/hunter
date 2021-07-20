@@ -79,6 +79,31 @@ package body MainWindow is
                  (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
                Post(ProgramMenu);
             end;
+         when SHOWTRASH =>
+            declare
+               Main_Menu_Array: constant array(1 .. 5) of Unbounded_String :=
+                 (To_Unbounded_String("Quit"),
+                  To_Unbounded_String("Bookmarks"),
+                  To_Unbounded_String("View"),
+                  To_Unbounded_String("Restore"),
+                  To_Unbounded_String("Clear"));
+               Menu_Items: constant Item_Array_Access :=
+                 new Item_Array(1 .. 6);
+            begin
+               Create_Trash_Menu_Loop :
+               for I in Main_Menu_Array'Range loop
+                  Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
+               end loop Create_Trash_Menu_Loop;
+               Menu_Items.all(6) := Null_Item;
+               ProgramMenu := New_Menu(Menu_Items);
+               Set_Format(ProgramMenu, 1, 5);
+               Set_Mark(ProgramMenu, "");
+               MenuWindow := Create(1, Columns, 0, 0);
+               Set_Window(ProgramMenu, MenuWindow);
+               Set_Sub_Window
+                 (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+               Post(ProgramMenu);
+            end;
          when others =>
             declare
                Main_Menu_Array: constant array(1 .. 7) of Unbounded_String :=
@@ -401,7 +426,7 @@ package body MainWindow is
                   Update_Directory_List(True);
                else
                   Tcl_Eval
-                     (Interpreter,
+                    (Interpreter,
                      "GoToTrash " & To_String(MainWindow.Current_Directory));
                end if;
             else
@@ -828,7 +853,7 @@ package body MainWindow is
                return SEARCH_FORM;
             elsif Current_Menu = "Show Trash" then
                New_Action := SHOWTRASH;
-               CreateProgramMenu;
+               CreateProgramMenu(True);
                Post(SubMenu, False);
                Delete(SubMenu);
                Clear_Preview_Window;
