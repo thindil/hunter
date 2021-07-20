@@ -84,8 +84,7 @@ package body MainWindow is
                Main_Menu_Array: constant array(1 .. 5) of Unbounded_String :=
                  (To_Unbounded_String("Quit"),
                   To_Unbounded_String("Bookmarks"),
-                  To_Unbounded_String("View"),
-                  To_Unbounded_String("Restore"),
+                  To_Unbounded_String("View"), To_Unbounded_String("Restore"),
                   To_Unbounded_String("Clear"));
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 6);
@@ -507,7 +506,8 @@ package body MainWindow is
                Menu_Items.all(4) := New_Item("Add bookmark");
             end if;
          when VIEW_MENU =>
-            Menu_Items := new Item_Array(1 .. 5);
+            Menu_Items :=
+              new Item_Array(1 .. (if New_Action = SHOWTRASH then 4 else 5));
             Count_Selected_Loop :
             for I in 1 .. Item_Count(DirectoryList) loop
                if Selected_Items.Contains
@@ -522,7 +522,9 @@ package body MainWindow is
                Menu_Items.all(1) := New_Item("Deselect all");
             end if;
             Menu_Items.all(2) := New_Item("Search for");
-            Menu_Items.all(3) := New_Item("Show Trash");
+            if New_Action /= SHOWTRASH then
+               Menu_Items.all(3) := New_Item("Show Trash");
+            end if;
          when ABOUT_MENU =>
             Menu_Items := new Item_Array(1 .. 7);
             Menu_Items.all(1) := New_Item("About the program");
