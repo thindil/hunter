@@ -646,8 +646,14 @@ package body MainWindow is
                      return VIEW_MENU;
                   end if;
                when 4 =>
-                  Draw_Menu(ACTIONS_MENU);
-                  return ACTIONS_MENU;
+                  if New_Action = SHOWTRASH then
+                     Tcl_Eval(Interpreter, "RestoreItems");
+                     Update_Directory_List(True);
+                     return DIRECTORY_VIEW;
+                  else
+                     Draw_Menu(ACTIONS_MENU);
+                     return ACTIONS_MENU;
+                  end if;
                when 5 =>
                   Draw_Menu(SELECTED_MENU);
                   return SELECTED_MENU;
