@@ -61,9 +61,7 @@ package body DeleteItems is
             Ada.Environment_Variables.Value("HOME") &
             "/.local/share/Trash/info/" & To_String(NewName) & ".trashinfo");
          Put_Line(TrashFile, "[Trash Info]");
-         Put_Line
-           (TrashFile,
-            "Path=" & To_String(MainWindow.Current_Directory & "/" & Name));
+         Put_Line(TrashFile, "Path=" & To_String(Name));
          DeleteTime := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
          DeleteTime(11) := 'T';
          Put_Line(TrashFile, "DeletionDate=" & DeleteTime);
