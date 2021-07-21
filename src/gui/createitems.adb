@@ -204,7 +204,7 @@ package body CreateItems is
             File :=
               Create_File
                 (Name => To_String(Source => New_Item_Name), Fmode => Binary);
-            Close(File);
+            Close(FD => File);
          when CREATELINK =>
             Destination := DestinationDirectory;
             if Selection(TreeViewWidget => Directory_View)'Length > 0 then
@@ -231,21 +231,23 @@ package body CreateItems is
                 Containing_Directory
                   (Name => To_String(Source => New_Item_Name)));
       end if;
-      LoadDirectory(To_String(MainWindow.Current_Directory));
-      UpdateWatch(To_String(MainWindow.Current_Directory));
-      Update_Directory_List(True);
+      LoadDirectory
+        (DirectoryName => To_String(Source => MainWindow.Current_Directory));
+      UpdateWatch(Path => To_String(Source => MainWindow.Current_Directory));
+      Update_Directory_List(Clear => True);
       <<End_Of_Create>>
-      if Invoke(Button) /= "" then
+      if Invoke(Buttn => Button) /= "" then
          return TCL_ERROR;
       end if;
-      Toggle_Tool_Buttons(New_Action, True);
+      Toggle_Tool_Buttons(Action => New_Action, Finished => True);
       return TCL_OK;
    end Create_Command;
 
    procedure Create_Create_Ui is
    begin
-      Add_Command("ShowCreate", Show_Create_Command'Access);
-      Add_Command("Create", Create_Command'Access);
+      Add_Command
+        (Name => "ShowCreate", Ada_Command => Show_Create_Command'Access);
+      Add_Command(Name => "Create", Ada_Command => Create_Command'Access);
    end Create_Create_Ui;
 
 end CreateItems;
