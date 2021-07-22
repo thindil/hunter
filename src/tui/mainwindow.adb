@@ -613,8 +613,8 @@ package body MainWindow is
                              Current(DirectoryList) =
                                Items(DirectoryList, I) then
                               MoveItemsList.Append
-                                (MainWindow.Current_Directory & "/" &
-                                 Description(Items(DirectoryList, I)));
+                                (To_Unbounded_String
+                                   (Description(Items(DirectoryList, I))));
                            end if;
                         end loop Update_Move_Items_Loop;
                      end if;
