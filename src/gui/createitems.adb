@@ -13,28 +13,28 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Directories;
+with Ada.Strings.Unbounded;
 with Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Interfaces.C.Strings;
+with GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
-with Tcl.Ada; use Tcl.Ada;
+with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada.Grid;
-with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
-with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
-with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
-with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
+with Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tklib.Ada.Tooltip;
+with LoadData;
+with LoadData.UI;
 with MainWindow; use MainWindow;
-with Messages; use Messages;
-with Preferences; use Preferences;
-with RefreshData; use RefreshData;
+with Messages;
+with Preferences;
+with RefreshData;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
@@ -64,6 +64,11 @@ package body CreateItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
+      use Interfaces.C.Strings;
+      use Tcl.Tk.Ada.Widgets;
+      use Tcl.Tk.Ada.Widgets.TtkFrame;
+      use Tcl.Tklib.Ada.Tooltip;
+
       Frame: constant Ttk_Frame :=
         Get_Widget(pathName => ".mainframe.textframe", Interp => Interp);
       Button: Ttk_Button :=
@@ -136,6 +141,17 @@ package body CreateItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
+      use GNAT.OS_Lib;
+      use Tcl.Ada;
+      use Tcl.Tk.Ada.Widgets.TtkTreeView;
+      use LoadData;
+      use LoadData.UI;
+      use Messages;
+      use Preferences;
+      use RefreshData;
+
       Text_Entry: constant Ttk_Entry :=
         Get_Widget
           (pathName => ".mainframe.textframe.textentry", Interp => Interp);
