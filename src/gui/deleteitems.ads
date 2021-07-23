@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,20 +20,20 @@
 package DeleteItems is
 -- ****
 
-   -- ****f* DeleteItems/DeleteItems.DeleteSelected
+   -- ****f* DeleteItems/DeleteItems.Delete_Selected
    -- FUNCTION
    -- Delete selected files and directories
    -- RESULT
    -- True if current directory was deleted too, otherwise false
    -- SOURCE
-   function DeleteSelected return Boolean;
+   function Delete_Selected return Boolean;
    -- ****
 
-   -- ****f* DeleteItems/DeleteItems.CreateDeleteUI
+   -- ****f* DeleteItems/DeleteItems.Create_Delete_Ui
    -- FUNCTION
    -- Create UI for deleting items
    -- SOURCE
-   procedure CreateDeleteUI;
+   procedure Create_Delete_Ui;
    -- ****
 
 end DeleteItems;
