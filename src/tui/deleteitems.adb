@@ -107,11 +107,8 @@ package body DeleteItems is
       Delete_Items_Loop :
       for Item of Selected_Items loop
          Update_Progress_Bar;
-         if Is_Directory
-             (To_String(MainWindow.Current_Directory & "/" & Item)) then
-            Arguments(2) :=
-              new String'
-                (To_String(MainWindow.Current_Directory & "/" & Item));
+         if Is_Directory(To_String(Item)) then
+            Arguments(2) := new String'(To_String(Item));
             if Settings.Delete_Files or New_Action = DELETETRASH then
                Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
                if not Success then
@@ -126,10 +123,9 @@ package body DeleteItems is
             end if;
          else
             if Settings.Delete_Files or New_Action = DELETETRASH then
-               Delete_File
-                 (To_String(MainWindow.Current_Directory & "/" & Item));
+               Delete_File(To_String(Item));
             else
-               MoveToTrash(MainWindow.Current_Directory & "/" & Item);
+               MoveToTrash(Item);
             end if;
          end if;
          if New_Action = DELETETRASH then
