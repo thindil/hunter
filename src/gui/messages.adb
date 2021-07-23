@@ -108,7 +108,7 @@ package body Messages is
             end if;
             if Response = "yes" then
                begin
-                  if DeleteSelected then
+                  if Delete_Selected then
                      Current_Directory :=
                        To_Unbounded_String
                          (Normalize_Pathname

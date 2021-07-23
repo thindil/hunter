@@ -161,7 +161,7 @@ package body MainWindow.Commands is
       Execute_Modules(On_Quit);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
-         if DeleteSelected then
+         if Delete_Selected then
             null;
          end if;
       end if;

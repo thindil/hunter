@@ -40,7 +40,7 @@ with Utils.UI; use Utils.UI;
 
 package body DeleteItems is
 
-   function DeleteSelected return Boolean is
+   function Delete_Selected return Boolean is
       GoUp, Success: Boolean := False;
       Arguments: Argument_List := (new String'("-rf"), new String'(""));
       OldSetting: Boolean;
@@ -159,7 +159,7 @@ package body DeleteItems is
               (Get_Context,
                "{Unknown error during deleting files or directories.}"));
          raise;
-   end DeleteSelected;
+   end Delete_Selected;
 
    -- ****o* DeleteItems/DeleteItems.Start_Deleting_Command
    -- FUNCTION
@@ -233,9 +233,9 @@ package body DeleteItems is
       return TCL_OK;
    end Start_Deleting_Command;
 
-   procedure CreateDeleteUI is
+   procedure Create_Delete_Ui is
    begin
       Add_Command("StartDeleting", Start_Deleting_Command'Access);
-   end CreateDeleteUI;
+   end Create_Delete_Ui;
 
 end DeleteItems;

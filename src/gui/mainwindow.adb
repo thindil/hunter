@@ -301,7 +301,7 @@ package body MainWindow is
       CreateMessagesUI;
       ActivateItems.Add_Commands;
       CreatePreferencesUI;
-      CreateDeleteUI;
+      Create_Delete_Ui;
       CreateRenameUI;
       Create_Create_Ui;
       Create_Copy_Ui;
