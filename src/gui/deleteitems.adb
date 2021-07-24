@@ -41,15 +41,15 @@ with Utils.UI; use Utils.UI;
 package body DeleteItems is
 
    function Delete_Selected return Boolean is
-      GoUp, Success: Boolean := False;
+      Go_Up, Success: Boolean := False;
       Arguments: Argument_List := (new String'("-rf"), new String'(""));
-      OldSetting: Boolean;
-      DeleteTime: String(1 .. 19);
-      procedure MoveToTrash(Name: Unbounded_String) is
-         NewName: Unbounded_String;
-         TrashFile: File_Type;
+      Old_Setting: Boolean;
+      Delete_Time: String(1 .. 19);
+      procedure Move_To_Trash(Name: Unbounded_String) is
+         New_Name: Unbounded_String;
+         Trash_File: File_Type;
       begin
-         NewName :=
+         New_Name :=
            Trim
              (To_Unbounded_String
                 (Hash_Type'Image
@@ -57,21 +57,21 @@ package body DeleteItems is
                       (Name & To_Unbounded_String(Image(Clock))))),
               Both);
          Create
-           (TrashFile, Out_File,
+           (Trash_File, Out_File,
             Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/info/" & To_String(NewName) & ".trashinfo");
-         Put_Line(TrashFile, "[Trash Info]");
-         Put_Line(TrashFile, "Path=" & To_String(Name));
-         DeleteTime := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
-         DeleteTime(11) := 'T';
-         Put_Line(TrashFile, "DeletionDate=" & DeleteTime);
-         Close(TrashFile);
+            "/.local/share/Trash/info/" & To_String(New_Name) & ".trashinfo");
+         Put_Line(Trash_File, "[Trash Info]");
+         Put_Line(Trash_File, "Path=" & To_String(Name));
+         Delete_Time := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
+         Delete_Time(11) := 'T';
+         Put_Line(Trash_File, "DeletionDate=" & Delete_Time);
+         Close(Trash_File);
          Rename_File
            (To_String(Name),
             Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/files/" & To_String(NewName),
+            "/.local/share/Trash/files/" & To_String(New_Name),
             Success);
-      end MoveToTrash;
+      end Move_To_Trash;
       procedure AddTrash(SubDirectory: String) is
          Search: Search_Type;
          Item: Directory_Entry_Type;
@@ -98,7 +98,7 @@ package body DeleteItems is
         (Ada.Environment_Variables.Value("HOME") &
          "/.local/share/Trash/files");
       if New_Action = CLEARTRASH then
-         OldSetting := Settings.Delete_Files;
+         Old_Setting := Settings.Delete_Files;
          Settings.Delete_Files := True;
          Selected_Items.Clear;
          AddTrash("info");
@@ -115,16 +115,16 @@ package body DeleteItems is
                   raise Directory_Error with To_String(Item);
                end if;
             else
-               MoveToTrash(Item);
+               Move_To_Trash(Item);
             end if;
             if Item = MainWindow.Current_Directory then
-               GoUp := True;
+               Go_Up := True;
             end if;
          else
             if Settings.Delete_Files or New_Action = DELETETRASH then
                Delete_File(To_String(Item));
             else
-               MoveToTrash(Item);
+               Move_To_Trash(Item);
             end if;
          end if;
          if New_Action = DELETETRASH then
@@ -135,11 +135,11 @@ package body DeleteItems is
          end if;
       end loop Delete_Items_Loop;
       if New_Action = CLEARTRASH then
-         Settings.Delete_Files := OldSetting;
+         Settings.Delete_Files := Old_Setting;
       end if;
       Selected_Items.Clear;
       Current_Selected := MainWindow.Current_Directory;
-      return GoUp;
+      return Go_Up;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
          ShowMessage
