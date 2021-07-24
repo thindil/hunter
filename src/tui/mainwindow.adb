@@ -941,6 +941,7 @@ package body MainWindow is
             end if;
             UILocation := DIRECTORY_VIEW;
             Update_Directory_List(True);
+            ShowPreview;
             Post(SubMenu, False);
             Delete(SubMenu);
             return DIRECTORY_VIEW;
