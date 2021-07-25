@@ -42,9 +42,10 @@ package body DeleteItems is
 
    function Delete_Selected return Boolean is
       Go_Up, Success: Boolean := False;
-      Arguments: Argument_List := (new String'("-rf"), new String'(""));
-      Old_Setting: Boolean;
-      Delete_Time: String(1 .. 19);
+      Arguments: Argument_List :=
+        (1 => new String'("-rf"), 2 => new String'(""));
+      Old_Setting: constant Boolean := Settings.Delete_Files;
+      Delete_Time: String(1 .. 19) := (others => ' ');
       procedure Move_To_Trash(Name: Unbounded_String) is
          New_Name: Unbounded_String;
          Trash_File: File_Type;
@@ -62,8 +63,10 @@ package body DeleteItems is
             "/.local/share/Trash/info/" & To_String(New_Name) & ".trashinfo");
          Put_Line(Trash_File, "[Trash Info]");
          Put_Line(Trash_File, "Path=" & To_String(Name));
+         --## rule off ASSIGNMENTS
          Delete_Time := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
          Delete_Time(11) := 'T';
+         --## rule on ASSIGNMENTS
          Put_Line(Trash_File, "DeletionDate=" & Delete_Time);
          Close(Trash_File);
          Rename_File
@@ -98,7 +101,6 @@ package body DeleteItems is
         (Ada.Environment_Variables.Value("HOME") &
          "/.local/share/Trash/files");
       if New_Action = CLEARTRASH then
-         Old_Setting := Settings.Delete_Files;
          Settings.Delete_Files := True;
          Selected_Items.Clear;
          AddTrash("info");
