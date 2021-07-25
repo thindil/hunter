@@ -641,20 +641,23 @@ package body MainWindow is
                      CreateProgramMenu;
                      Refresh(MenuWindow);
                      return DIRECTORY_VIEW;
-                  else
-                     Draw_Menu(VIEW_MENU);
-                     return VIEW_MENU;
                   end if;
+                  Draw_Menu(VIEW_MENU);
+                  return VIEW_MENU;
                when 4 =>
                   if New_Action = SHOWTRASH then
                      Tcl_Eval(Interpreter, "RestoreItems");
                      Update_Directory_List(True);
                      return DIRECTORY_VIEW;
-                  else
-                     Draw_Menu(ACTIONS_MENU);
-                     return ACTIONS_MENU;
                   end if;
+                  Draw_Menu(ACTIONS_MENU);
+                  return ACTIONS_MENU;
                when 5 =>
+                  if New_Action = SHOWTRASH then
+                     New_Action := CLEARTRASH;
+                     Tcl_Eval(Interpreter, "ClearTrash");
+                     return MESSAGE_FORM;
+                  end if;
                   Draw_Menu(SELECTED_MENU);
                   return SELECTED_MENU;
                when 6 =>
