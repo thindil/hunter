@@ -13,12 +13,14 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
-with LoadData.UI; use LoadData.UI;
 with MoveItems; use MoveItems;
 with Utils.UI; use Utils.UI;
 
@@ -220,15 +222,17 @@ package body Messages is
                   end if;
                exception
                   when others =>
-                     New_Action := CREATEFILE;
-                     UILocation := DIRECTORY_VIEW;
-                     LoadDirectory(To_String(Current_Directory));
-                     Update_Directory_List(True);
-                     return DIRECTORY_VIEW;
+                     return Go_To_Bookmark(Mc(Interpreter, "{Home}"));
                end;
-               New_Action := CREATEFILE;
-               UILocation := DIRECTORY_VIEW;
-               Update_Directory_List(True);
+               if Current_Directory =
+                 To_Unbounded_String
+                   (Value("HOME") & "/.local/share/Trash/files") then
+                  return Go_To_Bookmark(Mc(Interpreter, "{Home}"));
+               else
+                  New_Action := CREATEFILE;
+                  UILocation := DIRECTORY_VIEW;
+                  Update_Directory_List(True);
+               end if;
                return DIRECTORY_VIEW;
             end if;
          when others =>
