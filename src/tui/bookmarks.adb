@@ -193,10 +193,12 @@ package body Bookmarks is
       end if;
       if BookmarksList.Contains(Bookmark) then
          New_Action := CREATEFILE;
+         CreateProgramMenu(True);
          MainWindow.Current_Directory :=
            To_Unbounded_String(BookmarksList(Bookmark));
       elsif Bookmark = Mc(Interpreter, "{Home}") then
          New_Action := CREATEFILE;
+         CreateProgramMenu(True);
          MainWindow.Current_Directory := To_Unbounded_String(Value("HOME"));
       else
          ShowBookmarksForm;
