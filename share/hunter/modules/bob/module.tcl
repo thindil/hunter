@@ -1,4 +1,4 @@
-# Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+# Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -30,6 +30,9 @@ namespace eval bob {
    # SOURCE
    proc Create_UI {path} {
    # ****
+      if {[info exists tk_version] == 0} {
+         return
+      }
       image create photo BobIcon -file [file join $path bob.svg] -format "svg -scaletoheight [GetConfig toolbarssize]"
       menu .bobmenu -tearoff false
       ttk::menubutton .mainframe.toolbars.actiontoolbar.bobbutton -style Toolbutton -image BobIcon -takefocus 0 -menu .bobmenu
@@ -59,6 +62,9 @@ namespace eval bob {
    # SOURCE
    proc on_disable {} {
    # ****
+      if {[info exists tk_version] == 0} {
+         return
+      }
       image delete BobIcon
       destroy .mainframe.toolbars.actiontoolbar.bobbutton
       destroy .bobmenu
@@ -91,6 +97,9 @@ namespace eval bob {
    # SOURCE
    proc on_enter {path} {
    # ****
+      if {[info exists tk_version] == 0} {
+         return
+      }
       set filename [file join $path .bob.yml]
       if {[file exists $filename] == 0} {
          pack forget .mainframe.toolbars.actiontoolbar.bobbutton
