@@ -208,7 +208,7 @@ package body Bookmarks is
       UILocation := DIRECTORY_VIEW;
       Clear_Preview_Window;
       Update_Directory_List(True);
-      Show_Preview;
+      ShowPreview;
       UpdateWatch(To_String(MainWindow.Current_Directory));
       Execute_Modules
         (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
