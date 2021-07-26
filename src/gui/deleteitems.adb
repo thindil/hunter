@@ -52,28 +52,33 @@ package body DeleteItems is
       begin
          New_Name :=
            Trim
-             (To_Unbounded_String
-                (Hash_Type'Image
-                   (Ada.Strings.Unbounded.Hash
-                      (Name & To_Unbounded_String(Image(Clock))))),
-              Both);
+             (Source =>
+                To_Unbounded_String
+                  (Source =>
+                     Hash_Type'Image
+                       (Ada.Strings.Unbounded.Hash
+                          (Key => Name & Image(Date => Clock)))),
+              Side => Both);
          Create
-           (Trash_File, Out_File,
-            Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/info/" & To_String(New_Name) & ".trashinfo");
-         Put_Line(Trash_File, "[Trash Info]");
-         Put_Line(Trash_File, "Path=" & To_String(Name));
+           (File => Trash_File, Mode => Out_File,
+            Name =>
+              Ada.Environment_Variables.Value(Name => "HOME") &
+              "/.local/share/Trash/info/" & To_String(Source => New_Name) &
+              ".trashinfo");
+         Put_Line(File => Trash_File, Item => "[Trash Info]");
+         Put_Line(File => Trash_File, Item => "Path=" & To_String(Name));
          --## rule off ASSIGNMENTS
          Delete_Time := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
          Delete_Time(11) := 'T';
          --## rule on ASSIGNMENTS
-         Put_Line(Trash_File, "DeletionDate=" & Delete_Time);
-         Close(Trash_File);
+         Put_Line(File => Trash_File, Item => "DeletionDate=" & Delete_Time);
+         Close(File => Trash_File);
          Rename_File
-           (To_String(Name),
-            Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/files/" & To_String(New_Name),
-            Success);
+           (Old_Name => To_String(Source => Name),
+            New_Name =>
+              Ada.Environment_Variables.Value(Name => "HOME") &
+              "/.local/share/Trash/files/" & To_String(Source => New_Name),
+            Success => Success);
       end Move_To_Trash;
       procedure AddTrash(SubDirectory: String) is
          Search: Search_Type;
