@@ -66,7 +66,8 @@ package body DeleteItems is
               "/.local/share/Trash/info/" & To_String(Source => New_Name) &
               ".trashinfo");
          Put_Line(File => Trash_File, Item => "[Trash Info]");
-         Put_Line(File => Trash_File, Item => "Path=" & To_String(Name));
+         Put_Line
+           (File => Trash_File, Item => "Path=" & To_String(Source => Name));
          --## rule off ASSIGNMENTS
          Delete_Time := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
          Delete_Time(11) := 'T';
@@ -80,14 +81,14 @@ package body DeleteItems is
               "/.local/share/Trash/files/" & To_String(Source => New_Name),
             Success => Success);
       end Move_To_Trash;
-      procedure AddTrash(SubDirectory: String) is
+      procedure Add_Trash(Sub_Directory: String) is
          Search: Search_Type;
          Item: Directory_Entry_Type;
       begin
          Start_Search
            (Search,
             Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/" &
-            SubDirectory,
+            Sub_Directory,
             "*");
          Add_Items_To_Trash_Loop :
          while More_Entries(Search) loop
@@ -98,7 +99,7 @@ package body DeleteItems is
             end if;
          end loop Add_Items_To_Trash_Loop;
          End_Search(Search);
-      end AddTrash;
+      end Add_Trash;
    begin
       Create_Path
         (Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/info");
@@ -108,8 +109,8 @@ package body DeleteItems is
       if New_Action = CLEARTRASH then
          Settings.Delete_Files := True;
          Selected_Items.Clear;
-         AddTrash("info");
-         AddTrash("files");
+         Add_Trash("info");
+         Add_Trash("files");
       end if;
       Delete_Items_Loop :
       for Item of Selected_Items loop
