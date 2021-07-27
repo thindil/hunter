@@ -55,7 +55,7 @@ package body Modules is
                Simple_Name(To_String(ModulePath)) & "::" &
                To_Lower(Triggers'Image(State)) & " " & Arguments);
          exception
-            when Tcl_Error_Exception =>
+            when Tcl_Error_Exception | Constraint_Error =>
                null;
          end;
       end loop Execute_Modules_Loop;
