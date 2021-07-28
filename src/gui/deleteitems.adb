@@ -86,37 +86,43 @@ package body DeleteItems is
          Item: Directory_Entry_Type;
       begin
          Start_Search
-           (Search,
-            Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/" &
-            Sub_Directory,
-            "*");
+           (Search => Search,
+            Directory =>
+              Ada.Environment_Variables.Value(Name => "HOME") &
+              "/.local/share/Trash/" & Sub_Directory,
+            Pattern => "*");
          Add_Items_To_Trash_Loop :
-         while More_Entries(Search) loop
-            Get_Next_Entry(Search, Item);
-            if Simple_Name(Item) not in "." | ".." then
+         while More_Entries(Search => Search) loop
+            Get_Next_Entry(Search => Search, Directory_Entry => Item);
+            if Simple_Name(Directory_Entry => Item) not in "." | ".." then
                Selected_Items.Append
-                 (New_Item => To_Unbounded_String(Full_Name(Item)));
+                 (New_Item =>
+                    To_Unbounded_String
+                      (Source => Full_Name(Directory_Entry => Item)));
             end if;
          end loop Add_Items_To_Trash_Loop;
-         End_Search(Search);
+         End_Search(Search => Search);
       end Add_Trash;
    begin
       Create_Path
-        (Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/info");
+        (New_Directory =>
+           Ada.Environment_Variables.Value(Name => "HOME") &
+           "/.local/share/Trash/info");
       Create_Path
-        (Ada.Environment_Variables.Value("HOME") &
-         "/.local/share/Trash/files");
+        (New_Directory =>
+           Ada.Environment_Variables.Value(Name => "HOME") &
+           "/.local/share/Trash/files");
       if New_Action = CLEARTRASH then
          Settings.Delete_Files := True;
          Selected_Items.Clear;
-         Add_Trash("info");
-         Add_Trash("files");
+         Add_Trash(Sub_Directory => "info");
+         Add_Trash(Sub_Directory => "files");
       end if;
       Delete_Items_Loop :
       for Item of Selected_Items loop
          Update_Progress_Bar;
-         if Is_Directory(To_String(Item)) then
-            Arguments(2) := new String'(To_String(Item));
+         if Is_Directory(Name => To_String(Source => Item)) then
+            Arguments(2) := new String'(To_String(Source => Item));
             if Settings.Delete_Files or New_Action = DELETETRASH then
                Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
                if not Success then
