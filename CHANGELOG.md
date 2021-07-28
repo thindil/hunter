@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 ### Added
 - Missing translations
 - Path buttons in Trash
+- Console version of the program
 
 ### Changed
 - Updated the program themes
