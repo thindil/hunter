@@ -124,28 +124,32 @@ package body DeleteItems is
          if Is_Directory(Name => To_String(Source => Item)) then
             Arguments(2) := new String'(To_String(Source => Item));
             if Settings.Delete_Files or New_Action = DELETETRASH then
-               Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
+               Spawn
+                 (Program_Name => Locate_Exec_On_Path(Exec_Name => "rm").all,
+                  Args => Arguments, Success => Success);
                if not Success then
-                  raise Directory_Error with To_String(Item);
+                  raise Directory_Error with To_String(Source => Item);
                end if;
             else
-               Move_To_Trash(Item);
+               Move_To_Trash(Name => Item);
             end if;
             if Item = MainWindow.Current_Directory then
                Go_Up := True;
             end if;
          else
             if Settings.Delete_Files or New_Action = DELETETRASH then
-               Delete_File(To_String(Item));
+               Delete_File(Name => To_String(Source => Item));
             else
-               Move_To_Trash(Item);
+               Move_To_Trash(Name => Item);
             end if;
          end if;
          if New_Action = DELETETRASH then
             Delete_File
-              (Ada.Environment_Variables.Value("HOME") &
-               "/.local/share/Trash/info/" & Simple_Name(To_String(Item)) &
-               ".trashinfo");
+              (Name =>
+                 Ada.Environment_Variables.Value(Name => "HOME") &
+                 "/.local/share/Trash/info/" &
+                 Simple_Name(Name => To_String(Source => Item)) &
+                 ".trashinfo");
          end if;
       end loop Delete_Items_Loop;
       if New_Action = CLEARTRASH then
@@ -157,15 +161,20 @@ package body DeleteItems is
    exception
       when An_Exception : Ada.Directories.Use_Error =>
          ShowMessage
-           (Mc
-              (Get_Context,
-               "{Could not delete selected files or directories. Reason:}") &
-            " " & Exception_Message(An_Exception));
+           (Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Could not delete selected files or directories. Reason:}") &
+              " " & Exception_Message(X => An_Exception));
          raise;
       when An_Exception : Directory_Error =>
          ShowMessage
-           (Mc(Get_Context, "{Can't delete selected directory:}") & " " &
-            Exception_Message(An_Exception));
+           (Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String => "{Can't delete selected directory:}") &
+              " " & Exception_Message(X => An_Exception));
          raise;
       when others =>
          ShowMessage
