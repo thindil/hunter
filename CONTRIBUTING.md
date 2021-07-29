@@ -54,12 +54,11 @@ we first discuss your proposition. In any other case, fell free to fix my code.
 
 ### Coding standard
 
-When you write your own code, feel free to use any coding standard you want.
-But before you send your changes to the project, please use command `gnatpp`
-which automatically format source code to project coding standard. Proper
-`gnatpp` command usage (in main project directory, where *hunter.gpr* file is):
-
-`gnatpp -P hunter.gpr`
+The full description of coding style used by the project, you can find on the
+[Coding Standard](https://www.laeran.pl/repositories/hunter/wiki?name=Coding%20Standard) page.
+On the page [Testing the Project](https://www.laeran.pl/repositories/hunter/wiki?name=Testing%20the%20Project) you will
+find information how to test your code, so it will be compliant with the
+project standards.
 
 #### Code comments formatting
 
