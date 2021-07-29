@@ -1,10 +1,4 @@
 - command:
-   name: runtests
-   execute:
-      - cd tests/driver
-      - ./test_runner
-   description: Run Hunter unit tests
-- command:
    name: debug
    execute:
       - gprbuild -P hunter.gpr
@@ -24,16 +18,6 @@
    execute:
       - gprclean -P hunter.gpr
    description: Clean all compilation files
-- command:
-   name: createtests
-   execute:
-      - gnattest -P hunter.gpr
-   description: Regenerate unit tests
-- command:
-   name: tests
-   execute:
-      - gprbuild -P tests/driver/test_driver.gpr
-   description: Build Hunter unit tests
 - command:
    name: docs
    execute:
