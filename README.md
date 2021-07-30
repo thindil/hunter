@@ -1,4 +1,4 @@
-Hunter is a graphical file manager for Linux, inspired by [Ranger](https://ranger.github.io/).
+Hunter is a graphical and console file manager for Linux, inspired by [Ranger](https://ranger.github.io/).
 At this moment, Hunter is under development and have all basic features
 of a file manager. To open files, the program uses default applications
 from [XDG MIME Application Specification](https://specifications.freedesktop.org/mime-apps-spec/mime-apps-spec-latest.html).
@@ -9,19 +9,20 @@ If you read this file on Github: **please don't send pull requests here**.
 All will be automatically closed. Any code propositions should go to
 the [Fossil](https://www.laeran.pl/repositories/hunter) repository.
 
-This is the new version based on Tk library. For the stable version of the
-program please look [here](https://github.com/thindil/hunter/tree/origin/master)
+This is the new version based on Tk library (graphical version). For the stable
+version of the program please look [here](https://github.com/thindil/hunter/tree/origin/master)
 
 ## Features
 
+* Graphical (Tk) and console (Ncurses) version of the program.
 * Two column mode default or one column mode: One column always show files
   and directories, second column is used to preview files and directories
-  or select destination location for move or copy files. In one column
-  mode, second column appear only when copying or moving files or directories.
+  or select a destination location to move or copy files. In one column
+  mode, second column, appear only when copying or moving files or directories.
 * Preview of text files (with syntax highlighting) and images.
 * Standard file manager features: copy, delete, move files and directories,
   change their permissions, change application associated with them.
-* Written in TK and Ada.
+* Written in Ada programming language.
 * Available in English and Polish languages.
 * Extendable with plugins system (plugins can be written theoretically in any
   language, but mainly in Tcl).
@@ -35,7 +36,13 @@ It contains all libraries and compiler needed to build the program.
 
 To build the program, download `adabuild` image and type in console:
 
+* If you want to build the graphical version of the program:
+
 `docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuild /bin/bash -c "cd /app && gprbuild -p -P hunter.gpr -XMode=release"`
+
+* If you want to build the console version of the program:
+
+`docker run --rm -v [path to source code]:/app ghcr.io/thindil/adabuild /bin/bash -c "cd /app && gprbuild -p -P hunter.gpr -XMode=release -XUI=console"`
 
 ### Classic way
 
@@ -63,18 +70,28 @@ To build you need:
   every Linux distribution: in Fedora it is *file-devel* on Debian/Ubuntu/Mint
   *file-dev*.
 
+* If you want to build the console version of the program, you will also need
+  ncurses library, its development files and the Ada binding for it. All
+  should be available in the most Linux distributions.
+
 If you have all the required packages, navigate to the main directory(where
 this file is) to compile:
 
-* The simplest way to compile the program is use Gnat Studio. It should be available
-  in the most distributions. Just run it, select *hunter.gpr* as a project file
-  and select option `Build All`.
+* The simplest way to compile the program is use Gnat Studio. It should be
+  available in the most distributions. Just run it, select *hunter.gpr* as a
+  project file and select option `Build All`.
 
-* If you prefer using console: in main source code directory type
-  `gprbuild -P hunter.gpr` for debug mode build or for release mode:
-  `gprbuild -P hunter.gpr -XMode=release`. If you have installed
-  [Bob](https://github.com/thindil/bob) you can type `bob debug` for build in
-  debug mode or `bob release` to prepare release for the program.
+* If you prefer using console: to build the graphical version of the program,
+  in main source code directory, type `gprbuild -P hunter.gpr` for debug mode
+  build or for release mode: `gprbuild -P hunter.gpr -XMode=release`. If you
+  have installed [Bob](https://github.com/thindil/bob) you can type `bob debug`
+  for build in debug mode or `bob release` to prepare release for the program.
+  If you want to build the console version of the program, in main source code
+  directory type `gprbuild -P hunter.gpr -XUI=console` for debug mode build or
+  for release mode: `gprbuild -P hunter.gpr -XMode=release -XUI=console`. If
+  you have installed [Bob](https://github.com/thindil/bob) you can type
+  `bob debugconsole` for build in debug mode or `bob releaseconsole` to prepare
+  release for the program.
 
 ## Running Hunter
 
@@ -90,7 +107,7 @@ unfortunately you will have to build the program by yourself.
 
 When you are trying to run build by yourself version of the program, run
 `hunter` from `bin` directory. Additionally, the program requires a few
-more libraries:
+more libraries (in its graphical version):
 
 * Tk extension *tklib*. Should be available in every Linux distribution.
 
@@ -157,6 +174,10 @@ https://sourceforge.net/projects/tkimg/
 Tksvg library is available under BSD-like license:
 
 https://github.com/auriocus/tksvg
+
+Ncurses library is available under X-11 license:
+
+https://invisible-island.net/ncurses/
 
 TASHY is distributed under GPLv2 with runtime exception license:
 
