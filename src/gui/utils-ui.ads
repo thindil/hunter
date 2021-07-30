@@ -16,14 +16,14 @@
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
 with MainWindow; use MainWindow;
 
--- ****h* Utils/Utils
+-- ****h* Utils/UtilsUI
 -- FUNCTION
 -- Various utility subprograms.
 -- SOURCE
 package Utils.UI is
 -- ****
 
-   -- ****f* Utils/Utils.Find_Executable
+   -- ****f* UtilsUI/UtilsUI.Find_Executable
    -- FUNCTION
    -- Find executable file with selected name in this same directory where
    -- the program is or in PATH variable
@@ -39,7 +39,7 @@ package Utils.UI is
      (Name: String; Display_Message: Boolean := True) return String;
      -- ****
 
-     -- ****f* Utils/Utils.Update_Progress_Bar
+     -- ****f* UtilsUI/UtilsUI.Update_Progress_Bar
      -- FUNCTION
      -- Update fraction of the progress bar or set it maximum value and show it
      -- to the user
@@ -50,7 +50,7 @@ package Utils.UI is
    procedure Update_Progress_Bar(Amount: Natural := 0);
    -- ****
 
-   -- ****f* Utils/Utils.Set_Dialog
+   -- ****f* UtilsUI/UtilsUI.Set_Dialog
    -- FUNCTION
    -- Set the selected dialog
    -- PARAMETERS
@@ -64,7 +64,7 @@ package Utils.UI is
       Height: Height_Range);
    -- ****
 
-   -- ****f* Utils/Utils.Add_Command
+   -- ****f* UtilsUI/UtilsUI.Add_Command
    -- FUNCTION
    -- Add command to the Tcl interpreter
    -- PARAMETERS
@@ -76,7 +76,7 @@ package Utils.UI is
      (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc);
    -- ****
 
-   -- ****f* Utils/Utils.Toggle_Tool_Buttons
+   -- ****f* UtilsUI/UtilsUI.Toggle_Tool_Buttons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with
    -- files or directories
