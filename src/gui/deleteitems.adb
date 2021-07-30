@@ -178,9 +178,11 @@ package body DeleteItems is
          raise;
       when others =>
          ShowMessage
-           (Mc
-              (Get_Context,
-               "{Unknown error during deleting files or directories.}"));
+           (Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Unknown error during deleting files or directories.}"));
          raise;
    end Delete_Selected;
 
@@ -188,27 +190,27 @@ package body DeleteItems is
    -- FUNCTION
    -- Show confirmation to delete the selected files and directories
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- StartDeleting
    -- SOURCE
    function Start_Deleting_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Start_Deleting_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      Message, FileLine: Unbounded_String;
-      FileInfo: File_Type;
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      Message, File_Line: Unbounded_String := Null_Unbounded_String;
+      File_Info: File_Type;
       I: Positive := Selected_Items.First_Index;
    begin
       New_Action := (if New_Action /= SHOWTRASH then DELETE else DELETETRASH);
@@ -222,21 +224,21 @@ package body DeleteItems is
             Append(Message, Selected_Items(I));
          else
             Open
-              (FileInfo, In_File,
+              (File_Info, In_File,
                Ada.Environment_Variables.Value("HOME") &
                "/.local/share/Trash/info/" &
                Simple_Name(To_String(Selected_Items(I))) & ".trashinfo");
-            Skip_Line(FileInfo);
+            Skip_Line(File_Info);
             Get_Item_Name_Loop :
             for I in 1 .. 2 loop
-               FileLine := To_Unbounded_String(Get_Line(FileInfo));
-               if Slice(FileLine, 1, 4) = "Path" then
+               File_Line := To_Unbounded_String(Get_Line(File_Info));
+               if Slice(File_Line, 1, 4) = "Path" then
                   Append
                     (Message,
-                     Simple_Name(Slice(FileLine, 6, Length(FileLine))));
+                     Simple_Name(Slice(File_Line, 6, Length(File_Line))));
                end if;
             end loop Get_Item_Name_Loop;
-            Close(FileInfo);
+            Close(File_Info);
          end if;
          if not Is_Symbolic_Link(To_String(Selected_Items(I)))
            and then Is_Directory(To_String(Selected_Items(I))) then
