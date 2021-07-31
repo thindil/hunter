@@ -209,7 +209,8 @@ package body DeleteItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
-      Message, File_Line: Unbounded_String := Null_Unbounded_String;
+      Message: Unbounded_String;
+      File_Line: Unbounded_String := Null_Unbounded_String;
       File_Info: File_Type;
       I: Positive := Selected_Items.First_Index;
    begin
