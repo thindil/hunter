@@ -41,7 +41,7 @@ package Trash.UI is
       Convention => C;
       -- ****
 
-   -- ****f* Trash/TUI.CreateTrashUI
+   -- ****f* TUI/TUI.CreateTrashUI
    -- FUNCTION
    -- Create trash UI
    -- SOURCE
