@@ -17,14 +17,14 @@ with Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 
--- ****h* Trash/TUI
+-- ****h* Trash/TTUI
 -- FUNCTION
 -- Provide code to manipulate system Trash
 -- SOURCE
 package Trash.UI is
 -- ****
 
-   -- ****o* TUI/TUI.Show_Trash_Command
+   -- ****o* TTUI/TTUI.Show_Trash_Command
    -- FUNCTION
    -- Show content of the Trash
    -- PARAMETERS
@@ -41,7 +41,7 @@ package Trash.UI is
       Convention => C;
       -- ****
 
-   -- ****f* Trash/TUI.CreateTrashUI
+   -- ****f* TTUI/TTUI.CreateTrashUI
    -- FUNCTION
    -- Create trash UI
    -- SOURCE
