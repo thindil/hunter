@@ -81,21 +81,21 @@ package body MainWindow is
             end;
          when SHOWTRASH =>
             declare
-               Main_Menu_Array: constant array(1 .. 5) of Unbounded_String :=
+               Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
                  (To_Unbounded_String("Quit"),
                   To_Unbounded_String("Bookmarks"),
                   To_Unbounded_String("View"), To_Unbounded_String("Restore"),
-                  To_Unbounded_String("Clear"));
+                  To_Unbounded_String("Delete"), To_Unbounded_String("Clear"));
                Menu_Items: constant Item_Array_Access :=
-                 new Item_Array(1 .. 6);
+                 new Item_Array(1 .. 7);
             begin
                Create_Trash_Menu_Loop :
                for I in Main_Menu_Array'Range loop
                   Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
                end loop Create_Trash_Menu_Loop;
-               Menu_Items.all(6) := Null_Item;
+               Menu_Items.all(Menu_Items'Last) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
-               Set_Format(ProgramMenu, 1, 5);
+               Set_Format(ProgramMenu, 1, 6);
                Set_Mark(ProgramMenu, "");
                MenuWindow := Create(1, Columns, 0, 0);
                Set_Window(ProgramMenu, MenuWindow);
@@ -654,13 +654,18 @@ package body MainWindow is
                   return ACTIONS_MENU;
                when 5 =>
                   if New_Action = SHOWTRASH then
-                     New_Action := CLEARTRASH;
-                     Tcl_Eval(Interpreter, "ClearTrash");
-                     return MESSAGE_FORM;
+                     New_Action := DELETETRASH;
+                     ShowDeleteForm;
+                     return DELETE_FORM;
                   end if;
                   Draw_Menu(SELECTED_MENU);
                   return SELECTED_MENU;
                when 6 =>
+                  if New_Action = SHOWTRASH then
+                     New_Action := CLEARTRASH;
+                     Tcl_Eval(Interpreter, "ClearTrash");
+                     return MESSAGE_FORM;
+                  end if;
                   Draw_Menu(ABOUT_MENU);
                   return ABOUT_MENU;
                when 7 =>
@@ -734,8 +739,7 @@ package body MainWindow is
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 7 =>
-                  New_Action :=
-                    (if New_Action /= SHOWTRASH then DELETE else DELETETRASH);
+                  New_Action := DELETE;
                   ShowDeleteForm;
                   return DELETE_FORM;
                when 8 =>
