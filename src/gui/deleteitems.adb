@@ -231,7 +231,7 @@ package body DeleteItems is
                Simple_Name(To_String(Selected_Items(I))) & ".trashinfo");
             Skip_Line(File_Info);
             Get_Item_Name_Loop :
-            for I in 1 .. 2 loop
+            for J in 1 .. 2 loop
                File_Line := To_Unbounded_String(Get_Line(File_Info));
                if Slice(File_Line, 1, 4) = "Path" then
                   Append
