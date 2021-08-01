@@ -212,15 +212,17 @@ package body DeleteItems is
       Message: Unbounded_String;
       File_Line: Unbounded_String := Null_Unbounded_String;
       File_Info: File_Type;
-      I: Positive := Selected_Items.First_Index;
    begin
       New_Action := (if New_Action /= SHOWTRASH then DELETE else DELETETRASH);
       Message :=
         (if Settings.Delete_Files or New_Action = DELETETRASH then
-           To_Unbounded_String(Mc(Interp, "{Delete?}") & LF)
-         else To_Unbounded_String(Mc(Interp, "{Move to trash?}") & LF));
+           To_Unbounded_String
+             (Source => Mc(Interp => Interp, Src_String => "{Delete?}") & LF)
+         else To_Unbounded_String
+             (Source =>
+                Mc(Interp => Interp, Src_String => "{Move to trash?}") & LF));
       Add_Items_To_Delete_Loop :
-      while I <= Selected_Items.Last_Index loop
+      for I in Selected_Items.First_Index .. Selected_Items.Last_Index loop
          if New_Action = DELETE then
             Append(Message, Selected_Items(I));
          else
@@ -248,8 +250,7 @@ package body DeleteItems is
          if I /= Selected_Items.Last_Index then
             Append(Message, LF);
          end if;
-         I := I + 1;
-         if I = 11 then
+         if I = 10 then
             Append(Message, Mc(Interp, "{(and more)}"));
             exit Add_Items_To_Delete_Loop;
          end if;
