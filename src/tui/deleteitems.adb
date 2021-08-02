@@ -173,6 +173,8 @@ package body DeleteItems is
       DeleteList: Unbounded_String;
       ListLength: Positive;
       UnusedResult: Forms.Driver_Result;
+      File_Line: Unbounded_String := Null_Unbounded_String;
+      File_Info: File_Type;
    begin
       if Selected_Items.Length = 0 then
          return;
@@ -185,25 +187,46 @@ package body DeleteItems is
       end if;
       Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
-         if Is_Directory
-             (To_String
-                (MainWindow.Current_Directory & "/" & Selected_Items(I))) then
-            if Length(Selected_Items(I)) > 11 then
+         if New_Action = DELETE then
+            if Is_Directory
+                (To_String
+                   (MainWindow.Current_Directory & "/" &
+                    Selected_Items(I))) then
+               if Length(Selected_Items(I)) > 11 then
+                  Append
+                    (DeleteList,
+                     "  " & Slice(Selected_Items(I), 1, 11) &
+                     "...(and its content)" & LF);
+               else
+                  Append
+                    (DeleteList,
+                     "  " & Selected_Items(I) & " (and its content)" & LF);
+               end if;
+            elsif Length(Selected_Items(I)) > 27 then
                Append
                  (DeleteList,
-                  "  " & Slice(Selected_Items(I), 1, 11) &
-                  "...(and its content)" & LF);
+                  "  " & Slice(Selected_Items(I), 1, 27) & "..." & LF);
             else
-               Append
-                 (DeleteList,
-                  "  " & Selected_Items(I) & " (and its content)" & LF);
+               Append(DeleteList, "  " & Selected_Items(I) & LF);
             end if;
-         elsif Length(Selected_Items(I)) > 27 then
-            Append
-              (DeleteList,
-               "  " & Slice(Selected_Items(I), 1, 27) & "..." & LF);
          else
-            Append(DeleteList, "  " & Selected_Items(I) & LF);
+            Open
+              (File_Info, In_File,
+               Ada.Environment_Variables.Value("HOME") &
+               "/.local/share/Trash/info/" &
+               Simple_Name(To_String(Selected_Items(I))) & ".trashinfo");
+            Skip_Line(File_Info);
+            Get_Item_Name_Loop :
+            for J in 1 .. 2 loop
+               File_Line := To_Unbounded_String(Get_Line(File_Info));
+               if Slice(File_Line, 1, 4) = "Path" then
+                  Append
+                    (DeleteList,
+                     "  " &
+                     Simple_Name(Slice(File_Line, 6, Length(File_Line))));
+               end if;
+            end loop Get_Item_Name_Loop;
+            Close(File_Info);
          end if;
       end loop Set_Delete_List_Loop;
       if ListLength = 10 and Selected_Items.Length > 10 then
