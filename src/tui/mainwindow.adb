@@ -647,6 +647,7 @@ package body MainWindow is
                when 4 =>
                   if New_Action = SHOWTRASH then
                      Tcl_Eval(Interpreter, "RestoreItems");
+                     Clear_Preview_Window;
                      Update_Directory_List(True);
                      return DIRECTORY_VIEW;
                   end if;
