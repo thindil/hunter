@@ -224,21 +224,29 @@ package body DeleteItems is
       Add_Items_To_Delete_Loop :
       for I in Selected_Items.First_Index .. Selected_Items.Last_Index loop
          if New_Action = DELETE then
-            Append(Message, Selected_Items(I));
+            Append(Source => Message, New_Item => Selected_Items(I));
          else
             Open
-              (File_Info, In_File,
-               Ada.Environment_Variables.Value("HOME") &
-               "/.local/share/Trash/info/" &
-               Simple_Name(To_String(Selected_Items(I))) & ".trashinfo");
-            Skip_Line(File_Info);
+              (File => File_Info, Mode => In_File,
+               Name =>
+                 Ada.Environment_Variables.Value(Name => "HOME") &
+                 "/.local/share/Trash/info/" &
+                 Simple_Name(Name => To_String(Source => Selected_Items(I))) &
+                 ".trashinfo");
+            Skip_Line(File => File_Info);
             Get_Item_Name_Loop :
             for J in 1 .. 2 loop
-               File_Line := To_Unbounded_String(Get_Line(File_Info));
-               if Slice(File_Line, 1, 4) = "Path" then
+               File_Line :=
+                 To_Unbounded_String(Source => Get_Line(File => File_Info));
+               if Slice(Source => File_Line, Low => 1, High => 4) = "Path" then
                   Append
-                    (Message,
-                     Simple_Name(Slice(File_Line, 6, Length(File_Line))));
+                    (Source => Message,
+                     New_Item =>
+                       Simple_Name
+                         (Name =>
+                            Slice
+                              (Source => File_Line, Low => 6,
+                               High => Length(Source => File_Line))));
                end if;
             end loop Get_Item_Name_Loop;
             Close(File_Info);
