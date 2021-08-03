@@ -28,7 +28,7 @@ with Utils.UI; use Utils.UI;
 
 package body ProgramsMenu is
 
-   -- ****iv* ProgramsMenu/ProgramsMenu.ApplicationsList
+   -- ****iv* ProgramsMenuTUI/ProgramsMenuTUI.ApplicationsList
    -- FUNCTION
    -- List of all applications which can be used to execute files or
    -- directories
@@ -36,14 +36,14 @@ package body ProgramsMenu is
    ApplicationsList: Bookmarks_Container.Map;
    -- ****
 
-   -- ****iv* ProgramsMenu/ProgramsMenu.NamesList
+   -- ****iv* ProgramsMenuTUI/ProgramsMenuTUI.NamesList
    -- FUNCTION
    -- List of all applications showed in the menu
    -- SOURCE
    NamesList: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****it* ProgramsMenu/ProgramsMenu.Programs_Sorting
+   -- ****it* ProgramsMenuTUI/ProgramsMenuTUI.Programs_Sorting
    -- FUNCTION
    -- Used in sorting available programs
    -- SOURCE
