@@ -32,7 +32,7 @@ with Utils.UI; use Utils.UI;
 
 package body RenameItems is
 
-   -- ****o* RenameItems/RenameItems.Rename_Command
+   -- ****o* RenameItemsTUI/RenameItemsTUI.Rename_Command
    -- FUNCTION
    -- Rename currently selected file or directory
    -- PARAMETERS
