@@ -249,28 +249,38 @@ package body DeleteItems is
                                High => Length(Source => File_Line))));
                end if;
             end loop Get_Item_Name_Loop;
-            Close(File_Info);
+            Close(File => File_Info);
          end if;
-         if not Is_Symbolic_Link(To_String(Selected_Items(I)))
-           and then Is_Directory(To_String(Selected_Items(I))) then
-            Append(Message, Mc(Interp, "{(and its content)}"));
+         if not Is_Symbolic_Link
+             (Name => To_String(Source => Selected_Items(I)))
+           and then Is_Directory
+             (Name => To_String(Source => Selected_Items(I))) then
+            Append
+              (Source => Message,
+               New_Item =>
+                 Mc(Interp => Interp, Src_String => "{(and its content)}"));
          end if;
          if I /= Selected_Items.Last_Index then
-            Append(Message, LF);
+            Append(Source => Message, New_Item => LF);
          end if;
          if I = 10 then
-            Append(Message, Mc(Interp, "{(and more)}"));
+            Append
+              (Source => Message,
+               New_Item => Mc(Interp => Interp, Src_String => "{(and more)}"));
             exit Add_Items_To_Delete_Loop;
          end if;
       end loop Add_Items_To_Delete_Loop;
-      Toggle_Tool_Buttons(New_Action);
-      ShowMessage(To_String(Message), "question");
+      Toggle_Tool_Buttons(Action => New_Action);
+      ShowMessage
+        (Message => To_String(Source => Message), MessageType => "question");
       return TCL_OK;
    end Start_Deleting_Command;
 
    procedure Create_Delete_Ui is
    begin
-      Add_Command("StartDeleting", Start_Deleting_Command'Access);
+      Add_Command
+        (Name => "StartDeleting",
+         Ada_Command => Start_Deleting_Command'Access);
    end Create_Delete_Ui;
 
 end DeleteItems;
