@@ -32,6 +32,7 @@ with Inotify; use Inotify;
 with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
 with RefreshData; use RefreshData;
+with ShowItems; use ShowItems;
 with UserCommands; use UserCommands;
 
 package body Preferences.UI is
@@ -849,6 +850,7 @@ package body Preferences.UI is
                   Execute_Modules
                     (On_Enter,
                      "{" & To_String(MainWindow.Current_Directory) & "}");
+                  ShowPreview;
                   return DIRECTORY_VIEW;
                else
                   Show_Options_Tab(CurrentIndex);
