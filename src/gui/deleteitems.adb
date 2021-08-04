@@ -13,40 +13,50 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar; use Ada.Calendar;
-with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
-with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Containers; use Ada.Containers;
+with Ada.Calendar;
+with Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones;
+with Ada.Characters.Latin_1;
+with Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Exceptions; use Ada.Exceptions;
-with Ada.Strings; use Ada.Strings;
+with Ada.Exceptions;
+with Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Strings.Unbounded.Hash;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
-with Tcl; use Tcl;
+with Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Preferences; use Preferences;
-with Utils; use Utils;
+with Utils;
 with Utils.UI; use Utils.UI;
 
 package body DeleteItems is
 
    function Delete_Selected return Boolean is
+      use Ada.Exceptions;
+      use GNAT.Directory_Operations;
+      use Tcl.Tk.Ada;
+
       Go_Up, Success: Boolean := False;
       Arguments: Argument_List :=
         (1 => new String'("-rf"), 2 => new String'(""));
       Old_Setting: constant Boolean := Settings.Delete_Files;
       Delete_Time: String(1 .. 19) := (others => ' ');
       procedure Move_To_Trash(Name: Unbounded_String) is
+         use Ada.Calendar;
+         use Ada.Calendar.Formatting;
+         use Ada.Calendar.Time_Zones;
+         use Ada.Containers;
+         use Ada.Strings;
+
          New_Name: Unbounded_String;
          Trash_File: File_Type;
       begin
@@ -209,6 +219,9 @@ package body DeleteItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Ada.Characters.Latin_1;
+      use Tcl;
+
       Message: Unbounded_String;
       File_Line: Unbounded_String := Null_Unbounded_String;
       File_Info: File_Type;
