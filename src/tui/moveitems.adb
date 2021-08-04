@@ -31,7 +31,7 @@ with Utils.UI; use Utils.UI;
 
 package body MoveItems is
 
-   -- ****iv* MoveItems/MoveItems.SourceDirectory
+   -- ****iv* MoveItemsTUI/MoveItemsTUI.SourceDirectory
    -- FUNCTION
    -- Full path to the source directory of moved files and directories
    -- SOURCE
