@@ -79,11 +79,11 @@ package body ShowItems is
          if Settings.Show_Hidden then
             Add
               (PreviewPad,
-               Natural'Image(Natural(SecondItemsList.Length)) & LF);
+               Natural'Image(Natural(Second_Items_List.Length)) & LF);
          else
             Count_Directory_Size_Loop :
-            for Item of SecondItemsList loop
-               if not Item.IsHidden then
+            for Item of Second_Items_List loop
+               if not Item.Is_Hidden then
                   DirectorySize := DirectorySize + 1;
                end if;
             end loop Count_Directory_Size_Loop;
@@ -334,11 +334,11 @@ package body ShowItems is
          LoadDirectory(To_String(Current_Selected), True);
          PreviewPad :=
            New_Pad
-             (Line_Position(SecondItemsList.Length) + 1, (Columns / 2) - 1);
+             (Line_Position(Second_Items_List.Length) + 1, (Columns / 2) - 1);
          Add(PreviewPad, 0, Columns / 4, "Name");
          Load_Preview_Directory_Loop :
-         for Item of SecondItemsList loop
-            if not Settings.Show_Hidden and Item.IsHidden then
+         for Item of Second_Items_List loop
+            if not Settings.Show_Hidden and Item.Is_Hidden then
                goto End_Of_Loop;
             end if;
             Add(PreviewPad, Line, 0, To_String(Item.Name));
@@ -676,7 +676,7 @@ package body ShowItems is
       Tokens: Slice_Set;
       Menu_Items: constant Item_Array_Access :=
         new Item_Array
-          (SecondItemsList.First_Index .. SecondItemsList.Last_Index + 1);
+          (Second_Items_List.First_Index .. Second_Items_List.Last_Index + 1);
    begin
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
@@ -719,17 +719,19 @@ package body ShowItems is
       Buttons_Visible := True;
       Set_Current(Path, Path_Items.all(Index));
       Move_Window(PathButtons, 1, (Columns / 2));
-      Index := SecondItemsList.First_Index;
+      Index := Second_Items_List.First_Index;
       Load_Destination_View_Loop :
-      for I in SecondItemsList.First_Index .. SecondItemsList.Last_Index loop
-         if not Settings.Show_Hidden and SecondItemsList(I).IsHidden then
+      for I in
+        Second_Items_List.First_Index .. Second_Items_List.Last_Index loop
+         if not Settings.Show_Hidden and Second_Items_List(I).Is_Hidden then
             goto End_Of_Loop;
          end if;
-         Menu_Items.all(Index) := New_Item(To_String(SecondItemsList(I).Name));
+         Menu_Items.all(Index) :=
+           New_Item(To_String(Second_Items_List(I).Name));
          Index := Index + 1;
          <<End_Of_Loop>>
       end loop Load_Destination_View_Loop;
-      if Index > SecondItemsList.First_Index then
+      if Index > Second_Items_List.First_Index then
          Fill_Empty_Entries_Loop :
          for I in Index .. Menu_Items'Last loop
             Menu_Items.all(I) := Null_Item;

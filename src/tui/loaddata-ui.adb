@@ -24,9 +24,9 @@ package body LoadData.UI is
       Last: Natural range 0 .. FileName'Last;
    begin
       if not Second then
-         ItemsList.Clear;
+         Items_List.Clear;
       else
-         SecondItemsList.Clear;
+         Second_Items_List.Clear;
       end if;
       if not Is_Read_Accessible_File(DirectoryName) then
          return;
@@ -38,18 +38,19 @@ package body LoadData.UI is
          exit Read_Directory_Loop when Last = 0;
          if FileName(1 .. Last) /= "." and FileName(1 .. Last) /= ".." then
             if not Second then
-               AddItem(DirectoryName & "/" & FileName(1 .. Last), ItemsList);
+               Add_Item(DirectoryName & "/" & FileName(1 .. Last), Items_List);
             else
-               AddItem
-                 (DirectoryName & "/" & FileName(1 .. Last), SecondItemsList);
+               Add_Item
+                 (DirectoryName & "/" & FileName(1 .. Last),
+                  Second_Items_List);
             end if;
          end if;
       end loop Read_Directory_Loop;
       Close(Directory);
       if not Second then
-         Items_Sorting.Sort(ItemsList);
+         Items_Sorting.Sort(Items_List);
       else
-         Items_Sorting.Sort(SecondItemsList);
+         Items_Sorting.Sort(Second_Items_List);
       end if;
    end LoadDirectory;
 

@@ -161,7 +161,7 @@ package body MainWindow is
    procedure Update_Directory_List
      (Clear: Boolean := False; Search_For: String := "") is
       Menu_Items: constant Item_Array_Access :=
-        new Item_Array(ItemsList.First_Index .. ItemsList.Last_Index + 1);
+        new Item_Array(Items_List.First_Index .. Items_List.Last_Index + 1);
       Index: Positive;
       Path_Items: Item_Array_Access;
       Tokens: Slice_Set;
@@ -253,24 +253,24 @@ package body MainWindow is
          Item_Entry: String(1 .. Positive(Width - 2));
       begin
          Load_Directory_View_Loop :
-         for I in ItemsList.First_Index .. ItemsList.Last_Index loop
-            if not Settings.Show_Hidden and then ItemsList(I).IsHidden then
+         for I in Items_List.First_Index .. Items_List.Last_Index loop
+            if not Settings.Show_Hidden and then Items_List(I).Is_Hidden then
                goto End_Of_Loop;
             end if;
             if Search_For'Length > 0
               and then
-                Ada.Strings.Unbounded.Index(ItemsList(I).Name, Search_For) =
+                Ada.Strings.Unbounded.Index(Items_List(I).Name, Search_For) =
                 0 then
                goto End_Of_Loop;
             end if;
             Move
-              (Source => To_String(ItemsList(I).Name), Target => Item_Entry,
+              (Source => To_String(Items_List(I).Name), Target => Item_Entry,
                Drop => Right);
             if Settings.Show_Last_Modified then
                begin
                   TimeString :=
                     To_Unbounded_String
-                      (Ada.Calendar.Formatting.Image(ItemsList(I).Modified));
+                      (Ada.Calendar.Formatting.Image(Items_List(I).Modified));
                exception
                   when Ada.Calendar.Time_Error =>
                      TimeString := To_Unbounded_String("unknown");
@@ -278,34 +278,34 @@ package body MainWindow is
                Overwrite
                  (Item_Entry, Item_Entry'Last - 27, To_String(TimeString));
             end if;
-            case ItemsList(I).Size is
+            case Items_List(I).Size is
                when -2 =>
                   Overwrite(Item_Entry, Item_Entry'Last - 8, "->");
                when -1 =>
                   Overwrite(Item_Entry, Item_Entry'Last - 8, "unknown");
                when others =>
-                  if not ItemsList(I).IsDirectory then
+                  if not Items_List(I).Is_Directory then
                      Overwrite
                        (Item_Entry, Item_Entry'Last - 8,
                         Count_File_Size
-                          (Ada.Directories.File_Size(ItemsList(I).Size)));
+                          (Ada.Directories.File_Size(Items_List(I).Size)));
                   else
                      if Settings.Show_Hidden then
                         Overwrite
                           (Item_Entry, Item_Entry'Last - 8,
                            Item_Size'Image
-                             (ItemsList(I).Size +
-                              Item_Size(ItemsList(I).HiddenItems)));
+                             (Items_List(I).Size +
+                              Item_Size(Items_List(I).Hidden_Items)));
                      else
                         Overwrite
                           (Item_Entry, Item_Entry'Last - 8,
-                           Item_Size'Image(ItemsList(I).Size));
+                           Item_Size'Image(Items_List(I).Size));
                      end if;
                   end if;
             end case;
             Menu_Items.all(Index) :=
-              New_Item(Item_Entry, To_String(ItemsList(I).Path));
-            if ItemsList(I).Path = Current_Selected then
+              New_Item(Item_Entry, To_String(Items_List(I).Path));
+            if Items_List(I).Path = Current_Selected then
                CurrentIndex := Index;
             end if;
             Index := Index + 1;
@@ -716,7 +716,7 @@ package body MainWindow is
                   CreateProgramMenu;
                   Refresh(MenuWindow);
                   DestinationDirectory := MainWindow.Current_Directory;
-                  SecondItemsList := ItemsList;
+                  Second_Items_List := Items_List;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 4 =>
@@ -728,7 +728,7 @@ package body MainWindow is
                   CreateProgramMenu;
                   Refresh(MenuWindow);
                   DestinationDirectory := MainWindow.Current_Directory;
-                  SecondItemsList := ItemsList;
+                  Second_Items_List := Items_List;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 6 =>
@@ -736,7 +736,7 @@ package body MainWindow is
                   CreateProgramMenu;
                   Refresh(MenuWindow);
                   DestinationDirectory := MainWindow.Current_Directory;
-                  SecondItemsList := ItemsList;
+                  Second_Items_List := Items_List;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 7 =>
@@ -940,9 +940,9 @@ package body MainWindow is
                end if;
                LoadDirectory(To_String(Current_Directory));
                Set_Current_Selected_Loop :
-               for I in ItemsList.Iterate loop
-                  if ItemsList(I).Name = FileName then
-                     Current_Selected := ItemsList(I).Path;
+               for I in Items_List.Iterate loop
+                  if Items_List(I).Name = FileName then
+                     Current_Selected := Items_List(I).Path;
                      exit Set_Current_Selected_Loop;
                   end if;
                end loop Set_Current_Selected_Loop;

@@ -289,9 +289,9 @@ package body DeleteItems is
                        (To_String(MainWindow.Current_Directory)));
                end if;
                Current_Selected := MainWindow.Current_Directory;
-               if ItemsList.Length > 0 then
+               if Items_List.Length > 0 then
                   Current_Selected :=
-                    Current_Selected & "/" & ItemsList(1).Name;
+                    Current_Selected & "/" & Items_List(1).Name;
                end if;
                ShowPreview;
             end if;
