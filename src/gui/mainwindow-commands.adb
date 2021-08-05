@@ -92,44 +92,44 @@ package body MainWindow.Commands is
       Heading(DirectoryTree, "modified", "-image {}");
       Heading(DirectoryTree, "size", "-image {}");
       if CArgv.Arg(Argv, 1) = "name" then
-         if SortOrder = NameAsc then
-            SortOrder := NameDesc;
+         if Sort_Order = NAMEASC then
+            Sort_Order := NAMEDESC;
             Heading(DirectoryTree, "name", "-image {arrow-up}");
          else
-            SortOrder := NameAsc;
+            Sort_Order := NAMEASC;
             Heading(DirectoryTree, "name", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "modified" then
-         if SortOrder = ModifiedAsc then
-            SortOrder := ModifiedDesc;
+         if Sort_Order = MODIFIEDASC then
+            Sort_Order := MODIFIEDDESC;
             Heading(DirectoryTree, "modified", "-image {arrow-up}");
          else
-            SortOrder := ModifiedAsc;
+            Sort_Order := MODIFIEDASC;
             Heading(DirectoryTree, "modified", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "size" then
-         if SortOrder = SizeAsc then
-            SortOrder := SizeDesc;
+         if Sort_Order = SIZEASC then
+            Sort_Order := SIZEDESC;
             Heading(DirectoryTree, "size", "-image {arrow-up}");
          else
-            SortOrder := SizeAsc;
+            Sort_Order := SIZEASC;
             Heading(DirectoryTree, "size", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "previewname" then
          DirectoryTree.Name :=
            New_String(".mainframe.paned.previewframe.directorytree");
-         if SortOrder = NameAsc then
-            SortOrder := NameDesc;
+         if Sort_Order = NAMEASC then
+            Sort_Order := NAMEDESC;
             Heading(DirectoryTree, "name", "-image {arrow-up}");
          else
-            SortOrder := NameAsc;
+            Sort_Order := NAMEASC;
             Heading(DirectoryTree, "name", "-image {arrow-down}");
          end if;
-         Items_Sorting.Sort(SecondItemsList);
+         Items_Sorting.Sort(Second_Items_List);
          Update_Directory_List(True, "preview");
          return TCL_OK;
       end if;
-      Items_Sorting.Sort(ItemsList);
+      Items_Sorting.Sort(Items_List);
       Update_Directory_List(True);
       return TCL_OK;
    end Sort_Command;
@@ -479,9 +479,9 @@ package body MainWindow.Commands is
       end if;
       LoadDirectory(To_String(Current_Directory));
       Set_Current_Selected_Loop :
-      for I in ItemsList.Iterate loop
-         if ItemsList(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
-            Current_Selected := ItemsList(I).Path;
+      for I in Items_List.Iterate loop
+         if Items_List(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
+            Current_Selected := Items_List(I).Path;
             exit Set_Current_Selected_Loop;
          end if;
       end loop Set_Current_Selected_Loop;

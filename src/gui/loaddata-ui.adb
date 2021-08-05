@@ -32,9 +32,9 @@ package body LoadData.UI is
       Tcl.Tk.Ada.Busy.Busy(Get_Main_Window(Get_Context));
       Tcl_Eval(Get_Context, "update");
       if not Second then
-         ItemsList.Clear;
+         Items_List.Clear;
       else
-         SecondItemsList.Clear;
+         Second_Items_List.Clear;
       end if;
       if not Is_Read_Accessible_File(DirectoryName) then
          Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
@@ -47,21 +47,22 @@ package body LoadData.UI is
          exit Read_Directory_Loop when Last = 0;
          if FileName(1 .. Last) /= "." and FileName(1 .. Last) /= ".." then
             if not Second then
-               AddItem(DirectoryName & "/" & FileName(1 .. Last), ItemsList);
+               Add_Item(DirectoryName & "/" & FileName(1 .. Last), Items_List);
             else
-               AddItem
-                 (DirectoryName & "/" & FileName(1 .. Last), SecondItemsList);
+               Add_Item
+                 (DirectoryName & "/" & FileName(1 .. Last),
+                  Second_Items_List);
             end if;
          end if;
       end loop Read_Directory_Loop;
       Close(Directory);
       if not Second then
-         Items_Sorting.Sort(ItemsList);
+         Items_Sorting.Sort(Items_List);
          Wm_Set
            (Get_Main_Window(Get_Context), "title",
             "{Hunter " & DirectoryName & "}");
       else
-         Items_Sorting.Sort(SecondItemsList);
+         Items_Sorting.Sort(Second_Items_List);
       end if;
       if Tcl.Tk.Ada.Busy.Status(Get_Main_Window(Get_Context)) = "1" then
          Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));

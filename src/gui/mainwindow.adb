@@ -446,14 +446,14 @@ package body MainWindow is
       List: Items_Container.Vector;
    begin
       if Frame_Name = "directory" then
-         List := ItemsList;
+         List := Items_List;
          Path_Command :=
            (if New_Action not in SHOWTRASH | DELETETRASH then
               To_Unbounded_String(Source => "GoToBookmark")
             else To_Unbounded_String(Source => "GoToTrash"));
          Path_Shortcut := To_Unbounded_String(Source => "Alt");
       else
-         List := SecondItemsList;
+         List := Second_Items_List;
          Path_Command := To_Unbounded_String(Source => "GoToDirectory");
          Path_Shortcut := To_Unbounded_String(Source => "Control");
       end if;
@@ -483,14 +483,14 @@ package body MainWindow is
                       (Source =>
                          Mc(Interp => Get_Context, Src_String => "unknown"));
                when others =>
-                  if List(I).IsDirectory then
+                  if List(I).Is_Directory then
                      if Settings.Show_Hidden then
                         Size_String :=
                           To_Unbounded_String
                             (Source =>
                                Item_Size'Image
                                  (List(I).Size +
-                                  Item_Size(List(I).HiddenItems)));
+                                  Item_Size(List(I).Hidden_Items)));
                      else
                         Size_String :=
                           To_Unbounded_String
@@ -528,7 +528,7 @@ package body MainWindow is
                         To_String(Source => Size_String) & "}] -image {" &
                         To_String(Source => List(I).Image) &
                         "} -tags [list itemrow]"));
-            if not Settings.Show_Hidden and then List(I).IsHidden then
+            if not Settings.Show_Hidden and then List(I).Is_Hidden then
                Detach
                  (TreeViewWidget => Directory_Tree,
                   ItemsList => To_String(Source => Item_Index));
@@ -637,12 +637,13 @@ package body MainWindow is
                              "Path" then
                               Button_Label :=
                                 To_Unbounded_String
-                                  (Source => Simple_Name
-                                     (Name =>
-                                        Slice
-                                          (Source => File_Line, Low => 6,
-                                           High =>
-                                             Length(Source => File_Line))));
+                                  (Source =>
+                                     Simple_Name
+                                       (Name =>
+                                          Slice
+                                            (Source => File_Line, Low => 6,
+                                             High =>
+                                               Length(Source => File_Line))));
                            end if;
                         end loop Read_File_Path_Loop;
                         Close(File => File_Info);
@@ -728,8 +729,8 @@ package body MainWindow is
       else
          Rearrange_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
-            if (Settings.Show_Hidden and List(I).IsHidden) or
-              not List(I).IsHidden then
+            if (Settings.Show_Hidden and List(I).Is_Hidden) or
+              not List(I).Is_Hidden then
                Move
                  (TreeViewWidget => Directory_Tree, Item => Positive'Image(I),
                   Parent => "{}", Index => Positive'Image(I));

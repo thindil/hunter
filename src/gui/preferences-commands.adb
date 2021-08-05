@@ -1389,7 +1389,7 @@ package body Preferences.Commands is
              (CArgv.Arg(Argv, 1), Containing_Directory(Command_Name)));
       LoadDirectory(To_String(MainWindow.Current_Directory));
       Current_Selected :=
-        MainWindow.Current_Directory & "/" & ItemsList(1).Name;
+        MainWindow.Current_Directory & "/" & Items_List(1).Name;
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       ShowPreview;

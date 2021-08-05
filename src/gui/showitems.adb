@@ -542,12 +542,12 @@ package body ShowItems is
          if Settings.Show_Hidden then
             configure
               (Label,
-               "-text {" & Natural'Image(Natural(SecondItemsList.Length)) &
+               "-text {" & Natural'Image(Natural(Second_Items_List.Length)) &
                "}");
          else
             Count_Directory_Size_Loop :
-            for Item of SecondItemsList loop
-               if not Item.IsHidden then
+            for Item of Second_Items_List loop
+               if not Item.Is_Hidden then
                   DirectorySize := DirectorySize + 1;
                end if;
             end loop Count_Directory_Size_Loop;
@@ -774,7 +774,7 @@ package body ShowItems is
          Set_Selected_List_Loop :
          for I in 1 .. Slice_Count(Tokens) loop
             Selected_Items.Append
-              (ItemsList(Positive'Value(Slice(Tokens, I))).Path);
+              (Items_List(Positive'Value(Slice(Tokens, I))).Path);
          end loop Set_Selected_List_Loop;
       else
          Selected_Items.Append(MainWindow.Current_Directory);

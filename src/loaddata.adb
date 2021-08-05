@@ -27,39 +27,39 @@ package body LoadData is
 
    function "<"(Left, Right: Item_Record) return Boolean is
    begin
-      if Left.IsDirectory and not Right.IsDirectory then
+      if Left.Is_Directory and not Right.Is_Directory then
          return True;
       end if;
-      if not Left.IsDirectory and Right.IsDirectory then
+      if not Left.Is_Directory and Right.Is_Directory then
          return False;
       end if;
-      if Left.IsHidden and not Right.IsHidden then
+      if Left.Is_Hidden and not Right.Is_Hidden then
          return True;
       end if;
-      if not Left.IsHidden and Right.IsHidden then
+      if not Left.Is_Hidden and Right.Is_Hidden then
          return False;
       end if;
-      case SortOrder is
-         when NameAsc =>
+      case Sort_Order is
+         when NAMEASC =>
             return
               Translate(Left.Name, Lower_Case_Map) <
               Translate(Right.Name, Lower_Case_Map);
-         when NameDesc =>
+         when NAMEDESC =>
             return
               Translate(Left.Name, Lower_Case_Map) >
               Translate(Right.Name, Lower_Case_Map);
-         when ModifiedAsc =>
+         when MODIFIEDASC =>
             return Left.Modified < Right.Modified;
-         when ModifiedDesc =>
+         when MODIFIEDDESC =>
             return Left.Modified > Right.Modified;
-         when SizeAsc =>
+         when SIZEASC =>
             return Left.Size < Right.Size;
-         when SizeDesc =>
+         when SIZEDESC =>
             return Left.Size > Right.Size;
       end case;
    end "<";
 
-   procedure AddItem(Path: String; List: in out Items_Container.Vector) is
+   procedure Add_Item(Path: String; List: in out Items_Container.Vector) is
       FileName: constant String := Simple_Name(Path);
       Size: File_Size;
       SubDirectory: Dir_Type;
@@ -76,9 +76,9 @@ package body LoadData is
          when others =>
             Item.Modified := Time_Of(1_901, 1, 1);
       end;
-      Item.IsHidden := (if FileName(1) = '.' then True else False);
+      Item.Is_Hidden := (if FileName(1) = '.' then True else False);
       if Is_Directory(Path) then
-         Item.IsDirectory := True;
+         Item.Is_Directory := True;
          Item.Image :=
            (if Is_Symbolic_Link(Path) then
               To_Unbounded_String("emblem-symbolic-link")
@@ -103,10 +103,10 @@ package body LoadData is
             end loop Count_Directory_Size;
             Close(SubDirectory);
             Item.Size := Item_Size(Size);
-            Item.HiddenItems := HiddenAmount;
+            Item.Hidden_Items := HiddenAmount;
          end if;
       else
-         Item.IsDirectory := False;
+         Item.Is_Directory := False;
          if Is_Symbolic_Link(Path) then
             Item.Image := To_Unbounded_String("emblem-symbolic-link");
          elsif Is_Executable_File(Path) then
@@ -136,7 +136,7 @@ package body LoadData is
          end if;
          if not Is_Read_Accessible_File(Path) then
             Item.Size := -1;
-            ItemsList.Append(Item);
+            Items_List.Append(Item);
             return;
          end if;
          Item.Size :=
@@ -146,6 +146,6 @@ package body LoadData is
             else 0);
       end if;
       List.Append(Item);
-   end AddItem;
+   end Add_Item;
 
 end LoadData;

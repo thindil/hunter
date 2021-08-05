@@ -69,8 +69,8 @@ package body RefreshData is
       Last: Natural range 0 .. SubFileName'Last;
       procedure RemoveItem is
       begin
-         ItemsList.Delete(ItemIndex);
-         if ItemsList.Length = 0 then
+         Items_List.Delete(ItemIndex);
+         if Items_List.Length = 0 then
             Current_Selected := MainWindow.Current_Directory;
          end if;
          RefreshList := True;
@@ -91,24 +91,25 @@ package body RefreshData is
             Exists(To_String(Event.Path & "/" & Event.Target))) then
             ItemExists := False;
             Check_If_Item_Exists_Loop :
-            for Item of ItemsList loop
+            for Item of Items_List loop
                if Item.Name = Event.Target then
                   ItemExists := True;
                   exit Check_If_Item_Exists_Loop;
                end if;
             end loop Check_If_Item_Exists_Loop;
             if not ItemExists then
-               AddItem(To_String(Event.Path & "/" & Event.Target), ItemsList);
+               Add_Item
+                 (To_String(Event.Path & "/" & Event.Target), Items_List);
                RefreshList := True;
                goto End_Of_Loop;
             end if;
          end if;
-         ItemIndex := ItemsList.First_Index;
+         ItemIndex := Items_List.First_Index;
          Update_Items_Loop :
-         while ItemIndex <= ItemsList.Last_Index loop
-            FileName := ItemsList(ItemIndex).Path;
+         while ItemIndex <= Items_List.Last_Index loop
+            FileName := Items_List(ItemIndex).Path;
             if FileName = Event.Path or
-              ItemsList(ItemIndex).Name = Event.Target then
+              Items_List(ItemIndex).Name = Event.Target then
                case Event.Event is
                   when MOVED_FROM | DELETED =>
                      RemoveItem;
@@ -119,28 +120,28 @@ package body RefreshData is
                         exit Update_Items_Loop;
                      end if;
                      RefreshList := True;
-                     ItemsList(ItemIndex).Modified :=
+                     Items_List(ItemIndex).Modified :=
                        Modification_Time(To_String(FileName));
                      if not Is_Read_Accessible_File(To_String(FileName)) then
-                        ItemsList(ItemIndex).Size := -1;
+                        Items_List(ItemIndex).Size := -1;
                         exit Update_Items_Loop;
                      end if;
                      if Is_Directory(To_String(FileName)) then
                         Open(Directory, To_String(FileName));
-                        ItemsList(ItemIndex).Size := 0;
+                        Items_List(ItemIndex).Size := 0;
                         Count_New_Size_Loop :
                         loop
                            Read(Directory, SubFileName, Last);
                            exit Count_New_Size_Loop when Last = 0;
                            if SubFileName(1 .. Last) /= "." and
                              SubFileName(1 .. Last) /= ".." then
-                              ItemsList(ItemIndex).Size :=
-                                ItemsList(ItemIndex).Size + 1;
+                              Items_List(ItemIndex).Size :=
+                                Items_List(ItemIndex).Size + 1;
                            end if;
                         end loop Count_New_Size_Loop;
                         Close(Directory);
                      elsif Is_Regular_File(To_String(FileName)) then
-                        ItemsList(ItemIndex).Size :=
+                        Items_List(ItemIndex).Size :=
                           Item_Size(Ada.Directories.Size(To_String(FileName)));
                      end if;
                      if FileName = To_String(Current_Selected) then
@@ -156,7 +157,7 @@ package body RefreshData is
          <<End_Of_Loop>>
       end loop Check_Events_Loop;
       if RefreshList then
-         Items_Sorting.Sort(ItemsList);
+         Items_Sorting.Sort(Items_List);
          Update_Directory_List(True);
          RefreshList := False;
       end if;

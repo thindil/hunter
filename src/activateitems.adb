@@ -88,10 +88,10 @@ package body ActivateItems is
          Temporary_Stop := True;
          Current_Directory := Current_Selected;
          if Settings.Show_Preview then
-            ItemsList := SecondItemsList;
-            if SecondItemsList.Length > 0 then
+            Items_List := Second_Items_List;
+            if Second_Items_List.Length > 0 then
                if Ada.Directories.Containing_Directory
-                   (Name => To_String(Source => SecondItemsList(1).Path)) /=
+                   (Name => To_String(Source => Second_Items_List(1).Path)) /=
                  Current_Directory then
                   LoadDirectory
                     (DirectoryName => To_String(Source => Current_Directory));

@@ -132,14 +132,14 @@ package body SearchItems is
          return TCL_OK;
       end if;
       Search_Item_Loop :
-      for I in ItemsList.First_Index .. ItemsList.Last_Index loop
+      for I in Items_List.First_Index .. Items_List.Last_Index loop
          if Index
-             (To_Lower(To_String(ItemsList(I).Name)),
+             (To_Lower(To_String(Items_List(I).Name)),
               To_Lower(To_String(Query))) =
            0 then
             Detach(DirectoryTree, Positive'Image(I));
-         elsif (Settings.Show_Hidden and ItemsList(I).IsHidden) or
-           not ItemsList(I).IsHidden then
+         elsif (Settings.Show_Hidden and Items_List(I).Is_Hidden) or
+           not Items_List(I).Is_Hidden then
             Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
             if not Selected then
                Selection_Set(DirectoryTree, Positive'Image(I));

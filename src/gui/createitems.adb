@@ -226,7 +226,7 @@ package body CreateItems is
             if Selection(TreeViewWidget => Directory_View)'Length > 0 then
                Destination :=
                  DestinationDirectory &
-                 SecondItemsList
+                 Second_Items_List
                    (Positive'Value
                       (Selection(TreeViewWidget => Directory_View)))
                    .Name;

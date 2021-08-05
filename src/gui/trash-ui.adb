@@ -61,7 +61,7 @@ package body Trash.UI is
          New_Action := SHOWTRASH;
          Toggle_Tool_Buttons(SHOWTRASH);
       end if;
-      ItemsList.Clear;
+      Items_List.Clear;
       MainWindow.Current_Directory :=
         To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
       DestinationDirectory :=
@@ -102,9 +102,9 @@ package body Trash.UI is
             end if;
          end loop Read_File_Path_Loop;
          Close(FileInfo);
-         Item.IsHidden := (if FileName(1) = '.' then True else False);
+         Item.Is_Hidden := (if FileName(1) = '.' then True else False);
          if Is_Directory(To_String(FullName)) then
-            Item.IsDirectory := True;
+            Item.Is_Directory := True;
             Item.Image :=
               (if Is_Symbolic_Link(To_String(FullName)) then
                  To_Unbounded_String("emblem-symbolic-link")
@@ -124,7 +124,7 @@ package body Trash.UI is
                Item.Size := -1;
             end if;
          else
-            Item.IsDirectory := False;
+            Item.Is_Directory := False;
             if Is_Symbolic_Link(To_String(FullName)) then
                Item.Image := To_Unbounded_String("emblem-symbolic-link");
             elsif Is_Executable_File(To_String(FullName)) then
@@ -155,7 +155,7 @@ package body Trash.UI is
             end if;
             if not Is_Read_Accessible_File(To_String(FullName)) then
                Item.Size := -1;
-               ItemsList.Append(Item);
+               Items_List.Append(Item);
                goto End_Of_Loop;
             end if;
             if Is_Symbolic_Link(To_String(FullName)) then
@@ -167,12 +167,12 @@ package body Trash.UI is
                Item.Size := 0;
             end if;
          end if;
-         ItemsList.Append(Item);
+         Items_List.Append(Item);
          <<End_Of_Loop>>
       end loop Read_Trash_Content_Loop;
       Close(Directory);
       Update_Directory_List(True);
-      if ItemsList.Length = 0 then
+      if Items_List.Length = 0 then
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.deletebutton");
