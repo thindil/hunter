@@ -16,7 +16,7 @@
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with MainWindow; use MainWindow;
 
--- ****h* DeleteItems/DeleteItemsTUI
+-- ****h* DeleteItemsTUI/DeleteItemsTUI
 -- FUNCTION
 -- Provide code to delete files and directories
 -- SOURCE
