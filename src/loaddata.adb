@@ -60,15 +60,15 @@ package body LoadData is
    end "<";
 
    procedure Add_Item(Path: String; List: in out Items_Container.Vector) is
-      FileName: constant String := Simple_Name(Path);
+      File_Name: constant String := Simple_Name(Path);
       Size: File_Size;
-      SubDirectory: Dir_Type;
-      SubLast, HiddenAmount: Natural;
-      SubFileName: String(1 .. 1_024);
-      MimeType: Unbounded_String;
+      Sub_Director: Dir_Type;
+      Sub_Last, Hidden_Amount: Natural;
+      SubFile_Name: String(1 .. 1_024);
+      Mime_Type: Unbounded_String;
       Item: Item_Record;
    begin
-      Item.Name := To_Unbounded_String(FileName);
+      Item.Name := To_Unbounded_String(File_Name);
       Item.Path := To_Unbounded_String(Path);
       begin
          Item.Modified := Modification_Time(Path);
@@ -76,7 +76,7 @@ package body LoadData is
          when others =>
             Item.Modified := Time_Of(1_901, 1, 1);
       end;
-      Item.Is_Hidden := (if FileName(1) = '.' then True else False);
+      Item.Is_Hidden := (if File_Name(1) = '.' then True else False);
       if Is_Directory(Path) then
          Item.Is_Directory := True;
          Item.Image :=
@@ -85,25 +85,25 @@ package body LoadData is
             else To_Unbounded_String("folder"));
          Item.Size := -1;
          if Is_Read_Accessible_File(Path) then
-            Open(SubDirectory, Path);
+            Open(Sub_Director, Path);
             Size := 0;
-            HiddenAmount := 0;
+            Hidden_Amount := 0;
             Count_Directory_Size :
             loop
-               Read(SubDirectory, SubFileName, SubLast);
-               exit Count_Directory_Size when SubLast = 0;
-               if SubFileName(1 .. SubLast) /= "." and
-                 SubFileName(1 .. SubLast) /= ".." then
-                  if SubFileName(1) = '.' then
-                     HiddenAmount := HiddenAmount + 1;
+               Read(Sub_Director, SubFile_Name, Sub_Last);
+               exit Count_Directory_Size when Sub_Last = 0;
+               if SubFile_Name(1 .. Sub_Last) /= "." and
+                 SubFile_Name(1 .. Sub_Last) /= ".." then
+                  if SubFile_Name(1) = '.' then
+                     Hidden_Amount := Hidden_Amount + 1;
                   else
                      Size := Size + 1;
                   end if;
                end if;
             end loop Count_Directory_Size;
-            Close(SubDirectory);
+            Close(Sub_Director);
             Item.Size := Item_Size(Size);
-            Item.Hidden_Items := HiddenAmount;
+            Item.Hidden_Items := Hidden_Amount;
          end if;
       else
          Item.Is_Directory := False;
@@ -112,23 +112,23 @@ package body LoadData is
          elsif Is_Executable_File(Path) then
             Item.Image := To_Unbounded_String("application-x-executable");
          else
-            MimeType := To_Unbounded_String(Get_Mime_Type(Path));
-            if Index(MimeType, "audio") > 0 then
+            Mime_Type := To_Unbounded_String(Get_Mime_Type(Path));
+            if Index(Mime_Type, "audio") > 0 then
                Item.Image := To_Unbounded_String("audio-x-generic");
-            elsif Index(MimeType, "font") > 0 then
+            elsif Index(Mime_Type, "font") > 0 then
                Item.Image := To_Unbounded_String("font-x-generic");
-            elsif Index(MimeType, "image") > 0 then
+            elsif Index(Mime_Type, "image") > 0 then
                Item.Image := To_Unbounded_String("image-x-generic");
-            elsif Index(MimeType, "video") > 0 then
+            elsif Index(Mime_Type, "video") > 0 then
                Item.Image := To_Unbounded_String("video-x-generic");
-            elsif Index(MimeType, "text/x-script") > 0 then
+            elsif Index(Mime_Type, "text/x-script") > 0 then
                Item.Image := To_Unbounded_String("text-x-script");
-            elsif MimeType = To_Unbounded_String("text/html") then
+            elsif Mime_Type = To_Unbounded_String("text/html") then
                Item.Image := To_Unbounded_String("text-html");
-            elsif Index(MimeType, "zip") > 0 or
-              Index(MimeType, "x-xz") > 0 then
+            elsif Index(Mime_Type, "zip") > 0 or
+              Index(Mime_Type, "x-xz") > 0 then
                Item.Image := To_Unbounded_String("package-x-generic");
-            elsif Index(MimeType, "text") > 0 then
+            elsif Index(Mime_Type, "text") > 0 then
                Item.Image := To_Unbounded_String("text-x-generic");
             else
                Item.Image := To_Unbounded_String("text-x-generic-template");
