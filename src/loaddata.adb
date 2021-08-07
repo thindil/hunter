@@ -42,12 +42,12 @@ package body LoadData is
       case Sort_Order is
          when NAMEASC =>
             return
-              Translate(Left.Name, Lower_Case_Map) <
-              Translate(Right.Name, Lower_Case_Map);
+              Translate(Source => Left.Name, Mapping => Lower_Case_Map) <
+              Translate(Source => Right.Name, Mapping => Lower_Case_Map);
          when NAMEDESC =>
             return
-              Translate(Left.Name, Lower_Case_Map) >
-              Translate(Right.Name, Lower_Case_Map);
+              Translate(Source => Left.Name, Mapping => Lower_Case_Map) >
+              Translate(Source => Right.Name, Mapping => Lower_Case_Map);
          when MODIFIEDASC =>
             return Left.Modified < Right.Modified;
          when MODIFIEDDESC =>
@@ -61,21 +61,22 @@ package body LoadData is
 
    procedure Add_Item(Path: String; List: in out Items_Container.Vector) is
       File_Name: constant String := Simple_Name(Path);
-      Size: File_Size;
-      Sub_Director: Dir_Type;
-      Sub_Last, Hidden_Amount: Natural;
-      SubFile_Name: String(1 .. 1_024);
-      Mime_Type: Unbounded_String;
-      Item: Item_Record;
+      Size: File_Size := 0;
+      Sub_Directory: Dir_Type;
+      Sub_Last, Hidden_Amount: Natural := 0;
+      Sub_File_Name: String(1 .. 1_024) := (others => ' ');
+      Mime_Type: Unbounded_String := Null_Unbounded_String;
+      Item: Item_Record := Empty_Item;
    begin
       Item.Name := To_Unbounded_String(File_Name);
       Item.Path := To_Unbounded_String(Path);
+      Set_Item_Modified_Time_Block :
       begin
          Item.Modified := Modification_Time(Path);
       exception
          when others =>
             Item.Modified := Time_Of(1_901, 1, 1);
-      end;
+      end Set_Item_Modified_Time_Block;
       Item.Is_Hidden := (if File_Name(1) = '.' then True else False);
       if Is_Directory(Path) then
          Item.Is_Directory := True;
@@ -85,23 +86,23 @@ package body LoadData is
             else To_Unbounded_String("folder"));
          Item.Size := -1;
          if Is_Read_Accessible_File(Path) then
-            Open(Sub_Director, Path);
+            Open(Sub_Directory, Path);
             Size := 0;
             Hidden_Amount := 0;
             Count_Directory_Size :
             loop
-               Read(Sub_Director, SubFile_Name, Sub_Last);
+               Read(Sub_Directory, Sub_File_Name, Sub_Last);
                exit Count_Directory_Size when Sub_Last = 0;
-               if SubFile_Name(1 .. Sub_Last) /= "." and
-                 SubFile_Name(1 .. Sub_Last) /= ".." then
-                  if SubFile_Name(1) = '.' then
+               if Sub_File_Name(1 .. Sub_Last) /= "." and
+                 Sub_File_Name(1 .. Sub_Last) /= ".." then
+                  if Sub_File_Name(1) = '.' then
                      Hidden_Amount := Hidden_Amount + 1;
                   else
                      Size := Size + 1;
                   end if;
                end if;
             end loop Count_Directory_Size;
-            Close(Sub_Director);
+            Close(Sub_Directory);
             Item.Size := Item_Size(Size);
             Item.Hidden_Items := Hidden_Amount;
          end if;
