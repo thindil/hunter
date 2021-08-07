@@ -16,7 +16,12 @@
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with MainWindow; use MainWindow;
 
+-- ****h* SearchItemsTUI/SearchItemsTUI
+-- FUNCTION
+-- Provide code to show search UI and show search results.
+-- SOURCE
 package SearchItems is
+-- ****
 
    -- ****if* SearchItemsTUI/SearchItemsTUI.ShowSearchForm
    -- FUNCTION
