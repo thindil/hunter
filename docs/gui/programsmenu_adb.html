@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="../robodoc.css" type="text/css" />
+<title>./src/gui/programsmenu.adb</title>
+<!-- Source: ./src/gui/programsmenu.adb -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">Hunter v1.6 code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="../toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="../sources.html#top">Source files</a>
+<a class="menuitem" href="../index.html#top">Index</a>
+<a class="menuitem" href="../robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="../robo_constants.html#top">Constants</a>
+<a class="menuitem" href="../robo_exceptions.html#top">Exceptions</a>
+<a class="menuitem" href="../robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="../robo_packages.html#top">Packages</a>
+<a class="menuitem" href="../robo_commands.html#top">Commands</a>
+<a class="menuitem" href="../robo_records.html#top">Records</a>
+<a class="menuitem" href="../robo_types.html#top">Types</a>
+<a class="menuitem" href="../robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo70">ProgramsMenu/ProgramsMenu.Programs_Sorting</a></li>
+<li>2. <a href="#robo129">ProgramsMenu/ProgramsMenu.ApplicationsList</a></li>
+<li>3. <a href="#robo130">ProgramsMenu/ProgramsMenu.NamesList</a></li>
+<li>4. <a href="#robo378">ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command</a></li>
+<li>5. <a href="#robo379">ProgramsMenu/ProgramsMenu.Search_Program_Command</a></li>
+<li>6. <a href="#robo380">ProgramsMenu/ProgramsMenu.Set_Application_Command</a></li>
+</ul>
+<hr />
+<a name="ProgramsMenu2fProgramsMenu2ePrograms5fSorting"></a>
+<a name="robo70"></a><h2>ProgramsMenu/ProgramsMenu.Programs_Sorting [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo34">ProgramsMenu</a> ] [ <a href="../robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Used in sorting available programs
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">package</span> Programs_Sorting <span class="keyword">is</span> <span class="keyword">new</span> UnboundedString_Container<span class="sign">.</span>Generic_Sorting<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fProgramsMenu2eApplicationsList"></a>
+<a name="robo129"></a><h2>ProgramsMenu/ProgramsMenu.ApplicationsList [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo34">ProgramsMenu</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> List of all applications which can be used to execute files or
+ directories
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   ApplicationsList<span class="sign">:</span> Bookmarks_Container<span class="sign">.</span>Map<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fProgramsMenu2eNamesList"></a>
+<a name="robo130"></a><h2>ProgramsMenu/ProgramsMenu.NamesList [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo34">ProgramsMenu</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> List of all applications showed in the menu
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   NamesList<span class="sign">:</span> UnboundedString_Container<span class="sign">.</span>Vector<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fProgramsMenu2eHide5fOn5fFocus5fOut5fCommand"></a>
+<a name="robo378"></a><h2>ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo34">ProgramsMenu</a> ] [ <a href="../robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> If application menu lost focus, hide it
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Hide_On_Focus_Out_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span> Argc<span class="sign">:</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span>
+      Argv<span class="sign">:</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span> <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command.
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command.
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> HideOnFocusOut
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fProgramsMenu2eSearch5fProgram5fCommand"></a>
+<a name="robo379"></a><h2>ProgramsMenu/ProgramsMenu.Search_Program_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo34">ProgramsMenu</a> ] [ <a href="../robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Search the programs menu for the selected text (case insensitive) and
+ show only matching applications
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Search_Program_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span> Argc<span class="sign">:</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span>
+      Argv<span class="sign">:</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span> <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> SearchProgram
+</pre>
+
+<hr />
+<a name="ProgramsMenu2fProgramsMenu2eSet5fApplication5fCommand"></a>
+<a name="robo380"></a><h2>ProgramsMenu/ProgramsMenu.Set_Application_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./programsmenu_ads.html#robo34">ProgramsMenu</a> ] [ <a href="../robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set the selected application as a default application to open the
+ selected mime type items
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Set_Application_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span> Argc<span class="sign">:</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span>
+      Argv<span class="sign">:</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span> <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command.
+ Interp     - Tcl interpreter in which command was executed.
+ Argc       - Number of arguments passed to the command.
+ Argv       - Values of arguments passed to the command.
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> SetApplication
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/gui/programsmenu.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 08 2021 07:39:39
+</p>
+</div> <!-- footer -->
+</body>
+</html>
+

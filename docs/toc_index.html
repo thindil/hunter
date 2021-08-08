@@ -12,7 +12,7 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.6 code documentation</a>
 </div> <!-- logo -->
 <div id="extra">
 </div> <!-- extra -->
@@ -21,6 +21,7 @@
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_constants.html#top">Constants</a>
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
@@ -32,322 +33,509 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="./aboutdialog_ads.html#robo0">AboutDialog/AboutDialog</a></li>
+<li>1. <a href="./gui/aboutdialog_ads.html#robo0">AboutDialog/AboutDialog</a></li>
 <ul>
-<li>1.1. <a href="./aboutdialog_ads.html#robo94">AboutDialog/AboutDialog.CreateAboutUI</a></li>
-<li>1.2. <a href="./aboutdialog_adb.html#robo182">AboutDialog/AboutDialog.Open_Link_Command</a></li>
-<li>1.3. <a href="./aboutdialog_adb.html#robo183">AboutDialog/AboutDialog.Show_About_Command</a></li>
+<li>1.1. <a href="./gui/aboutdialog_ads.html#robo155">AboutDialog/AboutDialog.Create_About_Ui</a></li>
+<li>1.2. <a href="./gui/aboutdialog_adb.html#robo317">AboutDialog/AboutDialog.Open_Link_Command</a></li>
+<li>1.3. <a href="./gui/aboutdialog_adb.html#robo318">AboutDialog/AboutDialog.Show_About_Command</a></li>
 </ul>
-<li>2. <a href="./activateitems_ads.html#robo1">ActivateItems/ActivateItems</a></li>
+<li>2. <a href="./tui/aboutdialog_ads.html#robo1">AboutDialogTUI/AboutDialogTUI</a></li>
 <ul>
-<li>2.1. <a href="./activateitems_ads.html#robo95">ActivateItems/ActivateItems.CreateActivateUI</a></li>
-<li>2.2. <a href="./activateitems_adb.html#robo184">ActivateItems/ActivateItems.Activate_Item_Command</a></li>
-<li>2.3. <a href="./activateitems_adb.html#robo185">ActivateItems/ActivateItems.Execute_Command</a></li>
-<li>2.4. <a href="./activateitems_adb.html#robo186">ActivateItems/ActivateItems.Execute_With_Command</a></li>
-<li>2.5. <a href="./activateitems_adb.html#robo187">ActivateItems/ActivateItems.Toggle_Execute_With_Command</a></li>
+<li>2.1. <a href="./tui/aboutdialog_ads.html#robo156">AboutDialogTUI/AboutDialogTUI.About_Keys</a></li>
+<li>2.2. <a href="./tui/aboutdialog_ads.html#robo157">AboutDialogTUI/AboutDialogTUI.Developers_Keys</a></li>
+<li>2.3. <a href="./tui/aboutdialog_ads.html#robo158">AboutDialogTUI/AboutDialogTUI.Show_About_Dialog</a></li>
 </ul>
-<li>3. <a href="./bookmarks_ads.html#robo2">Bookmarks/Bookmarks</a></li>
+<li>3. <a href="./activateitems_ads.html#robo2">ActivateItems/ActivateItems</a></li>
 <ul>
-<li>3.1. <a href="./bookmarks-commands_ads.html#robo3">Bookmarks/Commands</a></li>
+<li>3.1. <a href="./gui/activateitems-ui_ads.html#robo3">ActivateItems/AUI</a></li>
 <ul>
-<li>3.1.1. <a href="./bookmarks-commands_ads.html#robo98">Commands/Commands.AddCommands</a></li>
-<li>3.1.2. <a href="./bookmarks-commands_adb.html#robo99">Commands/Commands.UpdateNewAction</a></li>
-<li>3.1.3. <a href="./bookmarks-commands_adb.html#robo188">Commands/Commands.Add_Bookmark_Command</a></li>
-<li>3.1.4. <a href="./bookmarks-commands_adb.html#robo189">Commands/Commands.GoToBookmark_Command</a></li>
-<li>3.1.5. <a href="./bookmarks-commands_adb.html#robo190">Commands/Commands.GoToDestination_Command</a></li>
-<li>3.1.6. <a href="./bookmarks-commands_adb.html#robo191">Commands/Commands.Remove_Bookmark_Command</a></li>
-<li>3.1.7. <a href="./bookmarks-commands_adb.html#robo192">Commands/Commands.SetDestination_Command</a></li>
-<li>3.1.8. <a href="./showitems_adb.html#robo193">Commands/ShowItems.GoToDirectory_Command</a></li>
+<li>3.1.1. <a href="./gui/activateitems-ui_ads.html#robo160">AUI/AUI.CreateActivateUI</a></li>
 </ul>
-<li>3.2. <a href="./bookmarks_ads.html#robo29">Bookmarks/Bookmarks.Bookmarks_Container</a></li>
-<li>3.3. <a href="./bookmarks_adb.html#robo54">Bookmarks/Bookmarks.BookmarksList</a></li>
-<li>3.4. <a href="./bookmarks_ads.html#robo96">Bookmarks/Bookmarks.CreateBookmarkMenu</a></li>
-<li>3.5. <a href="./bookmarks_ads.html#robo97">Bookmarks/Bookmarks.SetBookmarkButton</a></li>
-</ul>
-<li>4. <a href="./copyitems_ads.html#robo4">CopyItems/CopyItems</a></li>
+<li>3.2. <a href="./tui/activateitems-ui_ads.html#robo4">ActivateItems/AUITUI</a></li>
 <ul>
-<li>4.1. <a href="./copyitems_ads.html#robo55">CopyItems/CopyItems.CopyItemsList</a></li>
-<li>4.2. <a href="./copyitems_adb.html#robo56">CopyItems/CopyItems.SourceDirectory</a></li>
-<li>4.3. <a href="./copyitems_ads.html#robo100">CopyItems/CopyItems.CopyItem</a></li>
-<li>4.4. <a href="./copyitems_ads.html#robo101">CopyItems/CopyItems.CopySelected</a></li>
-<li>4.5. <a href="./copyitems_ads.html#robo102">CopyItems/CopyItems.CreateCopyUI</a></li>
-<li>4.6. <a href="./copyitems_ads.html#robo103">CopyItems/CopyItems.SkipCopying</a></li>
-<li>4.7. <a href="./copyitems_adb.html#robo194">CopyItems/CopyItems.Copy_Data_Command</a></li>
+<li>3.2.1. <a href="./tui/activateitems-ui_ads.html#robo161">AUITUI/AUITUI.CreateActivateUI</a></li>
+<li>3.2.2. <a href="./tui/activateitems-ui_ads.html#robo162">AUITUI/AUITUI.Execute_Form_Keys</a></li>
+<li>3.2.3. <a href="./tui/activateitems-ui_ads.html#robo163">AUITUI/AUITUI.Show_Execute_With_Dialog</a></li>
 </ul>
-<li>5. <a href="./createitems_ads.html#robo5">CreateItems/CreateItems</a></li>
-<ul>
-<li>5.1. <a href="./createitems_adb.html#robo92">CreateItems/CreateItems.Hunter_Create_Exception</a></li>
-<li>5.2. <a href="./createitems_ads.html#robo104">CreateItems/CreateItems.CreateCreateUI</a></li>
-<li>5.3. <a href="./createitems_adb.html#robo195">CreateItems/CreateItems.Create_Command</a></li>
-<li>5.4. <a href="./createitems_adb.html#robo196">CreateItems/CreateItems.Show_Create_Command</a></li>
+<li>3.3. <a href="./activateitems_ads.html#robo159">ActivateItems/ActivateItems.Add_Commands</a></li>
+<li>3.4. <a href="./activateitems_adb.html#robo319">ActivateItems/ActivateItems.Activate_Item_Command</a></li>
+<li>3.5. <a href="./activateitems_adb.html#robo320">ActivateItems/ActivateItems.Execute_Command</a></li>
+<li>3.6. <a href="./gui/activateitems-ui_adb.html#robo321">ActivateItems/ActivateItems.Execute_With_Command</a></li>
+<li>3.7. <a href="./gui/activateitems-ui_adb.html#robo322">ActivateItems/ActivateItems.Toggle_Execute_With_Command</a></li>
 </ul>
-<li>6. <a href="./deleteitems_ads.html#robo6">DeleteItems/DeleteItems</a></li>
+<li>4. <a href="./gui/bookmarks_ads.html#robo5">Bookmarks/Bookmarks</a></li>
 <ul>
-<li>6.1. <a href="./deleteitems_ads.html#robo105">DeleteItems/DeleteItems.CreateDeleteUI</a></li>
-<li>6.2. <a href="./deleteitems_ads.html#robo106">DeleteItems/DeleteItems.DeleteSelected</a></li>
-<li>6.3. <a href="./deleteitems_adb.html#robo197">DeleteItems/DeleteItems.Start_Deleting_Command</a></li>
+<li>4.1. <a href="./bookmarks-commands_ads.html#robo6">Bookmarks/Commands</a></li>
+<ul>
+<li>4.1.1. <a href="./gui/bookmarks-commands-ui_ads.html#robo8">Commands/BUI</a></li>
+<ul>
+<li>4.1.1.1. <a href="./gui/bookmarks-commands-ui_ads.html#robo174">BUI/BUI.AddUICommands</a></li>
 </ul>
-<li>7. <a href="./errordialog_ads.html#robo7">ErrorDialog/ErrorDialog</a></li>
-<ul>
-<li>7.1. <a href="./errordialog_ads.html#robo107">ErrorDialog/ErrorDialog.SaveException</a></li>
+<li>4.1.2. <a href="./bookmarks-commands_ads.html#robo175">Commands/Commands.AddCommands</a></li>
+<li>4.1.3. <a href="./gui/bookmarks-commands-ui_adb.html#robo176">Commands/Commands.UpdateNew_Action</a></li>
+<li>4.1.4. <a href="./gui/bookmarks-commands-ui_adb.html#robo323">Commands/Commands.Add_Bookmark_Command</a></li>
+<li>4.1.5. <a href="./bookmarks-commands_adb.html#robo324">Commands/Commands.GoToBookmark_Command</a></li>
+<li>4.1.6. <a href="./gui/bookmarks-commands-ui_adb.html#robo325">Commands/Commands.GoToDestination_Command</a></li>
+<li>4.1.7. <a href="./gui/bookmarks-commands-ui_adb.html#robo326">Commands/Commands.Remove_Bookmark_Command</a></li>
+<li>4.1.8. <a href="./gui/bookmarks-commands-ui_adb.html#robo327">Commands/Commands.SetDestination_Command</a></li>
 </ul>
-<li>8. <a href="./inotify_ads.html#robo8">Inotify/Inotify</a></li>
-<ul>
-<li>8.1. <a href="./inotify_ads.html#robo30">Inotify/Inotify.Events_Container</a></li>
-<li>8.2. <a href="./inotify_ads.html#robo31">Inotify/Inotify.Inotify_Events</a></li>
-<li>8.3. <a href="./inotify_adb.html#robo32">Inotify/Inotify.Mask_Array</a></li>
-<li>8.4. <a href="./inotify_adb.html#robo33">Inotify/Inotify.Watches_Container</a></li>
-<li>8.5. <a href="./inotify_ads.html#robo49">Inotify/Inotify.Event_Data</a></li>
-<li>8.6. <a href="./inotify_adb.html#robo50">Inotify/Inotify.Watch_Data</a></li>
-<li>8.7. <a href="./inotify_ads.html#robo57">Inotify/Inotify.EventsList</a></li>
-<li>8.8. <a href="./inotify_adb.html#robo58">Inotify/Inotify.Instance</a></li>
-<li>8.9. <a href="./inotify_ads.html#robo59">Inotify/Inotify.TemporaryStop</a></li>
-<li>8.10. <a href="./inotify_adb.html#robo60">Inotify/Inotify.Watches</a></li>
-<li>8.11. <a href="./inotify_adb.html#robo108">Inotify/Inotify.AddWatch</a></li>
-<li>8.12. <a href="./inotify_ads.html#robo109">Inotify/Inotify.AddWatches</a></li>
-<li>8.13. <a href="./inotify_adb.html#robo110">Inotify/Inotify.CreateMask</a></li>
-<li>8.14. <a href="./inotify_adb.html#robo111">Inotify/Inotify.inotify_add_watch</a></li>
-<li>8.15. <a href="./inotify_adb.html#robo112">Inotify/Inotify.inotify_init</a></li>
-<li>8.16. <a href="./inotify_adb.html#robo113">Inotify/Inotify.inotify_rm_watch</a></li>
-<li>8.17. <a href="./inotify_ads.html#robo114">Inotify/Inotify.InotifyClose</a></li>
-<li>8.18. <a href="./inotify_ads.html#robo115">Inotify/Inotify.InotifyInit</a></li>
-<li>8.19. <a href="./inotify_ads.html#robo116">Inotify/Inotify.InotifyRead</a></li>
-<li>8.20. <a href="./inotify_adb.html#robo117">Inotify/Inotify.RemoveWatch</a></li>
-<li>8.21. <a href="./inotify_ads.html#robo118">Inotify/Inotify.RemoveWatches</a></li>
+<li>4.2. <a href="./gui/bookmarks_ads.html#robo53">Bookmarks/Bookmarks.Bookmarks_Container</a></li>
+<li>4.3. <a href="./gui/bookmarks_adb.html#robo91">Bookmarks/Bookmarks.Bookmarks_List</a></li>
+<li>4.4. <a href="./gui/bookmarks_ads.html#robo164">Bookmarks/Bookmarks.Create_Bookmark_Menu</a></li>
+<li>4.5. <a href="./gui/bookmarks_adb.html#robo165">Bookmarks/Bookmarks.Get_Bookmarks_List</a></li>
+<li>4.6. <a href="./gui/bookmarks_ads.html#robo166">Bookmarks/Bookmarks.Set_Bookmark_Button</a></li>
 </ul>
-<li>9. <a href="./libmagic_ads.html#robo9">Libmagic/LibMagic</a></li>
+<li>5. <a href="./tui/bookmarks_ads.html#robo7">BookmarksTUI/BookmarksTUI</a></li>
 <ul>
-<li>9.1. <a href="./libmagic_adb.html#robo34">LibMagic/LibMagic.magic_set</a></li>
-<li>9.2. <a href="./libmagic_adb.html#robo35">LibMagic/LibMagic.magic_t</a></li>
-<li>9.3. <a href="./libmagic_adb.html#robo61">LibMagic/LibMagic.Initialized</a></li>
-<li>9.4. <a href="./libmagic_adb.html#robo62">LibMagic/LibMagic.MagicData</a></li>
-<li>9.5. <a href="./libmagic_adb.html#robo119">LibMagic/LibMagic.magic_close</a></li>
-<li>9.6. <a href="./libmagic_adb.html#robo120">LibMagic/LibMagic.magic_file</a></li>
-<li>9.7. <a href="./libmagic_adb.html#robo121">LibMagic/LibMagic.magic_load</a></li>
-<li>9.8. <a href="./libmagic_adb.html#robo122">LibMagic/LibMagic.magic_open</a></li>
-<li>9.9. <a href="./libmagic_ads.html#robo123">LibMagic/LibMagic.MagicClose</a></li>
-<li>9.10. <a href="./libmagic_ads.html#robo124">LibMagic/LibMagic.MagicFile</a></li>
-<li>9.11. <a href="./libmagic_ads.html#robo125">LibMagic/LibMagic.MagicOpen</a></li>
+<li>5.1. <a href="./tui/bookmarks_ads.html#robo54">BookmarksTUI/BookmarksTUI.Bookmarks_Container</a></li>
+<li>5.2. <a href="./tui/bookmarks_ads.html#robo92">BookmarksTUI/BookmarksTUI.BookmarksList</a></li>
+<li>5.3. <a href="./tui/bookmarks_ads.html#robo167">BookmarksTUI/BookmarksTUI.Add_Bookmark</a></li>
+<li>5.4. <a href="./tui/bookmarks_ads.html#robo168">BookmarksTUI/BookmarksTUI.Bookmarks_Form_Keys</a></li>
+<li>5.5. <a href="./tui/bookmarks_ads.html#robo169">BookmarksTUI/BookmarksTUI.Create_Bookmarks_List</a></li>
+<li>5.6. <a href="./tui/bookmarks_ads.html#robo170">BookmarksTUI/BookmarksTUI.Go_To_Bookmark</a></li>
+<li>5.7. <a href="./tui/bookmarks_ads.html#robo171">BookmarksTUI/BookmarksTUI.Remove_Bookmark</a></li>
+<li>5.8. <a href="./tui/bookmarks_ads.html#robo172">BookmarksTUI/BookmarksTUI.Show_Bookmarks_Menu</a></li>
+<li>5.9. <a href="./tui/bookmarks_adb.html#robo173">BookmarksTUI/BookmarksTUI.ShowBookmarksForm</a></li>
 </ul>
-<li>10. <a href="./loaddata_ads.html#robo10">LoadData/LoadData</a></li>
+<li>6. <a href="./gui/copyitems_ads.html#robo9">CopyItems/CopyItems</a></li>
 <ul>
-<li>10.1. <a href="./loaddata_ads.html#robo36">LoadData/LoadData.Item_Size</a></li>
-<li>10.2. <a href="./loaddata_ads.html#robo37">LoadData/LoadData.Items_Container</a></li>
-<li>10.3. <a href="./loaddata_ads.html#robo38">LoadData/LoadData.Items_Sorting</a></li>
-<li>10.4. <a href="./loaddata_ads.html#robo39">LoadData/LoadData.SortingOrder</a></li>
-<li>10.5. <a href="./loaddata_ads.html#robo51">LoadData/LoadData.Item_Record</a></li>
-<li>10.6. <a href="./loaddata_ads.html#robo63">LoadData/LoadData.ItemsList</a></li>
-<li>10.7. <a href="./loaddata_ads.html#robo64">LoadData/LoadData.SecondItemsList</a></li>
-<li>10.8. <a href="./loaddata_ads.html#robo65">LoadData/LoadData.SortOrder</a></li>
-<li>10.9. <a href="./loaddata_ads.html#robo126">LoadData/LoadData."&lt;"</a></li>
-<li>10.10. <a href="./loaddata_ads.html#robo127">LoadData/LoadData."="</a></li>
-<li>10.11. <a href="./loaddata_ads.html#robo128">LoadData/LoadData.AddItem</a></li>
-<li>10.12. <a href="./loaddata_ads.html#robo129">LoadData/LoadData.LoadDirectory</a></li>
+<li>6.1. <a href="./gui/copyitems_ads.html#robo93">CopyItems/CopyItems.Copy_Items_List</a></li>
+<li>6.2. <a href="./gui/copyitems_adb.html#robo94">CopyItems/CopyItems.Source_Directory</a></li>
+<li>6.3. <a href="./tui/copyitems_adb.html#robo95">CopyItems/CopyItems.SourceDirectory</a></li>
+<li>6.4. <a href="./gui/copyitems_ads.html#robo177">CopyItems/CopyItems.Copy_Item</a></li>
+<li>6.5. <a href="./gui/copyitems_ads.html#robo178">CopyItems/CopyItems.Copy_Selected</a></li>
+<li>6.6. <a href="./gui/copyitems_ads.html#robo179">CopyItems/CopyItems.Create_Copy_Ui</a></li>
+<li>6.7. <a href="./gui/copyitems_ads.html#robo180">CopyItems/CopyItems.Skip_Copying</a></li>
+<li>6.8. <a href="./gui/copyitems_adb.html#robo328">CopyItems/CopyItems.Copy_Data_Command</a></li>
 </ul>
-<li>11. <a href="./mainwindow_ads.html#robo11">MainWindow/MainWindow</a></li>
+<li>7. <a href="./tui/copyitems_ads.html#robo10">CopyItemsTUI/CopyItemsTUI</a></li>
 <ul>
-<li>11.1. <a href="./mainwindow-commands_ads.html#robo12">MainWindow/MCommands</a></li>
-<ul>
-<li>11.1.1. <a href="./mainwindow-commands_adb.html#robo42">MCommands/MCommands.ExitCommand</a></li>
-<li>11.1.2. <a href="./mainwindow-commands_ads.html#robo132">MCommands/MCommands.AddCommands</a></li>
-<li>11.1.3. <a href="./mainwindow-commands_adb.html#robo198">MCommands/MCommands.Arrange_Path_Command</a></li>
-<li>11.1.4. <a href="./mainwindow-commands_adb.html#robo199">MCommands/MCommands.Cancel_Action_Command</a></li>
-<li>11.1.5. <a href="./mainwindow-commands_adb.html#robo200">MCommands/MCommands.Hide_Widget_Command</a></li>
-<li>11.1.6. <a href="./mainwindow-commands_adb.html#robo201">MCommands/MCommands.Invoke_Button_Command</a></li>
-<li>11.1.7. <a href="./mainwindow-commands_adb.html#robo202">MCommands/MCommands.Quit_Command</a></li>
-<li>11.1.8. <a href="./mainwindow-commands_adb.html#robo203">MCommands/MCommands.Show_File_Command</a></li>
-<li>11.1.9. <a href="./mainwindow-commands_adb.html#robo204">MCommands/MCommands.Show_File_Menu_Command</a></li>
-<li>11.1.10. <a href="./mainwindow-commands_adb.html#robo205">MCommands/MCommands.Sort_Command</a></li>
-<li>11.1.11. <a href="./mainwindow-commands_adb.html#robo206">MCommands/MCommands.Toggle_Selection_Command</a></li>
+<li>7.1. <a href="./tui/copyitems_ads.html#robo96">CopyItemsTUI/CopyItemsTUI.CopyItemsList</a></li>
+<li>7.2. <a href="./tui/copyitems_ads.html#robo181">CopyItemsTUI/CopyItemsTUI.CopyItem</a></li>
+<li>7.3. <a href="./tui/copyitems_ads.html#robo182">CopyItemsTUI/CopyItemsTUI.CopySelected</a></li>
+<li>7.4. <a href="./tui/copyitems_ads.html#robo183">CopyItemsTUI/CopyItemsTUI.SkipCopying</a></li>
 </ul>
-<li>11.2. <a href="./mainwindow_ads.html#robo40">MainWindow/MainWindow.ItemActions</a></li>
-<li>11.3. <a href="./mainwindow_ads.html#robo41">MainWindow/MainWindow.UnboundedString_Container</a></li>
-<li>11.4. <a href="./mainwindow_ads.html#robo66">MainWindow/MainWindow.CurrentDirectory</a></li>
-<li>11.5. <a href="./mainwindow_ads.html#robo67">MainWindow/MainWindow.CurrentSelected</a></li>
-<li>11.6. <a href="./mainwindow_ads.html#robo68">MainWindow/MainWindow.NewAction</a></li>
-<li>11.7. <a href="./mainwindow_ads.html#robo69">MainWindow/MainWindow.SelectedItems</a></li>
-<li>11.8. <a href="./mainwindow_ads.html#robo130">MainWindow/MainWindow.CreateMainWindow</a></li>
-<li>11.9. <a href="./mainwindow_ads.html#robo131">MainWindow/MainWindow.UpdateDirectoryList</a></li>
-</ul>
-<li>12. <a href="./messages_ads.html#robo13">Messages/Messages</a></li>
+<li>8. <a href="./gui/createitems_ads.html#robo11">CreateItems/CreateItems</a></li>
 <ul>
-<li>12.1. <a href="./messages_adb.html#robo70">Messages/Messages.MessageFrame</a></li>
-<li>12.2. <a href="./messages_adb.html#robo71">Messages/Messages.MessageLabel</a></li>
-<li>12.3. <a href="./messages_adb.html#robo72">Messages/Messages.TimerId</a></li>
-<li>12.4. <a href="./messages_ads.html#robo73">Messages/Messages.YesToAll</a></li>
-<li>12.5. <a href="./messages_ads.html#robo134">Messages/Messages.CreateMessagesUI</a></li>
-<li>12.6. <a href="./messages_ads.html#robo135">Messages/Messages.ShowMessage</a></li>
-<li>12.7. <a href="./messages_ads.html#robo210">Messages/Messages.Close_Command</a></li>
-<li>12.8. <a href="./messages_adb.html#robo211">Messages/Messages.Response_Command</a></li>
+<li>8.1. <a href="./gui/createitems_ads.html#robo184">CreateItems/CreateItems.Create_Create_UI</a></li>
+<li>8.2. <a href="./gui/createitems_adb.html#robo329">CreateItems/CreateItems.Create_Command</a></li>
+<li>8.3. <a href="./gui/createitems_adb.html#robo330">CreateItems/CreateItems.Show_Create_Command</a></li>
 </ul>
-<li>13. <a href="./modules_ads.html#robo15">Modules/Modules</a></li>
+<li>9. <a href="./tui/createitems_ads.html#robo12">CreateItemsTUI/CreateItemsTUI</a></li>
 <ul>
-<li>13.1. <a href="./modules-commands_ads.html#robo14">Modules/MCommands2</a></li>
-<ul>
-<li>13.1.1. <a href="./modules-commands_ads.html#robo133">MCommands2/MCommands2.AddCommands</a></li>
-<li>13.1.2. <a href="./modules-commands_adb.html#robo207">MCommands2/MCommands2.Execute_Module_Command_Command</a></li>
-<li>13.1.3. <a href="./modules-commands_adb.html#robo208">MCommands2/MCommands2.Get_Config_Command</a></li>
-<li>13.1.4. <a href="./modules-commands_adb.html#robo209">MCommands2/MCommands2.Toggle_Module_Command</a></li>
+<li>9.1. <a href="./tui/createitems_ads.html#robo185">CreateItemsTUI/CreateItemsTUI.AddCommands</a></li>
+<li>9.2. <a href="./tui/createitems_ads.html#robo186">CreateItemsTUI/CreateItemsTUI.Create_Keys</a></li>
+<li>9.3. <a href="./tui/createitems_ads.html#robo187">CreateItemsTUI/CreateItemsTUI.Rename_Keys</a></li>
+<li>9.4. <a href="./tui/createitems_ads.html#robo188">CreateItemsTUI/CreateItemsTUI.Show_Create_Link_Form</a></li>
+<li>9.5. <a href="./tui/createitems_ads.html#robo189">CreateItemsTUI/CreateItemsTUI.ShowCreateForm</a></li>
+<li>9.6. <a href="./tui/createitems_adb.html#robo331">CreateItemsTUI/CreateItemsTUI.Create_Item_Command</a></li>
 </ul>
-<li>13.2. <a href="./modules_ads.html#robo43">Modules/Modules.Triggers</a></li>
-<li>13.3. <a href="./modules_ads.html#robo74">Modules/Modules.Enabled_Modules</a></li>
-<li>13.4. <a href="./modules_ads.html#robo136">Modules/Modules.Execute_Modules</a></li>
-<li>13.5. <a href="./modules_ads.html#robo137">Modules/Modules.LoadModules</a></li>
-</ul>
-<li>14. <a href="./moveitems_ads.html#robo16">MoveItems/MoveItems</a></li>
+<li>10. <a href="./gui/deleteitems_ads.html#robo13">DeleteItems/DeleteItems</a></li>
 <ul>
-<li>14.1. <a href="./moveitems_ads.html#robo75">MoveItems/MoveItems.MoveItemsList</a></li>
-<li>14.2. <a href="./moveitems_adb.html#robo76">MoveItems/MoveItems.SourceDirectory</a></li>
-<li>14.3. <a href="./moveitems_ads.html#robo138">MoveItems/MoveItems.CreateMoveUI</a></li>
-<li>14.4. <a href="./moveitems_ads.html#robo139">MoveItems/MoveItems.MoveSelected</a></li>
-<li>14.5. <a href="./moveitems_ads.html#robo140">MoveItems/MoveItems.SkipMoving</a></li>
-<li>14.6. <a href="./moveitems_adb.html#robo212">MoveItems/MoveItems.Move_Data_Command</a></li>
+<li>10.1. <a href="./gui/deleteitems_ads.html#robo190">DeleteItems/DeleteItems.Create_Delete_Ui</a></li>
+<li>10.2. <a href="./gui/deleteitems_ads.html#robo191">DeleteItems/DeleteItems.Delete_Selected</a></li>
+<li>10.3. <a href="./gui/deleteitems_adb.html#robo332">DeleteItems/DeleteItems.Start_Deleting_Command</a></li>
 </ul>
-<li>15. <a href="./preferences_ads.html#robo18">Preferences/Preferences</a></li>
+<li>11. <a href="./tui/deleteitems_ads.html#robo14">DeleteItemsTUI/DeleteItemsTUI</a></li>
 <ul>
-<li>15.1. <a href="./preferences-commands_ads.html#robo17">Preferences/PCommands</a></li>
-<ul>
-<li>15.1.1. <a href="./preferences-commands_ads.html#robo141">PCommands/PCommands.AddCommands</a></li>
-<li>15.1.2. <a href="./preferences-commands_adb.html#robo213">PCommands/PCommands.Add_Command_Command</a></li>
-<li>15.1.3. <a href="./preferences-commands_adb.html#robo214">PCommands/PCommands.Change_Shortcut_Command</a></li>
-<li>15.1.4. <a href="./preferences-commands_adb.html#robo215">PCommands/PCommands.Close_Dialog_Command</a></li>
-<li>15.1.5. <a href="./preferences-commands_adb.html#robo216">PCommands/PCommands.Close_Preferences_Command</a></li>
-<li>15.1.6. <a href="./preferences-commands_adb.html#robo217">PCommands/PCommands.Delete_Command_Command</a></li>
-<li>15.1.7. <a href="./preferences-commands_adb.html#robo218">PCommands/PCommands.Edit_Command_Command</a></li>
-<li>15.1.8. <a href="./preferences-commands_adb.html#robo219">PCommands/PCommands.Reset_Command_Command</a></li>
-<li>15.1.9. <a href="./preferences-commands_adb.html#robo220">PCommands/PCommands.Restore_Default_Shortcuts_Command</a></li>
-<li>15.1.10. <a href="./preferences-commands_adb.html#robo221">PCommands/PCommands.Restore_Defaults_Command</a></li>
-<li>15.1.11. <a href="./preferences-commands_adb.html#robo222">PCommands/PCommands.Set_Clear_Trash_Command</a></li>
-<li>15.1.12. <a href="./preferences-commands_adb.html#robo223">PCommands/PCommands.Set_Color_Text_Command</a></li>
-<li>15.1.13. <a href="./preferences-commands_adb.html#robo224">PCommands/PCommands.Set_Color_Theme_Command</a></li>
-<li>15.1.14. <a href="./preferences-commands_adb.html#robo225">PCommands/PCommands.Set_Delete_Files_Command</a></li>
-<li>15.1.15. <a href="./preferences-commands_adb.html#robo226">PCommands/PCommands.Set_Label_Command</a></li>
-<li>15.1.16. <a href="./preferences-commands_adb.html#robo227">PCommands/PCommands.Set_Monospace_Font_Command</a></li>
-<li>15.1.17. <a href="./preferences-commands_adb.html#robo228">PCommands/PCommands.Set_Overwrite_Command</a></li>
-<li>15.1.18. <a href="./preferences-commands_adb.html#robo229">PCommands/PCommands.Set_Scale_Images_Command</a></li>
-<li>15.1.19. <a href="./preferences-commands_adb.html#robo230">PCommands/PCommands.Set_Show_Finished_Info_Command</a></li>
-<li>15.1.20. <a href="./preferences-commands_adb.html#robo231">PCommands/PCommands.Set_Show_Hidden_Files_Command</a></li>
-<li>15.1.21. <a href="./preferences-commands_adb.html#robo232">PCommands/PCommands.Set_Show_Modification_Time_Command</a></li>
-<li>15.1.22. <a href="./preferences-commands_adb.html#robo233">PCommands/PCommands.Set_Show_Preview_Command</a></li>
-<li>15.1.23. <a href="./preferences-commands_adb.html#robo234">PCommands/PCommands.Set_Stay_In_Old_Command</a></li>
-<li>15.1.24. <a href="./preferences-commands_adb.html#robo235">PCommands/PCommands.Set_Toolbars_On_Top_Command</a></li>
-<li>15.1.25. <a href="./preferences-commands_adb.html#robo236">PCommands/PCommands.Set_Toolbars_Size_Command</a></li>
-<li>15.1.26. <a href="./preferences-commands_adb.html#robo237">PCommands/PCommands.Set_UI_Theme_Command</a></li>
-<li>15.1.27. <a href="./preferences-commands_adb.html#robo238">PCommands/PCommands.Show_Module_Command</a></li>
-<li>15.1.28. <a href="./preferences-commands_adb.html#robo239">PCommands/PCommands.Show_Preferences_Command</a></li>
-<li>15.1.29. <a href="./preferences-commands_adb.html#robo240">PCommands/PCommands.Start_Changing_Shortcut_Command</a></li>
+<li>11.1. <a href="./tui/deleteitems_ads.html#robo192">DeleteItemsTUI/DeleteItemsTUI.Delete_Keys</a></li>
+<li>11.2. <a href="./tui/deleteitems_ads.html#robo193">DeleteItemsTUI/DeleteItemsTUI.DeleteSelected</a></li>
+<li>11.3. <a href="./tui/deleteitems_ads.html#robo194">DeleteItemsTUI/DeleteItemsTUI.ShowDeleteForm</a></li>
 </ul>
-<li>15.2. <a href="./preferences_ads.html#robo44">Preferences/Preferences.Accelerators_Array</a></li>
-<li>15.3. <a href="./preferences_ads.html#robo52">Preferences/Preferences.Settings_Data</a></li>
-<li>15.4. <a href="./preferences_ads.html#robo77">Preferences/Preferences.Accelerators</a></li>
-<li>15.5. <a href="./preferences_ads.html#robo78">Preferences/Preferences.Settings</a></li>
-<li>15.6. <a href="./preferences_ads.html#robo142">Preferences/Preferences.Clear_Add_Command</a></li>
-<li>15.7. <a href="./preferences_ads.html#robo143">Preferences/Preferences.CreatePreferences</a></li>
-<li>15.8. <a href="./preferences_ads.html#robo144">Preferences/Preferences.LoadSettings</a></li>
-<li>15.9. <a href="./preferences_ads.html#robo145">Preferences/Preferences.SavePreferences</a></li>
-<li>15.10. <a href="./preferences_ads.html#robo146">Preferences/Preferences.SetDefaultAccelerators</a></li>
-<li>15.11. <a href="./preferences_ads.html#robo147">Preferences/Preferences.SetDefaultSettings</a></li>
-</ul>
-<li>16. <a href="./programsmenu_ads.html#robo19">ProgramsMenu/ProgramsMenu</a></li>
+<li>12. <a href="./gui/errordialog_ads.html#robo15">ErrorDialog/ErrorDialog</a></li>
 <ul>
-<li>16.1. <a href="./programsmenu_adb.html#robo45">ProgramsMenu/ProgramsMenu.Programs_Sorting</a></li>
-<li>16.2. <a href="./programsmenu_adb.html#robo79">ProgramsMenu/ProgramsMenu.ApplicationsList</a></li>
-<li>16.3. <a href="./programsmenu_adb.html#robo80">ProgramsMenu/ProgramsMenu.NamesList</a></li>
-<li>16.4. <a href="./programsmenu_ads.html#robo148">ProgramsMenu/ProgramsMenu.CreateProgramsMenu</a></li>
-<li>16.5. <a href="./programsmenu_ads.html#robo149">ProgramsMenu/ProgramsMenu.GetProgramName</a></li>
-<li>16.6. <a href="./programsmenu_adb.html#robo241">ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command</a></li>
-<li>16.7. <a href="./programsmenu_adb.html#robo242">ProgramsMenu/ProgramsMenu.Search_Program_Command</a></li>
-<li>16.8. <a href="./programsmenu_adb.html#robo243">ProgramsMenu/ProgramsMenu.Set_Application_Command</a></li>
-<li>16.9. <a href="./programsmenu_ads.html#robo244">ProgramsMenu/ProgramsMenu.Toggle_Applications_Menu_Command</a></li>
+<li>12.1. <a href="./gui/errordialog_ads.html#robo195">ErrorDialog/ErrorDialog.SaveException</a></li>
 </ul>
-<li>17. <a href="./refreshdata_ads.html#robo20">RefreshData/RefreshData</a></li>
+<li>13. <a href="./inotify_ads.html#robo16">Inotify/Inotify</a></li>
 <ul>
-<li>17.1. <a href="./refreshdata_ads.html#robo28">RefreshData/RefreshData.InotifyTask</a></li>
-<li>17.2. <a href="./refreshdata_adb.html#robo81">RefreshData/RefreshData.Timer_Token</a></li>
-<li>17.3. <a href="./refreshdata_adb.html#robo150">RefreshData/RefreshData.CheckItems</a></li>
-<li>17.4. <a href="./refreshdata_ads.html#robo151">RefreshData/RefreshData.StartTimer</a></li>
-<li>17.5. <a href="./refreshdata_ads.html#robo152">RefreshData/RefreshData.UpdateWatch</a></li>
+<li>13.1. <a href="./inotify_ads.html#robo55">Inotify/Inotify.Events_Container</a></li>
+<li>13.2. <a href="./inotify_ads.html#robo56">Inotify/Inotify.Inotify_Events</a></li>
+<li>13.3. <a href="./inotify_adb.html#robo57">Inotify/Inotify.Watches_Container</a></li>
+<li>13.4. <a href="./inotify_ads.html#robo75">Inotify/Inotify.Event_Data</a></li>
+<li>13.5. <a href="./inotify_adb.html#robo76">Inotify/Inotify.Watch_Data</a></li>
+<li>13.6. <a href="./inotify_adb.html#robo80">Inotify/Empty_Watch</a></li>
+<li>13.7. <a href="./inotify_ads.html#robo81">Inotify/Inotify.Accesed_Event</a></li>
+<li>13.8. <a href="./inotify_ads.html#robo82">Inotify/Inotify.Empty_Event_Data</a></li>
+<li>13.9. <a href="./inotify_ads.html#robo97">Inotify/Inotify.Events_List</a></li>
+<li>13.10. <a href="./inotify_adb.html#robo98">Inotify/Inotify.Instance</a></li>
+<li>13.11. <a href="./inotify_ads.html#robo99">Inotify/Inotify.Temporary_Stop</a></li>
+<li>13.12. <a href="./inotify_adb.html#robo100">Inotify/Inotify.Watches</a></li>
+<li>13.13. <a href="./inotify_adb.html#robo154">Inotify/Inotify_Error</a></li>
+<li>13.14. <a href="./inotify_adb.html#robo196">Inotify/Inotify.Add_Watch</a></li>
+<li>13.15. <a href="./inotify_ads.html#robo197">Inotify/Inotify.Add_Watches</a></li>
+<li>13.16. <a href="./inotify_adb.html#robo198">Inotify/Inotify.Get_Instance</a></li>
+<li>13.17. <a href="./inotify_ads.html#robo199">Inotify/Inotify.Inotify_Close</a></li>
+<li>13.18. <a href="./inotify_ads.html#robo200">Inotify/Inotify.Inotify_Init</a></li>
+<li>13.19. <a href="./inotify_ads.html#robo201">Inotify/Inotify.Inotify_Read</a></li>
+<li>13.20. <a href="./inotify_adb.html#robo202">Inotify/Inotify.Inotify_Rm_Watch_C</a></li>
+<li>13.21. <a href="./inotify_ads.html#robo203">Inotify/Inotify.Remove_Watches</a></li>
+<li>13.22. <a href="./inotify_adb.html#robo204">Inotify/Inotify.Watches_List</a></li>
 </ul>
-<li>18. <a href="./renameitems_ads.html#robo21">RenameItems/RenameItems</a></li>
+<li>14. <a href="./libmagic_ads.html#robo17">Libmagic/LibMagic</a></li>
 <ul>
-<li>18.1. <a href="./renameitems_ads.html#robo153">RenameItems/RenameItems.CreateRenameUI</a></li>
-<li>18.2. <a href="./renameitems_adb.html#robo245">RenameItems/RenameItems.Rename_Command</a></li>
-<li>18.3. <a href="./renameitems_adb.html#robo246">RenameItems/RenameItems.Toggle_Rename_Command</a></li>
+<li>14.1. <a href="./libmagic_adb.html#robo101">LibMagic/LibMagic.Initialized</a></li>
+<li>14.2. <a href="./libmagic_adb.html#robo102">LibMagic/LibMagic.Magic_Data</a></li>
+<li>14.3. <a href="./libmagic_adb.html#robo205">LibMagic/LibMagic.Get_Magic_Instance</a></li>
+<li>14.4. <a href="./libmagic_adb.html#robo206">LibMagic/LibMagic.Is_Initialized</a></li>
+<li>14.5. <a href="./libmagic_ads.html#robo207">LibMagic/LibMagic.Magic_Close</a></li>
+<li>14.6. <a href="./libmagic_ads.html#robo208">LibMagic/LibMagic.Magic_File</a></li>
+<li>14.7. <a href="./libmagic_ads.html#robo209">LibMagic/LibMagic.Magic_Open</a></li>
 </ul>
-<li>19. <a href="./searchitems_ads.html#robo22">SearchItems/SearchItems</a></li>
+<li>15. <a href="./loaddata_ads.html#robo18">LoadData/LoadData</a></li>
 <ul>
-<li>19.1. <a href="./searchitems_ads.html#robo154">SearchItems/SearchItems.CreateSearchUI</a></li>
-<li>19.2. <a href="./searchitems_adb.html#robo247">SearchItems/SearchItems.Search_Command</a></li>
-<li>19.3. <a href="./searchitems_adb.html#robo248">SearchItems/SearchItems.Toggle_Search_Command</a></li>
+<li>15.1. <a href="./gui/loaddata-ui_ads.html#robo19">LoadData/LUI</a></li>
+<ul>
+<li>15.1.1. <a href="./gui/loaddata-ui_ads.html#robo213">LUI/LUI.LoadDirectory</a></li>
 </ul>
-<li>20. <a href="./showitems_ads.html#robo23">ShowItems/ShowItems</a></li>
+<li>15.2. <a href="./tui/loaddata-ui_ads.html#robo20">LoadData/LUITUI</a></li>
 <ul>
-<li>20.1. <a href="./showitems_adb.html#robo82">ShowItems/ShowItems.ButtonNames</a></li>
-<li>20.2. <a href="./showitems_adb.html#robo83">ShowItems/ShowItems.InfoFrame</a></li>
-<li>20.3. <a href="./showitems_adb.html#robo84">ShowItems/ShowItems.PreviewCanvas</a></li>
-<li>20.4. <a href="./showitems_adb.html#robo85">ShowItems/ShowItems.PreviewFrame</a></li>
-<li>20.5. <a href="./showitems_adb.html#robo86">ShowItems/ShowItems.PreviewText</a></li>
-<li>20.6. <a href="./showitems_adb.html#robo87">ShowItems/ShowItems.PreviewTree</a></li>
-<li>20.7. <a href="./showitems_adb.html#robo88">ShowItems/ShowItems.PreviewXScroll</a></li>
-<li>20.8. <a href="./showitems_adb.html#robo89">ShowItems/ShowItems.PreviewYScroll</a></li>
-<li>20.9. <a href="./showitems_adb.html#robo93">ShowItems/ShowItems.Hunter_Show_Items_Exception</a></li>
-<li>20.10. <a href="./showitems_ads.html#robo155">ShowItems/ShowItems.CreateShowItemsUI</a></li>
-<li>20.11. <a href="./showitems_ads.html#robo156">ShowItems/ShowItems.DestinationDirectory</a></li>
-<li>20.12. <a href="./showitems_ads.html#robo157">ShowItems/ShowItems.ScaleImage</a></li>
-<li>20.13. <a href="./showitems_ads.html#robo158">ShowItems/ShowItems.ShowDestination</a></li>
-<li>20.14. <a href="./showitems_adb.html#robo159">ShowItems/ShowItems.ShowInfo</a></li>
-<li>20.15. <a href="./showitems_ads.html#robo160">ShowItems/ShowItems.ShowOutput</a></li>
-<li>20.16. <a href="./showitems_ads.html#robo161">ShowItems/ShowItems.ShowPreview</a></li>
-<li>20.17. <a href="./showitems_ads.html#robo162">ShowItems/ShowItems.UpdateOutput</a></li>
-<li>20.18. <a href="./showitems_adb.html#robo249">ShowItems/ShowItems.Set_Permissions_Command</a></li>
-<li>20.19. <a href="./showitems_adb.html#robo250">ShowItems/ShowItems.Show_Preview_Or_Info_Command</a></li>
-<li>20.20. <a href="./showitems_ads.html#robo251">ShowItems/ShowItems.Show_Selected_Command</a></li>
+<li>15.2.1. <a href="./tui/loaddata-ui_ads.html#robo214">LUITUI/LUITUI.LoadDirectory</a></li>
 </ul>
-<li>21. <a href="./toolbars_ads.html#robo24">Toolbars/Toolbars</a></li>
-<ul>
-<li>21.1. <a href="./toolbars_ads.html#robo163">Toolbars/Toolbars.CreateActionToolbar</a></li>
-<li>21.2. <a href="./toolbars_ads.html#robo164">Toolbars/Toolbars.CreateItemToolbar</a></li>
-<li>21.3. <a href="./toolbars_ads.html#robo165">Toolbars/Toolbars.SetActionsButtons</a></li>
-<li>21.4. <a href="./toolbars_adb.html#robo166">Toolbars/Toolbars.SetButton</a></li>
-<li>21.5. <a href="./toolbars_ads.html#robo167">Toolbars/Toolbars.SetToolbars</a></li>
-<li>21.6. <a href="./toolbars_ads.html#robo168">Toolbars/Toolbars.SetUserCommandsMenu</a></li>
+<li>15.3. <a href="./loaddata_ads.html#robo58">LoadData/LoadData.Item_Size</a></li>
+<li>15.4. <a href="./loaddata_ads.html#robo59">LoadData/LoadData.Items_Container</a></li>
+<li>15.5. <a href="./loaddata_ads.html#robo60">LoadData/LoadData.Items_Sorting</a></li>
+<li>15.6. <a href="./loaddata_ads.html#robo61">LoadData/LoadData.Sorting_Order</a></li>
+<li>15.7. <a href="./loaddata_ads.html#robo77">LoadData/LoadData.Item_Record</a></li>
+<li>15.8. <a href="./loaddata_ads.html#robo83">LoadData/LoadData.Default_Sorting_Order</a></li>
+<li>15.9. <a href="./loaddata_ads.html#robo84">LoadData/LoadData.Empty_Item</a></li>
+<li>15.10. <a href="./loaddata_ads.html#robo85">LoadData/LoadData.Empty_Item_Size</a></li>
+<li>15.11. <a href="./loaddata_ads.html#robo103">LoadData/LoadData.Items_List</a></li>
+<li>15.12. <a href="./loaddata_ads.html#robo104">LoadData/LoadData.Second_Items_List</a></li>
+<li>15.13. <a href="./loaddata_ads.html#robo105">LoadData/LoadData.Sort_Order</a></li>
+<li>15.14. <a href="./loaddata_ads.html#robo210">LoadData/LoadData."&lt;"</a></li>
+<li>15.15. <a href="./loaddata_ads.html#robo211">LoadData/LoadData."="</a></li>
+<li>15.16. <a href="./loaddata_ads.html#robo212">LoadData/LoadData.Add_Item</a></li>
 </ul>
-<li>22. <a href="./trash_ads.html#robo25">Trash/Trash</a></li>
+<li>16. <a href="./gui/mainwindow_ads.html#robo21">MainWindow/MainWindow</a></li>
 <ul>
-<li>22.1. <a href="./trash_ads.html#robo169">Trash/Trash.CreateTrashUI</a></li>
-<li>22.2. <a href="./trash_adb.html#robo252">Trash/Trash.Clear_Trash_Command</a></li>
-<li>22.3. <a href="./trash_adb.html#robo253">Trash/Trash.Restore_Item_Command</a></li>
-<li>22.4. <a href="./trash_ads.html#robo254">Trash/Trash.Show_Trash_Command</a></li>
+<li>16.1. <a href="./gui/mainwindow-commands_ads.html#robo22">MainWindow/MCommands</a></li>
+<ul>
+<li>16.1.1. <a href="./gui/mainwindow-commands_adb.html#robo67">MCommands/MCommands.ExitCommand</a></li>
+<li>16.1.2. <a href="./gui/mainwindow-commands_ads.html#robo230">MCommands/MCommands.AddCommands</a></li>
+<li>16.1.3. <a href="./gui/mainwindow-commands_adb.html#robo333">MCommands/MCommands.Arrange_Path_Command</a></li>
+<li>16.1.4. <a href="./gui/mainwindow-commands_adb.html#robo334">MCommands/MCommands.Cancel_Action_Command</a></li>
+<li>16.1.5. <a href="./gui/mainwindow-commands_adb.html#robo335">MCommands/MCommands.Hide_Widget_Command</a></li>
+<li>16.1.6. <a href="./gui/mainwindow-commands_adb.html#robo336">MCommands/MCommands.Invoke_Button_Command</a></li>
+<li>16.1.7. <a href="./gui/mainwindow-commands_adb.html#robo337">MCommands/MCommands.Quit_Command</a></li>
+<li>16.1.8. <a href="./gui/mainwindow-commands_adb.html#robo338">MCommands/MCommands.Show_File_Command</a></li>
+<li>16.1.9. <a href="./gui/mainwindow-commands_adb.html#robo339">MCommands/MCommands.Show_File_Menu_Command</a></li>
+<li>16.1.10. <a href="./gui/mainwindow-commands_adb.html#robo340">MCommands/MCommands.Sort_Command</a></li>
+<li>16.1.11. <a href="./gui/mainwindow-commands_adb.html#robo341">MCommands/MCommands.Toggle_Selection_Command</a></li>
 </ul>
-<li>23. <a href="./usercommands_ads.html#robo26">UserCommands/UserCommands</a></li>
-<ul>
-<li>23.1. <a href="./usercommands_ads.html#robo46">UserCommands/UserCommands.Commands_Container</a></li>
-<li>23.2. <a href="./usercommands_ads.html#robo53">UserCommands/UserCommands.UserCommand</a></li>
-<li>23.3. <a href="./usercommands_ads.html#robo90">UserCommands/UserCommands.UserCommandsList</a></li>
-<li>23.4. <a href="./usercommands_ads.html#robo170">UserCommands/UserCommands.AddCommands</a></li>
-<li>23.5. <a href="./usercommands_ads.html#robo171">UserCommands/UserCommands.UpdateUserCommandsList</a></li>
-<li>23.6. <a href="./usercommands_adb.html#robo255">UserCommands/UserCommands.Execute_Command_Command</a></li>
+<li>16.2. <a href="./gui/mainwindow_ads.html#robo62">MainWindow/MainWindow.Item_Actions</a></li>
+<li>16.3. <a href="./gui/mainwindow_ads.html#robo63">MainWindow/MainWindow.UnboundedString_Container</a></li>
+<li>16.4. <a href="./tui/mainwindow_ads.html#robo64">MainWindow/UI_Locations</a></li>
+<li>16.5. <a href="./gui/mainwindow_ads.html#robo86">MainWindow/MainWindow.Default_Item_Action</a></li>
+<li>16.6. <a href="./gui/mainwindow_ads.html#robo106">MainWindow/MainWindow.Current_Directory</a></li>
+<li>16.7. <a href="./gui/mainwindow_ads.html#robo107">MainWindow/MainWindow.Current_Selected</a></li>
+<li>16.8. <a href="./gui/mainwindow_ads.html#robo108">MainWindow/MainWindow.New_Action</a></li>
+<li>16.9. <a href="./gui/mainwindow_ads.html#robo109">MainWindow/MainWindow.Selected_Items</a></li>
+<li>16.10. <a href="./tui/mainwindow_ads.html#robo215">MainWindow/CreateProgramMenu</a></li>
+<li>16.11. <a href="./gui/mainwindow_ads.html#robo216">MainWindow/MainWindow.Create_Main_Window</a></li>
+<li>16.12. <a href="./gui/mainwindow_ads.html#robo217">MainWindow/MainWindow.Update_Directory_List</a></li>
 </ul>
-<li>24. <a href="./utils_ads.html#robo27">Utils/Utils</a></li>
+<li>17. <a href="./tui/mainwindow_ads.html#robo23">MainWindowTUI/MainWindowTUI</a></li>
 <ul>
-<li>24.1. <a href="./utils_ads.html#robo47">Utils/Utils.CreateCommands</a></li>
-<li>24.2. <a href="./utils_ads.html#robo48">Utils/Utils.Width_Range</a></li>
-<li>24.3. <a href="./utils_adb.html#robo91">Utils/Utils.ProgressIndex</a></li>
-<li>24.4. <a href="./utils_ads.html#robo172">Utils/Utils.AddCommand</a></li>
-<li>24.5. <a href="./utils_ads.html#robo173">Utils/Utils.CanBeOpened</a></li>
-<li>24.6. <a href="./utils_ads.html#robo174">Utils/Utils.CountFileSize</a></li>
-<li>24.7. <a href="./utils_ads.html#robo175">Utils/Utils.FindExecutable</a></li>
-<li>24.8. <a href="./utils_ads.html#robo176">Utils/Utils.GetMimeType</a></li>
-<li>24.9. <a href="./utils_ads.html#robo177">Utils/Utils.Height_Range</a></li>
-<li>24.10. <a href="./utils_ads.html#robo178">Utils/Utils.SetDialog</a></li>
-<li>24.11. <a href="./utils_ads.html#robo179">Utils/Utils.SetProgressBar</a></li>
-<li>24.12. <a href="./utils_ads.html#robo180">Utils/Utils.ToggleToolButtons</a></li>
-<li>24.13. <a href="./utils_ads.html#robo181">Utils/Utils.UpdateProgressBar</a></li>
+<li>17.1. <a href="./tui/mainwindow_ads.html#robo65">MainWindowTUI/MainWindowTUI.ItemActions</a></li>
+<li>17.2. <a href="./tui/mainwindow_ads.html#robo66">MainWindowTUI/MainWindowTUI.UnboundedString_Container</a></li>
+<li>17.3. <a href="./tui/mainwindow_ads.html#robo110">MainWindowTUI/MainWindowTUI.Current_Directory</a></li>
+<li>17.4. <a href="./tui/mainwindow_ads.html#robo111">MainWindowTUI/MainWindowTUI.Current_Selected</a></li>
+<li>17.5. <a href="./tui/mainwindow_ads.html#robo112">MainWindowTUI/MainWindowTUI.DirectoryList</a></li>
+<li>17.6. <a href="./tui/mainwindow_ads.html#robo113">MainWindowTUI/MainWindowTUI.Interpreter</a></li>
+<li>17.7. <a href="./tui/mainwindow_ads.html#robo114">MainWindowTUI/MainWindowTUI.New_Action</a></li>
+<li>17.8. <a href="./tui/mainwindow_ads.html#robo115">MainWindowTUI/MainWindowTUI.Selected_Items</a></li>
+<li>17.9. <a href="./tui/mainwindow_ads.html#robo116">MainWindowTUI/MainWindowTUI.UILocation</a></li>
+<li>17.10. <a href="./tui/mainwindow_ads.html#robo218">MainWindowTUI/MainWindowTUI.About_Keys</a></li>
+<li>17.11. <a href="./tui/mainwindow_ads.html#robo219">MainWindowTUI/MainWindowTUI.Actions_Keys</a></li>
+<li>17.12. <a href="./tui/mainwindow_ads.html#robo220">MainWindowTUI/MainWindowTUI.Bookmarks_Keys</a></li>
+<li>17.13. <a href="./tui/mainwindow_ads.html#robo221">MainWindowTUI/MainWindowTUI.CreateMainWindow</a></li>
+<li>17.14. <a href="./tui/mainwindow_ads.html#robo222">MainWindowTUI/MainWindowTUI.Directory_Keys</a></li>
+<li>17.15. <a href="./tui/mainwindow_ads.html#robo223">MainWindowTUI/MainWindowTUI.Menu_Keys</a></li>
+<li>17.16. <a href="./tui/mainwindow_ads.html#robo224">MainWindowTUI/MainWindowTUI.Path_Keys</a></li>
+<li>17.17. <a href="./tui/mainwindow_ads.html#robo225">MainWindowTUI/MainWindowTUI.Selected_Keys</a></li>
+<li>17.18. <a href="./tui/mainwindow_ads.html#robo226">MainWindowTUI/MainWindowTUI.Show_Main_Window</a></li>
+<li>17.19. <a href="./tui/mainwindow_ads.html#robo227">MainWindowTUI/MainWindowTUI.Update_Directory_List</a></li>
+<li>17.20. <a href="./tui/mainwindow_ads.html#robo228">MainWindowTUI/MainWindowTUI.User_Commands_Keys</a></li>
+<li>17.21. <a href="./tui/mainwindow_ads.html#robo229">MainWindowTUI/MainWindowTUI.View_Keys</a></li>
+</ul>
+<li>18. <a href="./gui/messages_ads.html#robo24">Messages/Messages</a></li>
+<ul>
+<li>18.1. <a href="./gui/messages_adb.html#robo117">Messages/Messages.MessageFrame</a></li>
+<li>18.2. <a href="./gui/messages_adb.html#robo118">Messages/Messages.MessageLabel</a></li>
+<li>18.3. <a href="./gui/messages_adb.html#robo119">Messages/Messages.TimerId</a></li>
+<li>18.4. <a href="./gui/messages_ads.html#robo120">Messages/Messages.YesToAll</a></li>
+<li>18.5. <a href="./gui/messages_ads.html#robo232">Messages/Messages.CreateMessagesUI</a></li>
+<li>18.6. <a href="./gui/messages_ads.html#robo233">Messages/Messages.ShowMessage</a></li>
+<li>18.7. <a href="./gui/messages_ads.html#robo345">Messages/Messages.Close_Command</a></li>
+<li>18.8. <a href="./gui/messages_adb.html#robo346">Messages/Messages.Response_Command</a></li>
+</ul>
+<li>19. <a href="./tui/messages_ads.html#robo25">MessagesTUI/MessagesTUI</a></li>
+<ul>
+<li>19.1. <a href="./tui/messages_ads.html#robo121">MessagesTUI/MessagesTUI.YesToAll</a></li>
+<li>19.2. <a href="./tui/messages_ads.html#robo234">MessagesTUI/MessagesTUI.CreateMessagesUI</a></li>
+<li>19.3. <a href="./tui/messages_ads.html#robo235">MessagesTUI/MessagesTUI.Message_Keys</a></li>
+<li>19.4. <a href="./tui/messages_ads.html#robo236">MessagesTUI/MessagesTUI.ShowMessage</a></li>
+<li>19.5. <a href="./tui/messages_ads.html#robo347">MessagesTUI/MessagesTUI.Close_Command</a></li>
+<li>19.6. <a href="./tui/messages_adb.html#robo348">MessagesTUI/MessagesTUI.Response_Command</a></li>
+</ul>
+<li>20. <a href="./modules_ads.html#robo27">Modules/Modules</a></li>
+<ul>
+<li>20.1. <a href="./modules-commands_ads.html#robo26">Modules/MCommands2</a></li>
+<ul>
+<li>20.1.1. <a href="./modules-commands_ads.html#robo231">MCommands2/MCommands2.AddCommands</a></li>
+<li>20.1.2. <a href="./modules-commands_adb.html#robo342">MCommands2/MCommands2.Execute_Module_Command_Command</a></li>
+<li>20.1.3. <a href="./modules-commands_adb.html#robo343">MCommands2/MCommands2.Get_Config_Command</a></li>
+<li>20.1.4. <a href="./modules-commands_adb.html#robo344">MCommands2/MCommands2.Toggle_Module_Command</a></li>
+</ul>
+<li>20.2. <a href="./modules_ads.html#robo68">Modules/Modules.Triggers</a></li>
+<li>20.3. <a href="./modules_ads.html#robo122">Modules/Modules.Enabled_Modules</a></li>
+<li>20.4. <a href="./modules_ads.html#robo237">Modules/Modules.Execute_Modules</a></li>
+<li>20.5. <a href="./modules_ads.html#robo238">Modules/Modules.LoadModules</a></li>
+</ul>
+<li>21. <a href="./gui/moveitems_ads.html#robo28">MoveItems/MoveItems</a></li>
+<ul>
+<li>21.1. <a href="./gui/moveitems_ads.html#robo123">MoveItems/MoveItems.MoveItemsList</a></li>
+<li>21.2. <a href="./gui/moveitems_adb.html#robo124">MoveItems/MoveItems.SourceDirectory</a></li>
+<li>21.3. <a href="./gui/moveitems_ads.html#robo239">MoveItems/MoveItems.CreateMoveUI</a></li>
+<li>21.4. <a href="./gui/moveitems_ads.html#robo240">MoveItems/MoveItems.MoveSelected</a></li>
+<li>21.5. <a href="./gui/moveitems_ads.html#robo241">MoveItems/MoveItems.SkipMoving</a></li>
+<li>21.6. <a href="./gui/moveitems_adb.html#robo349">MoveItems/MoveItems.Move_Data_Command</a></li>
+</ul>
+<li>22. <a href="./tui/moveitems_ads.html#robo29">MoveItemsTUI/MoveItemsTUI</a></li>
+<ul>
+<li>22.1. <a href="./tui/moveitems_ads.html#robo125">MoveItemsTUI/MoveItemsTUI.MoveItemsList</a></li>
+<li>22.2. <a href="./tui/moveitems_adb.html#robo126">MoveItemsTUI/MoveItemsTUI.SourceDirectory</a></li>
+<li>22.3. <a href="./tui/moveitems_ads.html#robo242">MoveItemsTUI/MoveItemsTUI.MoveSelected</a></li>
+<li>22.4. <a href="./tui/moveitems_ads.html#robo243">MoveItemsTUI/MoveItemsTUI.SkipMoving</a></li>
+</ul>
+<li>23. <a href="./preferences_ads.html#robo31">Preferences/Preferences</a></li>
+<ul>
+<li>23.1. <a href="./gui/preferences-commands_ads.html#robo30">Preferences/PCommands</a></li>
+<ul>
+<li>23.1.1. <a href="./gui/preferences-commands_ads.html#robo244">PCommands/PCommands.AddCommands</a></li>
+<li>23.1.2. <a href="./gui/preferences-commands_adb.html#robo350">PCommands/PCommands.Add_Command_Command</a></li>
+<li>23.1.3. <a href="./gui/preferences-commands_adb.html#robo351">PCommands/PCommands.Change_Shortcut_Command</a></li>
+<li>23.1.4. <a href="./gui/preferences-commands_adb.html#robo352">PCommands/PCommands.Close_Dialog_Command</a></li>
+<li>23.1.5. <a href="./gui/preferences-commands_adb.html#robo353">PCommands/PCommands.Close_Preferences_Command</a></li>
+<li>23.1.6. <a href="./gui/preferences-commands_adb.html#robo354">PCommands/PCommands.Delete_Command_Command</a></li>
+<li>23.1.7. <a href="./gui/preferences-commands_adb.html#robo355">PCommands/PCommands.Edit_Command_Command</a></li>
+<li>23.1.8. <a href="./gui/preferences-commands_adb.html#robo356">PCommands/PCommands.Reset_Command_Command</a></li>
+<li>23.1.9. <a href="./gui/preferences-commands_adb.html#robo357">PCommands/PCommands.Restore_Default_Shortcuts_Command</a></li>
+<li>23.1.10. <a href="./gui/preferences-commands_adb.html#robo358">PCommands/PCommands.Restore_Defaults_Command</a></li>
+<li>23.1.11. <a href="./gui/preferences-commands_adb.html#robo359">PCommands/PCommands.Set_Clear_Trash_Command</a></li>
+<li>23.1.12. <a href="./gui/preferences-commands_adb.html#robo360">PCommands/PCommands.Set_Color_Text_Command</a></li>
+<li>23.1.13. <a href="./gui/preferences-commands_adb.html#robo361">PCommands/PCommands.Set_Color_Theme_Command</a></li>
+<li>23.1.14. <a href="./gui/preferences-commands_adb.html#robo362">PCommands/PCommands.Set_Delete_Files_Command</a></li>
+<li>23.1.15. <a href="./gui/preferences-commands_adb.html#robo363">PCommands/PCommands.Set_Label_Command</a></li>
+<li>23.1.16. <a href="./gui/preferences-commands_adb.html#robo364">PCommands/PCommands.Set_Monospace_Font_Command</a></li>
+<li>23.1.17. <a href="./gui/preferences-commands_adb.html#robo365">PCommands/PCommands.Set_Overwrite_Command</a></li>
+<li>23.1.18. <a href="./gui/preferences-commands_adb.html#robo366">PCommands/PCommands.Set_Scale_Images_Command</a></li>
+<li>23.1.19. <a href="./gui/preferences-commands_adb.html#robo367">PCommands/PCommands.Set_Show_Finished_Info_Command</a></li>
+<li>23.1.20. <a href="./gui/preferences-commands_adb.html#robo368">PCommands/PCommands.Set_Show_Hidden_Files_Command</a></li>
+<li>23.1.21. <a href="./gui/preferences-commands_adb.html#robo369">PCommands/PCommands.Set_Show_Modification_Time_Command</a></li>
+<li>23.1.22. <a href="./gui/preferences-commands_adb.html#robo370">PCommands/PCommands.Set_Show_Preview_Command</a></li>
+<li>23.1.23. <a href="./gui/preferences-commands_adb.html#robo371">PCommands/PCommands.Set_Stay_In_Old_Command</a></li>
+<li>23.1.24. <a href="./gui/preferences-commands_adb.html#robo372">PCommands/PCommands.Set_Toolbars_On_Top_Command</a></li>
+<li>23.1.25. <a href="./gui/preferences-commands_adb.html#robo373">PCommands/PCommands.Set_Toolbars_Size_Command</a></li>
+<li>23.1.26. <a href="./gui/preferences-commands_adb.html#robo374">PCommands/PCommands.Set_UI_Theme_Command</a></li>
+<li>23.1.27. <a href="./gui/preferences-commands_adb.html#robo375">PCommands/PCommands.Show_Module_Command</a></li>
+<li>23.1.28. <a href="./gui/preferences-commands_adb.html#robo376">PCommands/PCommands.Show_Preferences_Command</a></li>
+<li>23.1.29. <a href="./gui/preferences-commands_adb.html#robo377">PCommands/PCommands.Start_Changing_Shortcut_Command</a></li>
+</ul>
+<li>23.2. <a href="./gui/preferences-ui_ads.html#robo32">Preferences/PreferencesUI</a></li>
+<ul>
+<li>23.2.1. <a href="./gui/preferences-ui_ads.html#robo247">PreferencesUI/PreferencesUI.Clear_Add_Command</a></li>
+<li>23.2.2. <a href="./gui/preferences-ui_ads.html#robo248">PreferencesUI/PreferencesUI.CreatePreferences</a></li>
+</ul>
+<li>23.3. <a href="./tui/preferences-ui_ads.html#robo33">Preferences/PreferencesUITUI</a></li>
+<ul>
+<li>23.3.1. <a href="./tui/preferences-ui_ads.html#robo249">PreferencesUITUI/PreferencesUITUI.Add_Command_Keys</a></li>
+<li>23.3.2. <a href="./tui/preferences-ui_ads.html#robo250">PreferencesUITUI/PreferencesUITUI.Select_Colors_Keys</a></li>
+<li>23.3.3. <a href="./tui/preferences-ui_ads.html#robo251">PreferencesUITUI/PreferencesUITUI.Select_Preferences_Keys</a></li>
+<li>23.3.4. <a href="./tui/preferences-ui_ads.html#robo252">PreferencesUITUI/PreferencesUITUI.Select_Seconds_Keys</a></li>
+<li>23.3.5. <a href="./tui/preferences-ui_ads.html#robo253">PreferencesUITUI/PreferencesUITUI.Set_Shortcut_Keys</a></li>
+<li>23.3.6. <a href="./tui/preferences-ui_ads.html#robo254">PreferencesUITUI/PreferencesUITUI.Show_Options</a></li>
+</ul>
+<li>23.4. <a href="./preferences_ads.html#robo69">Preferences/Preferences.Accelerators_Array</a></li>
+<li>23.5. <a href="./preferences_ads.html#robo78">Preferences/Preferences.Settings_Data</a></li>
+<li>23.6. <a href="./preferences_ads.html#robo87">Preferences/Preferences.Default_Accelerators</a></li>
+<li>23.7. <a href="./preferences_ads.html#robo88">Preferences/Preferenes.Default_Settings</a></li>
+<li>23.8. <a href="./preferences_ads.html#robo127">Preferences/Preferences.Accelerators</a></li>
+<li>23.9. <a href="./preferences_ads.html#robo128">Preferences/Preferences.Settings</a></li>
+<li>23.10. <a href="./preferences_ads.html#robo245">Preferences/Preferences.Load_Settings</a></li>
+<li>23.11. <a href="./preferences_ads.html#robo246">Preferences/Preferences.Save_Preferences</a></li>
+</ul>
+<li>24. <a href="./gui/programsmenu_ads.html#robo34">ProgramsMenu/ProgramsMenu</a></li>
+<ul>
+<li>24.1. <a href="./gui/programsmenu_adb.html#robo70">ProgramsMenu/ProgramsMenu.Programs_Sorting</a></li>
+<li>24.2. <a href="./gui/programsmenu_adb.html#robo129">ProgramsMenu/ProgramsMenu.ApplicationsList</a></li>
+<li>24.3. <a href="./gui/programsmenu_adb.html#robo130">ProgramsMenu/ProgramsMenu.NamesList</a></li>
+<li>24.4. <a href="./gui/programsmenu_ads.html#robo255">ProgramsMenu/ProgramsMenu.CreateProgramsMenu</a></li>
+<li>24.5. <a href="./gui/programsmenu_ads.html#robo256">ProgramsMenu/ProgramsMenu.GetProgramName</a></li>
+<li>24.6. <a href="./gui/programsmenu_adb.html#robo378">ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command</a></li>
+<li>24.7. <a href="./gui/programsmenu_adb.html#robo379">ProgramsMenu/ProgramsMenu.Search_Program_Command</a></li>
+<li>24.8. <a href="./gui/programsmenu_adb.html#robo380">ProgramsMenu/ProgramsMenu.Set_Application_Command</a></li>
+<li>24.9. <a href="./gui/programsmenu_ads.html#robo381">ProgramsMenu/ProgramsMenu.Toggle_Applications_Menu_Command</a></li>
+</ul>
+<li>25. <a href="./tui/programsmenu_ads.html#robo35">ProgramsMenuTUI/ProgramsMenuTUI</a></li>
+<ul>
+<li>25.1. <a href="./tui/programsmenu_adb.html#robo71">ProgramsMenuTUI/ProgramsMenuTUI.Programs_Sorting</a></li>
+<li>25.2. <a href="./tui/programsmenu_adb.html#robo131">ProgramsMenuTUI/ProgramsMenuTUI.ApplicationsList</a></li>
+<li>25.3. <a href="./tui/programsmenu_adb.html#robo132">ProgramsMenuTUI/ProgramsMenuTUI.NamesList</a></li>
+<li>25.4. <a href="./tui/programsmenu_ads.html#robo257">ProgramsMenuTUI/ProgramsMenuTUI.CreateProgramsMenu</a></li>
+<li>25.5. <a href="./tui/programsmenu_ads.html#robo258">ProgramsMenuTUI/ProgramsMenuTUI.GetProgramName</a></li>
+<li>25.6. <a href="./tui/programsmenu_ads.html#robo259">ProgramsMenuTUI/ProgramsMenuTUI.Programs_Keys</a></li>
+<li>25.7. <a href="./tui/programsmenu_ads.html#robo260">ProgramsMenuTUI/ProgramsMenuTUI.ShowProgramsMenu</a></li>
+</ul>
+<li>26. <a href="./refreshdata_ads.html#robo36">RefreshData/RefreshData</a></li>
+<ul>
+<li>26.1. <a href="./refreshdata_ads.html#robo52">RefreshData/RefreshData.InotifyTask</a></li>
+<li>26.2. <a href="./refreshdata_adb.html#robo133">RefreshData/Is_Checking</a></li>
+<li>26.3. <a href="./refreshdata_adb.html#robo134">RefreshData/RefreshData.Timer_Token</a></li>
+<li>26.4. <a href="./refreshdata_adb.html#robo261">RefreshData/RefreshData.CheckItems</a></li>
+<li>26.5. <a href="./refreshdata_ads.html#robo262">RefreshData/RefreshData.StartTimer</a></li>
+<li>26.6. <a href="./refreshdata_ads.html#robo263">RefreshData/RefreshData.UpdateWatch</a></li>
+</ul>
+<li>27. <a href="./gui/renameitems_ads.html#robo37">RenameItems/RenameItems</a></li>
+<ul>
+<li>27.1. <a href="./gui/renameitems_ads.html#robo264">RenameItems/RenameItems.CreateRenameUI</a></li>
+<li>27.2. <a href="./gui/renameitems_adb.html#robo382">RenameItems/RenameItems.Rename_Command</a></li>
+<li>27.3. <a href="./gui/renameitems_adb.html#robo383">RenameItems/RenameItems.Toggle_Rename_Command</a></li>
+</ul>
+<li>28. <a href="./tui/renameitems_ads.html#robo38">RenameItemsTUI/RenameItemsTUI</a></li>
+<ul>
+<li>28.1. <a href="./tui/renameitems_ads.html#robo265">RenameItemsTUI/RenameItemsTUI.AddCommands</a></li>
+<li>28.2. <a href="./tui/renameitems_ads.html#robo266">RenameItemsTUI/RenameItemsTUI.Rename_Keys</a></li>
+<li>28.3. <a href="./tui/renameitems_ads.html#robo267">RenameItemsTUI/RenameItemsTUI.ShowRenameForm</a></li>
+<li>28.4. <a href="./tui/renameitems_adb.html#robo384">RenameItemsTUI/RenameItemsTUI.Rename_Command</a></li>
+</ul>
+<li>29. <a href="./gui/searchitems_ads.html#robo39">SearchItems/SearchItems</a></li>
+<ul>
+<li>29.1. <a href="./gui/searchitems_ads.html#robo268">SearchItems/SearchItems.CreateSearchUI</a></li>
+<li>29.2. <a href="./gui/searchitems_adb.html#robo385">SearchItems/SearchItems.Search_Command</a></li>
+<li>29.3. <a href="./gui/searchitems_adb.html#robo386">SearchItems/SearchItems.Toggle_Search_Command</a></li>
+</ul>
+<li>30. <a href="./tui/searchitems_ads.html#robo40">SearchItemsTUI/SearchItemsTUI</a></li>
+<ul>
+<li>30.1. <a href="./tui/searchitems_ads.html#robo269">SearchItemsTUI/SearchItemsTUI.Search_Form_Keys</a></li>
+<li>30.2. <a href="./tui/searchitems_ads.html#robo270">SearchItemsTUI/SearchItemsTUI.ShowSearchForm</a></li>
+</ul>
+<li>31. <a href="./gui/showitems_ads.html#robo41">ShowItems/ShowItems</a></li>
+<ul>
+<li>31.1. <a href="./tui/showitems_ads.html#robo135">ShowItems/Default_Program_Form</a></li>
+<li>31.2. <a href="./gui/showitems_adb.html#robo136">ShowItems/ShowItems.ButtonNames</a></li>
+<li>31.3. <a href="./gui/showitems_adb.html#robo137">ShowItems/ShowItems.InfoFrame</a></li>
+<li>31.4. <a href="./gui/showitems_adb.html#robo138">ShowItems/ShowItems.PreviewCanvas</a></li>
+<li>31.5. <a href="./gui/showitems_adb.html#robo139">ShowItems/ShowItems.PreviewFrame</a></li>
+<li>31.6. <a href="./gui/showitems_adb.html#robo140">ShowItems/ShowItems.PreviewText</a></li>
+<li>31.7. <a href="./gui/showitems_adb.html#robo141">ShowItems/ShowItems.PreviewTree</a></li>
+<li>31.8. <a href="./gui/showitems_adb.html#robo142">ShowItems/ShowItems.PreviewXScroll</a></li>
+<li>31.9. <a href="./gui/showitems_adb.html#robo143">ShowItems/ShowItems.PreviewYScroll</a></li>
+<li>31.10. <a href="./gui/showitems_ads.html#robo271">ShowItems/ShowItems.CreateShowItemsUI</a></li>
+<li>31.11. <a href="./gui/showitems_ads.html#robo272">ShowItems/ShowItems.DestinationDirectory</a></li>
+<li>31.12. <a href="./gui/showitems_ads.html#robo273">ShowItems/ShowItems.ScaleImage</a></li>
+<li>31.13. <a href="./gui/showitems_ads.html#robo274">ShowItems/ShowItems.ShowDestination</a></li>
+<li>31.14. <a href="./gui/showitems_adb.html#robo275">ShowItems/ShowItems.ShowInfo</a></li>
+<li>31.15. <a href="./gui/showitems_ads.html#robo276">ShowItems/ShowItems.ShowOutput</a></li>
+<li>31.16. <a href="./gui/showitems_ads.html#robo277">ShowItems/ShowItems.ShowPreview</a></li>
+<li>31.17. <a href="./gui/showitems_ads.html#robo278">ShowItems/ShowItems.UpdateOutput</a></li>
+<li>31.18. <a href="./gui/showitems_adb.html#robo387">ShowItems/ShowItems.GoToDirectory_Command</a></li>
+<li>31.19. <a href="./gui/showitems_adb.html#robo388">ShowItems/ShowItems.Set_Permissions_Command</a></li>
+<li>31.20. <a href="./gui/showitems_adb.html#robo389">ShowItems/ShowItems.Show_Preview_Or_Info_Command</a></li>
+<li>31.21. <a href="./gui/showitems_ads.html#robo390">ShowItems/ShowItems.Show_Selected_Command</a></li>
+</ul>
+<li>32. <a href="./tui/showitems_ads.html#robo42">ShowItemsTUI/ShowItemsTUI</a></li>
+<ul>
+<li>32.1. <a href="./tui/showitems_adb.html#robo144">ShowItemsTUI/ShowItemsTUI.Buttons_Visible</a></li>
+<li>32.2. <a href="./tui/showitems_adb.html#robo145">ShowItemsTUI/ShowItemsTUI.Current_Line</a></li>
+<li>32.3. <a href="./tui/showitems_ads.html#robo146">ShowItemsTUI/ShowItemsTUI.DestinationList</a></li>
+<li>32.4. <a href="./tui/showitems_adb.html#robo147">ShowItemsTUI/ShowItemsTUI.Path</a></li>
+<li>32.5. <a href="./tui/showitems_adb.html#robo148">ShowItemsTUI/ShowItemsTUI.PathButtons</a></li>
+<li>32.6. <a href="./tui/showitems_adb.html#robo149">ShowItemsTUI/ShowItemsTUI.PreviewPad</a></li>
+<li>32.7. <a href="./tui/showitems_adb.html#robo150">ShowItemsTUI/ShowItemsTUI.PreviewWindow</a></li>
+<li>32.8. <a href="./tui/showitems_ads.html#robo279">ShowItemsTUI/ShowItemsTUI.Clear_Preview_Window</a></li>
+<li>32.9. <a href="./tui/showitems_ads.html#robo280">ShowItemsTUI/ShowItemsTUI.CreateShowItemsUI</a></li>
+<li>32.10. <a href="./tui/showitems_ads.html#robo281">ShowItemsTUI/ShowItemsTUI.Destination_Keys</a></li>
+<li>32.11. <a href="./tui/showitems_ads.html#robo282">ShowItemsTUI/ShowItemsTUI.Destination_Path_Keys</a></li>
+<li>32.12. <a href="./tui/showitems_ads.html#robo283">ShowItemsTUI/ShowItemsTUI.DestinationDirectory</a></li>
+<li>32.13. <a href="./tui/showitems_ads.html#robo284">ShowItemsTUI/ShowItemsTUI.Preview_Keys</a></li>
+<li>32.14. <a href="./tui/showitems_ads.html#robo285">ShowItemsTUI/ShowItemsTUI.Show_Selected</a></li>
+<li>32.15. <a href="./tui/showitems_ads.html#robo286">ShowItemsTUI/ShowItemsTUI.ShowDestination</a></li>
+<li>32.16. <a href="./tui/showitems_ads.html#robo287">ShowItemsTUI/ShowItemsTUI.ShowInfo</a></li>
+<li>32.17. <a href="./tui/showitems_ads.html#robo288">ShowItemsTUI/ShowItemsTUI.ShowOutput</a></li>
+<li>32.18. <a href="./tui/showitems_ads.html#robo289">ShowItemsTUI/ShowItemsTUI.ShowPreview</a></li>
+<li>32.19. <a href="./tui/showitems_ads.html#robo290">ShowItemsTUI/ShowItemsTUI.UpdateOutput</a></li>
+</ul>
+<li>33. <a href="./gui/toolbars_ads.html#robo43">Toolbars/Toolbars</a></li>
+<ul>
+<li>33.1. <a href="./gui/toolbars_ads.html#robo291">Toolbars/Toolbars.CreateActionToolbar</a></li>
+<li>33.2. <a href="./gui/toolbars_ads.html#robo292">Toolbars/Toolbars.CreateItemToolbar</a></li>
+<li>33.3. <a href="./gui/toolbars_ads.html#robo293">Toolbars/Toolbars.SetActionsButtons</a></li>
+<li>33.4. <a href="./gui/toolbars_adb.html#robo294">Toolbars/Toolbars.SetButton</a></li>
+<li>33.5. <a href="./gui/toolbars_ads.html#robo295">Toolbars/Toolbars.SetToolbars</a></li>
+<li>33.6. <a href="./gui/toolbars_ads.html#robo296">Toolbars/Toolbars.SetUserCommandsMenu</a></li>
+</ul>
+<li>34. <a href="./trash_ads.html#robo44">Trash/Trash</a></li>
+<ul>
+<li>34.1. <a href="./tui/trash-ui_ads.html#robo45">Trash/TTUI</a></li>
+<ul>
+<li>34.1.1. <a href="./tui/trash-ui_ads.html#robo298">TTUI/TTUI.CreateTrashUI</a></li>
+<li>34.1.2. <a href="./tui/trash-ui_ads.html#robo394">TTUI/TTUI.Show_Trash_Command</a></li>
+</ul>
+<li>34.2. <a href="./gui/trash-ui_ads.html#robo46">Trash/TUI</a></li>
+<ul>
+<li>34.2.1. <a href="./gui/trash-ui_ads.html#robo299">TUI/TUI.CreateTrashUI</a></li>
+<li>34.2.2. <a href="./gui/trash-ui_ads.html#robo395">TUI/TUI.Show_Trash_Command</a></li>
+</ul>
+<li>34.3. <a href="./trash_ads.html#robo297">Trash/Trash.CreateTrash</a></li>
+<li>34.4. <a href="./trash_adb.html#robo391">Trash/Trash.Clear_Trash_Command</a></li>
+<li>34.5. <a href="./trash_adb.html#robo392">Trash/Trash.GoToTrash_Command</a></li>
+<li>34.6. <a href="./trash_adb.html#robo393">Trash/Trash.Restore_Item_Command</a></li>
+</ul>
+<li>35. <a href="./usercommands_ads.html#robo47">UserCommands/UserCommands</a></li>
+<ul>
+<li>35.1. <a href="./gui/usercommands-ui_ads.html#robo48">UserCommands/UserCommandsUI</a></li>
+<li>35.2. <a href="./usercommands_ads.html#robo72">UserCommands/UserCommands.Commands_Container</a></li>
+<li>35.3. <a href="./usercommands_ads.html#robo79">UserCommands/UserCommands.UserCommand</a></li>
+<li>35.4. <a href="./usercommands_ads.html#robo151">UserCommands/UserCommands.UserCommandsList</a></li>
+<li>35.5. <a href="./usercommands_ads.html#robo300">UserCommands/UserCommands.AddCommands</a></li>
+<li>35.6. <a href="./gui/usercommands-ui_ads.html#robo301">UserCommands/UserCommandsUI.UpdateUserCommandsList</a></li>
+<li>35.7. <a href="./usercommands_adb.html#robo396">UserCommands/UserCommands.Execute_Command_Command</a></li>
+</ul>
+<li>36. <a href="./utils_ads.html#robo49">Utils/Utils</a></li>
+<ul>
+<li>36.1. <a href="./tui/utils-ui_ads.html#robo50">Utils/UtilsTUI</a></li>
+<ul>
+<li>36.1.1. <a href="./tui/utils-ui_adb.html#robo153">UtilsTUI/UtilsTUI.ProgressIndex</a></li>
+<li>36.1.2. <a href="./tui/utils-ui_ads.html#robo307">UtilsTUI/UtilsTUI.Add_Command</a></li>
+<li>36.1.3. <a href="./tui/utils-ui_ads.html#robo308">UtilsTUI/UtilsTUI.Find_Executable</a></li>
+<li>36.1.4. <a href="./tui/utils-ui_ads.html#robo309">UtilsTUI/UtilsTUI.Set_ProgressBar</a></li>
+<li>36.1.5. <a href="./tui/utils-ui_ads.html#robo310">UtilsTUI/UtilsTUI.Toggle_Tool_Buttons</a></li>
+<li>36.1.6. <a href="./tui/utils-ui_ads.html#robo311">UtilsTUI/UtilsTUI.Update_Progress_Bar</a></li>
+</ul>
+<li>36.2. <a href="./gui/utils-ui_ads.html#robo51">Utils/UtilsUI</a></li>
+<ul>
+<li>36.2.1. <a href="./gui/utils-ui_ads.html#robo312">UtilsUI/UtilsUI.Add_Command</a></li>
+<li>36.2.2. <a href="./gui/utils-ui_ads.html#robo313">UtilsUI/UtilsUI.Find_Executable</a></li>
+<li>36.2.3. <a href="./gui/utils-ui_ads.html#robo314">UtilsUI/UtilsUI.Set_Dialog</a></li>
+<li>36.2.4. <a href="./gui/utils-ui_ads.html#robo315">UtilsUI/UtilsUI.Toggle_Tool_Buttons</a></li>
+<li>36.2.5. <a href="./gui/utils-ui_ads.html#robo316">UtilsUI/UtilsUI.Update_Progress_Bar</a></li>
+</ul>
+<li>36.3. <a href="./utils_ads.html#robo73">Utils/Utils.CreateCommands</a></li>
+<li>36.4. <a href="./utils_ads.html#robo74">Utils/Utils.Width_Range</a></li>
+<li>36.5. <a href="./utils_ads.html#robo89">Utils/Utils.No_Height</a></li>
+<li>36.6. <a href="./utils_ads.html#robo90">Utils/Utils.No_Width</a></li>
+<li>36.7. <a href="./gui/utils-ui_adb.html#robo152">Utils/Utils.Progress_Index</a></li>
+<li>36.8. <a href="./utils_ads.html#robo302">Utils/Utils.Can_Be_Opened</a></li>
+<li>36.9. <a href="./utils_ads.html#robo303">Utils/Utils.Count_File_Size</a></li>
+<li>36.10. <a href="./utils_ads.html#robo304">Utils/Utils.Get_Mime_Type</a></li>
+<li>36.11. <a href="./utils_ads.html#robo305">Utils/Utils.Height_Range</a></li>
+<li>36.12. <a href="./utils_ads.html#robo306">Utils/Utils.Is_Text</a></li>
 </ul>
 </ul>
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/ with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
+<p>Generated from ./src/ with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 08 2021 07:39:39
 </p>
 </div> <!-- footer -->
 </body>

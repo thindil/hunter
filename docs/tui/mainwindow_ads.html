@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="../robodoc.css" type="text/css" />
+<title>./src/tui/mainwindow.ads</title>
+<!-- Source: ./src/tui/mainwindow.ads -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">Hunter v1.6 code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="../toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="../sources.html#top">Source files</a>
+<a class="menuitem" href="../index.html#top">Index</a>
+<a class="menuitem" href="../robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="../robo_constants.html#top">Constants</a>
+<a class="menuitem" href="../robo_exceptions.html#top">Exceptions</a>
+<a class="menuitem" href="../robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="../robo_packages.html#top">Packages</a>
+<a class="menuitem" href="../robo_commands.html#top">Commands</a>
+<a class="menuitem" href="../robo_records.html#top">Records</a>
+<a class="menuitem" href="../robo_types.html#top">Types</a>
+<a class="menuitem" href="../robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo23">MainWindowTUI/MainWindowTUI</a></li>
+<ul>
+<li>1.1. <a href="#robo65">MainWindowTUI/MainWindowTUI.ItemActions</a></li>
+<li>1.2. <a href="#robo66">MainWindowTUI/MainWindowTUI.UnboundedString_Container</a></li>
+<li>1.3. <a href="#robo110">MainWindowTUI/MainWindowTUI.Current_Directory</a></li>
+<li>1.4. <a href="#robo111">MainWindowTUI/MainWindowTUI.Current_Selected</a></li>
+<li>1.5. <a href="#robo112">MainWindowTUI/MainWindowTUI.DirectoryList</a></li>
+<li>1.6. <a href="#robo113">MainWindowTUI/MainWindowTUI.Interpreter</a></li>
+<li>1.7. <a href="#robo114">MainWindowTUI/MainWindowTUI.New_Action</a></li>
+<li>1.8. <a href="#robo115">MainWindowTUI/MainWindowTUI.Selected_Items</a></li>
+<li>1.9. <a href="#robo116">MainWindowTUI/MainWindowTUI.UILocation</a></li>
+<li>1.10. <a href="#robo218">MainWindowTUI/MainWindowTUI.About_Keys</a></li>
+<li>1.11. <a href="#robo219">MainWindowTUI/MainWindowTUI.Actions_Keys</a></li>
+<li>1.12. <a href="#robo220">MainWindowTUI/MainWindowTUI.Bookmarks_Keys</a></li>
+<li>1.13. <a href="#robo221">MainWindowTUI/MainWindowTUI.CreateMainWindow</a></li>
+<li>1.14. <a href="#robo222">MainWindowTUI/MainWindowTUI.Directory_Keys</a></li>
+<li>1.15. <a href="#robo223">MainWindowTUI/MainWindowTUI.Menu_Keys</a></li>
+<li>1.16. <a href="#robo224">MainWindowTUI/MainWindowTUI.Path_Keys</a></li>
+<li>1.17. <a href="#robo225">MainWindowTUI/MainWindowTUI.Selected_Keys</a></li>
+<li>1.18. <a href="#robo226">MainWindowTUI/MainWindowTUI.Show_Main_Window</a></li>
+<li>1.19. <a href="#robo227">MainWindowTUI/MainWindowTUI.Update_Directory_List</a></li>
+<li>1.20. <a href="#robo228">MainWindowTUI/MainWindowTUI.User_Commands_Keys</a></li>
+<li>1.21. <a href="#robo229">MainWindowTUI/MainWindowTUI.View_Keys</a></li>
+</ul>
+<li>2. <a href="#robo64">MainWindow/UI_Locations</a></li>
+<li>3. <a href="#robo215">MainWindow/CreateProgramMenu</a></li>
+</ul>
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI"></a>
+<a name="robo23"></a><h2>MainWindowTUI/MainWindowTUI [ Packages ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="../robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Provide code to show and manipulate the main program window.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="keyword">package</span> <a href="../gui/mainwindow_ads.html#robo21">MainWindow</a> <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="MainWindow2fUI5fLocations"></a>
+<a name="robo64"></a><h2>MainWindow/UI_Locations [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="../gui/mainwindow_ads.html#robo21">MainWindow</a> ] [ <a href="../robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Parts of the program UI, used mostly in handling keys events
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">type</span> <strong>UI_Locations</strong> <span class="keyword">is</span>
+     <span class="sign">(</span>DIRECTORY_VIEW<span class="sign">,</span> PATH_BUTTONS<span class="sign">,</span> MAIN_MENU<span class="sign">,</span> PREVIEW<span class="sign">,</span> ACTIONS_MENU<span class="sign">,</span>
+      CREATE_FORM<span class="sign">,</span> DELETE_FORM<span class="sign">,</span> MESSAGE_FORM<span class="sign">,</span> RENAME_FORM<span class="sign">,</span> DESTINATION_VIEW<span class="sign">,</span>
+      DESTINATION_PATH<span class="sign">,</span> BOOKMARKS_MENU<span class="sign">,</span> BOOKMARKS_FORM<span class="sign">,</span> CREATELINK_FORM<span class="sign">,</span>
+      SELECTED_MENU<span class="sign">,</span> PROGRAMS_MENU<span class="sign">,</span> VIEW_MENU<span class="sign">,</span> SEARCH_FORM<span class="sign">,</span> EXECUTE_FORM<span class="sign">,</span>
+      ABOUT_MENU<span class="sign">,</span> ABOUT_FORM<span class="sign">,</span> DEVELOPERS_VIEW<span class="sign">,</span> OPTIONS_VIEW<span class="sign">,</span> SECONDS_MENU<span class="sign">,</span>
+      COLORS_MENU<span class="sign">,</span> SHORTCUT_FORM<span class="sign">,</span> COMMAND_FORM<span class="sign">,</span> COMMANDS_MENU<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">OPTIONS</p>
+<pre> DIRECTORY_VIEW   - Current directory listing
+ PATH_BUTTONS     - Current directory path buttons
+ MAIN_MENU        - The main program's menu
+ PREVIEW          - The preview window
+ ACTIONS_MENU     - The actions menu
+ CREATE_FORM      - The create a new directory or file form
+ DELETE_FORM      - The delete files confirmation form
+ MESSAGE_FORM     - The message dialog
+ RENAME_FORM      - The rename directory or file form
+ DESTINATION_VIEW - The destination directory for copying/moving items
+ DESTINATION_PATH - The destination directory path buttons
+ BOOKMARKS_MENU   - The user's bookmarks menu
+ BOOKMARKS_FORM   - The enter destination directory form
+ CREATELINK_FORM  - The creating of new link
+ SELECTED_MENU    - The selected file or directory menu
+ PROGRAMS_MENU    - The list of applications to use with item
+ VIEW_MENU        - Select/deselect/search items in the directory view
+ SEARCH_FORM      - The search entry form
+ EXECUTE_FORM     - The execute item with command form
+ ABOUT_MENU       - The menu about the program
+ ABOUT_FORM       - The about widget
+ DEVELOPERS_VIEW  - The lists of the program's programmers and translators
+ OPTIONS_VIEW     - The view of the program's options settings
+ SECONDS_MENU     - The menu with list of values to set as time interval
+ COLORS_MENU      - The menu with list of available color themes for text
+                    highlightning
+ SHORTCUT_FORM    - The form for set the program keyboard shortcut
+ COMMAND_FORM     - The form for add or edit the user defined commands
+ COMMANDS_MENU    - The menu with user defined commands
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eItemActions"></a>
+<a name="robo65"></a><h2>MainWindowTUI/MainWindowTUI.ItemActions [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Types of action on files and directories
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">type</span> ItemActions <span class="keyword">is</span>
+     <span class="sign">(</span>CREATEFILE<span class="sign">,</span> CREATEDIRECTORY<span class="sign">,</span> RENAME<span class="sign">,</span> DELETE<span class="sign">,</span> COPY<span class="sign">,</span> MOVE<span class="sign">,</span> OPENWITH<span class="sign">,</span>
+      GOTOPATH<span class="sign">,</span> CREATELINK<span class="sign">,</span> CLEARTRASH<span class="sign">,</span> SHOWTRASH<span class="sign">,</span> DELETETRASH<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">OPTIONS</p>
+<pre> CREATEFILE      - create file
+ CREATEDIRECTORY - create directory
+ RENAME          - rename file or directory
+ DELETE          - delete file or directory
+ COPY            - copy file or directory
+ MOVE            - move file or directory
+ OPENWITH        - open selected file or directory with command
+ GOTOPATH        - go to selected path
+ CREATELINK      - create symbolic link to selected file or directory
+ CLEARTRASH      - remove all files and directories from trash
+ SHOWTRASH       - show content of the trash
+ DELETETRASH     - delete file or directory from trash
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eUnboundedString5fContainer"></a>
+<a name="robo66"></a><h2>MainWindowTUI/MainWindowTUI.UnboundedString_Container [ Types ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Used to store various Unbounded_String data in list.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">package</span> UnboundedString_Container <span class="keyword">is</span> <span class="keyword">new</span> Vectors
+     <span class="sign">(</span>Positive<span class="sign">,</span> Unbounded_String<span class="sign">)</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eCurrent5fDirectory"></a>
+<a name="robo110"></a><h2>MainWindowTUI/MainWindowTUI.Current_Directory [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Currently selected directory to show
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Current_Directory<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eCurrent5fSelected"></a>
+<a name="robo111"></a><h2>MainWindowTUI/MainWindowTUI.Current_Selected [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Full path to currently selected file or directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Current_Selected<span class="sign">:</span> Unbounded_String<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eDirectoryList"></a>
+<a name="robo112"></a><h2>MainWindowTUI/MainWindowTUI.DirectoryList [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Menu with list of all items in the current viewed directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   DirectoryList<span class="sign">:</span> Menu<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eInterpreter"></a>
+<a name="robo113"></a><h2>MainWindowTUI/MainWindowTUI.Interpreter [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Tcl interpreter to execute various program commands
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Interpreter<span class="sign">:</span> Tcl_Interp<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eNew5fAction"></a>
+<a name="robo114"></a><h2>MainWindowTUI/MainWindowTUI.New_Action [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Current performed action on files or directories
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   New_Action<span class="sign">:</span> ItemActions<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eSelected5fItems"></a>
+<a name="robo115"></a><h2>MainWindowTUI/MainWindowTUI.Selected_Items [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> List of currently selected files and directories by user
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Selected_Items<span class="sign">:</span> UnboundedString_Container<span class="sign">.</span>Vector<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eUILocation"></a>
+<a name="robo116"></a><h2>MainWindowTUI/MainWindowTUI.UILocation [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Currently active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   UILocation<span class="sign">:</span> <a href="#robo64">UI_Locations</a> <span class="sign">:</span><span class="sign">=</span> DIRECTORY_VIEW<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindow2fCreateProgramMenu"></a>
+<a name="robo215"></a><h2>MainWindow/CreateProgramMenu [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="../gui/mainwindow_ads.html#robo21">MainWindow</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Create the main program menu, the menu content depends on the program
+ state
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> <strong>CreateProgramMenu</strong><span class="sign">(</span>Update<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Update - If True also update the menu window. Default value is False.
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eAbout5fKeys"></a>
+<a name="robo218"></a><h2>MainWindowTUI/MainWindowTUI.About_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when the about menu is active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> About_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eActions5fKeys"></a>
+<a name="robo219"></a><h2>MainWindowTUI/MainWindowTUI.Actions_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when the actions menu is active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Actions_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eBookmarks5fKeys"></a>
+<a name="robo220"></a><h2>MainWindowTUI/MainWindowTUI.Bookmarks_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when the bookmarks menu is active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Bookmarks_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eCreateMainWindow"></a>
+<a name="robo221"></a><h2>MainWindowTUI/MainWindowTUI.CreateMainWindow [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Create main window and show content of selected directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> CreateMainWindow<span class="sign">(</span>Directory<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Directory  - Full path to the directory which will be show at the
+              program start
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eDirectory5fKeys"></a>
+<a name="robo222"></a><h2>MainWindowTUI/MainWindowTUI.Directory_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when directory view is active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Directory_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eMenu5fKeys"></a>
+<a name="robo223"></a><h2>MainWindowTUI/MainWindowTUI.Menu_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when the main menu is active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Menu_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2ePath5fKeys"></a>
+<a name="robo224"></a><h2>MainWindowTUI/MainWindowTUI.Path_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when path buttons are active elements of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Path_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eSelected5fKeys"></a>
+<a name="robo225"></a><h2>MainWindowTUI/MainWindowTUI.Selected_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when the selected item menu is active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Selected_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eShow5fMain5fWindow"></a>
+<a name="robo226"></a><h2>MainWindowTUI/MainWindowTUI.Show_Main_Window [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show the main window of the program to the user
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> Show_Main_Window<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eUpdate5fDirectory5fList"></a>
+<a name="robo227"></a><h2>MainWindowTUI/MainWindowTUI.Update_Directory_List [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Update directory list
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> Update_Directory_List
+     <span class="sign">(</span>Clear<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span> Search_For<span class="sign">:</span> String <span class="sign">:</span><span class="sign">=</span> <span class="quote">""</span><span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Clear      - Clear current list of items
+ Search_For - If not empty, show only items which contains the selected
+              string. Otherwise show everything. Default value is empty.
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eUser5fCommands5fKeys"></a>
+<a name="robo228"></a><h2>MainWindowTUI/MainWindowTUI.User_Commands_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when the user commands menu is active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> User_Commands_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+<hr />
+<a name="MainWindowTUI2fMainWindowTUI2eView5fKeys"></a>
+<a name="robo229"></a><h2>MainWindowTUI/MainWindowTUI.View_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo23">MainWindowTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when the view menu is active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> View_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/tui/mainwindow.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 08 2021 07:39:39
+</p>
+</div> <!-- footer -->
+</body>
+</html>
+

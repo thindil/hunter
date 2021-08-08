@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="../robodoc.css" type="text/css" />
+<title>./src/tui/showitems.adb</title>
+<!-- Source: ./src/tui/showitems.adb -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">Hunter v1.6 code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="../toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="../sources.html#top">Source files</a>
+<a class="menuitem" href="../index.html#top">Index</a>
+<a class="menuitem" href="../robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="../robo_constants.html#top">Constants</a>
+<a class="menuitem" href="../robo_exceptions.html#top">Exceptions</a>
+<a class="menuitem" href="../robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="../robo_packages.html#top">Packages</a>
+<a class="menuitem" href="../robo_commands.html#top">Commands</a>
+<a class="menuitem" href="../robo_records.html#top">Records</a>
+<a class="menuitem" href="../robo_types.html#top">Types</a>
+<a class="menuitem" href="../robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo144">ShowItemsTUI/ShowItemsTUI.Buttons_Visible</a></li>
+<li>2. <a href="#robo145">ShowItemsTUI/ShowItemsTUI.Current_Line</a></li>
+<li>3. <a href="#robo147">ShowItemsTUI/ShowItemsTUI.Path</a></li>
+<li>4. <a href="#robo148">ShowItemsTUI/ShowItemsTUI.PathButtons</a></li>
+<li>5. <a href="#robo149">ShowItemsTUI/ShowItemsTUI.PreviewPad</a></li>
+<li>6. <a href="#robo150">ShowItemsTUI/ShowItemsTUI.PreviewWindow</a></li>
+</ul>
+<hr />
+<a name="ShowItemsTUI2fShowItemsTUI2eButtons5fVisible"></a>
+<a name="robo144"></a><h2>ShowItemsTUI/ShowItemsTUI.Buttons_Visible [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo42">ShowItemsTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> If True, destination path buttons are visible
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Buttons_Visible<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItemsTUI2fShowItemsTUI2eCurrent5fLine"></a>
+<a name="robo145"></a><h2>ShowItemsTUI/ShowItemsTUI.Current_Line [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo42">ShowItemsTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> The starting line for showing the selected file preview
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Start_Line<span class="sign">:</span> Positive <span class="sign">:</span><span class="sign">=</span> 1<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItemsTUI2fShowItemsTUI2ePath"></a>
+<a name="robo147"></a><h2>ShowItemsTUI/ShowItemsTUI.Path [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo42">ShowItemsTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Path buttons menu for destination directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Path<span class="sign">:</span> Menu<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItemsTUI2fShowItemsTUI2ePathButtons"></a>
+<a name="robo148"></a><h2>ShowItemsTUI/ShowItemsTUI.PathButtons [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo42">ShowItemsTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Path buttons window for destination directory
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   PathButtons<span class="sign">:</span> Window<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItemsTUI2fShowItemsTUI2ePreviewPad"></a>
+<a name="robo149"></a><h2>ShowItemsTUI/ShowItemsTUI.PreviewPad [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo42">ShowItemsTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Window used to store content of preview/info of the selected item
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   PreviewPad<span class="sign">:</span> Window<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="ShowItemsTUI2fShowItemsTUI2ePreviewWindow"></a>
+<a name="robo150"></a><h2>ShowItemsTUI/ShowItemsTUI.PreviewWindow [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./showitems_ads.html#robo42">ShowItemsTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Window used for show preview/info about the selected item
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   PreviewWindow<span class="sign">:</span> Window<span class="sign">;</span>
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/tui/showitems.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 08 2021 07:39:39
+</p>
+</div> <!-- footer -->
+</body>
+</html>
+

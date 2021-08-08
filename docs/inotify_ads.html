@@ -12,13 +12,14 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.6 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_constants.html#top">Constants</a>
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
@@ -30,34 +31,35 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo8">Inotify/Inotify</a></li>
+<li>1. <a href="#robo16">Inotify/Inotify</a></li>
 <ul>
-<li>1.1. <a href="#robo30">Inotify/Inotify.Events_Container</a></li>
-<li>1.2. <a href="#robo31">Inotify/Inotify.Inotify_Events</a></li>
-<li>1.3. <a href="./inotify_adb.html#robo32">Inotify/Inotify.Mask_Array</a></li>
-<li>1.4. <a href="./inotify_adb.html#robo33">Inotify/Inotify.Watches_Container</a></li>
-<li>1.5. <a href="#robo49">Inotify/Inotify.Event_Data</a></li>
-<li>1.6. <a href="./inotify_adb.html#robo50">Inotify/Inotify.Watch_Data</a></li>
-<li>1.7. <a href="#robo57">Inotify/Inotify.EventsList</a></li>
-<li>1.8. <a href="./inotify_adb.html#robo58">Inotify/Inotify.Instance</a></li>
-<li>1.9. <a href="#robo59">Inotify/Inotify.TemporaryStop</a></li>
-<li>1.10. <a href="./inotify_adb.html#robo60">Inotify/Inotify.Watches</a></li>
-<li>1.11. <a href="./inotify_adb.html#robo108">Inotify/Inotify.AddWatch</a></li>
-<li>1.12. <a href="#robo109">Inotify/Inotify.AddWatches</a></li>
-<li>1.13. <a href="./inotify_adb.html#robo110">Inotify/Inotify.CreateMask</a></li>
-<li>1.14. <a href="./inotify_adb.html#robo111">Inotify/Inotify.inotify_add_watch</a></li>
-<li>1.15. <a href="./inotify_adb.html#robo112">Inotify/Inotify.inotify_init</a></li>
-<li>1.16. <a href="./inotify_adb.html#robo113">Inotify/Inotify.inotify_rm_watch</a></li>
-<li>1.17. <a href="#robo114">Inotify/Inotify.InotifyClose</a></li>
-<li>1.18. <a href="#robo115">Inotify/Inotify.InotifyInit</a></li>
-<li>1.19. <a href="#robo116">Inotify/Inotify.InotifyRead</a></li>
-<li>1.20. <a href="./inotify_adb.html#robo117">Inotify/Inotify.RemoveWatch</a></li>
-<li>1.21. <a href="#robo118">Inotify/Inotify.RemoveWatches</a></li>
+<li>1.1. <a href="#robo55">Inotify/Inotify.Events_Container</a></li>
+<li>1.2. <a href="#robo56">Inotify/Inotify.Inotify_Events</a></li>
+<li>1.3. <a href="./inotify_adb.html#robo57">Inotify/Inotify.Watches_Container</a></li>
+<li>1.4. <a href="#robo75">Inotify/Inotify.Event_Data</a></li>
+<li>1.5. <a href="./inotify_adb.html#robo76">Inotify/Inotify.Watch_Data</a></li>
+<li>1.6. <a href="./inotify_adb.html#robo80">Inotify/Empty_Watch</a></li>
+<li>1.7. <a href="#robo81">Inotify/Inotify.Accesed_Event</a></li>
+<li>1.8. <a href="#robo82">Inotify/Inotify.Empty_Event_Data</a></li>
+<li>1.9. <a href="#robo97">Inotify/Inotify.Events_List</a></li>
+<li>1.10. <a href="./inotify_adb.html#robo98">Inotify/Inotify.Instance</a></li>
+<li>1.11. <a href="#robo99">Inotify/Inotify.Temporary_Stop</a></li>
+<li>1.12. <a href="./inotify_adb.html#robo100">Inotify/Inotify.Watches</a></li>
+<li>1.13. <a href="./inotify_adb.html#robo154">Inotify/Inotify_Error</a></li>
+<li>1.14. <a href="./inotify_adb.html#robo196">Inotify/Inotify.Add_Watch</a></li>
+<li>1.15. <a href="#robo197">Inotify/Inotify.Add_Watches</a></li>
+<li>1.16. <a href="./inotify_adb.html#robo198">Inotify/Inotify.Get_Instance</a></li>
+<li>1.17. <a href="#robo199">Inotify/Inotify.Inotify_Close</a></li>
+<li>1.18. <a href="#robo200">Inotify/Inotify.Inotify_Init</a></li>
+<li>1.19. <a href="#robo201">Inotify/Inotify.Inotify_Read</a></li>
+<li>1.20. <a href="./inotify_adb.html#robo202">Inotify/Inotify.Inotify_Rm_Watch_C</a></li>
+<li>1.21. <a href="#robo203">Inotify/Inotify.Remove_Watches</a></li>
+<li>1.22. <a href="./inotify_adb.html#robo204">Inotify/Inotify.Watches_List</a></li>
 </ul>
 </ul>
 <hr />
 <a name="Inotify2fInotify"></a>
-<a name="robo8"></a><h2>Inotify/Inotify [ Packages ]</h2>
+<a name="robo16"></a><h2>Inotify/Inotify [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -69,43 +71,44 @@
 
 <hr />
 <a name="Inotify2fInotify2eEvents5fContainer"></a>
-<a name="robo30"></a><h2>Inotify/Inotify.Events_Container [ Types ]</h2>
+<a name="robo55"></a><h2>Inotify/Inotify.Events_Container [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store data about inotify events
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> Events_Container <span class="keyword">is</span> <span class="keyword">new</span> Vectors<span class="sign">(</span>Positive<span class="sign">,</span> Event_Data<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">package</span> Events_Container <span class="keyword">is</span> <span class="keyword">new</span> Vectors
+     <span class="sign">(</span>Index_Type <span class="sign">=</span><span class="sign">&gt;</span> Positive<span class="sign">,</span> Element_Type <span class="sign">=</span><span class="sign">&gt;</span> Event_Data<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="Inotify2fInotify2eInotify5fEvents"></a>
-<a name="robo31"></a><h2>Inotify/Inotify.Inotify_Events [ Types ]</h2>
+<a name="robo56"></a><h2>Inotify/Inotify.Inotify_Events [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Types of inotify events and values for them
 </pre>
 <p class="item_name">SOURCE</p>
 <pre class="source">   <span class="keyword">type</span> Inotify_Events <span class="keyword">is</span>
-     <span class="sign">(</span>Accessed<span class="sign">,</span> Modified<span class="sign">,</span> Metadata<span class="sign">,</span> Closed_Write<span class="sign">,</span> Closed_No_Write<span class="sign">,</span> Opened<span class="sign">,</span>
-      Moved_From<span class="sign">,</span> Moved_To<span class="sign">,</span> Created<span class="sign">,</span> Deleted<span class="sign">,</span> Deleted_Self<span class="sign">,</span> Moved_Self<span class="sign">,</span>
-      Unmounted_Filesystem<span class="sign">)</span><span class="sign">;</span>
+     <span class="sign">(</span>ACCESSED<span class="sign">,</span> MODIFIED<span class="sign">,</span> METADATA<span class="sign">,</span> CLOSED_WRITE<span class="sign">,</span> CLOSED_NO_WRITE<span class="sign">,</span> OPENED<span class="sign">,</span>
+      MOVED_FROM<span class="sign">,</span> MOVED_TO<span class="sign">,</span> CREATED<span class="sign">,</span> DELETED<span class="sign">,</span> DELETED_SELF<span class="sign">,</span> MOVED_SELF<span class="sign">,</span>
+      UNMOUNTED_FILESYSTEM<span class="sign">)</span><span class="sign">;</span>
 
-   <span class="keyword">for</span> Inotify_Events <span class="keyword">use</span> <span class="sign">(</span>Accessed <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0001<span class="sign">#</span><span class="sign">,</span> Modified <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0002<span class="sign">#</span><span class="sign">,</span>
-      Metadata <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0004<span class="sign">#</span><span class="sign">,</span> Closed_Write <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0008<span class="sign">#</span><span class="sign">,</span>
-      Closed_No_Write <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0010<span class="sign">#</span><span class="sign">,</span> Opened <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0020<span class="sign">#</span><span class="sign">,</span> Moved_From <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0040<span class="sign">#</span><span class="sign">,</span>
-      Moved_To <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0080<span class="sign">#</span><span class="sign">,</span> Created <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0100<span class="sign">#</span><span class="sign">,</span> Deleted <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0200<span class="sign">#</span><span class="sign">,</span>
-      Deleted_Self <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0400<span class="sign">#</span><span class="sign">,</span> Moved_Self <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0800<span class="sign">#</span><span class="sign">,</span>
-      Unmounted_Filesystem <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>2000<span class="sign">#</span><span class="sign">)</span><span class="sign">;</span>
+   <span class="keyword">for</span> Inotify_Events <span class="keyword">use</span>
+     <span class="sign">(</span>ACCESSED <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0001<span class="sign">#</span><span class="sign">,</span> MODIFIED <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0002<span class="sign">#</span><span class="sign">,</span> METADATA <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0004<span class="sign">#</span><span class="sign">,</span>
+      CLOSED_WRITE <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0008<span class="sign">#</span><span class="sign">,</span> CLOSED_NO_WRITE <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0010<span class="sign">#</span><span class="sign">,</span>
+      OPENED <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0020<span class="sign">#</span><span class="sign">,</span> MOVED_FROM <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0040<span class="sign">#</span><span class="sign">,</span> MOVED_TO <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0080<span class="sign">#</span><span class="sign">,</span>
+      CREATED <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0100<span class="sign">#</span><span class="sign">,</span> DELETED <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0200<span class="sign">#</span><span class="sign">,</span> DELETED_SELF <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0400<span class="sign">#</span><span class="sign">,</span>
+      MOVED_SELF <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>0800<span class="sign">#</span><span class="sign">,</span> UNMOUNTED_FILESYSTEM <span class="sign">=</span><span class="sign">&gt;</span> 16<span class="sign">#</span>2000<span class="sign">#</span><span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="Inotify2fInotify2eEvent5fData"></a>
-<a name="robo49"></a><h2>Inotify/Inotify.Event_Data [ Records ]</h2>
+<a name="robo75"></a><h2>Inotify/Inotify.Event_Data [ Records ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_records.html#robo_top_of_doc">Records</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_records.html#robo_top_of_doc">Records</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Data structure used to store information about inotify event
 </pre>
@@ -123,98 +126,122 @@
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eEventsList"></a>
-<a name="robo57"></a><h2>Inotify/Inotify.EventsList [ Variables ]</h2>
+<a name="Inotify2fInotify2eAccesed5fEvent"></a>
+<a name="robo81"></a><h2>Inotify/Inotify.Accesed_Event [ Constants ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_constants.html#robo_top_of_doc">Constants</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Default <a href="#robo16">Inotify</a> event
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Accessed_Event<span class="sign">:</span> <span class="keyword">constant</span> Inotify_Events <span class="sign">:</span><span class="sign">=</span> ACCESSED<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Inotify2fInotify2eEmpty5fEvent5fData"></a>
+<a name="robo82"></a><h2>Inotify/Inotify.Empty_Event_Data [ Constants ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_constants.html#robo_top_of_doc">Constants</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Empty event data record
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   Empty_Event_Data<span class="sign">:</span> <span class="keyword">constant</span> Event_Data <span class="sign">:</span><span class="sign">=</span> Event_Data<span class="squote">'<span class="sign">(</span>others =<span class="sign">&gt;</span> <span class="sign">&lt;&gt;);</span>
+</pre>
+
+<hr />
+<a name="Inotify2fInotify2eEvents5fList"></a>
+<a name="robo97"></a><h2>Inotify/Inotify.Events_List [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> List of all caught inotify events
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   EventsList<span class="sign">:</span> Events_Container<span class="sign">.</span>Vector<span class="sign">;</span>
+<pre class="source">   Events_List<span class="sign">:</span> Events_Container<span class="sign">.</span>Vector<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eTemporaryStop"></a>
-<a name="robo59"></a><h2>Inotify/Inotify.TemporaryStop [ Variables ]</h2>
+<a name="Inotify2fInotify2eTemporary5fStop"></a>
+<a name="robo99"></a><h2>Inotify/Inotify.Temporary_Stop [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> If true, temporary stop refreshing directory listing (mainly in trash).
  Default is false
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   TemporaryStop<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span>
+<pre class="source">   Temporary_Stop<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eAddWatches"></a>
-<a name="robo109"></a><h2>Inotify/Inotify.AddWatches [ Subprograms ]</h2>
+<a name="Inotify2fInotify2eAdd5fWatches"></a>
+<a name="robo197"></a><h2>Inotify/Inotify.Add_Watches [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Add inotify watches for selected path and all subdirectories inside it,
  but not deeper.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> AddWatches<span class="sign">(</span>Path<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Add_Watches<span class="sign">(</span>Path<span class="sign">:</span> String<span class="sign">)</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Path - Full path to which inotify watches will be added
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eInotifyClose"></a>
-<a name="robo114"></a><h2>Inotify/Inotify.InotifyClose [ Subprograms ]</h2>
+<a name="Inotify2fInotify2eInotify5fClose"></a>
+<a name="robo199"></a><h2>Inotify/Inotify.Inotify_Close [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Close inotify instance
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> InotifyClose<span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Inotify_Close<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eInotifyInit"></a>
-<a name="robo115"></a><h2>Inotify/Inotify.InotifyInit [ Subprograms ]</h2>
+<a name="Inotify2fInotify2eInotify5fInit"></a>
+<a name="robo200"></a><h2>Inotify/Inotify.Inotify_Init [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Start inotify instance
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> InotifyInit<span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Inotify_Init<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eInotifyRead"></a>
-<a name="robo116"></a><h2>Inotify/Inotify.InotifyRead [ Subprograms ]</h2>
+<a name="Inotify2fInotify2eInotify5fRead"></a>
+<a name="robo201"></a><h2>Inotify/Inotify.Inotify_Read [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Read all caught and waiting inotify events and store them in EventsList.
  If need, remove and add new watches also.
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> InotifyRead<span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Inotify_Read<span class="sign">;</span>
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eRemoveWatches"></a>
-<a name="robo118"></a><h2>Inotify/Inotify.RemoveWatches [ Subprograms ]</h2>
+<a name="Inotify2fInotify2eRemove5fWatches"></a>
+<a name="robo203"></a><h2>Inotify/Inotify.Remove_Watches [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo16">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Remove all inotify watches
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> RemoveWatches<span class="sign">;</span>
+<pre class="source">   <span class="keyword">procedure</span> Remove_Watches<span class="sign">;</span>
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/inotify.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
+<p>Generated from ./src/inotify.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 08 2021 07:39:39
 </p>
 </div> <!-- footer -->
 </body>

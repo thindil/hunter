@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html  xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
+<link rel="stylesheet" href="../robodoc.css" type="text/css" />
+<title>./src/tui/messages.ads</title>
+<!-- Source: ./src/tui/messages.ads -->
+<!-- Generated with ROBODoc Version 4.99.43 (Feb  8 2020) -->
+</head>
+<body>
+<div id="logo">
+<a name="robo_top_of_doc">Hunter v1.6 code documentation</a>
+</div> <!-- logo -->
+<div id="navigation">
+<a class="menuitem" href="../toc_index.html#top">Table of Contents</a>
+<a class="menuitem" href="../sources.html#top">Source files</a>
+<a class="menuitem" href="../index.html#top">Index</a>
+<a class="menuitem" href="../robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="../robo_constants.html#top">Constants</a>
+<a class="menuitem" href="../robo_exceptions.html#top">Exceptions</a>
+<a class="menuitem" href="../robo_subprograms.html#top">Subprograms</a>
+<a class="menuitem" href="../robo_packages.html#top">Packages</a>
+<a class="menuitem" href="../robo_commands.html#top">Commands</a>
+<a class="menuitem" href="../robo_records.html#top">Records</a>
+<a class="menuitem" href="../robo_types.html#top">Types</a>
+<a class="menuitem" href="../robo_variables.html#top">Variables</a>
+</div> <!-- navigation -->
+<div id="content">
+<h3>TABLE OF CONTENTS</h3>
+<ul>
+<li>1. <a href="#robo25">MessagesTUI/MessagesTUI</a></li>
+<ul>
+<li>1.1. <a href="#robo121">MessagesTUI/MessagesTUI.YesToAll</a></li>
+<li>1.2. <a href="#robo234">MessagesTUI/MessagesTUI.CreateMessagesUI</a></li>
+<li>1.3. <a href="#robo235">MessagesTUI/MessagesTUI.Message_Keys</a></li>
+<li>1.4. <a href="#robo236">MessagesTUI/MessagesTUI.ShowMessage</a></li>
+<li>1.5. <a href="#robo347">MessagesTUI/MessagesTUI.Close_Command</a></li>
+<li>1.6. <a href="./messages_adb.html#robo348">MessagesTUI/MessagesTUI.Response_Command</a></li>
+</ul>
+</ul>
+<hr />
+<a name="MessagesTUI2fMessagesTUI"></a>
+<a name="robo25"></a><h2>MessagesTUI/MessagesTUI [ Packages ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="../robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Provide code to show or hide messages to the user.
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source"><span class="keyword">package</span> <a href="../gui/messages_ads.html#robo24">Messages</a> <span class="keyword">is</span>
+</pre>
+
+<hr />
+<a name="MessagesTUI2fMessagesTUI2eYesToAll"></a>
+<a name="robo121"></a><h2>MessagesTUI/MessagesTUI.YesToAll [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo25">MessagesTUI</a> ] [ <a href="../robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Set to True if user clicked Yes for All button in response to question,
+ otherwise False
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   YesForAll<span class="sign">:</span> Boolean<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MessagesTUI2fMessagesTUI2eCreateMessagesUI"></a>
+<a name="robo234"></a><h2>MessagesTUI/MessagesTUI.CreateMessagesUI [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo25">MessagesTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Create UI related to the program messages
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> CreateMessagesUI<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="MessagesTUI2fMessagesTUI2eMessage5fKeys"></a>
+<a name="robo235"></a><h2>MessagesTUI/MessagesTUI.Message_Keys [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo25">MessagesTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Handles keys events when the message dialog is active element of UI
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Message_Keys<span class="sign">(</span>Key<span class="sign">:</span> Key_Code<span class="sign">)</span> <span class="keyword">return</span> <a href="./mainwindow_ads.html#robo64">UI_Locations</a><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Key - Key pressed by the user
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The currently selected UI element of the program
+</pre>
+
+<hr />
+<a name="MessagesTUI2fMessagesTUI2eShowMessage"></a>
+<a name="robo236"></a><h2>MessagesTUI/MessagesTUI.ShowMessage [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo25">MessagesTUI</a> ] [ <a href="../robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Show selected message with selected type to the user
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">procedure</span> ShowMessage<span class="sign">(</span>Message<span class="sign">:</span> String<span class="sign">;</span> MessageType<span class="sign">:</span> String <span class="sign">:</span><span class="sign">=</span> <span class="quote">"error"</span><span class="sign">)</span><span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> Message     - Text of message to show to the user
+ MessageType - Type of message. Posible values are error, message,
+               question. Default value is error.
+</pre>
+
+<hr />
+<a name="MessagesTUI2fMessagesTUI2eClose5fCommand"></a>
+<a name="robo347"></a><h2>MessagesTUI/MessagesTUI.Close_Command [ Commands ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo25">MessagesTUI</a> ] [ <a href="../robo_commands.html#robo_top_of_doc">Commands</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Hide message frame
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <span class="keyword">function</span> Close_Command
+     <span class="sign">(</span>ClientData<span class="sign">:</span> Integer<span class="sign">;</span> Interp<span class="sign">:</span> Tcl<span class="sign">.</span>Tcl_Interp<span class="sign">;</span> Argc<span class="sign">:</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int<span class="sign">;</span>
+      Argv<span class="sign">:</span> CArgv<span class="sign">.</span>Chars_Ptr_Ptr<span class="sign">)</span> <span class="keyword">return</span> Interfaces<span class="sign">.</span>C<span class="sign">.</span>int <span class="keyword">with</span>
+      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">;</span>
+</pre>
+<p class="item_name">PARAMETERS</p>
+<pre> ClientData - Custom data send to the command. Unused
+ Interp     - Tcl interpreter in which command was executed. Unused
+ Argc       - Number of arguments passed to the command. Unused
+ Argv       - Values of arguments passed to the command. Unused
+</pre>
+<p class="item_name">RESULT</p>
+<pre> This function always return TCL_OK
+</pre>
+<p class="item_name">COMMANDS</p>
+<pre> CloseMessage
+</pre>
+
+</div> <!-- content -->
+<div id="footer">
+<p>Generated from ./src/tui/messages.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 08 2021 07:39:39
+</p>
+</div> <!-- footer -->
+</body>
+</html>
+

@@ -12,13 +12,14 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.6 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_constants.html#top">Constants</a>
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
@@ -30,19 +31,20 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo26">UserCommands/UserCommands</a></li>
+<li>1. <a href="#robo47">UserCommands/UserCommands</a></li>
 <ul>
-<li>1.1. <a href="#robo46">UserCommands/UserCommands.Commands_Container</a></li>
-<li>1.2. <a href="#robo53">UserCommands/UserCommands.UserCommand</a></li>
-<li>1.3. <a href="#robo90">UserCommands/UserCommands.UserCommandsList</a></li>
-<li>1.4. <a href="#robo170">UserCommands/UserCommands.AddCommands</a></li>
-<li>1.5. <a href="#robo171">UserCommands/UserCommands.UpdateUserCommandsList</a></li>
-<li>1.6. <a href="./usercommands_adb.html#robo255">UserCommands/UserCommands.Execute_Command_Command</a></li>
+<li>1.1. <a href="./gui/usercommands-ui_ads.html#robo48">UserCommands/UserCommandsUI</a></li>
+<li>1.2. <a href="#robo72">UserCommands/UserCommands.Commands_Container</a></li>
+<li>1.3. <a href="#robo79">UserCommands/UserCommands.UserCommand</a></li>
+<li>1.4. <a href="#robo151">UserCommands/UserCommands.UserCommandsList</a></li>
+<li>1.5. <a href="#robo300">UserCommands/UserCommands.AddCommands</a></li>
+<li>1.6. <a href="./gui/usercommands-ui_ads.html#robo301">UserCommands/UserCommandsUI.UpdateUserCommandsList</a></li>
+<li>1.7. <a href="./usercommands_adb.html#robo396">UserCommands/UserCommands.Execute_Command_Command</a></li>
 </ul>
 </ul>
 <hr />
 <a name="UserCommands2fUserCommands"></a>
-<a name="robo26"></a><h2>UserCommands/UserCommands [ Packages ]</h2>
+<a name="robo47"></a><h2>UserCommands/UserCommands [ Packages ]</h2>
 
 <p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./robo_packages.html#robo_top_of_doc">Packages</a> ]</p>
 <p class="item_name">FUNCTION</p>
@@ -54,22 +56,22 @@
 
 <hr />
 <a name="UserCommands2fUserCommands2eCommands5fContainer"></a>
-<a name="robo46"></a><h2>UserCommands/UserCommands.Commands_Container [ Types ]</h2>
+<a name="robo72"></a><h2>UserCommands/UserCommands.Commands_Container [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo26">UserCommands</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo47">UserCommands</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store all bookmarks
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> Commands_Container <span class="keyword">is</span> <span class="keyword">new</span> Indefinite_Hashed_Maps<span class="sign">(</span>String<span class="sign">,</span>
-      UserCommand<span class="sign">,</span> Ada<span class="sign">.</span>Strings<span class="sign">.</span>Hash<span class="sign">,</span> <span class="quote">"="</span><span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">package</span> Commands_Container <span class="keyword">is</span> <span class="keyword">new</span> Indefinite_Hashed_Maps
+     <span class="sign">(</span>String<span class="sign">,</span> UserCommand<span class="sign">,</span> Ada<span class="sign">.</span>Strings<span class="sign">.</span>Hash<span class="sign">,</span> <span class="quote">"="</span><span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="UserCommands2fUserCommands2eUserCommand"></a>
-<a name="robo53"></a><h2>UserCommands/UserCommands.UserCommand [ Records ]</h2>
+<a name="robo79"></a><h2>UserCommands/UserCommands.UserCommand [ Records ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo26">UserCommands</a> ] [ <a href="./robo_records.html#robo_top_of_doc">Records</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo47">UserCommands</a> ] [ <a href="./robo_records.html#robo_top_of_doc">Records</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Data structure for the user defined commands
 </pre>
@@ -86,9 +88,9 @@
 
 <hr />
 <a name="UserCommands2fUserCommands2eUserCommandsList"></a>
-<a name="robo90"></a><h2>UserCommands/UserCommands.UserCommandsList [ Variables ]</h2>
+<a name="robo151"></a><h2>UserCommands/UserCommands.UserCommandsList [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo26">UserCommands</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo47">UserCommands</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> User defined commands list
 </pre>
@@ -98,9 +100,9 @@
 
 <hr />
 <a name="UserCommands2fUserCommands2eAddCommands"></a>
-<a name="robo170"></a><h2>UserCommands/UserCommands.AddCommands [ Subprograms ]</h2>
+<a name="robo300"></a><h2>UserCommands/UserCommands.AddCommands [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo26">UserCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo47">UserCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Adds the Ada code to the Tcl interpreter
 </pre>
@@ -108,21 +110,9 @@
 <pre class="source">   <span class="keyword">procedure</span> AddCommands<span class="sign">;</span>
 </pre>
 
-<hr />
-<a name="UserCommands2fUserCommands2eUpdateUserCommandsList"></a>
-<a name="robo171"></a><h2>UserCommands/UserCommands.UpdateUserCommandsList [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="#robo26">UserCommands</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Update list of user defined commands
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> UpdateUserCommandsList<span class="sign">;</span>
-</pre>
-
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/usercommands.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
+<p>Generated from ./src/usercommands.ads with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 08 2021 07:39:39
 </p>
 </div> <!-- footer -->
 </body>

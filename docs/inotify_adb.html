@@ -12,13 +12,14 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.6 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_constants.html#top">Constants</a>
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
@@ -30,47 +31,35 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo32">Inotify/Inotify.Mask_Array</a></li>
-<li>2. <a href="#robo33">Inotify/Inotify.Watches_Container</a></li>
-<li>3. <a href="#robo50">Inotify/Inotify.Watch_Data</a></li>
-<li>4. <a href="#robo58">Inotify/Inotify.Instance</a></li>
-<li>5. <a href="#robo60">Inotify/Inotify.Watches</a></li>
-<li>6. <a href="#robo108">Inotify/Inotify.AddWatch</a></li>
-<li>7. <a href="#robo110">Inotify/Inotify.CreateMask</a></li>
-<li>8. <a href="#robo111">Inotify/Inotify.inotify_add_watch</a></li>
-<li>9. <a href="#robo112">Inotify/Inotify.inotify_init</a></li>
-<li>10. <a href="#robo113">Inotify/Inotify.inotify_rm_watch</a></li>
-<li>11. <a href="#robo117">Inotify/Inotify.RemoveWatch</a></li>
+<li>1. <a href="#robo57">Inotify/Inotify.Watches_Container</a></li>
+<li>2. <a href="#robo76">Inotify/Inotify.Watch_Data</a></li>
+<li>3. <a href="#robo80">Inotify/Empty_Watch</a></li>
+<li>4. <a href="#robo98">Inotify/Inotify.Instance</a></li>
+<li>5. <a href="#robo100">Inotify/Inotify.Watches</a></li>
+<li>6. <a href="#robo154">Inotify/Inotify_Error</a></li>
+<li>7. <a href="#robo196">Inotify/Inotify.Add_Watch</a></li>
+<li>8. <a href="#robo198">Inotify/Inotify.Get_Instance</a></li>
+<li>9. <a href="#robo202">Inotify/Inotify.Inotify_Rm_Watch_C</a></li>
+<li>10. <a href="#robo204">Inotify/Inotify.Watches_List</a></li>
 </ul>
 <hr />
-<a name="Inotify2fInotify2eMask5fArray"></a>
-<a name="robo32"></a><h2>Inotify/Inotify.Mask_Array [ Types ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Array of inotify events to catch
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">type</span> Mask_Array <span class="keyword">is</span> <span class="keyword">array</span><span class="sign">(</span>Positive <span class="keyword">range</span> <span class="sign">&lt;</span><span class="sign">&gt;</span><span class="sign">)</span> <span class="keyword">of</span> Inotify_Events<span class="sign">;</span>
-</pre>
-
-<hr />
 <a name="Inotify2fInotify2eWatches5fContainer"></a>
-<a name="robo33"></a><h2>Inotify/Inotify.Watches_Container [ Types ]</h2>
+<a name="robo57"></a><h2>Inotify/Inotify.Watches_Container [ Types ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_types.html#robo_top_of_doc">Types</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Used to store information about inotify watches
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">package</span> Watches_Container <span class="keyword">is</span> <span class="keyword">new</span> Vectors<span class="sign">(</span>Positive<span class="sign">,</span> Watch_Data<span class="sign">)</span><span class="sign">;</span>
+<pre class="source">   <span class="keyword">package</span> Watches_Container <span class="keyword">is</span> <span class="keyword">new</span> Vectors
+     <span class="sign">(</span>Index_Type <span class="sign">=</span><span class="sign">&gt;</span> Positive<span class="sign">,</span> Element_Type <span class="sign">=</span><span class="sign">&gt;</span> Watch_Data<span class="sign">)</span><span class="sign">;</span>
 </pre>
 
 <hr />
 <a name="Inotify2fInotify2eWatch5fData"></a>
-<a name="robo50"></a><h2>Inotify/Inotify.Watch_Data [ Records ]</h2>
+<a name="robo76"></a><h2>Inotify/Inotify.Watch_Data [ Records ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_records.html#robo_top_of_doc">Records</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_records.html#robo_top_of_doc">Records</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Data structure for inotify watches
 </pre>
@@ -86,10 +75,23 @@
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eInstance"></a>
-<a name="robo58"></a><h2>Inotify/Inotify.Instance [ Variables ]</h2>
+<a name="Inotify2fEmpty5fWatch"></a>
+<a name="robo80"></a><h2>Inotify/Empty_Watch [ Constants ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_constants.html#robo_top_of_doc">Constants</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Empty inotify watch data
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>Empty_Watch</strong><span class="sign">:</span> <span class="keyword">constant</span> Watch_Data <span class="sign">:</span><span class="sign">=</span>
+     <span class="sign">(</span>Id <span class="sign">=</span><span class="sign">&gt;</span> 0<span class="sign">,</span> Path <span class="sign">=</span><span class="sign">&gt;</span> Null_Unbounded_String<span class="sign">)</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Inotify2fInotify2eInstance"></a>
+<a name="robo98"></a><h2>Inotify/Inotify.Instance [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> inotify instance to read
 </pre>
@@ -99,9 +101,9 @@
 
 <hr />
 <a name="Inotify2fInotify2eWatches"></a>
-<a name="robo60"></a><h2>Inotify/Inotify.Watches [ Variables ]</h2>
+<a name="robo100"></a><h2>Inotify/Inotify.Watches [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Stores information about all active inotify watches
 </pre>
@@ -110,121 +112,94 @@
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eAddWatch"></a>
-<a name="robo108"></a><h2>Inotify/Inotify.AddWatch [ Subprograms ]</h2>
+<a name="Inotify2fInotify5fError"></a>
+<a name="robo154"></a><h2>Inotify/Inotify_Error [ Exceptions ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_exceptions.html#robo_top_of_doc">Exceptions</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> Exception raised by problems during manipulating watches list
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>Inotify_Error</strong><span class="sign">:</span> <span class="keyword">exception</span><span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="Inotify2fInotify2eAdd5fWatch"></a>
+<a name="robo196"></a><h2>Inotify/Inotify.Add_Watch [ Subprograms ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Add inotify watch to selected path
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> AddWatch<span class="sign">(</span>Path<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">is</span>
+<pre class="source">   <span class="keyword">procedure</span> Add_Watch<span class="sign">(</span>Path<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">is</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
 <pre> Path - Full path to which new inotify watch will be added
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eCreateMask"></a>
-<a name="robo110"></a><h2>Inotify/Inotify.CreateMask [ Subprograms ]</h2>
+<a name="Inotify2fInotify2eGet5fInstance"></a>
+<a name="robo198"></a><h2>Inotify/Inotify.Get_Instance [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Convert list of inotify events to mask value for C
+<pre> Get the current instance of inotify converted to C int type
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> CreateMask<span class="sign">(</span>Events<span class="sign">:</span> Mask_Array<span class="sign">)</span> <span class="keyword">return</span> int <span class="keyword">is</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> Events - list of inotify events to convert
+<pre class="source">   <span class="keyword">function</span> Get_Instance <span class="keyword">return</span> int <span class="keyword">is</span>
 </pre>
 <p class="item_name">RESULT</p>
-<pre> Mask value for C
+<pre> The current inotify instance converted to C int type
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2einotify5fadd5fwatch"></a>
-<a name="robo111"></a><h2>Inotify/Inotify.inotify_add_watch [ Subprograms ]</h2>
+<a name="Inotify2fInotify2eInotify5fRm5fWatch5fC"></a>
+<a name="robo202"></a><h2>Inotify/Inotify.Inotify_Rm_Watch_C [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Binding to the C function
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> inotify_add_watch
-     <span class="sign">(</span>fd<span class="sign">:</span> int<span class="sign">;</span> pathname<span class="sign">:</span> chars_ptr<span class="sign">;</span> mask<span class="sign">:</span> int<span class="sign">)</span> <span class="keyword">return</span> int <span class="keyword">with</span>
-      Import <span class="sign">=</span><span class="sign">&gt;</span> True<span class="sign">,</span>
-      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">,</span>
-      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"inotify_add_watch"</span><span class="sign">;</span>
-</pre>
-<p class="item_name">PARAMETERS</p>
-<pre> fd       - inotify instance to which add a new watch
- pathname - full path to which a new inotify watch will be added
- mask     - list of inotify events to listen
-</pre>
-<p class="item_name">RESULT</p>
-<pre> -1 if inotify watch cannot be added, 0 if exists, otherwise index of
- newly created watch
-</pre>
-
-<hr />
-<a name="Inotify2fInotify2einotify5finit"></a>
-<a name="robo112"></a><h2>Inotify/Inotify.inotify_init [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Binding to the C function
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> inotify_init <span class="keyword">return</span> int <span class="keyword">with</span>
-      Import <span class="sign">=</span><span class="sign">&gt;</span> True<span class="sign">,</span>
-      Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">,</span>
-      External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"inotify_init"</span><span class="sign">;</span>
-</pre>
-<p class="item_name">RESULT</p>
-<pre> File descriptor used for a newly created inotify instance
-</pre>
-
-<hr />
-<a name="Inotify2fInotify2einotify5frm5fwatch"></a>
-<a name="robo113"></a><h2>Inotify/Inotify.inotify_rm_watch [ Subprograms ]</h2>
-
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
-<p class="item_name">FUNCTION</p>
-<pre> Binding to the C function
-</pre>
-<p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">function</span> inotify_rm_watch<span class="sign">(</span>fd<span class="sign">,</span> wd<span class="sign">:</span> int<span class="sign">)</span> <span class="keyword">return</span> int <span class="keyword">with</span>
+<pre class="source">   <span class="keyword">function</span> Inotify_Rm_Watch_C<span class="sign">(</span>Fd<span class="sign">,</span> Wd<span class="sign">:</span> int<span class="sign">)</span> <span class="keyword">return</span> int <span class="keyword">with</span>
       Import <span class="sign">=</span><span class="sign">&gt;</span> True<span class="sign">,</span>
       Convention <span class="sign">=</span><span class="sign">&gt;</span> C<span class="sign">,</span>
       External_Name <span class="sign">=</span><span class="sign">&gt;</span> <span class="quote">"inotify_rm_watch"</span><span class="sign">;</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> fd - inotify instance from which selected watch will be removed
- wd - inotify watch index to remove
+<pre> Fd - inotify instance from which selected watch will be removed
+ Wd - inotify watch index to remove
 </pre>
 <p class="item_name">RESULT</p>
 <pre> 0 if inotify watch was succesfully removed, -1 when error occurs
 </pre>
 
 <hr />
-<a name="Inotify2fInotify2eRemoveWatch"></a>
-<a name="robo117"></a><h2>Inotify/Inotify.RemoveWatch [ Subprograms ]</h2>
+<a name="Inotify2fInotify2eWatches5fList"></a>
+<a name="robo204"></a><h2>Inotify/Inotify.Watches_List [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo8">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./inotify_ads.html#robo16">Inotify</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
-<pre> Remove selected watch
+<pre> Manipulate the list of currently active inotify watches
 </pre>
 <p class="item_name">SOURCE</p>
-<pre class="source">   <span class="keyword">procedure</span> RemoveWatch<span class="sign">(</span>Path<span class="sign">:</span> String<span class="sign">)</span> <span class="keyword">is</span>
+<pre class="source">   <span class="keyword">function</span> Watches_List
+     <span class="sign">(</span>New_Watch<span class="sign">:</span> Watch_Data <span class="sign">:</span><span class="sign">=</span> <a href="#robo80">Empty_Watch</a><span class="sign">;</span> Clear<span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">)</span>
+      <span class="keyword">return</span> Watches_Container<span class="sign">.</span>Vector <span class="keyword">is</span>
 </pre>
 <p class="item_name">PARAMETERS</p>
-<pre> Path - Full path from which inotify watch will be removed
+<pre> New_Watch - A new inotify watch to add to the list. Can be empty.
+             Default value is <a href="#robo80">Empty_Watch</a>
+ Clear     - If true, clear the list
+</pre>
+<p class="item_name">RESULT</p>
+<pre> The vector with list of current inotify active watches
 </pre>
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/inotify.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
+<p>Generated from ./src/inotify.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 08 2021 07:39:39
 </p>
 </div> <!-- footer -->
 </body>

@@ -12,13 +12,14 @@
 </head>
 <body>
 <div id="logo">
-<a name="robo_top_of_doc">Hunter v1.5 code documentation</a>
+<a name="robo_top_of_doc">Hunter v1.6 code documentation</a>
 </div> <!-- logo -->
 <div id="navigation">
 <a class="menuitem" href="./toc_index.html#top">Table of Contents</a>
 <a class="menuitem" href="./sources.html#top">Source files</a>
 <a class="menuitem" href="./index.html#top">Index</a>
 <a class="menuitem" href="./robo_tasks.html#top">Tasks</a>
+<a class="menuitem" href="./robo_constants.html#top">Constants</a>
 <a class="menuitem" href="./robo_exceptions.html#top">Exceptions</a>
 <a class="menuitem" href="./robo_subprograms.html#top">Subprograms</a>
 <a class="menuitem" href="./robo_packages.html#top">Packages</a>
@@ -30,14 +31,27 @@
 <div id="content">
 <h3>TABLE OF CONTENTS</h3>
 <ul>
-<li>1. <a href="#robo81">RefreshData/RefreshData.Timer_Token</a></li>
-<li>2. <a href="#robo150">RefreshData/RefreshData.CheckItems</a></li>
+<li>1. <a href="#robo133">RefreshData/Is_Checking</a></li>
+<li>2. <a href="#robo134">RefreshData/RefreshData.Timer_Token</a></li>
+<li>3. <a href="#robo261">RefreshData/RefreshData.CheckItems</a></li>
 </ul>
 <hr />
-<a name="RefreshData2fRefreshData2eTimer5fToken"></a>
-<a name="robo81"></a><h2>RefreshData/RefreshData.Timer_Token [ Variables ]</h2>
+<a name="RefreshData2fIs5fChecking"></a>
+<a name="robo133"></a><h2>RefreshData/Is_Checking [ Variables ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo20">RefreshData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo36">RefreshData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
+<p class="item_name">FUNCTION</p>
+<pre> If True, checking events is on
+</pre>
+<p class="item_name">SOURCE</p>
+<pre class="source">   <strong>Is_Checking</strong><span class="sign">:</span> Boolean <span class="sign">:</span><span class="sign">=</span> False<span class="sign">;</span>
+</pre>
+
+<hr />
+<a name="RefreshData2fRefreshData2eTimer5fToken"></a>
+<a name="robo134"></a><h2>RefreshData/RefreshData.Timer_Token [ Variables ]</h2>
+
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo36">RefreshData</a> ] [ <a href="./robo_variables.html#robo_top_of_doc">Variables</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Identifier for the timer for periodically update directory listing
 </pre>
@@ -47,9 +61,9 @@
 
 <hr />
 <a name="RefreshData2fRefreshData2eCheckItems"></a>
-<a name="robo150"></a><h2>RefreshData/RefreshData.CheckItems [ Subprograms ]</h2>
+<a name="robo261"></a><h2>RefreshData/RefreshData.CheckItems [ Subprograms ]</h2>
 
-<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo20">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
+<p>[ <a href="#robo_top_of_doc">Top</a> ] [ <a href="./refreshdata_ads.html#robo36">RefreshData</a> ] [ <a href="./robo_subprograms.html#robo_top_of_doc">Subprograms</a> ]</p>
 <p class="item_name">FUNCTION</p>
 <pre> Check all inotify events and update directory listing if needed
 </pre>
@@ -63,7 +77,7 @@
 
 </div> <!-- content -->
 <div id="footer">
-<p>Generated from ./src/refreshdata.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Fri Nov 20 2020 08:01:27
+<p>Generated from ./src/refreshdata.adb with <a href="http://www.xs4all.nl/~rfsber/Robo/robodoc.html">ROBODoc</a> V4.99.43 on Sun Aug 08 2021 07:39:39
 </p>
 </div> <!-- footer -->
 </body>
