@@ -60,7 +60,7 @@ package body LoadData is
    end "<";
 
    procedure Add_Item(Path: String; List: in out Items_Container.Vector) is
-      File_Name: constant String := Simple_Name(Path);
+      File_Name: constant String := Simple_Name(Name => Path);
       Size: File_Size := 0;
       Sub_Directory: Dir_Type;
       Sub_Last, Hidden_Amount: Natural := 0;
@@ -68,31 +68,33 @@ package body LoadData is
       Mime_Type: Unbounded_String := Null_Unbounded_String;
       Item: Item_Record := Empty_Item;
    begin
-      Item.Name := To_Unbounded_String(File_Name);
-      Item.Path := To_Unbounded_String(Path);
+      Item.Name := To_Unbounded_String(Source => File_Name);
+      Item.Path := To_Unbounded_String(Source => Path);
       Set_Item_Modified_Time_Block :
       begin
-         Item.Modified := Modification_Time(Path);
+         Item.Modified := Modification_Time(Name => Path);
       exception
          when others =>
-            Item.Modified := Time_Of(1_901, 1, 1);
+            Item.Modified := Time_Of(Year => 1_901, Month => 1, Day => 1);
       end Set_Item_Modified_Time_Block;
       Item.Is_Hidden := (if File_Name(1) = '.' then True else False);
-      if Is_Directory(Path) then
+      if Is_Directory(Name => Path) then
          Item.Is_Directory := True;
          Item.Image :=
-           (if Is_Symbolic_Link(Path) then
-              To_Unbounded_String("emblem-symbolic-link")
-            else To_Unbounded_String("folder"));
+           (if Is_Symbolic_Link(Name => Path) then
+              To_Unbounded_String(Source => "emblem-symbolic-link")
+            else To_Unbounded_String(Source => "folder"));
          Item.Size := -1;
-         if Is_Read_Accessible_File(Path) then
-            Open(Sub_Directory, Path);
+         if Is_Read_Accessible_File(Name => Path) then
+            Open(Dir => Sub_Directory, Dir_Name => Path);
             Size := 0;
             Hidden_Amount := 0;
-            Count_Directory_Size :
+            Count_Directory_Size_Loop :
             loop
-               Read(Sub_Directory, Sub_File_Name, Sub_Last);
-               exit Count_Directory_Size when Sub_Last = 0;
+               Read
+                 (Dir => Sub_Directory, Str => Sub_File_Name,
+                  Last => Sub_Last);
+               exit Count_Directory_Size_Loop when Sub_Last = 0;
                if Sub_File_Name(1 .. Sub_Last) /= "." and
                  Sub_File_Name(1 .. Sub_Last) /= ".." then
                   if Sub_File_Name(1) = '.' then
@@ -101,14 +103,14 @@ package body LoadData is
                      Size := Size + 1;
                   end if;
                end if;
-            end loop Count_Directory_Size;
-            Close(Sub_Directory);
+            end loop Count_Directory_Size_Loop;
+            Close(Dir => Sub_Directory);
             Item.Size := Item_Size(Size);
             Item.Hidden_Items := Hidden_Amount;
          end if;
       else
          Item.Is_Directory := False;
-         if Is_Symbolic_Link(Path) then
+         if Is_Symbolic_Link(Name => Path) then
             Item.Image := To_Unbounded_String("emblem-symbolic-link");
          elsif Is_Executable_File(Path) then
             Item.Image := To_Unbounded_String("application-x-executable");
