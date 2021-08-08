@@ -1,7 +1,7 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [Unreleased]
+## [1.6] - 2021-08-08
 
 ### Added
 - Missing translations
