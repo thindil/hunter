@@ -42,7 +42,7 @@ package body AboutDialog is
       Set_Buffer(About_Fields.all(3), 0, "License: GNU GPLv3");
       Set_Options(About_Fields.all(3), FieldOptions);
       About_Fields.all(4) := New_Field(1, 26, 3, 4, 0, 0);
-      Set_Buffer(About_Fields.all(4), 0, "Version: 1.6 (development)");
+      Set_Buffer(About_Fields.all(4), 0, "Version: 1.7 (development)");
       Set_Options(About_Fields.all(4), FieldOptions);
       About_Fields.all(5) := New_Field(1, 9, 5, 0, 0, 0);
       Set_Buffer(About_Fields.all(5), 0, "[Website]");

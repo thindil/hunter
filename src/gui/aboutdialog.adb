@@ -132,7 +132,7 @@ package body AboutDialog is
           (pathName => Frame & ".version",
            options =>
              "-text {" & Mc(Interp => Interp, Src_String => "{Version:}") &
-             " 1.6 (" & Mc(Interp => Interp, Src_String => "{development}") &
+             " 1.7 (" & Mc(Interp => Interp, Src_String => "{development}") &
              ")}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       Website_Button :=
