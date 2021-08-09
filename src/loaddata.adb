@@ -111,21 +111,25 @@ package body LoadData is
       else
          Item.Is_Directory := False;
          if Is_Symbolic_Link(Name => Path) then
-            Item.Image := To_Unbounded_String("emblem-symbolic-link");
-         elsif Is_Executable_File(Path) then
-            Item.Image := To_Unbounded_String("application-x-executable");
+            Item.Image :=
+              To_Unbounded_String(Source => "emblem-symbolic-link");
+         elsif Is_Executable_File(Name => Path) then
+            Item.Image :=
+              To_Unbounded_String(Source => "application-x-executable");
          else
-            Mime_Type := To_Unbounded_String(Get_Mime_Type(Path));
-            if Index(Mime_Type, "audio") > 0 then
-               Item.Image := To_Unbounded_String("audio-x-generic");
-            elsif Index(Mime_Type, "font") > 0 then
-               Item.Image := To_Unbounded_String("font-x-generic");
-            elsif Index(Mime_Type, "image") > 0 then
-               Item.Image := To_Unbounded_String("image-x-generic");
-            elsif Index(Mime_Type, "video") > 0 then
-               Item.Image := To_Unbounded_String("video-x-generic");
-            elsif Index(Mime_Type, "text/x-script") > 0 then
-               Item.Image := To_Unbounded_String("text-x-script");
+            Mime_Type :=
+              To_Unbounded_String(Source => Get_Mime_Type(File_Name => Path));
+            if Index(Source => Mime_Type, Pattern => "audio") > 0 then
+               Item.Image := To_Unbounded_String(Source => "audio-x-generic");
+            elsif Index(Source => Mime_Type, Pattern => "font") > 0 then
+               Item.Image := To_Unbounded_String(Source => "font-x-generic");
+            elsif Index(Source => Mime_Type, Pattern => "image") > 0 then
+               Item.Image := To_Unbounded_String(Source => "image-x-generic");
+            elsif Index(Source => Mime_Type, Pattern => "video") > 0 then
+               Item.Image := To_Unbounded_String(Source => "video-x-generic");
+            elsif Index(Source => Mime_Type, Pattern => "text/x-script") >
+              0 then
+               Item.Image := To_Unbounded_String(Source => "text-x-script");
             elsif Mime_Type = To_Unbounded_String("text/html") then
                Item.Image := To_Unbounded_String("text-html");
             elsif Index(Mime_Type, "zip") > 0 or
