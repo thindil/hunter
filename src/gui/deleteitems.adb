@@ -237,7 +237,10 @@ package body DeleteItems is
       Add_Items_To_Delete_Loop :
       for I in Selected_Items.First_Index .. Selected_Items.Last_Index loop
          if New_Action = DELETE then
-            Append(Source => Message, New_Item => Selected_Items(I));
+            Append
+              (Source => Message,
+               New_Item =>
+                 Simple_Name(Name => To_String(Source => Selected_Items(I))));
          else
             Open
               (File => File_Info, Mode => In_File,
