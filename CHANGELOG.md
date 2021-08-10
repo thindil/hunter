@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## [Unreleased]
+
+### Changed
+- During confirmation of deleting files and directories, show only names of
+  items to delete, not their full paths
+
 ## [1.6] - 2021-08-08
 
 ### Added
