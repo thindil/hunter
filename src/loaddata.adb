@@ -130,29 +130,31 @@ package body LoadData is
             elsif Index(Source => Mime_Type, Pattern => "text/x-script") >
               0 then
                Item.Image := To_Unbounded_String(Source => "text-x-script");
-            elsif Mime_Type = To_Unbounded_String("text/html") then
-               Item.Image := To_Unbounded_String("text-html");
-            elsif Index(Mime_Type, "zip") > 0 or
-              Index(Mime_Type, "x-xz") > 0 then
-               Item.Image := To_Unbounded_String("package-x-generic");
-            elsif Index(Mime_Type, "text") > 0 then
-               Item.Image := To_Unbounded_String("text-x-generic");
+            elsif Mime_Type = To_Unbounded_String(Source => "text/html") then
+               Item.Image := To_Unbounded_String(Source => "text-html");
+            elsif Index(Source => Mime_Type, Pattern => "zip") > 0 or
+              Index(Source => Mime_Type, Pattern => "x-xz") > 0 then
+               Item.Image :=
+                 To_Unbounded_String(Source => "package-x-generic");
+            elsif Index(Source => Mime_Type, Pattern => "text") > 0 then
+               Item.Image := To_Unbounded_String(Source => "text-x-generic");
             else
-               Item.Image := To_Unbounded_String("text-x-generic-template");
+               Item.Image :=
+                 To_Unbounded_String(Source => "text-x-generic-template");
             end if;
          end if;
-         if not Is_Read_Accessible_File(Path) then
+         if not Is_Read_Accessible_File(Name => Path) then
             Item.Size := -1;
-            Items_List.Append(Item);
+            Items_List.Append(New_Item => Item);
             return;
          end if;
          Item.Size :=
-           (if Is_Symbolic_Link(Path) then -2
-            elsif Is_Regular_File(Path) then
-              Item_Size(Ada.Directories.Size(Path))
+           (if Is_Symbolic_Link(Name => Path) then -2
+            elsif Is_Regular_File(Name => Path) then
+              Item_Size(Ada.Directories.Size(Name => Path))
             else 0);
       end if;
-      List.Append(Item);
+      List.Append(New_Item => Item);
    end Add_Item;
 
 end LoadData;
