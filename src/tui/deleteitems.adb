@@ -192,22 +192,39 @@ package body DeleteItems is
                 (To_String
                    (MainWindow.Current_Directory & "/" &
                     Selected_Items(I))) then
-               if Length(Selected_Items(I)) > 11 then
+               if Simple_Name(Name => To_String(Source => Selected_Items(I)))'
+                   Length >
+                 11 then
                   Append
                     (DeleteList,
-                     "  " & Slice(Selected_Items(I), 1, 11) &
+                     "  " &
+                     Simple_Name
+                       (Name => To_String(Source => Selected_Items(I)))
+                       (1 .. 11) &
                      "...(and its content)" & LF);
                else
                   Append
                     (DeleteList,
-                     "  " & Selected_Items(I) & " (and its content)" & LF);
+                     "  " &
+                     Simple_Name
+                       (Name => To_String(Source => Selected_Items(I))) &
+                     " (and its content)" & LF);
                end if;
-            elsif Length(Selected_Items(I)) > 27 then
+            elsif Simple_Name(Name => To_String(Source => Selected_Items(I)))'
+                Length >
+              27 then
                Append
                  (DeleteList,
-                  "  " & Slice(Selected_Items(I), 1, 27) & "..." & LF);
+                  "  " &
+                  Simple_Name(Name => To_String(Source => Selected_Items(I)))
+                    (1 .. 27) &
+                  "..." & LF);
             else
-               Append(DeleteList, "  " & Selected_Items(I) & LF);
+               Append
+                 (DeleteList,
+                  "  " &
+                  Simple_Name(Name => To_String(Source => Selected_Items(I))) &
+                  LF);
             end if;
          else
             Open
