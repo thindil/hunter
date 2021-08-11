@@ -13,10 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Maps.Constants; use Ada.Strings.Maps.Constants;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Utils; use Utils;
+with Ada.Strings.Maps.Constants;
+with GNAT.Directory_Operations;
+with GNAT.OS_Lib;
+with Utils;
 
 package body LoadData is
 
@@ -26,6 +26,8 @@ package body LoadData is
    end "=";
 
    function "<"(Left, Right: Item_Record) return Boolean is
+      use Ada.Strings.Maps.Constants;
+
    begin
       if Left.Is_Directory and not Right.Is_Directory then
          return True;
@@ -60,6 +62,10 @@ package body LoadData is
    end "<";
 
    procedure Add_Item(Path: String; List: in out Items_Container.Vector) is
+      use GNAT.Directory_Operations;
+      use GNAT.OS_Lib;
+      use Utils;
+
       File_Name: constant String := Simple_Name(Name => Path);
       Size: File_Size := 0;
       Sub_Directory: Dir_Type;
