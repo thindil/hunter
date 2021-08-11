@@ -269,9 +269,11 @@ package body Messages is
       end if;
       Tcl.Tk.Ada.Grid.Grid
         (MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
-      TimerId :=
-        To_Unbounded_String
-          (After(Settings.Auto_Close_Messages_Time * 1_000, "CloseMessage"));
+      if MessageType /= "question" then
+         TimerId :=
+            To_Unbounded_String
+               (After(Settings.Auto_Close_Messages_Time * 1_000, "CloseMessage"));
+      end if;
    end ShowMessage;
 
 end Messages;
