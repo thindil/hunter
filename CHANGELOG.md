@@ -7,6 +7,9 @@ All notable changes to this project will be documented in this file.
 - During confirmation of deleting files and directories, show only names of
   items to delete, not their full paths
 
+### Fixed
+- Don't auto hide questions or confirmation messages in graphical version
+
 ## [1.6] - 2021-08-08
 
 ### Added
