@@ -331,7 +331,7 @@ package body ShowItems is
                   "{You don't have permissions to preview this directory.}"));
             return;
          end if;
-         LoadDirectory(To_String(Current_Selected), True);
+         Load_Directory(To_String(Current_Selected), True);
          PreviewPad :=
            New_Pad
              (Line_Position(Second_Items_List.Length) + 1, (Columns / 2) - 1);
@@ -789,7 +789,7 @@ package body ShowItems is
          when 10 =>
             DestinationDirectory :=
               DestinationDirectory & "/" & Name(Current(DestinationList));
-            LoadDirectory(To_String(DestinationDirectory), True);
+            Load_Directory(To_String(DestinationDirectory), True);
             ShowDestination;
             return;
          when others =>
@@ -821,7 +821,7 @@ package body ShowItems is
                   Append(DestinationDirectory, "/");
                end if;
             end loop Update_Destination_Directory_Loop;
-            LoadDirectory(To_String(DestinationDirectory), True);
+            Load_Directory(To_String(DestinationDirectory), True);
             ShowDestination;
             return DESTINATION_VIEW;
          when others =>

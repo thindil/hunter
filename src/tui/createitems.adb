@@ -131,7 +131,7 @@ package body CreateItems is
          MainWindow.Current_Directory :=
            To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
       end if;
-      LoadDirectory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(MainWindow.Current_Directory));
       UpdateWatch(To_String(MainWindow.Current_Directory));
       Tcl_SetResult(Interp, "1");
       return TCL_OK;

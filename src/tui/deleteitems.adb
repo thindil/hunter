@@ -299,9 +299,9 @@ package body DeleteItems is
          when 10 =>
             if FieldIndex = 2 then
                if not DeleteSelected then
-                  LoadDirectory(To_String(MainWindow.Current_Directory));
+                  Load_Directory(To_String(MainWindow.Current_Directory));
                else
-                  LoadDirectory
+                  Load_Directory
                     (Ada.Directories.Containing_Directory
                        (To_String(MainWindow.Current_Directory)));
                end if;

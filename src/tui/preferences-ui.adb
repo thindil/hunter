@@ -780,7 +780,7 @@ package body Preferences.UI is
                when 0 =>
                   MainWindow.Current_Directory :=
                     Modules_List((OptionIndex / 5) - 1);
-                  LoadDirectory(To_String(MainWindow.Current_Directory));
+                  Load_Directory(To_String(MainWindow.Current_Directory));
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
                   UpdateWatch(To_String(MainWindow.Current_Directory));

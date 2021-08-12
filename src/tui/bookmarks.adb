@@ -204,7 +204,7 @@ package body Bookmarks is
          ShowBookmarksForm;
          return BOOKMARKS_FORM;
       end if;
-      LoadDirectory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(MainWindow.Current_Directory));
       UILocation := DIRECTORY_VIEW;
       Clear_Preview_Window;
       Update_Directory_List(True);
@@ -251,7 +251,7 @@ package body Bookmarks is
                MainWindow.Current_Directory :=
                  To_Unbounded_String
                    (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
-               LoadDirectory(To_String(MainWindow.Current_Directory));
+               Load_Directory(To_String(MainWindow.Current_Directory));
                UpdateWatch(To_String(MainWindow.Current_Directory));
                Execute_Modules
                  (On_Enter,

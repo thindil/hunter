@@ -20,16 +20,16 @@
 package LoadData.UI is
 -- ****
 
-   -- ****f* LUITUI/LUITUI.LoadDirectory
+   -- ****f* LUITUI/LUITUI.Load_Directory
    -- FUNCTION
    -- Load content of the selected directory to the proper list
    -- PARAMETERS
-   -- DirectoryName - Full path to the directory which content will be added
-   --                 to the proper list
-   -- Second        - If true, add directory content to the SecondItemsList,
-   --                 otherwise add to the ItemsList. Default value is false
+   -- Directory_Name - Full path to the directory which content will be added
+   --                  to the proper list
+   -- Second         - If true, add directory content to the SecondItemsList,
+   --                  otherwise add to the ItemsList. Default value is false
    -- SOURCE
-   procedure LoadDirectory(DirectoryName: String; Second: Boolean := False);
+   procedure Load_Directory(Directory_Name: String; Second: Boolean := False);
    -- ****
 
 end LoadData.UI;

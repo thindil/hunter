@@ -148,7 +148,7 @@ package body CopyItems is
       MainWindow.Current_Directory :=
         (if Settings.Stay_In_Old then SourceDirectory
          else DestinationDirectory);
-      LoadDirectory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
       return DIRECTORY_VIEW;

@@ -153,7 +153,7 @@ package body MainWindow is
             MainWindow.Current_Directory := To_Unbounded_String("/");
          end if;
       end if;
-      LoadDirectory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(MainWindow.Current_Directory));
       StartTimer(To_String(MainWindow.Current_Directory));
       Show_Main_Window;
    end CreateMainWindow;
@@ -437,7 +437,7 @@ package body MainWindow is
                      Append(MainWindow.Current_Directory, "/");
                   end if;
                end loop Update_Current_Directory_Loop;
-               LoadDirectory(To_String(MainWindow.Current_Directory));
+               Load_Directory(To_String(MainWindow.Current_Directory));
                Update_Directory_List(True);
                UpdateWatch(To_String(MainWindow.Current_Directory));
                Execute_Modules
@@ -938,7 +938,7 @@ package body MainWindow is
                             (Ada.Directories.Containing_Directory
                                (Command_Name))));
                end if;
-               LoadDirectory(To_String(Current_Directory));
+               Load_Directory(To_String(Current_Directory));
                Set_Current_Selected_Loop :
                for I in Items_List.Iterate loop
                   if Items_List(I).Name = FileName then
