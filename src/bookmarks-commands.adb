@@ -64,7 +64,7 @@ package body Bookmarks.Commands is
       end if;
       Current_Directory :=
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
-      LoadDirectory(To_String(Current_Directory));
+      Load_Directory(To_String(Current_Directory));
       Update_Directory_List(True);
       Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
       return TCL_OK;

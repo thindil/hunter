@@ -24,7 +24,8 @@ with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
 
 package body LoadData.UI is
 
-   procedure LoadDirectory(DirectoryName: String; Second: Boolean := False) is
+   procedure Load_Directory
+     (Directory_Name: String; Second: Boolean := False) is
       Directory: Dir_Type;
       FileName: String(1 .. 1_024);
       Last: Natural range 0 .. FileName'Last;
@@ -36,21 +37,22 @@ package body LoadData.UI is
       else
          Second_Items_List.Clear;
       end if;
-      if not Is_Read_Accessible_File(DirectoryName) then
+      if not Is_Read_Accessible_File(Directory_Name) then
          Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
          return;
       end if;
-      Open(Directory, DirectoryName);
+      Open(Directory, Directory_Name);
       Read_Directory_Loop :
       loop
          Read(Directory, FileName, Last);
          exit Read_Directory_Loop when Last = 0;
          if FileName(1 .. Last) /= "." and FileName(1 .. Last) /= ".." then
             if not Second then
-               Add_Item(DirectoryName & "/" & FileName(1 .. Last), Items_List);
+               Add_Item
+                 (Directory_Name & "/" & FileName(1 .. Last), Items_List);
             else
                Add_Item
-                 (DirectoryName & "/" & FileName(1 .. Last),
+                 (Directory_Name & "/" & FileName(1 .. Last),
                   Second_Items_List);
             end if;
          end if;
@@ -60,13 +62,13 @@ package body LoadData.UI is
          Items_Sorting.Sort(Items_List);
          Wm_Set
            (Get_Main_Window(Get_Context), "title",
-            "{Hunter " & DirectoryName & "}");
+            "{Hunter " & Directory_Name & "}");
       else
          Items_Sorting.Sort(Second_Items_List);
       end if;
       if Tcl.Tk.Ada.Busy.Status(Get_Main_Window(Get_Context)) = "1" then
          Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
       end if;
-   end LoadDirectory;
+   end Load_Directory;
 
 end LoadData.UI;

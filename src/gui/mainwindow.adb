@@ -409,7 +409,7 @@ package body MainWindow is
             Current_Directory := To_Unbounded_String(Source => "/");
          end if;
       end if;
-      LoadDirectory(DirectoryName => To_String(Source => Current_Directory));
+      Load_Directory(Directory_Name => To_String(Source => Current_Directory));
       StartTimer(Path => To_String(Source => Current_Directory));
       Update_Directory_List(Clear => True);
       Execute_Modules

@@ -160,7 +160,7 @@ package body Trash is
            Length
              (To_Unbounded_String
                 (Value("HOME") & "/.local/share/Trash/files")));
-      LoadDirectory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
       Execute_Modules
         (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");

@@ -93,13 +93,13 @@ package body ActivateItems is
                if Ada.Directories.Containing_Directory
                    (Name => To_String(Source => Second_Items_List(1).Path)) /=
                  Current_Directory then
-                  LoadDirectory
-                    (DirectoryName => To_String(Source => Current_Directory));
+                  Load_Directory
+                    (Directory_Name => To_String(Source => Current_Directory));
                end if;
             end if;
          else
-            LoadDirectory
-              (DirectoryName => To_String(Source => Current_Directory));
+            Load_Directory
+              (Directory_Name => To_String(Source => Current_Directory));
          end if;
          if New_Action = SHOWTRASH then
             DestinationDirectory :=

@@ -116,7 +116,7 @@ package body Messages is
                   end if;
                exception
                   when others =>
-                     LoadDirectory(To_String(Current_Directory));
+                     Load_Directory(To_String(Current_Directory));
                      Update_Directory_List(True);
                      return TCL_OK;
                end;
@@ -130,7 +130,7 @@ package body Messages is
                      return Show_Trash_Command(ClientData, Interp, Argc, Argv);
                   end if;
                else
-                  LoadDirectory(To_String(Current_Directory));
+                  Load_Directory(To_String(Current_Directory));
                   Update_Directory_List(True);
                   UpdateWatch(To_String(Current_Directory));
                   Tcl.Ada.Tcl_Eval(Get_Context, "ShowSelected");
@@ -161,7 +161,7 @@ package body Messages is
          when COPY =>
             if Response = "noall" then
                Toggle_Tool_Buttons(New_Action, True);
-               LoadDirectory(To_String(Current_Directory));
+               Load_Directory(To_String(Current_Directory));
                Update_Directory_List(True);
                return Close_Command(ClientData, Interp, Argc, Argv);
             elsif Response = "no" then
@@ -173,7 +173,7 @@ package body Messages is
          when MOVE =>
             if Response = "noall" then
                Toggle_Tool_Buttons(New_Action, True);
-               LoadDirectory(To_String(Current_Directory));
+               Load_Directory(To_String(Current_Directory));
                Update_Directory_List(True);
                return Close_Command(ClientData, Interp, Argc, Argv);
             elsif Response = "no" then
@@ -271,8 +271,9 @@ package body Messages is
         (MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
       if MessageType /= "question" then
          TimerId :=
-            To_Unbounded_String
-               (After(Settings.Auto_Close_Messages_Time * 1_000, "CloseMessage"));
+           To_Unbounded_String
+             (After
+                (Settings.Auto_Close_Messages_Time * 1_000, "CloseMessage"));
       end if;
    end ShowMessage;
 

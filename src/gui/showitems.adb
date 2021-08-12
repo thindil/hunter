@@ -201,7 +201,7 @@ package body ShowItems is
                  (Get_Context,
                   "{You don't have permissions to preview this directory.}"));
          end if;
-         LoadDirectory(To_String(Current_Selected), True);
+         Load_Directory(To_String(Current_Selected), True);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
          Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
@@ -903,7 +903,7 @@ package body ShowItems is
          end if;
       end if;
       DestinationDirectory := SelectedItem;
-      LoadDirectory(To_String(SelectedItem), True);
+      Load_Directory(To_String(SelectedItem), True);
       Update_Directory_List(True, "preview");
       Execute_Modules(On_Enter, "{" & To_String(DestinationDirectory) & "}");
       return TCL_OK;
@@ -1064,7 +1064,7 @@ package body ShowItems is
       configure
         (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
       DestinationDirectory := MainWindow.Current_Directory;
-      LoadDirectory(To_String(DestinationDirectory), True);
+      Load_Directory(To_String(DestinationDirectory), True);
       Update_Directory_List(True, "preview");
       Autoscroll(PreviewXScroll);
       Autoscroll(PreviewYScroll);

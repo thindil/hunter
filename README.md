@@ -74,6 +74,9 @@ To build you need:
   ncurses library, its development files and the Ada binding for it. All
   should be available in the most Linux distributions.
 
+* Additionally, the program need a couple of other libraries to run, they are
+  listed in the section *Running Hunter* below.
+
 If you have all the required packages, navigate to the main directory(where
 this file is) to compile:
 

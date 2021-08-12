@@ -247,8 +247,8 @@ package body CreateItems is
                 Containing_Directory
                   (Name => To_String(Source => New_Item_Name)));
       end if;
-      LoadDirectory
-        (DirectoryName => To_String(Source => MainWindow.Current_Directory));
+      Load_Directory
+        (Directory_Name => To_String(Source => MainWindow.Current_Directory));
       UpdateWatch(Path => To_String(Source => MainWindow.Current_Directory));
       Update_Directory_List(Clear => True);
       <<End_Of_Create>>

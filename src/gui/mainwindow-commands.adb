@@ -477,7 +477,7 @@ package body MainWindow.Commands is
              (Normalize_Pathname
                 (Containing_Directory(Containing_Directory(Command_Name))));
       end if;
-      LoadDirectory(To_String(Current_Directory));
+      Load_Directory(To_String(Current_Directory));
       Set_Current_Selected_Loop :
       for I in Items_List.Iterate loop
          if Items_List(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
