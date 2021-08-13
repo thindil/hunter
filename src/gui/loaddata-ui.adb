@@ -27,15 +27,15 @@ package body LoadData.UI is
    procedure Load_Directory
      (Directory_Name: String; Second: Boolean := False) is
       Directory: Dir_Type;
-      FileName: String(1 .. 1_024);
-      Last: Natural range 0 .. FileName'Last;
+      File_Name: String(1 .. 1_024) := (others => ' ');
+      Last: Natural range 0 .. File_Name'Last := 0;
    begin
       Tcl.Tk.Ada.Busy.Busy(Get_Main_Window(Get_Context));
       Tcl_Eval(Get_Context, "update");
-      if not Second then
-         Items_List.Clear;
-      else
+      if Second then
          Second_Items_List.Clear;
+      else
+         Items_List.Clear;
       end if;
       if not Is_Read_Accessible_File(Directory_Name) then
          Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
@@ -44,16 +44,16 @@ package body LoadData.UI is
       Open(Directory, Directory_Name);
       Read_Directory_Loop :
       loop
-         Read(Directory, FileName, Last);
+         Read(Directory, File_Name, Last);
          exit Read_Directory_Loop when Last = 0;
-         if FileName(1 .. Last) /= "." and FileName(1 .. Last) /= ".." then
-            if not Second then
+         if File_Name(1 .. Last) /= "." and File_Name(1 .. Last) /= ".." then
+            if Second then
                Add_Item
-                 (Directory_Name & "/" & FileName(1 .. Last), Items_List);
+                 (Directory_Name & "/" & File_Name(1 .. Last),
+                  Second_Items_List);
             else
                Add_Item
-                 (Directory_Name & "/" & FileName(1 .. Last),
-                  Second_Items_List);
+                 (Directory_Name & "/" & File_Name(1 .. Last), Items_List);
             end if;
          end if;
       end loop Read_Directory_Loop;
