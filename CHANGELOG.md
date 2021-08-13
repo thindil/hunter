@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - During confirmation of deleting files and directories, show only names of
   items to delete, not their full paths
 - Updated README.md
+- Updated Polish translation
 
 ### Fixed
 - Don't auto hide questions or confirmation messages in graphical version
