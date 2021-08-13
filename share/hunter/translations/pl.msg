@@ -11,7 +11,7 @@
    "Programmers" "Programiści"
    "Translators" "Tłumacze"
    "Hunter - About" "Hunter - O programie"
-   "You can't enter this directory." "You can't enter this directory."
+   "You can't enter this directory." "Nie możesz wejść do tego katalogu."
    "I can't open this file. No application associated with this type of files." "Nie mogę otworzyć tego pliku. Nie ma aplikacji powiązanej z tym typem plików."
    "I can't open this file. Can't start application asociated with this type of files." "Nie mogę otworzyć tego pliku. Nie mogę uruchomić aplikacji powiązanej z tym typem plików."
    "Execute the selected file or directory with the entered program." "Uruchom wybrany plik bądź katalog przy pomocy wybranego programem."
