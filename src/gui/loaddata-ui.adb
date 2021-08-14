@@ -30,41 +30,43 @@ package body LoadData.UI is
       File_Name: String(1 .. 1_024) := (others => ' ');
       Last: Natural range 0 .. File_Name'Last := 0;
    begin
-      Tcl.Tk.Ada.Busy.Busy(Get_Main_Window(Get_Context));
-      Tcl_Eval(Get_Context, "update");
+      Tcl.Tk.Ada.Busy.Busy(Window => Get_Main_Window(Interp => Get_Context));
+      Tcl_Eval(interp => Get_Context, strng => "update");
       if Second then
          Second_Items_List.Clear;
       else
          Items_List.Clear;
       end if;
-      if not Is_Read_Accessible_File(Directory_Name) then
-         Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
+      if not Is_Read_Accessible_File(Name => Directory_Name) then
+         Tcl.Tk.Ada.Busy.Forget
+           (Window => Get_Main_Window(Interp => Get_Context));
          return;
       end if;
-      Open(Directory, Directory_Name);
+      Open(Dir => Directory, Dir_Name => Directory_Name);
       Read_Directory_Loop :
       loop
-         Read(Directory, File_Name, Last);
+         Read(Dir => Directory, Str => File_Name, Last => Last);
          exit Read_Directory_Loop when Last = 0;
          if File_Name(1 .. Last) /= "." and File_Name(1 .. Last) /= ".." then
             if Second then
                Add_Item
-                 (Directory_Name & "/" & File_Name(1 .. Last),
-                  Second_Items_List);
+                 (Path => Directory_Name & "/" & File_Name(1 .. Last),
+                  List => Second_Items_List);
             else
                Add_Item
-                 (Directory_Name & "/" & File_Name(1 .. Last), Items_List);
+                 (Path => Directory_Name & "/" & File_Name(1 .. Last),
+                  List => Items_List);
             end if;
          end if;
       end loop Read_Directory_Loop;
-      Close(Directory);
-      if not Second then
+      Close(Dir => Directory);
+      if Second then
+         Items_Sorting.Sort(Second_Items_List);
+      else
          Items_Sorting.Sort(Items_List);
          Wm_Set
            (Get_Main_Window(Get_Context), "title",
             "{Hunter " & Directory_Name & "}");
-      else
-         Items_Sorting.Sort(Second_Items_List);
       end if;
       if Tcl.Tk.Ada.Busy.Status(Get_Main_Window(Get_Context)) = "1" then
          Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
