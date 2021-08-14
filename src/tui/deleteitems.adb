@@ -310,8 +310,8 @@ package body DeleteItems is
                   Current_Selected :=
                     Current_Selected & "/" & Items_List(1).Name;
                end if;
-               ShowPreview;
             end if;
+            ShowPreview;
             Set_Cursor_Visibility(Visibility);
             Post(DialogForm, False);
             Delete(DialogForm);
