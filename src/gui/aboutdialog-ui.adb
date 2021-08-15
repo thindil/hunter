@@ -34,7 +34,7 @@ with Tcl.Tk.Ada.Winfo;
 with Utils;
 with Utils.UI; use Utils.UI;
 
-package body AboutDialog is
+package body AboutDialog.UI is
 
    -- ****o* AboutDialog/AboutDialog.Show_About_Command
    -- FUNCTION
@@ -249,4 +249,4 @@ package body AboutDialog is
       Add_Command(Name => "OpenLink", Ada_Command => Open_Link_Command'Access);
    end Create_About_Ui;
 
-end AboutDialog;
+end AboutDialog.UI;

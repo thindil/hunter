@@ -47,7 +47,7 @@ with Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with AboutDialog;
+with AboutDialog.UI;
 with ActivateItems;
 with Bookmarks;
 with CopyItems;
@@ -86,7 +86,7 @@ package body MainWindow is
       use Tcl.Tk.Ada.Widgets.TtkScrollbar;
       use Tcl.Tk.Ada.Wm;
       use Tcl.Tklib.Ada.Autoscroll;
-      use AboutDialog;
+      use AboutDialog.UI;
       use Bookmarks;
       use CopyItems;
       use CreateItems;

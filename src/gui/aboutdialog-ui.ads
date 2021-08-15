@@ -13,18 +13,18 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* AboutDialog/AboutDialog
+-- ****h* AboutDialog/AboutDialogUI
 -- FUNCTION
 -- Provides code for showing About the program dialog
 -- SOURCE
-package AboutDialog is
+package AboutDialog.UI is
 -- ****
 
-   -- ****f* AboutDialog/AboutDialog.Create_About_Ui
+   -- ****f* AboutDialogUI/AboutDialogUI.Create_About_Ui
    -- FUNCTION
    -- Create about UI
    -- SOURCE
    procedure Create_About_Ui;
    -- ****
 
-end AboutDialog;
+end AboutDialog.UI;
