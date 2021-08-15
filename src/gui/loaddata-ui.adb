@@ -13,19 +13,25 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Tcl.Ada; use Tcl.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with GNAT.Directory_Operations;
+with GNAT.OS_Lib;
+with Tcl.Ada;
+with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Busy;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-with Tcl.Tk.Ada.Wm; use Tcl.Tk.Ada.Wm;
+with Tcl.Tk.Ada.Wm;
 
 package body LoadData.UI is
 
    procedure Load_Directory
      (Directory_Name: String; Second: Boolean := False) is
+      use GNAT.Directory_Operations;
+      use GNAT.OS_Lib;
+      use Tcl.Ada;
+      use Tcl.Tk.Ada;
+      use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+      use Tcl.Tk.Ada.Wm;
+
       Directory: Dir_Type;
       File_Name: String(1 .. 1_024) := (others => ' ');
       Last: Natural range 0 .. File_Name'Last := 0;
@@ -61,15 +67,18 @@ package body LoadData.UI is
       end loop Read_Directory_Loop;
       Close(Dir => Directory);
       if Second then
-         Items_Sorting.Sort(Second_Items_List);
+         Items_Sorting.Sort(Container => Second_Items_List);
       else
-         Items_Sorting.Sort(Items_List);
+         Items_Sorting.Sort(Container => Items_List);
          Wm_Set
-           (Get_Main_Window(Get_Context), "title",
-            "{Hunter " & Directory_Name & "}");
+           (Widgt => Get_Main_Window(Interp => Get_Context), Action => "title",
+            Options => "{Hunter " & Directory_Name & "}");
       end if;
-      if Tcl.Tk.Ada.Busy.Status(Get_Main_Window(Get_Context)) = "1" then
-         Tcl.Tk.Ada.Busy.Forget(Get_Main_Window(Get_Context));
+      if Tcl.Tk.Ada.Busy.Status
+          (Window => Get_Main_Window(Interp => Get_Context)) =
+        "1" then
+         Tcl.Tk.Ada.Busy.Forget
+           (Window => Get_Main_Window(Interp => Get_Context));
       end if;
    end Load_Directory;
 
