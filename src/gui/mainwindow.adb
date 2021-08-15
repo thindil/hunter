@@ -47,6 +47,7 @@ with Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with AboutDialog;
 with AboutDialog.UI;
 with ActivateItems;
 with Bookmarks;
@@ -86,6 +87,7 @@ package body MainWindow is
       use Tcl.Tk.Ada.Widgets.TtkScrollbar;
       use Tcl.Tk.Ada.Wm;
       use Tcl.Tklib.Ada.Autoscroll;
+      use AboutDialog;
       use AboutDialog.UI;
       use Bookmarks;
       use CopyItems;
@@ -216,6 +218,7 @@ package body MainWindow is
       Theme_Use(ThemeName => To_String(Source => Settings.Ui_Theme));
       -- Load translations
       Mc_Load(DirName => "../share/hunter/translations", Interp => Interp);
+      Set_About_Dialog_Information(Interp => Interp);
       -- Set the program images
       Load_Images_Block :
       declare

@@ -123,9 +123,7 @@ package body AboutDialog.UI is
       Label :=
         Create
           (pathName => Frame & ".license",
-           options =>
-             "-text {" & Mc(Interp => Interp, Src_String => "{License:}") &
-             " GNU GPLv3}");
+           options => "-text {" & To_String(AboutDialog.License) & "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       Label :=
         Create

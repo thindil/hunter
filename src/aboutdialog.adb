@@ -13,18 +13,15 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Tcl;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 
--- ****h* AboutDialog/AboutDialog
--- FUNCTION
--- Provide code for information about the program
--- SOURCE
-package AboutDialog is
+package body AboutDialog is
 
-   Copyright: constant String := "© Bartek Jasicki 2019-2021";
-   License: Unbounded_String;
-
-   procedure Set_About_Dialog_Information(Interp: Tcl.Tcl_Interp);
+   procedure Set_About_Dialog_Information(Interp: Tcl.Tcl_Interp) is
+   begin
+      License :=
+        To_Unbounded_String
+          (Mc(Interp => Interp, Src_String => "{License:}") & " GNU GPLv3");
+   end Set_About_Dialog_Information;
 
 end AboutDialog;
