@@ -118,7 +118,7 @@ package body AboutDialog.UI is
       Label :=
         Create
           (pathName => Frame & ".copyright",
-           options => "-text {© Bartek Jasicki 2019-2021}");
+           options => "-text {" & AboutDialog.Copyright & "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       Label :=
         Create

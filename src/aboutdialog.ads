@@ -19,4 +19,6 @@
 -- SOURCE
 package AboutDialog is
 
+   Copyright: constant String := "© Bartek Jasicki 2019-2021";
+
 end AboutDialog;
