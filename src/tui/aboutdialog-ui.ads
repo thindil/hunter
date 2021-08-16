@@ -16,11 +16,11 @@
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with MainWindow; use MainWindow;
 
--- ****h* AboutDialogTUI/AboutDialogTUI
+-- ****h* AboutDialog/AboutDialogTUI
 -- FUNCTION
 -- Provides code to show the dialog with information about the program
 -- SOURCE
-package AboutDialog is
+package AboutDialog.UI is
 -- ****
 
    -- ****f* AboutDialogTUI/AboutDialogTUI.Show_About_Dialog
@@ -53,4 +53,4 @@ package AboutDialog is
    function Developers_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
-end AboutDialog;
+end AboutDialog.UI;

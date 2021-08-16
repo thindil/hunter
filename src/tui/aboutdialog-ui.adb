@@ -16,7 +16,7 @@
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 
-package body AboutDialog is
+package body AboutDialog.UI is
 
    DialogForm: Forms.Form;
    FormWindow: Window;
@@ -186,4 +186,4 @@ package body AboutDialog is
       return DEVELOPERS_VIEW;
    end Developers_Keys;
 
-end AboutDialog;
+end AboutDialog.UI;

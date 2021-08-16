@@ -23,7 +23,7 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
-with AboutDialog; use AboutDialog;
+with AboutDialog.UI; use AboutDialog.UI;
 with ActivateItems;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;

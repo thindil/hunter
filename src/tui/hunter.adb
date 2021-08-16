@@ -27,7 +27,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with AboutDialog; use AboutDialog;
+with AboutDialog.UI; use AboutDialog.UI;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
 with CreateItems; use CreateItems;
