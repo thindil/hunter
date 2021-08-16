@@ -21,9 +21,11 @@ with Tcl;
 -- Provide code for information about the program
 -- SOURCE
 package AboutDialog is
+-- ****
 
    Copyright: constant String := "© Bartek Jasicki 2019-2021";
    License: Unbounded_String;
+   Version: Unbounded_String;
 
    procedure Set_About_Dialog_Information(Interp: Tcl.Tcl_Interp);
 

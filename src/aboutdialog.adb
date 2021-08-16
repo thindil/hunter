@@ -22,6 +22,10 @@ package body AboutDialog is
       License :=
         To_Unbounded_String
           (Mc(Interp => Interp, Src_String => "{License:}") & " GNU GPLv3");
+      Version :=
+        To_Unbounded_String
+          (Mc(Interp => Interp, Src_String => "{Version:}") & " 1.7 (" &
+           Mc(Interp => Interp, Src_String => "{development}") & ")");
    end Set_About_Dialog_Information;
 
 end AboutDialog;

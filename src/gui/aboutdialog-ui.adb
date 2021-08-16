@@ -128,10 +128,7 @@ package body AboutDialog.UI is
       Label :=
         Create
           (pathName => Frame & ".version",
-           options =>
-             "-text {" & Mc(Interp => Interp, Src_String => "{Version:}") &
-             " 1.7 (" & Mc(Interp => Interp, Src_String => "{development}") &
-             ")}");
+           options => "-text {" & To_String(AboutDialog.Version) & "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       Website_Button :=
         Create
