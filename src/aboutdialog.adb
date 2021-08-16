@@ -13,15 +13,17 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Tcl.MsgCat.Ada;
 
 package body AboutDialog is
 
    procedure Set_About_Dialog_Information(Interp: Tcl.Tcl_Interp) is
+      use Tcl.MsgCat.Ada;
+
    begin
       License :=
         To_Unbounded_String
-          (Mc(Interp => Interp, Src_String => "{License:}") & " GNU GPLv3");
+          (Source => Mc(Interp => Interp, Src_String => "{License:}") & " GNU GPLv3");
       Version :=
         To_Unbounded_String
           (Mc(Interp => Interp, Src_String => "{Version:}") & " 1.7 (" &
