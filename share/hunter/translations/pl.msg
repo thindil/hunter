@@ -122,7 +122,7 @@
    "Deleting files and directories" "Kasowanie plików i katalogów"
    "Moving files and directories to trash" "Przenoszenie plików i katalogów do Kosza"
    "Trash can" "Kosz"
-   "development" "development"
+   "development" "rozwojowa"
    "Delete files" "Kasowanie plików"
    "Open with..." "Otwórz z..."
    "No" "Nie"
