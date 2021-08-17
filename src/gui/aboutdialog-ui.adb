@@ -123,12 +123,14 @@ package body AboutDialog.UI is
       Label :=
         Create
           (pathName => Frame & ".license",
-           options => "-text {" & To_String(AboutDialog.License) & "}");
+           options =>
+             "-text {" & To_String(Source => AboutDialog.License) & "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       Label :=
         Create
           (pathName => Frame & ".version",
-           options => "-text {" & To_String(AboutDialog.Version) & "}");
+           options =>
+             "-text {" & To_String(Source => AboutDialog.Version) & "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       Website_Button :=
         Create
