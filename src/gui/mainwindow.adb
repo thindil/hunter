@@ -191,7 +191,7 @@ package body MainWindow is
    begin
       Autoscroll(Scroll => Directory_Y_Scroll);
       Autoscroll(Scroll => Directory_X_Scroll);
-      AddCommands;
+      Add_Commands;
       UserCommands.AddCommands;
       CreateSearchUI;
       Set_Directory(Directory => Containing_Directory(Name => Command_Name));

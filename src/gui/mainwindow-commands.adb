@@ -567,7 +567,7 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Invoke_Button_Command;
 
-   procedure AddCommands is
+   procedure Add_Commands is
    begin
       Add_Command("Sort", Sort_Command'Access);
       Add_Command("HideWidget", Hide_Widget_Command'Access);
@@ -578,6 +578,6 @@ package body MainWindow.Commands is
       Add_Command("ShowFile", Show_File_Command'Access);
       Add_Command("InvokeButton", Invoke_Button_Command'Access);
       ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
-   end AddCommands;
+   end Add_Commands;
 
 end MainWindow.Commands;
