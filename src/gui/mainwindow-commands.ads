@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,11 +20,11 @@
 package MainWindow.Commands is
 -- ****
 
-   -- ****f* MCommands/MCommands.AddCommands
+   -- ****f* MCommands/MCommands.Add_Commands
    -- FUNCTION
    -- Adds the Ada code to the Tcl interpreter
    -- SOURCE
-   procedure AddCommands;
+   procedure Add_Commands;
    -- ****
 
 end MainWindow.Commands;
