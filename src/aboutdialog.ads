@@ -24,10 +24,12 @@ package AboutDialog is
 -- ****
 
    Version_Number: constant String := "1.7";
+   procedure Set_About_Dialog_Information(Interp: Tcl.Tcl_Interp);
+
+private
+
    Copyright: constant String := "© Bartek Jasicki 2019-2021";
    License: Unbounded_String;
    Version: Unbounded_String;
-
-   procedure Set_About_Dialog_Information(Interp: Tcl.Tcl_Interp);
 
 end AboutDialog;
