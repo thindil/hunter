@@ -57,17 +57,18 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Used in creating exit handler for the program
    -- SOURCE
-   package ExitCommand is new Tcl.Ada.Generic_ExitHandler(Integer);
+   package ExitCommand is new Tcl.Ada.Generic_ExitHandler
+     (ClientData => Integer);
    -- ****
 
    -- ****o* MCommands/MCommands.Sort_Command
    -- FUNCTION
    -- Sort directory view based on which header was clicked
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -76,54 +77,54 @@ package body MainWindow.Commands is
    -- values are name, modified, size and previewname
    -- SOURCE
    function Sort_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Sort_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
-      DirectoryTree: Ttk_Tree_View :=
+      pragma Unreferenced(Client_Data, Argc);
+      Directory_Tree: Ttk_Tree_View :=
         Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
    begin
-      Heading(DirectoryTree, "name", "-image {}");
-      Heading(DirectoryTree, "modified", "-image {}");
-      Heading(DirectoryTree, "size", "-image {}");
+      Heading(Directory_Tree, "name", "-image {}");
+      Heading(Directory_Tree, "modified", "-image {}");
+      Heading(Directory_Tree, "size", "-image {}");
       if CArgv.Arg(Argv, 1) = "name" then
          if Sort_Order = NAMEASC then
             Sort_Order := NAMEDESC;
-            Heading(DirectoryTree, "name", "-image {arrow-up}");
+            Heading(Directory_Tree, "name", "-image {arrow-up}");
          else
             Sort_Order := NAMEASC;
-            Heading(DirectoryTree, "name", "-image {arrow-down}");
+            Heading(Directory_Tree, "name", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "modified" then
          if Sort_Order = MODIFIEDASC then
             Sort_Order := MODIFIEDDESC;
-            Heading(DirectoryTree, "modified", "-image {arrow-up}");
+            Heading(Directory_Tree, "modified", "-image {arrow-up}");
          else
             Sort_Order := MODIFIEDASC;
-            Heading(DirectoryTree, "modified", "-image {arrow-down}");
+            Heading(Directory_Tree, "modified", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "size" then
          if Sort_Order = SIZEASC then
             Sort_Order := SIZEDESC;
-            Heading(DirectoryTree, "size", "-image {arrow-up}");
+            Heading(Directory_Tree, "size", "-image {arrow-up}");
          else
             Sort_Order := SIZEASC;
-            Heading(DirectoryTree, "size", "-image {arrow-down}");
+            Heading(Directory_Tree, "size", "-image {arrow-down}");
          end if;
       elsif CArgv.Arg(Argv, 1) = "previewname" then
-         DirectoryTree.Name :=
+         Directory_Tree.Name :=
            New_String(".mainframe.paned.previewframe.directorytree");
          if Sort_Order = NAMEASC then
             Sort_Order := NAMEDESC;
-            Heading(DirectoryTree, "name", "-image {arrow-up}");
+            Heading(Directory_Tree, "name", "-image {arrow-up}");
          else
             Sort_Order := NAMEASC;
-            Heading(DirectoryTree, "name", "-image {arrow-down}");
+            Heading(Directory_Tree, "name", "-image {arrow-down}");
          end if;
          Items_Sorting.Sort(Second_Items_List);
          Update_Directory_List(True, "preview");
@@ -253,14 +254,14 @@ package body MainWindow.Commands is
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc, Argv);
-      DirectoryTree: constant Ttk_Tree_View :=
+      Directory_Tree: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
    begin
-      if Selection(DirectoryTree) = Children(DirectoryTree, "{}") then
+      if Selection(Directory_Tree) = Children(Directory_Tree, "{}") then
          Update_Directory_List;
       else
          Selection_Set
-           (DirectoryTree, "[list " & Children(DirectoryTree, "{}") & " ]");
+           (Directory_Tree, "[list " & Children(Directory_Tree, "{}") & " ]");
       end if;
       return TCL_OK;
    end Toggle_Selection_Command;
