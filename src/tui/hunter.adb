@@ -27,6 +27,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with AboutDialog; use AboutDialog;
 with AboutDialog.UI; use AboutDialog.UI;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
@@ -283,7 +284,7 @@ exception
          Create(ErrorFile, Append_File, ErrorFilePath);
       end if;
       Put_Line(ErrorFile, Current_Time);
-      Put_Line(ErrorFile, "1.6");
+      Put_Line(ErrorFile, Version_Number);
       Put_Line(ErrorFile, "Exception: " & Exception_Name(An_Exception));
       Put_Line(ErrorFile, "Message: " & Exception_Message(An_Exception));
       Put_Line(ErrorFile, "-------------------------------------------------");

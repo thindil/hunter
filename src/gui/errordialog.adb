@@ -36,6 +36,7 @@ with Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Wm;
+with AboutDialog;
 with Utils.UI;
 
 package body ErrorDialog is
@@ -54,6 +55,7 @@ package body ErrorDialog is
       use Tcl.Tk.Ada.Widgets;
       use Tcl.Tk.Ada.Widgets.Toplevel;
       use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+      use AboutDialog;
 
       Error_File: File_Type;
       Error_Text: Unbounded_String := Null_Unbounded_String;
@@ -73,7 +75,7 @@ package body ErrorDialog is
            (File => Error_File, Mode => Append_File, Name => Error_File_Path);
       end if;
       Append(Source => Error_Text, New_Item => Current_Time & LF);
-      Append(Source => Error_Text, New_Item => "1.6" & LF);
+      Append(Source => Error_Text, New_Item => Version_Number & LF);
       Append
         (Source => Error_Text,
          New_Item => "Exception: " & Exception_Name(X => An_Exception) & LF);
