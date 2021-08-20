@@ -23,6 +23,8 @@ with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with AboutDialog; use AboutDialog;
 with AboutDialog.UI; use AboutDialog.UI;
 with ActivateItems;
 with ActivateItems.UI; use ActivateItems.UI;
@@ -137,6 +139,9 @@ package body MainWindow is
 
    procedure CreateMainWindow(Directory: String) is
    begin
+      -- Load translations
+      Mc_Load(DirName => "../share/hunter/translations", Interp => Interpreter);
+      Set_About_Dialog_Information(Interp => Interpreter);
       ActivateItems.Add_Commands;
       CreateItems.AddCommands;
       RenameItems.AddCommands;

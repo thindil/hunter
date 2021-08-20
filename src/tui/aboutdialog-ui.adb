@@ -55,8 +55,11 @@ package body AboutDialog.UI is
       About_Fields.all(7) := New_Field(1, 13, 5, 22, 0, 0);
       Set_Buffer(About_Fields.all(7), 0, "[Translators]");
       Set_Options(About_Fields.all(7), FieldOptions);
-      About_Fields.all(8) := New_Field(1, 7, 5, 35, 0, 0);
-      Set_Buffer(About_Fields.all(8), 0, "[Close]");
+      About_Fields.all(8) :=
+        New_Field
+          (1, Column_Position(Length(Source => Close_Text) + 2), 5, 35, 0, 0);
+      Set_Buffer
+        (About_Fields.all(8), 0, "[" & To_String(Source => Close_Text) & "]");
       Set_Options(About_Fields.all(8), FieldOptions);
       About_Fields.all(9) := Null_Field;
       DialogForm := New_Form(About_Fields);
@@ -84,20 +87,20 @@ package body AboutDialog.UI is
    begin
       About_Fields.all(1) := New_Field(1, 44, 0, 1, 0, 0);
       if Developers then
-         Set_Buffer
-           (About_Fields.all(1), 0, "Bartek Jasicki <thindil@laeran.pl>");
+         Set_Buffer(About_Fields.all(1), 0, Programmer);
       else
-         Set_Buffer
-           (About_Fields.all(1), 0,
-            "Polski - Bartek Jasicki <thindil@laeran.pl>");
+         Set_Buffer(About_Fields.all(1), 0, Translator);
       end if;
       FieldOptions := Get_Options(About_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(About_Fields.all(1), FieldOptions);
-      About_Fields.all(2) := New_Field(1, 7, 2, 10, 0, 0);
+      About_Fields.all(2) :=
+        New_Field
+          (1, Column_Position(Length(Source => Close_Text) + 2), 2, 10, 0, 0);
       FieldOptions := Get_Options(About_Fields.all(2));
       FieldOptions.Edit := False;
-      Set_Buffer(About_Fields.all(2), 0, "[Close]");
+      Set_Buffer
+        (About_Fields.all(2), 0, "[" & To_String(Source => Close_Text) & "]");
       Set_Options(About_Fields.all(2), FieldOptions);
       About_Fields.all(3) := Null_Field;
       DialogForm := New_Form(About_Fields);
@@ -136,8 +139,7 @@ package body AboutDialog.UI is
                      ProcessId :=
                        Non_Blocking_Spawn
                          (Locate_Exec_On_Path("xdg-open").all,
-                          Argument_String_To_List
-                            ("https://www.laeran.pl/repositories/hunter/").all);
+                          Argument_String_To_List(Website).all);
                      if ProcessId = Invalid_Pid then
                         return ABOUT_FORM;
                      end if;
