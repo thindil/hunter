@@ -27,9 +27,22 @@ package body AboutDialog is
              Mc(Interp => Interp, Src_String => "{License:}") & " GNU GPLv3");
       Version :=
         To_Unbounded_String
-          (Source => Mc(Interp => Interp, Src_String => "{Version:}") & " " &
-           Version_Number & " (" &
-           Mc(Interp => Interp, Src_String => "{development}") & ")");
+          (Source =>
+             Mc(Interp => Interp, Src_String => "{Version:}") & " " &
+             Version_Number & " (" &
+             Mc(Interp => Interp, Src_String => "{development}") & ")");
+      Website_Text :=
+        To_Unbounded_String
+          (Source => Mc(Interp => Interp, Src_String => "{Website:}"));
+      Programmers_Text :=
+        To_Unbounded_String
+          (Source => Mc(Interp => Interp, Src_String => "Programmers"));
+      Translators_Text :=
+        To_Unbounded_String
+          (Source => Mc(Interp => Interp, Src_String => "Translators"));
+      Close_Text :=
+        To_Unbounded_String
+          (Source => Mc(Interp => Interp, Src_String => "Close"));
    end Set_About_Dialog_Information;
 
 end AboutDialog;

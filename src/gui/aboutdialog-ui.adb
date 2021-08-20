@@ -78,7 +78,7 @@ package body AboutDialog.UI is
         Create
           (pathName => About_Dialog & ".closebutton",
            options =>
-             "-text {" & Mc(Interp => Interp, Src_String => "Close") &
+             "-text {" & To_String(Source => Close_Text) &
              "} -command {CloseDialog " & About_Dialog & "} -underline 0");
       Main_Window: constant Tk_Toplevel :=
         Get_Main_Window(Interp => Get_Context);
@@ -136,8 +136,8 @@ package body AboutDialog.UI is
         Create
           (pathName => Frame & ".website",
            options =>
-             "-text {" & Mc(Interp => Interp, Src_String => "Website") &
-             "} -command {OpenLink https://www.laeran.pl/repositories/hunter/} -style Toolbutton");
+             "-text {" & To_String(Source => Website_Text) &
+             "} -command {OpenLink " & Website & "} -style Toolbutton");
       Tcl.Tk.Ada.Grid.Grid(Slave => Website_Button);
       Tcl.Tk.Ada.Grid.Grid
         (Slave => Frame, Options => "-row 0 -column 1 -sticky nwe");
@@ -153,12 +153,12 @@ package body AboutDialog.UI is
          Options => "-stretch true -width" & Width_Range'Image(Width - 50));
       Insert
         (TreeViewWidget => View,
-         Options => "{} end -text {Bartek Jasicki <thindil@laeran.pl>}");
+         Options => "{} end -text {" & Programmer & "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => View, Options => "-sticky nwes");
       Add
         (Notebook => Creditsbook, WindowName => Widget_Image(Win => Frame),
          Options =>
-           "-text {" & Mc(Interp => Interp, Src_String => "Programmers") &
+           "-text {" & To_String(Source => Programmers_Text) &
            "}");
       Frame := Create(pathName => Creditsbook & ".translators");
       View :=
@@ -170,13 +170,12 @@ package body AboutDialog.UI is
          Options => "-stretch true -width" & Width_Range'Image(Width - 50));
       Insert
         (TreeViewWidget => View,
-         Options =>
-           "{} end -text {Polski - Bartek Jasicki <thindil@laeran.pl>}");
+         Options => "{} end -text {" & Translator & "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => View, Options => "-sticky nwes");
       Add
         (Notebook => Creditsbook, WindowName => Widget_Image(Win => Frame),
          Options =>
-           "-text {" & Mc(Interp => Interp, Src_String => "Translators") &
+           "-text {" & To_String(Source => Translators_Text) &
            "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Close_Button, Options => "-columnspan 2");
       Bind

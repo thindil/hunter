@@ -31,5 +31,12 @@ private
    Copyright: constant String := "© Bartek Jasicki 2019-2021";
    License: Unbounded_String;
    Version: Unbounded_String;
+   Website: constant String := "https://www.laeran.pl/repositories/hunter/";
+   Website_Text: Unbounded_String;
+   Programmer: constant String := "Bartek Jasicki <thindil@laeran.pl>";
+   Programmers_Text: Unbounded_String;
+   Translator: constant String := "Polski - Bartek Jasicki <thindil@laeran.pl>";
+   Translators_Text: Unbounded_String;
+   Close_Text: Unbounded_String;
 
 end AboutDialog;
