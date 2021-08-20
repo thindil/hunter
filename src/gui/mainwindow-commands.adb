@@ -87,20 +87,32 @@ package body MainWindow.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
       Directory_Tree: Ttk_Tree_View :=
-        Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
+        Get_Widget
+          (pathName => ".mainframe.paned.directoryframe.directorytree",
+           Interp => Interp);
    begin
-      Heading(Directory_Tree, "name", "-image {}");
-      Heading(Directory_Tree, "modified", "-image {}");
-      Heading(Directory_Tree, "size", "-image {}");
-      if CArgv.Arg(Argv, 1) = "name" then
+      Heading
+        (TreeViewWidget => Directory_Tree, Column => "name",
+         Options => "-image {}");
+      Heading
+        (TreeViewWidget => Directory_Tree, Column => "modified",
+         Options => "-image {}");
+      Heading
+        (TreeViewWidget => Directory_Tree, Column => "size",
+         Options => "-image {}");
+      if CArgv.Arg(Argv => Argv, N => 1) = "name" then
          if Sort_Order = NAMEASC then
             Sort_Order := NAMEDESC;
-            Heading(Directory_Tree, "name", "-image {arrow-up}");
+            Heading
+              (TreeViewWidget => Directory_Tree, Column => "name",
+               Options => "-image {arrow-up}");
          else
             Sort_Order := NAMEASC;
-            Heading(Directory_Tree, "name", "-image {arrow-down}");
+            Heading
+              (TreeViewWidget => Directory_Tree, Column => "name",
+               Options => "-image {arrow-down}");
          end if;
-      elsif CArgv.Arg(Argv, 1) = "modified" then
+      elsif CArgv.Arg(Argv => Argv, N => 1) = "modified" then
          if Sort_Order = MODIFIEDASC then
             Sort_Order := MODIFIEDDESC;
             Heading(Directory_Tree, "modified", "-image {arrow-up}");
