@@ -35,14 +35,18 @@ package body AboutDialog.UI is
       FieldOptions := Get_Options(About_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(About_Fields.all(1), FieldOptions);
-      About_Fields.all(2) := New_Field(1, 26, 1, 4, 0, 0);
-      Set_Buffer(About_Fields.all(2), 0, "© Bartek Jasicki 2019-2021");
+      About_Fields.all(2) :=
+        New_Field
+          (1, Column_Position(AboutDialog.Copyright'Length), 1, 4, 0, 0);
+      Set_Buffer(About_Fields.all(2), 0, AboutDialog.Copyright);
       Set_Options(About_Fields.all(2), FieldOptions);
-      About_Fields.all(3) := New_Field(1, 18, 2, 8, 0, 0);
-      Set_Buffer(About_Fields.all(3), 0, "License: GNU GPLv3");
+      About_Fields.all(3) :=
+        New_Field(1, Column_Position(Length(AboutDialog.License)), 2, 8, 0, 0);
+      Set_Buffer(About_Fields.all(3), 0, To_String(AboutDialog.License));
       Set_Options(About_Fields.all(3), FieldOptions);
-      About_Fields.all(4) := New_Field(1, 26, 3, 4, 0, 0);
-      Set_Buffer(About_Fields.all(4), 0, "Version: 1.7 (development)");
+      About_Fields.all(4) :=
+        New_Field(1, Column_Position(Length(AboutDialog.Version)), 3, 4, 0, 0);
+      Set_Buffer(About_Fields.all(4), 0, To_String(AboutDialog.Version));
       Set_Options(About_Fields.all(4), FieldOptions);
       About_Fields.all(5) := New_Field(1, 9, 5, 0, 0, 0);
       Set_Buffer(About_Fields.all(5), 0, "[Website]");
