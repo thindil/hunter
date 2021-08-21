@@ -115,25 +115,35 @@ package body MainWindow.Commands is
       elsif CArgv.Arg(Argv => Argv, N => 1) = "modified" then
          if Sort_Order = MODIFIEDASC then
             Sort_Order := MODIFIEDDESC;
-            Heading(Directory_Tree, "modified", "-image {arrow-up}");
+            Heading
+              (TreeViewWidget => Directory_Tree, Column => "modified",
+               Options => "-image {arrow-up}");
          else
             Sort_Order := MODIFIEDASC;
-            Heading(Directory_Tree, "modified", "-image {arrow-down}");
+            Heading
+              (TreeViewWidget => Directory_Tree, Column => "modified",
+               Options => "-image {arrow-down}");
          end if;
-      elsif CArgv.Arg(Argv, 1) = "size" then
+      elsif CArgv.Arg(Argv => Argv, N => 1) = "size" then
          if Sort_Order = SIZEASC then
             Sort_Order := SIZEDESC;
-            Heading(Directory_Tree, "size", "-image {arrow-up}");
+            Heading
+              (TreeViewWidget => Directory_Tree, Column => "size",
+               Options => "-image {arrow-up}");
          else
             Sort_Order := SIZEASC;
-            Heading(Directory_Tree, "size", "-image {arrow-down}");
+            Heading
+              (TreeViewWidget => Directory_Tree, Column => "size",
+               Options => "-image {arrow-down}");
          end if;
-      elsif CArgv.Arg(Argv, 1) = "previewname" then
+      elsif CArgv.Arg(Argv => Argv, N => 1) = "previewname" then
          Directory_Tree.Name :=
-           New_String(".mainframe.paned.previewframe.directorytree");
+           New_String(Str => ".mainframe.paned.previewframe.directorytree");
          if Sort_Order = NAMEASC then
             Sort_Order := NAMEDESC;
-            Heading(Directory_Tree, "name", "-image {arrow-up}");
+            Heading
+              (TreeViewWidget => Directory_Tree, Column => "name",
+               Options => "-image {arrow-up}");
          else
             Sort_Order := NAMEASC;
             Heading(Directory_Tree, "name", "-image {arrow-down}");
