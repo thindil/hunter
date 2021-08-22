@@ -70,7 +70,7 @@ package body AboutDialog.UI is
       Set_Options(About_Fields.all(6), FieldOptions);
       FieldPosition :=
         FieldPosition + Column_Position(Length(AboutDialog.Programmers_Text)) +
-        1;
+        2;
       About_Fields.all(7) := New_Field(1, 13, 5, FieldPosition, 0, 0);
       Set_Buffer(About_Fields.all(7), 0, "[Translators]");
       Set_Options(About_Fields.all(7), FieldOptions);
