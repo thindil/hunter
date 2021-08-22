@@ -33,7 +33,7 @@ package body AboutDialog is
              Mc(Interp => Interp, Src_String => "{development}") & ")");
       Website_Text :=
         To_Unbounded_String
-          (Source => Mc(Interp => Interp, Src_String => "{Website:}"));
+          (Source => Mc(Interp => Interp, Src_String => "{Website}"));
       Programmers_Text :=
         To_Unbounded_String
           (Source => Mc(Interp => Interp, Src_String => "Programmers"));
