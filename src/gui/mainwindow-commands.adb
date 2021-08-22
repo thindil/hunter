@@ -146,14 +146,16 @@ package body MainWindow.Commands is
                Options => "-image {arrow-up}");
          else
             Sort_Order := NAMEASC;
-            Heading(Directory_Tree, "name", "-image {arrow-down}");
+            Heading
+              (TreeViewWidget => Directory_Tree, Column => "name",
+               Options => "-image {arrow-down}");
          end if;
-         Items_Sorting.Sort(Second_Items_List);
-         Update_Directory_List(True, "preview");
+         Items_Sorting.Sort(Container => Second_Items_List);
+         Update_Directory_List(Clear => True, Frame_Name => "preview");
          return TCL_OK;
       end if;
-      Items_Sorting.Sort(Items_List);
-      Update_Directory_List(True);
+      Items_Sorting.Sort(Container => Items_List);
+      Update_Directory_List(Clear => True);
       return TCL_OK;
    end Sort_Command;
 
@@ -161,24 +163,24 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Save preferences and clear trash on exit from the program
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
    -- COMMANDS
    -- Quit
    -- SOURCE
-   procedure Quit_Command(ClientData: Integer) with
+   procedure Quit_Command(Client_Data: Integer) with
       Convention => C;
       -- ****
 
-   procedure Quit_Command(ClientData: Integer) is
-      pragma Unreferenced(ClientData);
-      MainWindow: constant Tk_Toplevel := Get_Main_Window(Get_Context);
-      ErrorButton: constant Ttk_Button := Get_Widget(".errorbutton");
+   procedure Quit_Command(Client_Data: Integer) is
+      pragma Unreferenced(Client_Data);
+      Main_Window: constant Tk_Toplevel := Get_Main_Window(Get_Context);
+      Error_Button: constant Ttk_Button := Get_Widget(".errorbutton");
    begin
-      if Winfo_Get(ErrorButton, "exists") = "0" then
+      if Winfo_Get(Error_Button, "exists") = "0" then
          Settings.Window_Width :=
-           Positive'Value(Winfo_Get(MainWindow, "width"));
+           Positive'Value(Winfo_Get(Main_Window, "width"));
          Settings.Window_Height :=
-           Positive'Value(Winfo_Get(MainWindow, "height"));
+           Positive'Value(Winfo_Get(Main_Window, "height"));
       end if;
       Save_Preferences;
       Execute_Modules(On_Quit);
