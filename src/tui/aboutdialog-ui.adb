@@ -27,6 +27,7 @@ package body AboutDialog.UI is
       FormLength: Column_Position;
       Visibility: Cursor_Visibility := Normal;
       FieldOptions: Field_Option_Set;
+      FieldPosition: Column_Position := 0;
    begin
       Set_Cursor_Visibility(Visibility);
       About_Fields.all(1) := New_Field(1, 36, 0, 1, 0, 0);
@@ -48,15 +49,29 @@ package body AboutDialog.UI is
         New_Field(1, Column_Position(Length(AboutDialog.Version)), 3, 4, 0, 0);
       Set_Buffer(About_Fields.all(4), 0, To_String(AboutDialog.Version));
       Set_Options(About_Fields.all(4), FieldOptions);
-      About_Fields.all(5) := New_Field(1, 9, 5, 0, 0, 0);
-      Set_Buffer(About_Fields.all(5), 0, "[Website]");
+      About_Fields.all(5) :=
+        New_Field
+          (1, Column_Position(Length(AboutDialog.Website_Text)) + 2, 5,
+           FieldPosition, 0, 0);
+      Set_Buffer
+        (About_Fields.all(5), 0,
+         "[" & To_String(AboutDialog.Website_Text) & "]");
       FieldOptions := Get_Options(About_Fields.all(5));
       FieldOptions.Edit := False;
       Set_Options(About_Fields.all(5), FieldOptions);
-      About_Fields.all(6) := New_Field(1, 13, 5, 9, 0, 0);
-      Set_Buffer(About_Fields.all(6), 0, "[Programmers]");
+      FieldPosition := Column_Position(Length(AboutDialog.Website_Text)) + 2;
+      About_Fields.all(6) :=
+        New_Field
+          (1, Column_Position(Length(AboutDialog.Programmers_Text)) + 2, 5,
+           FieldPosition, 0, 0);
+      Set_Buffer
+        (About_Fields.all(6), 0,
+         "[" & To_String(AboutDialog.Programmers_Text) & "]");
       Set_Options(About_Fields.all(6), FieldOptions);
-      About_Fields.all(7) := New_Field(1, 13, 5, 22, 0, 0);
+      FieldPosition :=
+        FieldPosition + Column_Position(Length(AboutDialog.Programmers_Text)) +
+        1;
+      About_Fields.all(7) := New_Field(1, 13, 5, FieldPosition, 0, 0);
       Set_Buffer(About_Fields.all(7), 0, "[Translators]");
       Set_Options(About_Fields.all(7), FieldOptions);
       About_Fields.all(8) :=
