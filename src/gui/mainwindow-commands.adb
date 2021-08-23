@@ -173,17 +173,19 @@ package body MainWindow.Commands is
 
    procedure Quit_Command(Client_Data: Integer) is
       pragma Unreferenced(Client_Data);
-      Main_Window: constant Tk_Toplevel := Get_Main_Window(Get_Context);
-      Error_Button: constant Ttk_Button := Get_Widget(".errorbutton");
+      Main_Window: constant Tk_Toplevel :=
+        Get_Main_Window(Interp => Get_Context);
+      Error_Button: constant Ttk_Button :=
+        Get_Widget(pathName => ".errorbutton");
    begin
-      if Winfo_Get(Error_Button, "exists") = "0" then
+      if Winfo_Get(Widgt => Error_Button, Info => "exists") = "0" then
          Settings.Window_Width :=
-           Positive'Value(Winfo_Get(Main_Window, "width"));
+           Positive'Value(Winfo_Get(Widgt => Main_Window, Info => "width"));
          Settings.Window_Height :=
-           Positive'Value(Winfo_Get(Main_Window, "height"));
+           Positive'Value(Winfo_Get(Widgt => Main_Window, Info => "height"));
       end if;
       Save_Preferences;
-      Execute_Modules(On_Quit);
+      Execute_Modules(State => On_Quit);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
          if Delete_Selected then
@@ -198,32 +200,36 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Hide text entry or message, depends on which is visible
    -- PARAMETERS
-   -- ClientData - Custom data send to the command.
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command.
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command.
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command.
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- HideWidget
    -- SOURCE
    function Hide_Widget_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Hide_Widget_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      Frame: Ttk_Frame := Get_Widget(".mainframe.message", Interp);
+      Frame: Ttk_Frame :=
+        Get_Widget(pathName => ".mainframe.message", Interp => Interp);
       Button: Ttk_Button :=
-        Get_Widget(".mainframe.toolbars.actiontoolbar.searchbutton", Interp);
-      TextEntry: constant Ttk_Entry :=
-        Get_Widget(".mainframe.textframe.textentry", Interp);
+        Get_Widget
+          (pathName => ".mainframe.toolbars.actiontoolbar.searchbutton",
+           Interp => Interp);
+      Text_Entry: constant Ttk_Entry :=
+        Get_Widget
+          (pathName => ".mainframe.textframe.textentry", Interp => Interp);
    begin
       if Winfo_Get(Frame, "ismapped") = "1" then
-         return Close_Command(ClientData, Interp, Argc, Argv);
+         return Close_Command(Client_Data, Interp, Argc, Argv);
       end if;
       Frame.Name := New_String(".mainframe.textframe");
       if Winfo_Get(Frame, "ismapped") = "1" then
@@ -242,7 +248,7 @@ package body MainWindow.Commands is
             State(Button, "!selected");
             New_Action := COPY;
          end if;
-         Delete(TextEntry, "0", "end");
+         Delete(Text_Entry, "0", "end");
          Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
          return TCL_OK;
       end if;
@@ -250,7 +256,7 @@ package body MainWindow.Commands is
         New_String(".mainframe.paned.previewframe.infoframe.applicationsmenu");
       if Winfo_Get(Frame, "ismapped") = "1" then
          return
-           Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
+           Toggle_Applications_Menu_Command(Client_Data, Interp, Argc, Argv);
       end if;
       return TCL_OK;
    end Hide_Widget_Command;
