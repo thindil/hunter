@@ -1,3 +1,2 @@
 pragma Restrictions (No_Obsolescent_Features);
 pragma Assertion_Policy (Check);
-pragma Wide_Character_Encoding (UTF8);
