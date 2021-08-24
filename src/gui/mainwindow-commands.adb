@@ -228,24 +228,27 @@ package body MainWindow.Commands is
         Get_Widget
           (pathName => ".mainframe.textframe.textentry", Interp => Interp);
    begin
-      if Winfo_Get(Frame, "ismapped") = "1" then
-         return Close_Command(Client_Data, Interp, Argc, Argv);
+      if Winfo_Get(Widgt => Frame, Info => "ismapped") = "1" then
+         return
+           Close_Command
+             (ClientData => Client_Data, Interp => Interp, Argc => Argc,
+              Argv => Argv);
       end if;
-      Frame.Name := New_String(".mainframe.textframe");
-      if Winfo_Get(Frame, "ismapped") = "1" then
-         State(Button, "!selected");
+      Frame.Name := New_String(Str => ".mainframe.textframe");
+      if Winfo_Get(Widgt => Frame, Info => "ismapped") = "1" then
+         State(Widget => Button, StateSpec => "!selected");
          Button.Name :=
-           New_String(".mainframe.toolbars.itemtoolbar.openwithbutton");
-         State(Button, "!selected");
+           New_String(Str => ".mainframe.toolbars.itemtoolbar.openwithbutton");
+         State(Widget => Button, StateSpec => "!selected");
          Button.Name :=
-           New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
-         Toggle_Tool_Buttons(New_Action, True);
+           New_String(Str => ".mainframe.toolbars.actiontoolbar.renamebutton");
+         Toggle_Tool_Buttons(Action => New_Action, Finished => True);
          if New_Action = CREATELINK then
             New_Action := COPY;
             ShowPreview;
          end if;
-         if State(Button) = "selected" then
-            State(Button, "!selected");
+         if State(Widget => Button) = "selected" then
+            State(Widget => Button, StateSpec => "!selected");
             New_Action := COPY;
          end if;
          Delete(Text_Entry, "0", "end");
