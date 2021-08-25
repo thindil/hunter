@@ -251,15 +251,19 @@ package body MainWindow.Commands is
             State(Widget => Button, StateSpec => "!selected");
             New_Action := COPY;
          end if;
-         Delete(Text_Entry, "0", "end");
-         Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
+         Delete
+           (TextEntry => Text_Entry, FirstIndex => "0", LastIndex => "end");
+         Tcl.Tk.Ada.Grid.Grid_Remove(Slave => Frame);
          return TCL_OK;
       end if;
       Frame.Name :=
-        New_String(".mainframe.paned.previewframe.infoframe.applicationsmenu");
-      if Winfo_Get(Frame, "ismapped") = "1" then
+        New_String
+          (Str => ".mainframe.paned.previewframe.infoframe.applicationsmenu");
+      if Winfo_Get(Widgt => Frame, Info => "ismapped") = "1" then
          return
-           Toggle_Applications_Menu_Command(Client_Data, Interp, Argc, Argv);
+           Toggle_Applications_Menu_Command
+             (ClientData => Client_Data, Interp => Interp, Argc => Argc,
+              Argv => Argv);
       end if;
       return TCL_OK;
    end Hide_Widget_Command;
@@ -278,23 +282,29 @@ package body MainWindow.Commands is
    -- ToggleSelection
    -- SOURCE
    function Toggle_Selection_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Toggle_Selection_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+      pragma Unreferenced(Client_Data, Argc, Argv);
       Directory_Tree: constant Ttk_Tree_View :=
-        Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
+        Get_Widget
+          (pathName => ".mainframe.paned.directoryframe.directorytree",
+           Interp => Interp);
    begin
-      if Selection(Directory_Tree) = Children(Directory_Tree, "{}") then
+      if Selection(TreeViewWidget => Directory_Tree) =
+        Children(TreeViewWidget => Directory_Tree, Item => "{}") then
          Update_Directory_List;
       else
          Selection_Set
-           (Directory_Tree, "[list " & Children(Directory_Tree, "{}") & " ]");
+           (TreeViewWidget => Directory_Tree,
+            Items =>
+              "[list " &
+              Children(TreeViewWidget => Directory_Tree, Item => "{}") & " ]");
       end if;
       return TCL_OK;
    end Toggle_Selection_Command;
