@@ -72,12 +72,21 @@ package body AboutDialog.UI is
       FieldPosition :=
         FieldPosition +
         Column_Position'Value(Mc_Max("{Programmers}", Interpreter)) + 2;
-      About_Fields.all(7) := New_Field(1, 13, 5, FieldPosition, 0, 0);
-      Set_Buffer(About_Fields.all(7), 0, "[Translators]");
+      About_Fields.all(7) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("{Translators}", Interpreter)) + 2,
+           5, FieldPosition, 0, 0);
+      Set_Buffer
+        (About_Fields.all(7), 0,
+         "[" & To_String(AboutDialog.Translators_Text) & "]");
       Set_Options(About_Fields.all(7), FieldOptions);
+      FieldPosition :=
+        FieldPosition +
+        Column_Position'Value(Mc_Max("{Translators}", Interpreter)) + 2;
       About_Fields.all(8) :=
         New_Field
-          (1, Column_Position(Length(Source => Close_Text) + 2), 5, 35, 0, 0);
+          (1, Column_Position'Value(Mc_Max("{Close}", Interpreter)) + 2, 5,
+           FieldPosition, 0, 0);
       Set_Buffer
         (About_Fields.all(8), 0, "[" & To_String(Source => Close_Text) & "]");
       Set_Options(About_Fields.all(8), FieldOptions);
