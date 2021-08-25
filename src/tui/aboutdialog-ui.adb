@@ -15,6 +15,7 @@
 
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 
 package body AboutDialog.UI is
 
@@ -62,15 +63,15 @@ package body AboutDialog.UI is
       FieldPosition := Column_Position(Length(AboutDialog.Website_Text)) + 2;
       About_Fields.all(6) :=
         New_Field
-          (1, Column_Position(Length(AboutDialog.Programmers_Text)) + 2, 5,
-           FieldPosition, 0, 0);
+          (1, Column_Position'Value(Mc_Max("{Programmers}", Interpreter)) + 2,
+           5, FieldPosition, 0, 0);
       Set_Buffer
         (About_Fields.all(6), 0,
          "[" & To_String(AboutDialog.Programmers_Text) & "]");
       Set_Options(About_Fields.all(6), FieldOptions);
       FieldPosition :=
-        FieldPosition + Column_Position(Length(AboutDialog.Programmers_Text)) +
-        2;
+        FieldPosition +
+        Column_Position'Value(Mc_Max("{Programmers}", Interpreter)) + 2;
       About_Fields.all(7) := New_Field(1, 13, 5, FieldPosition, 0, 0);
       Set_Buffer(About_Fields.all(7), 0, "[Translators]");
       Set_Options(About_Fields.all(7), FieldOptions);
