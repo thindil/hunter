@@ -239,7 +239,7 @@ package body Messages is
          To_Unbounded_String(MessageFrame & ".buttonsbox.buttonclose"));
       Button: Ttk_Button;
    begin
-      if MessageFrame.Interp = null then
+      if MessageFrame.Name = Null_Ptr then
          return;
       end if;
       Button.Interp := MessageLabel.Interp;
