@@ -16,6 +16,7 @@
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with ShowItems; use ShowItems;
 
 package body AboutDialog.UI is
 
@@ -176,6 +177,7 @@ package body AboutDialog.UI is
                when 6 | 7 =>
                   Post(DialogForm, False);
                   Delete(DialogForm);
+                  ShowPreview;
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List;
                   if FieldIndex = 6 then
@@ -188,6 +190,7 @@ package body AboutDialog.UI is
                   Set_Cursor_Visibility(Visibility);
                   Post(DialogForm, False);
                   Delete(DialogForm);
+                  ShowPreview;
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List;
                   return DIRECTORY_VIEW;
@@ -210,6 +213,7 @@ package body AboutDialog.UI is
          Set_Cursor_Visibility(Visibility);
          Post(DialogForm, False);
          Delete(DialogForm);
+         ShowPreview;
          UILocation := DIRECTORY_VIEW;
          Update_Directory_List;
          return DIRECTORY_VIEW;
