@@ -11,7 +11,8 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Don't auto hide questions or confirmation messages in graphical version
-- Refresh preview after canceling deleting items in console version
+- Refresh preview after canceling deleting items, closing about dialog in
+  console version
 
 ## [1.6] - 2021-08-08
 
