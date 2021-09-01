@@ -325,26 +325,27 @@ package body MainWindow.Commands is
    -- be resized. Width is the new width for the buttonsframe
    -- SOURCE
    function Arrange_Path_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Arrange_Path_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
-      PathButtonsFrame: constant Ttk_Frame :=
-        Get_Widget(CArgv.Arg(Argv, 1), Interp);
+      pragma Unreferenced(Client_Data, Argc);
+      Path_Buttons_Frame: constant Ttk_Frame :=
+        Get_Widget
+          (pathName => CArgv.Arg(Argv => Argv, N => 1), Interp => Interp);
       Buttons: Unbounded_String;
       Tokens: Slice_Set;
       Row, Column, Width: Natural := 0;
-      Button: Ttk_Button;
-      PreviewCanvas: constant Ttk_Frame :=
+      Button: Ttk_Button; --## rule line off IMPROPER_INITIALIZATION
+      Preview_Canvas: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned.previewframe.previewcanvas", Interp);
    begin
       Buttons :=
-        To_Unbounded_String(Tcl.Tk.Ada.Grid.Grid_Slaves(PathButtonsFrame));
+        To_Unbounded_String(Tcl.Tk.Ada.Grid.Grid_Slaves(Path_Buttons_Frame));
       if Buttons = Null_Unbounded_String then
          return TCL_OK;
       end if;
@@ -365,7 +366,7 @@ package body MainWindow.Commands is
          Column := Column + 1;
       end loop Arrange_Buttons_Loop;
       if (Settings.Scale_Images and Settings.Show_Preview)
-        and then Winfo_Get(PreviewCanvas, "ismapped") = "1" then
+        and then Winfo_Get(Preview_Canvas, "ismapped") = "1" then
          ScaleImage;
       end if;
       return TCL_OK;
