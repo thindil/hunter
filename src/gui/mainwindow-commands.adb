@@ -342,31 +342,40 @@ package body MainWindow.Commands is
       Row, Column, Width: Natural := 0;
       Button: Ttk_Button; --## rule line off IMPROPER_INITIALIZATION
       Preview_Canvas: constant Ttk_Frame :=
-        Get_Widget(".mainframe.paned.previewframe.previewcanvas", Interp);
+        Get_Widget
+          (pathName => ".mainframe.paned.previewframe.previewcanvas",
+           Interp => Interp);
    begin
       Buttons :=
-        To_Unbounded_String(Tcl.Tk.Ada.Grid.Grid_Slaves(Path_Buttons_Frame));
+        To_Unbounded_String
+          (Source =>
+             Tcl.Tk.Ada.Grid.Grid_Slaves(Master => Path_Buttons_Frame));
       if Buttons = Null_Unbounded_String then
          return TCL_OK;
       end if;
-      Create(Tokens, To_String(Buttons), " ");
+      Create
+        (S => Tokens, From => To_String(Source => Buttons), Separators => " ");
       Button.Interp := Interp;
       Arrange_Buttons_Loop :
-      for I in reverse 1 .. Slice_Count(Tokens) loop
-         Button.Name := New_String(Slice(Tokens, I));
-         Width := Width + Positive'Value(Winfo_Get(Button, "width"));
-         if Width > Positive'Value(CArgv.Arg(Argv, 2)) then
+      for I in reverse 1 .. Slice_Count(S => Tokens) loop
+         Button.Name := New_String(Str => Slice(S => Tokens, Index => I));
+         Width :=
+           Width + Positive'Value(Winfo_Get(Widgt => Button, Info => "width"));
+         if Width > Positive'Value(CArgv.Arg(Argv => Argv, N => 2)) then
             Row := Row + 1;
             Width := 0;
             Column := 0;
          end if;
          Tcl.Tk.Ada.Grid.Grid_Configure
-           (Button,
-            "-row" & Natural'Image(Row) & " -column" & Natural'Image(Column));
+           (Slave => Button,
+            Options =>
+              "-row" & Natural'Image(Row) & " -column" &
+              Natural'Image(Column));
          Column := Column + 1;
       end loop Arrange_Buttons_Loop;
       if (Settings.Scale_Images and Settings.Show_Preview)
-        and then Winfo_Get(Preview_Canvas, "ismapped") = "1" then
+        and then Winfo_Get(Widgt => Preview_Canvas, Info => "ismapped") =
+          "1" then
          ScaleImage;
       end if;
       return TCL_OK;
