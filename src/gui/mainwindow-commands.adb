@@ -395,32 +395,31 @@ package body MainWindow.Commands is
    -- CancelAction
    -- SOURCE
    function Cancel_Action_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Cancel_Action_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      ActionButton: Ttk_Button;
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      Action_Button: Ttk_Button :=
+        Get_Widget
+          (pathName => ".mainframe.toolbars.actiontoolbar.copybutton",
+           Interp => Interp);
    begin
       Toggle_Tool_Buttons(New_Action, True);
-      ActionButton.Interp := Interp;
       if New_Action = COPY then
          Copy_Items_List.Clear;
-         ActionButton.Name :=
-           New_String(".mainframe.toolbars.actiontoolbar.copybutton");
-         ShowPreview;
       elsif New_Action = MOVE then
          MoveItemsList.Clear;
-         ActionButton.Name :=
+         Action_Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.movebutton");
-         ShowPreview;
       end if;
-      if State(ActionButton) = "selected" then
-         State(ActionButton, "!selected");
+      ShowPreview;
+      if State(Action_Button) = "selected" then
+         State(Action_Button, "!selected");
       end if;
       Unbind_From_Main_Window(Interp, "<Escape>");
       return TCL_OK;
