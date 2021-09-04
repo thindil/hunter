@@ -410,18 +410,22 @@ package body MainWindow.Commands is
            Interp => Interp);
    begin
       Toggle_Tool_Buttons(New_Action, True);
-      if New_Action = COPY then
-         Copy_Items_List.Clear;
-      elsif New_Action = MOVE then
-         MoveItemsList.Clear;
-         Action_Button.Name :=
-           New_String(".mainframe.toolbars.actiontoolbar.movebutton");
-      end if;
+      case New_Action is
+         when COPY =>
+            Copy_Items_List.Clear;
+         when MOVE =>
+            MoveItemsList.Clear;
+            Action_Button.Name :=
+              New_String
+                (Str => ".mainframe.toolbars.actiontoolbar.movebutton");
+         when others =>
+            return TCL_OK;
+      end case;
       ShowPreview;
-      if State(Action_Button) = "selected" then
-         State(Action_Button, "!selected");
+      if State(Widget => Action_Button) = "selected" then
+         State(Widget => Action_Button, StateSpec => "!selected");
       end if;
-      Unbind_From_Main_Window(Interp, "<Escape>");
+      Unbind_From_Main_Window(Interp => Interp, Sequence => "<Escape>");
       return TCL_OK;
    end Cancel_Action_Command;
 
@@ -441,18 +445,18 @@ package body MainWindow.Commands is
    -- will be show
    -- SOURCE
    function Show_File_Menu_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_File_Menu_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
-      FileMenu: constant Tk_Menu := Get_Widget(".filemenu", Interp);
+      pragma Unreferenced(Client_Data, Argc);
+      File_Menu: constant Tk_Menu := Get_Widget(".filemenu", Interp);
       Button: Ttk_Button;
-      ButtonsNames: constant array(Positive range <>) of Unbounded_String :=
+      Buttons_Names: constant array(Positive range <>) of Unbounded_String :=
         (To_Unbounded_String("itemtoolbar.runbutton"),
          To_Unbounded_String("itemtoolbar.openbutton"),
          To_Unbounded_String("itemtoolbar.openwithbutton"),
@@ -461,7 +465,7 @@ package body MainWindow.Commands is
          To_Unbounded_String("actiontoolbar.movebutton"),
          To_Unbounded_String("actiontoolbar.deletebutton"),
          To_Unbounded_String("actiontoolbar.selectbutton"));
-      MenuLabels: constant array(ButtonsNames'Range) of Unbounded_String :=
+      Menu_Labels: constant array(Buttons_Names'Range) of Unbounded_String :=
         (To_Unbounded_String(Mc(Interp, "{Execute}")),
          To_Unbounded_String(Mc(Interp, "{Open}")),
          To_Unbounded_String(Mc(Interp, "{Open with...}")),
@@ -471,27 +475,27 @@ package body MainWindow.Commands is
          To_Unbounded_String(Mc(Interp, "{Delete}")),
          To_Unbounded_String(Mc(Interp, "{Select/Deselect all}")));
    begin
-      Delete(FileMenu, "0", "end");
+      Delete(File_Menu, "0", "end");
       Button.Interp := Interp;
       Update_File_Menu_Loop :
-      for I in ButtonsNames'Range loop
+      for I in Buttons_Names'Range loop
          Button.Name :=
-           New_String(".mainframe.toolbars." & To_String(ButtonsNames(I)));
+           New_String(".mainframe.toolbars." & To_String(Buttons_Names(I)));
          if Winfo_Get(Button, "ismapped") = "1" then
             if I /= 7 then
                Add
-                 (FileMenu, "command",
-                  "-label {" & To_String(MenuLabels(I)) & "} -command {" &
+                 (File_Menu, "command",
+                  "-label {" & To_String(Menu_Labels(I)) & "} -command {" &
                   Widget_Image(Button) & " invoke}");
             else
                Add
-                 (FileMenu, "command",
-                  "-label {" & To_String(MenuLabels(I)) &
+                 (File_Menu, "command",
+                  "-label {" & To_String(Menu_Labels(I)) &
                   "} -command {.deletemenu invoke 0}");
             end if;
          end if;
       end loop Update_File_Menu_Loop;
-      Tk_Popup(FileMenu, CArgv.Arg(Argv, 1), CArgv.Arg(Argv, 2));
+      Tk_Popup(File_Menu, CArgv.Arg(Argv, 1), CArgv.Arg(Argv, 2));
       return TCL_OK;
    end Show_File_Menu_Command;
 
