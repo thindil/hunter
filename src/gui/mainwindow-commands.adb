@@ -409,7 +409,7 @@ package body MainWindow.Commands is
           (pathName => ".mainframe.toolbars.actiontoolbar.copybutton",
            Interp => Interp);
    begin
-      Toggle_Tool_Buttons(New_Action, True);
+      Toggle_Tool_Buttons(Action => New_Action, Finished => True);
       case New_Action is
          when COPY =>
             Copy_Items_List.Clear;
@@ -454,17 +454,18 @@ package body MainWindow.Commands is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
-      File_Menu: constant Tk_Menu := Get_Widget(".filemenu", Interp);
-      Button: Ttk_Button;
-      Buttons_Names: constant array(Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String("itemtoolbar.runbutton"),
-         To_Unbounded_String("itemtoolbar.openbutton"),
-         To_Unbounded_String("itemtoolbar.openwithbutton"),
-         To_Unbounded_String("actiontoolbar.renamebutton"),
-         To_Unbounded_String("actiontoolbar.copybutton"),
-         To_Unbounded_String("actiontoolbar.movebutton"),
-         To_Unbounded_String("actiontoolbar.deletebutton"),
-         To_Unbounded_String("actiontoolbar.selectbutton"));
+      File_Menu: constant Tk_Menu :=
+        Get_Widget(pathName => ".filemenu", Interp => Interp);
+      Button: Ttk_Button; --## rule line off IMPROPER_INITIALIZATION
+      Buttons_Names: constant array(1 .. 8) of Unbounded_String :=
+        (1 => To_Unbounded_String(Source => "itemtoolbar.runbutton"),
+         2 => To_Unbounded_String(Source => "itemtoolbar.openbutton"),
+         3 => To_Unbounded_String(Source => "itemtoolbar.openwithbutton"),
+         4 => To_Unbounded_String(Source => "actiontoolbar.renamebutton"),
+         5 => To_Unbounded_String(Source => "actiontoolbar.copybutton"),
+         6 => To_Unbounded_String(Source => "actiontoolbar.movebutton"),
+         7 => To_Unbounded_String(Source => "actiontoolbar.deletebutton"),
+         8 => To_Unbounded_String(Source => "actiontoolbar.selectbutton"));
       Menu_Labels: constant array(Buttons_Names'Range) of Unbounded_String :=
         (To_Unbounded_String(Mc(Interp, "{Execute}")),
          To_Unbounded_String(Mc(Interp, "{Open}")),
