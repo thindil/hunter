@@ -467,14 +467,31 @@ package body MainWindow.Commands is
          7 => To_Unbounded_String(Source => "actiontoolbar.deletebutton"),
          8 => To_Unbounded_String(Source => "actiontoolbar.selectbutton"));
       Menu_Labels: constant array(Buttons_Names'Range) of Unbounded_String :=
-        (To_Unbounded_String(Mc(Interp, "{Execute}")),
-         To_Unbounded_String(Mc(Interp, "{Open}")),
-         To_Unbounded_String(Mc(Interp, "{Open with...}")),
-         To_Unbounded_String(Mc(Interp, "{Rename}")),
-         To_Unbounded_String(Mc(Interp, "{Copy}")),
-         To_Unbounded_String(Mc(Interp, "{Move}")),
-         To_Unbounded_String(Mc(Interp, "{Delete}")),
-         To_Unbounded_String(Mc(Interp, "{Select/Deselect all}")));
+        (1 =>
+           To_Unbounded_String
+             (Source => Mc(Interp => Interp, Src_String => "{Execute}")),
+         2 =>
+           To_Unbounded_String
+             (Source => Mc(Interp => Interp, Src_String => "{Open}")),
+         3 =>
+           To_Unbounded_String
+             (Source => Mc(Interp => Interp, Src_String => "{Open with...}")),
+         4 =>
+           To_Unbounded_String
+             (Source => Mc(Interp => Interp, Src_String => "{Rename}")),
+         5 =>
+           To_Unbounded_String
+             (Source => Mc(Interp => Interp, Src_String => "{Copy}")),
+         6 =>
+           To_Unbounded_String
+             (Source => Mc(Interp => Interp, Src_String => "{Move}")),
+         7 =>
+           To_Unbounded_String
+             (Source => Mc(Interp => Interp, Src_String => "{Delete}")),
+         8 =>
+           To_Unbounded_String
+             (Source =>
+                Mc(Interp => Interp, Src_String => "{Select/Deselect all}")));
    begin
       Delete(File_Menu, "0", "end");
       Button.Interp := Interp;
