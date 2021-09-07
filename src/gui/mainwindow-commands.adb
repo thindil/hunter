@@ -493,23 +493,28 @@ package body MainWindow.Commands is
              (Source =>
                 Mc(Interp => Interp, Src_String => "{Select/Deselect all}")));
    begin
-      Delete(File_Menu, "0", "end");
+      Delete(MenuWidget => File_Menu, StartIndex => "0", EndIndex => "end");
       Button.Interp := Interp;
       Update_File_Menu_Loop :
       for I in Buttons_Names'Range loop
          Button.Name :=
-           New_String(".mainframe.toolbars." & To_String(Buttons_Names(I)));
-         if Winfo_Get(Button, "ismapped") = "1" then
-            if I /= 7 then
+           New_String
+             (Str =>
+                ".mainframe.toolbars." &
+                To_String(Source => Buttons_Names(I)));
+         if Winfo_Get(Widgt => Button, Info => "ismapped") = "1" then
+            if I = 7 then
                Add
-                 (File_Menu, "command",
-                  "-label {" & To_String(Menu_Labels(I)) & "} -command {" &
-                  Widget_Image(Button) & " invoke}");
+                 (MenuWidget => File_Menu, EntryType => "command",
+                  Options =>
+                    "-label {" & To_String(Source => Menu_Labels(I)) &
+                    "} -command {.deletemenu invoke 0}");
             else
                Add
-                 (File_Menu, "command",
-                  "-label {" & To_String(Menu_Labels(I)) &
-                  "} -command {.deletemenu invoke 0}");
+                 (MenuWidget => File_Menu, EntryType => "command",
+                  Options =>
+                    "-label {" & To_String(Source => Menu_Labels(I)) &
+                    "} -command {" & Button & " invoke}");
             end if;
          end if;
       end loop Update_File_Menu_Loop;
