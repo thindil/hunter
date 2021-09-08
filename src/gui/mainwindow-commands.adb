@@ -518,7 +518,9 @@ package body MainWindow.Commands is
             end if;
          end if;
       end loop Update_File_Menu_Loop;
-      Tk_Popup(File_Menu, CArgv.Arg(Argv, 1), CArgv.Arg(Argv, 2));
+      Tk_Popup
+        (MenuWidget => File_Menu, X => CArgv.Arg(Argv => Argv, N => 1),
+         Y => CArgv.Arg(Argv => Argv, N => 2));
       return TCL_OK;
    end Show_File_Menu_Command;
 
@@ -537,27 +539,35 @@ package body MainWindow.Commands is
    -- Filename is the name of the file which preview will be show
    -- SOURCE
    function Show_File_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_File_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
+      pragma Unreferenced(Client_Data, Interp, Argc);
    begin
       if Ada.Directories.Exists
-          (Value("APPDIR", "") & "/usr/share/doc/hunter") then
+          (Name =>
+             Value(Name => "APPDIR", Default => "") &
+             "/usr/share/doc/hunter") then
          Current_Directory :=
-           To_Unbounded_String(Value("APPDIR", "") & "/usr/share/doc/hunter");
+           To_Unbounded_String
+             (Source =>
+                Value(Name => "APPDIR", Default => "") &
+                "/usr/share/doc/hunter");
       else
          Current_Directory :=
            To_Unbounded_String
-             (Normalize_Pathname
-                (Containing_Directory(Containing_Directory(Command_Name))));
+             (Source =>
+                Normalize_Pathname
+                  (Name =>
+                     Containing_Directory
+                       (Name => Containing_Directory(Name => Command_Name))));
       end if;
-      Load_Directory(To_String(Current_Directory));
+      Load_Directory(Directory_Name => To_String(Source => Current_Directory));
       Set_Current_Selected_Loop :
       for I in Items_List.Iterate loop
          if Items_List(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
