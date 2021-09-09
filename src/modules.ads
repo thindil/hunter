@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -13,6 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Tcl; use Tcl;
 with MainWindow; use MainWindow;
 
 -- ****h* Modules/Modules
@@ -49,19 +50,22 @@ package Modules is
    -- ****f* Modules/Modules.LoadModules
    -- FUNCTION
    -- Load all enabled modules at start the program
+   -- PARAMETERS
+   -- Interpreter - Tcl_Interpreter on which the modules will be loaded
    -- SOURCE
-   procedure LoadModules;
+   procedure LoadModules(Interpreter: Tcl_Interp);
    -- ****
 
    -- ****f* Modules/Modules.Execute_Modules
    -- FUNCTION
    -- Execute the program modules code based on the selected trigger
    -- PARAMETERS
-   -- State     - Trigger state on which the module code will be executed
-   -- Arguments - Arguments passed to the Tcl code. Can be empty. Default
-   --             value is empty
+   -- Interpreter - Tcl_Interpreter on which the modules will be executed
+   -- State       - Trigger state on which the module code will be executed
+   -- Arguments   - Arguments passed to the Tcl code. Can be empty. Default
+   --               value is empty
    -- SOURCE
-   procedure Execute_Modules(State: Triggers; Arguments: String := "");
+   procedure Execute_Modules(Interpreter: Tcl_Interp; State: Triggers; Arguments: String := "");
    -- ****
 
 end Modules;

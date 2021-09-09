@@ -19,11 +19,10 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl.Ada; use Tcl.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 
 package body Modules is
 
-   procedure LoadModules is
+   procedure LoadModules(Interpreter: Tcl_Interp) is
       FullPath: Unbounded_String;
    begin
       Load_Modules_Loop :
@@ -33,9 +32,9 @@ package body Modules is
              (Normalize_Pathname
                 (To_String(ModulePath), Containing_Directory(Command_Name)));
          begin
-            Tcl_EvalFile(Get_Context, To_String(FullPath) & "/module.tcl");
+            Tcl_EvalFile(Interpreter, To_String(FullPath) & "/module.tcl");
             Tcl_Eval
-              (Get_Context,
+              (Interpreter,
                Simple_Name(To_String(ModulePath)) & "::on_start {" &
                To_String(FullPath) & "}");
          exception
@@ -45,13 +44,14 @@ package body Modules is
       end loop Load_Modules_Loop;
    end LoadModules;
 
-   procedure Execute_Modules(State: Triggers; Arguments: String := "") is
+   procedure Execute_Modules
+     (Interpreter: Tcl_Interp; State: Triggers; Arguments: String := "") is
    begin
       Execute_Modules_Loop :
       for ModulePath of Enabled_Modules loop
          begin
             Tcl_Eval
-              (Get_Context,
+              (Interpreter,
                Simple_Name(To_String(ModulePath)) & "::" &
                To_Lower(Triggers'Image(State)) & " " & Arguments);
          exception
