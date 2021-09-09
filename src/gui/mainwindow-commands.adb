@@ -185,7 +185,7 @@ package body MainWindow.Commands is
            Positive'Value(Winfo_Get(Widgt => Main_Window, Info => "height"));
       end if;
       Save_Preferences;
-      Execute_Modules(State => On_Quit);
+      Execute_Modules(Interpreter => Get_Context, State => On_Quit);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
          if Delete_Selected then
@@ -272,10 +272,10 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Select all or deselect all items in directory view
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -313,10 +313,10 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Arrange path buttons when they window were resized
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -385,10 +385,10 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Select all or deselect all items in directory view
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK;
    -- COMMANDS
@@ -433,10 +433,10 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Show menu for the selected items in current directory
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -528,10 +528,10 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Show content of the selected file. Used in about menu
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed. Unused
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -570,12 +570,13 @@ package body MainWindow.Commands is
       Load_Directory(Directory_Name => To_String(Source => Current_Directory));
       Set_Current_Selected_Loop :
       for I in Items_List.Iterate loop
-         if Items_List(I).Name = To_Unbounded_String(CArgv.Arg(Argv, 1)) then
+         if Items_List(I).Name =
+           To_Unbounded_String(Source => CArgv.Arg(Argv => Argv, N => 1)) then
             Current_Selected := Items_List(I).Path;
             exit Set_Current_Selected_Loop;
          end if;
       end loop Set_Current_Selected_Loop;
-      Update_Directory_List(True);
+      Update_Directory_List(Clear => True);
       ShowPreview;
       return TCL_OK;
    end Show_File_Command;
@@ -584,10 +585,10 @@ package body MainWindow.Commands is
    -- FUNCTION
    -- Invoke the selected button if it is mapped
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -595,59 +596,54 @@ package body MainWindow.Commands is
    -- Buttonname is pathname of the button which will be invoked
    -- SOURCE
    function Invoke_Button_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Invoke_Button_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
+      pragma Unreferenced(Client_Data, Argc);
       Button: constant Ttk_Button := Get_Widget(CArgv.Arg(Argv, 1), Interp);
-      Menu: Tk_Menu;
+      Button_Menu: Tk_Menu;
+      Toolbar_Name: constant String := ".mainframe.toolbars.actiontoolbar";
    begin
       if Winfo_Get(Button, "ismapped") = "0" then
          return TCL_OK;
       end if;
-      Menu.Interp := Interp;
-      if CArgv.Arg(Argv, 1) =
-        ".mainframe.toolbars.actiontoolbar.bookmarksbutton" then
-         Menu.Name := New_String(".bookmarksmenu");
+      Button_Menu := Get_Widget(".bookmarksmenu", Interp);
+      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".bookmarksbutton" then
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
-      if CArgv.Arg(Argv, 1) =
-        ".mainframe.toolbars.actiontoolbar.newbutton" then
-         Menu.Name := New_String(".newmenu");
+      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".newbutton" then
+         Button_Menu.Name := New_String(".newmenu");
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
-      if CArgv.Arg(Argv, 1) =
-        ".mainframe.toolbars.actiontoolbar.deletebutton" then
-         Menu.Name := New_String(".deletemenu");
+      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".deletebutton" then
+         Button_Menu.Name := New_String(".deletemenu");
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
-      if CArgv.Arg(Argv, 1) =
-        ".mainframe.toolbars.actiontoolbar.aboutbutton" then
-         Menu.Name := New_String(".aboutmenu");
+      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".aboutbutton" then
+         Button_Menu.Name := New_String(".aboutmenu");
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
-      if CArgv.Arg(Argv, 1) =
-        ".mainframe.toolbars.actiontoolbar.userbutton" then
-         Menu.Name := New_String(".actionsmenu");
+      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".userbutton" then
+         Button_Menu.Name := New_String(".actionsmenu");
          Tk_Popup
-           (Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
+           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
             Winfo_Get(Get_Main_Window(Interp), "pointery"));
          return TCL_OK;
       end if;
