@@ -311,7 +311,7 @@ package body MainWindow is
       CreateMoveUI;
       CreateTrash;
       Create_About_Ui;
-      LoadModules;
+      LoadModules(Interpreter => Get_Context);
       SetToolbars;
       Add(Paned => Paned, SubWindow => Directory_Frame);
       Bind
@@ -416,7 +416,7 @@ package body MainWindow is
       StartTimer(Path => To_String(Source => Current_Directory));
       Update_Directory_List(Clear => True);
       Execute_Modules
-        (State => On_Enter,
+        (Interpreter => Get_Context, State => On_Enter,
          Arguments => "{" & To_String(Source => Current_Directory) & "}");
       CreateShowItemsUI;
       SashPos

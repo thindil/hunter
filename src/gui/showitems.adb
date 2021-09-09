@@ -867,7 +867,7 @@ package body ShowItems is
    -- Go to the selected directory in preview
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
@@ -885,7 +885,7 @@ package body ShowItems is
    function GoToDirectory_Command
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp);
+      pragma Unreferenced(ClientData);
       SelectedItem: Unbounded_String;
    begin
       if Argc = 2 then
@@ -905,7 +905,7 @@ package body ShowItems is
       DestinationDirectory := SelectedItem;
       Load_Directory(To_String(SelectedItem), True);
       Update_Directory_List(True, "preview");
-      Execute_Modules(On_Enter, "{" & To_String(DestinationDirectory) & "}");
+      Execute_Modules(Interp, On_Enter, "{" & To_String(DestinationDirectory) & "}");
       return TCL_OK;
    end GoToDirectory_Command;
 
