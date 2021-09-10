@@ -32,7 +32,7 @@ package body Bookmarks.Commands is
    -- Go to the selected bookmarked directory
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
@@ -51,7 +51,7 @@ package body Bookmarks.Commands is
    function GoToBookmark_Command
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
+      pragma Unreferenced(ClientData, Argc);
    begin
       if New_Action /= MOVE then
          if New_Action = CLEARTRASH then
@@ -66,7 +66,7 @@ package body Bookmarks.Commands is
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
       Load_Directory(To_String(Current_Directory));
       Update_Directory_List(True);
-      Execute_Modules(On_Enter, "{" & To_String(Current_Directory) & "}");
+      Execute_Modules(Interp, On_Enter, "{" & To_String(Current_Directory) & "}");
       return TCL_OK;
    end GoToBookmark_Command;
 

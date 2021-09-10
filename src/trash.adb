@@ -131,7 +131,7 @@ package body Trash is
    -- Go to the selected directory in Trash
    -- PARAMETERS
    -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command.
    -- RESULT
@@ -150,7 +150,7 @@ package body Trash is
    function GoToTrash_Command
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc);
+      pragma Unreferenced(ClientData, Argc);
    begin
       MainWindow.Current_Directory :=
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
@@ -163,7 +163,7 @@ package body Trash is
       Load_Directory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
       Execute_Modules
-        (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+        (Interp, On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
       return TCL_OK;
    end GoToTrash_Command;
 
