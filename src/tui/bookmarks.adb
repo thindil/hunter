@@ -211,7 +211,7 @@ package body Bookmarks is
       ShowPreview;
       UpdateWatch(To_String(MainWindow.Current_Directory));
       Execute_Modules
-        (On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+        (Interpreter, On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
       return DIRECTORY_VIEW;
    end Go_To_Bookmark;
 
@@ -254,7 +254,7 @@ package body Bookmarks is
                Load_Directory(To_String(MainWindow.Current_Directory));
                UpdateWatch(To_String(MainWindow.Current_Directory));
                Execute_Modules
-                 (On_Enter,
+                 (Interpreter, On_Enter,
                   "{" & To_String(MainWindow.Current_Directory) & "}");
             end if;
             if FieldIndex /= 2 then

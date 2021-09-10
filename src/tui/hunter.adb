@@ -59,7 +59,7 @@ procedure Hunter is
    procedure ExitFromProgram is
    begin
       Save_Preferences;
-      Execute_Modules(On_Quit);
+      Execute_Modules(Interpreter, On_Quit);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
          if DeleteSelected then

@@ -446,7 +446,7 @@ package body MainWindow is
                Update_Directory_List(True);
                UpdateWatch(To_String(MainWindow.Current_Directory));
                Execute_Modules
-                 (On_Enter,
+                 (Interpreter, On_Enter,
                   "{" & To_String(MainWindow.Current_Directory) & "}");
             end if;
             return DIRECTORY_VIEW;
