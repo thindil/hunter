@@ -605,21 +605,32 @@ package body MainWindow.Commands is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
-      Button: constant Ttk_Button := Get_Widget(CArgv.Arg(Argv, 1), Interp);
+      Button: constant Ttk_Button :=
+        Get_Widget
+          (pathName => CArgv.Arg(Argv => Argv, N => 1), Interp => Interp);
       Button_Menu: Tk_Menu;
       Toolbar_Name: constant String := ".mainframe.toolbars.actiontoolbar";
    begin
-      if Winfo_Get(Button, "ismapped") = "0" then
+      if Winfo_Get(Widgt => Button, Info => "ismapped") = "0" then
          return TCL_OK;
       end if;
-      Button_Menu := Get_Widget(".bookmarksmenu", Interp);
-      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".bookmarksbutton" then
+      Button_Menu :=
+        Get_Widget(pathName => ".bookmarksmenu", Interp => Interp);
+      if CArgv.Arg(Argv => Argv, N => 1) =
+        Toolbar_Name & ".bookmarksbutton" then
          Tk_Popup
-           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
-            Winfo_Get(Get_Main_Window(Interp), "pointery"));
+           (MenuWidget => Button_Menu,
+            X =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointerx"),
+            Y =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointery"));
          return TCL_OK;
       end if;
-      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".newbutton" then
+      if CArgv.Arg(Argv => Argv, N => 1) = Toolbar_Name & ".newbutton" then
          Button_Menu.Name := New_String(".newmenu");
          Tk_Popup
            (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
