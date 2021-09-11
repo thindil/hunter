@@ -631,17 +631,31 @@ package body MainWindow.Commands is
          return TCL_OK;
       end if;
       if CArgv.Arg(Argv => Argv, N => 1) = Toolbar_Name & ".newbutton" then
-         Button_Menu.Name := New_String(".newmenu");
+         Button_Menu.Name := New_String(Str => ".newmenu");
          Tk_Popup
-           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
-            Winfo_Get(Get_Main_Window(Interp), "pointery"));
+           (MenuWidget => Button_Menu,
+            X =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointerx"),
+            Y =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointery"));
          return TCL_OK;
       end if;
-      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".deletebutton" then
-         Button_Menu.Name := New_String(".deletemenu");
+      if CArgv.Arg(Argv => Argv, N => 1) = Toolbar_Name & ".deletebutton" then
+         Button_Menu.Name := New_String(Str => ".deletemenu");
          Tk_Popup
-           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
-            Winfo_Get(Get_Main_Window(Interp), "pointery"));
+           (MenuWidget => Button_Menu,
+            X =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointerx"),
+            Y =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointery"));
          return TCL_OK;
       end if;
       if CArgv.Arg(Argv, 1) = Toolbar_Name & ".aboutbutton" then
