@@ -19,6 +19,7 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Messages; use Messages;
 with Utils.UI; use Utils.UI;
 
@@ -36,8 +37,15 @@ package body ActivateItems.UI is
       UnusedResult: Forms.Driver_Result := Unknown_Request;
    begin
       Set_Cursor_Visibility(Visibility);
-      Create_Fields.all(1) := New_Field(1, 32, 0, 4, 0, 0);
-      Set_Buffer(Create_Fields.all(1), 0, "Enter the application to execute:");
+      Create_Fields.all(1) :=
+        New_Field
+          (1,
+           Column_Position'Value
+             (Mc_Max("{Enter the application to execute:}", Interpreter)),
+           0, 4, 0, 0);
+      Set_Buffer
+        (Create_Fields.all(1), 0,
+         Mc(Interpreter, "{Enter the application to execute:}"));
       FieldOptions := Get_Options(Create_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
@@ -46,16 +54,24 @@ package body ActivateItems.UI is
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
-      Create_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
-      Set_Buffer(Create_Fields.all(3), 0, "[Cancel]");
+      Create_Fields.all(3) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2, 2, 7,
+           0, 0);
+      Set_Buffer
+        (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
       FieldOptions := Get_Options(Create_Fields.all(3));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(3), FieldOptions);
-      Create_Fields.all(4) := New_Field(1, 9, 2, 23, 0, 0);
+      Create_Fields.all(4) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("{Execute}", Interpreter)) + 2, 2,
+           23, 0, 0);
       FieldOptions := Get_Options(Create_Fields.all(4));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(4), FieldOptions);
-      Set_Buffer(Create_Fields.all(4), 0, "[Execute]");
+      Set_Buffer
+        (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "{Execute}") & "]");
       Create_Fields.all(5) := Null_Field;
       DialogForm := New_Form(Create_Fields);
       Set_Current(DialogForm, Create_Fields(2));
