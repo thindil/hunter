@@ -274,4 +274,6 @@
    "Press again to move them." "Naciśnij ponownie aby przenieść je."
    "Edit the selected command. If you change the menu label," "Edytuj wybraną komendę. Jeżeli zmienisz etykietę menu,"
    "a new command will be added." "zostanie dodana nowa komenda."
+   "Cancel" "Anuluj"
+   "Enter the application to execute:" "Wprowadź komendę do uruchomienia:"
 }
