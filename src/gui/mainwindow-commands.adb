@@ -658,18 +658,32 @@ package body MainWindow.Commands is
                  Info => "pointery"));
          return TCL_OK;
       end if;
-      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".aboutbutton" then
-         Button_Menu.Name := New_String(".aboutmenu");
+      if CArgv.Arg(Argv => Argv, N => 1) = Toolbar_Name & ".aboutbutton" then
+         Button_Menu.Name := New_String(Str => ".aboutmenu");
          Tk_Popup
-           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
-            Winfo_Get(Get_Main_Window(Interp), "pointery"));
+           (MenuWidget => Button_Menu,
+            X =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointerx"),
+            Y =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointery"));
          return TCL_OK;
       end if;
-      if CArgv.Arg(Argv, 1) = Toolbar_Name & ".userbutton" then
-         Button_Menu.Name := New_String(".actionsmenu");
+      if CArgv.Arg(Argv => Argv, N => 1) = Toolbar_Name & ".userbutton" then
+         Button_Menu.Name := New_String(Str => ".actionsmenu");
          Tk_Popup
-           (Button_Menu, Winfo_Get(Get_Main_Window(Interp), "pointerx"),
-            Winfo_Get(Get_Main_Window(Interp), "pointery"));
+           (MenuWidget => Button_Menu,
+            X =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointerx"),
+            Y =>
+              Winfo_Get
+                (Widgt => Get_Main_Window(Interp => Interp),
+                 Info => "pointery"));
          return TCL_OK;
       end if;
       if Invoke(Button) /= "" then
