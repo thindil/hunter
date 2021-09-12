@@ -274,4 +274,6 @@
    "Edit the selected command. If you change the menu label," "Edit the selected command. If you change the menu label,"
    "a new command will be added." "a new command will be added."
    "Delete the selected command." "Delete the selected command."
+   "Cancel" "Cancel"
+   "Enter the application to execute:" "Enter the application to execute:"
 }
