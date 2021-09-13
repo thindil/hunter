@@ -111,7 +111,9 @@ package body ActivateItems.UI is
          else
             UILocation := DIRECTORY_VIEW;
          end if;
-         Update_Directory_List(not With_Message);
+         if not With_Message then
+            Update_Directory_List(True);
+         end if;
          return UILocation;
       end Hide_Dialog;
    begin
