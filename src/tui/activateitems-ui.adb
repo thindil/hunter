@@ -143,7 +143,8 @@ package body ActivateItems.UI is
                  To_Unbounded_String(Find_Executable(To_String(CommandName)));
                if CommandName = Null_Unbounded_String then
                   ShowMessage
-                    ("{Can't find command:}" & " " & Value(1 .. SpaceIndex));
+                    (Mc(Interpreter, "{Can't find command:}") & " " &
+                     Value(1 .. SpaceIndex));
                   return Hide_Dialog(True);
                end if;
                Arguments :=
@@ -161,7 +162,7 @@ package body ActivateItems.UI is
                  Non_Blocking_Spawn
                    (Full_Name(To_String(CommandName)), Arguments.all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
-                  ShowMessage("{Can't execute this command}");
+                  ShowMessage(Mc(Interpreter, "{Can't execute this command}"));
                   return Hide_Dialog(True);
                end if;
             end if;
