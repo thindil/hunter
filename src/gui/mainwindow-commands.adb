@@ -686,7 +686,7 @@ package body MainWindow.Commands is
                  Info => "pointery"));
          return TCL_OK;
       end if;
-      if Invoke(Button) /= "" then
+      if Invoke(Buttn => Button) /= "" then
          return TCL_ERROR;
       end if;
       return TCL_OK;
@@ -694,15 +694,23 @@ package body MainWindow.Commands is
 
    procedure Add_Commands is
    begin
-      Add_Command("Sort", Sort_Command'Access);
-      Add_Command("HideWidget", Hide_Widget_Command'Access);
-      Add_Command("ToggleSelection", Toggle_Selection_Command'Access);
-      Add_Command("ArrangePath", Arrange_Path_Command'Access);
-      Add_Command("CancelAction", Cancel_Action_Command'Access);
-      Add_Command("ShowFileMenu", Show_File_Menu_Command'Access);
-      Add_Command("ShowFile", Show_File_Command'Access);
-      Add_Command("InvokeButton", Invoke_Button_Command'Access);
-      ExitCommand.Tcl_CreateExitHandler(Quit_Command'Access, 0);
+      Add_Command(Name => "Sort", Ada_Command => Sort_Command'Access);
+      Add_Command
+        (Name => "HideWidget", Ada_Command => Hide_Widget_Command'Access);
+      Add_Command
+        (Name => "ToggleSelection",
+         Ada_Command => Toggle_Selection_Command'Access);
+      Add_Command
+        (Name => "ArrangePath", Ada_Command => Arrange_Path_Command'Access);
+      Add_Command
+        (Name => "CancelAction", Ada_Command => Cancel_Action_Command'Access);
+      Add_Command
+        (Name => "ShowFileMenu", Ada_Command => Show_File_Menu_Command'Access);
+      Add_Command(Name => "ShowFile", Ada_Command => Show_File_Command'Access);
+      Add_Command
+        (Name => "InvokeButton", Ada_Command => Invoke_Button_Command'Access);
+      ExitCommand.Tcl_CreateExitHandler
+        (proc => Quit_Command'Access, data => 0);
    end Add_Commands;
 
 end MainWindow.Commands;
