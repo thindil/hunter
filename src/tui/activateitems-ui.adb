@@ -103,15 +103,13 @@ package body ActivateItems.UI is
         (With_Message: Boolean := False) return UI_Locations is
          Visibility: Cursor_Visibility := Invisible;
       begin
-         Set_Cursor_Visibility(Visibility);
          Post(DialogForm, False);
          Delete(DialogForm);
          if With_Message then
             UILocation := MESSAGE_FORM;
          else
+            Set_Cursor_Visibility(Visibility);
             UILocation := DIRECTORY_VIEW;
-         end if;
-         if not With_Message then
             Update_Directory_List(True);
          end if;
          return UILocation;
