@@ -13,53 +13,45 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Command_Line; use Ada.Command_Line;
-with Ada.Directories; use Ada.Directories;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Command_Line;
+with Ada.Directories;
+with Ada.Environment_Variables;
 with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.String_Split; use GNAT.String_Split;
+with GNAT.OS_Lib;
+with GNAT.String_Split;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
-with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
-with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
+with Tcl.Tk.Ada.Widgets.Toplevel;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
-with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
+with Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
-with CopyItems; use CopyItems;
-with DeleteItems; use DeleteItems;
-with Inotify; use Inotify;
-with LibMagic; use LibMagic;
+with CopyItems;
+with DeleteItems;
+with Inotify;
+with LibMagic;
 with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
-with Messages; use Messages;
-with Modules; use Modules;
-with MoveItems; use MoveItems;
+with LoadData.UI;
+with Messages;
+with Modules;
+with MoveItems;
 with Preferences; use Preferences;
-with ProgramsMenu; use ProgramsMenu;
+with ProgramsMenu;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
 package body MainWindow.Commands is
-
-   -- ****it* MCommands/MCommands.ExitCommand
-   -- FUNCTION
-   -- Used in creating exit handler for the program
-   -- SOURCE
-   package ExitCommand is new Tcl.Ada.Generic_ExitHandler
-     (ClientData => Integer);
-   -- ****
 
    -- ****o* MCommands/MCommands.Sort_Command
    -- FUNCTION
@@ -173,6 +165,12 @@ package body MainWindow.Commands is
 
    procedure Quit_Command(Client_Data: Integer) is
       pragma Unreferenced(Client_Data);
+      use Tcl.Tk.Ada.Widgets.Toplevel;
+      use DeleteItems;
+      use Inotify;
+      use LibMagic;
+      use Modules;
+
       Main_Window: constant Tk_Toplevel :=
         Get_Main_Window(Interp => Get_Context);
       Error_Button: constant Ttk_Button :=
@@ -218,6 +216,10 @@ package body MainWindow.Commands is
    function Hide_Widget_Command
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
+      use Tcl.Tk.Ada.Widgets.TtkEntry;
+      use Messages;
+      use ProgramsMenu;
+
       Frame: Ttk_Frame :=
         Get_Widget(pathName => ".mainframe.message", Interp => Interp);
       Button: Ttk_Button :=
@@ -334,6 +336,8 @@ package body MainWindow.Commands is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
+      use GNAT.String_Split;
+
       Path_Buttons_Frame: constant Ttk_Frame :=
         Get_Widget
           (pathName => CArgv.Arg(Argv => Argv, N => 1), Interp => Interp);
@@ -404,6 +408,9 @@ package body MainWindow.Commands is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use CopyItems;
+      use MoveItems;
+
       Action_Button: Ttk_Button :=
         Get_Widget
           (pathName => ".mainframe.toolbars.actiontoolbar.copybutton",
@@ -454,6 +461,9 @@ package body MainWindow.Commands is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
+      use Tcl.MsgCat.Ada;
+      use Tcl.Tk.Ada.Widgets;
+
       File_Menu: constant Tk_Menu :=
         Get_Widget(pathName => ".filemenu", Interp => Interp);
       Button: Ttk_Button; --## rule line off IMPROPER_INITIALIZATION
@@ -548,6 +558,12 @@ package body MainWindow.Commands is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Interp, Argc);
+      use Ada.Command_Line;
+      use Ada.Directories;
+      use Ada.Environment_Variables;
+      use GNAT.OS_Lib;
+      use LoadData.UI;
+
    begin
       if Ada.Directories.Exists
           (Name =>
@@ -693,6 +709,8 @@ package body MainWindow.Commands is
    end Invoke_Button_Command;
 
    procedure Add_Commands is
+      package ExitCommand is new Tcl.Ada.Generic_ExitHandler
+         (ClientData => Integer);
    begin
       Add_Command(Name => "Sort", Ada_Command => Sort_Command'Access);
       Add_Command
