@@ -144,7 +144,8 @@ package body ActivateItems.UI is
                if CommandName = Null_Unbounded_String then
                   ShowMessage
                     (Mc(Interpreter, "{Can't find command:}") & " " &
-                     Value(1 .. SpaceIndex));
+                     (if SpaceIndex > 0 then Value(1 .. SpaceIndex - 1)
+                      else Value));
                   return Hide_Dialog(True);
                end if;
                Arguments :=
