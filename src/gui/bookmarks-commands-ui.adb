@@ -30,6 +30,7 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Bookmarks.UI; use Bookmarks.UI;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;

@@ -19,14 +19,14 @@ with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with MainWindow; use MainWindow;
 
--- ****h* BookmarksTUI/BookmarksTUI
+-- ****h* Bookmarks/BUITUI
 -- FUNCTION
 -- Provide code for add, delete or go to locations bookmarks
 -- SOURCE
-package Bookmarks is
+package Bookmarks.UI is
 -- ****
 
-   -- ****t* BookmarksTUI/BookmarksTUI.Bookmarks_Container
+   -- ****t* BUITUI/BUITUI.Bookmarks_Container
    -- FUNCTION
    -- Used to store all bookmarks
    -- SOURCE
@@ -34,21 +34,21 @@ package Bookmarks is
      (String, String, Ada.Strings.Hash, "=");
    -- ****
 
-   -- ****iv* BookmarksTUI/BookmarksTUI.BookmarksList
+   -- ****iv* BUITUI/BUITUI.BookmarksList
    -- FUNCTION
    -- List of all bookmarked locations
    -- SOURCE
    BookmarksList: Bookmarks_Container.Map;
    -- ****
 
-   -- ****f* BookmarksTUI/BookmarksTUI.Create_Bookmarks_List
+   -- ****f* BUITUI/BUITUI.Create_Bookmarks_List
    -- FUNCTION
    -- Create the user's bookmarks list
    -- SOURCE
    procedure Create_Bookmarks_List;
    -- ****
 
-   -- ****f* BookmarksTUI/BookmarksTUI.Show_Bookmarks_Menu
+   -- ****f* BUITUI/BUITUI.Show_Bookmarks_Menu
    -- FUNCTION
    -- Show the bookmarks menu to the user
    -- RESULT
@@ -57,7 +57,7 @@ package Bookmarks is
    function Show_Bookmarks_Menu return Item_Array_Access;
    -- ****
 
-   -- ****f* BookmarksTUI/BookmarksTUI.Go_To_Bookmark
+   -- ****f* BUITUI/BUITUI.Go_To_Bookmark
    -- FUNCTION
    -- Change currently viewed directory to the selected bookmark
    -- PARAMETERS
@@ -68,7 +68,7 @@ package Bookmarks is
    function Go_To_Bookmark(Bookmark: String) return UI_Locations;
    -- ****
 
-   -- ****f* BookmarksTUI/BookmarksTUI.Bookmarks_Form_Keys
+   -- ****f* BUITUI/BUITUI.Bookmarks_Form_Keys
    -- FUNCTION
    -- Handles keys events when the enter destination form is active element of
    -- UI
@@ -80,18 +80,18 @@ package Bookmarks is
    function Bookmarks_Form_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
-   -- ****f* BookmarksTUI/BookmarksTUI.Add_Bookmark
+   -- ****f* BUITUI/BUITUI.Add_Bookmark
    -- FUNCTION
    -- Add the currently selected directory as a new the program's bookmark
    -- SOURCE
    procedure Add_Bookmark;
    -- ****
 
-   -- ****f* BookmarksTUI/BookmarksTUI.Remove_Bookmark
+   -- ****f* BUITUI/BUITUI.Remove_Bookmark
    -- FUNCTION
    -- Remove the currently selected directory from the program's booksmark list
    -- SOURCE
    procedure Remove_Bookmark;
    -- ****
 
-end Bookmarks;
+end Bookmarks.UI;

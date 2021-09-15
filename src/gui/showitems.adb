@@ -49,7 +49,7 @@ with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Bookmarks; use Bookmarks;
+with Bookmarks.UI; use Bookmarks.UI;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;

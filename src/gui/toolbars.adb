@@ -40,7 +40,7 @@ with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Tcl.Tk.Ada.Widgets.TtkSeparator; use Tcl.Tk.Ada.Widgets.TtkSeparator;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Bookmarks; use Bookmarks;
+with Bookmarks.UI; use Bookmarks.UI;
 with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with UserCommands; use UserCommands;

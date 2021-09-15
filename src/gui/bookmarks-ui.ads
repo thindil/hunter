@@ -16,14 +16,14 @@
 with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Strings.Hash;
 
--- ****h* Bookmarks/Bookmarks
+-- ****h* Bookmarks/BUI
 -- FUNCTION
 -- Provide code for add, delete or go to locations bookmarks
 -- SOURCE
-package Bookmarks is
+package Bookmarks.UI is
 -- ****
 
-   -- ****t* Bookmarks/Bookmarks.Bookmarks_Container
+   -- ****t* BUI/BUI.Bookmarks_Container
    -- FUNCTION
    -- Used to store all bookmarks
    -- SOURCE
@@ -32,7 +32,7 @@ package Bookmarks is
       Equivalent_Keys => "=");
    -- ****
 
-   -- ****f* Bookmarks/Bookmarks.Create_Bookmark_Menu
+   -- ****f* BUI/BUI.Create_Bookmark_Menu
    -- FUNCTION
    -- Create bookmarks menu - show only existing bookmarks
    -- PARAMETERS
@@ -41,11 +41,11 @@ package Bookmarks is
    procedure Create_Bookmark_Menu(Create_New: Boolean := False);
    -- ****
 
-   -- ****f* Bookmarks/Bookmarks.Set_Bookmark_Button
+   -- ****f* BUI/BUI.Set_Bookmark_Button
    -- FUNCTION
    -- Show proper bookmark button for directories
    -- SOURCE
    procedure Set_Bookmark_Button;
    -- ****
 
-end Bookmarks;
+end Bookmarks.UI;

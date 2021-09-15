@@ -31,7 +31,7 @@ with Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Bookmarks.Commands;
 with MainWindow;
 
-package body Bookmarks is
+package body Bookmarks.UI is
 
    -- ****iv* Bookmarks/Bookmarks.Bookmarks_List
    -- FUNCTION
@@ -250,4 +250,4 @@ package body Bookmarks is
       Tcl.Tk.Ada.Pack.Pack(Slave => Button);
    end Set_Bookmark_Button;
 
-end Bookmarks;
+end Bookmarks.UI;

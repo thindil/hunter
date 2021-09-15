@@ -34,7 +34,7 @@ with Tcl.Tk.Ada.Widgets.TtkProgressBar;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip;
-with Bookmarks;
+with Bookmarks.UI;
 with Messages;
 with Preferences;
 
@@ -174,7 +174,7 @@ package body Utils.UI is
       use Tcl.Tk.Ada.Widgets.TtkLabel;
       use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
       use Tcl.Tklib.Ada.Tooltip;
-      use Bookmarks;
+      use Bookmarks.UI;
       use Preferences;
 
       Toolbar: Ttk_Frame := Get_Widget(pathName => ".mainframe.toolbars");

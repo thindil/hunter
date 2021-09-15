@@ -30,7 +30,7 @@ with Modules; use Modules;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 
-package body Bookmarks is
+package body Bookmarks.UI is
 
    procedure Create_Bookmarks_List is
       XDGBookmarks: constant array(1 .. 7) of Unbounded_String :=
@@ -321,4 +321,4 @@ package body Bookmarks is
       Create_Bookmarks_List;
    end Remove_Bookmark;
 
-end Bookmarks;
+end Bookmarks.UI;

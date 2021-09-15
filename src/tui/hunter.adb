@@ -30,7 +30,7 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with AboutDialog; use AboutDialog;
 with AboutDialog.UI; use AboutDialog.UI;
 with ActivateItems.UI; use ActivateItems.UI;
-with Bookmarks; use Bookmarks;
+with Bookmarks.UI; use Bookmarks.UI;
 with CreateItems; use CreateItems;
 with DeleteItems; use DeleteItems;
 with Inotify; use Inotify;

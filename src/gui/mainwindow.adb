@@ -50,7 +50,7 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with AboutDialog;
 with AboutDialog.UI;
 with ActivateItems;
-with Bookmarks;
+with Bookmarks.UI;
 with CopyItems;
 with CreateItems;
 with DeleteItems;
@@ -89,7 +89,7 @@ package body MainWindow is
       use Tcl.Tklib.Ada.Autoscroll;
       use AboutDialog;
       use AboutDialog.UI;
-      use Bookmarks;
+      use Bookmarks.UI;
       use CopyItems;
       use CreateItems;
       use DeleteItems;
