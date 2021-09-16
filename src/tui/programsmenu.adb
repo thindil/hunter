@@ -178,7 +178,7 @@ package body ProgramsMenu is
                                 Get_Mime_Type
                                   (To_String(Current_Selected))).all);
                         if Pid = GNAT.OS_Lib.Invalid_Pid then
-                           ShowMessage
+                           Show_Message
                              ("Could not set new associated program.");
                         end if;
                         exit Set_New_Application_Loop;

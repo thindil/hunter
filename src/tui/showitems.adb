@@ -325,7 +325,7 @@ package body ShowItems is
       Clear_Preview_Window;
       if Is_Directory(To_String(Current_Selected)) then
          if not Is_Read_Accessible_File(To_String(Current_Selected)) then
-            ShowMessage
+            Show_Message
               (Mc
                  (Interpreter,
                   "{You don't have permissions to preview this directory.}"));
@@ -685,7 +685,7 @@ package body ShowItems is
       Clear(PreviewWindow);
       Box(PreviewWindow, Default_Character, Default_Character);
       if not Is_Read_Accessible_File(To_String(DestinationDirectory)) then
-         ShowMessage
+         Show_Message
            (Mc
               (Interpreter,
                "{You don't have permissions to preview this directory.}"));

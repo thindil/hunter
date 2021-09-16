@@ -140,7 +140,8 @@ package body MainWindow is
    procedure CreateMainWindow(Directory: String) is
    begin
       -- Load translations
-      Mc_Load(DirName => "../share/hunter/translations", Interp => Interpreter);
+      Mc_Load
+        (DirName => "../share/hunter/translations", Interp => Interpreter);
       Set_About_Dialog_Information(Interp => Interpreter);
       ActivateItems.Add_Commands;
       CreateItems.AddCommands;

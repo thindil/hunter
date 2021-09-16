@@ -54,7 +54,7 @@ package body MoveItems is
                  (if Is_Directory(To_String(NewName)) then
                     To_Unbounded_String(Mc(Interpreter, "{Directory}"))
                   else To_Unbounded_String(Mc(Interpreter, "{File}")));
-               ShowMessage
+               Show_Message
                  (To_String(ItemType) & " " &
                   Simple_Name(To_String(MoveItemsList(1))) & " " &
                   Mc(Interpreter, "{exists. Do you want to overwrite it?}"),
@@ -92,12 +92,12 @@ package body MoveItems is
                   end if;
                exception
                   when Use_Error =>
-                     ShowMessage
+                     Show_Message
                        ("Can't delete " & To_String(MoveItemsList(1)) & ".");
                      return MESSAGE_FORM;
                end;
             else
-               ShowMessage
+               Show_Message
                  (Mc(Interpreter, "{Can't move}") & " " &
                   To_String(MoveItemsList(1)) & ".");
                return MESSAGE_FORM;
@@ -111,7 +111,7 @@ package body MoveItems is
       end loop Move_Items_Loop;
       MoveItemsList.Clear;
       if Settings.Show_Finished_Info then
-         ShowMessage
+         Show_Message
            (Mc
               (Interpreter,
                "{All selected files and directories have been moved.}"),

@@ -40,7 +40,7 @@ package body Utils.UI is
       ExecutablePath := Locate_Exec_On_Path(Name);
       if ExecutablePath = null then
          if Display_Message then
-            ShowMessage
+            Show_Message
               (Mc(Interpreter, "{Could not found executable:}") & " " & Name);
          end if;
          return "";

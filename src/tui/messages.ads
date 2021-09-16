@@ -60,15 +60,15 @@ package Messages is
    procedure CreateMessagesUI;
    -- ****
 
-   -- ****f* MessagesTUI/MessagesTUI.ShowMessage
+   -- ****f* MessagesTUI/MessagesTUI.Show_Message
    -- FUNCTION
    -- Show selected message with selected type to the user
    -- PARAMETERS
-   -- Message     - Text of message to show to the user
-   -- MessageType - Type of message. Posible values are error, message,
-   --               question. Default value is error.
+   -- Message      - Text of message to show to the user
+   -- Message_Type - Type of message. Posible values are error, message,
+   --                question. Default value is error.
    -- SOURCE
-   procedure ShowMessage(Message: String; MessageType: String := "error");
+   procedure Show_Message(Message: String; Message_Type: String := "error");
    -- ****
 
    -- ****f* MessagesTUI/MessagesTUI.Message_Keys

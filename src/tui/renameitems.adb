@@ -70,7 +70,7 @@ package body RenameItems is
            (if Is_Directory(To_String(NewName)) then
               To_Unbounded_String(Mc(Interp, "{directory}"))
             else To_Unbounded_String(Mc(Interp, "{file}")));
-         ShowMessage
+         Show_Message
            (Mc(Interp, "{You can't rename}") & " " &
             To_String(Current_Selected) & " " & Mc(Interp, "{to}") & " " &
             To_String(NewName) & " " & Mc(Interp, "{because there exists}") &
@@ -81,7 +81,7 @@ package body RenameItems is
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewName))) then
-         ShowMessage
+         Show_Message
            (Mc(Interp, "{You don't have permissions to rename}") & " " &
             To_String(NewName));
          Tcl_SetResult(Interp, "0");
@@ -89,7 +89,7 @@ package body RenameItems is
       end if;
       Rename_File(To_String(Current_Selected), To_String(NewName), Success);
       if not Success then
-         ShowMessage
+         Show_Message
            (Mc(Interp, "{Can't rename}") & " " & To_String(Current_Selected) &
             ".");
          return TCL_OK;

@@ -71,9 +71,9 @@ package body Messages is
       Add_Command("MessageResponse", Response_Command'Access);
    end CreateMessagesUI;
 
-   procedure ShowMessage(Message: String; MessageType: String := "error") is
+   procedure Show_Message(Message: String; Message_Type: String := "error") is
       Buttons_Fields: constant Field_Array_Access :=
-        (if MessageType /= "error" then new Field_Array(1 .. 5)
+        (if Message_Type /= "error" then new Field_Array(1 .. 5)
          else new Field_Array(1 .. 2));
       FormHeight: constant Line_Position := 7;
       FormLength: constant Column_Position := 32;
@@ -83,7 +83,7 @@ package body Messages is
       LineNumber: Line_Position := 1;
    begin
       Set_Cursor_Visibility(Visibility);
-      if MessageType /= "question" then
+      if Message_Type /= "question" then
          Buttons_Fields.all(1) := New_Field(1, 7, (FormHeight - 1), 7, 0, 0);
          Set_Buffer(Buttons_Fields.all(1), 0, "[Close]");
          FieldOptions := Get_Options(Buttons_Fields.all(1));
@@ -142,7 +142,7 @@ package body Messages is
       Box(FormWindow, Default_Character, Default_Character);
       Refresh;
       Refresh(FormWindow);
-   end ShowMessage;
+   end Show_Message;
 
    function Message_Keys(Key: Key_Code) return UI_Locations is
       Visibility: Cursor_Visibility := Invisible;

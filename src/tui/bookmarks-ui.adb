@@ -211,7 +211,8 @@ package body Bookmarks.UI is
       ShowPreview;
       UpdateWatch(To_String(MainWindow.Current_Directory));
       Execute_Modules
-        (Interpreter, On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+        (Interpreter, On_Enter,
+         "{" & To_String(MainWindow.Current_Directory) & "}");
       return DIRECTORY_VIEW;
    end Go_To_Bookmark;
 
@@ -241,7 +242,7 @@ package body Bookmarks.UI is
             if FieldIndex = 4 then
                if not Ada.Directories.Exists
                    (Trim(Get_Buffer(Fields(DialogForm, 2)), Both)) then
-                  ShowMessage
+                  Show_Message
                     (Mc(Interpreter, "{Directory}") & " " &
                      Trim(Get_Buffer(Fields(DialogForm, 2)), Both) &
                      " doesn't exists.");

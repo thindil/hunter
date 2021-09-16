@@ -121,7 +121,7 @@ package body CopyItems is
                     Simple_Name(To_String(CopyItemsList(1))))
                then To_Unbounded_String(Mc(Interpreter, "{Directory}"))
                else To_Unbounded_String(Mc(Interpreter, "{File}")));
-            ShowMessage
+            Show_Message
               (To_String(ItemType) & " " &
                Simple_Name(To_String(CopyItemsList(1))) & " " &
                Mc(Interpreter, "{exists. Do you want to overwrite it?}"),
@@ -137,7 +137,7 @@ package body CopyItems is
       end loop Copy_Items_Loop;
       CopyItemsList.Clear;
       if Settings.Show_Finished_Info then
-         ShowMessage
+         Show_Message
            (Mc
               (Interpreter,
                "{All selected files and directories have been copied.}"),

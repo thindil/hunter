@@ -142,19 +142,19 @@ package body DeleteItems is
       return GoUp;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
-         ShowMessage
+         Show_Message
            (Mc
               (Interpreter,
                "{Could not delete selected files or directories. Reason:}") &
             " " & Exception_Message(An_Exception));
          raise;
       when An_Exception : Directory_Error =>
-         ShowMessage
+         Show_Message
            (Mc(Interpreter, "{Can't delete selected directory:}") & " " &
             Exception_Message(An_Exception));
          raise;
       when others =>
-         ShowMessage
+         Show_Message
            (Mc
               (Interpreter,
                "{Unknown error during deleting files or directories.}"));

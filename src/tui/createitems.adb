@@ -88,7 +88,7 @@ package body CreateItems is
            (if Is_Directory(To_String(NewItemName)) then
               To_Unbounded_String(Mc(Interp, "directory"))
             else To_Unbounded_String(Mc(Interp, "file")));
-         ShowMessage
+         Show_Message
            (Mc(Interp, "{You can't}") & " " & To_String(ActionString) & " " &
             Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
             Mc(Interp, "{because there exists}") & " " &
@@ -98,7 +98,7 @@ package body CreateItems is
       end if;
       if not Is_Write_Accessible_File
           (Containing_Directory(To_String(NewItemName))) then
-         ShowMessage
+         Show_Message
            (Mc(Interp, "{You don't have permissions to write to}") & " " &
             Containing_Directory(To_String(NewItemName)));
          Tcl_SetResult(Interp, "0");
