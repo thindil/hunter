@@ -92,7 +92,7 @@ package body CopyItems is
       end if;
       if not Is_Write_Accessible_File
           (Name => To_String(Source => MainWindow.Current_Directory)) then
-         ShowMessage
+         Show_Message
            (Message =>
               Mc
                 (Interp => Interp,
@@ -211,14 +211,14 @@ package body CopyItems is
                else To_Unbounded_String
                    (Source =>
                       Mc(Interp => Get_Context, Src_String => "{File}")));
-            ShowMessage
+            Show_Message
               (Message =>
                  To_String(Source => Item_Type) & " " &
                  Simple_Name(Name => To_String(Source => Copy_Items_List(1))) &
                  " " &
                  Mc(Interp => Get_Context,
                     Src_String => "{exists. Do you want to overwrite it?}"),
-               MessageType => "question");
+               Message_Type => "question");
             return;
          end if;
          Copy_Item
@@ -226,19 +226,19 @@ package body CopyItems is
             Success => Success);
          exit Copy_Items_Loop when not Success;
          Copy_Items_List.Delete(Index => 1);
-         if not YesForAll then
+         if not Yes_For_All then
             Overwrite := False;
          end if;
       end loop Copy_Items_Loop;
       Copy_Items_List.Clear;
       if Settings.Show_Finished_Info then
-         ShowMessage
+         Show_Message
            (Message =>
               Mc
                 (Interp => Get_Context,
                  Src_String =>
                    "{All selected files and directories have been copied.}"),
-            MessageType => "message");
+            Message_Type => "message");
       end if;
       MainWindow.Current_Directory :=
         (if Settings.Stay_In_Old then Source_Directory

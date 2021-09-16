@@ -78,7 +78,7 @@ package body ActivateItems is
       if Is_Directory(Name => To_String(Source => Current_Selected)) then
          if not Is_Read_Accessible_File
              (Name => To_String(Source => Current_Selected)) then
-            ShowMessage
+            Show_Message
               (Message =>
                  Mc
                    (Interp => Interp,
@@ -149,7 +149,7 @@ package body ActivateItems is
             else
                if not Is_Executable_File
                    (Name => To_String(Source => Current_Selected)) then
-                  ShowMessage
+                  Show_Message
                     (Message =>
                        Mc
                          (Interp => Interp,
@@ -163,7 +163,7 @@ package body ActivateItems is
                    (Program_Name => To_String(Source => Current_Selected),
                     Args => Argument_String_To_List(Arg_String => "").all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
-                  ShowMessage
+                  Show_Message
                     (Message =>
                        Mc
                          (Interp => Interp,
@@ -174,7 +174,7 @@ package body ActivateItems is
             end if;
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                Tcl_SetResult(interp => Interp, str => "0");
-               ShowMessage
+               Show_Message
                  (Message =>
                     Mc
                       (Interp => Interp,
@@ -220,7 +220,7 @@ package body ActivateItems is
           (Program_Name => To_String(Source => Current_Selected),
            Args => Argument_String_To_List(Arg_String => "").all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
-         ShowMessage
+         Show_Message
            (Message =>
               Mc
                 (Interp => Interp,

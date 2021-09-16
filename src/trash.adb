@@ -78,7 +78,7 @@ package body Trash is
                     (if Is_Directory(To_String(Destination)) then
                        To_Unbounded_String(Mc(Interp, "{Directory}"))
                      else To_Unbounded_String(Mc(Interp, "{File}")));
-                  ShowMessage
+                  Show_Message
                     (Mc(Interp, "{Can't restore}") & " " &
                      To_String(Destination) & " " & To_String(ItemType) & " " &
                      Mc(Interp, "{with that name exists.}"));
@@ -120,7 +120,7 @@ package body Trash is
    begin
       New_Action := CLEARTRASH;
       Toggle_Tool_Buttons(New_Action);
-      ShowMessage
+      Show_Message
         (Mc(Interp, "{Remove all files and directories from Trash?}"),
          "question");
       return TCL_OK;
@@ -163,7 +163,8 @@ package body Trash is
       Load_Directory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
       Execute_Modules
-        (Interp, On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+        (Interp, On_Enter,
+         "{" & To_String(MainWindow.Current_Directory) & "}");
       return TCL_OK;
    end GoToTrash_Command;
 

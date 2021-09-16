@@ -185,7 +185,8 @@ package body Trash.UI is
         (Interp, "<" & To_String(Accelerators(19)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.restorebutton}");
       Execute_Modules
-        (Interp, On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+        (Interp, On_Enter,
+         "{" & To_String(MainWindow.Current_Directory) & "}");
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 

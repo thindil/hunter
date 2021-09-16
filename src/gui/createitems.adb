@@ -184,7 +184,7 @@ package body CreateItems is
                 (Source => Mc(Interp => Interp, Src_String => "directory"))
             else To_Unbounded_String
                 (Source => Mc(Interp => Interp, Src_String => "file")));
-         ShowMessage
+         Show_Message
            (Message =>
               Mc(Interp => Interp, Src_String => "{You can't}") & " " &
               To_String(Source => Action_String) & " " &
@@ -199,7 +199,7 @@ package body CreateItems is
           (Name =>
              Containing_Directory
                (Name => To_String(Source => New_Item_Name))) then
-         ShowMessage
+         Show_Message
            (Message =>
               Mc
                 (Interp => Interp,

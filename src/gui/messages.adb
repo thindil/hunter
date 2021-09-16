@@ -62,9 +62,9 @@ package body Messages is
    -- ****
 
    function Close_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
+      pragma Unreferenced(Client_Data, Interp, Argc, Argv);
    begin
       if TimerId /= Null_Unbounded_String then
          Cancel(To_String(TimerId));
@@ -100,7 +100,7 @@ package body Messages is
       OverwriteItem: Boolean := True;
       Response: constant String := CArgv.Arg(Argv, 1);
    begin
-      YesForAll := (if Response = "yesall" then True else False);
+      Yes_For_All := (if Response = "yesall" then True else False);
       case New_Action is
          when DELETE | CLEARTRASH | DELETETRASH =>
             if New_Action /= CLEARTRASH then
@@ -140,16 +140,16 @@ package body Messages is
             Toggle_Tool_Buttons(New_Action, True);
             if Settings.Show_Finished_Info then
                if New_Action = DELETE and not Settings.Delete_Files then
-                  ShowMessage
+                  Show_Message
                     (Mc
                        (Interp,
                         "{All selected files and directories have been moved to Trash.}"),
                      "message");
                elsif New_Action = CLEARTRASH then
-                  ShowMessage
+                  Show_Message
                     (Mc(Interp, "{Trash have been cleared.}"), "message");
                else
-                  ShowMessage
+                  Show_Message
                     (Mc
                        (Interp,
                         "{All selected files and directories have been deleted.}"),
@@ -188,7 +188,7 @@ package body Messages is
       return TCL_OK;
    end Response_Command;
 
-   procedure CreateMessagesUI is
+   procedure Create_Messages_Ui is
       ButtonsBox: Ttk_Frame;
       Button: Ttk_Button;
       procedure AddButton
@@ -228,9 +228,9 @@ package body Messages is
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 4 -row 0");
       Tcl.Tk.Ada.Pack.Pack(ButtonsBox, "-side right");
       Tcl.Tk.Ada.Pack.Pack(MessageLabel, "-expand true -fill x");
-   end CreateMessagesUI;
+   end Create_Messages_Ui;
 
-   procedure ShowMessage(Message: String; MessageType: String := "error") is
+   procedure Show_Message(Message: String; Message_Type: String := "error") is
       ButtonsNames: constant array(1 .. 5) of Unbounded_String :=
         (To_Unbounded_String(MessageFrame & ".buttonsbox.buttonno"),
          To_Unbounded_String(MessageFrame & ".buttonsbox.buttonyes"),
@@ -250,9 +250,9 @@ package body Messages is
       end loop Remove_Buttons_Loop;
       configure
         (MessageLabel,
-         "-text {" & Message & "} -style " & MessageType & ".TLabel");
-      configure(MessageFrame, "-style " & MessageType & ".TFrame");
-      if MessageType /= "question" then
+         "-text {" & Message & "} -style " & Message_Type & ".TLabel");
+      configure(MessageFrame, "-style " & Message_Type & ".TFrame");
+      if Message_Type /= "question" then
          Button.Name := New_String(To_String(ButtonsNames(5)));
          Tcl.Tk.Ada.Grid.Grid(Button);
       else
@@ -269,12 +269,12 @@ package body Messages is
       end if;
       Tcl.Tk.Ada.Grid.Grid
         (MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
-      if MessageType /= "question" then
+      if Message_Type /= "question" then
          TimerId :=
            To_Unbounded_String
              (After
                 (Settings.Auto_Close_Messages_Time * 1_000, "CloseMessage"));
       end if;
-   end ShowMessage;
+   end Show_Message;
 
 end Messages;

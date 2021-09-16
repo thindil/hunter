@@ -35,7 +35,8 @@ private
    Website_Text: Unbounded_String;
    Programmer: constant String := "Bartek Jasicki <thindil@laeran.pl>";
    Programmers_Text: Unbounded_String;
-   Translator: constant String := "Polski - Bartek Jasicki <thindil@laeran.pl>";
+   Translator: constant String :=
+     "Polski - Bartek Jasicki <thindil@laeran.pl>";
    Translators_Text: Unbounded_String;
    Close_Text: Unbounded_String;
 

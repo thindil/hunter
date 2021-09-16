@@ -157,9 +157,7 @@ package body AboutDialog.UI is
       Tcl.Tk.Ada.Grid.Grid(Slave => View, Options => "-sticky nwes");
       Add
         (Notebook => Creditsbook, WindowName => Widget_Image(Win => Frame),
-         Options =>
-           "-text {" & To_String(Source => Programmers_Text) &
-           "}");
+         Options => "-text {" & To_String(Source => Programmers_Text) & "}");
       Frame := Create(pathName => Creditsbook & ".translators");
       View :=
         Create
@@ -174,9 +172,7 @@ package body AboutDialog.UI is
       Tcl.Tk.Ada.Grid.Grid(Slave => View, Options => "-sticky nwes");
       Add
         (Notebook => Creditsbook, WindowName => Widget_Image(Win => Frame),
-         Options =>
-           "-text {" & To_String(Source => Translators_Text) &
-           "}");
+         Options => "-text {" & To_String(Source => Translators_Text) & "}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Close_Button, Options => "-columnspan 2");
       Bind
         (Widgt => About_Dialog, Sequence => "<Alt-c>",

@@ -139,7 +139,7 @@ package body ActivateItems.UI is
       CommandName :=
         To_Unbounded_String(Find_Executable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
-         ShowMessage
+         Show_Message
            (Mc(Interp, "{Can't find command:}") & " " &
             Value(1 .. SpaceIndex));
          return TCL_OK;
@@ -157,7 +157,7 @@ package body ActivateItems.UI is
       Pid :=
         Non_Blocking_Spawn(Full_Name(To_String(CommandName)), Arguments.all);
       if Pid = GNAT.OS_Lib.Invalid_Pid then
-         ShowMessage(Mc(Interp, "{Can't execute this command}"));
+         Show_Message(Mc(Interp, "{Can't execute this command}"));
          return TCL_OK;
       end if;
       return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);

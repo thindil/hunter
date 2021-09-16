@@ -301,7 +301,7 @@ package body MainWindow is
       CreateActionToolbar;
       Create_Bookmark_Menu(Create_New => True);
       CreateItemToolbar;
-      CreateMessagesUI;
+      Create_Messages_Ui;
       ActivateItems.Add_Commands;
       CreatePreferencesUI;
       Create_Delete_Ui;

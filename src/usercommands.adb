@@ -68,7 +68,7 @@ package body UserCommands is
       CommandName :=
         To_Unbounded_String(Find_Executable(To_String(CommandName)));
       if CommandName = Null_Unbounded_String then
-         ShowMessage
+         Show_Message
            (Mc(Interp, "{Can't find command:}") & " " &
             Slice(Value, 1, SpaceIndex));
          return TCL_OK;
@@ -103,7 +103,7 @@ package body UserCommands is
    exception
       when Process_Died =>
          if not Success then
-            ShowMessage
+            Show_Message
               (Mc(Interp, "{Can't execute command:}") & " " &
                Slice(Value, 1, SpaceIndex));
          end if;

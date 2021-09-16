@@ -196,7 +196,7 @@ package body ShowItems is
       Set(PreviewYScroll, "0.0", "1.0");
       if Is_Directory(To_String(Current_Selected)) then
          if not Is_Read_Accessible_File(To_String(Current_Selected)) then
-            ShowMessage
+            Show_Message
               (Mc
                  (Get_Context,
                   "{You don't have permissions to preview this directory.}"));
@@ -905,7 +905,8 @@ package body ShowItems is
       DestinationDirectory := SelectedItem;
       Load_Directory(To_String(SelectedItem), True);
       Update_Directory_List(True, "preview");
-      Execute_Modules(Interp, On_Enter, "{" & To_String(DestinationDirectory) & "}");
+      Execute_Modules
+        (Interp, On_Enter, "{" & To_String(DestinationDirectory) & "}");
       return TCL_OK;
    end GoToDirectory_Command;
 

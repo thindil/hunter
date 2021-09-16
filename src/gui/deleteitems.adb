@@ -170,7 +170,7 @@ package body DeleteItems is
       return Go_Up;
    exception
       when An_Exception : Ada.Directories.Use_Error =>
-         ShowMessage
+         Show_Message
            (Message =>
               Mc
                 (Interp => Get_Context,
@@ -179,7 +179,7 @@ package body DeleteItems is
               " " & Exception_Message(X => An_Exception));
          raise;
       when An_Exception : Directory_Error =>
-         ShowMessage
+         Show_Message
            (Message =>
               Mc
                 (Interp => Get_Context,
@@ -187,7 +187,7 @@ package body DeleteItems is
               " " & Exception_Message(X => An_Exception));
          raise;
       when others =>
-         ShowMessage
+         Show_Message
            (Message =>
               Mc
                 (Interp => Get_Context,
@@ -287,8 +287,8 @@ package body DeleteItems is
          end if;
       end loop Add_Items_To_Delete_Loop;
       Toggle_Tool_Buttons(Action => New_Action);
-      ShowMessage
-        (Message => To_String(Source => Message), MessageType => "question");
+      Show_Message
+        (Message => To_String(Source => Message), Message_Type => "question");
       return TCL_OK;
    end Start_Deleting_Command;
 

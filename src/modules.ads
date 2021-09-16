@@ -65,7 +65,8 @@ package Modules is
    -- Arguments   - Arguments passed to the Tcl code. Can be empty. Default
    --               value is empty
    -- SOURCE
-   procedure Execute_Modules(Interpreter: Tcl_Interp; State: Triggers; Arguments: String := "");
+   procedure Execute_Modules
+     (Interpreter: Tcl_Interp; State: Triggers; Arguments: String := "");
    -- ****
 
 end Modules;

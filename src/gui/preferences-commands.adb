@@ -878,7 +878,8 @@ package body Preferences.Commands is
       Frame.Name := New_String(".mainframe");
       Tcl.Tk.Ada.Grid.Grid(Frame);
       Execute_Modules
-        (Interp, On_Enter, "{" & To_String(MainWindow.Current_Directory) & "}");
+        (Interp, On_Enter,
+         "{" & To_String(MainWindow.Current_Directory) & "}");
       return TCL_OK;
    end Close_Preferences_Command;
 
@@ -910,7 +911,7 @@ package body Preferences.Commands is
            Interp);
    begin
       Settings.Ui_Theme := To_Unbounded_String(Get(ComboBox));
-      ShowMessage
+      Show_Message
         (Mc(Interp, "{To use the new UI theme, please restart the program.}"),
          "message");
       return Close_Preferences_Command(ClientData, Interp, Argc, Argv);
@@ -1010,7 +1011,7 @@ package body Preferences.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
    begin
       Settings := Default_Settings;
-      ShowMessage
+      Show_Message
         (Mc
            (Interp,
             "{To bring back all default Hunter settings, please restart the program.}"),

@@ -128,7 +128,7 @@ package body Bookmarks.Commands.UI is
    begin
       UpdateNew_Action;
       if not Ada.Directories.Exists(Get(TextEntry)) then
-         ShowMessage
+         Show_Message
            (Mc(Interp, "{Directory}") & " '" & Get(TextEntry) & "' " &
             Mc(Interp, "{doesn't exist.}"));
          return TCL_OK;

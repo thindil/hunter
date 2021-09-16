@@ -190,7 +190,7 @@ package body ProgramsMenu is
                    ("default " & Bookmarks_Container.Key(I) & " " &
                     Get_Mime_Type(To_String(Current_Selected))).all);
             if Pid = GNAT.OS_Lib.Invalid_Pid then
-               ShowMessage
+               Show_Message
                  (Mc(Interp, "{Could not set new associated program.}"));
             else
                configure(Button, "-text {" & ApplicationsList(I) & "}");

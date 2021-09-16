@@ -233,7 +233,7 @@ package body MainWindow.Commands is
       if Winfo_Get(Widgt => Frame, Info => "ismapped") = "1" then
          return
            Close_Command
-             (ClientData => Client_Data, Interp => Interp, Argc => Argc,
+             (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
               Argv => Argv);
       end if;
       Frame.Name := New_String(Str => ".mainframe.textframe");
@@ -710,7 +710,7 @@ package body MainWindow.Commands is
 
    procedure Add_Commands is
       package ExitCommand is new Tcl.Ada.Generic_ExitHandler
-         (ClientData => Integer);
+        (ClientData => Integer);
    begin
       Add_Command(Name => "Sort", Ada_Command => Sort_Command'Access);
       Add_Command

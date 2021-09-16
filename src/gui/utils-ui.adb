@@ -63,7 +63,7 @@ package body Utils.UI is
       Executable_Path := Locate_Exec_On_Path(Exec_Name => Name);
       if Executable_Path = null then
          if Display_Message then
-            ShowMessage
+            Show_Message
               (Message =>
                  Mc
                    (Interp => Get_Context,

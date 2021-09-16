@@ -89,7 +89,7 @@ package body MoveItems is
       end if;
       if not Is_Write_Accessible_File
           (To_String(MainWindow.Current_Directory)) then
-         ShowMessage
+         Show_Message
            (Mc
               (Interp,
                "{You don't have permissions to move selected items here.}"));
@@ -117,7 +117,7 @@ package body MoveItems is
                  (if Is_Directory(To_String(NewName)) then
                     To_Unbounded_String(Mc(Get_Context, "{Directory}"))
                   else To_Unbounded_String(Mc(Get_Context, "{File}")));
-               ShowMessage
+               Show_Message
                  (To_String(ItemType) & " " &
                   Simple_Name(To_String(MoveItemsList(1))) & " " &
                   Mc(Get_Context, "{exists. Do you want to overwrite it?}"),
@@ -153,21 +153,21 @@ package body MoveItems is
                   Delete_File(To_String(MoveItemsList(1)));
                end if;
             else
-               ShowMessage
+               Show_Message
                  (Mc(Get_Context, "{Can't move}") & " " &
                   To_String(MoveItemsList(1)) & ".");
                return;
             end if;
          end if;
          MoveItemsList.Delete(Index => 1);
-         if not YesForAll then
+         if not Yes_For_All then
             Overwrite := False;
          end if;
          Update_Progress_Bar;
       end loop Move_Items_Loop;
       MoveItemsList.Clear;
       if Settings.Show_Finished_Info then
-         ShowMessage
+         Show_Message
            (Mc
               (Get_Context,
                "{All selected files and directories have been moved.}"),
