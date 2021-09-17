@@ -13,24 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
-with Ada.Strings.Hash;
-
 -- ****h* Bookmarks/BUI
 -- FUNCTION
 -- Provide code for add, delete or go to locations bookmarks
 -- SOURCE
 package Bookmarks.UI is
 -- ****
-
-   -- ****t* BUI/BUI.Bookmarks_Container
-   -- FUNCTION
-   -- Used to store all bookmarks
-   -- SOURCE
-   package Bookmarks_Container is new Indefinite_Hashed_Maps
-     (Key_Type => String, Element_Type => String, Hash => Ada.Strings.Hash,
-      Equivalent_Keys => "=");
-   -- ****
 
    -- ****f* BUI/BUI.Create_Bookmark_Menu
    -- FUNCTION

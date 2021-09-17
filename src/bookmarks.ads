@@ -13,6 +13,22 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
+with Ada.Strings.Hash;
+
+-- ****h* Bookmarks/Bookmarks
+-- FUNCTION
+-- Provide code for manipulate the program bookmarks
+-- SOURCE
 package Bookmarks is
+-- ****
+
+   -- ****t* Bookmarks/Bookmarks.Bookmarks_Container
+   -- FUNCTION
+   -- Used to store all bookmarks
+   -- SOURCE
+   package Bookmarks_Container is new Indefinite_Hashed_Maps
+     (String, String, Ada.Strings.Hash, "=");
+   -- ****
 
 end Bookmarks;

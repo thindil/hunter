@@ -13,8 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
-with Ada.Strings.Hash;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with MainWindow; use MainWindow;
@@ -25,14 +23,6 @@ with MainWindow; use MainWindow;
 -- SOURCE
 package Bookmarks.UI is
 -- ****
-
-   -- ****t* BUITUI/BUITUI.Bookmarks_Container
-   -- FUNCTION
-   -- Used to store all bookmarks
-   -- SOURCE
-   package Bookmarks_Container is new Indefinite_Hashed_Maps
-     (String, String, Ada.Strings.Hash, "=");
-   -- ****
 
    -- ****iv* BUITUI/BUITUI.BookmarksList
    -- FUNCTION
