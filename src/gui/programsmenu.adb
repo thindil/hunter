@@ -33,7 +33,7 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Bookmarks.UI; use Bookmarks.UI;
+with Bookmarks; use Bookmarks;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
 with Utils; use Utils;
