@@ -40,25 +40,25 @@ with Utils.UI; use Utils.UI;
 
 package body Messages is
 
-   -- ****iv* Messages/Messages.MessageFrame
+   -- ****iv* Messages/Messages.Message_Frame
    -- FUNCTION
    -- Main frame for the message widget
    -- SOURCE
-   MessageFrame: Ttk_Frame;
+   Message_Frame: Ttk_Frame;
    -- ****
 
-   -- ****iv* Messages/Messages.MessageLabel
+   -- ****iv* Messages/Messages.Message_Label
    -- FUNCTION
    -- Label which show message text
    -- SOURCE
-   MessageLabel: Ttk_Label;
+   Message_Label: Ttk_Label;
    -- ****
 
-   -- ****iv* Messages/Messages.TimerId
+   -- ****iv* Messages/Messages.Timer_Id
    -- FUNCTION
    -- Id of timer for auto close command
    -- SOURCE
-   TimerId: Unbounded_String := Null_Unbounded_String;
+   Timer_Id: Unbounded_String := Null_Unbounded_String;
    -- ****
 
    function Close_Command
@@ -66,11 +66,11 @@ package body Messages is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Interp, Argc, Argv);
    begin
-      if TimerId /= Null_Unbounded_String then
-         Cancel(To_String(TimerId));
-         TimerId := Null_Unbounded_String;
+      if Timer_Id /= Null_Unbounded_String then
+         Cancel(id_or_script => To_String(Source => Timer_Id));
+         Timer_Id := Null_Unbounded_String;
       end if;
-      Grid_Remove(MessageFrame);
+      Grid_Remove(Slave => Message_Frame);
       return TCL_OK;
    end Close_Command;
 
@@ -89,24 +89,25 @@ package body Messages is
    -- Answer is the answer which the user selected by clicking in button
    -- SOURCE
    function Response_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Response_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      OverwriteItem: Boolean := True;
-      Response: constant String := CArgv.Arg(Argv, 1);
+      Overwrite_Item: Boolean := True;
+      Response: constant String := CArgv.Arg(Argv => Argv, N => 1);
    begin
       Yes_For_All := (if Response = "yesall" then True else False);
       case New_Action is
          when DELETE | CLEARTRASH | DELETETRASH =>
             if New_Action /= CLEARTRASH then
-               Update_Progress_Bar(Positive(Selected_Items.Length));
+               Update_Progress_Bar(Amount => Positive(Selected_Items.Length));
             end if;
             if Response = "yes" then
+               Delete_Selected_Block :
                begin
                   if Delete_Selected then
                      Current_Directory :=
@@ -119,15 +120,16 @@ package body Messages is
                      Load_Directory(To_String(Current_Directory));
                      Update_Directory_List(True);
                      return TCL_OK;
-               end;
+               end Delete_Selected_Block;
                if New_Action = CLEARTRASH then
                   Tcl.Ada.Tcl_Eval
                     (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
                elsif New_Action = DELETETRASH then
                   Toggle_Tool_Buttons(New_Action, True);
-                  if Close_Command(ClientData, Interp, Argc, Argv) =
+                  if Close_Command(Client_Data, Interp, Argc, Argv) =
                     TCL_OK then
-                     return Show_Trash_Command(ClientData, Interp, Argc, Argv);
+                     return
+                       Show_Trash_Command(Client_Data, Interp, Argc, Argv);
                   end if;
                else
                   Load_Directory(To_String(Current_Directory));
@@ -156,32 +158,32 @@ package body Messages is
                      "message");
                end if;
             else
-               return Close_Command(ClientData, Interp, Argc, Argv);
+               return Close_Command(Client_Data, Interp, Argc, Argv);
             end if;
          when COPY =>
             if Response = "noall" then
                Toggle_Tool_Buttons(New_Action, True);
                Load_Directory(To_String(Current_Directory));
                Update_Directory_List(True);
-               return Close_Command(ClientData, Interp, Argc, Argv);
+               return Close_Command(Client_Data, Interp, Argc, Argv);
             elsif Response = "no" then
                Skip_Copying;
-               return Close_Command(ClientData, Interp, Argc, Argv);
+               return Close_Command(Client_Data, Interp, Argc, Argv);
             end if;
-            Copy_Selected(OverwriteItem);
-            return Close_Command(ClientData, Interp, Argc, Argv);
+            Copy_Selected(Overwrite_Item);
+            return Close_Command(Client_Data, Interp, Argc, Argv);
          when MOVE =>
             if Response = "noall" then
                Toggle_Tool_Buttons(New_Action, True);
                Load_Directory(To_String(Current_Directory));
                Update_Directory_List(True);
-               return Close_Command(ClientData, Interp, Argc, Argv);
+               return Close_Command(Client_Data, Interp, Argc, Argv);
             elsif Response = "no" then
                SkipMoving;
-               return Close_Command(ClientData, Interp, Argc, Argv);
+               return Close_Command(Client_Data, Interp, Argc, Argv);
             end if;
-            MoveSelected(OverwriteItem);
-            return Close_Command(ClientData, Interp, Argc, Argv);
+            MoveSelected(Overwrite_Item);
+            return Close_Command(Client_Data, Interp, Argc, Argv);
          when others =>
             null;
       end case;
@@ -214,9 +216,9 @@ package body Messages is
       Style_Configure("question.TFrame", "-background #3daee9");
       Style_Configure
         ("question.TLabel", "-background #3daee9 -foreground #ffffff");
-      MessageFrame := Create(".mainframe.message");
-      MessageLabel := Create(MessageFrame & ".label", "-wraplength 800");
-      ButtonsBox := Create(MessageFrame & ".buttonsbox");
+      Message_Frame := Create(".mainframe.message");
+      Message_Label := Create(Message_Frame & ".label", "-wraplength 800");
+      ButtonsBox := Create(Message_Frame & ".buttonsbox");
       AddButton("no", Mc(Get_Context, "{No}"), "no");
       AddButton("yes", Mc(Get_Context, "{Yes}"), "yes", 1);
       AddButton("noall", Mc(Get_Context, "{No for all}"), "noall", 2);
@@ -227,31 +229,31 @@ package body Messages is
            "-text x -style Toolbutton -command CloseMessage");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 4 -row 0");
       Tcl.Tk.Ada.Pack.Pack(ButtonsBox, "-side right");
-      Tcl.Tk.Ada.Pack.Pack(MessageLabel, "-expand true -fill x");
+      Tcl.Tk.Ada.Pack.Pack(Message_Label, "-expand true -fill x");
    end Create_Messages_Ui;
 
    procedure Show_Message(Message: String; Message_Type: String := "error") is
       ButtonsNames: constant array(1 .. 5) of Unbounded_String :=
-        (To_Unbounded_String(MessageFrame & ".buttonsbox.buttonno"),
-         To_Unbounded_String(MessageFrame & ".buttonsbox.buttonyes"),
-         To_Unbounded_String(MessageFrame & ".buttonsbox.buttonnoall"),
-         To_Unbounded_String(MessageFrame & ".buttonsbox.buttonyesall"),
-         To_Unbounded_String(MessageFrame & ".buttonsbox.buttonclose"));
+        (To_Unbounded_String(Message_Frame & ".buttonsbox.buttonno"),
+         To_Unbounded_String(Message_Frame & ".buttonsbox.buttonyes"),
+         To_Unbounded_String(Message_Frame & ".buttonsbox.buttonnoall"),
+         To_Unbounded_String(Message_Frame & ".buttonsbox.buttonyesall"),
+         To_Unbounded_String(Message_Frame & ".buttonsbox.buttonclose"));
       Button: Ttk_Button;
    begin
-      if MessageFrame.Name = Null_Ptr then
+      if Message_Frame.Name = Null_Ptr then
          return;
       end if;
-      Button.Interp := MessageLabel.Interp;
+      Button.Interp := Message_Label.Interp;
       Remove_Buttons_Loop :
       for ButtonName of ButtonsNames loop
          Button.Name := New_String(To_String(ButtonName));
          Grid_Remove(Button);
       end loop Remove_Buttons_Loop;
       configure
-        (MessageLabel,
+        (Message_Label,
          "-text {" & Message & "} -style " & Message_Type & ".TLabel");
-      configure(MessageFrame, "-style " & Message_Type & ".TFrame");
+      configure(Message_Frame, "-style " & Message_Type & ".TFrame");
       if Message_Type /= "question" then
          Button.Name := New_String(To_String(ButtonsNames(5)));
          Tcl.Tk.Ada.Grid.Grid(Button);
@@ -268,9 +270,9 @@ package body Messages is
          end if;
       end if;
       Tcl.Tk.Ada.Grid.Grid
-        (MessageFrame, "-column 0 -row 2 -sticky we -columnspan 2");
+        (Message_Frame, "-column 0 -row 2 -sticky we -columnspan 2");
       if Message_Type /= "question" then
-         TimerId :=
+         Timer_Id :=
            To_Unbounded_String
              (After
                 (Settings.Auto_Close_Messages_Time * 1_000, "CloseMessage"));
