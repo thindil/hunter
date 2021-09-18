@@ -28,7 +28,8 @@ package Bookmarks is
    -- Used to store all bookmarks
    -- SOURCE
    package Bookmarks_Container is new Indefinite_Hashed_Maps
-     (String, String, Ada.Strings.Hash, "=");
+     (Key_Type => String, Element_Type => String, Hash => Ada.Strings.Hash,
+      Equivalent_Keys => "=");
    -- ****
 
 end Bookmarks;
