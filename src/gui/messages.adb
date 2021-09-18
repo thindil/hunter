@@ -112,32 +112,38 @@ package body Messages is
                   if Delete_Selected then
                      Current_Directory :=
                        To_Unbounded_String
-                         (Normalize_Pathname
-                            (To_String(Current_Directory) & "/.."));
+                         (Source =>
+                            Normalize_Pathname
+                              (Name =>
+                                 To_String(Source => Current_Directory) &
+                                 "/.."));
                   end if;
                exception
                   when others =>
-                     Load_Directory(To_String(Current_Directory));
-                     Update_Directory_List(True);
+                     Load_Directory
+                       (Directory_Name =>
+                          To_String(Source => Current_Directory));
+                     Update_Directory_List(Clear => True);
                      return TCL_OK;
                end Delete_Selected_Block;
-               if New_Action = CLEARTRASH then
-                  Tcl.Ada.Tcl_Eval
-                    (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
-               elsif New_Action = DELETETRASH then
-                  Toggle_Tool_Buttons(New_Action, True);
-                  if Close_Command(Client_Data, Interp, Argc, Argv) =
-                    TCL_OK then
-                     return
-                       Show_Trash_Command(Client_Data, Interp, Argc, Argv);
-                  end if;
-               else
-                  Load_Directory(To_String(Current_Directory));
-                  Update_Directory_List(True);
-                  UpdateWatch(To_String(Current_Directory));
-                  Tcl.Ada.Tcl_Eval(Get_Context, "ShowSelected");
-                  Tcl.Ada.Tcl_Eval(Get_Context, "update");
-               end if;
+               case New_Action is
+                  when CLEARTRASH =>
+                     Tcl.Ada.Tcl_Eval
+                       (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
+                  when DELETETRASH =>
+                     Toggle_Tool_Buttons(New_Action, True);
+                     if Close_Command(Client_Data, Interp, Argc, Argv) =
+                       TCL_OK then
+                        return
+                          Show_Trash_Command(Client_Data, Interp, Argc, Argv);
+                     end if;
+                  when others =>
+                     Load_Directory(To_String(Current_Directory));
+                     Update_Directory_List(True);
+                     UpdateWatch(To_String(Current_Directory));
+                     Tcl.Ada.Tcl_Eval(Get_Context, "ShowSelected");
+                     Tcl.Ada.Tcl_Eval(Get_Context, "update");
+               end case;
             end if;
             Toggle_Tool_Buttons(New_Action, True);
             if Settings.Show_Finished_Info then
