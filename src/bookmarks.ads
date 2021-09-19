@@ -32,4 +32,20 @@ package Bookmarks is
       Equivalent_Keys => "=");
    -- ****
 
+   -- ****iv* Bookmarks/Bookmarks.Bookmarks_List
+   -- FUNCTION
+   -- List of all bookmarked locations
+   -- SOURCE
+   Bookmarks_List: Bookmarks_Container.Map;
+   -- ****
+
+private
+
+   -- ****f* Bookmarks/Bookmarks.Create_Bookmarks_List
+   -- FUNCTION
+   -- Fill the user's bookmarks list
+   -- SOURCE
+   procedure Fill_Bookmarks_List;
+   -- ****
+
 end Bookmarks;

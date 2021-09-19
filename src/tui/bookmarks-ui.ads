@@ -24,13 +24,6 @@ with MainWindow; use MainWindow;
 package Bookmarks.UI is
 -- ****
 
-   -- ****iv* BUITUI/BUITUI.BookmarksList
-   -- FUNCTION
-   -- List of all bookmarked locations
-   -- SOURCE
-   BookmarksList: Bookmarks_Container.Map;
-   -- ****
-
    -- ****f* BUITUI/BUITUI.Create_Bookmarks_List
    -- FUNCTION
    -- Create the user's bookmarks list

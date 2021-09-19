@@ -20,7 +20,6 @@ with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -33,90 +32,18 @@ with ShowItems; use ShowItems;
 package body Bookmarks.UI is
 
    procedure Create_Bookmarks_List is
-      XDGBookmarks: constant array(1 .. 7) of Unbounded_String :=
-        (To_Unbounded_String("XDG_DESKTOP_DIR"),
-         To_Unbounded_String("XDG_DOWNLOAD_DIR"),
-         To_Unbounded_String("XDG_PUBLICSHARE_DIR"),
-         To_Unbounded_String("XDG_DOCUMENTS_DIR"),
-         To_Unbounded_String("XDG_MUSIC_DIR"),
-         To_Unbounded_String("XDG_PICTURES_DIR"),
-         To_Unbounded_String("XDG_VIDEOS_DIR"));
-      Path: Unbounded_String;
-      function GetXDGDirectory(Name: String) return Unbounded_String is
-         File: File_Type;
-         Line: Unbounded_String;
-         EqualIndex: Natural;
-      begin
-         if Value(Name, "") = "" then
-            Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
-            Load_Bookmarks_Loop :
-            while not End_Of_File(File) loop
-               Line := Get_Line(File);
-               EqualIndex := Index(Line, "=");
-               if EqualIndex > 0 then
-                  if Slice(Line, 1, EqualIndex - 1) = Name then
-                     Set(Name, Slice(Line, EqualIndex + 2, Length(Line) - 1));
-                     exit Load_Bookmarks_Loop;
-                  end if;
-               end if;
-            end loop Load_Bookmarks_Loop;
-            Close(File);
-         end if;
-         return To_Unbounded_String(Expand_Path(Value(Name)));
-      end GetXDGDirectory;
    begin
-      BookmarksList.Clear;
-      Set_XDGBookmarks_List_Loop :
-      for I in XDGBookmarks'Range loop
-         Path := GetXDGDirectory(To_String(XDGBookmarks(I)));
-         if Ada.Directories.Exists(To_String(Path)) then
-            BookmarksList.Include
-              (Simple_Name(To_String(Path)), To_String(Path));
-         end if;
-      end loop Set_XDGBookmarks_List_Loop;
-      if Ada.Directories.Exists
-          (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
-         declare
-            File: File_Type;
-            Line, Path: Unbounded_String;
-            BookmarkExist: Boolean;
-         begin
-            Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
-            Load_User_Bookmarks_Loop :
-            while not End_Of_File(File) loop
-               Line := Get_Line(File);
-               if Length(Line) < 7 or else Slice(Line, 1, 7) /= "file://" then
-                  goto End_Of_Loop;
-               end if;
-               Path := Unbounded_Slice(Line, 8, Length(Line));
-               BookmarkExist := False;
-               Check_Bookmark_Existence_Loop :
-               for I in BookmarksList.Iterate loop
-                  if BookmarksList(I) = To_String(Path) then
-                     BookmarkExist := True;
-                     exit Check_Bookmark_Existence_Loop;
-                  end if;
-               end loop Check_Bookmark_Existence_Loop;
-               if not BookmarkExist and
-                 Ada.Directories.Exists(To_String(Path)) then
-                  BookmarksList.Include
-                    (Simple_Name(To_String(Path)), To_String(Path));
-               end if;
-               <<End_Of_Loop>>
-            end loop Load_User_Bookmarks_Loop;
-            Close(File);
-         end;
-      end if;
+      Fill_Bookmarks_List;
    end Create_Bookmarks_List;
 
    function Show_Bookmarks_Menu return Item_Array_Access is
       Menu_Items: Item_Array_Access;
       MenuIndex: Positive := 1;
    begin
-      Menu_Items := new Item_Array(1 .. Positive(BookmarksList.Length) + 4);
+      Menu_Items := new Item_Array(1 .. Positive(Bookmarks_List.Length) + 4);
       Menu_Items.all(MenuIndex) := New_Item(Mc(Interpreter, "{Home}"));
       MenuIndex := MenuIndex + 1;
-      for I in BookmarksList.Iterate loop
+      for I in Bookmarks_List.Iterate loop
          Menu_Items.all(MenuIndex) := New_Item(Bookmarks_Container.Key(I));
          MenuIndex := MenuIndex + 1;
       end loop;
@@ -191,11 +118,11 @@ package body Bookmarks.UI is
          Update_Directory_List;
          return DIRECTORY_VIEW;
       end if;
-      if BookmarksList.Contains(Bookmark) then
+      if Bookmarks_List.Contains(Bookmark) then
          New_Action := CREATEFILE;
          CreateProgramMenu(True);
          MainWindow.Current_Directory :=
-           To_Unbounded_String(BookmarksList(Bookmark));
+           To_Unbounded_String(Bookmarks_List(Bookmark));
       elsif Bookmark = Mc(Interpreter, "{Home}") then
          New_Action := CREATEFILE;
          CreateProgramMenu(True);
