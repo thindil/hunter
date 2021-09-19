@@ -28,6 +28,7 @@ with AboutDialog; use AboutDialog;
 with AboutDialog.UI; use AboutDialog.UI;
 with ActivateItems;
 with ActivateItems.UI; use ActivateItems.UI;
+with Bookmarks; use Bookmarks;
 with Bookmarks.UI; use Bookmarks.UI;
 with CreateItems; use CreateItems;
 with CopyItems; use CopyItems;
@@ -500,7 +501,7 @@ package body MainWindow is
             else
                Menu_Items.all(1) := New_Item("Execute with");
             end if;
-            for Bookmark of BookmarksList loop
+            for Bookmark of Bookmarks_List loop
                if Bookmark = Current_Selected then
                   Bookmark_Exists := True;
                   exit;
