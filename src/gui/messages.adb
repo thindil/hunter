@@ -129,19 +129,30 @@ package body Messages is
                case New_Action is
                   when CLEARTRASH =>
                      Tcl.Ada.Tcl_Eval
-                       (Get_Context, "GoToBookmark {" & Value("HOME") & "}");
+                       (interp => Get_Context,
+                        strng =>
+                          "GoToBookmark {" & Value(Name => "HOME") & "}");
                   when DELETETRASH =>
-                     Toggle_Tool_Buttons(New_Action, True);
-                     if Close_Command(Client_Data, Interp, Argc, Argv) =
+                     Toggle_Tool_Buttons
+                       (Action => New_Action, Finished => True);
+                     if Close_Command
+                         (Client_Data => Client_Data, Interp => Interp,
+                          Argc => Argc, Argv => Argv) =
                        TCL_OK then
                         return
-                          Show_Trash_Command(Client_Data, Interp, Argc, Argv);
+                          Show_Trash_Command
+                            (ClientData => Client_Data, Interp => Interp,
+                             Argc => Argc, Argv => Argv);
                      end if;
                   when others =>
-                     Load_Directory(To_String(Current_Directory));
-                     Update_Directory_List(True);
-                     UpdateWatch(To_String(Current_Directory));
-                     Tcl.Ada.Tcl_Eval(Get_Context, "ShowSelected");
+                     Load_Directory
+                       (Directory_Name =>
+                          To_String(Source => Current_Directory));
+                     Update_Directory_List(Clear => True);
+                     UpdateWatch
+                       (Path => To_String(Source => Current_Directory));
+                     Tcl.Ada.Tcl_Eval
+                       (interp => Get_Context, strng => "ShowSelected");
                      Tcl.Ada.Tcl_Eval(Get_Context, "update");
                end case;
             end if;
