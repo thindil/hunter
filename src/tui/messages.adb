@@ -22,6 +22,7 @@ with Bookmarks.UI; use Bookmarks.UI;
 with CopyItems; use CopyItems;
 with DeleteItems; use DeleteItems;
 with MoveItems; use MoveItems;
+with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
 package body Messages is
@@ -169,6 +170,7 @@ package body Messages is
                New_Action := CREATEFILE;
                CreateProgramMenu(True);
                Update_Directory_List(True);
+               ShowPreview;
                return DIRECTORY_VIEW;
             elsif Option = "[Yes for all]" then
                YesForAll := True;
@@ -178,6 +180,7 @@ package body Messages is
                      New_Action := CREATEFILE;
                      CreateProgramMenu(True);
                      Update_Directory_List(True);
+                     ShowPreview;
                      return DIRECTORY_VIEW;
                   end if;
                   return MESSAGE_FORM;
@@ -186,6 +189,7 @@ package body Messages is
                      New_Action := CREATEFILE;
                      CreateProgramMenu(True);
                      Update_Directory_List(True);
+                     ShowPreview;
                      return DIRECTORY_VIEW;
                   end if;
                   return MESSAGE_FORM;
@@ -193,6 +197,7 @@ package body Messages is
                   New_Action := CREATEFILE;
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
+                  ShowPreview;
                   return DIRECTORY_VIEW;
                end if;
             end if;
@@ -201,6 +206,7 @@ package body Messages is
                   New_Action := CREATEFILE;
                   CreateProgramMenu(True);
                   Update_Directory_List(True);
+                  ShowPreview;
                   return DIRECTORY_VIEW;
                end if;
                return MESSAGE_FORM;
@@ -209,6 +215,7 @@ package body Messages is
                   New_Action := CREATEFILE;
                   CreateProgramMenu(True);
                   Update_Directory_List(True);
+                  ShowPreview;
                   return DIRECTORY_VIEW;
                end if;
                return MESSAGE_FORM;
@@ -232,6 +239,7 @@ package body Messages is
                   New_Action := CREATEFILE;
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
+                  ShowPreview;
                end if;
                return DIRECTORY_VIEW;
             end if;
