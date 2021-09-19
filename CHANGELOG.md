@@ -11,8 +11,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
 - Don't auto hide questions or confirmation messages in graphical version
-- Refresh preview after canceling deleting items, closing about dialog in
-  console version
+- Refresh preview after showing various dialogs in console version
 - Showing information about invalid command when trying execute file or
   directory with it in console version
 
