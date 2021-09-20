@@ -21,6 +21,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Messages; use Messages;
+with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
 package body ActivateItems.UI is
@@ -111,6 +112,7 @@ package body ActivateItems.UI is
             Set_Cursor_Visibility(Visibility);
             UILocation := DIRECTORY_VIEW;
             Update_Directory_List(True);
+            ShowPreview;
          end if;
          return UILocation;
       end Hide_Dialog;
