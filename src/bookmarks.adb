@@ -23,29 +23,29 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 package body Bookmarks is
 
    procedure Fill_Bookmarks_List is
-      XDGBookmarks: constant array(1 .. 7) of Unbounded_String :=
-        (To_Unbounded_String("XDG_DESKTOP_DIR"),
-         To_Unbounded_String("XDG_DOWNLOAD_DIR"),
-         To_Unbounded_String("XDG_PUBLICSHARE_DIR"),
-         To_Unbounded_String("XDG_DOCUMENTS_DIR"),
-         To_Unbounded_String("XDG_MUSIC_DIR"),
-         To_Unbounded_String("XDG_PICTURES_DIR"),
-         To_Unbounded_String("XDG_VIDEOS_DIR"));
-      Path: Unbounded_String;
-      function GetXDGDirectory(Name: String) return Unbounded_String is
+      Xdg_Bookmarks: constant array(1 .. 7) of Unbounded_String :=
+        (1 => To_Unbounded_String(Source => "XDG_DESKTOP_DIR"),
+         2 => To_Unbounded_String(Source => "XDG_DOWNLOAD_DIR"),
+         3 => To_Unbounded_String(Source => "XDG_PUBLICSHARE_DIR"),
+         4 => To_Unbounded_String(Source => "XDG_DOCUMENTS_DIR"),
+         5 => To_Unbounded_String(Source => "XDG_MUSIC_DIR"),
+         6 => To_Unbounded_String(Source => "XDG_PICTURES_DIR"),
+         7 => To_Unbounded_String(Source => "XDG_VIDEOS_DIR"));
+      Path: Unbounded_String := Null_Unbounded_String;
+      function Get_Xdg_Directory(Name: String) return Unbounded_String is
          File: File_Type;
-         Line: Unbounded_String;
-         EqualIndex: Natural;
+         Line: Unbounded_String := Null_Unbounded_String;
+         Equal_Index: Natural := 0;
       begin
          if Value(Name, "") = "" then
             Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
             Load_Bookmarks_Loop :
             while not End_Of_File(File) loop
                Line := Get_Line(File);
-               EqualIndex := Index(Line, "=");
-               if EqualIndex > 0 then
-                  if Slice(Line, 1, EqualIndex - 1) = Name then
-                     Set(Name, Slice(Line, EqualIndex + 2, Length(Line) - 1));
+               Equal_Index := Index(Line, "=");
+               if Equal_Index > 0 then
+                  if Slice(Line, 1, Equal_Index - 1) = Name then
+                     Set(Name, Slice(Line, Equal_Index + 2, Length(Line) - 1));
                      exit Load_Bookmarks_Loop;
                   end if;
                end if;
@@ -53,12 +53,12 @@ package body Bookmarks is
             Close(File);
          end if;
          return To_Unbounded_String(Expand_Path(Value(Name)));
-      end GetXDGDirectory;
+      end Get_Xdg_Directory;
    begin
       Bookmarks_List.Clear;
       Set_XDGBookmarks_List_Loop :
-      for I in XDGBookmarks'Range loop
-         Path := GetXDGDirectory(To_String(XDGBookmarks(I)));
+      for I in Xdg_Bookmarks'Range loop
+         Path := Get_Xdg_Directory(To_String(Xdg_Bookmarks(I)));
          if Ada.Directories.Exists(To_String(Path)) then
             Bookmarks_List.Include
               (Simple_Name(To_String(Path)), To_String(Path));
