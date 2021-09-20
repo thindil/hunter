@@ -16,10 +16,7 @@
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO;
-with Ada.Text_IO.Unbounded_IO;
 with Interfaces.C.Strings;
-with GNAT.Directory_Operations;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
@@ -35,149 +32,38 @@ package body Bookmarks.UI is
 
    procedure Create_Bookmark_Menu(Create_New: Boolean := False) is
       use Ada.Environment_Variables;
-      use Ada.Text_IO;
-      use Ada.Text_IO.Unbounded_IO;
       use Tcl.MsgCat.Ada;
       use Tcl.Tk.Ada.Widgets.TtkMenuButton;
       use Bookmarks.Commands;
 
-      Xdg_Bookmarks: constant array(1 .. 7) of Unbounded_String :=
-        (1 => To_Unbounded_String(Source => "XDG_DESKTOP_DIR"),
-         2 => To_Unbounded_String(Source => "XDG_DOWNLOAD_DIR"),
-         3 => To_Unbounded_String(Source => "XDG_PUBLICSHARE_DIR"),
-         4 => To_Unbounded_String(Source => "XDG_DOCUMENTS_DIR"),
-         5 => To_Unbounded_String(Source => "XDG_MUSIC_DIR"),
-         6 => To_Unbounded_String(Source => "XDG_PICTURES_DIR"),
-         7 => To_Unbounded_String(Source => "XDG_VIDEOS_DIR"));
       Bookmarks_Menu: Tk_Menu;
       Menu_Button: constant Ttk_MenuButton :=
         Get_Widget
           (pathName => ".mainframe.toolbars.actiontoolbar.bookmarksbutton");
-      Path: Unbounded_String := Null_Unbounded_String;
-      function Get_Xdg_Directory(Name: String) return Unbounded_String is
-         use GNAT.Directory_Operations;
-
-         File: File_Type;
-         Line: Unbounded_String := Null_Unbounded_String;
-         Equal_Index: Natural := 0;
-      begin
-         if Value(Name => Name, Default => "") = "" then
-            Open
-              (File => File, Mode => In_File,
-               Name => Value(Name => "HOME") & "/.config/user-dirs.dirs");
-            Load_Bookmarks_Loop :
-            while not End_Of_File(File => File) loop
-               Line := Get_Line(File => File);
-               Equal_Index := Index(Source => Line, Pattern => "=");
-               if Equal_Index > 0 then
-                  if Slice(Source => Line, Low => 1, High => Equal_Index - 1) =
-                    Name then
-                     Set
-                       (Name => Name,
-                        Value =>
-                          Slice
-                            (Source => Line, Low => Equal_Index + 2,
-                             High => Length(Source => Line) - 1));
-                     exit Load_Bookmarks_Loop;
-                  end if;
-               end if;
-            end loop Load_Bookmarks_Loop;
-            Close(File => File);
-         end if;
-         return
-           To_Unbounded_String
-             (Source => Expand_Path(Path => Value(Name => Name)));
-      end Get_Xdg_Directory;
    begin
       if Create_New then
          Bookmarks_Menu :=
            Create(pathName => ".bookmarksmenu", options => "-tearoff false");
          AddCommands;
+         Fill_Bookmarks_List;
       else
          Bookmarks_Menu := Get_Widget(pathName => ".bookmarksmenu");
          Delete
            (MenuWidget => Bookmarks_Menu, StartIndex => "0",
             EndIndex => "end");
       end if;
-      Bookmarks_List.Clear;
-      Bookmarks_List.Include
-        (Key => Mc(Interp => Get_Context, Src_String => "{Home}"),
-         New_Item => Value(Name => "HOME"));
       Add
         (MenuWidget => Bookmarks_Menu, EntryType => "command",
          Options =>
            "-label {" & Mc(Interp => Get_Context, Src_String => "{Home}") &
            "} -command {GoToBookmark {" & Value(Name => "HOME") & "}}");
-      Set_Xdg_Bookmarks_List_Loop :
-      for Bookmark of Xdg_Bookmarks loop
-         Path := Get_Xdg_Directory(Name => To_String(Source => Bookmark));
-         if Ada.Directories.Exists(Name => To_String(Source => Path)) then
-            Bookmarks_List.Include
-              (Key => Simple_Name(Name => To_String(Source => Path)),
-               New_Item => To_String(Source => Path));
-            Add
-              (MenuWidget => Bookmarks_Menu, EntryType => "command",
-               Options =>
-                 "-label {" & Simple_Name(Name => To_String(Source => Path)) &
-                 "} -command {GoToBookmark {" & To_String(Source => Path) &
-                 "}}");
-         end if;
-      end loop Set_Xdg_Bookmarks_List_Loop;
-      if Ada.Directories.Exists
-          (Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks") then
-         Add_User_Bookmarks_Block :
-         declare
-            File: File_Type;
-            Line, Bookmark_Path: Unbounded_String := Null_Unbounded_String;
-            Bookmark_Exist: Boolean := False;
-         begin
-            Open
-              (File => File, Mode => In_File,
-               Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
-            Load_User_Bookmarks_Loop :
-            while not End_Of_File(File => File) loop
-               Line := Get_Line(File => File);
-               if Length(Source => Line) < 7
-                 or else Slice(Source => Line, Low => 1, High => 7) /=
-                   "file://" then
-                  goto End_Of_Loop;
-               end if;
-               Bookmark_Path :=
-                 Unbounded_Slice
-                   (Source => Line, Low => 8, High => Length(Source => Line));
-               Bookmark_Exist := False;
-               Check_Bookmark_Existence_Loop :
-               for I in Bookmarks_List.Iterate loop
-                  if Bookmarks_List(I) =
-                    To_String(Source => Bookmark_Path) then
-                     Bookmark_Exist := True;
-                     exit Check_Bookmark_Existence_Loop;
-                  end if;
-               end loop Check_Bookmark_Existence_Loop;
-               if not Bookmark_Exist and
-                 Ada.Directories.Exists
-                   (Name => To_String(Source => Bookmark_Path)) then
-                  Bookmarks_List.Include
-                    (Key =>
-                       Simple_Name(Name => To_String(Source => Bookmark_Path)),
-                     New_Item => To_String(Source => Bookmark_Path));
-                  Add
-                    (MenuWidget => Bookmarks_Menu, EntryType => "command",
-                     Options =>
-                       "-label {" &
-                       Simple_Name
-                         (Name => To_String(Source => Bookmark_Path)) &
-                       "} -command {GoToBookmark {" &
-                       To_String(Source => Bookmark_Path) & "}}");
-               end if;
-               <<End_Of_Loop>>
-            end loop Load_User_Bookmarks_Loop;
-            Close(File => File);
-         end Add_User_Bookmarks_Block;
-      end if;
-      Bookmarks_List.Include
-        (Key => Mc(Interp => Get_Context, Src_String => "{Enter destination}"),
-         New_Item => "");
+      for I in Bookmarks_List.Iterate loop
+         Add
+           (MenuWidget => Bookmarks_Menu, EntryType => "command",
+            Options =>
+              "-label {" & Bookmarks_Container.Key(Position => I) &
+              "} -command {GoToBookmark {" & Bookmarks_List(I) & "}}");
+      end loop;
       Add
         (MenuWidget => Bookmarks_Menu, EntryType => "command",
          Options =>
