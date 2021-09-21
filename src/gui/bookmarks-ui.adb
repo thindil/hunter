@@ -45,13 +45,13 @@ package body Bookmarks.UI is
          Bookmarks_Menu :=
            Create(pathName => ".bookmarksmenu", options => "-tearoff false");
          AddCommands;
-         Fill_Bookmarks_List;
       else
          Bookmarks_Menu := Get_Widget(pathName => ".bookmarksmenu");
          Delete
            (MenuWidget => Bookmarks_Menu, StartIndex => "0",
             EndIndex => "end");
       end if;
+      Fill_Bookmarks_List;
       Add
         (MenuWidget => Bookmarks_Menu, EntryType => "command",
          Options =>

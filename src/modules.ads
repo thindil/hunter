@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Tcl; use Tcl;
-with MainWindow; use MainWindow;
+with CopyItems; use CopyItems;
 
 -- ****h* Modules/Modules
 -- FUNCTION

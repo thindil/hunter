@@ -13,8 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with CopyItems; use CopyItems;
 
 -- ****h* MainWindow/MainWindow
 -- FUNCTION
@@ -64,14 +64,6 @@ package MainWindow is
    -- Current performed action on files or directories
    -- SOURCE
    New_Action: Item_Actions;
-   -- ****
-
-   -- ****t* MainWindow/MainWindow.UnboundedString_Container
-   -- FUNCTION
-   -- Used to store various Unbounded_String data in list.
-   -- SOURCE
-   package UnboundedString_Container is new Vectors
-     (Index_Type => Positive, Element_Type => Unbounded_String);
    -- ****
 
    -- ****v* MainWindow/MainWindow.Selected_Items

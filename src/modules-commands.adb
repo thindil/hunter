@@ -26,6 +26,7 @@ with CArgv; use CArgv;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Messages; use Messages;
+with MainWindow; use MainWindow;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;

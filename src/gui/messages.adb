@@ -27,7 +27,7 @@ with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
-with CopyItems; use CopyItems;
+with CopyItems.UI; use CopyItems.UI;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;

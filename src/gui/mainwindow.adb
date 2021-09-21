@@ -51,7 +51,7 @@ with AboutDialog;
 with AboutDialog.UI;
 with ActivateItems;
 with Bookmarks.UI;
-with CopyItems;
+with CopyItems.UI;
 with CreateItems;
 with DeleteItems;
 with LoadData;
@@ -90,7 +90,6 @@ package body MainWindow is
       use AboutDialog;
       use AboutDialog.UI;
       use Bookmarks.UI;
-      use CopyItems;
       use CreateItems;
       use DeleteItems;
       use LoadData.UI;
@@ -307,7 +306,7 @@ package body MainWindow is
       Create_Delete_Ui;
       CreateRenameUI;
       Create_Create_Ui;
-      Create_Copy_Ui;
+      CopyItems.UI.Create_Copy_Ui;
       CreateMoveUI;
       CreateTrash;
       Create_About_Ui;
