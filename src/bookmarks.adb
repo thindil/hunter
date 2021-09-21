@@ -37,20 +37,28 @@ package body Bookmarks is
          Line: Unbounded_String := Null_Unbounded_String;
          Equal_Index: Natural := 0;
       begin
-         if Value(Name, "") = "" then
-            Open(File, In_File, Value("HOME") & "/.config/user-dirs.dirs");
+         if Value(Name => Name, Default => "") = "" then
+            Open
+              (File => File, Mode => In_File,
+               Name => Value(Name => "HOME") & "/.config/user-dirs.dirs");
             Load_Bookmarks_Loop :
-            while not End_Of_File(File) loop
-               Line := Get_Line(File);
-               Equal_Index := Index(Line, "=");
+            while not End_Of_File(File => File) loop
+               Line := Get_Line(File => File);
+               Equal_Index := Index(Source => Line, Pattern => "=");
                if Equal_Index > 0 then
-                  if Slice(Line, 1, Equal_Index - 1) = Name then
-                     Set(Name, Slice(Line, Equal_Index + 2, Length(Line) - 1));
+                  if Slice(Source => Line, Low => 1, High => Equal_Index - 1) =
+                    Name then
+                     Set
+                       (Name => Name,
+                        Value =>
+                          Slice
+                            (Source => Line, Low => Equal_Index + 2,
+                             High => Length(Source => Line) - 1));
                      exit Load_Bookmarks_Loop;
                   end if;
                end if;
             end loop Load_Bookmarks_Loop;
-            Close(File);
+            Close(File => File);
          end if;
          return To_Unbounded_String(Expand_Path(Value(Name)));
       end Get_Xdg_Directory;
