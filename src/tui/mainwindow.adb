@@ -15,6 +15,7 @@
 
 with Ada.Calendar.Formatting;
 with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Containers; use Ada.Containers;
 with Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
@@ -31,7 +32,7 @@ with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
 with Bookmarks.UI; use Bookmarks.UI;
 with CreateItems; use CreateItems;
-with CopyItems; use CopyItems;
+with CopyItems.UI; use CopyItems.UI;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
@@ -590,14 +591,14 @@ package body MainWindow is
                   return PATH_BUTTONS;
                when 2 =>
                   if New_Action = COPY then
-                     CopyItemsList.Clear;
+                     Copy_Items_List.Clear;
                      if Item_Count(DirectoryList) > 0 then
                         Update_Copy_Items_Loop :
                         for I in 1 .. Item_Count(DirectoryList) loop
                            if Value(Items(DirectoryList, I)) or
                              Current(DirectoryList) =
                                Items(DirectoryList, I) then
-                              CopyItemsList.Append
+                              Copy_Items_List.Append
                                 (To_Unbounded_String
                                    (Description(Items(DirectoryList, I))));
                            end if;

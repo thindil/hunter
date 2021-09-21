@@ -13,11 +13,11 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Tcl; use Tcl;
+with CopyItems; use CopyItems;
 
 -- ****h* MainWindowTUI/MainWindowTUI
 -- FUNCTION
@@ -110,14 +110,6 @@ package MainWindow is
    -- Currently active element of UI
    -- SOURCE
    UILocation: UI_Locations := DIRECTORY_VIEW;
-   -- ****
-
-   -- ****t* MainWindowTUI/MainWindowTUI.UnboundedString_Container
-   -- FUNCTION
-   -- Used to store various Unbounded_String data in list.
-   -- SOURCE
-   package UnboundedString_Container is new Vectors
-     (Positive, Unbounded_String);
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.Selected_Items

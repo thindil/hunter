@@ -21,6 +21,7 @@ with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Bookmarks; use Bookmarks;
+with CopyItems; use CopyItems;
 with Messages; use Messages;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
