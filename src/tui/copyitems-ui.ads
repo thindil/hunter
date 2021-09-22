@@ -22,18 +22,6 @@ with MainWindow; use MainWindow;
 package CopyItems.UI is
 -- ****
 
-   -- ****f* CopyItems/CUITUI.CopyItem
-   -- FUNCTION
-   -- Copy selected file or directory to new location
-   -- PARAMETERS
-   -- Name      - Full path to file or directory to copy
-   -- Path      - Full path to new home location of file or directory
-   -- Success   - True if item was successfully copied, otherwise False
-   -- SOURCE
-   procedure CopyItem
-     (Name: String; Path: Unbounded_String; Success: in out Boolean);
-   -- ****
-
    -- ****f* CopyItems/CUITUI.CopySelected
    -- FUNCTION
    -- Copy selected files and directories

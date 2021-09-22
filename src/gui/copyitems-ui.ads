@@ -20,18 +20,6 @@
 package CopyItems.UI is
 -- ****
 
-   -- ****f* CopyItemsUI/CopyItemsUI.Copy_Item
-   -- FUNCTION
-   -- Copy selected file or directory to new location
-   -- PARAMETERS
-   -- Name      - Full path to file or directory to copy
-   -- Path      - Full path to new home location of file or directory
-   -- Success   - True if item was successfully copied, otherwise False
-   -- SOURCE
-   procedure Copy_Item
-     (Name: String; Path: Unbounded_String; Success: in out Boolean);
-   -- ****
-
    -- ****f* CopyItemsUI/CopyItemsUI.Copy_Selected
    -- FUNCTION
    -- Copy selected files and directories

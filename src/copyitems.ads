@@ -38,4 +38,16 @@ package CopyItems is
    Copy_Items_List: UnboundedString_Container.Vector;
    -- ****
 
+   -- ****f* CopyItems/CopyItems.Copy_Item
+   -- FUNCTION
+   -- Copy selected file or directory to new location
+   -- PARAMETERS
+   -- Name      - Full path to file or directory to copy
+   -- Path      - Full path to new home location of file or directory
+   -- Success   - True if item was successfully copied, otherwise False
+   -- SOURCE
+   procedure Copy_Item
+     (Name: String; Path: Unbounded_String; Success: in out Boolean);
+   -- ****
+
 end CopyItems;

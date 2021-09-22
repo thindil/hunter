@@ -35,68 +35,6 @@ package body CopyItems.UI is
    SourceDirectory: Unbounded_String;
    -- ****
 
-   procedure CopyItem
-     (Name: String; Path: Unbounded_String; Success: in out Boolean) is
-      NewPath: Unbounded_String := Path;
-      procedure CopyFile(FileName: String) is
-         NewName: Unbounded_String :=
-           NewPath & To_Unbounded_String("/" & Simple_Name(FileName));
-      begin
-         if Exists(To_String(NewName)) then
-            if Settings.Overwrite_On_Exist then
-               Delete_File(To_String(NewName));
-            else
-               New_File_Name_Loop :
-               loop
-                  NewName :=
-                    NewPath &
-                    To_Unbounded_String
-                      ("/" & Base_Name(To_String(NewName)) & "_." &
-                       Extension(To_String(NewName)));
-                  exit New_File_Name_Loop when not Exists(To_String(NewName));
-               end loop New_File_Name_Loop;
-            end if;
-         end if;
-         GNAT.OS_Lib.Copy_File
-           (FileName, To_String(NewName), Success, Copy, Full);
-      end CopyFile;
-      procedure ProcessFile(Item: Directory_Entry_Type) is
-      begin
-         CopyFile(Full_Name(Item));
-      end ProcessFile;
-      procedure ProcessDirectory(Item: Directory_Entry_Type) is
-      begin
-         if Simple_Name(Item) /= "." and then Simple_Name(Item) /= ".." then
-            CopyItem(Full_Name(Item), NewPath, Success);
-         end if;
-      exception
-         when Ada.Directories.Name_Error =>
-            null;
-      end ProcessDirectory;
-   begin
-      if Is_Directory(Name) then
-         Append(NewPath, "/" & Simple_Name(Name));
-         if Exists(To_String(NewPath)) and not Settings.Overwrite_On_Exist then
-            New_Directory_Name_Loop :
-            loop
-               NewPath := NewPath & "_";
-               exit New_Directory_Name_Loop when not Exists
-                   (To_String(NewPath));
-            end loop New_Directory_Name_Loop;
-         end if;
-         Create_Path(To_String(NewPath));
-         Search
-           (Name, "", (Directory => False, others => True),
-            ProcessFile'Access);
-         Search
-           (Name, "", (Directory => True, others => False),
-            ProcessDirectory'Access);
-      else
-         CopyFile(Name);
-      end if;
-      Update_Progress_Bar;
-   end CopyItem;
-
    function CopySelected(Overwrite: in out Boolean) return UI_Locations is
       Path, ItemType: Unbounded_String;
       Success: Boolean := True;
@@ -127,7 +65,7 @@ package body CopyItems.UI is
                "question");
             return MESSAGE_FORM;
          end if;
-         CopyItem(To_String(Copy_Items_List(1)), Path, Success);
+         Copy_Item(To_String(Copy_Items_List(1)), Path, Success);
          exit Copy_Items_Loop when not Success;
          Copy_Items_List.Delete(Index => 1);
          if not YesForAll then
