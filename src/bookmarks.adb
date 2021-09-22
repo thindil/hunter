@@ -60,24 +60,28 @@ package body Bookmarks is
             end loop Load_Bookmarks_Loop;
             Close(File => File);
          end if;
-         return To_Unbounded_String(Expand_Path(Value(Name)));
+         return
+           To_Unbounded_String
+             (Source => Expand_Path(Path => Value(Name => Name)));
       end Get_Xdg_Directory;
    begin
       Bookmarks_List.Clear;
       Set_XDGBookmarks_List_Loop :
-      for I in Xdg_Bookmarks'Range loop
-         Path := Get_Xdg_Directory(To_String(Xdg_Bookmarks(I)));
-         if Ada.Directories.Exists(To_String(Path)) then
+      for Xdg_Bookmark of Xdg_Bookmarks loop
+         Path := Get_Xdg_Directory(Name => To_String(Source => Xdg_Bookmark));
+         if Ada.Directories.Exists(Name => To_String(Source => Path)) then
             Bookmarks_List.Include
-              (Simple_Name(To_String(Path)), To_String(Path));
+              (Key => Simple_Name(Name => To_String(Source => Path)),
+               New_Item => To_String(Source => Path));
          end if;
       end loop Set_XDGBookmarks_List_Loop;
       if Ada.Directories.Exists
-          (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
+          (Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks") then
+         Load_User_Bookmarks_Block :
          declare
             File: File_Type;
-            Line, Path: Unbounded_String;
-            BookmarkExist: Boolean;
+            Line, User_Path: Unbounded_String := Null_Unbounded_String;
+            Bookmark_Exist: Boolean := False;
          begin
             Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
             Load_User_Bookmarks_Loop :
@@ -86,24 +90,24 @@ package body Bookmarks is
                if Length(Line) < 7 or else Slice(Line, 1, 7) /= "file://" then
                   goto End_Of_Loop;
                end if;
-               Path := Unbounded_Slice(Line, 8, Length(Line));
-               BookmarkExist := False;
+               User_Path := Unbounded_Slice(Line, 8, Length(Line));
+               Bookmark_Exist := False;
                Check_Bookmark_Existence_Loop :
                for I in Bookmarks_List.Iterate loop
-                  if Bookmarks_List(I) = To_String(Path) then
-                     BookmarkExist := True;
+                  if Bookmarks_List(I) = To_String(User_Path) then
+                     Bookmark_Exist := True;
                      exit Check_Bookmark_Existence_Loop;
                   end if;
                end loop Check_Bookmark_Existence_Loop;
-               if not BookmarkExist and
-                 Ada.Directories.Exists(To_String(Path)) then
+               if not Bookmark_Exist and
+                 Ada.Directories.Exists(To_String(User_Path)) then
                   Bookmarks_List.Include
-                    (Simple_Name(To_String(Path)), To_String(Path));
+                    (Simple_Name(To_String(User_Path)), To_String(User_Path));
                end if;
                <<End_Of_Loop>>
             end loop Load_User_Bookmarks_Loop;
             Close(File);
-         end;
+         end Load_User_Bookmarks_Block;
       end if;
    end Fill_Bookmarks_List;
 
