@@ -25,7 +25,6 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-with CopyItems.UI; use CopyItems.UI;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
