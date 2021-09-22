@@ -20,7 +20,6 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with CopyItems.UI; use CopyItems.UI;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Messages; use Messages;
@@ -81,7 +80,7 @@ package body MoveItems is
          end if;
          Rename_File(To_String(MoveItemsList(1)), To_String(NewName), Success);
          if not Success then
-            CopyItem
+            Copy_Item
               (To_String(MoveItemsList(1)), DestinationDirectory, Success);
             if Success then
                begin
