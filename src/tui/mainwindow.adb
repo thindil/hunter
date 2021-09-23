@@ -31,7 +31,7 @@ with ActivateItems;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
 with Bookmarks.UI; use Bookmarks.UI;
-with CreateItems; use CreateItems;
+with CreateItems.UI; use CreateItems.UI;
 with CopyItems.UI; use CopyItems.UI;
 with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
@@ -146,7 +146,7 @@ package body MainWindow is
         (DirName => "../share/hunter/translations", Interp => Interpreter);
       Set_About_Dialog_Information(Interp => Interpreter);
       ActivateItems.Add_Commands;
-      CreateItems.AddCommands;
+      CreateItems.UI.AddCommands;
       RenameItems.AddCommands;
       UserCommands.AddCommands;
       Create_Bookmarks_List;
