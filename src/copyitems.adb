@@ -13,15 +13,20 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Preferences; use Preferences;
-with Utils.UI; use Utils.UI;
+with Ada.Directories;
+with GNAT.OS_Lib;
+with Preferences;
+with Utils.UI;
 
 package body CopyItems is
 
    procedure Copy_Item
      (Name: String; Path: Unbounded_String; Success: in out Boolean) is
+      use Ada.Directories;
+      use GNAT.OS_Lib;
+      use Preferences;
+      use Utils.UI;
+
       New_Path: Unbounded_String := Path;
       procedure Copy_File(File_Name: String) is
          New_Name: Unbounded_String :=
