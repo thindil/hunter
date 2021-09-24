@@ -259,11 +259,11 @@ package body CreateItems.UI is
       return TCL_OK;
    end Create_Command;
 
-   procedure Create_Create_Ui is
+   procedure Add_Commands is
    begin
       Add_Command
         (Name => "ShowCreate", Ada_Command => Show_Create_Command'Access);
       Add_Command(Name => "Create", Ada_Command => Create_Command'Access);
-   end Create_Create_Ui;
+   end Add_Commands;
 
 end CreateItems.UI;

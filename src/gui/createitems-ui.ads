@@ -20,11 +20,11 @@
 package CreateItems.UI is
 -- ****
 
-   -- ****f* CreateItemsUI/CreateItemsUI.Create_Create_UI
+   -- ****f* CreateItemsUI/CreateItemsUI.Add_Commands
    -- FUNCTION
-   -- Create creating new items UI
+   -- Add Tcl commands related to the creation of items
    -- SOURCE
-   procedure Create_Create_Ui;
+   procedure Add_Commands;
    -- ****
 
 end CreateItems.UI;
