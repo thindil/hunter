@@ -90,10 +90,8 @@ package body MainWindow is
       use AboutDialog;
       use AboutDialog.UI;
       use Bookmarks.UI;
-      use CreateItems.UI;
       use DeleteItems;
       use LoadData.UI;
-      use MainWindow.Commands;
       use Messages;
       use Modules;
       use MoveItems;
@@ -190,7 +188,7 @@ package body MainWindow is
    begin
       Autoscroll(Scroll => Directory_Y_Scroll);
       Autoscroll(Scroll => Directory_X_Scroll);
-      Add_Commands;
+      MainWindow.Commands.Add_Commands;
       UserCommands.AddCommands;
       CreateSearchUI;
       Set_Directory(Directory => Containing_Directory(Name => Command_Name));
@@ -305,7 +303,7 @@ package body MainWindow is
       CreatePreferencesUI;
       Create_Delete_Ui;
       CreateRenameUI;
-      Create_Create_Ui;
+      CreateItems.UI.Add_Commands;
       CopyItems.UI.Create_Copy_Ui;
       CreateMoveUI;
       CreateTrash;
