@@ -83,30 +83,39 @@ package body Bookmarks is
             Line, User_Path: Unbounded_String := Null_Unbounded_String;
             Bookmark_Exist: Boolean := False;
          begin
-            Open(File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+            Open
+              (File => File, Mode => In_File,
+               Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
             Load_User_Bookmarks_Loop :
-            while not End_Of_File(File) loop
-               Line := Get_Line(File);
-               if Length(Line) < 7 or else Slice(Line, 1, 7) /= "file://" then
+            while not End_Of_File(File => File) loop
+               Line := Get_Line(File => File);
+               if Length(Source => Line) < 7
+                 or else Slice(Source => Line, Low => 1, High => 7) /=
+                   "file://" then
                   goto End_Of_Loop;
                end if;
-               User_Path := Unbounded_Slice(Line, 8, Length(Line));
+               User_Path :=
+                 Unbounded_Slice
+                   (Source => Line, Low => 8, High => Length(Source => Line));
                Bookmark_Exist := False;
                Check_Bookmark_Existence_Loop :
                for I in Bookmarks_List.Iterate loop
-                  if Bookmarks_List(I) = To_String(User_Path) then
+                  if Bookmarks_List(I) = To_String(Source => User_Path) then
                      Bookmark_Exist := True;
                      exit Check_Bookmark_Existence_Loop;
                   end if;
                end loop Check_Bookmark_Existence_Loop;
                if not Bookmark_Exist and
-                 Ada.Directories.Exists(To_String(User_Path)) then
+                 Ada.Directories.Exists
+                   (Name => To_String(Source => User_Path)) then
                   Bookmarks_List.Include
-                    (Simple_Name(To_String(User_Path)), To_String(User_Path));
+                    (Key =>
+                       Simple_Name(Name => To_String(Source => User_Path)),
+                     New_Item => To_String(Source => User_Path));
                end if;
                <<End_Of_Loop>>
             end loop Load_User_Bookmarks_Loop;
-            Close(File);
+            Close(File => File);
          end Load_User_Bookmarks_Block;
       end if;
    end Fill_Bookmarks_List;
