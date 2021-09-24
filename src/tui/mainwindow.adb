@@ -756,6 +756,7 @@ package body MainWindow is
                   return MESSAGE_FORM;
                when others =>
                   if CurrentName = "Close" then
+                     ShowPreview;
                      return DIRECTORY_VIEW;
                   end if;
                   Draw_Menu(COMMANDS_MENU);
