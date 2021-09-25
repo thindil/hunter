@@ -13,16 +13,22 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with Ada.Directories;
+with Ada.Environment_Variables;
+with Ada.Strings.Unbounded;
+with Ada.Text_IO;
+with Ada.Text_IO.Unbounded_IO;
+with GNAT.Directory_Operations;
 
 package body Bookmarks is
 
    procedure Fill_Bookmarks_List is
+      use Ada.Directories;
+      use Ada.Environment_Variables;
+      use Ada.Strings.Unbounded;
+      use Ada.Text_IO;
+      use Ada.Text_IO.Unbounded_IO;
+
       Xdg_Bookmarks: constant array(1 .. 7) of Unbounded_String :=
         (1 => To_Unbounded_String(Source => "XDG_DESKTOP_DIR"),
          2 => To_Unbounded_String(Source => "XDG_DOWNLOAD_DIR"),
@@ -33,6 +39,8 @@ package body Bookmarks is
          7 => To_Unbounded_String(Source => "XDG_VIDEOS_DIR"));
       Path: Unbounded_String := Null_Unbounded_String;
       function Get_Xdg_Directory(Name: String) return Unbounded_String is
+         use GNAT.Directory_Operations;
+
          File: File_Type;
          Line: Unbounded_String := Null_Unbounded_String;
          Equal_Index: Natural := 0;
