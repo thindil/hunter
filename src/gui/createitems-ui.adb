@@ -32,7 +32,6 @@ with Tcl.Tklib.Ada.Tooltip;
 with LoadData;
 with LoadData.UI;
 with MainWindow; use MainWindow;
-with Messages;
 with Preferences;
 with RefreshData;
 with ShowItems; use ShowItems;
@@ -148,7 +147,6 @@ package body CreateItems.UI is
       use Tcl.Tk.Ada.Widgets.TtkTreeView;
       use LoadData;
       use LoadData.UI;
-      use Messages;
       use Preferences;
       use RefreshData;
 
@@ -156,8 +154,7 @@ package body CreateItems.UI is
         Get_Widget
           (pathName => ".mainframe.textframe.textentry", Interp => Interp);
       New_Item_Name: Unbounded_String;
-      Action_String, Action_Blocker, Destination: Unbounded_String :=
-        Null_Unbounded_String;
+      Destination: Unbounded_String := Null_Unbounded_String;
       Button: constant Ttk_Button :=
         Get_Widget
           (pathName => ".mainframe.textframe.closebutton", Interp => Interp);
@@ -170,43 +167,9 @@ package body CreateItems.UI is
    begin
       New_Item_Name :=
         MainWindow.Current_Directory & "/" & Get(Widgt => Text_Entry);
-      if Exists(Name => To_String(Source => New_Item_Name)) or
-        Is_Symbolic_Link(Name => To_String(Source => New_Item_Name)) then
-         Action_String :=
-           To_Unbounded_String
-             (Source =>
-                Mc(Interp => Interp, Src_String => "{create}") & " " &
-                CArgv.Arg(Argv => Argv, N => 1) & " " &
-                Mc(Interp => Interp, Src_String => "{with}"));
-         Action_Blocker :=
-           (if Is_Directory(Name => To_String(Source => New_Item_Name)) then
-              To_Unbounded_String
-                (Source => Mc(Interp => Interp, Src_String => "directory"))
-            else To_Unbounded_String
-                (Source => Mc(Interp => Interp, Src_String => "file")));
-         Show_Message
-           (Message =>
-              Mc(Interp => Interp, Src_String => "{You can't}") & " " &
-              To_String(Source => Action_String) & " " &
-              Mc(Interp => Interp, Src_String => "{name}") & " '" &
-              To_String(Source => New_Item_Name) & "' " &
-              Mc(Interp => Interp, Src_String => "{because there exists}") &
-              " " & To_String(Source => Action_Blocker) & " " &
-              Mc(Interp => Interp, Src_String => "{with that name.}"));
-         goto End_Of_Create;
-      end if;
-      if not Is_Write_Accessible_File
-          (Name =>
-             Containing_Directory
-               (Name => To_String(Source => New_Item_Name))) then
-         Show_Message
-           (Message =>
-              Mc
-                (Interp => Interp,
-                 Src_String => "{You don't have permissions to write to}") &
-              " " &
-              Containing_Directory
-                (Name => To_String(Source => New_Item_Name)));
+      if not Is_Creating_Possible
+          (To_String(Source => New_Item_Name), CArgv.Arg(Argv => Argv, N => 1),
+           Interp) then
          goto End_Of_Create;
       end if;
       case New_Action is

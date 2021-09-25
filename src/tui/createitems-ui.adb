@@ -27,7 +27,6 @@ with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
-with Messages; use Messages;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
@@ -59,7 +58,7 @@ package body CreateItems.UI is
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData);
-      NewItemName, ActionString, ActionBlocker, Destination: Unbounded_String;
+      NewItemName, Destination: Unbounded_String;
       File: File_Descriptor;
       Hunter_Create_Exception: exception;
    begin
@@ -68,39 +67,10 @@ package body CreateItems.UI is
          return TCL_OK;
       end if;
       NewItemName := MainWindow.Current_Directory & "/" & CArgv.Arg(Argv, 1);
-      if Exists(To_String(NewItemName)) or
-        Is_Symbolic_Link(To_String(NewItemName)) then
-         if New_Action = CREATEFILE then
-            ActionString :=
-              To_Unbounded_String
-                (Mc(Interp, "{create}") & " file " & Mc(Interp, "{with}"));
-         elsif New_Action = CREATEDIRECTORY then
-            ActionString :=
-              To_Unbounded_String
-                (Mc(Interp, "{create}") & " directory " &
-                 Mc(Interp, "{with}"));
-         else
-            ActionString :=
-              To_Unbounded_String
-                (Mc(Interp, "{create}") & " link " & Mc(Interp, "{with}"));
-         end if;
-         ActionBlocker :=
-           (if Is_Directory(To_String(NewItemName)) then
-              To_Unbounded_String(Mc(Interp, "directory"))
-            else To_Unbounded_String(Mc(Interp, "file")));
-         Show_Message
-           (Mc(Interp, "{You can't}") & " " & To_String(ActionString) & " " &
-            Mc(Interp, "{name}") & " '" & To_String(NewItemName) & "' " &
-            Mc(Interp, "{because there exists}") & " " &
-            To_String(ActionBlocker) & " " & Mc(Interp, "{with that name.}"));
-         Tcl_SetResult(Interp, "0");
-         return TCL_OK;
-      end if;
-      if not Is_Write_Accessible_File
-          (Containing_Directory(To_String(NewItemName))) then
-         Show_Message
-           (Mc(Interp, "{You don't have permissions to write to}") & " " &
-            Containing_Directory(To_String(NewItemName)));
+      if not Is_Creating_Possible
+          (To_String(NewItemName),
+           (if New_Action = CREATEFILE then "file" else "directory"),
+           Interp) then
          Tcl_SetResult(Interp, "0");
          return TCL_OK;
       end if;
