@@ -202,6 +202,7 @@ package body CreateItems.UI is
                Delete(DialogForm);
                UILocation := DIRECTORY_VIEW;
                Update_Directory_List(True);
+               ShowPreview;
                return DIRECTORY_VIEW;
             end if;
          when others =>
