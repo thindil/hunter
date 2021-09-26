@@ -13,9 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded;
 with Interfaces.C.Strings;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada;
@@ -57,13 +57,14 @@ package body Bookmarks.UI is
          Options =>
            "-label {" & Mc(Interp => Get_Context, Src_String => "{Home}") &
            "} -command {GoToBookmark {" & Value(Name => "HOME") & "}}");
+      Add_Menu_Entries_Loop:
       for I in Bookmarks_List.Iterate loop
          Add
            (MenuWidget => Bookmarks_Menu, EntryType => "command",
             Options =>
               "-label {" & Bookmarks_Container.Key(Position => I) &
               "} -command {GoToBookmark {" & Bookmarks_List(I) & "}}");
-      end loop;
+      end loop Add_Menu_Entries_Loop;
       Add
         (MenuWidget => Bookmarks_Menu, EntryType => "command",
          Options =>
@@ -74,6 +75,8 @@ package body Bookmarks.UI is
    end Create_Bookmark_Menu;
 
    procedure Set_Bookmark_Button is
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
       use Interfaces.C.Strings;
       use Tcl.Tk.Ada.Widgets.TtkButton;
       use MainWindow;
