@@ -24,7 +24,7 @@ with LoadData;
 with LoadData.UI;
 with MainWindow; use MainWindow;
 with Messages; use Messages;
-with Preferences; use Preferences;
+with Preferences;
 with RefreshData;
 with ShowItems; use ShowItems;
 with Utils;
@@ -107,6 +107,7 @@ package body CopyItems.UI is
    procedure Copy_Selected(Overwrite: in out Boolean) is
       use Tcl.Tk.Ada;
       use LoadData.UI;
+      use Preferences;
       use RefreshData;
 
    begin
