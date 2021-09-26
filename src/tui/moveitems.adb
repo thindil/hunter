@@ -103,7 +103,7 @@ package body MoveItems is
             end if;
          end if;
          MoveItemsList.Delete(Index => 1);
-         if not YesForAll then
+         if not Yes_For_All then
             Overwrite := False;
          end if;
          Update_Progress_Bar;

@@ -173,7 +173,7 @@ package body Messages is
                ShowPreview;
                return DIRECTORY_VIEW;
             elsif Option = "[Yes for all]" then
-               YesForAll := True;
+               Yes_For_All := True;
             elsif Option = "[No]" then
                if New_Action = COPY then
                   if SkipCopying = DIRECTORY_VIEW then
