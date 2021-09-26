@@ -26,12 +26,12 @@ with MainWindow; use MainWindow;
 package Messages is
 -- ****
 
-   -- ****v* MessagesTUI/MessagesTUI.YesToAll
+   -- ****v* MessagesTUI/MessagesTUI.Yes_For_All
    -- FUNCTION
    -- Set to True if user clicked Yes for All button in response to question,
    -- otherwise False
    -- SOURCE
-   YesForAll: Boolean;
+   Yes_For_All: Boolean;
    -- ****
 
    -- ****o* MessagesTUI/MessagesTUI.Close_Command
