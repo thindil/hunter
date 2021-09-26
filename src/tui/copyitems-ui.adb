@@ -13,9 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
@@ -36,43 +33,15 @@ package body CopyItems.UI is
    -- ****
 
    function CopySelected(Overwrite: in out Boolean) return UI_Locations is
-      Path, ItemType: Unbounded_String;
-      Success: Boolean := True;
    begin
       if DestinationDirectory = MainWindow.Current_Directory then
          UILocation := DIRECTORY_VIEW;
          Update_Directory_List(True);
          return DIRECTORY_VIEW;
       end if;
-      Copy_Items_Loop :
-      while Copy_Items_List.Length > 0 loop
-         Path := DestinationDirectory;
-         if Exists
-             (To_String(Path) & "/" &
-              Simple_Name(To_String(Copy_Items_List(1)))) and
-           not Overwrite and Settings.Overwrite_On_Exist then
-            ItemType :=
-              (if
-                 Is_Directory
-                   (To_String(Path) & "/" &
-                    Simple_Name(To_String(Copy_Items_List(1))))
-               then To_Unbounded_String(Mc(Interpreter, "{Directory}"))
-               else To_Unbounded_String(Mc(Interpreter, "{File}")));
-            Show_Message
-              (To_String(ItemType) & " " &
-               Simple_Name(To_String(Copy_Items_List(1))) & " " &
-               Mc(Interpreter, "{exists. Do you want to overwrite it?}"),
-               "question");
-            return MESSAGE_FORM;
-         end if;
-         Copy_Item(To_String(Copy_Items_List(1)), Path, Success);
-         exit Copy_Items_Loop when not Success;
-         Copy_Items_List.Delete(Index => 1);
-         if not YesForAll then
-            Overwrite := False;
-         end if;
-      end loop Copy_Items_Loop;
-      Copy_Items_List.Clear;
+      if not Copy_Items(Interpreter, Overwrite) then
+         return MESSAGE_FORM;
+      end if;
       if Settings.Show_Finished_Info then
          Show_Message
            (Mc

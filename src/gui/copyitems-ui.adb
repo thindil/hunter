@@ -17,7 +17,6 @@ with Ada.Directories; use Ada.Directories;
 with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
-with Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
@@ -63,7 +62,6 @@ package body CopyItems.UI is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
-      use Tcl;
       use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 
       Overwrite_Item: Boolean := False;
@@ -111,52 +109,10 @@ package body CopyItems.UI is
       use LoadData.UI;
       use RefreshData;
 
-      Path, Item_Type: Unbounded_String := Null_Unbounded_String;
-      Success: Boolean := True;
    begin
-      Copy_Items_Loop :
-      while Copy_Items_List.Length > 0 loop
-         Path := DestinationDirectory;
-         if Exists
-             (Name =>
-                To_String(Source => Path) & "/" &
-                Simple_Name
-                  (Name => To_String(Source => Copy_Items_List(1)))) and
-           not Overwrite and Settings.Overwrite_On_Exist then
-            Item_Type :=
-              (if
-                 Is_Directory
-                   (Name =>
-                      To_String(Source => Path) & "/" &
-                      Simple_Name
-                        (Name => To_String(Source => Copy_Items_List(1))))
-               then
-                 To_Unbounded_String
-                   (Source =>
-                      Mc(Interp => Get_Context, Src_String => "{Directory}"))
-               else To_Unbounded_String
-                   (Source =>
-                      Mc(Interp => Get_Context, Src_String => "{File}")));
-            Show_Message
-              (Message =>
-                 To_String(Source => Item_Type) & " " &
-                 Simple_Name(Name => To_String(Source => Copy_Items_List(1))) &
-                 " " &
-                 Mc(Interp => Get_Context,
-                    Src_String => "{exists. Do you want to overwrite it?}"),
-               Message_Type => "question");
-            return;
-         end if;
-         Copy_Item
-           (Name => To_String(Source => Copy_Items_List(1)), Path => Path,
-            Success => Success);
-         exit Copy_Items_Loop when not Success;
-         Copy_Items_List.Delete(Index => 1);
-         if not Yes_For_All then
-            Overwrite := False;
-         end if;
-      end loop Copy_Items_Loop;
-      Copy_Items_List.Clear;
+      if not Copy_Items(Get_Context, Overwrite) then
+         return;
+      end if;
       if Settings.Show_Finished_Info then
          Show_Message
            (Message =>

@@ -15,6 +15,7 @@
 
 with Ada.Containers.Vectors; use Ada.Containers;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Tcl; use Tcl;
 
 -- ****h* CopyItems/CopyItems
 -- FUNCTION
@@ -49,5 +50,10 @@ package CopyItems is
    procedure Copy_Item
      (Name: String; Path: Unbounded_String; Success: in out Boolean);
    -- ****
+
+private
+
+   function Copy_Items
+     (Interpreter: Tcl_Interp; Overwrite: in out Boolean) return Boolean;
 
 end CopyItems;
