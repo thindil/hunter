@@ -111,7 +111,8 @@ package body CopyItems.UI is
       use RefreshData;
 
    begin
-      if not Copy_Items(Get_Context, Overwrite) then
+      if not Copy_Items
+          (Interpreter => Get_Context, Overwrite => Overwrite) then
          return;
       end if;
       if Settings.Show_Finished_Info then
