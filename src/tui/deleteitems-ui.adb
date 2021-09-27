@@ -38,7 +38,7 @@ with ShowItems; use ShowItems;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
-package body DeleteItems is
+package body DeleteItems.UI is
 
    function DeleteSelected return Boolean is
       GoUp, Success: Boolean := False;
@@ -327,4 +327,4 @@ package body DeleteItems is
       return DELETE_FORM;
    end Delete_Keys;
 
-end DeleteItems;
+end DeleteItems.UI;

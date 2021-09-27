@@ -38,7 +38,7 @@ with Preferences; use Preferences;
 with Utils;
 with Utils.UI; use Utils.UI;
 
-package body DeleteItems is
+package body DeleteItems.UI is
 
    function Delete_Selected return Boolean is
       use Ada.Exceptions;
@@ -299,4 +299,4 @@ package body DeleteItems is
          Ada_Command => Start_Deleting_Command'Access);
    end Create_Delete_Ui;
 
-end DeleteItems;
+end DeleteItems.UI;

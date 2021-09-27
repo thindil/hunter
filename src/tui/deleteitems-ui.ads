@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -13,27 +13,41 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
--- ****h* DeleteItems/DeleteItems
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with MainWindow; use MainWindow;
+
+-- ****h* DeleteItems/DeleteItemsTUI
 -- FUNCTION
 -- Provide code to delete files and directories
 -- SOURCE
-package DeleteItems is
+package DeleteItems.UI is
 -- ****
 
-   -- ****f* DeleteItems/DeleteItems.Delete_Selected
+   -- ****f* DeleteItemsTUI/DeleteItemsTUI.DeleteSelected
    -- FUNCTION
    -- Delete selected files and directories
    -- RESULT
    -- True if current directory was deleted too, otherwise false
    -- SOURCE
-   function Delete_Selected return Boolean;
+   function DeleteSelected return Boolean;
    -- ****
 
-   -- ****f* DeleteItems/DeleteItems.Create_Delete_Ui
+   -- ****f* DeleteItemsTUI/DeleteItemsTUI.ShowDeleteForm
    -- FUNCTION
-   -- Create UI for deleting items
+   -- Show dialog to confirm deletion of items
    -- SOURCE
-   procedure Create_Delete_Ui;
+   procedure ShowDeleteForm;
    -- ****
 
-end DeleteItems;
+   -- ****f* DeleteItemsTUI/DeleteItemsTUI.Delete_Keys
+   -- FUNCTION
+   -- Handles keys events when the deletion form is active element of UI
+   -- PARAMETERS
+   -- Key - Key pressed by the user
+   -- RESULT
+   -- The currently selected UI element of the program
+   -- SOURCE
+   function Delete_Keys(Key: Key_Code) return UI_Locations;
+   -- ****
+
+end DeleteItems.UI;
