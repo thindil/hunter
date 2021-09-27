@@ -32,7 +32,7 @@ with AboutDialog.UI; use AboutDialog.UI;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks.UI; use Bookmarks.UI;
 with CreateItems.UI; use CreateItems.UI;
-with DeleteItems; use DeleteItems;
+with DeleteItems.UI; use DeleteItems.UI;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;

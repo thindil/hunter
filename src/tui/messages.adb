@@ -20,7 +20,7 @@ with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Bookmarks.UI; use Bookmarks.UI;
 with CopyItems.UI; use CopyItems.UI;
-with DeleteItems; use DeleteItems;
+with DeleteItems.UI; use DeleteItems.UI;
 with MoveItems; use MoveItems;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;

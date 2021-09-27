@@ -33,7 +33,7 @@ with Bookmarks; use Bookmarks;
 with Bookmarks.UI; use Bookmarks.UI;
 with CreateItems.UI; use CreateItems.UI;
 with CopyItems.UI; use CopyItems.UI;
-with DeleteItems; use DeleteItems;
+with DeleteItems.UI; use DeleteItems.UI;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
