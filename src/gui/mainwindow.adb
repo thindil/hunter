@@ -53,7 +53,7 @@ with ActivateItems;
 with Bookmarks.UI;
 with CopyItems.UI;
 with CreateItems.UI;
-with DeleteItems;
+with DeleteItems.UI;
 with LoadData;
 with LoadData.UI;
 with MainWindow.Commands;
@@ -90,7 +90,7 @@ package body MainWindow is
       use AboutDialog;
       use AboutDialog.UI;
       use Bookmarks.UI;
-      use DeleteItems;
+      use DeleteItems.UI;
       use LoadData.UI;
       use Messages;
       use Modules;
