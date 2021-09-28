@@ -1,14 +1,20 @@
-with Ada.Directories; use Ada.Directories;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Messages; use Messages;
+with Ada.Directories;
+with Ada.Strings.Unbounded;
+with GNAT.OS_Lib;
+with Tcl.MsgCat.Ada;
+with Messages;
 
 package body CreateItems is
 
    function Is_Creating_Possible
      (New_Item_Name, Item_Type: String; Interp: Tcl.Tcl_Interp)
       return Boolean is
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
+      use GNAT.OS_Lib;
+      use Tcl.MsgCat.Ada;
+      use Messages;
+
       Action_String, Action_Blocker: Unbounded_String := Null_Unbounded_String;
    begin
       if Exists(Name => New_Item_Name) or
