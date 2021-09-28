@@ -9,7 +9,7 @@ package body CreateItems is
    function Is_Creating_Possible
      (New_Item_Name, Item_Type: String; Interp: Tcl.Tcl_Interp)
       return Boolean is
-      Action_String, Action_Blocker: Unbounded_String;
+      Action_String, Action_Blocker: Unbounded_String := Null_Unbounded_String;
    begin
       if Exists(Name => New_Item_Name) or
         Is_Symbolic_Link(Name => New_Item_Name) then
