@@ -37,7 +37,7 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
-with DeleteItems.UI;
+with DeleteItems;
 with Inotify;
 with LibMagic;
 with LoadData; use LoadData;
@@ -165,7 +165,7 @@ package body MainWindow.Commands is
    procedure Quit_Command(Client_Data: Integer) is
       pragma Unreferenced(Client_Data);
       use Tcl.Tk.Ada.Widgets.Toplevel;
-      use DeleteItems.UI;
+      use DeleteItems;
       use Inotify;
       use LibMagic;
       use Modules;
@@ -185,7 +185,7 @@ package body MainWindow.Commands is
       Execute_Modules(Interpreter => Get_Context, State => On_Quit);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
-         if Delete_Selected then
+         if Delete_Selected(Interpreter => Get_Context) then
             null;
          end if;
       end if;

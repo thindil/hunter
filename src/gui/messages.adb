@@ -28,7 +28,7 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with CopyItems.UI; use CopyItems.UI;
-with DeleteItems.UI; use DeleteItems.UI;
+with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
@@ -109,7 +109,7 @@ package body Messages is
             if Response = "yes" then
                Delete_Selected_Block :
                begin
-                  if Delete_Selected then
+                  if Delete_Selected(Interpreter => Get_Context) then
                      Current_Directory :=
                        To_Unbounded_String
                          (Source =>
