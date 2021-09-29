@@ -23,15 +23,6 @@ with MainWindow; use MainWindow;
 package DeleteItems.UI is
 -- ****
 
-   -- ****f* DeleteItemsTUI/DeleteItemsTUI.DeleteSelected
-   -- FUNCTION
-   -- Delete selected files and directories
-   -- RESULT
-   -- True if current directory was deleted too, otherwise false
-   -- SOURCE
-   function DeleteSelected return Boolean;
-   -- ****
-
    -- ****f* DeleteItemsTUI/DeleteItemsTUI.ShowDeleteForm
    -- FUNCTION
    -- Show dialog to confirm deletion of items

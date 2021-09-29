@@ -20,15 +20,6 @@
 package DeleteItems.UI is
 -- ****
 
-   -- ****f* DeleteItemsUI/DeleteItemsUI.Delete_Selected
-   -- FUNCTION
-   -- Delete selected files and directories
-   -- RESULT
-   -- True if current directory was deleted too, otherwise false
-   -- SOURCE
-   function Delete_Selected return Boolean;
-   -- ****
-
    -- ****f* DeleteItemsUI/DeleteItemsUI.Create_Delete_Ui
    -- FUNCTION
    -- Create UI for deleting items

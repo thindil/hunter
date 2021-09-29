@@ -13,11 +13,22 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Tcl; use Tcl;
+
 -- ****h* DeleteItems/DeleteItems
 -- FUNCTION
 -- Provide code to delete files and directories
 -- SOURCE
 package DeleteItems is
 -- ****
+
+   -- ****f* DeleteItems/DeleteItems.Delete_Selected
+   -- FUNCTION
+   -- Delete selected files and directories
+   -- RESULT
+   -- True if current directory was deleted too, otherwise false
+   -- SOURCE
+   function Delete_Selected(Interpreter: Tcl_Interp) return Boolean;
+   -- ****
 
 end DeleteItems;

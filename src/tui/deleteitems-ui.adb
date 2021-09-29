@@ -13,153 +13,21 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar; use Ada.Calendar;
-with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
-with Ada.Calendar.Time_Zones; use Ada.Calendar.Time_Zones;
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Exceptions; use Ada.Exceptions;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Strings.Unbounded.Hash;
 with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
-with Tcl; use Tcl;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
-with Messages; use Messages;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
-with Utils; use Utils;
-with Utils.UI; use Utils.UI;
 
 package body DeleteItems.UI is
-
-   function DeleteSelected return Boolean is
-      GoUp, Success: Boolean := False;
-      Arguments: Argument_List := (new String'("-rf"), new String'(""));
-      OldSetting: Boolean;
-      DeleteTime: String(1 .. 19);
-      procedure MoveToTrash(Name: Unbounded_String) is
-         NewName: Unbounded_String;
-         TrashFile: File_Type;
-      begin
-         NewName :=
-           Trim
-             (To_Unbounded_String
-                (Hash_Type'Image
-                   (Ada.Strings.Unbounded.Hash
-                      (Name & To_Unbounded_String(Image(Clock))))),
-              Both);
-         Create
-           (TrashFile, Out_File,
-            Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/info/" & To_String(NewName) & ".trashinfo");
-         Put_Line(TrashFile, "[Trash Info]");
-         Put_Line(TrashFile, "Path=" & To_String(Name));
-         DeleteTime := Image(Date => Clock, Time_Zone => UTC_Time_Offset);
-         DeleteTime(11) := 'T';
-         Put_Line(TrashFile, "DeletionDate=" & DeleteTime);
-         Close(TrashFile);
-         Rename_File
-           (To_String(Name),
-            Ada.Environment_Variables.Value("HOME") &
-            "/.local/share/Trash/files/" & To_String(NewName),
-            Success);
-      end MoveToTrash;
-      procedure AddTrash(SubDirectory: String) is
-         Search: Search_Type;
-         Item: Directory_Entry_Type;
-      begin
-         Start_Search
-           (Search,
-            Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/" &
-            SubDirectory,
-            "*");
-         Add_Items_To_Trash_Loop :
-         while More_Entries(Search) loop
-            Get_Next_Entry(Search, Item);
-            if Simple_Name(Item) /= "." and Simple_Name(Item) /= ".." then
-               Selected_Items.Append
-                 (New_Item => To_Unbounded_String(Full_Name(Item)));
-            end if;
-         end loop Add_Items_To_Trash_Loop;
-         End_Search(Search);
-      end AddTrash;
-   begin
-      Create_Path
-        (Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/info");
-      Create_Path
-        (Ada.Environment_Variables.Value("HOME") &
-         "/.local/share/Trash/files");
-      if New_Action = CLEARTRASH then
-         OldSetting := Settings.Delete_Files;
-         Settings.Delete_Files := True;
-         Selected_Items.Clear;
-         AddTrash("info");
-         AddTrash("files");
-      end if;
-      Delete_Items_Loop :
-      for Item of Selected_Items loop
-         Update_Progress_Bar;
-         if Is_Directory(To_String(Item)) then
-            Arguments(2) := new String'(To_String(Item));
-            if Settings.Delete_Files or New_Action = DELETETRASH then
-               Spawn(Locate_Exec_On_Path("rm").all, Arguments, Success);
-               if not Success then
-                  raise Directory_Error
-                    with To_String(MainWindow.Current_Directory & "/" & Item);
-               end if;
-            else
-               MoveToTrash(MainWindow.Current_Directory & "/" & Item);
-            end if;
-            if Item = MainWindow.Current_Directory then
-               GoUp := True;
-            end if;
-         else
-            if Settings.Delete_Files or New_Action = DELETETRASH then
-               Delete_File(To_String(Item));
-            else
-               MoveToTrash(Item);
-            end if;
-         end if;
-         if New_Action = DELETETRASH then
-            Delete_File
-              (Ada.Environment_Variables.Value("HOME") &
-               "/.local/share/Trash/info/" & Simple_Name(To_String(Item)) &
-               ".trashinfo");
-         end if;
-      end loop Delete_Items_Loop;
-      if New_Action = CLEARTRASH then
-         Settings.Delete_Files := OldSetting;
-      end if;
-      Selected_Items.Clear;
-      return GoUp;
-   exception
-      when An_Exception : Ada.Directories.Use_Error =>
-         Show_Message
-           (Mc
-              (Interpreter,
-               "{Could not delete selected files or directories. Reason:}") &
-            " " & Exception_Message(An_Exception));
-         raise;
-      when An_Exception : Directory_Error =>
-         Show_Message
-           (Mc(Interpreter, "{Can't delete selected directory:}") & " " &
-            Exception_Message(An_Exception));
-         raise;
-      when others =>
-         Show_Message
-           (Mc
-              (Interpreter,
-               "{Unknown error during deleting files or directories.}"));
-         raise;
-   end DeleteSelected;
 
    DialogForm: Forms.Form;
    FormWindow: Window;
@@ -298,7 +166,7 @@ package body DeleteItems.UI is
             Result := Driver(DialogForm, F_Next_Field);
          when 10 =>
             if FieldIndex = 2 then
-               if not DeleteSelected then
+               if not Delete_Selected(Interpreter) then
                   Load_Directory(To_String(MainWindow.Current_Directory));
                else
                   Load_Directory
