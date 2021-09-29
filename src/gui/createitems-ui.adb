@@ -168,8 +168,8 @@ package body CreateItems.UI is
       New_Item_Name :=
         MainWindow.Current_Directory & "/" & Get(Widgt => Text_Entry);
       if not Is_Creating_Possible
-          (To_String(Source => New_Item_Name), CArgv.Arg(Argv => Argv, N => 1),
-           Interp) then
+          (New_Item_Name => To_String(Source => New_Item_Name),
+           Item_Type => CArgv.Arg(Argv => Argv, N => 1), Interp => Interp) then
          goto End_Of_Create;
       end if;
       case New_Action is
