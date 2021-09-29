@@ -20,7 +20,7 @@ with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Bookmarks.UI; use Bookmarks.UI;
 with CopyItems.UI; use CopyItems.UI;
-with DeleteItems.UI; use DeleteItems.UI;
+with DeleteItems; use DeleteItems;
 with MoveItems; use MoveItems;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
@@ -221,7 +221,7 @@ package body Messages is
                return MESSAGE_FORM;
             elsif New_Action = CLEARTRASH then
                begin
-                  if DeleteSelected then
+                  if Delete_Selected(Interpreter) then
                      Current_Directory :=
                        To_Unbounded_String
                          (Normalize_Pathname

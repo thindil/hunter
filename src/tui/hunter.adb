@@ -32,6 +32,7 @@ with AboutDialog.UI; use AboutDialog.UI;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks.UI; use Bookmarks.UI;
 with CreateItems.UI; use CreateItems.UI;
+with DeleteItems; use DeleteItems;
 with DeleteItems.UI; use DeleteItems.UI;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
@@ -62,7 +63,7 @@ procedure Hunter is
       Execute_Modules(Interpreter, On_Quit);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
-         if DeleteSelected then
+         if Delete_Selected(Interpreter) then
             null;
          end if;
       end if;
