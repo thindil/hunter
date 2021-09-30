@@ -53,7 +53,20 @@ package CopyItems is
 
 private
 
+   -- ****f* CopyItems/CopyItems.Copy_Items
+   -- FUNCTION
+   -- Copy the selected files and directories
+   -- PARAMETERS
+   -- Interpreter - Tcl_Interpreter on which the files will be copied
+   -- Overwrite   - If true, overwrite the files if exists file with the same
+   --               name
+   -- OUTPUT
+   -- Overwrite parameter
+   -- RESULT
+   -- True if files and directories copied otherwise False
+   -- SOURCE
    function Copy_Items
      (Interpreter: Tcl_Interp; Overwrite: in out Boolean) return Boolean;
+     -- ****
 
 end CopyItems;
