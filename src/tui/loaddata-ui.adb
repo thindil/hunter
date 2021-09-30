@@ -13,16 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 
 package body LoadData.UI is
 
    procedure Load_Directory
      (Directory_Name: String; Second: Boolean := False) is
-      Directory: Dir_Type;
-      FileName: String(1 .. 1_024);
-      Last: Natural range 0 .. FileName'Last;
    begin
       if not Second then
          Items_List.Clear;
@@ -32,23 +28,7 @@ package body LoadData.UI is
       if not Is_Read_Accessible_File(Directory_Name) then
          return;
       end if;
-      Open(Directory, Directory_Name);
-      Read_Directory_Loop :
-      loop
-         Read(Directory, FileName, Last);
-         exit Read_Directory_Loop when Last = 0;
-         if FileName(1 .. Last) /= "." and FileName(1 .. Last) /= ".." then
-            if not Second then
-               Add_Item
-                 (Directory_Name & "/" & FileName(1 .. Last), Items_List);
-            else
-               Add_Item
-                 (Directory_Name & "/" & FileName(1 .. Last),
-                  Second_Items_List);
-            end if;
-         end if;
-      end loop Read_Directory_Loop;
-      Close(Directory);
+      Load_Selected_Directory(Directory_Name, Second);
       if not Second then
          Items_Sorting.Sort(Items_List);
       else

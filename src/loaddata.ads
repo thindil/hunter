@@ -173,4 +173,18 @@ package LoadData is
    procedure Add_Item(Path: String; List: in out Items_Container.Vector);
    -- ****
 
+private
+
+   -- ****f* LoadData/LoadData.Load_Selected_Directory
+   -- FUNCTION
+   -- Load the content of the selected directory to the selected list of items
+   -- PARAMETERS
+   -- Directory_Name - Full path to the directory which content will be added
+   --                  to the proper list
+   -- Second         - If true, add directory content to the SecondItemsList,
+   --                  otherwise add to the ItemsList. Default value is false
+   -- SOURCE
+   procedure Load_Selected_Directory(Directory_Name: String; Second: Boolean);
+   -- ****
+
 end LoadData;

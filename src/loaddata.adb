@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Maps.Constants;
-with GNAT.Directory_Operations;
+with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 with Utils;
 
@@ -62,7 +62,6 @@ package body LoadData is
    end "<";
 
    procedure Add_Item(Path: String; List: in out Items_Container.Vector) is
-      use GNAT.Directory_Operations;
       use GNAT.OS_Lib;
       use Utils;
 
@@ -162,5 +161,31 @@ package body LoadData is
       end if;
       List.Append(New_Item => Item);
    end Add_Item;
+
+   procedure Load_Selected_Directory
+     (Directory_Name: String; Second: Boolean) is
+      Directory: Dir_Type;
+      File_Name: String(1 .. 1_024) := (others => ' ');
+      Last: Natural range 0 .. File_Name'Last := 0;
+   begin
+      Open(Dir => Directory, Dir_Name => Directory_Name);
+      Read_Directory_Loop :
+      loop
+         Read(Dir => Directory, Str => File_Name, Last => Last);
+         exit Read_Directory_Loop when Last = 0;
+         if File_Name(1 .. Last) /= "." and File_Name(1 .. Last) /= ".." then
+            if Second then
+               Add_Item
+                 (Path => Directory_Name & "/" & File_Name(1 .. Last),
+                  List => Second_Items_List);
+            else
+               Add_Item
+                 (Path => Directory_Name & "/" & File_Name(1 .. Last),
+                  List => Items_List);
+            end if;
+         end if;
+      end loop Read_Directory_Loop;
+      Close(Dir => Directory);
+   end Load_Selected_Directory;
 
 end LoadData;
