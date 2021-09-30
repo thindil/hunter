@@ -14,19 +14,19 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Characters.Latin_1;
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings.Unbounded;
+with Ada.Text_IO;
 with Interfaces.C;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.OS_Lib;
 with CArgv;
 with Tcl;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with MainWindow; use MainWindow;
-with Messages; use Messages;
-with Preferences; use Preferences;
+with Tcl.MsgCat.Ada;
+with MainWindow;
+with Messages;
+with Preferences;
 with Utils;
 with Utils.UI; use Utils.UI;
 
@@ -56,6 +56,14 @@ package body DeleteItems.UI is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
       use Ada.Characters.Latin_1;
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
+      use Ada.Text_IO;
+      use GNAT.OS_Lib;
+      use Tcl.MsgCat.Ada;
+      use MainWindow;
+      use Messages;
+      use Preferences;
 
       Message: Unbounded_String;
       File_Line: Unbounded_String := Null_Unbounded_String;
