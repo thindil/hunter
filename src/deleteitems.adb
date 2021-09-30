@@ -38,7 +38,6 @@ package body DeleteItems is
       use Ada.Directories;
       use Ada.Exceptions;
       use Ada.Strings.Unbounded;
-      use Ada.Text_IO;
       use GNAT.Directory_Operations;
       use GNAT.OS_Lib;
       use Tcl.MsgCat.Ada;
@@ -58,6 +57,7 @@ package body DeleteItems is
          use Ada.Calendar.Time_Zones;
          use Ada.Containers;
          use Ada.Strings;
+         use Ada.Text_IO;
 
          New_Name: Unbounded_String;
          Trash_File: File_Type;
