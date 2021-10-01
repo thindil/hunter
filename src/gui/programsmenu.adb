@@ -36,7 +36,7 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
 with MainWindow; use MainWindow;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 

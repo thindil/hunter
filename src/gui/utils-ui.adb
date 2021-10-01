@@ -35,7 +35,7 @@ with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tk.Ada.Wm;
 with Tcl.Tklib.Ada.Tooltip;
 with Bookmarks.UI;
-with Messages;
+with Messages.UI;
 with Preferences;
 
 package body Utils.UI is
@@ -51,7 +51,7 @@ package body Utils.UI is
      (Name: String; Display_Message: Boolean := True) return String is
       use Ada.Command_Line;
       use GNAT.OS_Lib;
-      use Messages;
+      use Messages.UI;
 
       Executable_Path: GNAT.OS_Lib.String_Access;
    begin

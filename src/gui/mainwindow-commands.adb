@@ -42,7 +42,7 @@ with Inotify;
 with LibMagic;
 with LoadData; use LoadData;
 with LoadData.UI;
-with Messages;
+with Messages.UI;
 with Modules;
 with MoveItems;
 with Preferences; use Preferences;
@@ -216,7 +216,7 @@ package body MainWindow.Commands is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       use Tcl.Tk.Ada.Widgets.TtkEntry;
-      use Messages;
+      use Messages.UI;
       use ProgramsMenu;
 
       Frame: Ttk_Frame :=

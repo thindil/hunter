@@ -53,7 +53,7 @@ with Bookmarks.UI; use Bookmarks.UI;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with Modules; use Modules;
 with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;

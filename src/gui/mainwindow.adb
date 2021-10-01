@@ -57,7 +57,7 @@ with DeleteItems.UI;
 with LoadData;
 with LoadData.UI;
 with MainWindow.Commands;
-with Messages;
+with Messages.UI;
 with Modules;
 with MoveItems;
 with Preferences; use Preferences;
@@ -92,7 +92,7 @@ package body MainWindow is
       use Bookmarks.UI;
       use DeleteItems.UI;
       use LoadData.UI;
-      use Messages;
+      use Messages.UI;
       use Modules;
       use MoveItems;
       use Preferences.UI;

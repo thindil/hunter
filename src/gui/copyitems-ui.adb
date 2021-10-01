@@ -23,7 +23,7 @@ with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with LoadData;
 with LoadData.UI;
 with MainWindow; use MainWindow;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with Preferences;
 with RefreshData;
 with ShowItems; use ShowItems;

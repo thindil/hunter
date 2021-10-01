@@ -25,7 +25,7 @@ with CArgv;
 with Tcl;
 with Tcl.MsgCat.Ada;
 with MainWindow;
-with Messages;
+with Messages.UI;
 with Preferences;
 with Utils;
 with Utils.UI; use Utils.UI;
@@ -62,7 +62,7 @@ package body DeleteItems.UI is
       use GNAT.OS_Lib;
       use Tcl.MsgCat.Ada;
       use MainWindow;
-      use Messages;
+      use Messages.UI;
       use Preferences;
 
       Message: Unbounded_String;
