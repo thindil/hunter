@@ -22,7 +22,7 @@ with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;

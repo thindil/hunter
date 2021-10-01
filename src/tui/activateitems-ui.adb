@@ -20,7 +20,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 

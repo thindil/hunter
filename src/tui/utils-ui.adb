@@ -19,7 +19,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 
 package body Utils.UI is
 

@@ -22,7 +22,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Bookmarks; use Bookmarks;
 with CopyItems; use CopyItems;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;

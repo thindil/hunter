@@ -37,7 +37,7 @@ with DeleteItems.UI; use DeleteItems.UI;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with Modules; use Modules;
 with Preferences; use Preferences;
 with Preferences.UI; use Preferences.UI;

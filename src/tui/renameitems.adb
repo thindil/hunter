@@ -26,7 +26,7 @@ with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with RefreshData; use RefreshData;
 with Utils.UI; use Utils.UI;
 
