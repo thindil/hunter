@@ -25,7 +25,7 @@ with MoveItems; use MoveItems;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
-package body Messages is
+package body Messages.UI is
 
    DialogForm: Forms.Form;
    FormWindow: Window;
@@ -252,4 +252,4 @@ package body Messages is
       return MESSAGE_FORM;
    end Message_Keys;
 
-end Messages;
+end Messages.UI;

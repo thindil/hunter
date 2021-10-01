@@ -19,11 +19,11 @@ with CArgv;
 with Tcl; use Tcl;
 with MainWindow; use MainWindow;
 
--- ****h* MessagesTUI/MessagesTUI
+-- ****h* Messages/MessagesTUI
 -- FUNCTION
 -- Provide code to show or hide messages to the user.
 -- SOURCE
-package Messages is
+package Messages.UI is
 -- ****
 
    -- ****v* MessagesTUI/MessagesTUI.Yes_For_All
@@ -82,4 +82,4 @@ package Messages is
    function Message_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
-end Messages;
+end Messages.UI;

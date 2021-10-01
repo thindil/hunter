@@ -38,7 +38,7 @@ with RefreshData; use RefreshData;
 with Trash.UI; use Trash.UI;
 with Utils.UI; use Utils.UI;
 
-package body Messages is
+package body Messages.UI is
 
    -- ****iv* Messages/Messages.Message_Frame
    -- FUNCTION
@@ -296,4 +296,4 @@ package body Messages is
       end if;
    end Show_Message;
 
-end Messages;
+end Messages.UI;

@@ -17,14 +17,14 @@ with Interfaces.C; use Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 
--- ****h* Messages/Messages
+-- ****h* Messages/MessagesUI
 -- FUNCTION
 -- Provide code to show or hide messages to the user.
 -- SOURCE
-package Messages is
+package Messages.UI is
 -- ****
 
-   -- ****v* Messages/Messages.Yes_For_All
+   -- ****v* MessagesUI/MessagesUI.Yes_For_All
    -- FUNCTION
    -- Set to True if user clicked Yes for All button in response to question,
    -- otherwise False
@@ -32,7 +32,7 @@ package Messages is
    Yes_For_All: Boolean;
    -- ****
 
-   -- ****o* Messages/Messages.Close_Command
+   -- ****o* MessagesUI/MessagesUI.Close_Command
    -- FUNCTION
    -- Hide message frame
    -- PARAMETERS
@@ -51,14 +51,14 @@ package Messages is
       Convention => C;
       -- ****
 
-      -- ****f* Messages/Messages.Create_Messages_Ui
+      -- ****f* MessagesUI/MessagesUI.Create_Messages_Ui
       -- FUNCTION
       -- Create UI related to the program messages
       -- SOURCE
    procedure Create_Messages_Ui;
    -- ****
 
-   -- ****f* Messages/Messages.Show_Message
+   -- ****f* MessagesUI/MessagesUI.Show_Message
    -- FUNCTION
    -- Show selected message with selected type to the user
    -- PARAMETERS
@@ -69,4 +69,4 @@ package Messages is
    procedure Show_Message(Message: String; Message_Type: String := "error");
    -- ****
 
-end Messages;
+end Messages.UI;
