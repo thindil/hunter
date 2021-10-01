@@ -17,7 +17,7 @@ with Ada.Directories;
 with Ada.Strings.Unbounded;
 with GNAT.OS_Lib;
 with Tcl.MsgCat.Ada;
-with Messages;
+with Messages.UI;
 
 package body CreateItems is
 
@@ -28,7 +28,7 @@ package body CreateItems is
       use Ada.Strings.Unbounded;
       use GNAT.OS_Lib;
       use Tcl.MsgCat.Ada;
-      use Messages;
+      use Messages.UI;
 
       Action_String, Action_Blocker: Unbounded_String := Null_Unbounded_String;
    begin

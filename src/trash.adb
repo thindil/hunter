@@ -25,7 +25,7 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with Modules; use Modules;
 with ShowItems; use ShowItems;
 with Trash.UI; use Trash.UI;

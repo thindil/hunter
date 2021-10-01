@@ -28,7 +28,7 @@ with Inotify;
 with LoadData;
 with LoadData.UI;
 with MainWindow; use MainWindow;
-with Messages; use Messages;
+with Messages.UI; use Messages.UI;
 with Modules;
 with Preferences;
 with RefreshData;
