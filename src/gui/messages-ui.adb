@@ -153,30 +153,39 @@ package body Messages.UI is
                        (Path => To_String(Source => Current_Directory));
                      Tcl.Ada.Tcl_Eval
                        (interp => Get_Context, strng => "ShowSelected");
-                     Tcl.Ada.Tcl_Eval(Get_Context, "update");
+                     Tcl.Ada.Tcl_Eval
+                       (interp => Get_Context, strng => "update");
                end case;
             end if;
-            Toggle_Tool_Buttons(New_Action, True);
+            Toggle_Tool_Buttons(Action => New_Action, Finished => True);
             if Settings.Show_Finished_Info then
                if New_Action = DELETE and not Settings.Delete_Files then
                   Show_Message
-                    (Mc
-                       (Interp,
-                        "{All selected files and directories have been moved to Trash.}"),
-                     "message");
+                    (Message =>
+                       Mc
+                         (Interp => Interp,
+                          Src_String =>
+                            "{All selected files and directories have been moved to Trash.}"),
+                     Message_Type => "message");
                elsif New_Action = CLEARTRASH then
                   Show_Message
-                    (Mc(Interp, "{Trash have been cleared.}"), "message");
+                    (Message =>
+                       Mc
+                         (Interp => Interp,
+                          Src_String => "{Trash have been cleared.}"),
+                     Message_Type => "message");
                else
                   Show_Message
-                    (Mc
-                       (Interp,
-                        "{All selected files and directories have been deleted.}"),
-                     "message");
+                    (Message =>
+                       Mc
+                         (Interp => Interp,
+                          Src_String =>
+                            "{All selected files and directories have been deleted.}"),
+                     Message_Type => "message");
                end if;
-            else
-               return Close_Command(Client_Data, Interp, Argc, Argv);
+               return TCL_OK;
             end if;
+            return Close_Command(Client_Data, Interp, Argc, Argv);
          when COPY =>
             if Response = "noall" then
                Toggle_Tool_Buttons(New_Action, True);
