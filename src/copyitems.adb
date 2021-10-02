@@ -16,6 +16,7 @@
 with Ada.Directories; use Ada.Directories;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl.MsgCat.Ada;
+with Messages;
 with Messages.UI;
 with Preferences; use Preferences;
 with ShowItems;
@@ -102,6 +103,7 @@ package body CopyItems is
    function Copy_Items
      (Interpreter: Tcl_Interp; Overwrite: in out Boolean) return Boolean is
       use Tcl.MsgCat.Ada;
+      use Messages;
       use Messages.UI;
       use ShowItems;
 
