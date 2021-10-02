@@ -26,14 +26,6 @@ with MainWindow; use MainWindow;
 package Messages.UI is
 -- ****
 
-   -- ****v* MessagesTUI/MessagesTUI.Yes_For_All
-   -- FUNCTION
-   -- Set to True if user clicked Yes for All button in response to question,
-   -- otherwise False
-   -- SOURCE
-   Yes_For_All: Boolean;
-   -- ****
-
    -- ****o* MessagesTUI/MessagesTUI.Close_Command
    -- FUNCTION
    -- Hide message frame

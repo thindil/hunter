@@ -24,14 +24,6 @@ with Tcl; use Tcl;
 package Messages.UI is
 -- ****
 
-   -- ****v* MessagesUI/MessagesUI.Yes_For_All
-   -- FUNCTION
-   -- Set to True if user clicked Yes for All button in response to question,
-   -- otherwise False
-   -- SOURCE
-   Yes_For_All: Boolean;
-   -- ****
-
    -- ****o* MessagesUI/MessagesUI.Close_Command
    -- FUNCTION
    -- Hide message frame
