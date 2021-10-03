@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
   items to delete, not their full paths
 - Updated README.md
 - Updated Polish translation
+- Updated contributing guide
 
 ### Fixed
 - Don't auto hide questions or confirmation messages in graphical version
