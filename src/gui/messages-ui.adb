@@ -185,19 +185,32 @@ package body Messages.UI is
                end if;
                return TCL_OK;
             end if;
-            return Close_Command(Client_Data, Interp, Argc, Argv);
+            return
+              Close_Command
+                (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+                 Argv => Argv);
          when COPY =>
             if Response = "noall" then
-               Toggle_Tool_Buttons(New_Action, True);
-               Load_Directory(To_String(Current_Directory));
-               Update_Directory_List(True);
-               return Close_Command(Client_Data, Interp, Argc, Argv);
+               Toggle_Tool_Buttons(Action => New_Action, Finished => True);
+               Load_Directory
+                 (Directory_Name => To_String(Source => Current_Directory));
+               Update_Directory_List(Clear => True);
+               return
+                 Close_Command
+                   (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+                    Argv => Argv);
             elsif Response = "no" then
                Skip_Copying;
-               return Close_Command(Client_Data, Interp, Argc, Argv);
+               return
+                 Close_Command
+                   (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+                    Argv => Argv);
             end if;
-            Copy_Selected(Overwrite_Item);
-            return Close_Command(Client_Data, Interp, Argc, Argv);
+            Copy_Selected(Overwrite => Overwrite_Item);
+            return
+              Close_Command
+                (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+                 Argv => Argv);
          when MOVE =>
             if Response = "noall" then
                Toggle_Tool_Buttons(New_Action, True);
