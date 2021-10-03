@@ -14,6 +14,8 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Strings; use Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
@@ -89,13 +91,28 @@ package body Messages.UI is
         (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       Move_Cursor(FormWindow, LineNumber, 1);
-      for I in Message'Range loop
-         Add(FormWindow, Message(I));
-         if I mod Positive(FormLength) = 0 then
+      declare
+         Index: Positive := Message'First;
+         Space_Index: Natural;
+         End_Index: Positive;
+      begin
+         while Index <= Message'Last loop
+            End_Index := Index + Positive(FormLength) - 1;
+            if End_Index > Message'Last then
+               End_Index := Message'Last;
+            end if;
+            Space_Index := Ada.Strings.Fixed.Index(Message, " ", End_Index, Backward);
+            if Space_Index = 0 or Space_Index < Index then
+               Space_Index := End_Index;
+            end if;
+            for I in Index .. Space_Index loop
+               Add(FormWindow, Message(I));
+            end loop;
+            Index := Space_Index + 1;
             LineNumber := LineNumber + 1;
             Move_Cursor(FormWindow, LineNumber, 1);
-         end if;
-      end loop;
+         end loop;
+      end;
       UnusedResult := Driver(DialogForm, F_First_Field);
       Box(FormWindow, Default_Character, Default_Character);
       Refresh;
