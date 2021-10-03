@@ -13,10 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Interfaces.C;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
-with CArgv;
-with Tcl; use Tcl;
 with MainWindow; use MainWindow;
 
 -- ****h* Messages/MessagesTUI
@@ -25,32 +22,6 @@ with MainWindow; use MainWindow;
 -- SOURCE
 package Messages.UI is
 -- ****
-
-   -- ****o* MessagesTUI/MessagesTUI.Close_Command
-   -- FUNCTION
-   -- Hide message frame
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- CloseMessage
-   -- SOURCE
-   function Close_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
-      Convention => C;
-      -- ****
-
-      -- ****f* MessagesTUI/MessagesTUI.CreateMessagesUI
-      -- FUNCTION
-      -- Create UI related to the program messages
-      -- SOURCE
-   procedure CreateMessagesUI;
-   -- ****
 
    -- ****f* MessagesTUI/MessagesTUI.Show_Message
    -- FUNCTION

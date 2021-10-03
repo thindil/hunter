@@ -23,54 +23,11 @@ with CopyItems.UI; use CopyItems.UI;
 with DeleteItems; use DeleteItems;
 with MoveItems; use MoveItems;
 with ShowItems; use ShowItems;
-with Utils.UI; use Utils.UI;
 
 package body Messages.UI is
 
    DialogForm: Forms.Form;
    FormWindow: Window;
-
-   function Close_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
-   begin
-      return TCL_OK;
-   end Close_Command;
-
-   -- ****o* MessagesTUI/MessagesTUI.Response_Command
-   -- FUNCTION
-   -- Hide message frame and do action, depends on user response
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command.
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command.
-   -- Argv       - Values of arguments passed to the command.
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- MessageResponse answer
-   -- Answer is the answer which the user selected by clicking in button
-   -- SOURCE
-   function Response_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
-      Convention => C;
-      -- ****
-
-   function Response_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Interp, Argc, Argv);
-   begin
-      return TCL_OK;
-   end Response_Command;
-
-   procedure CreateMessagesUI is
-   begin
-      Add_Command("CloseMessage", Close_Command'Access);
-      Add_Command("MessageResponse", Response_Command'Access);
-   end CreateMessagesUI;
 
    procedure Show_Message(Message: String; Message_Type: String := "error") is
       Buttons_Fields: constant Field_Array_Access :=
