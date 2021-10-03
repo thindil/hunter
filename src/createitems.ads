@@ -29,13 +29,12 @@ private
    -- Check if creation of the selected file or directory is possible
    -- PARAMETERS
    -- New_Item_Name - The name of file or directory which will be created
-   -- Item_Type     - The type of the item to create. Can be file or directory
    -- Interp        - The Tcl interpreter on which the creation will be check
    -- RESULT
    -- True if creation is possible, otherwise False
    -- SOURCE
    function Is_Creating_Possible
-     (New_Item_Name, Item_Type: String; Interp: Tcl.Tcl_Interp) return Boolean;
+     (New_Item_Name: String; Interp: Tcl.Tcl_Interp) return Boolean;
    -- ****
 
 end CreateItems;

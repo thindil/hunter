@@ -123,12 +123,11 @@ package body CreateItems.UI is
    -- Client_Data - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Argv       - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
-   -- Create itemtype
-   -- Itemtype is an item type which will be created. Can be file or directory
+   -- Create
    -- SOURCE
    function Create_Command
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
@@ -139,7 +138,7 @@ package body CreateItems.UI is
    function Create_Command
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(Client_Data, Argc);
+      pragma Unreferenced(Client_Data, Argc, Argv);
       use Ada.Directories;
       use Ada.Strings.Unbounded;
       use GNAT.OS_Lib;
@@ -169,7 +168,7 @@ package body CreateItems.UI is
         MainWindow.Current_Directory & "/" & Get(Widgt => Text_Entry);
       if not Is_Creating_Possible
           (New_Item_Name => To_String(Source => New_Item_Name),
-           Item_Type => CArgv.Arg(Argv => Argv, N => 1), Interp => Interp) then
+           Interp => Interp) then
          goto End_Of_Create;
       end if;
       case New_Action is

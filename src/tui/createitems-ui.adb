@@ -67,10 +67,7 @@ package body CreateItems.UI is
          return TCL_OK;
       end if;
       NewItemName := MainWindow.Current_Directory & "/" & CArgv.Arg(Argv, 1);
-      if not Is_Creating_Possible
-          (To_String(NewItemName),
-           (if New_Action = CREATEFILE then "file" else "directory"),
-           Interp) then
+      if not Is_Creating_Possible(To_String(NewItemName), Interp) then
          Tcl_SetResult(Interp, "0");
          return TCL_OK;
       end if;
