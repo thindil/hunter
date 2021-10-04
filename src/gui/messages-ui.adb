@@ -213,16 +213,26 @@ package body Messages.UI is
                  Argv => Argv);
          when MOVE =>
             if Response = "noall" then
-               Toggle_Tool_Buttons(New_Action, True);
-               Load_Directory(To_String(Current_Directory));
-               Update_Directory_List(True);
-               return Close_Command(Client_Data, Interp, Argc, Argv);
+               Toggle_Tool_Buttons(Action => New_Action, Finished => True);
+               Load_Directory
+                 (Directory_Name => To_String(Source => Current_Directory));
+               Update_Directory_List(Clear => True);
+               return
+                 Close_Command
+                   (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+                    Argv => Argv);
             elsif Response = "no" then
                SkipMoving;
-               return Close_Command(Client_Data, Interp, Argc, Argv);
+               return
+                 Close_Command
+                   (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+                    Argv => Argv);
             end if;
-            MoveSelected(Overwrite_Item);
-            return Close_Command(Client_Data, Interp, Argc, Argv);
+            MoveSelected(Overwrite => Overwrite_Item);
+            return
+              Close_Command
+                (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+                 Argv => Argv);
          when others =>
             null;
       end case;
@@ -230,19 +240,19 @@ package body Messages.UI is
    end Response_Command;
 
    procedure Create_Messages_Ui is
-      ButtonsBox: Ttk_Frame;
+      Buttons_Box: Ttk_Frame;
       Button: Ttk_Button;
-      procedure AddButton
+      procedure Add_Button
         (Name, Text, Response: String; Column: Natural := 0) is
          ResponseButton: constant Ttk_Button :=
            Create
-             (ButtonsBox & ".button" & Name,
+             (Buttons_Box & ".button" & Name,
               "-text {" & Text & "} -command {MessageResponse " & Response &
               "}");
       begin
          Tcl.Tk.Ada.Grid.Grid
            (ResponseButton, "-row 0 -column" & Natural'Image(Column));
-      end AddButton;
+      end Add_Button;
    begin
       Add_Command("CloseMessage", Close_Command'Access);
       Add_Command("MessageResponse", Response_Command'Access);
@@ -257,17 +267,17 @@ package body Messages.UI is
         ("question.TLabel", "-background #3daee9 -foreground #ffffff");
       Message_Frame := Create(".mainframe.message");
       Message_Label := Create(Message_Frame & ".label", "-wraplength 800");
-      ButtonsBox := Create(Message_Frame & ".buttonsbox");
-      AddButton("no", Mc(Get_Context, "{No}"), "no");
-      AddButton("yes", Mc(Get_Context, "{Yes}"), "yes", 1);
-      AddButton("noall", Mc(Get_Context, "{No for all}"), "noall", 2);
-      AddButton("yesall", Mc(Get_Context, "{Yes for all}"), "yesall", 3);
+      Buttons_Box := Create(Message_Frame & ".buttonsbox");
+      Add_Button("no", Mc(Get_Context, "{No}"), "no");
+      Add_Button("yes", Mc(Get_Context, "{Yes}"), "yes", 1);
+      Add_Button("noall", Mc(Get_Context, "{No for all}"), "noall", 2);
+      Add_Button("yesall", Mc(Get_Context, "{Yes for all}"), "yesall", 3);
       Button :=
         Create
-          (ButtonsBox & ".buttonclose",
+          (Buttons_Box & ".buttonclose",
            "-text x -style Toolbutton -command CloseMessage");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 4 -row 0");
-      Tcl.Tk.Ada.Pack.Pack(ButtonsBox, "-side right");
+      Tcl.Tk.Ada.Pack.Pack(Buttons_Box, "-side right");
       Tcl.Tk.Ada.Pack.Pack(Message_Label, "-expand true -fill x");
    end Create_Messages_Ui;
 
