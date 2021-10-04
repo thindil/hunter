@@ -23,7 +23,7 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Bookmarks.UI; use Bookmarks.UI;
 with CopyItems.UI; use CopyItems.UI;
 with DeleteItems; use DeleteItems;
-with MoveItems; use MoveItems;
+with MoveItems.UI; use MoveItems.UI;
 with ShowItems; use ShowItems;
 
 package body Messages.UI is
