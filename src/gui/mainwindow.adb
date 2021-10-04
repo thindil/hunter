@@ -59,7 +59,7 @@ with LoadData.UI;
 with MainWindow.Commands;
 with Messages.UI;
 with Modules;
-with MoveItems;
+with MoveItems.UI;
 with Preferences; use Preferences;
 with Preferences.UI;
 with RefreshData;
@@ -94,7 +94,7 @@ package body MainWindow is
       use LoadData.UI;
       use Messages.UI;
       use Modules;
-      use MoveItems;
+      use MoveItems.UI;
       use Preferences.UI;
       use RefreshData;
       use RenameItems;

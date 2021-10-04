@@ -44,7 +44,7 @@ with LoadData; use LoadData;
 with LoadData.UI;
 with Messages.UI;
 with Modules;
-with MoveItems;
+with MoveItems.UI;
 with Preferences; use Preferences;
 with ProgramsMenu;
 with ShowItems; use ShowItems;
@@ -407,7 +407,7 @@ package body MainWindow.Commands is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
-      use MoveItems;
+      use MoveItems.UI;
 
       Action_Button: Ttk_Button :=
         Get_Widget

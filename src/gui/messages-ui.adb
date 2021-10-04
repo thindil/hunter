@@ -32,7 +32,7 @@ with DeleteItems; use DeleteItems;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
-with MoveItems; use MoveItems;
+with MoveItems.UI; use MoveItems.UI;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with Trash.UI; use Trash.UI;
