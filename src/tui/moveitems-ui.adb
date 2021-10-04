@@ -29,7 +29,7 @@ with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
-package body MoveItems is
+package body MoveItems.UI is
 
    -- ****iv* MoveItemsTUI/MoveItemsTUI.SourceDirectory
    -- FUNCTION
@@ -139,4 +139,4 @@ package body MoveItems is
       return MoveSelected(OverwriteItem);
    end SkipMoving;
 
-end MoveItems;
+end MoveItems.UI;

@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -15,21 +15,21 @@
 
 with CopyItems; use CopyItems;
 
--- ****h* MoveItems/MoveItems
+-- ****h* MoveItems/MoveItemsUI
 -- FUNCTION
 -- Provide code to move selected files or directories.
 -- SOURCE
-package MoveItems is
+package MoveItems.UI is
 -- ****
 
-   -- ****v* MoveItems/MoveItems.MoveItemsList
+   -- ****v* MoveItemsUI/MoveItemsUI.MoveItemsList
    -- FUNCTION
    -- Stores names of all selected to move files and directories
    -- SOURCE
    MoveItemsList: UnboundedString_Container.Vector;
    -- ****
 
-   -- ****f* MoveItems/MoveItems.MoveSelected
+   -- ****f* MoveItemsUI/MoveItemsUI.MoveSelected
    -- FUNCTION
    -- Move selected files and directories
    -- PARAMETERS
@@ -40,18 +40,18 @@ package MoveItems is
    procedure MoveSelected(Overwrite: in out Boolean);
    -- ****
 
-   -- ****f* MoveItems/MoveItems.SkipMoving
+   -- ****f* MoveItemsUI/MoveItemsUI.SkipMoving
    -- FUNCTION
    -- Skip moving current file and move to next
    -- SOURCE
    procedure SkipMoving;
    -- ****
 
-   -- ****f* MoveItems/MoveItems.CreateMoveUI
+   -- ****f* MoveItemsUI/MoveItemsUI.CreateMoveUI
    -- FUNCTION
    -- Create UI for moving items
    -- SOURCE
    procedure CreateMoveUI;
    -- ****
 
-end MoveItems;
+end MoveItems.UI;

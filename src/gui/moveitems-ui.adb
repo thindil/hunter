@@ -35,7 +35,7 @@ with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
-package body MoveItems is
+package body MoveItems.UI is
 
    -- ****iv* MoveItems/MoveItems.SourceDirectory
    -- FUNCTION
@@ -200,4 +200,4 @@ package body MoveItems is
       Add_Command("MoveData", Move_Data_Command'Access);
    end CreateMoveUI;
 
-end MoveItems;
+end MoveItems.UI;

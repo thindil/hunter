@@ -16,11 +16,11 @@
 with CopyItems; use CopyItems;
 with MainWindow; use MainWindow;
 
--- ****h* MoveItemsTUI/MoveItemsTUI
+-- ****h* MoveItems/MoveItemsTUI
 -- FUNCTION
 -- Provide code to move selected files or directories.
 -- SOURCE
-package MoveItems is
+package MoveItems.UI is
 -- ****
 
    -- ****v* MoveItemsTUI/MoveItemsTUI.MoveItemsList
@@ -56,4 +56,4 @@ package MoveItems is
    function SkipMoving return UI_Locations;
    -- ****
 
-end MoveItems;
+end MoveItems.UI;
