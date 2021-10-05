@@ -38,6 +38,7 @@ with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Modules; use Modules;
 with Modules.Commands;
+with MoveItems; use MoveItems;
 with MoveItems.UI; use MoveItems.UI;
 with Preferences; use Preferences;
 with Preferences.UI; use Preferences.UI;
