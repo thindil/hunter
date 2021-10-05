@@ -244,27 +244,36 @@ package body Messages.UI is
       Button: Ttk_Button;
       procedure Add_Button
         (Name, Text, Response: String; Column: Natural := 0) is
-         ResponseButton: constant Ttk_Button :=
+         Response_Button: constant Ttk_Button :=
            Create
-             (Buttons_Box & ".button" & Name,
-              "-text {" & Text & "} -command {MessageResponse " & Response &
-              "}");
+             (pathName => Buttons_Box & ".button" & Name,
+              options =>
+                "-text {" & Text & "} -command {MessageResponse " & Response &
+                "}");
       begin
          Tcl.Tk.Ada.Grid.Grid
-           (ResponseButton, "-row 0 -column" & Natural'Image(Column));
+           (Slave => Response_Button,
+            Options => "-row 0 -column" & Natural'Image(Column));
       end Add_Button;
    begin
-      Add_Command("CloseMessage", Close_Command'Access);
-      Add_Command("MessageResponse", Response_Command'Access);
-      Style_Configure("message.TFrame", "-background #27ae60");
+      Add_Command(Name => "CloseMessage", Ada_Command => Close_Command'Access);
+      Add_Command
+        (Name => "MessageResponse", Ada_Command => Response_Command'Access);
       Style_Configure
-        ("message.TLabel", "-background #27ae60 -foreground #ffffff");
-      Style_Configure("error.TFrame", "-background #da4453");
+        (Name => "message.TFrame", Options => "-background #27ae60");
       Style_Configure
-        ("error.TLabel", "-background #da4453 -foreground #ffffff");
-      Style_Configure("question.TFrame", "-background #3daee9");
+        (Name => "message.TLabel",
+         Options => "-background #27ae60 -foreground #ffffff");
       Style_Configure
-        ("question.TLabel", "-background #3daee9 -foreground #ffffff");
+        (Name => "error.TFrame", Options => "-background #da4453");
+      Style_Configure
+        (Name => "error.TLabel",
+         Options => "-background #da4453 -foreground #ffffff");
+      Style_Configure
+        (Name => "question.TFrame", Options => "-background #3daee9");
+      Style_Configure
+        (Name => "question.TLabel",
+         Options => "-background #3daee9 -foreground #ffffff");
       Message_Frame := Create(".mainframe.message");
       Message_Label := Create(Message_Frame & ".label", "-wraplength 800");
       Buttons_Box := Create(Message_Frame & ".buttonsbox");
