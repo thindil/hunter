@@ -13,6 +13,15 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with CopyItems; use CopyItems;
+
 package MoveItems is
+
+   -- ****v* MoveItems/MoveItems.MoveItemsList
+   -- FUNCTION
+   -- Stores names of all selected to move files and directories
+   -- SOURCE
+   MoveItemsList: UnboundedString_Container.Vector;
+   -- ****
 
 end MoveItems;

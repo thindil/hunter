@@ -13,7 +13,6 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with CopyItems; use CopyItems;
 with MainWindow; use MainWindow;
 
 -- ****h* MoveItems/MoveItemsTUI
@@ -22,13 +21,6 @@ with MainWindow; use MainWindow;
 -- SOURCE
 package MoveItems.UI is
 -- ****
-
-   -- ****v* MoveItemsTUI/MoveItemsTUI.MoveItemsList
-   -- FUNCTION
-   -- Stores names of all selected to move files and directories
-   -- SOURCE
-   MoveItemsList: UnboundedString_Container.Vector;
-   -- ****
 
    -- ****f* MoveItemsTUI/MoveItemsTUI.MoveSelected
    -- FUNCTION
