@@ -40,12 +40,22 @@ with Utils.UI; use Utils.UI;
 
 package body Messages.UI is
 
-   -- ****iv* Messages/Messages.Message_Frame
+   -- ****iv* MessagesUI/MessagesUI.Message_Frame
    -- FUNCTION
    -- Main frame for the message widget
    -- SOURCE
    Message_Frame: Ttk_Frame;
    -- ****
+
+   -- ****if* MessagesUI/MessagesUI.Get_Message_Frame
+   -- FUNCTION
+   -- Get the main frame for the messages widget
+   -- SOURCE
+   function Get_Message_Frame return Ttk_Frame is
+      -- ****
+   begin
+      return Message_Frame;
+   end Get_Message_Frame;
 
    -- ****iv* Messages/Messages.Message_Label
    -- FUNCTION
@@ -274,9 +284,12 @@ package body Messages.UI is
       Style_Configure
         (Name => "question.TLabel",
          Options => "-background #3daee9 -foreground #ffffff");
-      Message_Frame := Create(".mainframe.message");
-      Message_Label := Create(Message_Frame & ".label", "-wraplength 800");
-      Buttons_Box := Create(Message_Frame & ".buttonsbox");
+      Message_Frame := Create(pathName => ".mainframe.message");
+      Message_Label :=
+        Create
+          (pathName => Get_Message_Frame & ".label",
+           options => "-wraplength 800");
+      Buttons_Box := Create(Get_Message_Frame & ".buttonsbox");
       Add_Button("no", Mc(Get_Context, "{No}"), "no");
       Add_Button("yes", Mc(Get_Context, "{Yes}"), "yes", 1);
       Add_Button("noall", Mc(Get_Context, "{No for all}"), "noall", 2);
