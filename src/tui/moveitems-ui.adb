@@ -31,13 +31,6 @@ with Utils.UI; use Utils.UI;
 
 package body MoveItems.UI is
 
-   -- ****iv* MoveItemsTUI/MoveItemsTUI.SourceDirectory
-   -- FUNCTION
-   -- Full path to the source directory of moved files and directories
-   -- SOURCE
-   SourceDirectory: Unbounded_String;
-   -- ****
-
    function MoveSelected(Overwrite: in out Boolean) return UI_Locations is
       ItemType: Unbounded_String;
       Success: Boolean := True;
@@ -120,7 +113,7 @@ package body MoveItems.UI is
       end if;
       UILocation := DIRECTORY_VIEW;
       MainWindow.Current_Directory :=
-        (if Settings.Stay_In_Old then SourceDirectory
+        (if Settings.Stay_In_Old then MainWindow.Current_Directory
          else DestinationDirectory);
       Current_Selected :=
         MainWindow.Current_Directory & "/" &
@@ -128,6 +121,9 @@ package body MoveItems.UI is
       Load_Directory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
+      if Settings.Stay_In_Old then
+         ShowPreview;
+      end if;
       return DIRECTORY_VIEW;
    end MoveSelected;
 
