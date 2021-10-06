@@ -15,6 +15,8 @@ All notable changes to this project will be documented in this file.
 - Refresh preview after showing various dialogs in console version
 - Showing information about invalid command when trying execute file or
   directory with it in console version
+- Crash after copying files or directories when the program is set to stay
+  in the old directory in console version
 
 ## [1.6] - 2021-08-08
 
