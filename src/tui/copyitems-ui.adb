@@ -25,13 +25,6 @@ with Utils.UI; use Utils.UI;
 
 package body CopyItems.UI is
 
-   -- ****iv* CopyItems/CUITUI.SourceDirectory
-   -- FUNCTION
-   -- Full path to the source directory of copied files and directories
-   -- SOURCE
-   SourceDirectory: Unbounded_String;
-   -- ****
-
    function CopySelected(Overwrite: in out Boolean) return UI_Locations is
    begin
       if DestinationDirectory = MainWindow.Current_Directory then
@@ -52,11 +45,14 @@ package body CopyItems.UI is
       end if;
       UILocation := DIRECTORY_VIEW;
       MainWindow.Current_Directory :=
-        (if Settings.Stay_In_Old then SourceDirectory
+        (if Settings.Stay_In_Old then MainWindow.Current_Directory
          else DestinationDirectory);
       Load_Directory(To_String(MainWindow.Current_Directory));
       Update_Directory_List(True);
       UpdateWatch(To_String(MainWindow.Current_Directory));
+      if Settings.Stay_In_Old then
+         ShowPreview;
+      end if;
       return DIRECTORY_VIEW;
    end CopySelected;
 
