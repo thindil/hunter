@@ -19,6 +19,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Bookmarks.Commands.UI; use Bookmarks.Commands.UI;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
@@ -62,12 +63,12 @@ package body Bookmarks.Commands is
          end if;
          New_Action := COPY;
       end if;
-      Current_Directory :=
+      Common.Current_Directory :=
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
-      Load_Directory(To_String(Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
       Execute_Modules
-        (Interp, On_Enter, "{" & To_String(Current_Directory) & "}");
+        (Interp, On_Enter, "{" & To_String(Common.Current_Directory) & "}");
       return TCL_OK;
    end GoToBookmark_Command;
 

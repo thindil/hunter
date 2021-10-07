@@ -24,6 +24,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Messages.UI; use Messages.UI;
@@ -63,7 +64,7 @@ package body RenameItems is
          Tcl_SetResult(Interp, "1");
          return TCL_OK;
       end if;
-      NewName := MainWindow.Current_Directory & "/" & CArgv.Arg(Argv, 1);
+      NewName := Common.Current_Directory & "/" & CArgv.Arg(Argv, 1);
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
          ActionBlocker :=
@@ -95,9 +96,9 @@ package body RenameItems is
          return TCL_OK;
       end if;
       Current_Selected := NewName;
-      Load_Directory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(Common.Current_Directory));
       Tcl_SetResult(Interp, "1");
       return TCL_OK;
    end Rename_Command;

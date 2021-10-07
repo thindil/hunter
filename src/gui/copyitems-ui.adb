@@ -20,6 +20,7 @@ with CArgv;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Common;
 with LoadData;
 with LoadData.UI;
 with MainWindow; use MainWindow;
@@ -80,7 +81,7 @@ package body CopyItems.UI is
       end if;
       if Copy_Items_List.Length = 0 then
          Copy_Items_List := Selected_Items;
-         Source_Directory := MainWindow.Current_Directory;
+         Source_Directory := Common.Current_Directory;
          New_Action := COPY;
          Toggle_Tool_Buttons(Action => New_Action);
          ShowDestination;
@@ -91,7 +92,7 @@ package body CopyItems.UI is
          return TCL_OK;
       end if;
       if not Is_Write_Accessible_File
-          (Name => To_String(Source => MainWindow.Current_Directory)) then
+          (Name => To_String(Source => Common.Current_Directory)) then
          Show_Message
            (Message =>
               Mc
@@ -126,13 +127,13 @@ package body CopyItems.UI is
                    "{All selected files and directories have been copied.}"),
             Message_Type => "message");
       end if;
-      MainWindow.Current_Directory :=
+      Common.Current_Directory :=
         (if Settings.Stay_In_Old then Source_Directory
          else DestinationDirectory);
       Load_Directory
-        (Directory_Name => To_String(Source => MainWindow.Current_Directory));
+        (Directory_Name => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
-      UpdateWatch(Path => To_String(Source => MainWindow.Current_Directory));
+      UpdateWatch(Path => To_String(Source => Common.Current_Directory));
       ShowPreview;
       Toggle_Tool_Buttons(Action => New_Action, Finished => True);
    end Copy_Selected;

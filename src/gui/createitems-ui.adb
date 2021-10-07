@@ -31,6 +31,7 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tklib.Ada.Tooltip;
 with LoadData;
 with LoadData.UI;
+with Common;
 with MainWindow; use MainWindow;
 with Preferences;
 with RefreshData;
@@ -165,7 +166,7 @@ package body CreateItems.UI is
       Hunter_Create_Exception: exception;
    begin
       New_Item_Name :=
-        MainWindow.Current_Directory & "/" & Get(Widgt => Text_Entry);
+        Common.Current_Directory & "/" & Get(Widgt => Text_Entry);
       if not Is_Creating_Possible
           (New_Item_Name => To_String(Source => New_Item_Name),
            Interp => Interp) then
@@ -203,15 +204,15 @@ package body CreateItems.UI is
               with Mc(Interp => Interp, Src_String => "{Invalid action type}");
       end case;
       if not Settings.Stay_In_Old and then New_Action /= CREATELINK then
-         MainWindow.Current_Directory :=
+         Common.Current_Directory :=
            To_Unbounded_String
              (Source =>
                 Containing_Directory
                   (Name => To_String(Source => New_Item_Name)));
       end if;
       Load_Directory
-        (Directory_Name => To_String(Source => MainWindow.Current_Directory));
-      UpdateWatch(Path => To_String(Source => MainWindow.Current_Directory));
+        (Directory_Name => To_String(Source => Common.Current_Directory));
+      UpdateWatch(Path => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
       <<End_Of_Create>>
       if Invoke(Buttn => Button) /= "" then

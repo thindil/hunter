@@ -26,6 +26,7 @@ with GNAT.String_Split; use GNAT.String_Split;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Messages.UI; use Messages.UI;
@@ -642,11 +643,11 @@ package body ShowItems is
             end if;
          end loop Update_Selected_Items_Loop;
       else
-         Selected_Items.Append(MainWindow.Current_Directory);
+         Selected_Items.Append(Common.Current_Directory);
       end if;
       if not Settings.Show_Preview or
         (Selected_Items(1) = Current_Selected and
-         Current_Selected /= MainWindow.Current_Directory) then
+         Current_Selected /= Common.Current_Directory) then
          return;
       end if;
       Current_Selected :=

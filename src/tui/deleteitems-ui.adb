@@ -22,6 +22,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Preferences; use Preferences;
@@ -58,7 +59,7 @@ package body DeleteItems.UI is
          if New_Action = DELETE then
             if Is_Directory
                 (To_String
-                   (MainWindow.Current_Directory & "/" &
+                   (Common.Current_Directory & "/" &
                     Selected_Items(I))) then
                if Simple_Name(Name => To_String(Source => Selected_Items(I)))'
                    Length >
@@ -167,13 +168,13 @@ package body DeleteItems.UI is
          when 10 =>
             if FieldIndex = 2 then
                if not Delete_Selected(Interpreter) then
-                  Load_Directory(To_String(MainWindow.Current_Directory));
+                  Load_Directory(To_String(Common.Current_Directory));
                else
                   Load_Directory
                     (Ada.Directories.Containing_Directory
-                       (To_String(MainWindow.Current_Directory)));
+                       (To_String(Common.Current_Directory)));
                end if;
-               Current_Selected := MainWindow.Current_Directory;
+               Current_Selected := Common.Current_Directory;
                if Items_List.Length > 0 then
                   Current_Selected :=
                     Current_Selected & "/" & Items_List(1).Name;

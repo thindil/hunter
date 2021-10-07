@@ -51,6 +51,7 @@ with AboutDialog;
 with AboutDialog.UI;
 with ActivateItems;
 with Bookmarks.UI;
+with Common;
 with CopyItems.UI;
 with CreateItems.UI;
 with DeleteItems.UI;
@@ -400,21 +401,21 @@ package body MainWindow is
       Column_Configure
         (Master => Text_Frame, Slave => Text_Entry, Options => "-weight 1");
       if Ada.Directories.Exists(Name => Directory) then
-         Current_Directory := To_Unbounded_String(Source => Directory);
+         Common.Current_Directory := To_Unbounded_String(Source => Directory);
       else
-         Current_Directory :=
+         Common.Current_Directory :=
            To_Unbounded_String(Source => Value(Name => "HOME"));
          if not Ada.Directories.Exists
-             (Name => To_String(Source => Current_Directory)) then
-            Current_Directory := To_Unbounded_String(Source => "/");
+             (Name => To_String(Source => Common.Current_Directory)) then
+            Common.Current_Directory := To_Unbounded_String(Source => "/");
          end if;
       end if;
-      Load_Directory(Directory_Name => To_String(Source => Current_Directory));
-      StartTimer(Path => To_String(Source => Current_Directory));
+      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+      StartTimer(Path => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
       Execute_Modules
         (Interpreter => Get_Context, State => On_Enter,
-         Arguments => "{" & To_String(Source => Current_Directory) & "}");
+         Arguments => "{" & To_String(Source => Common.Current_Directory) & "}");
       CreateShowItemsUI;
       SashPos
         (Paned => Paned, Index => "0",
@@ -572,7 +573,7 @@ package body MainWindow is
             if Frame_Name = "directory"
               and then New_Action not in SHOWTRASH | DELETETRASH then
                Create
-                 (S => Tokens, From => To_String(Source => Current_Directory),
+                 (S => Tokens, From => To_String(Source => Common.Current_Directory),
                   Separators => "/");
             else
                Create

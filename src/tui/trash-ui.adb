@@ -20,6 +20,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Common;
 with Inotify; use Inotify;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -53,11 +54,11 @@ package body Trash.UI is
          Toggle_Tool_Buttons(SHOWTRASH);
       end if;
       Items_List.Clear;
-      MainWindow.Current_Directory :=
+      Common.Current_Directory :=
         To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
       DestinationDirectory :=
         Delete
-          (MainWindow.Current_Directory, 1,
+          (Common.Current_Directory, 1,
            Length
              (To_Unbounded_String
                 (Value("HOME") & "/.local/share/Trash/files")));

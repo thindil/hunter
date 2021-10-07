@@ -37,6 +37,7 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
+with Common;
 with DeleteItems;
 with Inotify;
 with LibMagic;
@@ -567,13 +568,13 @@ package body MainWindow.Commands is
           (Name =>
              Value(Name => "APPDIR", Default => "") &
              "/usr/share/doc/hunter") then
-         Current_Directory :=
+         Common.Current_Directory :=
            To_Unbounded_String
              (Source =>
                 Value(Name => "APPDIR", Default => "") &
                 "/usr/share/doc/hunter");
       else
-         Current_Directory :=
+         Common.Current_Directory :=
            To_Unbounded_String
              (Source =>
                 Normalize_Pathname
@@ -581,7 +582,7 @@ package body MainWindow.Commands is
                      Containing_Directory
                        (Name => Containing_Directory(Name => Command_Name))));
       end if;
-      Load_Directory(Directory_Name => To_String(Source => Current_Directory));
+      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
       Set_Current_Selected_Loop :
       for I in Items_List.Iterate loop
          if Items_List(I).Name =

@@ -30,6 +30,7 @@ with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Common;
 with Bookmarks.UI; use Bookmarks.UI;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
@@ -88,7 +89,7 @@ package body Bookmarks.Commands.UI is
       configure(Button, "-command GoToDestination");
       Add(Button, Mc(Interp, "{Go to the selected destination}"));
       Focus(TextEntry);
-      Insert(TextEntry, "0", To_String(MainWindow.Current_Directory));
+      Insert(TextEntry, "0", To_String(Common.Current_Directory));
       Add(TextEntry, Mc(Interp, "{Enter the selected destination}"));
       Unbind(TextEntry, "<KeyRelease>");
       Tcl.Tk.Ada.Grid.Grid(Button);
@@ -133,13 +134,13 @@ package body Bookmarks.Commands.UI is
             Mc(Interp, "{doesn't exist.}"));
          return TCL_OK;
       end if;
-      MainWindow.Current_Directory := To_Unbounded_String(Get(TextEntry));
+      Common.Current_Directory := To_Unbounded_String(Get(TextEntry));
       if Invoke(HideButton) /= "" then
          return TCL_ERROR;
       end if;
-      Load_Directory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(Common.Current_Directory));
       return TCL_OK;
    end GoToDestination_Command;
 

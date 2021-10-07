@@ -30,6 +30,7 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
@@ -137,7 +138,7 @@ package body RenameItems is
       Success: Boolean;
    begin
       NewName :=
-        MainWindow.Current_Directory & "/" &
+        Common.Current_Directory & "/" &
         To_Unbounded_String(Get(TextEntry));
       if Exists(To_String(NewName)) or
         Is_Symbolic_Link(To_String(NewName)) then
@@ -168,9 +169,9 @@ package body RenameItems is
          return TCL_OK;
       end if;
       Current_Selected := NewName;
-      Load_Directory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(Common.Current_Directory));
       return Toggle_Rename_Command(ClientData, Interp, Argc, Argv);
    end Rename_Command;
 

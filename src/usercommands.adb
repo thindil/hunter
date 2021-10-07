@@ -22,6 +22,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common; use Common;
 with MainWindow; use MainWindow;
 with Messages.UI; use Messages.UI;
 with ShowItems; use ShowItems;
@@ -81,7 +82,7 @@ package body UserCommands is
       for I in Arguments'Range loop
          if Arguments(I).all = "@1" then
             Arguments(I) :=
-              new String'(To_String(MainWindow.Current_Directory));
+              new String'(To_String(Common.Current_Directory));
          elsif Arguments(I).all = "@2" then
             Arguments(I) := new String'(To_String(Current_Selected));
          end if;

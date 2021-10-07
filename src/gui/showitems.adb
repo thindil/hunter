@@ -50,6 +50,7 @@ with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Bookmarks.UI; use Bookmarks.UI;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
@@ -777,11 +778,11 @@ package body ShowItems is
               (Items_List(Positive'Value(Slice(Tokens, I))).Path);
          end loop Set_Selected_List_Loop;
       else
-         Selected_Items.Append(MainWindow.Current_Directory);
+         Selected_Items.Append(Common.Current_Directory);
       end if;
       if not Settings.Show_Preview or
         (Selected_Items(1) = Current_Selected and
-         Current_Selected /= MainWindow.Current_Directory) then
+         Current_Selected /= Common.Current_Directory) then
          return TCL_OK;
       end if;
       Current_Selected := Selected_Items(1);
@@ -1064,7 +1065,7 @@ package body ShowItems is
       Frame.Name := New_String(PreviewFrame & ".title");
       configure
         (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
-      DestinationDirectory := MainWindow.Current_Directory;
+      DestinationDirectory := Common.Current_Directory;
       Load_Directory(To_String(DestinationDirectory), True);
       Update_Directory_List(True, "preview");
       Autoscroll(PreviewXScroll);

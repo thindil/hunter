@@ -51,6 +51,7 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
@@ -879,7 +880,7 @@ package body Preferences.Commands is
       Tcl.Tk.Ada.Grid.Grid(Frame);
       Execute_Modules
         (Interp, On_Enter,
-         "{" & To_String(MainWindow.Current_Directory) & "}");
+         "{" & To_String(Common.Current_Directory) & "}");
       return TCL_OK;
    end Close_Preferences_Command;
 
@@ -1384,15 +1385,15 @@ package body Preferences.Commands is
         TCL_ERROR then
          return TCL_ERROR;
       end if;
-      MainWindow.Current_Directory :=
+      Common.Current_Directory :=
         To_Unbounded_String
           (Normalize_Pathname
              (CArgv.Arg(Argv, 1), Containing_Directory(Command_Name)));
-      Load_Directory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       Current_Selected :=
-        MainWindow.Current_Directory & "/" & Items_List(1).Name;
+        Common.Current_Directory & "/" & Items_List(1).Name;
       Update_Directory_List(True);
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(Common.Current_Directory));
       ShowPreview;
       return TCL_OK;
    end Show_Module_Command;

@@ -26,6 +26,7 @@ with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Common;
 with Inotify; use Inotify;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;
@@ -62,11 +63,11 @@ package body Trash.UI is
          Toggle_Tool_Buttons(SHOWTRASH);
       end if;
       Items_List.Clear;
-      MainWindow.Current_Directory :=
+      Common.Current_Directory :=
         To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
       DestinationDirectory :=
         Delete
-          (MainWindow.Current_Directory, 1,
+          (Common.Current_Directory, 1,
            Length
              (To_Unbounded_String
                 (Value("HOME") & "/.local/share/Trash/files")));
@@ -186,7 +187,7 @@ package body Trash.UI is
          "{InvokeButton .mainframe.toolbars.actiontoolbar.restorebutton}");
       Execute_Modules
         (Interp, On_Enter,
-         "{" & To_String(MainWindow.Current_Directory) & "}");
+         "{" & To_String(Common.Current_Directory) & "}");
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 

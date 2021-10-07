@@ -23,6 +23,7 @@ with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common;
 with LoadData.UI; use LoadData.UI;
 with Messages.UI; use Messages.UI;
 with Modules; use Modules;
@@ -79,7 +80,7 @@ package body Bookmarks.UI is
       Set_Options(Create_Fields.all(1), FieldOptions);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer
-        (Create_Fields.all(2), 0, To_String(MainWindow.Current_Directory));
+        (Create_Fields.all(2), 0, To_String(Common.Current_Directory));
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
@@ -121,25 +122,25 @@ package body Bookmarks.UI is
       if Bookmarks_List.Contains(Bookmark) then
          New_Action := CREATEFILE;
          CreateProgramMenu(True);
-         MainWindow.Current_Directory :=
+         Common.Current_Directory :=
            To_Unbounded_String(Bookmarks_List(Bookmark));
       elsif Bookmark = Mc(Interpreter, "{Home}") then
          New_Action := CREATEFILE;
          CreateProgramMenu(True);
-         MainWindow.Current_Directory := To_Unbounded_String(Value("HOME"));
+         Common.Current_Directory := To_Unbounded_String(Value("HOME"));
       else
          ShowBookmarksForm;
          return BOOKMARKS_FORM;
       end if;
-      Load_Directory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       UILocation := DIRECTORY_VIEW;
       Clear_Preview_Window;
       Update_Directory_List(True);
       ShowPreview;
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(Common.Current_Directory));
       Execute_Modules
         (Interpreter, On_Enter,
-         "{" & To_String(MainWindow.Current_Directory) & "}");
+         "{" & To_String(Common.Current_Directory) & "}");
       return DIRECTORY_VIEW;
    end Go_To_Bookmark;
 
@@ -176,14 +177,14 @@ package body Bookmarks.UI is
                   return MESSAGE_FORM;
                end if;
                New_Action := CREATEFILE;
-               MainWindow.Current_Directory :=
+               Common.Current_Directory :=
                  To_Unbounded_String
                    (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
-               Load_Directory(To_String(MainWindow.Current_Directory));
-               UpdateWatch(To_String(MainWindow.Current_Directory));
+               Load_Directory(To_String(Common.Current_Directory));
+               UpdateWatch(To_String(Common.Current_Directory));
                Execute_Modules
                  (Interpreter, On_Enter,
-                  "{" & To_String(MainWindow.Current_Directory) & "}");
+                  "{" & To_String(Common.Current_Directory) & "}");
             end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);

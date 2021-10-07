@@ -28,6 +28,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Tcl.Ada; use Tcl.Ada;
+with Common;
 with CopyItems; use CopyItems;
 with Inotify; use Inotify;
 with LoadData.UI; use LoadData.UI;
@@ -779,15 +780,15 @@ package body Preferences.UI is
          when 4 =>
             case OptionIndex mod 5 is
                when 0 =>
-                  MainWindow.Current_Directory :=
+                  Common.Current_Directory :=
                     Modules_List((OptionIndex / 5) - 1);
-                  Load_Directory(To_String(MainWindow.Current_Directory));
+                  Load_Directory(To_String(Common.Current_Directory));
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
-                  UpdateWatch(To_String(MainWindow.Current_Directory));
+                  UpdateWatch(To_String(Common.Current_Directory));
                   Execute_Modules
                     (Interpreter, On_Enter,
-                     "{" & To_String(MainWindow.Current_Directory) & "}");
+                     "{" & To_String(Common.Current_Directory) & "}");
                   return DIRECTORY_VIEW;
                when 1 =>
                   Tcl_Eval
@@ -850,7 +851,7 @@ package body Preferences.UI is
                   Show_Main_Window;
                   Execute_Modules
                     (Interpreter, On_Enter,
-                     "{" & To_String(MainWindow.Current_Directory) & "}");
+                     "{" & To_String(Common.Current_Directory) & "}");
                   ShowPreview;
                   return DIRECTORY_VIEW;
                else

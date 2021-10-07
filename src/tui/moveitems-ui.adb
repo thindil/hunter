@@ -20,6 +20,7 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Messages; use Messages;
@@ -112,15 +113,15 @@ package body MoveItems.UI is
          return MESSAGE_FORM;
       end if;
       UILocation := DIRECTORY_VIEW;
-      MainWindow.Current_Directory :=
-        (if Settings.Stay_In_Old then MainWindow.Current_Directory
+      Common.Current_Directory :=
+        (if Settings.Stay_In_Old then Common.Current_Directory
          else DestinationDirectory);
       Current_Selected :=
-        MainWindow.Current_Directory & "/" &
+        Common.Current_Directory & "/" &
         Simple_Name(To_String(Current_Selected));
-      Load_Directory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(Common.Current_Directory));
       if Settings.Stay_In_Old then
          ShowPreview;
       end if;

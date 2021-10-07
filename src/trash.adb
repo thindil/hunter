@@ -22,6 +22,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
@@ -152,19 +153,19 @@ package body Trash is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
    begin
-      MainWindow.Current_Directory :=
+      Common.Current_Directory :=
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
       DestinationDirectory :=
         Delete
-          (MainWindow.Current_Directory, 1,
+          (Common.Current_Directory, 1,
            Length
              (To_Unbounded_String
                 (Value("HOME") & "/.local/share/Trash/files")));
-      Load_Directory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
       Execute_Modules
         (Interp, On_Enter,
-         "{" & To_String(MainWindow.Current_Directory) & "}");
+         "{" & To_String(Common.Current_Directory) & "}");
       return TCL_OK;
    end GoToTrash_Command;
 

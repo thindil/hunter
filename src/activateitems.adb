@@ -24,6 +24,7 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with ActivateItems.UI;
+with Common; use Common;
 with Inotify;
 with LoadData;
 with LoadData.UI;

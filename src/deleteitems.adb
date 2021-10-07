@@ -27,6 +27,7 @@ with Ada.Text_IO;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
 with Tcl.MsgCat.Ada;
+with Common;
 with MainWindow;
 with Messages.UI;
 with Preferences;
@@ -145,7 +146,7 @@ package body DeleteItems is
             else
                Move_To_Trash(Name => Item);
             end if;
-            if Item = MainWindow.Current_Directory then
+            if Item = Common.Current_Directory then
                Go_Up := True;
             end if;
          else
@@ -168,7 +169,7 @@ package body DeleteItems is
          Settings.Delete_Files := Old_Setting;
       end if;
       Selected_Items.Clear;
-      Current_Selected := MainWindow.Current_Directory;
+      Current_Selected := Common.Current_Directory;
       return Go_Up;
    exception
       when An_Exception : Ada.Directories.Use_Error =>

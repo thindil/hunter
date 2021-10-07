@@ -21,6 +21,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Bookmarks.UI; use Bookmarks.UI;
+with Common;
 with CopyItems.UI; use CopyItems.UI;
 with DeleteItems; use DeleteItems;
 with MoveItems.UI; use MoveItems.UI;
@@ -196,16 +197,16 @@ package body Messages.UI is
             elsif New_Action = CLEARTRASH then
                begin
                   if Delete_Selected(Interpreter) then
-                     Current_Directory :=
+                     Common.Current_Directory :=
                        To_Unbounded_String
                          (Normalize_Pathname
-                            (To_String(Current_Directory) & "/.."));
+                            (To_String(Common.Current_Directory) & "/.."));
                   end if;
                exception
                   when others =>
                      return Go_To_Bookmark(Mc(Interpreter, "{Home}"));
                end;
-               if Current_Directory =
+               if Common.Current_Directory =
                  To_Unbounded_String
                    (Value("HOME") & "/.local/share/Trash/files") then
                   return Go_To_Bookmark(Mc(Interpreter, "{Home}"));

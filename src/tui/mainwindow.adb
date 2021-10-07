@@ -31,6 +31,7 @@ with ActivateItems;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
 with Bookmarks.UI; use Bookmarks.UI;
+with Common;
 with CreateItems.UI; use CreateItems.UI;
 with CopyItems.UI; use CopyItems.UI;
 with DeleteItems.UI; use DeleteItems.UI;
@@ -154,16 +155,16 @@ package body MainWindow is
       Modules.Commands.AddCommands;
       CreateTrash;
       if Ada.Directories.Exists(Directory) then
-         MainWindow.Current_Directory := To_Unbounded_String(Directory);
+         Common.Current_Directory := To_Unbounded_String(Directory);
       else
-         MainWindow.Current_Directory := To_Unbounded_String(Value("HOME"));
+         Common.Current_Directory := To_Unbounded_String(Value("HOME"));
          if not Ada.Directories.Exists
-             (To_String(MainWindow.Current_Directory)) then
-            MainWindow.Current_Directory := To_Unbounded_String("/");
+             (To_String(Common.Current_Directory)) then
+            Common.Current_Directory := To_Unbounded_String("/");
          end if;
       end if;
-      Load_Directory(To_String(MainWindow.Current_Directory));
-      StartTimer(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
+      StartTimer(To_String(Common.Current_Directory));
       Show_Main_Window;
    end CreateMainWindow;
 
@@ -180,12 +181,12 @@ package body MainWindow is
       Height: Line_Position;
    begin
       Terminal_Interface.Curses.Clear(PathButtons);
-      MainWindow.Current_Directory :=
+      Common.Current_Directory :=
         To_Unbounded_String
-          (Normalize_Pathname(To_String(MainWindow.Current_Directory)));
+          (Normalize_Pathname(To_String(Common.Current_Directory)));
       Index :=
-        Ada.Strings.Unbounded.Count(MainWindow.Current_Directory, "/") + 1;
-      if MainWindow.Current_Directory /= To_Unbounded_String("/") then
+        Ada.Strings.Unbounded.Count(Common.Current_Directory, "/") + 1;
+      if Common.Current_Directory /= To_Unbounded_String("/") then
          if New_Action in SHOWTRASH | DELETETRASH then
             Index :=
               Ada.Strings.Unbounded.Count(DestinationDirectory, "/") + 1;
@@ -195,7 +196,7 @@ package body MainWindow is
             Path_Items := new Item_Array(1 .. Index + 1);
             Path_Items.all(1) := New_Item("Trash");
          else
-            Create(Tokens, To_String(MainWindow.Current_Directory), "/");
+            Create(Tokens, To_String(Common.Current_Directory), "/");
             Path_Items := new Item_Array(1 .. Index + 1);
             Path_Items.all(1) := New_Item("/");
          end if;
@@ -412,21 +413,21 @@ package body MainWindow is
          when 10 =>
             UILocation := DIRECTORY_VIEW;
             if New_Action in SHOWTRASH | DELETETRASH then
-               MainWindow.Current_Directory :=
+               Common.Current_Directory :=
                  To_Unbounded_String
                    (Value("HOME") & "/.local/share/Trash/files/");
                Update_Trash_Directory_Loop :
                for I in 2 .. Get_Index(Current(Path)) loop
                   if I = 2 then
                      Append
-                       (MainWindow.Current_Directory,
+                       (Common.Current_Directory,
                         Description(Items(Path, I)));
                   else
                      Append
-                       (MainWindow.Current_Directory, Name(Items(Path, I)));
+                       (Common.Current_Directory, Name(Items(Path, I)));
                   end if;
                   if I < Get_Index(Current(Path)) then
-                     Append(MainWindow.Current_Directory, "/");
+                     Append(Common.Current_Directory, "/");
                   end if;
                end loop Update_Trash_Directory_Loop;
                if Get_Index(Current(Path)) = 1 then
@@ -435,23 +436,23 @@ package body MainWindow is
                else
                   Tcl_Eval
                     (Interpreter,
-                     "GoToTrash " & To_String(MainWindow.Current_Directory));
+                     "GoToTrash " & To_String(Common.Current_Directory));
                end if;
             else
-               MainWindow.Current_Directory := To_Unbounded_String("/");
+               Common.Current_Directory := To_Unbounded_String("/");
                Update_Current_Directory_Loop :
                for I in 2 .. Get_Index(Current(Path)) loop
-                  Append(MainWindow.Current_Directory, Name(Items(Path, I)));
+                  Append(Common.Current_Directory, Name(Items(Path, I)));
                   if I < Get_Index(Current(Path)) then
-                     Append(MainWindow.Current_Directory, "/");
+                     Append(Common.Current_Directory, "/");
                   end if;
                end loop Update_Current_Directory_Loop;
-               Load_Directory(To_String(MainWindow.Current_Directory));
+               Load_Directory(To_String(Common.Current_Directory));
                Update_Directory_List(True);
-               UpdateWatch(To_String(MainWindow.Current_Directory));
+               UpdateWatch(To_String(Common.Current_Directory));
                Execute_Modules
                  (Interpreter, On_Enter,
-                  "{" & To_String(MainWindow.Current_Directory) & "}");
+                  "{" & To_String(Common.Current_Directory) & "}");
             end if;
             return DIRECTORY_VIEW;
          when others =>
@@ -724,7 +725,7 @@ package body MainWindow is
                   New_Action := CREATELINK;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
-                  DestinationDirectory := MainWindow.Current_Directory;
+                  DestinationDirectory := Common.Current_Directory;
                   Second_Items_List := Items_List;
                   ShowDestination;
                   return DESTINATION_VIEW;
@@ -736,7 +737,7 @@ package body MainWindow is
                   New_Action := COPY;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
-                  DestinationDirectory := MainWindow.Current_Directory;
+                  DestinationDirectory := Common.Current_Directory;
                   Second_Items_List := Items_List;
                   ShowDestination;
                   return DESTINATION_VIEW;
@@ -744,7 +745,7 @@ package body MainWindow is
                   New_Action := MOVE;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
-                  DestinationDirectory := MainWindow.Current_Directory;
+                  DestinationDirectory := Common.Current_Directory;
                   Second_Items_List := Items_List;
                   ShowDestination;
                   return DESTINATION_VIEW;
@@ -937,18 +938,18 @@ package body MainWindow is
             if FileName /= Null_Unbounded_String then
                if Ada.Directories.Exists
                    (Value("APPDIR", "") & "/usr/share/doc/hunter") then
-                  Current_Directory :=
+                  Common.Current_Directory :=
                     To_Unbounded_String
                       (Value("APPDIR", "") & "/usr/share/doc/hunter");
                else
-                  Current_Directory :=
+                  Common.Current_Directory :=
                     To_Unbounded_String
                       (Normalize_Pathname
                          (Ada.Directories.Containing_Directory
                             (Ada.Directories.Containing_Directory
                                (Command_Name))));
                end if;
-               Load_Directory(To_String(Current_Directory));
+               Load_Directory(To_String(Common.Current_Directory));
                Set_Current_Selected_Loop :
                for I in Items_List.Iterate loop
                   if Items_List(I).Name = FileName then

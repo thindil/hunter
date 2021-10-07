@@ -25,6 +25,7 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Preferences; use Preferences;
@@ -66,7 +67,7 @@ package body CreateItems.UI is
          Tcl_SetResult(Interp, "1");
          return TCL_OK;
       end if;
-      NewItemName := MainWindow.Current_Directory & "/" & CArgv.Arg(Argv, 1);
+      NewItemName := Common.Current_Directory & "/" & CArgv.Arg(Argv, 1);
       if not Is_Creating_Possible(To_String(NewItemName), Interp) then
          Tcl_SetResult(Interp, "0");
          return TCL_OK;
@@ -95,11 +96,11 @@ package body CreateItems.UI is
               with Mc(Interp, "{Invalid action type}");
       end case;
       if not Settings.Stay_In_Old and then New_Action /= CREATELINK then
-         MainWindow.Current_Directory :=
+         Common.Current_Directory :=
            To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
       end if;
-      Load_Directory(To_String(MainWindow.Current_Directory));
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
+      UpdateWatch(To_String(Common.Current_Directory));
       Tcl_SetResult(Interp, "1");
       return TCL_OK;
    end Create_Item_Command;

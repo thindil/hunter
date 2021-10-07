@@ -25,6 +25,7 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
@@ -79,7 +80,7 @@ package body MoveItems.UI is
       end if;
       if MoveItemsList.Length = 0 then
          MoveItemsList := Selected_Items;
-         SourceDirectory := MainWindow.Current_Directory;
+         SourceDirectory := Common.Current_Directory;
          New_Action := MOVE;
          Toggle_Tool_Buttons(New_Action);
          ShowDestination;
@@ -89,7 +90,7 @@ package body MoveItems.UI is
          return TCL_OK;
       end if;
       if not Is_Write_Accessible_File
-          (To_String(MainWindow.Current_Directory)) then
+          (To_String(Common.Current_Directory)) then
          Show_Message
            (Mc
               (Interp,
@@ -174,15 +175,15 @@ package body MoveItems.UI is
                "{All selected files and directories have been moved.}"),
             "message");
       end if;
-      MainWindow.Current_Directory :=
+      Common.Current_Directory :=
         (if Settings.Stay_In_Old then SourceDirectory
          else DestinationDirectory);
       Current_Selected :=
-        MainWindow.Current_Directory & "/" &
+        Common.Current_Directory & "/" &
         Simple_Name(To_String(Current_Selected));
-      Load_Directory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(Common.Current_Directory));
       ShowPreview;
       Toggle_Tool_Buttons(New_Action, True);
    end MoveSelected;

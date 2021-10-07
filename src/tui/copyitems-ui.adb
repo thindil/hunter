@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Messages.UI; use Messages.UI;
@@ -27,7 +28,7 @@ package body CopyItems.UI is
 
    function CopySelected(Overwrite: in out Boolean) return UI_Locations is
    begin
-      if DestinationDirectory = MainWindow.Current_Directory then
+      if DestinationDirectory = Common.Current_Directory then
          UILocation := DIRECTORY_VIEW;
          Update_Directory_List(True);
          return DIRECTORY_VIEW;
@@ -44,12 +45,12 @@ package body CopyItems.UI is
          return MESSAGE_FORM;
       end if;
       UILocation := DIRECTORY_VIEW;
-      MainWindow.Current_Directory :=
-        (if Settings.Stay_In_Old then MainWindow.Current_Directory
+      Common.Current_Directory :=
+        (if Settings.Stay_In_Old then Common.Current_Directory
          else DestinationDirectory);
-      Load_Directory(To_String(MainWindow.Current_Directory));
+      Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
-      UpdateWatch(To_String(MainWindow.Current_Directory));
+      UpdateWatch(To_String(Common.Current_Directory));
       if Settings.Stay_In_Old then
          ShowPreview;
       end if;

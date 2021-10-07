@@ -20,6 +20,7 @@ with Interfaces.C; use Interfaces.C;
 with Tcl; use Tcl;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Common;
 with Inotify; use Inotify;
 pragma Elaborate_All(Inotify);
 with LoadData; use LoadData;
@@ -71,7 +72,7 @@ package body RefreshData is
       begin
          Items_List.Delete(ItemIndex);
          if Items_List.Length = 0 then
-            Current_Selected := MainWindow.Current_Directory;
+            Current_Selected := Common.Current_Directory;
          end if;
          RefreshList := True;
       end RemoveItem;
@@ -85,7 +86,7 @@ package body RefreshData is
          if Temporary_Stop then
             goto Clear_List;
          end if;
-         if Event.Path = MainWindow.Current_Directory
+         if Event.Path = Common.Current_Directory
            and then
            ((Event.Event in MOVED_TO | METADATA | ACCESSED) and
             Exists(To_String(Event.Path & "/" & Event.Target))) then
