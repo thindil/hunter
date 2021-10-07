@@ -81,7 +81,7 @@ package body Messages.UI is
          Cancel(id_or_script => To_String(Source => Timer_Id));
          Timer_Id := Null_Unbounded_String;
       end if;
-      Grid_Remove(Slave => Message_Frame);
+      Grid_Remove(Slave => Get_Message_Frame);
       return TCL_OK;
    end Close_Command;
 
