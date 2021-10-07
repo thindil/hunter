@@ -26,13 +26,6 @@ with CopyItems; use CopyItems;
 package MainWindow is
 -- ****
 
-   -- ****v* MainWindowTUI/MainWindowTUI.Current_Directory
-   -- FUNCTION
-   -- Currently selected directory to show
-   -- SOURCE
-   Current_Directory: Unbounded_String;
-   -- ****
-
    -- ****t* MainWindowTUI/MainWindowTUI.ItemActions
    -- FUNCTION
    -- Types of action on files and directories
