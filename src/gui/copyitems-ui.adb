@@ -20,7 +20,7 @@ with CArgv;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-with Common;
+with Common; use Common;
 with LoadData;
 with LoadData.UI;
 with MainWindow; use MainWindow;

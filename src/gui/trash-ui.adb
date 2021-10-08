@@ -26,7 +26,7 @@ with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
-with Common;
+with Common; use Common;
 with Inotify; use Inotify;
 with LoadData; use LoadData;
 with MainWindow; use MainWindow;

@@ -31,7 +31,7 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tklib.Ada.Tooltip;
 with LoadData;
 with LoadData.UI;
-with Common;
+with Common; use Common;
 with MainWindow; use MainWindow;
 with Preferences;
 with RefreshData;

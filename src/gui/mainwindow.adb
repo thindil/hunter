@@ -428,6 +428,7 @@ package body MainWindow is
       use Ada.Characters.Latin_1;
       use GNAT.String_Split;
       use Tcl.Tk.Ada.Winfo;
+      use Common;
       use LoadData;
       use Utils;
 

@@ -19,7 +19,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Bookmarks.Commands.UI; use Bookmarks.Commands.UI;
-with Common;
+with Common; use Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;

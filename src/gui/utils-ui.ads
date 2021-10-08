@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Tcl.Tk.Ada.Widgets.Toplevel; use Tcl.Tk.Ada.Widgets.Toplevel;
-with MainWindow; use MainWindow;
+with Common; use Common;
 
 -- ****h* Utils/UtilsUI
 -- FUNCTION

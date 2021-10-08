@@ -42,6 +42,7 @@ package body DeleteItems is
       use GNAT.Directory_Operations;
       use GNAT.OS_Lib;
       use Tcl.MsgCat.Ada;
+      use Common;
       use MainWindow;
       use Messages.UI;
       use Preferences;
