@@ -30,4 +30,40 @@ package Common is
    Current_Directory: Unbounded_String;
    -- ****
 
+   -- ****t* Common/Common.Item_Actions
+   -- FUNCTION
+   -- Types of action on files and directories
+   -- OPTIONS
+   -- CREATEFILE      - create file
+   -- CREATEDIRECTORY - create directory
+   -- RENAME          - rename file or directory
+   -- DELETE          - delete file or directory
+   -- COPY            - copy file or directory
+   -- MOVE            - move file or directory
+   -- OPENWITH        - open selected file or directory with command
+   -- GOTOPATH        - go to selected path
+   -- CREATELINK      - create symbolic link to selected file or directory
+   -- CLEARTRASH      - remove all files and directories from trash
+   -- SHOWTRASH       - show content of the trash
+   -- DELETETRASH     - delete file or directory from trash
+   -- SOURCE
+   type Item_Actions is
+     (CREATEFILE, CREATEDIRECTORY, RENAME, DELETE, COPY, MOVE, OPENWITH,
+      GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
+   -- ****
+
+   -- ****d* Common/Common.Default_Item_Action
+   -- FUNCTION
+   -- Default action type for files and directories
+   -- SOURCE
+   Default_Item_Action: constant Item_Actions := CREATEFILE;
+   -- ****
+
+   -- ****v* Common/Common.New_Action
+   -- FUNCTION
+   -- Current performed action on files or directories
+   -- SOURCE
+   New_Action: Item_Actions;
+   -- ****
+
 end Common;
