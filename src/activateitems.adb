@@ -24,7 +24,7 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with ActivateItems.UI;
-with Common; use Common;
+with Common;
 with Inotify;
 with LoadData;
 with LoadData.UI;
@@ -67,6 +67,7 @@ package body ActivateItems is
       use Ada.Containers;
       use Ada.Environment_Variables;
       use Tcl.Ada;
+      use Common;
       use Inotify;
       use LoadData;
       use LoadData.UI;
