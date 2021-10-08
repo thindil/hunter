@@ -26,7 +26,7 @@ with GNAT.String_Split; use GNAT.String_Split;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Common;
+with Common; use Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Messages.UI; use Messages.UI;

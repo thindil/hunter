@@ -23,7 +23,7 @@ with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Common;
+with Common; use Common;
 with LoadData.UI; use LoadData.UI;
 with Messages.UI; use Messages.UI;
 with Modules; use Modules;

@@ -31,6 +31,7 @@ with AboutDialog; use AboutDialog;
 with AboutDialog.UI; use AboutDialog.UI;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks.UI; use Bookmarks.UI;
+with Common; use Common;
 with CreateItems.UI; use CreateItems.UI;
 with DeleteItems; use DeleteItems;
 with DeleteItems.UI; use DeleteItems.UI;

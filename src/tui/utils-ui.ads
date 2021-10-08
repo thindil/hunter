@@ -13,7 +13,7 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with MainWindow; use MainWindow;
+with Common; use Common;
 
 -- ****h* Utils/UtilsTUI
 -- FUNCTION
@@ -75,7 +75,7 @@ package Utils.UI is
    -- Finished - If true, action was finished. Default is False
    -- SOURCE
    procedure Toggle_Tool_Buttons
-     (Action: ItemActions; Finished: Boolean := False);
+     (Action: Item_Actions; Finished: Boolean := False);
    -- ****
 
 end Utils.UI;

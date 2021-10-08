@@ -31,7 +31,7 @@ with ActivateItems;
 with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks; use Bookmarks;
 with Bookmarks.UI; use Bookmarks.UI;
-with Common;
+with Common; use Common;
 with CreateItems.UI; use CreateItems.UI;
 with CopyItems.UI; use CopyItems.UI;
 with DeleteItems.UI; use DeleteItems.UI;

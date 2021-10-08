@@ -21,7 +21,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Bookmarks.UI; use Bookmarks.UI;
-with Common;
+with Common; use Common;
 with CopyItems.UI; use CopyItems.UI;
 with DeleteItems; use DeleteItems;
 with MoveItems.UI; use MoveItems.UI;

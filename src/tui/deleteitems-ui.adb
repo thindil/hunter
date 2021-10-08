@@ -22,7 +22,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
-with Common;
+with Common; use Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Preferences; use Preferences;

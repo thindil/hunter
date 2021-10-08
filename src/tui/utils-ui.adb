@@ -19,6 +19,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with MainWindow; use MainWindow;
 with Messages.UI; use Messages.UI;
 
 package body Utils.UI is
@@ -74,7 +75,7 @@ package body Utils.UI is
    end Add_Command;
 
    procedure Toggle_Tool_Buttons
-     (Action: ItemActions; Finished: Boolean := False) is
+     (Action: Item_Actions; Finished: Boolean := False) is
    begin
       null;
    end Toggle_Tool_Buttons;
