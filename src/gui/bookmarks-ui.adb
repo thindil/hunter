@@ -26,7 +26,7 @@ with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Bookmarks.Commands;
-with MainWindow;
+with Common;
 
 package body Bookmarks.UI is
 
@@ -79,7 +79,7 @@ package body Bookmarks.UI is
       use Ada.Strings.Unbounded;
       use Interfaces.C.Strings;
       use Tcl.Tk.Ada.Widgets.TtkButton;
-      use MainWindow;
+      use Common;
 
       Button: Ttk_Button :=
         Get_Widget(pathName => ".mainframe.toolbars.itemtoolbar.addbutton");

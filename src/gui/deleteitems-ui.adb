@@ -25,7 +25,6 @@ with CArgv;
 with Tcl;
 with Tcl.MsgCat.Ada;
 with Common;
-with MainWindow;
 with Messages.UI;
 with Preferences;
 with Utils;
@@ -63,7 +62,6 @@ package body DeleteItems.UI is
       use GNAT.OS_Lib;
       use Tcl.MsgCat.Ada;
       use Common;
-      use MainWindow;
       use Messages.UI;
       use Preferences;
 

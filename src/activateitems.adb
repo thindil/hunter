@@ -215,6 +215,8 @@ package body ActivateItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Common;
+
       Pid: GNAT.OS_Lib.Process_Id;
    begin
       Pid :=

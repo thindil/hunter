@@ -23,7 +23,6 @@ with CArgv;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
-with MainWindow; use MainWindow;
 with Messages.UI; use Messages.UI;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;

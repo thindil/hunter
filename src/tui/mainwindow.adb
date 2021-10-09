@@ -33,6 +33,7 @@ with Bookmarks; use Bookmarks;
 with Bookmarks.UI; use Bookmarks.UI;
 with Common; use Common;
 with CreateItems.UI; use CreateItems.UI;
+with CopyItems; use CopyItems;
 with CopyItems.UI; use CopyItems.UI;
 with DeleteItems.UI; use DeleteItems.UI;
 with LoadData; use LoadData;

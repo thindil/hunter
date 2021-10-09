@@ -31,8 +31,8 @@ with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Common; use Common;
 with LoadData; use LoadData;
-with MainWindow; use MainWindow;
 with Messages.UI; use Messages.UI;
 with Utils.UI; use Utils.UI;
 
