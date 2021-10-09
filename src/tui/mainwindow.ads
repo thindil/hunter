@@ -17,7 +17,6 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Tcl; use Tcl;
-with CopyItems; use CopyItems;
 
 -- ****h* MainWindowTUI/MainWindowTUI
 -- FUNCTION
@@ -74,20 +73,6 @@ package MainWindow is
    -- Currently active element of UI
    -- SOURCE
    UILocation: UI_Locations := DIRECTORY_VIEW;
-   -- ****
-
-   -- ****v* MainWindowTUI/MainWindowTUI.Selected_Items
-   -- FUNCTION
-   -- List of currently selected files and directories by user
-   -- SOURCE
-   Selected_Items: UnboundedString_Container.Vector;
-   -- ****
-
-   -- ****v* MainWindowTUI/MainWindowTUI.Current_Selected
-   -- FUNCTION
-   -- Full path to currently selected file or directory
-   -- SOURCE
-   Current_Selected: Unbounded_String;
    -- ****
 
    -- ****v* MainWindowTUI/MainWindowTUI.Interpreter

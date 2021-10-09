@@ -14,7 +14,6 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with CopyItems; use CopyItems;
 
 -- ****h* MainWindow/MainWindow
 -- FUNCTION
@@ -22,20 +21,6 @@ with CopyItems; use CopyItems;
 -- SOURCE
 package MainWindow is
 -- ****
-
-   -- ****v* MainWindow/MainWindow.Selected_Items
-   -- FUNCTION
-   -- List of currently selected files and directories by user
-   -- SOURCE
-   Selected_Items: UnboundedString_Container.Vector;
-   -- ****
-
-   -- ****v* MainWindow/MainWindow.Current_Selected
-   -- FUNCTION
-   -- Full path to currently selected file or directory
-   -- SOURCE
-   Current_Selected: Unbounded_String;
-   -- ****
 
    -- ****f* MainWindow/MainWindow.Create_Main_Window
    -- FUNCTION
