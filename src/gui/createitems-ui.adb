@@ -32,7 +32,7 @@ with Tcl.Tklib.Ada.Tooltip;
 with LoadData;
 with LoadData.UI;
 with Common; use Common;
-with MainWindow; use MainWindow;
+with MainWindow;
 with Preferences;
 with RefreshData;
 with ShowItems; use ShowItems;
@@ -147,6 +147,7 @@ package body CreateItems.UI is
       use Tcl.Tk.Ada.Widgets.TtkTreeView;
       use LoadData;
       use LoadData.UI;
+      use MainWindow;
       use Preferences;
       use RefreshData;
 
