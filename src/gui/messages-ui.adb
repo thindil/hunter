@@ -290,10 +290,18 @@ package body Messages.UI is
         Create
           (pathName => Get_Message_Frame & ".label",
            options => "-wraplength 800");
-      Buttons_Box := Create(Get_Message_Frame & ".buttonsbox");
-      Add_Button("no", Mc(Get_Context, "{No}"), "no");
-      Add_Button("yes", Mc(Get_Context, "{Yes}"), "yes", 1);
-      Add_Button("noall", Mc(Get_Context, "{No for all}"), "noall", 2);
+      Buttons_Box := Create(pathName => Get_Message_Frame & ".buttonsbox");
+      Add_Button
+        (Name => "no", Text => Mc(Interp => Get_Context, Src_String => "{No}"),
+         Response => "no");
+      Add_Button
+        (Name => "yes",
+         Text => Mc(Interp => Get_Context, Src_String => "{Yes}"),
+         Response => "yes", Column => 1);
+      Add_Button
+        (Name => "noall",
+         Text => Mc(Interp => Get_Context, Src_String => "{No for all}"),
+         Response => "noall", Column => 2);
       Add_Button("yesall", Mc(Get_Context, "{Yes for all}"), "yesall", 3);
       Button :=
         Create
