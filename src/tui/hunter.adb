@@ -42,7 +42,7 @@ with Messages.UI; use Messages.UI;
 with Modules; use Modules;
 with Preferences; use Preferences;
 with Preferences.UI; use Preferences.UI;
-with ProgramsMenu; use ProgramsMenu;
+with ProgramsMenu.UI; use ProgramsMenu.UI;
 with RenameItems; use RenameItems;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
