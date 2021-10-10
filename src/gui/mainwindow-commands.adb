@@ -48,7 +48,7 @@ with Messages.UI;
 with Modules;
 with MoveItems;
 with Preferences; use Preferences;
-with ProgramsMenu;
+with ProgramsMenu.UI;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
@@ -219,7 +219,7 @@ package body MainWindow.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       use Tcl.Tk.Ada.Widgets.TtkEntry;
       use Messages.UI;
-      use ProgramsMenu;
+      use ProgramsMenu.UI;
 
       Frame: Ttk_Frame :=
         Get_Widget(pathName => ".mainframe.message", Interp => Interp);
