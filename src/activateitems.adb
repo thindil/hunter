@@ -28,7 +28,7 @@ with Common;
 with Inotify;
 with LoadData;
 with LoadData.UI;
-with MainWindow; use MainWindow;
+with MainWindow;
 with Messages.UI; use Messages.UI;
 with Modules;
 with Preferences;
@@ -71,6 +71,7 @@ package body ActivateItems is
       use Inotify;
       use LoadData;
       use LoadData.UI;
+      use MainWindow;
       use Modules;
       use Preferences;
       use RefreshData;
