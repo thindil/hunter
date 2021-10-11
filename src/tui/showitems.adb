@@ -31,6 +31,7 @@ with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Messages.UI; use Messages.UI;
 with Preferences; use Preferences;
+with ProgramsMenu; use ProgramsMenu;
 with ProgramsMenu.UI; use ProgramsMenu.UI;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;
