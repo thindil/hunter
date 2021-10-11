@@ -57,6 +57,7 @@ with MainWindow; use MainWindow;
 with Messages.UI; use Messages.UI;
 with Modules; use Modules;
 with Preferences; use Preferences;
+with ProgramsMenu; use ProgramsMenu;
 with ProgramsMenu.UI; use ProgramsMenu.UI;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
