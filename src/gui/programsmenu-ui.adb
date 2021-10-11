@@ -33,7 +33,6 @@ with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Bookmarks; use Bookmarks;
 with Common; use Common;
 with CopyItems; use CopyItems;
 with Messages.UI; use Messages.UI;
@@ -41,14 +40,6 @@ with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
 package body ProgramsMenu.UI is
-
-   -- ****iv* ProgramsMenu/ProgramsMenu.ApplicationsList
-   -- FUNCTION
-   -- List of all applications which can be used to execute files or
-   -- directories
-   -- SOURCE
-   ApplicationsList: Bookmarks_Container.Map;
-   -- ****
 
    -- ****iv* ProgramsMenu/ProgramsMenu.NamesList
    -- FUNCTION
@@ -332,13 +323,5 @@ package body ProgramsMenu.UI is
            (Get_Context,
             "{Press enter or double click to set the selected program as associated with that type of file or directory.}"));
    end CreateProgramsMenu;
-
-   function GetProgramName(DesktopFile: String) return String is
-   begin
-      if not ApplicationsList.Contains(DesktopFile) then
-         return DesktopFile;
-      end if;
-      return ApplicationsList(DesktopFile);
-   end GetProgramName;
 
 end ProgramsMenu.UI;

@@ -20,7 +20,6 @@ with Ada.Text_IO; use Ada.Text_IO;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Bookmarks; use Bookmarks;
 with Common; use Common;
 with CopyItems; use CopyItems;
 with Messages.UI; use Messages.UI;
@@ -29,14 +28,6 @@ with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
 package body ProgramsMenu.UI is
-
-   -- ****iv* ProgramsMenuTUI/ProgramsMenuTUI.ApplicationsList
-   -- FUNCTION
-   -- List of all applications which can be used to execute files or
-   -- directories
-   -- SOURCE
-   ApplicationsList: Bookmarks_Container.Map;
-   -- ****
 
    -- ****iv* ProgramsMenuTUI/ProgramsMenuTUI.NamesList
    -- FUNCTION
@@ -106,14 +97,6 @@ package body ProgramsMenu.UI is
       end loop Create_Programs_Menu_Loop;
       Programs_Sorting.Sort(NamesList);
    end CreateProgramsMenu;
-
-   function GetProgramName(DesktopFile: String) return String is
-   begin
-      if not ApplicationsList.Contains(DesktopFile) then
-         return DesktopFile;
-      end if;
-      return ApplicationsList(DesktopFile);
-   end GetProgramName;
 
    ProgramsWindow: Window;
    ProgramsMenu: Menu;

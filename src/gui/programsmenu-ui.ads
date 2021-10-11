@@ -51,16 +51,4 @@ package ProgramsMenu.UI is
    procedure CreateProgramsMenu;
    -- ****
 
-   -- ****f* ProgramsMenu/ProgramsMenu.GetProgramName
-   -- FUNCTION
-   -- Search for name of application associated with selected desktop file
-   -- PARAMETERS
-   -- DesktopFile - File name of .desktop file to search
-   -- RESULT
-   -- Name of the application associated with the selected desktop file or
-   -- DesktopFile if application was not found
-   -- SOURCE
-   function GetProgramName(DesktopFile: String) return String;
-   -- ****
-
 end ProgramsMenu.UI;

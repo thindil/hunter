@@ -13,11 +13,35 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Bookmarks; use Bookmarks;
+
 -- ****h* ProgramsMenu/ProgramsMenu
 -- FUNCTION
 -- Provides common code for manipulate associated programs with files.
 -- SOURCE
 package ProgramsMenu is
 -- ****
+
+   -- ****f* ProgramsMenu/ProgramsMenu.GetProgramName
+   -- FUNCTION
+   -- Search for name of application associated with selected desktop file
+   -- PARAMETERS
+   -- DesktopFile - File name of .desktop file to search
+   -- RESULT
+   -- Name of the application associated with the selected desktop file or
+   -- DesktopFile if application was not found
+   -- SOURCE
+   function GetProgramName(DesktopFile: String) return String;
+   -- ****
+
+private
+
+   -- ****iv* ProgramsMenu/ProgramsMenu.ApplicationsList
+   -- FUNCTION
+   -- List of all applications which can be used to execute files or
+   -- directories
+   -- SOURCE
+   ApplicationsList: Bookmarks_Container.Map;
+   -- ****
 
 end ProgramsMenu;
