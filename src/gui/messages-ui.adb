@@ -302,31 +302,35 @@ package body Messages.UI is
         (Name => "noall",
          Text => Mc(Interp => Get_Context, Src_String => "{No for all}"),
          Response => "noall", Column => 2);
-      Add_Button("yesall", Mc(Get_Context, "{Yes for all}"), "yesall", 3);
+      Add_Button
+        (Name => "yesall",
+         Text => Mc(Interp => Get_Context, Src_String => "{Yes for all}"),
+         Response => "yesall", Column => 3);
       Button :=
         Create
-          (Buttons_Box & ".buttonclose",
-           "-text x -style Toolbutton -command CloseMessage");
-      Tcl.Tk.Ada.Grid.Grid(Button, "-column 4 -row 0");
-      Tcl.Tk.Ada.Pack.Pack(Buttons_Box, "-side right");
-      Tcl.Tk.Ada.Pack.Pack(Message_Label, "-expand true -fill x");
+          (pathName => Buttons_Box & ".buttonclose",
+           options => "-text x -style Toolbutton -command CloseMessage");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Button, Options => "-column 4 -row 0");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Buttons_Box, Options => "-side right");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Message_Label, Options => "-expand true -fill x");
    end Create_Messages_Ui;
 
    procedure Show_Message(Message: String; Message_Type: String := "error") is
-      ButtonsNames: constant array(1 .. 5) of Unbounded_String :=
+      Buttons_Names: constant array(1 .. 5) of Unbounded_String :=
         (To_Unbounded_String(Message_Frame & ".buttonsbox.buttonno"),
          To_Unbounded_String(Message_Frame & ".buttonsbox.buttonyes"),
          To_Unbounded_String(Message_Frame & ".buttonsbox.buttonnoall"),
          To_Unbounded_String(Message_Frame & ".buttonsbox.buttonyesall"),
          To_Unbounded_String(Message_Frame & ".buttonsbox.buttonclose"));
-      Button: Ttk_Button;
+      Button: Ttk_Button := Get_Widget(".");
    begin
       if Message_Frame.Name = Null_Ptr then
          return;
       end if;
       Button.Interp := Message_Label.Interp;
       Remove_Buttons_Loop :
-      for ButtonName of ButtonsNames loop
+      for ButtonName of Buttons_Names loop
          Button.Name := New_String(To_String(ButtonName));
          Grid_Remove(Button);
       end loop Remove_Buttons_Loop;
@@ -335,17 +339,17 @@ package body Messages.UI is
          "-text {" & Message & "} -style " & Message_Type & ".TLabel");
       configure(Message_Frame, "-style " & Message_Type & ".TFrame");
       if Message_Type /= "question" then
-         Button.Name := New_String(To_String(ButtonsNames(5)));
+         Button.Name := New_String(To_String(Buttons_Names(5)));
          Tcl.Tk.Ada.Grid.Grid(Button);
       else
-         Button.Name := New_String(To_String(ButtonsNames(1)));
+         Button.Name := New_String(To_String(Buttons_Names(1)));
          Tcl.Tk.Ada.Grid.Grid(Button);
-         Button.Name := New_String(To_String(ButtonsNames(2)));
+         Button.Name := New_String(To_String(Buttons_Names(2)));
          Tcl.Tk.Ada.Grid.Grid(Button);
          if New_Action not in DELETE | CLEARTRASH | DELETETRASH then
-            Button.Name := New_String(To_String(ButtonsNames(3)));
+            Button.Name := New_String(To_String(Buttons_Names(3)));
             Tcl.Tk.Ada.Grid.Grid(Button);
-            Button.Name := New_String(To_String(ButtonsNames(4)));
+            Button.Name := New_String(To_String(Buttons_Names(4)));
             Tcl.Tk.Ada.Grid.Grid(Button);
          end if;
       end if;
