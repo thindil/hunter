@@ -17,7 +17,6 @@ with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
@@ -34,26 +33,11 @@ with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Common; use Common;
-with CopyItems; use CopyItems;
 with Messages.UI; use Messages.UI;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
 package body ProgramsMenu.UI is
-
-   -- ****iv* ProgramsMenu/ProgramsMenu.NamesList
-   -- FUNCTION
-   -- List of all applications showed in the menu
-   -- SOURCE
-   NamesList: UnboundedString_Container.Vector;
-   -- ****
-
-   -- ****it* ProgramsMenu/ProgramsMenu.Programs_Sorting
-   -- FUNCTION
-   -- Used in sorting available programs
-   -- SOURCE
-   package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
-   -- ****
 
    function Toggle_Applications_Menu_Command
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;

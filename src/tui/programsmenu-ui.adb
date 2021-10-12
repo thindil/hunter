@@ -15,33 +15,17 @@
 
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Common; use Common;
-with CopyItems; use CopyItems;
 with Messages.UI; use Messages.UI;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
 package body ProgramsMenu.UI is
-
-   -- ****iv* ProgramsMenuTUI/ProgramsMenuTUI.NamesList
-   -- FUNCTION
-   -- List of all applications showed in the menu
-   -- SOURCE
-   NamesList: UnboundedString_Container.Vector;
-   -- ****
-
-   -- ****it* ProgramsMenuTUI/ProgramsMenuTUI.Programs_Sorting
-   -- FUNCTION
-   -- Used in sorting available programs
-   -- SOURCE
-   package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
-   -- ****
 
    procedure CreateProgramsMenu is
       ApplicationsPaths: constant array
