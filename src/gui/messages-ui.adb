@@ -58,12 +58,22 @@ package body Messages.UI is
       return Message_Frame;
    end Get_Message_Frame;
 
-   -- ****iv* Messages/Messages.Message_Label
+   -- ****iv* MessagesUI/MessagesUI.Message_Label
    -- FUNCTION
    -- Label which show message text
    -- SOURCE
    Message_Label: Ttk_Label;
    -- ****
+
+   -- ****if* MessagesUI/MessagesUI.Get_Message_Label
+   -- FUNCTION
+   -- Get the label widget with the message text
+   -- SOURCE
+   function Get_Message_Label return Ttk_Label is
+      -- ****
+   begin
+      return Message_Label;
+   end Get_Message_Label;
 
    -- ****iv* Messages/Messages.Timer_Id
    -- FUNCTION
@@ -313,22 +323,32 @@ package body Messages.UI is
       Tcl.Tk.Ada.Grid.Grid(Slave => Button, Options => "-column 4 -row 0");
       Tcl.Tk.Ada.Pack.Pack(Slave => Buttons_Box, Options => "-side right");
       Tcl.Tk.Ada.Pack.Pack
-        (Slave => Message_Label, Options => "-expand true -fill x");
+        (Slave => Get_Message_Label, Options => "-expand true -fill x");
    end Create_Messages_Ui;
 
    procedure Show_Message(Message: String; Message_Type: String := "error") is
       Buttons_Names: constant array(1 .. 5) of Unbounded_String :=
-        (To_Unbounded_String(Message_Frame & ".buttonsbox.buttonno"),
-         To_Unbounded_String(Message_Frame & ".buttonsbox.buttonyes"),
-         To_Unbounded_String(Message_Frame & ".buttonsbox.buttonnoall"),
-         To_Unbounded_String(Message_Frame & ".buttonsbox.buttonyesall"),
-         To_Unbounded_String(Message_Frame & ".buttonsbox.buttonclose"));
-      Button: Ttk_Button := Get_Widget(".");
+        (1 =>
+           To_Unbounded_String
+             (Source => Get_Message_Frame & ".buttonsbox.buttonno"),
+         2 =>
+           To_Unbounded_String
+             (Source => Get_Message_Frame & ".buttonsbox.buttonyes"),
+         3 =>
+           To_Unbounded_String
+             (Source => Get_Message_Frame & ".buttonsbox.buttonnoall"),
+         4 =>
+           To_Unbounded_String
+             (Source => Get_Message_Frame & ".buttonsbox.buttonyesall"),
+         5 =>
+           To_Unbounded_String
+             (Source => Get_Message_Frame & ".buttonsbox.buttonclose"));
+      Button: Ttk_Button := Get_Widget(pathName => ".");
    begin
-      if Message_Frame.Name = Null_Ptr then
+      if Get_Message_Frame.Name = Null_Ptr then
          return;
       end if;
-      Button.Interp := Message_Label.Interp;
+      Button.Interp := Get_Message_Label.Interp;
       Remove_Buttons_Loop :
       for ButtonName of Buttons_Names loop
          Button.Name := New_String(To_String(ButtonName));
