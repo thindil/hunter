@@ -36,6 +36,13 @@ package ProgramsMenu is
    function GetProgramName(DesktopFile: String) return String;
    -- ****
 
+   -- ****f* ProgramsMenu/ProgramsMenu.CreateProgramsMenu
+   -- FUNCTION
+   -- Create associated programs menu list
+   -- SOURCE
+   procedure CreateProgramsMenu;
+   -- ****
+
 private
 
    -- ****iv* ProgramsMenu/ProgramsMenu.ApplicationsList

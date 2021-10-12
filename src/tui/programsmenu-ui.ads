@@ -23,13 +23,6 @@ with MainWindow; use MainWindow;
 package ProgramsMenu.UI is
 -- ****
 
-   -- ****f* ProgramsMenuTUI/ProgramsMenuTUI.CreateProgramsMenu
-   -- FUNCTION
-   -- Create associated programs menu list
-   -- SOURCE
-   procedure CreateProgramsMenu;
-   -- ****
-
    -- ****f* ProgramsMenuTUI/ProgramsMenuTUI.ShowProgramsMenu
    -- FUNCTION
    -- Show list of applications available for use with the selected item
