@@ -44,11 +44,11 @@ package ProgramsMenu.UI is
       Convention => C;
       -- ****
 
-      -- ****f* ProgramsMenu/ProgramsMenu.CreateProgramsMenu
+      -- ****f* ProgramsMenu/ProgramsMenu.CreateProgramsMenuUI
       -- FUNCTION
       -- Create associated programs menu popover
       -- SOURCE
-   procedure CreateProgramsMenu;
+   procedure CreateProgramsMenuUI;
    -- ****
 
 end ProgramsMenu.UI;
