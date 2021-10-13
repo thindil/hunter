@@ -351,17 +351,17 @@ package body Messages.UI is
       Button.Interp := Get_Message_Label.Interp;
       Remove_Buttons_Loop :
       for ButtonName of Buttons_Names loop
-         Button.Name := New_String(To_String(ButtonName));
-         Grid_Remove(Button);
+         Button.Name := New_String(Str => To_String(Source => ButtonName));
+         Grid_Remove(Slave => Button);
       end loop Remove_Buttons_Loop;
       configure
-        (Message_Label,
-         "-text {" & Message & "} -style " & Message_Type & ".TLabel");
-      configure(Message_Frame, "-style " & Message_Type & ".TFrame");
-      if Message_Type /= "question" then
-         Button.Name := New_String(To_String(Buttons_Names(5)));
-         Tcl.Tk.Ada.Grid.Grid(Button);
-      else
+        (Widgt => Get_Message_Label,
+         options =>
+           "-text {" & Message & "} -style " & Message_Type & ".TLabel");
+      configure
+        (Widgt => Get_Message_Frame,
+         options => "-style " & Message_Type & ".TFrame");
+      if Message_Type = "question" then
          Button.Name := New_String(To_String(Buttons_Names(1)));
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name := New_String(To_String(Buttons_Names(2)));
@@ -372,6 +372,9 @@ package body Messages.UI is
             Button.Name := New_String(To_String(Buttons_Names(4)));
             Tcl.Tk.Ada.Grid.Grid(Button);
          end if;
+      else
+         Button.Name := New_String(To_String(Buttons_Names(5)));
+         Tcl.Tk.Ada.Grid.Grid(Button);
       end if;
       Tcl.Tk.Ada.Grid.Grid
         (Message_Frame, "-column 0 -row 2 -sticky we -columnspan 2");
