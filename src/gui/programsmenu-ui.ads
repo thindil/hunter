@@ -17,14 +17,14 @@ with Interfaces.C;
 with CArgv;
 with Tcl; use Tcl;
 
--- ****h* ProgramsMenu/ProgramsMenu
+-- ****h* ProgramsMenu/ProgramsMenuUI
 -- FUNCTION
 -- Provides code for manipulate associated programs with files.
 -- SOURCE
 package ProgramsMenu.UI is
 -- ****
 
-   -- ****o* ProgramsMenu/ProgramsMenu.Toggle_Applications_Menu_Command
+   -- ****o* ProgramsMenuUI/ProgramsMenuUI.Toggle_Applications_Menu_Command
    -- FUNCTION
    -- Show or hide menu which allow to set a application which can be used
    -- to execute the selected file or directory
@@ -44,7 +44,7 @@ package ProgramsMenu.UI is
       Convention => C;
       -- ****
 
-      -- ****f* ProgramsMenu/ProgramsMenu.CreateProgramsMenuUI
+      -- ****f* ProgramsMenuUI/ProgramsMenuUI.CreateProgramsMenuUI
       -- FUNCTION
       -- Create associated programs menu popover
       -- SOURCE
