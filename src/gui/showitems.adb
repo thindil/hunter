@@ -1041,7 +1041,7 @@ package body ShowItems is
       if Settings.Show_Preview then
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
-      CreateProgramsMenu;
+      CreateProgramsMenuUI;
    end CreateShowItemsUI;
 
    procedure ShowDestination is
