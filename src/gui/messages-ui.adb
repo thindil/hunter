@@ -362,22 +362,22 @@ package body Messages.UI is
         (Widgt => Get_Message_Frame,
          options => "-style " & Message_Type & ".TFrame");
       if Message_Type = "question" then
-         Button.Name := New_String(To_String(Buttons_Names(1)));
-         Tcl.Tk.Ada.Grid.Grid(Button);
-         Button.Name := New_String(To_String(Buttons_Names(2)));
-         Tcl.Tk.Ada.Grid.Grid(Button);
+         Button.Name := New_String(Str => To_String(Source => Buttons_Names(1)));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Button);
+         Button.Name := New_String(Str => To_String(Source => Buttons_Names(2)));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Button);
          if New_Action not in DELETE | CLEARTRASH | DELETETRASH then
-            Button.Name := New_String(To_String(Buttons_Names(3)));
-            Tcl.Tk.Ada.Grid.Grid(Button);
-            Button.Name := New_String(To_String(Buttons_Names(4)));
-            Tcl.Tk.Ada.Grid.Grid(Button);
+            Button.Name := New_String(Str => To_String(Source => Buttons_Names(3)));
+            Tcl.Tk.Ada.Grid.Grid(Slave => Button);
+            Button.Name := New_String(Str => To_String(Source => Buttons_Names(4)));
+            Tcl.Tk.Ada.Grid.Grid(Slave => Button);
          end if;
       else
-         Button.Name := New_String(To_String(Buttons_Names(5)));
-         Tcl.Tk.Ada.Grid.Grid(Button);
+         Button.Name := New_String(Str => To_String(Source => Buttons_Names(5)));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Button);
       end if;
       Tcl.Tk.Ada.Grid.Grid
-        (Message_Frame, "-column 0 -row 2 -sticky we -columnspan 2");
+        (Slave => Get_Message_Frame, Options => "-column 0 -row 2 -sticky we -columnspan 2");
       if Message_Type /= "question" then
          Timer_Id :=
            To_Unbounded_String
