@@ -98,7 +98,6 @@ package body MainWindow is
       use MoveItems.UI;
       use Preferences.UI;
       use RefreshData;
-      use RenameItems;
       use SearchItems;
       use Toolbars;
       use Trash;
@@ -303,7 +302,7 @@ package body MainWindow is
       ActivateItems.Add_Commands;
       CreatePreferencesUI;
       Create_Delete_Ui;
-      CreateRenameUI;
+      RenameItems.AddCommands;
       CreateItems.UI.Add_Commands;
       CopyItems.UI.Create_Copy_Ui;
       CreateMoveUI;
