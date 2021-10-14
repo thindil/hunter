@@ -75,12 +75,24 @@ package body Messages.UI is
       return Message_Label;
    end Get_Message_Label;
 
-   -- ****iv* Messages/Messages.Timer_Id
+   -- ****iv* MessagesUI/MessagesUI.Timer_Id
    -- FUNCTION
    -- Id of timer for auto close command
    -- SOURCE
    Timer_Id: Unbounded_String := Null_Unbounded_String;
    -- ****
+
+   -- ****if* MessagesIU/MessagesUI.Set_Timer
+   -- FUNCTION
+   -- Set the name for the timer for auto close command
+   -- PARAMETERS
+   -- New_Timer - The new Id of the timer
+   -- SOURCE
+   procedure Set_Timer(New_Timer: Unbounded_String) is
+      -- ****
+   begin
+      Timer_Id := New_Timer;
+   end Set_Timer;
 
    function Close_Command
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
@@ -89,7 +101,7 @@ package body Messages.UI is
    begin
       if Timer_Id /= Null_Unbounded_String then
          Cancel(id_or_script => To_String(Source => Timer_Id));
-         Timer_Id := Null_Unbounded_String;
+         Set_Timer(New_Timer => Null_Unbounded_String);
       end if;
       Grid_Remove(Slave => Get_Message_Frame);
       return TCL_OK;
@@ -362,27 +374,35 @@ package body Messages.UI is
         (Widgt => Get_Message_Frame,
          options => "-style " & Message_Type & ".TFrame");
       if Message_Type = "question" then
-         Button.Name := New_String(Str => To_String(Source => Buttons_Names(1)));
+         Button.Name :=
+           New_String(Str => To_String(Source => Buttons_Names(1)));
          Tcl.Tk.Ada.Grid.Grid(Slave => Button);
-         Button.Name := New_String(Str => To_String(Source => Buttons_Names(2)));
+         Button.Name :=
+           New_String(Str => To_String(Source => Buttons_Names(2)));
          Tcl.Tk.Ada.Grid.Grid(Slave => Button);
          if New_Action not in DELETE | CLEARTRASH | DELETETRASH then
-            Button.Name := New_String(Str => To_String(Source => Buttons_Names(3)));
+            Button.Name :=
+              New_String(Str => To_String(Source => Buttons_Names(3)));
             Tcl.Tk.Ada.Grid.Grid(Slave => Button);
-            Button.Name := New_String(Str => To_String(Source => Buttons_Names(4)));
+            Button.Name :=
+              New_String(Str => To_String(Source => Buttons_Names(4)));
             Tcl.Tk.Ada.Grid.Grid(Slave => Button);
          end if;
       else
-         Button.Name := New_String(Str => To_String(Source => Buttons_Names(5)));
+         Button.Name :=
+           New_String(Str => To_String(Source => Buttons_Names(5)));
          Tcl.Tk.Ada.Grid.Grid(Slave => Button);
       end if;
       Tcl.Tk.Ada.Grid.Grid
-        (Slave => Get_Message_Frame, Options => "-column 0 -row 2 -sticky we -columnspan 2");
+        (Slave => Get_Message_Frame,
+         Options => "-column 0 -row 2 -sticky we -columnspan 2");
       if Message_Type /= "question" then
-         Timer_Id :=
-           To_Unbounded_String
-             (After
-                (Settings.Auto_Close_Messages_Time * 1_000, "CloseMessage"));
+         Set_Timer
+           (New_Timer =>
+              To_Unbounded_String
+                (After
+                   (Settings.Auto_Close_Messages_Time * 1_000,
+                    "CloseMessage")));
       end if;
    end Show_Message;
 
