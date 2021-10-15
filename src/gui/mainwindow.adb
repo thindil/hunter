@@ -64,7 +64,7 @@ with MoveItems.UI;
 with Preferences; use Preferences;
 with Preferences.UI;
 with RefreshData;
-with RenameItems;
+with RenameItems.UI;
 with SearchItems;
 with ShowItems; use ShowItems;
 with Toolbars;
@@ -302,7 +302,7 @@ package body MainWindow is
       ActivateItems.Add_Commands;
       CreatePreferencesUI;
       Create_Delete_Ui;
-      RenameItems.AddCommands;
+      RenameItems.UI.AddCommands;
       CreateItems.UI.Add_Commands;
       CopyItems.UI.Create_Copy_Ui;
       CreateMoveUI;
