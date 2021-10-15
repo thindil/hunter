@@ -31,7 +31,7 @@ with Messages.UI; use Messages.UI;
 with RefreshData; use RefreshData;
 with Utils.UI; use Utils.UI;
 
-package body RenameItems is
+package body RenameItems.UI is
 
    -- ****o* RenameItemsTUI/RenameItemsTUI.Rename_Command
    -- FUNCTION
@@ -209,4 +209,4 @@ package body RenameItems is
       return RENAME_FORM;
    end Rename_Keys;
 
-end RenameItems;
+end RenameItems.UI;

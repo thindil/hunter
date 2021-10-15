@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -15,16 +15,8 @@
 
 -- ****h* RenameItems/RenameItems
 -- FUNCTION
--- Provide code to rename items UI and rename them.
+-- Provide code to rename items.
 -- SOURCE
 package RenameItems is
 -- ****
-
-   -- ****f* RenameItems/RenameItems.AddCommands
-   -- FUNCTION
-   -- Create rename UI
-   -- SOURCE
-   procedure AddCommands;
-   -- ****
-
 end RenameItems;

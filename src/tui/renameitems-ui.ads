@@ -20,7 +20,7 @@ with MainWindow; use MainWindow;
 -- FUNCTION
 -- Provide code to rename items UI and rename them.
 -- SOURCE
-package RenameItems is
+package RenameItems.UI is
 -- ****
 
    -- ****f* RenameItemsTUI/RenameItemsTUI.AddCommands
@@ -48,4 +48,4 @@ package RenameItems is
    function Rename_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
-end RenameItems;
+end RenameItems.UI;

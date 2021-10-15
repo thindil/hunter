@@ -38,9 +38,9 @@ with Messages.UI; use Messages.UI;
 with RefreshData; use RefreshData;
 with Utils.UI; use Utils.UI;
 
-package body RenameItems is
+package body RenameItems.UI is
 
-   -- ****o* RenameItems/RenameItems.Toggle_Rename_Command
+   -- ****o* RenameItemsUI/RenameItemsUI.Toggle_Rename_Command
    -- FUNCTION
    -- Show or hide text entry to enter a new name for the item
    -- PARAMETERS
@@ -109,7 +109,7 @@ package body RenameItems is
       return TCL_OK;
    end Toggle_Rename_Command;
 
-   -- ****o* RenameItems/RenameItems.Rename_Command
+   -- ****o* RenameItemsUI/RenameItemsUI.Rename_Command
    -- FUNCTION
    -- Rename currently selected file or directory
    -- PARAMETERS
@@ -181,4 +181,4 @@ package body RenameItems is
       Add_Command("Rename", Rename_Command'Access);
    end AddCommands;
 
-end RenameItems;
+end RenameItems.UI;
