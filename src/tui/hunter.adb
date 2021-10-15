@@ -44,7 +44,7 @@ with Preferences; use Preferences;
 with Preferences.UI; use Preferences.UI;
 with ProgramsMenu; use ProgramsMenu;
 with ProgramsMenu.UI; use ProgramsMenu.UI;
-with RenameItems; use RenameItems;
+with RenameItems.UI; use RenameItems.UI;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 

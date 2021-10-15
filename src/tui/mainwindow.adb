@@ -45,7 +45,7 @@ with MoveItems.UI; use MoveItems.UI;
 with Preferences; use Preferences;
 with Preferences.UI; use Preferences.UI;
 with RefreshData; use RefreshData;
-with RenameItems; use RenameItems;
+with RenameItems.UI; use RenameItems.UI;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
 with Trash; use Trash;
@@ -150,7 +150,7 @@ package body MainWindow is
       Set_About_Dialog_Information(Interp => Interpreter);
       ActivateItems.Add_Commands;
       CreateItems.UI.AddCommands;
-      RenameItems.AddCommands;
+      RenameItems.UI.AddCommands;
       UserCommands.AddCommands;
       Create_Bookmarks_List;
       Modules.Commands.AddCommands;
