@@ -400,9 +400,10 @@ package body Messages.UI is
          Set_Timer
            (New_Timer =>
               To_Unbounded_String
-                (After
-                   (Settings.Auto_Close_Messages_Time * 1_000,
-                    "CloseMessage")));
+                (Source =>
+                   After
+                     (Ms => Settings.Auto_Close_Messages_Time * 1_000,
+                      Script => "CloseMessage")));
       end if;
    end Show_Message;
 
