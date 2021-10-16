@@ -13,10 +13,26 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Tcl; use Tcl;
+
 -- ****h* RenameItems/RenameItems
 -- FUNCTION
 -- Provide code to rename items.
 -- SOURCE
 package RenameItems is
 -- ****
+
+private
+
+   -- ****f* RenameItems/RenameItems.Rename_Item
+   -- FUNCTION
+   -- Rename the selected file or directory
+   -- NewName - The new name of the file or directory which will be renamed
+   -- Interp  - Tcl Interpreter on which rename will be done
+   -- RESULT
+   -- True is rename was successful otherwise False
+   -- SOURCE
+   function Rename_Item(NewName: String; Interp: Tcl_Interp) return Boolean;
+   -- ****
+
 end RenameItems;

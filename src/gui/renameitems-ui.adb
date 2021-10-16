@@ -19,7 +19,6 @@ with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
-with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
@@ -32,10 +31,6 @@ with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Common; use Common;
 with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
-with MainWindow; use MainWindow;
-with Messages.UI; use Messages.UI;
-with RefreshData; use RefreshData;
 with Utils.UI; use Utils.UI;
 
 package body RenameItems.UI is
@@ -134,44 +129,13 @@ package body RenameItems.UI is
       -- ****
       TextEntry: constant Ttk_Entry :=
         Get_Widget(".mainframe.textframe.textentry", Interp);
-      NewName, ActionBlocker: Unbounded_String;
-      Success: Boolean;
+      NewName: Unbounded_String;
    begin
       NewName :=
-        Common.Current_Directory & "/" &
-        To_Unbounded_String(Get(TextEntry));
-      if Exists(To_String(NewName)) or
-        Is_Symbolic_Link(To_String(NewName)) then
-         ActionBlocker :=
-           (if Is_Directory(To_String(NewName)) then
-              To_Unbounded_String(Mc(Interp, "{directory}"))
-            else To_Unbounded_String(Mc(Interp, "{file}")));
-         Show_Message
-           (Mc(Interp, "{You can't rename}") & " " &
-            To_String(Current_Selected) & " " & Mc(Interp, "{to}") & " " &
-            To_String(NewName) & " " & Mc(Interp, "{because there exists}") &
-            " " & To_String(ActionBlocker) & " " &
-            Mc(Interp, "{with that name}"));
+        Common.Current_Directory & "/" & To_Unbounded_String(Get(TextEntry));
+      if not Rename_Item(To_String(NewName), Interp) then
          return TCL_OK;
       end if;
-      if not Is_Write_Accessible_File
-          (Containing_Directory(To_String(NewName))) then
-         Show_Message
-           (Mc(Interp, "{You don't have permissions to rename}") & " " &
-            To_String(NewName));
-         return TCL_OK;
-      end if;
-      Rename_File(To_String(Current_Selected), To_String(NewName), Success);
-      if not Success then
-         Show_Message
-           (Mc(Interp, "{Can't rename}") & " " & To_String(Current_Selected) &
-            ".");
-         return TCL_OK;
-      end if;
-      Current_Selected := NewName;
-      Load_Directory(To_String(Common.Current_Directory));
-      Update_Directory_List(True);
-      UpdateWatch(To_String(Common.Current_Directory));
       return Toggle_Rename_Command(ClientData, Interp, Argc, Argv);
    end Rename_Command;
 
