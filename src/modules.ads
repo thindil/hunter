@@ -35,16 +35,16 @@ package Modules is
    -- The program states on which the selected the program's module code will
    -- be triggered
    -- OPTIONS
-   -- On_Quit     - The program quits normally, triggered after the config is
+   -- ON_QUIT     - The program quits normally, triggered after the config is
    --               saved but before clear the Trash and stop inotify
-   -- On_Activate - On activating by the user the selected directory or file
+   -- ON_ACTIVATE - On activating by the user the selected directory or file
    --               on the directory list
-   -- On_Enter    - On entering the selected directory: during the start the
+   -- ON_ENTER    - On entering the selected directory: during the start the
    --               program, when the user activate it on the directory list,
    --               when the user uses path buttons or when the user uses
    --               bookmarks
    -- SOURCE
-   type Triggers is (On_Quit, On_Activate, On_Enter);
+   type Triggers is (ON_QUIT, ON_ACTIVATE, ON_ENTER);
    -- ****
 
    -- ****f* Modules/Modules.LoadModules
