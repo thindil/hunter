@@ -13,30 +13,29 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Environment_Variables; use Ada.Environment_Variables;
+with Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
+with GNAT.OS_Lib;
+with Interfaces.C.Strings;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
-with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
+with Tcl.Tk.Ada.TtkStyle;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Common; use Common;
-with CopyItems.UI; use CopyItems.UI;
-with DeleteItems; use DeleteItems;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
-with MainWindow; use MainWindow;
-with MoveItems.UI; use MoveItems.UI;
+with CopyItems.UI;
+with DeleteItems;
+with LoadData.UI;
+with MainWindow;
+with MoveItems.UI;
 with Preferences; use Preferences;
-with RefreshData; use RefreshData;
-with Trash.UI; use Trash.UI;
+with RefreshData;
+with Trash.UI;
 with Utils.UI; use Utils.UI;
 
 package body Messages.UI is
@@ -130,6 +129,14 @@ package body Messages.UI is
    function Response_Command
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
+      use Ada.Environment_Variables;
+      use CopyItems.UI;
+      use LoadData.UI;
+      use MainWindow;
+      use MoveItems.UI;
+      use RefreshData;
+      use Trash.UI;
+
       Overwrite_Item: Boolean := True;
       Response: constant String := CArgv.Arg(Argv => Argv, N => 1);
    begin
@@ -141,6 +148,9 @@ package body Messages.UI is
             end if;
             if Response = "yes" then
                Delete_Selected_Block :
+               declare
+                  use GNAT.OS_Lib;
+                  use DeleteItems;
                begin
                   if Delete_Selected(Interpreter => Get_Context) then
                      Current_Directory :=
@@ -273,6 +283,8 @@ package body Messages.UI is
    end Response_Command;
 
    procedure Create_Messages_Ui is
+      use Tcl.Tk.Ada.TtkStyle;
+
       Buttons_Box: Ttk_Frame;
       Button: Ttk_Button;
       procedure Add_Button
@@ -339,6 +351,8 @@ package body Messages.UI is
    end Create_Messages_Ui;
 
    procedure Show_Message(Message: String; Message_Type: String := "error") is
+      use Interfaces.C.Strings;
+
       Buttons_Names: constant array(1 .. 5) of Unbounded_String :=
         (1 =>
            To_Unbounded_String
