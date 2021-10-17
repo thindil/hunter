@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Tcl; use Tcl;
 with CopyItems; use CopyItems;
 
 -- ****h* Common/Common
@@ -79,6 +80,13 @@ package Common is
    -- Full path to currently selected file or directory
    -- SOURCE
    Current_Selected: Unbounded_String;
+   -- ****
+
+   -- ****v* MainWindowTUI/MainWindowTUI.Interpreter
+   -- FUNCTION
+   -- Tcl interpreter to execute various program commands
+   -- SOURCE
+   Interpreter: Tcl_Interp;
    -- ****
 
 end Common;

@@ -75,13 +75,6 @@ package MainWindow is
    UILocation: UI_Locations := DIRECTORY_VIEW;
    -- ****
 
-   -- ****v* MainWindowTUI/MainWindowTUI.Interpreter
-   -- FUNCTION
-   -- Tcl interpreter to execute various program commands
-   -- SOURCE
-   Interpreter: Tcl_Interp;
-   -- ****
-
    -- ****v* MainWindowTUI/MainWindowTUI.DirectoryList
    -- FUNCTION
    -- Menu with list of all items in the current viewed directory

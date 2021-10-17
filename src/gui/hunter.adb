@@ -25,6 +25,7 @@ with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
 with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Common; use Common;
 with ErrorDialog; use ErrorDialog;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
@@ -36,7 +37,6 @@ procedure Hunter is
 
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
-   Interp: Tcl.Tcl_Interp;
 begin
    -- Create needed directories
    Create_Path(New_Directory => Value(Name => "HOME") & "/.cache/hunter");
@@ -59,39 +59,39 @@ begin
 
    --  Create one Tcl interpreter
    -----------------------------
-   Interp := Tcl.Tcl_CreateInterp;
+   Interpreter := Tcl.Tcl_CreateInterp;
 
    --  Initialize Tcl
    -----------------
-   if Tcl.Tcl_Init(interp => Interp) = Tcl.TCL_ERROR then
+   if Tcl.Tcl_Init(interp => Interpreter) = Tcl.TCL_ERROR then
       Ada.Text_IO.Put_Line
         (Item =>
            "Hunter: Tcl.Tcl_Init failed: " &
-           Tcl.Ada.Tcl_GetStringResult(interp => Interp));
+           Tcl.Ada.Tcl_GetStringResult(interp => Interpreter));
       return;
    end if;
 
    --  Initialize Tk
    ----------------
-   if Tcl.Tk.Tk_Init(interp => Interp) = Tcl.TCL_ERROR then
+   if Tcl.Tk.Tk_Init(interp => Interpreter) = Tcl.TCL_ERROR then
       Ada.Text_IO.Put_Line
         (Item =>
            "Hunter: Tcl.Tk.Tk_Init failed: " &
-           Tcl.Ada.Tcl_GetStringResult(interp => Interp));
+           Tcl.Ada.Tcl_GetStringResult(interp => Interpreter));
       return;
    end if;
 
    --  Set the Tk context so that we may use shortcut Tk
    --  calls that require reference to the interpreter.
    ----------------------------------------------------
-   Set_Context(Interp => Interp);
+   Set_Context(Interp => Interpreter);
 
    -- Load required Tcl packages
-   Tooltip_Init(Interp => Interp);
-   Tcl.Ada.Tcl_Eval(interp => Interp, strng => "package require Img");
-   Tcl.Ada.Tcl_Eval(interp => Interp, strng => "package require tksvg");
-   MsgCat_Init(Interp => Interp);
-   Autoscroll_Init(Interp => Interp);
+   Tooltip_Init(Interp => Interpreter);
+   Tcl.Ada.Tcl_Eval(interp => Interpreter, strng => "package require Img");
+   Tcl.Ada.Tcl_Eval(interp => Interpreter, strng => "package require tksvg");
+   MsgCat_Init(Interp => Interpreter);
+   Autoscroll_Init(Interp => Interpreter);
 
    -- Load the program setting
    Load_Settings;
