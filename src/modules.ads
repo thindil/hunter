@@ -47,13 +47,20 @@ package Modules is
    type Triggers is (ON_QUIT, ON_ACTIVATE, ON_ENTER);
    -- ****
 
-   -- ****f* Modules/Modules.LoadModules
+   -- ****d* Modules/Modules.On_Enter_Trigger
+   -- FUNCTION
+   -- Default trigger for modules, on enter the directory
+   -- SOURCE
+   On_Enter_Trigger: constant Triggers := ON_ENTER;
+   -- ****
+
+   -- ****f* Modules/Modules.Load_Modules
    -- FUNCTION
    -- Load all enabled modules at start the program
    -- PARAMETERS
    -- Interpreter - Tcl_Interpreter on which the modules will be loaded
    -- SOURCE
-   procedure LoadModules(Interpreter: Tcl_Interp);
+   procedure Load_Modules(Interpreter: Tcl_Interp);
    -- ****
 
    -- ****f* Modules/Modules.Execute_Modules
