@@ -908,7 +908,7 @@ package body ShowItems is
       Load_Directory(To_String(SelectedItem), True);
       Update_Directory_List(True, "preview");
       Execute_Modules
-        (Interp, On_Enter, "{" & To_String(DestinationDirectory) & "}");
+        (Interp, ON_ENTER, "{" & To_String(DestinationDirectory) & "}");
       return TCL_OK;
    end GoToDirectory_Command;
 

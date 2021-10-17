@@ -787,7 +787,7 @@ package body Preferences.UI is
                   Update_Directory_List(True);
                   UpdateWatch(To_String(Common.Current_Directory));
                   Execute_Modules
-                    (Interpreter, On_Enter,
+                    (Interpreter, ON_ENTER,
                      "{" & To_String(Common.Current_Directory) & "}");
                   return DIRECTORY_VIEW;
                when 1 =>
@@ -850,7 +850,7 @@ package body Preferences.UI is
                   UILocation := DIRECTORY_VIEW;
                   Show_Main_Window;
                   Execute_Modules
-                    (Interpreter, On_Enter,
+                    (Interpreter, ON_ENTER,
                      "{" & To_String(Common.Current_Directory) & "}");
                   ShowPreview;
                   return DIRECTORY_VIEW;

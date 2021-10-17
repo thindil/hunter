@@ -139,7 +139,7 @@ package body Bookmarks.UI is
       ShowPreview;
       UpdateWatch(To_String(Common.Current_Directory));
       Execute_Modules
-        (Interpreter, On_Enter,
+        (Interpreter, ON_ENTER,
          "{" & To_String(Common.Current_Directory) & "}");
       return DIRECTORY_VIEW;
    end Go_To_Bookmark;
@@ -183,7 +183,7 @@ package body Bookmarks.UI is
                Load_Directory(To_String(Common.Current_Directory));
                UpdateWatch(To_String(Common.Current_Directory));
                Execute_Modules
-                 (Interpreter, On_Enter,
+                 (Interpreter, ON_ENTER,
                   "{" & To_String(Common.Current_Directory) & "}");
             end if;
             if FieldIndex /= 2 then

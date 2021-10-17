@@ -119,7 +119,7 @@ package body ActivateItems is
          Update_Directory_List(Clear => True);
          UpdateWatch(Path => To_String(Source => Current_Directory));
          Execute_Modules
-           (Interpreter => Interp, State => On_Enter,
+           (Interpreter => Interp, State => ON_ENTER,
             Arguments => "{" & To_String(Source => Current_Directory) & "}");
       else
          Execute_File_Block :
@@ -187,7 +187,7 @@ package body ActivateItems is
          end Execute_File_Block;
       end if;
       Execute_Modules
-        (Interpreter => Interp, State => On_Activate,
+        (Interpreter => Interp, State => ON_ACTIVATE,
          Arguments => "{" & To_String(Source => Current_Selected) & "}");
       Tcl_SetResult(interp => Interp, str => "1");
       return TCL_OK;

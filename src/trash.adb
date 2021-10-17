@@ -164,7 +164,7 @@ package body Trash is
       Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
       Execute_Modules
-        (Interp, On_Enter,
+        (Interp, ON_ENTER,
          "{" & To_String(Common.Current_Directory) & "}");
       return TCL_OK;
    end GoToTrash_Command;

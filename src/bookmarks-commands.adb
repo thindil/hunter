@@ -68,7 +68,7 @@ package body Bookmarks.Commands is
       Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
       Execute_Modules
-        (Interp, On_Enter, "{" & To_String(Common.Current_Directory) & "}");
+        (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
       return TCL_OK;
    end GoToBookmark_Command;
 

@@ -184,7 +184,7 @@ package body MainWindow.Commands is
            Positive'Value(Winfo_Get(Widgt => Main_Window, Info => "height"));
       end if;
       Save_Preferences;
-      Execute_Modules(Interpreter => Get_Context, State => On_Quit);
+      Execute_Modules(Interpreter => Get_Context, State => ON_QUIT);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
          if Delete_Selected(Interpreter => Get_Context) then

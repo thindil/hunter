@@ -452,7 +452,7 @@ package body MainWindow is
                Update_Directory_List(True);
                UpdateWatch(To_String(Common.Current_Directory));
                Execute_Modules
-                 (Interpreter, On_Enter,
+                 (Interpreter, ON_ENTER,
                   "{" & To_String(Common.Current_Directory) & "}");
             end if;
             return DIRECTORY_VIEW;
