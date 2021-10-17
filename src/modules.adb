@@ -22,7 +22,7 @@ with Tcl.Ada; use Tcl.Ada;
 
 package body Modules is
 
-   procedure LoadModules(Interpreter: Tcl_Interp) is
+   procedure Load_Modules(Interpreter: Tcl_Interp) is
       FullPath: Unbounded_String;
    begin
       Load_Modules_Loop :
@@ -42,7 +42,7 @@ package body Modules is
                null;
          end;
       end loop Load_Modules_Loop;
-   end LoadModules;
+   end Load_Modules;
 
    procedure Execute_Modules
      (Interpreter: Tcl_Interp; State: Triggers; Arguments: String := "") is

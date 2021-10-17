@@ -308,7 +308,7 @@ package body MainWindow is
       CreateMoveUI;
       CreateTrash;
       Create_About_Ui;
-      LoadModules(Interpreter => Get_Context);
+      Load_Modules(Interpreter => Get_Context);
       SetToolbars;
       Add(Paned => Paned, SubWindow => Directory_Frame);
       Bind
