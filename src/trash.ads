@@ -27,4 +27,13 @@ package Trash is
    procedure CreateTrash;
    -- ****
 
+private
+
+   -- ****f* Trash/Load_Trash_Data
+   -- FUNCTION
+   -- Load the content of the Trash
+   -- SOURCE
+   procedure Load_Trash_Data;
+   -- ****
+
 end Trash;
