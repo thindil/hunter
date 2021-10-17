@@ -23,24 +23,26 @@ with Tcl.Ada; use Tcl.Ada;
 package body Modules is
 
    procedure Load_Modules(Interpreter: Tcl_Interp) is
-      FullPath: Unbounded_String;
+      Full_Path: Unbounded_String := Null_Unbounded_String;
    begin
       Load_Modules_Loop :
       for ModulePath of Enabled_Modules loop
-         FullPath :=
+         Full_Path :=
            To_Unbounded_String
              (Normalize_Pathname
-                (To_String(ModulePath), Containing_Directory(Command_Name)));
+                (Name => To_String(Source => ModulePath),
+                 Directory => Containing_Directory(Name => Command_Name)));
+         Load_Module_Block :
          begin
-            Tcl_EvalFile(Interpreter, To_String(FullPath) & "/module.tcl");
+            Tcl_EvalFile(Interpreter, To_String(Full_Path) & "/module.tcl");
             Tcl_Eval
               (Interpreter,
                Simple_Name(To_String(ModulePath)) & "::on_start {" &
-               To_String(FullPath) & "}");
+               To_String(Full_Path) & "}");
          exception
             when Tcl_Error_Exception =>
                null;
-         end;
+         end Load_Module_Block;
       end loop Load_Modules_Loop;
    end Load_Modules;
 
@@ -49,6 +51,7 @@ package body Modules is
    begin
       Execute_Modules_Loop :
       for ModulePath of Enabled_Modules loop
+         Execute_Module_Block :
          begin
             Tcl_Eval
               (Interpreter,
@@ -57,7 +60,7 @@ package body Modules is
          exception
             when Tcl_Error_Exception | Constraint_Error =>
                null;
-         end;
+         end Execute_Module_Block;
       end loop Execute_Modules_Loop;
    end Execute_Modules;
 
