@@ -48,7 +48,7 @@ with Modules.Commands;
 with Preferences.Commands;
 with UserCommands; use UserCommands;
 with UserCommands.UI; use UserCommands.UI;
-with Utils.UI; use Utils.UI;
+with Utils; use Utils;
 
 package body Preferences.UI is
 

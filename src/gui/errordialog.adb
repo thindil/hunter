@@ -37,7 +37,7 @@ with Tcl.Tk.Ada.Widgets.TtkLabelFrame;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Wm;
 with AboutDialog;
-with Utils.UI;
+with Utils;
 
 package body ErrorDialog is
 
@@ -123,7 +123,7 @@ package body ErrorDialog is
          use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
          use Tcl.Tk.Ada.Widgets.TtkScrollbar;
          use Tcl.Tk.Ada.Wm;
-         use Utils.UI;
+         use Utils;
 
          Error_Label: constant Ttk_Label :=
            Create

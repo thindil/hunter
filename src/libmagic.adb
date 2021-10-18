@@ -20,7 +20,7 @@ with Interfaces.C;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
 with GNAT.Expect;
 with GNAT.OS_Lib;
-with Utils.UI;
+with Utils;
 
 package body LibMagic is
 
@@ -109,7 +109,7 @@ package body LibMagic is
          use Ada.Strings.Unbounded;
          use GNAT.Expect;
          use GNAT.OS_Lib;
-         use Utils.UI;
+         use Utils;
 
          Process_Desc: Process_Descriptor;
          Result: Expect_Match;

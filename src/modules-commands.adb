@@ -29,6 +29,7 @@ with Common; use Common;
 with Messages.UI; use Messages.UI;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
+with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
 package body Modules.Commands is

@@ -27,14 +27,14 @@ with DOM.Readers;
 with Input_Sources.File;
 with Modules; use Modules;
 with UserCommands; use UserCommands;
-with Utils.UI;
+with Utils;
 
 package body Preferences is
 
    procedure Load_Settings is
       use DOM.Readers;
       use Input_Sources.File;
-      use Utils.UI;
+      use Utils;
 
       Reader: Tree_Reader; --## rule line off IMPROPER_INITIALIZATION
       Data_File: File_Input;
