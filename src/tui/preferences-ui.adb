@@ -28,7 +28,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Tcl.Ada; use Tcl.Ada;
-with Common;
+with Common; use Common;
 with CopyItems; use CopyItems;
 with Inotify; use Inotify;
 with LoadData.UI; use LoadData.UI;

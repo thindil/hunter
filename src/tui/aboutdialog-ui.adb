@@ -16,6 +16,7 @@
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common; use Common;
 with ShowItems; use ShowItems;
 
 package body AboutDialog.UI is

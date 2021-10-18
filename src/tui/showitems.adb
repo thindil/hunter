@@ -34,7 +34,6 @@ with Preferences; use Preferences;
 with ProgramsMenu; use ProgramsMenu;
 with ProgramsMenu.UI; use ProgramsMenu.UI;
 with Utils; use Utils;
-with Utils.UI; use Utils.UI;
 
 package body ShowItems is
 
