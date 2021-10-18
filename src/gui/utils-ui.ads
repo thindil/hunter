@@ -23,22 +23,6 @@ with Common; use Common;
 package Utils.UI is
 -- ****
 
-   -- ****f* UtilsUI/UtilsUI.Find_Executable
-   -- FUNCTION
-   -- Find executable file with selected name in this same directory where
-   -- the program is or in PATH variable
-   -- PARAMETERS
-   -- Name            - Name of executable file to find
-   -- Display_Message - If true, show message that executable cannot be found.
-   --                   Default value is true.
-   -- RESULT
-   -- Full path to the executable file or empty string and show message if
-   -- file could not be found.
-   -- SOURCE
-   function Find_Executable
-     (Name: String; Display_Message: Boolean := True) return String;
-     -- ****
-
      -- ****f* UtilsUI/UtilsUI.Update_Progress_Bar
      -- FUNCTION
      -- Update fraction of the progress bar or set it maximum value and show it

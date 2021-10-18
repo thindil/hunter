@@ -13,14 +13,9 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Command_Line; use Ada.Command_Line;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with MainWindow; use MainWindow;
-with Messages.UI; use Messages.UI;
 
 package body Utils.UI is
 
@@ -30,24 +25,6 @@ package body Utils.UI is
    -- SOURCE
    ProgressIndex: Natural;
    -- ****
-
-   function Find_Executable
-     (Name: String; Display_Message: Boolean := True) return String is
-      ExecutablePath: GNAT.OS_Lib.String_Access;
-   begin
-      if Exists(Containing_Directory(Command_Name) & "/" & Name) then
-         return Containing_Directory(Command_Name) & "/" & Name;
-      end if;
-      ExecutablePath := Locate_Exec_On_Path(Name);
-      if ExecutablePath = null then
-         if Display_Message then
-            Show_Message
-              (Mc(Interpreter, "{Could not found executable:}") & " " & Name);
-         end if;
-         return "";
-      end if;
-      return ExecutablePath.all;
-   end Find_Executable;
 
    procedure Set_Progress_Bar(Amount: Positive) is
       pragma Unreferenced(Amount);

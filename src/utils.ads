@@ -14,6 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Ada.Directories; use Ada.Directories;
+with Tcl; use Tcl;
 with Tcl.Ada;
 
 -- ****h* Utils/Utils
@@ -102,5 +103,21 @@ package Utils is
    -- SOURCE
    function Is_Text(Mime_Type: String) return Boolean;
    -- ****
+
+   -- ****f* Utils/Utils.Find_Executable
+   -- FUNCTION
+   -- Find executable file with selected name in this same directory where
+   -- the program is or in PATH variable
+   -- PARAMETERS
+   -- Name            - Name of executable file to find
+   -- Display_Message - If true, show message that executable cannot be found.
+   --                   Default value is true.
+   -- RESULT
+   -- Full path to the executable file or empty string and show message if
+   -- file could not be found.
+   -- SOURCE
+   function Find_Executable
+     (Name: String; Display_Message: Boolean := True) return String;
+      -- ****
 
 end Utils;

@@ -13,10 +13,13 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Command_Line;
 with Ada.Strings.Unbounded;
 with GNAT.OS_Lib;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common; use Common;
 with LibMagic;
-with Utils.UI;
+with Messages.UI;
 
 package body Utils is
 
@@ -29,7 +32,6 @@ package body Utils is
 
    function Can_Be_Opened(Mime_Type: String) return Boolean is
       use GNAT.OS_Lib;
-      use Utils.UI;
 
       Executable_Name: constant String := Find_Executable(Name => "xdg-mime");
       Return_Code: Integer;
@@ -90,5 +92,33 @@ package body Utils is
       end if;
       return False;
    end Is_Text;
+
+   function Find_Executable
+     (Name: String; Display_Message: Boolean := True) return String is
+      use Ada.Command_Line;
+      use GNAT.OS_Lib;
+      use Messages.UI;
+
+      Executable_Path: GNAT.OS_Lib.String_Access;
+   begin
+      if Exists
+          (Name =>
+             Containing_Directory(Name => Command_Name) & "/" & Name) then
+         return Containing_Directory(Name => Command_Name) & "/" & Name;
+      end if;
+      Executable_Path := Locate_Exec_On_Path(Exec_Name => Name);
+      if Executable_Path = null then
+         if Display_Message then
+            Show_Message
+              (Message =>
+                 Mc
+                   (Interp => Interpreter,
+                    Src_String => "{Could not found executable:}") &
+                 " " & Name);
+         end if;
+         return "";
+      end if;
+      return Executable_Path.all;
+   end Find_Executable;
 
 end Utils;
