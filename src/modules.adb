@@ -29,16 +29,20 @@ package body Modules is
       for ModulePath of Enabled_Modules loop
          Full_Path :=
            To_Unbounded_String
-             (Normalize_Pathname
-                (Name => To_String(Source => ModulePath),
-                 Directory => Containing_Directory(Name => Command_Name)));
+             (Source =>
+                Normalize_Pathname
+                  (Name => To_String(Source => ModulePath),
+                   Directory => Containing_Directory(Name => Command_Name)));
          Load_Module_Block :
          begin
-            Tcl_EvalFile(Interpreter, To_String(Full_Path) & "/module.tcl");
+            Tcl_EvalFile
+              (interp => Interpreter,
+               fileName => To_String(Source => Full_Path) & "/module.tcl");
             Tcl_Eval
-              (Interpreter,
-               Simple_Name(To_String(ModulePath)) & "::on_start {" &
-               To_String(Full_Path) & "}");
+              (interp => Interpreter,
+               strng =>
+                 Simple_Name(Name => To_String(Source => ModulePath)) &
+                 "::on_start {" & To_String(Source => Full_Path) & "}");
          exception
             when Tcl_Error_Exception =>
                null;
@@ -54,9 +58,10 @@ package body Modules is
          Execute_Module_Block :
          begin
             Tcl_Eval
-              (Interpreter,
-               Simple_Name(To_String(ModulePath)) & "::" &
-               To_Lower(Triggers'Image(State)) & " " & Arguments);
+              (interp => Interpreter,
+               strng =>
+                 Simple_Name(Name => To_String(Source => ModulePath)) & "::" &
+                 To_Lower(Item => Triggers'Image(State)) & " " & Arguments);
          exception
             when Tcl_Error_Exception | Constraint_Error =>
                null;
