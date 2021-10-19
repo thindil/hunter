@@ -23,7 +23,7 @@ with CArgv;
 with Tcl.Ada; use Tcl.Ada;
 with Common; use Common;
 with LoadData; use LoadData;
-with Utils.UI; use Utils.UI;
+with Utils; use Utils;
 
 package body RenameItems.UI is
 

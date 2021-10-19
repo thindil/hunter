@@ -13,10 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with LoadData; use LoadData;
 with Utils; use Utils;
-with Utils.UI; use Utils.UI;
 
 package body Trash.UI is
 

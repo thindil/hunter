@@ -31,7 +31,7 @@ with LoadData.UI; use LoadData.UI;
 with Preferences; use Preferences;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
-with Utils.UI; use Utils.UI;
+with Utils; use Utils;
 
 package body CreateItems.UI is
 
