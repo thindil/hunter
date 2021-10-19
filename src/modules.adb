@@ -13,16 +13,19 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Ada.Command_Line; use Ada.Command_Line;
+with Ada.Characters.Handling;
+with Ada.Command_Line;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.OS_Lib;
 with Tcl.Ada; use Tcl.Ada;
 
 package body Modules is
 
    procedure Load_Modules(Interpreter: Tcl_Interp) is
+      use Ada.Command_Line;
+      use GNAT.OS_Lib;
+
       Full_Path: Unbounded_String := Null_Unbounded_String;
    begin
       Load_Modules_Loop :
@@ -52,6 +55,8 @@ package body Modules is
 
    procedure Execute_Modules
      (Interpreter: Tcl_Interp; State: Triggers; Arguments: String := "") is
+      use Ada.Characters.Handling;
+
    begin
       Execute_Modules_Loop :
       for ModulePath of Enabled_Modules loop
