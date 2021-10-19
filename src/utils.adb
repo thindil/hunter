@@ -121,4 +121,21 @@ package body Utils is
       return Executable_Path.all;
    end Find_Executable;
 
+   procedure Add_Command
+     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc) is
+      Command: Tcl.Tcl_Command;
+      Hunter_Add_Command_Exception: exception;
+   begin
+      Command :=
+        CreateCommands.Tcl_CreateCommand
+          (interp => Interpreter, cmdName => Name, proc => Ada_Command,
+           data => 0, deleteProc => null);
+      if Command = null then
+         raise Hunter_Add_Command_Exception
+           with Mc
+             (Interp => Interpreter, Src_String => "{Can't add command}") &
+           " " & Name;
+      end if;
+   end Add_Command;
+
 end Utils;

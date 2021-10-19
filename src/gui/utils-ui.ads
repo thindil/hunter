@@ -48,18 +48,6 @@ package Utils.UI is
       Height: Height_Range);
    -- ****
 
-   -- ****f* UtilsUI/UtilsUI.Add_Command
-   -- FUNCTION
-   -- Add command to the Tcl interpreter
-   -- PARAMETERS
-   -- Name        - Name of the Tcl command which will be used to invoke the
-   --               Ada code
-   -- Ada_Command - Ada function which will be invoked
-   -- SOURCE
-   procedure Add_Command
-     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc);
-   -- ****
-
    -- ****f* UtilsUI/UtilsUI.Toggle_Tool_Buttons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with

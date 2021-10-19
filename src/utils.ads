@@ -120,4 +120,16 @@ package Utils is
      (Name: String; Display_Message: Boolean := True) return String;
       -- ****
 
+   -- ****f* Utils/Utils.Add_Command
+   -- FUNCTION
+   -- Add command to the Tcl interpreter
+   -- PARAMETERS
+   -- Name        - Name of the Tcl command which will be used to invoke the
+   --               Ada code
+   -- Ada_Command - Ada function which will be invoked
+   -- SOURCE
+   procedure Add_Command
+     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc);
+   -- ****
+
 end Utils;

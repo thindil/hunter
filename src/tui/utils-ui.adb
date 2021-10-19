@@ -15,7 +15,6 @@
 
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 
 package body Utils.UI is
 
@@ -36,20 +35,6 @@ package body Utils.UI is
    begin
       ProgressIndex := ProgressIndex + 1;
    end Update_Progress_Bar;
-
-   procedure Add_Command
-     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc) is
-      Command: Tcl.Tcl_Command;
-      Hunter_Add_Command_Exception: exception;
-   begin
-      Command :=
-        CreateCommands.Tcl_CreateCommand
-          (Interpreter, Name, Ada_Command, 0, null);
-      if Command = null then
-         raise Hunter_Add_Command_Exception
-           with Mc(Interpreter, "{Can't add command}") & " " & Name;
-      end if;
-   end Add_Command;
 
    procedure Toggle_Tool_Buttons
      (Action: Item_Actions; Finished: Boolean := False) is

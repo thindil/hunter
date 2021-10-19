@@ -117,23 +117,6 @@ package body Utils.UI is
          Script => "{CloseDialog " & Value(Item => Dialog.Name) & "}");
    end Set_Dialog;
 
-   procedure Add_Command
-     (Name: String; Ada_Command: not null CreateCommands.Tcl_CmdProc) is
-      Command: Tcl.Tcl_Command;
-      Hunter_Add_Command_Exception: exception;
-   begin
-      Command :=
-        CreateCommands.Tcl_CreateCommand
-          (interp => Get_Context, cmdName => Name, proc => Ada_Command,
-           data => 0, deleteProc => null);
-      if Command = null then
-         raise Hunter_Add_Command_Exception
-           with Mc
-             (Interp => Get_Context, Src_String => "{Can't add command}") &
-           " " & Name;
-      end if;
-   end Add_Command;
-
    procedure Toggle_Tool_Buttons
      (Action: Item_Actions; Finished: Boolean := False) is
       use Ada.Strings.Unbounded;
