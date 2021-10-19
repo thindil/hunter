@@ -34,8 +34,7 @@ with Modules;
 with Preferences;
 with RefreshData;
 with ShowItems;
-with Utils;
-with Utils.UI; use Utils.UI;
+with Utils; use Utils;
 
 package body ActivateItems is
 
@@ -124,8 +123,6 @@ package body ActivateItems is
       else
          Execute_File_Block :
          declare
-            use Utils;
-
             Mime_Type: constant String :=
               Get_Mime_Type
                 (File_Name => To_String(Source => Current_Selected));

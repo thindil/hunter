@@ -73,6 +73,8 @@ package body Bookmarks.Commands is
    end GoToBookmark_Command;
 
    procedure AddCommands is
+      use Utils;
+
    begin
       Add_Command("GoToBookmark", GoToBookmark_Command'Access);
       AddUICommands;

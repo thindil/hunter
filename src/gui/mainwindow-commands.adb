@@ -710,6 +710,8 @@ package body MainWindow.Commands is
    end Invoke_Button_Command;
 
    procedure Add_Commands is
+      use Utils;
+
       package ExitCommand is new Tcl.Ada.Generic_ExitHandler
         (ClientData => Integer);
    begin

@@ -284,6 +284,7 @@ package body Messages.UI is
 
    procedure Create_Messages_Ui is
       use Tcl.Tk.Ada.TtkStyle;
+      use Utils;
 
       Buttons_Box: Ttk_Frame;
       Button: Ttk_Button;

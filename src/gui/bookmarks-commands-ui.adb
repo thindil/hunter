@@ -238,6 +238,8 @@ package body Bookmarks.Commands.UI is
    end Remove_Bookmark_Command;
 
    procedure AddUICommands is
+      use Utils;
+
    begin
       Add_Command("SetDestination", SetDestination_Command'Access);
       Add_Command("GoToDestination", GoToDestination_Command'Access);

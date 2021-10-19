@@ -136,6 +136,8 @@ package body DeleteItems.UI is
    end Start_Deleting_Command;
 
    procedure Create_Delete_Ui is
+      use Utils;
+
    begin
       Add_Command
         (Name => "StartDeleting",

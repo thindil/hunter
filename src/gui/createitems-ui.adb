@@ -224,6 +224,8 @@ package body CreateItems.UI is
    end Create_Command;
 
    procedure Add_Commands is
+      use Utils;
+
    begin
       Add_Command
         (Name => "ShowCreate", Ada_Command => Show_Create_Command'Access);

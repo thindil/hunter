@@ -140,6 +140,8 @@ package body RenameItems.UI is
    end Rename_Command;
 
    procedure AddCommands is
+      use Utils;
+
    begin
       Add_Command("ToggleRename", Toggle_Rename_Command'Access);
       Add_Command("Rename", Rename_Command'Access);

@@ -31,7 +31,6 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with Common; use Common;
 with Messages.UI; use Messages.UI;
 with Utils; use Utils;
-with Utils.UI; use Utils.UI;
 
 package body ProgramsMenu.UI is
 

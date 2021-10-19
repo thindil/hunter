@@ -61,7 +61,6 @@ with ProgramsMenu; use ProgramsMenu;
 with ProgramsMenu.UI; use ProgramsMenu.UI;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
-with Utils.UI; use Utils.UI;
 
 package body ShowItems is
 

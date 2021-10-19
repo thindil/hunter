@@ -27,7 +27,6 @@ with Modules; use Modules;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
 with Utils; use Utils;
-with Utils.UI; use Utils.UI;
 
 package body Trash.UI is
 

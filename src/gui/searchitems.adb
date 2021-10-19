@@ -34,7 +34,7 @@ with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
 with MainWindow; use MainWindow;
-with Utils.UI; use Utils.UI;
+with Utils; use Utils;
 
 package body SearchItems is
 

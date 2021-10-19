@@ -64,7 +64,6 @@ with Toolbars; use Toolbars;
 with UserCommands; use UserCommands;
 with UserCommands.UI; use UserCommands.UI;
 with Utils; use Utils;
-with Utils.UI; use Utils.UI;
 
 package body Preferences.Commands is
 

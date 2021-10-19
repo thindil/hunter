@@ -197,6 +197,8 @@ package body MoveItems.UI is
    end SkipMoving;
 
    procedure CreateMoveUI is
+      use Utils;
+
    begin
       Add_Command("MoveData", Move_Data_Command'Access);
    end CreateMoveUI;

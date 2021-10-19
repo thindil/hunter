@@ -148,6 +148,8 @@ package body CopyItems.UI is
    end Skip_Copying;
 
    procedure Create_Copy_Ui is
+      use Utils;
+
    begin
       Add_Command(Name => "CopyData", Ada_Command => Copy_Data_Command'Access);
    end Create_Copy_Ui;
