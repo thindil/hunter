@@ -32,7 +32,7 @@ with Tcl.Tk.Ada.Widgets.TtkNotebook;
 with Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo;
 with Utils; use Utils;
-with Utils.UI; use Utils.UI;
+with Utils.UI;
 
 package body AboutDialog.UI is
 
@@ -70,6 +70,7 @@ package body AboutDialog.UI is
       use Tcl.Tk.Ada.Widgets.TtkNotebook;
       use Tcl.Tk.Ada.Widgets.TtkTreeView;
       use Tcl.Tk.Ada.Winfo;
+      use Utils.UI;
 
       About_Dialog: constant Tk_Toplevel :=
         Create(pathName => ".aboutdialog", options => "-class Dialog");
