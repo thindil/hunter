@@ -55,12 +55,13 @@ package body Modules is
 
    procedure Execute_Modules
      (Interpreter: Tcl_Interp; State: Triggers; Arguments: String := "") is
-      use Ada.Characters.Handling;
 
    begin
       Execute_Modules_Loop :
       for ModulePath of Enabled_Modules loop
          Execute_Module_Block :
+         declare
+            use Ada.Characters.Handling;
          begin
             Tcl_Eval
               (interp => Interpreter,
