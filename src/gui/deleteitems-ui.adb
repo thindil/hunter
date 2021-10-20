@@ -28,7 +28,7 @@ with Common;
 with Messages.UI;
 with Preferences;
 with Utils;
-with Utils.UI; use Utils.UI;
+with Utils.UI;
 
 package body DeleteItems.UI is
 
@@ -64,6 +64,7 @@ package body DeleteItems.UI is
       use Common;
       use Messages.UI;
       use Preferences;
+      use Utils.UI;
 
       Message: Unbounded_String;
       File_Line: Unbounded_String := Null_Unbounded_String;
