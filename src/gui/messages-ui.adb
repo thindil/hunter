@@ -36,7 +36,7 @@ with MoveItems.UI;
 with Preferences; use Preferences;
 with RefreshData;
 with Trash.UI;
-with Utils.UI; use Utils.UI;
+with Utils.UI;
 
 package body Messages.UI is
 
@@ -136,6 +136,7 @@ package body Messages.UI is
       use MoveItems.UI;
       use RefreshData;
       use Trash.UI;
+      use Utils.UI;
 
       Overwrite_Item: Boolean := True;
       Response: constant String := CArgv.Arg(Argv => Argv, N => 1);
