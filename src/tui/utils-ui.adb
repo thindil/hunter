@@ -36,10 +36,4 @@ package body Utils.UI is
       ProgressIndex := ProgressIndex + 1;
    end Update_Progress_Bar;
 
-   procedure Toggle_Tool_Buttons
-     (Action: Item_Actions; Finished: Boolean := False) is
-   begin
-      null;
-   end Toggle_Tool_Buttons;
-
 end Utils.UI;

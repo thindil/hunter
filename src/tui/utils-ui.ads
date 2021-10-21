@@ -41,13 +41,14 @@ package Utils.UI is
    -- ****f* UtilsTUI/UtilsTUI.Toggle_Tool_Buttons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with
-   -- files or directories
+   -- files or directories. This is null procedure, needed only to
+   -- compatibility with the graphical version
    -- PARAMETERS
    -- Action   - Action on files or directories started or finished.
    -- Finished - If true, action was finished. Default is False
    -- SOURCE
    procedure Toggle_Tool_Buttons
-     (Action: Item_Actions; Finished: Boolean := False);
+     (Action: Item_Actions; Finished: Boolean := False) is null;
    -- ****
 
 end Utils.UI;
