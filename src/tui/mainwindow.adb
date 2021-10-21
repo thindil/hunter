@@ -713,6 +713,7 @@ package body MainWindow is
             Post(SubMenu, False);
             Delete(SubMenu);
             Update_Directory_List;
+            ShowPreview;
             case CurrentIndex is
                when 1 =>
                   New_Action := CREATEDIRECTORY;
