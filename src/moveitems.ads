@@ -17,11 +17,11 @@ with CopyItems; use CopyItems;
 
 package MoveItems is
 
-   -- ****v* MoveItems/MoveItems.MoveItemsList
+   -- ****v* MoveItems/MoveItems.Move_Items_List
    -- FUNCTION
    -- Stores names of all selected to move files and directories
    -- SOURCE
-   MoveItemsList: UnboundedString_Container.Vector;
+   Move_Items_List: UnboundedString_Container.Vector;
    -- ****
 
 end MoveItems;
