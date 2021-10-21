@@ -23,6 +23,7 @@ with CArgv;
 with Tcl.Ada; use Tcl.Ada;
 with Common; use Common;
 with LoadData; use LoadData;
+with ShowItems; use ShowItems;
 with Utils; use Utils;
 
 package body RenameItems.UI is
@@ -158,6 +159,7 @@ package body RenameItems.UI is
                Post(DialogForm, False);
                Delete(DialogForm);
                Update_Directory_List(True);
+               ShowPreview;
                return DIRECTORY_VIEW;
             end if;
          when others =>
