@@ -645,7 +645,8 @@ package body MainWindow is
                   if New_Action in COPY | MOVE | CREATELINK then
                      New_Action := CREATEFILE;
                      UILocation := DIRECTORY_VIEW;
-                     Update_Directory_List;
+                     Update_Directory_List(True);
+                     ShowPreview;
                      CreateProgramMenu;
                      Refresh(MenuWindow);
                      return DIRECTORY_VIEW;
