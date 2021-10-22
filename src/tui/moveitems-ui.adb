@@ -38,10 +38,10 @@ package body MoveItems.UI is
       NewName, FileExtension: Unbounded_String;
    begin
       Move_Items_Loop :
-      while MoveItemsList.Length > 0 loop
+      while Move_Items_List.Length > 0 loop
          NewName :=
            DestinationDirectory & To_Unbounded_String("/") &
-           Simple_Name(To_String(MoveItemsList(1)));
+           Simple_Name(To_String(Move_Items_List(1)));
          if Exists(To_String(NewName)) then
             if not Overwrite and Settings.Overwrite_On_Exist then
                ItemType :=
@@ -50,14 +50,14 @@ package body MoveItems.UI is
                   else To_Unbounded_String(Mc(Interpreter, "{File}")));
                Show_Message
                  (To_String(ItemType) & " " &
-                  Simple_Name(To_String(MoveItemsList(1))) & " " &
+                  Simple_Name(To_String(Move_Items_List(1))) & " " &
                   Mc(Interpreter, "{exists. Do you want to overwrite it?}"),
                   "question");
                return MESSAGE_FORM;
             end if;
             if not Settings.Overwrite_On_Exist then
                FileExtension :=
-                 To_Unbounded_String(Extension(To_String(MoveItemsList(1))));
+                 To_Unbounded_String(Extension(To_String(Move_Items_List(1))));
                New_File_Name_Loop :
                loop
                   NewName :=
@@ -73,37 +73,38 @@ package body MoveItems.UI is
                end loop New_File_Name_Loop;
             end if;
          end if;
-         Rename_File(To_String(MoveItemsList(1)), To_String(NewName), Success);
+         Rename_File
+           (To_String(Move_Items_List(1)), To_String(NewName), Success);
          if not Success then
             Copy_Item
-              (To_String(MoveItemsList(1)), DestinationDirectory, Success);
+              (To_String(Move_Items_List(1)), DestinationDirectory, Success);
             if Success then
                begin
-                  if Is_Directory(To_String(MoveItemsList(1))) then
-                     Remove_Dir(To_String(MoveItemsList(1)), True);
+                  if Is_Directory(To_String(Move_Items_List(1))) then
+                     Remove_Dir(To_String(Move_Items_List(1)), True);
                   else
-                     Delete_File(To_String(MoveItemsList(1)));
+                     Delete_File(To_String(Move_Items_List(1)));
                   end if;
                exception
                   when Use_Error =>
                      Show_Message
-                       ("Can't delete " & To_String(MoveItemsList(1)) & ".");
+                       ("Can't delete " & To_String(Move_Items_List(1)) & ".");
                      return MESSAGE_FORM;
                end;
             else
                Show_Message
                  (Mc(Interpreter, "{Can't move}") & " " &
-                  To_String(MoveItemsList(1)) & ".");
+                  To_String(Move_Items_List(1)) & ".");
                return MESSAGE_FORM;
             end if;
          end if;
-         MoveItemsList.Delete(Index => 1);
+         Move_Items_List.Delete(Index => 1);
          if not Yes_For_All then
             Overwrite := False;
          end if;
          Update_Progress_Bar;
       end loop Move_Items_Loop;
-      MoveItemsList.Clear;
+      Move_Items_List.Clear;
       if Settings.Show_Finished_Info then
          Show_Message
            (Mc
@@ -131,7 +132,7 @@ package body MoveItems.UI is
    function SkipMoving return UI_Locations is
       OverwriteItem: Boolean := False;
    begin
-      MoveItemsList.Delete(Index => 1);
+      Move_Items_List.Delete(Index => 1);
       Update_Progress_Bar;
       return MoveSelected(OverwriteItem);
    end SkipMoving;

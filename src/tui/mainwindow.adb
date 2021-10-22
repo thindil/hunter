@@ -185,8 +185,7 @@ package body MainWindow is
       Common.Current_Directory :=
         To_Unbounded_String
           (Normalize_Pathname(To_String(Common.Current_Directory)));
-      Index :=
-        Ada.Strings.Unbounded.Count(Common.Current_Directory, "/") + 1;
+      Index := Ada.Strings.Unbounded.Count(Common.Current_Directory, "/") + 1;
       if Common.Current_Directory /= To_Unbounded_String("/") then
          if New_Action in SHOWTRASH | DELETETRASH then
             Index :=
@@ -421,11 +420,9 @@ package body MainWindow is
                for I in 2 .. Get_Index(Current(Path)) loop
                   if I = 2 then
                      Append
-                       (Common.Current_Directory,
-                        Description(Items(Path, I)));
+                       (Common.Current_Directory, Description(Items(Path, I)));
                   else
-                     Append
-                       (Common.Current_Directory, Name(Items(Path, I)));
+                     Append(Common.Current_Directory, Name(Items(Path, I)));
                   end if;
                   if I < Get_Index(Current(Path)) then
                      Append(Common.Current_Directory, "/");
@@ -616,14 +613,14 @@ package body MainWindow is
                         return MESSAGE_FORM;
                      end if;
                   elsif New_Action = MOVE then
-                     MoveItemsList.Clear;
+                     Move_Items_List.Clear;
                      if Item_Count(DirectoryList) > 0 then
                         Update_Move_Items_Loop :
                         for I in 1 .. Item_Count(DirectoryList) loop
                            if Value(Items(DirectoryList, I)) or
                              Current(DirectoryList) =
                                Items(DirectoryList, I) then
-                              MoveItemsList.Append
+                              Move_Items_List.Append
                                 (To_Unbounded_String
                                    (Description(Items(DirectoryList, I))));
                            end if;
