@@ -70,16 +70,16 @@ package body MoveItems.UI is
       pragma Unreferenced(ClientData, Argc, Argv);
       OverwriteItem: Boolean := False;
    begin
-      if MoveItemsList.Length > 0
-        and then Containing_Directory(To_String(MoveItemsList(1))) =
+      if Move_Items_List.Length > 0
+        and then Containing_Directory(To_String(Move_Items_List(1))) =
           To_String(DestinationDirectory) then
-         MoveItemsList.Clear;
+         Move_Items_List.Clear;
          ShowPreview;
          Toggle_Tool_Buttons(New_Action, True);
          return TCL_OK;
       end if;
-      if MoveItemsList.Length = 0 then
-         MoveItemsList := Selected_Items;
+      if Move_Items_List.Length = 0 then
+         Move_Items_List := Selected_Items;
          SourceDirectory := Common.Current_Directory;
          New_Action := MOVE;
          Toggle_Tool_Buttons(New_Action);
@@ -89,8 +89,7 @@ package body MoveItems.UI is
             "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
          return TCL_OK;
       end if;
-      if not Is_Write_Accessible_File
-          (To_String(Common.Current_Directory)) then
+      if not Is_Write_Accessible_File(To_String(Common.Current_Directory)) then
          Show_Message
            (Mc
               (Interp,
@@ -98,7 +97,7 @@ package body MoveItems.UI is
          return TCL_OK;
       end if;
       New_Action := MOVE;
-      Update_Progress_Bar(Positive(MoveItemsList.Length));
+      Update_Progress_Bar(Positive(Move_Items_List.Length));
       MoveSelected(OverwriteItem);
       return TCL_OK;
    end Move_Data_Command;
@@ -109,10 +108,10 @@ package body MoveItems.UI is
       NewName, FileExtension: Unbounded_String;
    begin
       Move_Items_Loop :
-      while MoveItemsList.Length > 0 loop
+      while Move_Items_List.Length > 0 loop
          NewName :=
            DestinationDirectory & To_Unbounded_String("/") &
-           Simple_Name(To_String(MoveItemsList(1)));
+           Simple_Name(To_String(Move_Items_List(1)));
          if Exists(To_String(NewName)) then
             if not Overwrite and Settings.Overwrite_On_Exist then
                ItemType :=
@@ -121,14 +120,14 @@ package body MoveItems.UI is
                   else To_Unbounded_String(Mc(Get_Context, "{File}")));
                Show_Message
                  (To_String(ItemType) & " " &
-                  Simple_Name(To_String(MoveItemsList(1))) & " " &
+                  Simple_Name(To_String(Move_Items_List(1))) & " " &
                   Mc(Get_Context, "{exists. Do you want to overwrite it?}"),
                   "question");
                return;
             end if;
             if not Settings.Overwrite_On_Exist then
                FileExtension :=
-                 To_Unbounded_String(Extension(To_String(MoveItemsList(1))));
+                 To_Unbounded_String(Extension(To_String(Move_Items_List(1))));
                New_File_Name_Loop :
                loop
                   NewName :=
@@ -144,30 +143,31 @@ package body MoveItems.UI is
                end loop New_File_Name_Loop;
             end if;
          end if;
-         Rename_File(To_String(MoveItemsList(1)), To_String(NewName), Success);
+         Rename_File
+           (To_String(Move_Items_List(1)), To_String(NewName), Success);
          if not Success then
             Copy_Item
-              (To_String(MoveItemsList(1)), DestinationDirectory, Success);
+              (To_String(Move_Items_List(1)), DestinationDirectory, Success);
             if Success then
-               if Is_Directory(To_String(MoveItemsList(1))) then
-                  Remove_Dir(To_String(MoveItemsList(1)), True);
+               if Is_Directory(To_String(Move_Items_List(1))) then
+                  Remove_Dir(To_String(Move_Items_List(1)), True);
                else
-                  Delete_File(To_String(MoveItemsList(1)));
+                  Delete_File(To_String(Move_Items_List(1)));
                end if;
             else
                Show_Message
                  (Mc(Get_Context, "{Can't move}") & " " &
-                  To_String(MoveItemsList(1)) & ".");
+                  To_String(Move_Items_List(1)) & ".");
                return;
             end if;
          end if;
-         MoveItemsList.Delete(Index => 1);
+         Move_Items_List.Delete(Index => 1);
          if not Yes_For_All then
             Overwrite := False;
          end if;
          Update_Progress_Bar;
       end loop Move_Items_Loop;
-      MoveItemsList.Clear;
+      Move_Items_List.Clear;
       if Settings.Show_Finished_Info then
          Show_Message
            (Mc
@@ -191,7 +191,7 @@ package body MoveItems.UI is
    procedure SkipMoving is
       OverwriteItem: Boolean := False;
    begin
-      MoveItemsList.Delete(Index => 1);
+      Move_Items_List.Delete(Index => 1);
       Update_Progress_Bar;
       MoveSelected(OverwriteItem);
    end SkipMoving;

@@ -422,7 +422,7 @@ package body MainWindow.Commands is
          when COPY =>
             Copy_Items_List.Clear;
          when MOVE =>
-            MoveItemsList.Clear;
+            Move_Items_List.Clear;
             Action_Button.Name :=
               New_String
                 (Str => ".mainframe.toolbars.actiontoolbar.movebutton");
@@ -584,7 +584,8 @@ package body MainWindow.Commands is
                      Containing_Directory
                        (Name => Containing_Directory(Name => Command_Name))));
       end if;
-      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+      Load_Directory
+        (Directory_Name => To_String(Source => Common.Current_Directory));
       Set_Current_Selected_Loop :
       for I in Items_List.Iterate loop
          if Items_List(I).Name =
