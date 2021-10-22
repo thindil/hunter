@@ -57,7 +57,7 @@ package body Bookmarks.UI is
          Options =>
            "-label {" & Mc(Interp => Get_Context, Src_String => "{Home}") &
            "} -command {GoToBookmark {" & Value(Name => "HOME") & "}}");
-      Add_Menu_Entries_Loop:
+      Add_Menu_Entries_Loop :
       for I in Bookmarks_List.Iterate loop
          Add
            (MenuWidget => Bookmarks_Menu, EntryType => "command",

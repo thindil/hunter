@@ -59,8 +59,7 @@ package body DeleteItems.UI is
          if New_Action = DELETE then
             if Is_Directory
                 (To_String
-                   (Common.Current_Directory & "/" &
-                    Selected_Items(I))) then
+                   (Common.Current_Directory & "/" & Selected_Items(I))) then
                if Simple_Name(Name => To_String(Source => Selected_Items(I)))'
                    Length >
                  11 then

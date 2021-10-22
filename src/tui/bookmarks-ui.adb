@@ -79,8 +79,7 @@ package body Bookmarks.UI is
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer
-        (Create_Fields.all(2), 0, To_String(Common.Current_Directory));
+      Set_Buffer(Create_Fields.all(2), 0, To_String(Common.Current_Directory));
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);

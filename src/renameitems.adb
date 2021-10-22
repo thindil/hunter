@@ -32,8 +32,7 @@ package body RenameItems is
       ActionBlocker: Unbounded_String;
       Success: Boolean;
    begin
-      if Exists(NewName) or
-        Is_Symbolic_Link(NewName) then
+      if Exists(NewName) or Is_Symbolic_Link(NewName) then
          ActionBlocker :=
            (if Is_Directory(NewName) then
               To_Unbounded_String(Mc(Interp, "{directory}"))
@@ -41,14 +40,12 @@ package body RenameItems is
          Show_Message
            (Mc(Interp, "{You can't rename}") & " " &
             To_String(Current_Selected) & " " & Mc(Interp, "{to}") & " " &
-            NewName & " " & Mc(Interp, "{because there exists}") &
-            " " & To_String(ActionBlocker) & " " &
-            Mc(Interp, "{with that name}"));
+            NewName & " " & Mc(Interp, "{because there exists}") & " " &
+            To_String(ActionBlocker) & " " & Mc(Interp, "{with that name}"));
          Tcl_SetResult(Interp, "0");
          return False;
       end if;
-      if not Is_Write_Accessible_File
-          (Containing_Directory(NewName)) then
+      if not Is_Write_Accessible_File(Containing_Directory(NewName)) then
          Show_Message
            (Mc(Interp, "{You don't have permissions to rename}") & " " &
             NewName);

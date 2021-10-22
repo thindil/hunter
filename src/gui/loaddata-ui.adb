@@ -43,7 +43,8 @@ package body LoadData.UI is
            (Window => Get_Main_Window(Interp => Get_Context));
          return;
       end if;
-      Load_Selected_Directory(Directory_Name => Directory_Name, Second => Second);
+      Load_Selected_Directory
+        (Directory_Name => Directory_Name, Second => Second);
       if Second then
          Items_Sorting.Sort(Container => Second_Items_List);
       else

@@ -409,12 +409,14 @@ package body MainWindow is
             Common.Current_Directory := To_Unbounded_String(Source => "/");
          end if;
       end if;
-      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+      Load_Directory
+        (Directory_Name => To_String(Source => Common.Current_Directory));
       StartTimer(Path => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
       Execute_Modules
         (Interpreter => Get_Context, State => ON_ENTER,
-         Arguments => "{" & To_String(Source => Common.Current_Directory) & "}");
+         Arguments =>
+           "{" & To_String(Source => Common.Current_Directory) & "}");
       CreateShowItemsUI;
       SashPos
         (Paned => Paned, Index => "0",
@@ -573,7 +575,8 @@ package body MainWindow is
             if Frame_Name = "directory"
               and then New_Action not in SHOWTRASH | DELETETRASH then
                Create
-                 (S => Tokens, From => To_String(Source => Common.Current_Directory),
+                 (S => Tokens,
+                  From => To_String(Source => Common.Current_Directory),
                   Separators => "/");
             else
                Create

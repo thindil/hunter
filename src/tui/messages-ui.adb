@@ -102,7 +102,8 @@ package body Messages.UI is
             if End_Index > Message'Last then
                End_Index := Message'Last;
             end if;
-            Space_Index := Ada.Strings.Fixed.Index(Message, " ", End_Index, Backward);
+            Space_Index :=
+              Ada.Strings.Fixed.Index(Message, " ", End_Index, Backward);
             if Space_Index = 0 or Space_Index < Index then
                Space_Index := End_Index;
             end if;
