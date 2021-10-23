@@ -20,7 +20,7 @@
 package MoveItems.UI is
 -- ****
 
-   -- ****f* MoveItemsUI/MoveItemsUI.MoveSelected
+   -- ****f* MoveItemsUI/MoveItemsUI.Move_Selected
    -- FUNCTION
    -- Move selected files and directories
    -- PARAMETERS
@@ -28,21 +28,21 @@ package MoveItems.UI is
    --             ask for overwrite permission. Value is set to False if
    --             permission was only for one file or directory
    -- SOURCE
-   procedure MoveSelected(Overwrite: in out Boolean);
+   procedure Move_Selected(Overwrite: in out Boolean);
    -- ****
 
-   -- ****f* MoveItemsUI/MoveItemsUI.SkipMoving
+   -- ****f* MoveItemsUI/MoveItemsUI.Skip_Moving
    -- FUNCTION
    -- Skip moving current file and move to next
    -- SOURCE
-   procedure SkipMoving;
+   procedure Skip_Moving;
    -- ****
 
-   -- ****f* MoveItemsUI/MoveItemsUI.CreateMoveUI
+   -- ****f* MoveItemsUI/MoveItemsUI.Create_Move_UI
    -- FUNCTION
    -- Create UI for moving items
    -- SOURCE
-   procedure CreateMoveUI;
+   procedure Create_Move_UI;
    -- ****
 
 end MoveItems.UI;
