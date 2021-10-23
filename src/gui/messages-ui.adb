@@ -266,13 +266,13 @@ package body Messages.UI is
                    (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
                     Argv => Argv);
             elsif Response = "no" then
-               SkipMoving;
+               Skip_Moving;
                return
                  Close_Command
                    (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
                     Argv => Argv);
             end if;
-            MoveSelected(Overwrite => Overwrite_Item);
+            Move_Selected(Overwrite => Overwrite_Item);
             return
               Close_Command
                 (Client_Data => Client_Data, Interp => Interp, Argc => Argc,

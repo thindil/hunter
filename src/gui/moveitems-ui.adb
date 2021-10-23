@@ -98,11 +98,11 @@ package body MoveItems.UI is
       end if;
       New_Action := MOVE;
       Update_Progress_Bar(Positive(Move_Items_List.Length));
-      MoveSelected(OverwriteItem);
+      Move_Selected(OverwriteItem);
       return TCL_OK;
    end Move_Data_Command;
 
-   procedure MoveSelected(Overwrite: in out Boolean) is
+   procedure Move_Selected(Overwrite: in out Boolean) is
       ItemType: Unbounded_String;
       Success: Boolean := True;
       NewName, FileExtension: Unbounded_String;
@@ -186,21 +186,21 @@ package body MoveItems.UI is
       UpdateWatch(To_String(Common.Current_Directory));
       ShowPreview;
       Toggle_Tool_Buttons(New_Action, True);
-   end MoveSelected;
+   end Move_Selected;
 
-   procedure SkipMoving is
+   procedure Skip_Moving is
       OverwriteItem: Boolean := False;
    begin
       Move_Items_List.Delete(Index => 1);
       Update_Progress_Bar;
-      MoveSelected(OverwriteItem);
-   end SkipMoving;
+      Move_Selected(OverwriteItem);
+   end Skip_Moving;
 
-   procedure CreateMoveUI is
+   procedure Create_Move_UI is
       use Utils;
 
    begin
       Add_Command("MoveData", Move_Data_Command'Access);
-   end CreateMoveUI;
+   end Create_Move_UI;
 
 end MoveItems.UI;
