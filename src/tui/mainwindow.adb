@@ -758,6 +758,8 @@ package body MainWindow is
                   return MESSAGE_FORM;
                when others =>
                   if CurrentName = "Close" then
+                     UILocation := DIRECTORY_VIEW;
+                     Update_Directory_List(True);
                      ShowPreview;
                      return DIRECTORY_VIEW;
                   end if;
