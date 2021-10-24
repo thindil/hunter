@@ -20,9 +20,11 @@ with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
 with Ada.Text_IO; use Ada.Text_IO;
+with Interfaces.C;
 with GNAT.Expect; use GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
+with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
@@ -663,12 +665,44 @@ package body ShowItems is
       end if;
    end Show_Selected;
 
+   -- ****o* ShowItemsTUI/ShowItemsTUI.GoToDirectory_Command
+   -- FUNCTION
+   -- Go to the selected directory in preview
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed. Unused
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command.
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- GoToDirectory ?selecteditem?
+   -- Selecteditem is full path to the currently selected file or directory
+   -- SOURCE
+   function GoToDirectory_Command
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function GoToDirectory_Command
+     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
+      pragma Unreferenced(ClientData, Interp, Argc);
+   begin
+      DestinationDirectory := To_Unbounded_String(CArgv.Arg(Argv, 1));
+      Load_Directory(CArgv.Arg(Argv, 1), True);
+      ShowDestination;
+      return TCL_OK;
+   end GoToDirectory_Command;
+
    procedure CreateShowItemsUI is
    begin
       PathButtons := Create(1, Columns / 2, 1, 0);
       PreviewWindow := Create(Lines - 2, Columns / 2, 2, Columns / 2);
       Box(PreviewWindow, Default_Character, Default_Character);
       Refresh(PreviewWindow);
+      Add_Command("GoToDirectory", GoToDirectory_Command'Access);
    end CreateShowItemsUI;
 
    procedure ShowDestination is
