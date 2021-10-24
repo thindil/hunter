@@ -196,11 +196,11 @@ package body MoveItems.UI is
       Move_Selected(OverwriteItem);
    end Skip_Moving;
 
-   procedure Create_Move_UI is
+   procedure Create_Move_Ui is
       use Utils;
 
    begin
       Add_Command("MoveData", Move_Data_Command'Access);
-   end Create_Move_UI;
+   end Create_Move_Ui;
 
 end MoveItems.UI;
