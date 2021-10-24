@@ -38,11 +38,11 @@ package MoveItems.UI is
    procedure Skip_Moving;
    -- ****
 
-   -- ****f* MoveItemsUI/MoveItemsUI.Create_Move_UI
+   -- ****f* MoveItemsUI/MoveItemsUI.Create_Move_Ui
    -- FUNCTION
    -- Create UI for moving items
    -- SOURCE
-   procedure Create_Move_UI;
+   procedure Create_Move_Ui;
    -- ****
 
 end MoveItems.UI;
