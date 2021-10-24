@@ -18,6 +18,7 @@ with Interfaces.C;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
+with Tcl.Ada; use Tcl.Ada;
 with Bookmarks.Commands.UI; use Bookmarks.Commands.UI;
 with Common; use Common;
 with LoadData; use LoadData;
@@ -59,14 +60,18 @@ package body Bookmarks.Commands is
       end if;
       if New_Action = SHOWTRASH then
          Toggle_Tool_Buttons(New_Action, True);
-         New_Action := COPY;
+         New_Action := CREATEFILE;
       end if;
-      Common.Current_Directory :=
-        To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
-      Load_Directory(To_String(Common.Current_Directory));
-      Update_Directory_List(True);
-      Execute_Modules
-        (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
+      if New_Action in COPY | MOVE then
+         Tcl_Eval(Interp, "GoToDirectory {" & CArgv.Arg(Argv, 1) & "}");
+      else
+         Common.Current_Directory :=
+            To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
+         Load_Directory(To_String(Common.Current_Directory));
+         Update_Directory_List(True);
+         Execute_Modules
+            (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
+      end if;
       return TCL_OK;
    end GoToBookmark_Command;
 
