@@ -54,13 +54,11 @@ package body Bookmarks.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Argc);
    begin
-      if New_Action /= MOVE then
-         if New_Action = CLEARTRASH then
-            New_Action := SHOWTRASH;
-         end if;
-         if New_Action = SHOWTRASH then
-            Toggle_Tool_Buttons(New_Action, True);
-         end if;
+      if New_Action = CLEARTRASH then
+         New_Action := SHOWTRASH;
+      end if;
+      if New_Action = SHOWTRASH then
+         Toggle_Tool_Buttons(New_Action, True);
          New_Action := COPY;
       end if;
       Common.Current_Directory :=
