@@ -85,7 +85,7 @@ package body Messages.UI is
       Set_Options(DialogForm, (others => False));
       FormWindow :=
         Create
-          (FormHeight + 2, 34, ((Lines / 3) - (FormHeight / 2)),
+          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
            ((Columns / 2) - (FormLength / 2)));
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
