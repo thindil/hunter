@@ -38,18 +38,18 @@ with Utils.UI; use Utils.UI;
 
 package body MoveItems.UI is
 
-   -- ****iv* MoveItems/MoveItems.SourceDirectory
+   -- ****iv* MoveItems/MoveItems.Source_Directory
    -- FUNCTION
    -- Full path to the source directory of moved files and directories
    -- SOURCE
-   SourceDirectory: Unbounded_String;
+   Source_Directory: Unbounded_String;
    -- ****
 
    -- ****o* MoveItems/MoveItems.Move_Data_Command
    -- FUNCTION
    -- Enter or quit moving items mode
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
@@ -59,53 +59,60 @@ package body MoveItems.UI is
    -- MoveData
    -- SOURCE
    function Move_Data_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Move_Data_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      OverwriteItem: Boolean := False;
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      Overwrite_Item: Boolean := False;
    begin
       if Move_Items_List.Length > 0
-        and then Containing_Directory(To_String(Move_Items_List(1))) =
-          To_String(DestinationDirectory) then
+        and then
+          Containing_Directory
+            (Name => To_String(Source => Move_Items_List(1))) =
+          To_String(Source => DestinationDirectory) then
          Move_Items_List.Clear;
          ShowPreview;
-         Toggle_Tool_Buttons(New_Action, True);
+         Toggle_Tool_Buttons(Action => New_Action, Finished => True);
          return TCL_OK;
       end if;
       if Move_Items_List.Length = 0 then
          Move_Items_List := Selected_Items;
-         SourceDirectory := Common.Current_Directory;
+         Source_Directory := Common.Current_Directory;
          New_Action := MOVE;
-         Toggle_Tool_Buttons(New_Action);
+         Toggle_Tool_Buttons(Action => New_Action);
          ShowDestination;
          Bind_To_Main_Window
-           (Interp, "<Escape>",
-            "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
+           (Interp => Interp, Sequence => "<Escape>",
+            Script =>
+              "{.mainframe.toolbars.actiontoolbar.cancelbutton invoke}");
          return TCL_OK;
       end if;
-      if not Is_Write_Accessible_File(To_String(Common.Current_Directory)) then
+      if not Is_Write_Accessible_File
+          (Name => To_String(Source => Common.Current_Directory)) then
          Show_Message
-           (Mc
-              (Interp,
-               "{You don't have permissions to move selected items here.}"));
+           (Message =>
+              Mc
+                (Interp => Interp,
+                 Src_String =>
+                   "{You don't have permissions to move selected items here.}"));
          return TCL_OK;
       end if;
       New_Action := MOVE;
-      Update_Progress_Bar(Positive(Move_Items_List.Length));
-      Move_Selected(OverwriteItem);
+      Update_Progress_Bar(Amount => Positive(Move_Items_List.Length));
+      Move_Selected(Overwrite => Overwrite_Item);
       return TCL_OK;
    end Move_Data_Command;
 
    procedure Move_Selected(Overwrite: in out Boolean) is
       ItemType: Unbounded_String;
       Success: Boolean := True;
-      NewName, FileExtension: Unbounded_String;
+      NewName: Unbounded_String;
+      FileExtension: Unbounded_String := Null_Unbounded_String;
    begin
       Move_Items_Loop :
       while Move_Items_List.Length > 0 loop
@@ -176,7 +183,7 @@ package body MoveItems.UI is
             "message");
       end if;
       Common.Current_Directory :=
-        (if Settings.Stay_In_Old then SourceDirectory
+        (if Settings.Stay_In_Old then Source_Directory
          else DestinationDirectory);
       Current_Selected :=
         Common.Current_Directory & "/" &
