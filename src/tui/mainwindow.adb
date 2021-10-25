@@ -66,18 +66,35 @@ package body MainWindow is
    begin
       Terminal_Interface.Curses.Clear(MenuWindow);
       case New_Action is
-         when COPY | MOVE | CREATELINK =>
+         when CREATELINK =>
             declare
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 4);
             begin
                Menu_Items.all(1) := New_Item("Quit");
-               Menu_Items.all(2) :=
-                 (if New_Action = COPY then New_Item("Copy selected")
-                  elsif New_Action = MOVE then New_Item("Move selected")
-                  else New_Item("Create link"));
+               Menu_Items.all(2) := New_Item("Create link");
                Menu_Items.all(3) := New_Item("Cancel");
                Menu_Items.all(4) := Null_Item;
+               ProgramMenu := New_Menu(Menu_Items);
+               Set_Format(ProgramMenu, 1, 3);
+               Set_Mark(ProgramMenu, "");
+               Set_Window(ProgramMenu, MenuWindow);
+               Set_Sub_Window
+                 (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+               Post(ProgramMenu);
+            end;
+         when COPY | MOVE =>
+            declare
+               Menu_Items: constant Item_Array_Access :=
+                 new Item_Array(1 .. 5);
+            begin
+               Menu_Items.all(1) := New_Item("Quit");
+               Menu_Items.all(2) := New_Item("Bookmarks");
+               Menu_Items.all(3) :=
+                 (if New_Action = COPY then New_Item("Copy selected")
+                  else New_Item("Move selected"));
+               Menu_Items.all(4) := New_Item("Cancel");
+               Menu_Items.all(5) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
                Set_Format(ProgramMenu, 1, 3);
                Set_Mark(ProgramMenu, "");
@@ -590,6 +607,13 @@ package body MainWindow is
                when 1 =>
                   return PATH_BUTTONS;
                when 2 =>
+                  if New_Action = CREATELINK then
+                     Show_Create_Link_Form;
+                     return CREATELINK_FORM;
+                  end if;
+                  Draw_Menu(BOOKMARKS_MENU);
+                  return BOOKMARKS_MENU;
+               when 3 =>
                   if New_Action = COPY then
                      Copy_Items_List.Clear;
                      if Item_Count(DirectoryList) > 0 then
@@ -635,14 +659,6 @@ package body MainWindow is
                         return MESSAGE_FORM;
                      end if;
                   elsif New_Action = CREATELINK then
-                     Show_Create_Link_Form;
-                     return CREATELINK_FORM;
-                  else
-                     Draw_Menu(BOOKMARKS_MENU);
-                     return BOOKMARKS_MENU;
-                  end if;
-               when 3 =>
-                  if New_Action in COPY | MOVE | CREATELINK then
                      New_Action := CREATEFILE;
                      UILocation := DIRECTORY_VIEW;
                      Update_Directory_List(True);
@@ -654,7 +670,15 @@ package body MainWindow is
                   Draw_Menu(VIEW_MENU);
                   return VIEW_MENU;
                when 4 =>
-                  if New_Action = SHOWTRASH then
+                  if New_Action in COPY | MOVE then
+                     New_Action := CREATEFILE;
+                     UILocation := DIRECTORY_VIEW;
+                     Update_Directory_List(True);
+                     ShowPreview;
+                     CreateProgramMenu;
+                     Refresh(MenuWindow);
+                     return DIRECTORY_VIEW;
+                  elsif New_Action = SHOWTRASH then
                      Tcl_Eval(Interpreter, "RestoreItems");
                      Clear_Preview_Window;
                      Update_Directory_List(True);
