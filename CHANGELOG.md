@@ -9,6 +9,8 @@ All notable changes to this project will be documented in this file.
 - Updated README.md
 - Updated Polish translation
 - Updated contributing guide
+- During copying or moving files and directories, bookmarks change destination
+  directory, not source
 
 ### Fixed
 - Don't auto hide questions or confirmation messages in graphical version
