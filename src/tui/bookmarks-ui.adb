@@ -114,6 +114,25 @@ package body Bookmarks.UI is
 
    function Go_To_Bookmark(Bookmark: String) return UI_Locations is
    begin
+      if New_Action in COPY | MOVE then
+         if Bookmarks_List.Contains(Bookmark) then
+            DestinationDirectory :=
+              To_Unbounded_String(Bookmarks_List(Bookmark));
+         elsif Bookmark = Mc(Interpreter, "{Home}") then
+            DestinationDirectory := To_Unbounded_String(Value("HOME"));
+         elsif Bookmark = "Close" then
+            Update_Directory_List;
+            ShowDestination;
+            return PREVIEW;
+         else
+            ShowBookmarksForm;
+            return BOOKMARKS_FORM;
+         end if;
+         Update_Directory_List;
+         Load_Directory(To_String(DestinationDirectory), True);
+         ShowDestination;
+         return PREVIEW;
+      end if;
       if Bookmark = "Close" then
          Update_Directory_List;
          return DIRECTORY_VIEW;
