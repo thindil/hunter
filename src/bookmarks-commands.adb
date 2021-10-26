@@ -66,11 +66,11 @@ package body Bookmarks.Commands is
          Tcl_Eval(Interp, "GoToDirectory {" & CArgv.Arg(Argv, 1) & "}");
       else
          Common.Current_Directory :=
-            To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
+           To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
          Load_Directory(To_String(Common.Current_Directory));
          Update_Directory_List(True);
          Execute_Modules
-            (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
+           (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
       end if;
       return TCL_OK;
    end GoToBookmark_Command;
