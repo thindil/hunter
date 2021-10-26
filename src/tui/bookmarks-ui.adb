@@ -194,23 +194,36 @@ package body Bookmarks.UI is
                      " doesn't exists.");
                   return MESSAGE_FORM;
                end if;
-               New_Action := CREATEFILE;
-               Common.Current_Directory :=
-                 To_Unbounded_String
-                   (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
-               Load_Directory(To_String(Common.Current_Directory));
-               UpdateWatch(To_String(Common.Current_Directory));
-               Execute_Modules
-                 (Interpreter, ON_ENTER,
-                  "{" & To_String(Common.Current_Directory) & "}");
+               if New_Action not in MOVE | COPY then
+                  New_Action := CREATEFILE;
+                  Common.Current_Directory :=
+                    To_Unbounded_String
+                      (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+                  Load_Directory(To_String(Common.Current_Directory));
+                  UpdateWatch(To_String(Common.Current_Directory));
+                  Execute_Modules
+                    (Interpreter, ON_ENTER,
+                     "{" & To_String(Common.Current_Directory) & "}");
+               else
+                  DestinationDirectory :=
+                    To_Unbounded_String
+                      (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+                  Load_Directory(To_String(DestinationDirectory), True);
+               end if;
             end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
-               UILocation := DIRECTORY_VIEW;
-               Update_Directory_List(True);
-               return DIRECTORY_VIEW;
+               if New_Action not in MOVE | COPY then
+                  UILocation := DIRECTORY_VIEW;
+                  Update_Directory_List(True);
+                  return DIRECTORY_VIEW;
+               else
+                  Update_Directory_List;
+                  ShowDestination;
+                  return PREVIEW;
+               end if;
             end if;
          when others =>
             if Key /= 91 then
