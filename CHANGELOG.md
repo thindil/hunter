@@ -21,6 +21,8 @@ All notable changes to this project will be documented in this file.
   in the old directory in console version
 - Crash after moving files or directories when the program is set to stay
   in the old directory in console version
+- Crash when activate file in destination directory during copying or moving
+  files or directories in console version
 
 ## [1.6] - 2021-08-08
 
