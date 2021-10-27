@@ -122,49 +122,66 @@ package body MoveItems.UI is
             if not Overwrite and Settings.Overwrite_On_Exist then
                Item_Type :=
                  (if Is_Directory(Name => To_String(Source => New_Name)) then
-                    To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Directory}"))
-                  else To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{File}")));
+                    To_Unbounded_String
+                      (Source =>
+                         Mc
+                           (Interp => Get_Context,
+                            Src_String => "{Directory}"))
+                  else To_Unbounded_String
+                      (Source =>
+                         Mc(Interp => Get_Context, Src_String => "{File}")));
                Show_Message
-                 (Message => To_String(Source => Item_Type) & " " &
-                  Simple_Name(Name => To_String(Source => Move_Items_List(1))) & " " &
-                  Mc(Interp => Get_Context, Src_String => "{exists. Do you want to overwrite it?}"),
+                 (Message =>
+                    To_String(Source => Item_Type) & " " &
+                    Simple_Name
+                      (Name => To_String(Source => Move_Items_List(1))) &
+                    " " &
+                    Mc(Interp => Get_Context,
+                       Src_String => "{exists. Do you want to overwrite it?}"),
                   Message_Type => "question");
                return;
             end if;
             if not Settings.Overwrite_On_Exist then
                File_Extension :=
-                 To_Unbounded_String(Source => Extension(Name => To_String(Source => Move_Items_List(1))));
+                 To_Unbounded_String
+                   (Source =>
+                      Extension
+                        (Name => To_String(Source => Move_Items_List(1))));
                New_File_Name_Loop :
                loop
                   New_Name :=
                     DestinationDirectory &
                     To_Unbounded_String
-                      (Source => "/" & Ada.Directories.Base_Name(Name => To_String(Source => New_Name)) &
-                       "_");
-                  if Length(File_Extension) > 0 then
-                     New_Name :=
-                       New_Name & To_Unbounded_String(".") & File_Extension;
+                      (Source =>
+                         "/" &
+                         Ada.Directories.Base_Name
+                           (Name => To_String(Source => New_Name)) &
+                         "_");
+                  if Length(Source => File_Extension) > 0 then
+                     New_Name := New_Name & "." & File_Extension;
                   end if;
-                  exit New_File_Name_Loop when not Exists(To_String(New_Name));
+                  exit New_File_Name_Loop when not Exists
+                      (Name => To_String(Source => New_Name));
                end loop New_File_Name_Loop;
             end if;
          end if;
          Rename_File
-           (To_String(Move_Items_List(1)), To_String(New_Name), Success);
+           (Old_Name => To_String(Source => Move_Items_List(1)),
+            New_Name => To_String(Source => New_Name), Success => Success);
          if not Success then
             Copy_Item
-              (To_String(Move_Items_List(1)), DestinationDirectory, Success);
-            if Success then
-               if Is_Directory(To_String(Move_Items_List(1))) then
-                  Remove_Dir(To_String(Move_Items_List(1)), True);
-               else
-                  Delete_File(To_String(Move_Items_List(1)));
-               end if;
-            else
+              (Name => To_String(Source => Move_Items_List(1)),
+               Path => DestinationDirectory, Success => Success);
+            if not Success then
                Show_Message
                  (Mc(Get_Context, "{Can't move}") & " " &
                   To_String(Move_Items_List(1)) & ".");
                return;
+            end if;
+            if Is_Directory(To_String(Move_Items_List(1))) then
+               Remove_Dir(To_String(Move_Items_List(1)), True);
+            else
+               Delete_File(To_String(Move_Items_List(1)));
             end if;
          end if;
          Move_Items_List.Delete(Index => 1);
