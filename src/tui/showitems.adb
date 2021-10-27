@@ -822,10 +822,14 @@ package body ShowItems is
          when KEY_PPAGE =>
             Result := Driver(DestinationList, M_ScrollDown_Page);
          when 10 =>
-            DestinationDirectory :=
-              DestinationDirectory & "/" & Name(Current(DestinationList));
-            Load_Directory(To_String(DestinationDirectory), True);
-            ShowDestination;
+            if Is_Directory
+                (To_String(DestinationDirectory) & "/" &
+                 Name(Current(DestinationList))) then
+               DestinationDirectory :=
+                 DestinationDirectory & "/" & Name(Current(DestinationList));
+               Load_Directory(To_String(DestinationDirectory), True);
+               ShowDestination;
+            end if;
             return;
          when others =>
             return;
