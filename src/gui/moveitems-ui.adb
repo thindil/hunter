@@ -174,12 +174,16 @@ package body MoveItems.UI is
                Path => DestinationDirectory, Success => Success);
             if not Success then
                Show_Message
-                 (Message => Mc(Interp => Get_Context, Src_String => "{Can't move}") & " " &
-                  To_String(Source => Move_Items_List(1)) & ".");
+                 (Message =>
+                    Mc(Interp => Get_Context, Src_String => "{Can't move}") &
+                    " " & To_String(Source => Move_Items_List(1)) & ".");
                return;
             end if;
-            if Is_Directory(Name => To_String(Source => Move_Items_List(1))) then
-               Remove_Dir(Dir_Name => To_String(Source => Move_Items_List(1)), Recursive => True);
+            if Is_Directory
+                (Name => To_String(Source => Move_Items_List(1))) then
+               Remove_Dir
+                 (Dir_Name => To_String(Source => Move_Items_List(1)),
+                  Recursive => True);
             else
                Delete_File(Name => To_String(Source => Move_Items_List(1)));
             end if;
@@ -193,9 +197,11 @@ package body MoveItems.UI is
       Move_Items_List.Clear;
       if Settings.Show_Finished_Info then
          Show_Message
-           (Message => Mc
-              (Interp => Get_Context,
-               Src_String => "{All selected files and directories have been moved.}"),
+           (Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{All selected files and directories have been moved.}"),
             Message_Type => "message");
       end if;
       Common.Current_Directory :=
@@ -204,26 +210,27 @@ package body MoveItems.UI is
       Current_Selected :=
         Common.Current_Directory & "/" &
         Simple_Name(Name => To_String(Source => Current_Selected));
-      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+      Load_Directory
+        (Directory_Name => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
-      UpdateWatch(To_String(Common.Current_Directory));
+      UpdateWatch(Path => To_String(Source => Common.Current_Directory));
       ShowPreview;
-      Toggle_Tool_Buttons(New_Action, True);
+      Toggle_Tool_Buttons(Action => New_Action, Finished => True);
    end Move_Selected;
 
    procedure Skip_Moving is
-      OverwriteItem: Boolean := False;
+      Overwrite_Item: Boolean := False;
    begin
       Move_Items_List.Delete(Index => 1);
       Update_Progress_Bar;
-      Move_Selected(OverwriteItem);
+      Move_Selected(Overwrite => Overwrite_Item);
    end Skip_Moving;
 
    procedure Create_Move_Ui is
       use Utils;
 
    begin
-      Add_Command("MoveData", Move_Data_Command'Access);
+      Add_Command(Name => "MoveData", Ada_Command => Move_Data_Command'Access);
    end Create_Move_Ui;
 
 end MoveItems.UI;
