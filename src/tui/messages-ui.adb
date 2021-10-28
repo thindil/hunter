@@ -13,9 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
@@ -36,7 +37,9 @@ package body Messages.UI is
       Buttons_Fields: constant Field_Array_Access :=
         (if Message_Type /= "error" then new Field_Array(1 .. 5)
          else new Field_Array(1 .. 2));
-      FormHeight: constant Line_Position := 7;
+      FormHeight: constant Line_Position :=
+        (Message'Length / 30) + (if Message_Type = "error" then 3 else 4) +
+        Line_Position(Count(Message, "" & LF));
       FormLength: constant Column_Position := 32;
       Visibility: Cursor_Visibility := Normal;
       FieldOptions: Field_Option_Set;
