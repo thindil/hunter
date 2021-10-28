@@ -123,7 +123,7 @@ package body Bookmarks.UI is
          elsif Bookmark = "Close" then
             Update_Directory_List;
             ShowDestination;
-            return PREVIEW;
+            return DESTINATION_VIEW;
          else
             ShowBookmarksForm;
             return BOOKMARKS_FORM;
@@ -131,7 +131,7 @@ package body Bookmarks.UI is
          Update_Directory_List;
          Load_Directory(To_String(DestinationDirectory), True);
          ShowDestination;
-         return PREVIEW;
+         return DESTINATION_VIEW;
       end if;
       if Bookmark = "Close" then
          Update_Directory_List;
