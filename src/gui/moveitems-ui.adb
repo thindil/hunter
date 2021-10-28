@@ -174,14 +174,14 @@ package body MoveItems.UI is
                Path => DestinationDirectory, Success => Success);
             if not Success then
                Show_Message
-                 (Mc(Get_Context, "{Can't move}") & " " &
-                  To_String(Move_Items_List(1)) & ".");
+                 (Message => Mc(Interp => Get_Context, Src_String => "{Can't move}") & " " &
+                  To_String(Source => Move_Items_List(1)) & ".");
                return;
             end if;
-            if Is_Directory(To_String(Move_Items_List(1))) then
-               Remove_Dir(To_String(Move_Items_List(1)), True);
+            if Is_Directory(Name => To_String(Source => Move_Items_List(1))) then
+               Remove_Dir(Dir_Name => To_String(Source => Move_Items_List(1)), Recursive => True);
             else
-               Delete_File(To_String(Move_Items_List(1)));
+               Delete_File(Name => To_String(Source => Move_Items_List(1)));
             end if;
          end if;
          Move_Items_List.Delete(Index => 1);
@@ -193,19 +193,19 @@ package body MoveItems.UI is
       Move_Items_List.Clear;
       if Settings.Show_Finished_Info then
          Show_Message
-           (Mc
-              (Get_Context,
-               "{All selected files and directories have been moved.}"),
-            "message");
+           (Message => Mc
+              (Interp => Get_Context,
+               Src_String => "{All selected files and directories have been moved.}"),
+            Message_Type => "message");
       end if;
       Common.Current_Directory :=
         (if Settings.Stay_In_Old then Source_Directory
          else DestinationDirectory);
       Current_Selected :=
         Common.Current_Directory & "/" &
-        Simple_Name(To_String(Current_Selected));
-      Load_Directory(To_String(Common.Current_Directory));
-      Update_Directory_List(True);
+        Simple_Name(Name => To_String(Source => Current_Selected));
+      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+      Update_Directory_List(Clear => True);
       UpdateWatch(To_String(Common.Current_Directory));
       ShowPreview;
       Toggle_Tool_Buttons(New_Action, True);
