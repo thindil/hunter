@@ -300,7 +300,7 @@ package body MainWindow is
       CreateItemToolbar;
       Create_Messages_Ui;
       ActivateItems.Add_Commands;
-      CreatePreferencesUI;
+      Create_Preferences_Ui;
       Create_Delete_Ui;
       RenameItems.UI.AddCommands;
       CreateItems.UI.Add_Commands;

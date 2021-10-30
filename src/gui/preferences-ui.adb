@@ -52,7 +52,7 @@ with Utils; use Utils;
 
 package body Preferences.UI is
 
-   procedure CreatePreferencesUI is
+   procedure Create_Preferences_Ui is
       LabelFrame: Ttk_LabelFrame;
       CheckButton: Ttk_CheckButton;
       Label: Ttk_Label;
@@ -738,7 +738,7 @@ package body Preferences.UI is
       configure(Canvas, "-scrollregion [list " & BBox(Canvas, "all") & "]");
       Preferences.Commands.AddCommands;
       Modules.Commands.AddCommands;
-   end CreatePreferencesUI;
+   end Create_Preferences_Ui;
 
    procedure Clear_Add_Command is
       Tentry: Ttk_Entry :=
