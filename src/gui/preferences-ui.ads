@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,11 +20,11 @@
 package Preferences.UI is
 -- ****
 
-   -- ****f* PreferencesUI/PreferencesUI.CreatePreferences
+   -- ****f* PreferencesUI/PreferencesUI.Create_Preferences_Ui
    -- FUNCTION
    -- Create preferences UI and fill it with data from the program settings
    -- SOURCE
-   procedure CreatePreferencesUI;
+   procedure Create_Preferences_Ui;
    -- ****
 
    -- ****f* PreferencesUI/PreferencesUI.Clear_Add_Command
