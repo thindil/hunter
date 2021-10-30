@@ -17,22 +17,21 @@ with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
-with Tcl; use Tcl;
+with Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
-use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
 with Common; use Common;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
-with MainWindow; use MainWindow;
-with Messages; use Messages;
+with LoadData;
+with LoadData.UI;
+with MainWindow;
+with Messages;
 with Messages.UI; use Messages.UI;
-with Preferences; use Preferences;
-with RefreshData; use RefreshData;
+with Preferences;
+with RefreshData;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
@@ -68,6 +67,9 @@ package body MoveItems.UI is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Tcl;
+      use Tcl.Tk.Ada.Widgets.Toplevel.MainWindow;
+
       Overwrite_Item: Boolean := False;
    begin
       if Move_Items_List.Length > 0
@@ -109,6 +111,14 @@ package body MoveItems.UI is
    end Move_Data_Command;
 
    procedure Move_Selected(Overwrite: in out Boolean) is
+      use GNAT.Directory_Operations;
+      use Tcl.Tk.Ada;
+      use LoadData.UI;
+      use MainWindow;
+      use Messages;
+      use Preferences;
+      use RefreshData;
+
       Success: Boolean := True;
       Item_Type, New_Name, File_Extension: Unbounded_String :=
         Null_Unbounded_String;
