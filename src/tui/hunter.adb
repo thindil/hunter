@@ -185,14 +185,17 @@ begin
             when PATH_BUTTONS =>
                UILocation := MAIN_MENU;
             when MAIN_MENU =>
+               Clear_Preview_Window;
                if New_Action in COPY | MOVE | CREATELINK then
                   UILocation := DESTINATION_VIEW;
+                  ShowDestination;
                else
                   if Info_Form /= Null_Form then
                      Visibility := Normal;
                      Set_Cursor_Visibility(Visibility);
                   end if;
                   UILocation := PREVIEW;
+                  ShowPreview;
                end if;
             when DESTINATION_VIEW =>
                UILocation := DESTINATION_PATH;
