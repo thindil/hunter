@@ -118,34 +118,58 @@ package body Preferences.UI is
    begin
       Autoscroll(Scroll => Scroll_X);
       Autoscroll(Scroll => Scroll_Y);
-      Tcl.Tk.Ada.Pack.Pack(Slave => Scroll_X, Options => "-side bottom -fill x");
-      Tcl.Tk.Ada.Pack.Pack(Slave => Scroll_Y, Options => "-side right -fill y");
       Tcl.Tk.Ada.Pack.Pack
-        (Slave => Preferences_Canvas, Options => "-side top -fill both -expand true");
+        (Slave => Scroll_X, Options => "-side bottom -fill x");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Scroll_Y, Options => "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Preferences_Canvas,
+         Options => "-side top -fill both -expand true");
       Label_Frame :=
         Create
           (pathName => Preferences_Frame & ".directory",
-           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Directory Listing}") & "}");
+           options =>
+             "-text {" &
+             Mc(Interp => Get_Context, Src_String => "{Directory Listing}") &
+             "}");
       Add_Button
-        (Name => ".showhidden", Text => Mc(Interp => Get_Context, Src_String => "{Show hidden files}"),
+        (Name => ".showhidden",
+         Text =>
+           Mc(Interp => Get_Context, Src_String => "{Show hidden files}"),
          Value => Settings.Show_Hidden,
-         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Show hidden files and directories in directory}") &
-         LF & Mc(Interp => Get_Context, Src_String => "{listing and in directories preview.}"),
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Show hidden files and directories in directory}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{listing and in directories preview.}"),
          Command => "SetShowHiddenFiles");
       Add_Button
-        (".showmodificationtime", Mc(Get_Context, "{Show modification time}"),
-         Settings.Show_Last_Modified,
-         Mc(Get_Context, "{Show the column with last modification}") & LF &
-         Mc(Get_Context, "{date for files and directories.}"),
-         "SetShowModificationTime");
+        (Name => ".showmodificationtime",
+         Text =>
+           Mc(Interp => Get_Context, Src_String => "{Show modification time}"),
+         Value => Settings.Show_Last_Modified,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Show the column with last modification}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{date for files and directories.}"),
+         Command => "SetShowModificationTime");
       Tcl_SetVar
-        (Get_Context, "updateinterval",
-         Natural'Image(Settings.Auto_Refresh_Interval));
+        (interp => Get_Context, varName => "updateinterval",
+         newValue => Natural'Image(Settings.Auto_Refresh_Interval));
       Label :=
         Create
-          (Label_Frame & ".intervallabel",
-           "-text """ & Mc(Get_Context, "{Auto refresh every}") &
-           "$updateinterval " & Mc(Get_Context, "{seconds}") & """");
+          (pathName => Label_Frame & ".intervallabel",
+           options =>
+             "-text """ &
+             Mc(Interp => Get_Context, Src_String => "{Auto refresh every}") &
+             "$updateinterval " &
+             Mc(Interp => Get_Context, Src_String => "{seconds}") & """");
       Add
         (Label,
          Mc(Get_Context, "{How often (in seconds) the program should check}") &
