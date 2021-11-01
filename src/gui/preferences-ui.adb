@@ -113,25 +113,25 @@ package body Preferences.UI is
                newValue => "0");
          end if;
          Add(Widget => New_Check_Button, Message => Tooltip_Text);
-         Tcl.Tk.Ada.Pack.Pack(New_Check_Button, "-fill x");
+         Tcl.Tk.Ada.Pack.Pack(Slave => New_Check_Button, Options => "-fill x");
       end Add_Button;
    begin
-      Autoscroll(Scroll_X);
-      Autoscroll(Scroll_Y);
-      Tcl.Tk.Ada.Pack.Pack(Scroll_X, "-side bottom -fill x");
-      Tcl.Tk.Ada.Pack.Pack(Scroll_Y, "-side right -fill y");
+      Autoscroll(Scroll => Scroll_X);
+      Autoscroll(Scroll => Scroll_Y);
+      Tcl.Tk.Ada.Pack.Pack(Slave => Scroll_X, Options => "-side bottom -fill x");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Scroll_Y, Options => "-side right -fill y");
       Tcl.Tk.Ada.Pack.Pack
-        (Preferences_Canvas, "-side top -fill both -expand true");
+        (Slave => Preferences_Canvas, Options => "-side top -fill both -expand true");
       Label_Frame :=
         Create
-          (Preferences_Frame & ".directory",
-           "-text {" & Mc(Get_Context, "{Directory Listing}") & "}");
+          (pathName => Preferences_Frame & ".directory",
+           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Directory Listing}") & "}");
       Add_Button
-        (".showhidden", Mc(Get_Context, "{Show hidden files}"),
-         Settings.Show_Hidden,
-         Mc(Get_Context, "{Show hidden files and directories in directory}") &
-         LF & Mc(Get_Context, "{listing and in directories preview.}"),
-         "SetShowHiddenFiles");
+        (Name => ".showhidden", Text => Mc(Interp => Get_Context, Src_String => "{Show hidden files}"),
+         Value => Settings.Show_Hidden,
+         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Show hidden files and directories in directory}") &
+         LF & Mc(Interp => Get_Context, Src_String => "{listing and in directories preview.}"),
+         Command => "SetShowHiddenFiles");
       Add_Button
         (".showmodificationtime", Mc(Get_Context, "{Show modification time}"),
          Settings.Show_Last_Modified,
