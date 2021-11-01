@@ -64,7 +64,9 @@ package body ShowItems is
          Delete(PreviewPad);
       end if;
       Clear(PreviewWindow);
-      Box(PreviewWindow, Default_Character, Default_Character);
+      if UILocation = PREVIEW then
+         Box(PreviewWindow, Default_Character, Default_Character);
+      end if;
       Refresh(PreviewWindow);
       PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 2);
       Add(PreviewPad, 0, Columns / 4, "Info" & LF);
@@ -700,7 +702,6 @@ package body ShowItems is
    begin
       PathButtons := Create(1, Columns / 2, 1, 0);
       PreviewWindow := Create(Lines - 2, Columns / 2, 2, Columns / 2);
-      Box(PreviewWindow, Default_Character, Default_Character);
       Refresh(PreviewWindow);
       Add_Command("GoToDirectory", GoToDirectory_Command'Access);
    end CreateShowItemsUI;
@@ -718,7 +719,9 @@ package body ShowItems is
       end if;
       Clear(PathButtons);
       Clear(PreviewWindow);
-      Box(PreviewWindow, Default_Character, Default_Character);
+      if UILocation = DESTINATION_VIEW then
+         Box(PreviewWindow, Default_Character, Default_Character);
+      end if;
       if not Is_Read_Accessible_File(To_String(DestinationDirectory)) then
          Show_Message
            (Mc
@@ -791,7 +794,6 @@ package body ShowItems is
          Delete(PreviewPad);
       end if;
       Clear(PreviewWindow);
-      Box(PreviewWindow, Default_Character, Default_Character);
       Refresh(PreviewWindow);
       PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 2);
       Refresh
@@ -987,7 +989,9 @@ package body ShowItems is
    procedure Clear_Preview_Window is
    begin
       Clear(PreviewWindow);
-      Box(PreviewWindow, Default_Character, Default_Character);
+      if UILocation in PREVIEW | DESTINATION_VIEW then
+         Box(PreviewWindow, Default_Character, Default_Character);
+      end if;
       Refresh(PreviewWindow);
    end Clear_Preview_Window;
 

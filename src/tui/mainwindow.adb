@@ -269,7 +269,9 @@ package body MainWindow is
       Post(Path);
       Set_Current(Path, Path_Items.all(Index));
       Terminal_Interface.Curses.Clear(ListWindow);
-      Box(ListWindow, Default_Character, Default_Character);
+      if UILocation = DIRECTORY_VIEW then
+         Box(ListWindow, Default_Character, Default_Character);
+      end if;
       Add(ListWindow, 1, 10, "Name");
       if Settings.Show_Last_Modified then
          Add(ListWindow, 1, Width - 27, "Modified");
