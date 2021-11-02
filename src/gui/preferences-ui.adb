@@ -172,38 +172,64 @@ package body Preferences.UI is
              Mc(Interp => Get_Context, Src_String => "{seconds}") & """");
       Add
         (Widget => Label,
-         Message => Mc(Interp => Get_Context, Src_String => "{How often (in seconds) the program should check}") &
-         LF & Mc(Interp => Get_Context, Src_String => "{for changes in current directory.}") & LF &
-         Mc(Interp => Get_Context, Src_String => "{If set to zero, autorefresh will be disabled.}"));
+         Message =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{How often (in seconds) the program should check}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{for changes in current directory.}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{If set to zero, autorefresh will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Slave => Label, Options => "-fill x");
       Scale :=
         Create
           (pathName => Label_Frame & ".intervalscale",
-           options => "-from 0 -to 30 -variable updateinterval -orient horizontal -command {SetLabel directory.interval}");
+           options =>
+             "-from 0 -to 30 -variable updateinterval -orient horizontal -command {SetLabel directory.interval}");
       Add
         (Widget => Scale,
-         Message => Mc(Interp => Get_Context, Src_String => "{How often (in seconds) the program should check}") &
-         LF & Mc(Interp => Get_Context, Src_String => "{for changes in current directory.}") & LF &
-         Mc(Interp => Get_Context, Src_String => "{If set to zero, autorefresh will be disabled.}"));
-      Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
-      Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
+         Message =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{How often (in seconds) the program should check}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{for changes in current directory.}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{If set to zero, autorefresh will be disabled.}"));
+      Tcl.Tk.Ada.Pack.Pack(Slave => Scale, Options => "-fill x");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Label_Frame, Options => "-fill x");
       Label_Frame :=
         Create
-          (Preferences_Frame & ".preview",
-           "-text {" & Mc(Get_Context, "{Preview}") & "}");
+          (pathName => Preferences_Frame & ".preview",
+           options =>
+             "-text {" & Mc(Interp => Get_Context, Src_String => "{Preview}") &
+             "}");
       Add_Button
-        (".showpreview", Mc(Get_Context, "{Show preview}"),
-         Settings.Show_Preview,
-         Mc
-           (Get_Context,
-            "{Show second panel with preview of files and directories.}") &
-         LF &
-         Mc(Get_Context,
-            "{If you disable this option, second panel will be visible only during}") &
-         LF &
-         Mc(Get_Context,
-            "{copying and moving files or directories and during creating new link.}"),
-         "SetShowPreview");
+        (Name => ".showpreview",
+         Text => Mc(Interp => Get_Context, Src_String => "{Show preview}"),
+         Value => Settings.Show_Preview,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Show second panel with preview of files and directories.}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{If you disable this option, second panel will be visible only during}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{copying and moving files or directories and during creating new link.}"),
+         Command => "SetShowPreview");
       Add_Button
         (".scaleimages", Mc(Get_Context, "{Scale images}"),
          Settings.Scale_Images,
