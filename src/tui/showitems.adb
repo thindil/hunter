@@ -316,6 +316,7 @@ package body ShowItems is
 
    procedure ShowPreview(Reset_Preview: Boolean := True) is
       Line: Line_Position := 1;
+      Current_Line: Natural := 0;
    begin
       if Reset_Preview then
          Start_Line := 1;
@@ -346,6 +347,10 @@ package body ShowItems is
             if not Settings.Show_Hidden and Item.Is_Hidden then
                goto End_Of_Loop;
             end if;
+            Current_Line := Current_Line + 1;
+            if Current_Line < Start_Line then
+               goto End_Of_Loop;
+            end if;
             Add(PreviewPad, Line, 0, To_String(Item.Name));
             Line := Line + 1;
             <<End_Of_Loop>>
@@ -371,7 +376,6 @@ package body ShowItems is
                   StartIndex, EndIndex, StartColor: Natural;
                   Colors: array(1 .. 16) of String(1 .. 6) :=
                     (others => "      ");
-                  Current_Line: Natural := 0;
                   procedure LoadFile is
                      FileLine: String(1 .. LineLength);
                      Amount: Natural;
