@@ -23,6 +23,8 @@ All notable changes to this project will be documented in this file.
   in the old directory in console version
 - Crash when activate file in destination directory during copying or moving
   files or directories in console version
+- Moving up and down the list of files in directories in preview of directory
+  in console version
 
 ## [1.6] - 2021-08-08
 
