@@ -171,20 +171,20 @@ package body Preferences.UI is
              "$updateinterval " &
              Mc(Interp => Get_Context, Src_String => "{seconds}") & """");
       Add
-        (Label,
-         Mc(Get_Context, "{How often (in seconds) the program should check}") &
-         LF & Mc(Get_Context, "{for changes in current directory.}") & LF &
-         Mc(Get_Context, "{If set to zero, autorefresh will be disabled.}"));
-      Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
+        (Widget => Label,
+         Message => Mc(Interp => Get_Context, Src_String => "{How often (in seconds) the program should check}") &
+         LF & Mc(Interp => Get_Context, Src_String => "{for changes in current directory.}") & LF &
+         Mc(Interp => Get_Context, Src_String => "{If set to zero, autorefresh will be disabled.}"));
+      Tcl.Tk.Ada.Pack.Pack(Slave => Label, Options => "-fill x");
       Scale :=
         Create
-          (Label_Frame & ".intervalscale",
-           "-from 0 -to 30 -variable updateinterval -orient horizontal -command {SetLabel directory.interval}");
+          (pathName => Label_Frame & ".intervalscale",
+           options => "-from 0 -to 30 -variable updateinterval -orient horizontal -command {SetLabel directory.interval}");
       Add
-        (Scale,
-         Mc(Get_Context, "{How often (in seconds) the program should check}") &
-         LF & Mc(Get_Context, "{for changes in current directory.}") & LF &
-         Mc(Get_Context, "{If set to zero, autorefresh will be disabled.}"));
+        (Widget => Scale,
+         Message => Mc(Interp => Get_Context, Src_String => "{How often (in seconds) the program should check}") &
+         LF & Mc(Interp => Get_Context, Src_String => "{for changes in current directory.}") & LF &
+         Mc(Interp => Get_Context, Src_String => "{If set to zero, autorefresh will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
       Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
       Label_Frame :=
