@@ -201,6 +201,8 @@ begin
                UILocation := DESTINATION_PATH;
             when PREVIEW =>
                UILocation := DIRECTORY_VIEW;
+               Clear_Preview_Window;
+               ShowPreview;
                Visibility := Invisible;
                Set_Cursor_Visibility(Visibility);
                begin
@@ -213,6 +215,8 @@ begin
                end;
             when DESTINATION_PATH =>
                UILocation := DIRECTORY_VIEW;
+               Clear_Preview_Window;
+               ShowDestination;
             when others =>
                null;
          end case;
