@@ -231,43 +231,59 @@ package body Preferences.UI is
                 "{copying and moving files or directories and during creating new link.}"),
          Command => "SetShowPreview");
       Add_Button
-        (Name => ".scaleimages", Text => Mc(Interp => Get_Context, Src_String => "{Scale images}"),
+        (Name => ".scaleimages",
+         Text => Mc(Interp => Get_Context, Src_String => "{Scale images}"),
          Value => Settings.Scale_Images,
-         Tooltip_Text => Mc
-           (Interp => Get_Context,
-            Src_String => "{Scale images in preview. When disabled, images shows with}") &
-         LF &
-         Mc(Interp => Get_Context,
-            Src_String => "{natural size. When enabled, images are resized to the size of the}") &
-         LF & Mc(Interp => Get_Context, Src_String => "{preview window.}"),
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Scale images in preview. When disabled, images shows with}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{natural size. When enabled, images are resized to the size of the}") &
+           LF & Mc(Interp => Get_Context, Src_String => "{preview window.}"),
          Command => "SetScaleImages");
       Check_Button :=
         Create
           (pathName => Label_Frame & ".syntaxhighlightning",
-           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Syntax highlightning}") &
-           "} -command {SetColorText}");
+           options =>
+             "-text {" &
+             Mc(Interp => Get_Context,
+                Src_String => "{Syntax highlightning}") &
+             "} -command {SetColorText}");
       if Settings.Color_Text then
-         Tcl_SetVar(interp => Check_Button.Interp, varName => Widget_Image(Win => Check_Button), newValue => "1");
+         Tcl_SetVar
+           (interp => Check_Button.Interp,
+            varName => Widget_Image(Win => Check_Button), newValue => "1");
       else
-         Tcl_SetVar(Check_Button.Interp, Widget_Image(Check_Button), "0");
+         Tcl_SetVar
+           (interp => Check_Button.Interp,
+            varName => Widget_Image(Win => Check_Button), newValue => "0");
       end if;
       if Colors_Enabled then
-         State(Check_Button, "!disabled");
+         State(Widget => Check_Button, StateSpec => "!disabled");
       else
-         State(Check_Button, "disabled");
+         State(Widget => Check_Button, StateSpec => "disabled");
       end if;
       Add
-        (Check_Button,
-         Mc
-           (Get_Context,
-            "{Color files syntax in files preview. Not all text (especially source code)}") &
-         LF &
-         Mc(Get_Context,
-            "{files are supported. You may not be able to enable this}") &
-         LF &
-         Mc(Get_Context,
-            "{option if you don't have installed the program 'highlight'.}"));
-      Tcl.Tk.Ada.Pack.Pack(Check_Button, "-fill x");
+        (Widget => Check_Button,
+         Message =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Color files syntax in files preview. Not all text (especially source code)}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{files are supported. You may not be able to enable this}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{option if you don't have installed the program 'highlight'.}"));
+      Tcl.Tk.Ada.Pack.Pack(Slave => Check_Button, Options => "-fill x");
+      Select_Color_Theme_Block :
       declare
          Search: Search_Type;
          File: Directory_Entry_Type;
@@ -332,7 +348,7 @@ package body Preferences.UI is
          Tcl.Tk.Ada.Grid.Grid(Label);
          Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
          Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
-      end;
+      end Select_Color_Theme_Block;
       Add_Button
         (".monospacefont", Mc(Get_Context, "{Use monospace font}"),
          Settings.Monospace_Font,
