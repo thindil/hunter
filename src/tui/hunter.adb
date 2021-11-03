@@ -182,6 +182,7 @@ begin
          case UILocation is
             when DIRECTORY_VIEW =>
                UILocation := PATH_BUTTONS;
+               Update_Directory_List;
             when PATH_BUTTONS =>
                UILocation := MAIN_MENU;
             when MAIN_MENU =>
@@ -203,6 +204,7 @@ begin
                UILocation := DIRECTORY_VIEW;
                Clear_Preview_Window;
                ShowPreview;
+               Update_Directory_List;
                Visibility := Invisible;
                Set_Cursor_Visibility(Visibility);
                begin
@@ -217,6 +219,7 @@ begin
                UILocation := DIRECTORY_VIEW;
                Clear_Preview_Window;
                ShowDestination;
+               Update_Directory_List;
             when others =>
                null;
          end case;
