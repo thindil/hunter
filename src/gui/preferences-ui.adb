@@ -231,23 +231,23 @@ package body Preferences.UI is
                 "{copying and moving files or directories and during creating new link.}"),
          Command => "SetShowPreview");
       Add_Button
-        (".scaleimages", Mc(Get_Context, "{Scale images}"),
-         Settings.Scale_Images,
-         Mc
-           (Get_Context,
-            "{Scale images in preview. When disabled, images shows with}") &
+        (Name => ".scaleimages", Text => Mc(Interp => Get_Context, Src_String => "{Scale images}"),
+         Value => Settings.Scale_Images,
+         Tooltip_Text => Mc
+           (Interp => Get_Context,
+            Src_String => "{Scale images in preview. When disabled, images shows with}") &
          LF &
-         Mc(Get_Context,
-            "{natural size. When enabled, images are resized to the size of the}") &
-         LF & Mc(Get_Context, "{preview window.}"),
-         "SetScaleImages");
+         Mc(Interp => Get_Context,
+            Src_String => "{natural size. When enabled, images are resized to the size of the}") &
+         LF & Mc(Interp => Get_Context, Src_String => "{preview window.}"),
+         Command => "SetScaleImages");
       Check_Button :=
         Create
-          (Label_Frame & ".syntaxhighlightning",
-           "-text {" & Mc(Get_Context, "{Syntax highlightning}") &
+          (pathName => Label_Frame & ".syntaxhighlightning",
+           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Syntax highlightning}") &
            "} -command {SetColorText}");
       if Settings.Color_Text then
-         Tcl_SetVar(Check_Button.Interp, Widget_Image(Check_Button), "1");
+         Tcl_SetVar(interp => Check_Button.Interp, varName => Widget_Image(Win => Check_Button), newValue => "1");
       else
          Tcl_SetVar(Check_Button.Interp, Widget_Image(Check_Button), "0");
       end if;
