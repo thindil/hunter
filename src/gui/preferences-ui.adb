@@ -287,44 +287,44 @@ package body Preferences.UI is
       declare
          Search: Search_Type;
          File: Directory_Entry_Type;
-         ThemesName: Unbounded_String;
-         ComboBox: Ttk_ComboBox;
-         ColorFrame: constant Ttk_Frame := Create(Label_Frame & ".colorframe");
+         Themes_Name: Unbounded_String := Null_Unbounded_String;
+         Color_Frame: constant Ttk_Frame := Create(pathName => Label_Frame & ".colorframe");
+         Combo_Box: Ttk_ComboBox := Get_Widget(pathName => Color_Frame & "highlighttheme");
       begin
-         if not Ada.Environment_Variables.Exists("HIGHLIGHT_DATADIR") then
+         if not Ada.Environment_Variables.Exists(Name => "HIGHLIGHT_DATADIR") then
             Ada.Environment_Variables.Set
-              ("HIGHLIGHT_DATADIR",
-               Ada.Environment_Variables.Value("APPDIR", "") &
+              (Name => "HIGHLIGHT_DATADIR",
+               Value => Ada.Environment_Variables.Value(Name => "APPDIR", Default => "") &
                "/usr/share/highlight");
          end if;
          if Exists
-             (Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+             (Name => Ada.Environment_Variables.Value(Name => "HIGHLIGHT_DATADIR") &
               "/themes/base16") then
             Start_Search
-              (Search,
-               Ada.Environment_Variables.Value("HIGHLIGHT_DATADIR") &
+              (Search => Search,
+               Directory => Ada.Environment_Variables.Value(Name => "HIGHLIGHT_DATADIR") &
                "/themes/base16",
-               "*.theme");
+               Pattern => "*.theme");
             Create_Themes_List_Loop :
-            while More_Entries(Search) loop
-               Get_Next_Entry(Search, File);
-               Append(ThemesName, " " & Base_Name(Simple_Name(File)));
+            while More_Entries(Search => Search) loop
+               Get_Next_Entry(Search => Search, Directory_Entry => File);
+               Append(Themes_Name, " " & Base_Name(Simple_Name(File)));
             end loop Create_Themes_List_Loop;
             End_Search(Search);
          end if;
-         ComboBox :=
+         Combo_Box :=
            Create
-             (ColorFrame & ".highlighttheme",
-              "-state readonly -values [list" & To_String(ThemesName) & "]");
+             (Color_Frame & ".highlighttheme",
+              "-state readonly -values [list" & To_String(Themes_Name) & "]");
          if Colors_Enabled then
-            State(ComboBox, "!disabled");
+            State(Combo_Box, "!disabled");
          else
-            State(ComboBox, "disabled");
+            State(Combo_Box, "disabled");
          end if;
-         Set(ComboBox, "{" & To_String(Settings.Color_Theme) & "}");
-         Bind(ComboBox, "<<ComboboxSelected>>", "SetColorTheme");
+         Set(Combo_Box, "{" & To_String(Settings.Color_Theme) & "}");
+         Bind(Combo_Box, "<<ComboboxSelected>>", "SetColorTheme");
          Add
-           (ComboBox,
+           (Combo_Box,
             Mc
               (Get_Context,
                "{Select color theme for coloring syntax in text files in preview. You may}") &
@@ -334,7 +334,7 @@ package body Preferences.UI is
             LF & Mc(Get_Context, "{the program 'highlight'.}"));
          Label :=
            Create
-             (ColorFrame & ".themelabel",
+             (Color_Frame & ".themelabel",
               "-text {" & Mc(Get_Context, "{Color theme:}") & "}");
          Add
            (Label,
@@ -346,8 +346,8 @@ package body Preferences.UI is
                "{not be able to enable this option if you don't have installed}") &
             LF & Mc(Get_Context, "{the program 'highlight'.}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
-         Tcl.Tk.Ada.Grid.Grid(ComboBox, "-column 1 -row 0");
-         Tcl.Tk.Ada.Pack.Pack(ColorFrame, "-fill x");
+         Tcl.Tk.Ada.Grid.Grid(Combo_Box, "-column 1 -row 0");
+         Tcl.Tk.Ada.Pack.Pack(Color_Frame, "-fill x");
       end Select_Color_Theme_Block;
       Add_Button
         (".monospacefont", Mc(Get_Context, "{Use monospace font}"),
