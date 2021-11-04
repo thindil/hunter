@@ -185,6 +185,8 @@ begin
                Update_Directory_List;
             when PATH_BUTTONS =>
                UILocation := MAIN_MENU;
+               CreateProgramMenu(True);
+               Update_Directory_List;
             when MAIN_MENU =>
                Clear_Preview_Window;
                if New_Action in COPY | MOVE | CREATELINK then
@@ -198,6 +200,7 @@ begin
                   UILocation := PREVIEW;
                   ShowPreview;
                end if;
+               CreateProgramMenu(True);
             when DESTINATION_VIEW =>
                UILocation := DESTINATION_PATH;
             when PREVIEW =>

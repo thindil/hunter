@@ -154,6 +154,11 @@ package body MainWindow is
                Post(ProgramMenu);
             end;
       end case;
+      if UILocation = MAIN_MENU then
+         Set_Foreground(ProgramMenu, (Reverse_Video => True, others => False));
+      else
+         Set_Foreground(ProgramMenu, Normal_Video);
+      end if;
       if Update then
          Refresh(MenuWindow);
       end if;
@@ -273,7 +278,11 @@ package body MainWindow is
          Box(ListWindow, Default_Character, Default_Character);
          Set_Foreground(Path, Normal_Video);
       else
-         Set_Foreground(Path, (Reverse_Video => True, others => False));
+         if UILocation = PATH_BUTTONS then
+            Set_Foreground(Path, (Reverse_Video => True, others => False));
+         else
+            Set_Foreground(Path, Normal_Video);
+         end if;
       end if;
       Add(ListWindow, 1, 10, "Name");
       if Settings.Show_Last_Modified then
