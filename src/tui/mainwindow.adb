@@ -271,6 +271,9 @@ package body MainWindow is
       Terminal_Interface.Curses.Clear(ListWindow);
       if UILocation = DIRECTORY_VIEW then
          Box(ListWindow, Default_Character, Default_Character);
+         Set_Foreground(Path, Normal_Video);
+      else
+         Set_Foreground(Path, (Reverse_Video => True, others => False));
       end if;
       Add(ListWindow, 1, 10, "Name");
       if Settings.Show_Last_Modified then
