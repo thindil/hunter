@@ -288,50 +288,72 @@ package body Preferences.UI is
          Search: Search_Type;
          File: Directory_Entry_Type;
          Themes_Name: Unbounded_String := Null_Unbounded_String;
-         Color_Frame: constant Ttk_Frame := Create(pathName => Label_Frame & ".colorframe");
-         Combo_Box: Ttk_ComboBox := Get_Widget(pathName => Color_Frame & "highlighttheme");
+         Color_Frame: constant Ttk_Frame :=
+           Create(pathName => Label_Frame & ".colorframe");
+         Combo_Box: Ttk_ComboBox :=
+           Get_Widget(pathName => Color_Frame & "highlighttheme");
       begin
-         if not Ada.Environment_Variables.Exists(Name => "HIGHLIGHT_DATADIR") then
+         if not Ada.Environment_Variables.Exists
+             (Name => "HIGHLIGHT_DATADIR") then
             Ada.Environment_Variables.Set
               (Name => "HIGHLIGHT_DATADIR",
-               Value => Ada.Environment_Variables.Value(Name => "APPDIR", Default => "") &
-               "/usr/share/highlight");
+               Value =>
+                 Ada.Environment_Variables.Value
+                   (Name => "APPDIR", Default => "") &
+                 "/usr/share/highlight");
          end if;
          if Exists
-             (Name => Ada.Environment_Variables.Value(Name => "HIGHLIGHT_DATADIR") &
-              "/themes/base16") then
+             (Name =>
+                Ada.Environment_Variables.Value(Name => "HIGHLIGHT_DATADIR") &
+                "/themes/base16") then
             Start_Search
               (Search => Search,
-               Directory => Ada.Environment_Variables.Value(Name => "HIGHLIGHT_DATADIR") &
-               "/themes/base16",
+               Directory =>
+                 Ada.Environment_Variables.Value(Name => "HIGHLIGHT_DATADIR") &
+                 "/themes/base16",
                Pattern => "*.theme");
             Create_Themes_List_Loop :
             while More_Entries(Search => Search) loop
                Get_Next_Entry(Search => Search, Directory_Entry => File);
-               Append(Themes_Name, " " & Base_Name(Simple_Name(File)));
+               Append
+                 (Source => Themes_Name,
+                  New_Item =>
+                    " " &
+                    Base_Name(Name => Simple_Name(Directory_Entry => File)));
             end loop Create_Themes_List_Loop;
-            End_Search(Search);
+            End_Search(Search => Search);
          end if;
          Combo_Box :=
            Create
-             (Color_Frame & ".highlighttheme",
-              "-state readonly -values [list" & To_String(Themes_Name) & "]");
+             (pathName => Color_Frame & ".highlighttheme",
+              options =>
+                "-state readonly -values [list" &
+                To_String(Source => Themes_Name) & "]");
          if Colors_Enabled then
-            State(Combo_Box, "!disabled");
+            State(Widget => Combo_Box, StateSpec => "!disabled");
          else
-            State(Combo_Box, "disabled");
+            State(Widget => Combo_Box, StateSpec => "disabled");
          end if;
-         Set(Combo_Box, "{" & To_String(Settings.Color_Theme) & "}");
-         Bind(Combo_Box, "<<ComboboxSelected>>", "SetColorTheme");
+         Set
+           (ComboBox => Combo_Box,
+            Value => "{" & To_String(Source => Settings.Color_Theme) & "}");
+         Bind
+           (Widgt => Combo_Box, Sequence => "<<ComboboxSelected>>",
+            Script => "SetColorTheme");
          Add
-           (Combo_Box,
-            Mc
-              (Get_Context,
-               "{Select color theme for coloring syntax in text files in preview. You may}") &
-            LF &
-            Mc(Get_Context,
-               "{not be able to enable this option if you don't have installed}") &
-            LF & Mc(Get_Context, "{the program 'highlight'.}"));
+           (Widget => Combo_Box,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Select color theme for coloring syntax in text files in preview. You may}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String =>
+                   "{not be able to enable this option if you don't have installed}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String => "{the program 'highlight'.}"));
          Label :=
            Create
              (Color_Frame & ".themelabel",
