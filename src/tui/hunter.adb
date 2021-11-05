@@ -203,6 +203,7 @@ begin
                CreateProgramMenu(True);
             when DESTINATION_VIEW =>
                UILocation := DESTINATION_PATH;
+               ShowDestination;
             when PREVIEW =>
                UILocation := DIRECTORY_VIEW;
                Clear_Preview_Window;

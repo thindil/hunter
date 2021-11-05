@@ -758,6 +758,15 @@ package body ShowItems is
       Set_Sub_Window
         (Path, Derived_Window(PathButtons, 1, (Columns / 2) - 2, 0, 1));
       Post(Path);
+      if UILocation = DESTINATION_VIEW then
+         Set_Foreground(Path, Normal_Video);
+      else
+         if UILocation = DESTINATION_PATH then
+            Set_Foreground(Path, (Reverse_Video => True, others => False));
+         else
+            Set_Foreground(Path, Normal_Video);
+         end if;
+      end if;
       Buttons_Visible := True;
       Set_Current(Path, Path_Items.all(Index));
       Move_Window(PathButtons, 1, (Columns / 2));
