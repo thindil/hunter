@@ -356,26 +356,26 @@ package body Preferences.UI is
                  Src_String => "{the program 'highlight'.}"));
          Label :=
            Create
-             (Color_Frame & ".themelabel",
-              "-text {" & Mc(Get_Context, "{Color theme:}") & "}");
+             (pathName => Color_Frame & ".themelabel",
+              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Color theme:}") & "}");
          Add
-           (Label,
-            Mc
-              (Get_Context,
-               "{Select color theme for coloring syntax in text files in preview. You may}") &
+           (Widget => Label,
+            Message => Mc
+              (Interp => Get_Context,
+               Src_String => "{Select color theme for coloring syntax in text files in preview. You may}") &
             LF &
-            Mc(Get_Context,
-               "{not be able to enable this option if you don't have installed}") &
-            LF & Mc(Get_Context, "{the program 'highlight'.}"));
-         Tcl.Tk.Ada.Grid.Grid(Label);
-         Tcl.Tk.Ada.Grid.Grid(Combo_Box, "-column 1 -row 0");
-         Tcl.Tk.Ada.Pack.Pack(Color_Frame, "-fill x");
+            Mc(Interp => Get_Context,
+               Src_String => "{not be able to enable this option if you don't have installed}") &
+            LF & Mc(Interp => Get_Context, Src_String => "{the program 'highlight'.}"));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+         Tcl.Tk.Ada.Grid.Grid(Slave => Combo_Box, Options => "-column 1 -row 0");
+         Tcl.Tk.Ada.Pack.Pack(Slave => Color_Frame, Options => "-fill x");
       end Select_Color_Theme_Block;
       Add_Button
-        (".monospacefont", Mc(Get_Context, "{Use monospace font}"),
-         Settings.Monospace_Font,
-         Mc(Get_Context, "{Use monospace font in the preview of text files.}"),
-         "SetMonospaceFont");
+        (Name => ".monospacefont", Text => Mc(Interp => Get_Context, Src_String => "{Use monospace font}"),
+         Value => Settings.Monospace_Font,
+         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Use monospace font in the preview of text files.}"),
+         Command => "SetMonospaceFont");
       Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
       Label_Frame :=
         Create
