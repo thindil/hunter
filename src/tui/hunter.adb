@@ -183,10 +183,16 @@ begin
             when DIRECTORY_VIEW =>
                UILocation := PATH_BUTTONS;
                Update_Directory_List;
+               if New_Action in COPY | MOVE | CREATELINK then
+                  ShowDestination;
+               end if;
             when PATH_BUTTONS =>
                UILocation := MAIN_MENU;
                CreateProgramMenu(True);
                Update_Directory_List;
+               if New_Action in COPY | MOVE | CREATELINK then
+                  ShowDestination;
+               end if;
             when MAIN_MENU =>
                Clear_Preview_Window;
                if New_Action in COPY | MOVE | CREATELINK then
@@ -222,8 +228,8 @@ begin
             when DESTINATION_PATH =>
                UILocation := DIRECTORY_VIEW;
                Clear_Preview_Window;
-               ShowDestination;
                Update_Directory_List;
+               ShowDestination;
             when others =>
                null;
          end case;
