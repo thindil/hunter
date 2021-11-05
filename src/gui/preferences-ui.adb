@@ -357,38 +357,58 @@ package body Preferences.UI is
          Label :=
            Create
              (pathName => Color_Frame & ".themelabel",
-              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Color theme:}") & "}");
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Color theme:}") &
+                "}");
          Add
            (Widget => Label,
-            Message => Mc
-              (Interp => Get_Context,
-               Src_String => "{Select color theme for coloring syntax in text files in preview. You may}") &
-            LF &
-            Mc(Interp => Get_Context,
-               Src_String => "{not be able to enable this option if you don't have installed}") &
-            LF & Mc(Interp => Get_Context, Src_String => "{the program 'highlight'.}"));
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Select color theme for coloring syntax in text files in preview. You may}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String =>
+                   "{not be able to enable this option if you don't have installed}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String => "{the program 'highlight'.}"));
          Tcl.Tk.Ada.Grid.Grid(Slave => Label);
-         Tcl.Tk.Ada.Grid.Grid(Slave => Combo_Box, Options => "-column 1 -row 0");
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Combo_Box, Options => "-column 1 -row 0");
          Tcl.Tk.Ada.Pack.Pack(Slave => Color_Frame, Options => "-fill x");
       end Select_Color_Theme_Block;
       Add_Button
-        (Name => ".monospacefont", Text => Mc(Interp => Get_Context, Src_String => "{Use monospace font}"),
+        (Name => ".monospacefont",
+         Text =>
+           Mc(Interp => Get_Context, Src_String => "{Use monospace font}"),
          Value => Settings.Monospace_Font,
-         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Use monospace font in the preview of text files.}"),
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Use monospace font in the preview of text files.}"),
          Command => "SetMonospaceFont");
-      Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Label_Frame, Options => "-fill x");
       Label_Frame :=
         Create
-          (Preferences_Frame & ".interface",
-           "-text {" & Mc(Get_Context, "{Interface}") & "}");
+          (pathName => Preferences_Frame & ".interface",
+           options =>
+             "-text {" &
+             Mc(Interp => Get_Context, Src_String => "{Interface}") & "}");
       Tcl_SetVar
-        (Check_Button.Interp, "messagesinterval",
-         Natural'Image(Settings.Auto_Close_Messages_Time));
+        (interp => Check_Button.Interp, varName => "messagesinterval",
+         newValue => Natural'Image(Settings.Auto_Close_Messages_Time));
       Label :=
         Create
-          (Label_Frame & ".messageslabel",
-           "-text """ & Mc(Get_Context, "{Hide messages after}") &
-           "$messagesinterval " & Mc(Get_Context, "{seconds}") & """");
+          (pathName => Label_Frame & ".messageslabel",
+           options =>
+             "-text """ &
+             Mc(Interp => Get_Context, Src_String => "{Hide messages after}") &
+             "$messagesinterval " &
+             Mc(Interp => Get_Context, Src_String => "{seconds}") & """");
       Add
         (Label,
          Mc
