@@ -765,6 +765,7 @@ package body MainWindow is
                   Refresh(MenuWindow);
                   DestinationDirectory := Common.Current_Directory;
                   Second_Items_List := Items_List;
+                  UILocation := DESTINATION_VIEW;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 4 =>
@@ -777,6 +778,7 @@ package body MainWindow is
                   Refresh(MenuWindow);
                   DestinationDirectory := Common.Current_Directory;
                   Second_Items_List := Items_List;
+                  UILocation := DESTINATION_VIEW;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 6 =>
@@ -785,6 +787,7 @@ package body MainWindow is
                   Refresh(MenuWindow);
                   DestinationDirectory := Common.Current_Directory;
                   Second_Items_List := Items_List;
+                  UILocation := DESTINATION_VIEW;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 7 =>
