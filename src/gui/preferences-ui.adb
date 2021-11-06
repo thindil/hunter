@@ -410,37 +410,37 @@ package body Preferences.UI is
              "$messagesinterval " &
              Mc(Interp => Get_Context, Src_String => "{seconds}") & """");
       Add
-        (Label,
-         Mc
-           (Get_Context,
-            "{After that amount of seconds, all messages will be automatically closed by the}") &
+        (Widget => Label,
+         Message => Mc
+           (Interp => Get_Context,
+            Src_String => "{After that amount of seconds, all messages will be automatically closed by the}") &
          LF &
-         Mc(Get_Context,
-            "{program. If you set it to 0, this feature will be disabled.}"));
-      Tcl.Tk.Ada.Pack.Pack(Label, "-fill x");
+         Mc(Interp => Get_Context,
+            Src_String => "{program. If you set it to 0, this feature will be disabled.}"));
+      Tcl.Tk.Ada.Pack.Pack(Slave => Label, Options => "-fill x");
       Scale :=
         Create
-          (Label_Frame & ".messagesscale",
-           "-from 0 -to 60 -variable messagesinterval -orient horizontal -command {SetLabel interface.messages}");
+          (pathName => Label_Frame & ".messagesscale",
+           options => "-from 0 -to 60 -variable messagesinterval -orient horizontal -command {SetLabel interface.messages}");
       Add
-        (Scale,
-         Mc
-           (Get_Context,
-            "{After that amount of seconds, all messages will be automatically closed by the}") &
+        (Widget => Scale,
+         Message => Mc
+           (Interp => Get_Context,
+            Src_String => "{After that amount of seconds, all messages will be automatically closed by the}") &
          LF &
-         Mc(Get_Context,
-            "{program. If you set it to 0, this feature will be disabled.}"));
-      Tcl.Tk.Ada.Pack.Pack(Scale, "-fill x");
+         Mc(Interp => Get_Context,
+            Src_String => "{program. If you set it to 0, this feature will be disabled.}"));
+      Tcl.Tk.Ada.Pack.Pack(Slave => Scale, Options => "-fill x");
       Add_Button
-        (".stayinold", Mc(Get_Context, "{Stay in source directory}"),
-         Settings.Stay_In_Old,
-         Mc
-           (Get_Context,
-            "{After copying, moving files and directories or creating new link, stay in old}") &
+        (Name => ".stayinold", Text => Mc(Interp => Get_Context, Src_String => "{Stay in source directory}"),
+         Value => Settings.Stay_In_Old,
+         Tooltip_Text => Mc
+           (Interp => Get_Context,
+            Src_String => "{After copying, moving files and directories or creating new link, stay in old}") &
          LF &
-         Mc(Get_Context,
-            "{directory, don't automatically go to destination directory.}"),
-         "SetStayInOld");
+         Mc(Interp => Get_Context,
+            Src_String => "{directory, don't automatically go to destination directory.}"),
+         Command => "SetStayInOld");
       Add_Button
         (".showfinished", Mc(Get_Context, "{Show info about finished action}"),
          Settings.Show_Finished_Info,
