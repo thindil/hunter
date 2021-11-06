@@ -411,44 +411,66 @@ package body Preferences.UI is
              Mc(Interp => Get_Context, Src_String => "{seconds}") & """");
       Add
         (Widget => Label,
-         Message => Mc
-           (Interp => Get_Context,
-            Src_String => "{After that amount of seconds, all messages will be automatically closed by the}") &
-         LF &
-         Mc(Interp => Get_Context,
-            Src_String => "{program. If you set it to 0, this feature will be disabled.}"));
+         Message =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{After that amount of seconds, all messages will be automatically closed by the}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{program. If you set it to 0, this feature will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Slave => Label, Options => "-fill x");
       Scale :=
         Create
           (pathName => Label_Frame & ".messagesscale",
-           options => "-from 0 -to 60 -variable messagesinterval -orient horizontal -command {SetLabel interface.messages}");
+           options =>
+             "-from 0 -to 60 -variable messagesinterval -orient horizontal -command {SetLabel interface.messages}");
       Add
         (Widget => Scale,
-         Message => Mc
-           (Interp => Get_Context,
-            Src_String => "{After that amount of seconds, all messages will be automatically closed by the}") &
-         LF &
-         Mc(Interp => Get_Context,
-            Src_String => "{program. If you set it to 0, this feature will be disabled.}"));
+         Message =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{After that amount of seconds, all messages will be automatically closed by the}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{program. If you set it to 0, this feature will be disabled.}"));
       Tcl.Tk.Ada.Pack.Pack(Slave => Scale, Options => "-fill x");
       Add_Button
-        (Name => ".stayinold", Text => Mc(Interp => Get_Context, Src_String => "{Stay in source directory}"),
+        (Name => ".stayinold",
+         Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Stay in source directory}"),
          Value => Settings.Stay_In_Old,
-         Tooltip_Text => Mc
-           (Interp => Get_Context,
-            Src_String => "{After copying, moving files and directories or creating new link, stay in old}") &
-         LF &
-         Mc(Interp => Get_Context,
-            Src_String => "{directory, don't automatically go to destination directory.}"),
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{After copying, moving files and directories or creating new link, stay in old}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{directory, don't automatically go to destination directory.}"),
          Command => "SetStayInOld");
       Add_Button
-        (".showfinished", Mc(Get_Context, "{Show info about finished action}"),
-         Settings.Show_Finished_Info,
-         Mc
-           (Get_Context,
-            "{Show information about finished copying, moving and}") &
-         LF & Mc(Get_Context, "{deleting files or directories.}"),
-         "SetShowFinishedInfo");
+        (Name => ".showfinished",
+         Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Show info about finished action}"),
+         Value => Settings.Show_Finished_Info,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Show information about finished copying, moving and}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{deleting files or directories.}"),
+         Command => "SetShowFinishedInfo");
       Add_Button
         (".toolbarsontop", Mc(Get_Context, "{Toolbars on top}"),
          Settings.Toolbars_On_Top,
