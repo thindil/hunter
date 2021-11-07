@@ -859,7 +859,6 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
-            Update_Directory_List;
             case Get_Index(Current(SubMenu)) is
                when 1 =>
                   ShowPreview;
@@ -881,6 +880,10 @@ package body MainWindow is
             end case;
             Post(SubMenu, False);
             Delete(SubMenu);
+            if New_Location /= EXECUTE_FORM then
+               UILocation := New_Location;
+               Update_Directory_List;
+            end if;
             return New_Location;
          when others =>
             null;
