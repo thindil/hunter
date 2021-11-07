@@ -617,6 +617,8 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(ProgramMenu, M_Last_Item);
          when 10 =>
+            UILocation := DIRECTORY_VIEW;
+            CreateProgramMenu(True);
             case CurrentIndex is
                when 1 =>
                   return PATH_BUTTONS;
