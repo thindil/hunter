@@ -148,6 +148,8 @@ package body Bookmarks.UI is
          CreateProgramMenu(True);
          Common.Current_Directory := To_Unbounded_String(Value("HOME"));
       else
+         Update_Directory_List;
+         ShowPreview;
          ShowBookmarksForm;
          return BOOKMARKS_FORM;
       end if;
