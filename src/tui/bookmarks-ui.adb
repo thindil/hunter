@@ -134,6 +134,7 @@ package body Bookmarks.UI is
          return DESTINATION_VIEW;
       end if;
       if Bookmark = "Close" then
+         UILocation := DIRECTORY_VIEW;
          Update_Directory_List;
          return DIRECTORY_VIEW;
       end if;
