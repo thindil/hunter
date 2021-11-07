@@ -472,39 +472,58 @@ package body Preferences.UI is
               Src_String => "{deleting files or directories.}"),
          Command => "SetShowFinishedInfo");
       Add_Button
-        (Name => ".toolbarsontop", Text => Mc(Interp => Get_Context, Src_String => "{Toolbars on top}"),
+        (Name => ".toolbarsontop",
+         Text => Mc(Interp => Get_Context, Src_String => "{Toolbars on top}"),
          Value => Settings.Toolbars_On_Top,
-         Tooltip_Text => Mc
-           (Interp => Get_Context,
-            Src_String => "{If enabled, show toolbars for actions and information on top of the window.}") &
-         LF &
-         Mc(Interp => Get_Context,
-            Src_String => "{Otherwise, they will be at left side of the window.}"),
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{If enabled, show toolbars for actions and information on top of the window.}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{Otherwise, they will be at left side of the window.}"),
          Command => "SetToolbarsOnTop");
-      Set_Ui_Theme_Block:
+      Set_Ui_Theme_Block :
       declare
-         Theme_Frame: constant Ttk_Frame := Create(pathName => Label_Frame & ".colorframe");
-         Themes_Names: Unbounded_String := To_Unbounded_String(Source => Theme_Names);
+         Theme_Frame: constant Ttk_Frame :=
+           Create(pathName => Label_Frame & ".colorframe");
+         Themes_Names: Unbounded_String :=
+           To_Unbounded_String(Source => Theme_Names);
          Color_Box: constant Ttk_ComboBox :=
-           Create(pathName => Theme_Frame & ".uitheme", options => "-state readonly");
+           Create
+             (pathName => Theme_Frame & ".uitheme",
+              options => "-state readonly");
       begin
-         if Index(Source => Themes_Names, Pattern => "hunter-dark", From => 1) = 0 then
-            Append(Themes_Names, " hunter-dark");
+         if Index
+             (Source => Themes_Names, Pattern => "hunter-dark", From => 1) =
+           0 then
+            Append(Source => Themes_Names, New_Item => " hunter-dark");
          end if;
-         if Index(Themes_Names, "hunter-light", 1) = 0 then
-            Append(Themes_Names, " hunter-light");
+         if Index
+             (Source => Themes_Names, Pattern => "hunter-light", From => 1) =
+           0 then
+            Append(Source => Themes_Names, New_Item => " hunter-light");
          end if;
          Widgets.configure
-           (Color_Box, "-values [list " & To_String(Themes_Names) & "]");
-         Bind(Color_Box, "<<ComboboxSelected>>", "SetUITheme");
+           (Widgt => Color_Box,
+            options =>
+              "-values [list " & To_String(Source => Themes_Names) & "]");
+         Bind
+           (Widgt => Color_Box, Sequence => "<<ComboboxSelected>>",
+            Script => "SetUITheme");
          Add
-           (Color_Box,
-            Mc
-              (Get_Context,
-               "{Select other theme for the program. After selecting a new theme,}") &
-            LF &
-            Mc(Get_Context,
-               "{you will have to restart the program to apply all changes.}"));
+           (Widget => Color_Box,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Select other theme for the program. After selecting a new theme,}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String =>
+                   "{you will have to restart the program to apply all changes.}"));
          Label :=
            Create
              (Theme_Frame & ".themelabel",
