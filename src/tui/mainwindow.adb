@@ -859,6 +859,7 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
+            UILocation := New_Location;
             case Get_Index(Current(SubMenu)) is
                when 1 =>
                   ShowPreview;
