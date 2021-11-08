@@ -71,9 +71,9 @@ package body MainWindow is
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 4);
             begin
-               Menu_Items.all(1) := New_Item("Quit");
-               Menu_Items.all(2) := New_Item("Create link");
-               Menu_Items.all(3) := New_Item("Cancel");
+               Menu_Items.all(1) := New_Item(Mc(Interpreter, "Quit"));
+               Menu_Items.all(2) := New_Item(Mc(Interpreter, "Create link"));
+               Menu_Items.all(3) := New_Item(Mc(Interpreter, "Cancel"));
                Menu_Items.all(4) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
                Set_Format(ProgramMenu, 1, 3);
@@ -88,12 +88,13 @@ package body MainWindow is
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 5);
             begin
-               Menu_Items.all(1) := New_Item("Quit");
-               Menu_Items.all(2) := New_Item("Bookmarks");
+               Menu_Items.all(1) := New_Item(Mc(Interpreter, "Quit"));
+               Menu_Items.all(2) := New_Item(Mc(Interpreter, "Bookmarks"));
                Menu_Items.all(3) :=
-                 (if New_Action = COPY then New_Item("Copy selected")
-                  else New_Item("Move selected"));
-               Menu_Items.all(4) := New_Item("Cancel");
+                 (if New_Action = COPY then
+                    New_Item(Mc(Interpreter, "Copy selected"))
+                  else New_Item(Mc(Interpreter, "Move selected")));
+               Menu_Items.all(4) := New_Item(Mc(Interpreter, "Cancel"));
                Menu_Items.all(5) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
                Set_Format(ProgramMenu, 1, 3);
@@ -106,10 +107,12 @@ package body MainWindow is
          when SHOWTRASH =>
             declare
                Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
-                 (To_Unbounded_String("Quit"),
-                  To_Unbounded_String("Bookmarks"),
-                  To_Unbounded_String("View"), To_Unbounded_String("Restore"),
-                  To_Unbounded_String("Delete"), To_Unbounded_String("Clear"));
+                 (To_Unbounded_String(Mc(Interpreter, "Quit")),
+                  To_Unbounded_String(Mc(Interpreter, "Bookmarks")),
+                  To_Unbounded_String(Mc(Interpreter, "View")),
+                  To_Unbounded_String(Mc(Interpreter, "Restore")),
+                  To_Unbounded_String(Mc(Interpreter, "Delete")),
+                  To_Unbounded_String(Mc(Interpreter, "Clear")));
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 7);
             begin
@@ -130,12 +133,13 @@ package body MainWindow is
          when others =>
             declare
                Main_Menu_Array: constant array(1 .. 7) of Unbounded_String :=
-                 (To_Unbounded_String("Quit"),
-                  To_Unbounded_String("Bookmarks"),
-                  To_Unbounded_String("View"), To_Unbounded_String("Actions"),
-                  To_Unbounded_String("Selected"),
-                  To_Unbounded_String("About"),
-                  To_Unbounded_String("Options"));
+                 (To_Unbounded_String(Mc(Interpreter, "Quit")),
+                  To_Unbounded_String(Mc(Interpreter, "Bookmarks")),
+                  To_Unbounded_String(Mc(Interpreter, "View")),
+                  To_Unbounded_String(Mc(Interpreter, "Actions")),
+                  To_Unbounded_String(Mc(Interpreter, "Selected")),
+                  To_Unbounded_String(Mc(Interpreter, "About")),
+                  To_Unbounded_String(Mc(Interpreter, "Options")));
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 8);
             begin
