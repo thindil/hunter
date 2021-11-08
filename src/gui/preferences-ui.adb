@@ -526,27 +526,28 @@ package body Preferences.UI is
                    "{you will have to restart the program to apply all changes.}"));
          Label :=
            Create
-             (Theme_Frame & ".themelabel",
-              "-text {" & Mc(Get_Context, "{UI theme:}") & "}");
+             (pathName => Theme_Frame & ".themelabel",
+              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{UI theme:}") & "}");
          Add
-           (Label,
-            Mc
-              (Get_Context,
-               "{Select other theme for the program. After selecting a new theme,}") &
+           (Widget => Label,
+            Message => Mc
+              (Interp => Get_Context,
+               Src_String => "{Select other theme for the program. After selecting a new theme,}") &
             LF &
-            Mc(Get_Context,
-               "{you will have to restart the program to apply all changes.}"));
-         Tcl.Tk.Ada.Grid.Grid(Label);
-         Tcl.Tk.Ada.Grid.Grid(Color_Box, "-column 1 -row 0");
-         Set(Color_Box, To_String(Settings.Ui_Theme));
-         Tcl.Tk.Ada.Pack.Pack(Theme_Frame, "-fill x");
+            Mc(Interp => Get_Context,
+               Src_String => "{you will have to restart the program to apply all changes.}"));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+         Tcl.Tk.Ada.Grid.Grid(Slave => Color_Box, Options => "-column 1 -row 0");
+         Set(ComboBox => Color_Box, Value => To_String(Settings.Ui_Theme));
+         Tcl.Tk.Ada.Pack.Pack(Slave => Theme_Frame, Options => "-fill x");
       end Set_Ui_Theme_Block;
+      Set_Toolbar_Size_Block:
       declare
-         ToolbarFrame: constant Ttk_Frame :=
+         Toolbar_Frame: constant Ttk_Frame :=
            Create(Label_Frame & ".toolbarframe");
          ToolbarBox: constant Ttk_ComboBox :=
            Create
-             (ToolbarFrame & ".toolbarsize",
+             (Toolbar_Frame & ".toolbarsize",
               "-state readonly -values [list {" & Mc(Get_Context, "{small}") &
               "} {" & Mc(Get_Context, "{medium}") & "} {" &
               Mc(Get_Context, "{large}") & "} {" & Mc(Get_Context, "{huge}") &
@@ -558,7 +559,7 @@ package body Preferences.UI is
             Mc(Get_Context, "{Set the size of icons in toolbars}"));
          Label :=
            Create
-             (ToolbarFrame & ".toolbarlabel",
+             (Toolbar_Frame & ".toolbarlabel",
               "-text {" & Mc(Get_Context, "{Toolbars size:}") & "}");
          Add(Label, Mc(Get_Context, "{Set the size of icons in toolbars}"));
          Tcl.Tk.Ada.Grid.Grid(Label);
@@ -572,8 +573,8 @@ package body Preferences.UI is
          else
             Set(ToolbarBox, Mc(Get_Context, "{huge}"));
          end if;
-         Tcl.Tk.Ada.Pack.Pack(ToolbarFrame, "-fill x");
-      end;
+         Tcl.Tk.Ada.Pack.Pack(Toolbar_Frame, "-fill x");
+      end Set_Toolbar_Size_Block;
       Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
       Label_Frame :=
         Create
