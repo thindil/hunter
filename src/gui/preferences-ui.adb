@@ -544,7 +544,7 @@ package body Preferences.UI is
          Tcl.Tk.Ada.Grid.Grid(Slave => Label);
          Tcl.Tk.Ada.Grid.Grid
            (Slave => Color_Box, Options => "-column 1 -row 0");
-         Set(ComboBox => Color_Box, Value => To_String(Settings.Ui_Theme));
+         Set(ComboBox => Color_Box, Value => To_String(Source => Settings.Ui_Theme));
          Tcl.Tk.Ada.Pack.Pack(Slave => Theme_Frame, Options => "-fill x");
       end Set_Ui_Theme_Block;
       Set_Toolbar_Size_Block :
@@ -577,9 +577,9 @@ package body Preferences.UI is
                 "-text {" &
                 Mc(Interp => Get_Context, Src_String => "{Toolbars size:}") &
                 "}");
-         Add(Label, Mc(Get_Context, "{Set the size of icons in toolbars}"));
-         Tcl.Tk.Ada.Grid.Grid(Label);
-         Tcl.Tk.Ada.Grid.Grid(Toolbar_Box, "-column 1 -row 0");
+         Add(Widget => Label, Message => Mc(Interp => Get_Context, Src_String => "{Set the size of icons in toolbars}"));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+         Tcl.Tk.Ada.Grid.Grid(Slave => Toolbar_Box, Options => "-column 1 -row 0");
          if Settings.Toolbars_Size < 24 then
             Set(Toolbar_Box, Mc(Get_Context, "{small}"));
          elsif Settings.Toolbars_Size < 32 then
