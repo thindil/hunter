@@ -55,7 +55,7 @@ if {[lindex $argv 0] == "generate"} {
          set adafile [open $filename r]
          set content [read $adafile]
          close $adafile
-         set translations [regexp -all -inline {Mc+\W*\((Interp =>)*\W*\w+,\W* "[^"]+} $content]
+         set translations [regexp -all -inline {Mc+\W*\((Interp =>)*\W*\w+,\W*(Src_String =>)*\W*"[^"]+} $content]
          foreach translation $translations {
             regsub {^.+"+\{*} $translation "" translation
             regsub {\}$} $translation "" translation
