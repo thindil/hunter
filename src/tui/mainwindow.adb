@@ -97,7 +97,7 @@ package body MainWindow is
                Menu_Items.all(4) := New_Item(Mc(Interpreter, "Cancel"));
                Menu_Items.all(5) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
-               Set_Format(ProgramMenu, 1, 3);
+               Set_Format(ProgramMenu, 1, 4);
                Set_Mark(ProgramMenu, "");
                Set_Window(ProgramMenu, MenuWindow);
                Set_Sub_Window
