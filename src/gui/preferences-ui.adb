@@ -590,17 +590,17 @@ package body Preferences.UI is
            (Slave => Toolbar_Box, Options => "-column 1 -row 0");
          case Settings.Toolbars_Size is
             when 8 .. 23 =>
-               Set(Toolbar_Box, Mc(Get_Context, "{small}"));
+               Set(ComboBox => Toolbar_Box, Value => Mc(Interp => Get_Context, Src_String => "{small}"));
             when 24 .. 31 =>
-               Set(Toolbar_Box, Mc(Get_Context, "{medium}"));
+               Set(ComboBox => Toolbar_Box, Value => Mc(Interp => Get_Context, Src_String => "{medium}"));
             when 32 .. 63 =>
-               Set(Toolbar_Box, Mc(Get_Context, "{large}"));
+               Set(ComboBox => Toolbar_Box, Value => Mc(Interp => Get_Context, Src_String => "{large}"));
             when 64 .. 128 =>
-               Set(Toolbar_Box, Mc(Get_Context, "{huge}"));
+               Set(ComboBox => Toolbar_Box, Value => Mc(Interp => Get_Context, Src_String => "{huge}"));
          end case;
-         Tcl.Tk.Ada.Pack.Pack(Toolbar_Frame, "-fill x");
+         Tcl.Tk.Ada.Pack.Pack(Slave => Toolbar_Frame, Options => "-fill x");
       end Set_Toolbar_Size_Block;
-      Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Label_Frame, Options => "-fill x");
       Label_Frame :=
         Create
           (Preferences_Frame & ".deleting",
