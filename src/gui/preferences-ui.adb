@@ -590,35 +590,53 @@ package body Preferences.UI is
            (Slave => Toolbar_Box, Options => "-column 1 -row 0");
          case Settings.Toolbars_Size is
             when 8 .. 23 =>
-               Set(ComboBox => Toolbar_Box, Value => Mc(Interp => Get_Context, Src_String => "{small}"));
+               Set
+                 (ComboBox => Toolbar_Box,
+                  Value => Mc(Interp => Get_Context, Src_String => "{small}"));
             when 24 .. 31 =>
-               Set(ComboBox => Toolbar_Box, Value => Mc(Interp => Get_Context, Src_String => "{medium}"));
+               Set
+                 (ComboBox => Toolbar_Box,
+                  Value =>
+                    Mc(Interp => Get_Context, Src_String => "{medium}"));
             when 32 .. 63 =>
-               Set(ComboBox => Toolbar_Box, Value => Mc(Interp => Get_Context, Src_String => "{large}"));
+               Set
+                 (ComboBox => Toolbar_Box,
+                  Value => Mc(Interp => Get_Context, Src_String => "{large}"));
             when 64 .. 128 =>
-               Set(ComboBox => Toolbar_Box, Value => Mc(Interp => Get_Context, Src_String => "{huge}"));
+               Set
+                 (ComboBox => Toolbar_Box,
+                  Value => Mc(Interp => Get_Context, Src_String => "{huge}"));
          end case;
          Tcl.Tk.Ada.Pack.Pack(Slave => Toolbar_Frame, Options => "-fill x");
       end Set_Toolbar_Size_Block;
       Tcl.Tk.Ada.Pack.Pack(Slave => Label_Frame, Options => "-fill x");
       Label_Frame :=
         Create
-          (Preferences_Frame & ".deleting",
-           "-text {" & Mc(Get_Context, "{Deleting}") & "}");
+          (pathName => Preferences_Frame & ".deleting",
+           options =>
+             "-text {" &
+             Mc(Interp => Get_Context, Src_String => "{Deleting}") & "}");
       Add_Button
-        (".deletefiles", Mc(Get_Context, "{Delete files}"),
-         Settings.Delete_Files,
-         Mc
-           (Get_Context,
-            "{Delete selected files and directories instead of moving them to Trash.}"),
-         "SetDeleteFiles");
+        (Name => ".deletefiles",
+         Text => Mc(Interp => Get_Context, Src_String => "{Delete files}"),
+         Value => Settings.Delete_Files,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Delete selected files and directories instead of moving them to Trash.}"),
+         Command => "SetDeleteFiles");
       Add_Button
-        (".cleartrash", Mc(Get_Context, "{Clear Trash on exit}"),
-         Settings.Clear_Trash_On_Exit,
-         Mc
-           (Get_Context,
-            "{Automatically clear Trash on exit from the program.}"),
-         "SetClearTrash");
+        (Name => ".cleartrash",
+         Text =>
+           Mc(Interp => Get_Context, Src_String => "{Clear Trash on exit}"),
+         Value => Settings.Clear_Trash_On_Exit,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Automatically clear Trash on exit from the program.}"),
+         Command => "SetClearTrash");
       Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
       Label_Frame :=
         Create
