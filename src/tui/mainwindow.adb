@@ -288,11 +288,11 @@ package body MainWindow is
             Set_Foreground(Path, Normal_Video);
          end if;
       end if;
-      Add(ListWindow, 1, 10, "Name");
+      Add(ListWindow, 1, 10, Mc(Interpreter, "Name"));
       if Settings.Show_Last_Modified then
-         Add(ListWindow, 1, Width - 27, "Modified");
+         Add(ListWindow, 1, Width - 27, Mc(Interpreter, "Modified"));
       end if;
-      Add(ListWindow, 1, Width - 10, "Size");
+      Add(ListWindow, 1, Width - 10, Mc(Interpreter, "Size"));
       Index := 1;
       declare
          Item_Entry: String(1 .. Positive(Width - 2));
@@ -318,7 +318,8 @@ package body MainWindow is
                       (Ada.Calendar.Formatting.Image(Items_List(I).Modified));
                exception
                   when Ada.Calendar.Time_Error =>
-                     TimeString := To_Unbounded_String("unknown");
+                     TimeString :=
+                       To_Unbounded_String(Mc(Interpreter, "unknown"));
                end;
                Overwrite
                  (Item_Entry, Item_Entry'Last - 27, To_String(TimeString));
@@ -327,7 +328,9 @@ package body MainWindow is
                when -2 =>
                   Overwrite(Item_Entry, Item_Entry'Last - 8, "->");
                when -1 =>
-                  Overwrite(Item_Entry, Item_Entry'Last - 8, "unknown");
+                  Overwrite
+                    (Item_Entry, Item_Entry'Last - 8,
+                     Mc(Interpreter, "unknown"));
                when others =>
                   if not Items_List(I).Is_Directory then
                      Overwrite
@@ -510,16 +513,17 @@ package body MainWindow is
                Menu_Items := new Item_Array(1 .. 10);
             else
                Menu_Items := new Item_Array(1 .. 11);
-               Menu_Items.all(9) := New_Item("User commands");
+               Menu_Items.all(9) := New_Item(Mc(Interpreter, "User commands"));
             end if;
-            Menu_Items.all(1) := New_Item("Create new directory");
-            Menu_Items.all(2) := New_Item("Create new file");
-            Menu_Items.all(3) := New_Item("Create new link");
-            Menu_Items.all(4) := New_Item("Rename selected");
-            Menu_Items.all(5) := New_Item("Start copying");
-            Menu_Items.all(6) := New_Item("Start moving");
-            Menu_Items.all(7) := New_Item("Delete selected");
-            Menu_Items.all(8) := New_Item("Clear the Trash");
+            Menu_Items.all(1) :=
+              New_Item(Mc(Interpreter, "Create new directory"));
+            Menu_Items.all(2) := New_Item(Mc(Interpreter, "Create new file"));
+            Menu_Items.all(3) := New_Item(Mc(Interpreter, "Create new link"));
+            Menu_Items.all(4) := New_Item(Mc(Interpreter, "Rename selected"));
+            Menu_Items.all(5) := New_Item(Mc(Interpreter, "Start copying"));
+            Menu_Items.all(6) := New_Item(Mc(Interpreter, "Start moving"));
+            Menu_Items.all(7) := New_Item(Mc(Interpreter, "Delete selected"));
+            Menu_Items.all(8) := New_Item(Mc(Interpreter, "Clear the Trash"));
          when BOOKMARKS_MENU =>
             Menu_Items := Show_Bookmarks_Menu;
          when SELECTED_MENU =>
