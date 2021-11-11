@@ -637,28 +637,28 @@ package body Preferences.UI is
               Src_String =>
                 "{Automatically clear Trash on exit from the program.}"),
          Command => "SetClearTrash");
-      Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Label_Frame, Options => "-fill x");
       Label_Frame :=
         Create
-          (Preferences_Frame & ".copying",
-           "-text {" & Mc(Get_Context, "{Copying or moving}") & "}");
+          (pathName => Preferences_Frame & ".copying",
+           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Copying or moving}") & "}");
       Add_Button
-        (".overwrite", Mc(Get_Context, "{Overwrite existing}"),
-         Settings.Overwrite_On_Exist,
-         Mc
-           (Get_Context,
-            "{If enabled, during copying or moving files and directories,}") &
+        (Name => ".overwrite", Text => Mc(Interp => Get_Context, Src_String => "{Overwrite existing}"),
+         Value => Settings.Overwrite_On_Exist,
+         Tooltip_Text => Mc
+           (Interp => Get_Context,
+            Src_String => "{If enabled, during copying or moving files and directories,}") &
          LF &
-         Mc(Get_Context,
-            "{if in destination directory exists file or directory with that}") &
+         Mc(Interp => Get_Context,
+            Src_String => "{if in destination directory exists file or directory with that}") &
          LF &
-         Mc(Get_Context,
-            "{same name, the program will ask if overwrite it. If disabled, the}") &
+         Mc(Interp => Get_Context,
+            Src_String => "{same name, the program will ask if overwrite it. If disabled, the}") &
          LF &
-         Mc(Get_Context,
-            "{program will quietly give add underscore to the name of moved or}") &
-         LF & Mc(Get_Context, "{copied file or directory.}"),
-         "SetOverwrite");
+         Mc(Interp => Get_Context,
+            Src_String => "{program will quietly give add underscore to the name of moved or}") &
+         LF & Mc(Interp => Get_Context, Src_String => "{copied file or directory.}"),
+         Command => "SetOverwrite");
       Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
       declare
          ButtonsFrame: constant Ttk_Frame :=
