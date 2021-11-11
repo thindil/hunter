@@ -641,50 +641,71 @@ package body Preferences.UI is
       Label_Frame :=
         Create
           (pathName => Preferences_Frame & ".copying",
-           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Copying or moving}") & "}");
+           options =>
+             "-text {" &
+             Mc(Interp => Get_Context, Src_String => "{Copying or moving}") &
+             "}");
       Add_Button
-        (Name => ".overwrite", Text => Mc(Interp => Get_Context, Src_String => "{Overwrite existing}"),
+        (Name => ".overwrite",
+         Text =>
+           Mc(Interp => Get_Context, Src_String => "{Overwrite existing}"),
          Value => Settings.Overwrite_On_Exist,
-         Tooltip_Text => Mc
-           (Interp => Get_Context,
-            Src_String => "{If enabled, during copying or moving files and directories,}") &
-         LF &
-         Mc(Interp => Get_Context,
-            Src_String => "{if in destination directory exists file or directory with that}") &
-         LF &
-         Mc(Interp => Get_Context,
-            Src_String => "{same name, the program will ask if overwrite it. If disabled, the}") &
-         LF &
-         Mc(Interp => Get_Context,
-            Src_String => "{program will quietly give add underscore to the name of moved or}") &
-         LF & Mc(Interp => Get_Context, Src_String => "{copied file or directory.}"),
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{If enabled, during copying or moving files and directories,}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{if in destination directory exists file or directory with that}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{same name, the program will ask if overwrite it. If disabled, the}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String =>
+                "{program will quietly give add underscore to the name of moved or}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{copied file or directory.}"),
          Command => "SetOverwrite");
-      Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Label_Frame, Options => "-fill x");
+      Create_Buttons_Block :
       declare
-         ButtonsFrame: constant Ttk_Frame :=
-           Create(Preferences_Frame & ".buttonsframe");
-         CloseButton: constant Ttk_Button :=
+         Buttons_Frame: constant Ttk_Frame :=
+           Create(pathName => Preferences_Frame & ".buttonsframe");
+         Close_Button: constant Ttk_Button :=
            Create
-             (ButtonsFrame & ".closebutton",
-              "-text {" & Mc(Get_Context, "{Close}") &
-              "} -command {ClosePreferences " & Preferences_Frame & "}");
-         RestoreButton: constant Ttk_Button :=
+             (pathName => Buttons_Frame & ".closebutton",
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Close}") &
+                "} -command {ClosePreferences " & Preferences_Frame & "}");
+         Restore_Button: constant Ttk_Button :=
            Create
-             (ButtonsFrame & ".restorebutton",
-              "-text {" & Mc(Get_Context, "{Restore defaults}") &
-              "} -command RestoreDefaults");
+             (pathName => Buttons_Frame & ".restorebutton",
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Restore defaults}") &
+                "} -command RestoreDefaults");
       begin
          Add
-           (RestoreButton,
-            Mc
-              (Get_Context,
-               "{Restore default settings for the program. You will have to restart}") &
-            LF & Mc(Get_Context, "{the program to apply all changes}"));
-         Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
-         Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
-         Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
-         Tcl.Tk.Ada.Pack.Pack(ButtonsFrame, "-fill x");
-      end;
+           (Widget => Restore_Button,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Restore default settings for the program. You will have to restart}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String => "{the program to apply all changes}"));
+         Tcl.Tk.Ada.Pack.Pack(Restore_Button, "-side left");
+         Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack(Close_Button, "-side right");
+         Tcl.Tk.Ada.Pack.Pack(Buttons_Frame, "-fill x");
+      end Create_Buttons_Block;
       TtkNotebook.Add
         (Notebook, Widget_Image(Preferences_Frame),
          "-text {" & Mc(Get_Context, "{Preferences}") & "}");
