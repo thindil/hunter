@@ -286,4 +286,11 @@
    "Selected" "Zaznaczony"
    "About" "Info"
    "Options" "Opcje"
+   "Create new directory" "Utwórz nowy katalog"
+   "Create new file" "Utwórz nowy plik"
+   "Create new link" "Utwórz nowy link"
+   "Rename selected" "Zmień nazwę wybranego"
+   "Start copying" "Zacznij kopiować"
+   "Start moving" "Zacznij przenosić"
+   "Clear the Trash" "Wyczyść Kosz"
 }
