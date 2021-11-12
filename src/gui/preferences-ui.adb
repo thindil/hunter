@@ -701,26 +701,27 @@ package body Preferences.UI is
               LF &
               Mc(Interp => Get_Context,
                  Src_String => "{the program to apply all changes}"));
-         Tcl.Tk.Ada.Pack.Pack(Restore_Button, "-side left");
-         Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
-         Tcl.Tk.Ada.Pack.Pack(Close_Button, "-side right");
-         Tcl.Tk.Ada.Pack.Pack(Buttons_Frame, "-fill x");
+         Tcl.Tk.Ada.Pack.Pack(Slave => Restore_Button, Options => "-side left");
+         Add(Widget => Close_Button, Message => Mc(Interp => Get_Context, Src_String => "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack(Slave => Close_Button, Options => "-side right");
+         Tcl.Tk.Ada.Pack.Pack(Slave => Buttons_Frame, Options => "-fill x");
       end Create_Buttons_Block;
       TtkNotebook.Add
-        (Notebook, Widget_Image(Preferences_Frame),
-         "-text {" & Mc(Get_Context, "{Preferences}") & "}");
+        (Notebook => Notebook, WindowName => Widget_Image(Win => Preferences_Frame),
+         Options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Preferences}") & "}");
       -- Keyboard shortcuts settings
+      Set_Keyboard_Shortcuts_Block:
       declare
-         ButtonsFrame: constant Ttk_Frame :=
+         Buttons_Frame: constant Ttk_Frame :=
            Create(Shortcuts_Frame & ".buttonsframe");
          CloseButton: constant Ttk_Button :=
            Create
-             (ButtonsFrame & ".closebutton",
+             (Buttons_Frame & ".closebutton",
               "-text {" & Mc(Get_Context, "{Close}") &
               "} -command {ClosePreferences " & Preferences_Frame & "}");
          RestoreButton: constant Ttk_Button :=
            Create
-             (ButtonsFrame & ".restorebutton",
+             (Buttons_Frame & ".restorebutton",
               "-text {" & Mc(Get_Context, "{Restore defaults}") &
               "} -command RestoreDefaultShortcuts");
          KeysLabels: constant array(Accelerators'Range) of Unbounded_String :=
@@ -765,8 +766,8 @@ package body Preferences.UI is
                   "{Restore deleted file or directory from Trash}")),
             To_Unbounded_String
               (Mc(Get_Context, "{Show the user defined actions}")));
-         Label: Ttk_Label;
-         Button: Ttk_Button;
+         Label: Ttk_Label := Get_Widget(".");
+         Button: Ttk_Button := Get_Widget(".");
          Image: constant Tk_Photo :=
            Create
              ("refreshicon",
@@ -806,12 +807,12 @@ package body Preferences.UI is
          Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
          Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
-         Tcl.Tk.Ada.Grid.Grid(ButtonsFrame, "-sticky we -columnspan 3");
+         Tcl.Tk.Ada.Grid.Grid(Buttons_Frame, "-sticky we -columnspan 3");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Shortcuts_Frame, ButtonsFrame, "-weight 1");
+           (Shortcuts_Frame, Buttons_Frame, "-weight 1");
          Tcl.Tk.Ada.Grid.Row_Configure
-           (Shortcuts_Frame, ButtonsFrame, "-weight 1");
-      end;
+           (Shortcuts_Frame, Buttons_Frame, "-weight 1");
+      end Set_Keyboard_Shortcuts_Block;
       TtkNotebook.Add
         (Notebook, Widget_Image(Shortcuts_Frame),
          "-text {" & Mc(Get_Context, "{Keyboard shortcuts}") & "}");
