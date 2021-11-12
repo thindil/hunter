@@ -701,71 +701,103 @@ package body Preferences.UI is
               LF &
               Mc(Interp => Get_Context,
                  Src_String => "{the program to apply all changes}"));
-         Tcl.Tk.Ada.Pack.Pack(Slave => Restore_Button, Options => "-side left");
-         Add(Widget => Close_Button, Message => Mc(Interp => Get_Context, Src_String => "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack
+           (Slave => Restore_Button, Options => "-side left");
+         Add
+           (Widget => Close_Button,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String => "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(Slave => Close_Button, Options => "-side right");
          Tcl.Tk.Ada.Pack.Pack(Slave => Buttons_Frame, Options => "-fill x");
       end Create_Buttons_Block;
       TtkNotebook.Add
-        (Notebook => Notebook, WindowName => Widget_Image(Win => Preferences_Frame),
-         Options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Preferences}") & "}");
+        (Notebook => Notebook,
+         WindowName => Widget_Image(Win => Preferences_Frame),
+         Options =>
+           "-text {" &
+           Mc(Interp => Get_Context, Src_String => "{Preferences}") & "}");
       -- Keyboard shortcuts settings
-      Set_Keyboard_Shortcuts_Block:
+      Set_Keyboard_Shortcuts_Block :
       declare
          Buttons_Frame: constant Ttk_Frame :=
-           Create(Shortcuts_Frame & ".buttonsframe");
-         CloseButton: constant Ttk_Button :=
+           Create(pathName => Shortcuts_Frame & ".buttonsframe");
+         Close_Button: constant Ttk_Button :=
            Create
-             (Buttons_Frame & ".closebutton",
-              "-text {" & Mc(Get_Context, "{Close}") &
-              "} -command {ClosePreferences " & Preferences_Frame & "}");
-         RestoreButton: constant Ttk_Button :=
+             (pathName => Buttons_Frame & ".closebutton",
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Close}") &
+                "} -command {ClosePreferences " & Preferences_Frame & "}");
+         Restore_Button: constant Ttk_Button :=
            Create
-             (Buttons_Frame & ".restorebutton",
-              "-text {" & Mc(Get_Context, "{Restore defaults}") &
-              "} -command RestoreDefaultShortcuts");
-         KeysLabels: constant array(Accelerators'Range) of Unbounded_String :=
-           (To_Unbounded_String(Mc(Get_Context, "{Quit from the program}")),
-            To_Unbounded_String(Mc(Get_Context, "{Show bookmarks menu}")),
-            To_Unbounded_String
-              (Mc(Get_Context, "{Search for the file or directory}")),
-            To_Unbounded_String(Mc(Get_Context, "{Show add new item menu}")),
-            To_Unbounded_String(Mc(Get_Context, "{Show delete menu}")),
-            To_Unbounded_String
-              (Mc
-                 (Get_Context,
-                  "{Show menu with information about the program}")),
-            To_Unbounded_String
-              (Mc(Get_Context, "{Open selected file or directory}")),
-            To_Unbounded_String
-              (Mc
-                 (Get_Context,
-                  "{Select or unselect all files and directories}")),
-            To_Unbounded_String
-              (Mc(Get_Context, "{Rename selected file or directory}")),
-            To_Unbounded_String(Mc(Get_Context, "{Copy selected files}")),
-            To_Unbounded_String(Mc(Get_Context, "{Move selected files}")),
-            To_Unbounded_String
-              (Mc(Get_Context, "{Show the program preferences}")),
-            To_Unbounded_String
-              (Mc
-                 (Get_Context,
-                  "{Open selected file or directory with command}")),
-            To_Unbounded_String
-              (Mc(Get_Context, "{File or directory information}")),
-            To_Unbounded_String
-              (Mc(Get_Context, "{Preview file or directory}")),
-            To_Unbounded_String
-              (Mc(Get_Context, "{Add bookmark to this directory}")),
-            To_Unbounded_String
-              (Mc(Get_Context, "{Remove bookmark from this directory}")),
-            To_Unbounded_String(Mc(Get_Context, "{Execute selected program}")),
-            To_Unbounded_String
-              (Mc
-                 (Get_Context,
-                  "{Restore deleted file or directory from Trash}")),
-            To_Unbounded_String
-              (Mc(Get_Context, "{Show the user defined actions}")));
+             (pathName => Buttons_Frame & ".restorebutton",
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Restore defaults}") &
+                "} -command RestoreDefaultShortcuts");
+         Keys_Labels: constant array(Accelerators'Range) of Unbounded_String :=
+           (1 =>
+              To_Unbounded_String(Mc(Get_Context, "{Quit from the program}")),
+            2 => To_Unbounded_String(Mc(Get_Context, "{Show bookmarks menu}")),
+            3 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{Search for the file or directory}")),
+            4 =>
+              To_Unbounded_String(Mc(Get_Context, "{Show add new item menu}")),
+            5 => To_Unbounded_String(Mc(Get_Context, "{Show delete menu}")),
+            6 =>
+              To_Unbounded_String
+                (Mc
+                   (Get_Context,
+                    "{Show menu with information about the program}")),
+            7 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{Open selected file or directory}")),
+            8 =>
+              To_Unbounded_String
+                (Mc
+                   (Get_Context,
+                    "{Select or unselect all files and directories}")),
+            9 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{Rename selected file or directory}")),
+            10 =>
+              To_Unbounded_String(Mc(Get_Context, "{Copy selected files}")),
+            11 =>
+              To_Unbounded_String(Mc(Get_Context, "{Move selected files}")),
+            12 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{Show the program preferences}")),
+            13 =>
+              To_Unbounded_String
+                (Mc
+                   (Get_Context,
+                    "{Open selected file or directory with command}")),
+            14 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{File or directory information}")),
+            15 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{Preview file or directory}")),
+            16 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{Add bookmark to this directory}")),
+            17 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{Remove bookmark from this directory}")),
+            18 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{Execute selected program}")),
+            19 =>
+              To_Unbounded_String
+                (Mc
+                   (Get_Context,
+                    "{Restore deleted file or directory from Trash}")),
+            20 =>
+              To_Unbounded_String
+                (Mc(Get_Context, "{Show the user defined actions}")));
          Label: Ttk_Label := Get_Widget(".");
          Button: Ttk_Button := Get_Widget(".");
          Image: constant Tk_Photo :=
@@ -774,11 +806,11 @@ package body Preferences.UI is
               "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
       begin
          Create_Shortcuts_UI_Loop :
-         for I in KeysLabels'Range loop
+         for I in Keys_Labels'Range loop
             Label :=
               Create
                 (Shortcuts_Frame & ".label" & Trim(Positive'Image(I), Left),
-                 "-text {" & To_String(KeysLabels(I)) & ": }");
+                 "-text {" & To_String(Keys_Labels(I)) & ": }");
             Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
             Label :=
               Create
@@ -795,18 +827,18 @@ package body Preferences.UI is
             Add
               (Button,
                Mc(Get_Context, "{Change keyboard shortcut for}") & ":" & LF &
-               To_String(KeysLabels(I)));
+               To_String(Keys_Labels(I)));
             Tcl.Tk.Ada.Grid.Grid
               (Button, "-sticky w -column 2 -row" & Natural'Image(I - 1));
          end loop Create_Shortcuts_UI_Loop;
          Add
-           (RestoreButton,
+           (Restore_Button,
             Mc
               (Get_Context,
                "{Restore default keyboard shortcuts for the program.}"));
-         Tcl.Tk.Ada.Pack.Pack(RestoreButton, "-side left");
-         Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
-         Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right");
+         Tcl.Tk.Ada.Pack.Pack(Restore_Button, "-side left");
+         Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack(Close_Button, "-side right");
          Tcl.Tk.Ada.Grid.Grid(Buttons_Frame, "-sticky we -columnspan 3");
          Tcl.Tk.Ada.Grid.Column_Configure
            (Shortcuts_Frame, Buttons_Frame, "-weight 1");
