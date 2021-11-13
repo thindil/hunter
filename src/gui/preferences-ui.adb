@@ -739,45 +739,92 @@ package body Preferences.UI is
                 "} -command RestoreDefaultShortcuts");
          Keys_Labels: constant array(Accelerators'Range) of Unbounded_String :=
            (1 =>
-              To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Quit from the program}")),
-            2 => To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Show bookmarks menu}")),
+              To_Unbounded_String
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Quit from the program}")),
+            2 =>
+              To_Unbounded_String
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Show bookmarks menu}")),
             3 =>
               To_Unbounded_String
-                (Source => Mc(Interp => Get_Context, Src_String => "{Search for the file or directory}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Search for the file or directory}")),
             4 =>
-              To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Show add new item menu}")),
-            5 => To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Show delete menu}")),
+              To_Unbounded_String
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Show add new item menu}")),
+            5 =>
+              To_Unbounded_String
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Show delete menu}")),
             6 =>
               To_Unbounded_String
-                (Source => Mc
-                   (Interp => Get_Context,
-                    Src_String => "{Show menu with information about the program}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String =>
+                        "{Show menu with information about the program}")),
             7 =>
               To_Unbounded_String
-                (Source => Mc(Interp => Get_Context, Src_String => "{Open selected file or directory}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Open selected file or directory}")),
             8 =>
               To_Unbounded_String
-                (Mc
-                   (Get_Context,
-                    "{Select or unselect all files and directories}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String =>
+                        "{Select or unselect all files and directories}")),
             9 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{Rename selected file or directory}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Rename selected file or directory}")),
             10 =>
-              To_Unbounded_String(Mc(Get_Context, "{Copy selected files}")),
+              To_Unbounded_String
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Copy selected files}")),
             11 =>
-              To_Unbounded_String(Mc(Get_Context, "{Move selected files}")),
+              To_Unbounded_String
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Move selected files}")),
             12 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{Show the program preferences}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Show the program preferences}")),
             13 =>
               To_Unbounded_String
-                (Mc
-                   (Get_Context,
-                    "{Open selected file or directory with command}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String =>
+                        "{Open selected file or directory with command}")),
             14 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{File or directory information}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{File or directory information}")),
             15 =>
               To_Unbounded_String
                 (Mc(Get_Context, "{Preview file or directory}")),
