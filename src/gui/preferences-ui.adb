@@ -739,22 +739,22 @@ package body Preferences.UI is
                 "} -command RestoreDefaultShortcuts");
          Keys_Labels: constant array(Accelerators'Range) of Unbounded_String :=
            (1 =>
-              To_Unbounded_String(Mc(Get_Context, "{Quit from the program}")),
-            2 => To_Unbounded_String(Mc(Get_Context, "{Show bookmarks menu}")),
+              To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Quit from the program}")),
+            2 => To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Show bookmarks menu}")),
             3 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{Search for the file or directory}")),
+                (Source => Mc(Interp => Get_Context, Src_String => "{Search for the file or directory}")),
             4 =>
-              To_Unbounded_String(Mc(Get_Context, "{Show add new item menu}")),
-            5 => To_Unbounded_String(Mc(Get_Context, "{Show delete menu}")),
+              To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Show add new item menu}")),
+            5 => To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Show delete menu}")),
             6 =>
               To_Unbounded_String
-                (Mc
-                   (Get_Context,
-                    "{Show menu with information about the program}")),
+                (Source => Mc
+                   (Interp => Get_Context,
+                    Src_String => "{Show menu with information about the program}")),
             7 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{Open selected file or directory}")),
+                (Source => Mc(Interp => Get_Context, Src_String => "{Open selected file or directory}")),
             8 =>
               To_Unbounded_String
                 (Mc
