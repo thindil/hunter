@@ -72,7 +72,7 @@ package body MainWindow is
                  new Item_Array(1 .. 4);
             begin
                Menu_Items.all(1) := New_Item(Mc(Interpreter, "Quit"));
-               Menu_Items.all(2) := New_Item(Mc(Interpreter, "Create link"));
+               Menu_Items.all(2) := New_Item(Mc(Interpreter, "{Create link}"));
                Menu_Items.all(3) := New_Item(Mc(Interpreter, "Cancel"));
                Menu_Items.all(4) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
@@ -92,8 +92,8 @@ package body MainWindow is
                Menu_Items.all(2) := New_Item(Mc(Interpreter, "Bookmarks"));
                Menu_Items.all(3) :=
                  (if New_Action = COPY then
-                    New_Item(Mc(Interpreter, "Copy selected"))
-                  else New_Item(Mc(Interpreter, "Move selected")));
+                    New_Item(Mc(Interpreter, "{Copy selected}"))
+                  else New_Item(Mc(Interpreter, "{Move selected}")));
                Menu_Items.all(4) := New_Item(Mc(Interpreter, "Cancel"));
                Menu_Items.all(5) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
@@ -516,14 +516,14 @@ package body MainWindow is
                Menu_Items.all(9) := New_Item(Mc(Interpreter, "User commands"));
             end if;
             Menu_Items.all(1) :=
-              New_Item(Mc(Interpreter, "Create new directory"));
-            Menu_Items.all(2) := New_Item(Mc(Interpreter, "Create new file"));
-            Menu_Items.all(3) := New_Item(Mc(Interpreter, "Create new link"));
-            Menu_Items.all(4) := New_Item(Mc(Interpreter, "Rename selected"));
-            Menu_Items.all(5) := New_Item(Mc(Interpreter, "Start copying"));
-            Menu_Items.all(6) := New_Item(Mc(Interpreter, "Start moving"));
-            Menu_Items.all(7) := New_Item(Mc(Interpreter, "Delete selected"));
-            Menu_Items.all(8) := New_Item(Mc(Interpreter, "Clear the Trash"));
+              New_Item(Mc(Interpreter, "{Create new directory}"));
+            Menu_Items.all(2) := New_Item(Mc(Interpreter, "{Create new file}"));
+            Menu_Items.all(3) := New_Item(Mc(Interpreter, "{Create new link}"));
+            Menu_Items.all(4) := New_Item(Mc(Interpreter, "{Rename selected}"));
+            Menu_Items.all(5) := New_Item(Mc(Interpreter, "{Start copying}"));
+            Menu_Items.all(6) := New_Item(Mc(Interpreter, "{Start moving}"));
+            Menu_Items.all(7) := New_Item(Mc(Interpreter, "{Delete selected}"));
+            Menu_Items.all(8) := New_Item(Mc(Interpreter, "{Clear the Trash}"));
          when BOOKMARKS_MENU =>
             Menu_Items := Show_Bookmarks_Menu;
          when SELECTED_MENU =>
