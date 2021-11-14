@@ -827,24 +827,24 @@ package body Preferences.UI is
                       Src_String => "{File or directory information}")),
             15 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{Preview file or directory}")),
+                (Source => Mc(Interp => Get_Context, Src_String => "{Preview file or directory}")),
             16 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{Add bookmark to this directory}")),
+                (Source => Mc(Interp => Get_Context, Src_String => "{Add bookmark to this directory}")),
             17 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{Remove bookmark from this directory}")),
+                (Source => Mc(Interp => Get_Context, Src_String => "{Remove bookmark from this directory}")),
             18 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{Execute selected program}")),
+                (Source => Mc(Interp => Get_Context, Src_String => "{Execute selected program}")),
             19 =>
               To_Unbounded_String
-                (Mc
-                   (Get_Context,
-                    "{Restore deleted file or directory from Trash}")),
+                (Source => Mc
+                   (Interp => Get_Context,
+                    Src_String => "{Restore deleted file or directory from Trash}")),
             20 =>
               To_Unbounded_String
-                (Mc(Get_Context, "{Show the user defined actions}")));
+                (Source => Mc(Interp => Get_Context, Src_String => "{Show the user defined actions}")));
          Label: Ttk_Label := Get_Widget(".");
          Button: Ttk_Button := Get_Widget(".");
          Image: constant Tk_Photo :=
