@@ -827,49 +827,67 @@ package body Preferences.UI is
                       Src_String => "{File or directory information}")),
             15 =>
               To_Unbounded_String
-                (Source => Mc(Interp => Get_Context, Src_String => "{Preview file or directory}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Preview file or directory}")),
             16 =>
               To_Unbounded_String
-                (Source => Mc(Interp => Get_Context, Src_String => "{Add bookmark to this directory}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Add bookmark to this directory}")),
             17 =>
               To_Unbounded_String
-                (Source => Mc(Interp => Get_Context, Src_String => "{Remove bookmark from this directory}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Remove bookmark from this directory}")),
             18 =>
               To_Unbounded_String
-                (Source => Mc(Interp => Get_Context, Src_String => "{Execute selected program}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Execute selected program}")),
             19 =>
               To_Unbounded_String
-                (Source => Mc
-                   (Interp => Get_Context,
-                    Src_String => "{Restore deleted file or directory from Trash}")),
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String =>
+                        "{Restore deleted file or directory from Trash}")),
             20 =>
               To_Unbounded_String
-                (Source => Mc(Interp => Get_Context, Src_String => "{Show the user defined actions}")));
-         Label: Ttk_Label := Get_Widget(".");
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String => "{Show the user defined actions}")));
+         Shortcut_Label: Ttk_Label := Get_Widget(".");
          Button: Ttk_Button := Get_Widget(".");
-         Image: constant Tk_Photo :=
+         Button_Image: constant Tk_Photo :=
            Create
              ("refreshicon",
               "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
       begin
          Create_Shortcuts_UI_Loop :
          for I in Keys_Labels'Range loop
-            Label :=
+            Shortcut_Label :=
               Create
                 (Shortcuts_Frame & ".label" & Trim(Positive'Image(I), Left),
                  "-text {" & To_String(Keys_Labels(I)) & ": }");
-            Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
-            Label :=
+            Tcl.Tk.Ada.Grid.Grid(Shortcut_Label, "-sticky w");
+            Shortcut_Label :=
               Create
                 (Shortcuts_Frame & ".labelshortcut" &
                  Trim(Positive'Image(I), Left),
                  "-text {" & To_String(Accelerators(I)) & "} -wraplength 150");
             Tcl.Tk.Ada.Grid.Grid
-              (Label, "-sticky w -column 1 -row" & Natural'Image(I - 1));
+              (Shortcut_Label,
+               "-sticky w -column 1 -row" & Natural'Image(I - 1));
             Button :=
               Create
                 (Shortcuts_Frame & ".button" & Trim(Positive'Image(I), Left),
-                 "-style Toolbutton -image " & Widget_Image(Image) &
+                 "-style Toolbutton -image " & Widget_Image(Button_Image) &
                  " -command {StartChangingShortcut" & Positive'Image(I) & "}");
             Add
               (Button,
