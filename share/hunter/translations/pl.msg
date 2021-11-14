@@ -293,4 +293,7 @@
    "Start copying" "Zacznij kopiować"
    "Start moving" "Zacznij przenosić"
    "Clear the Trash" "Wyczyść Kosz"
+   "Execute with" "Uruchom z"
+   "Remove bookmark" "Usuń zakładkę"
+   "Add bookmark" "Dodaj zakładkę"
 }
