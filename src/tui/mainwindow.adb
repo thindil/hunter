@@ -517,13 +517,18 @@ package body MainWindow is
             end if;
             Menu_Items.all(1) :=
               New_Item(Mc(Interpreter, "{Create new directory}"));
-            Menu_Items.all(2) := New_Item(Mc(Interpreter, "{Create new file}"));
-            Menu_Items.all(3) := New_Item(Mc(Interpreter, "{Create new link}"));
-            Menu_Items.all(4) := New_Item(Mc(Interpreter, "{Rename selected}"));
+            Menu_Items.all(2) :=
+              New_Item(Mc(Interpreter, "{Create new file}"));
+            Menu_Items.all(3) :=
+              New_Item(Mc(Interpreter, "{Create new link}"));
+            Menu_Items.all(4) :=
+              New_Item(Mc(Interpreter, "{Rename selected}"));
             Menu_Items.all(5) := New_Item(Mc(Interpreter, "{Start copying}"));
             Menu_Items.all(6) := New_Item(Mc(Interpreter, "{Start moving}"));
-            Menu_Items.all(7) := New_Item(Mc(Interpreter, "{Delete selected}"));
-            Menu_Items.all(8) := New_Item(Mc(Interpreter, "{Clear the Trash}"));
+            Menu_Items.all(7) :=
+              New_Item(Mc(Interpreter, "{Delete selected}"));
+            Menu_Items.all(8) :=
+              New_Item(Mc(Interpreter, "{Clear the Trash}"));
          when BOOKMARKS_MENU =>
             Menu_Items := Show_Bookmarks_Menu;
          when SELECTED_MENU =>
@@ -535,11 +540,13 @@ package body MainWindow is
                Menu_Items := new Item_Array(1 .. 3);
             end if;
             if Menu_Items'Length > 3 then
-               Menu_Items.all(1) := New_Item("Preview");
-               Menu_Items.all(2) := New_Item("Information");
-               Menu_Items.all(3) := New_Item("Execute with");
+               Menu_Items.all(1) := New_Item(Mc(Interpreter, "Preview"));
+               Menu_Items.all(2) := New_Item(Mc(Interpreter, "Information"));
+               Menu_Items.all(3) :=
+                 New_Item(Mc(Interpreter, "{Execute with}"));
             else
-               Menu_Items.all(1) := New_Item("Execute with");
+               Menu_Items.all(1) :=
+                 New_Item(Mc(Interpreter, "{Execute with}"));
             end if;
             for Bookmark of Bookmarks_List loop
                if Bookmark = Current_Selected then
@@ -548,9 +555,11 @@ package body MainWindow is
                end if;
             end loop;
             if Bookmark_Exists then
-               Menu_Items.all(4) := New_Item("Remove bookmark");
+               Menu_Items.all(4) :=
+                 New_Item(Mc(Interpreter, "{Remove bookmark}"));
             elsif Is_Directory(To_String(Current_Selected)) then
-               Menu_Items.all(4) := New_Item("Add bookmark");
+               Menu_Items.all(4) :=
+                 New_Item(Mc(Interpreter, "{Add bookmark}"));
             end if;
          when VIEW_MENU =>
             Menu_Items :=
