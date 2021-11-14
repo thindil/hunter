@@ -573,13 +573,14 @@ package body MainWindow is
                end if;
             end loop Count_Selected_Loop;
             if Selected_Amount < Item_Count(DirectoryList) then
-               Menu_Items.all(1) := New_Item("Select all");
+               Menu_Items.all(1) := New_Item(Mc(Interpreter, "{Select all}"));
             else
-               Menu_Items.all(1) := New_Item("Deselect all");
+               Menu_Items.all(1) :=
+                 New_Item(Mc(Interpreter, "{Deselect all}"));
             end if;
-            Menu_Items.all(2) := New_Item("Search for");
+            Menu_Items.all(2) := New_Item(Mc(Interpreter, "{Search for}"));
             if New_Action /= SHOWTRASH then
-               Menu_Items.all(3) := New_Item("Show Trash");
+               Menu_Items.all(3) := New_Item(Mc(Interpreter, "{Show Trash}"));
             end if;
          when ABOUT_MENU =>
             Menu_Items := new Item_Array(1 .. 7);
