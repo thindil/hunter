@@ -296,4 +296,7 @@
    "Execute with" "Uruchom z"
    "Remove bookmark" "Usuń zakładkę"
    "Add bookmark" "Dodaj zakładkę"
+   "Select all" "Zaznacz wszystko"
+   "Deselect all" "Odznacz wszystko"
+   "Search for" "Szukaj"
 }
