@@ -862,32 +862,32 @@ package body Preferences.UI is
                    Mc
                      (Interp => Get_Context,
                       Src_String => "{Show the user defined actions}")));
-         Shortcut_Label: Ttk_Label := Get_Widget(".");
-         Button: Ttk_Button := Get_Widget(".");
+         Shortcut_Label: Ttk_Label := Get_Widget(pathName => ".");
+         Button: Ttk_Button := Get_Widget(pathName => ".");
          Button_Image: constant Tk_Photo :=
            Create
-             ("refreshicon",
-              "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
+             (pathName => "refreshicon",
+              options => "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
       begin
          Create_Shortcuts_UI_Loop :
          for I in Keys_Labels'Range loop
             Shortcut_Label :=
               Create
-                (Shortcuts_Frame & ".label" & Trim(Positive'Image(I), Left),
-                 "-text {" & To_String(Keys_Labels(I)) & ": }");
-            Tcl.Tk.Ada.Grid.Grid(Shortcut_Label, "-sticky w");
+                (pathName => Shortcuts_Frame & ".label" & Trim(Source => Positive'Image(I), Side => Left),
+                 options => "-text {" & To_String(Source => Keys_Labels(I)) & ": }");
+            Tcl.Tk.Ada.Grid.Grid(Slave => Shortcut_Label, Options => "-sticky w");
             Shortcut_Label :=
               Create
-                (Shortcuts_Frame & ".labelshortcut" &
-                 Trim(Positive'Image(I), Left),
-                 "-text {" & To_String(Accelerators(I)) & "} -wraplength 150");
+                (pathName => Shortcuts_Frame & ".labelshortcut" &
+                 Trim(Source => Positive'Image(I), Side => Left),
+                 options => "-text {" & To_String(Source => Accelerators(I)) & "} -wraplength 150");
             Tcl.Tk.Ada.Grid.Grid
-              (Shortcut_Label,
-               "-sticky w -column 1 -row" & Natural'Image(I - 1));
+              (Slave => Shortcut_Label,
+               Options => "-sticky w -column 1 -row" & Natural'Image(I - 1));
             Button :=
               Create
-                (Shortcuts_Frame & ".button" & Trim(Positive'Image(I), Left),
-                 "-style Toolbutton -image " & Widget_Image(Button_Image) &
+                (pathName => Shortcuts_Frame & ".button" & Trim(Source => Positive'Image(I), Side => Left),
+                  options => "-style Toolbutton -image " & Widget_Image(Win => Button_Image) &
                  " -command {StartChangingShortcut" & Positive'Image(I) & "}");
             Add
               (Button,
