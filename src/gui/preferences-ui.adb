@@ -867,42 +867,67 @@ package body Preferences.UI is
          Button_Image: constant Tk_Photo :=
            Create
              (pathName => "refreshicon",
-              options => "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
+              options =>
+                "-file {../share/hunter/images/document-edit.svg} -format ""svg -scaletoheight [expr {[font metrics DefaultFont -linespace]}]""");
       begin
          Create_Shortcuts_UI_Loop :
          for I in Keys_Labels'Range loop
             Shortcut_Label :=
               Create
-                (pathName => Shortcuts_Frame & ".label" & Trim(Source => Positive'Image(I), Side => Left),
-                 options => "-text {" & To_String(Source => Keys_Labels(I)) & ": }");
-            Tcl.Tk.Ada.Grid.Grid(Slave => Shortcut_Label, Options => "-sticky w");
+                (pathName =>
+                   Shortcuts_Frame & ".label" &
+                   Trim(Source => Positive'Image(I), Side => Left),
+                 options =>
+                   "-text {" & To_String(Source => Keys_Labels(I)) & ": }");
+            Tcl.Tk.Ada.Grid.Grid
+              (Slave => Shortcut_Label, Options => "-sticky w");
             Shortcut_Label :=
               Create
-                (pathName => Shortcuts_Frame & ".labelshortcut" &
-                 Trim(Source => Positive'Image(I), Side => Left),
-                 options => "-text {" & To_String(Source => Accelerators(I)) & "} -wraplength 150");
+                (pathName =>
+                   Shortcuts_Frame & ".labelshortcut" &
+                   Trim(Source => Positive'Image(I), Side => Left),
+                 options =>
+                   "-text {" & To_String(Source => Accelerators(I)) &
+                   "} -wraplength 150");
             Tcl.Tk.Ada.Grid.Grid
               (Slave => Shortcut_Label,
                Options => "-sticky w -column 1 -row" & Natural'Image(I - 1));
             Button :=
               Create
-                (pathName => Shortcuts_Frame & ".button" & Trim(Source => Positive'Image(I), Side => Left),
-                  options => "-style Toolbutton -image " & Widget_Image(Win => Button_Image) &
-                 " -command {StartChangingShortcut" & Positive'Image(I) & "}");
+                (pathName =>
+                   Shortcuts_Frame & ".button" &
+                   Trim(Source => Positive'Image(I), Side => Left),
+                 options =>
+                   "-style Toolbutton -image " &
+                   Widget_Image(Win => Button_Image) &
+                   " -command {StartChangingShortcut" & Positive'Image(I) &
+                   "}");
             Add
-              (Button,
-               Mc(Get_Context, "{Change keyboard shortcut for}") & ":" & LF &
-               To_String(Keys_Labels(I)));
+              (Widget => Button,
+               Message =>
+                 Mc
+                   (Interp => Get_Context,
+                    Src_String => "{Change keyboard shortcut for}") &
+                 ":" & LF & To_String(Source => Keys_Labels(I)));
             Tcl.Tk.Ada.Grid.Grid
-              (Button, "-sticky w -column 2 -row" & Natural'Image(I - 1));
+              (Slave => Button,
+               Options => "-sticky w -column 2 -row" & Natural'Image(I - 1));
          end loop Create_Shortcuts_UI_Loop;
          Add
-           (Restore_Button,
-            Mc
-              (Get_Context,
-               "{Restore default keyboard shortcuts for the program.}"));
-         Tcl.Tk.Ada.Pack.Pack(Restore_Button, "-side left");
-         Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
+           (Widget => Restore_Button,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Restore default keyboard shortcuts for the program.}"));
+         Tcl.Tk.Ada.Pack.Pack
+           (Slave => Restore_Button, Options => "-side left");
+         Add
+           (Widget => Close_Button,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String => "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(Close_Button, "-side right");
          Tcl.Tk.Ada.Grid.Grid(Buttons_Frame, "-sticky we -columnspan 3");
          Tcl.Tk.Ada.Grid.Column_Configure
