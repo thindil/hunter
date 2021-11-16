@@ -888,7 +888,8 @@ package body MainWindow is
                   Show_Execute_With_Dialog;
                   New_Location := EXECUTE_FORM;
                when 4 =>
-                  if Name(Current(SubMenu)) = "Add bookmark" then
+                  if Name(Current(SubMenu)) =
+                    Mc(Interpreter, "{Add bookmark}") then
                      Add_Bookmark;
                   else
                      Remove_Bookmark;
@@ -928,8 +929,9 @@ package body MainWindow is
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
             UILocation := DIRECTORY_VIEW;
-            if Current_Menu in "Select all" | "Deselect all" then
-               if Current_Menu = "Select all" then
+            if Current_Menu in Mc(Interpreter, "{Select all}") |
+                  Mc(Interpreter, "{Deselect all}") then
+               if Current_Menu = Mc(Interpreter, "{Select all}") then
                   Update_Selected_Items_Loop :
                   for I in 1 .. Item_Count(DirectoryList) loop
                      Selected_Items.Append
@@ -939,13 +941,13 @@ package body MainWindow is
                else
                   Selected_Items.Clear;
                end if;
-            elsif Current_Menu = "Search for" then
+            elsif Current_Menu = Mc(Interpreter, "{Search for}") then
                Update_Directory_List;
                Post(SubMenu, False);
                Delete(SubMenu);
                ShowSearchForm;
                return SEARCH_FORM;
-            elsif Current_Menu = "Show Trash" then
+            elsif Current_Menu = Mc(Interpreter, "{Show Trash}") then
                New_Action := SHOWTRASH;
                CreateProgramMenu(True);
                Post(SubMenu, False);
