@@ -929,41 +929,50 @@ package body Preferences.UI is
                 (Interp => Get_Context,
                  Src_String => "{Back to the program}"));
          Tcl.Tk.Ada.Pack.Pack(Slave => Close_Button, Options => "-side right");
-         Tcl.Tk.Ada.Grid.Grid(Slave => Buttons_Frame, Options => "-sticky we -columnspan 3");
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Buttons_Frame, Options => "-sticky we -columnspan 3");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Master => Shortcuts_Frame, Slave => Buttons_Frame, Options => "-weight 1");
+           (Master => Shortcuts_Frame, Slave => Buttons_Frame,
+            Options => "-weight 1");
          Tcl.Tk.Ada.Grid.Row_Configure
-           (Master => Shortcuts_Frame, Slave => Buttons_Frame, Options => "-weight 1");
+           (Master => Shortcuts_Frame, Slave => Buttons_Frame,
+            Options => "-weight 1");
       end Set_Keyboard_Shortcuts_Block;
       TtkNotebook.Add
-        (Notebook => Notebook, WindowName => Widget_Image(Win => Shortcuts_Frame),
-         Options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Keyboard shortcuts}") & "}");
+        (Notebook => Notebook,
+         WindowName => Widget_Image(Win => Shortcuts_Frame),
+         Options =>
+           "-text {" &
+           Mc(Interp => Get_Context, Src_String => "{Keyboard shortcuts}") &
+           "}");
       -- Actions settings
-      Actions_Settings_Block:
+      Actions_Settings_Block :
       declare
          Close_Button: constant Ttk_Button :=
            Create
              (pathName => Actions_Frame & ".closebutton",
-              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Close}") &
-              "} -command {ClosePreferences " & Preferences_Frame & "}");
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Close}") &
+                "} -command {ClosePreferences " & Preferences_Frame & "}");
          Button: Ttk_Button;
-         Label: Ttk_Label;
+         Shortcut_Label: Ttk_Label;
          Tentry: Ttk_Entry;
       begin
          Label_Frame :=
            Create
              (Actions_Frame & ".addframe",
               "-text {" & Mc(Get_Context, "{Add a new command}") & "}");
-         Label :=
+         Shortcut_Label :=
            Create
              (Label_Frame & ".titlelbl",
               "-text {" & Mc(Get_Context, "{Menu label:}") & "}");
          Add
-           (Label,
+           (Shortcut_Label,
             Mc
               (Get_Context,
                "{Text which will be shown in user actions menu.}"));
-         Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
+         Tcl.Tk.Ada.Grid.Grid(Shortcut_Label, "-sticky w");
          Tentry := Create(Label_Frame & ".title");
          Add
            (Tentry,
@@ -971,12 +980,12 @@ package body Preferences.UI is
               (Get_Context,
                "{Text which will be shown in user actions menu.}"));
          Tcl.Tk.Ada.Grid.Grid(Tentry, "-row 0 -column 1");
-         Label :=
+         Shortcut_Label :=
            Create
              (Label_Frame & ".commandlbl",
               "-text {" & Mc(Get_Context, "{Command to execute:}") & "}");
          Add
-           (Label,
+           (Shortcut_Label,
             Mc
               (Get_Context,
                "{Command to execute. That command must be a program not a shell command.}") &
@@ -985,7 +994,7 @@ package body Preferences.UI is
             LF &
             Mc(Get_Context,
                "{@2 will be replaced by currently selected item on list.}"));
-         Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
+         Tcl.Tk.Ada.Grid.Grid(Shortcut_Label, "-sticky w");
          Tentry := Create(Label_Frame & ".command");
          Add
            (Tentry,
