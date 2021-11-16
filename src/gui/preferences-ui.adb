@@ -928,22 +928,23 @@ package body Preferences.UI is
               Mc
                 (Interp => Get_Context,
                  Src_String => "{Back to the program}"));
-         Tcl.Tk.Ada.Pack.Pack(Close_Button, "-side right");
-         Tcl.Tk.Ada.Grid.Grid(Buttons_Frame, "-sticky we -columnspan 3");
+         Tcl.Tk.Ada.Pack.Pack(Slave => Close_Button, Options => "-side right");
+         Tcl.Tk.Ada.Grid.Grid(Slave => Buttons_Frame, Options => "-sticky we -columnspan 3");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Shortcuts_Frame, Buttons_Frame, "-weight 1");
+           (Master => Shortcuts_Frame, Slave => Buttons_Frame, Options => "-weight 1");
          Tcl.Tk.Ada.Grid.Row_Configure
-           (Shortcuts_Frame, Buttons_Frame, "-weight 1");
+           (Master => Shortcuts_Frame, Slave => Buttons_Frame, Options => "-weight 1");
       end Set_Keyboard_Shortcuts_Block;
       TtkNotebook.Add
-        (Notebook, Widget_Image(Shortcuts_Frame),
-         "-text {" & Mc(Get_Context, "{Keyboard shortcuts}") & "}");
+        (Notebook => Notebook, WindowName => Widget_Image(Win => Shortcuts_Frame),
+         Options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Keyboard shortcuts}") & "}");
       -- Actions settings
+      Actions_Settings_Block:
       declare
-         CloseButton: constant Ttk_Button :=
+         Close_Button: constant Ttk_Button :=
            Create
-             (Actions_Frame & ".closebutton",
-              "-text {" & Mc(Get_Context, "{Close}") &
+             (pathName => Actions_Frame & ".closebutton",
+              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Close}") &
               "} -command {ClosePreferences " & Preferences_Frame & "}");
          Button: Ttk_Button;
          Label: Ttk_Label;
@@ -1036,9 +1037,9 @@ package body Preferences.UI is
               "-text {" & Mc(Get_Context, "{Defined commands}") & "}");
          Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
          UpdateUserCommandsList;
-         Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
-         Tcl.Tk.Ada.Pack.Pack(CloseButton, "-side right -anchor s");
-      end;
+         Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack(Close_Button, "-side right -anchor s");
+      end Actions_Settings_Block;
       TtkNotebook.Add
         (Notebook, Widget_Image(Actions_Frame),
          "-text {" & Mc(Get_Context, "{User commands}") & "}");
