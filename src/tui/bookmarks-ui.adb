@@ -48,9 +48,10 @@ package body Bookmarks.UI is
          Menu_Items.all(MenuIndex) := New_Item(Bookmarks_Container.Key(I));
          MenuIndex := MenuIndex + 1;
       end loop;
-      Menu_Items.all(MenuIndex) := New_Item("Enter destination");
+      Menu_Items.all(MenuIndex) :=
+        New_Item(Mc(Interpreter, "{Enter destination}"));
       MenuIndex := MenuIndex + 1;
-      Menu_Items.all(MenuIndex) := New_Item("Close");
+      Menu_Items.all(MenuIndex) := New_Item(Mc(Interpreter, "Close"));
       MenuIndex := MenuIndex + 1;
       Menu_Items.all(MenuIndex) := Null_Item;
       return Menu_Items;
@@ -120,7 +121,7 @@ package body Bookmarks.UI is
               To_Unbounded_String(Bookmarks_List(Bookmark));
          elsif Bookmark = Mc(Interpreter, "{Home}") then
             DestinationDirectory := To_Unbounded_String(Value("HOME"));
-         elsif Bookmark = "Close" then
+         elsif Bookmark = Mc(Interpreter, "Close") then
             Update_Directory_List;
             ShowDestination;
             return DESTINATION_VIEW;
@@ -133,7 +134,7 @@ package body Bookmarks.UI is
          ShowDestination;
          return DESTINATION_VIEW;
       end if;
-      if Bookmark = "Close" then
+      if Bookmark = Mc(Interpreter, "Close") then
          UILocation := DIRECTORY_VIEW;
          Update_Directory_List;
          return DIRECTORY_VIEW;
