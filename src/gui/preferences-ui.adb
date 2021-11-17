@@ -962,50 +962,73 @@ package body Preferences.UI is
          Label_Frame :=
            Create
              (pathName => Actions_Frame & ".addframe",
-              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Add a new command}") & "}");
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context,
+                   Src_String => "{Add a new command}") &
+                "}");
          Shortcut_Label :=
            Create
              (pathName => Label_Frame & ".titlelbl",
-              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Menu label:}") & "}");
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Menu label:}") &
+                "}");
          Add
            (Widget => Shortcut_Label,
-            Message => Mc
-              (Interp => Get_Context,
-               Src_String => "{Text which will be shown in user actions menu.}"));
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Text which will be shown in user actions menu.}"));
          Tcl.Tk.Ada.Grid.Grid(Slave => Shortcut_Label, Options => "-sticky w");
          Tentry := Create(pathName => Label_Frame & ".title");
          Add
            (Widget => Tentry,
-            Message => Mc
-              (Interp => Get_Context,
-               Src_String => "{Text which will be shown in user actions menu.}"));
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Text which will be shown in user actions menu.}"));
          Tcl.Tk.Ada.Grid.Grid(Slave => Tentry, Options => "-row 0 -column 1");
          Shortcut_Label :=
            Create
-             (Label_Frame & ".commandlbl",
-              "-text {" & Mc(Get_Context, "{Command to execute:}") & "}");
+             (pathName => Label_Frame & ".commandlbl",
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context,
+                   Src_String => "{Command to execute:}") &
+                "}");
          Add
-           (Shortcut_Label,
-            Mc
-              (Get_Context,
-               "{Command to execute. That command must be a program not a shell command.}") &
-            LF &
-            Mc(Get_Context, "{@1 will be replaced by current directory}") &
-            LF &
-            Mc(Get_Context,
-               "{@2 will be replaced by currently selected item on list.}"));
-         Tcl.Tk.Ada.Grid.Grid(Shortcut_Label, "-sticky w");
-         Tentry := Create(Label_Frame & ".command");
+           (Widget => Shortcut_Label,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Command to execute. That command must be a program not a shell command.}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String => "{@1 will be replaced by current directory}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String =>
+                   "{@2 will be replaced by currently selected item on list.}"));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Shortcut_Label, Options => "-sticky w");
+         Tentry := Create(pathName => Label_Frame & ".command");
          Add
-           (Tentry,
-            Mc
-              (Get_Context,
-               "{Command to execute. That command must be a program not a shell command.}") &
-            LF &
-            Mc(Get_Context, "{@1 will be replaced by current directory}") &
-            LF &
-            Mc(Get_Context,
-               "{@2 will be replaced by currently selected item on list.}"));
+           (Widget => Tentry,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Command to execute. That command must be a program not a shell command.}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String => "{@1 will be replaced by current directory}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String =>
+                   "{@2 will be replaced by currently selected item on list.}"));
          Tcl.Tk.Ada.Grid.Grid(Tentry, "-row 1 -column 1");
          Check_Button :=
            Create
