@@ -961,25 +961,25 @@ package body Preferences.UI is
       begin
          Label_Frame :=
            Create
-             (Actions_Frame & ".addframe",
-              "-text {" & Mc(Get_Context, "{Add a new command}") & "}");
+             (pathName => Actions_Frame & ".addframe",
+              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Add a new command}") & "}");
          Shortcut_Label :=
            Create
-             (Label_Frame & ".titlelbl",
-              "-text {" & Mc(Get_Context, "{Menu label:}") & "}");
+             (pathName => Label_Frame & ".titlelbl",
+              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Menu label:}") & "}");
          Add
-           (Shortcut_Label,
-            Mc
-              (Get_Context,
-               "{Text which will be shown in user actions menu.}"));
-         Tcl.Tk.Ada.Grid.Grid(Shortcut_Label, "-sticky w");
-         Tentry := Create(Label_Frame & ".title");
+           (Widget => Shortcut_Label,
+            Message => Mc
+              (Interp => Get_Context,
+               Src_String => "{Text which will be shown in user actions menu.}"));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Shortcut_Label, Options => "-sticky w");
+         Tentry := Create(pathName => Label_Frame & ".title");
          Add
-           (Tentry,
-            Mc
-              (Get_Context,
-               "{Text which will be shown in user actions menu.}"));
-         Tcl.Tk.Ada.Grid.Grid(Tentry, "-row 0 -column 1");
+           (Widget => Tentry,
+            Message => Mc
+              (Interp => Get_Context,
+               Src_String => "{Text which will be shown in user actions menu.}"));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Tentry, Options => "-row 0 -column 1");
          Shortcut_Label :=
            Create
              (Label_Frame & ".commandlbl",
