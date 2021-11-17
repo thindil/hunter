@@ -606,7 +606,8 @@ package body MainWindow is
          when others =>
             null;
       end case;
-      Menu_Items.all(Menu_Items'Last - 1) := New_Item("Close");
+      Menu_Items.all(Menu_Items'Last - 1) :=
+        New_Item(Mc(Interpreter, "Close"));
       Menu_Items.all(Menu_Items'Last) := Null_Item;
       SubMenu := New_Menu(Menu_Items);
       Set_Format(SubMenu, Lines - 5, 1);
@@ -821,7 +822,7 @@ package body MainWindow is
                   Tcl_Eval(Interpreter, "ClearTrash");
                   return MESSAGE_FORM;
                when others =>
-                  if CurrentName = "Close" then
+                  if CurrentName = Mc(Interpreter, "Close") then
                      UILocation := DIRECTORY_VIEW;
                      Update_Directory_List(True);
                      ShowPreview;
