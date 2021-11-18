@@ -1033,40 +1033,62 @@ package body Preferences.UI is
          Check_Button :=
            Create
              (pathName => Label_Frame & ".output",
-              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Show command output in preview}") &
-              "}");
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context,
+                   Src_String => "{Show command output in preview}") &
+                "}");
          Add
            (Widget => Check_Button,
-            Message => Mc
-              (Interp => Get_Context,
-               Src_String => "{If checked, the command output will be shown in preview window.}") &
-            LF &
-            Mc(Interp => Get_Context,
-               Src_String => "{Otherwise, the command output will be ignored.}"));
-         Tcl.Tk.Ada.Grid.Grid(Slave => Check_Button, Options => "-sticky we -columnspan 2");
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{If checked, the command output will be shown in preview window.}") &
+              LF &
+              Mc(Interp => Get_Context,
+                 Src_String =>
+                   "{Otherwise, the command output will be ignored.}"));
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Check_Button, Options => "-sticky we -columnspan 2");
          Button :=
            Create
              (pathName => Label_Frame & ".add",
-               options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Add command}") &
-              "} -command AddCommand");
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Add command}") &
+                "} -command AddCommand");
          Add
            (Widget => Button,
-            Message => Mc
-              (Interp => Get_Context,
-               Src_String => "{Add the selected command. If there is that same menu label, it will be replaced.}"));
-         Tcl.Tk.Ada.Grid.Grid(Button, "-sticky w");
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String =>
+                   "{Add the selected command. If there is that same menu label, it will be replaced.}"));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Button, Options => "-sticky w");
          Button :=
            Create
-             (Label_Frame & ".reset",
-              "-text {" & Mc(Get_Context, "{Reset}") &
-              "} -command ResetCommand");
-         Add(Button, Mc(Get_Context, "{Clear all settings.}"));
-         Tcl.Tk.Ada.Grid.Grid(Button, "-sticky e -row 3 -column 1");
-         Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
+             (pathName => Label_Frame & ".reset",
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Reset}") &
+                "} -command ResetCommand");
+         Add
+           (Widget => Button,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String => "{Clear all settings.}"));
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Button, Options => "-sticky e -row 3 -column 1");
+         Tcl.Tk.Ada.Pack.Pack(Slave => Label_Frame, Options => "-fill x");
          Label_Frame :=
            Create
-             (Actions_Frame & ".commandsframe",
-              "-text {" & Mc(Get_Context, "{Defined commands}") & "}");
+             (pathName => Actions_Frame & ".commandsframe",
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Defined commands}") &
+                "}");
          Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
          UpdateUserCommandsList;
          Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
