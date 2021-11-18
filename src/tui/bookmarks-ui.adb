@@ -135,6 +135,7 @@ package body Bookmarks.UI is
          return DESTINATION_VIEW;
       end if;
       if Bookmark = Mc(Interpreter, "Close") then
+         ShowPreview;
          UILocation := DIRECTORY_VIEW;
          Update_Directory_List;
          return DIRECTORY_VIEW;
@@ -220,6 +221,7 @@ package body Bookmarks.UI is
                Post(DialogForm, False);
                Delete(DialogForm);
                if New_Action not in MOVE | COPY then
+                  ShowPreview;
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
                   return DIRECTORY_VIEW;
