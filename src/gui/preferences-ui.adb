@@ -1029,31 +1029,31 @@ package body Preferences.UI is
               Mc(Interp => Get_Context,
                  Src_String =>
                    "{@2 will be replaced by currently selected item on list.}"));
-         Tcl.Tk.Ada.Grid.Grid(Tentry, "-row 1 -column 1");
+         Tcl.Tk.Ada.Grid.Grid(Slave => Tentry, Options => "-row 1 -column 1");
          Check_Button :=
            Create
-             (Label_Frame & ".output",
-              "-text {" & Mc(Get_Context, "{Show command output in preview}") &
+             (pathName => Label_Frame & ".output",
+              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Show command output in preview}") &
               "}");
          Add
-           (Check_Button,
-            Mc
-              (Get_Context,
-               "{If checked, the command output will be shown in preview window.}") &
+           (Widget => Check_Button,
+            Message => Mc
+              (Interp => Get_Context,
+               Src_String => "{If checked, the command output will be shown in preview window.}") &
             LF &
-            Mc(Get_Context,
-               "{Otherwise, the command output will be ignored.}"));
-         Tcl.Tk.Ada.Grid.Grid(Check_Button, "-sticky we -columnspan 2");
+            Mc(Interp => Get_Context,
+               Src_String => "{Otherwise, the command output will be ignored.}"));
+         Tcl.Tk.Ada.Grid.Grid(Slave => Check_Button, Options => "-sticky we -columnspan 2");
          Button :=
            Create
-             (Label_Frame & ".add",
-              "-text {" & Mc(Get_Context, "{Add command}") &
+             (pathName => Label_Frame & ".add",
+               options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Add command}") &
               "} -command AddCommand");
          Add
-           (Button,
-            Mc
-              (Get_Context,
-               "{Add the selected command. If there is that same menu label, it will be replaced.}"));
+           (Widget => Button,
+            Message => Mc
+              (Interp => Get_Context,
+               Src_String => "{Add the selected command. If there is that same menu label, it will be replaced.}"));
          Tcl.Tk.Ada.Grid.Grid(Button, "-sticky w");
          Button :=
            Create
