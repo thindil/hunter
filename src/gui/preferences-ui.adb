@@ -1089,20 +1089,21 @@ package body Preferences.UI is
                 "-text {" &
                 Mc(Interp => Get_Context, Src_String => "{Defined commands}") &
                 "}");
-         Tcl.Tk.Ada.Pack.Pack(Label_Frame, "-fill x");
+         Tcl.Tk.Ada.Pack.Pack(Slave => Label_Frame, Options => "-fill x");
          UpdateUserCommandsList;
-         Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
-         Tcl.Tk.Ada.Pack.Pack(Close_Button, "-side right -anchor s");
+         Add(Widget => Close_Button, Message => Mc(Interp => Get_Context, Src_String => "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack(Slave => Close_Button, Options => "-side right -anchor s");
       end Actions_Settings_Block;
       TtkNotebook.Add
-        (Notebook, Widget_Image(Actions_Frame),
-         "-text {" & Mc(Get_Context, "{User commands}") & "}");
+        (Notebook => Notebook, WindowName => Widget_Image(Win => Actions_Frame),
+         Options => "-text {" & Mc(Interp => Get_Context, Src_String => "{User commands}") & "}");
       -- The program modules settings
+      Modules_Settings_Block:
       declare
-         CloseButton: constant Ttk_Button :=
+         Close_Button: constant Ttk_Button :=
            Create
-             (Modules_Frame & ".closebutton",
-              "-text {" & Mc(Get_Context, "{Close}") &
+             (pathName => Modules_Frame & ".closebutton",
+              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Close}") &
               "} -command {ClosePreferences " & Preferences_Frame & "}");
          HeaderLabel: Ttk_Label;
       begin
@@ -1141,9 +1142,9 @@ package body Preferences.UI is
          Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 4 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
            (Modules_Frame, HeaderLabel, "-weight 1");
-         Add(CloseButton, Mc(Get_Context, "{Back to the program}"));
-         Tcl.Tk.Ada.Grid.Grid(CloseButton, "-sticky se -columnspan 5");
-      end;
+         Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
+         Tcl.Tk.Ada.Grid.Grid(Close_Button, "-sticky se -columnspan 5");
+      end Modules_Settings_Block;
       TtkNotebook.Add
         (Notebook, Widget_Image(Modules_Frame),
          "-text {" & Mc(Get_Context, "{Modules}") & "}");
