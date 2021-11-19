@@ -299,4 +299,7 @@
    "Select all" "Zaznacz wszystko"
    "Deselect all" "Odznacz wszystko"
    "Search for" "Szukaj"
+   "Enter the destination directory:" "Wprowadź katalog docelowy:"
+   "Enter" "Wejdź"
+   "doesn't exists." "nie istnieje."
 }
