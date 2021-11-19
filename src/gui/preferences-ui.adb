@@ -1091,57 +1091,77 @@ package body Preferences.UI is
                 "}");
          Tcl.Tk.Ada.Pack.Pack(Slave => Label_Frame, Options => "-fill x");
          UpdateUserCommandsList;
-         Add(Widget => Close_Button, Message => Mc(Interp => Get_Context, Src_String => "{Back to the program}"));
-         Tcl.Tk.Ada.Pack.Pack(Slave => Close_Button, Options => "-side right -anchor s");
+         Add
+           (Widget => Close_Button,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String => "{Back to the program}"));
+         Tcl.Tk.Ada.Pack.Pack
+           (Slave => Close_Button, Options => "-side right -anchor s");
       end Actions_Settings_Block;
       TtkNotebook.Add
-        (Notebook => Notebook, WindowName => Widget_Image(Win => Actions_Frame),
-         Options => "-text {" & Mc(Interp => Get_Context, Src_String => "{User commands}") & "}");
+        (Notebook => Notebook,
+         WindowName => Widget_Image(Win => Actions_Frame),
+         Options =>
+           "-text {" &
+           Mc(Interp => Get_Context, Src_String => "{User commands}") & "}");
       -- The program modules settings
-      Modules_Settings_Block:
+      Modules_Settings_Block :
       declare
          Close_Button: constant Ttk_Button :=
            Create
              (pathName => Modules_Frame & ".closebutton",
-              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Close}") &
-              "} -command {ClosePreferences " & Preferences_Frame & "}");
-         HeaderLabel: Ttk_Label;
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Close}") &
+                "} -command {ClosePreferences " & Preferences_Frame & "}");
+         Header_Label: Ttk_Label;
       begin
-         HeaderLabel :=
+         Header_Label :=
            Create
-             (Modules_Frame & ".enabled",
-              "-text {" & Mc(Get_Context, "{Enabled}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(HeaderLabel);
+             (pathName => Modules_Frame & ".enabled",
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Enabled}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(Slave => Header_Label);
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Modules_Frame, HeaderLabel, "-weight 1");
-         HeaderLabel :=
+           (Master => Modules_Frame, Slave => Header_Label,
+            Options => "-weight 1");
+         Header_Label :=
            Create
-             (Modules_Frame & ".name",
-              "-text {" & Mc(Get_Context, "{Name}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 1 -row 0");
+             (pathName => Modules_Frame & ".name",
+              options =>
+                "-text {" & Mc(Interp => Get_Context, Src_String => "{Name}") &
+                "}");
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Header_Label, Options => "-column 1 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Modules_Frame, HeaderLabel, "-weight 1");
-         HeaderLabel :=
+           (Master => Modules_Frame, Slave => Header_Label,
+            Options => "-weight 1");
+         Header_Label :=
            Create
-             (Modules_Frame & ".version",
-              "-text {" & Mc(Get_Context, "{Version}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 2 -row 0");
+             (pathName => Modules_Frame & ".version",
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Version}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(Header_Label, "-column 2 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Modules_Frame, HeaderLabel, "-weight 1");
-         HeaderLabel :=
+           (Modules_Frame, Header_Label, "-weight 1");
+         Header_Label :=
            Create
              (Modules_Frame & ".description",
               "-text {" & Mc(Get_Context, "{Description}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 3 -row 0");
+         Tcl.Tk.Ada.Grid.Grid(Header_Label, "-column 3 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Modules_Frame, HeaderLabel, "-weight 1");
-         HeaderLabel :=
+           (Modules_Frame, Header_Label, "-weight 1");
+         Header_Label :=
            Create
              (Modules_Frame & ".show",
               "-text {" & Mc(Get_Context, "{Show}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(HeaderLabel, "-column 4 -row 0");
+         Tcl.Tk.Ada.Grid.Grid(Header_Label, "-column 4 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Modules_Frame, HeaderLabel, "-weight 1");
+           (Modules_Frame, Header_Label, "-weight 1");
          Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
          Tcl.Tk.Ada.Grid.Grid(Close_Button, "-sticky se -columnspan 5");
       end Modules_Settings_Block;
