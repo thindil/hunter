@@ -1145,21 +1145,21 @@ package body Preferences.UI is
               options =>
                 "-text {" &
                 Mc(Interp => Get_Context, Src_String => "{Version}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(Header_Label, "-column 2 -row 0");
+         Tcl.Tk.Ada.Grid.Grid(Slave => Header_Label, Options => "-column 2 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Modules_Frame, Header_Label, "-weight 1");
+           (Master => Modules_Frame, Slave => Header_Label, Options => "-weight 1");
          Header_Label :=
            Create
-             (Modules_Frame & ".description",
-              "-text {" & Mc(Get_Context, "{Description}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(Header_Label, "-column 3 -row 0");
+             (pathName => Modules_Frame & ".description",
+              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Description}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(Slave => Header_Label, Options => "-column 3 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Modules_Frame, Header_Label, "-weight 1");
+           (Master => Modules_Frame, Slave => Header_Label, Options => "-weight 1");
          Header_Label :=
            Create
-             (Modules_Frame & ".show",
-              "-text {" & Mc(Get_Context, "{Show}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(Header_Label, "-column 4 -row 0");
+             (pathName => Modules_Frame & ".show",
+              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Show}") & "}");
+         Tcl.Tk.Ada.Grid.Grid(Slave => Header_Label, Options => "-column 4 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
            (Modules_Frame, Header_Label, "-weight 1");
          Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
