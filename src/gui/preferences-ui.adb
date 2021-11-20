@@ -1145,32 +1145,53 @@ package body Preferences.UI is
               options =>
                 "-text {" &
                 Mc(Interp => Get_Context, Src_String => "{Version}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(Slave => Header_Label, Options => "-column 2 -row 0");
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Header_Label, Options => "-column 2 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Master => Modules_Frame, Slave => Header_Label, Options => "-weight 1");
+           (Master => Modules_Frame, Slave => Header_Label,
+            Options => "-weight 1");
          Header_Label :=
            Create
              (pathName => Modules_Frame & ".description",
-              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Description}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(Slave => Header_Label, Options => "-column 3 -row 0");
+              options =>
+                "-text {" &
+                Mc(Interp => Get_Context, Src_String => "{Description}") &
+                "}");
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Header_Label, Options => "-column 3 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Master => Modules_Frame, Slave => Header_Label, Options => "-weight 1");
+           (Master => Modules_Frame, Slave => Header_Label,
+            Options => "-weight 1");
          Header_Label :=
            Create
              (pathName => Modules_Frame & ".show",
-              options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Show}") & "}");
-         Tcl.Tk.Ada.Grid.Grid(Slave => Header_Label, Options => "-column 4 -row 0");
+              options =>
+                "-text {" & Mc(Interp => Get_Context, Src_String => "{Show}") &
+                "}");
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Header_Label, Options => "-column 4 -row 0");
          Tcl.Tk.Ada.Grid.Column_Configure
-           (Modules_Frame, Header_Label, "-weight 1");
-         Add(Close_Button, Mc(Get_Context, "{Back to the program}"));
-         Tcl.Tk.Ada.Grid.Grid(Close_Button, "-sticky se -columnspan 5");
+           (Master => Modules_Frame, Slave => Header_Label,
+            Options => "-weight 1");
+         Add
+           (Widget => Close_Button,
+            Message =>
+              Mc
+                (Interp => Get_Context,
+                 Src_String => "{Back to the program}"));
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Close_Button, Options => "-sticky se -columnspan 5");
       end Modules_Settings_Block;
       TtkNotebook.Add
-        (Notebook, Widget_Image(Modules_Frame),
-         "-text {" & Mc(Get_Context, "{Modules}") & "}");
+        (Notebook => Notebook,
+         WindowName => Widget_Image(Win => Modules_Frame),
+         Options =>
+           "-text {" & Mc(Interp => Get_Context, Src_String => "{Modules}") &
+           "}");
       Canvas_Create
-        (Preferences_Canvas, "window", "0 0 -anchor nw -window " & Notebook);
-      Tcl_Eval(Get_Context, "update");
+        (Parent => Preferences_Canvas, Child_Type => "window",
+         Options => "0 0 -anchor nw -window " & Notebook);
+      Tcl_Eval(interp => Get_Context, strng => "update");
       configure
         (Preferences_Canvas,
          "-scrollregion [list " & BBox(Preferences_Canvas, "all") & "]");
