@@ -208,7 +208,7 @@ package body Bookmarks.UI is
                   Show_Message
                     (Mc(Interpreter, "{Directory}") & " " &
                      Trim(Get_Buffer(Fields(DialogForm, 2)), Both) & " " &
-                     Mc(Interpreter, "{doesn't exists.}"));
+                     Mc(Interpreter, "{doesn't exist.}"));
                   return MESSAGE_FORM;
                end if;
                if New_Action not in MOVE | COPY then
