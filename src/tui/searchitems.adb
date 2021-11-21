@@ -16,6 +16,7 @@
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with ShowItems; use ShowItems;
 
 package body SearchItems is
 
@@ -104,6 +105,7 @@ package body SearchItems is
                end if;
                Post(DialogForm, False);
                Delete(DialogForm);
+               ShowPreview;
                return DIRECTORY_VIEW;
             end if;
          when others =>
