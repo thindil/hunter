@@ -301,5 +301,4 @@
    "Search for" "Szukaj"
    "Enter the destination directory:" "Wprowadź katalog docelowy:"
    "Enter" "Wejdź"
-   "doesn't exists." "nie istnieje."
 }
