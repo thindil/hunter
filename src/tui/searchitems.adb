@@ -16,6 +16,8 @@
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Common; use Common;
 with ShowItems; use ShowItems;
 
 package body SearchItems is
@@ -32,8 +34,11 @@ package body SearchItems is
       UnusedResult: Forms.Driver_Result := Unknown_Request;
    begin
       Set_Cursor_Visibility(Visibility);
-      Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
-      Set_Buffer(Create_Fields.all(1), 0, "Search for:");
+      Create_Fields.all(1) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("{Search for:}", Interpreter)), 0,
+           8, 0, 0);
+      Set_Buffer(Create_Fields.all(1), 0, Mc(Interpreter, "{Search for:}"));
       FieldOptions := Get_Options(Create_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
@@ -42,16 +47,24 @@ package body SearchItems is
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
-      Create_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
-      Set_Buffer(Create_Fields.all(3), 0, "[Cancel]");
+      Create_Fields.all(3) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("Cancel", Interpreter)) + 2, 2, 7,
+           0, 0);
+      Set_Buffer
+        (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "Cancel") & "]");
       FieldOptions := Get_Options(Create_Fields.all(3));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(3), FieldOptions);
-      Create_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
+      Create_Fields.all(4) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("Search", Interpreter)) + 2, 2, 23,
+           0, 0);
       FieldOptions := Get_Options(Create_Fields.all(4));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(4), FieldOptions);
-      Set_Buffer(Create_Fields.all(4), 0, "[Search]");
+      Set_Buffer
+        (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "Search") & "]");
       Create_Fields.all(5) := Null_Field;
       DialogForm := New_Form(Create_Fields);
       Set_Current(DialogForm, Create_Fields(2));
