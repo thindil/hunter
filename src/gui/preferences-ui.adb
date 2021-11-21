@@ -17,42 +17,53 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
+with Ada.Strings.Fixed;
+with Interfaces.C.Strings;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
-with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
+with Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Pack;
-with Tcl.Tk.Ada.TtkStyle; use Tcl.Tk.Ada.TtkStyle;
+with Tcl.Tk.Ada.TtkStyle;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.Canvas; use Tcl.Tk.Ada.Widgets.Canvas;
+with Tcl.Tk.Ada.Widgets.Canvas;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
-use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
-use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
-with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
-with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
-with Tcl.Tk.Ada.Widgets.TtkLabelFrame; use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
-with Tcl.Tk.Ada.Widgets.TtkNotebook; use Tcl.Tk.Ada.Widgets.TtkNotebook;
-with Tcl.Tk.Ada.Widgets.TtkScale; use Tcl.Tk.Ada.Widgets.TtkScale;
-with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
-with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
-with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
-with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Modules; use Modules;
+with Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkLabel;
+with Tcl.Tk.Ada.Widgets.TtkLabelFrame;
+with Tcl.Tk.Ada.Widgets.TtkNotebook;
+with Tcl.Tk.Ada.Widgets.TtkScale;
+with Tcl.Tk.Ada.Widgets.TtkScrollbar;
+with Tcl.Tk.Ada.Widgets.TtkWidget;
+with Tcl.Tklib.Ada.Autoscroll;
+with Tcl.Tklib.Ada.Tooltip;
+with Modules;
 with Modules.Commands;
 with Preferences.Commands;
-with UserCommands; use UserCommands;
-with UserCommands.UI; use UserCommands.UI;
-with Utils; use Utils;
+with UserCommands.UI;
+with Utils;
 
 package body Preferences.UI is
 
    procedure Create_Preferences_Ui is
+      use Tcl.Tk.Ada.Widgets.Canvas;
+      use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
+      use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
+      use Tcl.Tk.Ada.Widgets.TtkFrame;
+      use Tcl.Tk.Ada.Widgets.TtkLabel;
+      use Tcl.Tk.Ada.Widgets.TtkLabelFrame;
+      use Tcl.Tk.Ada.Widgets.TtkNotebook;
+      use Tcl.Tk.Ada.Widgets.TtkScale;
+      use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+      use Tcl.Tk.Ada.Widgets.TtkWidget;
+      use Tcl.Tklib.Ada.Autoscroll;
+      use Tcl.Tklib.Ada.Tooltip;
+      use Utils;
+
       Label_Frame: Ttk_LabelFrame;
       Check_Button: Ttk_CheckButton;
       Label: Ttk_Label;
@@ -487,6 +498,8 @@ package body Preferences.UI is
          Command => "SetToolbarsOnTop");
       Set_Ui_Theme_Block :
       declare
+         use Tcl.Tk.Ada.TtkStyle;
+
          Theme_Frame: constant Ttk_Frame :=
            Create(pathName => Label_Frame & ".colorframe");
          Themes_Names: Unbounded_String :=
@@ -721,6 +734,9 @@ package body Preferences.UI is
       -- Keyboard shortcuts settings
       Set_Keyboard_Shortcuts_Block :
       declare
+         use Ada.Strings.Fixed;
+         use Tcl.Tk.Ada.Image.Photo;
+
          Buttons_Frame: constant Ttk_Frame :=
            Create(pathName => Shortcuts_Frame & ".buttonsframe");
          Close_Button: constant Ttk_Button :=
@@ -948,6 +964,8 @@ package body Preferences.UI is
       -- Actions settings
       Actions_Settings_Block :
       declare
+         use UserCommands.UI;
+
          Close_Button: constant Ttk_Button :=
            Create
              (pathName => Actions_Frame & ".closebutton",
@@ -1202,6 +1220,8 @@ package body Preferences.UI is
    end Create_Preferences_Ui;
 
    procedure Clear_Add_Command is
+      use Interfaces.C.Strings;
+
       Frame_Name: constant String :=
         ".preferencesframe.canvas.notebook.actions.addframe";
       Tentry: Ttk_Entry := Get_Widget(pathName => Frame_Name & ".title");
