@@ -1193,28 +1193,32 @@ package body Preferences.UI is
          Options => "0 0 -anchor nw -window " & Notebook);
       Tcl_Eval(interp => Get_Context, strng => "update");
       configure
-        (Preferences_Canvas,
-         "-scrollregion [list " & BBox(Preferences_Canvas, "all") & "]");
+        (Widgt => Preferences_Canvas,
+         options =>
+           "-scrollregion [list " &
+           BBox(CanvasWidget => Preferences_Canvas, TagOrId => "all") & "]");
       Preferences.Commands.AddCommands;
       Modules.Commands.AddCommands;
    end Create_Preferences_Ui;
 
    procedure Clear_Add_Command is
-      Tentry: Ttk_Entry :=
-        Get_Widget(".preferencesframe.canvas.notebook.actions.addframe.title");
+      Frame_Name: constant String :=
+        ".preferencesframe.canvas.notebook.actions.addframe";
+      Tentry: Ttk_Entry := Get_Widget(pathName => Frame_Name & ".title");
       Button: constant Ttk_Button :=
-        Get_Widget(".preferencesframe.canvas.notebook.actions.addframe.add");
+        Get_Widget(pathName => Frame_Name & ".add");
    begin
-      Delete(Tentry, "0", "end");
-      Tentry.Name :=
-        New_String
-          (".preferencesframe.canvas.notebook.actions.addframe.command");
-      Delete(Tentry, "0", "end");
+      Delete(TextEntry => Tentry, FirstIndex => "0", LastIndex => "end");
+      Tentry.Name := New_String(Str => Frame_Name & ".command");
+      Delete(TextEntry => Tentry, FirstIndex => "0", LastIndex => "end");
       Tcl_SetVar
-        (Get_Context,
-         ".preferencesframe.canvas.notebook.actions.addframe.output", "0");
+        (interp => Get_Context, varName => Frame_Name & ".output",
+         newValue => "0");
       Widgets.configure
-        (Button, "-text {" & Mc(Get_Context, "{Add command}") & "}");
+        (Widgt => Button,
+         options =>
+           "-text {" &
+           Mc(Interp => Get_Context, Src_String => "{Add command}") & "}");
    end Clear_Add_Command;
 
 end Preferences.UI;
