@@ -13,10 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Directories; use Ada.Directories;
+with Ada.Characters.Latin_1;
+with Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Strings; use Ada.Strings;
+with Ada.Strings;
 with Ada.Strings.Fixed;
 with Interfaces.C.Strings;
 with Tcl.Ada; use Tcl.Ada;
@@ -50,6 +50,7 @@ with Utils;
 package body Preferences.UI is
 
    procedure Create_Preferences_Ui is
+      use Ada.Characters.Latin_1;
       use Tcl.Tk.Ada.Widgets.Canvas;
       use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
       use Tcl.Tk.Ada.Widgets.TtkEntry.TtkComboBox;
@@ -296,6 +297,8 @@ package body Preferences.UI is
       Tcl.Tk.Ada.Pack.Pack(Slave => Check_Button, Options => "-fill x");
       Select_Color_Theme_Block :
       declare
+         use Ada.Directories;
+
          Search: Search_Type;
          File: Directory_Entry_Type;
          Themes_Name: Unbounded_String := Null_Unbounded_String;
@@ -734,6 +737,7 @@ package body Preferences.UI is
       -- Keyboard shortcuts settings
       Set_Keyboard_Shortcuts_Block :
       declare
+         use Ada.Strings;
          use Ada.Strings.Fixed;
          use Tcl.Tk.Ada.Image.Photo;
 
