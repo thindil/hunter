@@ -30,11 +30,11 @@ with ShowItems; use ShowItems;
 
 package body RefreshData is
 
-   task body InotifyTask is
+   task body Inotify_Task is
    begin
       accept Start;
       Inotify_Read;
-   end InotifyTask;
+   end Inotify_Task;
 
    -- ****iv* RefreshData/RefreshData.Timer_Token
    -- FUNCTION
@@ -176,14 +176,14 @@ package body RefreshData is
       Is_Checking := False;
    end CheckItems;
 
-   procedure StartTimer(Path: String := "") is
+   procedure Start_Timer(Path: String := "") is
    begin
       if Timer_Token /= null then
          Tcl_DeleteTimerHandler(Timer_Token);
       end if;
       if Path /= "" then
          Add_Watches(Path);
-         InotifyTask.Start;
+         Inotify_Task.Start;
       end if;
       if Settings.Auto_Refresh_Interval > 0 then
          Timer_Token :=
@@ -191,15 +191,15 @@ package body RefreshData is
              (int(Settings.Auto_Refresh_Interval) * 1_000, CheckItems'Access,
               Null_ClientData);
       end if;
-   end StartTimer;
+   end Start_Timer;
 
-   procedure UpdateWatch(Path: String) is
+   procedure Update_Watch(Path: String) is
    begin
       Temporary_Stop := True;
       CheckItems(Null_ClientData);
       Remove_Watches;
       Add_Watches(Path);
       Temporary_Stop := False;
-   end UpdateWatch;
+   end Update_Watch;
 
 end RefreshData;

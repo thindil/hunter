@@ -62,7 +62,7 @@ package body RenameItems is
       Current_Selected := To_Unbounded_String(NewName);
       Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
-      UpdateWatch(To_String(Common.Current_Directory));
+      Update_Watch(To_String(Common.Current_Directory));
       return True;
    end Rename_Item;
 

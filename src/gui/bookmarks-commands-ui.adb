@@ -140,7 +140,7 @@ package body Bookmarks.Commands.UI is
       end if;
       Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
-      UpdateWatch(To_String(Common.Current_Directory));
+      Update_Watch(To_String(Common.Current_Directory));
       return TCL_OK;
    end GoToDestination_Command;
 

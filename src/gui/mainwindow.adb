@@ -411,7 +411,7 @@ package body MainWindow is
       end if;
       Load_Directory
         (Directory_Name => To_String(Source => Common.Current_Directory));
-      StartTimer(Path => To_String(Source => Common.Current_Directory));
+      Start_Timer(Path => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
       Execute_Modules
         (Interpreter => Get_Context, State => ON_ENTER,

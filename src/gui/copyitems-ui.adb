@@ -134,7 +134,7 @@ package body CopyItems.UI is
       Load_Directory
         (Directory_Name => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
-      UpdateWatch(Path => To_String(Source => Common.Current_Directory));
+      Update_Watch(Path => To_String(Source => Common.Current_Directory));
       ShowPreview;
       Toggle_Tool_Buttons(Action => New_Action, Finished => True);
    end Copy_Selected;

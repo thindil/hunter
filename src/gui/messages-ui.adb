@@ -193,7 +193,7 @@ package body Messages.UI is
                        (Directory_Name =>
                           To_String(Source => Current_Directory));
                      Update_Directory_List(Clear => True);
-                     UpdateWatch
+                     Update_Watch
                        (Path => To_String(Source => Current_Directory));
                      Tcl.Ada.Tcl_Eval
                        (interp => Get_Context, strng => "ShowSelected");

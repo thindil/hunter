@@ -213,7 +213,7 @@ package body CreateItems.UI is
       end if;
       Load_Directory
         (Directory_Name => To_String(Source => Common.Current_Directory));
-      UpdateWatch(Path => To_String(Source => Common.Current_Directory));
+      Update_Watch(Path => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
       <<End_Of_Create>>
       if Invoke(Buttn => Button) /= "" then

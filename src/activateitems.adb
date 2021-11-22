@@ -116,7 +116,7 @@ package body ActivateItems is
                              "/.local/share/Trash/files")));
          end if;
          Update_Directory_List(Clear => True);
-         UpdateWatch(Path => To_String(Source => Current_Directory));
+         Update_Watch(Path => To_String(Source => Current_Directory));
          Execute_Modules
            (Interpreter => Interp, State => ON_ENTER,
             Arguments => "{" & To_String(Source => Current_Directory) & "}");

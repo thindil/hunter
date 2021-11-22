@@ -873,7 +873,7 @@ package body Preferences.Commands is
         New_String
           (".preferencesframe.canvas.notebook.preferences.interface.messagesscale");
       Settings.Auto_Close_Messages_Time := Natural(Float'Value(Get(Scale)));
-      StartTimer;
+      Start_Timer;
       Tcl.Tk.Ada.Grid.Grid_Remove(Frame);
       Frame.Name := New_String(".mainframe");
       Tcl.Tk.Ada.Grid.Grid(Frame);
@@ -1390,7 +1390,7 @@ package body Preferences.Commands is
       Load_Directory(To_String(Common.Current_Directory));
       Current_Selected := Common.Current_Directory & "/" & Items_List(1).Name;
       Update_Directory_List(True);
-      UpdateWatch(To_String(Common.Current_Directory));
+      Update_Watch(To_String(Common.Current_Directory));
       ShowPreview;
       return TCL_OK;
    end Show_Module_Command;
