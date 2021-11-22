@@ -785,7 +785,7 @@ package body Preferences.UI is
                   Load_Directory(To_String(Common.Current_Directory));
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
-                  UpdateWatch(To_String(Common.Current_Directory));
+                  Update_Watch(To_String(Common.Current_Directory));
                   Execute_Modules
                     (Interpreter, ON_ENTER,
                      "{" & To_String(Common.Current_Directory) & "}");

@@ -100,7 +100,7 @@ package body CreateItems.UI is
            To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
       end if;
       Load_Directory(To_String(Common.Current_Directory));
-      UpdateWatch(To_String(Common.Current_Directory));
+      Update_Watch(To_String(Common.Current_Directory));
       Tcl_SetResult(Interp, "1");
       return TCL_OK;
    end Create_Item_Command;

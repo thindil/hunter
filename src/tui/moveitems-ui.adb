@@ -122,7 +122,7 @@ package body MoveItems.UI is
         Simple_Name(To_String(Current_Selected));
       Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
-      UpdateWatch(To_String(Common.Current_Directory));
+      Update_Watch(To_String(Common.Current_Directory));
       if Settings.Stay_In_Old then
          ShowPreview;
       end if;

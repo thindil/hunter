@@ -172,7 +172,7 @@ package body Bookmarks.UI is
       Clear_Preview_Window;
       Update_Directory_List(True);
       ShowPreview;
-      UpdateWatch(To_String(Common.Current_Directory));
+      Update_Watch(To_String(Common.Current_Directory));
       Execute_Modules
         (Interpreter, ON_ENTER,
          "{" & To_String(Common.Current_Directory) & "}");
@@ -217,7 +217,7 @@ package body Bookmarks.UI is
                     To_Unbounded_String
                       (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
                   Load_Directory(To_String(Common.Current_Directory));
-                  UpdateWatch(To_String(Common.Current_Directory));
+                  Update_Watch(To_String(Common.Current_Directory));
                   Execute_Modules
                     (Interpreter, ON_ENTER,
                      "{" & To_String(Common.Current_Directory) & "}");

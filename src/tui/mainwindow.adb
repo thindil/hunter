@@ -191,7 +191,7 @@ package body MainWindow is
          end if;
       end if;
       Load_Directory(To_String(Common.Current_Directory));
-      StartTimer(To_String(Common.Current_Directory));
+      Start_Timer(To_String(Common.Current_Directory));
       Show_Main_Window;
    end CreateMainWindow;
 
@@ -485,7 +485,7 @@ package body MainWindow is
                end loop Update_Current_Directory_Loop;
                Load_Directory(To_String(Common.Current_Directory));
                Update_Directory_List(True);
-               UpdateWatch(To_String(Common.Current_Directory));
+               Update_Watch(To_String(Common.Current_Directory));
                Execute_Modules
                  (Interpreter, ON_ENTER,
                   "{" & To_String(Common.Current_Directory) & "}");
