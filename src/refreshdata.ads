@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -21,29 +21,29 @@
 package RefreshData is
 -- ****
 
-   -- ****a* RefreshData/RefreshData.InotifyTask
+   -- ****a* RefreshData/RefreshData.Inotify_Task
    -- FUNCTION
    -- Task to monitor changes on disk
    -- SOURCE
-   task InotifyTask is
+   task Inotify_Task is
       entry Start;
-   end InotifyTask;
+   end Inotify_Task;
    -- ****
 
-   -- ****f* RefreshData/RefreshData.StartTimer
+   -- ****f* RefreshData/RefreshData.Start_Timer
    -- FUNCTION
    -- Start timer for refreshing current directory listing
    -- SOURCE
-   procedure StartTimer(Path: String := "");
+   procedure Start_Timer(Path: String := "");
    -- ****
 
-   -- ****f* RefreshData/RefreshData.UpdateWatch
+   -- ****f* RefreshData/RefreshData.Update_Watch
    -- FUNCTION
    -- Update inotify watch with new path to watch.
    -- PARAMETERS
    -- Path - Full path to the directory which will be watched for changes.
    -- SOURCE
-   procedure UpdateWatch(Path: String);
+   procedure Update_Watch(Path: String);
    -- ****
 
 end RefreshData;
