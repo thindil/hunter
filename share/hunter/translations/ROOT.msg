@@ -43,6 +43,8 @@
    "Cancel" "Cancel"
    "Execute" "Execute"
    "You don't have permissions to preview this directory." "You don't have permissions to preview this directory."
+   "Search for:" "Search for:"
+   "Search" "Search"
    "Quit" "Quit"
    "Create link" "Create link"
    "Bookmarks" "Bookmarks"
