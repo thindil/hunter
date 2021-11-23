@@ -50,32 +50,32 @@ package body RefreshData is
    Is_Checking: Boolean := False;
    -- ****
 
-   -- ****if* RefreshData/RefreshData.CheckItems
+   -- ****if* RefreshData/RefreshData.Check_Items
    -- FUNCTION
    -- Check all inotify events and update directory listing if needed
    -- PARAMETERS
-   -- data - Custom data send to the command. Unused
+   -- Data - Custom data send to the command. Unused
    -- SOURCE
-   procedure CheckItems(data: ClientData) with
+   procedure Check_Items(Data: ClientData) with
       Convention => C;
       -- ****
 
-   procedure CheckItems(data: ClientData) is
-      pragma Unreferenced(data);
-      RefreshList, ItemExists: Boolean := False;
-      ItemIndex: Items_Container.Extended_Index;
-      FileName: Unbounded_String;
+   procedure Check_Items(Data: ClientData) is
+      pragma Unreferenced(Data);
+      Refresh_List, Item_Exists: Boolean := False;
+      Item_Index: Items_Container.Extended_Index := 0;
+      File_Name: Unbounded_String := Null_Unbounded_String;
       Directory: Dir_Type;
-      SubFileName: String(1 .. 1_024);
-      Last: Natural range 0 .. SubFileName'Last;
-      procedure RemoveItem is
+      Sub_File_Name: String(1 .. 1_024) := (others => ' ');
+      Last: Natural range 0 .. Sub_File_Name'Last := 0;
+      procedure Remove_Item is
       begin
-         Items_List.Delete(ItemIndex);
+         Items_List.Delete(Index => Item_Index);
          if Items_List.Length = 0 then
             Current_Selected := Common.Current_Directory;
          end if;
-         RefreshList := True;
-      end RemoveItem;
+         Refresh_List := True;
+      end Remove_Item;
    begin
       if Is_Checking then
          return;
@@ -88,64 +88,64 @@ package body RefreshData is
          end if;
          if Event.Path = Common.Current_Directory
            and then
-           ((Event.Event in MOVED_TO | METADATA | ACCESSED) and
-            Exists(To_String(Event.Path & "/" & Event.Target))) then
-            ItemExists := False;
+           (Event.Event in MOVED_TO | METADATA | ACCESSED and
+            Exists(Name => To_String(Source => Event.Path & "/" & Event.Target))) then
+            Item_Exists := False;
             Check_If_Item_Exists_Loop :
             for Item of Items_List loop
                if Item.Name = Event.Target then
-                  ItemExists := True;
+                  Item_Exists := True;
                   exit Check_If_Item_Exists_Loop;
                end if;
             end loop Check_If_Item_Exists_Loop;
-            if not ItemExists then
+            if not Item_Exists then
                Add_Item
-                 (To_String(Event.Path & "/" & Event.Target), Items_List);
-               RefreshList := True;
+                 (Path => To_String(Source => Event.Path & "/" & Event.Target), List => Items_List);
+               Refresh_List := True;
                goto End_Of_Loop;
             end if;
          end if;
-         ItemIndex := Items_List.First_Index;
+         Item_Index := Items_List.First_Index;
          Update_Items_Loop :
-         while ItemIndex <= Items_List.Last_Index loop
-            FileName := Items_List(ItemIndex).Path;
-            if FileName = Event.Path or
-              Items_List(ItemIndex).Name = Event.Target then
+         while Item_Index <= Items_List.Last_Index loop
+            File_Name := Items_List(Item_Index).Path;
+            if File_Name = Event.Path or
+              Items_List(Item_Index).Name = Event.Target then
                case Event.Event is
                   when MOVED_FROM | DELETED =>
-                     RemoveItem;
+                     Remove_Item;
                      exit Update_Items_Loop;
                   when METADATA | MODIFIED | MOVED_TO | ACCESSED =>
-                     if not Exists(To_String(FileName)) then
-                        RemoveItem;
+                     if not Exists(To_String(File_Name)) then
+                        Remove_Item;
                         exit Update_Items_Loop;
                      end if;
-                     RefreshList := True;
-                     Items_List(ItemIndex).Modified :=
-                       Modification_Time(To_String(FileName));
-                     if not Is_Read_Accessible_File(To_String(FileName)) then
-                        Items_List(ItemIndex).Size := -1;
+                     Refresh_List := True;
+                     Items_List(Item_Index).Modified :=
+                       Modification_Time(To_String(File_Name));
+                     if not Is_Read_Accessible_File(To_String(File_Name)) then
+                        Items_List(Item_Index).Size := -1;
                         exit Update_Items_Loop;
                      end if;
-                     if Is_Directory(To_String(FileName)) then
-                        Open(Directory, To_String(FileName));
-                        Items_List(ItemIndex).Size := 0;
+                     if Is_Directory(To_String(File_Name)) then
+                        Open(Directory, To_String(File_Name));
+                        Items_List(Item_Index).Size := 0;
                         Count_New_Size_Loop :
                         loop
-                           Read(Directory, SubFileName, Last);
+                           Read(Directory, Sub_File_Name, Last);
                            exit Count_New_Size_Loop when Last = 0;
-                           if SubFileName(1 .. Last) /= "." and
-                             SubFileName(1 .. Last) /= ".." then
-                              Items_List(ItemIndex).Size :=
-                                Items_List(ItemIndex).Size + 1;
+                           if Sub_File_Name(1 .. Last) /= "." and
+                             Sub_File_Name(1 .. Last) /= ".." then
+                              Items_List(Item_Index).Size :=
+                                Items_List(Item_Index).Size + 1;
                            end if;
                         end loop Count_New_Size_Loop;
                         Close(Directory);
-                     elsif Is_Regular_File(To_String(FileName)) then
-                        Items_List(ItemIndex).Size :=
-                          Item_Size(Ada.Directories.Size(To_String(FileName)));
+                     elsif Is_Regular_File(To_String(File_Name)) then
+                        Items_List(Item_Index).Size :=
+                          Item_Size(Ada.Directories.Size(To_String(File_Name)));
                      end if;
-                     if FileName = To_String(Current_Selected) then
+                     if File_Name = To_String(Current_Selected) then
                         ShowPreview;
                      end if;
                      exit Update_Items_Loop;
@@ -153,14 +153,14 @@ package body RefreshData is
                      null;
                end case;
             end if;
-            ItemIndex := ItemIndex + 1;
+            Item_Index := Item_Index + 1;
          end loop Update_Items_Loop;
          <<End_Of_Loop>>
       end loop Check_Events_Loop;
-      if RefreshList then
+      if Refresh_List then
          Items_Sorting.Sort(Items_List);
          Update_Directory_List(True);
-         RefreshList := False;
+         Refresh_List := False;
       end if;
       <<Clear_List>>
       begin
@@ -171,10 +171,10 @@ package body RefreshData is
       end;
       Timer_Token :=
         Tcl_CreateTimerHandler
-          (int(Settings.Auto_Refresh_Interval) * 1_000, CheckItems'Access,
+          (int(Settings.Auto_Refresh_Interval) * 1_000, Check_Items'Access,
            Null_ClientData);
       Is_Checking := False;
-   end CheckItems;
+   end Check_Items;
 
    procedure Start_Timer(Path: String := "") is
    begin
@@ -188,7 +188,7 @@ package body RefreshData is
       if Settings.Auto_Refresh_Interval > 0 then
          Timer_Token :=
            Tcl_CreateTimerHandler
-             (int(Settings.Auto_Refresh_Interval) * 1_000, CheckItems'Access,
+             (int(Settings.Auto_Refresh_Interval) * 1_000, Check_Items'Access,
               Null_ClientData);
       end if;
    end Start_Timer;
@@ -196,7 +196,7 @@ package body RefreshData is
    procedure Update_Watch(Path: String) is
    begin
       Temporary_Stop := True;
-      CheckItems(Null_ClientData);
+      Check_Items(Null_ClientData);
       Remove_Watches;
       Add_Watches(Path);
       Temporary_Stop := False;
