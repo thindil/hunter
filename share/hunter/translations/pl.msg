@@ -301,4 +301,6 @@
    "Search for" "Szukaj"
    "Enter the destination directory:" "Wprowadź katalog docelowy:"
    "Enter" "Wejdź"
+   "Search for:" "Szukaj:"
+   "Search" "Szukaj"
 }
