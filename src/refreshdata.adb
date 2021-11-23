@@ -106,6 +106,7 @@ package body RefreshData is
             end if;
          end if;
          Item_Index := Items_List.First_Index;
+         --## rule off SIMPLIFIABLE_STATEMENTS
          Update_Items_Loop :
          while Item_Index <= Items_List.Last_Index loop
             File_Name := Items_List(Item_Index).Path;
@@ -155,6 +156,7 @@ package body RefreshData is
             end if;
             Item_Index := Item_Index + 1;
          end loop Update_Items_Loop;
+         --## rule on SIMPLIFIABLE_STATEMENTS
          <<End_Of_Loop>>
       end loop Check_Events_Loop;
       if Refresh_List then
