@@ -122,9 +122,17 @@ package body CreateItems.UI is
       UnusedResult: Forms.Driver_Result := Unknown_Request;
    begin
       Set_Cursor_Visibility(Visibility);
-      Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
+      Create_Fields.all(1) :=
+        New_Field
+          (1,
+           Column_Position'Value(Mc_Max("{Enter a new}", Interpreter)) +
+           Column_Position'Value(Mc_Max(Create_Type, Interpreter)) +
+           Column_Position'Value(Mc_Max("{name:}", Interpreter)) + 2,
+           0, 2, 0, 0);
       Set_Buffer
-        (Create_Fields.all(1), 0, "Enter a new " & Create_Type & " name:");
+        (Create_Fields.all(1), 0,
+         Mc(Interpreter, "{Enter a new}") & " " &
+         Mc(Interpreter, Create_Type) & Mc(Interpreter, "{ name:}"));
       FieldOptions := Get_Options(Create_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
@@ -133,16 +141,24 @@ package body CreateItems.UI is
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
-      Create_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
-      Set_Buffer(Create_Fields.all(3), 0, "[Cancel]");
+      Create_Fields.all(3) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("Cancel", Interpreter)) + 2, 2, 7,
+           0, 0);
+      Set_Buffer
+        (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "Cancel") & "]");
       FieldOptions := Get_Options(Create_Fields.all(3));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(3), FieldOptions);
-      Create_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
+      Create_Fields.all(4) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("Create", Interpreter)) + 2, 2, 23,
+           0, 0);
       FieldOptions := Get_Options(Create_Fields.all(4));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(4), FieldOptions);
-      Set_Buffer(Create_Fields.all(4), 0, "[Create]");
+      Set_Buffer
+        (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "Create") & "]");
       Create_Fields.all(5) := Null_Field;
       DialogForm := New_Form(Create_Fields);
       Set_Current(DialogForm, Create_Fields(2));
@@ -223,8 +239,15 @@ package body CreateItems.UI is
       UnusedResult: Forms.Driver_Result := Unknown_Request;
    begin
       Set_Cursor_Visibility(Visibility);
-      Create_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
-      Set_Buffer(Create_Fields.all(1), 0, "Enter a new name for link:");
+      Create_Fields.all(1) :=
+        New_Field
+          (1,
+           Column_Position'Value
+             (Mc_Max("{Enter a new name for link:}", Interpreter)),
+           0, 8, 0, 0);
+      Set_Buffer
+        (Create_Fields.all(1), 0,
+         Mc(Interpreter, "{Enter a new name for link:}"));
       FieldOptions := Get_Options(Create_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
@@ -233,16 +256,24 @@ package body CreateItems.UI is
       FieldOptions := Get_Options(Create_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Create_Fields.all(2), FieldOptions);
-      Create_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
-      Set_Buffer(Create_Fields.all(3), 0, "[Cancel]");
+      Create_Fields.all(3) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("Cancel", Interpreter)) + 2, 2, 7,
+           0, 0);
+      Set_Buffer
+        (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "Cancel" & "]"));
       FieldOptions := Get_Options(Create_Fields.all(3));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(3), FieldOptions);
-      Create_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
+      Create_Fields.all(4) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("Create", Interpreter)) + 2, 2, 23,
+           0, 0);
       FieldOptions := Get_Options(Create_Fields.all(4));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(4), FieldOptions);
-      Set_Buffer(Create_Fields.all(4), 0, "[Create]");
+      Set_Buffer
+        (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "Create") & "]");
       Create_Fields.all(5) := Null_Field;
       DialogForm := New_Form(Create_Fields);
       Set_Current(DialogForm, Create_Fields(2));
