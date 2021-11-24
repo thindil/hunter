@@ -303,4 +303,8 @@
    "Enter" "Wejdź"
    "Search for:" "Szukaj:"
    "Search" "Szukaj"
+   "Enter a new" "Wprowadź nową nazwę dla"
+   "Create" "Utwórz"
+   " name:" "u:"
+   "Enter a new name for link:" "Enter a new name for link:"
 }
