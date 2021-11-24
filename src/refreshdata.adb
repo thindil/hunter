@@ -117,23 +117,23 @@ package body RefreshData is
                      Remove_Item;
                      exit Update_Items_Loop;
                   when METADATA | MODIFIED | MOVED_TO | ACCESSED =>
-                     if not Exists(To_String(File_Name)) then
+                     if not Exists(Name => To_String(Source => File_Name)) then
                         Remove_Item;
                         exit Update_Items_Loop;
                      end if;
                      Refresh_List := True;
                      Items_List(Item_Index).Modified :=
-                       Modification_Time(To_String(File_Name));
-                     if not Is_Read_Accessible_File(To_String(File_Name)) then
+                       Modification_Time(Name => To_String(Source => File_Name));
+                     if not Is_Read_Accessible_File(Name => To_String(Source => File_Name)) then
                         Items_List(Item_Index).Size := -1;
                         exit Update_Items_Loop;
                      end if;
-                     if Is_Directory(To_String(File_Name)) then
-                        Open(Directory, To_String(File_Name));
+                     if Is_Directory(Name => To_String(Source => File_Name)) then
+                        Open(Dir => Directory, Dir_Name => To_String(Source => File_Name));
                         Items_List(Item_Index).Size := 0;
                         Count_New_Size_Loop :
                         loop
-                           Read(Directory, Sub_File_Name, Last);
+                           Read(Dir => Directory, Str => Sub_File_Name, Last => Last);
                            exit Count_New_Size_Loop when Last = 0;
                            if Sub_File_Name(1 .. Last) /= "." and
                              Sub_File_Name(1 .. Last) /= ".." then
@@ -141,12 +141,12 @@ package body RefreshData is
                                 Items_List(Item_Index).Size + 1;
                            end if;
                         end loop Count_New_Size_Loop;
-                        Close(Directory);
-                     elsif Is_Regular_File(To_String(File_Name)) then
+                        Close(Dir => Directory);
+                     elsif Is_Regular_File(Name => To_String(Source => File_Name)) then
                         Items_List(Item_Index).Size :=
-                          Item_Size(Ada.Directories.Size(To_String(File_Name)));
+                          Item_Size(Ada.Directories.Size(Name => To_String(Source => File_Name)));
                      end if;
-                     if File_Name = To_String(Current_Selected) then
+                     if File_Name = To_String(Source => Current_Selected) then
                         ShowPreview;
                      end if;
                      exit Update_Items_Loop;
