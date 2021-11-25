@@ -29,19 +29,25 @@ with RefreshData; use RefreshData;
 package body RenameItems is
 
    function Rename_Item(New_Name: String; Interp: Tcl_Interp) return Boolean is
-      ActionBlocker: Unbounded_String;
+      Action_Blocker: Unbounded_String := Null_Unbounded_String;
       Success: Boolean;
    begin
-      if Exists(New_Name) or Is_Symbolic_Link(New_Name) then
-         ActionBlocker :=
-           (if Is_Directory(New_Name) then
-              To_Unbounded_String(Mc(Interp, "{directory}"))
-            else To_Unbounded_String(Mc(Interp, "{file}")));
+      if Exists(Name => New_Name) or Is_Symbolic_Link(Name => New_Name) then
+         Action_Blocker :=
+           (if Is_Directory(Name => New_Name) then
+              To_Unbounded_String
+                (Source => Mc(Interp => Interp, Src_String => "{directory}"))
+            else To_Unbounded_String
+                (Source => Mc(Interp => Interp, Src_String => "{file}")));
          Show_Message
-           (Mc(Interp, "{You can't rename}") & " " &
-            To_String(Current_Selected) & " " & Mc(Interp, "{to}") & " " &
-            New_Name & " " & Mc(Interp, "{because there exists}") & " " &
-            To_String(ActionBlocker) & " " & Mc(Interp, "{with that name}"));
+           (Message =>
+              Mc(Interp => Interp, Src_String => "{You can't rename}") & " " &
+              To_String(Source => Current_Selected) & " " &
+              Mc(Interp => Interp, Src_String => "{to}") & " " & New_Name &
+              " " &
+              Mc(Interp => Interp, Src_String => "{because there exists}") &
+              " " & To_String(Source => Action_Blocker) & " " &
+              Mc(Interp => Interp, Src_String => "{with that name}"));
          Tcl_SetResult(Interp, "0");
          return False;
       end if;
