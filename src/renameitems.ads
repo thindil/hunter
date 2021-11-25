@@ -27,12 +27,12 @@ private
    -- ****f* RenameItems/RenameItems.Rename_Item
    -- FUNCTION
    -- Rename the selected file or directory
-   -- NewName - The new name of the file or directory which will be renamed
-   -- Interp  - Tcl Interpreter on which rename will be done
+   -- New_Name - The new name of the file or directory which will be renamed
+   -- Interp   - Tcl Interpreter on which rename will be done
    -- RESULT
    -- True is rename was successful otherwise False
    -- SOURCE
-   function Rename_Item(NewName: String; Interp: Tcl_Interp) return Boolean;
+   function Rename_Item(New_Name: String; Interp: Tcl_Interp) return Boolean;
    -- ****
 
 end RenameItems;
