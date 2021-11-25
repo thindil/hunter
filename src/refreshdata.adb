@@ -13,20 +13,20 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Containers; use Ada.Containers;
-with Ada.Directories; use Ada.Directories;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Containers;
+with Ada.Directories;
+with Ada.Strings.Unbounded;
 with Interfaces.C; use Interfaces.C;
 with Tcl; use Tcl;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Common; use Common;
+with GNAT.Directory_Operations;
+with GNAT.OS_Lib;
+with Common;
 with Inotify; use Inotify;
 pragma Elaborate_All(Inotify);
-with LoadData; use LoadData;
-with MainWindow; use MainWindow;
+with LoadData;
+with MainWindow;
 with Preferences; use Preferences;
-with ShowItems; use ShowItems;
+with ShowItems;
 
 package body RefreshData is
 
@@ -62,6 +62,15 @@ package body RefreshData is
 
    procedure Check_Items(Data: ClientData) is
       pragma Unreferenced(Data);
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
+      use GNAT.Directory_Operations;
+      use GNAT.OS_Lib;
+      use Common;
+      use LoadData;
+      use MainWindow;
+      use ShowItems;
+
       Refresh_List, Item_Exists: Boolean := False;
       Item_Index: Items_Container.Extended_Index := 0;
       File_Name: Unbounded_String := Null_Unbounded_String;
@@ -69,6 +78,7 @@ package body RefreshData is
       Sub_File_Name: String(1 .. 1_024) := (others => ' ');
       Last: Natural range 0 .. Sub_File_Name'Last := 0;
       procedure Remove_Item is
+         use Ada.Containers;
       begin
          Items_List.Delete(Index => Item_Index);
          if Items_List.Length = 0 then
