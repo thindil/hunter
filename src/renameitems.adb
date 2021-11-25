@@ -28,38 +28,38 @@ with RefreshData; use RefreshData;
 
 package body RenameItems is
 
-   function Rename_Item(NewName: String; Interp: Tcl_Interp) return Boolean is
+   function Rename_Item(New_Name: String; Interp: Tcl_Interp) return Boolean is
       ActionBlocker: Unbounded_String;
       Success: Boolean;
    begin
-      if Exists(NewName) or Is_Symbolic_Link(NewName) then
+      if Exists(New_Name) or Is_Symbolic_Link(New_Name) then
          ActionBlocker :=
-           (if Is_Directory(NewName) then
+           (if Is_Directory(New_Name) then
               To_Unbounded_String(Mc(Interp, "{directory}"))
             else To_Unbounded_String(Mc(Interp, "{file}")));
          Show_Message
            (Mc(Interp, "{You can't rename}") & " " &
             To_String(Current_Selected) & " " & Mc(Interp, "{to}") & " " &
-            NewName & " " & Mc(Interp, "{because there exists}") & " " &
+            New_Name & " " & Mc(Interp, "{because there exists}") & " " &
             To_String(ActionBlocker) & " " & Mc(Interp, "{with that name}"));
          Tcl_SetResult(Interp, "0");
          return False;
       end if;
-      if not Is_Write_Accessible_File(Containing_Directory(NewName)) then
+      if not Is_Write_Accessible_File(Containing_Directory(New_Name)) then
          Show_Message
            (Mc(Interp, "{You don't have permissions to rename}") & " " &
-            NewName);
+            New_Name);
          Tcl_SetResult(Interp, "0");
          return False;
       end if;
-      Rename_File(To_String(Current_Selected), NewName, Success);
+      Rename_File(To_String(Current_Selected), New_Name, Success);
       if not Success then
          Show_Message
            (Mc(Interp, "{Can't rename}") & " " & To_String(Current_Selected) &
             ".");
          return False;
       end if;
-      Current_Selected := To_Unbounded_String(NewName);
+      Current_Selected := To_Unbounded_String(New_Name);
       Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
       Update_Watch(To_String(Common.Current_Directory));
