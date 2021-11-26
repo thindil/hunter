@@ -243,11 +243,11 @@ package body CreateItems.UI is
         New_Field
           (1,
            Column_Position'Value
-             (Mc_Max("{Enter a new name for link:}", Interpreter)),
+             (Mc_Max("{Enter a name for the new link:}", Interpreter)),
            0, 8, 0, 0);
       Set_Buffer
         (Create_Fields.all(1), 0,
-         Mc(Interpreter, "{Enter a new name for link:}"));
+         Mc(Interpreter, "{Enter a name for the new link:}"));
       FieldOptions := Get_Options(Create_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Create_Fields.all(1), FieldOptions);
@@ -261,7 +261,7 @@ package body CreateItems.UI is
           (1, Column_Position'Value(Mc_Max("Cancel", Interpreter)) + 2, 2, 7,
            0, 0);
       Set_Buffer
-        (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "Cancel" & "]"));
+        (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "Cancel") & "]");
       FieldOptions := Get_Options(Create_Fields.all(3));
       FieldOptions.Edit := False;
       Set_Options(Create_Fields.all(3), FieldOptions);
