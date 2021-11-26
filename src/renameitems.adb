@@ -48,25 +48,25 @@ package body RenameItems is
               Mc(Interp => Interp, Src_String => "{because there exists}") &
               " " & To_String(Source => Action_Blocker) & " " &
               Mc(Interp => Interp, Src_String => "{with that name}"));
-         Tcl_SetResult(Interp, "0");
+         Tcl_SetResult(interp => Interp, str => "0");
          return False;
       end if;
-      if not Is_Write_Accessible_File(Containing_Directory(New_Name)) then
+      if not Is_Write_Accessible_File(Name => Containing_Directory(Name => New_Name)) then
          Show_Message
-           (Mc(Interp, "{You don't have permissions to rename}") & " " &
+           (Message => Mc(Interp => Interp, Src_String => "{You don't have permissions to rename}") & " " &
             New_Name);
-         Tcl_SetResult(Interp, "0");
+         Tcl_SetResult(interp => Interp, str => "0");
          return False;
       end if;
-      Rename_File(To_String(Current_Selected), New_Name, Success);
+      Rename_File(Old_Name => To_String(Source => Current_Selected), New_Name => New_Name, Success => Success);
       if not Success then
          Show_Message
-           (Mc(Interp, "{Can't rename}") & " " & To_String(Current_Selected) &
+           (Message => Mc(Interp => Interp, Src_String => "{Can't rename}") & " " & To_String(Source => Current_Selected) &
             ".");
          return False;
       end if;
-      Current_Selected := To_Unbounded_String(New_Name);
-      Load_Directory(To_String(Common.Current_Directory));
+      Current_Selected := To_Unbounded_String(Source => New_Name);
+      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
       Update_Directory_List(True);
       Update_Watch(To_String(Common.Current_Directory));
       return True;
