@@ -13,22 +13,31 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with Tcl.Ada; use Tcl.Ada;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Common; use Common;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
-with MainWindow; use MainWindow;
-with Messages.UI; use Messages.UI;
-with RefreshData; use RefreshData;
+with Ada.Directories;
+with Ada.Strings.Unbounded;
+with GNAT.OS_Lib;
+with Tcl.Ada;
+with Tcl.MsgCat.Ada;
+with Common;
+with LoadData.UI;
+with MainWindow;
+with Messages.UI;
+with RefreshData;
 
 package body RenameItems is
 
    function Rename_Item(New_Name: String; Interp: Tcl_Interp) return Boolean is
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
+      use GNAT.OS_Lib;
+      use Tcl.Ada;
+      use Tcl.MsgCat.Ada;
+      use Common;
+      use LoadData.UI;
+      use MainWindow;
+      use Messages.UI;
+      use RefreshData;
+
       Action_Blocker: Unbounded_String := Null_Unbounded_String;
       Success: Boolean;
    begin
@@ -67,8 +76,8 @@ package body RenameItems is
       end if;
       Current_Selected := To_Unbounded_String(Source => New_Name);
       Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
-      Update_Directory_List(True);
-      Update_Watch(To_String(Common.Current_Directory));
+      Update_Directory_List(Clear => True);
+      Update_Watch(Path => To_String(Source => Common.Current_Directory));
       return True;
    end Rename_Item;
 
