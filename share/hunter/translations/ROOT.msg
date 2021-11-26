@@ -90,7 +90,7 @@
    "Enter a new" "Enter a new"
    " name:" " name:"
    "Create" "Create"
-   "Enter a new name for link:" "Enter a new name for link:"
+   "Enter a name for the new link:" "Enter a name for the new link:"
    "Enter destination" "Enter destination"
    "Enter the destination directory:" "Enter the destination directory:"
    "Enter" "Enter"
