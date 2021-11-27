@@ -39,7 +39,7 @@ package body RenameItems.UI is
    -- FUNCTION
    -- Show or hide text entry to enter a new name for the item
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
@@ -49,47 +49,52 @@ package body RenameItems.UI is
    -- ToggleRename
    -- SOURCE
    function Toggle_Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Toggle_Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      TextFrame: constant Ttk_Frame :=
-        Get_Widget(".mainframe.textframe", Interp);
-      Button: Ttk_Button := Get_Widget(TextFrame & ".closebutton", Interp);
-      TextEntry: constant Ttk_Entry :=
-        Get_Widget(TextFrame & ".textentry", Interp);
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      Text_Frame: constant Ttk_Frame :=
+        Get_Widget(pathName => ".mainframe.textframe", Interp => Interp);
+      Button: Ttk_Button :=
+        Get_Widget(pathName => Text_Frame & ".closebutton", Interp => Interp);
+      Text_Entry: constant Ttk_Entry :=
+        Get_Widget(pathName => Text_Frame & ".textentry", Interp => Interp);
       Hunter_Rename_Exception: exception;
    begin
-      if Winfo_Get(TextEntry, "ismapped") = "0" then
-         Tcl.Tk.Ada.Grid.Grid(Button);
-         Button.Name := New_String(TextFrame & ".okbutton");
-         configure(Button, "-command Rename");
-         if Is_Directory(To_String(Current_Selected)) then
+      if Winfo_Get(Widgt => Text_Entry, Info => "ismapped") = "0" then
+         Tcl.Tk.Ada.Grid.Grid(Slave => Button);
+         Button.Name := New_String(Str => Text_Frame & ".okbutton");
+         configure(Widgt => Button, options => "-command Rename");
+         if Is_Directory(Name => To_String(Source => Current_Selected)) then
             Add
-              (Button,
-               Mc(Interp, "{Set a new name for the selected directory.}"));
+              (Widget => Button,
+               Message =>
+                 Mc
+                   (Interp => Interp,
+                    Src_String =>
+                      "{Set a new name for the selected directory.}"));
             Add
-              (TextEntry,
+              (Text_Entry,
                Mc(Interp, "{Enter a new name for the selected directory.}"));
          else
             Add(Button, Mc(Interp, "{Set a new name for the selected file.}"));
             Add
-              (TextEntry,
+              (Text_Entry,
                Mc(Interp, "{Enter a new name for the selected file.}"));
          end if;
          Tcl.Tk.Ada.Grid.Grid(Button);
          Button.Name :=
            New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
          State(Button, "selected");
-         Unbind(TextEntry, "<KeyRelease>");
-         Insert(TextEntry, "end", Simple_Name(To_String(Current_Selected)));
-         Focus(TextEntry);
-         Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
+         Unbind(Text_Entry, "<KeyRelease>");
+         Insert(Text_Entry, "end", Simple_Name(To_String(Current_Selected)));
+         Focus(Text_Entry);
+         Tcl.Tk.Ada.Grid.Grid(Text_Frame, "-row 1 -columnspan 2 -sticky we");
          New_Action := RENAME;
          Toggle_Tool_Buttons(New_Action);
       else
