@@ -302,7 +302,7 @@ package body MainWindow is
       ActivateItems.Add_Commands;
       Create_Preferences_Ui;
       Create_Delete_Ui;
-      RenameItems.UI.AddCommands;
+      RenameItems.UI.Add_Commands;
       CreateItems.UI.Add_Commands;
       CopyItems.UI.Create_Copy_Ui;
       Create_Move_Ui;

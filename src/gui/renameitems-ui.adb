@@ -139,12 +139,12 @@ package body RenameItems.UI is
       return Toggle_Rename_Command(ClientData, Interp, Argc, Argv);
    end Rename_Command;
 
-   procedure AddCommands is
+   procedure Add_Commands is
       use Utils;
 
    begin
       Add_Command("ToggleRename", Toggle_Rename_Command'Access);
       Add_Command("Rename", Rename_Command'Access);
-   end AddCommands;
+   end Add_Commands;
 
 end RenameItems.UI;
