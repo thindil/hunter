@@ -20,11 +20,11 @@
 package RenameItems.UI is
 -- ****
 
-   -- ****f* RenameItemsUI/RenameItemsUI.AddCommands
+   -- ****f* RenameItemsUI/RenameItemsUI.Add_Commands
    -- FUNCTION
-   -- Create rename UI
+   -- Add Tcl commands related to the rename items UI
    -- SOURCE
-   procedure AddCommands;
+   procedure Add_Commands;
    -- ****
 
 end RenameItems.UI;
