@@ -158,6 +158,7 @@ package body RenameItems.UI is
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
+               UILocation := DIRECTORY_VIEW;
                Update_Directory_List(True);
                ShowPreview;
                return DIRECTORY_VIEW;
