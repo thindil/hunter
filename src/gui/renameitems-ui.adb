@@ -80,31 +80,50 @@ package body RenameItems.UI is
                       "{Set a new name for the selected directory.}"));
             Add
               (Widget => Text_Entry,
-               Message => Mc(Interp => Interp, Src_String => "{Enter a new name for the selected directory.}"));
+               Message =>
+                 Mc
+                   (Interp => Interp,
+                    Src_String =>
+                      "{Enter a new name for the selected directory.}"));
          else
-            Add(Widget => Button, Message => Mc(Interp => Interp, Src_String => "{Set a new name for the selected file.}"));
+            Add
+              (Widget => Button,
+               Message =>
+                 Mc
+                   (Interp => Interp,
+                    Src_String => "{Set a new name for the selected file.}"));
             Add
               (Widget => Text_Entry,
-               Message => Mc(Interp => Interp, Src_String => "{Enter a new name for the selected file.}"));
+               Message =>
+                 Mc
+                   (Interp => Interp,
+                    Src_String =>
+                      "{Enter a new name for the selected file.}"));
          end if;
          Tcl.Tk.Ada.Grid.Grid(Slave => Button);
          Button.Name :=
            New_String(Str => ".mainframe.toolbars.actiontoolbar.renamebutton");
          State(Widget => Button, StateSpec => "selected");
          Unbind(Widgt => Text_Entry, Sequence => "<KeyRelease>");
-         Insert(TextEntry => Text_Entry, Index => "end", Text => Simple_Name(Name => To_String(Source => Current_Selected)));
-         Focus(Text_Entry);
-         Tcl.Tk.Ada.Grid.Grid(Text_Frame, "-row 1 -columnspan 2 -sticky we");
+         Insert
+           (TextEntry => Text_Entry, Index => "end",
+            Text =>
+              Simple_Name(Name => To_String(Source => Current_Selected)));
+         Focus(Widgt => Text_Entry);
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Text_Frame, Options => "-row 1 -columnspan 2 -sticky we");
          New_Action := RENAME;
-         Toggle_Tool_Buttons(New_Action);
+         Toggle_Tool_Buttons(Action => New_Action);
       else
-         if Invoke(Button) /= "" then
+         if Invoke(Buttn => Button) /= "" then
             raise Hunter_Rename_Exception
-              with Mc(Interp, "{Can't hide rename item bar}");
+              with Mc
+                (Interp => Interp,
+                 Src_String => "{Can't hide rename item bar}");
          end if;
          Button.Name :=
-           New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
-         State(Button, "!selected");
+           New_String(Str => ".mainframe.toolbars.actiontoolbar.renamebutton");
+         State(Widget => Button, StateSpec => "!selected");
       end if;
       return TCL_OK;
    end Toggle_Rename_Command;
@@ -123,25 +142,25 @@ package body RenameItems.UI is
    -- Rename
    -- SOURCE
    function Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Rename_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       -- ****
-      TextEntry: constant Ttk_Entry :=
-        Get_Widget(".mainframe.textframe.textentry", Interp);
-      NewName: Unbounded_String;
+      Text_Entry: constant Ttk_Entry :=
+        Get_Widget
+          (pathName => ".mainframe.textframe.textentry", Interp => Interp);
+      New_Name: Unbounded_String;
    begin
-      NewName :=
-        Common.Current_Directory & "/" & To_Unbounded_String(Get(TextEntry));
-      if not Rename_Item(To_String(NewName), Interp) then
+      New_Name := Common.Current_Directory & "/" & Get(Text_Entry);
+      if not Rename_Item(To_String(New_Name), Interp) then
          return TCL_OK;
       end if;
-      return Toggle_Rename_Command(ClientData, Interp, Argc, Argv);
+      return Toggle_Rename_Command(Client_Data, Interp, Argc, Argv);
    end Rename_Command;
 
    procedure Add_Commands is
