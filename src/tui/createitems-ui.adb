@@ -327,6 +327,7 @@ package body CreateItems.UI is
             end if;
             if FieldIndex /= 2 then
                New_Action := CREATEFILE;
+               UILocation := DIRECTORY_VIEW;
                Set_Cursor_Visibility(Visibility);
                Post(DialogForm, False);
                Delete(DialogForm);
