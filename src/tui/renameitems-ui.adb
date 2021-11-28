@@ -21,6 +21,7 @@ with Interfaces.C; use Interfaces.C;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with CArgv;
 with Tcl.Ada; use Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
 with LoadData; use LoadData;
 with ShowItems; use ShowItems;
@@ -83,8 +84,13 @@ package body RenameItems.UI is
       UnusedResult: Forms.Driver_Result := Unknown_Request;
    begin
       Set_Cursor_Visibility(Visibility);
-      Rename_Fields.all(1) := New_Field(1, 30, 0, 8, 0, 0);
-      Set_Buffer(Rename_Fields.all(1), 0, "Enter a new name:");
+      Rename_Fields.all(1) :=
+        New_Field
+          (1,
+           Column_Position'Value(Mc_Max("{Enter a new name:}", Interpreter)),
+           0, 8, 0, 0);
+      Set_Buffer
+        (Rename_Fields.all(1), 0, Mc(Interpreter, "{Enter a new name:}"));
       FieldOptions := Get_Options(Rename_Fields.all(1));
       FieldOptions.Active := False;
       Set_Options(Rename_Fields.all(1), FieldOptions);
@@ -94,16 +100,24 @@ package body RenameItems.UI is
       FieldOptions := Get_Options(Rename_Fields.all(2));
       FieldOptions.Auto_Skip := False;
       Set_Options(Rename_Fields.all(2), FieldOptions);
-      Rename_Fields.all(3) := New_Field(1, 8, 2, 7, 0, 0);
-      Set_Buffer(Rename_Fields.all(3), 0, "[Cancel]");
+      Rename_Fields.all(3) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2, 2, 7,
+           0, 0);
+      Set_Buffer
+        (Rename_Fields.all(3), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
       FieldOptions := Get_Options(Rename_Fields.all(3));
       FieldOptions.Edit := False;
       Set_Options(Rename_Fields.all(3), FieldOptions);
-      Rename_Fields.all(4) := New_Field(1, 8, 2, 23, 0, 0);
+      Rename_Fields.all(4) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("{Rename}", Interpreter)) + 2, 2,
+           23, 0, 0);
       FieldOptions := Get_Options(Rename_Fields.all(4));
       FieldOptions.Edit := False;
       Set_Options(Rename_Fields.all(4), FieldOptions);
-      Set_Buffer(Rename_Fields.all(4), 0, "[Rename]");
+      Set_Buffer
+        (Rename_Fields.all(4), 0, "[" & Mc(Interpreter, "{Rename}") & "]");
       Rename_Fields.all(5) := Null_Field;
       DialogForm := New_Form(Rename_Fields);
       Set_Current(DialogForm, Rename_Fields(2));
