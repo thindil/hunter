@@ -307,4 +307,5 @@
    "Create" "Utwórz"
    " name:" "u:"
    "Enter a name for the new link:" "Wprowaź nazwę dla nowego linku:"
+   "Enter a new name:" "Wprowadź nową nazwę:"
 }
