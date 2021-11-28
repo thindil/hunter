@@ -79,20 +79,20 @@ package body RenameItems.UI is
                     Src_String =>
                       "{Set a new name for the selected directory.}"));
             Add
-              (Text_Entry,
-               Mc(Interp, "{Enter a new name for the selected directory.}"));
+              (Widget => Text_Entry,
+               Message => Mc(Interp => Interp, Src_String => "{Enter a new name for the selected directory.}"));
          else
-            Add(Button, Mc(Interp, "{Set a new name for the selected file.}"));
+            Add(Widget => Button, Message => Mc(Interp => Interp, Src_String => "{Set a new name for the selected file.}"));
             Add
-              (Text_Entry,
-               Mc(Interp, "{Enter a new name for the selected file.}"));
+              (Widget => Text_Entry,
+               Message => Mc(Interp => Interp, Src_String => "{Enter a new name for the selected file.}"));
          end if;
-         Tcl.Tk.Ada.Grid.Grid(Button);
+         Tcl.Tk.Ada.Grid.Grid(Slave => Button);
          Button.Name :=
-           New_String(".mainframe.toolbars.actiontoolbar.renamebutton");
-         State(Button, "selected");
-         Unbind(Text_Entry, "<KeyRelease>");
-         Insert(Text_Entry, "end", Simple_Name(To_String(Current_Selected)));
+           New_String(Str => ".mainframe.toolbars.actiontoolbar.renamebutton");
+         State(Widget => Button, StateSpec => "selected");
+         Unbind(Widgt => Text_Entry, Sequence => "<KeyRelease>");
+         Insert(TextEntry => Text_Entry, Index => "end", Text => Simple_Name(Name => To_String(Source => Current_Selected)));
          Focus(Text_Entry);
          Tcl.Tk.Ada.Grid.Grid(Text_Frame, "-row 1 -columnspan 2 -sticky we");
          New_Action := RENAME;
