@@ -13,25 +13,24 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Interfaces.C.Strings;
+with GNAT.OS_Lib;
 with CArgv;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.MsgCat.Ada;
+with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
-with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
-with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
-with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
-with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
-with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkWidget;
+with Tcl.Tk.Ada.Winfo;
+with Tcl.Tklib.Ada.Tooltip;
 with Common; use Common;
-with LoadData; use LoadData;
-with Utils.UI; use Utils.UI;
+with Utils.UI;
 
 package body RenameItems.UI is
 
@@ -58,6 +57,19 @@ package body RenameItems.UI is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Ada.Directories;
+      use Interfaces.C.Strings;
+      use GNAT.OS_Lib;
+      use Tcl.MsgCat.Ada;
+      use Tcl.Tk.Ada;
+      use Tcl.Tk.Ada.Widgets;
+      use Tcl.Tk.Ada.Widgets.TtkButton;
+      use Tcl.Tk.Ada.Widgets.TtkFrame;
+      use Tcl.Tk.Ada.Widgets.TtkWidget;
+      use Tcl.Tk.Ada.Winfo;
+      use Tcl.Tklib.Ada.Tooltip;
+      use Utils.UI;
+
       Text_Frame: constant Ttk_Frame :=
         Get_Widget(pathName => ".mainframe.textframe", Interp => Interp);
       Button: Ttk_Button :=
