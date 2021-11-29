@@ -22,6 +22,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
@@ -69,14 +70,20 @@ package body DeleteItems.UI is
                      Simple_Name
                        (Name => To_String(Source => Selected_Items(I)))
                        (1 .. 11) &
-                     "...(and its content)" & LF);
+                     "..." &
+                     Mc(Interp => Interpreter,
+                        Src_String => "{(and its content)}") &
+                     LF);
                else
                   Append
                     (DeleteList,
                      "  " &
                      Simple_Name
                        (Name => To_String(Source => Selected_Items(I))) &
-                     " (and its content)" & LF);
+                     " " &
+                     Mc(Interp => Interpreter,
+                        Src_String => "{(and its content)}") &
+                     LF);
                end if;
             elsif Simple_Name(Name => To_String(Source => Selected_Items(I)))'
                 Length >
@@ -116,20 +123,28 @@ package body DeleteItems.UI is
       end loop Set_Delete_List_Loop;
       if ListLength = 10 and Selected_Items.Length > 10 then
          ListLength := 11;
-         Append(DeleteList, "  and more");
+         Append
+           (DeleteList,
+            " " & Mc(Interp => Interpreter, Src_String => "{(and more)}"));
       end if;
       Delete_Fields.all(1) :=
-        New_Field(1, 8, 1 + Line_Position(ListLength), 7, 0, 0);
-      Set_Buffer(Delete_Fields.all(1), 0, "[Cancel]");
+        New_Field
+          (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2,
+           1 + Line_Position(ListLength), 7, 0, 0);
+      Set_Buffer
+        (Delete_Fields.all(1), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
       FieldOptions := Get_Options(Delete_Fields.all(1));
       FieldOptions.Edit := False;
       Set_Options(Delete_Fields.all(1), FieldOptions);
       Delete_Fields.all(2) :=
-        New_Field(1, 8, 1 + Line_Position(ListLength), 23, 0, 0);
+        New_Field
+          (1, Column_Position'Value(Mc_Max("{Delete}", Interpreter)) + 2,
+           1 + Line_Position(ListLength), 23, 0, 0);
       FieldOptions := Get_Options(Delete_Fields.all(2));
       FieldOptions.Edit := False;
       Set_Options(Delete_Fields.all(2), FieldOptions);
-      Set_Buffer(Delete_Fields.all(2), 0, "[Delete]");
+      Set_Buffer
+        (Delete_Fields.all(2), 0, "[" & Mc(Interpreter, "{Delete}") & "]");
       Delete_Fields.all(3) := Null_Field;
       DialogForm := New_Form(Delete_Fields);
       Set_Options(DialogForm, (others => False));
@@ -143,9 +158,9 @@ package body DeleteItems.UI is
         (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
       if Settings.Delete_Files or New_Action = DELETETRASH then
-         Add(FormWindow, 1, 1, "Delete?");
+         Add(FormWindow, 1, 1, Mc(Interpreter, "{Delete?}"));
       else
-         Add(FormWindow, 1, 1, "Move to Trash?");
+         Add(FormWindow, 1, 1, Mc(Interpreter, "{Move to Trash?}"));
       end if;
       Add(FormWindow, 2, 0, To_String(DeleteList));
       UnusedResult := Driver(DialogForm, F_First_Field);
