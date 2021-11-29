@@ -55,13 +55,21 @@ package body Messages.UI is
          Set_Options(Buttons_Fields.all(1), FieldOptions);
          Buttons_Fields.all(2) := Null_Field;
       else
-         Buttons_Fields.all(1) := New_Field(1, 5, (FormHeight - 2), 1, 0, 0);
-         Set_Buffer(Buttons_Fields.all(1), 0, "[Yes]");
+         Buttons_Fields.all(1) :=
+           New_Field
+             (1, Column_Position'Value(Mc_Max("{Yes}", Interpreter)) + 2,
+              (FormHeight - 2), 1, 0, 0);
+         Set_Buffer
+           (Buttons_Fields.all(1), 0, "[" & Mc(Interpreter, "Yes") & "]");
          FieldOptions := Get_Options(Buttons_Fields.all(1));
          FieldOptions.Edit := False;
          Set_Options(Buttons_Fields.all(1), FieldOptions);
-         Buttons_Fields.all(2) := New_Field(1, 4, (FormHeight - 2), 6, 0, 0);
-         Set_Buffer(Buttons_Fields.all(2), 0, "[No]");
+         Buttons_Fields.all(2) :=
+           New_Field
+             (1, Column_Position'Value(Mc_Max("{No}", Interpreter)) + 2,
+              (FormHeight - 2), 6, 0, 0);
+         Set_Buffer
+           (Buttons_Fields.all(2), 0, "[" & Mc(Interpreter, "No") & "]");
          FieldOptions := Get_Options(Buttons_Fields.all(2));
          FieldOptions.Edit := False;
          Set_Options(Buttons_Fields.all(2), FieldOptions);
