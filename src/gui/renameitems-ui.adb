@@ -156,19 +156,24 @@ package body RenameItems.UI is
           (pathName => ".mainframe.textframe.textentry", Interp => Interp);
       New_Name: Unbounded_String;
    begin
-      New_Name := Common.Current_Directory & "/" & Get(Text_Entry);
-      if not Rename_Item(To_String(New_Name), Interp) then
+      New_Name := Common.Current_Directory & "/" & Get(Widgt => Text_Entry);
+      if not Rename_Item
+          (New_Name => To_String(Source => New_Name), Interp => Interp) then
          return TCL_OK;
       end if;
-      return Toggle_Rename_Command(Client_Data, Interp, Argc, Argv);
+      return
+        Toggle_Rename_Command
+          (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+           Argv => Argv);
    end Rename_Command;
 
    procedure Add_Commands is
       use Utils;
 
    begin
-      Add_Command("ToggleRename", Toggle_Rename_Command'Access);
-      Add_Command("Rename", Rename_Command'Access);
+      Add_Command
+        (Name => "ToggleRename", Ada_Command => Toggle_Rename_Command'Access);
+      Add_Command(Name => "Rename", Ada_Command => Rename_Command'Access);
    end Add_Commands;
 
 end RenameItems.UI;
