@@ -889,6 +889,9 @@ package body MainWindow is
                   Set_Cursor_Visibility(Visibility);
                   ShowInfo;
                when 3 =>
+                  UILocation := DIRECTORY_VIEW;
+                  Update_Directory_List;
+                  ShowPreview;
                   Show_Execute_With_Dialog;
                   New_Location := EXECUTE_FORM;
                when 4 =>
