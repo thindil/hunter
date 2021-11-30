@@ -98,7 +98,6 @@ package body MainWindow is
       use MoveItems.UI;
       use Preferences.UI;
       use RefreshData;
-      use SearchItems;
       use Toolbars;
       use Trash;
 
@@ -190,7 +189,7 @@ package body MainWindow is
       Autoscroll(Scroll => Directory_X_Scroll);
       MainWindow.Commands.Add_Commands;
       UserCommands.AddCommands;
-      CreateSearchUI;
+      SearchItems.Add_Commands;
       Set_Directory(Directory => Containing_Directory(Name => Command_Name));
       -- Load the program Tk themes
       if Settings.Ui_Theme = To_Unbounded_String(Source => "hunter-light") then

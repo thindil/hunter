@@ -150,10 +150,10 @@ package body SearchItems is
       return TCL_OK;
    end Search_Command;
 
-   procedure CreateSearchUI is
+   procedure Add_Commands is
    begin
       Add_Command("ToggleSearch", Toggle_Search_Command'Access);
       Add_Command("Search", Search_Command'Access);
-   end CreateSearchUI;
+   end Add_Commands;
 
 end SearchItems;
