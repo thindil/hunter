@@ -42,7 +42,7 @@ package body SearchItems is
    -- FUNCTION
    -- Show text entry to enter directory destination
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
    -- Interp     - Tcl interpreter in which command was executed.
    -- Argc       - Number of arguments passed to the command. Unused
    -- Argv       - Values of arguments passed to the command. Unused
@@ -52,36 +52,40 @@ package body SearchItems is
    -- ToggleSearch
    -- SOURCE
    function Toggle_Search_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Toggle_Search_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      TextFrame: constant Ttk_Frame :=
-        Get_Widget(".mainframe.textframe", Interp);
-      Button: Ttk_Button := Get_Widget(TextFrame & ".closebutton");
-      TextEntry: constant Ttk_Entry := Get_Widget(TextFrame & ".textentry");
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      Text_Frame: constant Ttk_Frame :=
+        Get_Widget(pathName => ".mainframe.textframe", Interp => Interp);
+      Button: Ttk_Button :=
+        Get_Widget(pathName => Text_Frame & ".closebutton");
+      Text_Entry: constant Ttk_Entry :=
+        Get_Widget(pathName => Text_Frame & ".textentry");
       Hunter_Search_Exception: exception;
    begin
-      if Winfo_Get(TextEntry, "ismapped") = "0" then
-         Tcl.Tk.Ada.Grid.Grid_Remove(Button);
+      if Winfo_Get(Widgt => Text_Entry, Info => "ismapped") = "0" then
+         Tcl.Tk.Ada.Grid.Grid_Remove(Slave => Button);
          Button.Name :=
-           New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
-         State(Button, "selected");
-         Button.Name := New_String(TextFrame & ".okbutton");
-         Tcl.Tk.Ada.Grid.Grid_Remove(Button);
+           New_String(Str => ".mainframe.toolbars.actiontoolbar.searchbutton");
+         State(Widget => Button, StateSpec => "selected");
+         Button.Name := New_String(Str => Text_Frame & ".okbutton");
+         Tcl.Tk.Ada.Grid.Grid_Remove(Slave => Button);
          Add
-           (TextEntry,
-            Mc
-              (Interp,
-               "{Enter the name of the file or directory to search for}"));
-         Bind(TextEntry, "<KeyRelease>", "{Search}");
-         Focus(TextEntry);
-         Tcl.Tk.Ada.Grid.Grid(TextFrame, "-row 1 -columnspan 2 -sticky we");
+           (Widget => Text_Entry,
+            Message =>
+              Mc
+                (Interp => Interp,
+                 Src_String =>
+                   "{Enter the name of the file or directory to search for}"));
+         Bind(Text_Entry, "<KeyRelease>", "{Search}");
+         Focus(Text_Entry);
+         Tcl.Tk.Ada.Grid.Grid(Text_Frame, "-row 1 -columnspan 2 -sticky we");
       else
          if Invoke(Button) /= "" then
             raise Hunter_Search_Exception
