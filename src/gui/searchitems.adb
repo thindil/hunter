@@ -83,13 +83,18 @@ package body SearchItems is
                 (Interp => Interp,
                  Src_String =>
                    "{Enter the name of the file or directory to search for}"));
-         Bind(Widgt => Text_Entry, Sequence => "<KeyRelease>", Script => "{Search}");
+         Bind
+           (Widgt => Text_Entry, Sequence => "<KeyRelease>",
+            Script => "{Search}");
          Focus(Widgt => Text_Entry);
-         Tcl.Tk.Ada.Grid.Grid(Slave => Text_Frame, Options => "-row 1 -columnspan 2 -sticky we");
+         Tcl.Tk.Ada.Grid.Grid
+           (Slave => Text_Frame, Options => "-row 1 -columnspan 2 -sticky we");
       else
          if Invoke(Buttn => Button) /= "" then
             raise Hunter_Search_Exception
-              with Mc(Interp => Interp, Src_String => "{Can't hide search text bar}");
+              with Mc
+                (Interp => Interp,
+                 Src_String => "{Can't hide search text bar}");
          end if;
          Button.Name :=
            New_String(Str => ".mainframe.toolbars.actiontoolbar.searchbutton");
@@ -124,29 +129,39 @@ package body SearchItems is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
       Text_Entry: constant Ttk_Entry :=
-        Get_Widget(pathName => ".mainframe.textframe.textentry", Interp => Interp);
+        Get_Widget
+          (pathName => ".mainframe.textframe.textentry", Interp => Interp);
       Directory_Tree: constant Ttk_Tree_View :=
-        Get_Widget(pathName => ".mainframe.paned.directoryframe.directorytree", Interp => Interp);
+        Get_Widget
+          (pathName => ".mainframe.paned.directoryframe.directorytree",
+           Interp => Interp);
       Query: Unbounded_String;
       Selected: Boolean := False;
    begin
       Query := To_Unbounded_String(Source => Get(Widgt => Text_Entry));
-      if Length(Query) = 0 then
+      if Length(Source => Query) = 0 then
          Update_Directory_List;
          return TCL_OK;
       end if;
       Search_Item_Loop :
       for I in Items_List.First_Index .. Items_List.Last_Index loop
          if Index
-             (To_Lower(To_String(Items_List(I).Name)),
-              To_Lower(To_String(Query))) =
+             (Source =>
+                To_Lower(Item => To_String(Source => Items_List(I).Name)),
+              Pattern => To_Lower(Item => To_String(Source => Query))) =
            0 then
-            Detach(Directory_Tree, Positive'Image(I));
+            Detach
+              (TreeViewWidget => Directory_Tree,
+               ItemsList => Positive'Image(I));
          elsif (Settings.Show_Hidden and Items_List(I).Is_Hidden) or
            not Items_List(I).Is_Hidden then
-            Move(Directory_Tree, Positive'Image(I), "{}", Natural'Image(I - 1));
+            Move
+              (TreeViewWidget => Directory_Tree, Item => Positive'Image(I),
+               Parent => "{}", Index => Natural'Image(I - 1));
             if not Selected then
-               Selection_Set(Directory_Tree, Positive'Image(I));
+               Selection_Set
+                 (TreeViewWidget => Directory_Tree,
+                  Items => Positive'Image(I));
                Selected := True;
             end if;
          end if;
@@ -156,8 +171,9 @@ package body SearchItems is
 
    procedure Add_Commands is
    begin
-      Add_Command("ToggleSearch", Toggle_Search_Command'Access);
-      Add_Command("Search", Search_Command'Access);
+      Add_Command
+        (Name => "ToggleSearch", Ada_Command => Toggle_Search_Command'Access);
+      Add_Command(Name => "Search", Ada_Command => Search_Command'Access);
    end Add_Commands;
 
 end SearchItems;
