@@ -126,6 +126,8 @@ package body Messages.UI is
             Move_Cursor(FormWindow, LineNumber, 1);
          end loop;
       end;
+      Update_Directory_List;
+      ShowPreview;
       UnusedResult := Driver(DialogForm, F_First_Field);
       Box(FormWindow, Default_Character, Default_Character);
       Refresh;
