@@ -43,9 +43,9 @@ package body SearchItems is
    -- Show text entry to enter directory destination
    -- PARAMETERS
    -- Client_Data - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -83,17 +83,17 @@ package body SearchItems is
                 (Interp => Interp,
                  Src_String =>
                    "{Enter the name of the file or directory to search for}"));
-         Bind(Text_Entry, "<KeyRelease>", "{Search}");
-         Focus(Text_Entry);
-         Tcl.Tk.Ada.Grid.Grid(Text_Frame, "-row 1 -columnspan 2 -sticky we");
+         Bind(Widgt => Text_Entry, Sequence => "<KeyRelease>", Script => "{Search}");
+         Focus(Widgt => Text_Entry);
+         Tcl.Tk.Ada.Grid.Grid(Slave => Text_Frame, Options => "-row 1 -columnspan 2 -sticky we");
       else
-         if Invoke(Button) /= "" then
+         if Invoke(Buttn => Button) /= "" then
             raise Hunter_Search_Exception
-              with Mc(Interp, "{Can't hide search text bar}");
+              with Mc(Interp => Interp, Src_String => "{Can't hide search text bar}");
          end if;
          Button.Name :=
-           New_String(".mainframe.toolbars.actiontoolbar.searchbutton");
-         State(Button, "!selected");
+           New_String(Str => ".mainframe.toolbars.actiontoolbar.searchbutton");
+         State(Widget => Button, StateSpec => "!selected");
          Update_Directory_List;
       end if;
       return TCL_OK;
@@ -104,33 +104,33 @@ package body SearchItems is
    -- Search current directory for the selected text (case insensitive) and
    -- show only matching files and directories
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- Search
    -- SOURCE
    function Search_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Search_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      TextEntry: constant Ttk_Entry :=
-        Get_Widget(".mainframe.textframe.textentry", Interp);
-      DirectoryTree: constant Ttk_Tree_View :=
-        Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      Text_Entry: constant Ttk_Entry :=
+        Get_Widget(pathName => ".mainframe.textframe.textentry", Interp => Interp);
+      Directory_Tree: constant Ttk_Tree_View :=
+        Get_Widget(pathName => ".mainframe.paned.directoryframe.directorytree", Interp => Interp);
       Query: Unbounded_String;
       Selected: Boolean := False;
    begin
-      Query := To_Unbounded_String(Get(TextEntry));
+      Query := To_Unbounded_String(Source => Get(Widgt => Text_Entry));
       if Length(Query) = 0 then
          Update_Directory_List;
          return TCL_OK;
@@ -141,12 +141,12 @@ package body SearchItems is
              (To_Lower(To_String(Items_List(I).Name)),
               To_Lower(To_String(Query))) =
            0 then
-            Detach(DirectoryTree, Positive'Image(I));
+            Detach(Directory_Tree, Positive'Image(I));
          elsif (Settings.Show_Hidden and Items_List(I).Is_Hidden) or
            not Items_List(I).Is_Hidden then
-            Move(DirectoryTree, Positive'Image(I), "{}", Natural'Image(I - 1));
+            Move(Directory_Tree, Positive'Image(I), "{}", Natural'Image(I - 1));
             if not Selected then
-               Selection_Set(DirectoryTree, Positive'Image(I));
+               Selection_Set(Directory_Tree, Positive'Image(I));
                Selected := True;
             end if;
          end if;
