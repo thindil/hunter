@@ -155,6 +155,7 @@ package body Messages.UI is
             Set_Cursor_Visibility(Visibility);
             Post(DialogForm, False);
             Delete(DialogForm);
+            UILocation := DIRECTORY_VIEW;
             if Option in "[Close]" | "[No for all]" then
                New_Action := CREATEFILE;
                CreateProgramMenu(True);
@@ -226,7 +227,6 @@ package body Messages.UI is
                   return Go_To_Bookmark(Mc(Interpreter, "{Home}"));
                else
                   New_Action := CREATEFILE;
-                  UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
                   ShowPreview;
                end if;
