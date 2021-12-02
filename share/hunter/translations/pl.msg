@@ -308,4 +308,9 @@
    " name:" "u:"
    "Enter a name for the new link:" "Wprowaź nazwę dla nowego linku:"
    "Enter a new name:" "Wprowadź nową nazwę:"
+   "Move to Trash?" "Przenieść do Kosza?"
+   "Info" "Informacja"
+   "Can't execute" "Nie może uruchamiać"
+   "Can't write" "Nie może zapisywać"
+   "Can't read" "Nie może odczytywać"
 }
