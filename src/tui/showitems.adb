@@ -69,16 +69,22 @@ package body ShowItems is
       end if;
       Refresh(PreviewWindow);
       PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 2);
-      Add(PreviewPad, 0, Columns / 4, "Info" & LF);
+      Add(PreviewPad, 0, Columns / 4, Mc(Interpreter, "Info") & LF);
       if not Is_Symbolic_Link(SelectedItem) then
-         Add(PreviewPad, "Full path: " & Full_Name(SelectedItem) & LF);
+         Add
+           (PreviewPad,
+            Mc(Interpreter, "{Full path:}") & " " & Full_Name(SelectedItem) &
+            LF);
       else
-         Add(PreviewPad, "Links to: " & Full_Name(SelectedItem) & LF);
+         Add
+           (PreviewPad,
+            Mc(Interpreter, "{Links to:}") & " " & Full_Name(SelectedItem) &
+            LF);
       end if;
       if Is_Directory(SelectedItem) then
-         Add(PreviewPad, "Elements:");
+         Add(PreviewPad, Mc(Interpreter, "Elements:"));
       else
-         Add(PreviewPad, "Size:");
+         Add(PreviewPad, Mc(Interpreter, "Size:"));
       end if;
       if Is_Directory(SelectedItem) then
          if Settings.Show_Hidden then
@@ -97,21 +103,25 @@ package body ShowItems is
       elsif Is_Regular_File(SelectedItem) then
          Add(PreviewPad, Count_File_Size(Size(SelectedItem)) & LF);
       else
-         Add(PreviewPad, "Unknown" & LF);
+         Add(PreviewPad, Mc(Interpreter, "Unknown") & LF);
       end if;
       if Is_Directory(SelectedItem) or Is_Regular_File(SelectedItem) then
          Add
            (PreviewPad,
-            "Last modified: " &
+            Mc(Interpreter, "{Last modified:}") & " " &
             Ada.Calendar.Formatting.Image
               (Modification_Time(SelectedItem), False,
                Ada.Calendar.Time_Zones.UTC_Time_Offset) &
             LF);
       else
-         Add(PreviewPad, "Last modified: Unknown" & LF);
+         Add
+           (PreviewPad,
+            Mc(Interpreter, "{Last modified:}") & " " &
+            Mc(Interpreter, "Unknown") & LF);
       end if;
       if Is_Regular_File(SelectedItem) then
-         Add(PreviewPad, "File type: " & MimeType & LF);
+         Add
+           (PreviewPad, Mc(Interpreter, "{File type:}") & " " & MimeType & LF);
       end if;
       declare
          Attributes: Unbounded_String;
@@ -160,28 +170,33 @@ package body ShowItems is
             if not Is_Directory(SelectedItem) then
                if Tcl.Ada.Tcl_GetVar(Interpreter, Name & "execute") = "1" then
                   Set_Buffer
-                    (Permissions_Fields.all(NewFieldNumber), 0, "Can execute");
+                    (Permissions_Fields.all(NewFieldNumber), 0,
+                     Mc(Interpreter, "{Can execute}"));
                else
                   Set_Buffer
                     (Permissions_Fields.all(NewFieldNumber), 0,
-                     "Can't execute");
+                     Mc(Interpreter, "{Can't execute}"));
                end if;
                NewFieldNumber := NewFieldNumber + 1;
             end if;
             if Tcl.Ada.Tcl_GetVar(Interpreter, Name & "write") = "1" then
                Set_Buffer
-                 (Permissions_Fields.all(NewFieldNumber), 0, "Can write");
+                 (Permissions_Fields.all(NewFieldNumber), 0,
+                  Mc(Interpreter, "{Can write}"));
             else
                Set_Buffer
-                 (Permissions_Fields.all(NewFieldNumber), 0, "Can't write");
+                 (Permissions_Fields.all(NewFieldNumber), 0,
+                  Mc(Interpreter, "{Can't write}"));
             end if;
             NewFieldNumber := NewFieldNumber + 1;
             if Tcl.Ada.Tcl_GetVar(Interpreter, Name & "read") = "1" then
                Set_Buffer
-                 (Permissions_Fields.all(NewFieldNumber), 0, "Can read");
+                 (Permissions_Fields.all(NewFieldNumber), 0,
+                  Mc(Interpreter, "{Can read}"));
             else
                Set_Buffer
-                 (Permissions_Fields.all(NewFieldNumber), 0, "Can't read");
+                 (Permissions_Fields.all(NewFieldNumber), 0,
+                  Mc(Interpreter, "{Can't read}"));
             end if;
          end SetPermissionsButtons;
       begin
@@ -195,7 +210,9 @@ package body ShowItems is
          Set_Options(Permissions_Fields.all(1), FieldOptions);
          Permissions_Fields.all(2) := New_Field(1, 20, 0, 20, 0, 0);
          if Is_Regular_File(SelectedItem) or Is_Directory(SelectedItem) then
-            Set_Buffer(Permissions_Fields.all(1), 0, "Associated program: ");
+            Set_Buffer
+              (Permissions_Fields.all(1), 0,
+               Mc(Interpreter, "{Associated program:}") & " ");
             declare
                ProcessDesc: Process_Descriptor;
                Result: Expect_Match;
@@ -226,12 +243,14 @@ package body ShowItems is
                Close(ProcessDesc);
             exception
                when Process_Died =>
-                  Set_Buffer(Permissions_Fields.all(2), 0, "None");
+                  Set_Buffer
+                    (Permissions_Fields.all(2), 0, Mc(Interpreter, "None"));
             end;
          end if;
          Permissions_Fields.all(3) := New_Field(1, 30, 2, 0, 0, 0);
          Set_Buffer
-           (Permissions_Fields.all(3), 0, "Owner: " & Slice(Tokens, 2));
+           (Permissions_Fields.all(3), 0,
+            Mc(Interpreter, "{Owner}") & ": " & Slice(Tokens, 2));
          FieldOptions := Get_Options(Permissions_Fields.all(3));
          FieldOptions.Active := False;
          Set_Options(Permissions_Fields.all(3), FieldOptions);
@@ -240,14 +259,16 @@ package body ShowItems is
          if Is_Directory(SelectedItem) then
             Permissions_Fields.all(6) := New_Field(1, 30, 5, 0, 0, 0);
             Set_Buffer
-              (Permissions_Fields.all(6), 0, "Group: " & Slice(Tokens, 3));
+              (Permissions_Fields.all(6), 0,
+               Mc(Interpreter, "{Group}") & ": " & Slice(Tokens, 3));
             FieldOptions := Get_Options(Permissions_Fields.all(6));
             FieldOptions.Active := False;
             Set_Options(Permissions_Fields.all(6), FieldOptions);
             Permissions_Fields.all(7) := New_Field(1, 30, 6, 4, 0, 0);
             Permissions_Fields.all(8) := New_Field(1, 30, 7, 4, 0, 0);
             Permissions_Fields.all(9) := New_Field(1, 30, 8, 0, 0, 0);
-            Set_Buffer(Permissions_Fields.all(9), 0, "Others:");
+            Set_Buffer
+              (Permissions_Fields.all(9), 0, Mc(Interpreter, "Others") & ":");
             FieldOptions := Get_Options(Permissions_Fields.all(9));
             FieldOptions.Active := False;
             Set_Options(Permissions_Fields.all(9), FieldOptions);
@@ -266,7 +287,8 @@ package body ShowItems is
               ("owner", Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2), 4);
             Permissions_Fields.all(7) := New_Field(1, 30, 6, 0, 0, 0);
             Set_Buffer
-              (Permissions_Fields.all(7), 0, "Group: " & Slice(Tokens, 3));
+              (Permissions_Fields.all(7), 0,
+               Mc(Interpreter, "{Group}") & ": " & Slice(Tokens, 3));
             FieldOptions := Get_Options(Permissions_Fields.all(7));
             FieldOptions.Active := False;
             Set_Options(Permissions_Fields.all(7), FieldOptions);
@@ -274,7 +296,8 @@ package body ShowItems is
             Permissions_Fields.all(9) := New_Field(1, 30, 8, 4, 0, 0);
             Permissions_Fields.all(10) := New_Field(1, 30, 9, 4, 0, 0);
             Permissions_Fields.all(11) := New_Field(1, 30, 10, 0, 0, 0);
-            Set_Buffer(Permissions_Fields.all(11), 0, "Others:");
+            Set_Buffer
+              (Permissions_Fields.all(11), 0, Mc(Interpreter, "Others") & ":");
             FieldOptions := Get_Options(Permissions_Fields.all(11));
             FieldOptions.Active := False;
             Set_Options(Permissions_Fields.all(11), FieldOptions);
