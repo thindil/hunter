@@ -13,28 +13,28 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Ada.Characters.Handling;
+with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 with Interfaces.C;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
+with Interfaces.C.Strings;
 with CArgv;
 with Tcl; use Tcl;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
-with Tcl.Tk.Ada; use Tcl.Tk.Ada;
+with Tcl.MsgCat.Ada;
+with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid;
-with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets;
+with Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
-with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
-with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
-with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
-with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
-with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with LoadData; use LoadData;
-with Preferences; use Preferences;
+with Tcl.Tk.Ada.Widgets.TtkFrame;
+with Tcl.Tk.Ada.Widgets.TtkTreeView;
+with Tcl.Tk.Ada.Widgets.TtkWidget;
+with Tcl.Tk.Ada.Winfo;
+with Tcl.Tklib.Ada.Tooltip;
+with LoadData;
+with Preferences;
 with MainWindow; use MainWindow;
-with Utils; use Utils;
+with Utils;
 
 package body SearchItems is
 
@@ -61,6 +61,15 @@ package body SearchItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Interfaces.C.Strings;
+      use Tcl.MsgCat.Ada;
+      use Tcl.Tk.Ada.Widgets;
+      use Tcl.Tk.Ada.Widgets.TtkButton;
+      use Tcl.Tk.Ada.Widgets.TtkFrame;
+      use Tcl.Tk.Ada.Widgets.TtkWidget;
+      use Tcl.Tk.Ada.Winfo;
+      use Tcl.Tklib.Ada.Tooltip;
+
       Text_Frame: constant Ttk_Frame :=
         Get_Widget(pathName => ".mainframe.textframe", Interp => Interp);
       Button: Ttk_Button :=
@@ -128,6 +137,13 @@ package body SearchItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Ada.Characters.Handling;
+      use Ada.Strings.Fixed;
+      use Ada.Strings.Unbounded;
+      use Tcl.Tk.Ada.Widgets.TtkTreeView;
+      use LoadData;
+      use Preferences;
+
       Text_Entry: constant Ttk_Entry :=
         Get_Widget
           (pathName => ".mainframe.textframe.textentry", Interp => Interp);
@@ -170,6 +186,8 @@ package body SearchItems is
    end Search_Command;
 
    procedure Add_Commands is
+      use Utils;
+
    begin
       Add_Command
         (Name => "ToggleSearch", Ada_Command => Toggle_Search_Command'Access);
