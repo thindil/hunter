@@ -170,7 +170,7 @@ package body RefreshData is
                                (Name => To_String(Source => File_Name)));
                      end if;
                      if File_Name = To_String(Source => Current_Selected) then
-                        ShowPreview;
+                        Show_Preview;
                      end if;
                      exit Update_Items_Loop;
                   when others =>

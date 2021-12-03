@@ -104,7 +104,7 @@ package body ActivateItems is
               (Directory_Name => To_String(Source => Current_Directory));
          end if;
          if New_Action = SHOWTRASH then
-            DestinationDirectory :=
+            Destination_Directory :=
               Delete
                 (Source => Current_Directory, From => 1,
                  Through =>

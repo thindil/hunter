@@ -112,7 +112,7 @@ package body CopyItems is
    begin
       Copy_Items_Loop :
       while Copy_Items_List.Length > 0 loop
-         Path := DestinationDirectory;
+         Path := Destination_Directory;
          if Exists
              (Name =>
                 To_String(Source => Path) & "/" &

@@ -238,12 +238,12 @@ package body Modules.Commands is
       end loop Replace_Arguments_Loop;
       Non_Blocking_Spawn
         (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
-      ShowOutput;
+      Show_Output;
       Show_Output_Loop :
       loop
          Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 300_000);
          exit Show_Output_Loop when Result /= 1;
-         UpdateOutput(Expect_Out_Match(ProcessDesc) & LF);
+         Update_Output(Expect_Out_Match(ProcessDesc) & LF);
          Success := True;
       end loop Show_Output_Loop;
       Close(ProcessDesc);

@@ -88,12 +88,12 @@ package body UserCommands is
       Non_Blocking_Spawn
         (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
       if UserCommandsList(CArgv.Arg(Argv, 1)).NeedOutput then
-         ShowOutput;
+         Show_Output;
          Update_Output_Loop :
          loop
             Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 300_000);
             exit Update_Output_Loop when Result /= 1;
-            UpdateOutput(Expect_Out_Match(ProcessDesc) & LF);
+            Update_Output(Expect_Out_Match(ProcessDesc) & LF);
             Success := True;
          end loop Update_Output_Loop;
       end if;

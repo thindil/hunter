@@ -159,7 +159,7 @@ package body Trash is
    begin
       Common.Current_Directory :=
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
-      DestinationDirectory :=
+      Destination_Directory :=
         Delete
           (Common.Current_Directory, 1,
            Length
@@ -203,7 +203,7 @@ package body Trash is
       Items_List.Clear;
       Common.Current_Directory :=
         To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
-      DestinationDirectory :=
+      Destination_Directory :=
         Delete
           (Common.Current_Directory, 1,
            Length
