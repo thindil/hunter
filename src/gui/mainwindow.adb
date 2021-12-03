@@ -416,7 +416,7 @@ package body MainWindow is
         (Interpreter => Get_Context, State => ON_ENTER,
          Arguments =>
            "{" & To_String(Source => Common.Current_Directory) & "}");
-      CreateShowItemsUI;
+      Create_Show_Items_Ui;
       SashPos
         (Paned => Paned, Index => "0",
          NewPos =>
@@ -580,7 +580,7 @@ package body MainWindow is
             else
                Create
                  (S => Tokens,
-                  From => To_String(Source => DestinationDirectory),
+                  From => To_String(Source => Destination_Directory),
                   Separators => "/");
             end if;
             Add_Path_Buttons_Loop :

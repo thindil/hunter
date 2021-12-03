@@ -111,7 +111,7 @@ package body CreateItems.UI is
          New_Action := CREATEDIRECTORY;
       else
          New_Action := CREATELINK;
-         ShowDestination;
+         Show_Destination;
       end if;
       Toggle_Tool_Buttons(Action => New_Action);
       return TCL_OK;
@@ -186,10 +186,10 @@ package body CreateItems.UI is
                 (Name => To_String(Source => New_Item_Name), Fmode => Binary);
             Close(FD => File);
          when CREATELINK =>
-            Destination := DestinationDirectory;
+            Destination := Destination_Directory;
             if Selection(TreeViewWidget => Directory_View)'Length > 0 then
                Destination :=
-                 DestinationDirectory &
+                 Destination_Directory &
                  Second_Items_List
                    (Positive'Value
                       (Selection(TreeViewWidget => Directory_View)))

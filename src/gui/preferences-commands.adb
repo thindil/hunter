@@ -271,7 +271,7 @@ package body Preferences.Commands is
          then False
          else True);
       if MimeType(1 .. 5) = "image" then
-         ShowPreview;
+         Show_Preview;
       end if;
       return TCL_OK;
    end Set_Scale_Images_Command;
@@ -317,7 +317,7 @@ package body Preferences.Commands is
          State(ComboBox, "!disabled");
       end if;
       if MimeType(1 .. 4) = "text" then
-         ShowPreview;
+         Show_Preview;
       end if;
       return TCL_OK;
    end Set_Color_Text_Command;
@@ -354,7 +354,7 @@ package body Preferences.Commands is
    begin
       Settings.Color_Theme := To_Unbounded_String(Get(ComboBox));
       if MimeType(1 .. 4) = "text" then
-         ShowPreview;
+         Show_Preview;
       end if;
       return TCL_OK;
    end Set_Color_Theme_Command;
@@ -1391,7 +1391,7 @@ package body Preferences.Commands is
       Current_Selected := Common.Current_Directory & "/" & Items_List(1).Name;
       Update_Directory_List(True);
       Update_Watch(To_String(Common.Current_Directory));
-      ShowPreview;
+      Show_Preview;
       return TCL_OK;
    end Show_Module_Command;
 

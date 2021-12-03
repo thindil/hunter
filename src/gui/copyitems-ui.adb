@@ -73,9 +73,9 @@ package body CopyItems.UI is
         and then
           Containing_Directory
             (Name => To_String(Source => Copy_Items_List(1))) =
-          To_String(Source => DestinationDirectory) then
+          To_String(Source => Destination_Directory) then
          Copy_Items_List.Clear;
-         ShowPreview;
+         Show_Preview;
          Toggle_Tool_Buttons(Action => New_Action, Finished => True);
          return TCL_OK;
       end if;
@@ -84,7 +84,7 @@ package body CopyItems.UI is
          Source_Directory := Common.Current_Directory;
          New_Action := COPY;
          Toggle_Tool_Buttons(Action => New_Action);
-         ShowDestination;
+         Show_Destination;
          Bind_To_Main_Window
            (Interp => Interp, Sequence => "<Escape>",
             Script =>
@@ -130,12 +130,12 @@ package body CopyItems.UI is
       end if;
       Common.Current_Directory :=
         (if Settings.Stay_In_Old then Source_Directory
-         else DestinationDirectory);
+         else Destination_Directory);
       Load_Directory
         (Directory_Name => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
       Update_Watch(Path => To_String(Source => Common.Current_Directory));
-      ShowPreview;
+      Show_Preview;
       Toggle_Tool_Buttons(Action => New_Action, Finished => True);
    end Copy_Selected;
 

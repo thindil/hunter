@@ -122,7 +122,7 @@ package body ShowItems is
       To_Unbounded_String("write"));
    -- ****
 
-   procedure ScaleImage is
+   procedure Scale_Image is
       Image: constant Tk_Photo :=
         Create("previewimage", "-file " & To_String(Current_Selected));
       TempImage: Tk_Photo := Create("tempimage");
@@ -168,9 +168,9 @@ package body ShowItems is
       configure
         (PreviewCanvas,
          "-width " & Width(Image) & " -height" & Natural'Image(ImageHeight));
-   end ScaleImage;
+   end Scale_Image;
 
-   procedure ShowPreview is
+   procedure Show_Preview is
       Button: Ttk_Button :=
         Get_Widget(".mainframe.toolbars.itemtoolbar.previewbutton");
       Label: constant Ttk_Label := Get_Widget(PreviewFrame & ".title");
@@ -415,7 +415,7 @@ package body ShowItems is
                   if Settings.Scale_Images then
                      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
                      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
-                     ScaleImage;
+                     Scale_Image;
                   else
                      Delete(PreviewCanvas, "all");
                      ImageWidth := Natural'Value(Width(Image));
@@ -489,13 +489,13 @@ package body ShowItems is
             end if;
          end;
       end if;
-   end ShowPreview;
+   end Show_Preview;
 
    -- ****if* ShowItems/ShowItems.ShowInfo
    -- FUNCTION
    -- Show information about the currently selected file or directory.
    -- SOURCE
-   procedure ShowInfo is
+   procedure Show_Info is
       -- ****
       Label: Ttk_Label := Get_Widget(PreviewFrame & ".title");
       SelectedItem: constant String := To_String(Current_Selected);
@@ -723,7 +723,7 @@ package body ShowItems is
          end if;
       end;
       Tcl.Tk.Ada.Pack.Pack(InfoFrame);
-   end ShowInfo;
+   end Show_Info;
 
    -- ****o* ShowItems/ShowItems.Show_Preview_Or_Info_Command
    -- FUNCTION
@@ -751,17 +751,17 @@ package body ShowItems is
       pragma Unreferenced(ClientData, Argc, Argv);
    begin
       if Tcl.Ada.Tcl_GetVar(Interp, "previewtype") = "preview" then
-         ShowPreview;
+         Show_Preview;
       else
-         ShowInfo;
+         Show_Info;
       end if;
       return TCL_OK;
    end Show_Preview_Or_Info_Command;
 
    function Show_Selected_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+      pragma Unreferenced(Client_Data, Argc, Argv);
       DirectoryTree: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
       Tokens: Slice_Set;
@@ -896,22 +896,22 @@ package body ShowItems is
             return TCL_OK;
          end if;
          SelectedItem :=
-           DestinationDirectory & "/" &
+           Destination_Directory & "/" &
            To_Unbounded_String
              (Set(PreviewTree, Selection(PreviewTree), "name"));
          if not Is_Directory(To_String(SelectedItem)) then
             return TCL_OK;
          end if;
       end if;
-      DestinationDirectory := SelectedItem;
+      Destination_Directory := SelectedItem;
       Load_Directory(To_String(SelectedItem), True);
       Update_Directory_List(True, "preview");
       Execute_Modules
-        (Interp, ON_ENTER, "{" & To_String(DestinationDirectory) & "}");
+        (Interp, ON_ENTER, "{" & To_String(Destination_Directory) & "}");
       return TCL_OK;
    end GoToDirectory_Command;
 
-   procedure CreateShowItemsUI is
+   procedure Create_Show_Items_Ui is
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
       Label: Ttk_Label;
       Button: Ttk_Button;
@@ -1041,9 +1041,9 @@ package body ShowItems is
          Add(Paned, PreviewFrame, "-weight 20");
       end if;
       CreateProgramsMenuUI;
-   end CreateShowItemsUI;
+   end Create_Show_Items_Ui;
 
-   procedure ShowDestination is
+   procedure Show_Destination is
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
       Frame: Ttk_Frame := Get_Widget(PreviewFrame & ".pathframe");
    begin
@@ -1065,14 +1065,14 @@ package body ShowItems is
       Frame.Name := New_String(PreviewFrame & ".title");
       configure
         (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
-      DestinationDirectory := Common.Current_Directory;
-      Load_Directory(To_String(DestinationDirectory), True);
+      Destination_Directory := Common.Current_Directory;
+      Load_Directory(To_String(Destination_Directory), True);
       Update_Directory_List(True, "preview");
       Autoscroll(PreviewXScroll);
       Autoscroll(PreviewYScroll);
-   end ShowDestination;
+   end Show_Destination;
 
-   procedure ShowOutput is
+   procedure Show_Output is
       Frame: Ttk_Frame;
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
    begin
@@ -1094,14 +1094,14 @@ package body ShowItems is
       Delete(PreviewText, "1.0", "end");
       configure(PreviewText, "-state disabled");
       Autoscroll(PreviewYScroll);
-   end ShowOutput;
+   end Show_Output;
 
-   procedure UpdateOutput(Text: String) is
+   procedure Update_Output(Text: String) is
    begin
       configure(PreviewText, "-state normal");
       Insert(PreviewText, "end", "{" & Text & "}");
       configure(PreviewText, "-state disabled");
       Tcl_Eval(Get_Context, "update");
-   end UpdateOutput;
+   end Update_Output;
 
 end ShowItems;

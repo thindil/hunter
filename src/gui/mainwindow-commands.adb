@@ -248,7 +248,7 @@ package body MainWindow.Commands is
          Toggle_Tool_Buttons(Action => New_Action, Finished => True);
          if New_Action = CREATELINK then
             New_Action := COPY;
-            ShowPreview;
+            Show_Preview;
          end if;
          if State(Widget => Button) = "selected" then
             State(Widget => Button, StateSpec => "!selected");
@@ -381,7 +381,7 @@ package body MainWindow.Commands is
       if (Settings.Scale_Images and Settings.Show_Preview)
         and then Winfo_Get(Widgt => Preview_Canvas, Info => "ismapped") =
           "1" then
-         ScaleImage;
+         Scale_Image;
       end if;
       return TCL_OK;
    end Arrange_Path_Command;
@@ -429,7 +429,7 @@ package body MainWindow.Commands is
          when others =>
             return TCL_OK;
       end case;
-      ShowPreview;
+      Show_Preview;
       if State(Widget => Action_Button) = "selected" then
          State(Widget => Action_Button, StateSpec => "!selected");
       end if;
@@ -595,7 +595,7 @@ package body MainWindow.Commands is
          end if;
       end loop Set_Current_Selected_Loop;
       Update_Directory_List(Clear => True);
-      ShowPreview;
+      Show_Preview;
       return TCL_OK;
    end Show_File_Command;
 

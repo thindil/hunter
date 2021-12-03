@@ -76,9 +76,9 @@ package body MoveItems.UI is
         and then
           Containing_Directory
             (Name => To_String(Source => Move_Items_List(1))) =
-          To_String(Source => DestinationDirectory) then
+          To_String(Source => Destination_Directory) then
          Move_Items_List.Clear;
-         ShowPreview;
+         Show_Preview;
          Toggle_Tool_Buttons(Action => New_Action, Finished => True);
          return TCL_OK;
       end if;
@@ -87,7 +87,7 @@ package body MoveItems.UI is
          Source_Directory := Common.Current_Directory;
          New_Action := MOVE;
          Toggle_Tool_Buttons(Action => New_Action);
-         ShowDestination;
+         Show_Destination;
          Bind_To_Main_Window
            (Interp => Interp, Sequence => "<Escape>",
             Script =>
@@ -126,7 +126,7 @@ package body MoveItems.UI is
       Move_Items_Loop :
       while Move_Items_List.Length > 0 loop
          New_Name :=
-           DestinationDirectory & To_Unbounded_String(Source => "/") &
+           Destination_Directory & To_Unbounded_String(Source => "/") &
            Simple_Name(Name => To_String(Source => Move_Items_List(1)));
          if Exists(Name => To_String(Source => New_Name)) then
             if not Overwrite and Settings.Overwrite_On_Exist then
@@ -160,7 +160,7 @@ package body MoveItems.UI is
                New_File_Name_Loop :
                loop
                   New_Name :=
-                    DestinationDirectory &
+                    Destination_Directory &
                     To_Unbounded_String
                       (Source =>
                          "/" &
@@ -181,7 +181,7 @@ package body MoveItems.UI is
          if not Success then
             Copy_Item
               (Name => To_String(Source => Move_Items_List(1)),
-               Path => DestinationDirectory, Success => Success);
+               Path => Destination_Directory, Success => Success);
             if not Success then
                Show_Message
                  (Message =>
@@ -216,7 +216,7 @@ package body MoveItems.UI is
       end if;
       Common.Current_Directory :=
         (if Settings.Stay_In_Old then Source_Directory
-         else DestinationDirectory);
+         else Destination_Directory);
       Current_Selected :=
         Common.Current_Directory & "/" &
         Simple_Name(Name => To_String(Source => Current_Selected));
@@ -224,7 +224,7 @@ package body MoveItems.UI is
         (Directory_Name => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
       Update_Watch(Path => To_String(Source => Common.Current_Directory));
-      ShowPreview;
+      Show_Preview;
       Toggle_Tool_Buttons(Action => New_Action, Finished => True);
    end Move_Selected;
 
