@@ -26,27 +26,27 @@ with Tcl; use Tcl;
 package ShowItems is
 -- ****
 
-   -- ****f* ShowItems/ShowItems.DestinationDirectory
+   -- ****f* ShowItems/ShowItems.Destination_Directory
    -- FUNCTION
    -- Current directory previewed. Used during showing destination target for
    -- various commands
    -- SOURCE
-   DestinationDirectory: Unbounded_String;
+   Destination_Directory: Unbounded_String;
    -- ****
 
-   -- ****f* ShowItems/ShowItems.ScaleImage
+   -- ****f* ShowItems/ShowItems.Scale_Image
    -- FUNCTION
    -- Scale currently previewed image
    -- SOURCE
-   procedure ScaleImage;
+   procedure Scale_Image;
    -- ****
 
-   -- ****f* ShowItems/ShowItems.ShowPreview
+   -- ****f* ShowItems/ShowItems.Show_Preview
    -- FUNCTION
    -- Show preview of the currently selected file or directory. If preview is
    -- not available, show information about the selected item.
    -- SOURCE
-   procedure ShowPreview;
+   procedure Show_Preview;
    -- ****
 
    -- ****o* ShowItems/ShowItems.Show_Selected_Command
@@ -54,48 +54,48 @@ package ShowItems is
    -- Show preview or information about the currently selected file or
    -- directory after user select it in the directory view
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- ShowSelected
    -- SOURCE
    function Show_Selected_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
-      -- ****f* ShowItems/ShowItems.CreateShowItemsUI
+      -- ****f* ShowItems/ShowItems.Create_Show_Items_Ui
       -- FUNCTION
       -- Create UI related to show items and destination for moving/copying
       -- items.
       -- SOURCE
-   procedure CreateShowItemsUI;
+   procedure Create_Show_Items_Ui;
    -- ****
 
-   -- ****f* ShowItems/ShowItems.ShowDestination
+   -- ****f* ShowItems/ShowItems.Show_Destination
    -- FUNCTION
    -- Show destination directory for various commands in the preview widget
    -- SOURCE
-   procedure ShowDestination;
+   procedure Show_Destination;
    -- ****
 
-   -- ****f* ShowItems/ShowItems.ShowOutput
+   -- ****f* ShowItems/ShowItems.Show_Output
    -- FUNCTION
    -- Show the UI for the output of the user command
    -- SOURCE
-   procedure ShowOutput;
+   procedure Show_Output;
    -- ****
 
-   -- ****f* ShowItems/ShowItems.UpdateOutput
+   -- ****f* ShowItems/ShowItems.Update_Output
    -- FUNCTION
    -- Update UI with the output of the user command
    -- SOURCE
-   procedure UpdateOutput(Text: String);
+   procedure Update_Output(Text: String);
    -- ****
 
 end ShowItems;
