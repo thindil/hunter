@@ -129,10 +129,10 @@ package body Bookmarks.UI is
    begin
       if New_Action in COPY | MOVE then
          if Bookmarks_List.Contains(Bookmark) then
-            DestinationDirectory :=
+            Destination_Directory :=
               To_Unbounded_String(Bookmarks_List(Bookmark));
          elsif Bookmark = Mc(Interpreter, "{Home}") then
-            DestinationDirectory := To_Unbounded_String(Value("HOME"));
+            Destination_Directory := To_Unbounded_String(Value("HOME"));
          elsif Bookmark = Mc(Interpreter, "Close") then
             Update_Directory_List;
             ShowDestination;
@@ -142,12 +142,12 @@ package body Bookmarks.UI is
             return BOOKMARKS_FORM;
          end if;
          Update_Directory_List;
-         Load_Directory(To_String(DestinationDirectory), True);
+         Load_Directory(To_String(Destination_Directory), True);
          ShowDestination;
          return DESTINATION_VIEW;
       end if;
       if Bookmark = Mc(Interpreter, "Close") then
-         ShowPreview;
+         Show_Preview;
          UILocation := DIRECTORY_VIEW;
          Update_Directory_List;
          return DIRECTORY_VIEW;
@@ -163,7 +163,7 @@ package body Bookmarks.UI is
          Common.Current_Directory := To_Unbounded_String(Value("HOME"));
       else
          Update_Directory_List;
-         ShowPreview;
+         Show_Preview;
          ShowBookmarksForm;
          return BOOKMARKS_FORM;
       end if;
@@ -171,7 +171,7 @@ package body Bookmarks.UI is
       UILocation := DIRECTORY_VIEW;
       Clear_Preview_Window;
       Update_Directory_List(True);
-      ShowPreview;
+      Show_Preview;
       Update_Watch(To_String(Common.Current_Directory));
       Execute_Modules
         (Interpreter, ON_ENTER,
@@ -222,10 +222,10 @@ package body Bookmarks.UI is
                     (Interpreter, ON_ENTER,
                      "{" & To_String(Common.Current_Directory) & "}");
                else
-                  DestinationDirectory :=
+                  Destination_Directory :=
                     To_Unbounded_String
                       (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
-                  Load_Directory(To_String(DestinationDirectory), True);
+                  Load_Directory(To_String(Destination_Directory), True);
                end if;
             end if;
             if FieldIndex /= 2 then
@@ -233,7 +233,7 @@ package body Bookmarks.UI is
                Post(DialogForm, False);
                Delete(DialogForm);
                if New_Action not in MOVE | COPY then
-                  ShowPreview;
+                  Show_Preview;
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
                   return DIRECTORY_VIEW;

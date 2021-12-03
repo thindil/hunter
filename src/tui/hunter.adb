@@ -204,7 +204,7 @@ begin
                      Set_Cursor_Visibility(Visibility);
                   end if;
                   UILocation := PREVIEW;
-                  ShowPreview;
+                  Show_Preview;
                end if;
                CreateProgramMenu(True);
             when DESTINATION_VIEW =>
@@ -213,7 +213,7 @@ begin
             when PREVIEW =>
                UILocation := DIRECTORY_VIEW;
                Clear_Preview_Window;
-               ShowPreview;
+               Show_Preview;
                Update_Directory_List;
                Visibility := Invisible;
                Set_Cursor_Visibility(Visibility);

@@ -174,7 +174,7 @@ package body RenameItems.UI is
                Delete(DialogForm);
                UILocation := DIRECTORY_VIEW;
                Update_Directory_List(True);
-               ShowPreview;
+               Show_Preview;
                return DIRECTORY_VIEW;
             end if;
          when others =>

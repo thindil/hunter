@@ -852,7 +852,7 @@ package body Preferences.UI is
                   Execute_Modules
                     (Interpreter, ON_ENTER,
                      "{" & To_String(Common.Current_Directory) & "}");
-                  ShowPreview;
+                  Show_Preview;
                   return DIRECTORY_VIEW;
                else
                   Show_Options_Tab(CurrentIndex);

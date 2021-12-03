@@ -113,7 +113,7 @@ package body ActivateItems.UI is
             Set_Cursor_Visibility(Visibility);
             UILocation := DIRECTORY_VIEW;
             Update_Directory_List(True);
-            ShowPreview;
+            Show_Preview;
          end if;
          return UILocation;
       end Hide_Dialog;

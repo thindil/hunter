@@ -27,12 +27,12 @@ with MainWindow; use MainWindow;
 package ShowItems is
 -- ****
 
-   -- ****f* ShowItemsTUI/ShowItemsTUI.DestinationDirectory
+   -- ****f* ShowItemsTUI/ShowItemsTUI.Destination_Directory
    -- FUNCTION
    -- Current directory previewed. Used during showing destination target for
    -- various commands
    -- SOURCE
-   DestinationDirectory: Unbounded_String;
+   Destination_Directory: Unbounded_String;
    -- ****
 
    -- ****v* ShowItemsTUI/ShowItemsTUI.DestinationList
@@ -56,7 +56,7 @@ package ShowItems is
    procedure ShowInfo;
    -- ****
 
-   -- ****f* ShowItemsTUI/ShowItemsTUI.ShowPreview
+   -- ****f* ShowItemsTUI/ShowItemsTUI.Show_Preview
    -- FUNCTION
    -- Show preview of the currently selected file or directory. If preview is
    -- not available, show information about the selected item.
@@ -64,7 +64,7 @@ package ShowItems is
    -- Reset_Preview - If True, reset the first line in preview text file. Can
    --                 be empty. Default value is True
    -- SOURCE
-   procedure ShowPreview(Reset_Preview: Boolean := True);
+   procedure Show_Preview(Reset_Preview: Boolean := True);
    -- ****
 
    -- ****f* ShowItemsTUI/ShowItemsTUI.Show_Selected

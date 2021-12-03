@@ -215,9 +215,9 @@ package body MainWindow is
       if Common.Current_Directory /= To_Unbounded_String("/") then
          if New_Action in SHOWTRASH | DELETETRASH then
             Index :=
-              Ada.Strings.Unbounded.Count(DestinationDirectory, "/") + 1;
+              Ada.Strings.Unbounded.Count(Destination_Directory, "/") + 1;
             Create
-              (S => Tokens, From => To_String(Source => DestinationDirectory),
+              (S => Tokens, From => To_String(Source => Destination_Directory),
                Separators => "/");
             Path_Items := new Item_Array(1 .. Index + 1);
             Path_Items.all(1) := New_Item("Trash");
@@ -700,7 +700,7 @@ package body MainWindow is
                      New_Action := CREATEFILE;
                      UILocation := DIRECTORY_VIEW;
                      Update_Directory_List(True);
-                     ShowPreview;
+                     Show_Preview;
                      CreateProgramMenu;
                      Refresh(MenuWindow);
                      return DIRECTORY_VIEW;
@@ -712,7 +712,7 @@ package body MainWindow is
                      New_Action := CREATEFILE;
                      UILocation := DIRECTORY_VIEW;
                      Update_Directory_List(True);
-                     ShowPreview;
+                     Show_Preview;
                      CreateProgramMenu;
                      Refresh(MenuWindow);
                      return DIRECTORY_VIEW;
@@ -773,7 +773,7 @@ package body MainWindow is
             Post(SubMenu, False);
             Delete(SubMenu);
             Update_Directory_List;
-            ShowPreview;
+            Show_Preview;
             case CurrentIndex is
                when 1 =>
                   New_Action := CREATEDIRECTORY;
@@ -787,7 +787,7 @@ package body MainWindow is
                   New_Action := CREATELINK;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
-                  DestinationDirectory := Common.Current_Directory;
+                  Destination_Directory := Common.Current_Directory;
                   Second_Items_List := Items_List;
                   UILocation := DESTINATION_VIEW;
                   ShowDestination;
@@ -800,7 +800,7 @@ package body MainWindow is
                   New_Action := COPY;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
-                  DestinationDirectory := Common.Current_Directory;
+                  Destination_Directory := Common.Current_Directory;
                   Second_Items_List := Items_List;
                   UILocation := DESTINATION_VIEW;
                   ShowDestination;
@@ -809,7 +809,7 @@ package body MainWindow is
                   New_Action := MOVE;
                   CreateProgramMenu;
                   Refresh(MenuWindow);
-                  DestinationDirectory := Common.Current_Directory;
+                  Destination_Directory := Common.Current_Directory;
                   Second_Items_List := Items_List;
                   UILocation := DESTINATION_VIEW;
                   ShowDestination;
@@ -825,7 +825,7 @@ package body MainWindow is
                   if CurrentName = Mc(Interpreter, "Close") then
                      UILocation := DIRECTORY_VIEW;
                      Update_Directory_List(True);
-                     ShowPreview;
+                     Show_Preview;
                      return DIRECTORY_VIEW;
                   end if;
                   Draw_Menu(COMMANDS_MENU);
@@ -884,7 +884,7 @@ package body MainWindow is
             UILocation := New_Location;
             case Get_Index(Current(SubMenu)) is
                when 1 =>
-                  ShowPreview;
+                  Show_Preview;
                when 2 =>
                   Set_Cursor_Visibility(Visibility);
                   ShowInfo;
@@ -1034,7 +1034,7 @@ package body MainWindow is
             end if;
             UILocation := DIRECTORY_VIEW;
             Update_Directory_List(True);
-            ShowPreview;
+            Show_Preview;
             Post(SubMenu, False);
             Delete(SubMenu);
             return DIRECTORY_VIEW;

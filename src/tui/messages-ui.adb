@@ -127,7 +127,7 @@ package body Messages.UI is
          end loop;
       end;
       Update_Directory_List;
-      ShowPreview;
+      Show_Preview;
       UnusedResult := Driver(DialogForm, F_First_Field);
       Box(FormWindow, Default_Character, Default_Character);
       Refresh;
@@ -160,7 +160,7 @@ package body Messages.UI is
                New_Action := CREATEFILE;
                CreateProgramMenu(True);
                Update_Directory_List(True);
-               ShowPreview;
+               Show_Preview;
                return DIRECTORY_VIEW;
             elsif Option = "[Yes for all]" then
                Yes_For_All := True;
@@ -170,7 +170,7 @@ package body Messages.UI is
                      New_Action := CREATEFILE;
                      CreateProgramMenu(True);
                      Update_Directory_List(True);
-                     ShowPreview;
+                     Show_Preview;
                      return DIRECTORY_VIEW;
                   end if;
                   return MESSAGE_FORM;
@@ -179,7 +179,7 @@ package body Messages.UI is
                      New_Action := CREATEFILE;
                      CreateProgramMenu(True);
                      Update_Directory_List(True);
-                     ShowPreview;
+                     Show_Preview;
                      return DIRECTORY_VIEW;
                   end if;
                   return MESSAGE_FORM;
@@ -187,7 +187,7 @@ package body Messages.UI is
                   New_Action := CREATEFILE;
                   UILocation := DIRECTORY_VIEW;
                   Update_Directory_List(True);
-                  ShowPreview;
+                  Show_Preview;
                   return DIRECTORY_VIEW;
                end if;
             end if;
@@ -196,7 +196,7 @@ package body Messages.UI is
                   New_Action := CREATEFILE;
                   CreateProgramMenu(True);
                   Update_Directory_List(True);
-                  ShowPreview;
+                  Show_Preview;
                   return DIRECTORY_VIEW;
                end if;
                return MESSAGE_FORM;
@@ -205,7 +205,7 @@ package body Messages.UI is
                   New_Action := CREATEFILE;
                   CreateProgramMenu(True);
                   Update_Directory_List(True);
-                  ShowPreview;
+                  Show_Preview;
                   return DIRECTORY_VIEW;
                end if;
                return MESSAGE_FORM;
@@ -228,7 +228,7 @@ package body Messages.UI is
                else
                   New_Action := CREATEFILE;
                   Update_Directory_List(True);
-                  ShowPreview;
+                  Show_Preview;
                end if;
                return DIRECTORY_VIEW;
             end if;

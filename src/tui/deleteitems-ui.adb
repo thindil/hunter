@@ -194,7 +194,7 @@ package body DeleteItems.UI is
                     Current_Selected & "/" & Items_List(1).Name;
                end if;
             end if;
-            ShowPreview;
+            Show_Preview;
             Set_Cursor_Visibility(Visibility);
             Post(DialogForm, False);
             Delete(DialogForm);

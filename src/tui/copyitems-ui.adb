@@ -28,7 +28,7 @@ package body CopyItems.UI is
 
    function CopySelected(Overwrite: in out Boolean) return UI_Locations is
    begin
-      if DestinationDirectory = Common.Current_Directory then
+      if Destination_Directory = Common.Current_Directory then
          UILocation := DIRECTORY_VIEW;
          Update_Directory_List(True);
          return DIRECTORY_VIEW;
@@ -47,12 +47,12 @@ package body CopyItems.UI is
       UILocation := DIRECTORY_VIEW;
       Common.Current_Directory :=
         (if Settings.Stay_In_Old then Common.Current_Directory
-         else DestinationDirectory);
+         else Destination_Directory);
       Load_Directory(To_String(Common.Current_Directory));
       Update_Directory_List(True);
       Update_Watch(To_String(Common.Current_Directory));
       if Settings.Stay_In_Old then
-         ShowPreview;
+         Show_Preview;
       end if;
       return DIRECTORY_VIEW;
    end CopySelected;

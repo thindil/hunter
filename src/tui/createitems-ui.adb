@@ -80,7 +80,7 @@ package body CreateItems.UI is
             File := Create_File(To_String(NewItemName), Binary);
             Close(File);
          when CREATELINK =>
-            Destination := DestinationDirectory;
+            Destination := Destination_Directory;
             if Name(Current(DestinationList)) /=
               Simple_Name(To_String(Destination)) then
                Destination :=
@@ -216,7 +216,7 @@ package body CreateItems.UI is
                Delete(DialogForm);
                UILocation := DIRECTORY_VIEW;
                Update_Directory_List(True);
-               ShowPreview;
+               Show_Preview;
                return DIRECTORY_VIEW;
             end if;
          when others =>
@@ -332,7 +332,7 @@ package body CreateItems.UI is
                Post(DialogForm, False);
                Delete(DialogForm);
                Update_Directory_List(True);
-               ShowPreview;
+               Show_Preview;
                CreateProgramMenu(True);
                return DIRECTORY_VIEW;
             end if;

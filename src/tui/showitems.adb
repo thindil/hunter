@@ -337,7 +337,7 @@ package body ShowItems is
    Start_Line: Positive := 1;
    -- ****
 
-   procedure ShowPreview(Reset_Preview: Boolean := True) is
+   procedure Show_Preview(Reset_Preview: Boolean := True) is
       Line: Line_Position := 1;
       Current_Line: Natural := 0;
    begin
@@ -630,7 +630,7 @@ package body ShowItems is
             end if;
          end;
       end if;
-   end ShowPreview;
+   end Show_Preview;
 
    -- ****iv* ShowItemsTUI/ShowItemsTUI.Path
    -- FUNCTION
@@ -688,7 +688,7 @@ package body ShowItems is
       end if;
       if Is_Directory(To_String(Current_Selected)) or
         Is_Regular_File(To_String(Current_Selected)) then
-         ShowPreview;
+         Show_Preview;
       else
          ShowInfo;
       end if;
@@ -719,7 +719,7 @@ package body ShowItems is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
    begin
-      DestinationDirectory := To_Unbounded_String(CArgv.Arg(Argv, 1));
+      Destination_Directory := To_Unbounded_String(CArgv.Arg(Argv, 1));
       Load_Directory(CArgv.Arg(Argv, 1), True);
       ShowDestination;
       return TCL_OK;
@@ -749,21 +749,21 @@ package body ShowItems is
       if UILocation = DESTINATION_VIEW then
          Box(PreviewWindow, Default_Character, Default_Character);
       end if;
-      if not Is_Read_Accessible_File(To_String(DestinationDirectory)) then
+      if not Is_Read_Accessible_File(To_String(Destination_Directory)) then
          Show_Message
            (Mc
               (Interpreter,
                "{You don't have permissions to preview this directory.}"));
          return;
       end if;
-      DestinationDirectory :=
+      Destination_Directory :=
         To_Unbounded_String
-          (Normalize_Pathname(To_String(DestinationDirectory)));
-      Index := Ada.Strings.Unbounded.Count(DestinationDirectory, "/") + 1;
-      if DestinationDirectory /= To_Unbounded_String("/") then
+          (Normalize_Pathname(To_String(Destination_Directory)));
+      Index := Ada.Strings.Unbounded.Count(Destination_Directory, "/") + 1;
+      if Destination_Directory /= To_Unbounded_String("/") then
          Path_Items := new Item_Array(1 .. Index + 1);
          Path_Items.all(1) := New_Item("/");
-         Create(Tokens, To_String(DestinationDirectory), "/");
+         Create(Tokens, To_String(Destination_Directory), "/");
          for I in 2 .. Slice_Count(Tokens) loop
             Path_Items.all(Positive(I)) := New_Item(Slice(Tokens, I));
          end loop;
@@ -861,11 +861,11 @@ package body ShowItems is
             Result := Driver(DestinationList, M_ScrollDown_Page);
          when 10 =>
             if Is_Directory
-                (To_String(DestinationDirectory) & "/" &
+                (To_String(Destination_Directory) & "/" &
                  Name(Current(DestinationList))) then
-               DestinationDirectory :=
-                 DestinationDirectory & "/" & Name(Current(DestinationList));
-               Load_Directory(To_String(DestinationDirectory), True);
+               Destination_Directory :=
+                 Destination_Directory & "/" & Name(Current(DestinationList));
+               Load_Directory(To_String(Destination_Directory), True);
                ShowDestination;
             end if;
             return;
@@ -890,15 +890,15 @@ package body ShowItems is
          when Key_End =>
             Result := Driver(Path, M_Last_Item);
          when 10 =>
-            DestinationDirectory := To_Unbounded_String("/");
+            Destination_Directory := To_Unbounded_String("/");
             Update_Destination_Directory_Loop :
             for I in 2 .. Get_Index(Current(Path)) loop
-               Append(DestinationDirectory, Name(Items(Path, I)));
+               Append(Destination_Directory, Name(Items(Path, I)));
                if I < Get_Index(Current(Path)) then
-                  Append(DestinationDirectory, "/");
+                  Append(Destination_Directory, "/");
                end if;
             end loop Update_Destination_Directory_Loop;
-            Load_Directory(To_String(DestinationDirectory), True);
+            Load_Directory(To_String(Destination_Directory), True);
             ShowDestination;
             return DESTINATION_VIEW;
          when others =>
@@ -936,23 +936,23 @@ package body ShowItems is
                if Start_Line > 1 then
                   Start_Line := Start_Line - 1;
                end if;
-               ShowPreview(False);
+               Show_Preview(False);
             when KEY_DOWN =>
                Start_Line := Start_Line + 1;
-               ShowPreview(False);
+               Show_Preview(False);
             when Key_Home =>
                Start_Line := 1;
-               ShowPreview(False);
+               Show_Preview(False);
             when KEY_NPAGE =>
                if Start_Line > Positive(Lines - 6) then
                   Start_Line := Start_Line - Positive(Lines - 6);
                else
                   Start_Line := 1;
                end if;
-               ShowPreview(False);
+               Show_Preview(False);
             when KEY_PPAGE =>
                Start_Line := Start_Line + Positive(Lines - 6);
-               ShowPreview(False);
+               Show_Preview(False);
             when others =>
                null;
          end case;

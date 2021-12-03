@@ -118,7 +118,7 @@ package body SearchItems is
                end if;
                Post(DialogForm, False);
                Delete(DialogForm);
-               ShowPreview;
+               Show_Preview;
                return DIRECTORY_VIEW;
             end if;
          when others =>
