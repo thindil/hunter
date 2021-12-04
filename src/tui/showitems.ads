@@ -90,18 +90,18 @@ package ShowItems is
    procedure ShowDestination;
    -- ****
 
-   -- ****f* ShowItemsTUI/ShowItemsTUI.ShowOutput
+   -- ****f* ShowItemsTUI/ShowItemsTUI.Show_Output
    -- FUNCTION
    -- Show the UI for the output of the user command
    -- SOURCE
-   procedure ShowOutput;
+   procedure Show_Output;
    -- ****
 
-   -- ****f* ShowItemsTUI/ShowItemsTUI.UpdateOutput
+   -- ****f* ShowItemsTUI/ShowItemsTUI.Update_Output
    -- FUNCTION
    -- Update UI with the output of the user command
    -- SOURCE
-   procedure UpdateOutput(Text: String);
+   procedure Update_Output(Text: String);
    -- ****
 
    -- ****f* ShowItemsTUI/ShowItemsTUI.Destination_Keys

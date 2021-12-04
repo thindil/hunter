@@ -40,7 +40,7 @@ package body MoveItems.UI is
       Move_Items_Loop :
       while Move_Items_List.Length > 0 loop
          NewName :=
-           DestinationDirectory & To_Unbounded_String("/") &
+           Destination_Directory & To_Unbounded_String("/") &
            Simple_Name(To_String(Move_Items_List(1)));
          if Exists(To_String(NewName)) then
             if not Overwrite and Settings.Overwrite_On_Exist then
@@ -61,7 +61,7 @@ package body MoveItems.UI is
                New_File_Name_Loop :
                loop
                   NewName :=
-                    DestinationDirectory &
+                    Destination_Directory &
                     To_Unbounded_String
                       ("/" & Ada.Directories.Base_Name(To_String(NewName)) &
                        "_");
@@ -77,7 +77,7 @@ package body MoveItems.UI is
            (To_String(Move_Items_List(1)), To_String(NewName), Success);
          if not Success then
             Copy_Item
-              (To_String(Move_Items_List(1)), DestinationDirectory, Success);
+              (To_String(Move_Items_List(1)), Destination_Directory, Success);
             if Success then
                begin
                   if Is_Directory(To_String(Move_Items_List(1))) then
@@ -116,7 +116,7 @@ package body MoveItems.UI is
       UILocation := DIRECTORY_VIEW;
       Common.Current_Directory :=
         (if Settings.Stay_In_Old then Common.Current_Directory
-         else DestinationDirectory);
+         else Destination_Directory);
       Current_Selected :=
         Common.Current_Directory & "/" &
         Simple_Name(To_String(Current_Selected));
@@ -124,7 +124,7 @@ package body MoveItems.UI is
       Update_Directory_List(True);
       Update_Watch(To_String(Common.Current_Directory));
       if Settings.Stay_In_Old then
-         ShowPreview;
+         Show_Preview;
       end if;
       return DIRECTORY_VIEW;
    end MoveSelected;

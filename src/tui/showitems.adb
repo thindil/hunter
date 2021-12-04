@@ -824,7 +824,7 @@ package body ShowItems is
       Refresh(PreviewWindow);
    end ShowDestination;
 
-   procedure ShowOutput is
+   procedure Show_Output is
    begin
       if PreviewPad /= Null_Window then
          Delete(PreviewPad);
@@ -834,14 +834,14 @@ package body ShowItems is
       PreviewPad := New_Pad(Lines - 2, (Columns / 2) - 2);
       Refresh
         (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
-   end ShowOutput;
+   end Show_Output;
 
-   procedure UpdateOutput(Text: String) is
+   procedure Update_Output(Text: String) is
    begin
       Add(PreviewPad, Text);
       Refresh
         (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
-   end UpdateOutput;
+   end Update_Output;
 
    procedure Destination_Keys(Key: Key_Code) is
       Result: Menus.Driver_Result;
