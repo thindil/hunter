@@ -64,60 +64,60 @@ with Utils; use Utils;
 
 package body ShowItems is
 
-   -- ****iv* ShowItems/ShowItems.PreviewFrame
+   -- ****iv* ShowItems/ShowItems.Preview_Frame
    -- FUNCTION
    -- Main Ttk_Frame for preview items
    -- SOURCE
-   PreviewFrame: Ttk_Frame;
+   Preview_Frame: Ttk_Frame;
    -- ****
 
-   -- ****iv* ShowItems/ShowItems.PreviewXScroll
+   -- ****iv* ShowItems/ShowItems.Preview_X_Scroll
    -- FUNCTION
    -- X coordinates scrollbar for previews
    -- SOURCE
-   PreviewXScroll: Ttk_Scrollbar;
+   Preview_X_Scroll: Ttk_Scrollbar;
    -- ****
 
-   -- ****iv* ShowItems/ShowItems.PreviewYScroll
+   -- ****iv* ShowItems/ShowItems.Preview_Y_Scroll
    -- FUNCTION
    -- Y coordinates scrollbar for previews
    -- SOURCE
-   PreviewYScroll: Ttk_Scrollbar;
+   Preview_Y_Scroll: Ttk_Scrollbar;
    -- ****
 
-   -- ****iv* ShowItems/ShowItems.PreviewTree
+   -- ****iv* ShowItems/ShowItems.Preview_Tree
    -- FUNCTION
    -- Tk_Tree_View used to show directories previews
    -- SOURCE
-   PreviewTree: Ttk_Tree_View;
+   Preview_Tree: Ttk_Tree_View;
    -- ****
 
-   -- ****iv* ShowItems/ShowItems.PreviewText
+   -- ****iv* ShowItems/ShowItems.Preview_Text
    -- FUNCTION
    -- Tk_Text used to show text files previews
    -- SOURCE
-   PreviewText: Tk_Text;
+   Preview_Text: Tk_Text;
    -- ****
 
-   -- ****iv* ShowItems/ShowItems.PreviewCanvas
+   -- ****iv* ShowItems/ShowItems.Preview_Canvas
    -- FUNCTION
    -- Tk_Canvas used to show images
    -- SOURCE
-   PreviewCanvas: Tk_Canvas;
+   Preview_Canvas: Tk_Canvas;
    -- ****
 
-   -- ****iv* ShowItems/ShowItems.InfoFrame
+   -- ****iv* ShowItems/ShowItems.Info_Frame
    -- FUNCTION
    -- Ttk_Frame for show information about the selected item
    -- SOURCE
-   InfoFrame: Ttk_Frame;
+   Info_Frame: Ttk_Frame;
    -- ****
 
-   -- ****iv* ShowItems/ShowItems.ButtonNames
+   -- ****iv* ShowItems/ShowItems.Button_Names
    -- FUNCTION
    -- Names of the permissions buttons
    -- SOURCE
-   ButtonNames: constant array(1 .. 3) of Unbounded_String :=
+   Button_Names: constant array(1 .. 3) of Unbounded_String :=
      (To_Unbounded_String("execute"), To_Unbounded_String("read"),
       To_Unbounded_String("write"));
    -- ****
@@ -131,13 +131,13 @@ package body ShowItems is
       ScaleMode: Unbounded_String := To_Unbounded_String("-subsample");
       Scale: Natural;
    begin
-      Delete(PreviewCanvas, "all");
+      Delete(Preview_Canvas, "all");
       ImageWidth := Natural'Value(Width(Image));
       ImageHeight := Natural'Value(Height(Image));
       Copy(Image, TempImage);
       Blank(Image);
-      FrameHeight := Natural'Value(Winfo_Get(PreviewFrame, "height"));
-      FrameWidth := Natural'Value(Winfo_Get(PreviewFrame, "width"));
+      FrameHeight := Natural'Value(Winfo_Get(Preview_Frame, "height"));
+      FrameWidth := Natural'Value(Winfo_Get(Preview_Frame, "width"));
       if ImageWidth > FrameWidth or ImageHeight > FrameHeight then
          Scale :=
            (if ImageWidth / FrameWidth > ImageHeight / FrameHeight then
@@ -163,17 +163,17 @@ package body ShowItems is
       StartX := ImageWidth / 2;
       StartY := ImageHeight / 2;
       Canvas_Create
-        (PreviewCanvas, "image",
+        (Preview_Canvas, "image",
          Natural'Image(StartX) & Natural'Image(StartY) & " -image " & Image);
       configure
-        (PreviewCanvas,
+        (Preview_Canvas,
          "-width " & Width(Image) & " -height" & Natural'Image(ImageHeight));
    end Scale_Image;
 
    procedure Show_Preview is
       Button: Ttk_Button :=
         Get_Widget(".mainframe.toolbars.itemtoolbar.previewbutton");
-      Label: constant Ttk_Label := Get_Widget(PreviewFrame & ".title");
+      Label: constant Ttk_Label := Get_Widget(Preview_Frame & ".title");
       PathFrame: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned.previewframe.pathframe");
       Hunter_Show_Items_Exception: exception;
@@ -191,10 +191,10 @@ package body ShowItems is
          end;
       end if;
       SetActionsButtons;
-      Unautoscroll(PreviewXScroll);
-      Set(PreviewXScroll, "0.0", "1.0");
-      Unautoscroll(PreviewYScroll);
-      Set(PreviewYScroll, "0.0", "1.0");
+      Unautoscroll(Preview_X_Scroll);
+      Set(Preview_X_Scroll, "0.0", "1.0");
+      Unautoscroll(Preview_Y_Scroll);
+      Set(Preview_Y_Scroll, "0.0", "1.0");
       if Is_Directory(To_String(Current_Selected)) then
          if not Is_Read_Accessible_File(To_String(Current_Selected)) then
             Show_Message
@@ -203,26 +203,26 @@ package body ShowItems is
                   "{You don't have permissions to preview this directory.}"));
          end if;
          Load_Directory(To_String(Current_Selected), True);
-         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
-         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
-         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
-         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
-         Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
-         Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Y_Scroll);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
          configure
-           (PreviewYScroll, "-command [list " & PreviewTree & " yview]");
+           (Preview_Y_Scroll, "-command [list " & Preview_Tree & " yview]");
          configure
-           (PreviewXScroll, "-command [list " & PreviewTree & " xview]");
-         configure(PreviewTree, "-selectmode none");
-         Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
-         Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
+           (Preview_X_Scroll, "-command [list " & Preview_Tree & " xview]");
+         configure(Preview_Tree, "-selectmode none");
+         Tcl.Tk.Ada.Pack.Pack(Preview_X_Scroll, "-side bottom -fill x");
+         Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
-           (PreviewTree, "-side top -fill both -expand true");
+           (Preview_Tree, "-side top -fill both -expand true");
          Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
          Tcl_Eval(Get_Context, "update");
          Update_Directory_List(True, "preview");
-         Autoscroll(PreviewXScroll);
-         Autoscroll(PreviewYScroll);
+         Autoscroll(Preview_X_Scroll);
+         Autoscroll(Preview_Y_Scroll);
       else
          declare
             MimeType: constant String :=
@@ -261,7 +261,7 @@ package body ShowItems is
                            StartIndex := StartIndex + 2;
                         end loop Escape_Closing_Braces_Loop;
                         Insert
-                          (PreviewText, "end",
+                          (Preview_Text, "end",
                            "[subst -nocommands -novariables {" &
                            To_String(FileLine) & LF & "}]");
                      end loop Load_Simple_File;
@@ -291,19 +291,20 @@ package body ShowItems is
                      end loop Escape_Element_Loop;
                   end Escape_Element;
                begin
-                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
                   configure
-                    (PreviewYScroll,
-                     "-command [list " & PreviewText & " yview]");
-                  Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
+                    (Preview_Y_Scroll,
+                     "-command [list " & Preview_Text & " yview]");
                   Tcl.Tk.Ada.Pack.Pack
-                    (PreviewText, "-side top -fill both -expand true");
-                  configure(PreviewText, "-state normal");
-                  Delete(PreviewText, "1.0", "end");
+                    (Preview_Y_Scroll, "-side right -fill y");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Preview_Text, "-side top -fill both -expand true");
+                  configure(Preview_Text, "-state normal");
+                  Delete(Preview_Text, "1.0", "end");
                   if not Settings.Color_Text or ExecutableName = "" then
                      LoadFile;
                      goto Set_UI;
@@ -349,7 +350,7 @@ package body ShowItems is
                         exit Highlight_Text_Loop when StartIndex = 0;
                         if StartIndex > 1 then
                            Insert
-                             (PreviewText, "end",
+                             (Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
                               Slice(FileLine, 1, StartIndex - 1) & "}]");
                         end if;
@@ -362,7 +363,7 @@ package body ShowItems is
                              Unbounded_Slice
                                (TagText, StartColor + 12, StartColor + 18);
                            Tag_Configure
-                             (PreviewText, To_String(TagName),
+                             (Preview_Text, To_String(TagName),
                               "-foreground " & To_String(TagName));
                         elsif Index(TagText, "style=""italic""") > 0 then
                            TagName := To_Unbounded_String("italictag");
@@ -373,13 +374,13 @@ package body ShowItems is
                         EndIndex := Index(FileLine, "</span>", StartIndex) - 1;
                         if EndIndex > 0 then
                            Insert
-                             (PreviewText, "end",
+                             (Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
                               Slice(FileLine, StartIndex, EndIndex) &
                               "}] [list " & To_String(TagName) & "]");
                         else
                            Insert
-                             (PreviewText, "end",
+                             (Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
                               Slice(FileLine, StartIndex, Length(FileLine)) &
                               "}]");
@@ -390,18 +391,18 @@ package body ShowItems is
                             (FileLine, EndIndex + 8, Length(FileLine));
                      end loop Highlight_Text_Loop;
                      Insert
-                       (PreviewText, "end",
+                       (Preview_Text, "end",
                         "[subst -nocommands -novariables {" &
                         To_String(FileLine) & LF & "}]");
                   end loop Load_Highlight_File;
                   Close(File);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
                   <<Set_UI>>
-                  configure(PreviewText, "-state disabled");
+                  configure(Preview_Text, "-state disabled");
                   Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
                   Tcl_Eval(Get_Context, "update");
                end;
-               Autoscroll(PreviewYScroll);
+               Autoscroll(Preview_Y_Scroll);
             elsif MimeType(1 .. 5) = "image" then
                declare
                   Image: constant Tk_Photo :=
@@ -409,45 +410,45 @@ package body ShowItems is
                       ("previewimage", "-file " & To_String(Current_Selected));
                   StartX, StartY, ImageWidth, ImageHeight: Natural;
                begin
-                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
                   if Settings.Scale_Images then
-                     Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
-                     Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
+                     Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Y_Scroll);
+                     Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
                      Scale_Image;
                   else
-                     Delete(PreviewCanvas, "all");
+                     Delete(Preview_Canvas, "all");
                      ImageWidth := Natural'Value(Width(Image));
                      ImageHeight := Natural'Value(Height(Image));
                      if ImageHeight <
-                       Natural'Value(Winfo_Get(PreviewFrame, "height")) then
+                       Natural'Value(Winfo_Get(Preview_Frame, "height")) then
                         ImageHeight :=
-                          Natural'Value(Winfo_Get(PreviewFrame, "height"));
+                          Natural'Value(Winfo_Get(Preview_Frame, "height"));
                      end if;
                      StartX := ImageWidth / 2;
                      StartY := ImageHeight / 2;
                      Canvas_Create
-                       (PreviewCanvas, "image",
+                       (Preview_Canvas, "image",
                         Natural'Image(StartX) & Natural'Image(StartY) &
                         " -image " & Image);
                      configure
-                       (PreviewCanvas,
+                       (Preview_Canvas,
                         "-width " & Width(Image) & " -height" &
                         Natural'Image(ImageHeight) & " -scrollregion [list " &
-                        BBox(PreviewCanvas, "all") & "]");
+                        BBox(Preview_Canvas, "all") & "]");
                      configure
-                       (PreviewYScroll,
-                        "-command [list " & PreviewCanvas & " yview]");
+                       (Preview_Y_Scroll,
+                        "-command [list " & Preview_Canvas & " yview]");
                      configure
-                       (PreviewXScroll,
-                        "-command [list " & PreviewCanvas & " xview]");
+                       (Preview_X_Scroll,
+                        "-command [list " & Preview_Canvas & " xview]");
                      Tcl.Tk.Ada.Pack.Pack
-                       (PreviewXScroll, "-side bottom -fill x");
+                       (Preview_X_Scroll, "-side bottom -fill x");
                      Tcl.Tk.Ada.Pack.Pack
-                       (PreviewYScroll, "-side right -fill y");
+                       (Preview_Y_Scroll, "-side right -fill y");
                   end if;
-                  Tcl.Tk.Ada.Pack.Pack(PreviewCanvas, "-side top");
+                  Tcl.Tk.Ada.Pack.Pack(Preview_Canvas, "-side top");
                exception
                   when Tcl_Error_Exception =>
                      declare
@@ -469,8 +470,8 @@ package body ShowItems is
                end;
                Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
                Tcl_Eval(Get_Context, "update");
-               Autoscroll(PreviewXScroll);
-               Autoscroll(PreviewYScroll);
+               Autoscroll(Preview_X_Scroll);
+               Autoscroll(Preview_Y_Scroll);
             else
                declare
                   ActionButton: constant Ttk_RadioButton :=
@@ -497,7 +498,7 @@ package body ShowItems is
    -- SOURCE
    procedure Show_Info is
       -- ****
-      Label: Ttk_Label := Get_Widget(PreviewFrame & ".title");
+      Label: Ttk_Label := Get_Widget(Preview_Frame & ".title");
       SelectedItem: constant String := To_String(Current_Selected);
       Button: Ttk_Button;
       MimeType: constant String := Get_Mime_Type(SelectedItem);
@@ -505,15 +506,15 @@ package body ShowItems is
       PathFrame: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned.previewframe.pathframe");
    begin
-      Unautoscroll(PreviewXScroll);
-      Unautoscroll(PreviewYScroll);
+      Unautoscroll(Preview_X_Scroll);
+      Unautoscroll(Preview_Y_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
       Tcl_Eval(Get_Context, "update");
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewYScroll);
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Y_Scroll);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
       configure(Label, "-text {" & Mc(Get_Context, "{Information}") & "}");
       Button.Interp := Label.Interp;
       if
@@ -524,21 +525,21 @@ package body ShowItems is
            New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       end if;
-      Label.Name := New_String(InfoFrame & ".fullpathtext");
+      Label.Name := New_String(Info_Frame & ".fullpathtext");
       if not Is_Symbolic_Link(SelectedItem) then
          configure(Label, "-text {" & Mc(Get_Context, "{Full path:}") & "}");
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Links to:}") & "}");
       end if;
-      Label.Name := New_String(InfoFrame & ".fullpath");
+      Label.Name := New_String(Info_Frame & ".fullpath");
       configure(Label, "-text {" & Full_Name(SelectedItem) & "}");
-      Label.Name := New_String(InfoFrame & ".sizetext");
+      Label.Name := New_String(Info_Frame & ".sizetext");
       if Is_Directory(SelectedItem) then
          configure(Label, "-text {" & Mc(Get_Context, "{Elements:}") & "}");
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Size:}") & "}");
       end if;
-      Label.Name := New_String(InfoFrame & ".size");
+      Label.Name := New_String(Info_Frame & ".size");
       if Is_Directory(SelectedItem) then
          if Settings.Show_Hidden then
             configure
@@ -560,7 +561,7 @@ package body ShowItems is
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
       end if;
-      Label.Name := New_String(InfoFrame & ".lastmodified");
+      Label.Name := New_String(Info_Frame & ".lastmodified");
       if Is_Directory(SelectedItem) or Is_Regular_File(SelectedItem) then
          configure
            (Label,
@@ -572,27 +573,27 @@ package body ShowItems is
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
       end if;
-      Label.Name := New_String(InfoFrame & ".filetypetext");
+      Label.Name := New_String(Info_Frame & ".filetypetext");
       if Is_Directory(SelectedItem) or not Is_Regular_File(SelectedItem) then
          Tcl.Tk.Ada.Grid.Grid_Remove(Label);
-         Label.Name := New_String(InfoFrame & ".filetype");
+         Label.Name := New_String(Info_Frame & ".filetype");
          Tcl.Tk.Ada.Grid.Grid_Remove(Label);
       else
          Tcl.Tk.Ada.Grid.Grid(Label);
-         Label.Name := New_String(InfoFrame & ".filetype");
+         Label.Name := New_String(Info_Frame & ".filetype");
          configure
            (Label, "-text {" & Get_Mime_Type(Full_Name(SelectedItem)) & "}");
          Tcl.Tk.Ada.Grid.Grid(Label);
       end if;
-      Label.Name := New_String(InfoFrame & ".associatedprogramtext");
+      Label.Name := New_String(Info_Frame & ".associatedprogramtext");
       if not Is_Regular_File(SelectedItem) and
         not Is_Directory(SelectedItem) then
          Tcl.Tk.Ada.Grid.Grid_Remove(Label);
-         Button.Name := New_String(InfoFrame & ".associatedprogram");
+         Button.Name := New_String(Info_Frame & ".associatedprogram");
          Tcl.Tk.Ada.Grid.Grid_Remove(Button);
       else
          Tcl.Tk.Ada.Grid.Grid(Label);
-         Button.Name := New_String(InfoFrame & ".associatedprogram");
+         Button.Name := New_String(Info_Frame & ".associatedprogram");
          declare
             ProcessDesc: Process_Descriptor;
             Result: Expect_Match;
@@ -640,18 +641,18 @@ package body ShowItems is
          begin
             CheckButton.Interp := Get_Context;
             Set_Permission_Buttons_Loop :
-            for I in ButtonNames'Range loop
+            for I in Button_Names'Range loop
                CheckButton.Name :=
                  New_String
-                   (InfoFrame & "." & Name & "frame." &
-                    To_String(ButtonNames(I)));
+                   (Info_Frame & "." & Name & "frame." &
+                    To_String(Button_Names(I)));
                if I = 1 then
                   if Is_Directory(SelectedItem) then
                      Tcl.Tk.Ada.Pack.Pack_Forget(CheckButton);
                   else
                      Tcl.Tk.Ada.Pack.Pack
                        (CheckButton,
-                        "-before " & InfoFrame & "." & Name & "frame.read");
+                        "-before " & Info_Frame & "." & Name & "frame.read");
                   end if;
                end if;
                State(CheckButton, ButtonState);
@@ -692,15 +693,15 @@ package body ShowItems is
            To_Unbounded_String
              (Get_Command_Output("stat", Arguments, "", Status));
          Create(Tokens, To_String(Attributes), " ");
-         Label.Name := New_String(InfoFrame & ".grouptext");
+         Label.Name := New_String(Info_Frame & ".grouptext");
          configure(Label, "-text {" & Mc(Get_Context, "{Group}") & ":}");
-         Label.Name := New_String(InfoFrame & ".group");
+         Label.Name := New_String(Info_Frame & ".group");
          configure(Label, "-text {" & Slice(Tokens, 3) & "}");
-         Label.Name := New_String(InfoFrame & ".ownertext");
+         Label.Name := New_String(Info_Frame & ".ownertext");
          configure(Label, "-text {" & Mc(Get_Context, "{Owner}") & ":}");
-         Label.Name := New_String(InfoFrame & ".owner");
+         Label.Name := New_String(Info_Frame & ".owner");
          configure(Label, "-text {" & Slice(Tokens, 2) & "}");
-         Label.Name := New_String(InfoFrame & ".otherstext");
+         Label.Name := New_String(Info_Frame & ".otherstext");
          configure(Label, "-text {" & Mc(Get_Context, "{Others}") & ":}");
          if Value("USER") /= Slice(Tokens, 2) then
             SetPermissionsButtons
@@ -722,7 +723,7 @@ package body ShowItems is
               ("others", "!disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
          end if;
       end;
-      Tcl.Tk.Ada.Pack.Pack(InfoFrame);
+      Tcl.Tk.Ada.Pack.Pack(Info_Frame);
    end Show_Info;
 
    -- ****o* ShowItems/ShowItems.Show_Preview_Or_Info_Command
@@ -892,13 +893,13 @@ package body ShowItems is
       if Argc = 2 then
          SelectedItem := To_Unbounded_String(CArgv.Arg(Argv, 1));
       else
-         if Selection(PreviewTree) = "" then
+         if Selection(Preview_Tree) = "" then
             return TCL_OK;
          end if;
          SelectedItem :=
            Destination_Directory & "/" &
            To_Unbounded_String
-             (Set(PreviewTree, Selection(PreviewTree), "name"));
+             (Set(Preview_Tree, Selection(Preview_Tree), "name"));
          if not Is_Directory(To_String(SelectedItem)) then
             return TCL_OK;
          end if;
@@ -936,12 +937,12 @@ package body ShowItems is
          Tcl.Tk.Ada.Grid.Grid
            (Label, "-column 1 -row" & Positive'Image(Row) & " -sticky w");
          Set_Permission_Buttons_Loop :
-         for I in ButtonNames'Range loop
+         for I in Button_Names'Range loop
             CheckButton :=
               Create
-                (Frame & "." & To_String(ButtonNames(I)),
+                (Frame & "." & To_String(Button_Names(I)),
                  "-text {" & To_String(ButtonTexts(I)) & "} -variable " &
-                 Name & To_String(ButtonNames(I)) &
+                 Name & To_String(Button_Names(I)) &
                  " -command SetPermissions");
             Tcl.Tk.Ada.Pack.Pack(CheckButton, "-anchor w");
          end loop Set_Permission_Buttons_Loop;
@@ -949,80 +950,80 @@ package body ShowItems is
            (Frame, "-column 1 -row" & Positive'Image(Row + 1));
       end CreatePermissionsFrame;
    begin
-      PreviewFrame := Create(Paned & ".previewframe");
-      Label := Create(PreviewFrame & ".title");
+      Preview_Frame := Create(Paned & ".previewframe");
+      Label := Create(Preview_Frame & ".title");
       Tcl.Tk.Ada.Pack.Pack(Label);
-      PathButtonsFrame := Create(PreviewFrame & ".pathframe");
-      PreviewXScroll :=
+      PathButtonsFrame := Create(Preview_Frame & ".pathframe");
+      Preview_X_Scroll :=
         Create
-          (PreviewFrame & ".scrollx",
-           "-orient horizontal -command [list " & PreviewFrame &
+          (Preview_Frame & ".scrollx",
+           "-orient horizontal -command [list " & Preview_Frame &
            ".directorytree xview]");
-      PreviewYScroll :=
+      Preview_Y_Scroll :=
         Create
-          (PreviewFrame & ".scrolly",
-           "-orient vertical -command [list " & PreviewFrame &
+          (Preview_Frame & ".scrolly",
+           "-orient vertical -command [list " & Preview_Frame &
            ".directorytree yview]");
-      PreviewTree :=
+      Preview_Tree :=
         Create
-          (PreviewFrame & ".directorytree",
-           "-columns [list name] -xscrollcommand {" & PreviewXScroll &
-           " set} -yscrollcommand {" & PreviewYScroll &
+          (Preview_Frame & ".directorytree",
+           "-columns [list name] -xscrollcommand {" & Preview_X_Scroll &
+           " set} -yscrollcommand {" & Preview_Y_Scroll &
            " set} -selectmode none ");
       Heading
-        (PreviewTree, "name",
+        (Preview_Tree, "name",
          "-text {" & Mc(Get_Context, "{Name}") &
          "} -image {arrow-down} -command {Sort previewname}");
-      Column(PreviewTree, "#0", "-stretch false -width 50");
-      Tag_Bind(PreviewTree, "itemrow", "<Double-1>", "GoToDirectory");
-      Bind(PreviewTree, "<Return>", "GoToDirectory");
-      PreviewText :=
+      Column(Preview_Tree, "#0", "-stretch false -width 50");
+      Tag_Bind(Preview_Tree, "itemrow", "<Double-1>", "GoToDirectory");
+      Bind(Preview_Tree, "<Return>", "GoToDirectory");
+      Preview_Text :=
         Create
-          (PreviewFrame & ".previewtext",
-           "-wrap char -yscrollcommand {" & PreviewYScroll & " set} -font " &
+          (Preview_Frame & ".previewtext",
+           "-wrap char -yscrollcommand {" & Preview_Y_Scroll & " set} -font " &
            Font);
-      Tag_Configure(PreviewText, "boldtag", "-font bold");
-      Tag_Configure(PreviewText, "italictag", "-font italic");
-      PreviewCanvas :=
+      Tag_Configure(Preview_Text, "boldtag", "-font bold");
+      Tag_Configure(Preview_Text, "italictag", "-font italic");
+      Preview_Canvas :=
         Create
-          (PreviewFrame & ".previewcanvas",
-           "-xscrollcommand {" & PreviewXScroll & " set} -yscrollcommand {" &
-           PreviewYScroll & " set}");
-      InfoFrame := Create(PreviewFrame & ".infoframe");
-      Label := Create(InfoFrame & ".fullpathtext");
+          (Preview_Frame & ".previewcanvas",
+           "-xscrollcommand {" & Preview_X_Scroll & " set} -yscrollcommand {" &
+           Preview_Y_Scroll & " set}");
+      Info_Frame := Create(Preview_Frame & ".infoframe");
+      Label := Create(Info_Frame & ".fullpathtext");
       Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
       Label :=
         Create
-          (InfoFrame & ".fullpath",
+          (Info_Frame & ".fullpath",
            "-wraplength " &
            Natural'Image(Natural'Value(Winfo_Get(Paned, "width")) / 3));
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 0 -sticky w");
-      Label := Create(InfoFrame & ".sizetext");
+      Label := Create(Info_Frame & ".sizetext");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 1 -sticky w");
-      Label := Create(InfoFrame & ".size");
+      Label := Create(Info_Frame & ".size");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 1 -sticky w");
       Label :=
         Create
-          (InfoFrame & ".lastmodifiedtext",
+          (Info_Frame & ".lastmodifiedtext",
            "-text {" & Mc(Get_Context, "{Last modified:}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 2 -sticky w");
-      Label := Create(InfoFrame & ".lastmodified");
+      Label := Create(Info_Frame & ".lastmodified");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 2 -sticky w");
       Label :=
         Create
-          (InfoFrame & ".filetypetext",
+          (Info_Frame & ".filetypetext",
            "-text {" & Mc(Get_Context, "{File type:}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 3 -sticky w");
-      Label := Create(InfoFrame & ".filetype");
+      Label := Create(Info_Frame & ".filetype");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 3 -sticky w");
       Label :=
         Create
-          (InfoFrame & ".associatedprogramtext",
+          (Info_Frame & ".associatedprogramtext",
            "-text {" & Mc(Get_Context, "{Associated program:}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 4 -sticky w");
       Button :=
         Create
-          (InfoFrame & ".associatedprogram",
+          (Info_Frame & ".associatedprogram",
            "-command ToggleApplicationsMenu");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4 -sticky w");
       CreatePermissionsFrame("owner", 5);
@@ -1038,38 +1039,41 @@ package body ShowItems is
            (Get_Context,
             "{Select new associated program with that type of file or directory.}"));
       if Settings.Show_Preview then
-         Add(Paned, PreviewFrame, "-weight 20");
+         Add(Paned, Preview_Frame, "-weight 20");
       end if;
       CreateProgramsMenuUI;
    end Create_Show_Items_Ui;
 
    procedure Show_Destination is
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
-      Frame: Ttk_Frame := Get_Widget(PreviewFrame & ".pathframe");
+      Frame: Ttk_Frame := Get_Widget(Preview_Frame & ".pathframe");
    begin
       if not Settings.Show_Preview then
-         Add(Paned, PreviewFrame, "-weight 20");
+         Add(Paned, Preview_Frame, "-weight 20");
       end if;
-      Unautoscroll(PreviewXScroll);
-      Unautoscroll(PreviewYScroll);
-      Tcl.Tk.Ada.Pack.Pack(Frame, "-after " & PreviewFrame & ".title -fill x");
-      configure(PreviewXScroll, "-command [list " & PreviewTree & " xview]");
-      Tcl.Tk.Ada.Pack.Pack(PreviewXScroll, "-side bottom -fill x");
-      configure(PreviewYScroll, "-command [list " & PreviewTree & " yview]");
-      Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
-      configure(PreviewTree, "-selectmode browse");
-      Tcl.Tk.Ada.Pack.Pack(PreviewTree, "-side top -fill both -expand true");
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewText);
-      Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
-      Frame.Name := New_String(PreviewFrame & ".title");
+      Unautoscroll(Preview_X_Scroll);
+      Unautoscroll(Preview_Y_Scroll);
+      Tcl.Tk.Ada.Pack.Pack
+        (Frame, "-after " & Preview_Frame & ".title -fill x");
+      configure
+        (Preview_X_Scroll, "-command [list " & Preview_Tree & " xview]");
+      Tcl.Tk.Ada.Pack.Pack(Preview_X_Scroll, "-side bottom -fill x");
+      configure
+        (Preview_Y_Scroll, "-command [list " & Preview_Tree & " yview]");
+      Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
+      configure(Preview_Tree, "-selectmode browse");
+      Tcl.Tk.Ada.Pack.Pack(Preview_Tree, "-side top -fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
+      Frame.Name := New_String(Preview_Frame & ".title");
       configure
         (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
       Destination_Directory := Common.Current_Directory;
       Load_Directory(To_String(Destination_Directory), True);
       Update_Directory_List(True, "preview");
-      Autoscroll(PreviewXScroll);
-      Autoscroll(PreviewYScroll);
+      Autoscroll(Preview_X_Scroll);
+      Autoscroll(Preview_Y_Scroll);
    end Show_Destination;
 
    procedure Show_Output is
@@ -1078,29 +1082,30 @@ package body ShowItems is
    begin
       Frame.Interp := Get_Context;
       if not Settings.Show_Preview then
-         Add(Paned, PreviewFrame, "-weight 20");
+         Add(Paned, Preview_Frame, "-weight 20");
       end if;
-      Unautoscroll(PreviewYScroll);
-      configure(PreviewYScroll, "-command [list " & PreviewText & " yview]");
-      Tcl.Tk.Ada.Pack.Pack(PreviewYScroll, "-side right -fill y");
-      Tcl.Tk.Ada.Pack.Pack(PreviewText, "-side top -fill both -expand true");
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewXScroll);
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewCanvas);
-      Tcl.Tk.Ada.Pack.Pack_Forget(PreviewTree);
-      Tcl.Tk.Ada.Pack.Pack_Forget(InfoFrame);
-      Frame.Name := New_String(PreviewFrame & ".title");
+      Unautoscroll(Preview_Y_Scroll);
+      configure
+        (Preview_Y_Scroll, "-command [list " & Preview_Text & " yview]");
+      Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack(Preview_Text, "-side top -fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
+      Frame.Name := New_String(Preview_Frame & ".title");
       configure(Frame, "-text {" & Mc(Get_Context, "{Command output}") & "}");
-      configure(PreviewText, "-state normal");
-      Delete(PreviewText, "1.0", "end");
-      configure(PreviewText, "-state disabled");
-      Autoscroll(PreviewYScroll);
+      configure(Preview_Text, "-state normal");
+      Delete(Preview_Text, "1.0", "end");
+      configure(Preview_Text, "-state disabled");
+      Autoscroll(Preview_Y_Scroll);
    end Show_Output;
 
    procedure Update_Output(Text: String) is
    begin
-      configure(PreviewText, "-state normal");
-      Insert(PreviewText, "end", "{" & Text & "}");
-      configure(PreviewText, "-state disabled");
+      configure(Preview_Text, "-state normal");
+      Insert(Preview_Text, "end", "{" & Text & "}");
+      configure(Preview_Text, "-state disabled");
       Tcl_Eval(Get_Context, "update");
    end Update_Output;
 
