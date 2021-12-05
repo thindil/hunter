@@ -923,7 +923,6 @@ package body ShowItems is
          else
             PermissionsString := To_Unbounded_String(Group & "-" & Permission);
          end if;
-         Ada.Text_IO.Put_Line(Standard_Error, "here");
          Tcl.Ada.Tcl_Eval
            (Interpreter,
             "file attributes {" & SelectedItem & "} -permissions " &
