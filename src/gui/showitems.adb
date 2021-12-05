@@ -129,7 +129,7 @@ package body ShowItems is
       FrameWidth, FrameHeight, ImageWidth, ImageHeight, StartX,
       StartY: Natural;
       ScaleMode: Unbounded_String := To_Unbounded_String("-subsample");
-      Scale: Natural;
+      Scale: Natural := 0;
    begin
       Delete(Preview_Canvas, "all");
       ImageWidth := Natural'Value(Width(Image));
