@@ -916,17 +916,15 @@ package body ShowItems is
         (if Info_Form /= Null_Form then Get_Index(Current(Info_Form)) else 0);
       SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       procedure Set_Permission(Group, Permission: String) is
-         PermissionsString: Unbounded_String;
+         PermissionsString: constant String :=
+           (if Get_Buffer(Current(Info_Form))(1 .. 5) = "Can't" then
+              Group & "+" & Permission
+            else Group & "-" & Permission);
       begin
-         if Get_Buffer(Current(Info_Form))(1 .. 5) = "Can't" then
-            PermissionsString := To_Unbounded_String(Group & "+" & Permission);
-         else
-            PermissionsString := To_Unbounded_String(Group & "-" & Permission);
-         end if;
          Tcl.Ada.Tcl_Eval
            (Interpreter,
             "file attributes {" & SelectedItem & "} -permissions " &
-            To_String(PermissionsString));
+            PermissionsString);
       end Set_Permission;
    begin
       if FieldIndex = 0 then
