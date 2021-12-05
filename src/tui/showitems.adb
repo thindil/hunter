@@ -364,7 +364,7 @@ package body ShowItems is
          PreviewPad :=
            New_Pad
              (Line_Position(Second_Items_List.Length) + 1, (Columns / 2) - 1);
-         Add(PreviewPad, 0, Columns / 4, "Name");
+         Add(PreviewPad, 0, Columns / 4, Mc(Interpreter, "Name"));
          Load_Preview_Directory_Loop :
          for Item of Second_Items_List loop
             if not Settings.Show_Hidden and Item.Is_Hidden then
