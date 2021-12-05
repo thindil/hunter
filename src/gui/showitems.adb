@@ -118,8 +118,8 @@ package body ShowItems is
    -- Names of the permissions buttons
    -- SOURCE
    Button_Names: constant array(1 .. 3) of Unbounded_String :=
-     (To_Unbounded_String("execute"), To_Unbounded_String("read"),
-      To_Unbounded_String("write"));
+     (1 => To_Unbounded_String(Source => "execute"), 2 => To_Unbounded_String(Source => "read"),
+      3 => To_Unbounded_String(Source => "write"));
    -- ****
 
    procedure Scale_Image is
