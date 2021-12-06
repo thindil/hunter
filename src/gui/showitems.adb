@@ -123,7 +123,7 @@ package body ShowItems is
    -- ****
 
    procedure Scale_Image is
-      Image: constant Tk_Photo :=
+      Image_To_Scale: constant Tk_Photo :=
         Create("previewimage", "-file " & To_String(Current_Selected));
       TempImage: Tk_Photo := Create("tempimage");
       FrameWidth, FrameHeight, ImageWidth, ImageHeight, StartX,
@@ -132,10 +132,10 @@ package body ShowItems is
       Scale: Natural := 0;
    begin
       Delete(Preview_Canvas, "all");
-      ImageWidth := Natural'Value(Width(Image));
-      ImageHeight := Natural'Value(Height(Image));
-      Copy(Image, TempImage);
-      Blank(Image);
+      ImageWidth := Natural'Value(Width(Image_To_Scale));
+      ImageHeight := Natural'Value(Height(Image_To_Scale));
+      Copy(Image_To_Scale, TempImage);
+      Blank(Image_To_Scale);
       FrameHeight := Natural'Value(Winfo_Get(Preview_Frame, "height"));
       FrameWidth := Natural'Value(Winfo_Get(Preview_Frame, "width"));
       if ImageWidth > FrameWidth or ImageHeight > FrameHeight then
@@ -152,11 +152,11 @@ package body ShowItems is
             else FrameHeight / ImageHeight);
       end if;
       Copy
-        (TempImage, Image,
+        (TempImage, Image_To_Scale,
          "-shrink " & To_String(ScaleMode) & Natural'Image(Scale));
       Delete(TempImage);
-      ImageWidth := Natural'Value(Width(Image));
-      ImageHeight := Natural'Value(Height(Image));
+      ImageWidth := Natural'Value(Width(Image_To_Scale));
+      ImageHeight := Natural'Value(Height(Image_To_Scale));
       if ImageHeight < FrameHeight then
          ImageHeight := FrameHeight;
       end if;
@@ -164,10 +164,10 @@ package body ShowItems is
       StartY := ImageHeight / 2;
       Canvas_Create
         (Preview_Canvas, "image",
-         Natural'Image(StartX) & Natural'Image(StartY) & " -image " & Image);
+         Natural'Image(StartX) & Natural'Image(StartY) & " -image " & Image_To_Scale);
       configure
         (Preview_Canvas,
-         "-width " & Width(Image) & " -height" & Natural'Image(ImageHeight));
+         "-width " & Width(Image_To_Scale) & " -height" & Natural'Image(ImageHeight));
    end Scale_Image;
 
    procedure Show_Preview is
