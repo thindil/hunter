@@ -53,7 +53,12 @@ package body ShowItems is
    PreviewPad: Window;
    -- ****
 
+   -- ****iv* ShowItemsTUI/ShowItemsTUI.FormWindow
+   -- FUNCTION
+   -- Window used to store content of the permissions of the selected item
+   -- SOURCE
    FormWindow: Window;
+   -- ****
 
    procedure ShowInfo is
       SelectedItem: constant String := To_String(Current_Selected);
