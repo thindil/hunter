@@ -19,6 +19,7 @@ with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C;
 with GNAT.Expect; use GNAT.Expect;
@@ -937,14 +938,23 @@ package body ShowItems is
       SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       procedure Set_Permission(Group, Permission: String) is
          PermissionsString: constant String :=
-           (if Get_Buffer(Current(Info_Form))(1 .. 5) = "Can't" then
-              Group & "+" & Permission
-            else Group & "-" & Permission);
+           To_String(Source => Get_Item_Status(SelectedItem));
+         Sign: Character := '+';
       begin
+         if Group = "u"
+           and then Index(PermissionsString(1 .. 3), Permission) > 0 then
+            Sign := '-';
+         elsif Group = "g"
+           and then Index(PermissionsString(4 .. 6), Permission) > 0 then
+            Sign := '-';
+         elsif Group = "o"
+           and then Index(PermissionsString(7 .. 9), Permission) > 0 then
+            Sign := '-';
+         end if;
          Tcl.Ada.Tcl_Eval
            (Interpreter,
-            "file attributes {" & SelectedItem & "} -permissions " &
-            PermissionsString);
+            "file attributes {" & SelectedItem & "} -permissions " & Group &
+            Sign & Permission);
       end Set_Permission;
    begin
       if FieldIndex = 0 then
