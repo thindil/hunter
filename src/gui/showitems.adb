@@ -118,56 +118,62 @@ package body ShowItems is
    -- Names of the permissions buttons
    -- SOURCE
    Button_Names: constant array(1 .. 3) of Unbounded_String :=
-     (1 => To_Unbounded_String(Source => "execute"), 2 => To_Unbounded_String(Source => "read"),
+     (1 => To_Unbounded_String(Source => "execute"),
+      2 => To_Unbounded_String(Source => "read"),
       3 => To_Unbounded_String(Source => "write"));
    -- ****
 
    procedure Scale_Image is
       Image_To_Scale: constant Tk_Photo :=
-        Create("previewimage", "-file " & To_String(Current_Selected));
-      TempImage: Tk_Photo := Create("tempimage");
-      FrameWidth, FrameHeight, ImageWidth, ImageHeight, StartX,
-      StartY: Natural;
-      ScaleMode: Unbounded_String := To_Unbounded_String("-subsample");
+        Create
+          (pathName => "previewimage",
+           options => "-file " & To_String(Source => Current_Selected));
+      Temp_Image: Tk_Photo := Create(pathName => "tempimage");
+      Frame_Width, Frame_Height, Image_Width, Image_Height, Start_X,
+      Start_Y: Natural;
+      Scale_Mode: Unbounded_String :=
+        To_Unbounded_String(Source => "-subsample");
       Scale: Natural := 0;
    begin
-      Delete(Preview_Canvas, "all");
-      ImageWidth := Natural'Value(Width(Image_To_Scale));
-      ImageHeight := Natural'Value(Height(Image_To_Scale));
-      Copy(Image_To_Scale, TempImage);
-      Blank(Image_To_Scale);
-      FrameHeight := Natural'Value(Winfo_Get(Preview_Frame, "height"));
-      FrameWidth := Natural'Value(Winfo_Get(Preview_Frame, "width"));
-      if ImageWidth > FrameWidth or ImageHeight > FrameHeight then
+      Delete(CanvasWidget => Preview_Canvas, TagOrId => "all");
+      Image_Width := Natural'Value(Width(Img => Image_To_Scale));
+      Image_Height := Natural'Value(Height(Img => Image_To_Scale));
+      Copy(Source => Image_To_Scale, Target => Temp_Image);
+      Blank(Image => Image_To_Scale);
+      Frame_Height := Natural'Value(Winfo_Get(Preview_Frame, "height"));
+      Frame_Width := Natural'Value(Winfo_Get(Preview_Frame, "width"));
+      if Image_Width > Frame_Width or Image_Height > Frame_Height then
          Scale :=
-           (if ImageWidth / FrameWidth > ImageHeight / FrameHeight then
-              ImageWidth / FrameWidth
-            else ImageHeight / FrameHeight);
+           (if Image_Width / Frame_Width > Image_Height / Frame_Height then
+              Image_Width / Frame_Width
+            else Image_Height / Frame_Height);
          Scale := Scale + 1;
-      elsif FrameWidth > ImageWidth or FrameHeight > ImageHeight then
-         ScaleMode := To_Unbounded_String("-zoom");
+      elsif Frame_Width > Image_Width or Frame_Height > Image_Height then
+         Scale_Mode := To_Unbounded_String("-zoom");
          Scale :=
-           (if FrameWidth / ImageWidth > FrameHeight / ImageHeight then
-              FrameWidth / ImageWidth
-            else FrameHeight / ImageHeight);
+           (if Frame_Width / Image_Width > Frame_Height / Image_Height then
+              Frame_Width / Image_Width
+            else Frame_Height / Image_Height);
       end if;
       Copy
-        (TempImage, Image_To_Scale,
-         "-shrink " & To_String(ScaleMode) & Natural'Image(Scale));
-      Delete(TempImage);
-      ImageWidth := Natural'Value(Width(Image_To_Scale));
-      ImageHeight := Natural'Value(Height(Image_To_Scale));
-      if ImageHeight < FrameHeight then
-         ImageHeight := FrameHeight;
+        (Temp_Image, Image_To_Scale,
+         "-shrink " & To_String(Scale_Mode) & Natural'Image(Scale));
+      Delete(Temp_Image);
+      Image_Width := Natural'Value(Width(Image_To_Scale));
+      Image_Height := Natural'Value(Height(Image_To_Scale));
+      if Image_Height < Frame_Height then
+         Image_Height := Frame_Height;
       end if;
-      StartX := ImageWidth / 2;
-      StartY := ImageHeight / 2;
+      Start_X := Image_Width / 2;
+      Start_Y := Image_Height / 2;
       Canvas_Create
         (Preview_Canvas, "image",
-         Natural'Image(StartX) & Natural'Image(StartY) & " -image " & Image_To_Scale);
+         Natural'Image(Start_X) & Natural'Image(Start_Y) & " -image " &
+         Image_To_Scale);
       configure
         (Preview_Canvas,
-         "-width " & Width(Image_To_Scale) & " -height" & Natural'Image(ImageHeight));
+         "-width " & Width(Image_To_Scale) & " -height" &
+         Natural'Image(Image_Height));
    end Scale_Image;
 
    procedure Show_Preview is
