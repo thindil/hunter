@@ -60,6 +60,27 @@ package body ShowItems is
    FormWindow: Window;
    -- ****
 
+   -- ****if* ShowItemsTUI/ShowItemsTUI.Get_Item_Status
+   -- FUNCTION
+   -- Get information about permissions, owner and group for the selected
+   -- file or directory
+   -- PARAMETERS
+   -- File_Name - Name of the file or directory which information will be get
+   -- RESULT
+   -- Unbounded_String with information about permissions, owner and group of
+   -- the selected file or directory
+   -- SOURCE
+   function Get_Item_Status(File_Name: String) return Unbounded_String is
+      -- ****
+      type Integer_Access is access Integer;
+      Status: constant Integer_Access := new Integer;
+      Arguments: constant Argument_List :=
+        (new String'("-c%a %U %G"), new String'(File_Name));
+   begin
+      return
+        To_Unbounded_String(Get_Command_Output("stat", Arguments, "", Status));
+   end Get_Item_Status;
+
    procedure ShowInfo is
       SelectedItem: constant String := To_String(Current_Selected);
       DirectorySize: Natural := 0;
@@ -131,10 +152,6 @@ package body ShowItems is
       declare
          Attributes: Unbounded_String;
          Tokens: Slice_Set;
-         type Integer_Access is access Integer;
-         Status: constant Integer_Access := new Integer;
-         Arguments: constant Argument_List :=
-           (new String'("-c%a %U %G"), new String'(SelectedItem));
          Permissions_Fields: constant Field_Array_Access :=
            (if Is_Directory(SelectedItem) then new Field_Array(1 .. 12)
             else new Field_Array(1 .. 15));
@@ -205,9 +222,7 @@ package body ShowItems is
             end if;
          end SetPermissionsButtons;
       begin
-         Attributes :=
-           To_Unbounded_String
-             (Get_Command_Output("stat", Arguments, "", Status));
+         Attributes := Get_Item_Status(SelectedItem);
          Create(Tokens, To_String(Attributes), " ");
          Permissions_Fields.all(1) := New_Field(1, 30, 0, 0, 0, 0);
          FieldOptions := Get_Options(Permissions_Fields.all(1));
