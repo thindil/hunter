@@ -67,16 +67,17 @@ package body ShowItems is
    -- file or directory
    -- PARAMETERS
    -- File_Name - Name of the file or directory which information will be get
+   -- Args      - The list of arguments which will be passed to stat
    -- RESULT
    -- Unbounded_String with information about permissions, owner and group of
    -- the selected file or directory
    -- SOURCE
-   function Get_Item_Status(File_Name: String) return Unbounded_String is
+   function Get_Item_Status(File_Name, Args: String) return Unbounded_String is
       -- ****
       type Integer_Access is access Integer;
       Status: constant Integer_Access := new Integer;
       Arguments: constant Argument_List :=
-        (new String'("-c%a %U %G"), new String'(File_Name));
+        (new String'(Args), new String'(File_Name));
    begin
       return
         To_Unbounded_String(Get_Command_Output("stat", Arguments, "", Status));
@@ -223,7 +224,7 @@ package body ShowItems is
             end if;
          end SetPermissionsButtons;
       begin
-         Attributes := Get_Item_Status(SelectedItem);
+         Attributes := Get_Item_Status(SelectedItem, "-c%a %U %G");
          Create(Tokens, To_String(Attributes), " ");
          Permissions_Fields.all(1) := New_Field(1, 30, 0, 0, 0, 0);
          FieldOptions := Get_Options(Permissions_Fields.all(1));
@@ -938,7 +939,7 @@ package body ShowItems is
       SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       procedure Set_Permission(Group, Permission: String) is
          PermissionsString: constant String :=
-           To_String(Source => Get_Item_Status(SelectedItem));
+           To_String(Source => Get_Item_Status(SelectedItem, "-c%A"));
          Sign: Character := '+';
       begin
          if Group = "u"
