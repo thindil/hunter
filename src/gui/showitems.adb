@@ -140,14 +140,16 @@ package body ShowItems is
       Image_Height := Natural'Value(Height(Img => Image_To_Scale));
       Copy(Source => Image_To_Scale, Target => Temp_Image);
       Blank(Image => Image_To_Scale);
-      Frame_Height := Natural'Value(Winfo_Get(Widgt => Preview_Frame, Info => "height"));
-      Frame_Width := Natural'Value(Winfo_Get(Widgt => Preview_Frame, Info => "width"));
+      Frame_Height :=
+        Natural'Value(Winfo_Get(Widgt => Preview_Frame, Info => "height"));
+      Frame_Width :=
+        Natural'Value(Winfo_Get(Widgt => Preview_Frame, Info => "width"));
       if Image_Width > Frame_Width or Image_Height > Frame_Height then
          Scale :=
            (if Image_Width / Frame_Width > Image_Height / Frame_Height then
               Image_Width / Frame_Width
-            else Image_Height / Frame_Height);
-         Scale := Scale + 1;
+            else Image_Height / Frame_Height) +
+           1;
       elsif Frame_Width > Image_Width or Frame_Height > Image_Height then
          Scale_Mode := To_Unbounded_String("-zoom");
          Scale :=
