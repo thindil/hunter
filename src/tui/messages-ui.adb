@@ -48,8 +48,12 @@ package body Messages.UI is
    begin
       Set_Cursor_Visibility(Visibility);
       if Message_Type /= "question" then
-         Buttons_Fields.all(1) := New_Field(1, 7, (FormHeight - 1), 7, 0, 0);
-         Set_Buffer(Buttons_Fields.all(1), 0, "[Close]");
+         Buttons_Fields.all(1) :=
+           New_Field
+             (1, Column_Position'Value(Mc_Max("{Close}", Interpreter)) + 2,
+              (FormHeight - 1), 7, 0, 0);
+         Set_Buffer
+           (Buttons_Fields.all(1), 0, "[" & Mc(Interpreter, "Close") & "]");
          FieldOptions := Get_Options(Buttons_Fields.all(1));
          FieldOptions.Edit := False;
          Set_Options(Buttons_Fields.all(1), FieldOptions);
@@ -78,14 +82,26 @@ package body Messages.UI is
             Buttons_Fields.all(4) := Null_Field;
          else
             Buttons_Fields.all(3) :=
-              New_Field(1, 13, (FormHeight - 1), 1, 0, 0);
-            Set_Buffer(Buttons_Fields.all(3), 0, "[Yes for all]");
+              New_Field
+                (1,
+                 Column_Position'Value(Mc_Max("{Yes for all}", Interpreter)) +
+                 2,
+                 (FormHeight - 1), 1, 0, 0);
+            Set_Buffer
+              (Buttons_Fields.all(3), 0,
+               "[" & Mc(Interpreter, "{Yes for all}") & "]");
             FieldOptions := Get_Options(Buttons_Fields.all(3));
             FieldOptions.Edit := False;
             Set_Options(Buttons_Fields.all(3), FieldOptions);
             Buttons_Fields.all(4) :=
-              New_Field(1, 12, (FormHeight - 1), 15, 0, 0);
-            Set_Buffer(Buttons_Fields.all(4), 0, "[No for all]");
+              New_Field
+                (1,
+                 Column_Position'Value(Mc_Max("{No for all}", Interpreter)) +
+                 2,
+                 (FormHeight - 1), 15, 0, 0);
+            Set_Buffer
+              (Buttons_Fields.all(4), 0,
+               "[" & Mc(Interpreter, "{No for all}") & "]");
             FieldOptions := Get_Options(Buttons_Fields.all(4));
             FieldOptions.Edit := False;
             Set_Options(Buttons_Fields.all(4), FieldOptions);
@@ -156,15 +172,16 @@ package body Messages.UI is
             Post(DialogForm, False);
             Delete(DialogForm);
             UILocation := DIRECTORY_VIEW;
-            if Option in "[Close]" | "[No for all]" then
+            if Option in "[" & Mc(Interpreter, "Close") & "]" |
+                  "[" & Mc(Interpreter, "{No for all}") & "]" then
                New_Action := CREATEFILE;
                CreateProgramMenu(True);
                Update_Directory_List(True);
                Show_Preview;
                return DIRECTORY_VIEW;
-            elsif Option = "[Yes for all]" then
+            elsif Option = "[" & Mc(Interpreter, "{Yes for all}") & "]" then
                Yes_For_All := True;
-            elsif Option = "[No]" then
+            elsif Option = "[" & Mc(Interpreter, "No") & "]" then
                if New_Action = COPY then
                   if SkipCopying = DIRECTORY_VIEW then
                      New_Action := CREATEFILE;
