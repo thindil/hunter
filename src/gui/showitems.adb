@@ -71,6 +71,18 @@ package body ShowItems is
    Preview_Frame: Ttk_Frame;
    -- ****
 
+   -- ****if* ShowItems/ShowItems.Get_Preview_Frame
+   -- FUNCTION
+   -- Get the main Ttk_Frame for preview items
+   -- RESULT
+   -- The main Ttk_Frame for preview items
+   -- SOURCE
+   function Get_Preview_Frame return Ttk_Frame is
+      -- ****
+   begin
+      return Preview_Frame;
+   end Get_Preview_Frame;
+
    -- ****iv* ShowItems/ShowItems.Preview_X_Scroll
    -- FUNCTION
    -- X coordinates scrollbar for previews
@@ -141,9 +153,9 @@ package body ShowItems is
       Copy(Source => Image_To_Scale, Target => Temp_Image);
       Blank(Image => Image_To_Scale);
       Frame_Height :=
-        Natural'Value(Winfo_Get(Widgt => Preview_Frame, Info => "height"));
+        Natural'Value(Winfo_Get(Widgt => Get_Preview_Frame, Info => "height"));
       Frame_Width :=
-        Natural'Value(Winfo_Get(Widgt => Preview_Frame, Info => "width"));
+        Natural'Value(Winfo_Get(Widgt => Get_Preview_Frame, Info => "width"));
       if Image_Width > Frame_Width or Image_Height > Frame_Height then
          Scale :=
            (if Image_Width / Frame_Width > Image_Height / Frame_Height then
@@ -181,7 +193,7 @@ package body ShowItems is
    procedure Show_Preview is
       Button: Ttk_Button :=
         Get_Widget(pathName =>  ".mainframe.toolbars.itemtoolbar.previewbutton");
-      Label: constant Ttk_Label := Get_Widget(pathName => Preview_Frame & ".title");
+      Label: constant Ttk_Label := Get_Widget(pathName => Get_Preview_Frame & ".title");
       PathFrame: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned.previewframe.pathframe");
       Hunter_Show_Items_Exception: exception;
@@ -430,9 +442,9 @@ package body ShowItems is
                      ImageWidth := Natural'Value(Width(Image));
                      ImageHeight := Natural'Value(Height(Image));
                      if ImageHeight <
-                       Natural'Value(Winfo_Get(Preview_Frame, "height")) then
+                       Natural'Value(Winfo_Get(Get_Preview_Frame, "height")) then
                         ImageHeight :=
-                          Natural'Value(Winfo_Get(Preview_Frame, "height"));
+                          Natural'Value(Winfo_Get(Get_Preview_Frame, "height"));
                      end if;
                      StartX := ImageWidth / 2;
                      StartY := ImageHeight / 2;
@@ -506,7 +518,7 @@ package body ShowItems is
    -- SOURCE
    procedure Show_Info is
       -- ****
-      Label: Ttk_Label := Get_Widget(Preview_Frame & ".title");
+      Label: Ttk_Label := Get_Widget(Get_Preview_Frame & ".title");
       SelectedItem: constant String := To_String(Current_Selected);
       Button: Ttk_Button;
       MimeType: constant String := Get_Mime_Type(SelectedItem);
@@ -959,22 +971,22 @@ package body ShowItems is
       end CreatePermissionsFrame;
    begin
       Preview_Frame := Create(Paned & ".previewframe");
-      Label := Create(Preview_Frame & ".title");
+      Label := Create(Get_Preview_Frame & ".title");
       Tcl.Tk.Ada.Pack.Pack(Label);
-      PathButtonsFrame := Create(Preview_Frame & ".pathframe");
+      PathButtonsFrame := Create(Get_Preview_Frame & ".pathframe");
       Preview_X_Scroll :=
         Create
-          (Preview_Frame & ".scrollx",
-           "-orient horizontal -command [list " & Preview_Frame &
+          (Get_Preview_Frame & ".scrollx",
+           "-orient horizontal -command [list " & Get_Preview_Frame &
            ".directorytree xview]");
       Preview_Y_Scroll :=
         Create
-          (Preview_Frame & ".scrolly",
-           "-orient vertical -command [list " & Preview_Frame &
+          (Get_Preview_Frame & ".scrolly",
+           "-orient vertical -command [list " & Get_Preview_Frame &
            ".directorytree yview]");
       Preview_Tree :=
         Create
-          (Preview_Frame & ".directorytree",
+          (Get_Preview_Frame & ".directorytree",
            "-columns [list name] -xscrollcommand {" & Preview_X_Scroll &
            " set} -yscrollcommand {" & Preview_Y_Scroll &
            " set} -selectmode none ");
@@ -987,17 +999,17 @@ package body ShowItems is
       Bind(Preview_Tree, "<Return>", "GoToDirectory");
       Preview_Text :=
         Create
-          (Preview_Frame & ".previewtext",
+          (Get_Preview_Frame & ".previewtext",
            "-wrap char -yscrollcommand {" & Preview_Y_Scroll & " set} -font " &
            Font);
       Tag_Configure(Preview_Text, "boldtag", "-font bold");
       Tag_Configure(Preview_Text, "italictag", "-font italic");
       Preview_Canvas :=
         Create
-          (Preview_Frame & ".previewcanvas",
+          (Get_Preview_Frame & ".previewcanvas",
            "-xscrollcommand {" & Preview_X_Scroll & " set} -yscrollcommand {" &
            Preview_Y_Scroll & " set}");
-      Info_Frame := Create(Preview_Frame & ".infoframe");
+      Info_Frame := Create(Get_Preview_Frame & ".infoframe");
       Label := Create(Info_Frame & ".fullpathtext");
       Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
       Label :=
@@ -1047,22 +1059,22 @@ package body ShowItems is
            (Get_Context,
             "{Select new associated program with that type of file or directory.}"));
       if Settings.Show_Preview then
-         Add(Paned, Preview_Frame, "-weight 20");
+         Add(Paned, Get_Preview_Frame, "-weight 20");
       end if;
       CreateProgramsMenuUI;
    end Create_Show_Items_Ui;
 
    procedure Show_Destination is
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
-      Frame: Ttk_Frame := Get_Widget(Preview_Frame & ".pathframe");
+      Frame: Ttk_Frame := Get_Widget(Get_Preview_Frame & ".pathframe");
    begin
       if not Settings.Show_Preview then
-         Add(Paned, Preview_Frame, "-weight 20");
+         Add(Paned, Get_Preview_Frame, "-weight 20");
       end if;
       Unautoscroll(Preview_X_Scroll);
       Unautoscroll(Preview_Y_Scroll);
       Tcl.Tk.Ada.Pack.Pack
-        (Frame, "-after " & Preview_Frame & ".title -fill x");
+        (Frame, "-after " & Get_Preview_Frame & ".title -fill x");
       configure
         (Preview_X_Scroll, "-command [list " & Preview_Tree & " xview]");
       Tcl.Tk.Ada.Pack.Pack(Preview_X_Scroll, "-side bottom -fill x");
@@ -1074,7 +1086,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
       Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
-      Frame.Name := New_String(Preview_Frame & ".title");
+      Frame.Name := New_String(Get_Preview_Frame & ".title");
       configure
         (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
       Destination_Directory := Common.Current_Directory;
@@ -1090,7 +1102,7 @@ package body ShowItems is
    begin
       Frame.Interp := Get_Context;
       if not Settings.Show_Preview then
-         Add(Paned, Preview_Frame, "-weight 20");
+         Add(Paned, Get_Preview_Frame, "-weight 20");
       end if;
       Unautoscroll(Preview_Y_Scroll);
       configure
@@ -1101,7 +1113,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
       Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
-      Frame.Name := New_String(Preview_Frame & ".title");
+      Frame.Name := New_String(Get_Preview_Frame & ".title");
       configure(Frame, "-text {" & Mc(Get_Context, "{Command output}") & "}");
       configure(Preview_Text, "-state normal");
       Delete(Preview_Text, "1.0", "end");
