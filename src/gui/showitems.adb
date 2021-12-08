@@ -151,37 +151,37 @@ package body ShowItems is
             else Image_Height / Frame_Height) +
            1;
       elsif Frame_Width > Image_Width or Frame_Height > Image_Height then
-         Scale_Mode := To_Unbounded_String("-zoom");
+         Scale_Mode := To_Unbounded_String(Source => "-zoom");
          Scale :=
            (if Frame_Width / Image_Width > Frame_Height / Image_Height then
               Frame_Width / Image_Width
             else Frame_Height / Image_Height);
       end if;
       Copy
-        (Temp_Image, Image_To_Scale,
-         "-shrink " & To_String(Scale_Mode) & Natural'Image(Scale));
-      Delete(Temp_Image);
-      Image_Width := Natural'Value(Width(Image_To_Scale));
-      Image_Height := Natural'Value(Height(Image_To_Scale));
+        (Source => Temp_Image, Target => Image_To_Scale,
+         Options => "-shrink " & To_String(Source => Scale_Mode) & Natural'Image(Scale));
+      Delete(Img => Temp_Image);
+      Image_Width := Natural'Value(Width(Img => Image_To_Scale));
+      Image_Height := Natural'Value(Height(Img => Image_To_Scale));
       if Image_Height < Frame_Height then
          Image_Height := Frame_Height;
       end if;
       Start_X := Image_Width / 2;
       Start_Y := Image_Height / 2;
       Canvas_Create
-        (Preview_Canvas, "image",
-         Natural'Image(Start_X) & Natural'Image(Start_Y) & " -image " &
+        (Parent => Preview_Canvas, Child_Type => "image",
+         Options => Natural'Image(Start_X) & Natural'Image(Start_Y) & " -image " &
          Image_To_Scale);
       configure
-        (Preview_Canvas,
-         "-width " & Width(Image_To_Scale) & " -height" &
+        (Widgt => Preview_Canvas,
+         options => "-width " & Width(Img => Image_To_Scale) & " -height" &
          Natural'Image(Image_Height));
    end Scale_Image;
 
    procedure Show_Preview is
       Button: Ttk_Button :=
-        Get_Widget(".mainframe.toolbars.itemtoolbar.previewbutton");
-      Label: constant Ttk_Label := Get_Widget(Preview_Frame & ".title");
+        Get_Widget(pathName =>  ".mainframe.toolbars.itemtoolbar.previewbutton");
+      Label: constant Ttk_Label := Get_Widget(pathName => Preview_Frame & ".title");
       PathFrame: constant Ttk_Frame :=
         Get_Widget(".mainframe.paned.previewframe.pathframe");
       Hunter_Show_Items_Exception: exception;
