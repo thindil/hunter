@@ -210,17 +210,11 @@ package body ShowItems is
            "-text {" & Mc(Interp => Get_Context, Src_String => "{Preview}") &
            "}");
       if Winfo_Get(Widgt => Button, Info => "ismapped") = "0" then
-         Add_Preview_Button_Block :
-         declare
-            Side: constant String :=
-              (if Settings.Toolbars_On_Top then "left" else "top");
-         begin
-            Tcl.Tk.Ada.Pack.Pack
-              (Slave => Button,
-               Options =>
-                 "-before .mainframe.toolbars.itemtoolbar.infobutton -side " &
-                 Side);
-         end Add_Preview_Button_Block;
+         Tcl.Tk.Ada.Pack.Pack
+           (Slave => Button,
+            Options =>
+              "-before .mainframe.toolbars.itemtoolbar.infobutton -side " &
+              (if Settings.Toolbars_On_Top then "left" else "top"));
       end if;
       SetActionsButtons;
       Unautoscroll(Preview_X_Scroll);
