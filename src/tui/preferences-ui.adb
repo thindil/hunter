@@ -28,6 +28,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Tcl.Ada; use Tcl.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
 with CopyItems; use CopyItems;
 with Inotify; use Inotify;
@@ -520,9 +521,11 @@ package body Preferences.UI is
 
    procedure Show_Options is
       Main_Menu_Array: constant array(1 .. 5) of Unbounded_String :=
-        (To_Unbounded_String("Preferences"), To_Unbounded_String("Shortcuts"),
-         To_Unbounded_String("Commands"), To_Unbounded_String("Modules"),
-         To_Unbounded_String("Close"));
+        (To_Unbounded_String(Mc(Interpreter, "Preferences")),
+         To_Unbounded_String(Mc(Interpreter, "Shortcuts")),
+         To_Unbounded_String(Mc(Interpreter, "Commands")),
+         To_Unbounded_String(Mc(Interpreter, "Modules")),
+         To_Unbounded_String(Mc(Interpreter, "Close")));
       Menu_Items: constant Item_Array_Access := new Item_Array(1 .. 6);
    begin
       Temporary_Stop := True;
