@@ -313,6 +313,6 @@
    "Can't execute" "Nie może uruchamiać"
    "Can't write" "Nie może zapisywać"
    "Can't read" "Nie może odczytywać"
-   "Interp =>" "Interp =>"
-   "Src_String =>" "Src_String =>"
+   "Shortcuts" "Skróty"
+   "Commands" "Komendy"
 }
