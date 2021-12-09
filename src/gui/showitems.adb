@@ -171,7 +171,9 @@ package body ShowItems is
       end if;
       Copy
         (Source => Temp_Image, Target => Image_To_Scale,
-         Options => "-shrink " & To_String(Source => Scale_Mode) & Natural'Image(Scale));
+         Options =>
+           "-shrink " & To_String(Source => Scale_Mode) &
+           Natural'Image(Scale));
       Delete(Img => Temp_Image);
       Image_Width := Natural'Value(Width(Img => Image_To_Scale));
       Image_Height := Natural'Value(Height(Img => Image_To_Scale));
@@ -182,33 +184,43 @@ package body ShowItems is
       Start_Y := Image_Height / 2;
       Canvas_Create
         (Parent => Preview_Canvas, Child_Type => "image",
-         Options => Natural'Image(Start_X) & Natural'Image(Start_Y) & " -image " &
-         Image_To_Scale);
+         Options =>
+           Natural'Image(Start_X) & Natural'Image(Start_Y) & " -image " &
+           Image_To_Scale);
       configure
         (Widgt => Preview_Canvas,
-         options => "-width " & Width(Img => Image_To_Scale) & " -height" &
-         Natural'Image(Image_Height));
+         options =>
+           "-width " & Width(Img => Image_To_Scale) & " -height" &
+           Natural'Image(Image_Height));
    end Scale_Image;
 
    procedure Show_Preview is
       Button: Ttk_Button :=
-        Get_Widget(pathName =>  ".mainframe.toolbars.itemtoolbar.previewbutton");
-      Label: constant Ttk_Label := Get_Widget(pathName => Get_Preview_Frame & ".title");
-      PathFrame: constant Ttk_Frame :=
-        Get_Widget(".mainframe.paned.previewframe.pathframe");
+        Get_Widget
+          (pathName => ".mainframe.toolbars.itemtoolbar.previewbutton");
+      Label: constant Ttk_Label :=
+        Get_Widget(pathName => Get_Preview_Frame & ".title");
+      Path_Frame: constant Ttk_Frame :=
+        Get_Widget(pathName => ".mainframe.paned.previewframe.pathframe");
       Hunter_Show_Items_Exception: exception;
    begin
-      configure(Label, "-text {" & Mc(Get_Context, "{Preview}") & "}");
-      if Winfo_Get(Button, "ismapped") = "0" then
+      configure
+        (Widgt => Label,
+         options =>
+           "-text {" & Mc(Interp => Get_Context, Src_String => "{Preview}") &
+           "}");
+      if Winfo_Get(Widgt => Button, Info => "ismapped") = "0" then
+         Add_Preview_Button_Block :
          declare
             Side: constant String :=
               (if Settings.Toolbars_On_Top then "left" else "top");
          begin
             Tcl.Tk.Ada.Pack.Pack
-              (Button,
-               "-before .mainframe.toolbars.itemtoolbar.infobutton -side " &
-               Side);
-         end;
+              (Slave => Button,
+               Options =>
+                 "-before .mainframe.toolbars.itemtoolbar.infobutton -side " &
+                 Side);
+         end Add_Preview_Button_Block;
       end if;
       SetActionsButtons;
       Unautoscroll(Preview_X_Scroll);
@@ -238,7 +250,7 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
            (Preview_Tree, "-side top -fill both -expand true");
-         Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
          Tcl_Eval(Get_Context, "update");
          Update_Directory_List(True, "preview");
          Autoscroll(Preview_X_Scroll);
@@ -419,7 +431,7 @@ package body ShowItems is
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
                   <<Set_UI>>
                   configure(Preview_Text, "-state disabled");
-                  Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
                   Tcl_Eval(Get_Context, "update");
                end;
                Autoscroll(Preview_Y_Scroll);
@@ -442,9 +454,11 @@ package body ShowItems is
                      ImageWidth := Natural'Value(Width(Image));
                      ImageHeight := Natural'Value(Height(Image));
                      if ImageHeight <
-                       Natural'Value(Winfo_Get(Get_Preview_Frame, "height")) then
+                       Natural'Value
+                         (Winfo_Get(Get_Preview_Frame, "height")) then
                         ImageHeight :=
-                          Natural'Value(Winfo_Get(Get_Preview_Frame, "height"));
+                          Natural'Value
+                            (Winfo_Get(Get_Preview_Frame, "height"));
                      end if;
                      StartX := ImageWidth / 2;
                      StartY := ImageHeight / 2;
@@ -488,7 +502,7 @@ package body ShowItems is
                         end if;
                      end;
                end;
-               Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
+               Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
                Tcl_Eval(Get_Context, "update");
                Autoscroll(Preview_X_Scroll);
                Autoscroll(Preview_Y_Scroll);
