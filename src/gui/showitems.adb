@@ -217,21 +217,21 @@ package body ShowItems is
               (if Settings.Toolbars_On_Top then "left" else "top"));
       end if;
       SetActionsButtons;
-      Unautoscroll(Preview_X_Scroll);
-      Set(Preview_X_Scroll, "0.0", "1.0");
-      Unautoscroll(Preview_Y_Scroll);
-      Set(Preview_Y_Scroll, "0.0", "1.0");
-      if Is_Directory(To_String(Current_Selected)) then
-         if not Is_Read_Accessible_File(To_String(Current_Selected)) then
+      Unautoscroll(Scroll => Preview_X_Scroll);
+      Set(ScrollbarWidget => Preview_X_Scroll, First => "0.0", Last => "1.0");
+      Unautoscroll(Scroll => Preview_Y_Scroll);
+      Set(ScrollbarWidget => Preview_Y_Scroll, First => "0.0", Last => "1.0");
+      if Is_Directory(Name => To_String(Source => Current_Selected)) then
+         if not Is_Read_Accessible_File(Name => To_String(Source => Current_Selected)) then
             Show_Message
-              (Mc
-                 (Get_Context,
-                  "{You don't have permissions to preview this directory.}"));
+              (Message => Mc
+                 (Interp => Get_Context,
+                  Src_String => "{You don't have permissions to preview this directory.}"));
          end if;
-         Load_Directory(To_String(Current_Selected), True);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+         Load_Directory(Directory_Name => To_String(Source => Current_Selected), Second => True);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Text);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Canvas);
          Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
          Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Y_Scroll);
          Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
