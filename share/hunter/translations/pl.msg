@@ -306,7 +306,7 @@
    "Enter a new" "Wprowadź nową nazwę dla"
    "Create" "Utwórz"
    " name:" "u:"
-   "Enter a name for the new link:" "Wprowaź nazwę dla nowego linku:"
+   "Enter a name for the new link:" "Wprowadź nazwę dla nowego linku:"
    "Enter a new name:" "Wprowadź nową nazwę:"
    "Move to Trash?" "Przenieść do Kosza?"
    "Info" "Informacja"
@@ -315,4 +315,7 @@
    "Can't read" "Nie może odczytywać"
    "Shortcuts" "Skróty"
    "Commands" "Komendy"
+   "Don't show" "Ukryj"
+   "hidden files" "ukryte pliki"
+   "modification time" "czas modyfikacji"
 }
