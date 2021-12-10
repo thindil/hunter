@@ -61,34 +61,38 @@ package body Preferences.UI is
                Options_Fields: constant Field_Array_Access :=
                  new Field_Array(1 .. 17);
             begin
-               Options_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
-               Set_Buffer(Options_Fields.all(1), 0, "Directory Listing");
+               Options_Fields.all(1) := New_Field(1, 50, 0, 0, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(1), 0,
+                  Mc(Interpreter, "{Directory Listing}"));
                FieldOptions := Get_Options(Options_Fields.all(1));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(1), FieldOptions);
-               Options_Fields.all(2) := New_Field(1, 36, 1, 2, 0, 0);
+               Options_Fields.all(2) := New_Field(1, 50, 1, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(2), 0,
-                  (if Settings.Show_Hidden then "Show " else "Don't show ") &
-                  "hidden files");
+                  (if Settings.Show_Hidden then Mc(Interpreter, "Show")
+                   else Mc(Interpreter, "{Don't show}")) &
+                  " " & Mc(Interpreter, "{hidden files}"));
                FieldOptions := Get_Options(Options_Fields.all(2));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(2), FieldOptions);
                Options_Fields.all(3) := New_Field(1, 36, 2, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(3), 0,
-                  (if Settings.Show_Last_Modified then "Show "
-                   else "Don't show ") &
-                  "modification time");
+                  (if Settings.Show_Last_Modified then Mc(Interpreter, "Show")
+                   else Mc(Interpreter, "{Don't show}")) &
+                  " " & Mc(Interpreter, "{modification time}"));
                FieldOptions := Get_Options(Options_Fields.all(3));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(3), FieldOptions);
                Options_Fields.all(4) := New_Field(1, 36, 3, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(4), 0,
-                  "Auto refresh every" &
-                  Natural'Image(Settings.Auto_Refresh_Interval) & " seconds");
+                  Mc(Interpreter, "{Auto refresh every}") &
+                  Natural'Image(Settings.Auto_Refresh_Interval) & " " &
+                  Mc(Interpreter, "{seconds}"));
                FieldOptions := Get_Options(Options_Fields.all(4));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(4), FieldOptions);
