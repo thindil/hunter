@@ -118,6 +118,18 @@ package body ShowItems is
    Preview_Canvas: Tk_Canvas;
    -- ****
 
+   -- ****if* ShowItems/ShowItems.Get_Preview_Canvas
+   -- FUNCTION
+   -- Get the Tk_Canvas for preview items
+   -- RESULT
+   -- The Tk_Canvas for preview items
+   -- SOURCE
+   function Get_Preview_Canvas return Tk_Canvas is
+      -- ****
+   begin
+      return Preview_Canvas;
+   end Get_Preview_Canvas;
+
    -- ****iv* ShowItems/ShowItems.Info_Frame
    -- FUNCTION
    -- Ttk_Frame for show information about the selected item
@@ -147,7 +159,7 @@ package body ShowItems is
         To_Unbounded_String(Source => "-subsample");
       Scale: Natural := 0;
    begin
-      Delete(CanvasWidget => Preview_Canvas, TagOrId => "all");
+      Delete(CanvasWidget => Get_Preview_Canvas, TagOrId => "all");
       Image_Width := Natural'Value(Width(Img => Image_To_Scale));
       Image_Height := Natural'Value(Height(Img => Image_To_Scale));
       Copy(Source => Image_To_Scale, Target => Temp_Image);
@@ -183,12 +195,12 @@ package body ShowItems is
       Start_X := Image_Width / 2;
       Start_Y := Image_Height / 2;
       Canvas_Create
-        (Parent => Preview_Canvas, Child_Type => "image",
+        (Parent => Get_Preview_Canvas, Child_Type => "image",
          Options =>
            Natural'Image(Start_X) & Natural'Image(Start_Y) & " -image " &
            Image_To_Scale);
       configure
-        (Widgt => Preview_Canvas,
+        (Widgt => Get_Preview_Canvas,
          options =>
            "-width " & Width(Img => Image_To_Scale) & " -height" &
            Natural'Image(Image_Height));
@@ -231,7 +243,7 @@ package body ShowItems is
          Load_Directory(Directory_Name => To_String(Source => Current_Selected), Second => True);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Text);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Canvas);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
          Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
          Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Y_Scroll);
          Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
@@ -319,7 +331,7 @@ package body ShowItems is
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
                   configure
@@ -444,7 +456,7 @@ package body ShowItems is
                      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
                      Scale_Image;
                   else
-                     Delete(Preview_Canvas, "all");
+                     Delete(Get_Preview_Canvas, "all");
                      ImageWidth := Natural'Value(Width(Image));
                      ImageHeight := Natural'Value(Height(Image));
                      if ImageHeight <
@@ -457,26 +469,26 @@ package body ShowItems is
                      StartX := ImageWidth / 2;
                      StartY := ImageHeight / 2;
                      Canvas_Create
-                       (Preview_Canvas, "image",
+                       (Get_Preview_Canvas, "image",
                         Natural'Image(StartX) & Natural'Image(StartY) &
                         " -image " & Image);
                      configure
-                       (Preview_Canvas,
+                       (Get_Preview_Canvas,
                         "-width " & Width(Image) & " -height" &
                         Natural'Image(ImageHeight) & " -scrollregion [list " &
-                        BBox(Preview_Canvas, "all") & "]");
+                        BBox(Get_Preview_Canvas, "all") & "]");
                      configure
                        (Preview_Y_Scroll,
-                        "-command [list " & Preview_Canvas & " yview]");
+                        "-command [list " & Get_Preview_Canvas & " yview]");
                      configure
                        (Preview_X_Scroll,
-                        "-command [list " & Preview_Canvas & " xview]");
+                        "-command [list " & Get_Preview_Canvas & " xview]");
                      Tcl.Tk.Ada.Pack.Pack
                        (Preview_X_Scroll, "-side bottom -fill x");
                      Tcl.Tk.Ada.Pack.Pack
                        (Preview_Y_Scroll, "-side right -fill y");
                   end if;
-                  Tcl.Tk.Ada.Pack.Pack(Preview_Canvas, "-side top");
+                  Tcl.Tk.Ada.Pack.Pack(Get_Preview_Canvas, "-side top");
                exception
                   when Tcl_Error_Exception =>
                      declare
@@ -540,7 +552,7 @@ package body ShowItems is
       Tcl_Eval(Get_Context, "update");
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Y_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
       configure(Label, "-text {" & Mc(Get_Context, "{Information}") & "}");
@@ -1091,7 +1103,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
       configure(Preview_Tree, "-selectmode browse");
       Tcl.Tk.Ada.Pack.Pack(Preview_Tree, "-side top -fill both -expand true");
-      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
       Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
       Frame.Name := New_String(Get_Preview_Frame & ".title");
@@ -1118,7 +1130,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
       Tcl.Tk.Ada.Pack.Pack(Preview_Text, "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Canvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
       Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
       Frame.Name := New_String(Get_Preview_Frame & ".title");
