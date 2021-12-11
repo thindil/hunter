@@ -234,46 +234,61 @@ package body ShowItems is
       Unautoscroll(Scroll => Preview_Y_Scroll);
       Set(ScrollbarWidget => Preview_Y_Scroll, First => "0.0", Last => "1.0");
       if Is_Directory(Name => To_String(Source => Current_Selected)) then
-         if not Is_Read_Accessible_File(Name => To_String(Source => Current_Selected)) then
+         if not Is_Read_Accessible_File
+             (Name => To_String(Source => Current_Selected)) then
             Show_Message
-              (Message => Mc
-                 (Interp => Get_Context,
-                  Src_String => "{You don't have permissions to preview this directory.}"));
+              (Message =>
+                 Mc
+                   (Interp => Get_Context,
+                    Src_String =>
+                      "{You don't have permissions to preview this directory.}"));
          end if;
-         Load_Directory(Directory_Name => To_String(Source => Current_Selected), Second => True);
+         Load_Directory
+           (Directory_Name => To_String(Source => Current_Selected),
+            Second => True);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Text);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_X_Scroll);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Y_Scroll);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Slave =>Info_Frame);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Info_Frame);
          configure
-           (Widgt => Preview_Y_Scroll, options => "-command [list " & Preview_Tree & " yview]");
+           (Widgt => Preview_Y_Scroll,
+            options => "-command [list " & Preview_Tree & " yview]");
          configure
-           (Widgt => Preview_X_Scroll, options => "-command [list " & Preview_Tree & " xview]");
+           (Widgt => Preview_X_Scroll,
+            options => "-command [list " & Preview_Tree & " xview]");
          configure(Widgt => Preview_Tree, options => "-selectmode none");
-         Tcl.Tk.Ada.Pack.Pack(Slave => Preview_X_Scroll, Options => "-side bottom -fill x");
-         Tcl.Tk.Ada.Pack.Pack(Slave => Preview_Y_Scroll, Options => "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
-           (Slave => Preview_Tree, Options => "-side top -fill both -expand true");
+           (Slave => Preview_X_Scroll, Options => "-side bottom -fill x");
+         Tcl.Tk.Ada.Pack.Pack
+           (Slave => Preview_Y_Scroll, Options => "-side right -fill y");
+         Tcl.Tk.Ada.Pack.Pack
+           (Slave => Preview_Tree,
+            Options => "-side top -fill both -expand true");
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Path_Frame);
          Tcl_Eval(interp => Get_Context, strng => "update");
          Update_Directory_List(Clear => True, Frame_Name => "preview");
-         Autoscroll(Preview_X_Scroll);
-         Autoscroll(Preview_Y_Scroll);
+         Autoscroll(Scroll => Preview_X_Scroll);
+         Autoscroll(Scroll => Preview_Y_Scroll);
       else
+         Show_Preview_Block :
          declare
-            MimeType: constant String :=
-              Get_Mime_Type(To_String(Current_Selected));
+            Mime_Type: constant String :=
+              Get_Mime_Type
+                (File_Name => To_String(Source => Current_Selected));
          begin
-            if Is_Text(MimeType) then
+            if Is_Text(Mime_Type => Mime_Type) then
+               Show_Text_Preview_Block :
                declare
-                  ExecutableName: constant String :=
-                    Find_Executable("highlight", False);
-                  Success, FirstLine: Boolean;
+                  Executable_Name: constant String :=
+                    Find_Executable
+                      (Name => "highlight", Display_Message => False);
+                  Success, First_Line: Boolean := True;
                   File: File_Type;
-                  FileLine, TagText, TagName: Unbounded_String;
-                  StartIndex, EndIndex, StartColor: Natural;
+                  FileLine, TagText, TagName: Unbounded_String :=
+                    Null_Unbounded_String;
+                  StartIndex, EndIndex, StartColor: Natural := 0;
                   procedure LoadFile is
                   begin
                      Open(File, In_File, To_String(Current_Selected));
@@ -343,12 +358,12 @@ package body ShowItems is
                     (Preview_Text, "-side top -fill both -expand true");
                   configure(Preview_Text, "-state normal");
                   Delete(Preview_Text, "1.0", "end");
-                  if not Settings.Color_Text or ExecutableName = "" then
+                  if not Settings.Color_Text or Executable_Name = "" then
                      LoadFile;
                      goto Set_UI;
                   end if;
                   Spawn
-                    (ExecutableName,
+                    (Executable_Name,
                      Argument_String_To_List
                        ("--out-format=pango --force --quiet --output=" &
                         Value("HOME") &
@@ -363,16 +378,16 @@ package body ShowItems is
                   Open
                     (File, In_File,
                      Value("HOME") & "/.cache/hunter/highlight.tmp");
-                  FirstLine := True;
+                  First_Line := True;
                   Load_Highlight_File :
                   while not End_Of_File(File) loop
                      FileLine := To_Unbounded_String(Get_Line(File));
-                     if FirstLine then
+                     if First_Line then
                         FileLine :=
                           Unbounded_Slice
                             (FileLine, Index(FileLine, ">") + 1,
                              Length(FileLine));
-                        FirstLine := False;
+                        First_Line := False;
                      end if;
                      exit Load_Highlight_File when End_Of_File(File);
                      Replace_Element("&gt;", ">");
@@ -439,9 +454,9 @@ package body ShowItems is
                   configure(Preview_Text, "-state disabled");
                   Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
                   Tcl_Eval(Get_Context, "update");
-               end;
+               end Show_Text_Preview_Block;
                Autoscroll(Preview_Y_Scroll);
-            elsif MimeType(1 .. 5) = "image" then
+            elsif Mime_Type(1 .. 5) = "image" then
                declare
                   Image: constant Tk_Photo :=
                     Create
@@ -528,7 +543,7 @@ package body ShowItems is
                   end if;
                end;
             end if;
-         end;
+         end Show_Preview_Block;
       end if;
    end Show_Preview;
 
