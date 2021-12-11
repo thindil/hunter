@@ -244,21 +244,21 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Text);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Y_Scroll);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_X_Scroll);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Y_Scroll);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave =>Info_Frame);
          configure
-           (Preview_Y_Scroll, "-command [list " & Preview_Tree & " yview]");
+           (Widgt => Preview_Y_Scroll, options => "-command [list " & Preview_Tree & " yview]");
          configure
-           (Preview_X_Scroll, "-command [list " & Preview_Tree & " xview]");
-         configure(Preview_Tree, "-selectmode none");
-         Tcl.Tk.Ada.Pack.Pack(Preview_X_Scroll, "-side bottom -fill x");
-         Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
+           (Widgt => Preview_X_Scroll, options => "-command [list " & Preview_Tree & " xview]");
+         configure(Widgt => Preview_Tree, options => "-selectmode none");
+         Tcl.Tk.Ada.Pack.Pack(Slave => Preview_X_Scroll, Options => "-side bottom -fill x");
+         Tcl.Tk.Ada.Pack.Pack(Slave => Preview_Y_Scroll, Options => "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
-           (Preview_Tree, "-side top -fill both -expand true");
-         Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
-         Tcl_Eval(Get_Context, "update");
-         Update_Directory_List(True, "preview");
+           (Slave => Preview_Tree, Options => "-side top -fill both -expand true");
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Path_Frame);
+         Tcl_Eval(interp => Get_Context, strng => "update");
+         Update_Directory_List(Clear => True, Frame_Name => "preview");
          Autoscroll(Preview_X_Scroll);
          Autoscroll(Preview_Y_Scroll);
       else
