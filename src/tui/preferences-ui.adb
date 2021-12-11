@@ -78,7 +78,7 @@ package body Preferences.UI is
                FieldOptions := Get_Options(Options_Fields.all(2));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(2), FieldOptions);
-               Options_Fields.all(3) := New_Field(1, 36, 2, 2, 0, 0);
+               Options_Fields.all(3) := New_Field(1, 50, 2, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(3), 0,
                   (if Settings.Show_Last_Modified then Mc(Interpreter, "Show")
@@ -87,7 +87,7 @@ package body Preferences.UI is
                FieldOptions := Get_Options(Options_Fields.all(3));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(3), FieldOptions);
-               Options_Fields.all(4) := New_Field(1, 36, 3, 2, 0, 0);
+               Options_Fields.all(4) := New_Field(1, 50, 3, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(4), 0,
                   Mc(Interpreter, "{Auto refresh every}") &
@@ -96,32 +96,36 @@ package body Preferences.UI is
                FieldOptions := Get_Options(Options_Fields.all(4));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(4), FieldOptions);
-               Options_Fields.all(5) := New_Field(1, 18, 4, 0, 0, 0);
-               Set_Buffer(Options_Fields.all(5), 0, "Preview");
+               Options_Fields.all(5) := New_Field(1, 50, 4, 0, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(5), 0, Mc(Interpreter, "Preview"));
                FieldOptions := Get_Options(Options_Fields.all(5));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(5), FieldOptions);
-               Options_Fields.all(6) := New_Field(1, 36, 5, 2, 0, 0);
+               Options_Fields.all(6) := New_Field(1, 50, 5, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(6), 0,
-                  (if Settings.Show_Preview then "Show " else "Don't show ") &
-                  "preview");
+                  (if Settings.Show_Preview then Mc(Interpreter, "Show")
+                   else Mc(Interpreter, "{Don't show}")) &
+                  " " & Mc(Interpreter, "preview"));
                FieldOptions := Get_Options(Options_Fields.all(6));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(6), FieldOptions);
-               Options_Fields.all(7) := New_Field(1, 36, 6, 2, 0, 0);
+               Options_Fields.all(7) := New_Field(1, 50, 6, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(7), 0,
-                  (if Settings.Color_Text then "Enable " else "Disable ") &
-                  "syntax highlightning");
+                  (if Settings.Color_Text then Mc(Interpreter, "Enable")
+                   else Mc(Interpreter, "Disable")) &
+                  " " & Mc(Interpreter, "{syntax highlightning}"));
                FieldOptions := Get_Options(Options_Fields.all(7));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(7), FieldOptions);
-               Options_Fields.all(8) := New_Field(1, 40, 7, 2, 0, 0);
+               Options_Fields.all(8) := New_Field(1, 50, 7, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(8), 0,
-                  "Current theme: " & To_String(Settings.Color_Theme));
+                  Mc(Interpreter, "{Current theme}") & ": " &
+                  To_String(Settings.Color_Theme));
                FieldOptions := Get_Options(Options_Fields.all(8));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(8), FieldOptions);
