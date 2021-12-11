@@ -318,4 +318,9 @@
    "Don't show" "Ukryj"
    "hidden files" "ukryte pliki"
    "modification time" "czas modyfikacji"
+   "preview" "podgląd"
+   "Enable" "Włącz"
+   "Disable" "Wyłącz"
+   "syntax highlightning" "podświetlanie składni"
+   "Current theme" "Obecny zestaw kolorów"
 }
