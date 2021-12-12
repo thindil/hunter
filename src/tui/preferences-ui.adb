@@ -129,26 +129,29 @@ package body Preferences.UI is
                FieldOptions := Get_Options(Options_Fields.all(8));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(8), FieldOptions);
-               Options_Fields.all(9) := New_Field(1, 18, 8, 0, 0, 0);
-               Set_Buffer(Options_Fields.all(9), 0, "Interface");
+               Options_Fields.all(9) := New_Field(1, 50, 8, 0, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(9), 0, Mc(Interpreter, "Interface"));
                FieldOptions := Get_Options(Options_Fields.all(9));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(9), FieldOptions);
-               Options_Fields.all(10) := New_Field(1, 36, 9, 2, 0, 0);
+               Options_Fields.all(10) := New_Field(1, 50, 9, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(10), 0,
-                  (if Settings.Stay_In_Old then "Stay in source directory"
-                   else "Go to destination"));
+                  (if Settings.Stay_In_Old then
+                     Mc(Interpreter, "{Stay in source directory}")
+                   else Mc(Interpreter, "{Go to destination}")));
                FieldOptions := Get_Options(Options_Fields.all(10));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(10), FieldOptions);
-               Options_Fields.all(11) := New_Field(1, 38, 10, 2, 0, 0);
+               Options_Fields.all(11) := New_Field(1, 50, 10, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(11), 0,
-                  (if Settings.Show_Finished_Info then "Show "
-                   else "Don't show ") &
-                  "information about finished action");
+                  (if Settings.Show_Finished_Info then Mc(Interpreter, "Show")
+                   else Mc(Interpreter, "{Don't show}")) &
+                  " " &
+                  Mc(Interpreter, "{information about finished action}"));
                FieldOptions := Get_Options(Options_Fields.all(11));
                Set_Options(Options_Fields.all(11), FieldOptions);
                Options_Fields.all(12) := New_Field(1, 18, 11, 0, 0, 0);
