@@ -286,61 +286,61 @@ package body ShowItems is
                       (Name => "highlight", Display_Message => False);
                   Success, First_Line: Boolean := True;
                   File: File_Type;
-                  FileLine, TagText, TagName: Unbounded_String :=
+                  File_Line, Tag_Text, Tag_Name: Unbounded_String :=
                     Null_Unbounded_String;
-                  StartIndex, EndIndex, StartColor: Natural := 0;
-                  procedure LoadFile is
+                  Start_Index, End_Index, Start_Color: Natural := 0;
+                  procedure Load_File is
                   begin
-                     Open(File, In_File, To_String(Current_Selected));
-                     Load_Simple_File :
-                     while not End_Of_File(File) loop
-                        FileLine := To_Unbounded_String(Get_Line(File));
-                        StartIndex := 1;
+                     Open(File => File, Mode => In_File, Name => To_String(Source => Current_Selected));
+                     Load_Simple_File_Loop :
+                     while not End_Of_File(File => File) loop
+                        File_Line := To_Unbounded_String(Source => Get_Line(File => File));
+                        Start_Index := 1;
                         Escape_Entry_Braces_Loop :
                         loop
-                           StartIndex := Index(FileLine, "{", StartIndex);
-                           exit Escape_Entry_Braces_Loop when StartIndex = 0;
+                           Start_Index := Index(Source => File_Line, Pattern => "{", From => Start_Index);
+                           exit Escape_Entry_Braces_Loop when Start_Index = 0;
                            Replace_Slice
-                             (FileLine, StartIndex, StartIndex, "\{");
-                           StartIndex := StartIndex + 2;
+                             (Source => File_Line, Low => Start_Index, High => Start_Index, By => "\{");
+                           Start_Index := Start_Index + 2;
                         end loop Escape_Entry_Braces_Loop;
-                        StartIndex := 1;
+                        Start_Index := 1;
                         Escape_Closing_Braces_Loop :
                         loop
-                           StartIndex := Index(FileLine, "}", StartIndex);
-                           exit Escape_Closing_Braces_Loop when StartIndex = 0;
+                           Start_Index := Index(File_Line, "}", Start_Index);
+                           exit Escape_Closing_Braces_Loop when Start_Index = 0;
                            Replace_Slice
-                             (FileLine, StartIndex, StartIndex, "\}");
-                           StartIndex := StartIndex + 2;
+                             (File_Line, Start_Index, Start_Index, "\}");
+                           Start_Index := Start_Index + 2;
                         end loop Escape_Closing_Braces_Loop;
                         Insert
                           (Preview_Text, "end",
                            "[subst -nocommands -novariables {" &
-                           To_String(FileLine) & LF & "}]");
-                     end loop Load_Simple_File;
+                           To_String(File_Line) & LF & "}]");
+                     end loop Load_Simple_File_Loop;
                      Close(File);
-                  end LoadFile;
+                  end Load_File;
                   procedure Replace_Element(Element, New_Element: String) is
                   begin
                      Replace_Element_Loop :
                      loop
-                        StartIndex := Index(FileLine, Element);
-                        exit Replace_Element_Loop when StartIndex = 0;
+                        Start_Index := Index(File_Line, Element);
+                        exit Replace_Element_Loop when Start_Index = 0;
                         Replace_Slice
-                          (FileLine, StartIndex,
-                           StartIndex + Element'Length - 1, New_Element);
+                          (File_Line, Start_Index,
+                           Start_Index + Element'Length - 1, New_Element);
                      end loop Replace_Element_Loop;
                   end Replace_Element;
                   procedure Escape_Element(Element: String) is
                   begin
-                     StartIndex := 1;
+                     Start_Index := 1;
                      Escape_Element_Loop :
                      loop
-                        StartIndex := Index(FileLine, Element, StartIndex);
-                        exit Escape_Element_Loop when StartIndex = 0;
+                        Start_Index := Index(File_Line, Element, Start_Index);
+                        exit Escape_Element_Loop when Start_Index = 0;
                         Replace_Slice
-                          (FileLine, StartIndex, StartIndex, "\" & Element);
-                        StartIndex := StartIndex + 2;
+                          (File_Line, Start_Index, Start_Index, "\" & Element);
+                        Start_Index := Start_Index + 2;
                      end loop Escape_Element_Loop;
                   end Escape_Element;
                begin
@@ -359,7 +359,7 @@ package body ShowItems is
                   configure(Preview_Text, "-state normal");
                   Delete(Preview_Text, "1.0", "end");
                   if not Settings.Color_Text or Executable_Name = "" then
-                     LoadFile;
+                     Load_File;
                      goto Set_UI;
                   end if;
                   Spawn
@@ -372,7 +372,7 @@ package body ShowItems is
                         To_String(Current_Selected)).all,
                      Success);
                   if not Success then
-                     LoadFile;
+                     Load_File;
                      goto Set_UI;
                   end if;
                   Open
@@ -381,12 +381,12 @@ package body ShowItems is
                   First_Line := True;
                   Load_Highlight_File :
                   while not End_Of_File(File) loop
-                     FileLine := To_Unbounded_String(Get_Line(File));
+                     File_Line := To_Unbounded_String(Get_Line(File));
                      if First_Line then
-                        FileLine :=
+                        File_Line :=
                           Unbounded_Slice
-                            (FileLine, Index(FileLine, ">") + 1,
-                             Length(FileLine));
+                            (File_Line, Index(File_Line, ">") + 1,
+                             Length(File_Line));
                         First_Line := False;
                      end if;
                      exit Load_Highlight_File when End_Of_File(File);
@@ -396,57 +396,57 @@ package body ShowItems is
                      Escape_Element("\");
                      Escape_Element("{");
                      Escape_Element("}");
-                     StartIndex := 1;
+                     Start_Index := 1;
                      Highlight_Text_Loop :
                      loop
-                        StartIndex := Index(FileLine, "<span", StartIndex);
-                        exit Highlight_Text_Loop when StartIndex = 0;
-                        if StartIndex > 1 then
+                        Start_Index := Index(File_Line, "<span", Start_Index);
+                        exit Highlight_Text_Loop when Start_Index = 0;
+                        if Start_Index > 1 then
                            Insert
                              (Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
-                              Slice(FileLine, 1, StartIndex - 1) & "}]");
+                              Slice(File_Line, 1, Start_Index - 1) & "}]");
                         end if;
-                        EndIndex := Index(FileLine, ">", StartIndex);
-                        TagText :=
-                          Unbounded_Slice(FileLine, StartIndex, EndIndex);
-                        StartColor := Index(TagText, "foreground=");
-                        if Index(TagText, "foreground=") > 0 then
-                           TagName :=
+                        End_Index := Index(File_Line, ">", Start_Index);
+                        Tag_Text :=
+                          Unbounded_Slice(File_Line, Start_Index, End_Index);
+                        Start_Color := Index(Tag_Text, "foreground=");
+                        if Index(Tag_Text, "foreground=") > 0 then
+                           Tag_Name :=
                              Unbounded_Slice
-                               (TagText, StartColor + 12, StartColor + 18);
+                               (Tag_Text, Start_Color + 12, Start_Color + 18);
                            Tag_Configure
-                             (Preview_Text, To_String(TagName),
-                              "-foreground " & To_String(TagName));
-                        elsif Index(TagText, "style=""italic""") > 0 then
-                           TagName := To_Unbounded_String("italictag");
-                        elsif Index(TagText, "weight=""bold""") > 0 then
-                           TagName := To_Unbounded_String("boldtag");
+                             (Preview_Text, To_String(Tag_Name),
+                              "-foreground " & To_String(Tag_Name));
+                        elsif Index(Tag_Text, "style=""italic""") > 0 then
+                           Tag_Name := To_Unbounded_String("italictag");
+                        elsif Index(Tag_Text, "weight=""bold""") > 0 then
+                           Tag_Name := To_Unbounded_String("boldtag");
                         end if;
-                        StartIndex := StartIndex + Length(TagText);
-                        EndIndex := Index(FileLine, "</span>", StartIndex) - 1;
-                        if EndIndex > 0 then
+                        Start_Index := Start_Index + Length(Tag_Text);
+                        End_Index := Index(File_Line, "</span>", Start_Index) - 1;
+                        if End_Index > 0 then
                            Insert
                              (Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
-                              Slice(FileLine, StartIndex, EndIndex) &
-                              "}] [list " & To_String(TagName) & "]");
+                              Slice(File_Line, Start_Index, End_Index) &
+                              "}] [list " & To_String(Tag_Name) & "]");
                         else
                            Insert
                              (Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
-                              Slice(FileLine, StartIndex, Length(FileLine)) &
+                              Slice(File_Line, Start_Index, Length(File_Line)) &
                               "}]");
                         end if;
-                        StartIndex := 1;
-                        FileLine :=
+                        Start_Index := 1;
+                        File_Line :=
                           Unbounded_Slice
-                            (FileLine, EndIndex + 8, Length(FileLine));
+                            (File_Line, End_Index + 8, Length(File_Line));
                      end loop Highlight_Text_Loop;
                      Insert
                        (Preview_Text, "end",
                         "[subst -nocommands -novariables {" &
-                        To_String(FileLine) & LF & "}]");
+                        To_String(File_Line) & LF & "}]");
                   end loop Load_Highlight_File;
                   Close(File);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
