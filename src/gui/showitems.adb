@@ -291,32 +291,46 @@ package body ShowItems is
                   Start_Index, End_Index, Start_Color: Natural := 0;
                   procedure Load_File is
                   begin
-                     Open(File => File, Mode => In_File, Name => To_String(Source => Current_Selected));
+                     Open
+                       (File => File, Mode => In_File,
+                        Name => To_String(Source => Current_Selected));
                      Load_Simple_File_Loop :
                      while not End_Of_File(File => File) loop
-                        File_Line := To_Unbounded_String(Source => Get_Line(File => File));
+                        File_Line :=
+                          To_Unbounded_String
+                            (Source => Get_Line(File => File));
                         Start_Index := 1;
                         Escape_Entry_Braces_Loop :
                         loop
-                           Start_Index := Index(Source => File_Line, Pattern => "{", From => Start_Index);
+                           Start_Index :=
+                             Index
+                               (Source => File_Line, Pattern => "{",
+                                From => Start_Index);
                            exit Escape_Entry_Braces_Loop when Start_Index = 0;
                            Replace_Slice
-                             (Source => File_Line, Low => Start_Index, High => Start_Index, By => "\{");
+                             (Source => File_Line, Low => Start_Index,
+                              High => Start_Index, By => "\{");
                            Start_Index := Start_Index + 2;
                         end loop Escape_Entry_Braces_Loop;
                         Start_Index := 1;
                         Escape_Closing_Braces_Loop :
                         loop
-                           Start_Index := Index(File_Line, "}", Start_Index);
-                           exit Escape_Closing_Braces_Loop when Start_Index = 0;
+                           Start_Index :=
+                             Index
+                               (Source => File_Line, Pattern => "}",
+                                From => Start_Index);
+                           exit Escape_Closing_Braces_Loop when Start_Index =
+                             0;
                            Replace_Slice
-                             (File_Line, Start_Index, Start_Index, "\}");
+                             (Source => File_Line, Low => Start_Index,
+                              High => Start_Index, By => "\}");
                            Start_Index := Start_Index + 2;
                         end loop Escape_Closing_Braces_Loop;
                         Insert
-                          (Preview_Text, "end",
-                           "[subst -nocommands -novariables {" &
-                           To_String(File_Line) & LF & "}]");
+                          (TextWidget => Preview_Text, Index => "end",
+                           Text =>
+                             "[subst -nocommands -novariables {" &
+                             To_String(Source => File_Line) & LF & "}]");
                      end loop Load_Simple_File_Loop;
                      Close(File);
                   end Load_File;
@@ -424,7 +438,8 @@ package body ShowItems is
                            Tag_Name := To_Unbounded_String("boldtag");
                         end if;
                         Start_Index := Start_Index + Length(Tag_Text);
-                        End_Index := Index(File_Line, "</span>", Start_Index) - 1;
+                        End_Index :=
+                          Index(File_Line, "</span>", Start_Index) - 1;
                         if End_Index > 0 then
                            Insert
                              (Preview_Text, "end",
@@ -435,7 +450,8 @@ package body ShowItems is
                            Insert
                              (Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
-                              Slice(File_Line, Start_Index, Length(File_Line)) &
+                              Slice
+                                (File_Line, Start_Index, Length(File_Line)) &
                               "}]");
                         end if;
                         Start_Index := 1;
