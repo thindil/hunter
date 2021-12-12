@@ -154,26 +154,28 @@ package body Preferences.UI is
                   Mc(Interpreter, "{information about finished action}"));
                FieldOptions := Get_Options(Options_Fields.all(11));
                Set_Options(Options_Fields.all(11), FieldOptions);
-               Options_Fields.all(12) := New_Field(1, 18, 11, 0, 0, 0);
+               Options_Fields.all(12) := New_Field(1, 50, 11, 0, 0, 0);
                Set_Buffer(Options_Fields.all(12), 0, "Deleting");
                FieldOptions := Get_Options(Options_Fields.all(12));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(12), FieldOptions);
-               Options_Fields.all(13) := New_Field(1, 38, 12, 2, 0, 0);
+               Options_Fields.all(13) := New_Field(1, 50, 12, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(13), 0,
-                  (if Settings.Delete_Files then "Delete files"
-                   else "Move files to Trash"));
+                  (if Settings.Delete_Files then
+                     Mc(Interpreter, "{Delete files}")
+                   else Mc(Interpreter, "{Move files to Trash}")));
                FieldOptions := Get_Options(Options_Fields.all(13));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(13), FieldOptions);
-               Options_Fields.all(14) := New_Field(1, 38, 13, 2, 0, 0);
+               Options_Fields.all(14) := New_Field(1, 50, 13, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(14), 0,
-                  (if Settings.Clear_Trash_On_Exit then "Clear "
-                   else "Don't clear ") &
-                  "Trash on exit");
+                  (if Settings.Clear_Trash_On_Exit then
+                     Mc(Interpreter, "Clear")
+                   else Mc(Interpreter, "{Don't clear}")) &
+                  " " & Mc(Interpreter, "{Trash on exit}"));
                FieldOptions := Get_Options(Options_Fields.all(14));
                Set_Options(Options_Fields.all(14), FieldOptions);
                Options_Fields.all(15) := New_Field(1, 18, 14, 0, 0, 0);
