@@ -325,4 +325,7 @@
    "Current theme" "Obecny zestaw kolorów"
    "Go to destination" "Idź do katalogu docelowego"
    "information about finished action" "informacje o ukończeniu akcji"
+   "Move files to Trash" "Przenoś pliki do Kosza"
+   "Don't clear" "Nie czyść"
+   "Trash on exit" "Kosz przy wyjściu"
 }
