@@ -323,4 +323,6 @@
    "Disable" "Wyłącz"
    "syntax highlightning" "podświetlanie składni"
    "Current theme" "Obecny zestaw kolorów"
+   "Go to destination" "Idź do katalogu docelowego"
+   "information about finished action" "informacje o ukończeniu akcji"
 }
