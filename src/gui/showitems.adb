@@ -111,6 +111,18 @@ package body ShowItems is
    Preview_Text: Tk_Text;
    -- ****
 
+   -- ****if* ShowItems/ShowItems.Get_Preview_Text
+   -- FUNCTION
+   -- Get the main Tk_Text for preview text files
+   -- RESULT
+   -- The main Tk_Text for preview text files
+   -- SOURCE
+   function Get_Preview_Text return Tk_Text is
+      -- ****
+   begin
+      return Preview_Text;
+   end Get_Preview_Text;
+
    -- ****iv* ShowItems/ShowItems.Preview_Canvas
    -- FUNCTION
    -- Tk_Canvas used to show images
@@ -247,7 +259,7 @@ package body ShowItems is
            (Directory_Name => To_String(Source => Current_Selected),
             Second => True);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Text);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_X_Scroll);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Y_Scroll);
@@ -327,7 +339,7 @@ package body ShowItems is
                            Start_Index := Start_Index + 2;
                         end loop Escape_Closing_Braces_Loop;
                         Insert
-                          (TextWidget => Preview_Text, Index => "end",
+                          (TextWidget => Get_Preview_Text, Index => "end",
                            Text =>
                              "[subst -nocommands -novariables {" &
                              To_String(Source => File_Line) & LF & "}]");
@@ -359,19 +371,19 @@ package body ShowItems is
                   end Escape_Element;
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
                   configure
                     (Preview_Y_Scroll,
-                     "-command [list " & Preview_Text & " yview]");
+                     "-command [list " & Get_Preview_Text & " yview]");
                   Tcl.Tk.Ada.Pack.Pack
                     (Preview_Y_Scroll, "-side right -fill y");
                   Tcl.Tk.Ada.Pack.Pack
-                    (Preview_Text, "-side top -fill both -expand true");
-                  configure(Preview_Text, "-state normal");
-                  Delete(Preview_Text, "1.0", "end");
+                    (Get_Preview_Text, "-side top -fill both -expand true");
+                  configure(Get_Preview_Text, "-state normal");
+                  Delete(Get_Preview_Text, "1.0", "end");
                   if not Settings.Color_Text or Executable_Name = "" then
                      Load_File;
                      goto Set_UI;
@@ -417,7 +429,7 @@ package body ShowItems is
                         exit Highlight_Text_Loop when Start_Index = 0;
                         if Start_Index > 1 then
                            Insert
-                             (Preview_Text, "end",
+                             (Get_Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
                               Slice(File_Line, 1, Start_Index - 1) & "}]");
                         end if;
@@ -430,7 +442,7 @@ package body ShowItems is
                              Unbounded_Slice
                                (Tag_Text, Start_Color + 12, Start_Color + 18);
                            Tag_Configure
-                             (Preview_Text, To_String(Tag_Name),
+                             (Get_Preview_Text, To_String(Tag_Name),
                               "-foreground " & To_String(Tag_Name));
                         elsif Index(Tag_Text, "style=""italic""") > 0 then
                            Tag_Name := To_Unbounded_String("italictag");
@@ -442,13 +454,13 @@ package body ShowItems is
                           Index(File_Line, "</span>", Start_Index) - 1;
                         if End_Index > 0 then
                            Insert
-                             (Preview_Text, "end",
+                             (Get_Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
                               Slice(File_Line, Start_Index, End_Index) &
                               "}] [list " & To_String(Tag_Name) & "]");
                         else
                            Insert
-                             (Preview_Text, "end",
+                             (Get_Preview_Text, "end",
                               "[subst -nocommands -novariables {" &
                               Slice
                                 (File_Line, Start_Index, Length(File_Line)) &
@@ -460,14 +472,14 @@ package body ShowItems is
                             (File_Line, End_Index + 8, Length(File_Line));
                      end loop Highlight_Text_Loop;
                      Insert
-                       (Preview_Text, "end",
+                       (Get_Preview_Text, "end",
                         "[subst -nocommands -novariables {" &
                         To_String(File_Line) & LF & "}]");
                   end loop Load_Highlight_File;
                   Close(File);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
                   <<Set_UI>>
-                  configure(Preview_Text, "-state disabled");
+                  configure(Get_Preview_Text, "-state disabled");
                   Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
                   Tcl_Eval(Get_Context, "update");
                end Show_Text_Preview_Block;
@@ -479,7 +491,7 @@ package body ShowItems is
                       ("previewimage", "-file " & To_String(Current_Selected));
                   StartX, StartY, ImageWidth, ImageHeight: Natural;
                begin
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
                   if Settings.Scale_Images then
@@ -581,7 +593,7 @@ package body ShowItems is
       Unautoscroll(Preview_Y_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
       Tcl_Eval(Get_Context, "update");
-      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Y_Scroll);
@@ -1053,8 +1065,8 @@ package body ShowItems is
           (Get_Preview_Frame & ".previewtext",
            "-wrap char -yscrollcommand {" & Preview_Y_Scroll & " set} -font " &
            Font);
-      Tag_Configure(Preview_Text, "boldtag", "-font bold");
-      Tag_Configure(Preview_Text, "italictag", "-font italic");
+      Tag_Configure(Get_Preview_Text, "boldtag", "-font bold");
+      Tag_Configure(Get_Preview_Text, "italictag", "-font italic");
       Preview_Canvas :=
         Create
           (Get_Preview_Frame & ".previewcanvas",
@@ -1135,7 +1147,7 @@ package body ShowItems is
       configure(Preview_Tree, "-selectmode browse");
       Tcl.Tk.Ada.Pack.Pack(Preview_Tree, "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Text);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
       Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
       Frame.Name := New_String(Get_Preview_Frame & ".title");
       configure
@@ -1157,26 +1169,26 @@ package body ShowItems is
       end if;
       Unautoscroll(Preview_Y_Scroll);
       configure
-        (Preview_Y_Scroll, "-command [list " & Preview_Text & " yview]");
+        (Preview_Y_Scroll, "-command [list " & Get_Preview_Text & " yview]");
       Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
-      Tcl.Tk.Ada.Pack.Pack(Preview_Text, "-side top -fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack(Get_Preview_Text, "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
       Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
       Frame.Name := New_String(Get_Preview_Frame & ".title");
       configure(Frame, "-text {" & Mc(Get_Context, "{Command output}") & "}");
-      configure(Preview_Text, "-state normal");
-      Delete(Preview_Text, "1.0", "end");
-      configure(Preview_Text, "-state disabled");
+      configure(Get_Preview_Text, "-state normal");
+      Delete(Get_Preview_Text, "1.0", "end");
+      configure(Get_Preview_Text, "-state disabled");
       Autoscroll(Preview_Y_Scroll);
    end Show_Output;
 
    procedure Update_Output(Text: String) is
    begin
-      configure(Preview_Text, "-state normal");
-      Insert(Preview_Text, "end", "{" & Text & "}");
-      configure(Preview_Text, "-state disabled");
+      configure(Get_Preview_Text, "-state normal");
+      Insert(Get_Preview_Text, "end", "{" & Text & "}");
+      configure(Get_Preview_Text, "-state disabled");
       Tcl_Eval(Get_Context, "update");
    end Update_Output;
 
