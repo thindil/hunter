@@ -328,4 +328,7 @@
    "Move files to Trash" "Przenoś pliki do Kosza"
    "Don't clear" "Nie czyść"
    "Trash on exit" "Kosz przy wyjściu"
+   "Overwrite" "Zamieniaj"
+   "Don't overwrite" "Nie zamieniaj"
+   "existing" "istniejących"
 }
