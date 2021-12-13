@@ -155,7 +155,8 @@ package body Preferences.UI is
                FieldOptions := Get_Options(Options_Fields.all(11));
                Set_Options(Options_Fields.all(11), FieldOptions);
                Options_Fields.all(12) := New_Field(1, 50, 11, 0, 0, 0);
-               Set_Buffer(Options_Fields.all(12), 0, "Deleting");
+               Set_Buffer
+                 (Options_Fields.all(12), 0, Mc(Interpreter, "Deleting"));
                FieldOptions := Get_Options(Options_Fields.all(12));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
@@ -178,18 +179,21 @@ package body Preferences.UI is
                   " " & Mc(Interpreter, "{Trash on exit}"));
                FieldOptions := Get_Options(Options_Fields.all(14));
                Set_Options(Options_Fields.all(14), FieldOptions);
-               Options_Fields.all(15) := New_Field(1, 18, 14, 0, 0, 0);
-               Set_Buffer(Options_Fields.all(15), 0, "Copying or moving");
+               Options_Fields.all(15) := New_Field(1, 50, 14, 0, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(15), 0,
+                  Mc(Interpreter, "{Copying or moving}"));
                FieldOptions := Get_Options(Options_Fields.all(15));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(15), FieldOptions);
-               Options_Fields.all(16) := New_Field(1, 38, 15, 2, 0, 0);
+               Options_Fields.all(16) := New_Field(1, 50, 15, 2, 0, 0);
                Set_Buffer
                  (Options_Fields.all(16), 0,
-                  (if Settings.Overwrite_On_Exist then "Overwrite "
-                   else "Don't overwrite ") &
-                  "existing");
+                  (if Settings.Overwrite_On_Exist then
+                     Mc(Interpreter, "{Overwrite}")
+                   else Mc(Interpreter, "{Don't overwrite}")) & " " &
+                     Mc(Interpreter, "existing"));
                FieldOptions := Get_Options(Options_Fields.all(16));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(16), FieldOptions);
