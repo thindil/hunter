@@ -350,11 +350,13 @@ package body ShowItems is
                   begin
                      Replace_Element_Loop :
                      loop
-                        Start_Index := Index(File_Line, Element);
+                        Start_Index :=
+                          Index(Source => File_Line, Pattern => Element);
                         exit Replace_Element_Loop when Start_Index = 0;
                         Replace_Slice
-                          (File_Line, Start_Index,
-                           Start_Index + Element'Length - 1, New_Element);
+                          (Source => File_Line, Low => Start_Index,
+                           High => Start_Index + Element'Length - 1,
+                           By => New_Element);
                      end loop Replace_Element_Loop;
                   end Replace_Element;
                   procedure Escape_Element(Element: String) is
@@ -362,19 +364,23 @@ package body ShowItems is
                      Start_Index := 1;
                      Escape_Element_Loop :
                      loop
-                        Start_Index := Index(File_Line, Element, Start_Index);
+                        Start_Index :=
+                          Index
+                            (Source => File_Line, Pattern => Element,
+                             From => Start_Index);
                         exit Escape_Element_Loop when Start_Index = 0;
                         Replace_Slice
-                          (File_Line, Start_Index, Start_Index, "\" & Element);
+                          (Source => File_Line, Low => Start_Index,
+                           High => Start_Index, By => "\" & Element);
                         Start_Index := Start_Index + 2;
                      end loop Escape_Element_Loop;
                   end Escape_Element;
                begin
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_X_Scroll);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Info_Frame);
                   configure
                     (Preview_Y_Scroll,
                      "-command [list " & Get_Preview_Text & " yview]");
@@ -1171,7 +1177,8 @@ package body ShowItems is
       configure
         (Preview_Y_Scroll, "-command [list " & Get_Preview_Text & " yview]");
       Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
-      Tcl.Tk.Ada.Pack.Pack(Get_Preview_Text, "-side top -fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack
+        (Get_Preview_Text, "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
