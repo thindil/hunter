@@ -192,8 +192,8 @@ package body Preferences.UI is
                  (Options_Fields.all(16), 0,
                   (if Settings.Overwrite_On_Exist then
                      Mc(Interpreter, "{Overwrite}")
-                   else Mc(Interpreter, "{Don't overwrite}")) & " " &
-                     Mc(Interpreter, "existing"));
+                   else Mc(Interpreter, "{Don't overwrite}")) &
+                  " " & Mc(Interpreter, "existing"));
                FieldOptions := Get_Options(Options_Fields.all(16));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(16), FieldOptions);
@@ -206,18 +206,29 @@ package body Preferences.UI is
                Options_Fields: constant Field_Array_Access :=
                  new Field_Array(1 .. 39);
                KeysLabels: constant array(1 .. 19) of Unbounded_String :=
-                 (To_Unbounded_String("Show bookmarks menu"),
-                  To_Unbounded_String("Search for the file or directory"),
-                  To_Unbounded_String("Show add new item menu"),
-                  To_Unbounded_String("Show delete menu"),
+                 (To_Unbounded_String
+                    (Mc(Interpreter, "{Show bookmarks menu}")),
                   To_Unbounded_String
-                    ("Show menu with information about the program"),
-                  To_Unbounded_String("Open selected file or directory"),
+                    (Mc(Interpreter, "{Search for the file or directory}")),
                   To_Unbounded_String
-                    ("Select or unselect all files and directories"),
-                  To_Unbounded_String("Rename selected file or directory"),
-                  To_Unbounded_String("Copy selected files"),
-                  To_Unbounded_String("Move selected files"),
+                    (Mc(Interpreter, "{Show add new item menu}")),
+                  To_Unbounded_String(Mc(Interpreter, "{Show delete menu}")),
+                  To_Unbounded_String
+                    (Mc
+                       (Interpreter,
+                        "{Show menu with information about the program}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{Open selected file or directory}")),
+                  To_Unbounded_String
+                    (Mc
+                       (Interpreter,
+                        "{Select or unselect all files and directories}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{Rename selected file or directory}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{Copy selected files}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{Move selected files}")),
                   To_Unbounded_String("Show the program preferences"),
                   To_Unbounded_String
                     ("Open selected file or directory with command"),
