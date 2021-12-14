@@ -344,7 +344,7 @@ package body ShowItems is
                              "[subst -nocommands -novariables {" &
                              To_String(Source => File_Line) & LF & "}]");
                      end loop Load_Simple_File_Loop;
-                     Close(File);
+                     Close(File => File);
                   end Load_File;
                   procedure Replace_Element(Element, New_Element: String) is
                   begin
@@ -382,34 +382,34 @@ package body ShowItems is
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_X_Scroll);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Info_Frame);
                   configure
-                    (Preview_Y_Scroll,
-                     "-command [list " & Get_Preview_Text & " yview]");
+                    (Widgt => Preview_Y_Scroll,
+                     options => "-command [list " & Get_Preview_Text & " yview]");
                   Tcl.Tk.Ada.Pack.Pack
-                    (Preview_Y_Scroll, "-side right -fill y");
+                    (Slave => Preview_Y_Scroll, Options => "-side right -fill y");
                   Tcl.Tk.Ada.Pack.Pack
-                    (Get_Preview_Text, "-side top -fill both -expand true");
-                  configure(Get_Preview_Text, "-state normal");
-                  Delete(Get_Preview_Text, "1.0", "end");
+                    (Slave => Get_Preview_Text, Options => "-side top -fill both -expand true");
+                  configure(Widgt => Get_Preview_Text, options => "-state normal");
+                  Delete(TextWidget => Get_Preview_Text, StartIndex => "1.0", Indexes => "end");
                   if not Settings.Color_Text or Executable_Name = "" then
                      Load_File;
                      goto Set_UI;
                   end if;
                   Spawn
-                    (Executable_Name,
-                     Argument_String_To_List
-                       ("--out-format=pango --force --quiet --output=" &
-                        Value("HOME") &
+                    (Program_Name => Executable_Name,
+                     Args => Argument_String_To_List
+                       (Arg_String => "--out-format=pango --force --quiet --output=" &
+                        Value(Name => "HOME") &
                         "/.cache/hunter/highlight.tmp --base16 --style=" &
-                        To_String(Settings.Color_Theme) & " " &
-                        To_String(Current_Selected)).all,
-                     Success);
+                        To_String(Source => Settings.Color_Theme) & " " &
+                        To_String(Source => Current_Selected)).all,
+                     Success => Success);
                   if not Success then
                      Load_File;
                      goto Set_UI;
                   end if;
                   Open
-                    (File, In_File,
-                     Value("HOME") & "/.cache/hunter/highlight.tmp");
+                    (File => File, Mode => In_File,
+                     Name => Value(Name => "HOME") & "/.cache/hunter/highlight.tmp");
                   First_Line := True;
                   Load_Highlight_File :
                   while not End_Of_File(File) loop
