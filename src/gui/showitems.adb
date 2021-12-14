@@ -383,25 +383,33 @@ package body ShowItems is
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Info_Frame);
                   configure
                     (Widgt => Preview_Y_Scroll,
-                     options => "-command [list " & Get_Preview_Text & " yview]");
+                     options =>
+                       "-command [list " & Get_Preview_Text & " yview]");
                   Tcl.Tk.Ada.Pack.Pack
-                    (Slave => Preview_Y_Scroll, Options => "-side right -fill y");
+                    (Slave => Preview_Y_Scroll,
+                     Options => "-side right -fill y");
                   Tcl.Tk.Ada.Pack.Pack
-                    (Slave => Get_Preview_Text, Options => "-side top -fill both -expand true");
-                  configure(Widgt => Get_Preview_Text, options => "-state normal");
-                  Delete(TextWidget => Get_Preview_Text, StartIndex => "1.0", Indexes => "end");
+                    (Slave => Get_Preview_Text,
+                     Options => "-side top -fill both -expand true");
+                  configure
+                    (Widgt => Get_Preview_Text, options => "-state normal");
+                  Delete
+                    (TextWidget => Get_Preview_Text, StartIndex => "1.0",
+                     Indexes => "end");
                   if not Settings.Color_Text or Executable_Name = "" then
                      Load_File;
                      goto Set_UI;
                   end if;
                   Spawn
                     (Program_Name => Executable_Name,
-                     Args => Argument_String_To_List
-                       (Arg_String => "--out-format=pango --force --quiet --output=" &
-                        Value(Name => "HOME") &
-                        "/.cache/hunter/highlight.tmp --base16 --style=" &
-                        To_String(Source => Settings.Color_Theme) & " " &
-                        To_String(Source => Current_Selected)).all,
+                     Args =>
+                       Argument_String_To_List
+                         (Arg_String =>
+                            "--out-format=pango --force --quiet --output=" &
+                            Value(Name => "HOME") &
+                            "/.cache/hunter/highlight.tmp --base16 --style=" &
+                            To_String(Source => Settings.Color_Theme) & " " &
+                            To_String(Source => Current_Selected)).all,
                      Success => Success);
                   if not Success then
                      Load_File;
@@ -409,22 +417,27 @@ package body ShowItems is
                   end if;
                   Open
                     (File => File, Mode => In_File,
-                     Name => Value(Name => "HOME") & "/.cache/hunter/highlight.tmp");
+                     Name =>
+                       Value(Name => "HOME") & "/.cache/hunter/highlight.tmp");
                   First_Line := True;
-                  Load_Highlight_File :
-                  while not End_Of_File(File) loop
-                     File_Line := To_Unbounded_String(Get_Line(File));
+                  Load_Highlight_File_Loop :
+                  while not End_Of_File(File => File) loop
+                     File_Line :=
+                       To_Unbounded_String(Source => Get_Line(File => File));
                      if First_Line then
                         File_Line :=
                           Unbounded_Slice
-                            (File_Line, Index(File_Line, ">") + 1,
-                             Length(File_Line));
+                            (Source => File_Line,
+                             Low =>
+                               Index(Source => File_Line, Pattern => ">") + 1,
+                             High => Length(Source => File_Line));
                         First_Line := False;
                      end if;
-                     exit Load_Highlight_File when End_Of_File(File);
-                     Replace_Element("&gt;", ">");
-                     Replace_Element("&lt;", "<");
-                     Replace_Element("&amp;", "&");
+                     exit Load_Highlight_File_Loop when End_Of_File
+                         (File => File);
+                     Replace_Element(Element => "&gt;", New_Element => ">");
+                     Replace_Element(Element => "&lt;", New_Element => "<");
+                     Replace_Element(Element => "&amp;", New_Element => "&");
                      Escape_Element("\");
                      Escape_Element("{");
                      Escape_Element("}");
@@ -481,7 +494,7 @@ package body ShowItems is
                        (Get_Preview_Text, "end",
                         "[subst -nocommands -novariables {" &
                         To_String(File_Line) & LF & "}]");
-                  end loop Load_Highlight_File;
+                  end loop Load_Highlight_File_Loop;
                   Close(File);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
                   <<Set_UI>>
