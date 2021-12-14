@@ -229,17 +229,28 @@ package body Preferences.UI is
                     (Mc(Interpreter, "{Copy selected files}")),
                   To_Unbounded_String
                     (Mc(Interpreter, "{Move selected files}")),
-                  To_Unbounded_String("Show the program preferences"),
                   To_Unbounded_String
-                    ("Open selected file or directory with command"),
-                  To_Unbounded_String("File or directory information"),
-                  To_Unbounded_String("Preview file or directory"),
-                  To_Unbounded_String("Add bookmark to this directory"),
-                  To_Unbounded_String("Remove bookmark from this directory"),
-                  To_Unbounded_String("Execute selected program"),
+                    (Mc(Interpreter, "{Show the program preferences")),
                   To_Unbounded_String
-                    ("Restore deleted file or directory from Trash"),
-                  To_Unbounded_String("Show the user defined actions"));
+                    (Mc
+                       (Interpreter,
+                        "{Open selected file or directory with command}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{File or directory information}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{Preview file or directory}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{Add bookmark to this directory}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{Remove bookmark from this directory}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{Execute selected program}")),
+                  To_Unbounded_String
+                    (Mc
+                       (Interpreter,
+                        "{Restore deleted file or directory from Trash}")),
+                  To_Unbounded_String
+                    (Mc(Interpreter, "{Show the user defined actions}")));
             begin
                for I in Options_Fields'First .. Options_Fields'Last - 1 loop
                   if I mod 2 /= 0 then
