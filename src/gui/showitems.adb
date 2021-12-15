@@ -444,33 +444,64 @@ package body ShowItems is
                      Start_Index := 1;
                      Highlight_Text_Loop :
                      loop
-                        Start_Index := Index(Source => File_Line, Pattern => "<span", From => Start_Index);
+                        Start_Index :=
+                          Index
+                            (Source => File_Line, Pattern => "<span",
+                             From => Start_Index);
                         exit Highlight_Text_Loop when Start_Index = 0;
                         if Start_Index > 1 then
                            Insert
                              (TextWidget => Get_Preview_Text, Index => "end",
-                              Text => "[subst -nocommands -novariables {" &
-                              Slice(Source => File_Line, Low => 1, High => Start_Index - 1) & "}]");
+                              Text =>
+                                "[subst -nocommands -novariables {" &
+                                Slice
+                                  (Source => File_Line, Low => 1,
+                                   High => Start_Index - 1) &
+                                "}]");
                         end if;
-                        End_Index := Index(Source => File_Line, Pattern => ">", From => Start_Index);
+                        End_Index :=
+                          Index
+                            (Source => File_Line, Pattern => ">",
+                             From => Start_Index);
                         Tag_Text :=
-                          Unbounded_Slice(Source => File_Line, Low => Start_Index, High => End_Index);
-                        Start_Color := Index(Source => Tag_Text, Pattern => "foreground=");
-                        if Index(Tag_Text, "foreground=") > 0 then
+                          Unbounded_Slice
+                            (Source => File_Line, Low => Start_Index,
+                             High => End_Index);
+                        Start_Color :=
+                          Index(Source => Tag_Text, Pattern => "foreground=");
+                        if Index
+                            (Source => Tag_Text, Pattern => "foreground=") >
+                          0 then
                            Tag_Name :=
                              Unbounded_Slice
-                               (Tag_Text, Start_Color + 12, Start_Color + 18);
+                               (Source => Tag_Text, Low => Start_Color + 12,
+                                High => Start_Color + 18);
                            Tag_Configure
-                             (Get_Preview_Text, To_String(Tag_Name),
-                              "-foreground " & To_String(Tag_Name));
-                        elsif Index(Tag_Text, "style=""italic""") > 0 then
-                           Tag_Name := To_Unbounded_String("italictag");
-                        elsif Index(Tag_Text, "weight=""bold""") > 0 then
-                           Tag_Name := To_Unbounded_String("boldtag");
+                             (TextWidget => Get_Preview_Text,
+                              TagName => To_String(Source => Tag_Name),
+                              Options =>
+                                "-foreground " &
+                                To_String(Source => Tag_Name));
+                        elsif Index
+                            (Source => Tag_Text,
+                             Pattern => "style=""italic""") >
+                          0 then
+                           Tag_Name :=
+                             To_Unbounded_String(Source => "italictag");
+                        elsif Index
+                            (Source => Tag_Text,
+                             Pattern => "weight=""bold""") >
+                          0 then
+                           Tag_Name :=
+                             To_Unbounded_String(Source => "boldtag");
                         end if;
-                        Start_Index := Start_Index + Length(Tag_Text);
+                        Start_Index :=
+                          Start_Index + Length(Source => Tag_Text);
                         End_Index :=
-                          Index(File_Line, "</span>", Start_Index) - 1;
+                          Index
+                            (Source => File_Line, Pattern => "</span>",
+                             From => Start_Index) -
+                          1;
                         if End_Index > 0 then
                            Insert
                              (Get_Preview_Text, "end",
