@@ -230,7 +230,7 @@ package body Preferences.UI is
                   To_Unbounded_String
                     (Mc(Interpreter, "{Move selected files}")),
                   To_Unbounded_String
-                    (Mc(Interpreter, "{Show the program preferences")),
+                    (Mc(Interpreter, "{Show the program preferences}")),
                   To_Unbounded_String
                     (Mc
                        (Interpreter,
@@ -251,11 +251,18 @@ package body Preferences.UI is
                         "{Restore deleted file or directory from Trash}")),
                   To_Unbounded_String
                     (Mc(Interpreter, "{Show the user defined actions}")));
+               FieldLength: Column_Position := 1;
             begin
+               for Label of KeysLabels loop
+                  if Length(Label) > Positive(FieldLength) then
+                     FieldLength := Column_Position(Length(Label));
+                  end if;
+               end loop;
                for I in Options_Fields'First .. Options_Fields'Last - 1 loop
                   if I mod 2 /= 0 then
                      Options_Fields.all(I) :=
-                       New_Field(1, 44, Line_Position(I / 2), 0, 0, 0);
+                       New_Field
+                         (1, FieldLength, Line_Position(I / 2), 0, 0, 0);
                      Set_Buffer
                        (Options_Fields.all(I), 0,
                         To_String(KeysLabels((I / 2) + 1)));
@@ -265,7 +272,9 @@ package body Preferences.UI is
                      Set_Options(Options_Fields.all(I), FieldOptions);
                   else
                      Options_Fields.all(I) :=
-                       New_Field(1, 18, Line_Position((I / 2) - 1), 46, 0, 0);
+                       New_Field
+                         (1, 18, Line_Position((I / 2) - 1), FieldLength + 2,
+                          0, 0);
                      Set_Buffer
                        (Options_Fields.all(I), 0,
                         To_String(Accelerators((I / 2) + 1)));
