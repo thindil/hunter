@@ -295,30 +295,50 @@ package body Preferences.UI is
                Index: Positive := 6;
                Line: Line_Position := 3;
             begin
-               Options_Fields.all(1) := New_Field(1, 18, 0, 0, 0, 0);
+               Options_Fields.all(1) :=
+                 New_Field
+                   (1,
+                    Column_Position'Value
+                      (Mc_Max("{Add new command}", Interpreter)),
+                    0, 0, 0, 0);
                Set_Buffer(Options_Fields.all(1), 0, "Add new command");
                FieldOptions := Get_Options(Options_Fields.all(1));
                FieldOptions.Edit := False;
                Set_Options(Options_Fields.all(1), FieldOptions);
-               Options_Fields.all(2) := New_Field(1, 16, 1, 20, 0, 0);
+               Options_Fields.all(2) :=
+                 New_Field
+                   (1,
+                    Column_Position'Value
+                      (Mc_Max("{Defined commands}", Interpreter)),
+                    1, 20, 0, 0);
                Set_Buffer(Options_Fields.all(2), 0, "Defined commands");
                FieldOptions := Get_Options(Options_Fields.all(2));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(2), FieldOptions);
-               Options_Fields.all(3) := New_Field(1, 10, 2, 0, 0, 0);
+               Options_Fields.all(3) :=
+                 New_Field
+                   (1,
+                    Column_Position'Value(Mc_Max("{Menu label}", Interpreter)),
+                    2, 0, 0, 0);
                Set_Buffer(Options_Fields.all(3), 0, "Menu label");
                FieldOptions := Get_Options(Options_Fields.all(3));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(3), FieldOptions);
-               Options_Fields.all(4) := New_Field(1, 7, 2, 20, 0, 0);
+               Options_Fields.all(4) :=
+                 New_Field
+                   (1, Column_Position'Value(Mc_Max("{Command}", Interpreter)),
+                    2, 20, 0, 0);
                Set_Buffer(Options_Fields.all(4), 0, "Command");
                FieldOptions := Get_Options(Options_Fields.all(4));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(4), FieldOptions);
-               Options_Fields.all(5) := New_Field(1, 6, 2, 40, 0, 0);
+               Options_Fields.all(5) :=
+                 New_Field
+                   (1, Column_Position'Value(Mc_Max("{Output}", Interpreter)),
+                    2, 40, 0, 0);
                Set_Buffer(Options_Fields.all(5), 0, "Output");
                FieldOptions := Get_Options(Options_Fields.all(5));
                FieldOptions.Edit := False;
