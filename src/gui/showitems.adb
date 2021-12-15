@@ -438,24 +438,24 @@ package body ShowItems is
                      Replace_Element(Element => "&gt;", New_Element => ">");
                      Replace_Element(Element => "&lt;", New_Element => "<");
                      Replace_Element(Element => "&amp;", New_Element => "&");
-                     Escape_Element("\");
-                     Escape_Element("{");
-                     Escape_Element("}");
+                     Escape_Element(Element => "\");
+                     Escape_Element(Element => "{");
+                     Escape_Element(Element => "}");
                      Start_Index := 1;
                      Highlight_Text_Loop :
                      loop
-                        Start_Index := Index(File_Line, "<span", Start_Index);
+                        Start_Index := Index(Source => File_Line, Pattern => "<span", From => Start_Index);
                         exit Highlight_Text_Loop when Start_Index = 0;
                         if Start_Index > 1 then
                            Insert
-                             (Get_Preview_Text, "end",
-                              "[subst -nocommands -novariables {" &
-                              Slice(File_Line, 1, Start_Index - 1) & "}]");
+                             (TextWidget => Get_Preview_Text, Index => "end",
+                              Text => "[subst -nocommands -novariables {" &
+                              Slice(Source => File_Line, Low => 1, High => Start_Index - 1) & "}]");
                         end if;
-                        End_Index := Index(File_Line, ">", Start_Index);
+                        End_Index := Index(Source => File_Line, Pattern => ">", From => Start_Index);
                         Tag_Text :=
-                          Unbounded_Slice(File_Line, Start_Index, End_Index);
-                        Start_Color := Index(Tag_Text, "foreground=");
+                          Unbounded_Slice(Source => File_Line, Low => Start_Index, High => End_Index);
+                        Start_Color := Index(Source => Tag_Text, Pattern => "foreground=");
                         if Index(Tag_Text, "foreground=") > 0 then
                            Tag_Name :=
                              Unbounded_Slice
