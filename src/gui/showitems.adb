@@ -504,27 +504,27 @@ package body ShowItems is
                           1;
                         if End_Index > 0 then
                            Insert
-                             (Get_Preview_Text, "end",
-                              "[subst -nocommands -novariables {" &
-                              Slice(File_Line, Start_Index, End_Index) &
-                              "}] [list " & To_String(Tag_Name) & "]");
+                             (TextWidget => Get_Preview_Text, Index => "end",
+                              Text => "[subst -nocommands -novariables {" &
+                              Slice(Source => File_Line, Low => Start_Index, High => End_Index) &
+                              "}] [list " & To_String(Source => Tag_Name) & "]");
                         else
                            Insert
-                             (Get_Preview_Text, "end",
-                              "[subst -nocommands -novariables {" &
+                             (TextWidget => Get_Preview_Text, Index => "end",
+                              Text => "[subst -nocommands -novariables {" &
                               Slice
-                                (File_Line, Start_Index, Length(File_Line)) &
+                                (Source => File_Line, Low => Start_Index, High => Length(Source => File_Line)) &
                               "}]");
                         end if;
                         Start_Index := 1;
                         File_Line :=
                           Unbounded_Slice
-                            (File_Line, End_Index + 8, Length(File_Line));
+                            (Source => File_Line, Low => End_Index + 8, High => Length(Source => File_Line));
                      end loop Highlight_Text_Loop;
                      Insert
-                       (Get_Preview_Text, "end",
-                        "[subst -nocommands -novariables {" &
-                        To_String(File_Line) & LF & "}]");
+                       (TextWidget => Get_Preview_Text, Index => "end",
+                        Text => "[subst -nocommands -novariables {" &
+                        To_String(Source => File_Line) & LF & "}]");
                   end loop Load_Highlight_File_Loop;
                   Close(File);
                   Delete_File(Value("HOME") & "/.cache/hunter/highlight.tmp");
