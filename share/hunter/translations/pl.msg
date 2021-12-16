@@ -331,4 +331,8 @@
    "Overwrite" "Zamieniaj"
    "Don't overwrite" "Nie zamieniaj"
    "existing" "istniejących"
+   "Add new command" "Dodaj nową komendę"
+   "Menu label" "Etykieta w menu"
+   "Command" "Komenda"
+   "Output" "Pokaż wynik"
 }
