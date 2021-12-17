@@ -335,4 +335,5 @@
    "Menu label" "Etykieta w menu"
    "Command" "Komenda"
    "Output" "Pokaż wynik"
+   "Edit" "Edytuj"
 }
