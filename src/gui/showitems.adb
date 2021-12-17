@@ -550,37 +550,44 @@ package body ShowItems is
                declare
                   Preview_Image: constant Tk_Photo :=
                     Create
-                      ("previewimage", "-file " & To_String(Current_Selected));
-                  StartX, StartY, ImageWidth, ImageHeight: Natural := 0;
+                      (pathName => "previewimage",
+                       options =>
+                         "-file " & To_String(Source => Current_Selected));
+                  Start_X, Start_Y, Image_Width, Image_Height: Natural := 0;
                begin
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Info_Frame);
                   if Settings.Scale_Images then
-                     Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Y_Scroll);
-                     Tcl.Tk.Ada.Pack.Pack_Forget(Preview_X_Scroll);
+                     Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Y_Scroll);
+                     Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_X_Scroll);
                      Scale_Image;
                   else
-                     Delete(Get_Preview_Canvas, "all");
-                     ImageWidth := Natural'Value(Width(Preview_Image));
-                     ImageHeight := Natural'Value(Height(Preview_Image));
-                     if ImageHeight <
+                     Delete
+                       (CanvasWidget => Get_Preview_Canvas, TagOrId => "all");
+                     Image_Width := Natural'Value(Width(Img => Preview_Image));
+                     Image_Height :=
+                       Natural'Value(Height(Img => Preview_Image));
+                     if Image_Height <
                        Natural'Value
-                         (Winfo_Get(Get_Preview_Frame, "height")) then
-                        ImageHeight :=
+                         (Winfo_Get
+                            (Widgt => Get_Preview_Frame,
+                             Info => "height")) then
+                        Image_Height :=
                           Natural'Value
-                            (Winfo_Get(Get_Preview_Frame, "height"));
+                            (Winfo_Get
+                               (Widgt => Get_Preview_Frame, Info => "height"));
                      end if;
-                     StartX := ImageWidth / 2;
-                     StartY := ImageHeight / 2;
+                     Start_X := Image_Width / 2;
+                     Start_Y := Image_Height / 2;
                      Canvas_Create
                        (Get_Preview_Canvas, "image",
-                        Natural'Image(StartX) & Natural'Image(StartY) &
+                        Natural'Image(Start_X) & Natural'Image(Start_Y) &
                         " -image " & Preview_Image);
                      configure
                        (Get_Preview_Canvas,
                         "-width " & Width(Preview_Image) & " -height" &
-                        Natural'Image(ImageHeight) & " -scrollregion [list " &
+                        Natural'Image(Image_Height) & " -scrollregion [list " &
                         BBox(Get_Preview_Canvas, "all") & "]");
                      configure
                        (Preview_Y_Scroll,
