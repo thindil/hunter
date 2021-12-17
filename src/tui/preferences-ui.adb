@@ -372,20 +372,31 @@ package body Preferences.UI is
                     New_Field(1, 20, Line, 40, 0, 0);
                   Set_Buffer
                     (Options_Fields.all(Index + 2), 0,
-                     (if UserCommandsList(I).NeedOutput then "Yes" else "No"));
+                     (if UserCommandsList(I).NeedOutput then
+                        Mc(Interpreter, "Yes")
+                      else Mc(Interpreter, "No")));
                   FieldOptions := Get_Options(Options_Fields.all(Index + 2));
                   FieldOptions.Edit := False;
                   FieldOptions.Active := False;
                   Set_Options(Options_Fields.all(Index + 2), FieldOptions);
                   Options_Fields.all(Index + 3) :=
-                    New_Field(1, 5, Line, 50, 0, 0);
-                  Set_Buffer(Options_Fields.all(Index + 3), 0, "Edit");
+                    New_Field
+                      (1, Column_Position'Value(Mc_Max("{Edit}", Interpreter)),
+                       Line, 50, 0, 0);
+                  Set_Buffer
+                    (Options_Fields.all(Index + 3), 0,
+                     Mc(Interpreter, "Edit"));
                   FieldOptions := Get_Options(Options_Fields.all(Index + 3));
                   FieldOptions.Edit := False;
                   Set_Options(Options_Fields.all(Index + 3), FieldOptions);
                   Options_Fields.all(Index + 4) :=
-                    New_Field(1, 6, Line, 57, 0, 0);
-                  Set_Buffer(Options_Fields.all(Index + 4), 0, "Delete");
+                    New_Field
+                      (1,
+                       Column_Position'Value(Mc_Max("{Delete}", Interpreter)),
+                       Line, 57, 0, 0);
+                  Set_Buffer
+                    (Options_Fields.all(Index + 4), 0,
+                     Mc(Interpreter, "Delete"));
                   FieldOptions := Get_Options(Options_Fields.all(Index + 4));
                   FieldOptions.Edit := False;
                   Set_Options(Options_Fields.all(Index + 4), FieldOptions);
