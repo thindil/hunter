@@ -548,7 +548,7 @@ package body ShowItems is
             elsif Mime_Type(1 .. 5) = "image" then
                Show_Image_Preview_Block :
                declare
-                  Image: constant Tk_Photo :=
+                  Preview_Image: constant Tk_Photo :=
                     Create
                       ("previewimage", "-file " & To_String(Current_Selected));
                   StartX, StartY, ImageWidth, ImageHeight: Natural := 0;
@@ -562,8 +562,8 @@ package body ShowItems is
                      Scale_Image;
                   else
                      Delete(Get_Preview_Canvas, "all");
-                     ImageWidth := Natural'Value(Width(Image));
-                     ImageHeight := Natural'Value(Height(Image));
+                     ImageWidth := Natural'Value(Width(Preview_Image));
+                     ImageHeight := Natural'Value(Height(Preview_Image));
                      if ImageHeight <
                        Natural'Value
                          (Winfo_Get(Get_Preview_Frame, "height")) then
@@ -576,10 +576,10 @@ package body ShowItems is
                      Canvas_Create
                        (Get_Preview_Canvas, "image",
                         Natural'Image(StartX) & Natural'Image(StartY) &
-                        " -image " & Image);
+                        " -image " & Preview_Image);
                      configure
                        (Get_Preview_Canvas,
-                        "-width " & Width(Image) & " -height" &
+                        "-width " & Width(Preview_Image) & " -height" &
                         Natural'Image(ImageHeight) & " -scrollregion [list " &
                         BBox(Get_Preview_Canvas, "all") & "]");
                      configure
