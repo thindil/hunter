@@ -581,30 +581,31 @@ package body ShowItems is
                      Start_X := Image_Width / 2;
                      Start_Y := Image_Height / 2;
                      Canvas_Create
-                       (Get_Preview_Canvas, "image",
-                        Natural'Image(Start_X) & Natural'Image(Start_Y) &
+                       (Parent => Get_Preview_Canvas, Child_Type => "image",
+                        Options => Natural'Image(Start_X) & Natural'Image(Start_Y) &
                         " -image " & Preview_Image);
                      configure
-                       (Get_Preview_Canvas,
-                        "-width " & Width(Preview_Image) & " -height" &
+                       (Widgt => Get_Preview_Canvas,
+                        options => "-width " & Width(Img => Preview_Image) & " -height" &
                         Natural'Image(Image_Height) & " -scrollregion [list " &
-                        BBox(Get_Preview_Canvas, "all") & "]");
+                        BBox(CanvasWidget => Get_Preview_Canvas, TagOrId => "all") & "]");
                      configure
-                       (Preview_Y_Scroll,
-                        "-command [list " & Get_Preview_Canvas & " yview]");
+                       (Widgt => Preview_Y_Scroll,
+                        options => "-command [list " & Get_Preview_Canvas & " yview]");
                      configure
-                       (Preview_X_Scroll,
-                        "-command [list " & Get_Preview_Canvas & " xview]");
+                       (Widgt => Preview_X_Scroll,
+                        options => "-command [list " & Get_Preview_Canvas & " xview]");
                      Tcl.Tk.Ada.Pack.Pack
-                       (Preview_X_Scroll, "-side bottom -fill x");
+                       (Slave => Preview_X_Scroll, Options => "-side bottom -fill x");
                      Tcl.Tk.Ada.Pack.Pack
-                       (Preview_Y_Scroll, "-side right -fill y");
+                       (Slave => Preview_Y_Scroll, Options => "-side right -fill y");
                   end if;
-                  Tcl.Tk.Ada.Pack.Pack(Get_Preview_Canvas, "-side top");
+                  Tcl.Tk.Ada.Pack.Pack(Slave => Get_Preview_Canvas, Options => "-side top");
                exception
                   when Tcl_Error_Exception =>
+                     Show_Exception_Block:
                      declare
-                        ActionButton: constant Ttk_RadioButton :=
+                        Action_Button: constant Ttk_RadioButton :=
                           Get_Widget
                             (".mainframe.toolbars.itemtoolbar.infobutton");
                      begin
@@ -612,13 +613,13 @@ package body ShowItems is
                           New_String
                             (".mainframe.toolbars.itemtoolbar.previewbutton");
                         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-                        if Invoke(ActionButton) /= "" then
+                        if Invoke(Action_Button) /= "" then
                            raise Hunter_Show_Items_Exception
                              with Mc
                                (Get_Context,
                                 "{Can't show file or directory info}");
                         end if;
-                     end;
+                     end Show_Exception_Block;
                end Show_Image_Preview_Block;
                Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
                Tcl_Eval(Get_Context, "update");
