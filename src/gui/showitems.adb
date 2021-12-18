@@ -226,7 +226,6 @@ package body ShowItems is
         Get_Widget(pathName => Get_Preview_Frame & ".title");
       Path_Frame: constant Ttk_Frame :=
         Get_Widget(pathName => ".mainframe.paned.previewframe.pathframe");
-      Hunter_Show_Items_Exception: exception;
    begin
       configure
         (Widgt => Label,
@@ -289,6 +288,7 @@ package body ShowItems is
             Mime_Type: constant String :=
               Get_Mime_Type
                 (File_Name => To_String(Source => Current_Selected));
+            Hunter_Show_Items_Exception: exception;
          begin
             if Is_Text(Mime_Type => Mime_Type) then
                Show_Text_Preview_Block :
@@ -582,64 +582,82 @@ package body ShowItems is
                      Start_Y := Image_Height / 2;
                      Canvas_Create
                        (Parent => Get_Preview_Canvas, Child_Type => "image",
-                        Options => Natural'Image(Start_X) & Natural'Image(Start_Y) &
-                        " -image " & Preview_Image);
+                        Options =>
+                          Natural'Image(Start_X) & Natural'Image(Start_Y) &
+                          " -image " & Preview_Image);
                      configure
                        (Widgt => Get_Preview_Canvas,
-                        options => "-width " & Width(Img => Preview_Image) & " -height" &
-                        Natural'Image(Image_Height) & " -scrollregion [list " &
-                        BBox(CanvasWidget => Get_Preview_Canvas, TagOrId => "all") & "]");
+                        options =>
+                          "-width " & Width(Img => Preview_Image) &
+                          " -height" & Natural'Image(Image_Height) &
+                          " -scrollregion [list " &
+                          BBox
+                            (CanvasWidget => Get_Preview_Canvas,
+                             TagOrId => "all") &
+                          "]");
                      configure
                        (Widgt => Preview_Y_Scroll,
-                        options => "-command [list " & Get_Preview_Canvas & " yview]");
+                        options =>
+                          "-command [list " & Get_Preview_Canvas & " yview]");
                      configure
                        (Widgt => Preview_X_Scroll,
-                        options => "-command [list " & Get_Preview_Canvas & " xview]");
+                        options =>
+                          "-command [list " & Get_Preview_Canvas & " xview]");
                      Tcl.Tk.Ada.Pack.Pack
-                       (Slave => Preview_X_Scroll, Options => "-side bottom -fill x");
+                       (Slave => Preview_X_Scroll,
+                        Options => "-side bottom -fill x");
                      Tcl.Tk.Ada.Pack.Pack
-                       (Slave => Preview_Y_Scroll, Options => "-side right -fill y");
+                       (Slave => Preview_Y_Scroll,
+                        Options => "-side right -fill y");
                   end if;
-                  Tcl.Tk.Ada.Pack.Pack(Slave => Get_Preview_Canvas, Options => "-side top");
+                  Tcl.Tk.Ada.Pack.Pack
+                    (Slave => Get_Preview_Canvas, Options => "-side top");
                exception
                   when Tcl_Error_Exception =>
-                     Show_Exception_Block:
+                     Show_Exception_Block :
                      declare
                         Action_Button: constant Ttk_RadioButton :=
                           Get_Widget
-                            (".mainframe.toolbars.itemtoolbar.infobutton");
+                            (pathName =>
+                               ".mainframe.toolbars.itemtoolbar.infobutton");
                      begin
                         Button.Name :=
                           New_String
-                            (".mainframe.toolbars.itemtoolbar.previewbutton");
-                        Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-                        if Invoke(Action_Button) /= "" then
+                            (Str =>
+                               ".mainframe.toolbars.itemtoolbar.previewbutton");
+                        Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
+                        if Invoke(Buttn => Action_Button) /= "" then
                            raise Hunter_Show_Items_Exception
                              with Mc
-                               (Get_Context,
-                                "{Can't show file or directory info}");
+                               (Interp => Get_Context,
+                                Src_String =>
+                                  "{Can't show file or directory info}");
                         end if;
                      end Show_Exception_Block;
                end Show_Image_Preview_Block;
-               Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
-               Tcl_Eval(Get_Context, "update");
-               Autoscroll(Preview_X_Scroll);
-               Autoscroll(Preview_Y_Scroll);
+               Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Path_Frame);
+               Tcl_Eval(interp => Get_Context, strng => "update");
+               Autoscroll(Scroll => Preview_X_Scroll);
+               Autoscroll(Scroll => Preview_Y_Scroll);
             else
+               Show_Info_Block :
                declare
-                  ActionButton: constant Ttk_RadioButton :=
-                    Get_Widget(".mainframe.toolbars.itemtoolbar.infobutton");
+                  Action_Button: constant Ttk_RadioButton :=
+                    Get_Widget
+                      (pathName =>
+                         ".mainframe.toolbars.itemtoolbar.infobutton");
                begin
                   Button.Name :=
                     New_String
-                      (".mainframe.toolbars.itemtoolbar.previewbutton");
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Button);
-                  if Invoke(ActionButton) /= "" then
+                      (Str => ".mainframe.toolbars.itemtoolbar.previewbutton");
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
+                  if Invoke(Buttn => Action_Button) /= "" then
                      raise Hunter_Show_Items_Exception
                        with Mc
-                         (Get_Context, "{Can't show file or directory info}");
+                         (Interp => Get_Context,
+                          Src_String => "{Can't show file or directory info}");
                   end if;
-               end;
+               end Show_Info_Block;
             end if;
          end Show_Preview_Block;
       end if;
