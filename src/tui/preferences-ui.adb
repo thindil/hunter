@@ -451,8 +451,8 @@ package body Preferences.UI is
                            Enabled_Modules.Contains
                              (To_Unbounded_String
                                 (Path & "/" & FileName(1 .. Last)))
-                         then "Yes"
-                         else "No"));
+                         then Mc(Interpreter, "Yes")
+                         else Mc(Interpreter, "No")));
                      FieldOptions :=
                        Get_Options(Options_Fields.all(FormIndex));
                      FieldOptions.Edit := False;
@@ -505,7 +505,9 @@ package body Preferences.UI is
                      Close(ConfigFile);
                      Options_Fields.all(FormIndex + 4) :=
                        New_Field(1, 7, Line, 50, 0, 0);
-                     Set_Buffer(Options_Fields.all(FormIndex + 4), 0, "Show");
+                     Set_Buffer
+                       (Options_Fields.all(FormIndex + 4), 0,
+                        Mc(Interpreter, "Show"));
                      FieldOptions :=
                        Get_Options(Options_Fields.all(FormIndex + 4));
                      FieldOptions.Edit := False;
@@ -548,32 +550,35 @@ package body Preferences.UI is
                Modules_List.Clear;
                Amount := (CountModules("../share/hunter/modules") * 5);
                Options_Fields := new Field_Array(1 .. 6 + Amount);
-               Options_Fields.all(1) := New_Field(1, 7, 0, 0, 0, 0);
-               Set_Buffer(Options_Fields.all(1), 0, "Enabled");
+               Options_Fields.all(1) := New_Field(1, 9, 0, 0, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(1), 0, Mc(Interpreter, "Enabled"));
                FieldOptions := Get_Options(Options_Fields.all(1));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(1), FieldOptions);
-               Options_Fields.all(2) := New_Field(1, 4, 0, 10, 0, 0);
-               Set_Buffer(Options_Fields.all(2), 0, "Name");
+               Options_Fields.all(2) := New_Field(1, 6, 0, 10, 0, 0);
+               Set_Buffer(Options_Fields.all(2), 0, Mc(Interpreter, "Name"));
                FieldOptions := Get_Options(Options_Fields.all(2));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(2), FieldOptions);
-               Options_Fields.all(3) := New_Field(1, 7, 0, 17, 0, 0);
-               Set_Buffer(Options_Fields.all(3), 0, "Version");
+               Options_Fields.all(3) := New_Field(1, 9, 0, 17, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(3), 0, Mc(Interpreter, "Version"));
                FieldOptions := Get_Options(Options_Fields.all(3));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(3), FieldOptions);
-               Options_Fields.all(4) := New_Field(1, 11, 0, 27, 0, 0);
-               Set_Buffer(Options_Fields.all(4), 0, "Description");
+               Options_Fields.all(4) := New_Field(1, 20, 0, 27, 0, 0);
+               Set_Buffer
+                 (Options_Fields.all(4), 0, Mc(Interpreter, "Description"));
                FieldOptions := Get_Options(Options_Fields.all(4));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(4), FieldOptions);
-               Options_Fields.all(5) := New_Field(1, 4, 0, 50, 0, 0);
-               Set_Buffer(Options_Fields.all(5), 0, "Show");
+               Options_Fields.all(5) := New_Field(1, 10, 0, 50, 0, 0);
+               Set_Buffer(Options_Fields.all(5), 0, Mc(Interpreter, "Show"));
                FieldOptions := Get_Options(Options_Fields.all(5));
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
