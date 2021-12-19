@@ -336,4 +336,6 @@
    "Command" "Komenda"
    "Output" "Pokaż wynik"
    "Edit" "Edytuj"
+   "every" "co"
+   "second(s)" "sekund(y)"
 }
