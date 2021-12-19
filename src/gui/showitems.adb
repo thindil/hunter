@@ -669,17 +669,17 @@ package body ShowItems is
    -- SOURCE
    procedure Show_Info is
       -- ****
-      Label: Ttk_Label := Get_Widget(Get_Preview_Frame & ".title");
-      SelectedItem: constant String := To_String(Current_Selected);
-      Button: Ttk_Button;
-      MimeType: constant String := Get_Mime_Type(SelectedItem);
-      DirectorySize: Natural := 0;
-      PathFrame: constant Ttk_Frame :=
-        Get_Widget(".mainframe.paned.previewframe.pathframe");
+      Label: Ttk_Label := Get_Widget(pathName => Get_Preview_Frame & ".title");
+      Selected_Item: constant String := To_String(Source => Current_Selected);
+      Button: Ttk_Button := Get_Widget(pathName => ".");
+      Mime_Type: constant String := Get_Mime_Type(File_Name => Selected_Item);
+      Directory_Size: Natural := 0;
+      Path_Frame: constant Ttk_Frame :=
+        Get_Widget(pathName => ".mainframe.paned.previewframe.pathframe");
    begin
-      Unautoscroll(Preview_X_Scroll);
-      Unautoscroll(Preview_Y_Scroll);
-      Tcl.Tk.Ada.Pack.Pack_Forget(PathFrame);
+      Unautoscroll(Scroll => Preview_X_Scroll);
+      Unautoscroll(Scroll => Preview_Y_Scroll);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
       Tcl_Eval(Get_Context, "update");
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
       Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
@@ -689,29 +689,29 @@ package body ShowItems is
       configure(Label, "-text {" & Mc(Get_Context, "{Information}") & "}");
       Button.Interp := Label.Interp;
       if
-        (MimeType'Length > 4 and
-         (MimeType(1 .. 4) /= "imag" and not Is_Text(MimeType))) and
-        not Is_Directory(SelectedItem) then
+        (Mime_Type'Length > 4 and
+         (Mime_Type(1 .. 4) /= "imag" and not Is_Text(Mime_Type))) and
+        not Is_Directory(Selected_Item) then
          Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       end if;
       Label.Name := New_String(Info_Frame & ".fullpathtext");
-      if not Is_Symbolic_Link(SelectedItem) then
+      if not Is_Symbolic_Link(Selected_Item) then
          configure(Label, "-text {" & Mc(Get_Context, "{Full path:}") & "}");
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Links to:}") & "}");
       end if;
       Label.Name := New_String(Info_Frame & ".fullpath");
-      configure(Label, "-text {" & Full_Name(SelectedItem) & "}");
+      configure(Label, "-text {" & Full_Name(Selected_Item) & "}");
       Label.Name := New_String(Info_Frame & ".sizetext");
-      if Is_Directory(SelectedItem) then
+      if Is_Directory(Selected_Item) then
          configure(Label, "-text {" & Mc(Get_Context, "{Elements:}") & "}");
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Size:}") & "}");
       end if;
       Label.Name := New_String(Info_Frame & ".size");
-      if Is_Directory(SelectedItem) then
+      if Is_Directory(Selected_Item) then
          if Settings.Show_Hidden then
             configure
               (Label,
@@ -721,31 +721,31 @@ package body ShowItems is
             Count_Directory_Size_Loop :
             for Item of Second_Items_List loop
                if not Item.Is_Hidden then
-                  DirectorySize := DirectorySize + 1;
+                  Directory_Size := Directory_Size + 1;
                end if;
             end loop Count_Directory_Size_Loop;
-            configure(Label, "-text {" & Natural'Image(DirectorySize) & "}");
+            configure(Label, "-text {" & Natural'Image(Directory_Size) & "}");
          end if;
-      elsif Is_Regular_File(SelectedItem) then
+      elsif Is_Regular_File(Selected_Item) then
          configure
-           (Label, "-text {" & Count_File_Size(Size(SelectedItem)) & "}");
+           (Label, "-text {" & Count_File_Size(Size(Selected_Item)) & "}");
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
       end if;
       Label.Name := New_String(Info_Frame & ".lastmodified");
-      if Is_Directory(SelectedItem) or Is_Regular_File(SelectedItem) then
+      if Is_Directory(Selected_Item) or Is_Regular_File(Selected_Item) then
          configure
            (Label,
             "-text {" &
             Ada.Calendar.Formatting.Image
-              (Modification_Time(SelectedItem), False,
+              (Modification_Time(Selected_Item), False,
                Ada.Calendar.Time_Zones.UTC_Time_Offset) &
             "}");
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
       end if;
       Label.Name := New_String(Info_Frame & ".filetypetext");
-      if Is_Directory(SelectedItem) or not Is_Regular_File(SelectedItem) then
+      if Is_Directory(Selected_Item) or not Is_Regular_File(Selected_Item) then
          Tcl.Tk.Ada.Grid.Grid_Remove(Label);
          Label.Name := New_String(Info_Frame & ".filetype");
          Tcl.Tk.Ada.Grid.Grid_Remove(Label);
@@ -753,12 +753,12 @@ package body ShowItems is
          Tcl.Tk.Ada.Grid.Grid(Label);
          Label.Name := New_String(Info_Frame & ".filetype");
          configure
-           (Label, "-text {" & Get_Mime_Type(Full_Name(SelectedItem)) & "}");
+           (Label, "-text {" & Get_Mime_Type(Full_Name(Selected_Item)) & "}");
          Tcl.Tk.Ada.Grid.Grid(Label);
       end if;
       Label.Name := New_String(Info_Frame & ".associatedprogramtext");
-      if not Is_Regular_File(SelectedItem) and
-        not Is_Directory(SelectedItem) then
+      if not Is_Regular_File(Selected_Item) and
+        not Is_Directory(Selected_Item) then
          Tcl.Tk.Ada.Grid.Grid_Remove(Label);
          Button.Name := New_String(Info_Frame & ".associatedprogram");
          Tcl.Tk.Ada.Grid.Grid_Remove(Button);
@@ -776,7 +776,7 @@ package body ShowItems is
             end if;
             Non_Blocking_Spawn
               (ProcessDesc, ExecutableName,
-               Argument_String_To_List("query default " & MimeType).all);
+               Argument_String_To_List("query default " & Mime_Type).all);
             Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
             if Result = 1 then
                DesktopFile :=
@@ -805,7 +805,7 @@ package body ShowItems is
          type Integer_Access is access Integer;
          Status: constant Integer_Access := new Integer;
          Arguments: constant Argument_List :=
-           (new String'("-c%a %U %G"), new String'(SelectedItem));
+           (new String'("-c%a %U %G"), new String'(Selected_Item));
          procedure SetPermissionsButtons
            (Name, ButtonState: String; Permission: Character) is
             CheckButton: Ttk_CheckButton;
@@ -818,7 +818,7 @@ package body ShowItems is
                    (Info_Frame & "." & Name & "frame." &
                     To_String(Button_Names(I)));
                if I = 1 then
-                  if Is_Directory(SelectedItem) then
+                  if Is_Directory(Selected_Item) then
                      Tcl.Tk.Ada.Pack.Pack_Forget(CheckButton);
                   else
                      Tcl.Tk.Ada.Pack.Pack
