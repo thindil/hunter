@@ -647,13 +647,15 @@ package body Preferences.UI is
       MenuLength: Column_Position;
    begin
       Set_Cursor_Visibility(Visibility);
-      Menu_Items.all(1) := New_Item("Disable");
+      Menu_Items.all(1) := New_Item(Mc(Interpreter, "Disable"));
       Create_Time_Menu_Loop :
       for I in 2 .. Max + 1 loop
          Menu_Items.all(I) :=
-           New_Item("every" & Natural'Image(I - 1) & " second(s)");
+           New_Item
+             (Mc(Interpreter, "every") & Natural'Image(I - 1) & " " &
+              Mc(Interpreter, "second(s)"));
       end loop Create_Time_Menu_Loop;
-      Menu_Items.all(Max + 2) := New_Item("Close");
+      Menu_Items.all(Max + 2) := New_Item(Mc(Interpreter, "Close"));
       Menu_Items.all(Max + 3) := Null_Item;
       SubMenu := New_Menu(Menu_Items);
       Set_Format(SubMenu, 10, 1);
@@ -983,7 +985,7 @@ package body Preferences.UI is
          when KEY_PPAGE =>
             Result := Driver(SubMenu, M_ScrollDown_Page);
          when 10 =>
-            if Name(Current(SubMenu)) /= "Close" then
+            if Name(Current(SubMenu)) /= Mc(Interpreter, "Close") then
                if Get_Index(Current(DialogForm)) = 4 then
                   Settings.Auto_Refresh_Interval :=
                     Get_Index(Current(SubMenu)) - 1;
