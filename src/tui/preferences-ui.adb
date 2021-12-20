@@ -711,7 +711,8 @@ package body Preferences.UI is
       for I in 1 .. Integer(Slice_Count(Tokens)) - 1 loop
          Menu_Items.all(I) := New_Item(Slice(Tokens, Slice_Number(I + 1)));
       end loop Set_Menu_Loop;
-      Menu_Items.all(Menu_Items'Last - 1) := New_Item("Close");
+      Menu_Items.all(Menu_Items'Last - 1) :=
+        New_Item(Mc(Interpreter, "Close"));
       Menu_Items.all(Menu_Items'Last) := Null_Item;
       SubMenu := New_Menu(Menu_Items);
       Set_Format(SubMenu, 10, 1);
@@ -1020,7 +1021,7 @@ package body Preferences.UI is
          when KEY_PPAGE =>
             Result := Driver(SubMenu, M_ScrollDown_Page);
          when 10 =>
-            if ThemeName /= "Close" then
+            if ThemeName /= Mc(Interpreter, "Close") then
                Settings.Color_Theme := To_Unbounded_String(ThemeName);
             end if;
             Show_Options_Tab(1);
