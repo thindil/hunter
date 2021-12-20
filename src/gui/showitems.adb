@@ -292,7 +292,7 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Y_Scroll);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Info_Frame);
          configure
-           (Widgt => Preview_Y_Scroll,
+           (Widgt => Get_Preview_Y_Scroll,
             options => "-command [list " & Preview_Tree & " yview]");
          configure
            (Widgt => Get_Preview_X_Scroll,
@@ -301,7 +301,7 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack
            (Slave => Get_Preview_X_Scroll, Options => "-side bottom -fill x");
          Tcl.Tk.Ada.Pack.Pack
-           (Slave => Preview_Y_Scroll, Options => "-side right -fill y");
+           (Slave => Get_Preview_Y_Scroll, Options => "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
            (Slave => Preview_Tree,
             Options => "-side top -fill both -expand true");
@@ -309,7 +309,7 @@ package body ShowItems is
          Tcl_Eval(interp => Get_Context, strng => "update");
          Update_Directory_List(Clear => True, Frame_Name => "preview");
          Autoscroll(Scroll => Get_Preview_X_Scroll);
-         Autoscroll(Scroll => Preview_Y_Scroll);
+         Autoscroll(Scroll => Get_Preview_Y_Scroll);
       else
          Show_Preview_Block :
          declare
@@ -410,11 +410,11 @@ package body ShowItems is
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_X_Scroll);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Info_Frame);
                   configure
-                    (Widgt => Preview_Y_Scroll,
+                    (Widgt => Get_Preview_Y_Scroll,
                      options =>
                        "-command [list " & Get_Preview_Text & " yview]");
                   Tcl.Tk.Ada.Pack.Pack
-                    (Slave => Preview_Y_Scroll,
+                    (Slave => Get_Preview_Y_Scroll,
                      Options => "-side right -fill y");
                   Tcl.Tk.Ada.Pack.Pack
                     (Slave => Get_Preview_Text,
@@ -572,7 +572,7 @@ package body ShowItems is
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Path_Frame);
                   Tcl_Eval(interp => Get_Context, strng => "update");
                end Show_Text_Preview_Block;
-               Autoscroll(Scroll => Preview_Y_Scroll);
+               Autoscroll(Scroll => Get_Preview_Y_Scroll);
             elsif Mime_Type(1 .. 5) = "image" then
                Show_Image_Preview_Block :
                declare
@@ -709,10 +709,10 @@ package body ShowItems is
    begin
       Unautoscroll(Scroll => Get_Preview_X_Scroll);
       Unautoscroll(Scroll => Get_Preview_Y_Scroll);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Path_Frame);
-      Tcl_Eval(Get_Context, "update");
-      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Path_Frame);
+      Tcl_Eval(interp => Get_Context, strng => "update");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Y_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_X_Scroll);
