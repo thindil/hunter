@@ -123,10 +123,22 @@ package body ShowItems is
 
    -- ****iv* ShowItems/ShowItems.Preview_Tree
    -- FUNCTION
-   -- Tk_Tree_View used to show directories previews
+   -- Ttk_Tree_View used to show directories previews
    -- SOURCE
    Preview_Tree: Ttk_Tree_View;
    -- ****
+
+   -- ****if* ShowItems/ShowItems.Get_Preview_Tree
+   -- FUNCTION
+   -- Get the Ttk_Tree_View for show directories previews
+   -- RESULT
+   -- The Ttk_Tree_View for show directories previews
+   -- SOURCE
+   function Get_Preview_Tree return Ttk_Tree_View is
+      -- ****
+   begin
+      return Preview_Tree;
+   end Get_Preview_Tree;
 
    -- ****iv* ShowItems/ShowItems.Preview_Text
    -- FUNCTION
@@ -285,7 +297,7 @@ package body ShowItems is
          Load_Directory
            (Directory_Name => To_String(Source => Current_Selected),
             Second => True);
-         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Tree);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_X_Scroll);
@@ -293,17 +305,17 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Info_Frame);
          configure
            (Widgt => Get_Preview_Y_Scroll,
-            options => "-command [list " & Preview_Tree & " yview]");
+            options => "-command [list " & Get_Preview_Tree & " yview]");
          configure
            (Widgt => Get_Preview_X_Scroll,
-            options => "-command [list " & Preview_Tree & " xview]");
-         configure(Widgt => Preview_Tree, options => "-selectmode none");
+            options => "-command [list " & Get_Preview_Tree & " xview]");
+         configure(Widgt => Get_Preview_Tree, options => "-selectmode none");
          Tcl.Tk.Ada.Pack.Pack
            (Slave => Get_Preview_X_Scroll, Options => "-side bottom -fill x");
          Tcl.Tk.Ada.Pack.Pack
            (Slave => Get_Preview_Y_Scroll, Options => "-side right -fill y");
          Tcl.Tk.Ada.Pack.Pack
-           (Slave => Preview_Tree,
+           (Slave => Get_Preview_Tree,
             Options => "-side top -fill both -expand true");
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Path_Frame);
          Tcl_Eval(interp => Get_Context, strng => "update");
@@ -404,7 +416,7 @@ package body ShowItems is
                      end loop Escape_Element_Loop;
                   end Escape_Element;
                begin
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Tree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_X_Scroll);
@@ -584,7 +596,7 @@ package body ShowItems is
                   Start_X, Start_Y, Image_Width, Image_Height: Natural := 0;
                begin
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
-                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
+                  Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Tree);
                   Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Info_Frame);
                   if Settings.Scale_Images then
                      Tcl.Tk.Ada.Pack.Pack_Forget
@@ -712,7 +724,7 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Path_Frame);
       Tcl_Eval(interp => Get_Context, strng => "update");
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Preview_Tree);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Tree);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Y_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_X_Scroll);
@@ -1094,13 +1106,13 @@ package body ShowItems is
       if Argc = 2 then
          SelectedItem := To_Unbounded_String(CArgv.Arg(Argv, 1));
       else
-         if Selection(Preview_Tree) = "" then
+         if Selection(Get_Preview_Tree) = "" then
             return TCL_OK;
          end if;
          SelectedItem :=
            Destination_Directory & "/" &
            To_Unbounded_String
-             (Set(Preview_Tree, Selection(Preview_Tree), "name"));
+             (Set(Get_Preview_Tree, Selection(Get_Preview_Tree), "name"));
          if not Is_Directory(To_String(SelectedItem)) then
             return TCL_OK;
          end if;
@@ -1172,12 +1184,12 @@ package body ShowItems is
            " set} -yscrollcommand {" & Get_Preview_Y_Scroll &
            " set} -selectmode none ");
       Heading
-        (Preview_Tree, "name",
+        (Get_Preview_Tree, "name",
          "-text {" & Mc(Get_Context, "{Name}") &
          "} -image {arrow-down} -command {Sort previewname}");
-      Column(Preview_Tree, "#0", "-stretch false -width 50");
-      Tag_Bind(Preview_Tree, "itemrow", "<Double-1>", "GoToDirectory");
-      Bind(Preview_Tree, "<Return>", "GoToDirectory");
+      Column(Get_Preview_Tree, "#0", "-stretch false -width 50");
+      Tag_Bind(Get_Preview_Tree, "itemrow", "<Double-1>", "GoToDirectory");
+      Bind(Get_Preview_Tree, "<Return>", "GoToDirectory");
       Preview_Text :=
         Create
           (Get_Preview_Frame & ".previewtext",
@@ -1257,13 +1269,13 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack
         (Frame, "-after " & Get_Preview_Frame & ".title -fill x");
       configure
-        (Get_Preview_X_Scroll, "-command [list " & Preview_Tree & " xview]");
+        (Get_Preview_X_Scroll, "-command [list " & Get_Preview_Tree & " xview]");
       Tcl.Tk.Ada.Pack.Pack(Get_Preview_X_Scroll, "-side bottom -fill x");
       configure
-        (Get_Preview_Y_Scroll, "-command [list " & Preview_Tree & " yview]");
+        (Get_Preview_Y_Scroll, "-command [list " & Get_Preview_Tree & " yview]");
       Tcl.Tk.Ada.Pack.Pack(Get_Preview_Y_Scroll, "-side right -fill y");
-      configure(Preview_Tree, "-selectmode browse");
-      Tcl.Tk.Ada.Pack.Pack(Preview_Tree, "-side top -fill both -expand true");
+      configure(Get_Preview_Tree, "-selectmode browse");
+      Tcl.Tk.Ada.Pack.Pack(Get_Preview_Tree, "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
       Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
@@ -1293,7 +1305,7 @@ package body ShowItems is
         (Get_Preview_Text, "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_X_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Preview_Tree);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Tree);
       Tcl.Tk.Ada.Pack.Pack_Forget(Info_Frame);
       Frame.Name := New_String(Get_Preview_Frame & ".title");
       configure(Frame, "-text {" & Mc(Get_Context, "{Command output}") & "}");
