@@ -738,8 +738,13 @@ package body Preferences.UI is
          FormLength: Column_Position;
          FieldOptions: Field_Option_Set;
       begin
-         Command_Fields.all(1) := New_Field(1, 12, 0, 0, 0, 0);
-         Set_Buffer(Command_Fields.all(1), 0, "Menu label:");
+         Command_Fields.all(1) :=
+           New_Field
+             (1,
+              Column_Position'Value(Mc_Max("{Menu label}", Interpreter)) + 2,
+              0, 0, 0, 0);
+         Set_Buffer
+           (Command_Fields.all(1), 0, Mc(Interpreter, "{Menu label}") & ":");
          FieldOptions := Get_Options(Command_Fields.all(1));
          FieldOptions.Edit := False;
          FieldOptions.Active := False;
@@ -750,8 +755,16 @@ package body Preferences.UI is
               (Command_Fields.all(2), 0,
                Trim(Get_Buffer(Fields(DialogForm, Index - 3)), Both));
          end if;
-         Command_Fields.all(3) := New_Field(1, 19, 2, 0, 0, 0);
-         Set_Buffer(Command_Fields.all(3), 0, "Command to execute:");
+         Command_Fields.all(3) :=
+           New_Field
+             (1,
+              Column_Position'Value
+                (Mc_Max("{Command to execute}", Interpreter)) +
+              2,
+              2, 0, 0, 0);
+         Set_Buffer
+           (Command_Fields.all(3), 0,
+            Mc(Interpreter, "{Command to execute}") & ":");
          FieldOptions := Get_Options(Command_Fields.all(3));
          FieldOptions.Edit := False;
          FieldOptions.Active := False;
@@ -762,30 +775,43 @@ package body Preferences.UI is
               (Command_Fields.all(4), 0,
                Trim(Get_Buffer(Fields(DialogForm, Index - 2)), Both));
          end if;
-         Command_Fields.all(5) := New_Field(1, 20, 4, 0, 0, 0);
+         Command_Fields.all(5) :=
+           New_Field
+             (1,
+              Column_Position'Value(Mc_Max("{Don't use output}", Interpreter)),
+              4, 0, 0, 0);
          if Index = 0 then
-            Set_Buffer(Command_Fields.all(5), 0, "Don't use output");
+            Set_Buffer
+              (Command_Fields.all(5), 0,
+               Mc(Interpreter, "{Don't use output}"));
          else
             Set_Buffer
               (Command_Fields.all(5), 0,
                (if Trim(Get_Buffer(Fields(DialogForm, Index - 1)), Both) = "No"
-                then "Don't u"
-                else "U") &
-               "se output");
+                then Mc(Interpreter, "{Don't use output}")
+                else Mc(Interpreter, "{Use output}")));
          end if;
          FieldOptions := Get_Options(Command_Fields.all(5));
          FieldOptions.Edit := False;
          Set_Options(Command_Fields.all(5), FieldOptions);
-         Command_Fields.all(6) := New_Field(1, 8, 5, 2, 0, 0);
-         Set_Buffer(Command_Fields.all(6), 0, "[Cancel]");
+         Command_Fields.all(6) :=
+           New_Field
+             (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2, 5,
+              2, 0, 0);
+         Set_Buffer
+           (Command_Fields.all(6), 0, "[" & Mc(Interpreter, "Cancel") & "]");
          FieldOptions := Get_Options(Command_Fields.all(6));
          FieldOptions.Edit := False;
          Set_Options(Command_Fields.all(6), FieldOptions);
          Command_Fields.all(7) := Null_Field;
-         Command_Fields.all(7) := New_Field(1, 6, 5, 15, 0, 0);
+         Command_Fields.all(7) :=
+           New_Field
+             (1, Column_Position'Value(Mc_Max("{Edit}", Interpreter)) + 2, 5,
+              15, 0, 0);
          Set_Buffer
            (Command_Fields.all(7), 0,
-            (if Index = 0 then "[Add]" else "[Edit]"));
+            (if Index = 0 then "[Add]"
+             else "[" & Mc(Interpreter, "Edit") & "]"));
          FieldOptions := Get_Options(Command_Fields.all(7));
          FieldOptions.Edit := False;
          Set_Options(Command_Fields.all(7), FieldOptions);
