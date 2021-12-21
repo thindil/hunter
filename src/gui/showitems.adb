@@ -725,20 +725,20 @@ package body ShowItems is
       Tcl_Eval(interp => Get_Context, strng => "update");
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Tree);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Y_Scroll);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_X_Scroll);
-      configure(Label, "-text {" & Mc(Get_Context, "{Information}") & "}");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Y_Scroll);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_X_Scroll);
+      configure(Widgt => Label, options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Information}") & "}");
       Button.Interp := Label.Interp;
       if
         (Mime_Type'Length > 4 and
-         (Mime_Type(1 .. 4) /= "imag" and not Is_Text(Mime_Type))) and
-        not Is_Directory(Selected_Item) then
+         (Mime_Type(1 .. 4) /= "imag" and not Is_Text(Mime_Type => Mime_Type))) and
+        not Is_Directory(Name => Selected_Item) then
          Button.Name :=
-           New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
-         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+           New_String(Str => ".mainframe.toolbars.itemtoolbar.previewbutton");
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
       end if;
-      Label.Name := New_String(Info_Frame & ".fullpathtext");
+      Label.Name := New_String(Str => Info_Frame & ".fullpathtext");
       if not Is_Symbolic_Link(Selected_Item) then
          configure(Label, "-text {" & Mc(Get_Context, "{Full path:}") & "}");
       else
