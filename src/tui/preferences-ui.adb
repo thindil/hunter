@@ -810,7 +810,7 @@ package body Preferences.UI is
               15, 0, 0);
          Set_Buffer
            (Command_Fields.all(7), 0,
-            (if Index = 0 then "[Add]"
+            (if Index = 0 then "[" & Mc(Interpreter, "Add") & "]"
              else "[" & Mc(Interpreter, "Edit") & "]"));
          FieldOptions := Get_Options(Command_Fields.all(7));
          FieldOptions.Edit := False;
