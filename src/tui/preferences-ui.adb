@@ -741,10 +741,10 @@ package body Preferences.UI is
          Command_Fields.all(1) :=
            New_Field
              (1,
-              Column_Position'Value(Mc_Max("{Menu label}", Interpreter)) + 2,
+              Column_Position'Value(Mc_Max("{Menu label:}", Interpreter)) + 2,
               0, 0, 0, 0);
          Set_Buffer
-           (Command_Fields.all(1), 0, Mc(Interpreter, "{Menu label}") & ":");
+           (Command_Fields.all(1), 0, Mc(Interpreter, "{Menu label:}"));
          FieldOptions := Get_Options(Command_Fields.all(1));
          FieldOptions.Edit := False;
          FieldOptions.Active := False;
@@ -759,12 +759,12 @@ package body Preferences.UI is
            New_Field
              (1,
               Column_Position'Value
-                (Mc_Max("{Command to execute}", Interpreter)) +
+                (Mc_Max("{Command to execute:}", Interpreter)) +
               2,
               2, 0, 0, 0);
          Set_Buffer
            (Command_Fields.all(3), 0,
-            Mc(Interpreter, "{Command to execute}") & ":");
+            Mc(Interpreter, "{Command to execute:}"));
          FieldOptions := Get_Options(Command_Fields.all(3));
          FieldOptions.Edit := False;
          FieldOptions.Active := False;
