@@ -751,10 +751,10 @@ package body ShowItems is
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
       end if;
       Label.Name := New_String(Str => Get_Info_Frame & ".fullpathtext");
-      if not Is_Symbolic_Link(Selected_Item) then
-         configure(Label, "-text {" & Mc(Get_Context, "{Full path:}") & "}");
-      else
+      if Is_Symbolic_Link(Selected_Item) then
          configure(Label, "-text {" & Mc(Get_Context, "{Links to:}") & "}");
+      else
+         configure(Label, "-text {" & Mc(Get_Context, "{Full path:}") & "}");
       end if;
       Label.Name := New_String(Get_Info_Frame & ".fullpath");
       configure(Label, "-text {" & Full_Name(Selected_Item) & "}");
