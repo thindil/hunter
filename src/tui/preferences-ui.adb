@@ -1116,10 +1116,15 @@ package body Preferences.UI is
             end if;
          when 10 =>
             if CurrentField = 5 then
-               if Get_Buffer(Fields(CommandForm, 5))(1 .. 5) = "Don't" then
-                  Set_Buffer(Fields(CommandForm, 5), 0, "Use output");
+               if Get_Buffer(Fields(CommandForm, 5)) =
+                 Mc(Interpreter, "{Don't use output}") then
+                  Set_Buffer
+                    (Fields(CommandForm, 5), 0,
+                     Mc(Interpreter, "{Use output}"));
                else
-                  Set_Buffer(Fields(CommandForm, 5), 0, "Don't use output");
+                  Set_Buffer
+                    (Fields(CommandForm, 5), 0,
+                     Mc(Interpreter, "{Don't use output}"));
                end if;
                Refresh(MenuWindow2);
             end if;
@@ -1131,7 +1136,9 @@ package body Preferences.UI is
                      Command: constant String :=
                        Trim(Get_Buffer(Fields(CommandForm, 4)), Both);
                      NeedOutput: constant Boolean :=
-                       (if Get_Buffer(Fields(CommandForm, 5))(1 .. 3) = "Use"
+                       (if
+                          Get_Buffer(Fields(CommandForm, 5)) =
+                          Mc(Interpreter, "{Use output}")
                         then True
                         else False);
                   begin
