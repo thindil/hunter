@@ -338,4 +338,7 @@
    "Edit" "Edytuj"
    "every" "co"
    "second(s)" "sekund(y)"
+   "Don't use output" "Nie pokazuj wyniku"
+   "Use output" "Pokaż wynik"
+   "Add" "Dodaj"
 }
