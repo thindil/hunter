@@ -740,29 +740,52 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Y_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_X_Scroll);
-      configure(Widgt => Label, options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Information}") & "}");
+      configure
+        (Widgt => Label,
+         options =>
+           "-text {" &
+           Mc(Interp => Get_Context, Src_String => "{Information}") & "}");
       Button.Interp := Label.Interp;
       if
         (Mime_Type'Length > 4 and
-         (Mime_Type(1 .. 4) /= "imag" and not Is_Text(Mime_Type => Mime_Type))) and
+         (Mime_Type(1 .. 4) /= "imag" and
+          not Is_Text(Mime_Type => Mime_Type))) and
         not Is_Directory(Name => Selected_Item) then
          Button.Name :=
            New_String(Str => ".mainframe.toolbars.itemtoolbar.previewbutton");
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
       end if;
       Label.Name := New_String(Str => Get_Info_Frame & ".fullpathtext");
-      if Is_Symbolic_Link(Selected_Item) then
-         configure(Label, "-text {" & Mc(Get_Context, "{Links to:}") & "}");
+      if Is_Symbolic_Link(Name => Selected_Item) then
+         configure
+           (Widgt => Label,
+            options =>
+              "-text {" &
+              Mc(Interp => Get_Context, Src_String => "{Links to:}") & "}");
       else
-         configure(Label, "-text {" & Mc(Get_Context, "{Full path:}") & "}");
+         configure
+           (Widgt => Label,
+            options =>
+              "-text {" &
+              Mc(Interp => Get_Context, Src_String => "{Full path:}") & "}");
       end if;
-      Label.Name := New_String(Get_Info_Frame & ".fullpath");
-      configure(Label, "-text {" & Full_Name(Selected_Item) & "}");
-      Label.Name := New_String(Get_Info_Frame & ".sizetext");
-      if Is_Directory(Selected_Item) then
-         configure(Label, "-text {" & Mc(Get_Context, "{Elements:}") & "}");
+      Label.Name := New_String(Str => Get_Info_Frame & ".fullpath");
+      configure
+        (Widgt => Label,
+         options => "-text {" & Full_Name(Name => Selected_Item) & "}");
+      Label.Name := New_String(Str => Get_Info_Frame & ".sizetext");
+      if Is_Directory(Name => Selected_Item) then
+         configure
+           (Widgt => Label,
+            options =>
+              "-text {" &
+              Mc(Interp => Get_Context, Src_String => "{Elements:}") & "}");
       else
-         configure(Label, "-text {" & Mc(Get_Context, "{Size:}") & "}");
+         configure
+           (Widgt => Label,
+            options =>
+              "-text {" & Mc(Interp => Get_Context, Src_String => "{Size:}") &
+              "}");
       end if;
       Label.Name := New_String(Get_Info_Frame & ".size");
       if Is_Directory(Selected_Item) then
@@ -877,7 +900,8 @@ package body ShowItems is
                   else
                      Tcl.Tk.Ada.Pack.Pack
                        (CheckButton,
-                        "-before " & Get_Info_Frame & "." & Name & "frame.read");
+                        "-before " & Get_Info_Frame & "." & Name &
+                        "frame.read");
                   end if;
                end if;
                State(CheckButton, ButtonState);
@@ -1281,13 +1305,16 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack
         (Frame, "-after " & Get_Preview_Frame & ".title -fill x");
       configure
-        (Get_Preview_X_Scroll, "-command [list " & Get_Preview_Tree & " xview]");
+        (Get_Preview_X_Scroll,
+         "-command [list " & Get_Preview_Tree & " xview]");
       Tcl.Tk.Ada.Pack.Pack(Get_Preview_X_Scroll, "-side bottom -fill x");
       configure
-        (Get_Preview_Y_Scroll, "-command [list " & Get_Preview_Tree & " yview]");
+        (Get_Preview_Y_Scroll,
+         "-command [list " & Get_Preview_Tree & " yview]");
       Tcl.Tk.Ada.Pack.Pack(Get_Preview_Y_Scroll, "-side right -fill y");
       configure(Get_Preview_Tree, "-selectmode browse");
-      Tcl.Tk.Ada.Pack.Pack(Get_Preview_Tree, "-side top -fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack
+        (Get_Preview_Tree, "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Info_Frame);
