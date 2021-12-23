@@ -109,6 +109,8 @@
    "Use output" "Use output"
    "Cancel" "Cancel"
    "Add" "Add"
+   "Press a key which will be set as shortcut." "Press a key which will be set as shortcut."
+   "Press Escape twice for cancel." "Press Escape twice for cancel."
    "All selected files and directories have been copied." "All selected files and directories have been copied."
    "(and its content)" "(and its content)"
    "(and more)" "(and more)"

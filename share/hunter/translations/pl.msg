@@ -341,4 +341,6 @@
    "Don't use output" "Nie pokazuj wyniku"
    "Use output" "Pokaż wynik"
    "Add" "Dodaj"
+   "Press a key which will be set as shortcut." "Naciśnij klawisz który będzie skrótem."
+   "Press Escape twice for cancel." "Naciśnij dwa razy Escape aby przerwać."
 }
