@@ -870,9 +870,15 @@ package body Preferences.UI is
             Set_Cursor_Visibility(Visibility);
             MenuWindow2 := Create(5, 44, Lines / 3, Columns / 3);
             Move_Cursor(MenuWindow2, 1, 1);
-            Add(MenuWindow2, "Press a key which will be set as shortcut.");
+            Add
+              (MenuWindow2,
+               Mc
+                 (Interpreter,
+                  "{Press a key which will be set as shortcut.}"));
             Move_Cursor(MenuWindow2, 2, 1);
-            Add(MenuWindow2, "Press Escape twice for cancel.");
+            Add
+              (MenuWindow2,
+               Mc(Interpreter, "{Press Escape twice for cancel.}"));
             Box(MenuWindow2, Default_Character, Default_Character);
             Refresh;
             Refresh(MenuWindow2);
