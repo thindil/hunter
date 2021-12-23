@@ -792,8 +792,9 @@ package body ShowItems is
          if Settings.Show_Hidden then
             configure
               (Widgt => Label,
-               options => "-text {" & Natural'Image(Natural(Second_Items_List.Length)) &
-               "}");
+               options =>
+                 "-text {" & Natural'Image(Natural(Second_Items_List.Length)) &
+                 "}");
          else
             Count_Directory_Size_Loop :
             for Item of Second_Items_List loop
@@ -801,36 +802,56 @@ package body ShowItems is
                   Directory_Size := Directory_Size + 1;
                end if;
             end loop Count_Directory_Size_Loop;
-            configure(Widgt => Label, options => "-text {" & Natural'Image(Directory_Size) & "}");
+            configure
+              (Widgt => Label,
+               options => "-text {" & Natural'Image(Directory_Size) & "}");
          end if;
       elsif Is_Regular_File(Name => Selected_Item) then
          configure
-           (Widgt => Label, options => "-text {" & Count_File_Size(Size => Size(Name => Selected_Item)) & "}");
+           (Widgt => Label,
+            options =>
+              "-text {" &
+              Count_File_Size(Size => Size(Name => Selected_Item)) & "}");
       else
-         configure(Widgt => Label, options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Unknown}") & "}");
-      end if;
-      Label.Name := New_String(Str => Get_Info_Frame & ".lastmodified");
-      if Is_Directory(Name => Selected_Item) or Is_Regular_File(Name => Selected_Item) then
          configure
            (Widgt => Label,
-            options => "-text {" &
-            Ada.Calendar.Formatting.Image
-              (Date => Modification_Time(Name => Selected_Item),
-               Time_Zone => Ada.Calendar.Time_Zones.UTC_Time_Offset) &
-            "}");
-      else
-         configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
+            options =>
+              "-text {" &
+              Mc(Interp => Get_Context, Src_String => "{Unknown}") & "}");
       end if;
-      Label.Name := New_String(Get_Info_Frame & ".filetypetext");
-      if Is_Directory(Selected_Item) or not Is_Regular_File(Selected_Item) then
-         Tcl.Tk.Ada.Grid.Grid_Remove(Label);
-         Label.Name := New_String(Get_Info_Frame & ".filetype");
-         Tcl.Tk.Ada.Grid.Grid_Remove(Label);
-      else
-         Tcl.Tk.Ada.Grid.Grid(Label);
-         Label.Name := New_String(Get_Info_Frame & ".filetype");
+      Label.Name := New_String(Str => Get_Info_Frame & ".lastmodified");
+      if Is_Directory(Name => Selected_Item) or
+        Is_Regular_File(Name => Selected_Item) then
          configure
-           (Label, "-text {" & Get_Mime_Type(Full_Name(Selected_Item)) & "}");
+           (Widgt => Label,
+            options =>
+              "-text {" &
+              Ada.Calendar.Formatting.Image
+                (Date => Modification_Time(Name => Selected_Item),
+                 Time_Zone => Ada.Calendar.Time_Zones.UTC_Time_Offset) &
+              "}");
+      else
+         configure
+           (Widgt => Label,
+            options =>
+              "-text {" &
+              Mc(Interp => Get_Context, Src_String => "{Unknown}") & "}");
+      end if;
+      Label.Name := New_String(Str => Get_Info_Frame & ".filetypetext");
+      if Is_Directory(Name => Selected_Item) or
+        not Is_Regular_File(Name => Selected_Item) then
+         Tcl.Tk.Ada.Grid.Grid_Remove(Slave => Label);
+         Label.Name := New_String(Str => Get_Info_Frame & ".filetype");
+         Tcl.Tk.Ada.Grid.Grid_Remove(Slave => Label);
+      else
+         Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+         Label.Name := New_String(Str => Get_Info_Frame & ".filetype");
+         configure
+           (Widgt => Label,
+            options =>
+              "-text {" &
+              Get_Mime_Type(File_Name => Full_Name(Name => Selected_Item)) &
+              "}");
          Tcl.Tk.Ada.Grid.Grid(Label);
       end if;
       Label.Name := New_String(Get_Info_Frame & ".associatedprogramtext");
