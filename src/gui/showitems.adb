@@ -787,12 +787,12 @@ package body ShowItems is
               "-text {" & Mc(Interp => Get_Context, Src_String => "{Size:}") &
               "}");
       end if;
-      Label.Name := New_String(Get_Info_Frame & ".size");
-      if Is_Directory(Selected_Item) then
+      Label.Name := New_String(Str => Get_Info_Frame & ".size");
+      if Is_Directory(Name => Selected_Item) then
          if Settings.Show_Hidden then
             configure
-              (Label,
-               "-text {" & Natural'Image(Natural(Second_Items_List.Length)) &
+              (Widgt => Label,
+               options => "-text {" & Natural'Image(Natural(Second_Items_List.Length)) &
                "}");
          else
             Count_Directory_Size_Loop :
@@ -801,22 +801,22 @@ package body ShowItems is
                   Directory_Size := Directory_Size + 1;
                end if;
             end loop Count_Directory_Size_Loop;
-            configure(Label, "-text {" & Natural'Image(Directory_Size) & "}");
+            configure(Widgt => Label, options => "-text {" & Natural'Image(Directory_Size) & "}");
          end if;
-      elsif Is_Regular_File(Selected_Item) then
+      elsif Is_Regular_File(Name => Selected_Item) then
          configure
-           (Label, "-text {" & Count_File_Size(Size(Selected_Item)) & "}");
+           (Widgt => Label, options => "-text {" & Count_File_Size(Size => Size(Name => Selected_Item)) & "}");
       else
-         configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
+         configure(Widgt => Label, options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Unknown}") & "}");
       end if;
-      Label.Name := New_String(Get_Info_Frame & ".lastmodified");
-      if Is_Directory(Selected_Item) or Is_Regular_File(Selected_Item) then
+      Label.Name := New_String(Str => Get_Info_Frame & ".lastmodified");
+      if Is_Directory(Name => Selected_Item) or Is_Regular_File(Name => Selected_Item) then
          configure
-           (Label,
-            "-text {" &
+           (Widgt => Label,
+            options => "-text {" &
             Ada.Calendar.Formatting.Image
-              (Modification_Time(Selected_Item), False,
-               Ada.Calendar.Time_Zones.UTC_Time_Offset) &
+              (Date => Modification_Time(Name => Selected_Item),
+               Time_Zone => Ada.Calendar.Time_Zones.UTC_Time_Offset) &
             "}");
       else
          configure(Label, "-text {" & Mc(Get_Context, "{Unknown}") & "}");
