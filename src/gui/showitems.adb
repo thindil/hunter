@@ -854,20 +854,24 @@ package body ShowItems is
               "}");
          Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       end if;
-      Label.Name := New_String(Str => Get_Info_Frame & ".associatedprogramtext");
+      Label.Name :=
+        New_String(Str => Get_Info_Frame & ".associatedprogramtext");
       if not Is_Regular_File(Name => Selected_Item) and
         not Is_Directory(Name => Selected_Item) then
          Tcl.Tk.Ada.Grid.Grid_Remove(Slave => Label);
-         Button.Name := New_String(Str => Get_Info_Frame & ".associatedprogram");
+         Button.Name :=
+           New_String(Str => Get_Info_Frame & ".associatedprogram");
          Tcl.Tk.Ada.Grid.Grid_Remove(Slave => Button);
       else
          Tcl.Tk.Ada.Grid.Grid(Slave => Label);
-         Button.Name := New_String(Str => Get_Info_Frame & ".associatedprogram");
-         Show_Assigned_Program_Block:
+         Button.Name :=
+           New_String(Str => Get_Info_Frame & ".associatedprogram");
+         Show_Assigned_Program_Block :
          declare
             Process_Desc: Process_Descriptor;
             Result: Expect_Match;
-            Executable_Name: constant String := Find_Executable(Name => "xdg-mime");
+            Executable_Name: constant String :=
+              Find_Executable(Name => "xdg-mime");
             Desktop_File: Unbounded_String := Null_Unbounded_String;
          begin
             if Executable_Name = "" then
@@ -875,8 +879,12 @@ package body ShowItems is
             end if;
             Non_Blocking_Spawn
               (Descriptor => Process_Desc, Command => Executable_Name,
-               Args => Argument_String_To_List(Arg_String => "query default " & Mime_Type).all);
-            Expect(Process_Desc, Result, Regexp => ".+", Timeout => 1_000);
+               Args =>
+                 Argument_String_To_List
+                   (Arg_String => "query default " & Mime_Type).all);
+            Expect
+              (Descriptor => Process_Desc, Result => Result, Regexp => ".+",
+               Timeout => 1_000);
             if Result = 1 then
                Desktop_File :=
                  To_Unbounded_String(Expect_Out_Match(Process_Desc));
