@@ -894,10 +894,10 @@ package body Preferences.UI is
                      CurrentOption: constant String :=
                        Trim(Get_Buffer(Fields(DialogForm, OptionIndex)), Both);
                   begin
-                     if CurrentOption = "Edit" then
+                     if CurrentOption = Mc(Interpreter, "Edit") then
                         Show_Command_Form(OptionIndex);
                         return COMMAND_FORM;
-                     elsif CurrentOption = "Delete" then
+                     elsif CurrentOption = Mc(Interpreter, "Delete") then
                         UserCommandsList.Delete
                           (Trim
                              (Get_Buffer(Fields(DialogForm, OptionIndex - 4)),
