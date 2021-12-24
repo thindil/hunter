@@ -610,6 +610,7 @@ package body MainWindow is
         New_Item(Mc(Interpreter, "Close"));
       Menu_Items.all(Menu_Items'Last) := Null_Item;
       SubMenu := New_Menu(Menu_Items);
+      Set_Options(SubMenu, (Non_Cyclic => False, others => <>));
       Set_Format(SubMenu, Lines - 5, 1);
       Set_Mark(SubMenu, "");
       Scale(SubMenu, MenuHeight, MenuLength);
