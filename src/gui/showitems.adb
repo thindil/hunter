@@ -852,49 +852,50 @@ package body ShowItems is
               "-text {" &
               Get_Mime_Type(File_Name => Full_Name(Name => Selected_Item)) &
               "}");
-         Tcl.Tk.Ada.Grid.Grid(Label);
+         Tcl.Tk.Ada.Grid.Grid(Slave => Label);
       end if;
-      Label.Name := New_String(Get_Info_Frame & ".associatedprogramtext");
-      if not Is_Regular_File(Selected_Item) and
-        not Is_Directory(Selected_Item) then
-         Tcl.Tk.Ada.Grid.Grid_Remove(Label);
-         Button.Name := New_String(Get_Info_Frame & ".associatedprogram");
-         Tcl.Tk.Ada.Grid.Grid_Remove(Button);
+      Label.Name := New_String(Str => Get_Info_Frame & ".associatedprogramtext");
+      if not Is_Regular_File(Name => Selected_Item) and
+        not Is_Directory(Name => Selected_Item) then
+         Tcl.Tk.Ada.Grid.Grid_Remove(Slave => Label);
+         Button.Name := New_String(Str => Get_Info_Frame & ".associatedprogram");
+         Tcl.Tk.Ada.Grid.Grid_Remove(Slave => Button);
       else
-         Tcl.Tk.Ada.Grid.Grid(Label);
-         Button.Name := New_String(Get_Info_Frame & ".associatedprogram");
+         Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+         Button.Name := New_String(Str => Get_Info_Frame & ".associatedprogram");
+         Show_Assigned_Program_Block:
          declare
-            ProcessDesc: Process_Descriptor;
+            Process_Desc: Process_Descriptor;
             Result: Expect_Match;
-            ExecutableName: constant String := Find_Executable("xdg-mime");
-            DesktopFile: Unbounded_String;
+            Executable_Name: constant String := Find_Executable(Name => "xdg-mime");
+            Desktop_File: Unbounded_String := Null_Unbounded_String;
          begin
-            if ExecutableName = "" then
+            if Executable_Name = "" then
                return;
             end if;
             Non_Blocking_Spawn
-              (ProcessDesc, ExecutableName,
-               Argument_String_To_List("query default " & Mime_Type).all);
-            Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 1_000);
+              (Descriptor => Process_Desc, Command => Executable_Name,
+               Args => Argument_String_To_List(Arg_String => "query default " & Mime_Type).all);
+            Expect(Process_Desc, Result, Regexp => ".+", Timeout => 1_000);
             if Result = 1 then
-               DesktopFile :=
-                 To_Unbounded_String(Expect_Out_Match(ProcessDesc));
-               DesktopFile :=
-                 To_Unbounded_String(GetProgramName(To_String(DesktopFile)));
-               if Index(DesktopFile, ".desktop") = 0 then
-                  configure(Button, "-text {" & To_String(DesktopFile) & "}");
+               Desktop_File :=
+                 To_Unbounded_String(Expect_Out_Match(Process_Desc));
+               Desktop_File :=
+                 To_Unbounded_String(GetProgramName(To_String(Desktop_File)));
+               if Index(Desktop_File, ".desktop") = 0 then
+                  configure(Button, "-text {" & To_String(Desktop_File) & "}");
                else
                   configure
                     (Button,
-                     "-text {" & To_String(DesktopFile) & " (" &
+                     "-text {" & To_String(Desktop_File) & " (" &
                      Mc(Get_Context, "{not installed}") & ")}");
                end if;
             end if;
-            Close(ProcessDesc);
+            Close(Process_Desc);
          exception
             when Process_Died =>
                configure(Button, "-text {" & Mc(Get_Context, "{None}") & "}");
-         end;
+         end Show_Assigned_Program_Block;
          Tcl.Tk.Ada.Grid.Grid(Button);
       end if;
       declare
