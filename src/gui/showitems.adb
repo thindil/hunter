@@ -887,9 +887,7 @@ package body ShowItems is
                Timeout => 1_000);
             if Result = 1 then
                Desktop_File :=
-                 To_Unbounded_String(Expect_Out_Match(Process_Desc));
-               Desktop_File :=
-                 To_Unbounded_String(GetProgramName(To_String(Desktop_File)));
+                 To_Unbounded_String(GetProgramName(Expect_Out_Match(Process_Desc)));
                if Index(Desktop_File, ".desktop") = 0 then
                   configure(Button, "-text {" & To_String(Desktop_File) & "}");
                else
