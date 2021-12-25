@@ -887,22 +887,36 @@ package body ShowItems is
                Timeout => 1_000);
             if Result = 1 then
                Desktop_File :=
-                 To_Unbounded_String(GetProgramName(Expect_Out_Match(Process_Desc)));
-               if Index(Desktop_File, ".desktop") = 0 then
-                  configure(Button, "-text {" & To_String(Desktop_File) & "}");
+                 To_Unbounded_String
+                   (Source =>
+                      GetProgramName
+                        (DesktopFile =>
+                           Expect_Out_Match(Descriptor => Process_Desc)));
+               if Index(Source => Desktop_File, Pattern => ".desktop") = 0 then
+                  configure
+                    (Widgt => Button,
+                     options =>
+                       "-text {" & To_String(Source => Desktop_File) & "}");
                else
                   configure
-                    (Button,
-                     "-text {" & To_String(Desktop_File) & " (" &
-                     Mc(Get_Context, "{not installed}") & ")}");
+                    (Widgt => Button,
+                     options =>
+                       "-text {" & To_String(Source => Desktop_File) & " (" &
+                       Mc(Interp => Get_Context,
+                          Src_String => "{not installed}") &
+                       ")}");
                end if;
             end if;
-            Close(Process_Desc);
+            Close(Descriptor => Process_Desc);
          exception
             when Process_Died =>
-               configure(Button, "-text {" & Mc(Get_Context, "{None}") & "}");
+               configure
+                 (Widgt => Button,
+                  options =>
+                    "-text {" &
+                    Mc(Interp => Get_Context, Src_String => "{None}") & "}");
          end Show_Assigned_Program_Block;
-         Tcl.Tk.Ada.Grid.Grid(Button);
+         Tcl.Tk.Ada.Grid.Grid(Slave => Button);
       end if;
       declare
          Attributes: Unbounded_String;
