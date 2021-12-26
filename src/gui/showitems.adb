@@ -918,7 +918,7 @@ package body ShowItems is
          end Show_Assigned_Program_Block;
          Tcl.Tk.Ada.Grid.Grid(Slave => Button);
       end if;
-      Show_Permissions_Block:
+      Show_Permissions_Block :
       declare
          Attributes: Unbounded_String;
          Tokens: Slice_Set;
@@ -934,38 +934,55 @@ package body ShowItems is
             for I in Button_Names'Range loop
                Check_Button.Name :=
                  New_String
-                   (Str => Get_Info_Frame & "." & Name & "frame." &
-                    To_String(Source => Button_Names(I)));
+                   (Str =>
+                      Get_Info_Frame & "." & Name & "frame." &
+                      To_String(Source => Button_Names(I)));
                if I = 1 then
                   if Is_Directory(Name => Selected_Item) then
                      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Check_Button);
                   else
                      Tcl.Tk.Ada.Pack.Pack
                        (Slave => Check_Button,
-                        Options => "-before " & Get_Info_Frame & "." & Name &
-                        "frame.read");
+                        Options =>
+                          "-before " & Get_Info_Frame & "." & Name &
+                          "frame.read");
                   end if;
                end if;
                State(Widget => Check_Button, StateSpec => Button_State);
             end loop Set_Permission_Buttons_Loop;
-            Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "execute", newValue => "0");
-            Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "read", newValue => "0");
-            Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "write", "0");
+            Tcl.Ada.Tcl_SetVar
+              (interp => Check_Button.Interp, varName => Name & "execute",
+               newValue => "0");
+            Tcl.Ada.Tcl_SetVar
+              (interp => Check_Button.Interp, varName => Name & "read",
+               newValue => "0");
+            Tcl.Ada.Tcl_SetVar
+              (interp => Check_Button.Interp, varName => Name & "write",
+               newValue => "0");
             case Permission is
                when '1' =>
                   Tcl.Ada.Tcl_SetVar
-                    (Check_Button.Interp, Name & "execute", "1");
+                    (interp => Check_Button.Interp,
+                     varName => Name & "execute", newValue => "1");
                when '2' =>
-                  Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "write", "1");
+                  Tcl.Ada.Tcl_SetVar
+                    (interp => Check_Button.Interp, varName => Name & "write",
+                     newValue => "1");
                when '3' =>
                   Tcl.Ada.Tcl_SetVar
-                    (Check_Button.Interp, Name & "execute", "1");
-                  Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "write", "1");
+                    (interp => Check_Button.Interp,
+                     varName => Name & "execute", newValue => "1");
+                  Tcl.Ada.Tcl_SetVar
+                    (interp => Check_Button.Interp, varName => Name & "write",
+                     newValue => "1");
                when '4' =>
-                  Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "read", "1");
+                  Tcl.Ada.Tcl_SetVar
+                    (interp => Check_Button.Interp, varName => Name & "read",
+                     newValue => "1");
                when '5' =>
                   Tcl.Ada.Tcl_SetVar
-                    (Check_Button.Interp, Name & "execute", "1");
+                    (interp => Check_Button.Interp,
+                     varName => Name & "execute", newValue => "1");
                   Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "read", "1");
                when '6' =>
                   Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "read", "1");
