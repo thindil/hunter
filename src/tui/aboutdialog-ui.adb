@@ -21,8 +21,19 @@ with ShowItems; use ShowItems;
 
 package body AboutDialog.UI is
 
+   -- ****iv* AboutDialogTUI/AboutDialogTUI.DialogForm
+   -- FUNCTION
+   -- The form for showing information about the program
+   -- SOURCE
    DialogForm: Forms.Form;
+   -- ****
+
+   -- ****iv* AboutDialogTUI/AboutDialogTUI.FormWindow
+   -- FUNCTION
+   -- The window to show information about the program
+   -- SOURCE
    FormWindow: Window;
+   -- ****
 
    procedure Show_About_Dialog is
       About_Fields: constant Field_Array_Access := new Field_Array(1 .. 9);
