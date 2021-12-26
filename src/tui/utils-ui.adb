@@ -36,4 +36,21 @@ package body Utils.UI is
       ProgressIndex := ProgressIndex + 1;
    end Update_Progress_Bar;
 
+   procedure Create_Dialog
+     (DialogForm: in out Forms.Form; FormWindow: out Window;
+      Form_Height: out Line_Position; Form_Length: out Column_Position) is
+   begin
+      Set_Options(DialogForm, (others => False));
+      Scale(DialogForm, Form_Height, Form_Length);
+      FormWindow :=
+        Create
+          (Form_Height + 2, Form_Length + 2, ((Lines / 3) - (Form_Height / 2)),
+           ((Columns / 2) - (Form_Length / 2)));
+      Box(FormWindow, Default_Character, Default_Character);
+      Set_Window(DialogForm, FormWindow);
+      Set_Sub_Window
+        (DialogForm, Derived_Window(FormWindow, Form_Height, Form_Length, 1, 1));
+      Post(DialogForm);
+   end Create_Dialog;
+
 end Utils.UI;

@@ -14,6 +14,8 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Common; use Common;
+with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 
 -- ****h* Utils/UtilsTUI
 -- FUNCTION
@@ -36,6 +38,24 @@ package Utils.UI is
    -- Update fraction of the progress bar
    -- SOURCE
    procedure Update_Progress_Bar;
+   -- ****
+
+   -- ****f* UtilsTUI/UtilsTUI.Create_Dialog
+   -- FUNCTION
+   -- Create the selected dialog's window and set some default configuration
+   -- for the selected dialog
+   -- PARAMETERS
+   -- DialogForm  - The dialog which will be configured
+   -- FormWindow  - The dialog's window which will be created
+   -- Form_Height - The height of the dialog's window
+   -- Form_Length - The width of the dialog's window
+   -- OUTPUT
+   -- Parameters DialogForm as updated form, FormWindow as a newly created and
+   -- updated height and width of the dialog's window
+   -- SOURCE
+   procedure Create_Dialog
+     (DialogForm: in out Forms.Form; FormWindow: out Window;
+      Form_Height: out Line_Position; Form_Length: out Column_Position);
    -- ****
 
    -- ****f* UtilsTUI/UtilsTUI.Toggle_Tool_Buttons
