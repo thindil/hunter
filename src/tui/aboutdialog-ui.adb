@@ -18,6 +18,7 @@ with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
 with ShowItems; use ShowItems;
+with Utils.UI; use Utils.UI;
 
 package body AboutDialog.UI is
 
@@ -106,17 +107,7 @@ package body AboutDialog.UI is
       About_Fields.all(9) := Null_Field;
       DialogForm := New_Form(About_Fields);
       Set_Current(DialogForm, About_Fields(5));
-      Set_Options(DialogForm, (others => False));
-      Scale(DialogForm, FormHeight, FormLength);
-      FormWindow :=
-        Create
-          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
-           ((Columns / 2) - (FormLength / 2)));
-      Box(FormWindow, Default_Character, Default_Character);
-      Set_Window(DialogForm, FormWindow);
-      Set_Sub_Window
-        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
-      Post(DialogForm);
+      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
       Refresh;
       Refresh(FormWindow);
    end Show_About_Dialog;
@@ -147,17 +138,7 @@ package body AboutDialog.UI is
       About_Fields.all(3) := Null_Field;
       DialogForm := New_Form(About_Fields);
       Set_Current(DialogForm, About_Fields(2));
-      Set_Options(DialogForm, (others => False));
-      Scale(DialogForm, FormHeight, FormLength);
-      FormWindow :=
-        Create
-          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
-           ((Columns / 2) - (FormLength / 2)));
-      Box(FormWindow, Default_Character, Default_Character);
-      Set_Window(DialogForm, FormWindow);
-      Set_Sub_Window
-        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
-      Post(DialogForm);
+      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
       Refresh;
       Refresh(FormWindow);
    end Show_Developers_Dialog;
