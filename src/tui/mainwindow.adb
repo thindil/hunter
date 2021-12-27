@@ -993,8 +993,8 @@ package body MainWindow is
          when 10 =>
             case CurrentIndex is
                when 1 =>
-                  UILocation := DIRECTORY_VIEW;
                   Update_Directory_List;
+                  Show_Preview;
                   Post(SubMenu, False);
                   Delete(SubMenu);
                   Show_About_Dialog;
