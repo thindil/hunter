@@ -928,7 +928,7 @@ package body ShowItems is
            (1 => new String'("-c%a %U %G"), 2 => new String'(Selected_Item));
          procedure Set_Permissions_Buttons
            (Name, Button_State: String; Permission: Character) is
-            Check_Button: Ttk_CheckButton := Get_Widget(".");
+            Check_Button: Ttk_CheckButton := Get_Widget(pathName => ".");
          begin
             Set_Permission_Buttons_Loop :
             for I in Button_Names'Range loop
@@ -983,15 +983,15 @@ package body ShowItems is
                   Tcl.Ada.Tcl_SetVar
                     (interp => Check_Button.Interp,
                      varName => Name & "execute", newValue => "1");
-                  Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "read", "1");
+                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "read", newValue => "1");
                when '6' =>
-                  Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "read", "1");
-                  Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "write", "1");
+                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "read", newValue => "1");
+                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "write", newValue => "1");
                when '7' =>
                   Tcl.Ada.Tcl_SetVar
-                    (Check_Button.Interp, Name & "execute", "1");
-                  Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "read", "1");
-                  Tcl.Ada.Tcl_SetVar(Check_Button.Interp, Name & "write", "1");
+                    (interp => Check_Button.Interp, varName => Name & "execute", newValue => "1");
+                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "read", newValue => "1");
+                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "write", newValue => "1");
                when others =>
                   null;
             end case;
