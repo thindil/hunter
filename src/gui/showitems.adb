@@ -983,15 +983,26 @@ package body ShowItems is
                   Tcl.Ada.Tcl_SetVar
                     (interp => Check_Button.Interp,
                      varName => Name & "execute", newValue => "1");
-                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "read", newValue => "1");
+                  Tcl.Ada.Tcl_SetVar
+                    (interp => Check_Button.Interp, varName => Name & "read",
+                     newValue => "1");
                when '6' =>
-                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "read", newValue => "1");
-                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "write", newValue => "1");
+                  Tcl.Ada.Tcl_SetVar
+                    (interp => Check_Button.Interp, varName => Name & "read",
+                     newValue => "1");
+                  Tcl.Ada.Tcl_SetVar
+                    (interp => Check_Button.Interp, varName => Name & "write",
+                     newValue => "1");
                when '7' =>
                   Tcl.Ada.Tcl_SetVar
-                    (interp => Check_Button.Interp, varName => Name & "execute", newValue => "1");
-                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "read", newValue => "1");
-                  Tcl.Ada.Tcl_SetVar(interp => Check_Button.Interp, varName => Name & "write", newValue => "1");
+                    (interp => Check_Button.Interp,
+                     varName => Name & "execute", newValue => "1");
+                  Tcl.Ada.Tcl_SetVar
+                    (interp => Check_Button.Interp, varName => Name & "read",
+                     newValue => "1");
+                  Tcl.Ada.Tcl_SetVar
+                    (interp => Check_Button.Interp, varName => Name & "write",
+                     newValue => "1");
                when others =>
                   null;
             end case;
@@ -999,14 +1010,29 @@ package body ShowItems is
       begin
          Attributes :=
            To_Unbounded_String
-             (Get_Command_Output("stat", Arguments, "", Status));
-         Create(Tokens, To_String(Attributes), " ");
-         Label.Name := New_String(Get_Info_Frame & ".grouptext");
-         configure(Label, "-text {" & Mc(Get_Context, "{Group}") & ":}");
-         Label.Name := New_String(Get_Info_Frame & ".group");
-         configure(Label, "-text {" & Slice(Tokens, 3) & "}");
-         Label.Name := New_String(Get_Info_Frame & ".ownertext");
-         configure(Label, "-text {" & Mc(Get_Context, "{Owner}") & ":}");
+             (Source =>
+                Get_Command_Output
+                  (Command => "stat", Arguments => Arguments, Input => "",
+                   Status => Status));
+         Create
+           (S => Tokens, From => To_String(Source => Attributes),
+            Separators => " ");
+         Label.Name := New_String(Str => Get_Info_Frame & ".grouptext");
+         configure
+           (Widgt => Label,
+            options =>
+              "-text {" & Mc(Interp => Get_Context, Src_String => "{Group}") &
+              ":}");
+         Label.Name := New_String(Str => Get_Info_Frame & ".group");
+         configure
+           (Widgt => Label,
+            options => "-text {" & Slice(S => Tokens, Index => 3) & "}");
+         Label.Name := New_String(Str => Get_Info_Frame & ".ownertext");
+         configure
+           (Widgt => Label,
+            options =>
+              "-text {" & Mc(Interp => Get_Context, Src_String => "{Owner}") &
+              ":}");
          Label.Name := New_String(Get_Info_Frame & ".owner");
          configure(Label, "-text {" & Slice(Tokens, 2) & "}");
          Label.Name := New_String(Get_Info_Frame & ".otherstext");
