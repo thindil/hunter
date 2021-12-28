@@ -51,6 +51,8 @@ package body Utils.UI is
       Set_Sub_Window
         (DialogForm, Derived_Window(FormWindow, Form_Height, Form_Length, 1, 1));
       Post(DialogForm);
+      Refresh;
+      Refresh(FormWindow);
    end Create_Dialog;
 
 end Utils.UI;
