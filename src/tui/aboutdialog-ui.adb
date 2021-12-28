@@ -108,8 +108,6 @@ package body AboutDialog.UI is
       DialogForm := New_Form(About_Fields);
       Set_Current(DialogForm, About_Fields(5));
       Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
-      Refresh;
-      Refresh(FormWindow);
    end Show_About_Dialog;
 
    procedure Show_Developers_Dialog(Developers: Boolean := True) is
@@ -139,8 +137,6 @@ package body AboutDialog.UI is
       DialogForm := New_Form(About_Fields);
       Set_Current(DialogForm, About_Fields(2));
       Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
-      Refresh;
-      Refresh(FormWindow);
    end Show_Developers_Dialog;
 
    function About_View_Keys(Key: Key_Code) return UI_Locations is
