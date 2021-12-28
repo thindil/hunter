@@ -1033,10 +1033,10 @@ package body ShowItems is
             options =>
               "-text {" & Mc(Interp => Get_Context, Src_String => "{Owner}") &
               ":}");
-         Label.Name := New_String(Get_Info_Frame & ".owner");
-         configure(Label, "-text {" & Slice(Tokens, 2) & "}");
-         Label.Name := New_String(Get_Info_Frame & ".otherstext");
-         configure(Label, "-text {" & Mc(Get_Context, "{Others}") & ":}");
+         Label.Name := New_String(Str => Get_Info_Frame & ".owner");
+         configure(Widgt => Label, options => "-text {" & Slice(S => Tokens, Index => 2) & "}");
+         Label.Name := New_String(Str => Get_Info_Frame & ".otherstext");
+         configure(Widgt => Label, options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Others}") & ":}");
          if Value("USER") /= Slice(Tokens, 2) then
             Set_Permissions_Buttons
               ("owner", "disabled",
