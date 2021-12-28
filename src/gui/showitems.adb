@@ -1034,19 +1034,16 @@ package body ShowItems is
               "-text {" & Mc(Interp => Get_Context, Src_String => "{Owner}") &
               ":}");
          Label.Name := New_String(Str => Get_Info_Frame & ".owner");
-         configure(Widgt => Label, options => "-text {" & Slice(S => Tokens, Index => 2) & "}");
+         configure
+           (Widgt => Label,
+            options => "-text {" & Slice(S => Tokens, Index => 2) & "}");
          Label.Name := New_String(Str => Get_Info_Frame & ".otherstext");
-         configure(Widgt => Label, options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Others}") & ":}");
-         if Value("USER") /= Slice(Tokens, 2) then
-            Set_Permissions_Buttons
-              ("owner", "disabled",
-               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
-            Set_Permissions_Buttons
-              ("group", "disabled",
-               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
-            Set_Permissions_Buttons
-              ("others", "disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
-         else
+         configure
+           (Widgt => Label,
+            options =>
+              "-text {" & Mc(Interp => Get_Context, Src_String => "{Others}") &
+              ":}");
+         if Value("USER") = Slice(Tokens, 2) then
             Set_Permissions_Buttons
               ("owner", "!disabled",
                Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
@@ -1055,6 +1052,15 @@ package body ShowItems is
                Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
             Set_Permissions_Buttons
               ("others", "!disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
+         else
+            Set_Permissions_Buttons
+              ("owner", "disabled",
+               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
+            Set_Permissions_Buttons
+              ("group", "disabled",
+               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
+            Set_Permissions_Buttons
+              ("others", "disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
          end if;
       end Show_Permissions_Block;
       Tcl.Tk.Ada.Pack.Pack(Get_Info_Frame);
