@@ -164,11 +164,7 @@ package body AboutDialog.UI is
                      end if;
                   end;
                when 6 | 7 =>
-                  Post(DialogForm, False);
-                  Delete(DialogForm);
-                  Show_Preview;
-                  UILocation := DIRECTORY_VIEW;
-                  Update_Directory_List;
+                  Delete_Dialog(DialogForm);
                   if FieldIndex = 6 then
                      Show_Developers_Dialog;
                   else
@@ -200,11 +196,7 @@ package body AboutDialog.UI is
    begin
       if Key = 10 then
          Set_Cursor_Visibility(Visibility);
-         Post(DialogForm, False);
-         Delete(DialogForm);
-         Show_Preview;
-         UILocation := DIRECTORY_VIEW;
-         Update_Directory_List;
+         Delete_Dialog(DialogForm);
          return DIRECTORY_VIEW;
       end if;
       return DEVELOPERS_VIEW;
