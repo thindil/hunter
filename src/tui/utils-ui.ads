@@ -58,6 +58,17 @@ package Utils.UI is
       Form_Height: out Line_Position; Form_Length: out Column_Position);
    -- ****
 
+   -- ****f* UtilsUI/UtilsUI.Delete_Dialog
+   -- FUNCTION
+   -- Delete the selected dialog and refresh the main window of the program
+   -- PARAMETERS
+   -- DialogForm - The dialog which will be destroyed
+   -- OUTPUT
+   -- Parameter DialogForm as the deleted dialog
+   -- SOURCE
+   procedure Delete_Dialog(DialogForm: in out Forms.Form);
+   -- ****
+
    -- ****f* UtilsTUI/UtilsTUI.Toggle_Tool_Buttons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with

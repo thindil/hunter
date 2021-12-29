@@ -15,6 +15,8 @@
 
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with MainWindow; use MainWindow;
+with ShowItems; use ShowItems;
 
 package body Utils.UI is
 
@@ -54,5 +56,14 @@ package body Utils.UI is
       Refresh;
       Refresh(FormWindow);
    end Create_Dialog;
+
+   procedure Delete_Dialog(DialogForm: in out Forms.Form) is
+   begin
+      Post(DialogForm, False);
+      Delete(DialogForm);
+      Show_Preview;
+      UILocation := DIRECTORY_VIEW;
+      Update_Directory_List;
+   end Delete_Dialog;
 
 end Utils.UI;
