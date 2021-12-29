@@ -1043,15 +1043,15 @@ package body ShowItems is
             options =>
               "-text {" & Mc(Interp => Get_Context, Src_String => "{Others}") &
               ":}");
-         if Value("USER") = Slice(Tokens, 2) then
+         if Value(Name => "USER") = Slice(S => Tokens, Index => 2) then
             Set_Permissions_Buttons
-              ("owner", "!disabled",
-               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 2));
+              (Name => "owner", Button_State => "!disabled",
+               Permission => Slice(S => Tokens, Index => 1)(Slice(S => Tokens, Index => 1)'Last - 2));
             Set_Permissions_Buttons
-              ("group", "!disabled",
-               Slice(Tokens, 1)(Slice(Tokens, 1)'Last - 1));
+              (Name => "group", Button_State => "!disabled",
+               Permission => Slice(S => Tokens, Index => 1)(Slice(S => Tokens, Index => 1)'Last - 1));
             Set_Permissions_Buttons
-              ("others", "!disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
+              (Name => "others", Button_State => "!disabled", Permission => Slice(S => Tokens, Index => 1)(Slice(S => Tokens, Index => 1)'Last));
          else
             Set_Permissions_Buttons
               ("owner", "disabled",
