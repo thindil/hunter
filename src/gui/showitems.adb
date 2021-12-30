@@ -1116,9 +1116,9 @@ package body ShowItems is
       pragma Unreferenced(Client_Data, Argc, Argv);
       DirectoryTree: constant Ttk_Tree_View :=
         Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
-      Tokens: Slice_Set;
+      Tokens: Slice_Set; --## rule line off IMPROPER_INITIALIZATION
       Items: Unbounded_String;
-      ActionButton: Ttk_RadioButton;
+      ActionButton: Ttk_RadioButton := Get_Widget(".", Interp);
    begin
       Selected_Items.Clear;
       Items := To_Unbounded_String(Selection(DirectoryTree));
@@ -1142,7 +1142,6 @@ package body ShowItems is
          return TCL_OK;
       end if;
       SetActionsButtons;
-      ActionButton.Interp := Interp;
       if Is_Directory(To_String(Current_Selected)) or
         Is_Regular_File(To_String(Current_Selected)) then
          ActionButton.Name :=
