@@ -41,6 +41,7 @@ package body Utils.UI is
    procedure Create_Dialog
      (DialogForm: in out Forms.Form; FormWindow: out Window;
       Form_Height: out Line_Position; Form_Length: out Column_Position) is
+      UnusedResult: Forms.Driver_Result := Unknown_Request;
    begin
       Set_Options(DialogForm, (others => False));
       Scale(DialogForm, Form_Height, Form_Length);
@@ -53,6 +54,7 @@ package body Utils.UI is
       Set_Sub_Window
         (DialogForm, Derived_Window(FormWindow, Form_Height, Form_Length, 1, 1));
       Post(DialogForm);
+      UnusedResult := Driver(DialogForm, REQ_END_LINE);
       Refresh;
       Refresh(FormWindow);
    end Create_Dialog;
