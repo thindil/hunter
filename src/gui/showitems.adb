@@ -1071,10 +1071,10 @@ package body ShowItems is
                  Slice(S => Tokens, Index => 1)
                    (Slice(S => Tokens, Index => 1)'Last - 1));
             Set_Permissions_Buttons
-              ("others", "disabled", Slice(Tokens, 1)(Slice(Tokens, 1)'Last));
+              (Name => "others", Button_State => "disabled", Permission => Slice(S => Tokens, Index => 1)(Slice(S => Tokens, Index => 1)'Last));
          end if;
       end Show_Permissions_Block;
-      Tcl.Tk.Ada.Pack.Pack(Get_Info_Frame);
+      Tcl.Tk.Ada.Pack.Pack(Slave => Get_Info_Frame);
    end Show_Info;
 
    -- ****o* ShowItems/ShowItems.Show_Preview_Or_Info_Command
@@ -1092,17 +1092,17 @@ package body ShowItems is
    -- ShowPreviewOrInfo
    -- SOURCE
    function Show_Preview_Or_Info_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Show_Preview_Or_Info_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+      pragma Unreferenced(Client_Data, Argc, Argv);
    begin
-      if Tcl.Ada.Tcl_GetVar(Interp, "previewtype") = "preview" then
+      if Tcl.Ada.Tcl_GetVar(interp => Interp, varName => "previewtype") = "preview" then
          Show_Preview;
       else
          Show_Info;
