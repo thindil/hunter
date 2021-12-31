@@ -1122,15 +1122,15 @@ package body ShowItems is
    begin
       Selected_Items.Clear;
       Items := To_Unbounded_String(Source => Selection(TreeViewWidget => Directory_Tree));
-      if Items /= Null_Unbounded_String then
+      if Items = Null_Unbounded_String then
+         Selected_Items.Append(Common.Current_Directory);
+      else
          Create(Tokens, To_String(Items), " ");
          Set_Selected_List_Loop :
          for I in 1 .. Slice_Count(Tokens) loop
             Selected_Items.Append
               (Items_List(Positive'Value(Slice(Tokens, I))).Path);
          end loop Set_Selected_List_Loop;
-      else
-         Selected_Items.Append(Common.Current_Directory);
       end if;
       if not Settings.Show_Preview or
         (Selected_Items(1) = Current_Selected and
