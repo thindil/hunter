@@ -37,7 +37,6 @@ package body ActivateItems.UI is
       FormLength: Column_Position;
       Visibility: Cursor_Visibility := Normal;
       FieldOptions: Field_Option_Set;
-      UnusedResult: Forms.Driver_Result := Unknown_Request;
    begin
       Set_Cursor_Visibility(Visibility);
       Create_Fields.all(1) :=
@@ -80,7 +79,6 @@ package body ActivateItems.UI is
       Set_Current(DialogForm, Create_Fields(2));
       Set_Options(DialogForm, (others => False));
       Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
-      UnusedResult := Driver(DialogForm, REQ_END_LINE);
    end Show_Execute_With_Dialog;
 
    function Execute_Form_Keys(Key: Key_Code) return UI_Locations is
