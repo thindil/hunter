@@ -1114,14 +1114,14 @@ package body ShowItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
-      DirectoryTree: constant Ttk_Tree_View :=
-        Get_Widget(".mainframe.paned.directoryframe.directorytree", Interp);
+      Directory_Tree: constant Ttk_Tree_View :=
+        Get_Widget(pathName => ".mainframe.paned.directoryframe.directorytree", Interp => Interp);
       Tokens: Slice_Set; --## rule line off IMPROPER_INITIALIZATION
       Items: Unbounded_String;
-      ActionButton: Ttk_RadioButton := Get_Widget(".", Interp);
+      Action_Button: Ttk_RadioButton := Get_Widget(pathName => ".", Interp => Interp);
    begin
       Selected_Items.Clear;
-      Items := To_Unbounded_String(Selection(DirectoryTree));
+      Items := To_Unbounded_String(Source => Selection(TreeViewWidget => Directory_Tree));
       if Items /= Null_Unbounded_String then
          Create(Tokens, To_String(Items), " ");
          Set_Selected_List_Loop :
@@ -1144,13 +1144,13 @@ package body ShowItems is
       SetActionsButtons;
       if Is_Directory(To_String(Current_Selected)) or
         Is_Regular_File(To_String(Current_Selected)) then
-         ActionButton.Name :=
+         Action_Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
       else
-         ActionButton.Name :=
+         Action_Button.Name :=
            New_String(".mainframe.toolbars.itemtoolbar.infobutton");
       end if;
-      if Invoke(ActionButton) /= "" and Invoke(ActionButton) /= "0" then
+      if Invoke(Action_Button) /= "" and Invoke(Action_Button) /= "0" then
          Set_Bookmark_Button;
          return TCL_OK;
       end if;
