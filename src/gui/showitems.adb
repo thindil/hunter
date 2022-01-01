@@ -1123,13 +1123,13 @@ package body ShowItems is
       Selected_Items.Clear;
       Items := To_Unbounded_String(Source => Selection(TreeViewWidget => Directory_Tree));
       if Items = Null_Unbounded_String then
-         Selected_Items.Append(Common.Current_Directory);
+         Selected_Items.Append(New_Item => Common.Current_Directory);
       else
-         Create(Tokens, To_String(Items), " ");
+         Create(S => Tokens, From => To_String(Source => Items), Separators => " ");
          Set_Selected_List_Loop :
-         for I in 1 .. Slice_Count(Tokens) loop
+         for I in 1 .. Slice_Count(S => Tokens) loop
             Selected_Items.Append
-              (Items_List(Positive'Value(Slice(Tokens, I))).Path);
+              (New_Item => Items_List(Positive'Value(Slice(S => Tokens, Index => I))).Path);
          end loop Set_Selected_List_Loop;
       end if;
       if not Settings.Show_Preview or
@@ -1142,15 +1142,15 @@ package body ShowItems is
          return TCL_OK;
       end if;
       SetActionsButtons;
-      if Is_Directory(To_String(Current_Selected)) or
-        Is_Regular_File(To_String(Current_Selected)) then
+      if Is_Directory(Name => To_String(Source => Current_Selected)) or
+        Is_Regular_File(Name => To_String(Source => Current_Selected)) then
          Action_Button.Name :=
-           New_String(".mainframe.toolbars.itemtoolbar.previewbutton");
+           New_String(Str => ".mainframe.toolbars.itemtoolbar.previewbutton");
       else
          Action_Button.Name :=
-           New_String(".mainframe.toolbars.itemtoolbar.infobutton");
+           New_String(Str => ".mainframe.toolbars.itemtoolbar.infobutton");
       end if;
-      if Invoke(Action_Button) /= "" and Invoke(Action_Button) /= "0" then
+      if Invoke(Buttn => Action_Button) not in "" | "0" then
          Set_Bookmark_Button;
          return TCL_OK;
       end if;
@@ -1172,15 +1172,15 @@ package body ShowItems is
    -- SetPermissions
    -- SOURCE
    function Set_Permissions_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Set_Permissions_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+      pragma Unreferenced(Client_Data, Argc, Argv);
       SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       PermissionsString: Unbounded_String;
       Permission: Natural range 0 .. 7;
