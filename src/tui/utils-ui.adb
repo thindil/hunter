@@ -52,7 +52,8 @@ package body Utils.UI is
       Box(FormWindow, Default_Character, Default_Character);
       Set_Window(DialogForm, FormWindow);
       Set_Sub_Window
-        (DialogForm, Derived_Window(FormWindow, Form_Height, Form_Length, 1, 1));
+        (DialogForm,
+         Derived_Window(FormWindow, Form_Height, Form_Length, 1, 1));
       Post(DialogForm);
       UnusedResult := Driver(DialogForm, REQ_END_LINE);
       Refresh;
