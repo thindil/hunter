@@ -1183,7 +1183,7 @@ package body ShowItems is
       pragma Unreferenced(Client_Data, Argc, Argv);
       SelectedItem: constant String := Full_Name(To_String(Current_Selected));
       PermissionsString: Unbounded_String;
-      Permission: Natural range 0 .. 7;
+      Permission: Natural range 0 .. 7 := 0;
       Names: constant array(1 .. 3) of Unbounded_String :=
         (To_Unbounded_String("owner"), To_Unbounded_String("group"),
          To_Unbounded_String("others"));
