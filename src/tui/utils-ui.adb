@@ -60,13 +60,14 @@ package body Utils.UI is
       Refresh(FormWindow);
    end Create_Dialog;
 
-   procedure Delete_Dialog(DialogForm: in out Forms.Form) is
+   procedure Delete_Dialog
+     (DialogForm: in out Forms.Form; Clear: Boolean := False) is
    begin
       Post(DialogForm, False);
       Delete(DialogForm);
       Show_Preview;
       UILocation := DIRECTORY_VIEW;
-      Update_Directory_List;
+      Update_Directory_List(Clear);
    end Delete_Dialog;
 
 end Utils.UI;

@@ -63,10 +63,13 @@ package Utils.UI is
    -- Delete the selected dialog and refresh the main window of the program
    -- PARAMETERS
    -- DialogForm - The dialog which will be destroyed
+   -- Clear      - If True, the main directory preview list should be cleared.
+   --              Default value is False.
    -- OUTPUT
    -- Parameter DialogForm as the deleted dialog
    -- SOURCE
-   procedure Delete_Dialog(DialogForm: in out Forms.Form);
+   procedure Delete_Dialog
+     (DialogForm: in out Forms.Form; Clear: Boolean := False);
    -- ****
 
    -- ****f* UtilsTUI/UtilsTUI.Toggle_Tool_Buttons
