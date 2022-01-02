@@ -1071,7 +1071,10 @@ package body ShowItems is
                  Slice(S => Tokens, Index => 1)
                    (Slice(S => Tokens, Index => 1)'Last - 1));
             Set_Permissions_Buttons
-              (Name => "others", Button_State => "disabled", Permission => Slice(S => Tokens, Index => 1)(Slice(S => Tokens, Index => 1)'Last));
+              (Name => "others", Button_State => "disabled",
+               Permission =>
+                 Slice(S => Tokens, Index => 1)
+                   (Slice(S => Tokens, Index => 1)'Last));
          end if;
       end Show_Permissions_Block;
       Tcl.Tk.Ada.Pack.Pack(Slave => Get_Info_Frame);
@@ -1102,7 +1105,8 @@ package body ShowItems is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
    begin
-      if Tcl.Ada.Tcl_GetVar(interp => Interp, varName => "previewtype") = "preview" then
+      if Tcl.Ada.Tcl_GetVar(interp => Interp, varName => "previewtype") =
+        "preview" then
          Show_Preview;
       else
          Show_Info;
@@ -1115,21 +1119,30 @@ package body ShowItems is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
       Directory_Tree: constant Ttk_Tree_View :=
-        Get_Widget(pathName => ".mainframe.paned.directoryframe.directorytree", Interp => Interp);
+        Get_Widget
+          (pathName => ".mainframe.paned.directoryframe.directorytree",
+           Interp => Interp);
       Tokens: Slice_Set; --## rule line off IMPROPER_INITIALIZATION
       Items: Unbounded_String;
-      Action_Button: Ttk_RadioButton := Get_Widget(pathName => ".", Interp => Interp);
+      Action_Button: Ttk_RadioButton :=
+        Get_Widget(pathName => ".", Interp => Interp);
    begin
       Selected_Items.Clear;
-      Items := To_Unbounded_String(Source => Selection(TreeViewWidget => Directory_Tree));
+      Items :=
+        To_Unbounded_String
+          (Source => Selection(TreeViewWidget => Directory_Tree));
       if Items = Null_Unbounded_String then
          Selected_Items.Append(New_Item => Common.Current_Directory);
       else
-         Create(S => Tokens, From => To_String(Source => Items), Separators => " ");
+         Create
+           (S => Tokens, From => To_String(Source => Items),
+            Separators => " ");
          Set_Selected_List_Loop :
          for I in 1 .. Slice_Count(S => Tokens) loop
             Selected_Items.Append
-              (New_Item => Items_List(Positive'Value(Slice(S => Tokens, Index => I))).Path);
+              (New_Item =>
+                 Items_List(Positive'Value(Slice(S => Tokens, Index => I)))
+                   .Path);
          end loop Set_Selected_List_Loop;
       end if;
       if not Settings.Show_Preview or
@@ -1181,11 +1194,13 @@ package body ShowItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
-      Selected_Item: constant String := Full_Name(Name => To_String(Source => Current_Selected));
+      Selected_Item: constant String :=
+        Full_Name(Name => To_String(Source => Current_Selected));
       Permissions_String: Unbounded_String;
       Permission: Natural range 0 .. 7 := 0;
       Names: constant array(1 .. 3) of Unbounded_String :=
-        (1 => To_Unbounded_String(Source => "owner"), 2 => To_Unbounded_String(Source => "group"),
+        (1 => To_Unbounded_String(Source => "owner"),
+         2 => To_Unbounded_String(Source => "group"),
          3 => To_Unbounded_String(Source => "others"));
    begin
       if Is_Directory(Name => Selected_Item) then
@@ -1196,25 +1211,38 @@ package body ShowItems is
       Set_Permissions_Loop :
       for Name of Names loop
          Permission := 0;
-         if Tcl.Ada.Tcl_GetVar(interp => Interp, varName => To_String(Source => Name) & "execute") = "1" then
+         if Tcl.Ada.Tcl_GetVar
+             (interp => Interp,
+              varName => To_String(Source => Name) & "execute") =
+           "1" then
             Permission := Permission + 1;
          end if;
-         if Tcl.Ada.Tcl_GetVar(interp => Interp, varName => To_String(Source => Name) & "write") = "1" then
+         if Tcl.Ada.Tcl_GetVar
+             (interp => Interp,
+              varName => To_String(Source => Name) & "write") =
+           "1" then
             Permission := Permission + 2;
          end if;
-         if Tcl.Ada.Tcl_GetVar(Interp, To_String(Name) & "read") = "1" then
+         if Tcl.Ada.Tcl_GetVar
+             (interp => Interp,
+              varName => To_String(Source => Name) & "read") =
+           "1" then
             Permission := Permission + 4;
          end if;
-         Append(Permissions_String, Trim(Natural'Image(Permission), Both));
+         Append
+           (Source => Permissions_String,
+            New_Item =>
+              Trim(Source => Natural'Image(Permission), Side => Both));
       end loop Set_Permissions_Loop;
       Tcl.Ada.Tcl_Eval
-        (Interp,
-         "file attributes {" & Selected_Item & "} -permissions " &
-         To_String(Permissions_String));
+        (interp => Interp,
+         strng =>
+           "file attributes {" & Selected_Item & "} -permissions " &
+           To_String(Source => Permissions_String));
       return TCL_OK;
    end Set_Permissions_Command;
 
-   -- ****o* ShowItems/ShowItems.GoToDirectory_Command
+   -- ****o* ShowItems/ShowItems.Go_To_Directory_Command
    -- FUNCTION
    -- Go to the selected directory in preview
    -- PARAMETERS
@@ -1228,39 +1256,44 @@ package body ShowItems is
    -- GoToDirectory ?selecteditem?
    -- Selecteditem is full path to the currently selected file or directory
    -- SOURCE
-   function GoToDirectory_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+   function Go_To_Directory_Command
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
-   function GoToDirectory_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+   function Go_To_Directory_Command
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData);
-      SelectedItem: Unbounded_String;
+      pragma Unreferenced(Client_Data);
+      Selected_Item: Unbounded_String;
    begin
       if Argc = 2 then
-         SelectedItem := To_Unbounded_String(CArgv.Arg(Argv, 1));
+         Selected_Item :=
+           To_Unbounded_String(Source => CArgv.Arg(Argv => Argv, N => 1));
       else
-         if Selection(Get_Preview_Tree) = "" then
+         if Selection(TreeViewWidget => Get_Preview_Tree) = "" then
             return TCL_OK;
          end if;
-         SelectedItem :=
+         Selected_Item :=
            Destination_Directory & "/" &
            To_Unbounded_String
-             (Set(Get_Preview_Tree, Selection(Get_Preview_Tree), "name"));
-         if not Is_Directory(To_String(SelectedItem)) then
+             (Source =>
+                Set
+                  (TreeViewWidget => Get_Preview_Tree,
+                   Item => Selection(TreeViewWidget => Get_Preview_Tree),
+                   Column => "name"));
+         if not Is_Directory(To_String(Selected_Item)) then
             return TCL_OK;
          end if;
       end if;
-      Destination_Directory := SelectedItem;
-      Load_Directory(To_String(SelectedItem), True);
+      Destination_Directory := Selected_Item;
+      Load_Directory(To_String(Selected_Item), True);
       Update_Directory_List(True, "preview");
       Execute_Modules
         (Interp, ON_ENTER, "{" & To_String(Destination_Directory) & "}");
       return TCL_OK;
-   end GoToDirectory_Command;
+   end Go_To_Directory_Command;
 
    procedure Create_Show_Items_Ui is
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
@@ -1382,7 +1415,7 @@ package body ShowItems is
       Add_Command("ShowSelected", Show_Selected_Command'Access);
       Add_Command("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       Add_Command("SetPermissions", Set_Permissions_Command'Access);
-      Add_Command("GoToDirectory", GoToDirectory_Command'Access);
+      Add_Command("GoToDirectory", Go_To_Directory_Command'Access);
       Add
         (Button,
          Mc
