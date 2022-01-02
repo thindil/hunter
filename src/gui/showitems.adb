@@ -1181,36 +1181,36 @@ package body ShowItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
-      SelectedItem: constant String := Full_Name(To_String(Current_Selected));
-      PermissionsString: Unbounded_String;
+      Selected_Item: constant String := Full_Name(Name => To_String(Source => Current_Selected));
+      Permissions_String: Unbounded_String;
       Permission: Natural range 0 .. 7 := 0;
       Names: constant array(1 .. 3) of Unbounded_String :=
-        (To_Unbounded_String("owner"), To_Unbounded_String("group"),
-         To_Unbounded_String("others"));
+        (1 => To_Unbounded_String(Source => "owner"), 2 => To_Unbounded_String(Source => "group"),
+         3 => To_Unbounded_String(Source => "others"));
    begin
-      if Is_Directory(SelectedItem) then
-         PermissionsString := To_Unbounded_String("040");
+      if Is_Directory(Name => Selected_Item) then
+         Permissions_String := To_Unbounded_String(Source => "040");
       else
-         PermissionsString := To_Unbounded_String("00");
+         Permissions_String := To_Unbounded_String(Source => "00");
       end if;
       Set_Permissions_Loop :
       for Name of Names loop
          Permission := 0;
-         if Tcl.Ada.Tcl_GetVar(Interp, To_String(Name) & "execute") = "1" then
+         if Tcl.Ada.Tcl_GetVar(interp => Interp, varName => To_String(Source => Name) & "execute") = "1" then
             Permission := Permission + 1;
          end if;
-         if Tcl.Ada.Tcl_GetVar(Interp, To_String(Name) & "write") = "1" then
+         if Tcl.Ada.Tcl_GetVar(interp => Interp, varName => To_String(Source => Name) & "write") = "1" then
             Permission := Permission + 2;
          end if;
          if Tcl.Ada.Tcl_GetVar(Interp, To_String(Name) & "read") = "1" then
             Permission := Permission + 4;
          end if;
-         Append(PermissionsString, Trim(Natural'Image(Permission), Both));
+         Append(Permissions_String, Trim(Natural'Image(Permission), Both));
       end loop Set_Permissions_Loop;
       Tcl.Ada.Tcl_Eval
         (Interp,
-         "file attributes {" & SelectedItem & "} -permissions " &
-         To_String(PermissionsString));
+         "file attributes {" & Selected_Item & "} -permissions " &
+         To_String(Permissions_String));
       return TCL_OK;
    end Set_Permissions_Command;
 
