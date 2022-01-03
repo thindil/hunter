@@ -263,19 +263,7 @@ package body CreateItems.UI is
       DialogForm := New_Form(Create_Fields);
       Set_Current(DialogForm, Create_Fields(2));
       Set_Options(DialogForm, (others => False));
-      Scale(DialogForm, FormHeight, FormLength);
-      FormWindow :=
-        Create
-          (FormHeight + 2, FormLength + 2, ((Lines / 3) - (FormHeight / 2)),
-           ((Columns / 2) - (FormLength / 2)));
-      Box(FormWindow, Default_Character, Default_Character);
-      Set_Window(DialogForm, FormWindow);
-      Set_Sub_Window
-        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
-      Post(DialogForm);
-      UnusedResult := Driver(DialogForm, REQ_END_LINE);
-      Refresh;
-      Refresh(FormWindow);
+      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
    end Show_Create_Link_Form;
 
    function Create_Link_Keys(Key: Key_Code) return UI_Locations is
