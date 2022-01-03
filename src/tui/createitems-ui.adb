@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -300,11 +300,8 @@ package body CreateItems.UI is
             end if;
             if FieldIndex /= 2 then
                New_Action := CREATEFILE;
-               UILocation := DIRECTORY_VIEW;
                Set_Cursor_Visibility(Visibility);
-               Post(DialogForm, False);
-               Delete(DialogForm);
-               Update_Directory_List(True);
+               Delete_Dialog(DialogForm, True);
                Show_Preview;
                CreateProgramMenu(True);
                return DIRECTORY_VIEW;
