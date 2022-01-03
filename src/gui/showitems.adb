@@ -1283,15 +1283,15 @@ package body ShowItems is
                   (TreeViewWidget => Get_Preview_Tree,
                    Item => Selection(TreeViewWidget => Get_Preview_Tree),
                    Column => "name"));
-         if not Is_Directory(To_String(Selected_Item)) then
+         if not Is_Directory(Name => To_String(Source => Selected_Item)) then
             return TCL_OK;
          end if;
       end if;
       Destination_Directory := Selected_Item;
-      Load_Directory(To_String(Selected_Item), True);
-      Update_Directory_List(True, "preview");
+      Load_Directory(Directory_Name => To_String(Source => Selected_Item), Second => True);
+      Update_Directory_List(Clear => True, Frame_Name => "preview");
       Execute_Modules
-        (Interp, ON_ENTER, "{" & To_String(Destination_Directory) & "}");
+        (Interpreter => Interp, State => ON_ENTER, Arguments => "{" & To_String(Source => Destination_Directory) & "}");
       return TCL_OK;
    end Go_To_Directory_Command;
 
@@ -1299,10 +1299,10 @@ package body ShowItems is
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
       Label: Ttk_Label;
       Button: Ttk_Button;
-      ButtonTexts: constant array(1 .. 3) of Unbounded_String :=
-        (To_Unbounded_String(Mc(Get_Context, "{Can execute}")),
-         To_Unbounded_String(Mc(Get_Context, "{Can read}")),
-         To_Unbounded_String(Mc(Get_Context, "{Can write}")));
+      Button_Texts: constant array(1 .. 3) of Unbounded_String :=
+        (1 => To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Can execute}")),
+         2 => To_Unbounded_String(Mc(Get_Context, "{Can read}")),
+         3 => To_Unbounded_String(Mc(Get_Context, "{Can write}")));
       PathButtonsFrame: Ttk_Frame;
       pragma Unreferenced(PathButtonsFrame);
       Font: constant String :=
@@ -1324,7 +1324,7 @@ package body ShowItems is
             CheckButton :=
               Create
                 (Frame & "." & To_String(Button_Names(I)),
-                 "-text {" & To_String(ButtonTexts(I)) & "} -variable " &
+                 "-text {" & To_String(Button_Texts(I)) & "} -variable " &
                  Name & To_String(Button_Names(I)) &
                  " -command SetPermissions");
             Tcl.Tk.Ada.Pack.Pack(CheckButton, "-anchor w");
