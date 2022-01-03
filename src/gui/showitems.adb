@@ -1288,10 +1288,12 @@ package body ShowItems is
          end if;
       end if;
       Destination_Directory := Selected_Item;
-      Load_Directory(Directory_Name => To_String(Source => Selected_Item), Second => True);
+      Load_Directory
+        (Directory_Name => To_String(Source => Selected_Item), Second => True);
       Update_Directory_List(Clear => True, Frame_Name => "preview");
       Execute_Modules
-        (Interpreter => Interp, State => ON_ENTER, Arguments => "{" & To_String(Source => Destination_Directory) & "}");
+        (Interpreter => Interp, State => ON_ENTER,
+         Arguments => "{" & To_String(Source => Destination_Directory) & "}");
       return TCL_OK;
    end Go_To_Directory_Command;
 
@@ -1300,17 +1302,27 @@ package body ShowItems is
       Label: Ttk_Label;
       Button: Ttk_Button;
       Button_Texts: constant array(1 .. 3) of Unbounded_String :=
-        (1 => To_Unbounded_String(Source => Mc(Interp => Get_Context, Src_String => "{Can execute}")),
-         2 => To_Unbounded_String(Mc(Get_Context, "{Can read}")),
-         3 => To_Unbounded_String(Mc(Get_Context, "{Can write}")));
-      PathButtonsFrame: Ttk_Frame;
-      pragma Unreferenced(PathButtonsFrame);
+        (1 =>
+           To_Unbounded_String
+             (Source =>
+                Mc(Interp => Get_Context, Src_String => "{Can execute}")),
+         2 =>
+           To_Unbounded_String
+             (Source => Mc(Interp => Get_Context, Src_String => "{Can read}")),
+         3 =>
+           To_Unbounded_String
+             (Source =>
+                Mc(Interp => Get_Context, Src_String => "{Can write}")));
+      Path_Buttons_Frame: Ttk_Frame;
+      pragma Unreferenced(Path_Buttons_Frame);
       Font: constant String :=
         (if Settings.Monospace_Font then "TkFixedFont" else "TkDefaultFont");
-      procedure CreatePermissionsFrame(Name: String; Row: Positive) is
+      procedure Create_Permissions_Frame(Name: String; Row: Positive) is
          Frame: constant Ttk_Frame :=
-           Create(".mainframe.paned.previewframe.infoframe." & Name & "frame");
-         CheckButton: Ttk_CheckButton;
+           Create
+             (pathName =>
+                ".mainframe.paned.previewframe.infoframe." & Name & "frame");
+         Check_Button: Ttk_CheckButton;
       begin
          Label :=
            Create(".mainframe.paned.previewframe.infoframe." & Name & "text");
@@ -1321,22 +1333,22 @@ package body ShowItems is
            (Label, "-column 1 -row" & Positive'Image(Row) & " -sticky w");
          Set_Permission_Buttons_Loop :
          for I in Button_Names'Range loop
-            CheckButton :=
+            Check_Button :=
               Create
                 (Frame & "." & To_String(Button_Names(I)),
                  "-text {" & To_String(Button_Texts(I)) & "} -variable " &
                  Name & To_String(Button_Names(I)) &
                  " -command SetPermissions");
-            Tcl.Tk.Ada.Pack.Pack(CheckButton, "-anchor w");
+            Tcl.Tk.Ada.Pack.Pack(Check_Button, "-anchor w");
          end loop Set_Permission_Buttons_Loop;
          Tcl.Tk.Ada.Grid.Grid
            (Frame, "-column 1 -row" & Positive'Image(Row + 1));
-      end CreatePermissionsFrame;
+      end Create_Permissions_Frame;
    begin
       Preview_Frame := Create(Paned & ".previewframe");
       Label := Create(Get_Preview_Frame & ".title");
       Tcl.Tk.Ada.Pack.Pack(Label);
-      PathButtonsFrame := Create(Get_Preview_Frame & ".pathframe");
+      Path_Buttons_Frame := Create(Get_Preview_Frame & ".pathframe");
       Preview_X_Scroll :=
         Create
           (Get_Preview_Frame & ".scrollx",
@@ -1409,9 +1421,9 @@ package body ShowItems is
           (Get_Info_Frame & ".associatedprogram",
            "-command ToggleApplicationsMenu");
       Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4 -sticky w");
-      CreatePermissionsFrame("owner", 5);
-      CreatePermissionsFrame("group", 7);
-      CreatePermissionsFrame("others", 9);
+      Create_Permissions_Frame("owner", 5);
+      Create_Permissions_Frame("group", 7);
+      Create_Permissions_Frame("others", 9);
       Add_Command("ShowSelected", Show_Selected_Command'Access);
       Add_Command("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       Add_Command("SetPermissions", Set_Permissions_Command'Access);
