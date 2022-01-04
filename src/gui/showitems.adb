@@ -1298,7 +1298,8 @@ package body ShowItems is
    end Go_To_Directory_Command;
 
    procedure Create_Show_Items_Ui is
-      Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
+      Paned: constant Ttk_PanedWindow :=
+        Get_Widget(pathName => ".mainframe.paned");
       Label: Ttk_Label;
       Button: Ttk_Button;
       Button_Texts: constant array(1 .. 3) of Unbounded_String :=
@@ -1325,30 +1326,42 @@ package body ShowItems is
          Check_Button: Ttk_CheckButton := Get_Widget(pathName => ".");
       begin
          Label :=
-           Create(".mainframe.paned.previewframe.infoframe." & Name & "text");
+           Create
+             (pathName =>
+                ".mainframe.paned.previewframe.infoframe." & Name & "text");
          Tcl.Tk.Ada.Grid.Grid
-           (Label, "-column 0 -row" & Positive'Image(Row) & " -sticky w");
-         Label := Create(".mainframe.paned.previewframe.infoframe." & Name);
+           (Slave => Label,
+            Options => "-column 0 -row" & Positive'Image(Row) & " -sticky w");
+         Label :=
+           Create
+             (pathName => ".mainframe.paned.previewframe.infoframe." & Name);
          Tcl.Tk.Ada.Grid.Grid
-           (Label, "-column 1 -row" & Positive'Image(Row) & " -sticky w");
+           (Slave => Label,
+            Options => "-column 1 -row" & Positive'Image(Row) & " -sticky w");
          Set_Permission_Buttons_Loop :
          for I in Button_Names'Range loop
             Check_Button :=
               Create
-                (Frame & "." & To_String(Button_Names(I)),
-                 "-text {" & To_String(Button_Texts(I)) & "} -variable " &
-                 Name & To_String(Button_Names(I)) &
-                 " -command SetPermissions");
-            Tcl.Tk.Ada.Pack.Pack(Check_Button, "-anchor w");
+                (pathName =>
+                   Frame & "." & To_String(Source => Button_Names(I)),
+                 options =>
+                   "-text {" & To_String(Source => Button_Texts(I)) &
+                   "} -variable " & Name &
+                   To_String(Source => Button_Names(I)) &
+                   " -command SetPermissions");
+            Tcl.Tk.Ada.Pack.Pack
+              (Slave => Check_Button, Options => "-anchor w");
          end loop Set_Permission_Buttons_Loop;
          Tcl.Tk.Ada.Grid.Grid
-           (Frame, "-column 1 -row" & Positive'Image(Row + 1));
+           (Slave => Frame,
+            Options => "-column 1 -row" & Positive'Image(Row + 1));
       end Create_Permissions_Frame;
    begin
-      Preview_Frame := Create(Paned & ".previewframe");
-      Label := Create(Get_Preview_Frame & ".title");
-      Tcl.Tk.Ada.Pack.Pack(Label);
-      Path_Buttons_Frame := Create(Get_Preview_Frame & ".pathframe");
+      Preview_Frame := Create(pathName => Paned & ".previewframe");
+      Label := Create(pathName => Get_Preview_Frame & ".title");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Label);
+      Path_Buttons_Frame :=
+        Create(pathName => Get_Preview_Frame & ".pathframe");
       Preview_X_Scroll :=
         Create
           (Get_Preview_Frame & ".scrollx",
