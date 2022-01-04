@@ -1322,7 +1322,7 @@ package body ShowItems is
            Create
              (pathName =>
                 ".mainframe.paned.previewframe.infoframe." & Name & "frame");
-         Check_Button: Ttk_CheckButton;
+         Check_Button: Ttk_CheckButton := Get_Widget(pathName => ".");
       begin
          Label :=
            Create(".mainframe.paned.previewframe.infoframe." & Name & "text");
