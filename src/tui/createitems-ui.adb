@@ -162,7 +162,6 @@ package body CreateItems.UI is
       Create_Fields.all(5) := Null_Field;
       DialogForm := New_Form(Create_Fields);
       Set_Current(DialogForm, Create_Fields(2));
-      Set_Options(DialogForm, (others => False));
       Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
    end ShowCreateForm;
 
@@ -262,7 +261,6 @@ package body CreateItems.UI is
       Create_Fields.all(5) := Null_Field;
       DialogForm := New_Form(Create_Fields);
       Set_Current(DialogForm, Create_Fields(2));
-      Set_Options(DialogForm, (others => False));
       Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
    end Show_Create_Link_Form;
 
