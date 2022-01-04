@@ -35,7 +35,7 @@ package body DeleteItems.UI is
    FormWindow: Window;
 
    procedure ShowDeleteForm is
-      Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
+      Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 4);
       FormHeight: Line_Position;
       FormLength: constant Column_Position := 32;
       Visibility: Cursor_Visibility := Normal;
@@ -50,6 +50,12 @@ package body DeleteItems.UI is
          return;
       end if;
       Set_Cursor_Visibility(Visibility);
+      if Settings.Delete_Files or New_Action = DELETETRASH then
+         DeleteList := To_Unbounded_String(Mc(Interpreter, "{Delete?}") & LF);
+      else
+         DeleteList :=
+           To_Unbounded_String(Mc(Interpreter, "{Move to Trash?}") & LF);
+      end if;
       if Selected_Items.Length > 10 then
          ListLength := 10;
       else
@@ -127,28 +133,35 @@ package body DeleteItems.UI is
            (DeleteList,
             " " & Mc(Interp => Interpreter, Src_String => "{(and more)}"));
       end if;
+      ListLength := ListLength + 4;
       Delete_Fields.all(1) :=
+        New_Field(Line_Position(ListLength), 30, 0, 0, 0, 0);
+      Set_Buffer(Delete_Fields.all(1), 0, To_String(DeleteList));
+      FieldOptions := Get_Options(Delete_Fields.all(1));
+      FieldOptions.Active := False;
+      Set_Options(Delete_Fields.all(1), FieldOptions);
+      Delete_Fields.all(2) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2,
            1 + Line_Position(ListLength), 7, 0, 0);
       Set_Buffer
-        (Delete_Fields.all(1), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
-      FieldOptions := Get_Options(Delete_Fields.all(1));
-      FieldOptions.Edit := False;
-      Set_Options(Delete_Fields.all(1), FieldOptions);
-      Delete_Fields.all(2) :=
-        New_Field
-          (1, Column_Position'Value(Mc_Max("{Delete}", Interpreter)) + 2,
-           1 + Line_Position(ListLength), 23, 0, 0);
+        (Delete_Fields.all(2), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
       FieldOptions := Get_Options(Delete_Fields.all(2));
       FieldOptions.Edit := False;
       Set_Options(Delete_Fields.all(2), FieldOptions);
+      Delete_Fields.all(3) :=
+        New_Field
+          (1, Column_Position'Value(Mc_Max("{Delete}", Interpreter)) + 2,
+           1 + Line_Position(ListLength), 23, 0, 0);
+      FieldOptions := Get_Options(Delete_Fields.all(3));
+      FieldOptions.Edit := False;
+      Set_Options(Delete_Fields.all(3), FieldOptions);
       Set_Buffer
-        (Delete_Fields.all(2), 0, "[" & Mc(Interpreter, "{Delete}") & "]");
-      Delete_Fields.all(3) := Null_Field;
+        (Delete_Fields.all(3), 0, "[" & Mc(Interpreter, "{Delete}") & "]");
+      Delete_Fields.all(4) := Null_Field;
+      FormHeight := Line_Position(ListLength) + 2;
       DialogForm := New_Form(Delete_Fields);
       Set_Options(DialogForm, (others => False));
-      FormHeight := Line_Position(ListLength) + 2;
       FormWindow :=
         Create
           (FormHeight + 2, 34, ((Lines / 3) - (FormHeight / 2)),
@@ -157,12 +170,6 @@ package body DeleteItems.UI is
       Set_Sub_Window
         (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
       Post(DialogForm);
-      if Settings.Delete_Files or New_Action = DELETETRASH then
-         Add(FormWindow, 1, 1, Mc(Interpreter, "{Delete?}"));
-      else
-         Add(FormWindow, 1, 1, Mc(Interpreter, "{Move to Trash?}"));
-      end if;
-      Add(FormWindow, 2, 0, To_String(DeleteList));
       UnusedResult := Driver(DialogForm, F_First_Field);
       Box(FormWindow, Default_Character, Default_Character);
       Refresh;
@@ -180,7 +187,7 @@ package body DeleteItems.UI is
          when KEY_DOWN =>
             Result := Driver(DialogForm, F_Next_Field);
          when 10 =>
-            if FieldIndex = 2 then
+            if FieldIndex = 3 then
                if not Delete_Selected(Interpreter) then
                   Load_Directory(To_String(Common.Current_Directory));
                else
