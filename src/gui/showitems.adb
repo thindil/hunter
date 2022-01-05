@@ -1364,27 +1364,27 @@ package body ShowItems is
         Create(pathName => Get_Preview_Frame & ".pathframe");
       Preview_X_Scroll :=
         Create
-          (Get_Preview_Frame & ".scrollx",
-           "-orient horizontal -command [list " & Get_Preview_Frame &
+          (pathName => Get_Preview_Frame & ".scrollx",
+           options => "-orient horizontal -command [list " & Get_Preview_Frame &
            ".directorytree xview]");
       Preview_Y_Scroll :=
         Create
-          (Get_Preview_Frame & ".scrolly",
-           "-orient vertical -command [list " & Get_Preview_Frame &
+          (pathName => Get_Preview_Frame & ".scrolly",
+           options => "-orient vertical -command [list " & Get_Preview_Frame &
            ".directorytree yview]");
       Preview_Tree :=
         Create
-          (Get_Preview_Frame & ".directorytree",
-           "-columns [list name] -xscrollcommand {" & Get_Preview_X_Scroll &
+          (pathName => Get_Preview_Frame & ".directorytree",
+           options => "-columns [list name] -xscrollcommand {" & Get_Preview_X_Scroll &
            " set} -yscrollcommand {" & Get_Preview_Y_Scroll &
            " set} -selectmode none ");
       Heading
-        (Get_Preview_Tree, "name",
-         "-text {" & Mc(Get_Context, "{Name}") &
+        (TreeViewWidget => Get_Preview_Tree, Column => "name",
+         Options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Name}") &
          "} -image {arrow-down} -command {Sort previewname}");
-      Column(Get_Preview_Tree, "#0", "-stretch false -width 50");
-      Tag_Bind(Get_Preview_Tree, "itemrow", "<Double-1>", "GoToDirectory");
-      Bind(Get_Preview_Tree, "<Return>", "GoToDirectory");
+      Column(TreeViewWidget => Get_Preview_Tree, Col => "#0", Options => "-stretch false -width 50");
+      Tag_Bind(TreeViewWidget => Get_Preview_Tree, TagName => "itemrow", Sequence => "<Double-1>", Script => "GoToDirectory");
+      Bind(Widgt => Get_Preview_Tree, Sequence => "<Return>", Script => "GoToDirectory");
       Preview_Text :=
         Create
           (Get_Preview_Frame & ".previewtext",
