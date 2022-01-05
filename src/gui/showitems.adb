@@ -1365,47 +1365,67 @@ package body ShowItems is
       Preview_X_Scroll :=
         Create
           (pathName => Get_Preview_Frame & ".scrollx",
-           options => "-orient horizontal -command [list " & Get_Preview_Frame &
-           ".directorytree xview]");
+           options =>
+             "-orient horizontal -command [list " & Get_Preview_Frame &
+             ".directorytree xview]");
       Preview_Y_Scroll :=
         Create
           (pathName => Get_Preview_Frame & ".scrolly",
-           options => "-orient vertical -command [list " & Get_Preview_Frame &
-           ".directorytree yview]");
+           options =>
+             "-orient vertical -command [list " & Get_Preview_Frame &
+             ".directorytree yview]");
       Preview_Tree :=
         Create
           (pathName => Get_Preview_Frame & ".directorytree",
-           options => "-columns [list name] -xscrollcommand {" & Get_Preview_X_Scroll &
-           " set} -yscrollcommand {" & Get_Preview_Y_Scroll &
-           " set} -selectmode none ");
+           options =>
+             "-columns [list name] -xscrollcommand {" & Get_Preview_X_Scroll &
+             " set} -yscrollcommand {" & Get_Preview_Y_Scroll &
+             " set} -selectmode none ");
       Heading
         (TreeViewWidget => Get_Preview_Tree, Column => "name",
-         Options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Name}") &
-         "} -image {arrow-down} -command {Sort previewname}");
-      Column(TreeViewWidget => Get_Preview_Tree, Col => "#0", Options => "-stretch false -width 50");
-      Tag_Bind(TreeViewWidget => Get_Preview_Tree, TagName => "itemrow", Sequence => "<Double-1>", Script => "GoToDirectory");
-      Bind(Widgt => Get_Preview_Tree, Sequence => "<Return>", Script => "GoToDirectory");
+         Options =>
+           "-text {" & Mc(Interp => Get_Context, Src_String => "{Name}") &
+           "} -image {arrow-down} -command {Sort previewname}");
+      Column
+        (TreeViewWidget => Get_Preview_Tree, Col => "#0",
+         Options => "-stretch false -width 50");
+      Tag_Bind
+        (TreeViewWidget => Get_Preview_Tree, TagName => "itemrow",
+         Sequence => "<Double-1>", Script => "GoToDirectory");
+      Bind
+        (Widgt => Get_Preview_Tree, Sequence => "<Return>",
+         Script => "GoToDirectory");
       Preview_Text :=
         Create
-          (Get_Preview_Frame & ".previewtext",
-           "-wrap char -yscrollcommand {" & Get_Preview_Y_Scroll &
-           " set} -font " & Font);
-      Tag_Configure(Get_Preview_Text, "boldtag", "-font bold");
-      Tag_Configure(Get_Preview_Text, "italictag", "-font italic");
+          (pathName => Get_Preview_Frame & ".previewtext",
+           options =>
+             "-wrap char -yscrollcommand {" & Get_Preview_Y_Scroll &
+             " set} -font " & Font);
+      Tag_Configure
+        (TextWidget => Get_Preview_Text, TagName => "boldtag",
+         Options => "-font bold");
+      Tag_Configure
+        (TextWidget => Get_Preview_Text, TagName => "italictag",
+         Options => "-font italic");
       Preview_Canvas :=
         Create
-          (Get_Preview_Frame & ".previewcanvas",
-           "-xscrollcommand {" & Get_Preview_X_Scroll &
-           " set} -yscrollcommand {" & Get_Preview_Y_Scroll & " set}");
-      Info_Frame := Create(Get_Preview_Frame & ".infoframe");
-      Label := Create(Get_Info_Frame & ".fullpathtext");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-sticky w");
+          (pathName => Get_Preview_Frame & ".previewcanvas",
+           options =>
+             "-xscrollcommand {" & Get_Preview_X_Scroll &
+             " set} -yscrollcommand {" & Get_Preview_Y_Scroll & " set}");
+      Info_Frame := Create(pathName => Get_Preview_Frame & ".infoframe");
+      Label := Create(pathName => Get_Info_Frame & ".fullpathtext");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label, Options => "-sticky w");
       Label :=
         Create
-          (Get_Info_Frame & ".fullpath",
-           "-wraplength " &
-           Natural'Image(Natural'Value(Winfo_Get(Paned, "width")) / 3));
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 0 -sticky w");
+          (pathName => Get_Info_Frame & ".fullpath",
+           options =>
+             "-wraplength " &
+             Natural'Image
+               (Natural'Value(Winfo_Get(Widgt => Paned, Info => "width")) /
+                3));
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Label, Options => "-column 1 -row 0 -sticky w");
       Label := Create(Get_Info_Frame & ".sizetext");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 1 -sticky w");
       Label := Create(Get_Info_Frame & ".size");
