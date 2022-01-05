@@ -64,9 +64,7 @@ package body DeleteItems.UI is
       Set_Delete_List_Loop :
       for I in 1 .. ListLength loop
          if New_Action = DELETE then
-            if Is_Directory
-                (To_String
-                   (Common.Current_Directory & "/" & Selected_Items(I))) then
+            if Is_Directory(To_String(Selected_Items(I))) then
                if Simple_Name(Name => To_String(Source => Selected_Items(I)))'
                    Length >
                  11 then
