@@ -1427,36 +1427,52 @@ package body ShowItems is
       Tcl.Tk.Ada.Grid.Grid
         (Slave => Label, Options => "-column 1 -row 0 -sticky w");
       Label := Create(pathName => Get_Info_Frame & ".sizetext");
-      Tcl.Tk.Ada.Grid.Grid(Slave => Label, Options => "-column 0 -row 1 -sticky w");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Label, Options => "-column 0 -row 1 -sticky w");
       Label := Create(pathName => Get_Info_Frame & ".size");
-      Tcl.Tk.Ada.Grid.Grid(Slave => Label, Options => "-column 1 -row 1 -sticky w");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Label, Options => "-column 1 -row 1 -sticky w");
       Label :=
         Create
           (pathName => Get_Info_Frame & ".lastmodifiedtext",
-           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Last modified:}") & "}");
-      Tcl.Tk.Ada.Grid.Grid(Slave => Label, Options => "-column 0 -row 2 -sticky w");
+           options =>
+             "-text {" &
+             Mc(Interp => Get_Context, Src_String => "{Last modified:}") &
+             "}");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Label, Options => "-column 0 -row 2 -sticky w");
       Label := Create(pathName => Get_Info_Frame & ".lastmodified");
-      Tcl.Tk.Ada.Grid.Grid(Slave => Label, Options => "-column 1 -row 2 -sticky w");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Label, Options => "-column 1 -row 2 -sticky w");
       Label :=
         Create
           (pathName => Get_Info_Frame & ".filetypetext",
-           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{File type:}") & "}");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 3 -sticky w");
-      Label := Create(Get_Info_Frame & ".filetype");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 3 -sticky w");
+           options =>
+             "-text {" &
+             Mc(Interp => Get_Context, Src_String => "{File type:}") & "}");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Label, Options => "-column 0 -row 3 -sticky w");
+      Label := Create(pathName => Get_Info_Frame & ".filetype");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Label, Options => "-column 1 -row 3 -sticky w");
       Label :=
         Create
-          (Get_Info_Frame & ".associatedprogramtext",
-           "-text {" & Mc(Get_Context, "{Associated program:}") & "}");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 4 -sticky w");
+          (pathName => Get_Info_Frame & ".associatedprogramtext",
+           options =>
+             "-text {" &
+             Mc(Interp => Get_Context, Src_String => "{Associated program:}") &
+             "}");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Label, Options => "-column 0 -row 4 -sticky w");
       Button :=
         Create
-          (Get_Info_Frame & ".associatedprogram",
-           "-command ToggleApplicationsMenu");
-      Tcl.Tk.Ada.Grid.Grid(Button, "-column 1 -row 4 -sticky w");
-      Create_Permissions_Frame("owner", 5);
-      Create_Permissions_Frame("group", 7);
-      Create_Permissions_Frame("others", 9);
+          (pathName => Get_Info_Frame & ".associatedprogram",
+           options => "-command ToggleApplicationsMenu");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Button, Options => "-column 1 -row 4 -sticky w");
+      Create_Permissions_Frame(Name => "owner", Row => 5);
+      Create_Permissions_Frame(Name => "group", Row => 7);
+      Create_Permissions_Frame(Name => "others", Row => 9);
       Add_Command("ShowSelected", Show_Selected_Command'Access);
       Add_Command("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
       Add_Command("SetPermissions", Set_Permissions_Command'Access);
