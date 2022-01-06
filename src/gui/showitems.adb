@@ -1426,21 +1426,21 @@ package body ShowItems is
                 3));
       Tcl.Tk.Ada.Grid.Grid
         (Slave => Label, Options => "-column 1 -row 0 -sticky w");
-      Label := Create(Get_Info_Frame & ".sizetext");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 1 -sticky w");
-      Label := Create(Get_Info_Frame & ".size");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 1 -sticky w");
+      Label := Create(pathName => Get_Info_Frame & ".sizetext");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label, Options => "-column 0 -row 1 -sticky w");
+      Label := Create(pathName => Get_Info_Frame & ".size");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label, Options => "-column 1 -row 1 -sticky w");
       Label :=
         Create
-          (Get_Info_Frame & ".lastmodifiedtext",
-           "-text {" & Mc(Get_Context, "{Last modified:}") & "}");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 2 -sticky w");
-      Label := Create(Get_Info_Frame & ".lastmodified");
-      Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 2 -sticky w");
+          (pathName => Get_Info_Frame & ".lastmodifiedtext",
+           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Last modified:}") & "}");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label, Options => "-column 0 -row 2 -sticky w");
+      Label := Create(pathName => Get_Info_Frame & ".lastmodified");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label, Options => "-column 1 -row 2 -sticky w");
       Label :=
         Create
-          (Get_Info_Frame & ".filetypetext",
-           "-text {" & Mc(Get_Context, "{File type:}") & "}");
+          (pathName => Get_Info_Frame & ".filetypetext",
+           options => "-text {" & Mc(Interp => Get_Context, Src_String => "{File type:}") & "}");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 0 -row 3 -sticky w");
       Label := Create(Get_Info_Frame & ".filetype");
       Tcl.Tk.Ada.Grid.Grid(Label, "-column 1 -row 3 -sticky w");
