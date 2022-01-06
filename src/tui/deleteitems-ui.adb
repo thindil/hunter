@@ -52,7 +52,7 @@ package body DeleteItems.UI is
       end if;
       Set_Cursor_Visibility(Visibility);
       if Settings.Delete_Files or New_Action = DELETETRASH then
-         DeleteList := To_Unbounded_String(Mc(Interpreter, "{Delete?}") & LF);
+         DeleteList := To_Unbounded_String(Mc(Interpreter, "{Delete?}") & LF & LF);
       else
          DeleteList :=
            To_Unbounded_String(Mc(Interpreter, "{Move to Trash?}") & LF);
@@ -132,7 +132,7 @@ package body DeleteItems.UI is
            (DeleteList,
             " " & Mc(Interp => Interpreter, Src_String => "{(and more)}"));
       end if;
-      ListLength := ListLength + 4;
+      ListLength := ListLength + 2;
       Delete_Fields.all(1) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2,
