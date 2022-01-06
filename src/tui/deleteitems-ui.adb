@@ -28,6 +28,7 @@ with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with Preferences; use Preferences;
 with ShowItems; use ShowItems;
+with Utils.UI; use Utils.UI;
 
 package body DeleteItems.UI is
 
@@ -37,7 +38,7 @@ package body DeleteItems.UI is
    procedure ShowDeleteForm is
       Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
       FormHeight: Line_Position;
-      FormLength: constant Column_Position := 32;
+      FormLength: Column_Position := 32;
       Visibility: Cursor_Visibility := Normal;
       FieldOptions: Field_Option_Set;
       DeleteList: Unbounded_String;
@@ -152,16 +153,11 @@ package body DeleteItems.UI is
         (Delete_Fields.all(2), 0, "[" & Mc(Interpreter, "{Delete}") & "]");
       Delete_Fields.all(3) := Null_Field;
       FormHeight := Line_Position(ListLength) + 2;
+      if FormHeight = 2 then
+         return;
+      end if;
       DialogForm := New_Form(Delete_Fields);
-      Set_Options(DialogForm, (others => False));
-      FormWindow :=
-        Create
-          (FormHeight + 2, 34, ((Lines / 3) - (FormHeight / 2)),
-           ((Columns / 2) - (FormLength / 2)));
-      Set_Window(DialogForm, FormWindow);
-      Set_Sub_Window
-        (DialogForm, Derived_Window(FormWindow, FormHeight, FormLength, 1, 1));
-      Post(DialogForm);
+      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
       Add(FormWindow, 1, 2, To_String(DeleteList));
       Box(FormWindow, Default_Character, Default_Character);
       UnusedResult := Driver(DialogForm, F_First_Field);
