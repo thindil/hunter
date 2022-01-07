@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -192,10 +192,7 @@ package body DeleteItems.UI is
             end if;
             Show_Preview;
             Set_Cursor_Visibility(Visibility);
-            Post(DialogForm, False);
-            Delete(DialogForm);
-            UILocation := DIRECTORY_VIEW;
-            Update_Directory_List(True);
+            Delete_Dialog(DialogForm, True);
             return DIRECTORY_VIEW;
          when others =>
             null;
