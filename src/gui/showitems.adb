@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -1473,27 +1473,27 @@ package body ShowItems is
       Create_Permissions_Frame(Name => "owner", Row => 5);
       Create_Permissions_Frame(Name => "group", Row => 7);
       Create_Permissions_Frame(Name => "others", Row => 9);
-      Add_Command("ShowSelected", Show_Selected_Command'Access);
-      Add_Command("ShowPreviewOrInfo", Show_Preview_Or_Info_Command'Access);
-      Add_Command("SetPermissions", Set_Permissions_Command'Access);
-      Add_Command("GoToDirectory", Go_To_Directory_Command'Access);
+      Add_Command(Name => "ShowSelected", Ada_Command => Show_Selected_Command'Access);
+      Add_Command(Name => "ShowPreviewOrInfo", Ada_Command => Show_Preview_Or_Info_Command'Access);
+      Add_Command(Name => "SetPermissions", Ada_Command => Set_Permissions_Command'Access);
+      Add_Command(Name => "GoToDirectory", Ada_Command => Go_To_Directory_Command'Access);
       Add
-        (Button,
-         Mc
-           (Get_Context,
-            "{Select new associated program with that type of file or directory.}"));
+        (Widget => Button,
+         Message => Mc
+           (Interp => Get_Context,
+            Src_String => "{Select new associated program with that type of file or directory.}"));
       if Settings.Show_Preview then
-         Add(Paned, Get_Preview_Frame, "-weight 20");
+         Add(Paned => Paned, SubWindow => Get_Preview_Frame, Options => "-weight 20");
       end if;
       CreateProgramsMenuUI;
    end Create_Show_Items_Ui;
 
    procedure Show_Destination is
-      Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
-      Frame: Ttk_Frame := Get_Widget(Get_Preview_Frame & ".pathframe");
+      Paned: constant Ttk_PanedWindow := Get_Widget(pathName => ".mainframe.paned");
+      Frame: Ttk_Frame := Get_Widget(pathName => Get_Preview_Frame & ".pathframe");
    begin
       if not Settings.Show_Preview then
-         Add(Paned, Get_Preview_Frame, "-weight 20");
+         Add(Paned => Paned, SubWindow => Get_Preview_Frame, Options => "-weight 20");
       end if;
       Unautoscroll(Get_Preview_X_Scroll);
       Unautoscroll(Get_Preview_Y_Scroll);
