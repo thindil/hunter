@@ -1473,47 +1473,66 @@ package body ShowItems is
       Create_Permissions_Frame(Name => "owner", Row => 5);
       Create_Permissions_Frame(Name => "group", Row => 7);
       Create_Permissions_Frame(Name => "others", Row => 9);
-      Add_Command(Name => "ShowSelected", Ada_Command => Show_Selected_Command'Access);
-      Add_Command(Name => "ShowPreviewOrInfo", Ada_Command => Show_Preview_Or_Info_Command'Access);
-      Add_Command(Name => "SetPermissions", Ada_Command => Set_Permissions_Command'Access);
-      Add_Command(Name => "GoToDirectory", Ada_Command => Go_To_Directory_Command'Access);
+      Add_Command
+        (Name => "ShowSelected", Ada_Command => Show_Selected_Command'Access);
+      Add_Command
+        (Name => "ShowPreviewOrInfo",
+         Ada_Command => Show_Preview_Or_Info_Command'Access);
+      Add_Command
+        (Name => "SetPermissions",
+         Ada_Command => Set_Permissions_Command'Access);
+      Add_Command
+        (Name => "GoToDirectory",
+         Ada_Command => Go_To_Directory_Command'Access);
       Add
         (Widget => Button,
-         Message => Mc
-           (Interp => Get_Context,
-            Src_String => "{Select new associated program with that type of file or directory.}"));
+         Message =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Select new associated program with that type of file or directory.}"));
       if Settings.Show_Preview then
-         Add(Paned => Paned, SubWindow => Get_Preview_Frame, Options => "-weight 20");
+         Add
+           (Paned => Paned, SubWindow => Get_Preview_Frame,
+            Options => "-weight 20");
       end if;
       CreateProgramsMenuUI;
    end Create_Show_Items_Ui;
 
    procedure Show_Destination is
-      Paned: constant Ttk_PanedWindow := Get_Widget(pathName => ".mainframe.paned");
-      Frame: Ttk_Frame := Get_Widget(pathName => Get_Preview_Frame & ".pathframe");
+      Paned: constant Ttk_PanedWindow :=
+        Get_Widget(pathName => ".mainframe.paned");
+      Frame: Ttk_Frame :=
+        Get_Widget(pathName => Get_Preview_Frame & ".pathframe");
    begin
       if not Settings.Show_Preview then
-         Add(Paned => Paned, SubWindow => Get_Preview_Frame, Options => "-weight 20");
+         Add
+           (Paned => Paned, SubWindow => Get_Preview_Frame,
+            Options => "-weight 20");
       end if;
-      Unautoscroll(Get_Preview_X_Scroll);
-      Unautoscroll(Get_Preview_Y_Scroll);
+      Unautoscroll(Scroll => Get_Preview_X_Scroll);
+      Unautoscroll(Scroll => Get_Preview_Y_Scroll);
       Tcl.Tk.Ada.Pack.Pack
-        (Frame, "-after " & Get_Preview_Frame & ".title -fill x");
+        (Slave => Frame,
+         Options => "-after " & Get_Preview_Frame & ".title -fill x");
       configure
-        (Get_Preview_X_Scroll,
-         "-command [list " & Get_Preview_Tree & " xview]");
-      Tcl.Tk.Ada.Pack.Pack(Get_Preview_X_Scroll, "-side bottom -fill x");
-      configure
-        (Get_Preview_Y_Scroll,
-         "-command [list " & Get_Preview_Tree & " yview]");
-      Tcl.Tk.Ada.Pack.Pack(Get_Preview_Y_Scroll, "-side right -fill y");
-      configure(Get_Preview_Tree, "-selectmode browse");
+        (Widgt => Get_Preview_X_Scroll,
+         options => "-command [list " & Get_Preview_Tree & " xview]");
       Tcl.Tk.Ada.Pack.Pack
-        (Get_Preview_Tree, "-side top -fill both -expand true");
-      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Text);
-      Tcl.Tk.Ada.Pack.Pack_Forget(Get_Info_Frame);
-      Frame.Name := New_String(Get_Preview_Frame & ".title");
+        (Slave => Get_Preview_X_Scroll, Options => "-side bottom -fill x");
+      configure
+        (Widgt => Get_Preview_Y_Scroll,
+         options => "-command [list " & Get_Preview_Tree & " yview]");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Get_Preview_Y_Scroll, Options => "-side right -fill y");
+      configure(Widgt => Get_Preview_Tree, options => "-selectmode browse");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Get_Preview_Tree,
+         Options => "-side top -fill both -expand true");
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Text);
+      Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Info_Frame);
+      Frame.Name := New_String(Str => Get_Preview_Frame & ".title");
       configure
         (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
       Destination_Directory := Common.Current_Directory;
