@@ -1543,10 +1543,9 @@ package body ShowItems is
    end Show_Destination;
 
    procedure Show_Output is
-      Frame: Ttk_Frame;
+      Frame: constant Ttk_Frame := Get_Widget(Get_Preview_Frame & ".title");
       Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
    begin
-      Frame.Interp := Get_Context;
       if not Settings.Show_Preview then
          Add(Paned, Get_Preview_Frame, "-weight 20");
       end if;
@@ -1560,7 +1559,6 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_Tree);
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Info_Frame);
-      Frame.Name := New_String(Get_Preview_Frame & ".title");
       configure(Frame, "-text {" & Mc(Get_Context, "{Command output}") & "}");
       configure(Get_Preview_Text, "-state normal");
       Delete(Get_Preview_Text, "1.0", "end");
