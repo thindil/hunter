@@ -24,7 +24,6 @@ with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
 with LoadData; use LoadData;
-with ShowItems; use ShowItems;
 with Utils; use Utils;
 with Utils.UI; use Utils.UI;
 
@@ -157,11 +156,7 @@ package body RenameItems.UI is
             end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
-               Post(DialogForm, False);
-               Delete(DialogForm);
-               UILocation := DIRECTORY_VIEW;
-               Update_Directory_List(True);
-               Show_Preview;
+               Delete_Dialog(DialogForm, True);
                return DIRECTORY_VIEW;
             end if;
          when others =>
