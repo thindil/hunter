@@ -1534,12 +1534,12 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Info_Frame);
       Frame.Name := New_String(Str => Get_Preview_Frame & ".title");
       configure
-        (Frame, "-text {" & Mc(Get_Context, "{Destination directory}") & "}");
+        (Widgt => Frame, options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Destination directory}") & "}");
       Destination_Directory := Common.Current_Directory;
-      Load_Directory(To_String(Destination_Directory), True);
-      Update_Directory_List(True, "preview");
-      Autoscroll(Get_Preview_X_Scroll);
-      Autoscroll(Get_Preview_Y_Scroll);
+      Load_Directory(Directory_Name => To_String(Source => Destination_Directory), Second => True);
+      Update_Directory_List(Clear => True, Frame_Name => "preview");
+      Autoscroll(Scroll => Get_Preview_X_Scroll);
+      Autoscroll(Scroll => Get_Preview_Y_Scroll);
    end Show_Destination;
 
    procedure Show_Output is
