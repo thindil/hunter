@@ -1534,25 +1534,36 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Info_Frame);
       Frame.Name := New_String(Str => Get_Preview_Frame & ".title");
       configure
-        (Widgt => Frame, options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Destination directory}") & "}");
+        (Widgt => Frame,
+         options =>
+           "-text {" &
+           Mc(Interp => Get_Context, Src_String => "{Destination directory}") &
+           "}");
       Destination_Directory := Common.Current_Directory;
-      Load_Directory(Directory_Name => To_String(Source => Destination_Directory), Second => True);
+      Load_Directory
+        (Directory_Name => To_String(Source => Destination_Directory),
+         Second => True);
       Update_Directory_List(Clear => True, Frame_Name => "preview");
       Autoscroll(Scroll => Get_Preview_X_Scroll);
       Autoscroll(Scroll => Get_Preview_Y_Scroll);
    end Show_Destination;
 
    procedure Show_Output is
-      Frame: constant Ttk_Frame := Get_Widget(pathName => Get_Preview_Frame & ".title");
-      Paned: constant Ttk_PanedWindow := Get_Widget(pathName => ".mainframe.paned");
+      Frame: constant Ttk_Frame :=
+        Get_Widget(pathName => Get_Preview_Frame & ".title");
+      Paned: constant Ttk_PanedWindow :=
+        Get_Widget(pathName => ".mainframe.paned");
    begin
       if not Settings.Show_Preview then
-         Add(Paned => Paned, SubWindow => Get_Preview_Frame, Options => "-weight 20");
+         Add
+           (Paned => Paned, SubWindow => Get_Preview_Frame,
+            Options => "-weight 20");
       end if;
-      Unautoscroll(Scroll => Preview_Y_Scroll);
+      Unautoscroll(Scroll => Get_Preview_Y_Scroll);
       configure
-        (Preview_Y_Scroll, "-command [list " & Get_Preview_Text & " yview]");
-      Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
+        (Get_Preview_Y_Scroll,
+         "-command [list " & Get_Preview_Text & " yview]");
+      Tcl.Tk.Ada.Pack.Pack(Get_Preview_Y_Scroll, "-side right -fill y");
       Tcl.Tk.Ada.Pack.Pack
         (Get_Preview_Text, "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(Get_Preview_X_Scroll);
