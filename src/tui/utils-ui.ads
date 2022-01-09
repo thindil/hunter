@@ -72,6 +72,17 @@ package Utils.UI is
      (DialogForm: in out Forms.Form; Clear: Boolean := False);
    -- ****
 
+   -- ****f* UtilsUI/UtilsUI.Go_Field_Up
+   -- FUNCTION
+   -- Move cursor to the previous field in the dialog form
+   -- PARAMETERS
+   -- DialogFor - The dialog in which the cursor will be moved
+   -- RESULT
+   -- Form.Driver_Result of the move
+   -- SOURCE
+   function Go_Field_Up(DialogForm: Forms.Form) return Forms.Driver_Result;
+   -- ****
+
    -- ****f* UtilsTUI/UtilsTUI.Toggle_Tool_Buttons
    -- FUNCTION
    -- Show or hide other tool bar buttons when user starts any action with
