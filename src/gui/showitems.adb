@@ -1543,13 +1543,13 @@ package body ShowItems is
    end Show_Destination;
 
    procedure Show_Output is
-      Frame: constant Ttk_Frame := Get_Widget(Get_Preview_Frame & ".title");
-      Paned: constant Ttk_PanedWindow := Get_Widget(".mainframe.paned");
+      Frame: constant Ttk_Frame := Get_Widget(pathName => Get_Preview_Frame & ".title");
+      Paned: constant Ttk_PanedWindow := Get_Widget(pathName => ".mainframe.paned");
    begin
       if not Settings.Show_Preview then
-         Add(Paned, Get_Preview_Frame, "-weight 20");
+         Add(Paned => Paned, SubWindow => Get_Preview_Frame, Options => "-weight 20");
       end if;
-      Unautoscroll(Preview_Y_Scroll);
+      Unautoscroll(Scroll => Preview_Y_Scroll);
       configure
         (Preview_Y_Scroll, "-command [list " & Get_Preview_Text & " yview]");
       Tcl.Tk.Ada.Pack.Pack(Preview_Y_Scroll, "-side right -fill y");
