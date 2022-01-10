@@ -72,7 +72,7 @@ package Utils.UI is
      (DialogForm: in out Forms.Form; Clear: Boolean := False);
    -- ****
 
-   -- ****f* UtilsUI/UtilsUI.Go_Field_Up
+   -- ****f* UtilsUI/UtilsUI.Go_Previous_Field
    -- FUNCTION
    -- Move cursor to the previous field in the dialog form
    -- PARAMETERS
@@ -80,7 +80,18 @@ package Utils.UI is
    -- RESULT
    -- Form.Driver_Result of the move
    -- SOURCE
-   function Go_Field_Up(DialogForm: Forms.Form) return Forms.Driver_Result;
+   function Go_Previous_Field(DialogForm: Forms.Form) return Forms.Driver_Result;
+   -- ****
+
+   -- ****f* UtilsUI/UtilsUI.Go_Next_Field
+   -- FUNCTION
+   -- Move cursor to the next field in the dialog form
+   -- PARAMETERS
+   -- DialogFor - The dialog in which the cursor will be moved
+   -- RESULT
+   -- Form.Driver_Result of the move
+   -- SOURCE
+   function Go_Next_Field(DialogForm: Forms.Form) return Forms.Driver_Result;
    -- ****
 
    -- ****f* UtilsTUI/UtilsTUI.Toggle_Tool_Buttons

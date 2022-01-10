@@ -70,12 +70,20 @@ package body Utils.UI is
       Update_Directory_List(Clear);
    end Delete_Dialog;
 
-   function Go_Field_Up(DialogForm: Forms.Form) return Forms.Driver_Result is
+   function Go_Previous_Field(DialogForm: Forms.Form) return Forms.Driver_Result is
    begin
       return Result: Forms.Driver_Result do
          Result := Driver(DialogForm, F_Previous_Field);
          Result := Driver(DialogForm, F_End_Line);
       end return;
-   end Go_Field_Up;
+   end Go_Previous_Field;
+
+   function Go_Next_Field(DialogForm: Forms.Form) return Forms.Driver_Result is
+   begin
+      return Result: Forms.Driver_Result do
+         Result := Driver(DialogForm, F_Next_Field);
+         Result := Driver(DialogForm, F_End_Line);
+      end return;
+   end Go_Next_Field;
 
 end Utils.UI;
