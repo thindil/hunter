@@ -1563,18 +1563,26 @@ package body ShowItems is
       configure
         (Widgt => Get_Preview_Y_Scroll,
          options => "-command [list " & Get_Preview_Text & " yview]");
-      Tcl.Tk.Ada.Pack.Pack(Slave => Get_Preview_Y_Scroll, Options => "-side right -fill y");
       Tcl.Tk.Ada.Pack.Pack
-        (Slave => Get_Preview_Text, Options => "-side top -fill both -expand true");
+        (Slave => Get_Preview_Y_Scroll, Options => "-side right -fill y");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Get_Preview_Text,
+         Options => "-side top -fill both -expand true");
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_X_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Canvas);
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Preview_Tree);
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Get_Info_Frame);
-      configure(Widgt => Frame, options => "-text {" & Mc(Interp => Get_Context, Src_String => "{Command output}") & "}");
+      configure
+        (Widgt => Frame,
+         options =>
+           "-text {" &
+           Mc(Interp => Get_Context, Src_String => "{Command output}") & "}");
       configure(Widgt => Get_Preview_Text, options => "-state normal");
-      Delete(TextWidget => Get_Preview_Text, StartIndex => "1.0", Indexes => "end");
-      configure(Get_Preview_Text, "-state disabled");
-      Autoscroll(Get_Preview_Y_Scroll);
+      Delete
+        (TextWidget => Get_Preview_Text, StartIndex => "1.0",
+         Indexes => "end");
+      configure(Widgt => Get_Preview_Text, options => "-state disabled");
+      Autoscroll(Scroll => Get_Preview_Y_Scroll);
    end Show_Output;
 
    procedure Update_Output(Text: String) is
