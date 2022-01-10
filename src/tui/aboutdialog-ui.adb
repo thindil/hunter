@@ -146,9 +146,9 @@ package body AboutDialog.UI is
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(DialogForm, F_Previous_Field);
+            Result := Go_Previous_Field(DialogForm);
          when KEY_DOWN =>
-            Result := Driver(DialogForm, F_Next_Field);
+            Result := Go_Next_Field(DialogForm);
          when 10 =>
             case FieldIndex is
                when 5 =>
