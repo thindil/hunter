@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -173,11 +173,9 @@ package body Bookmarks.UI is
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(DialogForm, F_Previous_Field);
-            Result := Driver(DialogForm, F_End_Line);
+            Result := Go_Previous_Field(DialogForm);
          when KEY_DOWN =>
-            Result := Driver(DialogForm, F_Next_Field);
-            Result := Driver(DialogForm, F_End_Line);
+            Result := Go_Next_Field(DialogForm);
          when KEY_LEFT =>
             if FieldIndex = 2 then
                Result := Driver(DialogForm, F_Previous_Char);
