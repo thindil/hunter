@@ -94,6 +94,8 @@ package ShowItems is
    -- ****f* ShowItems/ShowItems.Update_Output
    -- FUNCTION
    -- Update UI with the output of the user command
+   -- PARAMETERS
+   -- Text - The new text to add in the output frame
    -- SOURCE
    procedure Update_Output(Text: String);
    -- ****
