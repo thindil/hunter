@@ -95,9 +95,9 @@ package ShowItems is
    -- FUNCTION
    -- Update UI with the output of the user command
    -- PARAMETERS
-   -- Text - The new text to add in the output frame
+   -- Text_To_Append - The new text to add in the output frame
    -- SOURCE
-   procedure Update_Output(Text: String);
+   procedure Update_Output(Text_To_Append: String);
    -- ****
 
 end ShowItems;

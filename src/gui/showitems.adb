@@ -1585,10 +1585,10 @@ package body ShowItems is
       Autoscroll(Scroll => Get_Preview_Y_Scroll);
    end Show_Output;
 
-   procedure Update_Output(Text: String) is
+   procedure Update_Output(Text_To_Append: String) is
    begin
       configure(Get_Preview_Text, "-state normal");
-      Insert(Get_Preview_Text, "end", "{" & Text & "}");
+      Insert(Get_Preview_Text, "end", "{" & Text_To_Append & "}");
       configure(Get_Preview_Text, "-state disabled");
       Tcl_Eval(Get_Context, "update");
    end Update_Output;
