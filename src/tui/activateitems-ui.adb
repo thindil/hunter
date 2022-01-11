@@ -108,11 +108,9 @@ package body ActivateItems.UI is
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(DialogForm, F_Previous_Field);
-            Result := Driver(DialogForm, F_End_Line);
+            Result := Go_Previous_Field(DialogForm);
          when KEY_DOWN =>
-            Result := Driver(DialogForm, F_Next_Field);
-            Result := Driver(DialogForm, F_End_Line);
+            Result := Go_Next_Field(DialogForm);
          when KEY_LEFT =>
             if FieldIndex = 2 then
                Result := Driver(DialogForm, F_Previous_Char);
