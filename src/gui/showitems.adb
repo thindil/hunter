@@ -717,12 +717,30 @@ package body ShowItems is
       end if;
    end Show_Preview;
 
-   -- ****if* ShowItems/ShowItems.ShowInfo
+   -- ****o* ShowItems/ShowItems.Show_Preview_Or_Info_Command
    -- FUNCTION
-   -- Show information about the currently selected file or directory.
+   -- Show preview or information about the currently selected file or
+   -- directory, depends which button was clicked
+   -- PARAMETERS
+   -- ClientData - Custom data send to the command. Unused
+   -- Interp     - Tcl interpreter in which command was executed.
+   -- Argc       - Number of arguments passed to the command. Unused
+   -- Argv       - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- ShowPreviewOrInfo
    -- SOURCE
-   procedure Show_Info is
+   function Show_Preview_Or_Info_Command
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
+      Convention => C;
       -- ****
+
+   function Show_Preview_Or_Info_Command
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
+      pragma Unreferenced(Client_Data, Argc, Argv);
       Label: Ttk_Label := Get_Widget(pathName => Get_Preview_Frame & ".title");
       Selected_Item: constant String := To_String(Source => Current_Selected);
       Button: Ttk_Button := Get_Widget(pathName => ".");
@@ -731,6 +749,11 @@ package body ShowItems is
       Path_Frame: constant Ttk_Frame :=
         Get_Widget(pathName => ".mainframe.paned.previewframe.pathframe");
    begin
+      if Tcl.Ada.Tcl_GetVar(interp => Interp, varName => "previewtype") =
+        "preview" then
+         Show_Preview;
+         return TCL_OK;
+      end if;
       Unautoscroll(Scroll => Get_Preview_X_Scroll);
       Unautoscroll(Scroll => Get_Preview_Y_Scroll);
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Path_Frame);
@@ -875,7 +898,7 @@ package body ShowItems is
             Desktop_File: Unbounded_String := Null_Unbounded_String;
          begin
             if Executable_Name = "" then
-               return;
+               return TCL_OK;
             end if;
             Non_Blocking_Spawn
               (Descriptor => Process_Desc, Command => Executable_Name,
@@ -1078,39 +1101,6 @@ package body ShowItems is
          end if;
       end Show_Permissions_Block;
       Tcl.Tk.Ada.Pack.Pack(Slave => Get_Info_Frame);
-   end Show_Info;
-
-   -- ****o* ShowItems/ShowItems.Show_Preview_Or_Info_Command
-   -- FUNCTION
-   -- Show preview or information about the currently selected file or
-   -- directory, depends which button was clicked
-   -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
-   -- RESULT
-   -- This function always return TCL_OK
-   -- COMMANDS
-   -- ShowPreviewOrInfo
-   -- SOURCE
-   function Show_Preview_Or_Info_Command
-     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
-      Convention => C;
-      -- ****
-
-   function Show_Preview_Or_Info_Command
-     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
-      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(Client_Data, Argc, Argv);
-   begin
-      if Tcl.Ada.Tcl_GetVar(interp => Interp, varName => "previewtype") =
-        "preview" then
-         Show_Preview;
-      else
-         Show_Info;
-      end if;
       return TCL_OK;
    end Show_Preview_Or_Info_Command;
 
