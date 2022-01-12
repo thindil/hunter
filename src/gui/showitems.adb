@@ -1587,10 +1587,12 @@ package body ShowItems is
 
    procedure Update_Output(Text_To_Append: String) is
    begin
-      configure(Get_Preview_Text, "-state normal");
-      Insert(Get_Preview_Text, "end", "{" & Text_To_Append & "}");
-      configure(Get_Preview_Text, "-state disabled");
-      Tcl_Eval(Get_Context, "update");
+      configure(Widgt => Get_Preview_Text, options => "-state normal");
+      Insert
+        (TextWidget => Get_Preview_Text, Index => "end",
+         Text => "{" & Text_To_Append & "}");
+      configure(Widgt => Get_Preview_Text, options => "-state disabled");
+      Tcl_Eval(interp => Get_Context, strng => "update");
    end Update_Output;
 
 end ShowItems;
