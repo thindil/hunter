@@ -15,14 +15,14 @@
 
 with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Characters.Latin_1;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Text_IO; use Ada.Text_IO;
+with Ada.Strings;
+with Ada.Strings.Fixed;
+with Ada.Text_IO;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.Expect; use GNAT.Expect;
+with GNAT.Expect;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with GNAT.String_Split; use GNAT.String_Split;
 with Tcl.Ada; use Tcl.Ada;
@@ -45,20 +45,20 @@ with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkPanedWindow; use Tcl.Tk.Ada.Widgets.TtkPanedWindow;
 with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
-with Tcl.Tk.Ada.Widgets.TtkWidget; use Tcl.Tk.Ada.Widgets.TtkWidget;
+with Tcl.Tk.Ada.Widgets.TtkWidget;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
 with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
-with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Bookmarks.UI; use Bookmarks.UI;
+with Tcl.Tklib.Ada.Tooltip;
+with Bookmarks.UI;
 with Common; use Common;
 with LoadData; use LoadData;
 with LoadData.UI; use LoadData.UI;
 with MainWindow; use MainWindow;
-with Messages.UI; use Messages.UI;
-with Modules; use Modules;
+with Messages.UI;
+with Modules;
 with Preferences; use Preferences;
-with ProgramsMenu; use ProgramsMenu;
-with ProgramsMenu.UI; use ProgramsMenu.UI;
+with ProgramsMenu;
+with ProgramsMenu.UI;
 with Toolbars; use Toolbars;
 with Utils; use Utils;
 
@@ -267,6 +267,10 @@ package body ShowItems is
    end Scale_Image;
 
    procedure Show_Preview is
+      use Ada.Characters.Latin_1;
+      use Ada.Text_IO;
+      use Messages.UI;
+
       Button: Ttk_Button :=
         Get_Widget
           (pathName => ".mainframe.toolbars.itemtoolbar.previewbutton");
@@ -741,6 +745,10 @@ package body ShowItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use GNAT.Expect;
+      use Tcl.Tk.Ada.Widgets.TtkWidget;
+      use ProgramsMenu;
+
       Label: Ttk_Label := Get_Widget(pathName => Get_Preview_Frame & ".title");
       Selected_Item: constant String := To_String(Source => Current_Selected);
       Button: Ttk_Button := Get_Widget(pathName => ".");
@@ -1108,6 +1116,8 @@ package body ShowItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Bookmarks.UI;
+
       Directory_Tree: constant Ttk_Tree_View :=
         Get_Widget
           (pathName => ".mainframe.paned.directoryframe.directorytree",
@@ -1184,6 +1194,9 @@ package body ShowItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+
       Selected_Item: constant String :=
         Full_Name(Name => To_String(Source => Current_Selected));
       Permissions_String: Unbounded_String;
@@ -1256,6 +1269,8 @@ package body ShowItems is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data);
+      use Modules;
+
       Selected_Item: Unbounded_String;
    begin
       if Argc = 2 then
@@ -1288,6 +1303,9 @@ package body ShowItems is
    end Go_To_Directory_Command;
 
    procedure Create_Show_Items_Ui is
+      use Tcl.Tklib.Ada.Tooltip;
+      use ProgramsMenu.UI;
+
       Paned: constant Ttk_PanedWindow :=
         Get_Widget(pathName => ".mainframe.paned");
       Label: Ttk_Label;
