@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -506,7 +506,7 @@ package body Preferences.Commands is
            "0"
          then False
          else True);
-      SetToolbars;
+      Set_Toolbars;
       if not Settings.Toolbars_On_Top then
          Tcl.Tk.Ada.Grid.Grid_Configure
            (Paned, "-column 1 -row 3 -sticky nswe");
@@ -1238,7 +1238,7 @@ package body Preferences.Commands is
       end if;
       Clear_Add_Command;
       UpdateUserCommandsList;
-      SetUserCommandsMenu;
+      Set_User_Commands_Menu;
       return TCL_OK;
    end Add_Command_Command;
 
@@ -1322,7 +1322,7 @@ package body Preferences.Commands is
    begin
       UserCommandsList.Delete(CArgv.Arg(Argv, 1));
       UpdateUserCommandsList;
-      SetUserCommandsMenu;
+      Set_User_Commands_Menu;
       return TCL_OK;
    end Delete_Command_Command;
 

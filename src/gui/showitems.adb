@@ -291,7 +291,7 @@ package body ShowItems is
               "-before .mainframe.toolbars.itemtoolbar.infobutton -side " &
               (if Settings.Toolbars_On_Top then "left" else "top"));
       end if;
-      SetActionsButtons;
+      Set_Actions_Buttons;
       Unautoscroll(Scroll => Get_Preview_X_Scroll);
       Set
         (ScrollbarWidget => Get_Preview_X_Scroll, First => "0.0",
@@ -1154,7 +1154,7 @@ package body ShowItems is
       if New_Action = CREATELINK then
          return TCL_OK;
       end if;
-      SetActionsButtons;
+      Set_Actions_Buttons;
       if Is_Directory(Name => To_String(Source => Current_Selected)) or
         Is_Regular_File(Name => To_String(Source => Current_Selected)) then
          Action_Button.Name :=

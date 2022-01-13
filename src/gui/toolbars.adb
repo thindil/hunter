@@ -48,7 +48,7 @@ with Utils; use Utils;
 
 package body Toolbars is
 
-   procedure SetToolbars is
+   procedure Set_Toolbars is
       Fill: constant Character :=
         (if Settings.Toolbars_On_Top then 'y' else 'x');
       MainFrame: constant Ttk_Frame := Get_Widget(".mainframe");
@@ -130,10 +130,10 @@ package body Toolbars is
          Row_Configure(Toolbar, Label, "-weight 0");
       end if;
       if Current_Selected /= Null_Unbounded_String then
-         SetActionsButtons;
+         Set_Actions_Buttons;
          Set_Bookmark_Button;
       end if;
-   end SetToolbars;
+   end Set_Toolbars;
 
    -- ****if* Toolbars/Toolbars.SetButton
    -- FUNCTION
@@ -160,7 +160,7 @@ package body Toolbars is
          "-style Toolbutton -image " & ImageName & "icon -takefocus 0");
    end SetButton;
 
-   procedure CreateActionToolbar is
+   procedure Create_Action_Toolbar is
       ToolMenuButton: Ttk_MenuButton;
       ToolbarsFrame: constant Ttk_Frame := Create(".mainframe.toolbars");
       Toolbar: constant Ttk_Frame := Create(ToolbarsFrame & ".actiontoolbar");
@@ -212,7 +212,7 @@ package body Toolbars is
          "run-build");
       ButtonMenu := Create(".actionsmenu", "-tearoff false");
       configure(ToolMenuButton, "-menu " & ButtonMenu & " -direction right");
-      SetUserCommandsMenu;
+      Set_User_Commands_Menu;
       ToolMenuButton := Create(Toolbar & ".newbutton");
       SetButton
         (ToolMenuButton,
@@ -348,9 +348,9 @@ package body Toolbars is
       Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
       Tcl.Tk.Ada.Grid.Grid(Label);
       Tcl.Tk.Ada.Grid.Grid(ToolbarsFrame);
-   end CreateActionToolbar;
+   end Create_Action_Toolbar;
 
-   procedure CreateItemToolbar is
+   procedure Create_Item_Toolbar is
       Toolbar: constant Ttk_Frame := Create(".mainframe.toolbars.itemtoolbar");
       ToolButton: Ttk_Button;
       Separator: Ttk_Separator;
@@ -418,9 +418,9 @@ package body Toolbars is
          "list-remove");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       Tcl.Tk.Ada.Grid.Grid(Toolbar);
-   end CreateItemToolbar;
+   end Create_Item_Toolbar;
 
-   procedure SetActionsButtons is
+   procedure Set_Actions_Buttons is
       Button: Ttk_Button :=
         Get_Widget(".mainframe.toolbars.itemtoolbar.runbutton");
       Side: constant String :=
@@ -447,9 +447,9 @@ package body Toolbars is
       else
          Tcl.Tk.Ada.Pack.Pack_Forget(Button);
       end if;
-   end SetActionsButtons;
+   end Set_Actions_Buttons;
 
-   procedure SetUserCommandsMenu is
+   procedure Set_User_Commands_Menu is
       ActionsMenu: constant Tk_Menu := Get_Widget(".actionsmenu");
       ActionsButton: constant Ttk_MenuButton :=
         Get_Widget(".mainframe.toolbars.actiontoolbar.userbutton");
@@ -472,6 +472,6 @@ package body Toolbars is
             "-label {" & Commands_Container.Key(I) &
             "} -command {ExecuteCommand {" & Commands_Container.Key(I) & "}}");
       end loop Add_User_Commands_Menu_Loop;
-   end SetUserCommandsMenu;
+   end Set_User_Commands_Menu;
 
 end Toolbars;

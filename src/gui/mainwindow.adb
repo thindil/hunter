@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -294,9 +294,9 @@ package body MainWindow is
         (Master => Main_Window, Slave => Main_Frame, Options => "-weight 1");
       Tcl.Tk.Ada.Grid.Column_Configure
         (Master => Main_Window, Slave => Main_Frame, Options => "-weight 1");
-      CreateActionToolbar;
+      Create_Action_Toolbar;
       Create_Bookmark_Menu(Create_New => True);
-      CreateItemToolbar;
+      Create_Item_Toolbar;
       Create_Messages_Ui;
       ActivateItems.Add_Commands;
       Create_Preferences_Ui;
@@ -308,7 +308,7 @@ package body MainWindow is
       CreateTrash;
       Create_About_Ui;
       Load_Modules(Interpreter => Get_Context);
-      SetToolbars;
+      Set_Toolbars;
       Add(Paned => Paned, SubWindow => Directory_Frame);
       Bind
         (Widgt => Path_Buttons_Frame, Sequence => "<Configure>",
