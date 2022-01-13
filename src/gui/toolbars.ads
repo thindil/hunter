@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,39 +20,39 @@
 package Toolbars is
 -- ****
 
-   -- ****f* Toolbars/Toolbars.SetToolbars
+   -- ****f* Toolbars/Toolbars.Set_Toolbars
    -- FUNCTION
    -- Set proper orientation for the toolbars;
    -- SOURCE
-   procedure SetToolbars;
+   procedure Set_Toolbars;
    -- ****
 
-   -- ****f* Toolbars/Toolbars.CreateActionToolbar
+   -- ****f* Toolbars/Toolbars.Create_Action_Toolbar
    -- FUNCTION
    -- Create ActionToolBar
    -- SOURCE
-   procedure CreateActionToolbar;
+   procedure Create_Action_Toolbar;
    -- ****
 
-   -- ****f* Toolbars/Toolbars.CreateItemToolbar
+   -- ****f* Toolbars/Toolbars.Create_Item_Toolbar
    -- FUNCTION
    -- Crete ItemToolBar
    -- SOURCE
-   procedure CreateItemToolbar;
+   procedure Create_Item_Toolbar;
    -- ****
 
-   -- ****f* Toolbars/Toolbars.SetActionsButtons
+   -- ****f* Toolbars/Toolbars.Set_Actions_Buttons
    -- FUNCTION
    -- Set visibility for buttons actions related to the currently selected item
    -- SOURCE
-   procedure SetActionsButtons;
+   procedure Set_Actions_Buttons;
    -- ****
 
-   -- ****f* Toolbars/Toolbars.SetUserCommandsMenu
+   -- ****f* Toolbars/Toolbars.Set_User_Commands_Menu
    -- FUNCTION
    -- Set menu and button related to the user defined commands/actions
    -- SOURCE
-   procedure SetUserCommandsMenu;
+   procedure Set_User_Commands_Menu;
    -- ****
 
 end Toolbars;
