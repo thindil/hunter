@@ -52,7 +52,8 @@ package body DeleteItems.UI is
       end if;
       Set_Cursor_Visibility(Visibility);
       if Settings.Delete_Files or New_Action = DELETETRASH then
-         DeleteList := To_Unbounded_String(Mc(Interpreter, "{Delete?}") & LF & LF);
+         DeleteList :=
+           To_Unbounded_String(Mc(Interpreter, "{Delete?}") & LF & LF);
       else
          DeleteList :=
            To_Unbounded_String(Mc(Interpreter, "{Move to Trash?}") & LF);

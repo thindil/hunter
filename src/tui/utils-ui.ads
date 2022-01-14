@@ -80,7 +80,8 @@ package Utils.UI is
    -- RESULT
    -- Form.Driver_Result of the move
    -- SOURCE
-   function Go_Previous_Field(DialogForm: Forms.Form) return Forms.Driver_Result;
+   function Go_Previous_Field
+     (DialogForm: Forms.Form) return Forms.Driver_Result;
    -- ****
 
    -- ****f* UtilsUI/UtilsUI.Go_Next_Field
