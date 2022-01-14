@@ -267,8 +267,6 @@ package body ShowItems is
    end Scale_Image;
 
    procedure Show_Preview is
-      use Ada.Characters.Latin_1;
-      use Ada.Text_IO;
       use Messages.UI;
 
       Button: Ttk_Button :=
@@ -349,6 +347,9 @@ package body ShowItems is
             if Is_Text(Mime_Type => Mime_Type) then
                Show_Text_Preview_Block :
                declare
+                  use Ada.Characters.Latin_1;
+                  use Ada.Text_IO;
+
                   Executable_Name: constant String :=
                     Find_Executable
                       (Name => "highlight", Display_Message => False);
@@ -746,8 +747,6 @@ package body ShowItems is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
       use GNAT.Expect;
-      use Tcl.Tk.Ada.Widgets.TtkWidget;
-      use ProgramsMenu;
 
       Label: Ttk_Label := Get_Widget(pathName => Get_Preview_Frame & ".title");
       Selected_Item: constant String := To_String(Source => Current_Selected);
@@ -899,6 +898,8 @@ package body ShowItems is
            New_String(Str => Get_Info_Frame & ".associatedprogram");
          Show_Assigned_Program_Block :
          declare
+            use ProgramsMenu;
+
             Process_Desc: Process_Descriptor;
             Result: Expect_Match;
             Executable_Name: constant String :=
@@ -960,6 +961,8 @@ package body ShowItems is
          procedure Set_Permissions_Buttons
            (Name, Button_State: String; Permission: Character) is
             Check_Button: Ttk_CheckButton := Get_Widget(pathName => ".");
+            use Tcl.Tk.Ada.Widgets.TtkWidget;
+
          begin
             Set_Permission_Buttons_Loop :
             for I in Button_Names'Range loop
