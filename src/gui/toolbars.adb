@@ -52,9 +52,9 @@ package body Toolbars is
       Fill: constant Character :=
         (if Settings.Toolbars_On_Top then 'y' else 'x');
       MainFrame: constant Ttk_Frame := Get_Widget(".mainframe");
-      Toolbar: Ttk_Frame;
-      Button: Ttk_Button;
-      Label: Ttk_Label;
+      Toolbar: Ttk_Frame := Get_Widget(MainFrame & ".toolbars.actiontoolbar");
+      Button: Ttk_Button := Get_Widget(".");
+      Label: constant Ttk_Label := Get_Widget(MainFrame & ".toolbars.label");
       Tokens: Slice_Set;
       Side: constant String :=
         (if Settings.Toolbars_On_Top then "left" else "top");
@@ -63,8 +63,6 @@ package body Toolbars is
       Orientation: constant String :=
         (if Settings.Toolbars_On_Top then "vertical" else "horizontal");
    begin
-      Button.Interp := Get_Context;
-      Toolbar := Get_Widget(MainFrame & ".toolbars.actiontoolbar");
       Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
       Set_Actions_Loop :
       for I in 1 .. Slice_Count(Tokens) loop
@@ -119,8 +117,6 @@ package body Toolbars is
       else
          Grid_Configure(Toolbar, "-sticky we -row 0 -columnspan 2");
       end if;
-      Label.Interp := Get_Context;
-      Label.Name := New_String(MainFrame & ".toolbars.label");
       Toolbar.Name := New_String(MainFrame & ".toolbars");
       if not Settings.Toolbars_On_Top then
          Column_Configure(Toolbar, Label, "-weight 0");
