@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -51,10 +51,10 @@ package body Toolbars is
    procedure Set_Toolbars is
       Fill: constant Character :=
         (if Settings.Toolbars_On_Top then 'y' else 'x');
-      MainFrame: constant Ttk_Frame := Get_Widget(".mainframe");
-      Toolbar: Ttk_Frame := Get_Widget(MainFrame & ".toolbars.actiontoolbar");
+      Main_Frame: constant Ttk_Frame := Get_Widget(pathName => ".mainframe");
+      Toolbar: Ttk_Frame := Get_Widget(Main_Frame & ".toolbars.actiontoolbar");
       Button: Ttk_Button := Get_Widget(".");
-      Label: constant Ttk_Label := Get_Widget(MainFrame & ".toolbars.label");
+      Label: constant Ttk_Label := Get_Widget(Main_Frame & ".toolbars.label");
       Tokens: Slice_Set;
       Side: constant String :=
         (if Settings.Toolbars_On_Top then "left" else "top");
@@ -72,7 +72,7 @@ package body Toolbars is
          end if;
          Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & Side);
       end loop Set_Actions_Loop;
-      Toolbar := Get_Widget(MainFrame & ".toolbars.itemtoolbar");
+      Toolbar := Get_Widget(Main_Frame & ".toolbars.itemtoolbar");
       Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
       Set_Info_Loop :
       for I in 1 .. Slice_Count(Tokens) loop
@@ -86,7 +86,7 @@ package body Toolbars is
       for I in 1 .. 3 loop
          Button.Name :=
            New_String
-             (MainFrame & ".toolbars.actiontoolbar.separator" &
+             (Main_Frame & ".toolbars.actiontoolbar.separator" &
               Trim(Positive'Image(I), Both));
          configure(Button, "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
@@ -96,28 +96,28 @@ package body Toolbars is
       for I in 1 .. 2 loop
          Button.Name :=
            New_String
-             (MainFrame & ".toolbars.itemtoolbar.separator" &
+             (Main_Frame & ".toolbars.itemtoolbar.separator" &
               Trim(Positive'Image(I), Both));
          configure(Button, "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
            (Button, "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
       end loop Set_Info_Separators_Loop;
       Toolbar.Interp := Get_Context;
-      Toolbar.Name := New_String(MainFrame & ".toolbars.itemtoolbar");
+      Toolbar.Name := New_String(Main_Frame & ".toolbars.itemtoolbar");
       if not Settings.Toolbars_On_Top then
          Grid_Configure(Toolbar, "-column 0 -row 2 -sticky s");
       else
          Grid_Configure(Toolbar, "-column 2 -row 0 -sticky e");
       end if;
-      Toolbar.Name := New_String(MainFrame & ".toolbars");
+      Toolbar.Name := New_String(Main_Frame & ".toolbars");
       if not Settings.Toolbars_On_Top then
          Grid_Configure(Toolbar, "-sticky ns -row 3 -column 0 -columnspan 1");
-         Column_Configure(MainFrame, Toolbar, "-weight 0");
-         Row_Configure(MainFrame, Toolbar, "-weight 0");
+         Column_Configure(Main_Frame, Toolbar, "-weight 0");
+         Row_Configure(Main_Frame, Toolbar, "-weight 0");
       else
          Grid_Configure(Toolbar, "-sticky we -row 0 -columnspan 2");
       end if;
-      Toolbar.Name := New_String(MainFrame & ".toolbars");
+      Toolbar.Name := New_String(Main_Frame & ".toolbars");
       if not Settings.Toolbars_On_Top then
          Column_Configure(Toolbar, Label, "-weight 0");
          Row_Configure(Toolbar, Label, "-weight 1");
