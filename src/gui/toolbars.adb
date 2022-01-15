@@ -52,9 +52,9 @@ package body Toolbars is
       Fill: constant Character :=
         (if Settings.Toolbars_On_Top then 'y' else 'x');
       Main_Frame: constant Ttk_Frame := Get_Widget(pathName => ".mainframe");
-      Toolbar: Ttk_Frame := Get_Widget(Main_Frame & ".toolbars.actiontoolbar");
-      Button: Ttk_Button := Get_Widget(".");
-      Label: constant Ttk_Label := Get_Widget(Main_Frame & ".toolbars.label");
+      Toolbar: Ttk_Frame := Get_Widget(pathName => Main_Frame & ".toolbars.actiontoolbar");
+      Button: Ttk_Button := Get_Widget(pathName => ".");
+      Label: constant Ttk_Label := Get_Widget(pathName => Main_Frame & ".toolbars.label");
       Tokens: Slice_Set;
       Side: constant String :=
         (if Settings.Toolbars_On_Top then "left" else "top");
@@ -63,16 +63,16 @@ package body Toolbars is
       Orientation: constant String :=
         (if Settings.Toolbars_On_Top then "vertical" else "horizontal");
    begin
-      Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
+      Create(S => Tokens, From => Tcl.Tk.Ada.Pack.Pack_Slaves(Master => Toolbar), Separators => " ");
       Set_Actions_Loop :
-      for I in 1 .. Slice_Count(Tokens) loop
-         Button.Name := New_String(Slice(Tokens, I));
-         if Winfo_Get(Button, "class") = "TMenubutton" then
-            configure(Button, "-direction " & Direction);
+      for I in 1 .. Slice_Count(S => Tokens) loop
+         Button.Name := New_String(Str => Slice(S => Tokens, Index => I));
+         if Winfo_Get(Widgt => Button, Info => "class") = "TMenubutton" then
+            configure(Widgt => Button, options => "-direction " & Direction);
          end if;
-         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & Side);
+         Tcl.Tk.Ada.Pack.Pack_Configure(Slave => Button, Options => "-side " & Side);
       end loop Set_Actions_Loop;
-      Toolbar := Get_Widget(Main_Frame & ".toolbars.itemtoolbar");
+      Toolbar := Get_Widget(pathName => Main_Frame & ".toolbars.itemtoolbar");
       Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
       Set_Info_Loop :
       for I in 1 .. Slice_Count(Tokens) loop
