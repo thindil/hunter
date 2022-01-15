@@ -52,9 +52,11 @@ package body Toolbars is
       Fill: constant Character :=
         (if Settings.Toolbars_On_Top then 'y' else 'x');
       Main_Frame: constant Ttk_Frame := Get_Widget(pathName => ".mainframe");
-      Toolbar: Ttk_Frame := Get_Widget(pathName => Main_Frame & ".toolbars.actiontoolbar");
+      Toolbar: Ttk_Frame :=
+        Get_Widget(pathName => Main_Frame & ".toolbars.actiontoolbar");
       Button: Ttk_Button := Get_Widget(pathName => ".");
-      Label: constant Ttk_Label := Get_Widget(pathName => Main_Frame & ".toolbars.label");
+      Label: constant Ttk_Label :=
+        Get_Widget(pathName => Main_Frame & ".toolbars.label");
       Tokens: Slice_Set;
       Side: constant String :=
         (if Settings.Toolbars_On_Top then "left" else "top");
@@ -63,34 +65,42 @@ package body Toolbars is
       Orientation: constant String :=
         (if Settings.Toolbars_On_Top then "vertical" else "horizontal");
    begin
-      Create(S => Tokens, From => Tcl.Tk.Ada.Pack.Pack_Slaves(Master => Toolbar), Separators => " ");
+      Create
+        (S => Tokens, From => Tcl.Tk.Ada.Pack.Pack_Slaves(Master => Toolbar),
+         Separators => " ");
       Set_Actions_Loop :
       for I in 1 .. Slice_Count(S => Tokens) loop
          Button.Name := New_String(Str => Slice(S => Tokens, Index => I));
          if Winfo_Get(Widgt => Button, Info => "class") = "TMenubutton" then
             configure(Widgt => Button, options => "-direction " & Direction);
          end if;
-         Tcl.Tk.Ada.Pack.Pack_Configure(Slave => Button, Options => "-side " & Side);
+         Tcl.Tk.Ada.Pack.Pack_Configure
+           (Slave => Button, Options => "-side " & Side);
       end loop Set_Actions_Loop;
       Toolbar := Get_Widget(pathName => Main_Frame & ".toolbars.itemtoolbar");
-      Create(Tokens, Tcl.Tk.Ada.Pack.Pack_Slaves(Toolbar), " ");
+      Create
+        (S => Tokens, From => Tcl.Tk.Ada.Pack.Pack_Slaves(Master => Toolbar),
+         Separators => " ");
       Set_Info_Loop :
-      for I in 1 .. Slice_Count(Tokens) loop
-         Button.Name := New_String(Slice(Tokens, I));
-         if Winfo_Get(Button, "class") = "TMenubutton" then
-            configure(Button, "-direction " & Direction);
+      for I in 1 .. Slice_Count(S => Tokens) loop
+         Button.Name := New_String(Str => Slice(S => Tokens, Index => I));
+         if Winfo_Get(Widgt => Button, Info => "class") = "TMenubutton" then
+            configure(Widgt => Button, options => "-direction " & Direction);
          end if;
-         Tcl.Tk.Ada.Pack.Pack_Configure(Button, "-side " & Side);
+         Tcl.Tk.Ada.Pack.Pack_Configure
+           (Slave => Button, Options => "-side " & Side);
       end loop Set_Info_Loop;
       Set_Action_Separators_Loop :
       for I in 1 .. 3 loop
          Button.Name :=
            New_String
-             (Main_Frame & ".toolbars.actiontoolbar.separator" &
-              Trim(Positive'Image(I), Both));
-         configure(Button, "-orient " & Orientation);
+             (Str =>
+                Main_Frame & ".toolbars.actiontoolbar.separator" &
+                Trim(Source => Positive'Image(I), Side => Both));
+         configure(Widgt => Button, options => "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
-           (Button, "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
+           (Slave => Button,
+            Options => "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
       end loop Set_Action_Separators_Loop;
       Set_Info_Separators_Loop :
       for I in 1 .. 2 loop
