@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -27,6 +27,7 @@ with CopyItems.UI; use CopyItems.UI;
 with DeleteItems; use DeleteItems;
 with MoveItems.UI; use MoveItems.UI;
 with ShowItems; use ShowItems;
+with Utils.UI; use Utils.UI;
 
 package body Messages.UI is
 
@@ -159,13 +160,11 @@ package body Messages.UI is
       case Key is
          when KEY_UP =>
             if New_Action in COPY | MOVE | CLEARTRASH then
-               Result := Driver(DialogForm, F_Previous_Field);
-               Result := Driver(DialogForm, F_End_Line);
+               Result := Go_Previous_Field(DialogForm);
             end if;
          when KEY_DOWN =>
             if New_Action in COPY | MOVE | CLEARTRASH then
-               Result := Driver(DialogForm, F_Next_Field);
-               Result := Driver(DialogForm, F_End_Line);
+               Result := Go_Next_Field(DialogForm);
             end if;
          when 10 =>
             Set_Cursor_Visibility(Visibility);
