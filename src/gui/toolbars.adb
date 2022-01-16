@@ -106,14 +106,14 @@ package body Toolbars is
       for I in 1 .. 2 loop
          Button.Name :=
            New_String
-             (Main_Frame & ".toolbars.itemtoolbar.separator" &
-              Trim(Positive'Image(I), Both));
+             (Str => Main_Frame & ".toolbars.itemtoolbar.separator" &
+              Trim(Source => Positive'Image(I), Side => Both));
          configure(Button, "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
-           (Button, "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
+           (Slave => Button, Options => "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
       end loop Set_Info_Separators_Loop;
       Toolbar.Interp := Get_Context;
-      Toolbar.Name := New_String(Main_Frame & ".toolbars.itemtoolbar");
+      Toolbar.Name := New_String(Str => Main_Frame & ".toolbars.itemtoolbar");
       if not Settings.Toolbars_On_Top then
          Grid_Configure(Toolbar, "-column 0 -row 2 -sticky s");
       else
