@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -37,6 +37,7 @@ with Modules; use Modules;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
 with UserCommands; use UserCommands;
+with Utils.UI; use Utils.UI;
 
 package body Preferences.UI is
 
@@ -1105,9 +1106,9 @@ package body Preferences.UI is
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(CommandForm, F_Previous_Field);
+            Result := Go_Previous_Field(CommandForm);
          when KEY_DOWN =>
-            Result := Driver(CommandForm, F_Next_Field);
+            Result := Go_Next_Field(CommandForm);
          when KEY_LEFT =>
             if CurrentField in 2 | 4 then
                Result := Driver(CommandForm, F_Previous_Char);
