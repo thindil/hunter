@@ -114,10 +114,10 @@ package body Toolbars is
       end loop Set_Info_Separators_Loop;
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(Str => Main_Frame & ".toolbars.itemtoolbar");
-      if not Settings.Toolbars_On_Top then
-         Grid_Configure(Toolbar, "-column 0 -row 2 -sticky s");
-      else
+      if Settings.Toolbars_On_Top then
          Grid_Configure(Toolbar, "-column 2 -row 0 -sticky e");
+      else
+         Grid_Configure(Toolbar, "-column 0 -row 2 -sticky s");
       end if;
       Toolbar.Name := New_String(Main_Frame & ".toolbars");
       if not Settings.Toolbars_On_Top then
