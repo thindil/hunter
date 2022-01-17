@@ -149,7 +149,9 @@ begin
       AltKey := False;
       -- Escape key pressed
       if Key = 27 then
+         Set_NoDelay_Mode(Mode => True);
          Key := Get_Keystroke;
+         Set_NoDelay_Mode(Mode => False);
          -- Check if pressed key was arrow key
          if Key = 91 then
             Key := Get_Keystroke;
@@ -173,6 +175,8 @@ begin
                when others =>
                   null;
             end case;
+         elsif Key = 256 then
+            Key := 27;
          elsif Key > 1 then
             AltKey := True;
          end if;
