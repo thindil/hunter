@@ -120,12 +120,12 @@ package body Toolbars is
          Grid_Configure(Slave => Toolbar, Options => "-column 0 -row 2 -sticky s");
       end if;
       Toolbar.Name := New_String(Str => Main_Frame & ".toolbars");
-      if not Settings.Toolbars_On_Top then
+      if Settings.Toolbars_On_Top then
+         Grid_Configure(Toolbar, "-sticky we -row 0 -columnspan 2");
+      else
          Grid_Configure(Toolbar, "-sticky ns -row 3 -column 0 -columnspan 1");
          Column_Configure(Main_Frame, Toolbar, "-weight 0");
          Row_Configure(Main_Frame, Toolbar, "-weight 0");
-      else
-         Grid_Configure(Toolbar, "-sticky we -row 0 -columnspan 2");
       end if;
       Toolbar.Name := New_String(Main_Frame & ".toolbars");
       if not Settings.Toolbars_On_Top then
