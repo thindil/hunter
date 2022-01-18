@@ -143,12 +143,24 @@ package body AboutDialog.UI is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Positive := Get_Index(Current(DialogForm));
       Visibility: Cursor_Visibility := Invisible;
+      function HideAboutDialog return UI_Locations is
+      begin
+         Set_Cursor_Visibility(Visibility);
+         Post(DialogForm, False);
+         Delete(DialogForm);
+         Show_Preview;
+         UILocation := DIRECTORY_VIEW;
+         Update_Directory_List;
+         return DIRECTORY_VIEW;
+      end HideAboutDialog;
    begin
       case Key is
          when KEY_UP =>
             Result := Go_Previous_Field(DialogForm);
          when KEY_DOWN =>
             Result := Go_Next_Field(DialogForm);
+         when 27 =>
+            return HideAboutDialog;
          when 10 =>
             case FieldIndex is
                when 5 =>
@@ -172,13 +184,7 @@ package body AboutDialog.UI is
                   end if;
                   return DEVELOPERS_VIEW;
                when 8 =>
-                  Set_Cursor_Visibility(Visibility);
-                  Post(DialogForm, False);
-                  Delete(DialogForm);
-                  Show_Preview;
-                  UILocation := DIRECTORY_VIEW;
-                  Update_Directory_List;
-                  return DIRECTORY_VIEW;
+                  return HideAboutDialog;
                when others =>
                   null;
             end case;
