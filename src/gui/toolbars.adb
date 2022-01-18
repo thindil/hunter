@@ -121,13 +121,13 @@ package body Toolbars is
       end if;
       Toolbar.Name := New_String(Str => Main_Frame & ".toolbars");
       if Settings.Toolbars_On_Top then
-         Grid_Configure(Toolbar, "-sticky we -row 0 -columnspan 2");
+         Grid_Configure(Slave => Toolbar, Options => "-sticky we -row 0 -columnspan 2");
       else
-         Grid_Configure(Toolbar, "-sticky ns -row 3 -column 0 -columnspan 1");
-         Column_Configure(Main_Frame, Toolbar, "-weight 0");
-         Row_Configure(Main_Frame, Toolbar, "-weight 0");
+         Grid_Configure(Slave => Toolbar, Options => "-sticky ns -row 3 -column 0 -columnspan 1");
+         Column_Configure(Master => Main_Frame, Slave => Toolbar, Options => "-weight 0");
+         Row_Configure(Master => Main_Frame, Slave => Toolbar, Options => "-weight 0");
       end if;
-      Toolbar.Name := New_String(Main_Frame & ".toolbars");
+      Toolbar.Name := New_String(Str => Main_Frame & ".toolbars");
       if not Settings.Toolbars_On_Top then
          Column_Configure(Toolbar, Label, "-weight 0");
          Row_Configure(Toolbar, Label, "-weight 1");
