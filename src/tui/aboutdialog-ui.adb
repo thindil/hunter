@@ -155,9 +155,9 @@ package body AboutDialog.UI is
       end HideAboutDialog;
    begin
       case Key is
-         when KEY_UP =>
+         when KEY_UP | KEY_LEFT =>
             Result := Go_Previous_Field(DialogForm);
-         when KEY_DOWN =>
+         when KEY_DOWN | KEY_RIGHT =>
             Result := Go_Next_Field(DialogForm);
          when 27 =>
             return HideAboutDialog;
