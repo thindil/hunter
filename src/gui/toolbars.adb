@@ -106,34 +106,47 @@ package body Toolbars is
       for I in 1 .. 2 loop
          Button.Name :=
            New_String
-             (Str => Main_Frame & ".toolbars.itemtoolbar.separator" &
-              Trim(Source => Positive'Image(I), Side => Both));
+             (Str =>
+                Main_Frame & ".toolbars.itemtoolbar.separator" &
+                Trim(Source => Positive'Image(I), Side => Both));
          configure(Button, "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
-           (Slave => Button, Options => "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
+           (Slave => Button,
+            Options => "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
       end loop Set_Info_Separators_Loop;
       Toolbar.Interp := Get_Context;
       Toolbar.Name := New_String(Str => Main_Frame & ".toolbars.itemtoolbar");
       if Settings.Toolbars_On_Top then
-         Grid_Configure(Slave => Toolbar, Options =>  "-column 2 -row 0 -sticky e");
+         Grid_Configure
+           (Slave => Toolbar, Options => "-column 2 -row 0 -sticky e");
       else
-         Grid_Configure(Slave => Toolbar, Options => "-column 0 -row 2 -sticky s");
+         Grid_Configure
+           (Slave => Toolbar, Options => "-column 0 -row 2 -sticky s");
       end if;
       Toolbar.Name := New_String(Str => Main_Frame & ".toolbars");
       if Settings.Toolbars_On_Top then
-         Grid_Configure(Slave => Toolbar, Options => "-sticky we -row 0 -columnspan 2");
+         Grid_Configure
+           (Slave => Toolbar, Options => "-sticky we -row 0 -columnspan 2");
       else
-         Grid_Configure(Slave => Toolbar, Options => "-sticky ns -row 3 -column 0 -columnspan 1");
-         Column_Configure(Master => Main_Frame, Slave => Toolbar, Options => "-weight 0");
-         Row_Configure(Master => Main_Frame, Slave => Toolbar, Options => "-weight 0");
+         Grid_Configure
+           (Slave => Toolbar,
+            Options => "-sticky ns -row 3 -column 0 -columnspan 1");
+         Column_Configure
+           (Master => Main_Frame, Slave => Toolbar, Options => "-weight 0");
+         Row_Configure
+           (Master => Main_Frame, Slave => Toolbar, Options => "-weight 0");
       end if;
       Toolbar.Name := New_String(Str => Main_Frame & ".toolbars");
       if not Settings.Toolbars_On_Top then
-         Column_Configure(Toolbar, Label, "-weight 0");
-         Row_Configure(Toolbar, Label, "-weight 1");
+         Column_Configure
+           (Master => Toolbar, Slave => Label, Options => "-weight 0");
+         Row_Configure
+           (Master => Toolbar, Slave => Label, Options => "-weight 1");
       else
-         Column_Configure(Toolbar, Label, "-weight 1");
-         Row_Configure(Toolbar, Label, "-weight 0");
+         Column_Configure
+           (Master => Toolbar, Slave => Label, Options => "-weight 1");
+         Row_Configure
+           (Master => Toolbar, Slave => Label, Options => "-weight 0");
       end if;
       if Current_Selected /= Null_Unbounded_String then
          Set_Actions_Buttons;
@@ -141,30 +154,30 @@ package body Toolbars is
       end if;
    end Set_Toolbars;
 
-   -- ****if* Toolbars/Toolbars.SetButton
+   -- ****if* Toolbars/Toolbars.Set_Button
    -- FUNCTION
    -- Configure selected button on toolbars
    -- PARAMETERS
-   -- Button      - Button to configure
-   -- TooltipText - Text which will be displayed as tooltip
-   -- ImageName   - Name of image which will be used as icon for button
+   -- Button       - Button to configure
+   -- Tooltip_Text - Text which will be displayed as tooltip
+   -- Image_Name   - Name of image which will be used as icon for button
    -- SOURCE
-   procedure SetButton
-     (Button: Tk_Widget'Class; TooltipText, ImageName: String) is
+   procedure Set_Button
+     (Button: Tk_Widget'Class; Tooltip_Text, Image_Name: String) is
       Image: constant Tk_Photo :=
         Create
-          (ImageName & "icon",
-           "-file {../share/hunter/images/" & ImageName &
+          (Image_Name & "icon",
+           "-file {../share/hunter/images/" & Image_Name &
            ".svg} -format {svg -scaletoheight" &
            Natural'Image(Settings.Toolbars_Size) & "}");
       pragma Unreferenced(Image);
       -- ****
    begin
-      Add(Button, TooltipText);
+      Add(Button, Tooltip_Text);
       configure
         (Button,
-         "-style Toolbutton -image " & ImageName & "icon -takefocus 0");
-   end SetButton;
+         "-style Toolbutton -image " & Image_Name & "icon -takefocus 0");
+   end Set_Button;
 
    procedure Create_Action_Toolbar is
       ToolMenuButton: Ttk_MenuButton;
@@ -177,7 +190,7 @@ package body Toolbars is
       ToolCheckButton: Ttk_CheckButton;
    begin
       ToolButton := Create(Toolbar & ".quitbutton", "-command exit");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc(Get_Context, "{Quit from the program.}") & " \[" &
          To_String(Accelerators(1)) & "\]",
@@ -186,7 +199,7 @@ package body Toolbars is
       Separator := Create(Toolbar & ".separator1");
       Tcl.Tk.Ada.Pack.Pack(Separator);
       ToolMenuButton := Create(Toolbar & ".bookmarksbutton");
-      SetButton
+      Set_Button
         (ToolMenuButton,
          Mc(Get_Context, "{Show bookmarks menu}") & " \[" &
          To_String(Accelerators(2)) & "\]",
@@ -194,7 +207,7 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolMenuButton);
       ToolCheckButton :=
         Create(Toolbar & ".searchbutton", "-command ToggleSearch");
-      SetButton
+      Set_Button
         (ToolCheckButton,
          Mc(Get_Context, "{Search for the file or directory}") & " \[" &
          To_String(Accelerators(3)) & "\]",
@@ -202,7 +215,7 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolButton :=
         Create(Toolbar & ".selectbutton", "-command ToggleSelection");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc(Get_Context, "{Select or unselect all files and directories.}") &
          " \[" & To_String(Accelerators(8)) & "\]",
@@ -211,7 +224,7 @@ package body Toolbars is
       Separator := Create(Toolbar & ".separator2");
       Tcl.Tk.Ada.Pack.Pack(Separator);
       ToolMenuButton := Create(Toolbar & ".userbutton");
-      SetButton
+      Set_Button
         (ToolMenuButton,
          Mc(Get_Context, "{Show user actions menu}") & " \[" &
          To_String(Accelerators(20)) & "\]",
@@ -220,7 +233,7 @@ package body Toolbars is
       configure(ToolMenuButton, "-menu " & ButtonMenu & " -direction right");
       Set_User_Commands_Menu;
       ToolMenuButton := Create(Toolbar & ".newbutton");
-      SetButton
+      Set_Button
         (ToolMenuButton,
          Mc(Get_Context, "{Show add new item menu}") & " \[" &
          To_String(Accelerators(4)) & "\]",
@@ -242,14 +255,14 @@ package body Toolbars is
       configure(ToolMenuButton, "-menu " & ButtonMenu);
       ToolCheckButton :=
         Create(Toolbar & ".renamebutton", "-command ToggleRename");
-      SetButton
+      Set_Button
         (ToolCheckButton,
          Mc(Get_Context, "{Rename selected file or directory}") & " \[" &
          To_String(Accelerators(9)) & "\]",
          "document-save-as");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton := Create(Toolbar & ".copybutton", "-command CopyData");
-      SetButton
+      Set_Button
         (ToolCheckButton,
          Mc(Get_Context, "{Copy selected files}") & " \[" &
          To_String(Accelerators(10)) & "\]." & LF &
@@ -259,7 +272,7 @@ package body Toolbars is
          "edit-copy");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolCheckButton := Create(Toolbar & ".movebutton", "-command MoveData");
-      SetButton
+      Set_Button
         (ToolCheckButton,
          Mc(Get_Context, "{Move selected files}") & " \[" &
          To_String(Accelerators(11)) & "\]." & LF &
@@ -269,7 +282,7 @@ package body Toolbars is
          "edit-cut");
       Tcl.Tk.Ada.Pack.Pack(ToolCheckButton);
       ToolMenuButton := Create(Toolbar & ".deletebutton");
-      SetButton
+      Set_Button
         (ToolMenuButton,
          Mc(Get_Context, "{Show delete menu}") & " \[" &
          To_String(Accelerators(5)) & "\]",
@@ -297,7 +310,7 @@ package body Toolbars is
          "} -command ClearTrash");
       configure(ToolMenuButton, "-menu " & ButtonMenu);
       ToolButton := Create(Toolbar & ".cancelbutton", "-command CancelAction");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc
            (Get_Context,
@@ -305,7 +318,7 @@ package body Toolbars is
          "dialog-cancel");
       ToolButton :=
         Create(Toolbar & ".restorebutton", "-command RestoreItems");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc
            (Get_Context,
@@ -316,14 +329,14 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(Separator);
       ToolButton :=
         Create(Toolbar & ".optionsbutton", "-command ShowPreferences");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc(Get_Context, "{Show the program preferences}") & " \[" &
          To_String(Accelerators(12)) & "\]",
          "configure");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolMenuButton := Create(Toolbar & ".aboutbutton");
-      SetButton
+      Set_Button
         (ToolMenuButton,
          Mc(Get_Context, "{Show menu with information about the program}") &
          " \[" & To_String(Accelerators(6)) & "\]",
@@ -363,14 +376,14 @@ package body Toolbars is
       ToolRadioButton: Ttk_RadioButton;
    begin
       ToolButton := Create(Toolbar & ".runbutton", "-command Execute");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc(Get_Context, "{Execute selected program}") & " \[" &
          To_String(Accelerators(18)) & "\]",
          "media-playback-start");
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolButton := Create(Toolbar & ".openbutton", "-command ActivateItem");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc(Get_Context, "{Open selected file or directory}") & " \[" &
          To_String(Accelerators(7)) & "\]",
@@ -378,7 +391,7 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolButton :=
         Create(Toolbar & ".openwithbutton", "-command ToggleExecuteWith");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc(Get_Context, "{Open selected file or directory with command}") &
          " \[" & To_String(Accelerators(13)) & "\]",
@@ -390,7 +403,7 @@ package body Toolbars is
         Create
           (Toolbar & ".previewbutton",
            "-variable previewtype -value preview -command ShowPreviewOrInfo");
-      SetButton
+      Set_Button
         (ToolRadioButton,
          Mc(Get_Context, "{Preview file or directory}") & " \[" &
          To_String(Accelerators(15)) & "\]",
@@ -400,7 +413,7 @@ package body Toolbars is
         Create
           (Toolbar & ".infobutton",
            "-variable previewtype -value info -command ShowPreviewOrInfo");
-      SetButton
+      Set_Button
         (ToolRadioButton,
          Mc(Get_Context, "{File or directory information}") & " \[" &
          To_String(Accelerators(14)) & "\]",
@@ -409,7 +422,7 @@ package body Toolbars is
       Separator := Create(Toolbar & ".separator2");
       Tcl.Tk.Ada.Pack.Pack(Separator);
       ToolButton := Create(Toolbar & ".addbutton", "-command AddBookmark");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc(Get_Context, "{Add bookmark to this directory}") & " \[" &
          To_String(Accelerators(16)) & "\]",
@@ -417,7 +430,7 @@ package body Toolbars is
       Tcl.Tk.Ada.Pack.Pack(ToolButton);
       ToolButton :=
         Create(Toolbar & ".deletebutton", "-command RemoveBookmark");
-      SetButton
+      Set_Button
         (ToolButton,
          Mc(Get_Context, "{Remove bookmark from this directory}") & " \[" &
          To_String(Accelerators(17)) & "\]",
