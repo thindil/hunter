@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ package AboutDialog is
 
 private
 
-   Copyright: constant String := "© Bartek Jasicki 2019-2021";
+   Copyright: constant String := "© Bartek Jasicki 2019-2022";
    License: Unbounded_String;
    Version: Unbounded_String;
    Website: constant String := "https://www.laeran.pl/repositories/hunter/";
