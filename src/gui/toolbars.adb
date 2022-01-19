@@ -109,7 +109,7 @@ package body Toolbars is
              (Str =>
                 Main_Frame & ".toolbars.itemtoolbar.separator" &
                 Trim(Source => Positive'Image(I), Side => Both));
-         configure(Button, "-orient " & Orientation);
+         configure(Widgt => Button, options => "-orient " & Orientation);
          Tcl.Tk.Ada.Pack.Pack_Configure
            (Slave => Button,
             Options => "-side " & Side & " -pad" & Fill & " 5 -fill " & Fill);
@@ -137,16 +137,16 @@ package body Toolbars is
            (Master => Main_Frame, Slave => Toolbar, Options => "-weight 0");
       end if;
       Toolbar.Name := New_String(Str => Main_Frame & ".toolbars");
-      if not Settings.Toolbars_On_Top then
+      if Settings.Toolbars_On_Top then
          Column_Configure
-           (Master => Toolbar, Slave => Label, Options => "-weight 0");
-         Row_Configure
            (Master => Toolbar, Slave => Label, Options => "-weight 1");
+         Row_Configure
+           (Master => Toolbar, Slave => Label, Options => "-weight 0");
       else
          Column_Configure
-           (Master => Toolbar, Slave => Label, Options => "-weight 1");
-         Row_Configure
            (Master => Toolbar, Slave => Label, Options => "-weight 0");
+         Row_Configure
+           (Master => Toolbar, Slave => Label, Options => "-weight 1");
       end if;
       if Current_Selected /= Null_Unbounded_String then
          Set_Actions_Buttons;
