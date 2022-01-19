@@ -164,13 +164,13 @@ package body Toolbars is
    -- SOURCE
    procedure Set_Button
      (Button: Tk_Widget'Class; Tooltip_Text, Image_Name: String) is
-      Image: constant Tk_Photo :=
+      Button_Image: constant Tk_Photo :=
         Create
           (Image_Name & "icon",
            "-file {../share/hunter/images/" & Image_Name &
            ".svg} -format {svg -scaletoheight" &
            Natural'Image(Settings.Toolbars_Size) & "}");
-      pragma Unreferenced(Image);
+      pragma Unreferenced(Button_Image);
       -- ****
    begin
       Add(Button, Tooltip_Text);
