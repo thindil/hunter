@@ -124,6 +124,10 @@ package body ActivateItems.UI is
          when 27 =>
             return Hide_Dialog;
          when 10 =>
+            if FieldIndex = 2 then
+               Result := Go_Previous_Field(DialogForm);
+               return Execute_Form_Keys(10);
+            end if;
             if FieldIndex = 4 then
                SpaceIndex := Index(Value, " ");
                CommandName :=
@@ -159,9 +163,7 @@ package body ActivateItems.UI is
                   return Hide_Dialog(True);
                end if;
             end if;
-            if FieldIndex /= 2 then
-               return Hide_Dialog;
-            end if;
+            return Hide_Dialog;
          when others =>
             if Key /= 91 then
                Result := Driver(DialogForm, Key);
