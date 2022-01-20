@@ -121,6 +121,8 @@ package body ActivateItems.UI is
             end if;
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
+         when 27 =>
+            return Hide_Dialog;
          when 10 =>
             if FieldIndex = 4 then
                SpaceIndex := Index(Value, " ");
