@@ -17,6 +17,7 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
+with Messages.UI; use Messages.UI;
 with ShowItems; use ShowItems;
 with Utils.UI; use Utils.UI;
 
@@ -143,15 +144,20 @@ package body AboutDialog.UI is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Positive := Get_Index(Current(DialogForm));
       Visibility: Cursor_Visibility := Invisible;
-      function HideAboutDialog return UI_Locations is
+      function HideAboutDialog
+        (With_Message: Boolean := False) return UI_Locations is
       begin
          Set_Cursor_Visibility(Visibility);
          Post(DialogForm, False);
          Delete(DialogForm);
-         Show_Preview;
-         UILocation := DIRECTORY_VIEW;
-         Update_Directory_List;
-         return DIRECTORY_VIEW;
+         if With_Message then
+            UILocation := MESSAGE_FORM;
+         else
+            Show_Preview;
+            UILocation := DIRECTORY_VIEW;
+            Update_Directory_List;
+         end if;
+         return UILocation;
       end HideAboutDialog;
    begin
       case Key is
@@ -174,6 +180,13 @@ package body AboutDialog.UI is
                      if ProcessId = Invalid_Pid then
                         return ABOUT_FORM;
                      end if;
+                  exception
+                     when Constraint_Error =>
+                        Show_Message
+                          (Mc
+                             (Interpreter,
+                              "{Can't find web browser to open the link}"));
+                        return HideAboutDialog(True);
                   end;
                when 6 | 7 =>
                   Delete_Dialog(DialogForm);
