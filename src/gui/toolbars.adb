@@ -230,11 +230,17 @@ package body Toolbars is
          Image_Name => "edit-find");
       Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Check_Button);
       Tool_Button :=
-        Create(pathName => Toolbar & ".selectbutton", options => "-command ToggleSelection");
+        Create
+          (pathName => Toolbar & ".selectbutton",
+           options => "-command ToggleSelection");
       Set_Button
         (Button => Tool_Button,
-        Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Select or unselect all files and directories.}") &
-         " \[" & To_String(Source => Accelerators(8)) & "\]",
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Select or unselect all files and directories.}") &
+           " \[" & To_String(Source => Accelerators(8)) & "\]",
          Image_Name => "edit-select-all");
       Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
       Separator := Create(pathName => Toolbar & ".separator2");
@@ -242,29 +248,41 @@ package body Toolbars is
       Tool_Menu_Button := Create(pathName => Toolbar & ".userbutton");
       Set_Button
         (Button => Tool_Menu_Button,
-         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Show user actions menu}") & " \[" &
-         To_String(Source => Accelerators(20)) & "\]",
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Show user actions menu}") &
+           " \[" & To_String(Source => Accelerators(20)) & "\]",
          Image_Name => "run-build");
-      Button_Menu := Create(pathName => ".actionsmenu", options => "-tearoff false");
+      Button_Menu :=
+        Create(pathName => ".actionsmenu", options => "-tearoff false");
       configure
-        (Tool_Menu_Button, "-menu " & Button_Menu & " -direction right");
+        (Widgt => Tool_Menu_Button,
+         options => "-menu " & Button_Menu & " -direction right");
       Set_User_Commands_Menu;
-      Tool_Menu_Button := Create(Toolbar & ".newbutton");
+      Tool_Menu_Button := Create(pathName => Toolbar & ".newbutton");
       Set_Button
-        (Tool_Menu_Button,
-         Mc(Get_Context, "{Show add new item menu}") & " \[" &
-         To_String(Accelerators(4)) & "\]",
-         "document-new");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Menu_Button);
-      Button_Menu := Create(".newmenu", "-tearoff false");
+        (Button => Tool_Menu_Button,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Show add new item menu}") &
+           " \[" & To_String(Accelerators(4)) & "\]",
+         Image_Name => "document-new");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Menu_Button);
+      Button_Menu :=
+        Create(pathName => ".newmenu", options => "-tearoff false");
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{New directory}") &
-         "} -command {ShowCreate directory}");
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options =>
+           "-label {" &
+           Mc(Interp => Get_Context, Src_String => "{New directory}") &
+           "} -command {ShowCreate directory}");
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{New file}") &
-         "} -command {ShowCreate file}");
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options =>
+           "-label {" & Mc(Interp => Get_Context, Src_String => "{New file}") &
+           "} -command {ShowCreate file}");
       Menu.Add
         (Button_Menu, "command",
          "-label {" & Mc(Get_Context, "{New link}") &
