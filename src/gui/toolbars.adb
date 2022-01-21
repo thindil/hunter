@@ -228,24 +228,24 @@ package body Toolbars is
               Src_String => "{Search for the file or directory}") &
            " \[" & To_String(Source => Accelerators(3)) & "\]",
          Image_Name => "edit-find");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Check_Button);
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Check_Button);
       Tool_Button :=
-        Create(Toolbar & ".selectbutton", "-command ToggleSelection");
+        Create(pathName => Toolbar & ".selectbutton", options => "-command ToggleSelection");
       Set_Button
-        (Tool_Button,
-         Mc(Get_Context, "{Select or unselect all files and directories.}") &
-         " \[" & To_String(Accelerators(8)) & "\]",
-         "edit-select-all");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
-      Separator := Create(Toolbar & ".separator2");
-      Tcl.Tk.Ada.Pack.Pack(Separator);
-      Tool_Menu_Button := Create(Toolbar & ".userbutton");
+        (Button => Tool_Button,
+        Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Select or unselect all files and directories.}") &
+         " \[" & To_String(Source => Accelerators(8)) & "\]",
+         Image_Name => "edit-select-all");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
+      Separator := Create(pathName => Toolbar & ".separator2");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Separator);
+      Tool_Menu_Button := Create(pathName => Toolbar & ".userbutton");
       Set_Button
-        (Tool_Menu_Button,
-         Mc(Get_Context, "{Show user actions menu}") & " \[" &
-         To_String(Accelerators(20)) & "\]",
-         "run-build");
-      Button_Menu := Create(".actionsmenu", "-tearoff false");
+        (Button => Tool_Menu_Button,
+         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Show user actions menu}") & " \[" &
+         To_String(Source => Accelerators(20)) & "\]",
+         Image_Name => "run-build");
+      Button_Menu := Create(pathName => ".actionsmenu", options => "-tearoff false");
       configure
         (Tool_Menu_Button, "-menu " & Button_Menu & " -direction right");
       Set_User_Commands_Menu;
