@@ -285,38 +285,55 @@ package body Toolbars is
            "} -command {ShowCreate file}");
       Menu.Add
         (MenuWidget => Button_Menu, EntryType => "command",
-         Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{New link}") &
-         "} -command {ShowCreate link}");
+         Options =>
+           "-label {" & Mc(Interp => Get_Context, Src_String => "{New link}") &
+           "} -command {ShowCreate link}");
       configure(Widgt => Tool_Menu_Button, options => "-menu " & Button_Menu);
       Tool_Check_Button :=
-        Create(pathName => Toolbar & ".renamebutton", options => "-command ToggleRename");
+        Create
+          (pathName => Toolbar & ".renamebutton",
+           options => "-command ToggleRename");
       Set_Button
         (Button => Tool_Check_Button,
-         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Rename selected file or directory}") & " \[" &
-         To_String(Source => Accelerators(9)) & "\]",
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Rename selected file or directory}") &
+           " \[" & To_String(Source => Accelerators(9)) & "\]",
          Image_Name => "document-save-as");
       Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Check_Button);
       Tool_Check_Button :=
-        Create(pathName => Toolbar & ".copybutton", options => "-command CopyData");
+        Create
+          (pathName => Toolbar & ".copybutton",
+           options => "-command CopyData");
       Set_Button
-        (Tool_Check_Button,
-         Mc(Get_Context, "{Copy selected files}") & " \[" &
-         To_String(Accelerators(10)) & "\]." & LF &
-         Mc(Get_Context, "{Pressed button means start copying}") & LF &
-         Mc(Get_Context, "{currently selected files or directories.}") & LF &
-         Mc(Get_Context, "{Press again to copy them.}"),
-         "edit-copy");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Check_Button);
+        (Button => Tool_Check_Button,
+         Tooltip_Text =>
+           Mc(Interp => Get_Context, Src_String => "{Copy selected files}") &
+           " \[" & To_String(Source => Accelerators(10)) & "\]." & LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{Pressed button means start copying}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{currently selected files or directories.}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{Press again to copy them.}"),
+         Image_Name => "edit-copy");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Check_Button);
       Tool_Check_Button :=
-        Create(Toolbar & ".movebutton", "-command MoveData");
+        Create
+          (pathName => Toolbar & ".movebutton",
+           options => "-command MoveData");
       Set_Button
-        (Tool_Check_Button,
-         Mc(Get_Context, "{Move selected files}") & " \[" &
-         To_String(Accelerators(11)) & "\]." & LF &
-         Mc(Get_Context, "{Pressed button means start moving}") & LF &
-         Mc(Get_Context, "{currently selected files or directories.}") & LF &
-         Mc(Get_Context, "{Press again to move them.}"),
-         "edit-cut");
+        (Button => Tool_Check_Button,
+         Tooltip_Text =>
+           Mc(Get_Context, "{Move selected files}") & " \[" &
+           To_String(Accelerators(11)) & "\]." & LF &
+           Mc(Get_Context, "{Pressed button means start moving}") & LF &
+           Mc(Get_Context, "{currently selected files or directories.}") & LF &
+           Mc(Get_Context, "{Press again to move them.}"),
+         Image_Name => "edit-cut");
       Tcl.Tk.Ada.Pack.Pack(Tool_Check_Button);
       Tool_Menu_Button := Create(Toolbar & ".deletebutton");
       Set_Button
