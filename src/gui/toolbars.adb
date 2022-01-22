@@ -267,7 +267,7 @@ package body Toolbars is
            Mc
              (Interp => Get_Context,
               Src_String => "{Show add new item menu}") &
-           " \[" & To_String(Accelerators(4)) & "\]",
+           " \[" & To_String(Source => Accelerators(4)) & "\]",
          Image_Name => "document-new");
       Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Menu_Button);
       Button_Menu :=
@@ -284,20 +284,20 @@ package body Toolbars is
            "-label {" & Mc(Interp => Get_Context, Src_String => "{New file}") &
            "} -command {ShowCreate file}");
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{New link}") &
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{New link}") &
          "} -command {ShowCreate link}");
-      configure(Tool_Menu_Button, "-menu " & Button_Menu);
+      configure(Widgt => Tool_Menu_Button, options => "-menu " & Button_Menu);
       Tool_Check_Button :=
-        Create(Toolbar & ".renamebutton", "-command ToggleRename");
+        Create(pathName => Toolbar & ".renamebutton", options => "-command ToggleRename");
       Set_Button
-        (Tool_Check_Button,
-         Mc(Get_Context, "{Rename selected file or directory}") & " \[" &
-         To_String(Accelerators(9)) & "\]",
-         "document-save-as");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Check_Button);
+        (Button => Tool_Check_Button,
+         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Rename selected file or directory}") & " \[" &
+         To_String(Source => Accelerators(9)) & "\]",
+         Image_Name => "document-save-as");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Check_Button);
       Tool_Check_Button :=
-        Create(Toolbar & ".copybutton", "-command CopyData");
+        Create(pathName => Toolbar & ".copybutton", options => "-command CopyData");
       Set_Button
         (Tool_Check_Button,
          Mc(Get_Context, "{Copy selected files}") & " \[" &
