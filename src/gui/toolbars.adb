@@ -328,21 +328,28 @@ package body Toolbars is
       Set_Button
         (Button => Tool_Check_Button,
          Tooltip_Text =>
-           Mc(Get_Context, "{Move selected files}") & " \[" &
-           To_String(Accelerators(11)) & "\]." & LF &
-           Mc(Get_Context, "{Pressed button means start moving}") & LF &
-           Mc(Get_Context, "{currently selected files or directories.}") & LF &
-           Mc(Get_Context, "{Press again to move them.}"),
+           Mc(Interp => Get_Context, Src_String => "{Move selected files}") &
+           " \[" & To_String(Source => Accelerators(11)) & "\]." & LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{Pressed button means start moving}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{currently selected files or directories.}") &
+           LF &
+           Mc(Interp => Get_Context,
+              Src_String => "{Press again to move them.}"),
          Image_Name => "edit-cut");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Check_Button);
-      Tool_Menu_Button := Create(Toolbar & ".deletebutton");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Check_Button);
+      Tool_Menu_Button := Create(pathName => Toolbar & ".deletebutton");
       Set_Button
-        (Tool_Menu_Button,
-         Mc(Get_Context, "{Show delete menu}") & " \[" &
-         To_String(Accelerators(5)) & "\]",
-         "edit-delete");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Menu_Button);
-      Button_Menu := Create(".deletemenu", "-tearoff false");
+        (Button => Tool_Menu_Button,
+         Tooltip_Text =>
+           Mc(Interp => Get_Context, Src_String => "{Show delete menu}") &
+           " \[" & To_String(Source => Accelerators(5)) & "\]",
+         Image_Name => "edit-delete");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Menu_Button);
+      Button_Menu :=
+        Create(pathName => ".deletemenu", options => "-tearoff false");
       if Settings.Delete_Files then
          Menu.Add
            (Button_Menu, "command",
