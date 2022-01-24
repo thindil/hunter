@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@ with GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.Ada;
-with Tcl.MsgCat.Ada;
+with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Busy;
 with Tcl.Tk.Ada.Grid;
@@ -31,6 +31,7 @@ with Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkNotebook;
 with Tcl.Tk.Ada.Widgets.TtkTreeView;
 with Tcl.Tk.Ada.Winfo;
+with Messages.UI;
 with Utils; use Utils;
 with Utils.UI;
 
@@ -59,7 +60,6 @@ package body AboutDialog.UI is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
-      use Tcl.MsgCat.Ada;
       use Tcl.Tk.Ada;
       use Tcl.Tk.Ada.Widgets;
       use Tcl.Tk.Ada.Widgets.Toplevel;
@@ -211,20 +211,25 @@ package body AboutDialog.UI is
       pragma Unreferenced(Client_Data, Argc);
       use GNAT.OS_Lib;
       use Tcl.Ada;
+      use Messages.UI;
 
       Os_Name: constant String :=
         Tcl_GetVar(interp => Interp, varName => "tcl_platform(os)");
-      Command: constant String :=
-        (if Os_Name = "Windows" then
-           Locate_Exec_On_Path(Exec_Name => "start").all
-         elsif Os_Name = "Darwin" then
-           Locate_Exec_On_Path(Exec_Name => "open").all
-         else Locate_Exec_On_Path(Exec_Name => "xdg-open").all);
+      Command: Unbounded_String;
       Pid: Process_Id;
    begin
+      Command :=
+        (if Os_Name = "Windows" then
+           To_Unbounded_String
+             (Source => Locate_Exec_On_Path(Exec_Name => "start").all)
+         elsif Os_Name = "Darwin" then
+           To_Unbounded_String
+             (Source => Locate_Exec_On_Path(Exec_Name => "open").all)
+         else To_Unbounded_String
+             (Source => Locate_Exec_On_Path(Exec_Name => "xdg-open").all));
       Pid :=
         Non_Blocking_Spawn
-          (Program_Name => Command,
+          (Program_Name => To_String(Source => Command),
            Args =>
              Argument_String_To_List
                (Arg_String => CArgv.Arg(Argv => Argv, N => 1)).all);
@@ -232,6 +237,14 @@ package body AboutDialog.UI is
          return TCL_ERROR;
       end if;
       return TCL_OK;
+   exception
+      when Constraint_Error =>
+         Show_Message
+           (Message =>
+              Mc
+                (Interp => Interp,
+                 Src_String => "{Can't find web browser to open the link}"));
+         return TCL_OK;
    end Open_Link_Command;
 
    procedure Create_About_Ui is
