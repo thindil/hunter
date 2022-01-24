@@ -26,7 +26,7 @@ All notable changes to this project will be documented in this file.
 - Moving up and down the list of files in directories in preview of directory
   in console version
 - Crash when trying to open the project's website in about dialog in console
-  version when xdg-open isn't installed
+  and graphical versions when xdg-open isn't installed
 
 ## [1.6] - 2021-08-08
 
