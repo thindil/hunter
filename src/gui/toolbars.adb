@@ -352,22 +352,22 @@ package body Toolbars is
         Create(pathName => ".deletemenu", options => "-tearoff false");
       if Settings.Delete_Files then
          Menu.Add
-           (Button_Menu, "command",
-            "-label {" & Mc(Get_Context, "{Delete selected}") &
+           (MenuWidget => Button_Menu, EntryType => "command",
+            Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{Delete selected}") &
             "} -command StartDeleting");
       else
          Menu.Add
-           (Button_Menu, "command",
-            "-label {" & Mc(Get_Context, "{Move selected to Trash}") &
+           (MenuWidget => Button_Menu, EntryType => "command",
+            Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{Move selected to Trash}") &
             "} -command StartDeleting");
       end if;
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{Show Trash}") &
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{Show Trash}") &
          "} -command ShowTrash");
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{Empty Trash}") &
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{Empty Trash}") &
          "} -command ClearTrash");
       configure(Tool_Menu_Button, "-menu " & Button_Menu);
       Tool_Button :=
