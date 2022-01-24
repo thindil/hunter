@@ -353,44 +353,63 @@ package body Toolbars is
       if Settings.Delete_Files then
          Menu.Add
            (MenuWidget => Button_Menu, EntryType => "command",
-            Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{Delete selected}") &
-            "} -command StartDeleting");
+            Options =>
+              "-label {" &
+              Mc(Interp => Get_Context, Src_String => "{Delete selected}") &
+              "} -command StartDeleting");
       else
          Menu.Add
            (MenuWidget => Button_Menu, EntryType => "command",
-            Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{Move selected to Trash}") &
-            "} -command StartDeleting");
+            Options =>
+              "-label {" &
+              Mc(Interp => Get_Context,
+                 Src_String => "{Move selected to Trash}") &
+              "} -command StartDeleting");
       end if;
       Menu.Add
         (MenuWidget => Button_Menu, EntryType => "command",
-         Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{Show Trash}") &
-         "} -command ShowTrash");
+         Options =>
+           "-label {" &
+           Mc(Interp => Get_Context, Src_String => "{Show Trash}") &
+           "} -command ShowTrash");
       Menu.Add
         (MenuWidget => Button_Menu, EntryType => "command",
-         Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{Empty Trash}") &
-         "} -command ClearTrash");
-      configure(Tool_Menu_Button, "-menu " & Button_Menu);
+         Options =>
+           "-label {" &
+           Mc(Interp => Get_Context, Src_String => "{Empty Trash}") &
+           "} -command ClearTrash");
+      configure(Widgt => Tool_Menu_Button, options => "-menu " & Button_Menu);
       Tool_Button :=
-        Create(Toolbar & ".cancelbutton", "-command CancelAction");
+        Create
+          (pathName => Toolbar & ".cancelbutton",
+           options => "-command CancelAction");
       Set_Button
-        (Tool_Button,
-         Mc
-           (Get_Context,
-            "{Discard all changes and back to files list \[Escape\]}"),
-         "dialog-cancel");
+        (Button => Tool_Button,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Discard all changes and back to files list \[Escape\]}"),
+         Image_Name => "dialog-cancel");
       Tool_Button :=
-        Create(Toolbar & ".restorebutton", "-command RestoreItems");
+        Create
+          (pathName => Toolbar & ".restorebutton",
+           options => "-command RestoreItems");
       Set_Button
-        (Tool_Button,
-         Mc
-           (Get_Context,
-            "{Restore selected file or directory from the trash}") &
-         " \[" & To_String(Accelerators(19)) & "\]",
-         "document-revert");
-      Separator := Create(Toolbar & ".separator3");
-      Tcl.Tk.Ada.Pack.Pack(Separator);
+        (Button => Tool_Button,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String =>
+                "{Restore selected file or directory from the trash}") &
+           " \[" & To_String(Source => Accelerators(19)) & "\]",
+         Image_Name => "document-revert");
+      Separator := Create(pathName => Toolbar & ".separator3");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Separator);
       Tool_Button :=
-        Create(Toolbar & ".optionsbutton", "-command ShowPreferences");
+        Create
+          (pathName => Toolbar & ".optionsbutton",
+           options => "-command ShowPreferences");
       Set_Button
         (Tool_Button,
          Mc(Get_Context, "{Show the program preferences}") & " \[" &
