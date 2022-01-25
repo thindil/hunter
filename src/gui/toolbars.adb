@@ -411,22 +411,22 @@ package body Toolbars is
           (pathName => Toolbar & ".optionsbutton",
            options => "-command ShowPreferences");
       Set_Button
-        (Tool_Button,
-         Mc(Get_Context, "{Show the program preferences}") & " \[" &
-         To_String(Accelerators(12)) & "\]",
-         "configure");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
-      Tool_Menu_Button := Create(Toolbar & ".aboutbutton");
+        (Button => Tool_Button,
+         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Show the program preferences}") & " \[" &
+         To_String(Source => Accelerators(12)) & "\]",
+         Image_Name => "configure");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
+      Tool_Menu_Button := Create(pathName => Toolbar & ".aboutbutton");
       Set_Button
-        (Tool_Menu_Button,
-         Mc(Get_Context, "{Show menu with information about the program}") &
-         " \[" & To_String(Accelerators(6)) & "\]",
-         "help-about");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Menu_Button);
-      Button_Menu := Create(".aboutmenu", "-tearoff false");
+        (Button => Tool_Menu_Button,
+         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Show menu with information about the program}") &
+         " \[" & To_String(Source => Accelerators(6)) & "\]",
+         Image_Name => "help-about");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Menu_Button);
+      Button_Menu := Create(pathName => ".aboutmenu", options => "-tearoff false");
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{About the program}") &
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{About the program}") &
          "} -command ShowAbout");
       Menu.Add
         (Button_Menu, "command",
