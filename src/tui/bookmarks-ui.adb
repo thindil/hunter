@@ -170,6 +170,22 @@ package body Bookmarks.UI is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Positive := Get_Index(Current(DialogForm));
       Visibility: Cursor_Visibility := Invisible;
+      function HideDialog return UI_Locations is
+      begin
+         Set_Cursor_Visibility(Visibility);
+         Post(DialogForm, False);
+         Delete(DialogForm);
+         if New_Action not in MOVE | COPY then
+            Show_Preview;
+            UILocation := DIRECTORY_VIEW;
+            Update_Directory_List(True);
+            return DIRECTORY_VIEW;
+         else
+            Update_Directory_List;
+            ShowDestination;
+            return PREVIEW;
+         end if;
+      end HideDialog;
    begin
       case Key is
          when KEY_UP =>
@@ -186,6 +202,8 @@ package body Bookmarks.UI is
             end if;
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
+         when 27 =>
+            return HideDialog;
          when 10 =>
             if FieldIndex = 4 then
                if not Ada.Directories.Exists
@@ -214,19 +232,7 @@ package body Bookmarks.UI is
                end if;
             end if;
             if FieldIndex /= 2 then
-               Set_Cursor_Visibility(Visibility);
-               Post(DialogForm, False);
-               Delete(DialogForm);
-               if New_Action not in MOVE | COPY then
-                  Show_Preview;
-                  UILocation := DIRECTORY_VIEW;
-                  Update_Directory_List(True);
-                  return DIRECTORY_VIEW;
-               else
-                  Update_Directory_List;
-                  ShowDestination;
-                  return PREVIEW;
-               end if;
+               return HideDialog;
             end if;
          when others =>
             if Key /= 91 then
