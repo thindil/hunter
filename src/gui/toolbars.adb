@@ -412,38 +412,55 @@ package body Toolbars is
            options => "-command ShowPreferences");
       Set_Button
         (Button => Tool_Button,
-         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Show the program preferences}") & " \[" &
-         To_String(Source => Accelerators(12)) & "\]",
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Show the program preferences}") &
+           " \[" & To_String(Source => Accelerators(12)) & "\]",
          Image_Name => "configure");
       Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
       Tool_Menu_Button := Create(pathName => Toolbar & ".aboutbutton");
       Set_Button
         (Button => Tool_Menu_Button,
-         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Show menu with information about the program}") &
-         " \[" & To_String(Source => Accelerators(6)) & "\]",
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Show menu with information about the program}") &
+           " \[" & To_String(Source => Accelerators(6)) & "\]",
          Image_Name => "help-about");
       Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Menu_Button);
-      Button_Menu := Create(pathName => ".aboutmenu", options => "-tearoff false");
+      Button_Menu :=
+        Create(pathName => ".aboutmenu", options => "-tearoff false");
       Menu.Add
         (MenuWidget => Button_Menu, EntryType => "command",
-         Options => "-label {" & Mc(Interp => Get_Context, Src_String => "{About the program}") &
-         "} -command ShowAbout");
+         Options =>
+           "-label {" &
+           Mc(Interp => Get_Context, Src_String => "{About the program}") &
+           "} -command ShowAbout");
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{Show README}") &
-         "} -command {ShowFile README.md}");
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options =>
+           "-label {" &
+           Mc(Interp => Get_Context, Src_String => "{Show README}") &
+           "} -command {ShowFile README.md}");
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{Show list of changes}") &
-         "} -command {ShowFile CHANGELOG.md}");
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options =>
+           "-label {" &
+           Mc(Interp => Get_Context, Src_String => "{Show list of changes}") &
+           "} -command {ShowFile CHANGELOG.md}");
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{Get involved}") &
-         "} -command {ShowFile CONTRIBUTING.md}");
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options =>
+           "-label {" &
+           Mc(Interp => Get_Context, Src_String => "{Get involved}") &
+           "} -command {ShowFile CONTRIBUTING.md}");
       Menu.Add
-        (Button_Menu, "command",
-         "-label {" & Mc(Get_Context, "{Show modding guide}") &
-         "} -command {ShowFile MODDING.md}");
+        (MenuWidget => Button_Menu, EntryType => "command",
+         Options =>
+           "-label {" &
+           Mc(Interp => Get_Context, Src_String => "{Show modding guide}") &
+           "} -command {ShowFile MODDING.md}");
       configure(Tool_Menu_Button, "-menu " & Button_Menu);
       Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
       Tcl.Tk.Ada.Grid.Grid(Label);
