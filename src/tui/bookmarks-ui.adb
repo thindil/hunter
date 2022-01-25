@@ -205,6 +205,10 @@ package body Bookmarks.UI is
          when 27 =>
             return HideDialog;
          when 10 =>
+            if FieldIndex = 2 then
+               Result := Go_Previous_Field(DialogForm);
+               return Bookmarks_Form_Keys(10);
+            end if;
             if FieldIndex = 4 then
                if not Ada.Directories.Exists
                    (Trim(Get_Buffer(Fields(DialogForm, 2)), Both)) then
