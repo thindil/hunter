@@ -461,79 +461,79 @@ package body Toolbars is
            "-label {" &
            Mc(Interp => Get_Context, Src_String => "{Show modding guide}") &
            "} -command {ShowFile MODDING.md}");
-      configure(Tool_Menu_Button, "-menu " & Button_Menu);
-      Tcl.Tk.Ada.Grid.Grid(Toolbar, "-sticky w");
-      Tcl.Tk.Ada.Grid.Grid(Label);
-      Tcl.Tk.Ada.Grid.Grid(Toolbars_Frame);
+      configure(Widgt => Tool_Menu_Button, options => "-menu " & Button_Menu);
+      Tcl.Tk.Ada.Grid.Grid(Slave => Toolbar, Options => "-sticky w");
+      Tcl.Tk.Ada.Grid.Grid(Slave => Label);
+      Tcl.Tk.Ada.Grid.Grid(Slave => Toolbars_Frame);
    end Create_Action_Toolbar;
 
    procedure Create_Item_Toolbar is
-      Toolbar: constant Ttk_Frame := Create(".mainframe.toolbars.itemtoolbar");
-      ToolButton: Ttk_Button;
+      Toolbar: constant Ttk_Frame := Create(pathName => ".mainframe.toolbars.itemtoolbar");
+      Tool_Button: Ttk_Button;
       Separator: Ttk_Separator;
-      ToolRadioButton: Ttk_RadioButton;
+      Tool_Radio_Button: Ttk_RadioButton;
    begin
-      ToolButton := Create(Toolbar & ".runbutton", "-command Execute");
+      Tool_Button := Create(pathName => Toolbar & ".runbutton", options => "-command Execute");
       Set_Button
-        (ToolButton,
-         Mc(Get_Context, "{Execute selected program}") & " \[" &
-         To_String(Accelerators(18)) & "\]",
-         "media-playback-start");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton := Create(Toolbar & ".openbutton", "-command ActivateItem");
+        (Button => Tool_Button,
+         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Execute selected program}") & " \[" &
+         To_String(Source => Accelerators(18)) & "\]",
+         Image_Name => "media-playback-start");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
+      Tool_Button := Create(pathName => Toolbar & ".openbutton", options => "-command ActivateItem");
       Set_Button
-        (ToolButton,
+        (Tool_Button,
          Mc(Get_Context, "{Open selected file or directory}") & " \[" &
          To_String(Accelerators(7)) & "\]",
          "document-open");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton :=
+      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
+      Tool_Button :=
         Create(Toolbar & ".openwithbutton", "-command ToggleExecuteWith");
       Set_Button
-        (ToolButton,
+        (Tool_Button,
          Mc(Get_Context, "{Open selected file or directory with command}") &
          " \[" & To_String(Accelerators(13)) & "\]",
          "system-run");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
       Separator := Create(Toolbar & ".separator1");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolRadioButton :=
+      Tool_Radio_Button :=
         Create
           (Toolbar & ".previewbutton",
            "-variable previewtype -value preview -command ShowPreviewOrInfo");
       Set_Button
-        (ToolRadioButton,
+        (Tool_Radio_Button,
          Mc(Get_Context, "{Preview file or directory}") & " \[" &
          To_String(Accelerators(15)) & "\]",
          "document-preview");
-      Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
-      ToolRadioButton :=
+      Tcl.Tk.Ada.Pack.Pack(Tool_Radio_Button);
+      Tool_Radio_Button :=
         Create
           (Toolbar & ".infobutton",
            "-variable previewtype -value info -command ShowPreviewOrInfo");
       Set_Button
-        (ToolRadioButton,
+        (Tool_Radio_Button,
          Mc(Get_Context, "{File or directory information}") & " \[" &
          To_String(Accelerators(14)) & "\]",
          "document-properties");
-      Tcl.Tk.Ada.Pack.Pack(ToolRadioButton);
+      Tcl.Tk.Ada.Pack.Pack(Tool_Radio_Button);
       Separator := Create(Toolbar & ".separator2");
       Tcl.Tk.Ada.Pack.Pack(Separator);
-      ToolButton := Create(Toolbar & ".addbutton", "-command AddBookmark");
+      Tool_Button := Create(Toolbar & ".addbutton", "-command AddBookmark");
       Set_Button
-        (ToolButton,
+        (Tool_Button,
          Mc(Get_Context, "{Add bookmark to this directory}") & " \[" &
          To_String(Accelerators(16)) & "\]",
          "list-add");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
-      ToolButton :=
+      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
+      Tool_Button :=
         Create(Toolbar & ".deletebutton", "-command RemoveBookmark");
       Set_Button
-        (ToolButton,
+        (Tool_Button,
          Mc(Get_Context, "{Remove bookmark from this directory}") & " \[" &
          To_String(Accelerators(17)) & "\]",
          "list-remove");
-      Tcl.Tk.Ada.Pack.Pack(ToolButton);
+      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
       Tcl.Tk.Ada.Grid.Grid(Toolbar);
    end Create_Item_Toolbar;
 
