@@ -468,39 +468,57 @@ package body Toolbars is
    end Create_Action_Toolbar;
 
    procedure Create_Item_Toolbar is
-      Toolbar: constant Ttk_Frame := Create(pathName => ".mainframe.toolbars.itemtoolbar");
+      Toolbar: constant Ttk_Frame :=
+        Create(pathName => ".mainframe.toolbars.itemtoolbar");
       Tool_Button: Ttk_Button;
       Separator: Ttk_Separator;
       Tool_Radio_Button: Ttk_RadioButton;
    begin
-      Tool_Button := Create(pathName => Toolbar & ".runbutton", options => "-command Execute");
+      Tool_Button :=
+        Create
+          (pathName => Toolbar & ".runbutton", options => "-command Execute");
       Set_Button
         (Button => Tool_Button,
-         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Execute selected program}") & " \[" &
-         To_String(Source => Accelerators(18)) & "\]",
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Execute selected program}") &
+           " \[" & To_String(Source => Accelerators(18)) & "\]",
          Image_Name => "media-playback-start");
       Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
-      Tool_Button := Create(pathName => Toolbar & ".openbutton", options => "-command ActivateItem");
-      Set_Button
-        (Tool_Button,
-         Mc(Get_Context, "{Open selected file or directory}") & " \[" &
-         To_String(Accelerators(7)) & "\]",
-         "document-open");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
       Tool_Button :=
-        Create(Toolbar & ".openwithbutton", "-command ToggleExecuteWith");
+        Create
+          (pathName => Toolbar & ".openbutton",
+           options => "-command ActivateItem");
       Set_Button
-        (Tool_Button,
-         Mc(Get_Context, "{Open selected file or directory with command}") &
-         " \[" & To_String(Accelerators(13)) & "\]",
-         "system-run");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
-      Separator := Create(Toolbar & ".separator1");
-      Tcl.Tk.Ada.Pack.Pack(Separator);
+        (Button => Tool_Button,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Open selected file or directory}") &
+           " \[" & To_String(Source => Accelerators(7)) & "\]",
+         Image_Name => "document-open");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
+      Tool_Button :=
+        Create
+          (pathName => Toolbar & ".openwithbutton",
+           options => "-command ToggleExecuteWith");
+      Set_Button
+        (Button => Tool_Button,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Open selected file or directory with command}") &
+           " \[" & To_String(Source => Accelerators(13)) & "\]",
+         Image_Name => "system-run");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
+      Separator := Create(pathName => Toolbar & ".separator1");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Separator);
       Tool_Radio_Button :=
         Create
-          (Toolbar & ".previewbutton",
-           "-variable previewtype -value preview -command ShowPreviewOrInfo");
+          (pathName => Toolbar & ".previewbutton",
+           options =>
+             "-variable previewtype -value preview -command ShowPreviewOrInfo");
       Set_Button
         (Tool_Radio_Button,
          Mc(Get_Context, "{Preview file or directory}") & " \[" &
