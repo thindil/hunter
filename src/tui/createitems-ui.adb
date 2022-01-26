@@ -191,6 +191,10 @@ package body CreateItems.UI is
             Show_Preview;
             return DIRECTORY_VIEW;
          when 10 =>
+            if FieldIndex = 2 then
+               Result := Go_Previous_Field(DialogForm);
+               return Create_Keys(10);
+            end if;
             if FieldIndex = 4 then
                Tcl_Eval
                  (Interpreter,
