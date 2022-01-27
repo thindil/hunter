@@ -520,24 +520,24 @@ package body Toolbars is
            options =>
              "-variable previewtype -value preview -command ShowPreviewOrInfo");
       Set_Button
-        (Tool_Radio_Button,
-         Mc(Get_Context, "{Preview file or directory}") & " \[" &
-         To_String(Accelerators(15)) & "\]",
-         "document-preview");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Radio_Button);
+        (Button => Tool_Radio_Button,
+         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Preview file or directory}") & " \[" &
+         To_String(Source => Accelerators(15)) & "\]",
+         Image_Name => "document-preview");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Radio_Button);
       Tool_Radio_Button :=
         Create
-          (Toolbar & ".infobutton",
-           "-variable previewtype -value info -command ShowPreviewOrInfo");
+          (pathName => Toolbar & ".infobutton",
+           options => "-variable previewtype -value info -command ShowPreviewOrInfo");
       Set_Button
-        (Tool_Radio_Button,
-         Mc(Get_Context, "{File or directory information}") & " \[" &
-         To_String(Accelerators(14)) & "\]",
-         "document-properties");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Radio_Button);
-      Separator := Create(Toolbar & ".separator2");
-      Tcl.Tk.Ada.Pack.Pack(Separator);
-      Tool_Button := Create(Toolbar & ".addbutton", "-command AddBookmark");
+        (Button => Tool_Radio_Button,
+         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{File or directory information}") & " \[" &
+         To_String(Source => Accelerators(14)) & "\]",
+         Image_Name => "document-properties");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Radio_Button);
+      Separator := Create(pathName => Toolbar & ".separator2");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Separator);
+      Tool_Button := Create(pathName => Toolbar & ".addbutton", options => "-command AddBookmark");
       Set_Button
         (Tool_Button,
          Mc(Get_Context, "{Add bookmark to this directory}") & " \[" &
