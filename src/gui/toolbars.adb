@@ -521,47 +521,65 @@ package body Toolbars is
              "-variable previewtype -value preview -command ShowPreviewOrInfo");
       Set_Button
         (Button => Tool_Radio_Button,
-         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{Preview file or directory}") & " \[" &
-         To_String(Source => Accelerators(15)) & "\]",
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Preview file or directory}") &
+           " \[" & To_String(Source => Accelerators(15)) & "\]",
          Image_Name => "document-preview");
       Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Radio_Button);
       Tool_Radio_Button :=
         Create
           (pathName => Toolbar & ".infobutton",
-           options => "-variable previewtype -value info -command ShowPreviewOrInfo");
+           options =>
+             "-variable previewtype -value info -command ShowPreviewOrInfo");
       Set_Button
         (Button => Tool_Radio_Button,
-         Tooltip_Text => Mc(Interp => Get_Context, Src_String => "{File or directory information}") & " \[" &
-         To_String(Source => Accelerators(14)) & "\]",
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{File or directory information}") &
+           " \[" & To_String(Source => Accelerators(14)) & "\]",
          Image_Name => "document-properties");
       Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Radio_Button);
       Separator := Create(pathName => Toolbar & ".separator2");
       Tcl.Tk.Ada.Pack.Pack(Slave => Separator);
-      Tool_Button := Create(pathName => Toolbar & ".addbutton", options => "-command AddBookmark");
-      Set_Button
-        (Tool_Button,
-         Mc(Get_Context, "{Add bookmark to this directory}") & " \[" &
-         To_String(Accelerators(16)) & "\]",
-         "list-add");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
       Tool_Button :=
-        Create(Toolbar & ".deletebutton", "-command RemoveBookmark");
+        Create
+          (pathName => Toolbar & ".addbutton",
+           options => "-command AddBookmark");
       Set_Button
-        (Tool_Button,
-         Mc(Get_Context, "{Remove bookmark from this directory}") & " \[" &
-         To_String(Accelerators(17)) & "\]",
-         "list-remove");
-      Tcl.Tk.Ada.Pack.Pack(Tool_Button);
-      Tcl.Tk.Ada.Grid.Grid(Toolbar);
+        (Button => Tool_Button,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Add bookmark to this directory}") &
+           " \[" & To_String(Source => Accelerators(16)) & "\]",
+         Image_Name => "list-add");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
+      Tool_Button :=
+        Create
+          (pathName => Toolbar & ".deletebutton",
+           options => "-command RemoveBookmark");
+      Set_Button
+        (Button => Tool_Button,
+         Tooltip_Text =>
+           Mc
+             (Interp => Get_Context,
+              Src_String => "{Remove bookmark from this directory}") &
+           " \[" & To_String(Source => Accelerators(17)) & "\]",
+         Image_Name => "list-remove");
+      Tcl.Tk.Ada.Pack.Pack(Slave => Tool_Button);
+      Tcl.Tk.Ada.Grid.Grid(Slave => Toolbar);
    end Create_Item_Toolbar;
 
    procedure Set_Actions_Buttons is
       Button: Ttk_Button :=
-        Get_Widget(".mainframe.toolbars.itemtoolbar.runbutton");
+        Get_Widget(pathName => ".mainframe.toolbars.itemtoolbar.runbutton");
       Side: constant String :=
         (if Settings.Toolbars_On_Top then "left" else "top");
    begin
-      if Is_Executable_File(To_String(Current_Selected)) then
+      if Is_Executable_File(Name => To_String(Source => Current_Selected)) then
          if Winfo_Get(Button, "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
               (Button,
