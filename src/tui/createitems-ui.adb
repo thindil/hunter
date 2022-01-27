@@ -291,6 +291,13 @@ package body CreateItems.UI is
             end if;
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
+         when 27 =>
+            New_Action := CREATEFILE;
+            Set_Cursor_Visibility(Visibility);
+            Delete_Dialog(DialogForm, True);
+            Show_Preview;
+            CreateProgramMenu(True);
+            return DIRECTORY_VIEW;
          when 10 =>
             if FieldIndex = 4 then
                Tcl_Eval
