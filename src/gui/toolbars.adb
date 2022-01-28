@@ -583,19 +583,25 @@ package body Toolbars is
          if Winfo_Get(Widgt => Button, Info => "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
               (Slave => Button,
-               Options => "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
-               Side);
+               Options =>
+                 "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
+                 Side);
          end if;
       else
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
       end if;
-      Button.Name := New_String(Str => ".mainframe.toolbars.itemtoolbar.openbutton");
-      if Can_Be_Opened(Mime_Type => Get_Mime_Type(File_Name => To_String(Source => Current_Selected))) then
+      Button.Name :=
+        New_String(Str => ".mainframe.toolbars.itemtoolbar.openbutton");
+      if Can_Be_Opened
+          (Mime_Type =>
+             Get_Mime_Type
+               (File_Name => To_String(Source => Current_Selected))) then
          if Winfo_Get(Widgt => Button, Info => "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
               (Slave => Button,
-               Options => "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
-               Side);
+               Options =>
+                 "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
+                 Side);
          end if;
       else
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
@@ -609,21 +615,24 @@ package body Toolbars is
       Side: constant String :=
         (if Settings.Toolbars_On_Top then "left" else "top");
    begin
-      Delete(Actions_Menu, "0", "end");
+      Delete(MenuWidget => Actions_Menu, StartIndex => "0", EndIndex => "end");
       if UserCommandsList.Is_Empty then
-         Tcl.Tk.Ada.Pack.Pack_Forget(Actions_Button);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Actions_Button);
       else
          Tcl.Tk.Ada.Pack.Pack
-           (Actions_Button,
-            "-after .mainframe.toolbars.actiontoolbar.separator2 -side " &
-            Side);
+           (Slave => Actions_Button,
+            Options =>
+              "-after .mainframe.toolbars.actiontoolbar.separator2 -side " &
+              Side);
       end if;
       Add_User_Commands_Menu_Loop :
       for I in UserCommandsList.Iterate loop
          Menu.Add
-           (Actions_Menu, "command",
-            "-label {" & Commands_Container.Key(I) &
-            "} -command {ExecuteCommand {" & Commands_Container.Key(I) & "}}");
+           (MenuWidget => Actions_Menu, EntryType => "command",
+            Options =>
+              "-label {" & Commands_Container.Key(Position => I) &
+              "} -command {ExecuteCommand {" &
+              Commands_Container.Key(Position => I) & "}}");
       end loop Add_User_Commands_Menu_Loop;
    end Set_User_Commands_Menu;
 
