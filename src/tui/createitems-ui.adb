@@ -299,6 +299,10 @@ package body CreateItems.UI is
             CreateProgramMenu(True);
             return DIRECTORY_VIEW;
          when 10 =>
+            if FieldIndex = 2 then
+               Result := Go_Previous_Field(DialogForm);
+               return Create_Link_Keys(10);
+            end if;
             if FieldIndex = 4 then
                Tcl_Eval
                  (Interpreter,
