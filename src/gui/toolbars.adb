@@ -580,48 +580,48 @@ package body Toolbars is
         (if Settings.Toolbars_On_Top then "left" else "top");
    begin
       if Is_Executable_File(Name => To_String(Source => Current_Selected)) then
-         if Winfo_Get(Button, "ismapped") = "0" then
+         if Winfo_Get(Widgt => Button, Info => "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
-              (Button,
-               "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
+              (Slave => Button,
+               Options => "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
                Side);
          end if;
       else
-         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
       end if;
-      Button.Name := New_String(".mainframe.toolbars.itemtoolbar.openbutton");
-      if Can_Be_Opened(Get_Mime_Type(To_String(Current_Selected))) then
-         if Winfo_Get(Button, "ismapped") = "0" then
+      Button.Name := New_String(Str => ".mainframe.toolbars.itemtoolbar.openbutton");
+      if Can_Be_Opened(Mime_Type => Get_Mime_Type(File_Name => To_String(Source => Current_Selected))) then
+         if Winfo_Get(Widgt => Button, Info => "ismapped") = "0" then
             Tcl.Tk.Ada.Pack.Pack
-              (Button,
-               "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
+              (Slave => Button,
+               Options => "-before .mainframe.toolbars.itemtoolbar.openwithbutton -side " &
                Side);
          end if;
       else
-         Tcl.Tk.Ada.Pack.Pack_Forget(Button);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
       end if;
    end Set_Actions_Buttons;
 
    procedure Set_User_Commands_Menu is
-      ActionsMenu: constant Tk_Menu := Get_Widget(".actionsmenu");
-      ActionsButton: constant Ttk_MenuButton :=
-        Get_Widget(".mainframe.toolbars.actiontoolbar.userbutton");
+      Actions_Menu: constant Tk_Menu := Get_Widget(pathName => ".actionsmenu");
+      Actions_Button: constant Ttk_MenuButton :=
+        Get_Widget(pathName => ".mainframe.toolbars.actiontoolbar.userbutton");
       Side: constant String :=
         (if Settings.Toolbars_On_Top then "left" else "top");
    begin
-      Delete(ActionsMenu, "0", "end");
+      Delete(Actions_Menu, "0", "end");
       if UserCommandsList.Is_Empty then
-         Tcl.Tk.Ada.Pack.Pack_Forget(ActionsButton);
+         Tcl.Tk.Ada.Pack.Pack_Forget(Actions_Button);
       else
          Tcl.Tk.Ada.Pack.Pack
-           (ActionsButton,
+           (Actions_Button,
             "-after .mainframe.toolbars.actiontoolbar.separator2 -side " &
             Side);
       end if;
       Add_User_Commands_Menu_Loop :
       for I in UserCommandsList.Iterate loop
          Menu.Add
-           (ActionsMenu, "command",
+           (Actions_Menu, "command",
             "-label {" & Commands_Container.Key(I) &
             "} -command {ExecuteCommand {" & Commands_Container.Key(I) & "}}");
       end loop Add_User_Commands_Menu_Loop;
