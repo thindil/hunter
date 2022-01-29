@@ -13,42 +13,44 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Characters.Latin_1;
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Interfaces.C.Strings; use Interfaces.C.Strings;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-with GNAT.String_Split; use GNAT.String_Split;
+with GNAT.OS_Lib;
+with GNAT.String_Split;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
-with Tcl.Tk.Ada.Image; use Tcl.Tk.Ada.Image;
-with Tcl.Tk.Ada.Image.Photo; use Tcl.Tk.Ada.Image.Photo;
+with Tcl.Tk.Ada.Image.Photo;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
 with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
-use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
 with Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
-use Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
 with Tcl.Tk.Ada.Widgets.TtkLabel; use Tcl.Tk.Ada.Widgets.TtkLabel;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton; use Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Tcl.Tk.Ada.Widgets.TtkSeparator; use Tcl.Tk.Ada.Widgets.TtkSeparator;
 with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
-with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
+with Tcl.Tklib.Ada.Tooltip;
+with Bookmarks.UI;
 with Common; use Common;
-with Bookmarks.UI; use Bookmarks.UI;
 with Preferences; use Preferences;
-with UserCommands; use UserCommands;
-with Utils; use Utils;
+with UserCommands;
+with Utils;
 
 package body Toolbars is
 
    procedure Set_Toolbars is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+      use GNAT.String_Split;
+      use Bookmarks.UI;
+
       Fill: constant Character :=
         (if Settings.Toolbars_On_Top then 'y' else 'x');
       Main_Frame: constant Ttk_Frame := Get_Widget(pathName => ".mainframe");
@@ -164,6 +166,10 @@ package body Toolbars is
    -- SOURCE
    procedure Set_Button
      (Button: Tk_Widget'Class; Tooltip_Text, Image_Name: String) is
+      -- ****
+      use Tcl.Tk.Ada.Image.Photo;
+      use Tcl.Tklib.Ada.Tooltip;
+
       Button_Image: constant Tk_Photo :=
         Create
           (pathName => Image_Name & "icon",
@@ -172,7 +178,6 @@ package body Toolbars is
              ".svg} -format {svg -scaletoheight" &
              Natural'Image(Settings.Toolbars_Size) & "}");
       pragma Unreferenced(Button_Image);
-      -- ****
    begin
       Add(Widget => Button, Message => Tooltip_Text);
       configure
@@ -182,6 +187,9 @@ package body Toolbars is
    end Set_Button;
 
    procedure Create_Action_Toolbar is
+      use Ada.Characters.Latin_1;
+      use Tcl.Tk.Ada.Widgets.TtkButton.TtkCheckButton;
+
       Tool_Menu_Button: Ttk_MenuButton;
       Toolbars_Frame: constant Ttk_Frame :=
         Create(pathName => ".mainframe.toolbars");
@@ -468,6 +476,8 @@ package body Toolbars is
    end Create_Action_Toolbar;
 
    procedure Create_Item_Toolbar is
+      use Tcl.Tk.Ada.Widgets.TtkButton.TtkRadioButton;
+
       Toolbar: constant Ttk_Frame :=
         Create(pathName => ".mainframe.toolbars.itemtoolbar");
       Tool_Button: Ttk_Button;
@@ -574,6 +584,9 @@ package body Toolbars is
    end Create_Item_Toolbar;
 
    procedure Set_Actions_Buttons is
+      use GNAT.OS_Lib;
+      use Utils;
+
       Button: Ttk_Button :=
         Get_Widget(pathName => ".mainframe.toolbars.itemtoolbar.runbutton");
       Side: constant String :=
@@ -609,6 +622,8 @@ package body Toolbars is
    end Set_Actions_Buttons;
 
    procedure Set_User_Commands_Menu is
+      use UserCommands;
+
       Actions_Menu: constant Tk_Menu := Get_Widget(pathName => ".actionsmenu");
       Actions_Button: constant Ttk_MenuButton :=
         Get_Widget(pathName => ".mainframe.toolbars.actiontoolbar.userbutton");
