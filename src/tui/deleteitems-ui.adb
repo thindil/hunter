@@ -176,6 +176,11 @@ package body DeleteItems.UI is
             Result := Go_Previous_Field(DialogForm);
          when KEY_DOWN =>
             Result := Go_Next_Field(DialogForm);
+         when 27 =>
+            Show_Preview;
+            Set_Cursor_Visibility(Visibility);
+            Delete_Dialog(DialogForm, True);
+            return DIRECTORY_VIEW;
          when 10 =>
             if FieldIndex = 2 then
                if not Delete_Selected(Interpreter) then
