@@ -305,7 +305,7 @@ package body MainWindow is
       CreateItems.UI.Add_Commands;
       CopyItems.UI.Create_Copy_Ui;
       Create_Move_Ui;
-      CreateTrash;
+      Create_Trash;
       Create_About_Ui;
       Load_Modules(Interpreter => Get_Context);
       Set_Toolbars;

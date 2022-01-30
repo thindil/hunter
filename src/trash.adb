@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -172,13 +172,13 @@ package body Trash is
       return TCL_OK;
    end GoToTrash_Command;
 
-   procedure CreateTrash is
+   procedure Create_Trash is
    begin
       Add_Command("RestoreItems", Restore_Item_Command'Access);
       Add_Command("ClearTrash", Clear_Trash_Command'Access);
       Add_Command("GoToTrash", GoToTrash_Command'Access);
       CreateTrashUI;
-   end CreateTrash;
+   end Create_Trash;
 
    procedure Load_Trash_Data is
       Directory, SubDirectory: Dir_Type;
