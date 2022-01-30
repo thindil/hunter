@@ -180,7 +180,7 @@ package body MainWindow is
       UserCommands.AddCommands;
       Create_Bookmarks_List;
       Modules.Commands.AddCommands;
-      CreateTrash;
+      Create_Trash;
       if Ada.Directories.Exists(Directory) then
          Common.Current_Directory := To_Unbounded_String(Directory);
       else
