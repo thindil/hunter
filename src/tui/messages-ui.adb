@@ -156,6 +156,14 @@ package body Messages.UI is
       Option: constant String := Get_Buffer(Current(DialogForm));
       Overwrite: Boolean := True;
       Result: Forms.Driver_Result := Unknown_Request;
+      function Hide_Dialog return UI_Locations is
+      begin
+         New_Action := CREATEFILE;
+         CreateProgramMenu(True);
+         Update_Directory_List(True);
+         Show_Preview;
+         return DIRECTORY_VIEW;
+      end Hide_Dialog;
    begin
       case Key is
          when KEY_UP =>
@@ -173,56 +181,32 @@ package body Messages.UI is
             UILocation := DIRECTORY_VIEW;
             if Option in "[" & Mc(Interpreter, "Close") & "]" |
                   "[" & Mc(Interpreter, "{No for all}") & "]" then
-               New_Action := CREATEFILE;
-               CreateProgramMenu(True);
-               Update_Directory_List(True);
-               Show_Preview;
-               return DIRECTORY_VIEW;
+               return Hide_Dialog;
             elsif Option = "[" & Mc(Interpreter, "{Yes for all}") & "]" then
                Yes_For_All := True;
             elsif Option = "[" & Mc(Interpreter, "No") & "]" then
                if New_Action = COPY then
                   if SkipCopying = DIRECTORY_VIEW then
-                     New_Action := CREATEFILE;
-                     CreateProgramMenu(True);
-                     Update_Directory_List(True);
-                     Show_Preview;
-                     return DIRECTORY_VIEW;
+                     return Hide_Dialog;
                   end if;
                   return MESSAGE_FORM;
                elsif New_Action = MOVE then
                   if SkipMoving = DIRECTORY_VIEW then
-                     New_Action := CREATEFILE;
-                     CreateProgramMenu(True);
-                     Update_Directory_List(True);
-                     Show_Preview;
-                     return DIRECTORY_VIEW;
+                     return Hide_Dialog;
                   end if;
                   return MESSAGE_FORM;
                elsif New_Action = CLEARTRASH then
-                  New_Action := CREATEFILE;
-                  UILocation := DIRECTORY_VIEW;
-                  Update_Directory_List(True);
-                  Show_Preview;
-                  return DIRECTORY_VIEW;
+                  return Hide_Dialog;
                end if;
             end if;
             if New_Action = COPY then
                if CopySelected(Overwrite) = DIRECTORY_VIEW then
-                  New_Action := CREATEFILE;
-                  CreateProgramMenu(True);
-                  Update_Directory_List(True);
-                  Show_Preview;
-                  return DIRECTORY_VIEW;
+                  return Hide_Dialog;
                end if;
                return MESSAGE_FORM;
             elsif New_Action = MOVE then
                if MoveSelected(Overwrite) = DIRECTORY_VIEW then
-                  New_Action := CREATEFILE;
-                  CreateProgramMenu(True);
-                  Update_Directory_List(True);
-                  Show_Preview;
-                  return DIRECTORY_VIEW;
+                  return Hide_Dialog;
                end if;
                return MESSAGE_FORM;
             elsif New_Action = CLEARTRASH then
