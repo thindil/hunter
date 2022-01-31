@@ -60,7 +60,8 @@ package body Trash is
    function Restore_Item_Command
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      Restore_Info, File_Line, Destination, Item_Type: Unbounded_String := Null_Unbounded_String;
+      Restore_Info, File_Line, Destination, Item_Type: Unbounded_String :=
+        Null_Unbounded_String;
       Start_Index: Positive := 1;
       File_Info: File_Type;
    begin
@@ -68,25 +69,35 @@ package body Trash is
       for Item of Selected_Items loop
          Start_Index := Index(Source => Item, Pattern => "files");
          Restore_Info :=
-           Unbounded_Slice(Source => Item, Low => 1, High => Start_Index - 1) & "info" &
-           Unbounded_Slice(Source => Item, Low => Start_Index + 5, High => Length(Source => Item)) &
-           To_Unbounded_String(".trashinfo");
-         Open(File_Info, In_File, To_String(Restore_Info));
-         Skip_Line(File_Info);
+           Unbounded_Slice(Source => Item, Low => 1, High => Start_Index - 1) &
+           "info" &
+           Unbounded_Slice
+             (Source => Item, Low => Start_Index + 5,
+              High => Length(Source => Item)) &
+           To_Unbounded_String(Source => ".trashinfo");
+         Open
+           (File => File_Info, Mode => In_File,
+            Name => To_String(Source => Restore_Info));
+         Skip_Line(File => File_Info);
          Restore_Item_Loop :
          for I in 1 .. 2 loop
-            File_Line := To_Unbounded_String(Get_Line(File_Info));
-            if Slice(File_Line, 1, 4) = "Path" then
-               Destination := Unbounded_Slice(File_Line, 6, Length(File_Line));
-               if Ada.Directories.Exists(To_String(Destination)) then
+            File_Line :=
+              To_Unbounded_String(Source => Get_Line(File => File_Info));
+            if Slice(Source => File_Line, Low => 1, High => 4) = "Path" then
+               Destination :=
+                 Unbounded_Slice
+                   (Source => File_Line, Low => 6,
+                    High => Length(Source => File_Line));
+               if Ada.Directories.Exists
+                   (Name => To_String(Source => Destination)) then
                   Item_Type :=
-                    (if Is_Directory(To_String(Destination)) then
-                       To_Unbounded_String(Mc(Interp, "{Directory}"))
+                    (if Is_Directory(Name => To_String(Source => Destination))
+                     then To_Unbounded_String(Mc(Interp, "{Directory}"))
                      else To_Unbounded_String(Mc(Interp, "{File}")));
                   Show_Message
                     (Mc(Interp, "{Can't restore}") & " " &
-                     To_String(Destination) & " " & To_String(Item_Type) & " " &
-                     Mc(Interp, "{with that name exists.}"));
+                     To_String(Destination) & " " & To_String(Item_Type) &
+                     " " & Mc(Interp, "{with that name exists.}"));
                   Close(File_Info);
                   return Show_Trash_Command(Client_Data, Interp, Argc, Argv);
                end if;
