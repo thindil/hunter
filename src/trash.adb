@@ -42,61 +42,61 @@ package body Trash is
    -- FUNCTION
    -- Restore the selected item
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- RestoreItem
    -- SOURCE
    function Restore_Item_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Restore_Item_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      RestoreInfo, FileLine, Destination, ItemType: Unbounded_String;
-      StartIndex: Positive;
-      FileInfo: File_Type;
+      Restore_Info, File_Line, Destination, Item_Type: Unbounded_String := Null_Unbounded_String;
+      Start_Index: Positive := 1;
+      File_Info: File_Type;
    begin
       Restore_Items_Loop :
       for Item of Selected_Items loop
-         StartIndex := Index(Item, "files");
-         RestoreInfo :=
-           Unbounded_Slice(Item, 1, StartIndex - 1) & "info" &
-           Unbounded_Slice(Item, StartIndex + 5, Length(Item)) &
+         Start_Index := Index(Source => Item, Pattern => "files");
+         Restore_Info :=
+           Unbounded_Slice(Source => Item, Low => 1, High => Start_Index - 1) & "info" &
+           Unbounded_Slice(Source => Item, Low => Start_Index + 5, High => Length(Source => Item)) &
            To_Unbounded_String(".trashinfo");
-         Open(FileInfo, In_File, To_String(RestoreInfo));
-         Skip_Line(FileInfo);
+         Open(File_Info, In_File, To_String(Restore_Info));
+         Skip_Line(File_Info);
          Restore_Item_Loop :
          for I in 1 .. 2 loop
-            FileLine := To_Unbounded_String(Get_Line(FileInfo));
-            if Slice(FileLine, 1, 4) = "Path" then
-               Destination := Unbounded_Slice(FileLine, 6, Length(FileLine));
+            File_Line := To_Unbounded_String(Get_Line(File_Info));
+            if Slice(File_Line, 1, 4) = "Path" then
+               Destination := Unbounded_Slice(File_Line, 6, Length(File_Line));
                if Ada.Directories.Exists(To_String(Destination)) then
-                  ItemType :=
+                  Item_Type :=
                     (if Is_Directory(To_String(Destination)) then
                        To_Unbounded_String(Mc(Interp, "{Directory}"))
                      else To_Unbounded_String(Mc(Interp, "{File}")));
                   Show_Message
                     (Mc(Interp, "{Can't restore}") & " " &
-                     To_String(Destination) & " " & To_String(ItemType) & " " &
+                     To_String(Destination) & " " & To_String(Item_Type) & " " &
                      Mc(Interp, "{with that name exists.}"));
-                  Close(FileInfo);
-                  return Show_Trash_Command(ClientData, Interp, Argc, Argv);
+                  Close(File_Info);
+                  return Show_Trash_Command(Client_Data, Interp, Argc, Argv);
                end if;
-               Rename(To_String(Item), Slice(FileLine, 6, Length(FileLine)));
+               Rename(To_String(Item), Slice(File_Line, 6, Length(File_Line)));
             end if;
          end loop Restore_Item_Loop;
-         Close(FileInfo);
-         Delete_File(To_String(RestoreInfo));
+         Close(File_Info);
+         Delete_File(To_String(Restore_Info));
       end loop Restore_Items_Loop;
-      return Show_Trash_Command(ClientData, Interp, Argc, Argv);
+      return Show_Trash_Command(Client_Data, Interp, Argc, Argv);
    end Restore_Item_Command;
 
    -- ****o* Trash/Trash.Clear_Trash_Command
