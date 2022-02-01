@@ -92,14 +92,14 @@ package body Trash is
                    (Name => To_String(Source => Destination)) then
                   Item_Type :=
                     (if Is_Directory(Name => To_String(Source => Destination))
-                     then To_Unbounded_String(Mc(Interp, "{Directory}"))
-                     else To_Unbounded_String(Mc(Interp, "{File}")));
+                     then To_Unbounded_String(Source => Mc(Interp => Interp,  Src_String => "{Directory}"))
+                     else To_Unbounded_String(Source => Mc(Interp => Interp, Src_String => "{File}")));
                   Show_Message
-                    (Mc(Interp, "{Can't restore}") & " " &
-                     To_String(Destination) & " " & To_String(Item_Type) &
-                     " " & Mc(Interp, "{with that name exists.}"));
-                  Close(File_Info);
-                  return Show_Trash_Command(Client_Data, Interp, Argc, Argv);
+                    (Message => Mc(Interp => Interp, Src_String => "{Can't restore}") & " " &
+                     To_String(Source => Destination) & " " & To_String(Source => Item_Type) &
+                     " " & Mc(Interp => Interp, Src_String => "{with that name exists.}"));
+                  Close(File => File_Info);
+                  return Show_Trash_Command(ClientData => Client_Data, Interp => Interp, Argc => Argc, Argv => Argv);
                end if;
                Rename(To_String(Item), Slice(File_Line, 6, Length(File_Line)));
             end if;
