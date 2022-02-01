@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -30,6 +30,9 @@ package body ProgramsMenu.UI is
         new Item_Array(1 .. Natural(ApplicationsList.Length) + 2);
       Index: Positive := 1;
       Visibility: Cursor_Visibility := Invisible;
+      MenuHeight: constant Line_Position :=
+        (if Menu_Items'Length < 17 then Line_Position(Menu_Items'Length) + 1
+         else 17);
    begin
       Set_Cursor_Visibility(Visibility);
       for Application of ApplicationsList loop
@@ -41,10 +44,11 @@ package body ProgramsMenu.UI is
       ProgramsMenu := New_Menu(Menu_Items);
       Set_Format(ProgramsMenu, 15, 1);
       Set_Mark(ProgramsMenu, "");
-      ProgramsWindow := Create(17, 27, Lines / 3, Columns / 3);
+      ProgramsWindow := Create(MenuHeight, 27, Lines / 3, Columns / 3);
       Set_Window(ProgramsMenu, ProgramsWindow);
       Set_Sub_Window
-        (ProgramsMenu, Derived_Window(ProgramsWindow, 15, 25, 1, 1));
+        (ProgramsMenu,
+         Derived_Window(ProgramsWindow, MenuHeight - 2, 25, 1, 1));
       Box(ProgramsWindow, Default_Character, Default_Character);
       Post(ProgramsMenu);
       Refresh;
