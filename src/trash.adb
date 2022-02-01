@@ -92,64 +92,86 @@ package body Trash is
                    (Name => To_String(Source => Destination)) then
                   Item_Type :=
                     (if Is_Directory(Name => To_String(Source => Destination))
-                     then To_Unbounded_String(Source => Mc(Interp => Interp,  Src_String => "{Directory}"))
-                     else To_Unbounded_String(Source => Mc(Interp => Interp, Src_String => "{File}")));
+                     then
+                       To_Unbounded_String
+                         (Source =>
+                            Mc(Interp => Interp, Src_String => "{Directory}"))
+                     else To_Unbounded_String
+                         (Source =>
+                            Mc(Interp => Interp, Src_String => "{File}")));
                   Show_Message
-                    (Message => Mc(Interp => Interp, Src_String => "{Can't restore}") & " " &
-                     To_String(Source => Destination) & " " & To_String(Source => Item_Type) &
-                     " " & Mc(Interp => Interp, Src_String => "{with that name exists.}"));
+                    (Message =>
+                       Mc(Interp => Interp, Src_String => "{Can't restore}") &
+                       " " & To_String(Source => Destination) & " " &
+                       To_String(Source => Item_Type) & " " &
+                       Mc(Interp => Interp,
+                          Src_String => "{with that name exists.}"));
                   Close(File => File_Info);
-                  return Show_Trash_Command(ClientData => Client_Data, Interp => Interp, Argc => Argc, Argv => Argv);
+                  return
+                    Show_Trash_Command
+                      (ClientData => Client_Data, Interp => Interp,
+                       Argc => Argc, Argv => Argv);
                end if;
-               Rename(To_String(Item), Slice(File_Line, 6, Length(File_Line)));
+               Rename
+                 (Old_Name => To_String(Source => Item),
+                  New_Name =>
+                    Slice
+                      (Source => File_Line, Low => 6,
+                       High => Length(Source => File_Line)));
             end if;
          end loop Restore_Item_Loop;
-         Close(File_Info);
-         Delete_File(To_String(Restore_Info));
+         Close(File => File_Info);
+         Delete_File(Name => To_String(Source => Restore_Info));
       end loop Restore_Items_Loop;
-      return Show_Trash_Command(Client_Data, Interp, Argc, Argv);
+      return
+        Show_Trash_Command
+          (ClientData => Client_Data, Interp => Interp, Argc => Argc,
+           Argv => Argv);
    end Restore_Item_Command;
 
    -- ****o* Trash/Trash.Clear_Trash_Command
    -- FUNCTION
    -- Remove everything from the Trash
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- ClearTrash
    -- SOURCE
    function Clear_Trash_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Clear_Trash_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+      pragma Unreferenced(Client_Data, Argc, Argv);
    begin
       New_Action := CLEARTRASH;
-      Toggle_Tool_Buttons(New_Action);
+      Toggle_Tool_Buttons(Action => New_Action);
       Show_Message
-        (Mc(Interp, "{Remove all files and directories from Trash?}"),
-         "question");
+        (Message =>
+           Mc
+             (Interp => Interp,
+              Src_String => "{Remove all files and directories from Trash?}"),
+         Message_Type => "question");
       return TCL_OK;
    end Clear_Trash_Command;
 
-   -- ****o* Trash/Trash.GoToTrash_Command
+   -- ****o* Trash/Trash.Go_To_Trash_Command
    -- FUNCTION
    -- Go to the selected directory in Trash
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -157,16 +179,16 @@ package body Trash is
    -- Path is the full path to the directory which will be set as current
    -- directory (and show to the user)
    -- SOURCE
-   function GoToTrash_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+   function Go_To_Trash_Command
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
-   function GoToTrash_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+   function Go_To_Trash_Command
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
+      pragma Unreferenced(Client_Data, Argc);
    begin
       Common.Current_Directory :=
         To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
@@ -181,13 +203,13 @@ package body Trash is
       Execute_Modules
         (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
       return TCL_OK;
-   end GoToTrash_Command;
+   end Go_To_Trash_Command;
 
    procedure Create_Trash is
    begin
       Add_Command("RestoreItems", Restore_Item_Command'Access);
       Add_Command("ClearTrash", Clear_Trash_Command'Access);
-      Add_Command("GoToTrash", GoToTrash_Command'Access);
+      Add_Command("GoToTrash", Go_To_Trash_Command'Access);
       CreateTrashUI;
    end Create_Trash;
 
