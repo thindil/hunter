@@ -191,24 +191,24 @@ package body Trash is
       pragma Unreferenced(Client_Data, Argc);
    begin
       Common.Current_Directory :=
-        To_Unbounded_String(Normalize_Pathname(CArgv.Arg(Argv, 1)));
+        To_Unbounded_String(Source => Normalize_Pathname(Name => CArgv.Arg(Argv => Argv, N => 1)));
       Destination_Directory :=
         Delete
-          (Common.Current_Directory, 1,
-           Length
-             (To_Unbounded_String
-                (Value("HOME") & "/.local/share/Trash/files")));
-      Load_Directory(To_String(Common.Current_Directory));
-      Update_Directory_List(True);
+          (Source => Common.Current_Directory, From => 1,
+           Through => Length
+             (Source => To_Unbounded_String
+                (Source => Value(Name => "HOME") & "/.local/share/Trash/files")));
+      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+      Update_Directory_List(Clear => True);
       Execute_Modules
-        (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
+        (Interpreter => Interp, State => ON_ENTER, Arguments => "{" & To_String(Source => Common.Current_Directory) & "}");
       return TCL_OK;
    end Go_To_Trash_Command;
 
    procedure Create_Trash is
    begin
-      Add_Command("RestoreItems", Restore_Item_Command'Access);
-      Add_Command("ClearTrash", Clear_Trash_Command'Access);
+      Add_Command(Name => "RestoreItems", Ada_Command => Restore_Item_Command'Access);
+      Add_Command(Name => "ClearTrash", Ada_Command => Clear_Trash_Command'Access);
       Add_Command("GoToTrash", Go_To_Trash_Command'Access);
       CreateTrashUI;
    end Create_Trash;
