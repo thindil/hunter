@@ -191,37 +191,49 @@ package body Trash is
       pragma Unreferenced(Client_Data, Argc);
    begin
       Common.Current_Directory :=
-        To_Unbounded_String(Source => Normalize_Pathname(Name => CArgv.Arg(Argv => Argv, N => 1)));
+        To_Unbounded_String
+          (Source =>
+             Normalize_Pathname(Name => CArgv.Arg(Argv => Argv, N => 1)));
       Destination_Directory :=
         Delete
           (Source => Common.Current_Directory, From => 1,
-           Through => Length
-             (Source => To_Unbounded_String
-                (Source => Value(Name => "HOME") & "/.local/share/Trash/files")));
-      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+           Through =>
+             Length
+               (Source =>
+                  To_Unbounded_String
+                    (Source =>
+                       Value(Name => "HOME") & "/.local/share/Trash/files")));
+      Load_Directory
+        (Directory_Name => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
       Execute_Modules
-        (Interpreter => Interp, State => ON_ENTER, Arguments => "{" & To_String(Source => Common.Current_Directory) & "}");
+        (Interpreter => Interp, State => ON_ENTER,
+         Arguments =>
+           "{" & To_String(Source => Common.Current_Directory) & "}");
       return TCL_OK;
    end Go_To_Trash_Command;
 
    procedure Create_Trash is
    begin
-      Add_Command(Name => "RestoreItems", Ada_Command => Restore_Item_Command'Access);
-      Add_Command(Name => "ClearTrash", Ada_Command => Clear_Trash_Command'Access);
-      Add_Command("GoToTrash", Go_To_Trash_Command'Access);
+      Add_Command
+        (Name => "RestoreItems", Ada_Command => Restore_Item_Command'Access);
+      Add_Command
+        (Name => "ClearTrash", Ada_Command => Clear_Trash_Command'Access);
+      Add_Command
+        (Name => "GoToTrash", Ada_Command => Go_To_Trash_Command'Access);
       CreateTrashUI;
    end Create_Trash;
 
    procedure Load_Trash_Data is
-      Directory, SubDirectory: Dir_Type;
-      FileName, SubFileName: String(1 .. 1_024);
-      Last: Natural range 0 .. FileName'Last;
-      SubLast: Natural range 0 .. SubFileName'Last;
-      FileInfo: File_Type;
-      Size: File_Size;
-      FileLine, FullName, MimeType: Unbounded_String;
-      Item: Item_Record;
+      Directory, Sub_Directory: Dir_Type;
+      File_Name, Sub_File_Name: String(1 .. 1_024) := (others => ' ');
+      Last: Natural range 0 .. File_Name'Last := 0;
+      Sub_Last: Natural range 0 .. Sub_File_Name'Last := 0;
+      File_Info: File_Type;
+      Size: File_Size := 0;
+      File_Line, Full_Name, Mime_Type: Unbounded_String :=
+        Null_Unbounded_String;
+      Item: Item_Record := Empty_Item;
    begin
       Temporary_Stop := True;
       Create_Path
@@ -245,96 +257,96 @@ package body Trash is
       Open(Directory, Value("HOME") & "/.local/share/Trash/files");
       Read_Trash_Content_Loop :
       loop
-         Read(Directory, FileName, Last);
+         Read(Directory, File_Name, Last);
          exit Read_Trash_Content_Loop when Last = 0;
-         if FileName(1 .. Last) = "." or FileName(1 .. Last) = ".." then
+         if File_Name(1 .. Last) = "." or File_Name(1 .. Last) = ".." then
             goto End_Of_Loop;
          end if;
-         FullName :=
+         Full_Name :=
            To_Unbounded_String
              (Value("HOME") & "/.local/share/Trash/files/" &
-              FileName(1 .. Last));
-         Item.Path := FullName;
+              File_Name(1 .. Last));
+         Item.Path := Full_Name;
          Open
-           (FileInfo, In_File,
-            Value("HOME") & "/.local/share/Trash/info/" & FileName(1 .. Last) &
-            ".trashinfo");
-         Skip_Line(FileInfo);
+           (File_Info, In_File,
+            Value("HOME") & "/.local/share/Trash/info/" &
+            File_Name(1 .. Last) & ".trashinfo");
+         Skip_Line(File_Info);
          Read_File_Path_Loop :
          for I in 1 .. 2 loop
-            FileLine := To_Unbounded_String(Get_Line(FileInfo));
-            if Slice(FileLine, 1, 4) = "Path" then
+            File_Line := To_Unbounded_String(Get_Line(File_Info));
+            if Slice(File_Line, 1, 4) = "Path" then
                Item.Name :=
                  To_Unbounded_String
-                   (Simple_Name(Slice(FileLine, 6, Length(FileLine))));
+                   (Simple_Name(Slice(File_Line, 6, Length(File_Line))));
             else
-               FileLine := Unbounded_Slice(FileLine, 14, Length(FileLine));
-               Replace_Slice(FileLine, 11, 11, " ");
-               Item.Modified := Value(To_String(FileLine));
+               File_Line := Unbounded_Slice(File_Line, 14, Length(File_Line));
+               Replace_Slice(File_Line, 11, 11, " ");
+               Item.Modified := Value(To_String(File_Line));
             end if;
          end loop Read_File_Path_Loop;
-         Close(FileInfo);
-         Item.Is_Hidden := (if FileName(1) = '.' then True else False);
-         if Is_Directory(To_String(FullName)) then
+         Close(File_Info);
+         Item.Is_Hidden := (if File_Name(1) = '.' then True else False);
+         if Is_Directory(To_String(Full_Name)) then
             Item.Is_Directory := True;
             Item.Image :=
-              (if Is_Symbolic_Link(To_String(FullName)) then
+              (if Is_Symbolic_Link(To_String(Full_Name)) then
                  To_Unbounded_String("emblem-symbolic-link")
                else To_Unbounded_String("folder"));
-            if Is_Read_Accessible_File(To_String(FullName)) then
-               Open(SubDirectory, To_String(FullName));
+            if Is_Read_Accessible_File(To_String(Full_Name)) then
+               Open(Sub_Directory, To_String(Full_Name));
                Size := 0;
                Count_Directory_Size_Loop :
                loop
-                  Read(SubDirectory, SubFileName, SubLast);
-                  exit Count_Directory_Size_Loop when SubLast = 0;
+                  Read(Sub_Directory, Sub_File_Name, Sub_Last);
+                  exit Count_Directory_Size_Loop when Sub_Last = 0;
                   Size := Size + 1;
                end loop Count_Directory_Size_Loop;
-               Close(SubDirectory);
+               Close(Sub_Directory);
                Item.Size := Item_Size(Size - 2);
             else
                Item.Size := -1;
             end if;
          else
             Item.Is_Directory := False;
-            if Is_Symbolic_Link(To_String(FullName)) then
+            if Is_Symbolic_Link(To_String(Full_Name)) then
                Item.Image := To_Unbounded_String("emblem-symbolic-link");
-            elsif Is_Executable_File(To_String(FullName)) then
+            elsif Is_Executable_File(To_String(Full_Name)) then
                Item.Image := To_Unbounded_String("application-x-executable");
             else
-               MimeType :=
-                 To_Unbounded_String(Get_Mime_Type(To_String(FullName)));
-               if Index(MimeType, "audio") > 0 then
+               Mime_Type :=
+                 To_Unbounded_String(Get_Mime_Type(To_String(Full_Name)));
+               if Index(Mime_Type, "audio") > 0 then
                   Item.Image := To_Unbounded_String("audio-x-generic");
-               elsif Index(MimeType, "font") > 0 then
+               elsif Index(Mime_Type, "font") > 0 then
                   Item.Image := To_Unbounded_String("font-x-generic");
-               elsif Index(MimeType, "image") > 0 then
+               elsif Index(Mime_Type, "image") > 0 then
                   Item.Image := To_Unbounded_String("image-x-generic");
-               elsif Index(MimeType, "video") > 0 then
+               elsif Index(Mime_Type, "video") > 0 then
                   Item.Image := To_Unbounded_String("video-x-generic");
-               elsif Index(MimeType, "text/x-script") > 0 then
+               elsif Index(Mime_Type, "text/x-script") > 0 then
                   Item.Image := To_Unbounded_String("text-x-script");
-               elsif MimeType = To_Unbounded_String("text/html") then
+               elsif Mime_Type = To_Unbounded_String("text/html") then
                   Item.Image := To_Unbounded_String("text-html");
-               elsif Index(MimeType, "zip") > 0 or
-                 Index(MimeType, "x-xz") > 0 then
+               elsif Index(Mime_Type, "zip") > 0 or
+                 Index(Mime_Type, "x-xz") > 0 then
                   Item.Image := To_Unbounded_String("package-x-generic");
-               elsif Index(MimeType, "text") > 0 then
+               elsif Index(Mime_Type, "text") > 0 then
                   Item.Image := To_Unbounded_String("text-x-generic");
                else
                   Item.Image := To_Unbounded_String("text-x-generic-template");
                end if;
             end if;
-            if not Is_Read_Accessible_File(To_String(FullName)) then
+            if not Is_Read_Accessible_File(To_String(Full_Name)) then
                Item.Size := -1;
                Items_List.Append(Item);
                goto End_Of_Loop;
             end if;
-            if Is_Symbolic_Link(To_String(FullName)) then
+            if Is_Symbolic_Link(To_String(Full_Name)) then
                Item.Size := -2;
-            elsif Is_Regular_File(To_String(FullName)) then
+            elsif Is_Regular_File(To_String(Full_Name)) then
                Item.Size :=
-                 Item_Size(Ada.Directories.Size(To_String(FullName)));
+                 Item_Size(Ada.Directories.Size(To_String(Full_Name)));
             else
                Item.Size := 0;
             end if;
