@@ -33,9 +33,20 @@ package body ProgramsMenu.UI is
       MenuHeight: constant Line_Position :=
         (if Menu_Items'Length < 17 then Line_Position(Menu_Items'Length) + 1
          else 17);
+      MenuWidth: Column_Position := 25;
    begin
       Set_Cursor_Visibility(Visibility);
       for Application of ApplicationsList loop
+         if (Application'Length < 25 and MenuWidth = 25) or
+           (Application'Length > MenuWidth and MenuWidth < 25) then
+            MenuWidth := Column_Position(Application'Length);
+            if MenuWidth < 5 then
+               MenuWidth := 5;
+            end if;
+            if MenuWidth > 25 then
+               MenuWidth := 25;
+            end if;
+         end if;
          Menu_Items.all(Index) := New_Item(Application);
          Index := Index + 1;
       end loop;
@@ -44,11 +55,12 @@ package body ProgramsMenu.UI is
       ProgramsMenu := New_Menu(Menu_Items);
       Set_Format(ProgramsMenu, 15, 1);
       Set_Mark(ProgramsMenu, "");
-      ProgramsWindow := Create(MenuHeight, 27, Lines / 3, Columns / 3);
+      ProgramsWindow :=
+        Create(MenuHeight, MenuWidth + 2, Lines / 3, Columns / 3);
       Set_Window(ProgramsMenu, ProgramsWindow);
       Set_Sub_Window
         (ProgramsMenu,
-         Derived_Window(ProgramsWindow, MenuHeight - 2, 25, 1, 1));
+         Derived_Window(ProgramsWindow, MenuHeight - 2, MenuWidth, 1, 1));
       Box(ProgramsWindow, Default_Character, Default_Character);
       Post(ProgramsMenu);
       Refresh;
