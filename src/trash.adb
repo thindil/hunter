@@ -237,27 +237,27 @@ package body Trash is
    begin
       Temporary_Stop := True;
       Create_Path
-        (Ada.Environment_Variables.Value("HOME") & "/.local/share/Trash/info");
+        (New_Directory => Ada.Environment_Variables.Value(Name => "HOME") & "/.local/share/Trash/info");
       Create_Path
-        (Ada.Environment_Variables.Value("HOME") &
+        (New_Directory => Ada.Environment_Variables.Value(Name => "HOME") &
          "/.local/share/Trash/files");
       if New_Action /= SHOWTRASH then
          New_Action := SHOWTRASH;
-         Toggle_Tool_Buttons(SHOWTRASH);
+         Toggle_Tool_Buttons(Action => SHOWTRASH);
       end if;
       Items_List.Clear;
       Common.Current_Directory :=
-        To_Unbounded_String(Value("HOME") & "/.local/share/Trash/files");
+        To_Unbounded_String(Source => Value(Name => "HOME") & "/.local/share/Trash/files");
       Destination_Directory :=
         Delete
-          (Common.Current_Directory, 1,
-           Length
-             (To_Unbounded_String
-                (Value("HOME") & "/.local/share/Trash/files")));
-      Open(Directory, Value("HOME") & "/.local/share/Trash/files");
+          (Source => Common.Current_Directory, From => 1,
+           Through => Length
+             (Source => To_Unbounded_String
+                (Source => Value(Name => "HOME") & "/.local/share/Trash/files")));
+      Open(Dir => Directory, Dir_Name => Value(Name => "HOME") & "/.local/share/Trash/files");
       Read_Trash_Content_Loop :
       loop
-         Read(Directory, File_Name, Last);
+         Read(Dir => Directory, Str => File_Name, Last => Last);
          exit Read_Trash_Content_Loop when Last = 0;
          if File_Name(1 .. Last) = "." or File_Name(1 .. Last) = ".." then
             goto End_Of_Loop;
