@@ -237,24 +237,33 @@ package body Trash is
    begin
       Temporary_Stop := True;
       Create_Path
-        (New_Directory => Ada.Environment_Variables.Value(Name => "HOME") & "/.local/share/Trash/info");
+        (New_Directory =>
+           Ada.Environment_Variables.Value(Name => "HOME") &
+           "/.local/share/Trash/info");
       Create_Path
-        (New_Directory => Ada.Environment_Variables.Value(Name => "HOME") &
-         "/.local/share/Trash/files");
+        (New_Directory =>
+           Ada.Environment_Variables.Value(Name => "HOME") &
+           "/.local/share/Trash/files");
       if New_Action /= SHOWTRASH then
          New_Action := SHOWTRASH;
          Toggle_Tool_Buttons(Action => SHOWTRASH);
       end if;
       Items_List.Clear;
       Common.Current_Directory :=
-        To_Unbounded_String(Source => Value(Name => "HOME") & "/.local/share/Trash/files");
+        To_Unbounded_String
+          (Source => Value(Name => "HOME") & "/.local/share/Trash/files");
       Destination_Directory :=
         Delete
           (Source => Common.Current_Directory, From => 1,
-           Through => Length
-             (Source => To_Unbounded_String
-                (Source => Value(Name => "HOME") & "/.local/share/Trash/files")));
-      Open(Dir => Directory, Dir_Name => Value(Name => "HOME") & "/.local/share/Trash/files");
+           Through =>
+             Length
+               (Source =>
+                  To_Unbounded_String
+                    (Source =>
+                       Value(Name => "HOME") & "/.local/share/Trash/files")));
+      Open
+        (Dir => Directory,
+         Dir_Name => Value(Name => "HOME") & "/.local/share/Trash/files");
       Read_Trash_Content_Loop :
       loop
          Read(Dir => Directory, Str => File_Name, Last => Last);
@@ -264,23 +273,34 @@ package body Trash is
          end if;
          Full_Name :=
            To_Unbounded_String
-             (Value("HOME") & "/.local/share/Trash/files/" &
-              File_Name(1 .. Last));
+             (Source =>
+                Value(Name => "HOME") & "/.local/share/Trash/files/" &
+                File_Name(1 .. Last));
          Item.Path := Full_Name;
          Open
-           (File_Info, In_File,
-            Value("HOME") & "/.local/share/Trash/info/" &
-            File_Name(1 .. Last) & ".trashinfo");
-         Skip_Line(File_Info);
+           (File => File_Info, Mode => In_File,
+            Name =>
+              Value(Name => "HOME") & "/.local/share/Trash/info/" &
+              File_Name(1 .. Last) & ".trashinfo");
+         Skip_Line(File => File_Info);
          Read_File_Path_Loop :
          for I in 1 .. 2 loop
-            File_Line := To_Unbounded_String(Get_Line(File_Info));
-            if Slice(File_Line, 1, 4) = "Path" then
+            File_Line :=
+              To_Unbounded_String(Source => Get_Line(File => File_Info));
+            if Slice(Source => File_Line, Low => 1, High => 4) = "Path" then
                Item.Name :=
                  To_Unbounded_String
-                   (Simple_Name(Slice(File_Line, 6, Length(File_Line))));
+                   (Source =>
+                      Simple_Name
+                        (Name =>
+                           Slice
+                             (Source => File_Line, Low => 6,
+                              High => Length(Source => File_Line))));
             else
-               File_Line := Unbounded_Slice(File_Line, 14, Length(File_Line));
+               File_Line :=
+                 Unbounded_Slice
+                   (Source => File_Line, Low => 14,
+                    High => Length(Source => File_Line));
                Replace_Slice(File_Line, 11, 11, " ");
                Item.Modified := Value(To_String(File_Line));
             end if;
