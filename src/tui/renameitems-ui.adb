@@ -148,6 +148,10 @@ package body RenameItems.UI is
             Delete_Dialog(DialogForm, True);
             return DIRECTORY_VIEW;
          when 10 =>
+            if FieldIndex = 2 then
+               Result := Go_Previous_Field(DialogForm);
+               return Rename_Keys(10);
+            end if;
             if FieldIndex = 4 then
                Tcl_Eval
                  (Interpreter,
