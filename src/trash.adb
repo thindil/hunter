@@ -301,7 +301,8 @@ package body Trash is
                  Unbounded_Slice
                    (Source => File_Line, Low => 14,
                     High => Length(Source => File_Line));
-               Replace_Slice(Source => File_Line, Low => 11, High => 11, By => " ");
+               Replace_Slice
+                 (Source => File_Line, Low => 11, High => 11, By => " ");
                Item.Modified := Value(Date => To_String(Source => File_Line));
             end if;
          end loop Read_File_Path_Loop;
@@ -313,35 +314,49 @@ package body Trash is
               (if Is_Symbolic_Link(Name => To_String(Source => Full_Name)) then
                  To_Unbounded_String(Source => "emblem-symbolic-link")
                else To_Unbounded_String(Source => "folder"));
-            if Is_Read_Accessible_File(Name => To_String(Source => Full_Name)) then
-               Open(Dir => Sub_Directory, Dir_Name => To_String(Source => Full_Name));
+            if Is_Read_Accessible_File
+                (Name => To_String(Source => Full_Name)) then
+               Open
+                 (Dir => Sub_Directory,
+                  Dir_Name => To_String(Source => Full_Name));
                Size := 0;
                Count_Directory_Size_Loop :
                loop
-                  Read(Dir => Sub_Directory, Str => Sub_File_Name, Last => Sub_Last);
+                  Read
+                    (Dir => Sub_Directory, Str => Sub_File_Name,
+                     Last => Sub_Last);
                   exit Count_Directory_Size_Loop when Sub_Last = 0;
                   Size := Size + 1;
                end loop Count_Directory_Size_Loop;
-               Close(Sub_Directory);
+               Close(Dir => Sub_Directory);
                Item.Size := Item_Size(Size - 2);
             else
                Item.Size := -1;
             end if;
          else
             Item.Is_Directory := False;
-            if Is_Symbolic_Link(To_String(Full_Name)) then
-               Item.Image := To_Unbounded_String("emblem-symbolic-link");
-            elsif Is_Executable_File(To_String(Full_Name)) then
-               Item.Image := To_Unbounded_String("application-x-executable");
+            if Is_Symbolic_Link(Name => To_String(Source => Full_Name)) then
+               Item.Image :=
+                 To_Unbounded_String(Source => "emblem-symbolic-link");
+            elsif Is_Executable_File
+                (Name => To_String(Source => Full_Name)) then
+               Item.Image :=
+                 To_Unbounded_String(Source => "application-x-executable");
             else
                Mime_Type :=
-                 To_Unbounded_String(Get_Mime_Type(To_String(Full_Name)));
-               if Index(Mime_Type, "audio") > 0 then
-                  Item.Image := To_Unbounded_String("audio-x-generic");
-               elsif Index(Mime_Type, "font") > 0 then
-                  Item.Image := To_Unbounded_String("font-x-generic");
-               elsif Index(Mime_Type, "image") > 0 then
-                  Item.Image := To_Unbounded_String("image-x-generic");
+                 To_Unbounded_String
+                   (Source =>
+                      Get_Mime_Type
+                        (File_Name => To_String(Source => Full_Name)));
+               if Index(Source => Mime_Type, Pattern => "audio") > 0 then
+                  Item.Image :=
+                    To_Unbounded_String(Source => "audio-x-generic");
+               elsif Index(Source => Mime_Type, Pattern => "font") > 0 then
+                  Item.Image :=
+                    To_Unbounded_String(Source => "font-x-generic");
+               elsif Index(Source => Mime_Type, Pattern => "image") > 0 then
+                  Item.Image :=
+                    To_Unbounded_String(Source => "image-x-generic");
                elsif Index(Mime_Type, "video") > 0 then
                   Item.Image := To_Unbounded_String("video-x-generic");
                elsif Index(Mime_Type, "text/x-script") > 0 then
