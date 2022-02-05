@@ -357,24 +357,24 @@ package body Trash is
                elsif Index(Source => Mime_Type, Pattern => "image") > 0 then
                   Item.Image :=
                     To_Unbounded_String(Source => "image-x-generic");
-               elsif Index(Mime_Type, "video") > 0 then
-                  Item.Image := To_Unbounded_String("video-x-generic");
-               elsif Index(Mime_Type, "text/x-script") > 0 then
-                  Item.Image := To_Unbounded_String("text-x-script");
-               elsif Mime_Type = To_Unbounded_String("text/html") then
-                  Item.Image := To_Unbounded_String("text-html");
-               elsif Index(Mime_Type, "zip") > 0 or
-                 Index(Mime_Type, "x-xz") > 0 then
-                  Item.Image := To_Unbounded_String("package-x-generic");
-               elsif Index(Mime_Type, "text") > 0 then
-                  Item.Image := To_Unbounded_String("text-x-generic");
+               elsif Index(Source => Mime_Type, Pattern => "video") > 0 then
+                  Item.Image := To_Unbounded_String(Source => "video-x-generic");
+               elsif Index(Source => Mime_Type, Pattern => "text/x-script") > 0 then
+                  Item.Image := To_Unbounded_String(Source => "text-x-script");
+               elsif Mime_Type = To_Unbounded_String(Source => "text/html") then
+                  Item.Image := To_Unbounded_String(Source => "text-html");
+               elsif Index(Source => Mime_Type, Pattern => "zip") > 0 or
+                 Index(Source => Mime_Type, Pattern => "x-xz") > 0 then
+                  Item.Image := To_Unbounded_String(Source => "package-x-generic");
+               elsif Index(Source => Mime_Type, Pattern => "text") > 0 then
+                  Item.Image := To_Unbounded_String(Source => "text-x-generic");
                else
-                  Item.Image := To_Unbounded_String("text-x-generic-template");
+                  Item.Image := To_Unbounded_String(Source => "text-x-generic-template");
                end if;
             end if;
-            if not Is_Read_Accessible_File(To_String(Full_Name)) then
+            if not Is_Read_Accessible_File(Name => To_String(Source => Full_Name)) then
                Item.Size := -1;
-               Items_List.Append(Item);
+               Items_List.Append(New_Item => Item);
                goto End_Of_Loop;
             end if;
             if Is_Symbolic_Link(To_String(Full_Name)) then
