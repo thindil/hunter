@@ -1,4 +1,4 @@
--- Copyright (c) 2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -24,15 +24,15 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package UserCommands is
 -- ****
 
-   -- ****s* UserCommands/UserCommands.UserCommand
+   -- ****s* UserCommands/UserCommands.User_Command
    -- FUNCTION
    -- Data structure for the user defined commands
    -- OPTIONS
-   -- NeedOutput - If true, show the command output to the user
-   -- Command    - The command to execute
+   -- Need_Output - If true, show the command output to the user
+   -- Command     - The command to execute
    -- SOURCE
-   type UserCommand is record
-      NeedOutput: Boolean;
+   type User_Command is record
+      Need_Output: Boolean;
       Command: Unbounded_String;
    end record;
    -- ****
@@ -42,21 +42,22 @@ package UserCommands is
    -- Used to store all bookmarks
    -- SOURCE
    package Commands_Container is new Indefinite_Hashed_Maps
-     (String, UserCommand, Ada.Strings.Hash, "=");
+     (Key_Type => String, Element_Type => User_Command,
+      Hash => Ada.Strings.Hash, Equivalent_Keys => "=");
    -- ****
 
-   -- ****v* UserCommands/UserCommands.UserCommandsList
+   -- ****v* UserCommands/UserCommands.User_Commands_List
    -- FUNCTION
    -- User defined commands list
    -- SOURCE
-   UserCommandsList: Commands_Container.Map;
+   User_Commands_List: Commands_Container.Map;
    -- ****
 
-   -- ****f* UserCommands/UserCommands.AddCommands
+   -- ****f* UserCommands/UserCommands.Add_Commands
    -- FUNCTION
    -- Adds the Ada code to the Tcl interpreter
    -- SOURCE
-   procedure AddCommands;
+   procedure Add_Commands;
    -- ****
 
 end UserCommands;
