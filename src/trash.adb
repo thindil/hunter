@@ -13,24 +13,24 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Calendar.Formatting; use Ada.Calendar.Formatting;
+with Ada.Calendar.Formatting;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Interfaces.C; use Interfaces.C;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with GNAT.Directory_Operations;
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with CArgv;
 with Tcl; use Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
-with Inotify; use Inotify;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
-with MainWindow; use MainWindow;
+with Inotify;
+with LoadData;
+with LoadData.UI;
+with MainWindow;
 with Messages.UI; use Messages.UI;
-with Modules; use Modules;
+with Modules;
 with ShowItems; use ShowItems;
 with Trash.UI; use Trash.UI;
 with Utils; use Utils;
@@ -189,6 +189,10 @@ package body Trash is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc);
+      use LoadData.UI;
+      use MainWindow;
+      use Modules;
+
    begin
       Common.Current_Directory :=
         To_Unbounded_String
@@ -225,6 +229,11 @@ package body Trash is
    end Create_Trash;
 
    procedure Load_Trash_Data is
+      use Ada.Calendar.Formatting;
+      use GNAT.Directory_Operations;
+      use Inotify;
+      use LoadData;
+
       Directory, Sub_Directory: Dir_Type;
       File_Name, Sub_File_Name: String(1 .. 1_024) := (others => ' ');
       Last: Natural range 0 .. File_Name'Last := 0;
