@@ -188,7 +188,7 @@ package body MainWindow is
       Autoscroll(Scroll => Directory_Y_Scroll);
       Autoscroll(Scroll => Directory_X_Scroll);
       MainWindow.Commands.Add_Commands;
-      UserCommands.AddCommands;
+      UserCommands.Add_Commands;
       SearchItems.Add_Commands;
       Set_Directory(Directory => Containing_Directory(Name => Command_Name));
       -- Load the program Tk themes

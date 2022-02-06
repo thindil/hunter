@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ package body UserCommands.UI is
             Destroy(Item);
          end loop Delete_Items_Loop;
       end loop Clear_Commands_List_Loop;
-      if UserCommandsList.Is_Empty then
+      if User_Commands_List.Is_Empty then
          return;
       end if;
       Label := Create(CommandsFrame & ".name", "-text {Menu label}");
@@ -69,7 +69,7 @@ package body UserCommands.UI is
       Tcl.Tk.Ada.Grid.Column_Configure(CommandsFrame, Label, "-weight 1");
       Image.Interp := Get_Context;
       Load_User_Commnads_Loop :
-      for I in UserCommandsList.Iterate loop
+      for I in User_Commands_List.Iterate loop
          Label :=
            Create
              (CommandsFrame & ".name" & Trim(Positive'Image(Row), Left),
@@ -78,11 +78,11 @@ package body UserCommands.UI is
          Label :=
            Create
              (CommandsFrame & ".command" & Trim(Positive'Image(Row), Left),
-              "-text {" & To_String(UserCommandsList(I).Command) & "}");
+              "-text {" & To_String(User_Commands_List(I).Command) & "}");
          Tcl.Tk.Ada.Grid.Grid
            (Label, "-row" & Positive'Image(Row) & " -column 1");
          Label :=
-           (if UserCommandsList(I).NeedOutput then
+           (if User_Commands_List(I).Need_Output then
               Create
                 (CommandsFrame & ".output" & Trim(Positive'Image(Row), Left),
                  "-text {" & Mc(Get_Context, "{Yes}") & "}")

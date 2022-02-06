@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -190,19 +190,19 @@ package body Preferences is
          elsif Data_Node_Name = To_Unbounded_String(Source => "command") then
             if Get_Attribute(Elem => Data_Node, Name => "needoutput") =
               "Yes" then
-               UserCommandsList.Include
+               User_Commands_List.Include
                  (Key => Get_Attribute(Elem => Data_Node, Name => "menuentry"),
                   New_Item =>
-                    (NeedOutput => True,
+                    (Need_Output => True,
                      Command =>
                        To_Unbounded_String
                          (Source =>
                             Node_Value(N => First_Child(N => Data_Node)))));
             else
-               UserCommandsList.Include
+               User_Commands_List.Include
                  (Key => Get_Attribute(Elem => Data_Node, Name => "menuentry"),
                   New_Item =>
-                    (NeedOutput => False,
+                    (Need_Output => False,
                      Command =>
                        To_Unbounded_String
                          (Source =>
@@ -334,7 +334,7 @@ package body Preferences is
             Value => To_String(Source => Accelerators(I)));
       end loop Save_Accelerators_Loop;
       Save_User_Commands_Loop :
-      for I in UserCommandsList.Iterate loop
+      for I in User_Commands_List.Iterate loop
          Setting_Node :=
            Append_Child
              (N => Main_Node,
@@ -344,7 +344,7 @@ package body Preferences is
          Set_Attribute
            (Elem => Setting_Node, Name => "menuentry",
             Value => Commands_Container.Key(Position => I));
-         if UserCommandsList(I).NeedOutput then
+         if User_Commands_List(I).Need_Output then
             Set_Attribute
               (Elem => Setting_Node, Name => "needoutput", Value => "Yes");
          else
@@ -357,7 +357,7 @@ package body Preferences is
               New_Child =>
                 Create_Text_Node
                   (Doc => Save_Settings_Data,
-                   Data => To_String(Source => UserCommandsList(I).Command)));
+                   Data => To_String(Source => User_Commands_List(I).Command)));
       end loop Save_User_Commands_Loop;
       Save_Enabled_Modules_Loop :
       for ModuleName of Enabled_Modules loop

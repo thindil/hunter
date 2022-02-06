@@ -631,7 +631,7 @@ package body Toolbars is
         (if Settings.Toolbars_On_Top then "left" else "top");
    begin
       Delete(MenuWidget => Actions_Menu, StartIndex => "0", EndIndex => "end");
-      if UserCommandsList.Is_Empty then
+      if User_Commands_List.Is_Empty then
          Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Actions_Button);
       else
          Tcl.Tk.Ada.Pack.Pack
@@ -641,7 +641,7 @@ package body Toolbars is
               Side);
       end if;
       Add_User_Commands_Menu_Loop :
-      for I in UserCommandsList.Iterate loop
+      for I in User_Commands_List.Iterate loop
          Menu.Add
            (MenuWidget => Actions_Menu, EntryType => "command",
             Options =>

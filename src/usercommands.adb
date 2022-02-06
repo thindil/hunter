@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -60,7 +60,7 @@ package body UserCommands is
       Arguments: Argument_List_Access;
       Success: Boolean := False;
    begin
-      Value := UserCommandsList(CArgv.Arg(Argv, 1)).Command;
+      Value := User_Commands_List(CArgv.Arg(Argv, 1)).Command;
       SpaceIndex := Index(Value, " ");
       CommandName :=
         (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex - 1)
@@ -87,7 +87,7 @@ package body UserCommands is
       end loop Replace_Substitutes_Loop;
       Non_Blocking_Spawn
         (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
-      if UserCommandsList(CArgv.Arg(Argv, 1)).NeedOutput then
+      if User_Commands_List(CArgv.Arg(Argv, 1)).Need_Output then
          Show_Output;
          Update_Output_Loop :
          loop
@@ -109,9 +109,9 @@ package body UserCommands is
          return TCL_OK;
    end Execute_Command_Command;
 
-   procedure AddCommands is
+   procedure Add_Commands is
    begin
       Add_Command("ExecuteCommand", Execute_Command_Command'Access);
-   end AddCommands;
+   end Add_Commands;
 
 end UserCommands;

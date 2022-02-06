@@ -1231,10 +1231,10 @@ package body Preferences.Commands is
            "1"
          then True
          else False);
-      if UserCommandsList.Contains(To_String(MenuEntry)) then
-         UserCommandsList(To_String(MenuEntry)) := (NeedOutput, Command);
+      if User_Commands_List.Contains(To_String(MenuEntry)) then
+         User_Commands_List(To_String(MenuEntry)) := (NeedOutput, Command);
       else
-         UserCommandsList.Include(To_String(MenuEntry), (NeedOutput, Command));
+         User_Commands_List.Include(To_String(MenuEntry), (NeedOutput, Command));
       end if;
       Clear_Add_Command;
       UpdateUserCommandsList;
@@ -1280,8 +1280,8 @@ package body Preferences.Commands is
         New_String
           (".preferencesframe.canvas.notebook.actions.addframe.command");
       Delete(Tentry, "0", "end");
-      Insert(Tentry, "end", To_String(UserCommandsList(MenuEntry).Command));
-      if UserCommandsList(MenuEntry).NeedOutput then
+      Insert(Tentry, "end", To_String(User_Commands_List(MenuEntry).Command));
+      if User_Commands_List(MenuEntry).Need_Output then
          Tcl_SetVar
            (Interp,
             ".preferencesframe.canvas.notebook.actions.addframe.output", "1");
@@ -1320,7 +1320,7 @@ package body Preferences.Commands is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData, Interp, Argc);
    begin
-      UserCommandsList.Delete(CArgv.Arg(Argv, 1));
+      User_Commands_List.Delete(CArgv.Arg(Argv, 1));
       UpdateUserCommandsList;
       Set_User_Commands_Menu;
       return TCL_OK;
