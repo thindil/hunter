@@ -292,7 +292,7 @@ package body Preferences.UI is
             declare
                Options_Fields: constant Field_Array_Access :=
                  new Field_Array
-                   (1 .. Positive((UserCommandsList.Length * 5) + 6));
+                   (1 .. Positive((User_Commands_List.Length * 5) + 6));
                Index: Positive := 6;
                Line: Line_Position := 3;
             begin
@@ -352,7 +352,7 @@ package body Preferences.UI is
                FieldOptions.Edit := False;
                FieldOptions.Active := False;
                Set_Options(Options_Fields.all(5), FieldOptions);
-               for I in UserCommandsList.Iterate loop
+               for I in User_Commands_List.Iterate loop
                   Options_Fields.all(Index) := New_Field(1, 20, Line, 0, 0, 0);
                   Set_Buffer
                     (Options_Fields.all(Index), 0, Commands_Container.Key(I));
@@ -364,7 +364,7 @@ package body Preferences.UI is
                     New_Field(1, 20, Line, 20, 0, 0);
                   Set_Buffer
                     (Options_Fields.all(Index + 1), 0,
-                     To_String(UserCommandsList(I).Command));
+                     To_String(User_Commands_List(I).Command));
                   FieldOptions := Get_Options(Options_Fields.all(Index + 1));
                   FieldOptions.Edit := False;
                   FieldOptions.Active := False;
@@ -373,7 +373,7 @@ package body Preferences.UI is
                     New_Field(1, 20, Line, 40, 0, 0);
                   Set_Buffer
                     (Options_Fields.all(Index + 2), 0,
-                     (if UserCommandsList(I).NeedOutput then
+                     (if User_Commands_List(I).Need_Output then
                         Mc(Interpreter, "Yes")
                       else Mc(Interpreter, "No")));
                   FieldOptions := Get_Options(Options_Fields.all(Index + 2));
@@ -899,7 +899,7 @@ package body Preferences.UI is
                         Show_Command_Form(OptionIndex);
                         return COMMAND_FORM;
                      elsif CurrentOption = Mc(Interpreter, "Delete") then
-                        UserCommandsList.Delete
+                        User_Commands_List.Delete
                           (Trim
                              (Get_Buffer(Fields(DialogForm, OptionIndex - 4)),
                               Both));
@@ -1150,11 +1150,11 @@ package body Preferences.UI is
                         else False);
                   begin
                      if MenuEntry'Length > 0 and Command'Length > 0 then
-                        if UserCommandsList.Contains(MenuEntry) then
-                           UserCommandsList(MenuEntry) :=
+                        if User_Commands_List.Contains(MenuEntry) then
+                           User_Commands_List(MenuEntry) :=
                              (NeedOutput, To_Unbounded_String(Command));
                         else
-                           UserCommandsList.Include
+                           User_Commands_List.Include
                              (MenuEntry,
                               (NeedOutput, To_Unbounded_String(Command)));
                         end if;

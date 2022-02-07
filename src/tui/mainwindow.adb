@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -177,7 +177,7 @@ package body MainWindow is
       ActivateItems.Add_Commands;
       CreateItems.UI.AddCommands;
       RenameItems.UI.AddCommands;
-      UserCommands.AddCommands;
+      UserCommands.Add_Commands;
       Create_Bookmarks_List;
       Modules.Commands.AddCommands;
       Create_Trash;
@@ -509,7 +509,7 @@ package body MainWindow is
    begin
       case Menu_Type is
          when ACTIONS_MENU =>
-            if UserCommandsList.Length = 0 then
+            if User_Commands_List.Length = 0 then
                Menu_Items := new Item_Array(1 .. 10);
             else
                Menu_Items := new Item_Array(1 .. 11);
@@ -594,11 +594,11 @@ package body MainWindow is
               New_Item(Mc(Interpreter, "{Show modding guide}"));
          when COMMANDS_MENU =>
             Menu_Items :=
-              new Item_Array(1 .. Natural(UserCommandsList.Length) + 2);
+              new Item_Array(1 .. Natural(User_Commands_List.Length) + 2);
             declare
                Index: Positive := 1;
             begin
-               for I in UserCommandsList.Iterate loop
+               for I in User_Commands_List.Iterate loop
                   Menu_Items.all(Index) := New_Item(Commands_Container.Key(I));
                   Index := Index + 1;
                end loop;
