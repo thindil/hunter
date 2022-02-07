@@ -33,10 +33,10 @@ package body UserCommands is
    -- FUNCTION
    -- Execute the selected user command and show its output if needed
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed. Unused
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed. Unused
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -44,38 +44,40 @@ package body UserCommands is
    -- Menuentry is the menu label of the command which will be executed
    -- SOURCE
    function Execute_Command_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Execute_Command_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc);
-      Value, CommandName: Unbounded_String;
-      SpaceIndex: Natural;
-      Result: Expect_Match;
-      ProcessDesc: Process_Descriptor;
+      pragma Unreferenced(Client_Data, Argc);
+      Value, Command_Name: Unbounded_String;
+      Space_Index: Natural;
+      Result: Expect_Match := 1;
+      Process_Desc: Process_Descriptor; --## rule line off IMPROPER_INITIALIZATION
       Arguments: Argument_List_Access;
       Success: Boolean := False;
    begin
       Value := User_Commands_List(CArgv.Arg(Argv, 1)).Command;
-      SpaceIndex := Index(Value, " ");
-      CommandName :=
-        (if SpaceIndex > 0 then Unbounded_Slice(Value, 1, SpaceIndex - 1)
-         else Value);
-      CommandName :=
-        To_Unbounded_String(Find_Executable(To_String(CommandName)));
-      if CommandName = Null_Unbounded_String then
+      Space_Index := Index(Value, " ");
+      Command_Name :=
+        To_Unbounded_String
+          (Find_Executable
+             (To_String
+                ((if Space_Index > 0 then
+                    Unbounded_Slice(Value, 1, Space_Index - 1)
+                  else Value))));
+      if Command_Name = Null_Unbounded_String then
          Show_Message
            (Mc(Interp, "{Can't find command:}") & " " &
-            Slice(Value, 1, SpaceIndex));
+            Slice(Value, 1, Space_Index));
          return TCL_OK;
       end if;
-      if SpaceIndex > 0 then
+      if Space_Index > 0 then
          Arguments :=
-           Argument_String_To_List(Slice(Value, SpaceIndex, Length(Value)));
+           Argument_String_To_List(Slice(Value, Space_Index, Length(Value)));
       end if;
       Replace_Substitutes_Loop :
       for I in Arguments'Range loop
@@ -86,25 +88,25 @@ package body UserCommands is
          end if;
       end loop Replace_Substitutes_Loop;
       Non_Blocking_Spawn
-        (ProcessDesc, Full_Name(To_String(CommandName)), Arguments.all);
+        (Process_Desc, Full_Name(To_String(Command_Name)), Arguments.all);
       if User_Commands_List(CArgv.Arg(Argv, 1)).Need_Output then
          Show_Output;
          Update_Output_Loop :
          loop
-            Expect(ProcessDesc, Result, Regexp => ".+", Timeout => 300_000);
+            Expect(Process_Desc, Result, Regexp => ".+", Timeout => 300_000);
             exit Update_Output_Loop when Result /= 1;
-            Update_Output(Expect_Out_Match(ProcessDesc) & LF);
+            Update_Output(Expect_Out_Match(Process_Desc) & LF);
             Success := True;
          end loop Update_Output_Loop;
       end if;
-      Close(ProcessDesc);
+      Close(Process_Desc);
       return TCL_OK;
    exception
       when Process_Died =>
          if not Success then
             Show_Message
               (Mc(Interp, "{Can't execute command:}") & " " &
-               Slice(Value, 1, SpaceIndex));
+               Slice(Value, 1, Space_Index));
          end if;
          return TCL_OK;
    end Execute_Command_Command;
