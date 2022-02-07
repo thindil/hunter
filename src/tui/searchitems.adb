@@ -92,6 +92,14 @@ package body SearchItems is
             end if;
          when 127 =>
             Result := Driver(DialogForm, F_Delete_Previous);
+         when 27 =>
+            Set_Cursor_Visibility(Visibility);
+            UILocation := DIRECTORY_VIEW;
+            Post(DialogForm, False);
+            Delete(DialogForm);
+            Update_Directory_List(True);
+            Show_Preview;
+            return DIRECTORY_VIEW;
          when 10 =>
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
