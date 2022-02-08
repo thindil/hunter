@@ -37,6 +37,14 @@ package UserCommands is
    end record;
    -- ****
 
+   -- ****d* UserCommands/UserCommands.Empty_User_Command
+   -- FUNCTION
+   -- Default value for empty user command
+   -- SOURCE
+   Empty_User_Command: constant User_Command :=
+     (Need_Output => False, Command => Null_Unbounded_String);
+   -- ****
+
    -- ****t* UserCommands/UserCommands.Commands_Container
    -- FUNCTION
    -- Used to store all bookmarks
