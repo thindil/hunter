@@ -90,7 +90,7 @@ package body UserCommands is
                    High => Length(Source => Value)));
       end if;
       Replace_Substitutes_Loop :
-      for I in Arguments'Range loop
+      for I in Arguments'Range loop --## rule line off SIMPLIFIABLE_STATEMENTS
          if Arguments(I).all = "@1" then
             Arguments(I) := new String'(To_String(Common.Current_Directory));
          elsif Arguments(I).all = "@2" then
