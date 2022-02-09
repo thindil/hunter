@@ -92,38 +92,50 @@ package body UserCommands is
       Replace_Substitutes_Loop :
       for I in Arguments'Range loop --## rule line off SIMPLIFIABLE_STATEMENTS
          if Arguments(I).all = "@1" then
-            Arguments(I) := new String'(To_String(Common.Current_Directory));
+            Arguments(I) :=
+              new String'(To_String(Source => Common.Current_Directory));
          elsif Arguments(I).all = "@2" then
-            Arguments(I) := new String'(To_String(Current_Selected));
+            Arguments(I) := new String'(To_String(Source => Current_Selected));
          end if;
       end loop Replace_Substitutes_Loop;
       Non_Blocking_Spawn
-        (Process_Desc, Full_Name(To_String(Command_Name)), Arguments.all);
-      if User_Commands_List(CArgv.Arg(Argv, 1)).Need_Output then
+        (Descriptor => Process_Desc,
+         Command => Full_Name(Name => To_String(Source => Command_Name)),
+         Args => Arguments.all);
+      if User_Commands_List(CArgv.Arg(Argv => Argv, N => 1)).Need_Output then
          Show_Output;
          Update_Output_Loop :
          loop
-            Expect(Process_Desc, Result, Regexp => ".+", Timeout => 300_000);
+            Expect
+              (Descriptor => Process_Desc, Result => Result, Regexp => ".+",
+               Timeout => 300_000);
             exit Update_Output_Loop when Result /= 1;
-            Update_Output(Expect_Out_Match(Process_Desc) & LF);
+            Update_Output
+              (Text_To_Append =>
+                 Expect_Out_Match(Descriptor => Process_Desc) & LF);
             Success := True;
          end loop Update_Output_Loop;
       end if;
-      Close(Process_Desc);
+      Close(Descriptor => Process_Desc);
       return TCL_OK;
    exception
       when Process_Died =>
          if not Success then
             Show_Message
-              (Mc(Interp, "{Can't execute command:}") & " " &
-               Slice(Value, 1, Space_Index));
+              (Message =>
+                 Mc
+                   (Interp => Interp,
+                    Src_String => "{Can't execute command:}") &
+                 " " & Slice(Source => Value, Low => 1, High => Space_Index));
          end if;
          return TCL_OK;
    end Execute_Command_Command;
 
    procedure Add_Commands is
    begin
-      Add_Command("ExecuteCommand", Execute_Command_Command'Access);
+      Add_Command
+        (Name => "ExecuteCommand",
+         Ada_Command => Execute_Command_Command'Access);
    end Add_Commands;
 
 end UserCommands;
