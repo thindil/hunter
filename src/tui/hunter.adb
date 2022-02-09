@@ -185,12 +185,6 @@ begin
       if Key in KEY_STAB | 9 then
          case UILocation is
             when DIRECTORY_VIEW =>
-               UILocation := PATH_BUTTONS;
-               Update_Directory_List;
-               if New_Action in COPY | MOVE | CREATELINK then
-                  ShowDestination;
-               end if;
-            when PATH_BUTTONS =>
                UILocation := MAIN_MENU;
                CreateProgramMenu(True);
                Update_Directory_List;
@@ -212,7 +206,9 @@ begin
                end if;
                CreateProgramMenu(True);
             when DESTINATION_VIEW =>
-               UILocation := DESTINATION_PATH;
+               UILocation := DIRECTORY_VIEW;
+               Clear_Preview_Window;
+               Update_Directory_List;
                ShowDestination;
             when PREVIEW =>
                UILocation := DIRECTORY_VIEW;
@@ -229,11 +225,6 @@ begin
                   when Ada.Directories.Name_Error =>
                      null;
                end;
-            when DESTINATION_PATH =>
-               UILocation := DIRECTORY_VIEW;
-               Clear_Preview_Window;
-               Update_Directory_List;
-               ShowDestination;
             when others =>
                null;
          end case;
