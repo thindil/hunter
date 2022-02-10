@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -120,7 +120,7 @@ begin
    Load_Settings;
 
    -- Load the available applications list
-   CreateProgramsMenu;
+   Create_Programs_Menu;
 
    -- Initialize ncurses
    Ada.Environment_Variables.Set("ESCDELAY", "10");

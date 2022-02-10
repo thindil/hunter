@@ -27,7 +27,7 @@ package body ProgramsMenu.UI is
 
    procedure ShowProgramsMenu is
       Menu_Items: constant Item_Array_Access :=
-        new Item_Array(1 .. Natural(ApplicationsList.Length) + 2);
+        new Item_Array(1 .. Natural(Applications_List.Length) + 2);
       Index: Positive := 1;
       Visibility: Cursor_Visibility := Invisible;
       MenuHeight: constant Line_Position :=
@@ -36,7 +36,7 @@ package body ProgramsMenu.UI is
       MenuWidth: Column_Position := 25;
    begin
       Set_Cursor_Visibility(Visibility);
-      for Application of ApplicationsList loop
+      for Application of Applications_List loop
          if (Application'Length < 25 and MenuWidth = 25) or
            (Application'Length > MenuWidth and MenuWidth < 25) then
             MenuWidth := Column_Position(Application'Length);
@@ -93,8 +93,8 @@ package body ProgramsMenu.UI is
                     To_Unbounded_String(Name(Current(ProgramsMenu)));
                begin
                   Set_New_Application_Loop :
-                  for I in ApplicationsList.Iterate loop
-                     if ApplicationsList(I) = ApplicationName then
+                  for I in Applications_List.Iterate loop
+                     if Applications_List(I) = ApplicationName then
                         Pid :=
                           Non_Blocking_Spawn
                             (ExecutableName,

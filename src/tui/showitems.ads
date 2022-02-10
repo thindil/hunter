@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -101,7 +101,7 @@ package ShowItems is
    -- FUNCTION
    -- Update UI with the output of the user command
    -- SOURCE
-   procedure Update_Output(Text: String);
+   procedure Update_Output(Text_To_Append: String);
    -- ****
 
    -- ****f* ShowItemsTUI/ShowItemsTUI.Destination_Keys

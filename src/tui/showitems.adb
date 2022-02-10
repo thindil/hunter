@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -253,7 +253,7 @@ package body ShowItems is
                     To_Unbounded_String(Expect_Out_Match(ProcessDesc));
                   DesktopFile :=
                     To_Unbounded_String
-                      (GetProgramName(To_String(DesktopFile)));
+                      (Get_Program_Name(To_String(DesktopFile)));
                   if Index(DesktopFile, ".desktop") = 0 then
                      Set_Buffer
                        (Permissions_Fields.all(2), 0, To_String(DesktopFile));
@@ -858,9 +858,9 @@ package body ShowItems is
         (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
    end Show_Output;
 
-   procedure Update_Output(Text: String) is
+   procedure Update_Output(Text_To_Append: String) is
    begin
-      Add(PreviewPad, Text);
+      Add(PreviewPad, Text_To_Append);
       Refresh
         (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2), Columns - 3);
    end Update_Output;
