@@ -921,8 +921,8 @@ package body ShowItems is
                Desktop_File :=
                  To_Unbounded_String
                    (Source =>
-                      GetProgramName
-                        (DesktopFile =>
+                      Get_Program_Name
+                        (Desktop_File =>
                            Expect_Out_Match(Descriptor => Process_Desc)));
                if Index(Source => Desktop_File, Pattern => ".desktop") = 0 then
                   configure

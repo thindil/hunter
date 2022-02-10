@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,15 +20,15 @@ with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 
 package body ProgramsMenu is
 
-   function GetProgramName(DesktopFile: String) return String is
+   function Get_Program_Name(Desktop_File: String) return String is
    begin
-      if not ApplicationsList.Contains(DesktopFile) then
-         return DesktopFile;
+      if not Applications_List.Contains(Desktop_File) then
+         return Desktop_File;
       end if;
-      return ApplicationsList(DesktopFile);
-   end GetProgramName;
+      return Applications_List(Desktop_File);
+   end Get_Program_Name;
 
-   procedure CreateProgramsMenu is
+   procedure Create_Programs_Menu is
       ApplicationsPaths: constant array
         (Positive range <>) of Unbounded_String :=
         (To_Unbounded_String("/usr/share/applications"),
@@ -63,12 +63,12 @@ package body ProgramsMenu is
                   FileLine := To_Unbounded_String(Get_Line(File));
                   if Length(FileLine) > 5
                     and then Slice(FileLine, 1, 5) = "Name=" then
-                     ApplicationsList.Include
+                     Applications_List.Include
                        (SubFileName(1 .. SubLast),
                         Slice(FileLine, 6, Length(FileLine)));
-                     if not NamesList.Contains
+                     if not Names_List.Contains
                          (Unbounded_Slice(FileLine, 6, Length(FileLine))) then
-                        NamesList.Append
+                        Names_List.Append
                           (Unbounded_Slice(FileLine, 6, Length(FileLine)));
                      end if;
                      exit Find_Application_Name_Loop;
@@ -80,7 +80,7 @@ package body ProgramsMenu is
          Close(SubDirectory);
          <<End_Of_Loop>>
       end loop Create_Programs_Menu_Loop;
-      Programs_Sorting.Sort(NamesList);
-   end CreateProgramsMenu;
+      Programs_Sorting.Sort(Names_List);
+   end Create_Programs_Menu;
 
 end ProgramsMenu;

@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -91,11 +91,11 @@ package body ProgramsMenu.UI is
    begin
       Query := To_Unbounded_String(Get(TextEntry));
       Search_Program_Loop :
-      for I in NamesList.First_Index .. NamesList.Last_Index loop
+      for I in Names_List.First_Index .. Names_List.Last_Index loop
          if Query /= Null_Unbounded_String
            and then
              Index
-               (To_Lower(To_String(NamesList(I))),
+               (To_Lower(To_String(Names_List(I))),
                 To_Lower(To_String(Query))) =
              0 then
             Detach(ProgramsTree, Positive'Image(I));
@@ -152,8 +152,8 @@ package body ProgramsMenu.UI is
         To_Unbounded_String
           (Item(ApplicationsView, Selection(ApplicationsView), "-text"));
       Set_New_Application_Loop :
-      for I in ApplicationsList.Iterate loop
-         if ApplicationsList(I) = ApplicationName then
+      for I in Applications_List.Iterate loop
+         if Applications_List(I) = ApplicationName then
             Pid :=
               Non_Blocking_Spawn
                 (ExecutableName,
@@ -164,7 +164,7 @@ package body ProgramsMenu.UI is
                Show_Message
                  (Mc(Interp, "{Could not set new associated program.}"));
             else
-               configure(Button, "-text {" & ApplicationsList(I) & "}");
+               configure(Button, "-text {" & Applications_List(I) & "}");
             end if;
             exit Set_New_Application_Loop;
          end if;
@@ -223,13 +223,13 @@ package body ProgramsMenu.UI is
            Widget_Image(ApplicationsView) & " yview]");
    begin
       Autoscroll(ApplicationsYScroll);
-      CreateProgramsMenu;
+      Create_Programs_Menu;
       Fill_Applications_List_Loop :
-      for I in NamesList.First_Index .. NamesList.Last_Index loop
+      for I in Names_List.First_Index .. Names_List.Last_Index loop
          Insert
            (ApplicationsView,
             "{} end -id" & Positive'Image(I) & " -text {" &
-            To_String(NamesList(I)) & "}");
+            To_String(Names_List(I)) & "}");
       end loop Fill_Applications_List_Loop;
       Tcl.Tk.Ada.Grid.Grid(SearchEntry, "-columnspan 2 -sticky we");
       Tcl.Tk.Ada.Grid.Grid(ApplicationsView, "-column 0 -row 1 -sticky we");
