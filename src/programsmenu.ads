@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -24,40 +24,40 @@ with CopyItems; use CopyItems;
 package ProgramsMenu is
 -- ****
 
-   -- ****f* ProgramsMenu/ProgramsMenu.GetProgramName
+   -- ****f* ProgramsMenu/ProgramsMenu.Get_Program_Name
    -- FUNCTION
    -- Search for name of application associated with selected desktop file
    -- PARAMETERS
-   -- DesktopFile - File name of .desktop file to search
+   -- Desktop_File - File name of .desktop file to search
    -- RESULT
    -- Name of the application associated with the selected desktop file or
    -- DesktopFile if application was not found
    -- SOURCE
-   function GetProgramName(DesktopFile: String) return String;
+   function Get_Program_Name(Desktop_File: String) return String;
    -- ****
 
-   -- ****f* ProgramsMenu/ProgramsMenu.CreateProgramsMenu
+   -- ****f* ProgramsMenu/ProgramsMenu.Create_Programs_Menu
    -- FUNCTION
    -- Create associated programs menu list
    -- SOURCE
-   procedure CreateProgramsMenu;
+   procedure Create_Programs_Menu;
    -- ****
 
 private
 
-   -- ****iv* ProgramsMenu/ProgramsMenu.ApplicationsList
+   -- ****iv* ProgramsMenu/ProgramsMenu.Applications_List
    -- FUNCTION
    -- List of all applications which can be used to execute files or
    -- directories
    -- SOURCE
-   ApplicationsList: Bookmarks_Container.Map;
+   Applications_List: Bookmarks_Container.Map;
    -- ****
 
-   -- ****iv* ProgramsMenu/ProgramsMenu.NamesList
+   -- ****iv* ProgramsMenu/ProgramsMenu.Names_List
    -- FUNCTION
    -- List of all applications showed in the menu
    -- SOURCE
-   NamesList: UnboundedString_Container.Vector;
+   Names_List: UnboundedString_Container.Vector;
    -- ****
 
    -- ****it* ProgramsMenu/ProgramsMenu.Programs_Sorting
