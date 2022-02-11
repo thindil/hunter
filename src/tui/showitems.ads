@@ -100,6 +100,8 @@ package ShowItems is
    -- ****f* ShowItemsTUI/ShowItemsTUI.Update_Output
    -- FUNCTION
    -- Update UI with the output of the user command
+   -- PARAMETERS
+   -- Text_To_Append - The text which will be appended to the output
    -- SOURCE
    procedure Update_Output(Text_To_Append: String);
    -- ****
