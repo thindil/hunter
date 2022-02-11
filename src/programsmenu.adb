@@ -22,29 +22,32 @@ package body ProgramsMenu is
 
    function Get_Program_Name(Desktop_File: String) return String is
    begin
-      if not Applications_List.Contains(Desktop_File) then
+      if not Applications_List.Contains(Key => Desktop_File) then
          return Desktop_File;
       end if;
       return Applications_List(Desktop_File);
    end Get_Program_Name;
 
    procedure Create_Programs_Menu is
-      ApplicationsPaths: constant array
-        (Positive range <>) of Unbounded_String :=
-        (To_Unbounded_String("/usr/share/applications"),
-         To_Unbounded_String("/usr/share/applnk"),
-         To_Unbounded_String("/usr/local/share/applications"),
-         To_Unbounded_String("/usr/local/share/applnk"),
-         To_Unbounded_String(Value("HOME") & "/.local/share/applications"),
-         To_Unbounded_String(Value("HOME") & "/.local/share/applnk"));
+      Applications_Paths: constant array(1 .. 6) of Unbounded_String :=
+        (1 => To_Unbounded_String(Source => "/usr/share/applications"),
+         2 => To_Unbounded_String(Source => "/usr/share/applnk"),
+         3 => To_Unbounded_String(Source => "/usr/local/share/applications"),
+         4 => To_Unbounded_String(Source => "/usr/local/share/applnk"),
+         5 =>
+           To_Unbounded_String
+             (Source => Value(Name => "HOME") & "/.local/share/applications"),
+         6 =>
+           To_Unbounded_String
+             (Source => Value(Name => "HOME") & "/.local/share/applnk"));
       SubDirectory: Dir_Type;
-      SubLast: Natural;
-      SubFileName: String(1 .. 1_024);
+      SubLast: Natural := 0;
+      SubFileName: String(1 .. 1_024) := (others => ' ');
       File: File_Type;
-      FileLine: Unbounded_String;
+      FileLine: Unbounded_String := Null_Unbounded_String;
    begin
       Create_Programs_Menu_Loop :
-      for Path of ApplicationsPaths loop
+      for Path of Applications_Paths loop
          if not Ada.Directories.Exists(To_String(Path)) then
             goto End_Of_Loop;
          end if;
