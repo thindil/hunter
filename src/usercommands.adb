@@ -89,8 +89,9 @@ package body UserCommands is
                   (Source => Value, Low => Space_Index,
                    High => Length(Source => Value)));
       end if;
+      --## rule off SIMPLIFIABLE_STATEMENTS
       Replace_Substitutes_Loop :
-      for I in Arguments'Range loop --## rule line off SIMPLIFIABLE_STATEMENTS
+      for I in Arguments'Range loop
          if Arguments(I).all = "@1" then
             Arguments(I) :=
               new String'(To_String(Source => Common.Current_Directory));
@@ -98,6 +99,7 @@ package body UserCommands is
             Arguments(I) := new String'(To_String(Source => Current_Selected));
          end if;
       end loop Replace_Substitutes_Loop;
+      --## rule on SIMPLIFIABLE_STATEMENTS
       Non_Blocking_Spawn
         (Descriptor => Process_Desc,
          Command => Full_Name(Name => To_String(Source => Command_Name)),
