@@ -40,39 +40,39 @@ package body ProgramsMenu is
          6 =>
            To_Unbounded_String
              (Source => Value(Name => "HOME") & "/.local/share/applnk"));
-      SubDirectory: Dir_Type;
-      SubLast: Natural := 0;
-      SubFileName: String(1 .. 1_024) := (others => ' ');
+      Sub_Directory: Dir_Type;
+      Sub_Last: Natural := 0;
+      Sub_File_Name: String(1 .. 1_024) := (others => ' ');
       File: File_Type;
-      FileLine: Unbounded_String := Null_Unbounded_String;
+      File_Line: Unbounded_String := Null_Unbounded_String;
    begin
       Create_Programs_Menu_Loop :
       for Path of Applications_Paths loop
-         if not Ada.Directories.Exists(To_String(Path)) then
+         if not Ada.Directories.Exists(Name => To_String(Source => Path)) then
             goto End_Of_Loop;
          end if;
-         Open(SubDirectory, To_String(Path));
+         Open(Dir => Sub_Directory, Dir_Name => To_String(Source => Path));
          Read_Desktop_File_Loop :
          loop
-            Read(SubDirectory, SubFileName, SubLast);
-            exit Read_Desktop_File_Loop when SubLast = 0;
-            if Extension(SubFileName(1 .. SubLast)) = "desktop" then
+            Read(Dir => Sub_Directory, Str => Sub_File_Name, Last => Sub_Last);
+            exit Read_Desktop_File_Loop when Sub_Last = 0;
+            if Extension(Name => Sub_File_Name(1 .. Sub_Last)) = "desktop" then
                Open
-                 (File, In_File,
-                  To_String(Path) & "/" &
-                  Simple_Name(SubFileName(1 .. SubLast)));
+                 (File => File, Mode => In_File,
+                  Name => To_String(Source => Path) & "/" &
+                  Simple_Name(Name => Sub_File_Name(1 .. Sub_Last)));
                Find_Application_Name_Loop :
-               while not End_Of_File(File) loop
-                  FileLine := To_Unbounded_String(Get_Line(File));
-                  if Length(FileLine) > 5
-                    and then Slice(FileLine, 1, 5) = "Name=" then
+               while not End_Of_File(File => File) loop
+                  File_Line := To_Unbounded_String(Get_Line(File));
+                  if Length(File_Line) > 5
+                    and then Slice(File_Line, 1, 5) = "Name=" then
                      Applications_List.Include
-                       (SubFileName(1 .. SubLast),
-                        Slice(FileLine, 6, Length(FileLine)));
+                       (Sub_File_Name(1 .. Sub_Last),
+                        Slice(File_Line, 6, Length(File_Line)));
                      if not Names_List.Contains
-                         (Unbounded_Slice(FileLine, 6, Length(FileLine))) then
+                         (Unbounded_Slice(File_Line, 6, Length(File_Line))) then
                         Names_List.Append
-                          (Unbounded_Slice(FileLine, 6, Length(FileLine)));
+                          (Unbounded_Slice(File_Line, 6, Length(File_Line)));
                      end if;
                      exit Find_Application_Name_Loop;
                   end if;
@@ -80,7 +80,7 @@ package body ProgramsMenu is
                Close(File);
             end if;
          end loop Read_Desktop_File_Loop;
-         Close(SubDirectory);
+         Close(Sub_Directory);
          <<End_Of_Loop>>
       end loop Create_Programs_Menu_Loop;
       Programs_Sorting.Sort(Names_List);
