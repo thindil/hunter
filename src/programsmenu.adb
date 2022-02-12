@@ -59,20 +59,32 @@ package body ProgramsMenu is
             if Extension(Name => Sub_File_Name(1 .. Sub_Last)) = "desktop" then
                Open
                  (File => File, Mode => In_File,
-                  Name => To_String(Source => Path) & "/" &
-                  Simple_Name(Name => Sub_File_Name(1 .. Sub_Last)));
+                  Name =>
+                    To_String(Source => Path) & "/" &
+                    Simple_Name(Name => Sub_File_Name(1 .. Sub_Last)));
                Find_Application_Name_Loop :
                while not End_Of_File(File => File) loop
-                  File_Line := To_Unbounded_String(Get_Line(File));
-                  if Length(File_Line) > 5
-                    and then Slice(File_Line, 1, 5) = "Name=" then
+                  File_Line :=
+                    To_Unbounded_String(Source => Get_Line(File => File));
+                  if Length(Source => File_Line) > 5
+                    and then Slice(Source => File_Line, Low => 1, High => 5) =
+                      "Name=" then
                      Applications_List.Include
-                       (Sub_File_Name(1 .. Sub_Last),
-                        Slice(File_Line, 6, Length(File_Line)));
+                       (Key => Sub_File_Name(1 .. Sub_Last),
+                        New_Item =>
+                          Slice
+                            (Source => File_Line, Low => 6,
+                             High => Length(Source => File_Line)));
                      if not Names_List.Contains
-                         (Unbounded_Slice(File_Line, 6, Length(File_Line))) then
+                         (Item =>
+                            Unbounded_Slice
+                              (Source => File_Line, Low => 6,
+                               High => Length(Source => File_Line))) then
                         Names_List.Append
-                          (Unbounded_Slice(File_Line, 6, Length(File_Line)));
+                          (New_Item =>
+                             Unbounded_Slice
+                               (Source => File_Line, Low => 6,
+                                High => Length(Source => File_Line)));
                      end if;
                      exit Find_Application_Name_Loop;
                   end if;
