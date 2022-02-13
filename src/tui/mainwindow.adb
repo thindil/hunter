@@ -280,13 +280,6 @@ package body MainWindow is
       Terminal_Interface.Curses.Clear(ListWindow);
       if UILocation = DIRECTORY_VIEW then
          Box(ListWindow, Default_Character, Default_Character);
-         Set_Foreground(Path, Normal_Video);
-      else
-         if UILocation = PATH_BUTTONS then
-            Set_Foreground(Path, (Reverse_Video => True, others => False));
-         else
-            Set_Foreground(Path, Normal_Video);
-         end if;
       end if;
       Add(ListWindow, 1, 10, Mc(Interpreter, "Name"));
       if Settings.Show_Last_Modified then
@@ -400,6 +393,10 @@ package body MainWindow is
    begin
       Set_Cursor_Visibility(Visibility);
       if Item_Count(DirectoryList) = 0 then
+         if Key in KEY_LEFT | KEY_RIGHT then
+            UILocation := PATH_BUTTONS;
+            return Path_Keys(Key);
+         end if;
          return DIRECTORY_VIEW;
       end if;
       case Key is
@@ -418,6 +415,9 @@ package body MainWindow is
             Result := Driver(DirectoryList, M_ScrollUp_Page);
          when KEY_PPAGE =>
             Result := Driver(DirectoryList, M_ScrollDown_Page);
+         when KEY_LEFT | KEY_RIGHT =>
+            UILocation := PATH_BUTTONS;
+            return Path_Keys(Key);
          when 10 =>
             Tcl_Eval(Interpreter, "ActivateItem");
             if Tcl_GetResult(Interpreter) = "0" then
@@ -492,7 +492,8 @@ package body MainWindow is
             end if;
             return DIRECTORY_VIEW;
          when others =>
-            null;
+            UILocation := DIRECTORY_VIEW;
+            return Directory_Keys(Key);
       end case;
       if Result = Menu_Ok then
          Refresh(PathButtons);
