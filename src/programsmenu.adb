@@ -13,10 +13,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
-with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
+with Ada.Directories;
+with Ada.Environment_Variables;
+with Ada.Text_IO;
+with GNAT.Directory_Operations;
 
 package body ProgramsMenu is
 
@@ -29,6 +29,11 @@ package body ProgramsMenu is
    end Get_Program_Name;
 
    procedure Create_Programs_Menu is
+      use Ada.Directories;
+      use Ada.Environment_Variables;
+      use Ada.Text_IO;
+      use GNAT.Directory_Operations;
+
       Applications_Paths: constant array(1 .. 6) of Unbounded_String :=
         (1 => To_Unbounded_String(Source => "/usr/share/applications"),
          2 => To_Unbounded_String(Source => "/usr/share/applnk"),
