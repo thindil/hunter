@@ -89,13 +89,13 @@ package body ProgramsMenu is
                      exit Find_Application_Name_Loop;
                   end if;
                end loop Find_Application_Name_Loop;
-               Close(File);
+               Close(File => File);
             end if;
          end loop Read_Desktop_File_Loop;
-         Close(Sub_Directory);
+         Close(Dir => Sub_Directory);
          <<End_Of_Loop>>
       end loop Create_Programs_Menu_Loop;
-      Programs_Sorting.Sort(Names_List);
+      Programs_Sorting.Sort(Container => Names_List);
    end Create_Programs_Menu;
 
 end ProgramsMenu;
