@@ -38,18 +38,22 @@ package body ProgramsMenu.UI is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
-      ApplicationsFrame: constant Ttk_Frame :=
+      Applications_Frame: constant Ttk_Frame :=
         Get_Widget
-          (".mainframe.paned.previewframe.infoframe.applicationsmenu", Interp);
-      TextEntry: constant Ttk_Entry :=
-        Get_Widget(ApplicationsFrame & ".searchentry", Interp);
+          (pathName =>
+             ".mainframe.paned.previewframe.infoframe.applicationsmenu",
+           Interp => Interp);
+      Text_Entry: constant Ttk_Entry :=
+        Get_Widget
+          (pathName => Applications_Frame & ".searchentry", Interp => Interp);
    begin
-      if Winfo_Get(ApplicationsFrame, "ismapped") = "0" then
+      if Winfo_Get(Widgt => Applications_Frame, Info => "ismapped") = "0" then
          Tcl.Tk.Ada.Grid.Grid
-           (ApplicationsFrame, "-column 1 -row 5 -rowspan 3");
-         Focus(TextEntry);
+           (Slave => Applications_Frame,
+            Options => "-column 1 -row 5 -rowspan 3");
+         Focus(Widgt => Text_Entry);
       else
-         Grid_Forget(ApplicationsFrame);
+         Grid_Forget(Slave => Applications_Frame);
       end if;
       return TCL_OK;
    end Toggle_Applications_Menu_Command;
@@ -59,37 +63,39 @@ package body ProgramsMenu.UI is
    -- Search the programs menu for the selected text (case insensitive) and
    -- show only matching applications
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- SearchProgram
    -- SOURCE
    function Search_Program_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Search_Program_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
-      TextEntry: constant Ttk_Entry :=
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      Text_Entry: constant Ttk_Entry :=
         Get_Widget
-          (".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry",
-           Interp);
-      ProgramsTree: constant Ttk_Tree_View :=
+          (pathName =>
+             ".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry",
+           Interp => Interp);
+      Programs_Tree: constant Ttk_Tree_View :=
         Get_Widget
-          (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree",
-           Interp);
+          (pathName =>
+             ".mainframe.paned.previewframe.infoframe.applicationsmenu.tree",
+           Interp => Interp);
       Query: Unbounded_String;
       Selected: Boolean := False;
    begin
-      Query := To_Unbounded_String(Get(TextEntry));
+      Query := To_Unbounded_String(Get(Text_Entry));
       Search_Program_Loop :
       for I in Names_List.First_Index .. Names_List.Last_Index loop
          if Query /= Null_Unbounded_String
@@ -98,11 +104,11 @@ package body ProgramsMenu.UI is
                (To_Lower(To_String(Names_List(I))),
                 To_Lower(To_String(Query))) =
              0 then
-            Detach(ProgramsTree, Positive'Image(I));
+            Detach(Programs_Tree, Positive'Image(I));
          else
-            Move(ProgramsTree, Positive'Image(I), "{}", Natural'Image(I - 1));
+            Move(Programs_Tree, Positive'Image(I), "{}", Natural'Image(I - 1));
             if not Selected then
-               Selection_Set(ProgramsTree, Positive'Image(I));
+               Selection_Set(Programs_Tree, Positive'Image(I));
                Selected := True;
             end if;
          end if;
