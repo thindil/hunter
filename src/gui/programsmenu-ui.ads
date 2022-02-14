@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -29,26 +29,26 @@ package ProgramsMenu.UI is
    -- Show or hide menu which allow to set a application which can be used
    -- to execute the selected file or directory
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command. Unused
-   -- Argv       - Values of arguments passed to the command. Unused
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- ToggleApplicationsMenu
    -- SOURCE
    function Toggle_Applications_Menu_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
-      -- ****f* ProgramsMenuUI/ProgramsMenuUI.CreateProgramsMenuUI
+      -- ****f* ProgramsMenuUI/ProgramsMenuUI.Create_Programs_Menu_Ui
       -- FUNCTION
       -- Create associated programs menu popover
       -- SOURCE
-   procedure CreateProgramsMenuUI;
+   procedure Create_Programs_Menu_Ui;
    -- ****
 
 end ProgramsMenu.UI;
