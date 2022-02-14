@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -265,7 +265,7 @@ package body MainWindow.Commands is
       if Winfo_Get(Widgt => Frame, Info => "ismapped") = "1" then
          return
            Toggle_Applications_Menu_Command
-             (ClientData => Client_Data, Interp => Interp, Argc => Argc,
+             (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
               Argv => Argv);
       end if;
       return TCL_OK;

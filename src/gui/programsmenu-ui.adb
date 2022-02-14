@@ -35,9 +35,9 @@ with Utils; use Utils;
 package body ProgramsMenu.UI is
 
    function Toggle_Applications_Menu_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData, Argc, Argv);
+      pragma Unreferenced(Client_Data, Argc, Argv);
       ApplicationsFrame: constant Ttk_Frame :=
         Get_Widget
           (".mainframe.paned.previewframe.infoframe.applicationsmenu", Interp);
@@ -204,7 +204,7 @@ package body ProgramsMenu.UI is
       return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
    end Hide_On_Focus_Out_Command;
 
-   procedure CreateProgramsMenuUI is
+   procedure Create_Programs_Menu_Ui is
       ApplicationsFrame: constant Ttk_Frame :=
         Create
           (".mainframe.paned.previewframe.infoframe.applicationsmenu",
@@ -251,6 +251,6 @@ package body ProgramsMenu.UI is
          Mc
            (Get_Context,
             "{Press enter or double click to set the selected program as associated with that type of file or directory.}"));
-   end CreateProgramsMenuUI;
+   end Create_Programs_Menu_Ui;
 
 end ProgramsMenu.UI;

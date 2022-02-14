@@ -1507,7 +1507,7 @@ package body ShowItems is
            (Paned => Paned, SubWindow => Get_Preview_Frame,
             Options => "-weight 20");
       end if;
-      CreateProgramsMenuUI;
+      Create_Programs_Menu_Ui;
    end Create_Show_Items_Ui;
 
    procedure Show_Destination is
