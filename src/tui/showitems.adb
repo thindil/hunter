@@ -803,15 +803,6 @@ package body ShowItems is
       Set_Sub_Window
         (Path, Derived_Window(PathButtons, 1, (Columns / 2) - 2, 0, 1));
       Post(Path);
-      if UILocation = DESTINATION_VIEW then
-         Set_Foreground(Path, Normal_Video);
-      else
-         if UILocation = DESTINATION_PATH then
-            Set_Foreground(Path, (Reverse_Video => True, others => False));
-         else
-            Set_Foreground(Path, Normal_Video);
-         end if;
-      end if;
       Buttons_Visible := True;
       Set_Current(Path, Path_Items.all(Index));
       Move_Window(PathButtons, 1, (Columns / 2));
@@ -881,6 +872,9 @@ package body ShowItems is
             Result := Driver(DestinationList, M_ScrollUp_Page);
          when KEY_PPAGE =>
             Result := Driver(DestinationList, M_ScrollDown_Page);
+         when KEY_LEFT | KEY_RIGHT =>
+            UILocation := Destination_Path_Keys(Key);
+            return;
          when 10 =>
             if Is_Directory
                 (To_String(Destination_Directory) & "/" &
@@ -924,7 +918,9 @@ package body ShowItems is
             ShowDestination;
             return DESTINATION_VIEW;
          when others =>
-            null;
+            UILocation := DESTINATION_VIEW;
+            Destination_Keys(Key);
+            return UILocation;
       end case;
       if Result = Menu_Ok then
          Refresh(PathButtons);
