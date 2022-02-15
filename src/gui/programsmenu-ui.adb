@@ -95,20 +95,20 @@ package body ProgramsMenu.UI is
       Query: Unbounded_String;
       Selected: Boolean := False;
    begin
-      Query := To_Unbounded_String(Get(Text_Entry));
+      Query := To_Unbounded_String(Source => Get(Widgt => Text_Entry));
       Search_Program_Loop :
       for I in Names_List.First_Index .. Names_List.Last_Index loop
          if Query /= Null_Unbounded_String
            and then
              Index
-               (To_Lower(To_String(Names_List(I))),
-                To_Lower(To_String(Query))) =
+               (Source => To_Lower(Item => To_String(Source => Names_List(I))),
+                Pattern => To_Lower(Item => To_String(Source => Query))) =
              0 then
-            Detach(Programs_Tree, Positive'Image(I));
+            Detach(TreeViewWidget => Programs_Tree, ItemsList => Positive'Image(I));
          else
-            Move(Programs_Tree, Positive'Image(I), "{}", Natural'Image(I - 1));
+            Move(TreeViewWidget => Programs_Tree, Item => Positive'Image(I), Parent => "{}", Index => Natural'Image(I - 1));
             if not Selected then
-               Selection_Set(Programs_Tree, Positive'Image(I));
+               Selection_Set(TreeViewWidget => Programs_Tree, Items => Positive'Image(I));
                Selected := True;
             end if;
          end if;
@@ -121,29 +121,29 @@ package body ProgramsMenu.UI is
    -- Set the selected application as a default application to open the
    -- selected mime type items
    -- PARAMETERS
-   -- ClientData - Custom data send to the command.
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command.
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command.
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command.
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- SetApplication
    -- SOURCE
    function Set_Application_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Set_Application_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      ApplicationsView: constant Ttk_Tree_View :=
+      Applications_View: constant Ttk_Tree_View :=
         Get_Widget
           (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree",
            Interp);
-      Pid: Process_Id;
+      Pid: Process_Id := GNAT.OS_Lib.Invalid_Pid;
       ExecutableName: constant String := Find_Executable("xdg-mime");
       ApplicationName: Unbounded_String;
       Button: constant Ttk_Button :=
@@ -156,7 +156,7 @@ package body ProgramsMenu.UI is
       end if;
       ApplicationName :=
         To_Unbounded_String
-          (Item(ApplicationsView, Selection(ApplicationsView), "-text"));
+          (Item(Applications_View, Selection(Applications_View), "-text"));
       Set_New_Application_Loop :
       for I in Applications_List.Iterate loop
          if Applications_List(I) = ApplicationName then
@@ -175,7 +175,7 @@ package body ProgramsMenu.UI is
             exit Set_New_Application_Loop;
          end if;
       end loop Set_New_Application_Loop;
-      return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
+      return Toggle_Applications_Menu_Command(Client_Data, Interp, Argc, Argv);
    end Set_Application_Command;
 
    -- ****o* ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command
