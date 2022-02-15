@@ -104,11 +104,16 @@ package body ProgramsMenu.UI is
                (Source => To_Lower(Item => To_String(Source => Names_List(I))),
                 Pattern => To_Lower(Item => To_String(Source => Query))) =
              0 then
-            Detach(TreeViewWidget => Programs_Tree, ItemsList => Positive'Image(I));
+            Detach
+              (TreeViewWidget => Programs_Tree,
+               ItemsList => Positive'Image(I));
          else
-            Move(TreeViewWidget => Programs_Tree, Item => Positive'Image(I), Parent => "{}", Index => Natural'Image(I - 1));
+            Move
+              (TreeViewWidget => Programs_Tree, Item => Positive'Image(I),
+               Parent => "{}", Index => Natural'Image(I - 1));
             if not Selected then
-               Selection_Set(TreeViewWidget => Programs_Tree, Items => Positive'Image(I));
+               Selection_Set
+                 (TreeViewWidget => Programs_Tree, Items => Positive'Image(I));
                Selected := True;
             end if;
          end if;
@@ -141,34 +146,49 @@ package body ProgramsMenu.UI is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       Applications_View: constant Ttk_Tree_View :=
         Get_Widget
-          (".mainframe.paned.previewframe.infoframe.applicationsmenu.tree",
-           Interp);
+          (pathName =>
+             ".mainframe.paned.previewframe.infoframe.applicationsmenu.tree",
+           Interp => Interp);
       Pid: Process_Id := GNAT.OS_Lib.Invalid_Pid;
-      ExecutableName: constant String := Find_Executable("xdg-mime");
-      ApplicationName: Unbounded_String;
+      Executable_Name: constant String := Find_Executable(Name => "xdg-mime");
+      Application_Name: Unbounded_String;
       Button: constant Ttk_Button :=
         Get_Widget
-          (".mainframe.paned.previewframe.infoframe.associatedprogram",
-           Interp);
+          (pathName =>
+             ".mainframe.paned.previewframe.infoframe.associatedprogram",
+           Interp => Interp);
    begin
-      if ExecutableName = "" then
+      if Executable_Name = "" then
          return TCL_OK;
       end if;
-      ApplicationName :=
+      Application_Name :=
         To_Unbounded_String
-          (Item(Applications_View, Selection(Applications_View), "-text"));
+          (Source =>
+             Item
+               (TreeViewWidget => Applications_View,
+                Item => Selection(TreeViewWidget => Applications_View),
+                Options => "-text"));
       Set_New_Application_Loop :
       for I in Applications_List.Iterate loop
-         if Applications_List(I) = ApplicationName then
+         if Applications_List(I) = Application_Name then
             Pid :=
               Non_Blocking_Spawn
-                (ExecutableName,
-                 Argument_String_To_List
-                   ("default " & Bookmarks_Container.Key(I) & " " &
-                    Get_Mime_Type(To_String(Current_Selected))).all);
+                (Program_Name => Executable_Name,
+                 Args =>
+                   Argument_String_To_List
+                     (Arg_String =>
+                        "default " & Bookmarks_Container.Key(Position => I) &
+                        " " &
+                        Get_Mime_Type
+                          (File_Name =>
+                             To_String(Source => Current_Selected))).all);
             if Pid = GNAT.OS_Lib.Invalid_Pid then
                Show_Message
-                 (Mc(Interp, "{Could not set new associated program.}"));
+                 (Message =>
+                    Mc
+                      (Interp => Interp,
+                       Src_String =>
+                         "{Could not set new associated program.}"));
             else
                configure(Button, "-text {" & Applications_List(I) & "}");
             end if;
