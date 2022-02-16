@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Updated contributing guide
 - During copying or moving files and directories, bookmarks change destination
   directory, not source
+- Use left and right arrows to move between path buttons in console version
 
 ### Fixed
 - Don't auto hide questions or confirmation messages in graphical version
