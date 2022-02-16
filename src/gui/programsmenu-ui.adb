@@ -190,90 +190,90 @@ package body ProgramsMenu.UI is
                        Src_String =>
                          "{Could not set new associated program.}"));
             else
-               configure(Button, "-text {" & Applications_List(I) & "}");
+               configure(Widgt => Button, options => "-text {" & Applications_List(I) & "}");
             end if;
             exit Set_New_Application_Loop;
          end if;
       end loop Set_New_Application_Loop;
-      return Toggle_Applications_Menu_Command(Client_Data, Interp, Argc, Argv);
+      return Toggle_Applications_Menu_Command(Client_Data => Client_Data, Interp => Interp, Argc => Argc, Argv => Argv);
    end Set_Application_Command;
 
    -- ****o* ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command
    -- FUNCTION
    -- If application menu lost focus, hide it
    -- PARAMETERS
-   -- ClientData - Custom data send to the command.
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command.
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command.
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command.
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
    -- HideOnFocusOut
    -- SOURCE
    function Hide_On_Focus_Out_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Hide_On_Focus_Out_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
    begin
-      if Focus(Interp) in
+      if Focus(Interp => Interp) in
           ".mainframe.paned.previewframe.infoframe.applicationsmenu.searchentry" |
             ".mainframe.paned.previewframe.infoframe.applicationsmenu.tree" |
             ".mainframe.paned.previewframe.infoframe.associatedprogram" then
          return TCL_OK;
       end if;
-      return Toggle_Applications_Menu_Command(ClientData, Interp, Argc, Argv);
+      return Toggle_Applications_Menu_Command(Client_Data => Client_Data, Interp => Interp, Argc => Argc, Argv => Argv);
    end Hide_On_Focus_Out_Command;
 
    procedure Create_Programs_Menu_Ui is
-      ApplicationsFrame: constant Ttk_Frame :=
+      Applications_Frame: constant Ttk_Frame :=
         Create
-          (".mainframe.paned.previewframe.infoframe.applicationsmenu",
-           "-width 200 -height 400");
-      SearchEntry: constant Ttk_Entry :=
-        Create(Widget_Image(ApplicationsFrame) & ".searchentry");
-      ApplicationsView: constant Ttk_Tree_View :=
+          (pathName => ".mainframe.paned.previewframe.infoframe.applicationsmenu",
+           options => "-width 200 -height 400");
+      Search_Entry: constant Ttk_Entry :=
+        Create(pathName => Applications_Frame & ".searchentry");
+      Applications_View: constant Ttk_Tree_View :=
         Create
-          (Widget_Image(ApplicationsFrame) & ".tree",
-           "-show tree -yscrollcommand {" & Widget_Image(ApplicationsFrame) &
+          (pathName => Applications_Frame & ".tree",
+           options => "-show tree -yscrollcommand {" & Applications_Frame &
            ".scrolly set}");
       ApplicationsYScroll: constant Ttk_Scrollbar :=
         Create
-          (Widget_Image(ApplicationsFrame) & ".scrolly",
+          (Widget_Image(Applications_Frame) & ".scrolly",
            "-orient vertical -command [list " &
-           Widget_Image(ApplicationsView) & " yview]");
+           Widget_Image(Applications_View) & " yview]");
    begin
       Autoscroll(ApplicationsYScroll);
       Create_Programs_Menu;
       Fill_Applications_List_Loop :
       for I in Names_List.First_Index .. Names_List.Last_Index loop
          Insert
-           (ApplicationsView,
+           (Applications_View,
             "{} end -id" & Positive'Image(I) & " -text {" &
             To_String(Names_List(I)) & "}");
       end loop Fill_Applications_List_Loop;
-      Tcl.Tk.Ada.Grid.Grid(SearchEntry, "-columnspan 2 -sticky we");
-      Tcl.Tk.Ada.Grid.Grid(ApplicationsView, "-column 0 -row 1 -sticky we");
+      Tcl.Tk.Ada.Grid.Grid(Search_Entry, "-columnspan 2 -sticky we");
+      Tcl.Tk.Ada.Grid.Grid(Applications_View, "-column 0 -row 1 -sticky we");
       Tcl.Tk.Ada.Grid.Grid(ApplicationsYScroll, "-column 1 -row 1 -sticky ns");
-      Row_Configure(ApplicationsFrame, ApplicationsView, "-weight 1");
+      Row_Configure(Applications_Frame, Applications_View, "-weight 1");
       Add_Command
         ("ToggleApplicationsMenu", Toggle_Applications_Menu_Command'Access);
       Add_Command("SearchProgram", Search_Program_Command'Access);
       Add_Command("SetApplication", Set_Application_Command'Access);
       Add_Command("HideOnFocusOut", Hide_On_Focus_Out_Command'Access);
-      Bind(SearchEntry, "<KeyRelease>", "{SearchProgram}");
-      Bind(SearchEntry, "<FocusOut>", "{HideOnFocusOut}");
-      Bind(ApplicationsView, "<Double-1>", "{SetApplication}");
-      Bind(ApplicationsView, "<Return>", "{SetApplication}");
-      Bind(ApplicationsView, "<FocusOut>", "{HideOnFocusOut}");
-      Add(SearchEntry, Mc(Get_Context, "{Search for a program}"));
+      Bind(Search_Entry, "<KeyRelease>", "{SearchProgram}");
+      Bind(Search_Entry, "<FocusOut>", "{HideOnFocusOut}");
+      Bind(Applications_View, "<Double-1>", "{SetApplication}");
+      Bind(Applications_View, "<Return>", "{SetApplication}");
+      Bind(Applications_View, "<FocusOut>", "{HideOnFocusOut}");
+      Add(Search_Entry, Mc(Get_Context, "{Search for a program}"));
       Add
-        (ApplicationsView,
+        (Applications_View,
          Mc
            (Get_Context,
             "{Press enter or double click to set the selected program as associated with that type of file or directory.}"));
