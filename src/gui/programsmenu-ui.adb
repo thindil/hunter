@@ -190,12 +190,17 @@ package body ProgramsMenu.UI is
                        Src_String =>
                          "{Could not set new associated program.}"));
             else
-               configure(Widgt => Button, options => "-text {" & Applications_List(I) & "}");
+               configure
+                 (Widgt => Button,
+                  options => "-text {" & Applications_List(I) & "}");
             end if;
             exit Set_New_Application_Loop;
          end if;
       end loop Set_New_Application_Loop;
-      return Toggle_Applications_Menu_Command(Client_Data => Client_Data, Interp => Interp, Argc => Argc, Argv => Argv);
+      return
+        Toggle_Applications_Menu_Command
+          (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+           Argv => Argv);
    end Set_Application_Command;
 
    -- ****o* ProgramsMenu/ProgramsMenu.Hide_On_Focus_Out_Command
@@ -227,40 +232,53 @@ package body ProgramsMenu.UI is
             ".mainframe.paned.previewframe.infoframe.associatedprogram" then
          return TCL_OK;
       end if;
-      return Toggle_Applications_Menu_Command(Client_Data => Client_Data, Interp => Interp, Argc => Argc, Argv => Argv);
+      return
+        Toggle_Applications_Menu_Command
+          (Client_Data => Client_Data, Interp => Interp, Argc => Argc,
+           Argv => Argv);
    end Hide_On_Focus_Out_Command;
 
    procedure Create_Programs_Menu_Ui is
       Applications_Frame: constant Ttk_Frame :=
         Create
-          (pathName => ".mainframe.paned.previewframe.infoframe.applicationsmenu",
+          (pathName =>
+             ".mainframe.paned.previewframe.infoframe.applicationsmenu",
            options => "-width 200 -height 400");
       Search_Entry: constant Ttk_Entry :=
         Create(pathName => Applications_Frame & ".searchentry");
       Applications_View: constant Ttk_Tree_View :=
         Create
           (pathName => Applications_Frame & ".tree",
-           options => "-show tree -yscrollcommand {" & Applications_Frame &
-           ".scrolly set}");
-      ApplicationsYScroll: constant Ttk_Scrollbar :=
+           options =>
+             "-show tree -yscrollcommand {" & Applications_Frame &
+             ".scrolly set}");
+      Applications_Y_Scroll: constant Ttk_Scrollbar :=
         Create
-          (Widget_Image(Applications_Frame) & ".scrolly",
-           "-orient vertical -command [list " &
-           Widget_Image(Applications_View) & " yview]");
+          (pathName => Applications_Frame & ".scrolly",
+           options =>
+             "-orient vertical -command [list " & Applications_View &
+             " yview]");
    begin
-      Autoscroll(ApplicationsYScroll);
+      Autoscroll(Scroll => Applications_Y_Scroll);
       Create_Programs_Menu;
       Fill_Applications_List_Loop :
       for I in Names_List.First_Index .. Names_List.Last_Index loop
          Insert
-           (Applications_View,
-            "{} end -id" & Positive'Image(I) & " -text {" &
-            To_String(Names_List(I)) & "}");
+           (TreeViewWidget => Applications_View,
+            Options =>
+              "{} end -id" & Positive'Image(I) & " -text {" &
+              To_String(Source => Names_List(I)) & "}");
       end loop Fill_Applications_List_Loop;
-      Tcl.Tk.Ada.Grid.Grid(Search_Entry, "-columnspan 2 -sticky we");
-      Tcl.Tk.Ada.Grid.Grid(Applications_View, "-column 0 -row 1 -sticky we");
-      Tcl.Tk.Ada.Grid.Grid(ApplicationsYScroll, "-column 1 -row 1 -sticky ns");
-      Row_Configure(Applications_Frame, Applications_View, "-weight 1");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Search_Entry, Options => "-columnspan 2 -sticky we");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Applications_View, Options => "-column 0 -row 1 -sticky we");
+      Tcl.Tk.Ada.Grid.Grid
+        (Slave => Applications_Y_Scroll,
+         Options => "-column 1 -row 1 -sticky ns");
+      Row_Configure
+        (Master => Applications_Frame, Slave => Applications_View,
+         Options => "-weight 1");
       Add_Command
         ("ToggleApplicationsMenu", Toggle_Applications_Menu_Command'Access);
       Add_Command("SearchProgram", Search_Program_Command'Access);
