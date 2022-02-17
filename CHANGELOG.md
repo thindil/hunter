@@ -3,6 +3,9 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Added
+- Use Enter key to accept values in dialogs in console version
+
 ### Changed
 - During confirmation of deleting files and directories, show only names of
   items to delete, not their full paths
