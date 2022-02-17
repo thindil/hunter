@@ -280,14 +280,14 @@ package body ProgramsMenu.UI is
         (Master => Applications_Frame, Slave => Applications_View,
          Options => "-weight 1");
       Add_Command
-        ("ToggleApplicationsMenu", Toggle_Applications_Menu_Command'Access);
-      Add_Command("SearchProgram", Search_Program_Command'Access);
-      Add_Command("SetApplication", Set_Application_Command'Access);
-      Add_Command("HideOnFocusOut", Hide_On_Focus_Out_Command'Access);
-      Bind(Search_Entry, "<KeyRelease>", "{SearchProgram}");
-      Bind(Search_Entry, "<FocusOut>", "{HideOnFocusOut}");
-      Bind(Applications_View, "<Double-1>", "{SetApplication}");
-      Bind(Applications_View, "<Return>", "{SetApplication}");
+        (Name => "ToggleApplicationsMenu", Ada_Command => Toggle_Applications_Menu_Command'Access);
+      Add_Command(Name => "SearchProgram", Ada_Command => Search_Program_Command'Access);
+      Add_Command(Name => "SetApplication", Ada_Command => Set_Application_Command'Access);
+      Add_Command(Name => "HideOnFocusOut", Ada_Command => Hide_On_Focus_Out_Command'Access);
+      Bind(Widgt => Search_Entry, Sequence => "<KeyRelease>", Script => "{SearchProgram}");
+      Bind(Widgt => Search_Entry, Sequence => "<FocusOut>", Script => "{HideOnFocusOut}");
+      Bind(Widgt => Applications_View, Sequence => "<Double-1>", Script => "{SetApplication}");
+      Bind(Widgt => Applications_View, Sequence => "<Return>", Script => "{SetApplication}");
       Bind(Applications_View, "<FocusOut>", "{HideOnFocusOut}");
       Add(Search_Entry, Mc(Get_Context, "{Search for a program}"));
       Add
