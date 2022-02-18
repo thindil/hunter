@@ -13,23 +13,23 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Characters.Handling; use Ada.Characters.Handling;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Ada.Characters.Handling;
+with Ada.Strings.Fixed;
+with GNAT.OS_Lib;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Grid; use Tcl.Tk.Ada.Grid;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.TtkButton; use Tcl.Tk.Ada.Widgets.TtkButton;
+with Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkEntry; use Tcl.Tk.Ada.Widgets.TtkEntry;
 with Tcl.Tk.Ada.Widgets.TtkFrame; use Tcl.Tk.Ada.Widgets.TtkFrame;
-with Tcl.Tk.Ada.Widgets.TtkScrollbar; use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+with Tcl.Tk.Ada.Widgets.TtkScrollbar;
 with Tcl.Tk.Ada.Widgets.TtkTreeView; use Tcl.Tk.Ada.Widgets.TtkTreeView;
-with Tcl.Tk.Ada.Winfo; use Tcl.Tk.Ada.Winfo;
-with Tcl.Tklib.Ada.Autoscroll; use Tcl.Tklib.Ada.Autoscroll;
-with Tcl.Tklib.Ada.Tooltip; use Tcl.Tklib.Ada.Tooltip;
-with Common; use Common;
-with Messages.UI; use Messages.UI;
+with Tcl.Tk.Ada.Winfo;
+with Tcl.Tklib.Ada.Autoscroll;
+with Tcl.Tklib.Ada.Tooltip;
+with Common;
+with Messages.UI;
 with Utils; use Utils;
 
 package body ProgramsMenu.UI is
@@ -38,6 +38,8 @@ package body ProgramsMenu.UI is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Tcl.Tk.Ada.Winfo;
+
       Applications_Frame: constant Ttk_Frame :=
         Get_Widget
           (pathName =>
@@ -82,6 +84,9 @@ package body ProgramsMenu.UI is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data, Argc, Argv);
+      use Ada.Characters.Handling;
+      use Ada.Strings.Fixed;
+
       Text_Entry: constant Ttk_Entry :=
         Get_Widget
           (pathName =>
@@ -144,6 +149,11 @@ package body ProgramsMenu.UI is
    function Set_Application_Command
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
+      use GNAT.OS_Lib;
+      use Tcl.Tk.Ada.Widgets.TtkButton;
+      use Common;
+      use Messages.UI;
+
       Applications_View: constant Ttk_Tree_View :=
         Get_Widget
           (pathName =>
@@ -239,6 +249,10 @@ package body ProgramsMenu.UI is
    end Hide_On_Focus_Out_Command;
 
    procedure Create_Programs_Menu_Ui is
+      use Tcl.Tk.Ada.Widgets.TtkScrollbar;
+      use Tcl.Tklib.Ada.Autoscroll;
+      use Tcl.Tklib.Ada.Tooltip;
+
       Applications_Frame: constant Ttk_Frame :=
         Create
           (pathName =>
