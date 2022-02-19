@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -32,12 +32,14 @@ package Bookmarks is
       Equivalent_Keys => "=");
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* Bookmarks/Bookmarks.Bookmarks_List
    -- FUNCTION
    -- List of all bookmarked locations
    -- SOURCE
    Bookmarks_List: Bookmarks_Container.Map;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
 private
 
