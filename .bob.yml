@@ -74,7 +74,7 @@
 - command:
    name: check
    execute:
-      - sudo docker run --rm -w /app -v $1:/app ghcr.io/thindil/adacontrol:9 /bin/bash others/check.tcl
+      - others/check.tcl
    description: Run AdaControl to check correctness of the code required argument is full path to the program source code
    flags:
       - unixpath
@@ -87,7 +87,7 @@
 - command:
    name: checkfile
    execute:
-      - sudo docker run --rm -w /app -v $1:/app ghcr.io/thindil/adacontrol:9 /bin/bash others/check.tcl $2
+      - others/check.tcl $2
    description: Run AdaControl to check correctness of the selected file. Required arguments are full path to the program source code and relative path to the file which will be check
    flags:
       - unixpath
