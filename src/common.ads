@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -25,12 +25,14 @@ with CopyItems; use CopyItems;
 package Common is
 -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* Common/Common.Current_Directory
    -- FUNCTION
    -- Currently selected directory to show
    -- SOURCE
    Current_Directory: Unbounded_String;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****t* Common/Common.Item_Actions
    -- FUNCTION
