@@ -1,0 +1,79 @@
+with "tashy";
+with "xmlada";
+with "ncursesada";
+
+project hunter is
+
+   for Main use ("hunter.adb");
+   for Source_Dirs use ("src", "src/tui");
+   for Object_Dir use "obj";
+   for Exec_Dir use "bin";
+
+   for Create_Missing_Dirs use "True";
+
+   type Mode_Type is ("debug", "release", "analyze");
+   Mode : Mode_Type := external ("Mode", "debug");
+
+   package Builder is
+      case Mode is
+         when "release" =>
+            for Default_Switches("ada") use ("-j0", "-gnat2012");
+         when others =>
+            for Default_Switches("ada") use ("-j0", "-gnat2012", "-g");
+            for Global_Configuration_Pragmas use "debug.adc";
+      end case;
+   end Builder;
+
+   package Binder is
+      case Mode is
+         when "debug" | "analyze" =>
+            for Default_Switches("ada") use ("-E", "-shared");
+         when "release" =>
+            for Default_Switches("ada") use ("-static");
+      end case;
+   end Binder;
+
+   package Compiler is
+      case Mode is
+         when "debug" =>
+            for Default_Switches ("ada") use ("-gnatwa",
+               "-fstack-check",
+               "-gnatVa",
+               "-gnatU",
+               "-gnatf",
+               "-gnateE",
+               "-gnaty3aAbCdefhIklnOprSux",
+               "-gnatwe");
+         when "release" =>
+            for Default_Switches ("ada") use ("-O2",
+               "-ffunction-sections",
+               "-fdata-sections",
+               "-s",
+               "-flto");
+         when "analyze" =>
+            for Default_Switches ("ada") use ("-pg",
+               "-fprofile-arcs",
+               "-ftest-coverage");
+      end case;
+   end Compiler;
+
+   package Linker is
+      case Mode is
+         when "debug" =>
+            for Default_Switches ("ada") use ("-no-pie", "-lmagic");
+         when "release" =>
+            for Default_Switches ("ada") use ("-Wl,--gc-sections",
+               "-lmagic",
+               "-Wl,-rpath,$ORIGIN/../lib",
+               "-s",
+               "-O2",
+               "-flto");
+         when "analyze" =>
+            for Default_Switches ("ada") use ("-no-pie",
+               "-pg",
+               "-fprofile-arcs",
+               "-lmagic");
+      end case;
+   end Linker;
+
+end hunter;
