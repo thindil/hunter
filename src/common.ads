@@ -77,12 +77,14 @@ package Common is
    Selected_Items: UnboundedString_Container.Vector;
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* Common/Common.Current_Selected
    -- FUNCTION
    -- Full path to currently selected file or directory
    -- SOURCE
    Current_Selected: Unbounded_String;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****v* MainWindowTUI/MainWindowTUI.Interpreter
    -- FUNCTION
