@@ -84,7 +84,6 @@ package Common is
    -- SOURCE
    Current_Selected: Unbounded_String;
    -- ****
-   --## rule on GLOBAL_REFERENCES
 
    -- ****v* MainWindowTUI/MainWindowTUI.Interpreter
    -- FUNCTION
@@ -92,5 +91,6 @@ package Common is
    -- SOURCE
    Interpreter: Tcl_Interp;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
 end Common;
