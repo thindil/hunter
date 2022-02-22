@@ -79,6 +79,15 @@
    flags:
       - unixpath
 - command:
+   name: checkconsole
+   variables:
+      - GPR_PROJECT = others/console.gpr
+   execute:
+      - others/check.tcl
+   description: Run AdaControl to check correctness of the code required argument is full path to the program source code
+   flags:
+      - unixpath
+- command:
    name: checkall
    execute:
       - bob debug
