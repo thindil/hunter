@@ -63,6 +63,7 @@ package Common is
    Default_Item_Action: constant Item_Actions := CREATEFILE;
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* Common/Common.New_Action
    -- FUNCTION
    -- Current performed action on files or directories
@@ -77,7 +78,6 @@ package Common is
    Selected_Items: UnboundedString_Container.Vector;
    -- ****
 
-   --## rule off GLOBAL_REFERENCES
    -- ****v* Common/Common.Current_Selected
    -- FUNCTION
    -- Full path to currently selected file or directory
