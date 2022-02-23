@@ -96,7 +96,16 @@
 - command:
    name: checkfile
    execute:
-      - others/check.tcl $2
-   description: Run AdaControl to check correctness of the selected file. Required arguments are full path to the program source code and relative path to the file which will be check
+      - others/check.tcl $1
+   description: Run AdaControl to check correctness of the selected file. Required argument is relative path to the file which will be check
+   flags:
+      - unixpath
+- command:
+   name: checkconsolefile
+   variables:
+      - GPR_PROJECT = others/console.gpr
+   execute:
+      - others/check.tcl $1
+   description: Run AdaControl to check correctness of the selected file in console version. Required argument is relative path to the file which will be check
    flags:
       - unixpath
