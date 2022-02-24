@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -28,7 +28,7 @@ package body CopyItems is
      (Name: String; Path: Unbounded_String; Success: in out Boolean) is
       use Utils.UI;
 
-      New_Path: Unbounded_String := Path;
+      New_Path: Unbounded_String := Path; --## rule line off GLOBAL_REFERENCES
       procedure Copy_File(File_Name: String) is
          New_Name: Unbounded_String :=
            New_Path &
