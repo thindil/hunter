@@ -75,7 +75,7 @@
    name: check
    execute:
       - others/check.tcl
-   description: Run AdaControl to check correctness of the code required argument is full path to the program source code
+   description: Run AdaControl to check correctness of the code
    flags:
       - unixpath
 - command:
@@ -84,7 +84,7 @@
       - GPR_PROJECT = others/console.gpr
    execute:
       - others/check.tcl
-   description: Run AdaControl to check correctness of the code required argument is full path to the program source code
+   description: Run AdaControl to check correctness of the code
    flags:
       - unixpath
 - command:
