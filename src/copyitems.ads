@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -32,12 +32,14 @@ package CopyItems is
      (Index_Type => Positive, Element_Type => Unbounded_String);
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* CopyItems/CopyItems.Copy_Items_List
    -- FUNCTION
    -- Stores names of all selected to copy files and directories
    -- SOURCE
    Copy_Items_List: UnboundedString_Container.Vector;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****f* CopyItems/CopyItems.Copy_Item
    -- FUNCTION
