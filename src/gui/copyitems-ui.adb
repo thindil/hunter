@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -33,12 +33,14 @@ with Utils.UI; use Utils.UI;
 
 package body CopyItems.UI is
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* CopyItemsUI/CopyItemsUI.Source_Directory
    -- FUNCTION
    -- Full path to the source directory of copied files and directories
    -- SOURCE
    Source_Directory: Unbounded_String;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****o* CopyItemsUI/CopyItemsUI.Copy_Data_Command
    -- FUNCTION
