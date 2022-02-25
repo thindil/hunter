@@ -46,11 +46,14 @@ package body DeleteItems is
       use Preferences;
       use Utils.UI;
 
-      Go_Up, Success: Boolean := False;
+      Go_Up: Boolean := False;
       Arguments: Argument_List :=
         (1 => new String'("-rf"), 2 => new String'(""));
       Old_Setting: constant Boolean := Settings.Delete_Files;
+      --## rule off GLOBAL_REFERENCES
       Delete_Time: String(1 .. 19) := (others => ' ');
+      Success: Boolean := False;
+      --## rule on GLOBAL_REFERENCES
       procedure Move_To_Trash(Name: Unbounded_String) is
          use Ada.Calendar;
          use Ada.Calendar.Formatting;
