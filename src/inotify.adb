@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -21,12 +21,14 @@ with GNAT.OS_Lib; use GNAT.OS_Lib;
 
 package body Inotify is
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* Inotify/Inotify.Instance
    -- FUNCTION
    -- inotify instance to read
    -- SOURCE
    Instance: File_Descriptor;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****is* Inotify/Inotify.Watch_Data
    -- FUNCTION
