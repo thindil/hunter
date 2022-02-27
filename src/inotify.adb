@@ -59,6 +59,7 @@ package body Inotify is
      (Index_Type => Positive, Element_Type => Watch_Data);
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    --## rule off REDUCEABLE_SCOPE
    -- ****iv* Inotify/Inotify.Watches
    -- FUNCTION
@@ -67,6 +68,7 @@ package body Inotify is
    Watches: Watches_Container.Vector;
    -- ****
    --## rule on REDUCEABLE_SCOPE
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* Inotify/Inotify.Watches_List
    -- FUNCTION
