@@ -31,5 +31,7 @@ if {[catch {exec adactl -f [file join $rootdir others rules.aru] -p [file join $
       } else {
          file delete $logfile
       }
+   } else {
+      return -options $options -level 0 $results
    }   
 }
