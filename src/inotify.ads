@@ -84,7 +84,6 @@ package Inotify is
    -- SOURCE
    Events_List: Events_Container.Vector;
    -- ****
-   --## rule on GLOBAL_REFERENCES
 
    -- ****v* Inotify/Inotify.Temporary_Stop
    -- FUNCTION
@@ -93,6 +92,7 @@ package Inotify is
    -- SOURCE
    Temporary_Stop: Boolean := False;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****f* Inotify/Inotify.Inotify_Init
    -- FUNCTION
