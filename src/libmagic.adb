@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -43,12 +43,14 @@ package body LibMagic is
       return Magic_Data;
    end Get_Magic_Instance;
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* LibMagic/LibMagic.Initialized
    -- FUNCTION
    -- If true, libmagic was succesfully initialized. Default is false.
    -- SOURCE
    Initialized: Boolean := False;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* LibMagic/LibMagic.Is_Initialized
    -- FUNCTION
