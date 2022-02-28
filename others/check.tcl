@@ -20,7 +20,7 @@ exec gprclean -P hunter.gpr >@stdout
 file delete $logfile
 cd [file join obj]
 if {$argc == 0} {
-   set adaoptions "-r hunter-tcl-cargv-chelper-unicode-sax-dom-input_sources"
+   set adaoptions "-r hunter-tcl-cargv-chelper-unicode-sax-dom-input_sources-dom_core"
 } else {
    set adaoptions "[file join $rootdir src [lindex $argv 0]]"
 }
