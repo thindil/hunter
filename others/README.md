@@ -21,3 +21,5 @@ Various files which are not necessary needed for development:
 * check.tcl          - script to run AdaControl check for the code. **Important:**
                        run this script from the main project directory, not
                        from here.
+* console.gpr        - GNAT project file used to check console version of the
+                       program with AdaControl
