@@ -24,12 +24,14 @@ with Utils;
 
 package body LibMagic is
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* LibMagic/LibMagic.Magic_Data
    -- FUNCTION
    -- Pointer to the Magic data
    -- SOURCE
    Magic_Data: System.Address;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* LibMagic/LibMagic.Get_Magic_Instance
    -- FUNCTION
