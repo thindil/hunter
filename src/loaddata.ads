@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -148,12 +148,14 @@ package LoadData is
    package Items_Sorting is new Items_Container.Generic_Sorting;
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* LoadData/LoadData.Items_List
    -- FUNCTION
    -- The content of the currently viewed directory
    -- SOURCE
    Items_List: Items_Container.Vector;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****v* LoadData/LoadData.Second_Items_List
    -- FUNCTION
