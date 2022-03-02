@@ -21,6 +21,8 @@ jobs:
          mkdir obj
          cd obj
          adactl -f ../others/rules.aru -p ../hunter.gpr -o ../adacontrol.log -r hunter-tcl-cargv-chelper-unicode-sax-dom-input_sources-dom_core
+         rm -rf *.*
+         adactl -f ../others/rules.aru -p ../others/console.gpr -o ../adacontrol.log -r hunter-tcl-cargv-chelper-unicode-sax-dom-input_sources-dom_core
          cd ..
 
     - name: Upload the log
