@@ -155,7 +155,6 @@ package LoadData is
    -- SOURCE
    Items_List: Items_Container.Vector;
    -- ****
-   --## rule on GLOBAL_REFERENCES
 
    -- ****v* LoadData/LoadData.Second_Items_List
    -- FUNCTION
@@ -164,6 +163,7 @@ package LoadData is
    -- SOURCE
    Second_Items_List: Items_Container.Vector;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****f* LoadData/LoadData.Add_Item
    -- FUNCTION
