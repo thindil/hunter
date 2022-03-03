@@ -91,12 +91,14 @@ package LoadData is
    Default_Sorting_Order: constant Sorting_Order := NAMEASC;
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* LoadData/LoadData.Sort_Order
    -- FUNCTION
    -- Currently set sorting order for directory view. Default value is NameAsc
    -- SOURCE
    Sort_Order: Sorting_Order := Default_Sorting_Order;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****f* LoadData/LoadData."<"
    -- FUNCTION
