@@ -164,7 +164,6 @@ package body MainWindow.Commands is
       Convention => C;
       -- ****
 
-   --## rule off GLOBAL_REFERENCES
    procedure Quit_Command(Client_Data: Integer) is
       pragma Unreferenced(Client_Data);
       use Tcl.Tk.Ada.Widgets.Toplevel;
@@ -195,7 +194,6 @@ package body MainWindow.Commands is
       Inotify_Close;
       Magic_Close;
    end Quit_Command;
-   --## rule on GLOBAL_REFERENCES
 
    -- ****o* MCommands/MCommands.Hide_Widget_Command
    -- FUNCTION
