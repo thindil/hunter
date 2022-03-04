@@ -40,12 +40,14 @@ with Utils.UI;
 
 package body Messages.UI is
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* MessagesUI/MessagesUI.Message_Frame
    -- FUNCTION
    -- Main frame for the message widget
    -- SOURCE
    Message_Frame: Ttk_Frame;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* MessagesUI/MessagesUI.Get_Message_Frame
    -- FUNCTION
