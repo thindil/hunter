@@ -106,13 +106,11 @@ package body MainWindow is
             end;
          when SHOWTRASH =>
             declare
-               Main_Menu_Array: constant array(1 .. 6) of Unbounded_String :=
+               Main_Menu_Array: constant array(1 .. 4) of Unbounded_String :=
                  (To_Unbounded_String(Mc(Interpreter, "Quit")),
                   To_Unbounded_String(Mc(Interpreter, "Bookmarks")),
                   To_Unbounded_String(Mc(Interpreter, "View")),
-                  To_Unbounded_String(Mc(Interpreter, "Restore")),
-                  To_Unbounded_String(Mc(Interpreter, "Delete")),
-                  To_Unbounded_String(Mc(Interpreter, "Clear")));
+                  To_Unbounded_String(Mc(Interpreter, "Actions")));
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 7);
             begin
@@ -604,6 +602,14 @@ package body MainWindow is
                   Index := Index + 1;
                end loop;
             end;
+         when T_ACTIONS_MENU =>
+            Menu_Items := new Item_Array(1 .. 4);
+            Menu_Items.all(1) :=
+              New_Item(Mc(Interpreter, "{Restore selected}"));
+            Menu_Items.all(2) :=
+              New_Item(Mc(Interpreter, "{Delete selected}"));
+            Menu_Items.all(3) :=
+              New_Item(Mc(Interpreter, "{Clear trash}"));
          when others =>
             null;
       end case;
@@ -719,10 +725,12 @@ package body MainWindow is
                      Refresh(MenuWindow);
                      return DIRECTORY_VIEW;
                   elsif New_Action = SHOWTRASH then
-                     Tcl_Eval(Interpreter, "RestoreItems");
-                     Clear_Preview_Window;
-                     Update_Directory_List(True);
-                     return DIRECTORY_VIEW;
+                     -- Tcl_Eval(Interpreter, "RestoreItems");
+                     -- Clear_Preview_Window;
+                     -- Update_Directory_List(True);
+                     -- return DIRECTORY_VIEW;
+                     Draw_Menu(T_ACTIONS_MENU);
+                     return T_ACTIONS_MENU;
                   end if;
                   Draw_Menu(ACTIONS_MENU);
                   return ACTIONS_MENU;
@@ -1096,4 +1104,43 @@ package body MainWindow is
       return COMMANDS_MENU;
    end User_Commands_Keys;
 
+   function Trash_Actions_Keys(Key: Key_Code) return UI_Locations is
+      Result: Menus.Driver_Result := Unknown_Request;
+      CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
+   begin
+      case Key is
+         when KEY_UP =>
+            Result := Driver(SubMenu, M_Up_Item);
+         when KEY_DOWN =>
+            Result := Driver(SubMenu, M_Down_Item);
+         when Key_Home =>
+            Result := Driver(SubMenu, M_First_Item);
+         when Key_End =>
+            Result := Driver(SubMenu, M_Last_Item);
+         when 10 =>
+            Post(SubMenu, False);
+            Delete(SubMenu);
+            Update_Directory_List;
+            Show_Preview;
+            case CurrentIndex is
+               when 1 =>
+                  return CREATE_FORM;
+               when 2 =>
+                  return CREATE_FORM;
+               when 3 =>
+                  return DESTINATION_VIEW;
+               when others =>
+                  UILocation := DIRECTORY_VIEW;
+                  Update_Directory_List(True);
+                  Show_Preview;
+                  return DIRECTORY_VIEW;
+            end case;
+         when others =>
+            null;
+      end case;
+      if Result = Menu_Ok then
+         Refresh(SubMenuWindow);
+      end if;
+      return T_ACTIONS_MENU;
+   end Trash_Actions_Keys;
 end MainWindow;

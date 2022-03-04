@@ -287,6 +287,8 @@ begin
                UILocation := Add_Command_Keys(Key);
             when COMMANDS_MENU =>
                UILocation := User_Commands_Keys(Key);
+            when T_ACTIONS_MENU =>
+               UILocation := Trash_Actions_Keys(Key);
          end case;
       end if;
    end loop Main_Program_Loop;
