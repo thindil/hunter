@@ -287,7 +287,7 @@ package body Messages.UI is
       use Tcl.Tk.Ada.TtkStyle;
       use Utils;
 
-      Buttons_Box: Ttk_Frame;
+      Buttons_Box: Ttk_Frame; --## rule line off GLOBAL_REFERENCES
       Button: Ttk_Button;
       procedure Add_Button
         (Name, Text, Response: String; Column: Natural := 0) is
