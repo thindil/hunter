@@ -59,12 +59,14 @@ package body Messages.UI is
       return Message_Frame;
    end Get_Message_Frame;
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* MessagesUI/MessagesUI.Message_Label
    -- FUNCTION
    -- Label which show message text
    -- SOURCE
    Message_Label: Ttk_Label;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* MessagesUI/MessagesUI.Get_Message_Label
    -- FUNCTION
