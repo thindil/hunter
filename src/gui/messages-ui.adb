@@ -78,12 +78,14 @@ package body Messages.UI is
       return Message_Label;
    end Get_Message_Label;
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* MessagesUI/MessagesUI.Timer_Id
    -- FUNCTION
    -- Id of timer for auto close command
    -- SOURCE
    Timer_Id: Unbounded_String := Null_Unbounded_String;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* MessagesIU/MessagesUI.Set_Timer
    -- FUNCTION
