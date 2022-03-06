@@ -112,7 +112,7 @@ package body MainWindow is
                   To_Unbounded_String(Mc(Interpreter, "View")),
                   To_Unbounded_String(Mc(Interpreter, "Actions")));
                Menu_Items: constant Item_Array_Access :=
-                 new Item_Array(1 .. 7);
+                 new Item_Array(1 .. 5);
             begin
                Create_Trash_Menu_Loop :
                for I in Main_Menu_Array'Range loop
@@ -120,7 +120,7 @@ package body MainWindow is
                end loop Create_Trash_Menu_Loop;
                Menu_Items.all(Menu_Items'Last) := Null_Item;
                ProgramMenu := New_Menu(Menu_Items);
-               Set_Format(ProgramMenu, 1, 6);
+               Set_Format(ProgramMenu, 1, 4);
                Set_Mark(ProgramMenu, "");
                MenuWindow := Create(1, Columns, 0, 0);
                Set_Window(ProgramMenu, MenuWindow);
