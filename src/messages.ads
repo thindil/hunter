@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,6 +20,7 @@
 package Messages is
 -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* Messages/Messages.Yes_For_All
    -- FUNCTION
    -- Set to True if user clicked Yes for All button in response to question,
@@ -27,5 +28,6 @@ package Messages is
    -- SOURCE
    Yes_For_All: Boolean;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
 end Messages;
