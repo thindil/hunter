@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -23,12 +23,14 @@ with CopyItems; use CopyItems;
 package Modules is
 -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* Modules/Modules.Enabled_Modules
    -- FUNCTION
    -- Store paths to the enabled the program's modules
    -- SOURCE
    Enabled_Modules: UnboundedString_Container.Vector;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****t* Modules/Modules.Triggers
    -- FUNCTION
