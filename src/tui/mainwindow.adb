@@ -603,7 +603,7 @@ package body MainWindow is
                end loop;
             end;
          when T_ACTIONS_MENU =>
-            Menu_Items := new Item_Array(1 .. 4);
+            Menu_Items := new Item_Array(1 .. 5);
             Menu_Items.all(1) :=
               New_Item(Mc(Interpreter, "{Restore selected}"));
             Menu_Items.all(2) :=
