@@ -234,7 +234,8 @@ package body Preferences is
 
       Config_File: File_Type;
       Configuration: DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
-      Setting_Node, Main_Node: DOM.Core.Element;
+      Main_Node: Dom.Core.Element; --## rule line off GLOBAL_REFERENCES
+      Setting_Node: DOM.Core.Element;
       Save_Settings_Data: Document;
       Unused_Node: Text;
       procedure Save_Boolean(Value: Boolean; Name: String) is
