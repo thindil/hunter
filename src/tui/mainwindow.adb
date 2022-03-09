@@ -1116,6 +1116,7 @@ package body MainWindow is
          when 10 =>
             Post(SubMenu, False);
             Delete(SubMenu);
+            UILocation := DIRECTORY_VIEW;
             Update_Directory_List;
             Show_Preview;
             case CurrentIndex is
@@ -1129,9 +1130,6 @@ package body MainWindow is
                when 3 =>
                   return DESTINATION_VIEW;
                when others =>
-                  UILocation := DIRECTORY_VIEW;
-                  Update_Directory_List(True);
-                  Show_Preview;
                   return DIRECTORY_VIEW;
             end case;
          when others =>
