@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -142,12 +142,14 @@ package Preferences is
       20 => To_Unbounded_String(Source => "Alt-t"));
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* Preferences/Preferences.Accelerators
    -- FUNCTION
    -- Array with keyboard shortcuts used by the program
    -- SOURCE
    Accelerators: Accelerators_Array := Default_Accelerators;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****f* Preferences/Preferences.Load_Settings
    -- FUNCTION
