@@ -234,7 +234,7 @@ package body Preferences is
 
       Config_File: File_Type;
       Configuration: DOM_Implementation; --## rule line off IMPROPER_INITIALIZATION
-      Main_Node: Dom.Core.Element; --## rule line off GLOBAL_REFERENCES
+      Main_Node: DOM.Core.Element; --## rule line off GLOBAL_REFERENCES
       Setting_Node: DOM.Core.Element;
       Save_Settings_Data: Document;
       Unused_Node: Text;
