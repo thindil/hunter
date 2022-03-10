@@ -32,6 +32,7 @@ All notable changes to this project will be documented in this file.
   in console version
 - Crash when trying to open the project's website in about dialog in console
   and graphical versions when xdg-open isn't installed
+- Showing info about the selected file or directory in Trash in console version
 
 ## [1.6] - 2021-08-08
 
