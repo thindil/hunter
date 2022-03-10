@@ -38,7 +38,7 @@ package body Preferences is
 
       Reader: Tree_Reader; --## rule line off IMPROPER_INITIALIZATION
       Data_File: File_Input;
-      Save_Settings_Data: Document;
+      Save_Settings_Data: Document; --## rule line off GLOBAL_REFERENCES
       Nodes_List: Node_List;
       Data_Node_Name: Unbounded_String := Null_Unbounded_String;
       Data_Node: Node;
