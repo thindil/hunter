@@ -101,12 +101,14 @@ package Preferences is
       Toolbars_Size => 24, Monospace_Font => False);
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****v* Preferences/Preferences.Settings
    -- FUNCTION
    -- The program settings
    -- SOURCE
    Settings: Settings_Data := Default_Settings;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****t* Preferences/Preferences.Accelerators_Array
    -- FUNCTION
