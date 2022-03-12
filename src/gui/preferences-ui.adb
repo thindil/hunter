@@ -65,7 +65,7 @@ package body Preferences.UI is
       use Tcl.Tklib.Ada.Tooltip;
       use Utils;
 
-      Label_Frame: Ttk_LabelFrame;
+      Label_Frame: Ttk_LabelFrame; --## rule line off GLOBAL_REFERENCES
       Check_Button: Ttk_CheckButton;
       Label: Ttk_Label;
       Scale: Ttk_Scale;
