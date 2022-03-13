@@ -45,6 +45,7 @@ package ProgramsMenu is
 
 private
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* ProgramsMenu/ProgramsMenu.Applications_List
    -- FUNCTION
    -- List of all applications which can be used to execute files or
@@ -52,6 +53,7 @@ private
    -- SOURCE
    Applications_List: Bookmarks_Container.Map;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****iv* ProgramsMenu/ProgramsMenu.Names_List
    -- FUNCTION
