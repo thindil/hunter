@@ -53,7 +53,6 @@ private
    -- SOURCE
    Applications_List: Bookmarks_Container.Map;
    -- ****
-   --## rule on GLOBAL_REFERENCES
 
    -- ****iv* ProgramsMenu/ProgramsMenu.Names_List
    -- FUNCTION
@@ -61,6 +60,7 @@ private
    -- SOURCE
    Names_List: UnboundedString_Container.Vector;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****it* ProgramsMenu/ProgramsMenu.Programs_Sorting
    -- FUNCTION
