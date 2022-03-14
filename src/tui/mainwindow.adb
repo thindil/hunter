@@ -1126,7 +1126,9 @@ package body MainWindow is
                   Update_Directory_List(True);
                   return DIRECTORY_VIEW;
                when 2 =>
-                  return CREATE_FORM;
+                  New_Action := DELETETRASH;
+                  ShowDeleteForm;
+                  return DELETE_FORM;
                when 3 =>
                   return DESTINATION_VIEW;
                when others =>
