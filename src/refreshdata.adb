@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -72,7 +72,9 @@ package body RefreshData is
       use ShowItems;
 
       Refresh_List, Item_Exists: Boolean := False;
+      --## rule off GLOBAL_REFERENCES
       Item_Index: Items_Container.Extended_Index := 0;
+      --## rule on GLOBAL_REFERENCES
       File_Name: Unbounded_String := Null_Unbounded_String;
       Directory: Dir_Type;
       Sub_File_Name: String(1 .. 1_024) := (others => ' ');
