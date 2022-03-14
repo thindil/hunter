@@ -43,12 +43,14 @@ package body RefreshData is
    Timer_Token: Tcl_TimerToken;
    -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* RefreshData/Is_Checking
    -- FUNCTION
    -- If True, checking events is on
    -- SOURCE
    Is_Checking: Boolean := False;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* RefreshData/RefreshData.Check_Items
    -- FUNCTION
