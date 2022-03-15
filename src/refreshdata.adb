@@ -36,6 +36,7 @@ package body RefreshData is
       Inotify_Read;
    end Inotify_Task;
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* RefreshData/RefreshData.Timer_Token
    -- FUNCTION
    -- Identifier for the timer for periodically update directory listing
@@ -43,7 +44,6 @@ package body RefreshData is
    Timer_Token: Tcl_TimerToken;
    -- ****
 
-   --## rule off GLOBAL_REFERENCES
    -- ****iv* RefreshData/Is_Checking
    -- FUNCTION
    -- If True, checking events is on
