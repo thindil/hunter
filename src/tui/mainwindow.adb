@@ -1142,4 +1142,5 @@ package body MainWindow is
       end if;
       return T_ACTIONS_MENU;
    end Trash_Actions_Keys;
+
 end MainWindow;
