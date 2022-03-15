@@ -73,8 +73,9 @@ package body RefreshData is
       use MainWindow;
       use ShowItems;
 
-      Refresh_List, Item_Exists: Boolean := False;
+      Item_Exists: Boolean := False;
       --## rule off GLOBAL_REFERENCES
+      Refresh_List: Boolean := False;
       Item_Index: Items_Container.Extended_Index := 0;
       --## rule on GLOBAL_REFERENCES
       File_Name: Unbounded_String := Null_Unbounded_String;
