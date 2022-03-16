@@ -1311,7 +1311,7 @@ package body ShowItems is
 
       Paned: constant Ttk_PanedWindow :=
         Get_Widget(pathName => ".mainframe.paned");
-      Label: Ttk_Label;
+      Label: Ttk_Label; --## rule line off GLOBAL_REFERENCES
       Button: Ttk_Button;
       Button_Texts: constant array(1 .. 3) of Unbounded_String :=
         (1 =>
