@@ -177,6 +177,9 @@ package body DeleteItems.UI is
          when KEY_DOWN =>
             Result := Go_Next_Field(DialogForm);
          when 27 =>
+            if New_Action = DELETETRASH then
+               New_Action := SHOWTRASH;
+            end if;
             Show_Preview;
             Set_Cursor_Visibility(Visibility);
             Delete_Dialog(DialogForm, True);
@@ -195,6 +198,9 @@ package body DeleteItems.UI is
                   Current_Selected :=
                     Current_Selected & "/" & Items_List(1).Name;
                end if;
+            end if;
+            if New_Action = DELETETRASH then
+               New_Action := SHOWTRASH;
             end if;
             Show_Preview;
             Set_Cursor_Visibility(Visibility);

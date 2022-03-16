@@ -104,7 +104,7 @@ package body MainWindow is
                  (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
                Post(ProgramMenu);
             end;
-         when SHOWTRASH =>
+         when SHOWTRASH | DELETETRASH =>
             declare
                Main_Menu_Array: constant array(1 .. 4) of Unbounded_String :=
                  (To_Unbounded_String(Mc(Interpreter, "Quit")),
