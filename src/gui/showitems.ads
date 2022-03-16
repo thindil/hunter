@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ with Tcl; use Tcl;
 package ShowItems is
 -- ****
 
+   --## rule off GLOBAL_REFERENCES
    -- ****f* ShowItems/ShowItems.Destination_Directory
    -- FUNCTION
    -- Current directory previewed. Used during showing destination target for
@@ -33,6 +34,7 @@ package ShowItems is
    -- SOURCE
    Destination_Directory: Unbounded_String;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****f* ShowItems/ShowItems.Scale_Image
    -- FUNCTION
