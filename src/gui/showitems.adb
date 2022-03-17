@@ -159,12 +159,14 @@ package body ShowItems is
       return Preview_Text;
    end Get_Preview_Text;
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* ShowItems/ShowItems.Preview_Canvas
    -- FUNCTION
    -- Tk_Canvas used to show images
    -- SOURCE
    Preview_Canvas: Tk_Canvas;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* ShowItems/ShowItems.Get_Preview_Canvas
    -- FUNCTION
