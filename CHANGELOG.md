@@ -33,6 +33,8 @@ All notable changes to this project will be documented in this file.
 - Crash when trying to open the project's website in about dialog in console
   and graphical versions when xdg-open isn't installed
 - Showing info about the selected file or directory in Trash in console version
+- Showing the main program menu in Trash after deleting file or directory from
+  it in console version
 
 ## [1.6] - 2021-08-08
 
