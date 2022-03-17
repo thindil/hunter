@@ -178,12 +178,14 @@ package body ShowItems is
       return Preview_Canvas;
    end Get_Preview_Canvas;
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* ShowItems/ShowItems.Info_Frame
    -- FUNCTION
    -- Ttk_Frame for show information about the selected item
    -- SOURCE
    Info_Frame: Ttk_Frame;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* ShowItems/ShowItems.Get_Info_Frame
    -- FUNCTION
