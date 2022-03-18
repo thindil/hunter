@@ -142,12 +142,14 @@ package body ShowItems is
       return Preview_Tree;
    end Get_Preview_Tree;
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* ShowItems/ShowItems.Preview_Text
    -- FUNCTION
    -- Tk_Text used to show text files previews
    -- SOURCE
    Preview_Text: Tk_Text;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* ShowItems/ShowItems.Get_Preview_Text
    -- FUNCTION
