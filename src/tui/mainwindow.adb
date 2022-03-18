@@ -1130,7 +1130,9 @@ package body MainWindow is
                   ShowDeleteForm;
                   return DELETE_FORM;
                when 3 =>
-                  return DESTINATION_VIEW;
+                  New_Action := CLEARTRASH;
+                  Tcl_Eval(Interpreter, "ClearTrash");
+                  return MESSAGE_FORM;
                when others =>
                   return DIRECTORY_VIEW;
             end case;
