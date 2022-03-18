@@ -64,12 +64,14 @@ with Utils; use Utils;
 
 package body ShowItems is
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* ShowItems/ShowItems.Preview_Frame
    -- FUNCTION
    -- Main Ttk_Frame for preview items
    -- SOURCE
    Preview_Frame: Ttk_Frame;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* ShowItems/ShowItems.Get_Preview_Frame
    -- FUNCTION
