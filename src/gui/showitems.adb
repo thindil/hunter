@@ -123,12 +123,14 @@ package body ShowItems is
       return Preview_Y_Scroll;
    end Get_Preview_Y_Scroll;
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* ShowItems/ShowItems.Preview_Tree
    -- FUNCTION
    -- Ttk_Tree_View used to show directories previews
    -- SOURCE
    Preview_Tree: Ttk_Tree_View;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* ShowItems/ShowItems.Get_Preview_Tree
    -- FUNCTION
