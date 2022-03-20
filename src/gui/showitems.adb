@@ -106,12 +106,14 @@ package body ShowItems is
       return Preview_X_Scroll;
    end Get_Preview_X_Scroll;
 
+   --## rule off GLOBAL_REFERENCES
    -- ****iv* ShowItems/ShowItems.Preview_Y_Scroll
    -- FUNCTION
    -- Y coordinates scrollbar for previews
    -- SOURCE
    Preview_Y_Scroll: Ttk_Scrollbar;
    -- ****
+   --## rule on GLOBAL_REFERENCES
 
    -- ****if* ShowItems/ShowItems.Get_Preview_Y_Scroll
    -- FUNCTION
