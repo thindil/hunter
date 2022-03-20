@@ -368,7 +368,7 @@ package body ShowItems is
                     Find_Executable
                       (Name => "highlight", Display_Message => False);
                   Success, First_Line: Boolean := True;
-                  File: File_Type;
+                  File: File_Type; --## rule line off GLOBAL_REFERENCES
                   File_Line, Tag_Text, Tag_Name: Unbounded_String :=
                     Null_Unbounded_String;
                   Start_Index, End_Index, Start_Color: Natural := 0;
