@@ -1134,6 +1134,8 @@ package body MainWindow is
                   Tcl_Eval(Interpreter, "ClearTrash");
                   return MESSAGE_FORM;
                when others =>
+                  Clear_Preview_Window;
+                  Update_Directory_List(True);
                   return DIRECTORY_VIEW;
             end case;
          when others =>
