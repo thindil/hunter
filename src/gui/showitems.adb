@@ -371,10 +371,11 @@ package body ShowItems is
                   --## rule off GLOBAL_REFERENCES
                   File: File_Type;
                   File_Line: Unbounded_String := Null_Unbounded_String;
+                  Start_Index: Natural := 0;
                   --## rule on GLOBAL_REFERENCES
-                  File_Line, Tag_Text, Tag_Name: Unbounded_String :=
+                  Tag_Text, Tag_Name: Unbounded_String :=
                     Null_Unbounded_String;
-                  Start_Index, End_Index, Start_Color: Natural := 0;
+                  End_Index, Start_Color: Natural := 0;
                   procedure Load_File is
                   begin
                      Open
