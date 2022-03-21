@@ -16,6 +16,7 @@ All notable changes to this project will be documented in this file.
 - During copying or moving files and directories, bookmarks change destination
   directory, not source
 - Use left and right arrows to move between path buttons in console version
+- Moved all actions in Trash in console version to Actions menu
 
 ### Fixed
 - Don't auto hide questions or confirmation messages in graphical version
