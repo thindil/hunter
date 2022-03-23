@@ -140,12 +140,12 @@ package body Bookmarks.UI is
          return DIRECTORY_VIEW;
       end if;
       if Bookmarks_List.Contains(Bookmark) then
-         New_Action := CREATEFILE;
+         New_Action := Default_Item_Action;
          CreateProgramMenu(True);
          Common.Current_Directory :=
            To_Unbounded_String(Bookmarks_List(Bookmark));
       elsif Bookmark = Mc(Interpreter, "{Home}") then
-         New_Action := CREATEFILE;
+         New_Action := Default_Item_Action;
          CreateProgramMenu(True);
          Common.Current_Directory := To_Unbounded_String(Value("HOME"));
       else
@@ -219,7 +219,7 @@ package body Bookmarks.UI is
                   return MESSAGE_FORM;
                end if;
                if New_Action not in MOVE | COPY then
-                  New_Action := CREATEFILE;
+                  New_Action := Default_Item_Action;
                   Common.Current_Directory :=
                     To_Unbounded_String
                       (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));

@@ -60,7 +60,7 @@ package body Bookmarks.Commands is
       end if;
       if New_Action = SHOWTRASH then
          Toggle_Tool_Buttons(New_Action, True);
-         New_Action := CREATEFILE;
+         New_Action := Default_Item_Action;
       end if;
       if New_Action in COPY | MOVE then
          Tcl_Eval(Interp, "GoToDirectory {" & CArgv.Arg(Argv, 1) & "}");

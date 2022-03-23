@@ -158,7 +158,7 @@ package body Messages.UI is
       Result: Forms.Driver_Result := Unknown_Request;
       function Hide_Dialog return UI_Locations is
       begin
-         New_Action := CREATEFILE;
+         New_Action := Default_Item_Action;
          CreateProgramMenu(True);
          Update_Directory_List(True);
          Show_Preview;
@@ -226,7 +226,7 @@ package body Messages.UI is
                    (Value("HOME") & "/.local/share/Trash/files") then
                   return Go_To_Bookmark(Mc(Interpreter, "{Home}"));
                else
-                  New_Action := CREATEFILE;
+                  New_Action := Default_Item_Action;
                   Update_Directory_List(True);
                   Show_Preview;
                end if;
