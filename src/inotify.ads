@@ -40,13 +40,6 @@ package Inotify is
       MOVED_SELF => 16#0800#, UNMOUNTED_FILESYSTEM => 16#2000#);
    -- ****
 
-   -- ****d* Inotify/Inotify.Accesed_Event
-   -- FUNCTION
-   -- Default Inotify event
-   -- SOURCE
-   Accessed_Event: constant Inotify_Events := ACCESSED;
-   -- ****
-
    -- ****s* Inotify/Inotify.Event_Data
    -- FUNCTION
    -- Data structure used to store information about inotify event

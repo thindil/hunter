@@ -30,6 +30,13 @@ package body Inotify is
    -- ****
    --## rule on GLOBAL_REFERENCES
 
+   -- ****d* Inotify/Inotify.Accesed_Event
+   -- FUNCTION
+   -- Default Inotify event
+   -- SOURCE
+   Accessed_Event: constant Inotify_Events := ACCESSED;
+   -- ****
+
    -- ****is* Inotify/Inotify.Watch_Data
    -- FUNCTION
    -- Data structure for inotify watches
