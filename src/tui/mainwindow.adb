@@ -675,7 +675,7 @@ package body MainWindow is
                         end loop Update_Copy_Items_Loop;
                      end if;
                      if CopySelected(OverwriteItem) = DIRECTORY_VIEW then
-                        New_Action := CREATEFILE;
+                        New_Action := Default_Item_Action;
                         CreateProgramMenu;
                         Refresh(MenuWindow);
                         return DIRECTORY_VIEW;
@@ -697,7 +697,7 @@ package body MainWindow is
                         end loop Update_Move_Items_Loop;
                      end if;
                      if MoveSelected(OverwriteItem) = DIRECTORY_VIEW then
-                        New_Action := CREATEFILE;
+                        New_Action := Default_Item_Action;
                         CreateProgramMenu;
                         Refresh(MenuWindow);
                         return DIRECTORY_VIEW;
@@ -705,7 +705,7 @@ package body MainWindow is
                         return MESSAGE_FORM;
                      end if;
                   elsif New_Action = CREATELINK then
-                     New_Action := CREATEFILE;
+                     New_Action := Default_Item_Action;
                      UILocation := DIRECTORY_VIEW;
                      Update_Directory_List(True);
                      Show_Preview;
@@ -717,7 +717,7 @@ package body MainWindow is
                   return VIEW_MENU;
                when 4 =>
                   if New_Action in COPY | MOVE then
-                     New_Action := CREATEFILE;
+                     New_Action := Default_Item_Action;
                      UILocation := DIRECTORY_VIEW;
                      Update_Directory_List(True);
                      Show_Preview;
@@ -775,6 +775,12 @@ package body MainWindow is
             Result := Driver(SubMenu, M_First_Item);
          when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
+         when 27 =>
+            Post(SubMenu, False);
+            Delete(SubMenu);
+            UILocation := DIRECTORY_VIEW;
+            Update_Directory_List;
+            return DIRECTORY_VIEW;
          when 10 =>
             Post(SubMenu, False);
             Delete(SubMenu);
