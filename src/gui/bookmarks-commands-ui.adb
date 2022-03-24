@@ -173,6 +173,7 @@ package body Bookmarks.Commands.UI is
           (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
          Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
       else
+         Create_Path(Value("HOME") & "/.config/gtk-3.0/");
          Create
            (File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
       end if;
