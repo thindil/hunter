@@ -55,13 +55,6 @@ package Inotify is
    end record;
    -- ****
 
-   -- ****d* Inotify/Inotify.Empty_Event_Data
-   -- FUNCTION
-   -- Empty event data record
-   -- SOURCE
-   Empty_Event_Data: constant Event_Data := Event_Data'(others => <>);
-   -- ****
-
    -- ****t* Inotify/Inotify.Events_Container
    -- FUNCTION
    -- Used to store data about inotify events
