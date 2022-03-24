@@ -23,6 +23,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package Inotify is
 -- ****
 
+   --## rule off TYPE_INITIAL_VALUES
    -- ****t* Inotify/Inotify.Inotify_Events
    -- FUNCTION
    -- Types of inotify events and values for them
@@ -39,6 +40,7 @@ package Inotify is
       CREATED => 16#0100#, DELETED => 16#0200#, DELETED_SELF => 16#0400#,
       MOVED_SELF => 16#0800#, UNMOUNTED_FILESYSTEM => 16#2000#);
    -- ****
+   --## rule on TYPE_INITIAL_VALUES
 
    -- ****s* Inotify/Inotify.Event_Data
    -- FUNCTION
