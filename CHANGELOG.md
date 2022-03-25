@@ -36,6 +36,8 @@ All notable changes to this project will be documented in this file.
 - Showing info about the selected file or directory in Trash in console version
 - Showing the main program menu in Trash after deleting file or directory from
   it in console version
+- Crash when trying to add bookmark when directory with bookmarks' settings
+  doesn't exist
 
 ## [1.6] - 2021-08-08
 
