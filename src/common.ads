@@ -56,12 +56,14 @@ package Common is
       GOTOPATH, CREATELINK, CLEARTRASH, SHOWTRASH, DELETETRASH);
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****d* Common/Common.Default_Item_Action
    -- FUNCTION
    -- Default action type for files and directories
    -- SOURCE
    Default_Item_Action: constant Item_Actions := CREATEFILE;
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
    --## rule off GLOBAL_REFERENCES
    -- ****v* Common/Common.New_Action
