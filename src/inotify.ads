@@ -40,7 +40,6 @@ package Inotify is
       CREATED => 16#0100#, DELETED => 16#0200#, DELETED_SELF => 16#0400#,
       MOVED_SELF => 16#0800#, UNMOUNTED_FILESYSTEM => 16#2000#);
    -- ****
-   --## rule on TYPE_INITIAL_VALUES
 
    -- ****s* Inotify/Inotify.Event_Data
    -- FUNCTION
@@ -56,6 +55,7 @@ package Inotify is
       Path: Unbounded_String;
    end record;
    -- ****
+   --## rule on TYPE_INITIAL_VALUES
 
    -- ****t* Inotify/Inotify.Events_Container
    -- FUNCTION
