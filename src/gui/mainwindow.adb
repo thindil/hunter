@@ -413,7 +413,7 @@ package body MainWindow is
       Start_Timer(Path => To_String(Source => Common.Current_Directory));
       Update_Directory_List(Clear => True);
       Execute_Modules
-        (Interpreter => Get_Context, State => ON_ENTER,
+        (Interpreter => Get_Context, State => On_Enter_Trigger,
          Arguments =>
            "{" & To_String(Source => Common.Current_Directory) & "}");
       Create_Show_Items_Ui;

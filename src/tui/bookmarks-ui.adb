@@ -161,7 +161,7 @@ package body Bookmarks.UI is
       Show_Preview;
       Update_Watch(To_String(Common.Current_Directory));
       Execute_Modules
-        (Interpreter, ON_ENTER,
+        (Interpreter, On_Enter_Trigger,
          "{" & To_String(Common.Current_Directory) & "}");
       return DIRECTORY_VIEW;
    end Go_To_Bookmark;
@@ -226,7 +226,7 @@ package body Bookmarks.UI is
                   Load_Directory(To_String(Common.Current_Directory));
                   Update_Watch(To_String(Common.Current_Directory));
                   Execute_Modules
-                    (Interpreter, ON_ENTER,
+                    (Interpreter, On_Enter_Trigger,
                      "{" & To_String(Common.Current_Directory) & "}");
                else
                   Destination_Directory :=

@@ -485,7 +485,7 @@ package body MainWindow is
                Update_Directory_List(True);
                Update_Watch(To_String(Common.Current_Directory));
                Execute_Modules
-                 (Interpreter, ON_ENTER,
+                 (Interpreter, On_Enter_Trigger,
                   "{" & To_String(Common.Current_Directory) & "}");
             end if;
             return DIRECTORY_VIEW;

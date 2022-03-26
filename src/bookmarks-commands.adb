@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -70,7 +70,7 @@ package body Bookmarks.Commands is
          Load_Directory(To_String(Common.Current_Directory));
          Update_Directory_List(True);
          Execute_Modules
-           (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
+           (Interp, On_Enter_Trigger, "{" & To_String(Common.Current_Directory) & "}");
       end if;
       return TCL_OK;
    end GoToBookmark_Command;

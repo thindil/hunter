@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -118,7 +118,7 @@ package body ActivateItems is
          Update_Directory_List(Clear => True);
          Update_Watch(Path => To_String(Source => Current_Directory));
          Execute_Modules
-           (Interpreter => Interp, State => ON_ENTER,
+           (Interpreter => Interp, State => On_Enter_Trigger,
             Arguments => "{" & To_String(Source => Current_Directory) & "}");
       else
          Execute_File_Block :

@@ -878,7 +878,7 @@ package body Preferences.Commands is
       Frame.Name := New_String(".mainframe");
       Tcl.Tk.Ada.Grid.Grid(Frame);
       Execute_Modules
-        (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
+        (Interp, On_Enter_Trigger, "{" & To_String(Common.Current_Directory) & "}");
       return TCL_OK;
    end Close_Preferences_Command;
 

@@ -1318,7 +1318,7 @@ package body ShowItems is
         (Directory_Name => To_String(Source => Selected_Item), Second => True);
       Update_Directory_List(Clear => True, Frame_Name => "preview");
       Execute_Modules
-        (Interpreter => Interp, State => ON_ENTER,
+        (Interpreter => Interp, State => On_Enter_Trigger,
          Arguments => "{" & To_String(Source => Destination_Directory) & "}");
       return TCL_OK;
    end Go_To_Directory_Command;

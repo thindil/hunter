@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -51,7 +51,7 @@ package body Trash.UI is
         (Interp, "<" & To_String(Accelerators(19)) & ">",
          "{InvokeButton .mainframe.toolbars.actiontoolbar.restorebutton}");
       Execute_Modules
-        (Interp, ON_ENTER, "{" & To_String(Common.Current_Directory) & "}");
+        (Interp, On_Enter_Trigger, "{" & To_String(Common.Current_Directory) & "}");
       return Show_Selected_Command(ClientData, Interp, Argc, Argv);
    end Show_Trash_Command;
 
