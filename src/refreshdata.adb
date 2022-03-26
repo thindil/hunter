@@ -153,7 +153,7 @@ package body RefreshData is
                         Open
                           (Dir => Directory,
                            Dir_Name => To_String(Source => File_Name));
-                        Items_List(Item_Index).Size := 0;
+                        Items_List(Item_Index).Size := Empty_Item_Size;
                         Count_New_Size_Loop :
                         loop
                            Read

@@ -401,7 +401,7 @@ package body Trash is
                    (Ada.Directories.Size
                       (Name => To_String(Source => Full_Name)));
             else
-               Item.Size := 0;
+               Item.Size := Empty_Item_Size;
             end if;
          end if;
          Items_List.Append(New_Item => Item);
