@@ -62,11 +62,4 @@ private
    -- ****
    --## rule on GLOBAL_REFERENCES
 
-   -- ****it* ProgramsMenu/ProgramsMenu.Programs_Sorting
-   -- FUNCTION
-   -- Used in sorting available programs
-   -- SOURCE
-   package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
-   -- ****
-
 end ProgramsMenu;

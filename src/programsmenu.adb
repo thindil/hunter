@@ -20,6 +20,13 @@ with GNAT.Directory_Operations;
 
 package body ProgramsMenu is
 
+   -- ****it* ProgramsMenu/ProgramsMenu.Programs_Sorting
+   -- FUNCTION
+   -- Used in sorting available programs
+   -- SOURCE
+   package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
+   -- ****
+
    function Get_Program_Name(Desktop_File: String) return String is
    begin
       if not Applications_List.Contains(Key => Desktop_File) then
