@@ -15,6 +15,7 @@
 
 with Ada.Containers.Indefinite_Hashed_Maps; use Ada.Containers;
 with Ada.Strings.Hash;
+with CopyItems; use CopyItems;
 
 -- ****h* Bookmarks/Bookmarks
 -- FUNCTION
@@ -42,6 +43,13 @@ package Bookmarks is
    --## rule on GLOBAL_REFERENCES
 
 private
+
+   -- ****iv* Bookmarks/Bookmarks.Xdg_Bookmarks_List
+   -- FUNCTION
+   -- List of default XDG bookmarked locations
+   -- SOURCE
+   Xdg_Bookmarks_List: UnboundedString_Container.Vector;
+   -- ****
 
    -- ****f* Bookmarks/Bookmarks.Create_Bookmarks_List
    -- FUNCTION

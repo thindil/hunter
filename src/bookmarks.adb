@@ -81,6 +81,7 @@ package body Bookmarks is
             Bookmarks_List.Include
               (Key => Simple_Name(Name => To_String(Source => Path)),
                New_Item => To_String(Source => Path));
+            Xdg_Bookmarks_List.Append(New_Item => Path);
          end if;
       end loop Set_XDGBookmarks_List_Loop;
       if Ada.Directories.Exists

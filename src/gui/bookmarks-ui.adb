@@ -83,8 +83,6 @@ package body Bookmarks.UI is
 
       Button: Ttk_Button :=
         Get_Widget(pathName => ".mainframe.toolbars.itemtoolbar.addbutton");
-      Bookmarks_Menu: constant Tk_Menu :=
-        Get_Widget(pathName => ".bookmarksmenu");
    begin
       Tcl.Tk.Ada.Pack.Pack_Forget(Slave => Button);
       Button.Name :=
@@ -99,12 +97,7 @@ package body Bookmarks.UI is
       Set_Bookmark_Button_Loop :
       for I in Bookmarks_List.Iterate loop
          if Bookmarks_List(I) = Current_Selected then
-            if Natural'Value
-                (Index
-                   (MenuWidget => Bookmarks_Menu,
-                    Index =>
-                      "{" & Bookmarks_Container.Key(Position => I) & "}")) <
-              8 then
+            if Xdg_Bookmarks_List.Contains(Item => Current_Selected) then
                return;
             end if;
             Tcl.Tk.Ada.Pack.Pack(Slave => Button);
