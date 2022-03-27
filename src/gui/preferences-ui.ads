@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -27,11 +27,13 @@ package Preferences.UI is
    procedure Create_Preferences_Ui;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****f* PreferencesUI/PreferencesUI.Clear_Add_Command
    -- FUNCTION
    -- Clear form for edit or add user defined commands
    -- SOURCE
    procedure Clear_Add_Command;
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
 end Preferences.UI;
