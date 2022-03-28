@@ -86,12 +86,14 @@ package ShowItems is
    procedure Show_Destination;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****f* ShowItems/ShowItems.Show_Output
    -- FUNCTION
    -- Show the UI for the output of the user command
    -- SOURCE
    procedure Show_Output;
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
    -- ****f* ShowItems/ShowItems.Update_Output
    -- FUNCTION
