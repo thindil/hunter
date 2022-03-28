@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -22,7 +22,7 @@ with Tcl.MsgCat.Ada;
 with Tcl.Tk.Ada; use Tcl.Tk.Ada;
 with Tcl.Tk.Ada.Pack;
 with Tcl.Tk.Ada.Widgets; use Tcl.Tk.Ada.Widgets;
-with Tcl.Tk.Ada.Widgets.Menu; use Tcl.Tk.Ada.Widgets.Menu;
+with Tcl.Tk.Ada.Widgets.Menu;
 with Tcl.Tk.Ada.Widgets.TtkButton;
 with Tcl.Tk.Ada.Widgets.TtkMenuButton;
 with Bookmarks.Commands;
@@ -34,6 +34,7 @@ package body Bookmarks.UI is
       use Ada.Environment_Variables;
       use Tcl.MsgCat.Ada;
       use Tcl.Tk.Ada.Widgets.TtkMenuButton;
+      use Tcl.Tk.Ada.Widgets.Menu;
       use Bookmarks.Commands;
 
       Bookmarks_Menu: Tk_Menu;
