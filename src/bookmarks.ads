@@ -42,14 +42,14 @@ package Bookmarks is
    -- ****
    --## rule on GLOBAL_REFERENCES
 
-private
-
    -- ****iv* Bookmarks/Bookmarks.Xdg_Bookmarks_List
    -- FUNCTION
    -- List of default XDG bookmarked locations
    -- SOURCE
    Xdg_Bookmarks_List: UnboundedString_Container.Vector;
    -- ****
+
+private
 
    -- ****f* Bookmarks/Bookmarks.Create_Bookmarks_List
    -- FUNCTION
