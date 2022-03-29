@@ -20,13 +20,6 @@ with GNAT.Directory_Operations;
 
 package body ProgramsMenu is
 
-   -- ****it* ProgramsMenu/ProgramsMenu.Programs_Sorting
-   -- FUNCTION
-   -- Used in sorting available programs
-   -- SOURCE
-   package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
-   -- ****
-
    function Get_Program_Name(Desktop_File: String) return String is
    begin
       if not Applications_List.Contains(Key => Desktop_File) then
@@ -40,6 +33,8 @@ package body ProgramsMenu is
       use Ada.Environment_Variables;
       use Ada.Text_IO;
       use GNAT.Directory_Operations;
+
+      package Programs_Sorting is new UnboundedString_Container.Generic_Sorting;
 
       Applications_Paths: constant array(1 .. 6) of Unbounded_String :=
         (1 => To_Unbounded_String(Source => "/usr/share/applications"),
