@@ -532,7 +532,11 @@ package body MainWindow is
             Menu_Items := Show_Bookmarks_Menu;
          when SELECTED_MENU =>
             if Is_Directory(To_String(Current_Selected)) then
-               Menu_Items := new Item_Array(1 .. 6);
+               if Xdg_Bookmarks_List.Contains(Item => Current_Selected) then
+                  Menu_Items := new Item_Array(1 .. 5);
+               else
+                  Menu_Items := new Item_Array(1 .. 6);
+               end if;
             elsif Is_Text(Get_Mime_Type(To_String(Current_Selected))) then
                Menu_Items := new Item_Array(1 .. 5);
             else
@@ -553,12 +557,14 @@ package body MainWindow is
                   exit;
                end if;
             end loop;
-            if Bookmark_Exists then
-               Menu_Items.all(4) :=
-                 New_Item(Mc(Interpreter, "{Remove bookmark}"));
-            elsif Is_Directory(To_String(Current_Selected)) then
-               Menu_Items.all(4) :=
-                 New_Item(Mc(Interpreter, "{Add bookmark}"));
+            if not Xdg_Bookmarks_List.Contains(Item => Current_Selected) then
+               if Bookmark_Exists then
+                  Menu_Items.all(4) :=
+                    New_Item(Mc(Interpreter, "{Remove bookmark}"));
+               elsif Is_Directory(To_String(Current_Selected)) then
+                  Menu_Items.all(4) :=
+                    New_Item(Mc(Interpreter, "{Add bookmark}"));
+               end if;
             end if;
          when VIEW_MENU =>
             Menu_Items :=
@@ -608,8 +614,7 @@ package body MainWindow is
               New_Item(Mc(Interpreter, "{Restore selected}"));
             Menu_Items.all(2) :=
               New_Item(Mc(Interpreter, "{Delete selected}"));
-            Menu_Items.all(3) :=
-              New_Item(Mc(Interpreter, "{Clear trash}"));
+            Menu_Items.all(3) := New_Item(Mc(Interpreter, "{Clear trash}"));
          when others =>
             null;
       end case;
@@ -914,7 +919,8 @@ package body MainWindow is
                   if Name(Current(SubMenu)) =
                     Mc(Interpreter, "{Add bookmark}") then
                      Add_Bookmark;
-                  else
+                  elsif Name(Current(SubMenu)) =
+                    Mc(Interpreter, "{Remove bookmark}") then
                      Remove_Bookmark;
                   end if;
                   New_Location := DIRECTORY_VIEW;
