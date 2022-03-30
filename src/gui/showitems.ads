@@ -95,7 +95,6 @@ package ShowItems is
    -- SOURCE
    procedure Show_Output;
    -- ****
-   --## rule on REDUCEABLE_SCOPE
 
    -- ****f* ShowItems/ShowItems.Update_Output
    -- FUNCTION
@@ -105,5 +104,6 @@ package ShowItems is
    -- SOURCE
    procedure Update_Output(Text_To_Append: String);
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
 end ShowItems;
