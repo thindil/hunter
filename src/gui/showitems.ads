@@ -51,6 +51,7 @@ package ShowItems is
    procedure Show_Preview;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****o* ShowItems/ShowItems.Show_Selected_Command
    -- FUNCTION
    -- Show preview or information about the currently selected file or
@@ -70,6 +71,7 @@ package ShowItems is
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
+      --## rule on REDUCEABLE_SCOPE
 
       -- ****f* ShowItems/ShowItems.Create_Show_Items_Ui
       -- FUNCTION
