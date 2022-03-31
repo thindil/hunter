@@ -29,11 +29,13 @@ package Trash is
 
 private
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****f* Trash/Load_Trash_Data
    -- FUNCTION
    -- Load the content of the Trash
    -- SOURCE
    procedure Load_Trash_Data;
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
 end Trash;
