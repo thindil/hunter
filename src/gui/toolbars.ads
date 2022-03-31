@@ -48,11 +48,13 @@ package Toolbars is
    procedure Set_Actions_Buttons;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****f* Toolbars/Toolbars.Set_User_Commands_Menu
    -- FUNCTION
    -- Set menu and button related to the user defined commands/actions
    -- SOURCE
    procedure Set_User_Commands_Menu;
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
 end Toolbars;
