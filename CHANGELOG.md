@@ -38,7 +38,9 @@ All notable changes to this project will be documented in this file.
   it in console version
 - Crash when trying to add bookmark when directory with bookmarks' settings
   doesn't exist
-- Showing remove bookmark button in graphical version of the program
+- Showing remove bookmark button in the graphical version of the program
+- Showing remove bookmark button for the standard bookmarks in the console
+  version of the program
 
 ## [1.6] - 2021-08-08
 
