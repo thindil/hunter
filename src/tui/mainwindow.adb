@@ -903,6 +903,12 @@ package body MainWindow is
             Result := Driver(SubMenu, M_First_Item);
          when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
+         when 27 =>
+            Post(SubMenu, False);
+            Delete(SubMenu);
+            UILocation := DIRECTORY_VIEW;
+            Update_Directory_List;
+            return DIRECTORY_VIEW;
          when 10 =>
             UILocation := New_Location;
             case Get_Index(Current(SubMenu)) is
