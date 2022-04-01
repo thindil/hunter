@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -95,7 +95,7 @@ package body Utils.UI is
          Width) /
         2;
       if X < 0 then
-         X := 0;
+         X := No_Width;
       end if;
       Y :=
         (Height_Range'Value
@@ -103,7 +103,7 @@ package body Utils.UI is
          Height) /
         2;
       if Y < 0 then
-         Y := 0;
+         Y := No_Height;
       end if;
       Wm_Set
         (Widgt => Dialog, Action => "geometry",
