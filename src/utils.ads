@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -31,12 +31,14 @@ package Utils is
    type Width_Range is new Integer;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****d* Utils/Utils.No_Width
    -- FUNCTION
    -- Zero value for the widgets width
    -- SOURCE
    No_Width: constant Width_Range := 0;
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
    -- ****f* Utils/Utils.Height_Range
    -- FUNCTION
@@ -45,12 +47,14 @@ package Utils is
    type Height_Range is new Integer;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****d* Utils/Utils.No_Height
    -- FUNCTION
    -- Zero value fo the widgets height
    -- SOURCE
    No_Height: constant Height_Range := 0;
    -- ****
+   --## rule on REDUCEABLE_SCOPE
 
    -- ****t* Utils/Utils.CreateCommands
    -- FUNCTION
