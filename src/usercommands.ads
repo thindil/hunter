@@ -24,6 +24,7 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 package UserCommands is
 -- ****
 
+   --## rule off TYPE_INITIAL_VALUES
    -- ****s* UserCommands/UserCommands.User_Command
    -- FUNCTION
    -- Data structure for the user defined commands
@@ -36,6 +37,7 @@ package UserCommands is
       Command: Unbounded_String;
    end record;
    -- ****
+   --## rule on TYPE_INITIAL_VALUES
 
    -- ****t* UserCommands/UserCommands.Commands_Container
    -- FUNCTION
