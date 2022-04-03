@@ -1,4 +1,4 @@
-name: AdaControl checks - graphical version
+name: AdaControl checks - console version
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
       run: |
          mkdir obj
          cd obj
-         adactl -f ../others/rules.aru -p ../hunter.gpr -o ../adacontrol.log -r hunter-tcl-cargv-chelper-unicode-sax-dom-input_sources
+         adactl -f ../others/rules.aru -p ../others/console.gpr -o ../adacontrol.log -r hunter-tcl-cargv-chelper-unicode-sax-dom-input_sources
          cd ..
 
     - name: Upload the log
