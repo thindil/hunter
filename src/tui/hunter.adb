@@ -53,13 +53,13 @@ procedure Hunter is
 
    Key: Key_Code := Key_None;
    Visibility: Cursor_Visibility := Invisible;
-   ErrorFile: File_Type;
-   ErrorFilePath: constant String :=
+   Error_File: File_Type;
+   Error_File_Path: constant String :=
      Ada.Environment_Variables.Value("HOME") & "/.cache/hunter/error.log";
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
-   AltKey: Boolean;
-   procedure ExitFromProgram is
+   Alt_Key: Boolean;
+   procedure Exit_From_Program is
    begin
       Save_Preferences;
       Execute_Modules(Interpreter, ON_QUIT);
@@ -78,7 +78,7 @@ procedure Hunter is
    exception
       when Ada.Directories.Name_Error =>
          null;
-   end ExitFromProgram;
+   end Exit_From_Program;
 begin
    -- Create needed directories
    Create_Path(Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
@@ -146,7 +146,7 @@ begin
    Main_Program_Loop :
    loop
       Key := Get_Keystroke;
-      AltKey := False;
+      Alt_Key := False;
       -- Escape key pressed
       if Key = 27 then
          Set_NoDelay_Mode(Mode => True);
@@ -178,7 +178,7 @@ begin
          elsif Key = 256 then
             Key := 27;
          elsif Key > 1 then
-            AltKey := True;
+            Alt_Key := True;
          end if;
          exit Main_Program_Loop when Key = 113;
       end if;
@@ -282,7 +282,7 @@ begin
             when COLORS_MENU =>
                UILocation := Select_Colors_Keys(Key);
             when SHORTCUT_FORM =>
-               UILocation := Set_Shortcut_Keys(Key, AltKey);
+               UILocation := Set_Shortcut_Keys(Key, Alt_Key);
             when COMMAND_FORM =>
                UILocation := Add_Command_Keys(Key);
             when COMMANDS_MENU =>
@@ -293,24 +293,24 @@ begin
       end if;
    end loop Main_Program_Loop;
 
-   ExitFromProgram;
+   Exit_From_Program;
    Tcl.Ada.Tcl_Eval(Interpreter, "exit");
 exception
    when An_Exception : others =>
       Create_Path(Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
-      if Exists(ErrorFilePath) then
-         Open(ErrorFile, Append_File, ErrorFilePath);
+      if Exists(Error_File_Path) then
+         Open(Error_File, Append_File, Error_File_Path);
       else
-         Create(ErrorFile, Append_File, ErrorFilePath);
+         Create(Error_File, Append_File, Error_File_Path);
       end if;
-      Put_Line(ErrorFile, Current_Time);
-      Put_Line(ErrorFile, Version_Number);
-      Put_Line(ErrorFile, "Exception: " & Exception_Name(An_Exception));
-      Put_Line(ErrorFile, "Message: " & Exception_Message(An_Exception));
-      Put_Line(ErrorFile, "-------------------------------------------------");
-      Put_Line(ErrorFile, Symbolic_Traceback(An_Exception));
-      Put_Line(ErrorFile, "-------------------------------------------------");
-      Close(ErrorFile);
+      Put_Line(Error_File, Current_Time);
+      Put_Line(Error_File, Version_Number);
+      Put_Line(Error_File, "Exception: " & Exception_Name(An_Exception));
+      Put_Line(Error_File, "Message: " & Exception_Message(An_Exception));
+      Put_Line(Error_File, "-------------------------------------------------");
+      Put_Line(Error_File, Symbolic_Traceback(An_Exception));
+      Put_Line(Error_File, "-------------------------------------------------");
+      Close(Error_File);
       Erase;
       Refresh;
       Move_Cursor(Line => (Lines / 2), Column => 2);
@@ -320,6 +320,6 @@ exception
            Ada.Environment_Variables.Value("HOME") &
            "/.cache/hunter' directory.");
       Key := Get_Keystroke;
-      ExitFromProgram;
+      Exit_From_Program;
       Tcl.Ada.Tcl_Eval(Interpreter, "exit 1");
 end Hunter;
