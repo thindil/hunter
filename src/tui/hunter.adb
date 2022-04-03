@@ -184,7 +184,7 @@ begin
       end if;
       if Key in KEY_STAB | 9 then
          case UILocation is
-            when DIRECTORY_VIEW =>
+            when DIRECTORY_VIEW | PATH_BUTTONS =>
                UILocation := MAIN_MENU;
                CreateProgramMenu(True);
                Update_Directory_List;
@@ -205,7 +205,7 @@ begin
                   Show_Preview;
                end if;
                CreateProgramMenu(True);
-            when DESTINATION_VIEW =>
+            when DESTINATION_VIEW | DESTINATION_PATH =>
                UILocation := DIRECTORY_VIEW;
                Clear_Preview_Window;
                Update_Directory_List;
