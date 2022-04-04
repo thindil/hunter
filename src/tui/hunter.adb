@@ -55,7 +55,8 @@ procedure Hunter is
    Visibility: Cursor_Visibility := Invisible;
    Error_File: File_Type;
    Error_File_Path: constant String :=
-     Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter/error.log";
+     Ada.Environment_Variables.Value(Name => "HOME") &
+     "/.cache/hunter/error.log";
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
    Alt_Key: Boolean := False;
@@ -73,18 +74,22 @@ procedure Hunter is
       Inotify_Close;
       Magic_Close;
       Delete_File
-        (Name => Ada.Environment_Variables.Value(Name => "HOME") &
-         "/.cache/hunter/highlight.tmp");
+        (Name =>
+           Ada.Environment_Variables.Value(Name => "HOME") &
+           "/.cache/hunter/highlight.tmp");
    exception
       when Ada.Directories.Name_Error =>
          null;
    end Exit_From_Program;
 begin
    -- Create needed directories
-   Create_Path(New_Directory => Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter");
    Create_Path
-     (New_Directory => Ada.Environment_Variables.Value(Name => "HOME") &
-      "/.local/share/hunter/modules");
+     (New_Directory =>
+        Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter");
+   Create_Path
+     (New_Directory =>
+        Ada.Environment_Variables.Value(Name => "HOME") &
+        "/.local/share/hunter/modules");
    -- Start libmagic data
    Magic_Open;
    -- Start inotify
@@ -108,8 +113,9 @@ begin
    -----------------
    if Tcl.Tcl_Init(interp => Interpreter) = Tcl.TCL_ERROR then
       Ada.Text_IO.Put_Line
-        (Item => "Hunter: Tcl.Tcl_Init failed: " &
-         Tcl.Ada.Tcl_GetStringResult(interp => Interpreter));
+        (Item =>
+           "Hunter: Tcl.Tcl_Init failed: " &
+           Tcl.Ada.Tcl_GetStringResult(interp => Interpreter));
       return;
    end if;
 
@@ -124,22 +130,26 @@ begin
 
    -- Initialize ncurses
    Ada.Environment_Variables.Set(Name => "ESCDELAY", Value => "10");
-   Ada.Environment_Variables.Set("TERMINFO", "terminfo");
+   Ada.Environment_Variables.Set(Name => "TERMINFO", Value => "terminfo");
    Init_Screen;
    Start_Color;
+   Set_Colors_Loop :
    for I in 1 .. 16 loop
-      Init_Color(Color_Number(I + 7), 0, 0, 0);
-      Init_Pair(Color_Pair(I), Color_Number(I + 7), Black);
-   end loop;
-   Set_Timeout_Mode(Standard_Window, Blocking, 0);
-   Set_Echo_Mode(False);
-   Set_Cursor_Visibility(Visibility);
+      Init_Color
+        (Color => Color_Number(I + 7), Red => 0, Green => 0, Blue => 0);
+      Init_Pair
+        (Pair => Color_Pair(I), Fore => Color_Number(I + 7), Back => Black);
+   end loop Set_Colors_Loop;
+   Set_Timeout_Mode(Win => Standard_Window, Mode => Blocking, Amount => 0);
+   Set_Echo_Mode(SwitchOn => False);
+   Set_Cursor_Visibility(Visibility => Visibility);
 
    -- Create the program main window
    if Argument_Count < 1 then
-      CreateMainWindow(Ada.Environment_Variables.Value("HOME"));
+      CreateMainWindow
+        (Directory => Ada.Environment_Variables.Value(Name => "HOME"));
    else
-      CreateMainWindow(Full_Name(Argument(1)));
+      CreateMainWindow(Directory => Full_Name(Name => Argument(Number => 1)));
    end if;
 
    -- Main program loop, exit on alt+q
@@ -307,9 +317,11 @@ exception
       Put_Line(Error_File, Version_Number);
       Put_Line(Error_File, "Exception: " & Exception_Name(An_Exception));
       Put_Line(Error_File, "Message: " & Exception_Message(An_Exception));
-      Put_Line(Error_File, "-------------------------------------------------");
+      Put_Line
+        (Error_File, "-------------------------------------------------");
       Put_Line(Error_File, Symbolic_Traceback(An_Exception));
-      Put_Line(Error_File, "-------------------------------------------------");
+      Put_Line
+        (Error_File, "-------------------------------------------------");
       Close(Error_File);
       Erase;
       Refresh;
