@@ -55,17 +55,17 @@ procedure Hunter is
    Visibility: Cursor_Visibility := Invisible;
    Error_File: File_Type;
    Error_File_Path: constant String :=
-     Ada.Environment_Variables.Value("HOME") & "/.cache/hunter/error.log";
+     Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter/error.log";
    Argc: CArgv.CNatural;
    Argv: CArgv.Chars_Ptr_Ptr;
-   Alt_Key: Boolean;
+   Alt_Key: Boolean := False;
    procedure Exit_From_Program is
    begin
       Save_Preferences;
-      Execute_Modules(Interpreter, ON_QUIT);
+      Execute_Modules(Interpreter => Interpreter, State => ON_QUIT);
       if Settings.Clear_Trash_On_Exit then
          New_Action := CLEARTRASH;
-         if Delete_Selected(Interpreter) then
+         if Delete_Selected(Interpreter => Interpreter) then
             null;
          end if;
       end if;
@@ -73,7 +73,7 @@ procedure Hunter is
       Inotify_Close;
       Magic_Close;
       Delete_File
-        (Ada.Environment_Variables.Value("HOME") &
+        (Name => Ada.Environment_Variables.Value(Name => "HOME") &
          "/.cache/hunter/highlight.tmp");
    exception
       when Ada.Directories.Name_Error =>
@@ -81,9 +81,9 @@ procedure Hunter is
    end Exit_From_Program;
 begin
    -- Create needed directories
-   Create_Path(Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
+   Create_Path(New_Directory => Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter");
    Create_Path
-     (Ada.Environment_Variables.Value("HOME") &
+     (New_Directory => Ada.Environment_Variables.Value(Name => "HOME") &
       "/.local/share/hunter/modules");
    -- Start libmagic data
    Magic_Open;
@@ -93,12 +93,12 @@ begin
 
    --  Get command-line arguments and put them into C-style "argv"
    --------------------------------------------------------------
-   CArgv.Create(Argc, Argv);
+   CArgv.Create(Argc => Argc, Argv => Argv);
 
    --  Tcl needs to know the path name of the executable
    --  otherwise Tcl.Tcl_Init below will fail.
    ----------------------------------------------------
-   Tcl.Tcl_FindExecutable(Argv.all);
+   Tcl.Tcl_FindExecutable(argv0 => Argv.all);
 
    --  Create one Tcl interpreter
    -----------------------------
@@ -106,15 +106,15 @@ begin
 
    --  Initialize Tcl
    -----------------
-   if Tcl.Tcl_Init(Interpreter) = Tcl.TCL_ERROR then
+   if Tcl.Tcl_Init(interp => Interpreter) = Tcl.TCL_ERROR then
       Ada.Text_IO.Put_Line
-        ("Hunter: Tcl.Tcl_Init failed: " &
-         Tcl.Ada.Tcl_GetStringResult(Interpreter));
+        (Item => "Hunter: Tcl.Tcl_Init failed: " &
+         Tcl.Ada.Tcl_GetStringResult(interp => Interpreter));
       return;
    end if;
 
    -- Load required Tcl packages
-   MsgCat_Init(Interpreter);
+   MsgCat_Init(Interp => Interpreter);
 
    -- Load the program setting
    Load_Settings;
@@ -123,7 +123,7 @@ begin
    Create_Programs_Menu;
 
    -- Initialize ncurses
-   Ada.Environment_Variables.Set("ESCDELAY", "10");
+   Ada.Environment_Variables.Set(Name => "ESCDELAY", Value => "10");
    Ada.Environment_Variables.Set("TERMINFO", "terminfo");
    Init_Screen;
    Start_Color;
