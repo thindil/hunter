@@ -162,6 +162,7 @@ begin
          Set_NoDelay_Mode(Mode => True);
          Key := Get_Keystroke;
          Set_NoDelay_Mode(Mode => False);
+         --## rule off SIMPLIFIABLE_STATEMENTS
          -- Check if pressed key was arrow key
          if Key = 91 then
             Key := Get_Keystroke;
@@ -190,13 +191,14 @@ begin
          elsif Key > 1 then
             Alt_Key := True;
          end if;
+         --## rule on SIMPLIFIABLE_STATEMENTS
          exit Main_Program_Loop when Key = 113;
       end if;
       if Key in KEY_STAB | 9 then
          case UILocation is
             when DIRECTORY_VIEW | PATH_BUTTONS =>
                UILocation := MAIN_MENU;
-               CreateProgramMenu(True);
+               CreateProgramMenu(Update => True);
                Update_Directory_List;
                if New_Action in COPY | MOVE | CREATELINK then
                   ShowDestination;
@@ -209,12 +211,12 @@ begin
                else
                   if Info_Form /= Null_Form then
                      Visibility := Normal;
-                     Set_Cursor_Visibility(Visibility);
+                     Set_Cursor_Visibility(Visibility => Visibility);
                   end if;
                   UILocation := PREVIEW;
                   Show_Preview;
                end if;
-               CreateProgramMenu(True);
+               CreateProgramMenu(Update => True);
             when DESTINATION_VIEW | DESTINATION_PATH =>
                UILocation := DIRECTORY_VIEW;
                Clear_Preview_Window;
@@ -226,43 +228,44 @@ begin
                Show_Preview;
                Update_Directory_List;
                Visibility := Invisible;
-               Set_Cursor_Visibility(Visibility);
+               Set_Cursor_Visibility(Visibility => Visibility);
+               Delete_Temporary_File_Block:
                begin
                   Delete_File
-                    ((Ada.Environment_Variables.Value("HOME") &
-                      "/.cache/hunter/highlight.tmp"));
+                    (Name => Ada.Environment_Variables.Value(Name => "HOME") &
+                      "/.cache/hunter/highlight.tmp");
                exception
                   when Ada.Directories.Name_Error =>
                      null;
-               end;
+               end Delete_Temporary_File_Block;
             when others =>
                null;
          end case;
       else
          case UILocation is
             when DIRECTORY_VIEW =>
-               UILocation := Directory_Keys(Key);
+               UILocation := Directory_Keys(Key => Key);
             when PATH_BUTTONS =>
-               UILocation := Path_Keys(Key);
+               UILocation := Path_Keys(Key => Key);
             when MAIN_MENU =>
-               UILocation := Menu_Keys(Key);
+               UILocation := Menu_Keys(Key => Key);
                exit Main_Program_Loop when UILocation = PATH_BUTTONS;
             when ACTIONS_MENU =>
-               UILocation := Actions_Keys(Key);
+               UILocation := Actions_Keys(Key => Key);
             when CREATE_FORM =>
-               UILocation := Create_Keys(Key);
+               UILocation := Create_Keys(Key => Key);
             when DELETE_FORM =>
-               UILocation := Delete_Keys(Key);
+               UILocation := Delete_Keys(Key => Key);
             when MESSAGE_FORM =>
-               UILocation := Message_Keys(Key);
+               UILocation := Message_Keys(Key => Key);
             when RENAME_FORM =>
-               UILocation := Rename_Keys(Key);
+               UILocation := Rename_Keys(Key => Key);
             when DESTINATION_VIEW =>
-               Destination_Keys(Key);
+               Destination_Keys(Key => Key);
             when DESTINATION_PATH =>
-               UILocation := Destination_Path_Keys(Key);
+               UILocation := Destination_Path_Keys(Key => Key);
             when BOOKMARKS_MENU =>
-               UILocation := Bookmarks_Keys(Key);
+               UILocation := Bookmarks_Keys(Key => Key);
             when BOOKMARKS_FORM =>
                UILocation := Bookmarks_Form_Keys(Key);
             when CREATELINK_FORM =>
