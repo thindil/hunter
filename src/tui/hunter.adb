@@ -229,11 +229,12 @@ begin
                Update_Directory_List;
                Visibility := Invisible;
                Set_Cursor_Visibility(Visibility => Visibility);
-               Delete_Temporary_File_Block:
+               Delete_Temporary_File_Block :
                begin
                   Delete_File
-                    (Name => Ada.Environment_Variables.Value(Name => "HOME") &
-                      "/.cache/hunter/highlight.tmp");
+                    (Name =>
+                       Ada.Environment_Variables.Value(Name => "HOME") &
+                       "/.cache/hunter/highlight.tmp");
                exception
                   when Ada.Directories.Name_Error =>
                      null;
@@ -267,41 +268,41 @@ begin
             when BOOKMARKS_MENU =>
                UILocation := Bookmarks_Keys(Key => Key);
             when BOOKMARKS_FORM =>
-               UILocation := Bookmarks_Form_Keys(Key);
+               UILocation := Bookmarks_Form_Keys(Key => Key);
             when CREATELINK_FORM =>
-               UILocation := Create_Link_Keys(Key);
+               UILocation := Create_Link_Keys(Key => Key);
             when SELECTED_MENU =>
-               UILocation := Selected_Keys(Key);
+               UILocation := Selected_Keys(Key => Key);
             when PREVIEW =>
-               Preview_Keys(Key);
+               Preview_Keys(Key => Key);
             when PROGRAMS_MENU =>
-               UILocation := Programs_Keys(Key);
+               UILocation := Programs_Keys(Key => Key);
             when VIEW_MENU =>
-               UILocation := View_Keys(Key);
+               UILocation := View_Keys(Key => Key);
             when SEARCH_FORM =>
-               UILocation := Search_Form_Keys(Key);
+               UILocation := Search_Form_Keys(Key => Key);
             when EXECUTE_FORM =>
-               UILocation := Execute_Form_Keys(Key);
+               UILocation := Execute_Form_Keys(Key => Key);
             when ABOUT_MENU =>
-               UILocation := About_Keys(Key);
+               UILocation := About_Keys(Key => Key);
             when ABOUT_FORM =>
-               UILocation := About_View_Keys(Key);
+               UILocation := About_View_Keys(Key => Key);
             when DEVELOPERS_VIEW =>
-               UILocation := Developers_Keys(Key);
+               UILocation := Developers_Keys(Key => Key);
             when OPTIONS_VIEW =>
-               UILocation := Select_Preferences_Keys(Key);
+               UILocation := Select_Preferences_Keys(Key => Key);
             when SECONDS_MENU =>
-               UILocation := Select_Seconds_Keys(Key);
+               UILocation := Select_Seconds_Keys(Key => Key);
             when COLORS_MENU =>
-               UILocation := Select_Colors_Keys(Key);
+               UILocation := Select_Colors_Keys(Key => Key);
             when SHORTCUT_FORM =>
-               UILocation := Set_Shortcut_Keys(Key, Alt_Key);
+               UILocation := Set_Shortcut_Keys(Key => Key, AltKey => Alt_Key);
             when COMMAND_FORM =>
-               UILocation := Add_Command_Keys(Key);
+               UILocation := Add_Command_Keys(Key => Key);
             when COMMANDS_MENU =>
-               UILocation := User_Commands_Keys(Key);
+               UILocation := User_Commands_Keys(Key => Key);
             when T_ACTIONS_MENU =>
-               UILocation := Trash_Actions_Keys(Key);
+               UILocation := Trash_Actions_Keys(Key => Key);
          end case;
       end if;
    end loop Main_Program_Loop;
