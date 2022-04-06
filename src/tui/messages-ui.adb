@@ -96,13 +96,11 @@ package body Messages.UI is
             Set_Options(Buttons_Fields.all(3), FieldOptions);
             Buttons_Fields.all(4) :=
               New_Field
-                (1,
-                 Column_Position'Value(Mc_Max("{No for all}", Interpreter)) +
-                 2,
+                (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2,
                  (FormHeight - 1), 15, 0, 0);
             Set_Buffer
               (Buttons_Fields.all(4), 0,
-               "[" & Mc(Interpreter, "{No for all}") & "]");
+               "[" & Mc(Interpreter, "{Cancel}") & "]");
             FieldOptions := Get_Options(Buttons_Fields.all(4));
             FieldOptions.Edit := False;
             Set_Options(Buttons_Fields.all(4), FieldOptions);
