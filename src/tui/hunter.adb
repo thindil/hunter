@@ -308,18 +308,18 @@ begin
    end loop Main_Program_Loop;
 
    Exit_From_Program;
-   Tcl.Ada.Tcl_Eval(Interpreter, "exit");
+   Tcl.Ada.Tcl_Eval(interp => Interpreter, strng => "exit");
 exception
    when An_Exception : others =>
-      Create_Path(Ada.Environment_Variables.Value("HOME") & "/.cache/hunter");
-      if Exists(Error_File_Path) then
-         Open(Error_File, Append_File, Error_File_Path);
+      Create_Path(New_Directory => Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter");
+      if Exists(Name => Error_File_Path) then
+         Open(File => Error_File, Mode => Append_File, Name => Error_File_Path);
       else
-         Create(Error_File, Append_File, Error_File_Path);
+         Create(File => Error_File, Mode => Append_File, Name => Error_File_Path);
       end if;
-      Put_Line(Error_File, Current_Time);
-      Put_Line(Error_File, Version_Number);
-      Put_Line(Error_File, "Exception: " & Exception_Name(An_Exception));
+      Put_Line(File => Error_File, Item => Current_Time);
+      Put_Line(File => Error_File, Item => Version_Number);
+      Put_Line(File => Error_File, Item => "Exception: " & Exception_Name(X => An_Exception));
       Put_Line(Error_File, "Message: " & Exception_Message(An_Exception));
       Put_Line
         (Error_File, "-------------------------------------------------");
