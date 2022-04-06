@@ -320,22 +320,22 @@ exception
       Put_Line(File => Error_File, Item => Current_Time);
       Put_Line(File => Error_File, Item => Version_Number);
       Put_Line(File => Error_File, Item => "Exception: " & Exception_Name(X => An_Exception));
-      Put_Line(Error_File, "Message: " & Exception_Message(An_Exception));
+      Put_Line(File => Error_File, Item => "Message: " & Exception_Message(X => An_Exception));
       Put_Line
-        (Error_File, "-------------------------------------------------");
-      Put_Line(Error_File, Symbolic_Traceback(An_Exception));
+        (File => Error_File, Item => "-------------------------------------------------");
+      Put_Line(File => Error_File, Item => Symbolic_Traceback(E => An_Exception));
       Put_Line
-        (Error_File, "-------------------------------------------------");
-      Close(Error_File);
+        (File => Error_File, Item => "-------------------------------------------------");
+      Close(File => Error_File);
       Erase;
       Refresh;
-      Move_Cursor(Line => (Lines / 2), Column => 2);
+      Move_Cursor(Line => Lines / 2, Column => 2);
       Add
         (Str =>
            "Oops, something bad happens and progam crashed. Please, remember what have you done before crash and report this problem at https://www.laeran.pl/repositories/hunter/ticket and attach (if possible) file 'error.log' from '" &
-           Ada.Environment_Variables.Value("HOME") &
+           Ada.Environment_Variables.Value(Name => "HOME") &
            "/.cache/hunter' directory.");
       Key := Get_Keystroke;
       Exit_From_Program;
-      Tcl.Ada.Tcl_Eval(Interpreter, "exit 1");
+      Tcl.Ada.Tcl_Eval(interp => Interpreter, strng => "exit 1");
 end Hunter;
