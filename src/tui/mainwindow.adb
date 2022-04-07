@@ -54,7 +54,7 @@ with Utils; use Utils;
 
 package body MainWindow is
 
-   ListWindow: Window;
+   List_Window: Window;
    PathButtons: Window;
    Path: Menu;
    ProgramMenu: Menu;
@@ -271,19 +271,19 @@ package body MainWindow is
       Set_Format(Path, 1, 5);
       Set_Mark(Path, "");
       Set_Window(Path, PathButtons);
-      Get_Size(ListWindow, Height, Width);
+      Get_Size(List_Window, Height, Width);
       Set_Sub_Window(Path, Derived_Window(PathButtons, 1, Width - 2, 0, 1));
       Post(Path);
       Set_Current(Path, Path_Items.all(Index));
-      Terminal_Interface.Curses.Clear(ListWindow);
+      Terminal_Interface.Curses.Clear(List_Window);
       if UILocation = DIRECTORY_VIEW then
-         Box(ListWindow, Default_Character, Default_Character);
+         Box(List_Window, Default_Character, Default_Character);
       end if;
-      Add(ListWindow, 1, 10, Mc(Interpreter, "Name"));
+      Add(List_Window, 1, 10, Mc(Interpreter, "Name"));
       if Settings.Show_Last_Modified then
-         Add(ListWindow, 1, Width - 27, Mc(Interpreter, "Modified"));
+         Add(List_Window, 1, Width - 27, Mc(Interpreter, "Modified"));
       end if;
-      Add(ListWindow, 1, Width - 10, Mc(Interpreter, "Size"));
+      Add(List_Window, 1, Width - 10, Mc(Interpreter, "Size"));
       Index := 1;
       declare
          Item_Entry: String(1 .. Positive(Width - 2));
@@ -362,10 +362,10 @@ package body MainWindow is
             (One_Valued => False, Non_Cyclic => True, others => <>));
          Set_Format(DirectoryList, Lines - 5, 1);
          Set_Mark(DirectoryList, "");
-         Set_Window(DirectoryList, ListWindow);
+         Set_Window(DirectoryList, List_Window);
          Set_Sub_Window
            (DirectoryList,
-            Derived_Window(ListWindow, Lines - 5, (Columns / 2) - 2, 2, 1));
+            Derived_Window(List_Window, Lines - 5, (Columns / 2) - 2, 2, 1));
          Post(DirectoryList);
          Set_Current(DirectoryList, Menu_Items.all(CurrentIndex));
          if not Clear then
@@ -382,7 +382,7 @@ package body MainWindow is
       end if;
       Refresh;
       Refresh(PathButtons);
-      Refresh(ListWindow);
+      Refresh(List_Window);
    end Update_Directory_List;
 
    function Directory_Keys(Key: Key_Code) return UI_Locations is
@@ -426,7 +426,7 @@ package body MainWindow is
             return DIRECTORY_VIEW;
       end case;
       if Result = Menu_Ok then
-         Refresh(ListWindow);
+         Refresh(List_Window);
          if New_Action /= COPY then
             Show_Selected;
          end if;
@@ -1094,13 +1094,13 @@ package body MainWindow is
       MenuWindow := Create(1, Columns, 0, 0);
       CreateProgramMenu;
       PathButtons := Create(1, Columns / 2, 1, 0);
-      ListWindow :=
+      List_Window :=
         (if Settings.Show_Preview then Create(Lines - 2, Columns / 2, 2, 0)
          else Create(Lines - 2, Columns, 2, 0));
-      Box(ListWindow, Default_Character, Default_Character);
+      Box(List_Window, Default_Character, Default_Character);
       Refresh;
       Refresh(MenuWindow);
-      Refresh(ListWindow);
+      Refresh(List_Window);
       CreateShowItemsUI;
       Update_Directory_List(True);
    end Show_Main_Window;
