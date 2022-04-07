@@ -33,13 +33,13 @@ with ActivateItems.UI; use ActivateItems.UI;
 with Bookmarks.UI; use Bookmarks.UI;
 with Common; use Common;
 with CreateItems.UI; use CreateItems.UI;
-with DeleteItems; use DeleteItems;
+with DeleteItems;
 with DeleteItems.UI; use DeleteItems.UI;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;
 with Messages.UI; use Messages.UI;
-with Modules; use Modules;
+with Modules;
 with Preferences; use Preferences;
 with Preferences.UI; use Preferences.UI;
 with ProgramsMenu; use ProgramsMenu;
@@ -61,6 +61,8 @@ procedure Hunter is
    Argv: CArgv.Chars_Ptr_Ptr;
    Alt_Key: Boolean := False;
    procedure Exit_From_Program is
+      use DeleteItems;
+      use Modules;
    begin
       Save_Preferences;
       Execute_Modules(Interpreter => Interpreter, State => ON_QUIT);
