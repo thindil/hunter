@@ -55,9 +55,9 @@ with Utils; use Utils;
 package body MainWindow is
 
    List_Window: Window;
-   Path_Buttons: Window;
+   Path_Buttons_Window: Window;
    Path: Menu;
-   ProgramMenu: Menu;
+   Program_Menu: Menu;
    MenuWindow: Window;
    SubMenuWindow: Window;
    SubMenu: Menu;
@@ -75,13 +75,13 @@ package body MainWindow is
                Menu_Items.all(2) := New_Item(Mc(Interpreter, "{Create link}"));
                Menu_Items.all(3) := New_Item(Mc(Interpreter, "Cancel"));
                Menu_Items.all(4) := Null_Item;
-               ProgramMenu := New_Menu(Menu_Items);
-               Set_Format(ProgramMenu, 1, 3);
-               Set_Mark(ProgramMenu, "");
-               Set_Window(ProgramMenu, MenuWindow);
+               Program_Menu := New_Menu(Menu_Items);
+               Set_Format(Program_Menu, 1, 3);
+               Set_Mark(Program_Menu, "");
+               Set_Window(Program_Menu, MenuWindow);
                Set_Sub_Window
-                 (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
-               Post(ProgramMenu);
+                 (Program_Menu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+               Post(Program_Menu);
             end;
          when COPY | MOVE =>
             declare
@@ -96,13 +96,13 @@ package body MainWindow is
                   else New_Item(Mc(Interpreter, "{Move selected}")));
                Menu_Items.all(4) := New_Item(Mc(Interpreter, "Cancel"));
                Menu_Items.all(5) := Null_Item;
-               ProgramMenu := New_Menu(Menu_Items);
-               Set_Format(ProgramMenu, 1, 4);
-               Set_Mark(ProgramMenu, "");
-               Set_Window(ProgramMenu, MenuWindow);
+               Program_Menu := New_Menu(Menu_Items);
+               Set_Format(Program_Menu, 1, 4);
+               Set_Mark(Program_Menu, "");
+               Set_Window(Program_Menu, MenuWindow);
                Set_Sub_Window
-                 (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
-               Post(ProgramMenu);
+                 (Program_Menu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+               Post(Program_Menu);
             end;
          when SHOWTRASH | DELETETRASH =>
             declare
@@ -119,14 +119,14 @@ package body MainWindow is
                   Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
                end loop Create_Trash_Menu_Loop;
                Menu_Items.all(Menu_Items'Last) := Null_Item;
-               ProgramMenu := New_Menu(Menu_Items);
-               Set_Format(ProgramMenu, 1, 4);
-               Set_Mark(ProgramMenu, "");
+               Program_Menu := New_Menu(Menu_Items);
+               Set_Format(Program_Menu, 1, 4);
+               Set_Mark(Program_Menu, "");
                MenuWindow := Create(1, Columns, 0, 0);
-               Set_Window(ProgramMenu, MenuWindow);
+               Set_Window(Program_Menu, MenuWindow);
                Set_Sub_Window
-                 (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
-               Post(ProgramMenu);
+                 (Program_Menu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+               Post(Program_Menu);
             end;
          when others =>
             declare
@@ -146,20 +146,20 @@ package body MainWindow is
                   Menu_Items.all(I) := New_Item(To_String(Main_Menu_Array(I)));
                end loop Create_Program_Menu_Loop;
                Menu_Items.all(8) := Null_Item;
-               ProgramMenu := New_Menu(Menu_Items);
-               Set_Format(ProgramMenu, 1, 7);
-               Set_Mark(ProgramMenu, "");
+               Program_Menu := New_Menu(Menu_Items);
+               Set_Format(Program_Menu, 1, 7);
+               Set_Mark(Program_Menu, "");
                MenuWindow := Create(1, Columns, 0, 0);
-               Set_Window(ProgramMenu, MenuWindow);
+               Set_Window(Program_Menu, MenuWindow);
                Set_Sub_Window
-                 (ProgramMenu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
-               Post(ProgramMenu);
+                 (Program_Menu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+               Post(Program_Menu);
             end;
       end case;
       if UILocation = MAIN_MENU then
-         Set_Foreground(ProgramMenu, (Reverse_Video => True, others => False));
+         Set_Foreground(Program_Menu, (Reverse_Video => True, others => False));
       else
-         Set_Foreground(ProgramMenu, Normal_Video);
+         Set_Foreground(Program_Menu, Normal_Video);
       end if;
       if Update then
          Refresh(MenuWindow);
@@ -205,7 +205,7 @@ package body MainWindow is
       Width: Column_Position;
       Height: Line_Position;
    begin
-      Terminal_Interface.Curses.Clear(Path_Buttons);
+      Terminal_Interface.Curses.Clear(Path_Buttons_Window);
       Common.Current_Directory :=
         To_Unbounded_String
           (Normalize_Pathname(To_String(Common.Current_Directory)));
@@ -270,9 +270,9 @@ package body MainWindow is
       Set_Options(Path, (Show_Descriptions => False, others => <>));
       Set_Format(Path, 1, 5);
       Set_Mark(Path, "");
-      Set_Window(Path, Path_Buttons);
+      Set_Window(Path, Path_Buttons_Window);
       Get_Size(List_Window, Height, Width);
-      Set_Sub_Window(Path, Derived_Window(Path_Buttons, 1, Width - 2, 0, 1));
+      Set_Sub_Window(Path, Derived_Window(Path_Buttons_Window, 1, Width - 2, 0, 1));
       Post(Path);
       Set_Current(Path, Path_Items.all(Index));
       Terminal_Interface.Curses.Clear(List_Window);
@@ -381,7 +381,7 @@ package body MainWindow is
          Show_Selected;
       end if;
       Refresh;
-      Refresh(Path_Buttons);
+      Refresh(Path_Buttons_Window);
       Refresh(List_Window);
    end Update_Directory_List;
 
@@ -494,7 +494,7 @@ package body MainWindow is
             return Directory_Keys(Key);
       end case;
       if Result = Menu_Ok then
-         Refresh(Path_Buttons);
+         Refresh(Path_Buttons_Window);
       end if;
       return PATH_BUTTONS;
    end Path_Keys;
@@ -639,18 +639,18 @@ package body MainWindow is
 
    function Menu_Keys(Key: Key_Code) return UI_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
-      CurrentIndex: constant Positive := Get_Index(Current(ProgramMenu));
+      CurrentIndex: constant Positive := Get_Index(Current(Program_Menu));
       OverwriteItem: Boolean := False;
    begin
       case Key is
          when KEY_LEFT =>
-            Result := Driver(ProgramMenu, M_Previous_Item);
+            Result := Driver(Program_Menu, M_Previous_Item);
          when KEY_RIGHT =>
-            Result := Driver(ProgramMenu, M_Next_Item);
+            Result := Driver(Program_Menu, M_Next_Item);
          when Key_Home =>
-            Result := Driver(ProgramMenu, M_First_Item);
+            Result := Driver(Program_Menu, M_First_Item);
          when Key_End =>
-            Result := Driver(ProgramMenu, M_Last_Item);
+            Result := Driver(Program_Menu, M_Last_Item);
          when 10 =>
             UILocation := DIRECTORY_VIEW;
             CreateProgramMenu(True);
@@ -1093,7 +1093,7 @@ package body MainWindow is
    begin
       MenuWindow := Create(1, Columns, 0, 0);
       CreateProgramMenu;
-      Path_Buttons := Create(1, Columns / 2, 1, 0);
+      Path_Buttons_Window := Create(1, Columns / 2, 1, 0);
       List_Window :=
         (if Settings.Show_Preview then Create(Lines - 2, Columns / 2, 2, 0)
          else Create(Lines - 2, Columns, 2, 0));
