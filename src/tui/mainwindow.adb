@@ -55,7 +55,7 @@ with Utils; use Utils;
 package body MainWindow is
 
    List_Window: Window;
-   PathButtons: Window;
+   Path_Buttons: Window;
    Path: Menu;
    ProgramMenu: Menu;
    MenuWindow: Window;
@@ -205,7 +205,7 @@ package body MainWindow is
       Width: Column_Position;
       Height: Line_Position;
    begin
-      Terminal_Interface.Curses.Clear(PathButtons);
+      Terminal_Interface.Curses.Clear(Path_Buttons);
       Common.Current_Directory :=
         To_Unbounded_String
           (Normalize_Pathname(To_String(Common.Current_Directory)));
@@ -270,9 +270,9 @@ package body MainWindow is
       Set_Options(Path, (Show_Descriptions => False, others => <>));
       Set_Format(Path, 1, 5);
       Set_Mark(Path, "");
-      Set_Window(Path, PathButtons);
+      Set_Window(Path, Path_Buttons);
       Get_Size(List_Window, Height, Width);
-      Set_Sub_Window(Path, Derived_Window(PathButtons, 1, Width - 2, 0, 1));
+      Set_Sub_Window(Path, Derived_Window(Path_Buttons, 1, Width - 2, 0, 1));
       Post(Path);
       Set_Current(Path, Path_Items.all(Index));
       Terminal_Interface.Curses.Clear(List_Window);
@@ -381,7 +381,7 @@ package body MainWindow is
          Show_Selected;
       end if;
       Refresh;
-      Refresh(PathButtons);
+      Refresh(Path_Buttons);
       Refresh(List_Window);
    end Update_Directory_List;
 
@@ -494,7 +494,7 @@ package body MainWindow is
             return Directory_Keys(Key);
       end case;
       if Result = Menu_Ok then
-         Refresh(PathButtons);
+         Refresh(Path_Buttons);
       end if;
       return PATH_BUTTONS;
    end Path_Keys;
@@ -1093,7 +1093,7 @@ package body MainWindow is
    begin
       MenuWindow := Create(1, Columns, 0, 0);
       CreateProgramMenu;
-      PathButtons := Create(1, Columns / 2, 1, 0);
+      Path_Buttons := Create(1, Columns / 2, 1, 0);
       List_Window :=
         (if Settings.Show_Preview then Create(Lines - 2, Columns / 2, 2, 0)
          else Create(Lines - 2, Columns, 2, 0));
