@@ -58,13 +58,13 @@ package body MainWindow is
    Path_Buttons_Window: Window;
    Path: Menu;
    Program_Menu: Menu;
-   MenuWindow: Window;
+   Menu_Window: Window;
    SubMenuWindow: Window;
    SubMenu: Menu;
 
    procedure CreateProgramMenu(Update: Boolean := False) is
    begin
-      Terminal_Interface.Curses.Clear(MenuWindow);
+      Terminal_Interface.Curses.Clear(Menu_Window);
       case New_Action is
          when CREATELINK =>
             declare
@@ -78,9 +78,9 @@ package body MainWindow is
                Program_Menu := New_Menu(Menu_Items);
                Set_Format(Program_Menu, 1, 3);
                Set_Mark(Program_Menu, "");
-               Set_Window(Program_Menu, MenuWindow);
+               Set_Window(Program_Menu, Menu_Window);
                Set_Sub_Window
-                 (Program_Menu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+                 (Program_Menu, Derived_Window(Menu_Window, 1, Columns, 0, 0));
                Post(Program_Menu);
             end;
          when COPY | MOVE =>
@@ -99,9 +99,9 @@ package body MainWindow is
                Program_Menu := New_Menu(Menu_Items);
                Set_Format(Program_Menu, 1, 4);
                Set_Mark(Program_Menu, "");
-               Set_Window(Program_Menu, MenuWindow);
+               Set_Window(Program_Menu, Menu_Window);
                Set_Sub_Window
-                 (Program_Menu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+                 (Program_Menu, Derived_Window(Menu_Window, 1, Columns, 0, 0));
                Post(Program_Menu);
             end;
          when SHOWTRASH | DELETETRASH =>
@@ -122,10 +122,10 @@ package body MainWindow is
                Program_Menu := New_Menu(Menu_Items);
                Set_Format(Program_Menu, 1, 4);
                Set_Mark(Program_Menu, "");
-               MenuWindow := Create(1, Columns, 0, 0);
-               Set_Window(Program_Menu, MenuWindow);
+               Menu_Window := Create(1, Columns, 0, 0);
+               Set_Window(Program_Menu, Menu_Window);
                Set_Sub_Window
-                 (Program_Menu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+                 (Program_Menu, Derived_Window(Menu_Window, 1, Columns, 0, 0));
                Post(Program_Menu);
             end;
          when others =>
@@ -149,10 +149,10 @@ package body MainWindow is
                Program_Menu := New_Menu(Menu_Items);
                Set_Format(Program_Menu, 1, 7);
                Set_Mark(Program_Menu, "");
-               MenuWindow := Create(1, Columns, 0, 0);
-               Set_Window(Program_Menu, MenuWindow);
+               Menu_Window := Create(1, Columns, 0, 0);
+               Set_Window(Program_Menu, Menu_Window);
                Set_Sub_Window
-                 (Program_Menu, Derived_Window(MenuWindow, 1, Columns, 0, 0));
+                 (Program_Menu, Derived_Window(Menu_Window, 1, Columns, 0, 0));
                Post(Program_Menu);
             end;
       end case;
@@ -162,7 +162,7 @@ package body MainWindow is
          Set_Foreground(Program_Menu, Normal_Video);
       end if;
       if Update then
-         Refresh(MenuWindow);
+         Refresh(Menu_Window);
       end if;
    end CreateProgramMenu;
 
@@ -682,7 +682,7 @@ package body MainWindow is
                      if CopySelected(OverwriteItem) = DIRECTORY_VIEW then
                         New_Action := Default_Item_Action;
                         CreateProgramMenu;
-                        Refresh(MenuWindow);
+                        Refresh(Menu_Window);
                         return DIRECTORY_VIEW;
                      else
                         return MESSAGE_FORM;
@@ -704,7 +704,7 @@ package body MainWindow is
                      if MoveSelected(OverwriteItem) = DIRECTORY_VIEW then
                         New_Action := Default_Item_Action;
                         CreateProgramMenu;
-                        Refresh(MenuWindow);
+                        Refresh(Menu_Window);
                         return DIRECTORY_VIEW;
                      else
                         return MESSAGE_FORM;
@@ -715,7 +715,7 @@ package body MainWindow is
                      Update_Directory_List(True);
                      Show_Preview;
                      CreateProgramMenu;
-                     Refresh(MenuWindow);
+                     Refresh(Menu_Window);
                      return DIRECTORY_VIEW;
                   end if;
                   Draw_Menu(VIEW_MENU);
@@ -727,7 +727,7 @@ package body MainWindow is
                      Update_Directory_List(True);
                      Show_Preview;
                      CreateProgramMenu;
-                     Refresh(MenuWindow);
+                     Refresh(Menu_Window);
                      return DIRECTORY_VIEW;
                   elsif New_Action = SHOWTRASH then
                      Draw_Menu(T_ACTIONS_MENU);
@@ -761,7 +761,7 @@ package body MainWindow is
             null;
       end case;
       if Result = Menu_Ok then
-         Refresh(MenuWindow);
+         Refresh(Menu_Window);
       end if;
       return MAIN_MENU;
    end Menu_Keys;
@@ -803,7 +803,7 @@ package body MainWindow is
                when 3 =>
                   New_Action := CREATELINK;
                   CreateProgramMenu;
-                  Refresh(MenuWindow);
+                  Refresh(Menu_Window);
                   Destination_Directory := Common.Current_Directory;
                   Second_Items_List := Items_List;
                   UILocation := DESTINATION_VIEW;
@@ -816,7 +816,7 @@ package body MainWindow is
                when 5 =>
                   New_Action := COPY;
                   CreateProgramMenu;
-                  Refresh(MenuWindow);
+                  Refresh(Menu_Window);
                   Destination_Directory := Common.Current_Directory;
                   Second_Items_List := Items_List;
                   UILocation := DESTINATION_VIEW;
@@ -825,7 +825,7 @@ package body MainWindow is
                when 6 =>
                   New_Action := MOVE;
                   CreateProgramMenu;
-                  Refresh(MenuWindow);
+                  Refresh(Menu_Window);
                   Destination_Directory := Common.Current_Directory;
                   Second_Items_List := Items_List;
                   UILocation := DESTINATION_VIEW;
@@ -1091,7 +1091,7 @@ package body MainWindow is
 
    procedure Show_Main_Window is
    begin
-      MenuWindow := Create(1, Columns, 0, 0);
+      Menu_Window := Create(1, Columns, 0, 0);
       CreateProgramMenu;
       Path_Buttons_Window := Create(1, Columns / 2, 1, 0);
       List_Window :=
@@ -1099,7 +1099,7 @@ package body MainWindow is
          else Create(Lines - 2, Columns, 2, 0));
       Box(List_Window, Default_Character, Default_Character);
       Refresh;
-      Refresh(MenuWindow);
+      Refresh(Menu_Window);
       Refresh(List_Window);
       CreateShowItemsUI;
       Update_Directory_List(True);
