@@ -23,99 +23,99 @@ with Utils.UI; use Utils.UI;
 
 package body AboutDialog.UI is
 
-   -- ****iv* AboutDialogTUI/AboutDialogTUI.DialogForm
+   -- ****iv* AboutDialogTUI/AboutDialogTUI.Dialog_Form
    -- FUNCTION
    -- The form for showing information about the program
    -- SOURCE
-   DialogForm: Forms.Form;
+   Dialog_Form: Forms.Form;
    -- ****
 
-   -- ****iv* AboutDialogTUI/AboutDialogTUI.FormWindow
+   -- ****iv* AboutDialogTUI/AboutDialogTUI.Form_Window
    -- FUNCTION
    -- The window to show information about the program
    -- SOURCE
-   FormWindow: Window;
+   Form_Window: Window;
    -- ****
 
    procedure Show_About_Dialog is
       About_Fields: constant Field_Array_Access := new Field_Array(1 .. 9);
-      FormHeight: Line_Position;
-      FormLength: Column_Position;
+      Form_Height: Line_Position;
+      Form_Length: Column_Position;
       Visibility: Cursor_Visibility := Normal;
-      FieldOptions: Field_Option_Set;
-      FieldPosition: Column_Position := 0;
+      Field_Options: Field_Option_Set;
+      Field_Position: Column_Position := 0;
    begin
       Set_Cursor_Visibility(Visibility);
       About_Fields.all(1) := New_Field(1, 36, 0, 1, 0, 0);
       Set_Buffer
         (About_Fields.all(1), 0, "Hunter - Text file manager for Linux");
-      FieldOptions := Get_Options(About_Fields.all(1));
-      FieldOptions.Active := False;
-      Set_Options(About_Fields.all(1), FieldOptions);
+      Field_Options := Get_Options(About_Fields.all(1));
+      Field_Options.Active := False;
+      Set_Options(About_Fields.all(1), Field_Options);
       About_Fields.all(2) :=
         New_Field
           (1, Column_Position(AboutDialog.Copyright'Length), 1, 4, 0, 0);
       Set_Buffer(About_Fields.all(2), 0, AboutDialog.Copyright);
-      Set_Options(About_Fields.all(2), FieldOptions);
+      Set_Options(About_Fields.all(2), Field_Options);
       About_Fields.all(3) :=
         New_Field(1, Column_Position(Length(AboutDialog.License)), 2, 8, 0, 0);
       Set_Buffer(About_Fields.all(3), 0, To_String(AboutDialog.License));
-      Set_Options(About_Fields.all(3), FieldOptions);
+      Set_Options(About_Fields.all(3), Field_Options);
       About_Fields.all(4) :=
         New_Field(1, Column_Position(Length(AboutDialog.Version)), 3, 4, 0, 0);
       Set_Buffer(About_Fields.all(4), 0, To_String(AboutDialog.Version));
-      Set_Options(About_Fields.all(4), FieldOptions);
+      Set_Options(About_Fields.all(4), Field_Options);
       About_Fields.all(5) :=
         New_Field
           (1, Column_Position(Length(AboutDialog.Website_Text)) + 2, 5,
-           FieldPosition, 0, 0);
+           Field_Position, 0, 0);
       Set_Buffer
         (About_Fields.all(5), 0,
          "[" & To_String(AboutDialog.Website_Text) & "]");
-      FieldOptions := Get_Options(About_Fields.all(5));
-      FieldOptions.Edit := False;
-      Set_Options(About_Fields.all(5), FieldOptions);
-      FieldPosition := Column_Position(Length(AboutDialog.Website_Text)) + 2;
+      Field_Options := Get_Options(About_Fields.all(5));
+      Field_Options.Edit := False;
+      Set_Options(About_Fields.all(5), Field_Options);
+      Field_Position := Column_Position(Length(AboutDialog.Website_Text)) + 2;
       About_Fields.all(6) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Programmers}", Interpreter)) + 2,
-           5, FieldPosition, 0, 0);
+           5, Field_Position, 0, 0);
       Set_Buffer
         (About_Fields.all(6), 0,
          "[" & To_String(AboutDialog.Programmers_Text) & "]");
-      Set_Options(About_Fields.all(6), FieldOptions);
-      FieldPosition :=
-        FieldPosition +
+      Set_Options(About_Fields.all(6), Field_Options);
+      Field_Position :=
+        Field_Position +
         Column_Position'Value(Mc_Max("{Programmers}", Interpreter)) + 2;
       About_Fields.all(7) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Translators}", Interpreter)) + 2,
-           5, FieldPosition, 0, 0);
+           5, Field_Position, 0, 0);
       Set_Buffer
         (About_Fields.all(7), 0,
          "[" & To_String(AboutDialog.Translators_Text) & "]");
-      Set_Options(About_Fields.all(7), FieldOptions);
-      FieldPosition :=
-        FieldPosition +
+      Set_Options(About_Fields.all(7), Field_Options);
+      Field_Position :=
+        Field_Position +
         Column_Position'Value(Mc_Max("{Translators}", Interpreter)) + 2;
       About_Fields.all(8) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Close}", Interpreter)) + 2, 5,
-           FieldPosition, 0, 0);
+           Field_Position, 0, 0);
       Set_Buffer
         (About_Fields.all(8), 0, "[" & To_String(Source => Close_Text) & "]");
-      Set_Options(About_Fields.all(8), FieldOptions);
+      Set_Options(About_Fields.all(8), Field_Options);
       About_Fields.all(9) := Null_Field;
-      DialogForm := New_Form(About_Fields);
-      Set_Current(DialogForm, About_Fields(5));
-      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
+      Dialog_Form := New_Form(About_Fields);
+      Set_Current(Dialog_Form, About_Fields(5));
+      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
    end Show_About_Dialog;
 
    procedure Show_Developers_Dialog(Developers: Boolean := True) is
       About_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
-      FormHeight: Line_Position;
-      FormLength: Column_Position;
-      FieldOptions: Field_Option_Set;
+      Form_Height: Line_Position;
+      Form_Length: Column_Position;
+      Field_Options: Field_Option_Set;
    begin
       About_Fields.all(1) := New_Field(1, 44, 0, 1, 0, 0);
       if Developers then
@@ -123,33 +123,33 @@ package body AboutDialog.UI is
       else
          Set_Buffer(About_Fields.all(1), 0, Translator);
       end if;
-      FieldOptions := Get_Options(About_Fields.all(1));
-      FieldOptions.Active := False;
-      Set_Options(About_Fields.all(1), FieldOptions);
+      Field_Options := Get_Options(About_Fields.all(1));
+      Field_Options.Active := False;
+      Set_Options(About_Fields.all(1), Field_Options);
       About_Fields.all(2) :=
         New_Field
           (1, Column_Position(Length(Source => Close_Text) + 2), 2, 10, 0, 0);
-      FieldOptions := Get_Options(About_Fields.all(2));
-      FieldOptions.Edit := False;
+      Field_Options := Get_Options(About_Fields.all(2));
+      Field_Options.Edit := False;
       Set_Buffer
         (About_Fields.all(2), 0, "[" & To_String(Source => Close_Text) & "]");
-      Set_Options(About_Fields.all(2), FieldOptions);
+      Set_Options(About_Fields.all(2), Field_Options);
       About_Fields.all(3) := Null_Field;
-      DialogForm := New_Form(About_Fields);
-      Set_Current(DialogForm, About_Fields(2));
-      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
+      Dialog_Form := New_Form(About_Fields);
+      Set_Current(Dialog_Form, About_Fields(2));
+      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
    end Show_Developers_Dialog;
 
    function About_View_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
       function HideAboutDialog
         (With_Message: Boolean := False) return UI_Locations is
       begin
          Set_Cursor_Visibility(Visibility);
-         Post(DialogForm, False);
-         Delete(DialogForm);
+         Post(Dialog_Form, False);
+         Delete(Dialog_Form);
          if With_Message then
             UILocation := MESSAGE_FORM;
          else
@@ -162,9 +162,9 @@ package body AboutDialog.UI is
    begin
       case Key is
          when KEY_UP | KEY_LEFT =>
-            Result := Go_Previous_Field(DialogForm);
+            Result := Go_Previous_Field(Dialog_Form);
          when KEY_DOWN | KEY_RIGHT =>
-            Result := Go_Next_Field(DialogForm);
+            Result := Go_Next_Field(Dialog_Form);
          when 27 =>
             return HideAboutDialog;
          when 10 =>
@@ -189,7 +189,7 @@ package body AboutDialog.UI is
                         return HideAboutDialog(True);
                   end;
                when 6 | 7 =>
-                  Delete_Dialog(DialogForm);
+                  Delete_Dialog(Dialog_Form);
                   if FieldIndex = 6 then
                      Show_Developers_Dialog;
                   else
@@ -205,7 +205,7 @@ package body AboutDialog.UI is
             null;
       end case;
       if Result = Form_Ok then
-         Refresh(FormWindow);
+         Refresh(Form_Window);
       end if;
       return ABOUT_FORM;
    end About_View_Keys;
@@ -215,7 +215,7 @@ package body AboutDialog.UI is
    begin
       if Key = 10 then
          Set_Cursor_Visibility(Visibility);
-         Delete_Dialog(DialogForm);
+         Delete_Dialog(Dialog_Form);
          return DIRECTORY_VIEW;
       end if;
       return DEVELOPERS_VIEW;
