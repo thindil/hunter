@@ -45,16 +45,21 @@ package body AboutDialog.UI is
       Field_Options: Field_Option_Set;
       Field_Position: Column_Position := 0;
    begin
-      Set_Cursor_Visibility(Visibility);
-      About_Fields.all(1) := New_Field(1, 36, 0, 1, 0, 0);
+      Set_Cursor_Visibility(Visibility => Visibility);
+      About_Fields.all(1) :=
+        New_Field
+          (Height => 1, Width => 36, Top => 0, Left => 1, Off_Screen => 0,
+           More_Buffers => 0);
       Set_Buffer
-        (About_Fields.all(1), 0, "Hunter - Text file manager for Linux");
-      Field_Options := Get_Options(About_Fields.all(1));
+        (Fld => About_Fields.all(1), Buffer => 0,
+         Str => "Hunter - Text file manager for Linux");
+      Field_Options := Get_Options(Fld => About_Fields.all(1));
       Field_Options.Active := False; --## rule line off ASSIGNMENTS
-      Set_Options(About_Fields.all(1), Field_Options);
+      Set_Options(Fld => About_Fields.all(1), Options => Field_Options);
       About_Fields.all(2) :=
         New_Field
-          (1, Column_Position(AboutDialog.Copyright'Length), 1, 4, 0, 0);
+          (Height => 1, Width => Column_Position(AboutDialog.Copyright'Length),
+           Top => 1, Left => 4, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer(About_Fields.all(2), 0, AboutDialog.Copyright);
       Set_Options(About_Fields.all(2), Field_Options);
       About_Fields.all(3) :=
