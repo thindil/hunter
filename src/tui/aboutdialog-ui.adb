@@ -50,7 +50,7 @@ package body AboutDialog.UI is
       Set_Buffer
         (About_Fields.all(1), 0, "Hunter - Text file manager for Linux");
       Field_Options := Get_Options(About_Fields.all(1));
-      Field_Options.Active := False;
+      Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(About_Fields.all(1), Field_Options);
       About_Fields.all(2) :=
         New_Field
@@ -73,7 +73,7 @@ package body AboutDialog.UI is
         (About_Fields.all(5), 0,
          "[" & To_String(AboutDialog.Website_Text) & "]");
       Field_Options := Get_Options(About_Fields.all(5));
-      Field_Options.Edit := False;
+      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(About_Fields.all(5), Field_Options);
       Field_Position := Column_Position(Length(AboutDialog.Website_Text)) + 2;
       About_Fields.all(6) :=
