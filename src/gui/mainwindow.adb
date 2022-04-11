@@ -540,195 +540,186 @@ package body MainWindow is
                  To_Unbounded_String(Source => Positive'Image(I));
             end if;
          end loop Add_Items_Loop;
-         if Winfo_Get(Widgt => Path_Buttons_Frame, Info => "ismapped") =
-           "1" then
             -- Remove old path buttons
-            Create
-              (S => Tokens, From => Grid_Slaves(Master => Path_Buttons_Frame),
-               Separators => " ");
-            if Slice(S => Tokens, Index => 1) /= "" then
-               Remove_Old_Path_Buttons_Loop :
-               for I in reverse 1 .. Slice_Count(S => Tokens) loop
-                  Path_Button :=
-                    Get_Widget(pathName => Slice(S => Tokens, Index => I));
-                  case I is
-                     when 1 =>
-                        Shortcut := Path_Shortcut & "-r";
-                     when 2 =>
-                        Shortcut := Path_Shortcut & "-u";
-                     when 3 .. 10 =>
-                        Shortcut :=
-                          Path_Shortcut & "-KP_" &
-                          Slice_Number'Image(I - 2)(2);
-                     when others =>
-                        null;
-                  end case;
-                  Unbind_From_Main_Window
-                    (Interp => Path_Button.Interp,
-                     Sequence => "<" & To_String(Source => Shortcut) & ">");
-                  Grid_Forget(Slave => Path_Button);
-                  Destroy(Widgt => Path_Button);
-               end loop Remove_Old_Path_Buttons_Loop;
-            end if;
+         Create
+           (S => Tokens, From => Grid_Slaves(Master => Path_Buttons_Frame),
+            Separators => " ");
+         if Slice(S => Tokens, Index => 1) /= "" then
+            Remove_Old_Path_Buttons_Loop :
+            for I in reverse 1 .. Slice_Count(S => Tokens) loop
+               Path_Button :=
+                 Get_Widget(pathName => Slice(S => Tokens, Index => I));
+               case I is
+                  when 1 =>
+                     Shortcut := Path_Shortcut & "-r";
+                  when 2 =>
+                     Shortcut := Path_Shortcut & "-u";
+                  when 3 .. 10 =>
+                     Shortcut :=
+                       Path_Shortcut & "-KP_" & Slice_Number'Image(I - 2)(2);
+                  when others =>
+                     null;
+               end case;
+               Unbind_From_Main_Window
+                 (Interp => Path_Button.Interp,
+                  Sequence => "<" & To_String(Source => Shortcut) & ">");
+               Grid_Forget(Slave => Path_Button);
+               Destroy(Widgt => Path_Button);
+            end loop Remove_Old_Path_Buttons_Loop;
+         end if;
             -- Add new path buttons
-            if Frame_Name = "directory"
-              and then New_Action not in SHOWTRASH | DELETETRASH then
-               Create
-                 (S => Tokens,
-                  From => To_String(Source => Common.Current_Directory),
-                  Separators => "/");
-            else
-               Create
-                 (S => Tokens,
-                  From => To_String(Source => Destination_Directory),
-                  Separators => "/");
+         if Frame_Name = "directory"
+           and then New_Action not in SHOWTRASH | DELETETRASH then
+            Create
+              (S => Tokens,
+               From => To_String(Source => Common.Current_Directory),
+               Separators => "/");
+         else
+            Create
+              (S => Tokens, From => To_String(Source => Destination_Directory),
+               Separators => "/");
+         end if;
+         Add_Path_Buttons_Loop :
+         for I in 1 .. Slice_Count(S => Tokens) loop
+            if Slice(S => Tokens, Index => I) = "" and I > 1 then
+               goto End_Of_Loop;
             end if;
-            Add_Path_Buttons_Loop :
-            for I in 1 .. Slice_Count(S => Tokens) loop
-               if Slice(S => Tokens, Index => I) = "" and I > 1 then
-                  goto End_Of_Loop;
-               end if;
-               if I = 1 then
-                  if New_Action = SHOWTRASH then
-                     Path_Button :=
-                       Create
-                         (pathName => Path_Buttons_Frame & ".button1",
-                          options =>
-                            "-text {" &
-                            Mc(Interp => Get_Context,
-                               Src_String => "{Trash}") &
-                            "} -command {ShowTrash}");
-                     Path :=
-                       To_Unbounded_String
-                         (Source =>
-                            Value(Name => "HOME") &
-                            "/.local/share/Trash/files/");
-                  else
-                     Path_Button :=
-                       Create
-                         (pathName => Path_Buttons_Frame & ".button1",
-                          options =>
-                            "-text {/} -command {" &
-                            To_String(Source => Path_Command) & " {/}}");
-                     Path := To_Unbounded_String(Source => "/");
-                  end if;
-               else
-                  Append
-                    (Source => Path,
-                     New_Item => Slice(S => Tokens, Index => I) & "/");
-                  if New_Action = SHOWTRASH and I = 2 then
-                     Set_Path_Button_Block :
-                     declare
-                        use Ada.Text_IO;
-
-                        File_Info: File_Type;
-                        File_Line: Unbounded_String := Null_Unbounded_String;
-                     begin
-                        Open
-                          (File => File_Info, Mode => In_File,
-                           Name =>
-                             Value(Name => "HOME") &
-                             "/.local/share/Trash/info/" &
-                             Slice(S => Tokens, Index => I) & ".trashinfo");
-                        Skip_Line(File => File_Info);
-                        Read_File_Path_Loop :
-                        for J in 1 .. 2 loop
-                           File_Line :=
-                             To_Unbounded_String
-                               (Source => Get_Line(File => File_Info));
-                           if Slice(Source => File_Line, Low => 1, High => 4) =
-                             "Path" then
-                              Button_Label :=
-                                To_Unbounded_String
-                                  (Source =>
-                                     Simple_Name
-                                       (Name =>
-                                          Slice
-                                            (Source => File_Line, Low => 6,
-                                             High =>
-                                               Length(Source => File_Line))));
-                           end if;
-                        end loop Read_File_Path_Loop;
-                        Close(File => File_Info);
-                     end Set_Path_Button_Block;
-                  else
-                     Button_Label :=
-                       To_Unbounded_String
-                         (Source => Slice(S => Tokens, Index => I));
-                  end if;
-                  if Length(Source => Button_Label) > 7 then
-                     Button_Label :=
-                       Unbounded_Slice
-                         (Source => Button_Label, Low => 1, High => 7) &
-                       "...";
-                  end if;
+            if I = 1 then
+               if New_Action = SHOWTRASH then
                   Path_Button :=
                     Create
-                      (pathName =>
-                         Widget_Image(Win => Path_Buttons_Frame) & ".button" &
-                         Trim(Source => Slice_Number'Image(I), Side => Both),
+                      (pathName => Path_Buttons_Frame & ".button1",
                        options =>
-                         "-text {" & To_String(Source => Button_Label) &
-                         "} -command {" & To_String(Source => Path_Command) &
-                         " {" & To_String(Source => Path) & "}}");
+                         "-text {" &
+                         Mc(Interp => Get_Context, Src_String => "{Trash}") &
+                         "} -command {ShowTrash}");
+                  Path :=
+                    To_Unbounded_String
+                      (Source =>
+                         Value(Name => "HOME") & "/.local/share/Trash/files/");
+               else
+                  Path_Button :=
+                    Create
+                      (pathName => Path_Buttons_Frame & ".button1",
+                       options =>
+                         "-text {/} -command {" &
+                         To_String(Source => Path_Command) & " {/}}");
+                  Path := To_Unbounded_String(Source => "/");
                end if;
-               if I + 11 > Slice_Count(S => Tokens) then
-                  if I = Slice_Count(S => Tokens) then
-                     Shortcut := Path_Shortcut & "-r";
-                     Tooltip_Text :=
-                       Mc
-                         (Interp => Get_Context,
-                          Src_String => "{Reload the current directory:}") &
-                       LF & To_String(Source => Path) & LF & "\[" & Shortcut &
-                       "\]";
-                  elsif I = Slice_Count(S => Tokens) - 1 then
-                     Shortcut := Path_Shortcut & "-u";
-                     Tooltip_Text :=
-                       Mc
-                         (Interp => Get_Context,
-                          Src_String => "{Go to directory:}") &
-                       LF & To_String(Source => Path) & LF & "\[" & Shortcut &
-                       "\]";
-                  else
-                     Shortcut :=
-                       Path_Shortcut & "-KP_" &
-                       Slice_Number'Image(Slice_Count(S => Tokens) - I - 1)(2);
-                     Tooltip_Text :=
-                       Mc
-                         (Interp => Get_Context,
-                          Src_String => "{Go to directory:}") &
-                       LF & To_String(Source => Path) & LF & "\[" & Shortcut &
-                       "\]";
-                  end if;
-                  Bind_To_Main_Window
-                    (Interp => Path_Button.Interp,
-                     Sequence => "<" & To_String(Source => Shortcut) & ">",
-                     Script => "{" & Path_Button & " invoke}");
-                  Add
-                    (Widget => Path_Button,
-                     Message => To_String(Source => Tooltip_Text));
+            else
+               Append
+                 (Source => Path,
+                  New_Item => Slice(S => Tokens, Index => I) & "/");
+               if New_Action = SHOWTRASH and I = 2 then
+                  Set_Path_Button_Block :
+                  declare
+                     use Ada.Text_IO;
+
+                     File_Info: File_Type;
+                     File_Line: Unbounded_String := Null_Unbounded_String;
+                  begin
+                     Open
+                       (File => File_Info, Mode => In_File,
+                        Name =>
+                          Value(Name => "HOME") & "/.local/share/Trash/info/" &
+                          Slice(S => Tokens, Index => I) & ".trashinfo");
+                     Skip_Line(File => File_Info);
+                     Read_File_Path_Loop :
+                     for J in 1 .. 2 loop
+                        File_Line :=
+                          To_Unbounded_String
+                            (Source => Get_Line(File => File_Info));
+                        if Slice(Source => File_Line, Low => 1, High => 4) =
+                          "Path" then
+                           Button_Label :=
+                             To_Unbounded_String
+                               (Source =>
+                                  Simple_Name
+                                    (Name =>
+                                       Slice
+                                         (Source => File_Line, Low => 6,
+                                          High =>
+                                            Length(Source => File_Line))));
+                        end if;
+                     end loop Read_File_Path_Loop;
+                     Close(File => File_Info);
+                  end Set_Path_Button_Block;
+               else
+                  Button_Label :=
+                    To_Unbounded_String
+                      (Source => Slice(S => Tokens, Index => I));
                end if;
-               Width :=
-                 Width +
-                 Positive'Value
-                   (Winfo_Get(Widgt => Path_Button, Info => "reqwidth"));
-               if Width >
-                 Positive'Value
-                   (Winfo_Get
-                      (Widgt => Path_Buttons_Frame, Info => "width")) then
-                  Row := Row + 1;
-                  Width := 0;
-                  Column := 0;
+               if Length(Source => Button_Label) > 7 then
+                  Button_Label :=
+                    Unbounded_Slice
+                      (Source => Button_Label, Low => 1, High => 7) &
+                    "...";
                end if;
-               Tcl.Tk.Ada.Grid.Grid
-                 (Slave => Path_Button,
-                  Options =>
-                    "-row" & Natural'Image(Row) & " -column" &
-                    Natural'Image(Column));
-               Column := Column + 1;
-               <<End_Of_Loop>>
-            end loop Add_Path_Buttons_Loop;
-         end if;
+               Path_Button :=
+                 Create
+                   (pathName =>
+                      Widget_Image(Win => Path_Buttons_Frame) & ".button" &
+                      Trim(Source => Slice_Number'Image(I), Side => Both),
+                    options =>
+                      "-text {" & To_String(Source => Button_Label) &
+                      "} -command {" & To_String(Source => Path_Command) &
+                      " {" & To_String(Source => Path) & "}}");
+            end if;
+            if I + 11 > Slice_Count(S => Tokens) then
+               if I = Slice_Count(S => Tokens) then
+                  Shortcut := Path_Shortcut & "-r";
+                  Tooltip_Text :=
+                    Mc
+                      (Interp => Get_Context,
+                       Src_String => "{Reload the current directory:}") &
+                    LF & To_String(Source => Path) & LF & "\[" & Shortcut &
+                    "\]";
+               elsif I = Slice_Count(S => Tokens) - 1 then
+                  Shortcut := Path_Shortcut & "-u";
+                  Tooltip_Text :=
+                    Mc
+                      (Interp => Get_Context,
+                       Src_String => "{Go to directory:}") &
+                    LF & To_String(Source => Path) & LF & "\[" & Shortcut &
+                    "\]";
+               else
+                  Shortcut :=
+                    Path_Shortcut & "-KP_" &
+                    Slice_Number'Image(Slice_Count(S => Tokens) - I - 1)(2);
+                  Tooltip_Text :=
+                    Mc
+                      (Interp => Get_Context,
+                       Src_String => "{Go to directory:}") &
+                    LF & To_String(Source => Path) & LF & "\[" & Shortcut &
+                    "\]";
+               end if;
+               Bind_To_Main_Window
+                 (Interp => Path_Button.Interp,
+                  Sequence => "<" & To_String(Source => Shortcut) & ">",
+                  Script => "{" & Path_Button & " invoke}");
+               Add
+                 (Widget => Path_Button,
+                  Message => To_String(Source => Tooltip_Text));
+            end if;
+            Width :=
+              Width +
+              Positive'Value
+                (Winfo_Get(Widgt => Path_Button, Info => "reqwidth"));
+            if Width >
+              Positive'Value
+                (Winfo_Get(Widgt => Path_Buttons_Frame, Info => "width")) then
+               Row := Row + 1;
+               Width := 0;
+               Column := 0;
+            end if;
+            Tcl.Tk.Ada.Grid.Grid
+              (Slave => Path_Button,
+               Options =>
+                 "-row" & Natural'Image(Row) & " -column" &
+                 Natural'Image(Column));
+            Column := Column + 1;
+            <<End_Of_Loop>>
+         end loop Add_Path_Buttons_Loop;
       else
          Rearrange_Items_Loop :
          for I in List.First_Index .. List.Last_Index loop
