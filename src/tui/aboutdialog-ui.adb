@@ -60,12 +60,12 @@ package body AboutDialog.UI is
         New_Field
           (Height => 1, Width => Column_Position(AboutDialog.Copyright'Length),
            Top => 1, Left => 4, Off_Screen => 0, More_Buffers => 0);
-      Set_Buffer(About_Fields.all(2), 0, AboutDialog.Copyright);
-      Set_Options(About_Fields.all(2), Field_Options);
+      Set_Buffer(Fld => About_Fields.all(2), Buffer => 0, Str => AboutDialog.Copyright);
+      Set_Options(Fld => About_Fields.all(2), Options => Field_Options);
       About_Fields.all(3) :=
-        New_Field(1, Column_Position(Length(AboutDialog.License)), 2, 8, 0, 0);
-      Set_Buffer(About_Fields.all(3), 0, To_String(AboutDialog.License));
-      Set_Options(About_Fields.all(3), Field_Options);
+        New_Field(Height => 1, Width => Column_Position(Length(Source => AboutDialog.License)), Top => 2, Left => 8, Off_Screen => 0, More_Buffers => 0);
+      Set_Buffer(Fld => About_Fields.all(3), Buffer => 0, Str => To_String(Source => AboutDialog.License));
+      Set_Options(Fld => About_Fields.all(3), Options => Field_Options);
       About_Fields.all(4) :=
         New_Field(1, Column_Position(Length(AboutDialog.Version)), 3, 4, 0, 0);
       Set_Buffer(About_Fields.all(4), 0, To_String(AboutDialog.Version));
