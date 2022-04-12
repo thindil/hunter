@@ -90,19 +90,19 @@ package body AboutDialog.UI is
            Top => 5, Left => Field_Position, Off_Screen => 0,
            More_Buffers => 0);
       Set_Buffer
-        (About_Fields.all(5), 0,
-         "[" & To_String(AboutDialog.Website_Text) & "]");
-      Field_Options := Get_Options(About_Fields.all(5));
+        (Fld => About_Fields.all(5), Buffer => 0,
+         Str => "[" & To_String(Source => AboutDialog.Website_Text) & "]");
+      Field_Options := Get_Options(Fld => About_Fields.all(5));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
-      Set_Options(About_Fields.all(5), Field_Options);
-      Field_Position := Column_Position(Length(AboutDialog.Website_Text)) + 2;
+      Set_Options(Fld => About_Fields.all(5), Options => Field_Options);
+      Field_Position := Column_Position(Length(Source => AboutDialog.Website_Text)) + 2;
       About_Fields.all(6) :=
         New_Field
-          (1, Column_Position'Value(Mc_Max("{Programmers}", Interpreter)) + 2,
-           5, Field_Position, 0, 0);
+          (Height => 1, Width => Column_Position'Value(Mc_Max(Strings => "{Programmers}", Interp => Interpreter)) + 2,
+           Top => 5, Left => Field_Position, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
-        (About_Fields.all(6), 0,
-         "[" & To_String(AboutDialog.Programmers_Text) & "]");
+        (Fld => About_Fields.all(6), Buffer => 0,
+         Str => "[" & To_String(Source => AboutDialog.Programmers_Text) & "]");
       Set_Options(About_Fields.all(6), Field_Options);
       Field_Position :=
         Field_Position +
