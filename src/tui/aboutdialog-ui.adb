@@ -135,15 +135,15 @@ package body AboutDialog.UI is
         2;
       About_Fields.all(8) :=
         New_Field
-          (1, Column_Position'Value(Mc_Max("{Close}", Interpreter)) + 2, 5,
-           Field_Position, 0, 0);
+          (Height => 1, Width => Column_Position'Value(Mc_Max(Strings => "{Close}", Interp => Interpreter)) + 2, Top => 5,
+           Left => Field_Position, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
-        (About_Fields.all(8), 0, "[" & To_String(Source => Close_Text) & "]");
-      Set_Options(About_Fields.all(8), Field_Options);
+        (Fld => About_Fields.all(8), Buffer => 0, Str => "[" & To_String(Source => Close_Text) & "]");
+      Set_Options(Fld => About_Fields.all(8), Options => Field_Options);
       About_Fields.all(9) := Null_Field;
-      Dialog_Form := New_Form(About_Fields);
-      Set_Current(Dialog_Form, About_Fields(5));
-      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
+      Dialog_Form := New_Form(Fields => About_Fields);
+      Set_Current(Frm => Dialog_Form, Fld => About_Fields(5));
+      Create_Dialog(DialogForm => Dialog_Form, FormWindow => Form_Window, Form_Height => Form_Height, Form_Length => Form_Length);
    end Show_About_Dialog;
 
    procedure Show_Developers_Dialog(Developers: Boolean := True) is
