@@ -1344,7 +1344,6 @@ package body ShowItems is
              (Source =>
                 Mc(Interp => Get_Context, Src_String => "{Can write}")));
       Path_Buttons_Frame: Ttk_Frame;
-      pragma Unreferenced(Path_Buttons_Frame);
       Font: constant String :=
         (if Settings.Monospace_Font then "TkFixedFont" else "TkDefaultFont");
       procedure Create_Permissions_Frame(Name: String; Row: Positive) is
@@ -1391,6 +1390,11 @@ package body ShowItems is
       Tcl.Tk.Ada.Pack.Pack(Slave => Label);
       Path_Buttons_Frame :=
         Create(pathName => Get_Preview_Frame & ".pathframe");
+      Bind
+        (Widgt => Path_Buttons_Frame, Sequence => "<Configure>",
+         Script => "{ArrangePath %W %w}");
+      Tcl.Tk.Ada.Pack.Pack
+        (Slave => Path_Buttons_Frame, Options => "-side top -fill x");
       Preview_X_Scroll :=
         Create
           (pathName => Get_Preview_Frame & ".scrollx",
