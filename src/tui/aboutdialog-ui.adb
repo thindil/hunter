@@ -135,15 +135,23 @@ package body AboutDialog.UI is
         2;
       About_Fields.all(8) :=
         New_Field
-          (Height => 1, Width => Column_Position'Value(Mc_Max(Strings => "{Close}", Interp => Interpreter)) + 2, Top => 5,
-           Left => Field_Position, Off_Screen => 0, More_Buffers => 0);
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "{Close}", Interp => Interpreter)) +
+             2,
+           Top => 5, Left => Field_Position, Off_Screen => 0,
+           More_Buffers => 0);
       Set_Buffer
-        (Fld => About_Fields.all(8), Buffer => 0, Str => "[" & To_String(Source => Close_Text) & "]");
+        (Fld => About_Fields.all(8), Buffer => 0,
+         Str => "[" & To_String(Source => Close_Text) & "]");
       Set_Options(Fld => About_Fields.all(8), Options => Field_Options);
       About_Fields.all(9) := Null_Field;
       Dialog_Form := New_Form(Fields => About_Fields);
       Set_Current(Frm => Dialog_Form, Fld => About_Fields(5));
-      Create_Dialog(DialogForm => Dialog_Form, FormWindow => Form_Window, Form_Height => Form_Height, Form_Length => Form_Length);
+      Create_Dialog
+        (DialogForm => Dialog_Form, FormWindow => Form_Window,
+         Form_Height => Form_Height, Form_Length => Form_Length);
    end Show_About_Dialog;
 
    procedure Show_Developers_Dialog(Developers: Boolean := True) is
@@ -159,13 +167,13 @@ package body AboutDialog.UI is
          Set_Buffer(About_Fields.all(1), 0, Translator);
       end if;
       Field_Options := Get_Options(About_Fields.all(1));
-      Field_Options.Active := False;
+      Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(About_Fields.all(1), Field_Options);
       About_Fields.all(2) :=
         New_Field
           (1, Column_Position(Length(Source => Close_Text) + 2), 2, 10, 0, 0);
       Field_Options := Get_Options(About_Fields.all(2));
-      Field_Options.Edit := False;
+      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Buffer
         (About_Fields.all(2), 0, "[" & To_String(Source => Close_Text) & "]");
       Set_Options(About_Fields.all(2), Field_Options);
