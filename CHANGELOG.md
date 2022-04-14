@@ -43,6 +43,8 @@ All notable changes to this project will be documented in this file.
 - Showing remove bookmark button for the standard bookmarks in the console
   version of the program
 - Showing path buttons after start the program in the graphical version
+- Showing path buttons for destination directory after starting copying or
+  moving files and directories in the graphical version
 
 ## [1.6] - 2021-08-08
 
