@@ -160,23 +160,31 @@ package body AboutDialog.UI is
       Form_Length: Column_Position;
       Field_Options: Field_Option_Set;
    begin
-      About_Fields.all(1) := New_Field(Height => 1, Width => 44, Top => 0, Left => 1, Off_Screen => 0, More_Buffers => 0);
+      About_Fields.all(1) :=
+        New_Field
+          (Height => 1, Width => 44, Top => 0, Left => 1, Off_Screen => 0,
+           More_Buffers => 0);
       if Developers then
-         Set_Buffer(Fld => About_Fields.all(1), Buffer => 0, Str => Programmer);
+         Set_Buffer
+           (Fld => About_Fields.all(1), Buffer => 0, Str => Programmer);
       else
-         Set_Buffer(Fld => About_Fields.all(1), Buffer => 0, Str => Translator);
+         Set_Buffer
+           (Fld => About_Fields.all(1), Buffer => 0, Str => Translator);
       end if;
       Field_Options := Get_Options(Fld => About_Fields.all(1));
       Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => About_Fields.all(1), Options => Field_Options);
       About_Fields.all(2) :=
         New_Field
-          (Height => 1, Width => Column_Position(Length(Source => Close_Text) + 2), Top => 2, Left => 10, Off_Screen => 0, More_Buffers => 0);
-      Field_Options := Get_Options(About_Fields.all(2));
+          (Height => 1,
+           Width => Column_Position(Length(Source => Close_Text) + 2),
+           Top => 2, Left => 10, Off_Screen => 0, More_Buffers => 0);
+      Field_Options := Get_Options(Fld => About_Fields.all(2));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Buffer
-        (About_Fields.all(2), 0, "[" & To_String(Source => Close_Text) & "]");
-      Set_Options(About_Fields.all(2), Field_Options);
+        (Fld => About_Fields.all(2), Buffer => 0,
+         Str => "[" & To_String(Source => Close_Text) & "]");
+      Set_Options(Fld => About_Fields.all(2), Options => Field_Options);
       About_Fields.all(3) := Null_Field;
       Dialog_Form := New_Form(About_Fields);
       Set_Current(Dialog_Form, About_Fields(2));
