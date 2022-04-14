@@ -160,18 +160,18 @@ package body AboutDialog.UI is
       Form_Length: Column_Position;
       Field_Options: Field_Option_Set;
    begin
-      About_Fields.all(1) := New_Field(1, 44, 0, 1, 0, 0);
+      About_Fields.all(1) := New_Field(Height => 1, Width => 44, Top => 0, Left => 1, Off_Screen => 0, More_Buffers => 0);
       if Developers then
-         Set_Buffer(About_Fields.all(1), 0, Programmer);
+         Set_Buffer(Fld => About_Fields.all(1), Buffer => 0, Str => Programmer);
       else
-         Set_Buffer(About_Fields.all(1), 0, Translator);
+         Set_Buffer(Fld => About_Fields.all(1), Buffer => 0, Str => Translator);
       end if;
-      Field_Options := Get_Options(About_Fields.all(1));
+      Field_Options := Get_Options(Fld => About_Fields.all(1));
       Field_Options.Active := False; --## rule line off ASSIGNMENTS
-      Set_Options(About_Fields.all(1), Field_Options);
+      Set_Options(Fld => About_Fields.all(1), Options => Field_Options);
       About_Fields.all(2) :=
         New_Field
-          (1, Column_Position(Length(Source => Close_Text) + 2), 2, 10, 0, 0);
+          (Height => 1, Width => Column_Position(Length(Source => Close_Text) + 2), Top => 2, Left => 10, Off_Screen => 0, More_Buffers => 0);
       Field_Options := Get_Options(About_Fields.all(2));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Buffer
