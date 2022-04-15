@@ -135,6 +135,7 @@ package body CopyItems.UI is
          else Destination_Directory);
       Load_Directory
         (Directory_Name => To_String(Source => Common.Current_Directory));
+      New_Action := CREATEFILE;
       Update_Directory_List(Clear => True);
       Update_Watch(Path => To_String(Source => Common.Current_Directory));
       Show_Preview;

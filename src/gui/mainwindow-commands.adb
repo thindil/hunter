@@ -429,6 +429,7 @@ package body MainWindow.Commands is
          when others =>
             return TCL_OK;
       end case;
+      New_Action := CREATEFILE;
       Show_Preview;
       if State(Widget => Action_Button) = "selected" then
          State(Widget => Action_Button, StateSpec => "!selected");
