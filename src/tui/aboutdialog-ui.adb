@@ -30,6 +30,18 @@ package body AboutDialog.UI is
    Dialog_Form: Forms.Form;
    -- ****
 
+   -- ****if* AboutDialogTUI/Get_Dialog_Form
+   -- FUNCTION
+   -- Get the about dialog form
+   -- RESULT
+   -- The ncurses dialog form for information about the program
+   -- SOURCE
+   function Get_Dialog_Form return Forms.Form is
+      -- ****
+   begin
+      return Dialog_Form;
+   end Get_Dialog_Form;
+
    -- ****iv* AboutDialogTUI/AboutDialogTUI.Form_Window
    -- FUNCTION
    -- The window to show information about the program
@@ -147,11 +159,15 @@ package body AboutDialog.UI is
          Str => "[" & To_String(Source => Close_Text) & "]");
       Set_Options(Fld => About_Fields.all(8), Options => Field_Options);
       About_Fields.all(9) := Null_Field;
-      Dialog_Form := New_Form(Fields => About_Fields);
-      Set_Current(Frm => Dialog_Form, Fld => About_Fields(5));
-      Create_Dialog
-        (DialogForm => Dialog_Form, FormWindow => Form_Window,
-         Form_Height => Form_Height, Form_Length => Form_Length);
+      declare
+         New_Dialog_Form: Forms.Form := New_Form(Fields => About_Fields);
+      begin
+         Set_Current(Frm => New_Dialog_Form, Fld => About_Fields(5));
+         Create_Dialog
+           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+            Form_Height => Form_Height, Form_Length => Form_Length);
+         Dialog_Form := New_Dialog_Form;
+      end;
    end Show_About_Dialog;
 
    procedure Show_Developers_Dialog(Developers: Boolean := True) is
@@ -186,21 +202,27 @@ package body AboutDialog.UI is
          Str => "[" & To_String(Source => Close_Text) & "]");
       Set_Options(Fld => About_Fields.all(2), Options => Field_Options);
       About_Fields.all(3) := Null_Field;
-      Dialog_Form := New_Form(About_Fields);
-      Set_Current(Dialog_Form, About_Fields(2));
-      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
+      declare
+         New_Dialog_Form: Forms.Form := New_Form(About_Fields);
+      begin
+         Set_Current(New_Dialog_Form, About_Fields(2));
+         Create_Dialog(New_Dialog_Form, Form_Window, Form_Height, Form_Length);
+         Dialog_Form := New_Dialog_Form;
+      end;
    end Show_Developers_Dialog;
 
    function About_View_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
+      FieldIndex: constant Positive := Get_Index(Current(Get_Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
+      Dialog_Frm: Forms.Form := Get_Dialog_Form;
       function HideAboutDialog
         (With_Message: Boolean := False) return UI_Locations is
       begin
          Set_Cursor_Visibility(Visibility);
-         Post(Dialog_Form, False);
-         Delete(Dialog_Form);
+         Post(Dialog_Frm, False);
+         Delete(Dialog_Frm);
+         Dialog_Form := Dialog_Frm;
          if With_Message then
             UILocation := MESSAGE_FORM;
          else
@@ -213,9 +235,9 @@ package body AboutDialog.UI is
    begin
       case Key is
          when KEY_UP | KEY_LEFT =>
-            Result := Go_Previous_Field(Dialog_Form);
+            Result := Go_Previous_Field(Dialog_Frm);
          when KEY_DOWN | KEY_RIGHT =>
-            Result := Go_Next_Field(Dialog_Form);
+            Result := Go_Next_Field(Dialog_Frm);
          when 27 =>
             return HideAboutDialog;
          when 10 =>
@@ -240,7 +262,8 @@ package body AboutDialog.UI is
                         return HideAboutDialog(True);
                   end;
                when 6 | 7 =>
-                  Delete_Dialog(Dialog_Form);
+                  Delete_Dialog(Dialog_Frm);
+                  Dialog_Form := Dialog_Frm;
                   if FieldIndex = 6 then
                      Show_Developers_Dialog;
                   else
@@ -263,10 +286,12 @@ package body AboutDialog.UI is
 
    function Developers_Keys(Key: Key_Code) return UI_Locations is
       Visibility: Cursor_Visibility := Invisible;
+      Dialog_Frm: Forms.Form := Get_Dialog_Form;
    begin
       if Key = 10 then
          Set_Cursor_Visibility(Visibility);
-         Delete_Dialog(Dialog_Form);
+         Delete_Dialog(Dialog_Frm);
+         Dialog_Form := Dialog_Frm;
          return DIRECTORY_VIEW;
       end if;
       return DEVELOPERS_VIEW;
