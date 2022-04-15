@@ -49,6 +49,18 @@ package body AboutDialog.UI is
    Form_Window: Window;
    -- ****
 
+   -- ****if* AboutDialogTUI/Get_Form_Window
+   -- FUNCTION
+   -- Get the about window
+   -- RESULT
+   -- The ncurses window for information about the program
+   -- SOURCE
+   function Get_Form_Window return Window is
+      -- ****
+   begin
+      return Form_Window;
+   end Get_Form_Window;
+
    procedure Show_About_Dialog is
       About_Fields: constant Field_Array_Access := new Field_Array(1 .. 9);
       Form_Height: Line_Position;
@@ -161,12 +173,14 @@ package body AboutDialog.UI is
       About_Fields.all(9) := Null_Field;
       declare
          New_Dialog_Form: Forms.Form := New_Form(Fields => About_Fields);
+         Local_Form_Window: Window := Get_Form_Window;
       begin
          Set_Current(Frm => New_Dialog_Form, Fld => About_Fields(5));
          Create_Dialog
-           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+           (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window,
             Form_Height => Form_Height, Form_Length => Form_Length);
          Dialog_Form := New_Dialog_Form;
+         Form_Window := Local_Form_Window;
       end;
    end Show_About_Dialog;
 
@@ -204,10 +218,13 @@ package body AboutDialog.UI is
       About_Fields.all(3) := Null_Field;
       declare
          New_Dialog_Form: Forms.Form := New_Form(About_Fields);
+         Local_Form_Window: Window := Get_Form_Window;
       begin
          Set_Current(New_Dialog_Form, About_Fields(2));
-         Create_Dialog(New_Dialog_Form, Form_Window, Form_Height, Form_Length);
+         Create_Dialog
+           (New_Dialog_Form, Local_Form_Window, Form_Height, Form_Length);
          Dialog_Form := New_Dialog_Form;
+         Form_Window := Local_Form_Window;
       end;
    end Show_Developers_Dialog;
 
@@ -279,7 +296,7 @@ package body AboutDialog.UI is
             null;
       end case;
       if Result = Form_Ok then
-         Refresh(Form_Window);
+         Refresh(Get_Form_Window);
       end if;
       return ABOUT_FORM;
    end About_View_Keys;
