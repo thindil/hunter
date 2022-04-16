@@ -42,6 +42,18 @@ package body AboutDialog.UI is
       return Dialog_Form;
    end Get_Dialog_Form;
 
+   -- ****if* AboutDialogTUI/Set_Dialog_Form
+   -- FUNCTION
+   -- Set the new value for the dialog form for information about the program
+   -- PARAMETERS
+   -- New_Form - The new value for the Dialog_Form
+   -- SOURCE
+   procedure Set_Dialog_Form(New_Form: Forms.Form) is
+      -- ****
+   begin
+      Dialog_Form := New_Form;
+   end Set_Dialog_Form;
+
    -- ****iv* AboutDialogTUI/AboutDialogTUI.Form_Window
    -- FUNCTION
    -- The window to show information about the program
@@ -169,7 +181,7 @@ package body AboutDialog.UI is
          Str => "[" & To_String(Source => Close_Text) & "]");
       Set_Options(Fld => About_Fields.all(8), Options => Field_Options);
       About_Fields.all(9) := Null_Field;
-      Create_About_Dialog_Block:
+      Create_About_Dialog_Block :
       declare
          New_Dialog_Form: Forms.Form := New_Form(Fields => About_Fields);
          --## rule off IMPROPER_INITIALIZATION
@@ -182,7 +194,7 @@ package body AboutDialog.UI is
          Create_Dialog
            (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window,
             Form_Height => Form_Height, Form_Length => Form_Length);
-         Dialog_Form := New_Dialog_Form;
+         Set_Dialog_Form(New_Form => New_Dialog_Form);
          Form_Window := Local_Form_Window;
       end Create_About_Dialog_Block;
    end Show_About_Dialog;
@@ -217,7 +229,7 @@ package body AboutDialog.UI is
          Str => "[" & To_String(Source => Close_Text) & "]");
       Set_Options(Fld => About_Fields.all(2), Options => Field_Options);
       About_Fields.all(3) := Null_Field;
-      Create_Developers_Dialog_Block:
+      Create_Developers_Dialog_Block :
       declare
          New_Dialog_Form: Forms.Form := New_Form(About_Fields);
          --## rule off IMPROPER_INITIALIZATION
@@ -229,7 +241,7 @@ package body AboutDialog.UI is
          Set_Current(New_Dialog_Form, About_Fields(2));
          Create_Dialog
            (New_Dialog_Form, Local_Form_Window, Form_Height, Form_Length);
-         Dialog_Form := New_Dialog_Form;
+         Set_Dialog_Form(New_Form => New_Dialog_Form);
          Form_Window := Local_Form_Window;
       end Create_Developers_Dialog_Block;
    end Show_Developers_Dialog;
@@ -245,7 +257,7 @@ package body AboutDialog.UI is
          Set_Cursor_Visibility(Visibility);
          Post(Dialog_Frm, False);
          Delete(Dialog_Frm);
-         Dialog_Form := Dialog_Frm;
+         Set_Dialog_Form(New_Form => Dialog_Frm);
          if With_Message then
             UILocation := MESSAGE_FORM;
          else
@@ -286,7 +298,7 @@ package body AboutDialog.UI is
                   end;
                when 6 | 7 =>
                   Delete_Dialog(Dialog_Frm);
-                  Dialog_Form := Dialog_Frm;
+                  Set_Dialog_Form(New_Form => Dialog_Frm);
                   if FieldIndex = 6 then
                      Show_Developers_Dialog;
                   else
@@ -314,7 +326,7 @@ package body AboutDialog.UI is
       if Key = 10 then
          Set_Cursor_Visibility(Visibility);
          Delete_Dialog(Dialog_Frm);
-         Dialog_Form := Dialog_Frm;
+         Set_Dialog_Form(New_Form => Dialog_Frm);
          return DIRECTORY_VIEW;
       end if;
       return DEVELOPERS_VIEW;
