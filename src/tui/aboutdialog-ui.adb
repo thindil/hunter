@@ -63,8 +63,6 @@ package body AboutDialog.UI is
 
    procedure Show_About_Dialog is
       About_Fields: constant Field_Array_Access := new Field_Array(1 .. 9);
-      Form_Height: Line_Position;
-      Form_Length: Column_Position;
       Visibility: Cursor_Visibility := Normal;
       Field_Options: Field_Option_Set;
       Field_Position: Column_Position := 0;
@@ -171,9 +169,14 @@ package body AboutDialog.UI is
          Str => "[" & To_String(Source => Close_Text) & "]");
       Set_Options(Fld => About_Fields.all(8), Options => Field_Options);
       About_Fields.all(9) := Null_Field;
+      Create_About_Dialog_Block:
       declare
          New_Dialog_Form: Forms.Form := New_Form(Fields => About_Fields);
+         --## rule off IMPROPER_INITIALIZATION
          Local_Form_Window: Window := Get_Form_Window;
+         --## rule on IMPROPER_INITIALIZATION
+         Form_Height: Line_Position := 0;
+         Form_Length: Column_Position := 0;
       begin
          Set_Current(Frm => New_Dialog_Form, Fld => About_Fields(5));
          Create_Dialog
@@ -181,13 +184,11 @@ package body AboutDialog.UI is
             Form_Height => Form_Height, Form_Length => Form_Length);
          Dialog_Form := New_Dialog_Form;
          Form_Window := Local_Form_Window;
-      end;
+      end Create_About_Dialog_Block;
    end Show_About_Dialog;
 
    procedure Show_Developers_Dialog(Developers: Boolean := True) is
       About_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
-      Form_Height: Line_Position;
-      Form_Length: Column_Position;
       Field_Options: Field_Option_Set;
    begin
       About_Fields.all(1) :=
@@ -216,16 +217,21 @@ package body AboutDialog.UI is
          Str => "[" & To_String(Source => Close_Text) & "]");
       Set_Options(Fld => About_Fields.all(2), Options => Field_Options);
       About_Fields.all(3) := Null_Field;
+      Create_Developers_Dialog_Block:
       declare
          New_Dialog_Form: Forms.Form := New_Form(About_Fields);
+         --## rule off IMPROPER_INITIALIZATION
          Local_Form_Window: Window := Get_Form_Window;
+         --## rule on IMPROPER_INITIALIZATION
+         Form_Height: Line_Position := 0;
+         Form_Length: Column_Position := 0;
       begin
          Set_Current(New_Dialog_Form, About_Fields(2));
          Create_Dialog
            (New_Dialog_Form, Local_Form_Window, Form_Height, Form_Length);
          Dialog_Form := New_Dialog_Form;
          Form_Window := Local_Form_Window;
-      end;
+      end Create_Developers_Dialog_Block;
    end Show_Developers_Dialog;
 
    function About_View_Keys(Key: Key_Code) return UI_Locations is
