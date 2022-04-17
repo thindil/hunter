@@ -30,7 +30,7 @@ package body AboutDialog.UI is
    Dialog_Form: Forms.Form;
    -- ****
 
-   -- ****if* AboutDialogTUI/Get_Dialog_Form
+   -- ****if* AboutDialogTUI/AboutDialogTUI.Get_Dialog_Form
    -- FUNCTION
    -- Get the about dialog form
    -- RESULT
@@ -42,7 +42,7 @@ package body AboutDialog.UI is
       return Dialog_Form;
    end Get_Dialog_Form;
 
-   -- ****if* AboutDialogTUI/Set_Dialog_Form
+   -- ****if* AboutDialogTUI/AboutDialogTUI.Set_Dialog_Form
    -- FUNCTION
    -- Set the new value for the dialog form for information about the program
    -- PARAMETERS
@@ -61,7 +61,7 @@ package body AboutDialog.UI is
    Form_Window: Window;
    -- ****
 
-   -- ****if* AboutDialogTUI/Get_Form_Window
+   -- ****if* AboutDialogTUI/AboutDialogTUI.Get_Form_Window
    -- FUNCTION
    -- Get the about window
    -- RESULT
@@ -72,6 +72,18 @@ package body AboutDialog.UI is
    begin
       return Form_Window;
    end Get_Form_Window;
+
+   -- ****if* AboutDialogTUI/AboutDialogTUI.Set_Form_Window
+   -- FUNCTION
+   -- Set the new window for information about the program
+   -- PARAMETERS
+   -- New_Window - The new window for the Form_Window
+   -- SOURCE
+   procedure Set_Form_Window(New_Window: Window) is
+      -- ****
+   begin
+      Form_Window := New_Window;
+   end Set_Form_Window;
 
    procedure Show_About_Dialog is
       About_Fields: constant Field_Array_Access := new Field_Array(1 .. 9);
@@ -195,7 +207,7 @@ package body AboutDialog.UI is
            (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window,
             Form_Height => Form_Height, Form_Length => Form_Length);
          Set_Dialog_Form(New_Form => New_Dialog_Form);
-         Form_Window := Local_Form_Window;
+         Set_Form_Window(New_Window => Local_Form_Window);
       end Create_About_Dialog_Block;
    end Show_About_Dialog;
 
@@ -242,7 +254,7 @@ package body AboutDialog.UI is
          Create_Dialog
            (New_Dialog_Form, Local_Form_Window, Form_Height, Form_Length);
          Set_Dialog_Form(New_Form => New_Dialog_Form);
-         Form_Window := Local_Form_Window;
+         Set_Form_Window(New_Window => Local_Form_Window);
       end Create_Developers_Dialog_Block;
    end Show_Developers_Dialog;
 
