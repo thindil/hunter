@@ -45,6 +45,8 @@ All notable changes to this project will be documented in this file.
 - Showing path buttons after start the program in the graphical version
 - Showing path buttons for destination directory after starting copying or
   moving files and directories in the graphical version
+- Not working path buttons after finishing copying or moving files and
+  directories in the graphical version
 
 ## [1.6] - 2021-08-08
 
