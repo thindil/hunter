@@ -187,8 +187,8 @@ package body AboutDialog.UI is
          --## rule off IMPROPER_INITIALIZATION
          Local_Form_Window: Window := Get_Form_Window;
          --## rule on IMPROPER_INITIALIZATION
-         Form_Height: Line_Position := 0;
-         Form_Length: Column_Position := 0;
+         Form_Height: Line_Position;
+         Form_Length: Column_Position;
       begin
          Set_Current(Frm => New_Dialog_Form, Fld => About_Fields(5));
          Create_Dialog
@@ -235,8 +235,8 @@ package body AboutDialog.UI is
          --## rule off IMPROPER_INITIALIZATION
          Local_Form_Window: Window := Get_Form_Window;
          --## rule on IMPROPER_INITIALIZATION
-         Form_Height: Line_Position := 0;
-         Form_Length: Column_Position := 0;
+         Form_Height: Line_Position;
+         Form_Length: Column_Position;
       begin
          Set_Current(New_Dialog_Form, About_Fields(2));
          Create_Dialog
