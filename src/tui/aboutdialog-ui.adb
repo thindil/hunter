@@ -252,7 +252,8 @@ package body AboutDialog.UI is
       begin
          Set_Current(Frm => New_Dialog_Form, Fld => About_Fields(2));
          Create_Dialog
-           (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window, Form_Height => Form_Height, Form_Length => Form_Length);
+           (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window,
+            Form_Height => Form_Height, Form_Length => Form_Length);
          Set_Dialog_Form(New_Form => New_Dialog_Form);
          Set_Form_Window(New_Window => Local_Form_Window);
       end Create_Developers_Dialog_Block;
@@ -260,7 +261,8 @@ package body AboutDialog.UI is
 
    function About_View_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      Field_Index: constant Positive := Get_Index(Fld => Current(Frm => Get_Dialog_Form));
+      Field_Index: constant Positive :=
+        Get_Index(Fld => Current(Frm => Get_Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
       function Hide_About_Dialog
@@ -290,32 +292,37 @@ package body AboutDialog.UI is
          when 10 =>
             case Field_Index is
                when 5 =>
-                  Open_Link_In_Browser_Block:
+                  Open_Link_In_Browser_Block :
                   declare
                      Browser_Process_Id: Process_Id;
                   begin
                      Browser_Process_Id :=
                        Non_Blocking_Spawn
-                         (Locate_Exec_On_Path("xdg-open").all,
-                          Argument_String_To_List(Website).all);
+                         (Program_Name =>
+                            Locate_Exec_On_Path(Exec_Name => "xdg-open").all,
+                          Args =>
+                            Argument_String_To_List
+                              (Arg_String => Website).all);
                      if Browser_Process_Id = Invalid_Pid then
                         return ABOUT_FORM;
                      end if;
                   exception
                      when Constraint_Error =>
                         Show_Message
-                          (Mc
-                             (Interpreter,
-                              "{Can't find web browser to open the link}"));
-                        return Hide_About_Dialog(True);
+                          (Message =>
+                             Mc
+                               (Interp => Interpreter,
+                                Src_String =>
+                                  "{Can't find web browser to open the link}"));
+                        return Hide_About_Dialog(With_Message => True);
                   end Open_Link_In_Browser_Block;
                when 6 | 7 =>
-                  Delete_Dialog(Dialog_Frm);
+                  Delete_Dialog(DialogForm => Dialog_Frm);
                   Set_Dialog_Form(New_Form => Dialog_Frm);
                   if Field_Index = 6 then
                      Show_Developers_Dialog;
                   else
-                     Show_Developers_Dialog(False);
+                     Show_Developers_Dialog(Developers => False);
                   end if;
                   return DEVELOPERS_VIEW;
                when 8 =>
@@ -327,7 +334,7 @@ package body AboutDialog.UI is
             null;
       end case;
       if Result = Form_Ok then
-         Refresh(Get_Form_Window);
+         Refresh(Win => Get_Form_Window);
       end if;
       return ABOUT_FORM;
    end About_View_Keys;
@@ -337,8 +344,8 @@ package body AboutDialog.UI is
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
    begin
       if Key = 10 then
-         Set_Cursor_Visibility(Visibility);
-         Delete_Dialog(Dialog_Frm);
+         Set_Cursor_Visibility(Visibility => Visibility);
+         Delete_Dialog(DialogForm => Dialog_Frm);
          Set_Dialog_Form(New_Form => Dialog_Frm);
          return DIRECTORY_VIEW;
       end if;
