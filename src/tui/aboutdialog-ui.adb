@@ -243,16 +243,16 @@ package body AboutDialog.UI is
       About_Fields.all(3) := Null_Field;
       Create_Developers_Dialog_Block :
       declare
-         New_Dialog_Form: Forms.Form := New_Form(About_Fields);
+         New_Dialog_Form: Forms.Form := New_Form(Fields => About_Fields);
          --## rule off IMPROPER_INITIALIZATION
          Local_Form_Window: Window := Get_Form_Window;
          --## rule on IMPROPER_INITIALIZATION
          Form_Height: Line_Position;
          Form_Length: Column_Position;
       begin
-         Set_Current(New_Dialog_Form, About_Fields(2));
+         Set_Current(Frm => New_Dialog_Form, Fld => About_Fields(2));
          Create_Dialog
-           (New_Dialog_Form, Local_Form_Window, Form_Height, Form_Length);
+           (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window, Form_Height => Form_Height, Form_Length => Form_Length);
          Set_Dialog_Form(New_Form => New_Dialog_Form);
          Set_Form_Window(New_Window => Local_Form_Window);
       end Create_Developers_Dialog_Block;
@@ -260,15 +260,15 @@ package body AboutDialog.UI is
 
    function About_View_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(Get_Dialog_Form));
+      Field_Index: constant Positive := Get_Index(Fld => Current(Frm => Get_Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
-      function HideAboutDialog
+      function Hide_About_Dialog
         (With_Message: Boolean := False) return UI_Locations is
       begin
-         Set_Cursor_Visibility(Visibility);
-         Post(Dialog_Frm, False);
-         Delete(Dialog_Frm);
+         Set_Cursor_Visibility(Visibility => Visibility);
+         Post(Frm => Dialog_Frm, Post => False);
+         Delete(Frm => Dialog_Frm);
          Set_Dialog_Form(New_Form => Dialog_Frm);
          if With_Message then
             UILocation := MESSAGE_FORM;
@@ -278,26 +278,27 @@ package body AboutDialog.UI is
             Update_Directory_List;
          end if;
          return UILocation;
-      end HideAboutDialog;
+      end Hide_About_Dialog;
    begin
       case Key is
          when KEY_UP | KEY_LEFT =>
-            Result := Go_Previous_Field(Dialog_Frm);
+            Result := Go_Previous_Field(DialogForm => Dialog_Frm);
          when KEY_DOWN | KEY_RIGHT =>
-            Result := Go_Next_Field(Dialog_Frm);
+            Result := Go_Next_Field(DialogForm => Dialog_Frm);
          when 27 =>
-            return HideAboutDialog;
+            return Hide_About_Dialog;
          when 10 =>
-            case FieldIndex is
+            case Field_Index is
                when 5 =>
+                  Open_Link_In_Browser_Block:
                   declare
-                     ProcessId: Process_Id;
+                     Browser_Process_Id: Process_Id;
                   begin
-                     ProcessId :=
+                     Browser_Process_Id :=
                        Non_Blocking_Spawn
                          (Locate_Exec_On_Path("xdg-open").all,
                           Argument_String_To_List(Website).all);
-                     if ProcessId = Invalid_Pid then
+                     if Browser_Process_Id = Invalid_Pid then
                         return ABOUT_FORM;
                      end if;
                   exception
@@ -306,19 +307,19 @@ package body AboutDialog.UI is
                           (Mc
                              (Interpreter,
                               "{Can't find web browser to open the link}"));
-                        return HideAboutDialog(True);
-                  end;
+                        return Hide_About_Dialog(True);
+                  end Open_Link_In_Browser_Block;
                when 6 | 7 =>
                   Delete_Dialog(Dialog_Frm);
                   Set_Dialog_Form(New_Form => Dialog_Frm);
-                  if FieldIndex = 6 then
+                  if Field_Index = 6 then
                      Show_Developers_Dialog;
                   else
                      Show_Developers_Dialog(False);
                   end if;
                   return DEVELOPERS_VIEW;
                when 8 =>
-                  return HideAboutDialog;
+                  return Hide_About_Dialog;
                when others =>
                   null;
             end case;
