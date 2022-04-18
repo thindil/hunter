@@ -346,7 +346,7 @@ package body Messages.UI is
          Response => "noall", Column => 2);
       Add_Button
         (Name => "yesall",
-         Text => Mc(Interp => Get_Context, Src_String => "{Yes for all}"),
+         Text => Mc(Interp => Get_Context, Src_String => "{Overwrite all}"),
          Response => "yesall", Column => 3);
       Button :=
         Create

@@ -85,12 +85,12 @@ package body Messages.UI is
             Buttons_Fields.all(3) :=
               New_Field
                 (1,
-                 Column_Position'Value(Mc_Max("{Yes for all}", Interpreter)) +
+                 Column_Position'Value(Mc_Max("{Overwrite all}", Interpreter)) +
                  2,
                  (FormHeight - 1), 1, 0, 0);
             Set_Buffer
               (Buttons_Fields.all(3), 0,
-               "[" & Mc(Interpreter, "{Yes for all}") & "]");
+               "[" & Mc(Interpreter, "{Overwrite all}") & "]");
             FieldOptions := Get_Options(Buttons_Fields.all(3));
             FieldOptions.Edit := False;
             Set_Options(Buttons_Fields.all(3), FieldOptions);
@@ -180,7 +180,7 @@ package body Messages.UI is
             if Option in "[" & Mc(Interpreter, "Close") & "]" |
                   "[" & Mc(Interpreter, "{No for all}") & "]" then
                return Hide_Dialog;
-            elsif Option = "[" & Mc(Interpreter, "{Yes for all}") & "]" then
+            elsif Option = "[" & Mc(Interpreter, "{Overwrite all}") & "]" then
                Yes_For_All := True;
             elsif Option = "[" & Mc(Interpreter, "No") & "]" then
                if New_Action = COPY then

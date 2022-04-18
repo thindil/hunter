@@ -23,7 +23,7 @@ package Messages is
    --## rule off GLOBAL_REFERENCES
    -- ****v* Messages/Messages.Yes_For_All
    -- FUNCTION
-   -- Set to True if user clicked Yes for All button in response to question,
+   -- Set to True if user clicked Overwrite All button in response to question,
    -- otherwise False
    -- SOURCE
    Yes_For_All: Boolean;
