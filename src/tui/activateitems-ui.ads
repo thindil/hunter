@@ -23,11 +23,11 @@ with MainWindow; use MainWindow;
 package ActivateItems.UI is
 -- ****
 
-   -- ****f* AUITUI/AUITUI.CreateActivateUI
+   -- ****f* AUITUI/AUITUI.Create_Activate_Ui
    -- FUNCTION
    -- Create activation UI
    -- SOURCE
-   procedure CreateActivateUI is null;
+   procedure Create_Activate_Ui is null;
    -- ****
 
    -- ****f* AUITUI/AUITUI.Show_Execute_With_Dialog
