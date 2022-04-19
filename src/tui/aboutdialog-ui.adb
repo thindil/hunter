@@ -13,12 +13,12 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
-with Messages.UI; use Messages.UI;
-with ShowItems; use ShowItems;
+with Messages.UI;
+with ShowItems;
 with Utils.UI; use Utils.UI;
 
 package body AboutDialog.UI is
@@ -211,54 +211,6 @@ package body AboutDialog.UI is
       end Create_About_Dialog_Block;
    end Show_About_Dialog;
 
-   procedure Show_Developers_Dialog(Developers: Boolean := True) is
-      About_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
-      Field_Options: Field_Option_Set;
-   begin
-      About_Fields.all(1) :=
-        New_Field
-          (Height => 1, Width => 44, Top => 0, Left => 1, Off_Screen => 0,
-           More_Buffers => 0);
-      if Developers then
-         Set_Buffer
-           (Fld => About_Fields.all(1), Buffer => 0, Str => Programmer);
-      else
-         Set_Buffer
-           (Fld => About_Fields.all(1), Buffer => 0, Str => Translator);
-      end if;
-      Field_Options := Get_Options(Fld => About_Fields.all(1));
-      Field_Options.Active := False; --## rule line off ASSIGNMENTS
-      Set_Options(Fld => About_Fields.all(1), Options => Field_Options);
-      About_Fields.all(2) :=
-        New_Field
-          (Height => 1,
-           Width => Column_Position(Length(Source => Close_Text) + 2),
-           Top => 2, Left => 10, Off_Screen => 0, More_Buffers => 0);
-      Field_Options := Get_Options(Fld => About_Fields.all(2));
-      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
-      Set_Buffer
-        (Fld => About_Fields.all(2), Buffer => 0,
-         Str => "[" & To_String(Source => Close_Text) & "]");
-      Set_Options(Fld => About_Fields.all(2), Options => Field_Options);
-      About_Fields.all(3) := Null_Field;
-      Create_Developers_Dialog_Block :
-      declare
-         New_Dialog_Form: Forms.Form := New_Form(Fields => About_Fields);
-         --## rule off IMPROPER_INITIALIZATION
-         Local_Form_Window: Window := Get_Form_Window;
-         --## rule on IMPROPER_INITIALIZATION
-         Form_Height: Line_Position;
-         Form_Length: Column_Position;
-      begin
-         Set_Current(Frm => New_Dialog_Form, Fld => About_Fields(2));
-         Create_Dialog
-           (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window,
-            Form_Height => Form_Height, Form_Length => Form_Length);
-         Set_Dialog_Form(New_Form => New_Dialog_Form);
-         Set_Form_Window(New_Window => Local_Form_Window);
-      end Create_Developers_Dialog_Block;
-   end Show_Developers_Dialog;
-
    function About_View_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       Field_Index: constant Positive :=
@@ -267,6 +219,8 @@ package body AboutDialog.UI is
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
       function Hide_About_Dialog
         (With_Message: Boolean := False) return UI_Locations is
+         use ShowItems;
+
       begin
          Set_Cursor_Visibility(Visibility => Visibility);
          Post(Frm => Dialog_Frm, Post => False);
@@ -281,6 +235,54 @@ package body AboutDialog.UI is
          end if;
          return UILocation;
       end Hide_About_Dialog;
+      procedure Show_Developers_Dialog(Developers: Boolean := True) is
+         About_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
+         Field_Options: Field_Option_Set;
+      begin
+         About_Fields.all(1) :=
+           New_Field
+             (Height => 1, Width => 44, Top => 0, Left => 1, Off_Screen => 0,
+              More_Buffers => 0);
+         if Developers then
+            Set_Buffer
+              (Fld => About_Fields.all(1), Buffer => 0, Str => Programmer);
+         else
+            Set_Buffer
+              (Fld => About_Fields.all(1), Buffer => 0, Str => Translator);
+         end if;
+         Field_Options := Get_Options(Fld => About_Fields.all(1));
+         Field_Options.Active := False; --## rule line off ASSIGNMENTS
+         Set_Options(Fld => About_Fields.all(1), Options => Field_Options);
+         About_Fields.all(2) :=
+           New_Field
+             (Height => 1,
+              Width => Column_Position(Length(Source => Close_Text) + 2),
+              Top => 2, Left => 10, Off_Screen => 0, More_Buffers => 0);
+         Field_Options := Get_Options(Fld => About_Fields.all(2));
+         Field_Options.Edit := False; --## rule line off ASSIGNMENTS
+         Set_Buffer
+           (Fld => About_Fields.all(2), Buffer => 0,
+            Str => "[" & To_String(Source => Close_Text) & "]");
+         Set_Options(Fld => About_Fields.all(2), Options => Field_Options);
+         About_Fields.all(3) := Null_Field;
+         Create_Developers_Dialog_Block :
+         declare
+            New_Dialog_Form: Forms.Form := New_Form(Fields => About_Fields);
+         --## rule off IMPROPER_INITIALIZATION
+            Local_Form_Window: Window := Get_Form_Window;
+         --## rule on IMPROPER_INITIALIZATION
+            Form_Height: Line_Position;
+            Form_Length: Column_Position;
+         begin
+            Set_Current(Frm => New_Dialog_Form, Fld => About_Fields(2));
+            Create_Dialog
+              (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window,
+               Form_Height => Form_Height, Form_Length => Form_Length);
+            Set_Dialog_Form(New_Form => New_Dialog_Form);
+            Set_Form_Window(New_Window => Local_Form_Window);
+         end Create_Developers_Dialog_Block;
+      end Show_Developers_Dialog;
+
    begin
       case Key is
          when KEY_UP | KEY_LEFT =>
@@ -294,6 +296,9 @@ package body AboutDialog.UI is
                when 5 =>
                   Open_Link_In_Browser_Block :
                   declare
+                     use GNAT.OS_Lib;
+                     use Messages.UI;
+
                      Browser_Process_Id: Process_Id;
                   begin
                      Browser_Process_Id :=
