@@ -237,7 +237,7 @@ package body ActivateItems is
       Add_Command
         (Name => "ActivateItem", Ada_Command => Activate_Item_Command'Access);
       Add_Command(Name => "Execute", Ada_Command => Execute_Command'Access);
-      CreateActivateUI;
+      Create_Activate_Ui;
    end Add_Commands;
 
 end ActivateItems;

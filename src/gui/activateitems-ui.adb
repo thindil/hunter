@@ -163,10 +163,10 @@ package body ActivateItems.UI is
       return Toggle_Execute_With_Command(ClientData, Interp, Argc, Argv);
    end Execute_With_Command;
 
-   procedure CreateActivateUI is
+   procedure Create_Activate_Ui is
    begin
       Add_Command("ToggleExecuteWith", Toggle_Execute_With_Command'Access);
       Add_Command("ExecuteWith", Execute_With_Command'Access);
-   end CreateActivateUI;
+   end Create_Activate_Ui;
 
 end ActivateItems.UI;

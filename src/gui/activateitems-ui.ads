@@ -1,4 +1,4 @@
--- Copyright (c) 2019-2020 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2019-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -20,11 +20,11 @@
 package ActivateItems.UI is
 -- ****
 
-   -- ****f* AUI/AUI.CreateActivateUI
+   -- ****f* AUI/AUI.Create_Activate_Ui
    -- FUNCTION
    -- Create activation UI
    -- SOURCE
-   procedure CreateActivateUI;
+   procedure Create_Activate_Ui;
    -- ****
 
 end ActivateItems.UI;
