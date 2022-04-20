@@ -98,7 +98,10 @@ package body AboutDialog.UI is
            More_Buffers => 0);
       Set_Buffer
         (Fld => About_Fields.all(1), Buffer => 0,
-         Str => "Hunter - Text file manager for Linux");
+         Str =>
+           Mc
+             (Interp => Interpreter,
+              Src_String => "{Hunter - Text file manager for Linux}"));
       Field_Options := Get_Options(Fld => About_Fields.all(1));
       Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => About_Fields.all(1), Options => Field_Options);
