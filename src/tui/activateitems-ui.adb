@@ -42,24 +42,37 @@ package body ActivateItems.UI is
       Create_Fields.all(1) :=
         New_Field
           (Height => 1,
-           Width => Column_Position'Value
-             (Mc_Max(Strings => "{Enter the application to execute:}", Interp => Interpreter)),
+           Width =>
+             Column_Position'Value
+               (Mc_Max
+                  (Strings => "{Enter the application to execute:}",
+                   Interp => Interpreter)),
            Top => 0, Left => 4, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
         (Fld => Create_Fields.all(1), Buffer => 0,
-         Str => Mc(Interp => Interpreter, Src_String => "{Enter the application to execute:}"));
+         Str =>
+           Mc
+             (Interp => Interpreter,
+              Src_String => "{Enter the application to execute:}"));
       Field_Options := Get_Options(Fld => Create_Fields.all(1));
       Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Create_Fields.all(1), Options => Field_Options);
-      Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer(Create_Fields.all(2), 0, "");
-      Field_Options := Get_Options(Create_Fields.all(2));
+      Create_Fields.all(2) :=
+        New_Field
+          (Height => 1, Width => 40, Top => 1, Left => 0, Off_Screen => 0,
+           More_Buffers => 0);
+      Set_Buffer(Fld => Create_Fields.all(2), Buffer => 0, Str => "");
+      Field_Options := Get_Options(Fld => Create_Fields.all(2));
       Field_Options.Auto_Skip := False; --## rule line off ASSIGNMENTS
-      Set_Options(Create_Fields.all(2), Field_Options);
+      Set_Options(Fld => Create_Fields.all(2), Options => Field_Options);
       Create_Fields.all(3) :=
         New_Field
-          (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2, 2, 7,
-           0, 0);
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "{Cancel}", Interp => Interpreter)) +
+             2,
+           Top => 2, Left => 7, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
         (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
       Field_Options := Get_Options(Create_Fields.all(3));
