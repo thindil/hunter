@@ -74,33 +74,43 @@ package body ActivateItems.UI is
              2,
            Top => 2, Left => 7, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
-        (Fld => Create_Fields.all(3), Buffer => 0, Str => "[" & Mc(Interp => Interpreter, Src_String => "{Cancel}") & "]");
+        (Fld => Create_Fields.all(3), Buffer => 0,
+         Str =>
+           "[" & Mc(Interp => Interpreter, Src_String => "{Cancel}") & "]");
       Field_Options := Get_Options(Fld => Create_Fields.all(3));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Create_Fields.all(3), Options => Field_Options);
       Create_Fields.all(4) :=
         New_Field
-          (Height => 1, Width => Column_Position'Value(Mc_Max(Strings => "{Execute}", Interp => Interpreter)) + 2, Top => 2,
-           Left => 23, Off_Screen => 0, More_Buffers => 0);
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "{Execute}", Interp => Interpreter)) +
+             2,
+           Top => 2, Left => 23, Off_Screen => 0, More_Buffers => 0);
       Field_Options := Get_Options(Fld => Create_Fields.all(4));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Create_Fields.all(4), Options => Field_Options);
       Set_Buffer
-        (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "{Execute}") & "]");
+        (Fld => Create_Fields.all(4), Buffer => 0,
+         Str =>
+           "[" & Mc(Interp => Interpreter, Src_String => "{Execute}") & "]");
       Create_Fields.all(5) := Null_Field;
-      Dialog_Form := New_Form(Create_Fields);
-      Set_Current(Dialog_Form, Create_Fields(2));
-      Set_Options(Dialog_Form, (others => False));
-      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
+      Dialog_Form := New_Form(Fields => Create_Fields);
+      Set_Current(Frm => Dialog_Form, Fld => Create_Fields(2));
+      Set_Options(Frm => Dialog_Form, Options => (others => False));
+      Create_Dialog
+        (DialogForm => Dialog_Form, FormWindow => Form_Window,
+         Form_Height => Form_Height, Form_Length => Form_Length);
    end Show_Execute_With_Dialog;
 
    function Execute_Form_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
+      Field_Index: constant Positive := Get_Index(Current(Dialog_Form));
       Value: constant String := Trim(Get_Buffer(Fields(Dialog_Form, 2)), Both);
-      CommandName: Unbounded_String;
-      Pid: GNAT.OS_Lib.Process_Id;
-      SpaceIndex: Natural range 0 .. Value'Length;
+      CommandName: Unbounded_String := Null_Unbounded_String;
+      Pid: GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
+      SpaceIndex: Natural range 0 .. Value'Length := 0;
       Arguments: Argument_List_Access;
       function Hide_Dialog
         (With_Message: Boolean := False) return UI_Locations is
@@ -125,11 +135,11 @@ package body ActivateItems.UI is
          when KEY_DOWN =>
             Result := Go_Next_Field(Dialog_Form);
          when KEY_LEFT =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                Result := Driver(Dialog_Form, F_Previous_Char);
             end if;
          when KEY_RIGHT =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                Result := Driver(Dialog_Form, F_Next_Char);
             end if;
          when 127 =>
@@ -137,11 +147,11 @@ package body ActivateItems.UI is
          when 27 =>
             return Hide_Dialog;
          when 10 =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                Result := Go_Previous_Field(Dialog_Form);
                return Execute_Form_Keys(10);
             end if;
-            if FieldIndex = 4 then
+            if Field_Index = 4 then
                SpaceIndex := Index(Value, " ");
                CommandName :=
                  (if SpaceIndex > 0 then
