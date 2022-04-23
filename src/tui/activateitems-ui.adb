@@ -29,6 +29,19 @@ with Utils.UI; use Utils.UI;
 package body ActivateItems.UI is
 
    Dialog_Form: Forms.Form;
+
+   -- ****if* ActivateItemsTUI/ActivateItemsTUI.Get_Dialog_Form
+   -- FUNCTION
+   -- Get the execute items with dialog form
+   -- RESULT
+   -- The ncurses dialog form for set execute items with command
+   -- SOURCE
+   function Get_Dialog_Form return Forms.Form is
+      -- ****
+   begin
+      return Dialog_Form;
+   end Get_Dialog_Form;
+
    Form_Window: Window;
 
    procedure Show_Execute_With_Dialog is
@@ -96,18 +109,24 @@ package body ActivateItems.UI is
          Str =>
            "[" & Mc(Interp => Interpreter, Src_String => "{Execute}") & "]");
       Create_Fields.all(5) := Null_Field;
-      Dialog_Form := New_Form(Fields => Create_Fields);
-      Set_Current(Frm => Dialog_Form, Fld => Create_Fields(2));
-      Set_Options(Frm => Dialog_Form, Options => (others => False));
-      Create_Dialog
-        (DialogForm => Dialog_Form, FormWindow => Form_Window,
-         Form_Height => Form_Height, Form_Length => Form_Length);
+      Create_Execute_With_Dialog_Block:
+      declare
+         New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
+      begin
+         Set_Current(Frm => New_Dialog_Form, Fld => Create_Fields(2));
+         Set_Options(Frm => New_Dialog_Form, Options => (others => False));
+         Create_Dialog
+           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+            Form_Height => Form_Height, Form_Length => Form_Length);
+         Dialog_Form := New_Dialog_Form;
+      end Create_Execute_With_Dialog_Block;
    end Show_Execute_With_Dialog;
 
    function Execute_Form_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      Field_Index: constant Positive := Get_Index(Current(Dialog_Form));
-      Value: constant String := Trim(Get_Buffer(Fields(Dialog_Form, 2)), Both);
+      Dialog_Frm: Forms.Form := Get_Dialog_Form;
+      Field_Index: constant Positive := Get_Index(Current(Dialog_Frm));
+      Value: constant String := Trim(Get_Buffer(Fields(Dialog_Frm, 2)), Both);
       CommandName: Unbounded_String := Null_Unbounded_String;
       Pid: GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
       SpaceIndex: Natural range 0 .. Value'Length := 0;
@@ -116,8 +135,8 @@ package body ActivateItems.UI is
         (With_Message: Boolean := False) return UI_Locations is
          Visibility: Cursor_Visibility := Invisible;
       begin
-         Post(Dialog_Form, False);
-         Delete(Dialog_Form);
+         Post(Dialog_Frm, False);
+         Delete(Dialog_Frm);
          if With_Message then
             UILocation := MESSAGE_FORM;
          else
@@ -131,24 +150,24 @@ package body ActivateItems.UI is
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(Dialog_Form);
+            Result := Go_Previous_Field(Dialog_Frm);
          when KEY_DOWN =>
-            Result := Go_Next_Field(Dialog_Form);
+            Result := Go_Next_Field(Dialog_Frm);
          when KEY_LEFT =>
             if Field_Index = 2 then
-               Result := Driver(Dialog_Form, F_Previous_Char);
+               Result := Driver(Dialog_Frm, F_Previous_Char);
             end if;
          when KEY_RIGHT =>
             if Field_Index = 2 then
-               Result := Driver(Dialog_Form, F_Next_Char);
+               Result := Driver(Dialog_Frm, F_Next_Char);
             end if;
          when 127 =>
-            Result := Driver(Dialog_Form, F_Delete_Previous);
+            Result := Driver(Dialog_Frm, F_Delete_Previous);
          when 27 =>
             return Hide_Dialog;
          when 10 =>
             if Field_Index = 2 then
-               Result := Go_Previous_Field(Dialog_Form);
+               Result := Go_Previous_Field(Dialog_Frm);
                return Execute_Form_Keys(10);
             end if;
             if Field_Index = 4 then
@@ -189,7 +208,7 @@ package body ActivateItems.UI is
             return Hide_Dialog;
          when others =>
             if Key /= 91 then
-               Result := Driver(Dialog_Form, Key);
+               Result := Driver(Dialog_Frm, Key);
             end if;
       end case;
       if Result = Form_Ok then
