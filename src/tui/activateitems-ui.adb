@@ -42,6 +42,18 @@ package body ActivateItems.UI is
       return Dialog_Form;
    end Get_Dialog_Form;
 
+   -- ****if* ActivateItemsTUI/ActivateItemsTUI.Set_Dialog_Form
+   -- FUNCTION
+   -- Set the new value for the dialog form for execute item with command
+   -- PARAMETERS
+   -- New_Form - The new value for the Dialog_Form
+   -- SOURCE
+   procedure Set_Dialog_Form(New_Form: Forms.Form) is
+      -- ****
+   begin
+      Dialog_Form := New_Form;
+   end Set_Dialog_Form;
+
    Form_Window: Window;
 
    procedure Show_Execute_With_Dialog is
@@ -109,7 +121,7 @@ package body ActivateItems.UI is
          Str =>
            "[" & Mc(Interp => Interpreter, Src_String => "{Execute}") & "]");
       Create_Fields.all(5) := Null_Field;
-      Create_Execute_With_Dialog_Block:
+      Create_Execute_With_Dialog_Block :
       declare
          New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
       begin
@@ -118,7 +130,7 @@ package body ActivateItems.UI is
          Create_Dialog
            (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
             Form_Height => Form_Height, Form_Length => Form_Length);
-         Dialog_Form := New_Dialog_Form;
+         Set_Dialog_Form(New_Form => New_Dialog_Form);
       end Create_Execute_With_Dialog_Block;
    end Show_Execute_With_Dialog;
 
@@ -137,6 +149,7 @@ package body ActivateItems.UI is
       begin
          Post(Dialog_Frm, False);
          Delete(Dialog_Frm);
+         Set_Dialog_Form(New_Form => Dialog_Frm);
          if With_Message then
             UILocation := MESSAGE_FORM;
          else
