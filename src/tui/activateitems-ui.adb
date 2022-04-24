@@ -58,8 +58,6 @@ package body ActivateItems.UI is
 
    procedure Show_Execute_With_Dialog is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
-      Form_Height: Line_Position;
-      Form_Length: Column_Position;
       Visibility: Cursor_Visibility := Normal;
       Field_Options: Field_Option_Set;
    begin
@@ -124,6 +122,8 @@ package body ActivateItems.UI is
       Create_Execute_With_Dialog_Block :
       declare
          New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
+         Form_Height: Line_Position;
+         Form_Length: Column_Position;
       begin
          Set_Current(Frm => New_Dialog_Form, Fld => Create_Fields(2));
          Set_Options(Frm => New_Dialog_Form, Options => (others => False));
