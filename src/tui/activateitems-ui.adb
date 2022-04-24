@@ -137,25 +137,29 @@ package body ActivateItems.UI is
    function Execute_Form_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
-      Field_Index: constant Positive := Get_Index(Current(Dialog_Frm));
-      Value: constant String := Trim(Get_Buffer(Fields(Dialog_Frm, 2)), Both);
-      CommandName: Unbounded_String := Null_Unbounded_String;
+      Field_Index: constant Positive :=
+        Get_Index(Fld => Current(Frm => Dialog_Frm));
+      Value: constant String :=
+        Trim
+          (Source => Get_Buffer(Fld => Fields(Frm => Dialog_Frm, Index => 2)),
+           Side => Both);
+      Command_Name: Unbounded_String := Null_Unbounded_String;
       Pid: GNAT.OS_Lib.Process_Id := GNAT.OS_Lib.Invalid_Pid;
-      SpaceIndex: Natural range 0 .. Value'Length := 0;
+      Space_Index: Natural range 0 .. Value'Length := 0;
       Arguments: Argument_List_Access;
       function Hide_Dialog
         (With_Message: Boolean := False) return UI_Locations is
          Visibility: Cursor_Visibility := Invisible;
       begin
-         Post(Dialog_Frm, False);
-         Delete(Dialog_Frm);
+         Post(Frm => Dialog_Frm, Post => False);
+         Delete(Frm => Dialog_Frm);
          Set_Dialog_Form(New_Form => Dialog_Frm);
          if With_Message then
             UILocation := MESSAGE_FORM;
          else
-            Set_Cursor_Visibility(Visibility);
+            Set_Cursor_Visibility(Visibility => Visibility);
             UILocation := DIRECTORY_VIEW;
-            Update_Directory_List(True);
+            Update_Directory_List(Clear => True);
             Show_Preview;
          end if;
          return UILocation;
@@ -163,16 +167,16 @@ package body ActivateItems.UI is
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(Dialog_Frm);
+            Result := Go_Previous_Field(DialogForm => Dialog_Frm);
          when KEY_DOWN =>
-            Result := Go_Next_Field(Dialog_Frm);
+            Result := Go_Next_Field(DialogForm => Dialog_Frm);
          when KEY_LEFT =>
             if Field_Index = 2 then
-               Result := Driver(Dialog_Frm, F_Previous_Char);
+               Result := Driver(Frm => Dialog_Frm, Key => F_Previous_Char);
             end if;
          when KEY_RIGHT =>
             if Field_Index = 2 then
-               Result := Driver(Dialog_Frm, F_Next_Char);
+               Result := Driver(Frm => Dialog_Frm, Key => F_Next_Char);
             end if;
          when 127 =>
             Result := Driver(Dialog_Frm, F_Delete_Previous);
@@ -184,24 +188,24 @@ package body ActivateItems.UI is
                return Execute_Form_Keys(10);
             end if;
             if Field_Index = 4 then
-               SpaceIndex := Index(Value, " ");
-               CommandName :=
-                 (if SpaceIndex > 0 then
-                    To_Unbounded_String(Value(1 .. SpaceIndex - 1))
+               Space_Index := Index(Value, " ");
+               Command_Name :=
+                 (if Space_Index > 0 then
+                    To_Unbounded_String(Value(1 .. Space_Index - 1))
                   else To_Unbounded_String(Value));
-               CommandName :=
-                 To_Unbounded_String(Find_Executable(To_String(CommandName)));
-               if CommandName = Null_Unbounded_String then
+               Command_Name :=
+                 To_Unbounded_String(Find_Executable(To_String(Command_Name)));
+               if Command_Name = Null_Unbounded_String then
                   Show_Message
                     (Mc(Interpreter, "{Can't find command:}") & " " &
-                     (if SpaceIndex > 0 then Value(1 .. SpaceIndex - 1)
+                     (if Space_Index > 0 then Value(1 .. Space_Index - 1)
                       else Value));
                   return Hide_Dialog(True);
                end if;
                Arguments :=
-                 (if SpaceIndex > 0 then
+                 (if Space_Index > 0 then
                     Argument_String_To_List
-                      (Value(SpaceIndex .. Value'Length) & " @2")
+                      (Value(Space_Index .. Value'Length) & " @2")
                   else Argument_String_To_List("@2"));
                Replace_Substitutes_Loop :
                for I in Arguments'Range loop
@@ -211,7 +215,7 @@ package body ActivateItems.UI is
                end loop Replace_Substitutes_Loop;
                Pid :=
                  Non_Blocking_Spawn
-                   (Full_Name(To_String(CommandName)), Arguments.all);
+                   (Full_Name(To_String(Command_Name)), Arguments.all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
                   Show_Message
                     (Mc(Interpreter, "{Can't execute this command}"));
