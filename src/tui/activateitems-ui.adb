@@ -28,7 +28,12 @@ with Utils.UI; use Utils.UI;
 
 package body ActivateItems.UI is
 
+   -- ****iv* ActivateItemsTUI/ActivateItemsTUI.Dialog_Form
+   -- FUNCTION
+   -- The form to set command to execute the selected item
+   -- SOURCE
    Dialog_Form: Forms.Form;
+   -- ****
 
    -- ****if* ActivateItemsTUI/ActivateItemsTUI.Get_Dialog_Form
    -- FUNCTION
@@ -54,7 +59,12 @@ package body ActivateItems.UI is
       Dialog_Form := New_Form;
    end Set_Dialog_Form;
 
+   -- ****iv* ActivateItemsTUI/ActivateItemsTUI.Form_Window
+   -- FUNCTION
+   -- The window to show form to set execute item command
+   -- SOURCE
    Form_Window: Window;
+   -- ****
 
    procedure Show_Execute_With_Dialog is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
