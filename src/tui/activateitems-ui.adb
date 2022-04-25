@@ -198,13 +198,16 @@ package body ActivateItems.UI is
                return Execute_Form_Keys(Key => 10);
             end if;
             if Field_Index = 4 then
-               Space_Index := Index(Value, " ");
+               Space_Index := Index(Source => Value, Pattern => " ");
                Command_Name :=
                  (if Space_Index > 0 then
-                    To_Unbounded_String(Value(1 .. Space_Index - 1))
-                  else To_Unbounded_String(Value));
+                    To_Unbounded_String(Source => Value(1 .. Space_Index - 1))
+                  else To_Unbounded_String(Source => Value));
                Command_Name :=
-                 To_Unbounded_String(Find_Executable(To_String(Command_Name)));
+                 To_Unbounded_String
+                   (Source =>
+                      Find_Executable
+                        (Name => To_String(Source => Command_Name)));
                if Command_Name = Null_Unbounded_String then
                   Show_Message
                     (Mc(Interpreter, "{Can't find command:}") & " " &
