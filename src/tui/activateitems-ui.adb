@@ -212,16 +212,21 @@ package body ActivateItems.UI is
                --## rule on ASSIGNMENTS
                if Command_Name = Null_Unbounded_String then
                   Show_Message
-                    (Mc(Interpreter, "{Can't find command:}") & " " &
-                     (if Space_Index > 0 then Value(1 .. Space_Index - 1)
-                      else Value));
-                  return Hide_Dialog(True);
+                    (Message =>
+                       Mc
+                         (Interp => Interpreter,
+                          Src_String => "{Can't find command:}") &
+                       " " &
+                       (if Space_Index > 0 then Value(1 .. Space_Index - 1)
+                        else Value));
+                  return Hide_Dialog(With_Message => True);
                end if;
                Arguments :=
                  (if Space_Index > 0 then
                     Argument_String_To_List
-                      (Value(Space_Index .. Value'Length) & " @2")
-                  else Argument_String_To_List("@2"));
+                      (Arg_String =>
+                         Value(Space_Index .. Value'Length) & " @2")
+                  else Argument_String_To_List(Arg_String => "@2"));
                Replace_Substitutes_Loop :
                for I in Arguments'Range loop
                   if Arguments(I).all = "@2" then
