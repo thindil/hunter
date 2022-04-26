@@ -203,11 +203,13 @@ package body ActivateItems.UI is
                  (if Space_Index > 0 then
                     To_Unbounded_String(Source => Value(1 .. Space_Index - 1))
                   else To_Unbounded_String(Source => Value));
+               --## rule off ASSIGNMENTS
                Command_Name :=
                  To_Unbounded_String
                    (Source =>
                       Find_Executable
                         (Name => To_String(Source => Command_Name)));
+               --## rule on ASSIGNMENTS
                if Command_Name = Null_Unbounded_String then
                   Show_Message
                     (Mc(Interpreter, "{Can't find command:}") & " " &
