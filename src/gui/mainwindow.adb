@@ -180,7 +180,8 @@ package body MainWindow is
          17 => To_Unbounded_String(Source => "itemtoolbar.deletebutton"),
          18 => To_Unbounded_String(Source => "itemtoolbar.runbutton"),
          19 => Null_Unbounded_String,
-         20 => To_Unbounded_String(Source => "actiontoolbar.userbutton"));
+         20 => To_Unbounded_String(Source => "actiontoolbar.userbutton"),
+         21 => Null_Unbounded_String);
       --## rule off POSITIONAL_ASSOCIATIONS
       pragma Unreferenced(Progress_Bar, Header_Label, File_Menu);
       --## rule on POSITIONAL_ASSOCIATIONS

@@ -205,8 +205,8 @@ package body Preferences.UI is
          when 2 =>
             declare
                Options_Fields: constant Field_Array_Access :=
-                 new Field_Array(1 .. 39);
-               KeysLabels: constant array(1 .. 19) of Unbounded_String :=
+                 new Field_Array(1 .. 41);
+               KeysLabels: constant array(1 .. 20) of Unbounded_String :=
                  (To_Unbounded_String
                     (Mc(Interpreter, "{Show bookmarks menu}")),
                   To_Unbounded_String
@@ -251,7 +251,11 @@ package body Preferences.UI is
                        (Interpreter,
                         "{Restore deleted file or directory from Trash}")),
                   To_Unbounded_String
-                    (Mc(Interpreter, "{Show the user defined actions}")));
+                    (Mc(Interpreter, "{Show the user defined actions}")),
+                  To_Unbounded_String
+                    (Mc
+                       (Interpreter,
+                        "{Toggle visibility of hidden files and directories}")));
                FieldLength: Column_Position := 1;
             begin
                for Label of KeysLabels loop
@@ -284,7 +288,7 @@ package body Preferences.UI is
                      Set_Options(Options_Fields.all(I), FieldOptions);
                   end if;
                end loop;
-               Options_Fields.all(39) := Null_Field;
+               Options_Fields.all(41) := Null_Field;
                DialogForm := New_Form(Options_Fields);
                Set_Current(DialogForm, Options_Fields(2));
             end;

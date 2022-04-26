@@ -114,7 +114,7 @@ package Preferences is
    -- FUNCTION
    -- Array used to store keyboard shortcuts
    -- SOURCE
-   type Accelerators_Array is array(1 .. 20) of Unbounded_String;
+   type Accelerators_Array is array(1 .. 21) of Unbounded_String;
    -- ****
 
    -- ****d* Preferences/Preferences.Default_Accelerators
@@ -141,7 +141,8 @@ package Preferences is
       17 => To_Unbounded_String(Source => "Alt-d"),
       18 => To_Unbounded_String(Source => "Alt-e"),
       19 => To_Unbounded_String(Source => "Alt-s"),
-      20 => To_Unbounded_String(Source => "Alt-t"));
+      20 => To_Unbounded_String(Source => "Alt-t"),
+      21 => To_Unbounded_String(Source => "Control-h"));
    -- ****
 
    --## rule off GLOBAL_REFERENCES

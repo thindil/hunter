@@ -881,7 +881,14 @@ package body Preferences.UI is
                 (Source =>
                    Mc
                      (Interp => Get_Context,
-                      Src_String => "{Show the user defined actions}")));
+                      Src_String => "{Show the user defined actions}")),
+            21 =>
+              To_Unbounded_String
+                (Source =>
+                   Mc
+                     (Interp => Get_Context,
+                      Src_String =>
+                        "{Toggle visibility of hidden files and directories}")));
          Shortcut_Label: Ttk_Label := Get_Widget(pathName => ".");
          Button: Ttk_Button := Get_Widget(pathName => ".");
          Button_Image: constant Tk_Photo :=
