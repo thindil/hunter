@@ -40,38 +40,44 @@ package body Bookmarks.UI is
 
    function Show_Bookmarks_Menu return Item_Array_Access is
       Menu_Items: Item_Array_Access;
-      MenuIndex: Positive := 1;
+      Menu_Index: Positive := 1;
    begin
       Menu_Items := new Item_Array(1 .. Positive(Bookmarks_List.Length) + 4);
-      Menu_Items.all(MenuIndex) := New_Item(Mc(Interpreter, "{Home}"));
-      MenuIndex := MenuIndex + 1;
+      Menu_Items.all(Menu_Index) :=
+        New_Item(Name => Mc(Interp => Interpreter, Src_String => "{Home}"));
+      Menu_Index := Menu_Index + 1;
+      Add_Bookmarks_Loop :
       for I in Bookmarks_List.Iterate loop
-         Menu_Items.all(MenuIndex) := New_Item(Bookmarks_Container.Key(I));
-         MenuIndex := MenuIndex + 1;
-      end loop;
-      Menu_Items.all(MenuIndex) :=
-        New_Item(Mc(Interpreter, "{Enter destination}"));
-      MenuIndex := MenuIndex + 1;
-      Menu_Items.all(MenuIndex) := New_Item(Mc(Interpreter, "Close"));
-      MenuIndex := MenuIndex + 1;
-      Menu_Items.all(MenuIndex) := Null_Item;
+         Menu_Items.all(Menu_Index) :=
+           New_Item(Name => Bookmarks_Container.Key(Position => I));
+         Menu_Index := Menu_Index + 1;
+      end loop Add_Bookmarks_Loop;
+      Menu_Items.all(Menu_Index) :=
+        New_Item
+          (Name =>
+             Mc(Interp => Interpreter, Src_String => "{Enter destination}"));
+      Menu_Index := Menu_Index + 1;
+      Menu_Items.all(Menu_Index) :=
+        New_Item(Name => Mc(Interp => Interpreter, Src_String => "Close"));
+      Menu_Index := Menu_Index + 1; --## rule line off ASSIGNMENTS
+      Menu_Items.all(Menu_Index) := Null_Item;
       return Menu_Items;
    end Show_Bookmarks_Menu;
 
-   DialogForm: Forms.Form;
-   FormWindow: Window;
+   Dialog_Form: Forms.Form;
+   Form_Window: Window;
 
-   -- ****if* BookmarksTUI/BookmarksTUI.ShowBookmarksForm
+   -- ****if* BookmarksTUI/BookmarksTUI.Show_Bookmarks_Form
    -- FUNCTION
    -- Show dialog to enter the destination directory
    -- SOURCE
-   procedure ShowBookmarksForm is
+   procedure Show_Bookmarks_Form is
       -- ****
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
-      FormHeight: Line_Position;
-      FormLength: Column_Position;
+      Form_Height: Line_Position;
+      Form_Length: Column_Position;
       Visibility: Cursor_Visibility := Normal;
-      FieldOptions: Field_Option_Set;
+      Field_Options: Field_Option_Set;
    begin
       Set_Cursor_Visibility(Visibility);
       Create_Fields.all(1) :=
@@ -83,34 +89,34 @@ package body Bookmarks.UI is
       Set_Buffer
         (Create_Fields.all(1), 0,
          Mc(Interpreter, "{Enter the destination directory:}"));
-      FieldOptions := Get_Options(Create_Fields.all(1));
-      FieldOptions.Active := False;
-      Set_Options(Create_Fields.all(1), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(1));
+      Field_Options.Active := False;
+      Set_Options(Create_Fields.all(1), Field_Options);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer(Create_Fields.all(2), 0, To_String(Common.Current_Directory));
-      FieldOptions := Get_Options(Create_Fields.all(2));
-      FieldOptions.Auto_Skip := False;
-      Set_Options(Create_Fields.all(2), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(2));
+      Field_Options.Auto_Skip := False;
+      Set_Options(Create_Fields.all(2), Field_Options);
       Create_Fields.all(3) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2, 2, 7,
            0, 0);
       Set_Buffer
         (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
-      FieldOptions := Get_Options(Create_Fields.all(3));
-      FieldOptions.Edit := False;
-      Set_Options(Create_Fields.all(3), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(3));
+      Field_Options.Edit := False;
+      Set_Options(Create_Fields.all(3), Field_Options);
       Create_Fields.all(4) := New_Field(1, 7, 2, 23, 0, 0);
-      FieldOptions := Get_Options(Create_Fields.all(4));
-      FieldOptions.Edit := False;
-      Set_Options(Create_Fields.all(4), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(4));
+      Field_Options.Edit := False;
+      Set_Options(Create_Fields.all(4), Field_Options);
       Set_Buffer
         (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "{Enter}") & "]");
       Create_Fields.all(5) := Null_Field;
-      DialogForm := New_Form(Create_Fields);
-      Set_Current(DialogForm, Create_Fields(2));
-      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
-   end ShowBookmarksForm;
+      Dialog_Form := New_Form(Create_Fields);
+      Set_Current(Dialog_Form, Create_Fields(2));
+      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
+   end Show_Bookmarks_Form;
 
    function Go_To_Bookmark(Bookmark: String) return UI_Locations is
    begin
@@ -125,7 +131,7 @@ package body Bookmarks.UI is
             ShowDestination;
             return DESTINATION_VIEW;
          else
-            ShowBookmarksForm;
+            Show_Bookmarks_Form;
             return BOOKMARKS_FORM;
          end if;
          Update_Directory_List;
@@ -151,7 +157,7 @@ package body Bookmarks.UI is
       else
          Update_Directory_List;
          Show_Preview;
-         ShowBookmarksForm;
+         Show_Bookmarks_Form;
          return BOOKMARKS_FORM;
       end if;
       Load_Directory(To_String(Common.Current_Directory));
@@ -168,13 +174,13 @@ package body Bookmarks.UI is
 
    function Bookmarks_Form_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
       function HideDialog return UI_Locations is
       begin
          Set_Cursor_Visibility(Visibility);
-         Post(DialogForm, False);
-         Delete(DialogForm);
+         Post(Dialog_Form, False);
+         Delete(Dialog_Form);
          if New_Action not in MOVE | COPY then
             Show_Preview;
             UILocation := DIRECTORY_VIEW;
@@ -189,32 +195,32 @@ package body Bookmarks.UI is
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(DialogForm);
+            Result := Go_Previous_Field(Dialog_Form);
          when KEY_DOWN =>
-            Result := Go_Next_Field(DialogForm);
+            Result := Go_Next_Field(Dialog_Form);
          when KEY_LEFT =>
             if FieldIndex = 2 then
-               Result := Driver(DialogForm, F_Previous_Char);
+               Result := Driver(Dialog_Form, F_Previous_Char);
             end if;
          when KEY_RIGHT =>
             if FieldIndex = 2 then
-               Result := Driver(DialogForm, F_Next_Char);
+               Result := Driver(Dialog_Form, F_Next_Char);
             end if;
          when 127 =>
-            Result := Driver(DialogForm, F_Delete_Previous);
+            Result := Driver(Dialog_Form, F_Delete_Previous);
          when 27 =>
             return HideDialog;
          when 10 =>
             if FieldIndex = 2 then
-               Result := Go_Previous_Field(DialogForm);
+               Result := Go_Previous_Field(Dialog_Form);
                return Bookmarks_Form_Keys(10);
             end if;
             if FieldIndex = 4 then
                if not Ada.Directories.Exists
-                   (Trim(Get_Buffer(Fields(DialogForm, 2)), Both)) then
+                   (Trim(Get_Buffer(Fields(Dialog_Form, 2)), Both)) then
                   Show_Message
                     (Mc(Interpreter, "{Directory}") & " " &
-                     Trim(Get_Buffer(Fields(DialogForm, 2)), Both) & " " &
+                     Trim(Get_Buffer(Fields(Dialog_Form, 2)), Both) & " " &
                      Mc(Interpreter, "{doesn't exist.}"));
                   return MESSAGE_FORM;
                end if;
@@ -222,7 +228,7 @@ package body Bookmarks.UI is
                   New_Action := Default_Item_Action;
                   Common.Current_Directory :=
                     To_Unbounded_String
-                      (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+                      (Trim(Get_Buffer(Fields(Dialog_Form, 2)), Both));
                   Load_Directory(To_String(Common.Current_Directory));
                   Update_Watch(To_String(Common.Current_Directory));
                   Execute_Modules
@@ -231,7 +237,7 @@ package body Bookmarks.UI is
                else
                   Destination_Directory :=
                     To_Unbounded_String
-                      (Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+                      (Trim(Get_Buffer(Fields(Dialog_Form, 2)), Both));
                   Load_Directory(To_String(Destination_Directory), True);
                end if;
             end if;
@@ -240,11 +246,11 @@ package body Bookmarks.UI is
             end if;
          when others =>
             if Key /= 91 then
-               Result := Driver(DialogForm, Key);
+               Result := Driver(Dialog_Form, Key);
             end if;
       end case;
       if Result = Form_Ok then
-         Refresh(FormWindow);
+         Refresh(Form_Window);
       end if;
       return BOOKMARKS_FORM;
    end Bookmarks_Form_Keys;
