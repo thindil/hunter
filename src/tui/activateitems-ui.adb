@@ -227,12 +227,15 @@ package body ActivateItems.UI is
                       (Arg_String =>
                          Value(Space_Index .. Value'Length) & " @2")
                   else Argument_String_To_List(Arg_String => "@2"));
+               --## rule off SIMPLIFIABLE_STATEMENTS
                Replace_Substitutes_Loop :
                for I in Arguments'Range loop
                   if Arguments(I).all = "@2" then
-                     Arguments(I) := new String'(To_String(Current_Selected));
+                     Arguments(I) :=
+                       new String'(To_String(Source => Current_Selected));
                   end if;
                end loop Replace_Substitutes_Loop;
+               --## rule on SIMPLIFIABLE_STATEMENTS
                Pid :=
                  Non_Blocking_Spawn
                    (Full_Name(To_String(Command_Name)), Arguments.all);
