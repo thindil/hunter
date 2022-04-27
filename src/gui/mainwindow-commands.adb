@@ -711,6 +711,42 @@ package body MainWindow.Commands is
       return TCL_OK;
    end Invoke_Button_Command;
 
+   -- ****o* MCommands/MCommands.Toggle_Hidden_Command
+   -- FUNCTION
+   -- Toggle visibility of hidden files and directories in directory view
+   -- PARAMETERS
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command. Unused
+   -- Argv        - Values of arguments passed to the command. Unused
+   -- RESULT
+   -- This function always return TCL_OK
+   -- COMMANDS
+   -- ToggleHidden
+   -- SOURCE
+   function Toggle_Hidden_Command
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
+      Convention => C;
+      -- ****
+
+   function Toggle_Hidden_Command
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+      Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
+      pragma Unreferenced(Client_Data, Argc, Argv);
+      Directory_Tree: constant Ttk_Tree_View :=
+        Get_Widget
+          (pathName => ".mainframe.paned.previewframe.directorytree",
+           Interp => Interp);
+   begin
+      Settings.Show_Hidden := not Settings.Show_Hidden;
+      Update_Directory_List(Clear => True);
+      if Winfo_Get(Widgt => Directory_Tree, Info => "ismapped") = "1" then
+         Update_Directory_List(Clear => True, Frame_Name => "preview");
+      end if;
+      return TCL_OK;
+   end Toggle_Hidden_Command;
+
    procedure Add_Commands is
       use Utils;
 
@@ -732,6 +768,8 @@ package body MainWindow.Commands is
       Add_Command(Name => "ShowFile", Ada_Command => Show_File_Command'Access);
       Add_Command
         (Name => "InvokeButton", Ada_Command => Invoke_Button_Command'Access);
+      Add_Command
+        (Name => "ToggleHidden", Ada_Command => Toggle_Hidden_Command'Access);
       ExitCommand.Tcl_CreateExitHandler
         (proc => Quit_Command'Access, data => 0);
    end Add_Commands;

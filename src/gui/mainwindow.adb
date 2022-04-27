@@ -290,6 +290,10 @@ package body MainWindow is
       end loop Add_Accelerators_Loop;
       Bind_To_Main_Window
         (Interp => Interp, Sequence => "<Escape>", Script => "{HideWidget}");
+      Bind_To_Main_Window
+        (Interp => Interp,
+         Sequence => "<" & To_String(Source => Accelerators(21)) & ">",
+         Script => "{ToggleHidden}");
       Tcl.Tk.Ada.Grid.Grid(Slave => Main_Frame, Options => "-sticky nwse");
       Tcl.Tk.Ada.Grid.Row_Configure
         (Master => Main_Window, Slave => Main_Frame, Options => "-weight 1");
