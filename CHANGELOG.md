@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - Use Escape key to close dialogs in console version
 - Use Escape key to close menus in console version
 - Missing translations
+- Keyboard shortcut for toggling visibility of hidden files and directories
 
 ### Changed
 - During confirmation of deleting files and directories, show only names of
