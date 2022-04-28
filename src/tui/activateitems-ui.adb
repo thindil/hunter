@@ -238,21 +238,26 @@ package body ActivateItems.UI is
                --## rule on SIMPLIFIABLE_STATEMENTS
                Pid :=
                  Non_Blocking_Spawn
-                   (Full_Name(To_String(Command_Name)), Arguments.all);
+                   (Program_Name =>
+                      Full_Name(Name => To_String(Source => Command_Name)),
+                    Args => Arguments.all);
                if Pid = GNAT.OS_Lib.Invalid_Pid then
                   Show_Message
-                    (Mc(Interpreter, "{Can't execute this command}"));
-                  return Hide_Dialog(True);
+                    (Message =>
+                       Mc
+                         (Interp => Interpreter,
+                          Src_String => "{Can't execute this command}"));
+                  return Hide_Dialog(With_Message => True);
                end if;
             end if;
             return Hide_Dialog;
          when others =>
             if Key /= 91 then
-               Result := Driver(Dialog_Frm, Key);
+               Result := Driver(Frm => Dialog_Frm, Key => Key);
             end if;
       end case;
       if Result = Form_Ok then
-         Refresh(Form_Window);
+         Refresh(Win => Form_Window);
       end if;
       return EXECUTE_FORM;
    end Execute_Form_Keys;
