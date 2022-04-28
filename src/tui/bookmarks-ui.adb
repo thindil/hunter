@@ -90,12 +90,12 @@ package body Bookmarks.UI is
         (Create_Fields.all(1), 0,
          Mc(Interpreter, "{Enter the destination directory:}"));
       Field_Options := Get_Options(Create_Fields.all(1));
-      Field_Options.Active := False;
+      Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(Create_Fields.all(1), Field_Options);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer(Create_Fields.all(2), 0, To_String(Common.Current_Directory));
       Field_Options := Get_Options(Create_Fields.all(2));
-      Field_Options.Auto_Skip := False;
+      Field_Options.Auto_Skip := False; --## rule line off ASSIGNMENTS
       Set_Options(Create_Fields.all(2), Field_Options);
       Create_Fields.all(3) :=
         New_Field
@@ -104,11 +104,11 @@ package body Bookmarks.UI is
       Set_Buffer
         (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
       Field_Options := Get_Options(Create_Fields.all(3));
-      Field_Options.Edit := False;
+      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Create_Fields.all(3), Field_Options);
       Create_Fields.all(4) := New_Field(1, 7, 2, 23, 0, 0);
       Field_Options := Get_Options(Create_Fields.all(4));
-      Field_Options.Edit := False;
+      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Create_Fields.all(4), Field_Options);
       Set_Buffer
         (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "{Enter}") & "]");
