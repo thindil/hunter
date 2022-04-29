@@ -79,19 +79,19 @@ package body Bookmarks.UI is
       Visibility: Cursor_Visibility := Normal;
       Field_Options: Field_Option_Set;
    begin
-      Set_Cursor_Visibility(Visibility);
+      Set_Cursor_Visibility(Visibility => Visibility);
       Create_Fields.all(1) :=
         New_Field
-          (1,
-           Column_Position'Value
-             (Mc_Max("{Enter the destination directory:}", Interpreter)),
-           0, 8, 0, 0);
+          (Height => 1,
+           Width => Column_Position'Value
+             (Mc_Max(Strings => "{Enter the destination directory:}", Interp => Interpreter)),
+           Top => 0, Left => 8, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
-        (Create_Fields.all(1), 0,
-         Mc(Interpreter, "{Enter the destination directory:}"));
-      Field_Options := Get_Options(Create_Fields.all(1));
+        (Fld => Create_Fields.all(1), Buffer => 0,
+         Str => Mc(Interp => Interpreter, Src_String => "{Enter the destination directory:}"));
+      Field_Options := Get_Options(Fld => Create_Fields.all(1));
       Field_Options.Active := False; --## rule line off ASSIGNMENTS
-      Set_Options(Create_Fields.all(1), Field_Options);
+      Set_Options(Fld => Create_Fields.all(1), Options => Field_Options);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer(Create_Fields.all(2), 0, To_String(Common.Current_Directory));
       Field_Options := Get_Options(Create_Fields.all(2));
