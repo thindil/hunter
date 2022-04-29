@@ -64,8 +64,19 @@ package body Bookmarks.UI is
       return Menu_Items;
    end Show_Bookmarks_Menu;
 
+   -- ****iv* BookmarksTUI/BookmarksTUI.Dialog_Form
+   -- FUNCTION
+   -- The form to enter the selected directory
+   -- SOURCE
    Dialog_Form: Forms.Form;
+   -- ****
+
+   -- ****iv* BookmarksTUI/BookmarksTUI.Form_Window
+   -- FUNCTION
+   -- The window to show the form to enter the selected directory
+   -- SOURCE
    Form_Window: Window;
+   -- ****
 
    -- ****if* BookmarksTUI/BookmarksTUI.Show_Bookmarks_Form
    -- FUNCTION
