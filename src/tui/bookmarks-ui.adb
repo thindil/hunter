@@ -94,20 +94,31 @@ package body Bookmarks.UI is
       Create_Fields.all(1) :=
         New_Field
           (Height => 1,
-           Width => Column_Position'Value
-             (Mc_Max(Strings => "{Enter the destination directory:}", Interp => Interpreter)),
+           Width =>
+             Column_Position'Value
+               (Mc_Max
+                  (Strings => "{Enter the destination directory:}",
+                   Interp => Interpreter)),
            Top => 0, Left => 8, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
         (Fld => Create_Fields.all(1), Buffer => 0,
-         Str => Mc(Interp => Interpreter, Src_String => "{Enter the destination directory:}"));
+         Str =>
+           Mc
+             (Interp => Interpreter,
+              Src_String => "{Enter the destination directory:}"));
       Field_Options := Get_Options(Fld => Create_Fields.all(1));
       Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Create_Fields.all(1), Options => Field_Options);
-      Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer(Create_Fields.all(2), 0, To_String(Common.Current_Directory));
-      Field_Options := Get_Options(Create_Fields.all(2));
+      Create_Fields.all(2) :=
+        New_Field
+          (Height => 1, Width => 40, Top => 1, Left => 0, Off_Screen => 0,
+           More_Buffers => 0);
+      Set_Buffer
+        (Fld => Create_Fields.all(2), Buffer => 0,
+         Str => To_String(Source => Common.Current_Directory));
+      Field_Options := Get_Options(Fld => Create_Fields.all(2));
       Field_Options.Auto_Skip := False; --## rule line off ASSIGNMENTS
-      Set_Options(Create_Fields.all(2), Field_Options);
+      Set_Options(Fld => Create_Fields.all(2), Options => Field_Options);
       Create_Fields.all(3) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2, 2, 7,
