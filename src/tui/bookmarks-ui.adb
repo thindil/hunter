@@ -121,13 +121,13 @@ package body Bookmarks.UI is
       Set_Options(Fld => Create_Fields.all(2), Options => Field_Options);
       Create_Fields.all(3) :=
         New_Field
-          (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2, 2, 7,
-           0, 0);
+          (Height => 1, Width => Column_Position'Value(Mc_Max(Strings => "{Cancel}", Interp => Interpreter)) + 2, Top => 2, Left => 7,
+           Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
-        (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
-      Field_Options := Get_Options(Create_Fields.all(3));
+        (Fld => Create_Fields.all(3), Buffer => 0, Str => "[" & Mc(Interp => Interpreter, Src_String => "{Cancel}") & "]");
+      Field_Options := Get_Options(Fld => Create_Fields.all(3));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
-      Set_Options(Create_Fields.all(3), Field_Options);
+      Set_Options(Fld => Create_Fields.all(3), Options => Field_Options);
       Create_Fields.all(4) := New_Field(1, 7, 2, 23, 0, 0);
       Field_Options := Get_Options(Create_Fields.all(4));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
