@@ -121,31 +121,44 @@ package body Bookmarks.UI is
       Set_Options(Fld => Create_Fields.all(2), Options => Field_Options);
       Create_Fields.all(3) :=
         New_Field
-          (Height => 1, Width => Column_Position'Value(Mc_Max(Strings => "{Cancel}", Interp => Interpreter)) + 2, Top => 2, Left => 7,
-           Off_Screen => 0, More_Buffers => 0);
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "{Cancel}", Interp => Interpreter)) +
+             2,
+           Top => 2, Left => 7, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
-        (Fld => Create_Fields.all(3), Buffer => 0, Str => "[" & Mc(Interp => Interpreter, Src_String => "{Cancel}") & "]");
+        (Fld => Create_Fields.all(3), Buffer => 0,
+         Str =>
+           "[" & Mc(Interp => Interpreter, Src_String => "{Cancel}") & "]");
       Field_Options := Get_Options(Fld => Create_Fields.all(3));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Create_Fields.all(3), Options => Field_Options);
-      Create_Fields.all(4) := New_Field(1, 7, 2, 23, 0, 0);
-      Field_Options := Get_Options(Create_Fields.all(4));
+      Create_Fields.all(4) :=
+        New_Field
+          (Height => 1, Width => 7, Top => 2, Left => 23, Off_Screen => 0,
+           More_Buffers => 0);
+      Field_Options := Get_Options(Fld => Create_Fields.all(4));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
-      Set_Options(Create_Fields.all(4), Field_Options);
+      Set_Options(Fld => Create_Fields.all(4), Options => Field_Options);
       Set_Buffer
-        (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "{Enter}") & "]");
+        (Fld => Create_Fields.all(4), Buffer => 0,
+         Str =>
+           "[" & Mc(Interp => Interpreter, Src_String => "{Enter}") & "]");
       Create_Fields.all(5) := Null_Field;
-      Dialog_Form := New_Form(Create_Fields);
-      Set_Current(Dialog_Form, Create_Fields(2));
-      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
+      Dialog_Form := New_Form(Fields => Create_Fields);
+      Set_Current(Frm => Dialog_Form, Fld => Create_Fields(2));
+      Create_Dialog
+        (DialogForm => Dialog_Form, FormWindow => Form_Window,
+         Form_Height => Form_Height, Form_Length => Form_Length);
    end Show_Bookmarks_Form;
 
    function Go_To_Bookmark(Bookmark: String) return UI_Locations is
    begin
       if New_Action in COPY | MOVE then
-         if Bookmarks_List.Contains(Bookmark) then
+         if Bookmarks_List.Contains(Key => Bookmark) then
             Destination_Directory :=
-              To_Unbounded_String(Bookmarks_List(Bookmark));
+              To_Unbounded_String(Source => Bookmarks_List(Bookmark));
          elsif Bookmark = Mc(Interpreter, "{Home}") then
             Destination_Directory := To_Unbounded_String(Value("HOME"));
          elsif Bookmark = Mc(Interpreter, "Close") then
