@@ -159,9 +159,9 @@ package body Bookmarks.UI is
          if Bookmarks_List.Contains(Key => Bookmark) then
             Destination_Directory :=
               To_Unbounded_String(Source => Bookmarks_List(Bookmark));
-         elsif Bookmark = Mc(Interpreter, "{Home}") then
-            Destination_Directory := To_Unbounded_String(Value("HOME"));
-         elsif Bookmark = Mc(Interpreter, "Close") then
+         elsif Bookmark = Mc(Interp => Interpreter, Src_String => "{Home}") then
+            Destination_Directory := To_Unbounded_String(Source => Value(Name => "HOME"));
+         elsif Bookmark = Mc(Interp => Interpreter, Src_String => "Close") then
             Update_Directory_List;
             ShowDestination;
             return DESTINATION_VIEW;
@@ -170,25 +170,25 @@ package body Bookmarks.UI is
             return BOOKMARKS_FORM;
          end if;
          Update_Directory_List;
-         Load_Directory(To_String(Destination_Directory), True);
+         Load_Directory(Directory_Name => To_String(Source => Destination_Directory), Second => True);
          ShowDestination;
          return DESTINATION_VIEW;
       end if;
-      if Bookmark = Mc(Interpreter, "Close") then
+      if Bookmark = Mc(Interp => Interpreter, Src_String => "Close") then
          Show_Preview;
          UILocation := DIRECTORY_VIEW;
          Update_Directory_List;
          return DIRECTORY_VIEW;
       end if;
-      if Bookmarks_List.Contains(Bookmark) then
+      if Bookmarks_List.Contains(Key => Bookmark) then
          New_Action := Default_Item_Action;
-         CreateProgramMenu(True);
+         CreateProgramMenu(Update => True);
          Common.Current_Directory :=
-           To_Unbounded_String(Bookmarks_List(Bookmark));
-      elsif Bookmark = Mc(Interpreter, "{Home}") then
+           To_Unbounded_String(Source => Bookmarks_List(Bookmark));
+      elsif Bookmark = Mc(Interp => Interpreter, Src_String => "{Home}") then
          New_Action := Default_Item_Action;
-         CreateProgramMenu(True);
-         Common.Current_Directory := To_Unbounded_String(Value("HOME"));
+         CreateProgramMenu(Update => True);
+         Common.Current_Directory := To_Unbounded_String(Source => Value(Name => "HOME"));
       else
          Update_Directory_List;
          Show_Preview;
