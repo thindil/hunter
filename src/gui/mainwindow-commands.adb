@@ -530,6 +530,12 @@ package body MainWindow.Commands is
             end if;
          end if;
       end loop Update_File_Menu_Loop;
+      Add
+        (MenuWidget => File_Menu, EntryType => "command",
+         Options =>
+           "-label {" &
+           Mc(Interp => Interp, Src_String => "{Show/Hide hidden}") &
+           "} -command ToggleHidden");
       Tk_Popup
         (MenuWidget => File_Menu, X => CArgv.Arg(Argv => Argv, N => 1),
          Y => CArgv.Arg(Argv => Argv, N => 2));
