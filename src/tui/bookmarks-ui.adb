@@ -75,13 +75,25 @@ package body Bookmarks.UI is
    -- FUNCTION
    -- Get the execute items with dialog form
    -- RESULT
-   -- The ncurses dialog form for set execute items with command
+   -- The ncurses dialog form for enter the selected directory
    -- SOURCE
    function Get_Dialog_Form return Forms.Form is
       -- ****
    begin
       return Dialog_Form;
    end Get_Dialog_Form;
+
+   -- ****if* BookmarksTUI/BookmarksTUI.Set_Dialog_Form
+   -- FUNCTION
+   -- Set the new value for the dialog form for enter the selected directory
+   -- PARAMETERS
+   -- New_Form - The new value for the Dialog_Form
+   -- SOURCE
+   procedure Set_Dialog_Form(New_Form: Forms.Form) is
+      -- ****
+   begin
+      Dialog_Form := New_Form;
+   end Set_Dialog_Form;
 
    -- ****iv* BookmarksTUI/BookmarksTUI.Form_Window
    -- FUNCTION
@@ -166,7 +178,7 @@ package body Bookmarks.UI is
          Create_Dialog
            (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
             Form_Height => Form_Height, Form_Length => Form_Length);
-         Dialog_Form := New_Dialog_Form;
+         Set_Dialog_Form(New_Form => New_Dialog_Form);
       end Create_Go_To_Dialog_Block;
    end Show_Bookmarks_Form;
 
@@ -234,6 +246,7 @@ package body Bookmarks.UI is
          Set_Cursor_Visibility(Visibility);
          Post(Dialog_Frm, False);
          Delete(Dialog_Frm);
+         Set_Dialog_Form(New_Form => Dialog_Frm);
          if New_Action not in MOVE | COPY then
             Show_Preview;
             UILocation := DIRECTORY_VIEW;
