@@ -196,6 +196,7 @@ begin
          --## rule on SIMPLIFIABLE_STATEMENTS
          exit Main_Program_Loop when Key = 113;
       end if;
+      -- Tab key pressed
       if Key in KEY_STAB | 9 then
          case UILocation is
             when DIRECTORY_VIEW | PATH_BUTTONS =>
@@ -244,6 +245,7 @@ begin
             when others =>
                null;
          end case;
+      -- Another key pressed, depends on current UI location
       else
          case UILocation is
             when DIRECTORY_VIEW =>
