@@ -298,26 +298,52 @@ package body Bookmarks.UI is
                              (Fld => Fields(Frm => Dialog_Frm, Index => 2)),
                          Side => Both)) then
                   Show_Message
-                    (Message => Mc(Interp => Interpreter, Src_String => "{Directory}") & " " &
-                     Trim(Source => Get_Buffer(Fld => Fields(Frm => Dialog_Frm, Index => 2)), Side => Both) & " " &
-                     Mc(Interp => Interpreter, Src_String => "{doesn't exist.}"));
+                    (Message =>
+                       Mc(Interp => Interpreter, Src_String => "{Directory}") &
+                       " " &
+                       Trim
+                         (Source =>
+                            Get_Buffer
+                              (Fld => Fields(Frm => Dialog_Frm, Index => 2)),
+                          Side => Both) &
+                       " " &
+                       Mc(Interp => Interpreter,
+                          Src_String => "{doesn't exist.}"));
                   return MESSAGE_FORM;
                end if;
                if New_Action not in MOVE | COPY then
                   New_Action := Default_Item_Action;
                   Common.Current_Directory :=
                     To_Unbounded_String
-                      (Source => Trim(Source => Get_Buffer(Fld => Fields(Frm => Dialog_Frm, Index => 2)), Side => Both));
-                  Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
-                  Update_Watch(Path => To_String(Source => Common.Current_Directory));
+                      (Source =>
+                         Trim
+                           (Source =>
+                              Get_Buffer
+                                (Fld => Fields(Frm => Dialog_Frm, Index => 2)),
+                            Side => Both));
+                  Load_Directory
+                    (Directory_Name =>
+                       To_String(Source => Common.Current_Directory));
+                  Update_Watch
+                    (Path => To_String(Source => Common.Current_Directory));
                   Execute_Modules
-                    (Interpreter, On_Enter_Trigger,
-                     "{" & To_String(Common.Current_Directory) & "}");
+                    (Interpreter => Interpreter, State => On_Enter_Trigger,
+                     Arguments =>
+                       "{" & To_String(Source => Common.Current_Directory) &
+                       "}");
                else
                   Destination_Directory :=
                     To_Unbounded_String
-                      (Trim(Get_Buffer(Fields(Dialog_Frm, 2)), Both));
-                  Load_Directory(To_String(Destination_Directory), True);
+                      (Source =>
+                         Trim
+                           (Source =>
+                              Get_Buffer
+                                (Fld => Fields(Frm => Dialog_Frm, Index => 2)),
+                            Side => Both));
+                  Load_Directory
+                    (Directory_Name =>
+                       To_String(Source => Destination_Directory),
+                     Second => True);
                end if;
             end if;
             if Field_Index /= 2 then
@@ -325,11 +351,11 @@ package body Bookmarks.UI is
             end if;
          when others =>
             if Key /= 91 then
-               Result := Driver(Dialog_Frm, Key);
+               Result := Driver(Frm => Dialog_Frm, Key => Key);
             end if;
       end case;
       if Result = Form_Ok then
-         Refresh(Form_Window);
+         Refresh(Win => Form_Window);
       end if;
       return BOOKMARKS_FORM;
    end Bookmarks_Form_Keys;
@@ -338,7 +364,7 @@ package body Bookmarks.UI is
       File: File_Type;
    begin
       if Ada.Directories.Exists
-          (Value("HOME") & "/.config/gtk-3.0/bookmarks") then
+          (Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks") then
          Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
       else
          Create_Path(Value("HOME") & "/.config/gtk-3.0/");
