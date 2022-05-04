@@ -298,18 +298,18 @@ package body Bookmarks.UI is
                              (Fld => Fields(Frm => Dialog_Frm, Index => 2)),
                          Side => Both)) then
                   Show_Message
-                    (Mc(Interpreter, "{Directory}") & " " &
-                     Trim(Get_Buffer(Fields(Dialog_Frm, 2)), Both) & " " &
-                     Mc(Interpreter, "{doesn't exist.}"));
+                    (Message => Mc(Interp => Interpreter, Src_String => "{Directory}") & " " &
+                     Trim(Source => Get_Buffer(Fld => Fields(Frm => Dialog_Frm, Index => 2)), Side => Both) & " " &
+                     Mc(Interp => Interpreter, Src_String => "{doesn't exist.}"));
                   return MESSAGE_FORM;
                end if;
                if New_Action not in MOVE | COPY then
                   New_Action := Default_Item_Action;
                   Common.Current_Directory :=
                     To_Unbounded_String
-                      (Trim(Get_Buffer(Fields(Dialog_Frm, 2)), Both));
-                  Load_Directory(To_String(Common.Current_Directory));
-                  Update_Watch(To_String(Common.Current_Directory));
+                      (Source => Trim(Source => Get_Buffer(Fld => Fields(Frm => Dialog_Frm, Index => 2)), Side => Both));
+                  Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+                  Update_Watch(Path => To_String(Source => Common.Current_Directory));
                   Execute_Modules
                     (Interpreter, On_Enter_Trigger,
                      "{" & To_String(Common.Current_Directory) & "}");
