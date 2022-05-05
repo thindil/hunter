@@ -365,40 +365,40 @@ package body Bookmarks.UI is
    begin
       if Ada.Directories.Exists
           (Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks") then
-         Open(File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+         Open(File => File, Mode => Append_File, Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
       else
-         Create_Path(Value("HOME") & "/.config/gtk-3.0/");
+         Create_Path(New_Directory => Value(Name => "HOME") & "/.config/gtk-3.0/");
          Create
-           (File, Append_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+           (File => File, Mode => Append_File, Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
       end if;
-      Put_Line(File, "file://" & Current_Selected);
-      Close(File);
+      Put_Line(File => File, Item => "file://" & Current_Selected);
+      Close(File => File);
       Create_Bookmarks_List;
    end Add_Bookmark;
 
    procedure Remove_Bookmark is
-      NewFile, OldFile: File_Type;
-      Line, Path: Unbounded_String;
+      New_File, Old_File: File_Type;
+      Line, Path: Unbounded_String := Null_Unbounded_String;
       Added: Boolean := False;
    begin
       Rename
         (Value("HOME") & "/.config/gtk-3.0/bookmarks",
          Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
-      Open(OldFile, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
-      Create(NewFile, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+      Open(Old_File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Create(New_File, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
       Update_Bookmarks_Loop :
-      while not End_Of_File(OldFile) loop
-         Line := Get_Line(OldFile);
+      while not End_Of_File(Old_File) loop
+         Line := Get_Line(Old_File);
          if Length(Line) > 7 and then Slice(Line, 1, 7) = "file://" then
             Path := Unbounded_Slice(Line, 8, Length(Line));
             if Path /= Current_Selected then
-               Put_Line(NewFile, Line);
+               Put_Line(New_File, Line);
                Added := True;
             end if;
          end if;
       end loop Update_Bookmarks_Loop;
-      Close(NewFile);
-      Close(OldFile);
+      Close(New_File);
+      Close(Old_File);
       Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
       if not Added then
          Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks");
