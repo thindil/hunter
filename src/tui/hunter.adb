@@ -307,6 +307,8 @@ begin
                UILocation := User_Commands_Keys(Key => Key);
             when T_ACTIONS_MENU =>
                UILocation := Trash_Actions_Keys(Key => Key);
+            when QUIT_PROGRAM =>
+               exit Main_Program_Loop;
          end case;
       end if;
    end loop Main_Program_Loop;
