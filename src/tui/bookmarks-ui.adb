@@ -365,11 +365,15 @@ package body Bookmarks.UI is
    begin
       if Ada.Directories.Exists
           (Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks") then
-         Open(File => File, Mode => Append_File, Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
+         Open
+           (File => File, Mode => Append_File,
+            Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
       else
-         Create_Path(New_Directory => Value(Name => "HOME") & "/.config/gtk-3.0/");
+         Create_Path
+           (New_Directory => Value(Name => "HOME") & "/.config/gtk-3.0/");
          Create
-           (File => File, Mode => Append_File, Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
+           (File => File, Mode => Append_File,
+            Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
       end if;
       Put_Line(File => File, Item => "file://" & Current_Selected);
       Close(File => File);
@@ -382,15 +386,22 @@ package body Bookmarks.UI is
       Added: Boolean := False;
    begin
       Rename
-        (Value("HOME") & "/.config/gtk-3.0/bookmarks",
-         Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
-      Open(Old_File, In_File, Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
-      Create(New_File, Out_File, Value("HOME") & "/.config/gtk-3.0/bookmarks");
+        (Old_Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks",
+         New_Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Open
+        (File => Old_File, Mode => In_File,
+         Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Create
+        (File => New_File, Mode => Out_File,
+         Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
       Update_Bookmarks_Loop :
-      while not End_Of_File(Old_File) loop
-         Line := Get_Line(Old_File);
-         if Length(Line) > 7 and then Slice(Line, 1, 7) = "file://" then
-            Path := Unbounded_Slice(Line, 8, Length(Line));
+      while not End_Of_File(File => Old_File) loop
+         Line := Get_Line(File => Old_File);
+         if Length(Source => Line) > 7
+           and then Slice(Source => Line, Low => 1, High => 7) = "file://" then
+            Path :=
+              Unbounded_Slice
+                (Source => Line, Low => 8, High => Length(Source => Line));
             if Path /= Current_Selected then
                Put_Line(New_File, Line);
                Added := True;
