@@ -15,17 +15,17 @@
 
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables; use Ada.Environment_Variables;
-with Ada.Strings; use Ada.Strings;
-with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Ada.Strings;
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Ada.Text_IO; use Ada.Text_IO;
 with Ada.Text_IO.Unbounded_IO; use Ada.Text_IO.Unbounded_IO;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
-with Tcl; use Tcl;
+with Tcl;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
 with LoadData.UI; use LoadData.UI;
-with Messages.UI; use Messages.UI;
+with Messages.UI;
 with Modules; use Modules;
 with RefreshData; use RefreshData;
 with ShowItems; use ShowItems;
@@ -71,6 +71,7 @@ package body Bookmarks.UI is
    Dialog_Form: Forms.Form;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
    -- ****if* BookmarksTUI/BookmarksTUI.Get_Dialog_Form
    -- FUNCTION
    -- Get the execute items with dialog form
@@ -82,6 +83,7 @@ package body Bookmarks.UI is
    begin
       return Dialog_Form;
    end Get_Dialog_Form;
+   --## rule on REDUCEABLE_SCOPE
 
    -- ****if* BookmarksTUI/BookmarksTUI.Set_Dialog_Form
    -- FUNCTION
@@ -102,87 +104,81 @@ package body Bookmarks.UI is
    Form_Window: Window;
    -- ****
 
-   -- ****if* BookmarksTUI/BookmarksTUI.Show_Bookmarks_Form
-   -- FUNCTION
-   -- Show dialog to enter the destination directory
-   -- SOURCE
-   procedure Show_Bookmarks_Form is
-      -- ****
-      Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
-      Visibility: Cursor_Visibility := Normal;
-      Field_Options: Field_Option_Set;
-   begin
-      Set_Cursor_Visibility(Visibility => Visibility);
-      Create_Fields.all(1) :=
-        New_Field
-          (Height => 1,
-           Width =>
-             Column_Position'Value
-               (Mc_Max
-                  (Strings => "{Enter the destination directory:}",
-                   Interp => Interpreter)),
-           Top => 0, Left => 8, Off_Screen => 0, More_Buffers => 0);
-      Set_Buffer
-        (Fld => Create_Fields.all(1), Buffer => 0,
-         Str =>
-           Mc
-             (Interp => Interpreter,
-              Src_String => "{Enter the destination directory:}"));
-      Field_Options := Get_Options(Fld => Create_Fields.all(1));
-      Field_Options.Active := False; --## rule line off ASSIGNMENTS
-      Set_Options(Fld => Create_Fields.all(1), Options => Field_Options);
-      Create_Fields.all(2) :=
-        New_Field
-          (Height => 1, Width => 40, Top => 1, Left => 0, Off_Screen => 0,
-           More_Buffers => 0);
-      Set_Buffer
-        (Fld => Create_Fields.all(2), Buffer => 0,
-         Str => To_String(Source => Common.Current_Directory));
-      Field_Options := Get_Options(Fld => Create_Fields.all(2));
-      Field_Options.Auto_Skip := False; --## rule line off ASSIGNMENTS
-      Set_Options(Fld => Create_Fields.all(2), Options => Field_Options);
-      Create_Fields.all(3) :=
-        New_Field
-          (Height => 1,
-           Width =>
-             Column_Position'Value
-               (Mc_Max(Strings => "{Cancel}", Interp => Interpreter)) +
-             2,
-           Top => 2, Left => 7, Off_Screen => 0, More_Buffers => 0);
-      Set_Buffer
-        (Fld => Create_Fields.all(3), Buffer => 0,
-         Str =>
-           "[" & Mc(Interp => Interpreter, Src_String => "{Cancel}") & "]");
-      Field_Options := Get_Options(Fld => Create_Fields.all(3));
-      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
-      Set_Options(Fld => Create_Fields.all(3), Options => Field_Options);
-      Create_Fields.all(4) :=
-        New_Field
-          (Height => 1, Width => 7, Top => 2, Left => 23, Off_Screen => 0,
-           More_Buffers => 0);
-      Field_Options := Get_Options(Fld => Create_Fields.all(4));
-      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
-      Set_Options(Fld => Create_Fields.all(4), Options => Field_Options);
-      Set_Buffer
-        (Fld => Create_Fields.all(4), Buffer => 0,
-         Str =>
-           "[" & Mc(Interp => Interpreter, Src_String => "{Enter}") & "]");
-      Create_Fields.all(5) := Null_Field;
-      Create_Go_To_Dialog_Block :
-      declare
-         New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
-         Form_Height: Line_Position;
-         Form_Length: Column_Position;
-      begin
-         Set_Current(Frm => New_Dialog_Form, Fld => Create_Fields(2));
-         Create_Dialog
-           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
-            Form_Height => Form_Height, Form_Length => Form_Length);
-         Set_Dialog_Form(New_Form => New_Dialog_Form);
-      end Create_Go_To_Dialog_Block;
-   end Show_Bookmarks_Form;
-
    function Go_To_Bookmark(Bookmark: String) return UI_Locations is
+      procedure Show_Bookmarks_Form is
+         Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
+         Visibility: Cursor_Visibility := Normal;
+         Field_Options: Field_Option_Set;
+      begin
+         Set_Cursor_Visibility(Visibility => Visibility);
+         Create_Fields.all(1) :=
+           New_Field
+             (Height => 1,
+              Width =>
+                Column_Position'Value
+                  (Mc_Max
+                     (Strings => "{Enter the destination directory:}",
+                      Interp => Interpreter)),
+              Top => 0, Left => 8, Off_Screen => 0, More_Buffers => 0);
+         Set_Buffer
+           (Fld => Create_Fields.all(1), Buffer => 0,
+            Str =>
+              Mc
+                (Interp => Interpreter,
+                 Src_String => "{Enter the destination directory:}"));
+         Field_Options := Get_Options(Fld => Create_Fields.all(1));
+         Field_Options.Active := False; --## rule line off ASSIGNMENTS
+         Set_Options(Fld => Create_Fields.all(1), Options => Field_Options);
+         Create_Fields.all(2) :=
+           New_Field
+             (Height => 1, Width => 40, Top => 1, Left => 0, Off_Screen => 0,
+              More_Buffers => 0);
+         Set_Buffer
+           (Fld => Create_Fields.all(2), Buffer => 0,
+            Str => To_String(Source => Common.Current_Directory));
+         Field_Options := Get_Options(Fld => Create_Fields.all(2));
+         Field_Options.Auto_Skip := False; --## rule line off ASSIGNMENTS
+         Set_Options(Fld => Create_Fields.all(2), Options => Field_Options);
+         Create_Fields.all(3) :=
+           New_Field
+             (Height => 1,
+              Width =>
+                Column_Position'Value
+                  (Mc_Max(Strings => "{Cancel}", Interp => Interpreter)) +
+                2,
+              Top => 2, Left => 7, Off_Screen => 0, More_Buffers => 0);
+         Set_Buffer
+           (Fld => Create_Fields.all(3), Buffer => 0,
+            Str =>
+              "[" & Mc(Interp => Interpreter, Src_String => "{Cancel}") & "]");
+         Field_Options := Get_Options(Fld => Create_Fields.all(3));
+         Field_Options.Edit := False; --## rule line off ASSIGNMENTS
+         Set_Options(Fld => Create_Fields.all(3), Options => Field_Options);
+         Create_Fields.all(4) :=
+           New_Field
+             (Height => 1, Width => 7, Top => 2, Left => 23, Off_Screen => 0,
+              More_Buffers => 0);
+         Field_Options := Get_Options(Fld => Create_Fields.all(4));
+         Field_Options.Edit := False; --## rule line off ASSIGNMENTS
+         Set_Options(Fld => Create_Fields.all(4), Options => Field_Options);
+         Set_Buffer
+           (Fld => Create_Fields.all(4), Buffer => 0,
+            Str =>
+              "[" & Mc(Interp => Interpreter, Src_String => "{Enter}") & "]");
+         Create_Fields.all(5) := Null_Field;
+         Create_Go_To_Dialog_Block :
+         declare
+            New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
+            Form_Height: Line_Position;
+            Form_Length: Column_Position;
+         begin
+            Set_Current(Frm => New_Dialog_Form, Fld => Create_Fields(2));
+            Create_Dialog
+              (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+               Form_Height => Form_Height, Form_Length => Form_Length);
+            Set_Dialog_Form(New_Form => New_Dialog_Form);
+         end Create_Go_To_Dialog_Block;
+      end Show_Bookmarks_Form;
    begin
       if New_Action in COPY | MOVE then
          if Bookmarks_List.Contains(Key => Bookmark) then
@@ -244,6 +240,10 @@ package body Bookmarks.UI is
    end Go_To_Bookmark;
 
    function Bookmarks_Form_Keys(Key: Key_Code) return UI_Locations is
+      use Ada.Strings;
+      use Ada.Strings.Fixed;
+      use Messages.UI;
+
       Result: Forms.Driver_Result := Unknown_Request;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
       Field_Index: constant Positive :=

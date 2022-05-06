@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -14,7 +14,9 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
+--## rule off REDUCEABLE_SCOPE
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
+--## rule on REDUCEABLE_SCOPE
 with MainWindow; use MainWindow;
 
 -- ****h* Bookmarks/BUITUI
