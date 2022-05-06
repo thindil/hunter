@@ -403,16 +403,18 @@ package body Bookmarks.UI is
               Unbounded_Slice
                 (Source => Line, Low => 8, High => Length(Source => Line));
             if Path /= Current_Selected then
-               Put_Line(New_File, Line);
+               Put_Line(File => New_File, Item => Line);
                Added := True;
             end if;
          end if;
       end loop Update_Bookmarks_Loop;
-      Close(New_File);
-      Close(Old_File);
-      Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks.old");
+      Close(File => New_File);
+      Close(File => Old_File);
+      Delete_File
+        (Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks.old");
       if not Added then
-         Delete_File(Value("HOME") & "/.config/gtk-3.0/bookmarks");
+         Delete_File
+           (Name => Value(Name => "HOME") & "/.config/gtk-3.0/bookmarks");
       end if;
       Create_Bookmarks_List;
    end Remove_Bookmark;
