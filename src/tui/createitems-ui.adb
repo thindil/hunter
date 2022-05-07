@@ -60,25 +60,28 @@ package body CreateItems.UI is
      (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(ClientData);
-      NewItemName, Destination: Unbounded_String;
-      File: File_Descriptor;
+      New_Item_Name, Destination: Unbounded_String;
+      File: File_Descriptor := Null_FD;
       Hunter_Create_Exception: exception;
    begin
       if Argc = 1 then
-         Tcl_SetResult(Interp, "1");
+         Tcl_SetResult(interp => Interp, str => "1");
          return TCL_OK;
       end if;
-      NewItemName := Common.Current_Directory & "/" & CArgv.Arg(Argv, 1);
-      if not Is_Creating_Possible(To_String(NewItemName), Interp) then
-         Tcl_SetResult(Interp, "0");
+      New_Item_Name :=
+        Common.Current_Directory & "/" & CArgv.Arg(Argv => Argv, N => 1);
+      if not Is_Creating_Possible
+          (New_Item_Name => To_String(Source => New_Item_Name),
+           Interp => Interp) then
+         Tcl_SetResult(interp => Interp, str => "0");
          return TCL_OK;
       end if;
       case New_Action is
          when CREATEDIRECTORY =>
-            Create_Path(To_String(NewItemName));
+            Create_Path(New_Directory => To_String(Source => New_Item_Name));
          when CREATEFILE =>
-            Create_Path(Containing_Directory(To_String(NewItemName)));
-            File := Create_File(To_String(NewItemName), Binary);
+            Create_Path(Containing_Directory(To_String(New_Item_Name)));
+            File := Create_File(To_String(New_Item_Name), Binary);
             Close(File);
          when CREATELINK =>
             Destination := Destination_Directory;
@@ -90,7 +93,7 @@ package body CreateItems.UI is
             end if;
             Tcl_Eval
               (Interp,
-               "file link -symbolic {" & To_String(NewItemName) & "} {" &
+               "file link -symbolic {" & To_String(New_Item_Name) & "} {" &
                To_String(Destination) & "}");
          when others =>
             raise Hunter_Create_Exception
@@ -98,7 +101,7 @@ package body CreateItems.UI is
       end case;
       if not Settings.Stay_In_Old and then New_Action /= CREATELINK then
          Common.Current_Directory :=
-           To_Unbounded_String(Containing_Directory(To_String(NewItemName)));
+           To_Unbounded_String(Containing_Directory(To_String(New_Item_Name)));
       end if;
       Load_Directory(To_String(Common.Current_Directory));
       Update_Watch(To_String(Common.Current_Directory));
