@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -23,21 +23,21 @@ with MainWindow; use MainWindow;
 package CreateItems.UI is
 -- ****
 
-   -- ****f* CreateItemsTUI/CreateItemsTUI.AddCommands
+   -- ****f* CreateItemsTUI/CreateItemsTUI.Add_Commands
    -- FUNCTION
    -- Add Tcl commands related to the creation of items
    -- SOURCE
-   procedure AddCommands;
+   procedure Add_Commands;
    -- ****
 
-   -- ****f* CreateItemsTUI/CreateItemsTUI.ShowCreateForm
+   -- ****f* CreateItemsTUI/CreateItemsTUI.Show_Create_Form
    -- FUNCTION
    -- Show dialog to create file or directory
    -- PARAMETERS
    -- Create_Type - Type of item which will be created. Should be "file" or
    --               "directory"
    -- SOURCE
-   procedure ShowCreateForm(Create_Type: String);
+   procedure Show_Create_Form(Create_Type: String);
    -- ****
 
    -- ****f* CreateItemsTUI/CreateItemsTUI.Create_Keys
