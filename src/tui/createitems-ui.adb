@@ -109,15 +109,15 @@ package body CreateItems.UI is
       return TCL_OK;
    end Create_Item_Command;
 
-   procedure AddCommands is
+   procedure Add_Commands is
    begin
       Add_Command("CreateItem", Create_Item_Command'Access);
-   end AddCommands;
+   end Add_Commands;
 
    DialogForm: Forms.Form;
    FormWindow: Window;
 
-   procedure ShowCreateForm(Create_Type: String) is
+   procedure Show_Create_Form(Create_Type: String) is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
       FormHeight: Line_Position;
       FormLength: Column_Position;
@@ -166,7 +166,7 @@ package body CreateItems.UI is
       DialogForm := New_Form(Create_Fields);
       Set_Current(DialogForm, Create_Fields(2));
       Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
-   end ShowCreateForm;
+   end Show_Create_Form;
 
    function Create_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;

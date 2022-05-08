@@ -173,7 +173,7 @@ package body MainWindow is
         (DirName => "../share/hunter/translations", Interp => Interpreter);
       Set_About_Dialog_Information(Interp => Interpreter);
       ActivateItems.Add_Commands;
-      CreateItems.UI.AddCommands;
+      CreateItems.UI.Add_Commands;
       RenameItems.UI.AddCommands;
       UserCommands.Add_Commands;
       Create_Bookmarks_List;
@@ -794,11 +794,11 @@ package body MainWindow is
             case CurrentIndex is
                when 1 =>
                   New_Action := CREATEDIRECTORY;
-                  ShowCreateForm("directory");
+                  Show_Create_Form("directory");
                   return CREATE_FORM;
                when 2 =>
                   New_Action := CREATEFILE;
-                  ShowCreateForm("file");
+                  Show_Create_Form("file");
                   return CREATE_FORM;
                when 3 =>
                   New_Action := CREATELINK;
