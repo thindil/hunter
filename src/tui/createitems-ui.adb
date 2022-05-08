@@ -40,10 +40,10 @@ package body CreateItems.UI is
    -- FUNCTION
    -- Create the new item of the selected name
    -- PARAMETERS
-   -- ClientData - Custom data send to the command. Unused
-   -- Interp     - Tcl interpreter in which command was executed.
-   -- Argc       - Number of arguments passed to the command.
-   -- Argv       - Values of arguments passed to the command.
+   -- Client_Data - Custom data send to the command. Unused
+   -- Interp      - Tcl interpreter in which command was executed.
+   -- Argc        - Number of arguments passed to the command.
+   -- Argv        - Values of arguments passed to the command.
    -- RESULT
    -- This function always return TCL_OK
    -- COMMANDS
@@ -51,16 +51,17 @@ package body CreateItems.UI is
    -- ItemName is the name of item to create
    -- SOURCE
    function Create_Item_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int with
       Convention => C;
       -- ****
 
    function Create_Item_Command
-     (ClientData: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
+     (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
-      pragma Unreferenced(ClientData);
-      New_Item_Name, Destination: Unbounded_String;
+      pragma Unreferenced(Client_Data);
+      New_Item_Name: Unbounded_String;
+      Destination: Unbounded_String := Null_Unbounded_String;
       File: File_Descriptor := Null_FD;
       Hunter_Create_Exception: exception;
    begin
@@ -80,21 +81,21 @@ package body CreateItems.UI is
          when CREATEDIRECTORY =>
             Create_Path(New_Directory => To_String(Source => New_Item_Name));
          when CREATEFILE =>
-            Create_Path(Containing_Directory(To_String(New_Item_Name)));
-            File := Create_File(To_String(New_Item_Name), Binary);
-            Close(File);
+            Create_Path(New_Directory => Containing_Directory(Name => To_String(Source => New_Item_Name)));
+            File := Create_File(Name => To_String(Source => New_Item_Name), Fmode => Binary);
+            Close(FD => File);
          when CREATELINK =>
             Destination := Destination_Directory;
-            if Name(Current(DestinationList)) /=
-              Simple_Name(To_String(Destination)) then
+            if Name(Itm => Current(Men => DestinationList)) /=
+              Simple_Name(Name => To_String(Source => Destination)) then
                Destination :=
                  Destination & "/" &
-                 To_Unbounded_String(Name(Current(DestinationList)));
+                 To_Unbounded_String(Source => Name(Itm => Current(Men => DestinationList)));
             end if;
             Tcl_Eval
-              (Interp,
-               "file link -symbolic {" & To_String(New_Item_Name) & "} {" &
-               To_String(Destination) & "}");
+              (interp => Interp,
+               strng => "file link -symbolic {" & To_String(Source => New_Item_Name) & "} {" &
+               To_String(Source => Destination) & "}");
          when others =>
             raise Hunter_Create_Exception
               with Mc(Interp, "{Invalid action type}");
