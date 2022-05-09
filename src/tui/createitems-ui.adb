@@ -98,32 +98,32 @@ package body CreateItems.UI is
                To_String(Source => Destination) & "}");
          when others =>
             raise Hunter_Create_Exception
-              with Mc(Interp, "{Invalid action type}");
+              with Mc(Interp => Interp, Src_String => "{Invalid action type}");
       end case;
       if not Settings.Stay_In_Old and then New_Action /= CREATELINK then
          Common.Current_Directory :=
-           To_Unbounded_String(Containing_Directory(To_String(New_Item_Name)));
+           To_Unbounded_String(Source => Containing_Directory(Name => To_String(Source => New_Item_Name)));
       end if;
-      Load_Directory(To_String(Common.Current_Directory));
-      Update_Watch(To_String(Common.Current_Directory));
-      Tcl_SetResult(Interp, "1");
+      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+      Update_Watch(Path => To_String(Source => Common.Current_Directory));
+      Tcl_SetResult(interp => Interp, str => "1");
       return TCL_OK;
    end Create_Item_Command;
 
    procedure Add_Commands is
    begin
-      Add_Command("CreateItem", Create_Item_Command'Access);
+      Add_Command(Name => "CreateItem", Ada_Command => Create_Item_Command'Access);
    end Add_Commands;
 
-   DialogForm: Forms.Form;
-   FormWindow: Window;
+   Dialog_Form: Forms.Form;
+   Form_Window: Window;
 
    procedure Show_Create_Form(Create_Type: String) is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
-      FormHeight: Line_Position;
-      FormLength: Column_Position;
+      Form_Height: Line_Position;
+      Form_Length: Column_Position;
       Visibility: Cursor_Visibility := Normal;
-      FieldOptions: Field_Option_Set;
+      Field_Options: Field_Option_Set;
    begin
       Set_Cursor_Visibility(Visibility);
       Create_Fields.all(1) :=
@@ -137,100 +137,100 @@ package body CreateItems.UI is
         (Create_Fields.all(1), 0,
          Mc(Interpreter, "{Enter a new}") & " " &
          Mc(Interpreter, Create_Type) & Mc(Interpreter, "{ name:}"));
-      FieldOptions := Get_Options(Create_Fields.all(1));
-      FieldOptions.Active := False;
-      Set_Options(Create_Fields.all(1), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(1));
+      Field_Options.Active := False;
+      Set_Options(Create_Fields.all(1), Field_Options);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer(Create_Fields.all(2), 0, "");
-      FieldOptions := Get_Options(Create_Fields.all(2));
-      FieldOptions.Auto_Skip := False;
-      Set_Options(Create_Fields.all(2), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(2));
+      Field_Options.Auto_Skip := False;
+      Set_Options(Create_Fields.all(2), Field_Options);
       Create_Fields.all(3) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("Cancel", Interpreter)) + 2, 2, 7,
            0, 0);
       Set_Buffer
         (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "Cancel") & "]");
-      FieldOptions := Get_Options(Create_Fields.all(3));
-      FieldOptions.Edit := False;
-      Set_Options(Create_Fields.all(3), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(3));
+      Field_Options.Edit := False;
+      Set_Options(Create_Fields.all(3), Field_Options);
       Create_Fields.all(4) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("Create", Interpreter)) + 2, 2, 23,
            0, 0);
-      FieldOptions := Get_Options(Create_Fields.all(4));
-      FieldOptions.Edit := False;
-      Set_Options(Create_Fields.all(4), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(4));
+      Field_Options.Edit := False;
+      Set_Options(Create_Fields.all(4), Field_Options);
       Set_Buffer
         (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "Create") & "]");
       Create_Fields.all(5) := Null_Field;
-      DialogForm := New_Form(Create_Fields);
-      Set_Current(DialogForm, Create_Fields(2));
-      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
+      Dialog_Form := New_Form(Create_Fields);
+      Set_Current(Dialog_Form, Create_Fields(2));
+      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
    end Show_Create_Form;
 
    function Create_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(DialogForm);
+            Result := Go_Previous_Field(Dialog_Form);
          when KEY_DOWN =>
-            Result := Go_Next_Field(DialogForm);
+            Result := Go_Next_Field(Dialog_Form);
          when KEY_LEFT =>
             if FieldIndex = 2 then
-               Result := Driver(DialogForm, F_Previous_Char);
+               Result := Driver(Dialog_Form, F_Previous_Char);
             end if;
          when KEY_RIGHT =>
             if FieldIndex = 2 then
-               Result := Driver(DialogForm, F_Next_Char);
+               Result := Driver(Dialog_Form, F_Next_Char);
             end if;
          when 127 =>
-            Result := Driver(DialogForm, F_Delete_Previous);
+            Result := Driver(Dialog_Form, F_Delete_Previous);
          when 27 =>
             Set_Cursor_Visibility(Visibility);
-            Delete_Dialog(DialogForm, True);
+            Delete_Dialog(Dialog_Form, True);
             Show_Preview;
             return DIRECTORY_VIEW;
          when 10 =>
             if FieldIndex = 2 then
-               Result := Go_Previous_Field(DialogForm);
+               Result := Go_Previous_Field(Dialog_Form);
                return Create_Keys(10);
             end if;
             if FieldIndex = 4 then
                Tcl_Eval
                  (Interpreter,
                   "CreateItem " &
-                  Trim(Get_Buffer(Fields(DialogForm, 2)), Both));
+                  Trim(Get_Buffer(Fields(Dialog_Form, 2)), Both));
                if Tcl_GetResult(Interpreter) = "0" then
                   return MESSAGE_FORM;
                end if;
             end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
-               Delete_Dialog(DialogForm, True);
+               Delete_Dialog(Dialog_Form, True);
                Show_Preview;
                return DIRECTORY_VIEW;
             end if;
          when others =>
             if Key /= 91 then
-               Result := Driver(DialogForm, Key);
+               Result := Driver(Dialog_Form, Key);
             end if;
       end case;
       if Result = Form_Ok then
-         Refresh(FormWindow);
+         Refresh(Form_Window);
       end if;
       return CREATE_FORM;
    end Create_Keys;
 
    procedure Show_Create_Link_Form is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
-      FormHeight: Line_Position;
-      FormLength: Column_Position;
+      Form_Height: Line_Position;
+      Form_Length: Column_Position;
       Visibility: Cursor_Visibility := Normal;
-      FieldOptions: Field_Option_Set;
+      Field_Options: Field_Option_Set;
       UnusedResult: Forms.Driver_Result := Unknown_Request;
    begin
       Set_Cursor_Visibility(Visibility);
@@ -243,75 +243,75 @@ package body CreateItems.UI is
       Set_Buffer
         (Create_Fields.all(1), 0,
          Mc(Interpreter, "{Enter a name for the new link:}"));
-      FieldOptions := Get_Options(Create_Fields.all(1));
-      FieldOptions.Active := False;
-      Set_Options(Create_Fields.all(1), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(1));
+      Field_Options.Active := False;
+      Set_Options(Create_Fields.all(1), Field_Options);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer(Create_Fields.all(2), 0, "");
-      FieldOptions := Get_Options(Create_Fields.all(2));
-      FieldOptions.Auto_Skip := False;
-      Set_Options(Create_Fields.all(2), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(2));
+      Field_Options.Auto_Skip := False;
+      Set_Options(Create_Fields.all(2), Field_Options);
       Create_Fields.all(3) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("Cancel", Interpreter)) + 2, 2, 7,
            0, 0);
       Set_Buffer
         (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "Cancel") & "]");
-      FieldOptions := Get_Options(Create_Fields.all(3));
-      FieldOptions.Edit := False;
-      Set_Options(Create_Fields.all(3), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(3));
+      Field_Options.Edit := False;
+      Set_Options(Create_Fields.all(3), Field_Options);
       Create_Fields.all(4) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("Create", Interpreter)) + 2, 2, 23,
            0, 0);
-      FieldOptions := Get_Options(Create_Fields.all(4));
-      FieldOptions.Edit := False;
-      Set_Options(Create_Fields.all(4), FieldOptions);
+      Field_Options := Get_Options(Create_Fields.all(4));
+      Field_Options.Edit := False;
+      Set_Options(Create_Fields.all(4), Field_Options);
       Set_Buffer
         (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "Create") & "]");
       Create_Fields.all(5) := Null_Field;
-      DialogForm := New_Form(Create_Fields);
-      Set_Current(DialogForm, Create_Fields(2));
-      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
+      Dialog_Form := New_Form(Create_Fields);
+      Set_Current(Dialog_Form, Create_Fields(2));
+      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
    end Show_Create_Link_Form;
 
    function Create_Link_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(DialogForm);
+            Result := Go_Previous_Field(Dialog_Form);
          when KEY_DOWN =>
-            Result := Go_Next_Field(DialogForm);
+            Result := Go_Next_Field(Dialog_Form);
          when KEY_LEFT =>
             if FieldIndex = 2 then
-               Result := Driver(DialogForm, F_Previous_Char);
+               Result := Driver(Dialog_Form, F_Previous_Char);
             end if;
          when KEY_RIGHT =>
             if FieldIndex = 2 then
-               Result := Driver(DialogForm, F_Next_Char);
+               Result := Driver(Dialog_Form, F_Next_Char);
             end if;
          when 127 =>
-            Result := Driver(DialogForm, F_Delete_Previous);
+            Result := Driver(Dialog_Form, F_Delete_Previous);
          when 27 =>
             New_Action := CREATEFILE;
             Set_Cursor_Visibility(Visibility);
-            Delete_Dialog(DialogForm, True);
+            Delete_Dialog(Dialog_Form, True);
             Show_Preview;
             CreateProgramMenu(True);
             return DIRECTORY_VIEW;
          when 10 =>
             if FieldIndex = 2 then
-               Result := Go_Previous_Field(DialogForm);
+               Result := Go_Previous_Field(Dialog_Form);
                return Create_Link_Keys(10);
             end if;
             if FieldIndex = 4 then
                Tcl_Eval
                  (Interpreter,
                   "CreateItem {" &
-                  Trim(Get_Buffer(Fields(DialogForm, 2)), Both) & "}");
+                  Trim(Get_Buffer(Fields(Dialog_Form, 2)), Both) & "}");
                if Tcl_GetResult(Interpreter) = "0" then
                   return MESSAGE_FORM;
                end if;
@@ -319,18 +319,18 @@ package body CreateItems.UI is
             if FieldIndex /= 2 then
                New_Action := CREATEFILE;
                Set_Cursor_Visibility(Visibility);
-               Delete_Dialog(DialogForm, True);
+               Delete_Dialog(Dialog_Form, True);
                Show_Preview;
                CreateProgramMenu(True);
                return DIRECTORY_VIEW;
             end if;
          when others =>
             if Key /= 91 then
-               Result := Driver(DialogForm, Key);
+               Result := Driver(Dialog_Form, Key);
             end if;
       end case;
       if Result = Form_Ok then
-         Refresh(FormWindow);
+         Refresh(Form_Window);
       end if;
       return CREATELINK_FORM;
    end Create_Link_Keys;
