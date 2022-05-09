@@ -115,8 +115,19 @@ package body CreateItems.UI is
       Add_Command(Name => "CreateItem", Ada_Command => Create_Item_Command'Access);
    end Add_Commands;
 
+   -- ****iv* CreateItemsTUI/CreateItemsTUI.Dialog_Form
+   -- FUNCTION
+   -- The form to create a new item
+   -- SOURCE
    Dialog_Form: Forms.Form;
+   -- ****
+
+   -- ****iv* CreateItemsTUI/CreateItemsTUI.Form_Window
+   -- FUNCTION
+   -- The window to show the form to create a new item
+   -- SOURCE
    Form_Window: Window;
+   -- ****
 
    procedure Show_Create_Form(Create_Type: String) is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
