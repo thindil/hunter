@@ -81,8 +81,13 @@ package body CreateItems.UI is
          when CREATEDIRECTORY =>
             Create_Path(New_Directory => To_String(Source => New_Item_Name));
          when CREATEFILE =>
-            Create_Path(New_Directory => Containing_Directory(Name => To_String(Source => New_Item_Name)));
-            File := Create_File(Name => To_String(Source => New_Item_Name), Fmode => Binary);
+            Create_Path
+              (New_Directory =>
+                 Containing_Directory
+                   (Name => To_String(Source => New_Item_Name)));
+            File :=
+              Create_File
+                (Name => To_String(Source => New_Item_Name), Fmode => Binary);
             Close(FD => File);
          when CREATELINK =>
             Destination := Destination_Directory;
@@ -90,21 +95,27 @@ package body CreateItems.UI is
               Simple_Name(Name => To_String(Source => Destination)) then
                Destination :=
                  Destination & "/" &
-                 To_Unbounded_String(Source => Name(Itm => Current(Men => DestinationList)));
+                 To_Unbounded_String
+                   (Source => Name(Itm => Current(Men => DestinationList)));
             end if;
             Tcl_Eval
               (interp => Interp,
-               strng => "file link -symbolic {" & To_String(Source => New_Item_Name) & "} {" &
-               To_String(Source => Destination) & "}");
+               strng =>
+                 "file link -symbolic {" & To_String(Source => New_Item_Name) &
+                 "} {" & To_String(Source => Destination) & "}");
          when others =>
             raise Hunter_Create_Exception
               with Mc(Interp => Interp, Src_String => "{Invalid action type}");
       end case;
       if not Settings.Stay_In_Old and then New_Action /= CREATELINK then
          Common.Current_Directory :=
-           To_Unbounded_String(Source => Containing_Directory(Name => To_String(Source => New_Item_Name)));
+           To_Unbounded_String
+             (Source =>
+                Containing_Directory
+                  (Name => To_String(Source => New_Item_Name)));
       end if;
-      Load_Directory(Directory_Name => To_String(Source => Common.Current_Directory));
+      Load_Directory
+        (Directory_Name => To_String(Source => Common.Current_Directory));
       Update_Watch(Path => To_String(Source => Common.Current_Directory));
       Tcl_SetResult(interp => Interp, str => "1");
       return TCL_OK;
@@ -112,7 +123,8 @@ package body CreateItems.UI is
 
    procedure Add_Commands is
    begin
-      Add_Command(Name => "CreateItem", Ada_Command => Create_Item_Command'Access);
+      Add_Command
+        (Name => "CreateItem", Ada_Command => Create_Item_Command'Access);
    end Add_Commands;
 
    -- ****iv* CreateItemsTUI/CreateItemsTUI.Dialog_Form
@@ -149,12 +161,12 @@ package body CreateItems.UI is
          Mc(Interpreter, "{Enter a new}") & " " &
          Mc(Interpreter, Create_Type) & Mc(Interpreter, "{ name:}"));
       Field_Options := Get_Options(Create_Fields.all(1));
-      Field_Options.Active := False;
+      Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(Create_Fields.all(1), Field_Options);
       Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
       Set_Buffer(Create_Fields.all(2), 0, "");
       Field_Options := Get_Options(Create_Fields.all(2));
-      Field_Options.Auto_Skip := False;
+      Field_Options.Auto_Skip := False; --## rule line off ASSIGNMENTS
       Set_Options(Create_Fields.all(2), Field_Options);
       Create_Fields.all(3) :=
         New_Field
@@ -163,14 +175,14 @@ package body CreateItems.UI is
       Set_Buffer
         (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "Cancel") & "]");
       Field_Options := Get_Options(Create_Fields.all(3));
-      Field_Options.Edit := False;
+      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Create_Fields.all(3), Field_Options);
       Create_Fields.all(4) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("Create", Interpreter)) + 2, 2, 23,
            0, 0);
       Field_Options := Get_Options(Create_Fields.all(4));
-      Field_Options.Edit := False;
+      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Create_Fields.all(4), Field_Options);
       Set_Buffer
         (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "Create") & "]");
