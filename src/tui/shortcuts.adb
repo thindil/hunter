@@ -15,7 +15,7 @@
 
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-package body RenameItems.UI is
+package body Shortcuts is
 
    function Shortcut_Keys(Key: Key_Code; AltKey: Boolean; Old_Location: UI_Locations) return UI_Locations is
       Key_Value: constant String := Key_Name(Key);
@@ -47,4 +47,4 @@ package body RenameItems.UI is
       return Old_Location;
    end Rename_Keys;
 
-end RenameItems.UI;
+end Shortcuts;
