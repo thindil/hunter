@@ -148,18 +148,18 @@ package body CreateItems.UI is
       Visibility: Cursor_Visibility := Normal;
       Field_Options: Field_Option_Set;
    begin
-      Set_Cursor_Visibility(Visibility);
+      Set_Cursor_Visibility(Visibility => Visibility);
       Create_Fields.all(1) :=
         New_Field
-          (1,
-           Column_Position'Value(Mc_Max("{Enter a new}", Interpreter)) +
-           Column_Position'Value(Mc_Max(Create_Type, Interpreter)) +
-           Column_Position'Value(Mc_Max("{name:}", Interpreter)) + 2,
-           0, 2, 0, 0);
+          (Height => 1,
+           Width => Column_Position'Value(Mc_Max(Strings => "{Enter a new}", Interp => Interpreter)) +
+           Column_Position'Value(Mc_Max(Strings => Create_Type, Interp => Interpreter)) +
+           Column_Position'Value(Mc_Max(Strings => "{name:}", Interp => Interpreter)) + 2,
+           Top => 0, Left => 2, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
-        (Create_Fields.all(1), 0,
-         Mc(Interpreter, "{Enter a new}") & " " &
-         Mc(Interpreter, Create_Type) & Mc(Interpreter, "{ name:}"));
+        (Fld => Create_Fields.all(1), Buffer => 0,
+         Str => Mc(Interp => Interpreter, Src_String => "{Enter a new}") & " " &
+         Mc(Interp => Interpreter, Src_String => Create_Type) & Mc(Interp => Interpreter, Src_String => "{ name:}"));
       Field_Options := Get_Options(Create_Fields.all(1));
       Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(Create_Fields.all(1), Field_Options);
