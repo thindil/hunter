@@ -193,8 +193,6 @@ begin
          elsif Key > 1 then
             Alt_Key := True;
          end if;
-         --## rule on SIMPLIFIABLE_STATEMENTS
-         exit Main_Program_Loop when Key = 113;
       end if;
       -- Tab key pressed
       if Key in KEY_STAB | 9 then
