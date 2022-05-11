@@ -180,31 +180,43 @@ package body CreateItems.UI is
       Set_Options(Fld => Create_Fields.all(2), Options => Field_Options);
       Create_Fields.all(3) :=
         New_Field
-          (Height => 1, Width => Column_Position'Value(Mc_Max(Strings => "Cancel", Interp => Interpreter)) + 2, Top => 2, Left => 7,
-           Off_Screen => 0, More_Buffers => 0);
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "Cancel", Interp => Interpreter)) +
+             2,
+           Top => 2, Left => 7, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
-        (Fld => Create_Fields.all(3), Buffer => 0, Str => "[" & Mc(Interp => Interpreter, Src_String => "Cancel") & "]");
+        (Fld => Create_Fields.all(3), Buffer => 0,
+         Str => "[" & Mc(Interp => Interpreter, Src_String => "Cancel") & "]");
       Field_Options := Get_Options(Fld => Create_Fields.all(3));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Create_Fields.all(3), Options => Field_Options);
       Create_Fields.all(4) :=
         New_Field
-          (1, Column_Position'Value(Mc_Max("Create", Interpreter)) + 2, 2, 23,
-           0, 0);
-      Field_Options := Get_Options(Create_Fields.all(4));
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "Create", Interp => Interpreter)) +
+             2,
+           Top => 2, Left => 23, Off_Screen => 0, More_Buffers => 0);
+      Field_Options := Get_Options(Fld => Create_Fields.all(4));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
-      Set_Options(Create_Fields.all(4), Field_Options);
+      Set_Options(Fld => Create_Fields.all(4), Options => Field_Options);
       Set_Buffer
-        (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "Create") & "]");
+        (Fld => Create_Fields.all(4), Buffer => 0,
+         Str => "[" & Mc(Interp => Interpreter, Src_String => "Create") & "]");
       Create_Fields.all(5) := Null_Field;
-      Dialog_Form := New_Form(Create_Fields);
-      Set_Current(Dialog_Form, Create_Fields(2));
-      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
+      Dialog_Form := New_Form(Fields => Create_Fields);
+      Set_Current(Frm => Dialog_Form, Fld => Create_Fields(2));
+      Create_Dialog
+        (DialogForm => Dialog_Form, FormWindow => Form_Window,
+         Form_Height => Form_Height, Form_Length => Form_Length);
    end Show_Create_Form;
 
    function Create_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
+      Field_Index: constant Positive := Get_Index(Current(Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
@@ -213,11 +225,11 @@ package body CreateItems.UI is
          when KEY_DOWN =>
             Result := Go_Next_Field(Dialog_Form);
          when KEY_LEFT =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                Result := Driver(Dialog_Form, F_Previous_Char);
             end if;
          when KEY_RIGHT =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                Result := Driver(Dialog_Form, F_Next_Char);
             end if;
          when 127 =>
@@ -228,11 +240,11 @@ package body CreateItems.UI is
             Show_Preview;
             return DIRECTORY_VIEW;
          when 10 =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                Result := Go_Previous_Field(Dialog_Form);
                return Create_Keys(10);
             end if;
-            if FieldIndex = 4 then
+            if Field_Index = 4 then
                Tcl_Eval
                  (Interpreter,
                   "CreateItem " &
@@ -241,7 +253,7 @@ package body CreateItems.UI is
                   return MESSAGE_FORM;
                end if;
             end if;
-            if FieldIndex /= 2 then
+            if Field_Index /= 2 then
                Set_Cursor_Visibility(Visibility);
                Delete_Dialog(Dialog_Form, True);
                Show_Preview;
@@ -310,7 +322,7 @@ package body CreateItems.UI is
 
    function Create_Link_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
+      Field_Index: constant Positive := Get_Index(Current(Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
@@ -319,11 +331,11 @@ package body CreateItems.UI is
          when KEY_DOWN =>
             Result := Go_Next_Field(Dialog_Form);
          when KEY_LEFT =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                Result := Driver(Dialog_Form, F_Previous_Char);
             end if;
          when KEY_RIGHT =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                Result := Driver(Dialog_Form, F_Next_Char);
             end if;
          when 127 =>
@@ -336,11 +348,11 @@ package body CreateItems.UI is
             CreateProgramMenu(True);
             return DIRECTORY_VIEW;
          when 10 =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                Result := Go_Previous_Field(Dialog_Form);
                return Create_Link_Keys(10);
             end if;
-            if FieldIndex = 4 then
+            if Field_Index = 4 then
                Tcl_Eval
                  (Interpreter,
                   "CreateItem {" &
@@ -349,7 +361,7 @@ package body CreateItems.UI is
                   return MESSAGE_FORM;
                end if;
             end if;
-            if FieldIndex /= 2 then
+            if Field_Index /= 2 then
                New_Action := CREATEFILE;
                Set_Cursor_Visibility(Visibility);
                Delete_Dialog(Dialog_Form, True);
