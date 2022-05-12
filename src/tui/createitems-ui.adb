@@ -216,7 +216,7 @@ package body CreateItems.UI is
 
    function Create_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      Field_Index: constant Positive := Get_Index(Current(Dialog_Form));
+      Field_Index: constant Positive := Get_Index(Fld => Current(Frm => Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
