@@ -23,6 +23,9 @@ All notable changes to this project will be documented in this file.
 - Use left and right arrows to move between path buttons in console version
 - Moved all actions in Trash in console version to Actions menu
 
+### Removed
+- Quitting from the console version of the program with Alt-q keys
+
 ### Fixed
 - Don't auto hide questions or confirmation messages in graphical version
 - Refresh preview after showing various dialogs in console version
