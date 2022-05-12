@@ -134,6 +134,20 @@ package body CreateItems.UI is
    Dialog_Form: Forms.Form;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
+   -- ****if* CreateItemsTUI/CreateItemsTUI.Get_Dialog_Form
+   -- FUNCTION
+   -- Get the create a new item dialog
+   -- RESULT
+   -- The ncurses dialog form for create a new item
+   -- SOURCE
+   function Get_Dialog_Form return Forms.Form is
+      -- ****
+   begin
+      return Dialog_Form;
+   end Get_Dialog_Form;
+   --## rule on REDUCEABLE_SCOPE
+
    -- ****iv* CreateItemsTUI/CreateItemsTUI.Form_Window
    -- FUNCTION
    -- The window to show the form to create a new item
@@ -208,7 +222,7 @@ package body CreateItems.UI is
          Str => "[" & Mc(Interp => Interpreter, Src_String => "Create") & "]");
       Create_Fields.all(5) := Null_Field;
       Dialog_Form := New_Form(Fields => Create_Fields);
-      Set_Current(Frm => Dialog_Form, Fld => Create_Fields(2));
+      Set_Current(Frm => Get_Dialog_Form, Fld => Create_Fields(2));
       Create_Dialog
         (DialogForm => Dialog_Form, FormWindow => Form_Window,
          Form_Height => Form_Height, Form_Length => Form_Length);
