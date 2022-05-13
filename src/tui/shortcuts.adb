@@ -13,11 +13,13 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Preferences; use Preferences;
 
 package body Shortcuts is
 
-   function Shortcut_Keys(Key: Key_Code; AltKey: Boolean; Old_Location: UI_Locations) return UI_Locations is
+   function Shortcuts_Keys(Key: Key_Code; AltKey: Boolean; Old_Location: UI_Locations) return UI_Locations is
       Key_Value: constant String := Key_Name(Key);
       New_Key: Unbounded_String := Null_Unbounded_String;
       Index: Natural := 0;
@@ -36,15 +38,16 @@ package body Shortcuts is
       for I in Accelerators'Range loop
          if Accelerators(I) = New_Key then
             Index := I;
-            break;
+            exit;
          end if;
          case Index is
             when 1 =>
+               return QUIT_PROGRAM;
             when others =>
                null;
          end case;
       end loop;
       return Old_Location;
-   end Rename_Keys;
+   end Shortcuts_Keys;
 
 end Shortcuts;
