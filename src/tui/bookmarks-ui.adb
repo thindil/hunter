@@ -173,11 +173,9 @@ package body Bookmarks.UI is
             Form_Length: Column_Position;
          begin
             Set_Current(Frm => New_Dialog_Form, Fld => Create_Fields(2));
-            --## rule off DIRECTLY_ACCESSED_GLOBALS
             Create_Dialog
               (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
                Form_Height => Form_Height, Form_Length => Form_Length);
-            --## rule on DIRECTLY_ACCESSED_GLOBALS
             Set_Dialog_Form(New_Form => New_Dialog_Form);
          end Create_Go_To_Dialog_Block;
       end Show_Bookmarks_Form;
