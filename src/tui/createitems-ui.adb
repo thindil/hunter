@@ -148,6 +148,18 @@ package body CreateItems.UI is
    end Get_Dialog_Form;
    --## rule on REDUCEABLE_SCOPE
 
+   -- ****if* CreateItemsTUI/CreateItemsTUI.Set_Dialog_Form
+   -- FUNCTION
+   -- Set the new value for the dialog form for create a new item
+   -- PARAMETERS
+   -- New_Form - The new value for the Dialog_Form
+   -- SOURCE
+   procedure Set_Dialog_Form(New_Form: Forms.Form) is
+      -- ****
+   begin
+      Dialog_Form := New_Form;
+   end Set_Dialog_Form;
+
    -- ****iv* CreateItemsTUI/CreateItemsTUI.Form_Window
    -- FUNCTION
    -- The window to show the form to create a new item
@@ -157,8 +169,6 @@ package body CreateItems.UI is
 
    procedure Show_Create_Form(Create_Type: String) is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
-      Form_Height: Line_Position;
-      Form_Length: Column_Position;
       Visibility: Cursor_Visibility := Normal;
       Field_Options: Field_Option_Set;
    begin
@@ -222,10 +232,18 @@ package body CreateItems.UI is
          Str => "[" & Mc(Interp => Interpreter, Src_String => "Create") & "]");
       Create_Fields.all(5) := Null_Field;
       Dialog_Form := New_Form(Fields => Create_Fields);
-      Set_Current(Frm => Get_Dialog_Form, Fld => Create_Fields(2));
-      Create_Dialog
-        (DialogForm => Dialog_Form, FormWindow => Form_Window,
-         Form_Height => Form_Height, Form_Length => Form_Length);
+      Create_Create_New_Dialog_Block :
+      declare
+         New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
+         Form_Height: Line_Position;
+         Form_Length: Column_Position;
+      begin
+         Set_Current(Frm => New_Dialog_Form, Fld => Create_Fields(2));
+         Create_Dialog
+           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+            Form_Height => Form_Height, Form_Length => Form_Length);
+         Set_Dialog_Form(New_Form => New_Dialog_Form);
+      end Create_Create_New_Dialog_Block;
    end Show_Create_Form;
 
    function Create_Keys(Key: Key_Code) return UI_Locations is
