@@ -46,6 +46,7 @@ with ProgramsMenu; use ProgramsMenu;
 with ProgramsMenu.UI; use ProgramsMenu.UI;
 with RenameItems.UI; use RenameItems.UI;
 with SearchItems; use SearchItems;
+with Shortcuts; use Shortcuts;
 with ShowItems; use ShowItems;
 
 procedure Hunter is
@@ -245,6 +246,7 @@ begin
          end case;
       -- Another key pressed, depends on current UI location
       else
+         UILocation := Shortcuts_Keys(Key => Key, AltKey => Alt_Key, Old_Location => UILocation);
          case UILocation is
             when DIRECTORY_VIEW =>
                UILocation := Directory_Keys(Key => Key);

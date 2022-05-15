@@ -40,13 +40,13 @@ package body Shortcuts is
             Index := I;
             exit;
          end if;
-         case Index is
-            when 1 =>
-               return QUIT_PROGRAM;
-            when others =>
-               null;
-         end case;
       end loop;
+      case Index is
+         when 1 =>
+            return QUIT_PROGRAM;
+         when others =>
+            null;
+      end case;
       return Old_Location;
    end Shortcuts_Keys;
 
