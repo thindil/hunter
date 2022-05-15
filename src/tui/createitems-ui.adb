@@ -231,7 +231,6 @@ package body CreateItems.UI is
         (Fld => Create_Fields.all(4), Buffer => 0,
          Str => "[" & Mc(Interp => Interpreter, Src_String => "Create") & "]");
       Create_Fields.all(5) := Null_Field;
-      Dialog_Form := New_Form(Fields => Create_Fields);
       Create_Create_New_Dialog_Block :
       declare
          New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
@@ -248,54 +247,56 @@ package body CreateItems.UI is
 
    function Create_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
+      Dialog_Frm: Forms.Form := Get_Dialog_Form;
       Field_Index: constant Positive :=
-        Get_Index(Fld => Current(Frm => Get_Dialog_Form));
+        Get_Index(Fld => Current(Frm => Dialog_Frm));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(DialogForm => Get_Dialog_Form);
+            Result := Go_Previous_Field(DialogForm => Dialog_Frm);
          when KEY_DOWN =>
-            Result := Go_Next_Field(DialogForm => Get_Dialog_Form);
+            Result := Go_Next_Field(DialogForm => Dialog_Frm);
          when KEY_LEFT =>
             if Field_Index = 2 then
-               Result :=
-                 Driver(Frm => Get_Dialog_Form, Key => F_Previous_Char);
+               Result := Driver(Frm => Dialog_Frm, Key => F_Previous_Char);
             end if;
          when KEY_RIGHT =>
             if Field_Index = 2 then
-               Result := Driver(Frm => Get_Dialog_Form, Key => F_Next_Char);
+               Result := Driver(Frm => Dialog_Frm, Key => F_Next_Char);
             end if;
          when 127 =>
-            Result := Driver(Frm => Get_Dialog_Form, Key => F_Delete_Previous);
+            Result := Driver(Frm => Dialog_Frm, Key => F_Delete_Previous);
          when 27 =>
             Set_Cursor_Visibility(Visibility => Visibility);
-            Delete_Dialog(Dialog_Form, True);
+            Delete_Dialog(Dialog_Frm, True);
+            Set_Dialog_Form(New_Form => Dialog_Frm);
             Show_Preview;
             return DIRECTORY_VIEW;
          when 10 =>
             if Field_Index = 2 then
-               Result := Go_Previous_Field(Get_Dialog_Form);
+               Result := Go_Previous_Field(Dialog_Frm);
                return Create_Keys(10);
             end if;
             if Field_Index = 4 then
                Tcl_Eval
                  (Interpreter,
                   "CreateItem " &
-                  Trim(Get_Buffer(Fields(Get_Dialog_Form, 2)), Both));
+                  Trim(Get_Buffer(Fields(Dialog_Frm, 2)), Both));
                if Tcl_GetResult(Interpreter) = "0" then
                   return MESSAGE_FORM;
                end if;
             end if;
             if Field_Index /= 2 then
                Set_Cursor_Visibility(Visibility);
-               Delete_Dialog(Dialog_Form, True);
+               Delete_Dialog(Dialog_Frm, True);
+               Set_Dialog_Form(New_Form => Dialog_Frm);
                Show_Preview;
                return DIRECTORY_VIEW;
             end if;
          when others =>
             if Key /= 91 then
-               Result := Driver(Get_Dialog_Form, Key);
+               Result := Driver(Dialog_Frm, Key);
             end if;
       end case;
       if Result = Form_Ok then
