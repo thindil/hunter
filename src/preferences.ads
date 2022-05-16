@@ -122,7 +122,7 @@ package Preferences is
    -- Default the program keyboard shortcuts
    -- SOURCE
    Default_Accelerators: constant Accelerators_Array :=
-     (1 => To_Unbounded_String(Source => "Control-q"),
+     (1 => To_Unbounded_String(Source => "Alt-q"),
       2 => To_Unbounded_String(Source => "Alt-h"),
       3 => To_Unbounded_String(Source => "Alt-f"),
       4 => To_Unbounded_String(Source => "Alt-n"),
