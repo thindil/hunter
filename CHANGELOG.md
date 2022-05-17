@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
   directory, not source
 - Use left and right arrows to move between path buttons in console version
 - Moved all actions in Trash in console version to Actions menu
+- The default keyboard shortcut for quitting from program to Alt-q
 
 ### Removed
 - Quitting from the console version of the program with Alt-q keys
