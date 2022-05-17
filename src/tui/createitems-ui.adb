@@ -281,8 +281,13 @@ package body CreateItems.UI is
             if Field_Index = 4 then
                Tcl_Eval
                  (interp => Interpreter,
-                  strng => "CreateItem " &
-                  Trim(Source => Get_Buffer(Fld => Fields(Frm => Dialog_Frm, Index => 2)), Side => Both));
+                  strng =>
+                    "CreateItem " &
+                    Trim
+                      (Source =>
+                         Get_Buffer
+                           (Fld => Fields(Frm => Dialog_Frm, Index => 2)),
+                       Side => Both));
                if Tcl_GetResult(interp => Interpreter) = "0" then
                   return MESSAGE_FORM;
                end if;
@@ -317,24 +322,37 @@ package body CreateItems.UI is
       Create_Fields.all(1) :=
         New_Field
           (Height => 1,
-           Width => Column_Position'Value
-             (Mc_Max(Strings => "{Enter a name for the new link:}", Interp => Interpreter)),
+           Width =>
+             Column_Position'Value
+               (Mc_Max
+                  (Strings => "{Enter a name for the new link:}",
+                   Interp => Interpreter)),
            Top => 0, Left => 8, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
         (Fld => Create_Fields.all(1), Buffer => 0,
-         Str => Mc(Interp => Interpreter, Src_String => "{Enter a name for the new link:}"));
+         Str =>
+           Mc
+             (Interp => Interpreter,
+              Src_String => "{Enter a name for the new link:}"));
       Field_Options := Get_Options(Fld => Create_Fields.all(1));
       Field_Options.Active := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Create_Fields.all(1), Options => Field_Options);
-      Create_Fields.all(2) := New_Field(1, 40, 1, 0, 0, 0);
-      Set_Buffer(Create_Fields.all(2), 0, "");
-      Field_Options := Get_Options(Create_Fields.all(2));
+      Create_Fields.all(2) :=
+        New_Field
+          (Height => 1, Width => 40, Top => 1, Left => 0, Off_Screen => 0,
+           More_Buffers => 0);
+      Set_Buffer(Fld => Create_Fields.all(2), Buffer => 0, Str => "");
+      Field_Options := Get_Options(Fld => Create_Fields.all(2));
       Field_Options.Auto_Skip := False; --## rule line off ASSIGNMENTS
-      Set_Options(Create_Fields.all(2), Field_Options);
+      Set_Options(Fld => Create_Fields.all(2), Options => Field_Options);
       Create_Fields.all(3) :=
         New_Field
-          (1, Column_Position'Value(Mc_Max("Cancel", Interpreter)) + 2, 2, 7,
-           0, 0);
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "Cancel", Interp => Interpreter)) +
+             2,
+           Top => 2, Left => 7, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
         (Create_Fields.all(3), 0, "[" & Mc(Interpreter, "Cancel") & "]");
       Field_Options := Get_Options(Create_Fields.all(3));
