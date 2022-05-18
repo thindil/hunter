@@ -19,7 +19,9 @@ with Preferences; use Preferences;
 
 package body Shortcuts is
 
-   function Shortcuts_Keys(Key: Key_Code; AltKey: Boolean; Old_Location: UI_Locations) return UI_Locations is
+   function Shortcuts_Keys
+     (Key: Key_Code; AltKey: Boolean; Old_Location: UI_Locations)
+      return UI_Locations is
       Key_Value: constant String := Key_Name(Key);
       New_Key: Unbounded_String := Null_Unbounded_String;
       Index: Natural := 0;
@@ -44,6 +46,9 @@ package body Shortcuts is
       case Index is
          when 1 =>
             return QUIT_PROGRAM;
+         when 2 =>
+            Draw_Menu(BOOKMARKS_MENU);
+            return BOOKMARKS_MENU;
          when others =>
             null;
       end case;

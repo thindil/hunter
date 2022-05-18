@@ -139,6 +139,15 @@ package MainWindow is
    function Path_Keys(Key: Key_Code) return UI_Locations;
    -- ****
 
+   -- ****f* MainWindowTUI/MainWindowTUI.Draw_Menu
+   -- FUNCTION
+   -- Show the selected menu to the user
+   -- PARAMETERS
+   -- Menu_Type - The type of the menu to show
+   -- SOURCE
+   procedure Draw_Menu(Menu_Type: UI_Locations);
+   -- ****
+
    -- ****f* MainWindowTUI/MainWindowTUI.Menu_Keys
    -- FUNCTION
    -- Handles keys events when the main menu is active element of UI
