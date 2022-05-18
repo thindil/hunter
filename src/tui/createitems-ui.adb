@@ -354,19 +354,25 @@ package body CreateItems.UI is
              2,
            Top => 2, Left => 7, Off_Screen => 0, More_Buffers => 0);
       Set_Buffer
-        (Fld => Create_Fields.all(3), Buffer => 0, Str => "[" & Mc(Interp => Interpreter, Src_String => "Cancel") & "]");
+        (Fld => Create_Fields.all(3), Buffer => 0,
+         Str => "[" & Mc(Interp => Interpreter, Src_String => "Cancel") & "]");
       Field_Options := Get_Options(Fld => Create_Fields.all(3));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Create_Fields.all(3), Options => Field_Options);
       Create_Fields.all(4) :=
         New_Field
-          (Height => 1, Width => Column_Position'Value(Mc_Max(Strings => "Create", Interp => Interpreter)) + 2, Top => 2, Left => 23,
-           Off_Screen => 0, More_Buffers => 0);
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "Create", Interp => Interpreter)) +
+             2,
+           Top => 2, Left => 23, Off_Screen => 0, More_Buffers => 0);
       Field_Options := Get_Options(Fld => Create_Fields.all(4));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Create_Fields.all(4), Options => Field_Options);
       Set_Buffer
-        (Create_Fields.all(4), 0, "[" & Mc(Interpreter, "Create") & "]");
+        (Fld => Create_Fields.all(4), Buffer => 0,
+         Str => "[" & Mc(Interp => Interpreter, Src_String => "Create") & "]");
       Create_Fields.all(5) := Null_Field;
       Dialog_Form := New_Form(Create_Fields);
       Set_Current(Dialog_Form, Create_Fields(2));
