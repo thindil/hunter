@@ -388,41 +388,43 @@ package body CreateItems.UI is
 
    function Create_Link_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      Field_Index: constant Positive := Get_Index(Current(Dialog_Form));
+      Dialog_Frm: Forms.Form := Get_Dialog_Form;
+      Field_Index: constant Positive := Get_Index(Current(Dialog_Frm));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(Dialog_Form);
+            Result := Go_Previous_Field(Dialog_Frm);
          when KEY_DOWN =>
-            Result := Go_Next_Field(Dialog_Form);
+            Result := Go_Next_Field(Dialog_Frm);
          when KEY_LEFT =>
             if Field_Index = 2 then
-               Result := Driver(Dialog_Form, F_Previous_Char);
+               Result := Driver(Dialog_Frm, F_Previous_Char);
             end if;
          when KEY_RIGHT =>
             if Field_Index = 2 then
-               Result := Driver(Dialog_Form, F_Next_Char);
+               Result := Driver(Dialog_Frm, F_Next_Char);
             end if;
          when 127 =>
-            Result := Driver(Dialog_Form, F_Delete_Previous);
+            Result := Driver(Dialog_Frm, F_Delete_Previous);
          when 27 =>
             New_Action := CREATEFILE;
             Set_Cursor_Visibility(Visibility);
-            Delete_Dialog(Dialog_Form, True);
+            Delete_Dialog(Dialog_Frm, True);
+            Set_Dialog_Form(New_Form => Dialog_Frm);
             Show_Preview;
             CreateProgramMenu(True);
             return DIRECTORY_VIEW;
          when 10 =>
             if Field_Index = 2 then
-               Result := Go_Previous_Field(Dialog_Form);
+               Result := Go_Previous_Field(Dialog_Frm);
                return Create_Link_Keys(10);
             end if;
             if Field_Index = 4 then
                Tcl_Eval
                  (Interpreter,
                   "CreateItem {" &
-                  Trim(Get_Buffer(Fields(Dialog_Form, 2)), Both) & "}");
+                  Trim(Get_Buffer(Fields(Dialog_Frm, 2)), Both) & "}");
                if Tcl_GetResult(Interpreter) = "0" then
                   return MESSAGE_FORM;
                end if;
@@ -430,14 +432,15 @@ package body CreateItems.UI is
             if Field_Index /= 2 then
                New_Action := CREATEFILE;
                Set_Cursor_Visibility(Visibility);
-               Delete_Dialog(Dialog_Form, True);
+               Delete_Dialog(Dialog_Frm, True);
+               Set_Dialog_Form(New_Form => Dialog_Frm);
                Show_Preview;
                CreateProgramMenu(True);
                return DIRECTORY_VIEW;
             end if;
          when others =>
             if Key /= 91 then
-               Result := Driver(Dialog_Form, Key);
+               Result := Driver(Dialog_Frm, Key);
             end if;
       end case;
       if Result = Form_Ok then
