@@ -16,6 +16,7 @@
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Preferences; use Preferences;
+with SearchItems; use SearchItems;
 
 package body Shortcuts is
 
@@ -49,6 +50,9 @@ package body Shortcuts is
          when 2 =>
             Draw_Menu(BOOKMARKS_MENU);
             return BOOKMARKS_MENU;
+         when 3 =>
+            ShowSearchForm;
+            return SEARCH_FORM;
          when others =>
             null;
       end case;

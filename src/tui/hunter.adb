@@ -246,70 +246,82 @@ begin
          end case;
       -- Another key pressed, depends on current UI location
       else
-         UILocation := Shortcuts_Keys(Key => Key, AltKey => Alt_Key, Old_Location => UILocation);
-         case UILocation is
-            when DIRECTORY_VIEW =>
-               UILocation := Directory_Keys(Key => Key);
-            when PATH_BUTTONS =>
-               UILocation := Path_Keys(Key => Key);
-            when MAIN_MENU =>
-               UILocation := Menu_Keys(Key => Key);
-               exit Main_Program_Loop when UILocation = PATH_BUTTONS;
-            when ACTIONS_MENU =>
-               UILocation := Actions_Keys(Key => Key);
-            when CREATE_FORM =>
-               UILocation := Create_Keys(Key => Key);
-            when DELETE_FORM =>
-               UILocation := Delete_Keys(Key => Key);
-            when MESSAGE_FORM =>
-               UILocation := Message_Keys(Key => Key);
-            when RENAME_FORM =>
-               UILocation := Rename_Keys(Key => Key);
-            when DESTINATION_VIEW =>
-               Destination_Keys(Key => Key);
-            when DESTINATION_PATH =>
-               UILocation := Destination_Path_Keys(Key => Key);
-            when BOOKMARKS_MENU =>
-               UILocation := Bookmarks_Keys(Key => Key);
-            when BOOKMARKS_FORM =>
-               UILocation := Bookmarks_Form_Keys(Key => Key);
-            when CREATELINK_FORM =>
-               UILocation := Create_Link_Keys(Key => Key);
-            when SELECTED_MENU =>
-               UILocation := Selected_Keys(Key => Key);
-            when PREVIEW =>
-               Preview_Keys(Key => Key);
-            when PROGRAMS_MENU =>
-               UILocation := Programs_Keys(Key => Key);
-            when VIEW_MENU =>
-               UILocation := View_Keys(Key => Key);
-            when SEARCH_FORM =>
-               UILocation := Search_Form_Keys(Key => Key);
-            when EXECUTE_FORM =>
-               UILocation := Execute_Form_Keys(Key => Key);
-            when ABOUT_MENU =>
-               UILocation := About_Keys(Key => Key);
-            when ABOUT_FORM =>
-               UILocation := About_View_Keys(Key => Key);
-            when DEVELOPERS_VIEW =>
-               UILocation := Developers_Keys(Key => Key);
-            when OPTIONS_VIEW =>
-               UILocation := Select_Preferences_Keys(Key => Key);
-            when SECONDS_MENU =>
-               UILocation := Select_Seconds_Keys(Key => Key);
-            when COLORS_MENU =>
-               UILocation := Select_Colors_Keys(Key => Key);
-            when SHORTCUT_FORM =>
-               UILocation := Set_Shortcut_Keys(Key => Key, AltKey => Alt_Key);
-            when COMMAND_FORM =>
-               UILocation := Add_Command_Keys(Key => Key);
-            when COMMANDS_MENU =>
-               UILocation := User_Commands_Keys(Key => Key);
-            when T_ACTIONS_MENU =>
-               UILocation := Trash_Actions_Keys(Key => Key);
-            when QUIT_PROGRAM =>
+         Handle_Keys_Block :
+         declare
+            Old_Ui_Location: constant UI_Locations := UILocation;
+         begin
+            UILocation :=
+              Shortcuts_Keys
+                (Key => Key, AltKey => Alt_Key, Old_Location => UILocation);
+            if UILocation = Old_Ui_Location then
+               case UILocation is
+                  when DIRECTORY_VIEW =>
+                     UILocation := Directory_Keys(Key => Key);
+                  when PATH_BUTTONS =>
+                     UILocation := Path_Keys(Key => Key);
+                  when MAIN_MENU =>
+                     UILocation := Menu_Keys(Key => Key);
+                     exit Main_Program_Loop when UILocation = PATH_BUTTONS;
+                  when ACTIONS_MENU =>
+                     UILocation := Actions_Keys(Key => Key);
+                  when CREATE_FORM =>
+                     UILocation := Create_Keys(Key => Key);
+                  when DELETE_FORM =>
+                     UILocation := Delete_Keys(Key => Key);
+                  when MESSAGE_FORM =>
+                     UILocation := Message_Keys(Key => Key);
+                  when RENAME_FORM =>
+                     UILocation := Rename_Keys(Key => Key);
+                  when DESTINATION_VIEW =>
+                     Destination_Keys(Key => Key);
+                  when DESTINATION_PATH =>
+                     UILocation := Destination_Path_Keys(Key => Key);
+                  when BOOKMARKS_MENU =>
+                     UILocation := Bookmarks_Keys(Key => Key);
+                  when BOOKMARKS_FORM =>
+                     UILocation := Bookmarks_Form_Keys(Key => Key);
+                  when CREATELINK_FORM =>
+                     UILocation := Create_Link_Keys(Key => Key);
+                  when SELECTED_MENU =>
+                     UILocation := Selected_Keys(Key => Key);
+                  when PREVIEW =>
+                     Preview_Keys(Key => Key);
+                  when PROGRAMS_MENU =>
+                     UILocation := Programs_Keys(Key => Key);
+                  when VIEW_MENU =>
+                     UILocation := View_Keys(Key => Key);
+                  when SEARCH_FORM =>
+                     UILocation := Search_Form_Keys(Key => Key);
+                  when EXECUTE_FORM =>
+                     UILocation := Execute_Form_Keys(Key => Key);
+                  when ABOUT_MENU =>
+                     UILocation := About_Keys(Key => Key);
+                  when ABOUT_FORM =>
+                     UILocation := About_View_Keys(Key => Key);
+                  when DEVELOPERS_VIEW =>
+                     UILocation := Developers_Keys(Key => Key);
+                  when OPTIONS_VIEW =>
+                     UILocation := Select_Preferences_Keys(Key => Key);
+                  when SECONDS_MENU =>
+                     UILocation := Select_Seconds_Keys(Key => Key);
+                  when COLORS_MENU =>
+                     UILocation := Select_Colors_Keys(Key => Key);
+                  when SHORTCUT_FORM =>
+                     UILocation :=
+                       Set_Shortcut_Keys(Key => Key, AltKey => Alt_Key);
+                  when COMMAND_FORM =>
+                     UILocation := Add_Command_Keys(Key => Key);
+                  when COMMANDS_MENU =>
+                     UILocation := User_Commands_Keys(Key => Key);
+                  when T_ACTIONS_MENU =>
+                     UILocation := Trash_Actions_Keys(Key => Key);
+                  when QUIT_PROGRAM =>
+                     exit Main_Program_Loop;
+               end case;
+            elsif UILocation = QUIT_PROGRAM then
                exit Main_Program_Loop;
-         end case;
+            end if;
+         end Handle_Keys_Block;
       end if;
    end loop Main_Program_Loop;
 
@@ -317,21 +329,32 @@ begin
    Tcl.Ada.Tcl_Eval(interp => Interpreter, strng => "exit");
 exception
    when An_Exception : others =>
-      Create_Path(New_Directory => Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter");
+      Create_Path
+        (New_Directory =>
+           Ada.Environment_Variables.Value(Name => "HOME") & "/.cache/hunter");
       if Exists(Name => Error_File_Path) then
-         Open(File => Error_File, Mode => Append_File, Name => Error_File_Path);
+         Open
+           (File => Error_File, Mode => Append_File, Name => Error_File_Path);
       else
-         Create(File => Error_File, Mode => Append_File, Name => Error_File_Path);
+         Create
+           (File => Error_File, Mode => Append_File, Name => Error_File_Path);
       end if;
       Put_Line(File => Error_File, Item => Current_Time);
       Put_Line(File => Error_File, Item => Version_Number);
-      Put_Line(File => Error_File, Item => "Exception: " & Exception_Name(X => An_Exception));
-      Put_Line(File => Error_File, Item => "Message: " & Exception_Message(X => An_Exception));
       Put_Line
-        (File => Error_File, Item => "-------------------------------------------------");
-      Put_Line(File => Error_File, Item => Symbolic_Traceback(E => An_Exception));
+        (File => Error_File,
+         Item => "Exception: " & Exception_Name(X => An_Exception));
       Put_Line
-        (File => Error_File, Item => "-------------------------------------------------");
+        (File => Error_File,
+         Item => "Message: " & Exception_Message(X => An_Exception));
+      Put_Line
+        (File => Error_File,
+         Item => "-------------------------------------------------");
+      Put_Line
+        (File => Error_File, Item => Symbolic_Traceback(E => An_Exception));
+      Put_Line
+        (File => Error_File,
+         Item => "-------------------------------------------------");
       Close(File => Error_File);
       Erase;
       Refresh;
