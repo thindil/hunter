@@ -312,8 +312,6 @@ package body CreateItems.UI is
 
    procedure Show_Create_Link_Form is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
-      Form_Height: Line_Position;
-      Form_Length: Column_Position;
       Visibility: Cursor_Visibility := Normal;
       Field_Options: Field_Option_Set;
       Unused_Result: Forms.Driver_Result := Unknown_Request;
@@ -374,9 +372,18 @@ package body CreateItems.UI is
         (Fld => Create_Fields.all(4), Buffer => 0,
          Str => "[" & Mc(Interp => Interpreter, Src_String => "Create") & "]");
       Create_Fields.all(5) := Null_Field;
-      Dialog_Form := New_Form(Create_Fields);
-      Set_Current(Dialog_Form, Create_Fields(2));
-      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
+      Create_Create_New_Dialog_Block :
+      declare
+         New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
+         Form_Height: Line_Position;
+         Form_Length: Column_Position;
+      begin
+         Set_Current(Frm => New_Dialog_Form, Fld => Create_Fields(2));
+         Create_Dialog
+           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+            Form_Height => Form_Height, Form_Length => Form_Length);
+         Set_Dialog_Form(New_Form => New_Dialog_Form);
+      end Create_Create_New_Dialog_Block;
    end Show_Create_Link_Form;
 
    function Create_Link_Keys(Key: Key_Code) return UI_Locations is
