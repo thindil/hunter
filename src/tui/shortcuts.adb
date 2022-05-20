@@ -15,6 +15,8 @@
 
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Common; use Common;
+with DeleteItems.UI; use DeleteItems.UI;
 with Preferences; use Preferences;
 with SearchItems; use SearchItems;
 
@@ -53,6 +55,10 @@ package body Shortcuts is
          when 3 =>
             ShowSearchForm;
             return SEARCH_FORM;
+         when 5 =>
+            New_Action := DELETE;
+            ShowDeleteForm;
+            return DELETE_FORM;
          when others =>
             null;
       end case;
