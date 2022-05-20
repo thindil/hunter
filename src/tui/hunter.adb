@@ -28,25 +28,25 @@ with Tcl; use Tcl;
 with Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with AboutDialog; use AboutDialog;
-with AboutDialog.UI; use AboutDialog.UI;
-with ActivateItems.UI; use ActivateItems.UI;
-with Bookmarks.UI; use Bookmarks.UI;
+with AboutDialog.UI;
+with ActivateItems.UI;
+with Bookmarks.UI;
 with Common; use Common;
-with CreateItems.UI; use CreateItems.UI;
+with CreateItems.UI;
 with DeleteItems;
-with DeleteItems.UI; use DeleteItems.UI;
+with DeleteItems.UI;
 with Inotify; use Inotify;
 with LibMagic; use LibMagic;
 with MainWindow; use MainWindow;
-with Messages.UI; use Messages.UI;
+with Messages.UI;
 with Modules;
 with Preferences; use Preferences;
-with Preferences.UI; use Preferences.UI;
+with Preferences.UI;
 with ProgramsMenu; use ProgramsMenu;
-with ProgramsMenu.UI; use ProgramsMenu.UI;
-with RenameItems.UI; use RenameItems.UI;
-with SearchItems; use SearchItems;
-with Shortcuts; use Shortcuts;
+with ProgramsMenu.UI;
+with RenameItems.UI;
+with SearchItems;
+with Shortcuts;
 with ShowItems; use ShowItems;
 
 procedure Hunter is
@@ -248,6 +248,18 @@ begin
       else
          Handle_Keys_Block :
          declare
+            use AboutDialog.UI;
+            use ActivateItems.UI;
+            use Bookmarks.UI;
+            use CreateItems.UI;
+            use DeleteItems.UI;
+            use Messages.UI;
+            use Preferences.UI;
+            use ProgramsMenu.UI;
+            use RenameItems.UI;
+            use SearchItems;
+            use Shortcuts;
+
             Old_Ui_Location: constant UI_Locations := UILocation;
          begin
             UILocation :=
