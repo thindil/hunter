@@ -167,6 +167,18 @@ package body CreateItems.UI is
    Form_Window: Window;
    -- ****
 
+   -- ****if* CreateItemsTUI/CreateItemsTUI.Get_Form_Window
+   -- FUNCTION
+   -- Get the create a new item window
+   -- RESULT
+   -- The ncurses window for the form to create a new item
+   -- SOURCE
+   function Get_Form_Window return Window is
+      -- ****
+   begin
+      return Form_Window;
+   end Get_Form_Window;
+
    procedure Show_Create_Form(Create_Type: String) is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
       Visibility: Cursor_Visibility := Normal;
@@ -305,7 +317,7 @@ package body CreateItems.UI is
             end if;
       end case;
       if Result = Form_Ok then
-         Refresh(Win => Form_Window);
+         Refresh(Win => Get_Form_Window);
       end if;
       return CREATE_FORM;
    end Create_Keys;
@@ -444,7 +456,7 @@ package body CreateItems.UI is
             end if;
       end case;
       if Result = Form_Ok then
-         Refresh(Form_Window);
+         Refresh(Win => Get_Form_Window);
       end if;
       return CREATELINK_FORM;
    end Create_Link_Keys;
