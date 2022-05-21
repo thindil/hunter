@@ -126,7 +126,7 @@ package Preferences is
       2 => To_Unbounded_String(Source => "Alt-h"),
       3 => To_Unbounded_String(Source => "Alt-f"),
       4 => To_Unbounded_String(Source => "Alt-n"),
-      5 => To_Unbounded_String(Source => "Control-Delete"),
+      5 => To_Unbounded_String(Source => "Alt-r"),
       6 => To_Unbounded_String(Source => "Alt-a"),
       7 => To_Unbounded_String(Source => "Alt-o"),
       8 => To_Unbounded_String(Source => "Control-a"),
