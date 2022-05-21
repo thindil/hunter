@@ -179,6 +179,18 @@ package body CreateItems.UI is
       return Form_Window;
    end Get_Form_Window;
 
+   -- ****if* CreateItemsTUI/CreateItemsTUI.Set_Form_Window
+   -- FUNCTION
+   -- Set the new window for creating a new item
+   -- PARAMETERS
+   -- New_Window - The new window for the Form_Window
+   -- SOURCE
+   procedure Set_Form_Window(New_Window: Window) is
+      -- ****
+   begin
+      Form_Window := New_Window;
+   end Set_Form_Window;
+
    procedure Show_Create_Form(Create_Type: String) is
       Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
       Visibility: Cursor_Visibility := Normal;
@@ -248,12 +260,16 @@ package body CreateItems.UI is
          New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
          Form_Height: Line_Position;
          Form_Length: Column_Position;
+         --## rule off IMPROPER_INITIALIZATION
+         Local_Form_Window: Window := Get_Form_Window;
+         --## rule on IMPROPER_INITIALIZATION
       begin
          Set_Current(Frm => New_Dialog_Form, Fld => Create_Fields(2));
          Create_Dialog
-           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+           (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window,
             Form_Height => Form_Height, Form_Length => Form_Length);
          Set_Dialog_Form(New_Form => New_Dialog_Form);
+         Set_Form_Window(New_Window => Local_Form_Window);
       end Create_Create_New_Dialog_Block;
    end Show_Create_Form;
 
@@ -389,12 +405,16 @@ package body CreateItems.UI is
          New_Dialog_Form: Forms.Form := New_Form(Fields => Create_Fields);
          Form_Height: Line_Position;
          Form_Length: Column_Position;
+         --## rule off IMPROPER_INITIALIZATION
+         Local_Form_Window: Window := Get_Form_Window;
+         --## rule on IMPROPER_INITIALIZATION
       begin
          Set_Current(Frm => New_Dialog_Form, Fld => Create_Fields(2));
          Create_Dialog
-           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+           (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window,
             Form_Height => Form_Height, Form_Length => Form_Length);
          Set_Dialog_Form(New_Form => New_Dialog_Form);
+         Set_Form_Window(New_Window => Local_Form_Window);
       end Create_Create_New_Dialog_Block;
    end Show_Create_Link_Form;
 
