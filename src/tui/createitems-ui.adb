@@ -421,7 +421,8 @@ package body CreateItems.UI is
    function Create_Link_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
-      Field_Index: constant Positive := Get_Index(Fld => Current(Frm => Dialog_Frm));
+      Field_Index: constant Positive :=
+        Get_Index(Fld => Current(Frm => Dialog_Frm));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
@@ -454,25 +455,31 @@ package body CreateItems.UI is
             end if;
             if Field_Index = 4 then
                Tcl_Eval
-                 (Interpreter,
-                  "CreateItem {" &
-                  Trim(Get_Buffer(Fields(Dialog_Frm, 2)), Both) & "}");
-               if Tcl_GetResult(Interpreter) = "0" then
+                 (interp => Interpreter,
+                  strng =>
+                    "CreateItem {" &
+                    Trim
+                      (Source =>
+                         Get_Buffer
+                           (Fld => Fields(Frm => Dialog_Frm, Index => 2)),
+                       Side => Both) &
+                    "}");
+               if Tcl_GetResult(interp => Interpreter) = "0" then
                   return MESSAGE_FORM;
                end if;
             end if;
             if Field_Index /= 2 then
                New_Action := CREATEFILE;
-               Set_Cursor_Visibility(Visibility);
-               Delete_Dialog(Dialog_Frm, True);
+               Set_Cursor_Visibility(Visibility => Visibility);
+               Delete_Dialog(DialogForm => Dialog_Frm, Clear => True);
                Set_Dialog_Form(New_Form => Dialog_Frm);
                Show_Preview;
-               CreateProgramMenu(True);
+               CreateProgramMenu(Update => True);
                return DIRECTORY_VIEW;
             end if;
          when others =>
             if Key /= 91 then
-               Result := Driver(Dialog_Frm, Key);
+               Result := Driver(Frm => Dialog_Frm, Key => Key);
             end if;
       end case;
       if Result = Form_Ok then
