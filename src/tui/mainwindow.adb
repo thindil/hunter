@@ -738,7 +738,7 @@ package body MainWindow is
                when 5 =>
                   if New_Action = SHOWTRASH then
                      New_Action := DELETETRASH;
-                     ShowDeleteForm;
+                     Show_Delete_Form;
                      return DELETE_FORM;
                   end if;
                   Draw_Menu(SELECTED_MENU);
@@ -833,7 +833,7 @@ package body MainWindow is
                   return DESTINATION_VIEW;
                when 7 =>
                   New_Action := DELETE;
-                  ShowDeleteForm;
+                  Show_Delete_Form;
                   return DELETE_FORM;
                when 8 =>
                   Tcl_Eval(Interpreter, "ClearTrash");
@@ -1163,7 +1163,7 @@ package body MainWindow is
                   return DIRECTORY_VIEW;
                when 2 =>
                   New_Action := DELETETRASH;
-                  ShowDeleteForm;
+                  Show_Delete_Form;
                   return DELETE_FORM;
                when 3 =>
                   New_Action := CLEARTRASH;

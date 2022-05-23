@@ -57,7 +57,7 @@ package body Shortcuts is
             return SEARCH_FORM;
          when 5 =>
             New_Action := DELETE;
-            ShowDeleteForm;
+            Show_Delete_Form;
             return DELETE_FORM;
          when others =>
             null;

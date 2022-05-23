@@ -35,7 +35,7 @@ package body DeleteItems.UI is
    DialogForm: Forms.Form;
    FormWindow: Window;
 
-   procedure ShowDeleteForm is
+   procedure Show_Delete_Form is
       Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
       FormHeight: Line_Position;
       FormLength: Column_Position := 32;
@@ -164,7 +164,7 @@ package body DeleteItems.UI is
       UnusedResult := Driver(DialogForm, F_First_Field);
       Refresh;
       Refresh(FormWindow);
-   end ShowDeleteForm;
+   end Show_Delete_Form;
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
