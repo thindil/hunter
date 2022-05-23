@@ -13,25 +13,25 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Directories; use Ada.Directories;
+with Ada.Directories;
 with Ada.Strings; use Ada.Strings;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Interfaces.C; use Interfaces.C;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Ada.Strings.Unbounded;
+with Interfaces.C;
+with GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
-with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
+with Terminal_Interface.Curses.Menus;
 with CArgv;
-with Tcl; use Tcl;
+with Tcl;
 with Tcl.Ada; use Tcl.Ada;
 with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
 with Common; use Common;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
-with Preferences; use Preferences;
-with RefreshData; use RefreshData;
+with LoadData;
+with LoadData.UI;
+with Preferences;
+with RefreshData;
 with ShowItems; use ShowItems;
-with Utils; use Utils;
+with Utils;
 with Utils.UI; use Utils.UI;
 
 package body CreateItems.UI is
@@ -60,6 +60,16 @@ package body CreateItems.UI is
      (Client_Data: Integer; Interp: Tcl.Tcl_Interp; Argc: Interfaces.C.int;
       Argv: CArgv.Chars_Ptr_Ptr) return Interfaces.C.int is
       pragma Unreferenced(Client_Data);
+      use Ada.Directories;
+      use Ada.Strings.Unbounded;
+      use Interfaces.C;
+      use GNAT.OS_Lib;
+      use Terminal_Interface.Curses.Menus;
+      use Tcl;
+      use LoadData.UI;
+      use Preferences;
+      use RefreshData;
+
       New_Item_Name: Unbounded_String;
       Destination: Unbounded_String := Null_Unbounded_String;
       File: File_Descriptor := Null_FD;
@@ -122,6 +132,7 @@ package body CreateItems.UI is
    end Create_Item_Command;
 
    procedure Add_Commands is
+      use Utils;
    begin
       Add_Command
         (Name => "CreateItem", Ada_Command => Create_Item_Command'Access);
