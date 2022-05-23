@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -23,11 +23,11 @@ with MainWindow; use MainWindow;
 package DeleteItems.UI is
 -- ****
 
-   -- ****f* DeleteItemsTUI/DeleteItemsTUI.ShowDeleteForm
+   -- ****f* DeleteItemsTUI/DeleteItemsTUI.Show_Delete_Form
    -- FUNCTION
    -- Show dialog to confirm deletion of items
    -- SOURCE
-   procedure ShowDeleteForm;
+   procedure Show_Delete_Form;
    -- ****
 
    -- ****f* DeleteItemsTUI/DeleteItemsTUI.Delete_Keys
