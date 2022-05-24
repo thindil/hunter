@@ -32,8 +32,19 @@ with Utils.UI; use Utils.UI;
 
 package body DeleteItems.UI is
 
+   -- ****iv* DeleteItemsTUI/DeleteItemsTUI.Dialog_Form
+   -- FUNCTION
+   -- The form to show delete items confirmation dialog
+   -- SOURCE
    Dialog_Form: Forms.Form;
+   -- ****
+
+   -- ****iv* DeleteItemsTUI/DeleteItemsTUI.Form_Window
+   -- FUNCTION
+   -- The window to show the form with confirmation of deleting items
+   -- SOURCE
    Form_Window: Window;
+   -- ****
 
    procedure Show_Delete_Form is
       Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
