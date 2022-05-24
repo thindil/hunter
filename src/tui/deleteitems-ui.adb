@@ -32,18 +32,18 @@ with Utils.UI; use Utils.UI;
 
 package body DeleteItems.UI is
 
-   DialogForm: Forms.Form;
-   FormWindow: Window;
+   Dialog_Form: Forms.Form;
+   Form_Window: Window;
 
    procedure Show_Delete_Form is
       Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
-      FormHeight: Line_Position;
-      FormLength: Column_Position := 32;
+      Form_Height: Line_Position := 0;
+      Form_Length: Column_Position := 32;
       Visibility: Cursor_Visibility := Normal;
-      FieldOptions: Field_Option_Set;
-      DeleteList: Unbounded_String;
-      ListLength: Positive;
-      UnusedResult: Forms.Driver_Result;
+      Field_Options: Field_Option_Set := Forms.Default_Field_Options;
+      Delete_List: Unbounded_String;
+      List_Length: Positive;
+      Unused_Result: Forms.Driver_Result := Forms.Form_Ok;
       File_Line: Unbounded_String := Null_Unbounded_String;
       File_Info: File_Type;
    begin
@@ -52,26 +52,26 @@ package body DeleteItems.UI is
       end if;
       Set_Cursor_Visibility(Visibility);
       if Settings.Delete_Files or New_Action = DELETETRASH then
-         DeleteList :=
+         Delete_List :=
            To_Unbounded_String(Mc(Interpreter, "{Delete?}") & LF & LF);
       else
-         DeleteList :=
+         Delete_List :=
            To_Unbounded_String(Mc(Interpreter, "{Move to Trash?}") & LF);
       end if;
       if Selected_Items.Length > 10 then
-         ListLength := 10;
+         List_Length := 10;
       else
-         ListLength := Positive(Selected_Items.Length);
+         List_Length := Positive(Selected_Items.Length);
       end if;
       Set_Delete_List_Loop :
-      for I in 1 .. ListLength loop
+      for I in 1 .. List_Length loop
          if New_Action = DELETE then
             if Is_Directory(To_String(Selected_Items(I))) then
                if Simple_Name(Name => To_String(Source => Selected_Items(I)))'
                    Length >
                  11 then
                   Append
-                    (DeleteList,
+                    (Delete_List,
                      "  " &
                      Simple_Name
                        (Name => To_String(Source => Selected_Items(I)))
@@ -82,7 +82,7 @@ package body DeleteItems.UI is
                      LF);
                else
                   Append
-                    (DeleteList,
+                    (Delete_List,
                      "  " &
                      Simple_Name
                        (Name => To_String(Source => Selected_Items(I))) &
@@ -95,14 +95,14 @@ package body DeleteItems.UI is
                 Length >
               27 then
                Append
-                 (DeleteList,
+                 (Delete_List,
                   "  " &
                   Simple_Name(Name => To_String(Source => Selected_Items(I)))
                     (1 .. 27) &
                   "..." & LF);
             else
                Append
-                 (DeleteList,
+                 (Delete_List,
                   "  " &
                   Simple_Name(Name => To_String(Source => Selected_Items(I))) &
                   LF);
@@ -119,7 +119,7 @@ package body DeleteItems.UI is
                File_Line := To_Unbounded_String(Get_Line(File_Info));
                if Slice(File_Line, 1, 4) = "Path" then
                   Append
-                    (DeleteList,
+                    (Delete_List,
                      "  " &
                      Simple_Name(Slice(File_Line, 6, Length(File_Line))));
                end if;
@@ -127,62 +127,62 @@ package body DeleteItems.UI is
             Close(File_Info);
          end if;
       end loop Set_Delete_List_Loop;
-      if ListLength = 10 and Selected_Items.Length > 10 then
-         ListLength := 11;
+      if List_Length = 10 and Selected_Items.Length > 10 then
+         List_Length := 11;
          Append
-           (DeleteList,
+           (Delete_List,
             " " & Mc(Interp => Interpreter, Src_String => "{(and more)}"));
       end if;
-      ListLength := ListLength + 2;
+      List_Length := List_Length + 2;
       Delete_Fields.all(1) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2,
-           1 + Line_Position(ListLength), 7, 0, 0);
+           1 + Line_Position(List_Length), 7, 0, 0);
       Set_Buffer
         (Delete_Fields.all(1), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
-      FieldOptions := Get_Options(Delete_Fields.all(1));
-      FieldOptions.Edit := False;
-      Set_Options(Delete_Fields.all(1), FieldOptions);
+      Field_Options := Get_Options(Delete_Fields.all(1));
+      Field_Options.Edit := False;
+      Set_Options(Delete_Fields.all(1), Field_Options);
       Delete_Fields.all(2) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Delete}", Interpreter)) + 2,
-           1 + Line_Position(ListLength), 23, 0, 0);
-      FieldOptions := Get_Options(Delete_Fields.all(2));
-      FieldOptions.Edit := False;
-      Set_Options(Delete_Fields.all(2), FieldOptions);
+           1 + Line_Position(List_Length), 23, 0, 0);
+      Field_Options := Get_Options(Delete_Fields.all(2));
+      Field_Options.Edit := False;
+      Set_Options(Delete_Fields.all(2), Field_Options);
       Set_Buffer
         (Delete_Fields.all(2), 0, "[" & Mc(Interpreter, "{Delete}") & "]");
       Delete_Fields.all(3) := Null_Field;
-      FormHeight := Line_Position(ListLength) + 2;
-      if FormHeight = 2 then
+      Form_Height := Line_Position(List_Length) + 2;
+      if Form_Height = 2 then
          return;
       end if;
-      DialogForm := New_Form(Delete_Fields);
-      Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
-      Add(FormWindow, 1, 2, To_String(DeleteList));
-      Box(FormWindow, Default_Character, Default_Character);
-      UnusedResult := Driver(DialogForm, F_First_Field);
+      Dialog_Form := New_Form(Delete_Fields);
+      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
+      Add(Form_Window, 1, 2, To_String(Delete_List));
+      Box(Form_Window, Default_Character, Default_Character);
+      Unused_Result := Driver(Dialog_Form, F_First_Field);
       Refresh;
-      Refresh(FormWindow);
+      Refresh(Form_Window);
    end Show_Delete_Form;
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(DialogForm));
+      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(DialogForm);
+            Result := Go_Previous_Field(Dialog_Form);
          when KEY_DOWN =>
-            Result := Go_Next_Field(DialogForm);
+            Result := Go_Next_Field(Dialog_Form);
          when 27 =>
             if New_Action = DELETETRASH then
                New_Action := SHOWTRASH;
             end if;
             Show_Preview;
             Set_Cursor_Visibility(Visibility);
-            Delete_Dialog(DialogForm, True);
+            Delete_Dialog(Dialog_Form, True);
             return DIRECTORY_VIEW;
          when 10 =>
             if FieldIndex = 2 then
@@ -204,13 +204,13 @@ package body DeleteItems.UI is
             end if;
             Show_Preview;
             Set_Cursor_Visibility(Visibility);
-            Delete_Dialog(DialogForm, True);
+            Delete_Dialog(Dialog_Form, True);
             return DIRECTORY_VIEW;
          when others =>
             null;
       end case;
       if Result = Form_Ok then
-         Refresh(FormWindow);
+         Refresh(Form_Window);
       end if;
       return DELETE_FORM;
    end Delete_Keys;
