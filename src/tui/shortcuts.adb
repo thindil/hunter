@@ -59,6 +59,9 @@ package body Shortcuts is
             New_Action := DELETE;
             Show_Delete_Form;
             return DELETE_FORM;
+         when 6 =>
+            Draw_Menu(ABOUT_MENU);
+            return ABOUT_MENU;
          when others =>
             null;
       end case;
