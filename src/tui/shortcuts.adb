@@ -15,6 +15,7 @@
 
 with Ada.Characters.Handling; use Ada.Characters.Handling;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Common; use Common;
 with DeleteItems.UI; use DeleteItems.UI;
 with Preferences; use Preferences;
@@ -62,6 +63,18 @@ package body Shortcuts is
          when 6 =>
             Draw_Menu(ABOUT_MENU);
             return ABOUT_MENU;
+         when 8 =>
+            if Natural(Selected_Items.Length) = Item_Count(DirectoryList) then
+               Selected_Items.Clear;
+            else
+               Update_Selected_Items_Loop :
+               for I in 1 .. Item_Count(DirectoryList) loop
+                  Selected_Items.Append
+                    (To_Unbounded_String
+                       (Description(Items(DirectoryList, I))));
+               end loop Update_Selected_Items_Loop;
+            end if;
+            Update_Directory_List;
          when others =>
             null;
       end case;
