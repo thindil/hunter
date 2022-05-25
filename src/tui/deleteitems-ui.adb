@@ -152,14 +152,14 @@ package body DeleteItems.UI is
       Set_Buffer
         (Delete_Fields.all(1), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
       Field_Options := Get_Options(Delete_Fields.all(1));
-      Field_Options.Edit := False;
+      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Delete_Fields.all(1), Field_Options);
       Delete_Fields.all(2) :=
         New_Field
           (1, Column_Position'Value(Mc_Max("{Delete}", Interpreter)) + 2,
            1 + Line_Position(List_Length), 23, 0, 0);
       Field_Options := Get_Options(Delete_Fields.all(2));
-      Field_Options.Edit := False;
+      Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Delete_Fields.all(2), Field_Options);
       Set_Buffer
         (Delete_Fields.all(2), 0, "[" & Mc(Interpreter, "{Delete}") & "]");
