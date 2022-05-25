@@ -61,19 +61,26 @@ package body DeleteItems.UI is
       if Selected_Items.Length = 0 then
          return;
       end if;
-      Set_Cursor_Visibility(Visibility);
+      Set_Cursor_Visibility(Visibility => Visibility);
       if Settings.Delete_Files or New_Action = DELETETRASH then
          Delete_List :=
-           To_Unbounded_String(Mc(Interpreter, "{Delete?}") & LF & LF);
+           To_Unbounded_String
+             (Source =>
+                Mc(Interp => Interpreter, Src_String => "{Delete?}") & LF &
+                LF);
       else
          Delete_List :=
-           To_Unbounded_String(Mc(Interpreter, "{Move to Trash?}") & LF);
+           To_Unbounded_String
+             (Source =>
+                Mc(Interp => Interpreter, Src_String => "{Move to Trash?}") &
+                LF);
       end if;
       if Selected_Items.Length > 10 then
          List_Length := 10;
       else
          List_Length := Positive(Selected_Items.Length);
       end if;
+      --## rule off SIMPLIFIABLE_STATEMENTS
       Set_Delete_List_Loop :
       for I in 1 .. List_Length loop
          if New_Action = DELETE then
@@ -138,6 +145,7 @@ package body DeleteItems.UI is
             Close(File_Info);
          end if;
       end loop Set_Delete_List_Loop;
+      --## rule on SIMPLIFIABLE_STATEMENTS
       if List_Length = 10 and Selected_Items.Length > 10 then
          List_Length := 11;
          Append
