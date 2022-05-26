@@ -84,13 +84,13 @@ package body DeleteItems.UI is
       Set_Delete_List_Loop :
       for I in 1 .. List_Length loop
          if New_Action = DELETE then
-            if Is_Directory(To_String(Selected_Items(I))) then
+            if Is_Directory(Name => To_String(Source => Selected_Items(I))) then
                if Simple_Name(Name => To_String(Source => Selected_Items(I)))'
                    Length >
                  11 then
                   Append
-                    (Delete_List,
-                     "  " &
+                    (Source => Delete_List,
+                     New_Item => "  " &
                      Simple_Name
                        (Name => To_String(Source => Selected_Items(I)))
                        (1 .. 11) &
@@ -100,8 +100,8 @@ package body DeleteItems.UI is
                      LF);
                else
                   Append
-                    (Delete_List,
-                     "  " &
+                    (Source => Delete_List,
+                     New_Item => "  " &
                      Simple_Name
                        (Name => To_String(Source => Selected_Items(I))) &
                      " " &
@@ -113,28 +113,28 @@ package body DeleteItems.UI is
                 Length >
               27 then
                Append
-                 (Delete_List,
-                  "  " &
+                 (Source => Delete_List,
+                  New_Item => "  " &
                   Simple_Name(Name => To_String(Source => Selected_Items(I)))
                     (1 .. 27) &
                   "..." & LF);
             else
                Append
-                 (Delete_List,
-                  "  " &
+                 (Source => Delete_List,
+                  New_Item => "  " &
                   Simple_Name(Name => To_String(Source => Selected_Items(I))) &
                   LF);
             end if;
          else
             Open
-              (File_Info, In_File,
-               Ada.Environment_Variables.Value("HOME") &
+              (File => File_Info, Mode => In_File,
+               Name => Ada.Environment_Variables.Value(Name => "HOME") &
                "/.local/share/Trash/info/" &
-               Simple_Name(To_String(Selected_Items(I))) & ".trashinfo");
-            Skip_Line(File_Info);
+               Simple_Name(Name => To_String(Source => Selected_Items(I))) & ".trashinfo");
+            Skip_Line(File => File_Info);
             Get_Item_Name_Loop :
             for J in 1 .. 2 loop
-               File_Line := To_Unbounded_String(Get_Line(File_Info));
+               File_Line := To_Unbounded_String(Source => Get_Line(File => File_Info));
                if Slice(File_Line, 1, 4) = "Path" then
                   Append
                     (Delete_List,
