@@ -84,79 +84,99 @@ package body DeleteItems.UI is
       Set_Delete_List_Loop :
       for I in 1 .. List_Length loop
          if New_Action = DELETE then
-            if Is_Directory(Name => To_String(Source => Selected_Items(I))) then
+            if Is_Directory
+                (Name => To_String(Source => Selected_Items(I))) then
                if Simple_Name(Name => To_String(Source => Selected_Items(I)))'
                    Length >
                  11 then
                   Append
                     (Source => Delete_List,
-                     New_Item => "  " &
-                     Simple_Name
-                       (Name => To_String(Source => Selected_Items(I)))
-                       (1 .. 11) &
-                     "..." &
-                     Mc(Interp => Interpreter,
-                        Src_String => "{(and its content)}") &
-                     LF);
+                     New_Item =>
+                       "  " &
+                       Simple_Name
+                         (Name => To_String(Source => Selected_Items(I)))
+                         (1 .. 11) &
+                       "..." &
+                       Mc(Interp => Interpreter,
+                          Src_String => "{(and its content)}") &
+                       LF);
                else
                   Append
                     (Source => Delete_List,
-                     New_Item => "  " &
-                     Simple_Name
-                       (Name => To_String(Source => Selected_Items(I))) &
-                     " " &
-                     Mc(Interp => Interpreter,
-                        Src_String => "{(and its content)}") &
-                     LF);
+                     New_Item =>
+                       "  " &
+                       Simple_Name
+                         (Name => To_String(Source => Selected_Items(I))) &
+                       " " &
+                       Mc(Interp => Interpreter,
+                          Src_String => "{(and its content)}") &
+                       LF);
                end if;
             elsif Simple_Name(Name => To_String(Source => Selected_Items(I)))'
                 Length >
               27 then
                Append
                  (Source => Delete_List,
-                  New_Item => "  " &
-                  Simple_Name(Name => To_String(Source => Selected_Items(I)))
-                    (1 .. 27) &
-                  "..." & LF);
+                  New_Item =>
+                    "  " &
+                    Simple_Name(Name => To_String(Source => Selected_Items(I)))
+                      (1 .. 27) &
+                    "..." & LF);
             else
                Append
                  (Source => Delete_List,
-                  New_Item => "  " &
-                  Simple_Name(Name => To_String(Source => Selected_Items(I))) &
-                  LF);
+                  New_Item =>
+                    "  " &
+                    Simple_Name
+                      (Name => To_String(Source => Selected_Items(I))) &
+                    LF);
             end if;
          else
             Open
               (File => File_Info, Mode => In_File,
-               Name => Ada.Environment_Variables.Value(Name => "HOME") &
-               "/.local/share/Trash/info/" &
-               Simple_Name(Name => To_String(Source => Selected_Items(I))) & ".trashinfo");
+               Name =>
+                 Ada.Environment_Variables.Value(Name => "HOME") &
+                 "/.local/share/Trash/info/" &
+                 Simple_Name(Name => To_String(Source => Selected_Items(I))) &
+                 ".trashinfo");
             Skip_Line(File => File_Info);
             Get_Item_Name_Loop :
             for J in 1 .. 2 loop
-               File_Line := To_Unbounded_String(Source => Get_Line(File => File_Info));
-               if Slice(File_Line, 1, 4) = "Path" then
+               File_Line :=
+                 To_Unbounded_String(Source => Get_Line(File => File_Info));
+               if Slice(Source => File_Line, Low => 1, High => 4) = "Path" then
                   Append
-                    (Delete_List,
-                     "  " &
-                     Simple_Name(Slice(File_Line, 6, Length(File_Line))));
+                    (Source => Delete_List,
+                     New_Item =>
+                       "  " &
+                       Simple_Name
+                         (Name =>
+                            Slice
+                              (Source => File_Line, Low => 6,
+                               High => Length(Source => File_Line))));
                end if;
             end loop Get_Item_Name_Loop;
-            Close(File_Info);
+            Close(File => File_Info);
          end if;
       end loop Set_Delete_List_Loop;
       --## rule on SIMPLIFIABLE_STATEMENTS
       if List_Length = 10 and Selected_Items.Length > 10 then
          List_Length := 11;
          Append
-           (Delete_List,
-            " " & Mc(Interp => Interpreter, Src_String => "{(and more)}"));
+           (Source => Delete_List,
+            New_Item =>
+              " " & Mc(Interp => Interpreter, Src_String => "{(and more)}"));
       end if;
       List_Length := List_Length + 2;
       Delete_Fields.all(1) :=
         New_Field
-          (1, Column_Position'Value(Mc_Max("{Cancel}", Interpreter)) + 2,
-           1 + Line_Position(List_Length), 7, 0, 0);
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "{Cancel}", Interp => Interpreter)) +
+             2,
+           Top => 1 + Line_Position(List_Length), Left => 7, Off_Screen => 0,
+           More_Buffers => 0);
       Set_Buffer
         (Delete_Fields.all(1), 0, "[" & Mc(Interpreter, "{Cancel}") & "]");
       Field_Options := Get_Options(Delete_Fields.all(1));
