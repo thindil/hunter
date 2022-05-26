@@ -19,6 +19,7 @@ with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Common; use Common;
 with DeleteItems.UI; use DeleteItems.UI;
 with Preferences; use Preferences;
+with RenameItems.UI; use RenameItems.UI;
 with SearchItems; use SearchItems;
 
 package body Shortcuts is
@@ -75,6 +76,10 @@ package body Shortcuts is
                end loop Update_Selected_Items_Loop;
             end if;
             Update_Directory_List;
+         when 9 =>
+            New_Action := RENAME;
+            ShowRenameForm;
+            return RENAME_FORM;
          when others =>
             null;
       end case;
