@@ -178,31 +178,46 @@ package body DeleteItems.UI is
            Top => 1 + Line_Position(List_Length), Left => 7, Off_Screen => 0,
            More_Buffers => 0);
       Set_Buffer
-        (Fld => Delete_Fields.all(1), Buffer => 0, Str => "[" & Mc(Interp => Interpreter, Src_String => "{Cancel}") & "]");
+        (Fld => Delete_Fields.all(1), Buffer => 0,
+         Str =>
+           "[" & Mc(Interp => Interpreter, Src_String => "{Cancel}") & "]");
       Field_Options := Get_Options(Fld => Delete_Fields.all(1));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Delete_Fields.all(1), Options => Field_Options);
       Delete_Fields.all(2) :=
         New_Field
-          (Height => 1, Width => Column_Position'Value(Mc_Max(Strings => "{Delete}", Interp => Interpreter)) + 2,
-           Top => 1 + Line_Position(List_Length), Left => 23, Off_Screen => 0, More_Buffers => 0);
+          (Height => 1,
+           Width =>
+             Column_Position'Value
+               (Mc_Max(Strings => "{Delete}", Interp => Interpreter)) +
+             2,
+           Top => 1 + Line_Position(List_Length), Left => 23, Off_Screen => 0,
+           More_Buffers => 0);
       Field_Options := Get_Options(Fld => Delete_Fields.all(2));
       Field_Options.Edit := False; --## rule line off ASSIGNMENTS
       Set_Options(Fld => Delete_Fields.all(2), Options => Field_Options);
       Set_Buffer
-        (Delete_Fields.all(2), 0, "[" & Mc(Interpreter, "{Delete}") & "]");
+        (Fld => Delete_Fields.all(2), Buffer => 0,
+         Str =>
+           "[" & Mc(Interp => Interpreter, Src_String => "{Delete}") & "]");
       Delete_Fields.all(3) := Null_Field;
       Form_Height := Line_Position(List_Length) + 2;
       if Form_Height = 2 then
          return;
       end if;
-      Dialog_Form := New_Form(Delete_Fields);
-      Create_Dialog(Dialog_Form, Form_Window, Form_Height, Form_Length);
-      Add(Form_Window, 1, 2, To_String(Delete_List));
-      Box(Form_Window, Default_Character, Default_Character);
-      Unused_Result := Driver(Dialog_Form, F_First_Field);
+      Dialog_Form := New_Form(Fields => Delete_Fields);
+      Create_Dialog
+        (DialogForm => Dialog_Form, FormWindow => Form_Window,
+         Form_Height => Form_Height, Form_Length => Form_Length);
+      Add
+        (Win => Form_Window, Line => 1, Column => 2,
+         Str => To_String(Delete_List));
+      Box
+        (Win => Form_Window, Vertical_Symbol => Default_Character,
+         Horizontal_Symbol => Default_Character);
+      Unused_Result := Driver(Frm => Dialog_Form, Key => F_First_Field);
       Refresh;
-      Refresh(Form_Window);
+      Refresh(Win => Form_Window);
    end Show_Delete_Form;
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
