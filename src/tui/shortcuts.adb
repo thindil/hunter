@@ -18,9 +18,11 @@ with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Terminal_Interface.Curses.Menus; use Terminal_Interface.Curses.Menus;
 with Common; use Common;
 with DeleteItems.UI; use DeleteItems.UI;
+with LoadData; use LoadData;
 with Preferences; use Preferences;
 with RenameItems.UI; use RenameItems.UI;
 with SearchItems; use SearchItems;
+with ShowItems; use ShowItems;
 
 package body Shortcuts is
 
@@ -80,6 +82,25 @@ package body Shortcuts is
             New_Action := RENAME;
             ShowRenameForm;
             return RENAME_FORM;
+         when 10 =>
+            if New_Action /= COPY then
+               New_Action := COPY;
+               UILocation := DESTINATION_VIEW;
+               Destination_Directory := Common.Current_Directory;
+               Second_Items_List := Items_List;
+            else
+               New_Action := Default_Item_Action;
+               UILocation := DIRECTORY_VIEW;
+            end if;
+            CreateProgramMenu(Update => True);
+            if New_Action = COPY then
+               Update_Directory_List;
+               ShowDestination;
+            else
+               Update_Directory_List(Clear => True);
+               Show_Preview;
+            end if;
+            return UILocation;
          when others =>
             null;
       end case;
