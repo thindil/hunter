@@ -211,7 +211,7 @@ package body DeleteItems.UI is
          Form_Height => Form_Height, Form_Length => Form_Length);
       Add
         (Win => Form_Window, Line => 1, Column => 2,
-         Str => To_String(Delete_List));
+         Str => To_String(Source => Delete_List));
       Box
         (Win => Form_Window, Vertical_Symbol => Default_Character,
          Horizontal_Symbol => Default_Character);
@@ -222,7 +222,7 @@ package body DeleteItems.UI is
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      FieldIndex: constant Positive := Get_Index(Current(Dialog_Form));
+      Field_Index: constant Positive := Get_Index(Current(Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
@@ -239,7 +239,7 @@ package body DeleteItems.UI is
             Delete_Dialog(Dialog_Form, True);
             return DIRECTORY_VIEW;
          when 10 =>
-            if FieldIndex = 2 then
+            if Field_Index = 2 then
                if not Delete_Selected(Interpreter) then
                   Load_Directory(To_String(Common.Current_Directory));
                else
