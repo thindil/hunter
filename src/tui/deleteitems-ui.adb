@@ -39,6 +39,20 @@ package body DeleteItems.UI is
    Dialog_Form: Forms.Form;
    -- ****
 
+   --## rule off REDUCEABLE_SCOPE
+   -- ****if* DeleteItemsTUI/DeleteItemsTUI.Get_Dialog_Form
+   -- FUNCTION
+   -- Get the create a new item dialog
+   -- RESULT
+   -- The ncurses dialog form for delete items confirmation dialog
+   -- SOURCE
+   function Get_Dialog_Form return Forms.Form is
+      -- ****
+   begin
+      return Dialog_Form;
+   end Get_Dialog_Form;
+   --## rule on REDUCEABLE_SCOPE
+
    -- ****iv* DeleteItemsTUI/DeleteItemsTUI.Form_Window
    -- FUNCTION
    -- The window to show the form with confirmation of deleting items
@@ -215,21 +229,21 @@ package body DeleteItems.UI is
       Box
         (Win => Form_Window, Vertical_Symbol => Default_Character,
          Horizontal_Symbol => Default_Character);
-      Unused_Result := Driver(Frm => Dialog_Form, Key => F_First_Field);
+      Unused_Result := Driver(Frm => Get_Dialog_Form, Key => F_First_Field);
       Refresh;
       Refresh(Win => Form_Window);
    end Show_Delete_Form;
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      Field_Index: constant Positive := Get_Index(Current(Dialog_Form));
+      Field_Index: constant Positive := Get_Index(Current(Get_Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(Dialog_Form);
+            Result := Go_Previous_Field(Get_Dialog_Form);
          when KEY_DOWN =>
-            Result := Go_Next_Field(Dialog_Form);
+            Result := Go_Next_Field(Get_Dialog_Form);
          when 27 =>
             if New_Action = DELETETRASH then
                New_Action := SHOWTRASH;
