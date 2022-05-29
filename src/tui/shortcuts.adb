@@ -82,9 +82,13 @@ package body Shortcuts is
             New_Action := RENAME;
             ShowRenameForm;
             return RENAME_FORM;
-         when 10 =>
-            if New_Action /= COPY then
-               New_Action := COPY;
+         when 10 | 11 =>
+            if New_Action not in COPY | MOVE then
+               if Index = 10 then
+                  New_Action := COPY;
+               else
+                  New_Action := MOVE;
+               end if;
                UILocation := DESTINATION_VIEW;
                Destination_Directory := Common.Current_Directory;
                Second_Items_List := Items_List;
@@ -93,7 +97,7 @@ package body Shortcuts is
                UILocation := DIRECTORY_VIEW;
             end if;
             CreateProgramMenu(Update => True);
-            if New_Action = COPY then
+            if New_Action in COPY | MOVE then
                Update_Directory_List;
                ShowDestination;
             else
