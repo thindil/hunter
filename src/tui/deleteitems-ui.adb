@@ -72,6 +72,18 @@ package body DeleteItems.UI is
    Form_Window: Window;
    -- ****
 
+   -- ****if* DeleteItemsTUI/DeleteItemsTUI.Get_Form_Window
+   -- FUNCTION
+   -- Get the create a new item window
+   -- RESULT
+   -- The ncurses window for the form with confirmation of deleting items
+   -- SOURCE
+   function Get_Form_Window return Window is
+      -- ****
+   begin
+      return Form_Window;
+   end Get_Form_Window;
+
    procedure Show_Delete_Form is
       Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
       Form_Height: Line_Position := 0;
@@ -234,21 +246,25 @@ package body DeleteItems.UI is
       Create_Delete_Dialog_Block :
       declare
          New_Dialog_Form: Forms.Form := New_Form(Fields => Delete_Fields);
+         --## rule off IMPROPER_INITIALIZATION
+         Local_Form_Window: Window := Get_Form_Window;
+         --## rule on IMPROPER_INITIALIZATION
       begin
          Create_Dialog
-           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+           (DialogForm => New_Dialog_Form, FormWindow => Local_Form_Window,
             Form_Height => Form_Height, Form_Length => Form_Length);
          Set_Dialog_Form(New_Form => New_Dialog_Form);
+         Form_Window := Local_Form_Window;
       end Create_Delete_Dialog_Block;
       Add
-        (Win => Form_Window, Line => 1, Column => 2,
+        (Win => Get_Form_Window, Line => 1, Column => 2,
          Str => To_String(Source => Delete_List));
       Box
-        (Win => Form_Window, Vertical_Symbol => Default_Character,
+        (Win => Get_Form_Window, Vertical_Symbol => Default_Character,
          Horizontal_Symbol => Default_Character);
       Unused_Result := Driver(Frm => Get_Dialog_Form, Key => F_First_Field);
       Refresh;
-      Refresh(Win => Form_Window);
+      Refresh(Win => Get_Form_Window);
    end Show_Delete_Form;
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
@@ -298,7 +314,7 @@ package body DeleteItems.UI is
             null;
       end case;
       if Result = Form_Ok then
-         Refresh(Form_Window);
+         Refresh(Get_Form_Window);
       end if;
       return DELETE_FORM;
    end Delete_Keys;
