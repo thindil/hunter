@@ -53,6 +53,18 @@ package body DeleteItems.UI is
    end Get_Dialog_Form;
    --## rule on REDUCEABLE_SCOPE
 
+   -- ****if* DeleteItemsTUI/DeleteItemsTUI.Set_Dialog_Form
+   -- FUNCTION
+   -- Set the new value for the dialog form for delete items confirmation
+   -- PARAMETERS
+   -- New_Form - The new value for the Dialog_Form
+   -- SOURCE
+   procedure Set_Dialog_Form(New_Form: Forms.Form) is
+      -- ****
+   begin
+      Dialog_Form := New_Form;
+   end Set_Dialog_Form;
+
    -- ****iv* DeleteItemsTUI/DeleteItemsTUI.Form_Window
    -- FUNCTION
    -- The window to show the form with confirmation of deleting items
@@ -219,10 +231,15 @@ package body DeleteItems.UI is
       if Form_Height = 2 then
          return;
       end if;
-      Dialog_Form := New_Form(Fields => Delete_Fields);
-      Create_Dialog
-        (DialogForm => Dialog_Form, FormWindow => Form_Window,
-         Form_Height => Form_Height, Form_Length => Form_Length);
+      Create_Delete_Dialog_Block :
+      declare
+         New_Dialog_Form: Forms.Form := New_Form(Fields => Delete_Fields);
+      begin
+         Create_Dialog
+           (DialogForm => New_Dialog_Form, FormWindow => Form_Window,
+            Form_Height => Form_Height, Form_Length => Form_Length);
+         Set_Dialog_Form(New_Form => New_Dialog_Form);
+      end Create_Delete_Dialog_Block;
       Add
         (Win => Form_Window, Line => 1, Column => 2,
          Str => To_String(Source => Delete_List));
@@ -236,21 +253,23 @@ package body DeleteItems.UI is
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
-      Field_Index: constant Positive := Get_Index(Current(Get_Dialog_Form));
+      Dialog_Frm: Forms.Form := Get_Dialog_Form;
+      Field_Index: constant Positive := Get_Index(Current(Dialog_Frm));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(Get_Dialog_Form);
+            Result := Go_Previous_Field(Dialog_Frm);
          when KEY_DOWN =>
-            Result := Go_Next_Field(Get_Dialog_Form);
+            Result := Go_Next_Field(Dialog_Frm);
          when 27 =>
             if New_Action = DELETETRASH then
                New_Action := SHOWTRASH;
             end if;
             Show_Preview;
             Set_Cursor_Visibility(Visibility);
-            Delete_Dialog(Dialog_Form, True);
+            Delete_Dialog(Dialog_Frm, True);
+            Set_Dialog_Form(New_Form => Dialog_Frm);
             return DIRECTORY_VIEW;
          when 10 =>
             if Field_Index = 2 then
@@ -272,7 +291,8 @@ package body DeleteItems.UI is
             end if;
             Show_Preview;
             Set_Cursor_Visibility(Visibility);
-            Delete_Dialog(Dialog_Form, True);
+            Delete_Dialog(Dialog_Frm, True);
+            Set_Dialog_Form(New_Form => Dialog_Frm);
             return DIRECTORY_VIEW;
          when others =>
             null;
