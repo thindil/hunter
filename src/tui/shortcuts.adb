@@ -20,6 +20,7 @@ with Common; use Common;
 with DeleteItems.UI; use DeleteItems.UI;
 with LoadData; use LoadData;
 with Preferences; use Preferences;
+with Preferences.UI; use Preferences.UI;
 with RenameItems.UI; use RenameItems.UI;
 with SearchItems; use SearchItems;
 with ShowItems; use ShowItems;
@@ -105,6 +106,9 @@ package body Shortcuts is
                Show_Preview;
             end if;
             return UILocation;
+         when 12 =>
+            Show_Options;
+            return OPTIONS_VIEW;
          when others =>
             null;
       end case;
