@@ -13,21 +13,21 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Characters.Latin_1;
 with Ada.Containers; use Ada.Containers;
 with Ada.Directories; use Ada.Directories;
 with Ada.Environment_Variables;
-with Ada.Strings; use Ada.Strings;
+with Ada.Strings;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-with Ada.Text_IO; use Ada.Text_IO;
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Ada.Text_IO;
+with GNAT.OS_Lib;
 with Terminal_Interface.Curses.Forms; use Terminal_Interface.Curses.Forms;
-with Tcl.MsgCat.Ada; use Tcl.MsgCat.Ada;
+with Tcl.MsgCat.Ada;
 with Common; use Common;
-with LoadData; use LoadData;
-with LoadData.UI; use LoadData.UI;
-with Preferences; use Preferences;
-with ShowItems; use ShowItems;
+with LoadData;
+with LoadData.UI;
+with Preferences;
+with ShowItems;
 with Utils.UI; use Utils.UI;
 
 package body DeleteItems.UI is
@@ -85,6 +85,12 @@ package body DeleteItems.UI is
    end Get_Form_Window;
 
    procedure Show_Delete_Form is
+      use Ada.Characters.Latin_1;
+      use Ada.Text_IO;
+      use GNAT.OS_Lib;
+      use Tcl.MsgCat.Ada;
+      use Preferences;
+
       Delete_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
       Form_Height: Line_Position := 0;
       Form_Length: Column_Position := 32;
@@ -268,6 +274,10 @@ package body DeleteItems.UI is
    end Show_Delete_Form;
 
    function Delete_Keys(Key: Key_Code) return UI_Locations is
+      use LoadData;
+      use LoadData.UI;
+      use ShowItems;
+
       Result: Forms.Driver_Result := Unknown_Request;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
       Field_Index: constant Positive :=
