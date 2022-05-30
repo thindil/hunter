@@ -270,31 +270,36 @@ package body DeleteItems.UI is
    function Delete_Keys(Key: Key_Code) return UI_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
-      Field_Index: constant Positive := Get_Index(Current(Dialog_Frm));
+      Field_Index: constant Positive :=
+        Get_Index(Fld => Current(Frm => Dialog_Frm));
       Visibility: Cursor_Visibility := Invisible;
    begin
       case Key is
          when KEY_UP =>
-            Result := Go_Previous_Field(Dialog_Frm);
+            Result := Go_Previous_Field(DialogForm => Dialog_Frm);
          when KEY_DOWN =>
-            Result := Go_Next_Field(Dialog_Frm);
+            Result := Go_Next_Field(DialogForm => Dialog_Frm);
          when 27 =>
             if New_Action = DELETETRASH then
                New_Action := SHOWTRASH;
             end if;
             Show_Preview;
-            Set_Cursor_Visibility(Visibility);
-            Delete_Dialog(Dialog_Frm, True);
+            Set_Cursor_Visibility(Visibility => Visibility);
+            Delete_Dialog(DialogForm => Dialog_Frm, Clear => True);
             Set_Dialog_Form(New_Form => Dialog_Frm);
             return DIRECTORY_VIEW;
          when 10 =>
             if Field_Index = 2 then
-               if not Delete_Selected(Interpreter) then
-                  Load_Directory(To_String(Common.Current_Directory));
+               if Delete_Selected(Interpreter => Interpreter) then
+                  Load_Directory
+                    (Directory_Name =>
+                       Ada.Directories.Containing_Directory
+                         (Name =>
+                            To_String(Source => Common.Current_Directory)));
                else
                   Load_Directory
-                    (Ada.Directories.Containing_Directory
-                       (To_String(Common.Current_Directory)));
+                    (Directory_Name =>
+                       To_String(Source => Common.Current_Directory));
                end if;
                Current_Selected := Common.Current_Directory;
                if Items_List.Length > 0 then
@@ -306,15 +311,15 @@ package body DeleteItems.UI is
                New_Action := SHOWTRASH;
             end if;
             Show_Preview;
-            Set_Cursor_Visibility(Visibility);
-            Delete_Dialog(Dialog_Frm, True);
+            Set_Cursor_Visibility(Visibility => Visibility);
+            Delete_Dialog(DialogForm => Dialog_Frm, Clear => True);
             Set_Dialog_Form(New_Form => Dialog_Frm);
             return DIRECTORY_VIEW;
          when others =>
             null;
       end case;
       if Result = Form_Ok then
-         Refresh(Get_Form_Window);
+         Refresh(Win => Get_Form_Window);
       end if;
       return DELETE_FORM;
    end Delete_Keys;
