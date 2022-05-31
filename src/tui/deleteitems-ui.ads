@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 with Terminal_Interface.Curses; use Terminal_Interface.Curses;
-with MainWindow; use MainWindow;
+with MainWindow; use MainWindow; --## rule line off REDUCEABLE_SCOPE
 
 -- ****h* DeleteItems/DeleteItemsTUI
 -- FUNCTION
@@ -38,7 +38,7 @@ package DeleteItems.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Delete_Keys(Key: Key_Code) return UI_Locations;
+   function Delete_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
 end DeleteItems.UI;
