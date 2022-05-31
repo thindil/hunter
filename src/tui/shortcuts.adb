@@ -28,8 +28,8 @@ with ShowItems; use ShowItems;
 package body Shortcuts is
 
    function Shortcuts_Keys
-     (Key: Key_Code; AltKey: Boolean; Old_Location: UI_Locations)
-      return UI_Locations is
+     (Key: Key_Code; AltKey: Boolean; Old_Location: Ui_Locations)
+      return Ui_Locations is
       Key_Value: constant String := Key_Name(Key);
       New_Key: Unbounded_String := Null_Unbounded_String;
       Index: Natural := 0;
@@ -68,14 +68,14 @@ package body Shortcuts is
             Draw_Menu(ABOUT_MENU);
             return ABOUT_MENU;
          when 8 =>
-            if Natural(Selected_Items.Length) = Item_Count(DirectoryList) then
+            if Natural(Selected_Items.Length) = Item_Count(Directory_List) then
                Selected_Items.Clear;
             else
                Update_Selected_Items_Loop :
-               for I in 1 .. Item_Count(DirectoryList) loop
+               for I in 1 .. Item_Count(Directory_List) loop
                   Selected_Items.Append
                     (To_Unbounded_String
-                       (Description(Items(DirectoryList, I))));
+                       (Description(Items(Directory_List, I))));
                end loop Update_Selected_Items_Loop;
             end if;
             Update_Directory_List;
@@ -90,14 +90,14 @@ package body Shortcuts is
                else
                   New_Action := MOVE;
                end if;
-               UILocation := DESTINATION_VIEW;
+               Ui_Location := DESTINATION_VIEW;
                Destination_Directory := Common.Current_Directory;
                Second_Items_List := Items_List;
             else
                New_Action := Default_Item_Action;
-               UILocation := DIRECTORY_VIEW;
+               Ui_Location := DIRECTORY_VIEW;
             end if;
-            CreateProgramMenu(Update => True);
+            Create_Program_Menu(Update => True);
             if New_Action in COPY | MOVE then
                Update_Directory_List;
                ShowDestination;
@@ -105,7 +105,7 @@ package body Shortcuts is
                Update_Directory_List(Clear => True);
                Show_Preview;
             end if;
-            return UILocation;
+            return Ui_Location;
          when 12 =>
             Show_Options;
             return OPTIONS_VIEW;

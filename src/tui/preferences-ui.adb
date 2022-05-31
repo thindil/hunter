@@ -734,7 +734,7 @@ package body Preferences.UI is
       Refresh(MenuWindow2);
    end Show_Colors_Menu;
 
-   function Set_Option(TabIndex, OptionIndex: Positive) return UI_Locations is
+   function Set_Option(TabIndex, OptionIndex: Positive) return Ui_Locations is
       Visibility: Cursor_Visibility := Invisible;
       procedure Show_Command_Form(Index: Natural := 0) is
          Command_Fields: constant Field_Array_Access :=
@@ -917,7 +917,7 @@ package body Preferences.UI is
                   Common.Current_Directory :=
                     Modules_List((OptionIndex / 5) - 1);
                   Load_Directory(To_String(Common.Current_Directory));
-                  UILocation := DIRECTORY_VIEW;
+                  Ui_Location := DIRECTORY_VIEW;
                   Update_Directory_List(True);
                   Update_Watch(To_String(Common.Current_Directory));
                   Execute_Modules
@@ -939,7 +939,7 @@ package body Preferences.UI is
       return OPTIONS_VIEW;
    end Set_Option;
 
-   function Select_Preferences_Keys(Key: Key_Code) return UI_Locations is
+   function Select_Preferences_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       Result2: Forms.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(OptionsMenu));
@@ -981,7 +981,7 @@ package body Preferences.UI is
                   Set_Cursor_Visibility(Visibility);
                   Temporary_Stop := False;
                   Clear;
-                  UILocation := DIRECTORY_VIEW;
+                  Ui_Location := DIRECTORY_VIEW;
                   Show_Main_Window;
                   Execute_Modules
                     (Interpreter, On_Enter_Trigger,
@@ -1006,7 +1006,7 @@ package body Preferences.UI is
       return OPTIONS_VIEW;
    end Select_Preferences_Keys;
 
-   function Select_Seconds_Keys(Key: Key_Code) return UI_Locations is
+   function Select_Seconds_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
    begin
       case Key is
@@ -1040,7 +1040,7 @@ package body Preferences.UI is
       return SECONDS_MENU;
    end Select_Seconds_Keys;
 
-   function Select_Colors_Keys(Key: Key_Code) return UI_Locations is
+   function Select_Colors_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       ThemeName: constant String := Name(Current(SubMenu));
    begin
@@ -1073,7 +1073,7 @@ package body Preferences.UI is
    end Select_Colors_Keys;
 
    function Set_Shortcut_Keys
-     (Key: Key_Code; AltKey: Boolean) return UI_Locations is
+     (Key: Key_Code; AltKey: Boolean) return Ui_Locations is
       CurrentOption: constant Positive := Get_Index(Current(DialogForm));
       Key_Value: constant String := Key_Name(Key);
       New_Key: Unbounded_String := Null_Unbounded_String;
@@ -1104,7 +1104,7 @@ package body Preferences.UI is
       return OPTIONS_VIEW;
    end Set_Shortcut_Keys;
 
-   function Add_Command_Keys(Key: Key_Code) return UI_Locations is
+   function Add_Command_Keys(Key: Key_Code) return Ui_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       CurrentField: constant Positive := Get_Index(Current(CommandForm));
    begin

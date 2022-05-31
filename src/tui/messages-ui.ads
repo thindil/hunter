@@ -1,4 +1,4 @@
--- Copyright (c) 2020-2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2020-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@ package Messages.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Message_Keys(Key: Key_Code) return UI_Locations;
+   function Message_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
 end Messages.UI;

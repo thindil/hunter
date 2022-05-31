@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -26,10 +26,10 @@ with Utils.UI; use Utils.UI;
 
 package body CopyItems.UI is
 
-   function CopySelected(Overwrite: in out Boolean) return UI_Locations is
+   function CopySelected(Overwrite: in out Boolean) return Ui_Locations is
    begin
       if Destination_Directory = Common.Current_Directory then
-         UILocation := DIRECTORY_VIEW;
+         Ui_Location := DIRECTORY_VIEW;
          Update_Directory_List(True);
          return DIRECTORY_VIEW;
       end if;
@@ -44,7 +44,7 @@ package body CopyItems.UI is
             "message");
          return MESSAGE_FORM;
       end if;
-      UILocation := DIRECTORY_VIEW;
+      Ui_Location := DIRECTORY_VIEW;
       Common.Current_Directory :=
         (if Settings.Stay_In_Old then Common.Current_Directory
          else Destination_Directory);
@@ -57,7 +57,7 @@ package body CopyItems.UI is
       return DIRECTORY_VIEW;
    end CopySelected;
 
-   function SkipCopying return UI_Locations is
+   function SkipCopying return Ui_Locations is
       OverwriteItem: Boolean := False;
    begin
       Copy_Items_List.Delete(Index => 1);

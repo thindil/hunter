@@ -92,7 +92,7 @@ package body ShowItems is
          Delete(PreviewPad);
       end if;
       Clear(PreviewWindow);
-      if UILocation = PREVIEW then
+      if Ui_Location = PREVIEW then
          Box(PreviewWindow, Default_Character, Default_Character);
       end if;
       Refresh(PreviewWindow);
@@ -490,7 +490,7 @@ package body ShowItems is
                   end if;
                   if not Ada.Directories.Exists
                       (Value("HOME") & "/.cache/hunter/highlight.tmp") or
-                    UILocation /= PREVIEW then
+                    Ui_Location /= PREVIEW then
                      Spawn
                        (ExecutableName,
                         Argument_String_To_List
@@ -642,7 +642,7 @@ package body ShowItems is
                   Refresh
                     (PreviewPad, 0, 0, 3, (Columns / 2) + 1, (Lines - 2),
                      Columns - 3);
-                  if UILocation /= PREVIEW then
+                  if Ui_Location /= PREVIEW then
                      Delete_File
                        (Value("HOME") & "/.cache/hunter/highlight.tmp");
                   end if;
@@ -682,17 +682,17 @@ package body ShowItems is
          Refresh(PathButtons);
          Buttons_Visible := False;
       end if;
-      if UILocation /= DIRECTORY_VIEW then
+      if Ui_Location /= DIRECTORY_VIEW then
          return;
       end if;
       Selected_Items.Clear;
-      if Item_Count(DirectoryList) > 0 then
+      if Item_Count(Directory_List) > 0 then
          Update_Selected_Items_Loop :
-         for I in 1 .. Item_Count(DirectoryList) loop
-            if Value(Items(DirectoryList, I)) or
-              Current(DirectoryList) = Items(DirectoryList, I) then
+         for I in 1 .. Item_Count(Directory_List) loop
+            if Value(Items(Directory_List, I)) or
+              Current(Directory_List) = Items(Directory_List, I) then
                Selected_Items.Append
-                 (To_Unbounded_String(Description(Items(DirectoryList, I))));
+                 (To_Unbounded_String(Description(Items(Directory_List, I))));
             end if;
          end loop Update_Selected_Items_Loop;
       else
@@ -704,7 +704,7 @@ package body ShowItems is
          return;
       end if;
       Current_Selected :=
-        To_Unbounded_String(Description(Current(DirectoryList)));
+        To_Unbounded_String(Description(Current(Directory_List)));
       if New_Action = CREATELINK then
          return;
       end if;
@@ -768,7 +768,7 @@ package body ShowItems is
       end if;
       Clear(PathButtons);
       Clear(PreviewWindow);
-      if UILocation = DESTINATION_VIEW then
+      if Ui_Location = DESTINATION_VIEW then
          Box(PreviewWindow, Default_Character, Default_Character);
       end if;
       if not Is_Read_Accessible_File(To_String(Destination_Directory)) then
@@ -873,7 +873,7 @@ package body ShowItems is
          when KEY_PPAGE =>
             Result := Driver(DestinationList, M_ScrollDown_Page);
          when KEY_LEFT | KEY_RIGHT =>
-            UILocation := Destination_Path_Keys(Key);
+            Ui_Location := Destination_Path_Keys(Key);
             return;
          when 10 =>
             if Is_Directory
@@ -893,7 +893,7 @@ package body ShowItems is
       end if;
    end Destination_Keys;
 
-   function Destination_Path_Keys(Key: Key_Code) return UI_Locations is
+   function Destination_Path_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
    begin
       case Key is
@@ -918,9 +918,9 @@ package body ShowItems is
             ShowDestination;
             return DESTINATION_VIEW;
          when others =>
-            UILocation := DESTINATION_VIEW;
+            Ui_Location := DESTINATION_VIEW;
             Destination_Keys(Key);
-            return UILocation;
+            return Ui_Location;
       end case;
       if Result = Menu_Ok then
          Refresh(PathButtons);
@@ -992,7 +992,7 @@ package body ShowItems is
          when 10 =>
             if FieldIndex = 2 then
                ShowProgramsMenu;
-               UILocation := PROGRAMS_MENU;
+               Ui_Location := PROGRAMS_MENU;
                return;
             end if;
             if Is_Directory(SelectedItem) then
@@ -1049,7 +1049,7 @@ package body ShowItems is
    procedure Clear_Preview_Window is
    begin
       Clear(PreviewWindow);
-      if UILocation in PREVIEW | DESTINATION_VIEW then
+      if Ui_Location in PREVIEW | DESTINATION_VIEW then
          Box(PreviewWindow, Default_Character, Default_Character);
       end if;
       Refresh(PreviewWindow);

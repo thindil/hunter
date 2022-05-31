@@ -62,7 +62,7 @@ package body MainWindow is
    SubMenuWindow: Window;
    SubMenu: Menu;
 
-   procedure CreateProgramMenu(Update: Boolean := False) is
+   procedure Create_Program_Menu(Update: Boolean := False) is
    begin
       Terminal_Interface.Curses.Clear(Menu_Window);
       case New_Action is
@@ -156,7 +156,7 @@ package body MainWindow is
                Post(Program_Menu);
             end;
       end case;
-      if UILocation = MAIN_MENU then
+      if Ui_Location = MAIN_MENU then
          Set_Foreground(Program_Menu, (Reverse_Video => True, others => False));
       else
          Set_Foreground(Program_Menu, Normal_Video);
@@ -164,9 +164,9 @@ package body MainWindow is
       if Update then
          Refresh(Menu_Window);
       end if;
-   end CreateProgramMenu;
+   end Create_Program_Menu;
 
-   procedure CreateMainWindow(Directory: String) is
+   procedure Create_Main_Window(Directory: String) is
    begin
       -- Load translations
       Mc_Load
@@ -191,7 +191,7 @@ package body MainWindow is
       Load_Directory(To_String(Common.Current_Directory));
       Start_Timer(To_String(Common.Current_Directory));
       Show_Main_Window;
-   end CreateMainWindow;
+   end Create_Main_Window;
 
    procedure Update_Directory_List
      (Clear: Boolean := False; Search_For: String := "") is
@@ -276,7 +276,7 @@ package body MainWindow is
       Post(Path);
       Set_Current(Path, Path_Items.all(Index));
       Terminal_Interface.Curses.Clear(List_Window);
-      if UILocation = DIRECTORY_VIEW then
+      if Ui_Location = DIRECTORY_VIEW then
          Box(List_Window, Default_Character, Default_Character);
       end if;
       Add(List_Window, 1, 10, Mc(Interpreter, "Name"));
@@ -355,26 +355,26 @@ package body MainWindow is
       for I in Index .. Menu_Items'Last loop
          Menu_Items.all(I) := Null_Item;
       end loop Fill_Empty_Entries_Loop;
-      DirectoryList := New_Menu(Menu_Items);
+      Directory_List := New_Menu(Menu_Items);
       if Index > 1 then
          Set_Options
-           (DirectoryList,
+           (Directory_List,
             (One_Valued => False, Non_Cyclic => True, others => <>));
-         Set_Format(DirectoryList, Lines - 5, 1);
-         Set_Mark(DirectoryList, "");
-         Set_Window(DirectoryList, List_Window);
+         Set_Format(Directory_List, Lines - 5, 1);
+         Set_Mark(Directory_List, "");
+         Set_Window(Directory_List, List_Window);
          Set_Sub_Window
-           (DirectoryList,
+           (Directory_List,
             Derived_Window(List_Window, Lines - 5, (Columns / 2) - 2, 2, 1));
-         Post(DirectoryList);
-         Set_Current(DirectoryList, Menu_Items.all(CurrentIndex));
+         Post(Directory_List);
+         Set_Current(Directory_List, Menu_Items.all(CurrentIndex));
          if not Clear then
             Update_Selected_Loop :
-            for I in 1 .. Item_Count(DirectoryList) loop
+            for I in 1 .. Item_Count(Directory_List) loop
                if Selected_Items.Contains
                    (To_Unbounded_String
-                      (Description(Items(DirectoryList, I)))) then
-                  Set_Value(Items(DirectoryList, I), True);
+                      (Description(Items(Directory_List, I)))) then
+                  Set_Value(Items(Directory_List, I), True);
                end if;
             end loop Update_Selected_Loop;
          end if;
@@ -385,36 +385,36 @@ package body MainWindow is
       Refresh(List_Window);
    end Update_Directory_List;
 
-   function Directory_Keys(Key: Key_Code) return UI_Locations is
+   function Directory_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result;
       Visibility: Cursor_Visibility := Invisible;
    begin
       Set_Cursor_Visibility(Visibility);
-      if Item_Count(DirectoryList) = 0 then
+      if Item_Count(Directory_List) = 0 then
          if Key in KEY_LEFT | KEY_RIGHT then
-            UILocation := PATH_BUTTONS;
+            Ui_Location := PATH_BUTTONS;
             return Path_Keys(Key);
          end if;
          return DIRECTORY_VIEW;
       end if;
       case Key is
          when KEY_UP =>
-            Result := Driver(DirectoryList, M_Up_Item);
+            Result := Driver(Directory_List, M_Up_Item);
          when KEY_DOWN =>
-            Result := Driver(DirectoryList, M_Down_Item);
+            Result := Driver(Directory_List, M_Down_Item);
          when 32 =>
-            Result := Driver(DirectoryList, M_Toggle_Item);
-            Result := Driver(DirectoryList, M_Down_Item);
+            Result := Driver(Directory_List, M_Toggle_Item);
+            Result := Driver(Directory_List, M_Down_Item);
          when Key_Home =>
-            Result := Driver(DirectoryList, M_First_Item);
+            Result := Driver(Directory_List, M_First_Item);
          when Key_End =>
-            Result := Driver(DirectoryList, M_Last_Item);
+            Result := Driver(Directory_List, M_Last_Item);
          when KEY_NPAGE =>
-            Result := Driver(DirectoryList, M_ScrollUp_Page);
+            Result := Driver(Directory_List, M_ScrollUp_Page);
          when KEY_PPAGE =>
-            Result := Driver(DirectoryList, M_ScrollDown_Page);
+            Result := Driver(Directory_List, M_ScrollDown_Page);
          when KEY_LEFT | KEY_RIGHT =>
-            UILocation := PATH_BUTTONS;
+            Ui_Location := PATH_BUTTONS;
             return Path_Keys(Key);
          when 10 =>
             Tcl_Eval(Interpreter, "ActivateItem");
@@ -434,7 +434,7 @@ package body MainWindow is
       return DIRECTORY_VIEW;
    end Directory_Keys;
 
-   function Path_Keys(Key: Key_Code) return UI_Locations is
+   function Path_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
    begin
       case Key is
@@ -447,7 +447,7 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(Path, M_Last_Item);
          when 10 =>
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             if New_Action in SHOWTRASH | DELETETRASH then
                Common.Current_Directory :=
                  To_Unbounded_String
@@ -490,7 +490,7 @@ package body MainWindow is
             end if;
             return DIRECTORY_VIEW;
          when others =>
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             return Directory_Keys(Key);
       end case;
       if Result = Menu_Ok then
@@ -499,7 +499,7 @@ package body MainWindow is
       return PATH_BUTTONS;
    end Path_Keys;
 
-   procedure Draw_Menu(Menu_Type: UI_Locations) is
+   procedure Draw_Menu(Menu_Type: Ui_Locations) is
       Menu_Items: Item_Array_Access;
       MenuHeight: Line_Position;
       MenuLength: Column_Position;
@@ -570,14 +570,14 @@ package body MainWindow is
             Menu_Items :=
               new Item_Array(1 .. (if New_Action = SHOWTRASH then 4 else 5));
             Count_Selected_Loop :
-            for I in 1 .. Item_Count(DirectoryList) loop
+            for I in 1 .. Item_Count(Directory_List) loop
                if Selected_Items.Contains
                    (To_Unbounded_String
-                      (Description(Items(DirectoryList, I)))) then
+                      (Description(Items(Directory_List, I)))) then
                   Selected_Amount := Selected_Amount + 1;
                end if;
             end loop Count_Selected_Loop;
-            if Selected_Amount < Item_Count(DirectoryList) then
+            if Selected_Amount < Item_Count(Directory_List) then
                Menu_Items.all(1) := New_Item(Mc(Interpreter, "{Select all}"));
             else
                Menu_Items.all(1) :=
@@ -637,7 +637,7 @@ package body MainWindow is
       Refresh(SubMenuWindow);
    end Draw_Menu;
 
-   function Menu_Keys(Key: Key_Code) return UI_Locations is
+   function Menu_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(Program_Menu));
       OverwriteItem: Boolean := False;
@@ -652,8 +652,8 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(Program_Menu, M_Last_Item);
          when 10 =>
-            UILocation := DIRECTORY_VIEW;
-            CreateProgramMenu(True);
+            Ui_Location := DIRECTORY_VIEW;
+            Create_Program_Menu(True);
             case CurrentIndex is
                when 1 =>
                   return PATH_BUTTONS;
@@ -667,21 +667,21 @@ package body MainWindow is
                when 3 =>
                   if New_Action = COPY then
                      Copy_Items_List.Clear;
-                     if Item_Count(DirectoryList) > 0 then
+                     if Item_Count(Directory_List) > 0 then
                         Update_Copy_Items_Loop :
-                        for I in 1 .. Item_Count(DirectoryList) loop
-                           if Value(Items(DirectoryList, I)) or
-                             Current(DirectoryList) =
-                               Items(DirectoryList, I) then
+                        for I in 1 .. Item_Count(Directory_List) loop
+                           if Value(Items(Directory_List, I)) or
+                             Current(Directory_List) =
+                               Items(Directory_List, I) then
                               Copy_Items_List.Append
                                 (To_Unbounded_String
-                                   (Description(Items(DirectoryList, I))));
+                                   (Description(Items(Directory_List, I))));
                            end if;
                         end loop Update_Copy_Items_Loop;
                      end if;
                      if CopySelected(OverwriteItem) = DIRECTORY_VIEW then
                         New_Action := Default_Item_Action;
-                        CreateProgramMenu;
+                        Create_Program_Menu;
                         Refresh(Menu_Window);
                         return DIRECTORY_VIEW;
                      else
@@ -689,21 +689,21 @@ package body MainWindow is
                      end if;
                   elsif New_Action = MOVE then
                      Move_Items_List.Clear;
-                     if Item_Count(DirectoryList) > 0 then
+                     if Item_Count(Directory_List) > 0 then
                         Update_Move_Items_Loop :
-                        for I in 1 .. Item_Count(DirectoryList) loop
-                           if Value(Items(DirectoryList, I)) or
-                             Current(DirectoryList) =
-                               Items(DirectoryList, I) then
+                        for I in 1 .. Item_Count(Directory_List) loop
+                           if Value(Items(Directory_List, I)) or
+                             Current(Directory_List) =
+                               Items(Directory_List, I) then
                               Move_Items_List.Append
                                 (To_Unbounded_String
-                                   (Description(Items(DirectoryList, I))));
+                                   (Description(Items(Directory_List, I))));
                            end if;
                         end loop Update_Move_Items_Loop;
                      end if;
                      if MoveSelected(OverwriteItem) = DIRECTORY_VIEW then
                         New_Action := Default_Item_Action;
-                        CreateProgramMenu;
+                        Create_Program_Menu;
                         Refresh(Menu_Window);
                         return DIRECTORY_VIEW;
                      else
@@ -711,10 +711,10 @@ package body MainWindow is
                      end if;
                   elsif New_Action = CREATELINK then
                      New_Action := Default_Item_Action;
-                     UILocation := DIRECTORY_VIEW;
+                     Ui_Location := DIRECTORY_VIEW;
                      Update_Directory_List(True);
                      Show_Preview;
-                     CreateProgramMenu;
+                     Create_Program_Menu;
                      Refresh(Menu_Window);
                      return DIRECTORY_VIEW;
                   end if;
@@ -723,10 +723,10 @@ package body MainWindow is
                when 4 =>
                   if New_Action in COPY | MOVE then
                      New_Action := Default_Item_Action;
-                     UILocation := DIRECTORY_VIEW;
+                     Ui_Location := DIRECTORY_VIEW;
                      Update_Directory_List(True);
                      Show_Preview;
-                     CreateProgramMenu;
+                     Create_Program_Menu;
                      Refresh(Menu_Window);
                      return DIRECTORY_VIEW;
                   elsif New_Action = SHOWTRASH then
@@ -766,7 +766,7 @@ package body MainWindow is
       return MAIN_MENU;
    end Menu_Keys;
 
-   function Actions_Keys(Key: Key_Code) return UI_Locations is
+   function Actions_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
       CurrentName: constant String := Name(Current(SubMenu));
@@ -783,7 +783,7 @@ package body MainWindow is
          when 27 =>
             Post(SubMenu, False);
             Delete(SubMenu);
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
          when 10 =>
@@ -802,11 +802,11 @@ package body MainWindow is
                   return CREATE_FORM;
                when 3 =>
                   New_Action := CREATELINK;
-                  CreateProgramMenu;
+                  Create_Program_Menu;
                   Refresh(Menu_Window);
                   Destination_Directory := Common.Current_Directory;
                   Second_Items_List := Items_List;
-                  UILocation := DESTINATION_VIEW;
+                  Ui_Location := DESTINATION_VIEW;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 4 =>
@@ -815,20 +815,20 @@ package body MainWindow is
                   return RENAME_FORM;
                when 5 =>
                   New_Action := COPY;
-                  CreateProgramMenu;
+                  Create_Program_Menu;
                   Refresh(Menu_Window);
                   Destination_Directory := Common.Current_Directory;
                   Second_Items_List := Items_List;
-                  UILocation := DESTINATION_VIEW;
+                  Ui_Location := DESTINATION_VIEW;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 6 =>
                   New_Action := MOVE;
-                  CreateProgramMenu;
+                  Create_Program_Menu;
                   Refresh(Menu_Window);
                   Destination_Directory := Common.Current_Directory;
                   Second_Items_List := Items_List;
-                  UILocation := DESTINATION_VIEW;
+                  Ui_Location := DESTINATION_VIEW;
                   ShowDestination;
                   return DESTINATION_VIEW;
                when 7 =>
@@ -840,7 +840,7 @@ package body MainWindow is
                   return MESSAGE_FORM;
                when others =>
                   if CurrentName = Mc(Interpreter, "Close") then
-                     UILocation := DIRECTORY_VIEW;
+                     Ui_Location := DIRECTORY_VIEW;
                      Update_Directory_List(True);
                      Show_Preview;
                      return DIRECTORY_VIEW;
@@ -857,7 +857,7 @@ package body MainWindow is
       return ACTIONS_MENU;
    end Actions_Keys;
 
-   function Bookmarks_Keys(Key: Key_Code) return UI_Locations is
+   function Bookmarks_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       Bookmark: constant String := Name(Current(SubMenu));
    begin
@@ -873,7 +873,7 @@ package body MainWindow is
          when 27 =>
             Post(SubMenu, False);
             Delete(SubMenu);
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
          when 10 =>
@@ -889,10 +889,10 @@ package body MainWindow is
       return BOOKMARKS_MENU;
    end Bookmarks_Keys;
 
-   function Selected_Keys(Key: Key_Code) return UI_Locations is
+   function Selected_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       Visibility: Cursor_Visibility := Normal;
-      New_Location: UI_Locations := PREVIEW;
+      New_Location: Ui_Locations := PREVIEW;
    begin
       case Key is
          when KEY_UP =>
@@ -906,11 +906,11 @@ package body MainWindow is
          when 27 =>
             Post(SubMenu, False);
             Delete(SubMenu);
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
          when 10 =>
-            UILocation := New_Location;
+            Ui_Location := New_Location;
             case Get_Index(Current(SubMenu)) is
                when 1 =>
                   Show_Preview;
@@ -936,7 +936,7 @@ package body MainWindow is
             Post(SubMenu, False);
             Delete(SubMenu);
             if New_Location /= EXECUTE_FORM then
-               UILocation := New_Location;
+               Ui_Location := New_Location;
                Update_Directory_List;
             end if;
             return New_Location;
@@ -949,7 +949,7 @@ package body MainWindow is
       return SELECTED_MENU;
    end Selected_Keys;
 
-   function View_Keys(Key: Key_Code) return UI_Locations is
+   function View_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       Current_Menu: constant String := Name(Current(SubMenu));
    begin
@@ -965,19 +965,19 @@ package body MainWindow is
          when 27 =>
             Post(SubMenu, False);
             Delete(SubMenu);
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
          when 10 =>
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             if Current_Menu in Mc(Interpreter, "{Select all}") |
                   Mc(Interpreter, "{Deselect all}") then
                if Current_Menu = Mc(Interpreter, "{Select all}") then
                   Update_Selected_Items_Loop :
-                  for I in 1 .. Item_Count(DirectoryList) loop
+                  for I in 1 .. Item_Count(Directory_List) loop
                      Selected_Items.Append
                        (To_Unbounded_String
-                          (Description(Items(DirectoryList, I))));
+                          (Description(Items(Directory_List, I))));
                   end loop Update_Selected_Items_Loop;
                else
                   Selected_Items.Clear;
@@ -990,7 +990,7 @@ package body MainWindow is
                return SEARCH_FORM;
             elsif Current_Menu = Mc(Interpreter, "{Show Trash}") then
                New_Action := SHOWTRASH;
-               CreateProgramMenu(True);
+               Create_Program_Menu(True);
                Post(SubMenu, False);
                Delete(SubMenu);
                Clear_Preview_Window;
@@ -1011,7 +1011,7 @@ package body MainWindow is
       return VIEW_MENU;
    end View_Keys;
 
-   function About_Keys(Key: Key_Code) return UI_Locations is
+   function About_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
       FileName: Unbounded_String := Null_Unbounded_String;
@@ -1028,7 +1028,7 @@ package body MainWindow is
          when 27 =>
             Post(SubMenu, False);
             Delete(SubMenu);
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
          when 10 =>
@@ -1074,7 +1074,7 @@ package body MainWindow is
                   end if;
                end loop Set_Current_Selected_Loop;
             end if;
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List(True);
             Show_Preview;
             Post(SubMenu, False);
@@ -1092,7 +1092,7 @@ package body MainWindow is
    procedure Show_Main_Window is
    begin
       Menu_Window := Create(1, Columns, 0, 0);
-      CreateProgramMenu;
+      Create_Program_Menu;
       Path_Buttons_Window := Create(1, Columns / 2, 1, 0);
       List_Window :=
         (if Settings.Show_Preview then Create(Lines - 2, Columns / 2, 2, 0)
@@ -1105,7 +1105,7 @@ package body MainWindow is
       Update_Directory_List(True);
    end Show_Main_Window;
 
-   function User_Commands_Keys(Key: Key_Code) return UI_Locations is
+   function User_Commands_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       Current_Option: constant String := Name(Current(SubMenu));
    begin
@@ -1119,7 +1119,7 @@ package body MainWindow is
          when Key_End =>
             Result := Driver(SubMenu, M_Last_Item);
          when 10 =>
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             Post(SubMenu, False);
             Delete(SubMenu);
@@ -1136,7 +1136,7 @@ package body MainWindow is
       return COMMANDS_MENU;
    end User_Commands_Keys;
 
-   function Trash_Actions_Keys(Key: Key_Code) return UI_Locations is
+   function Trash_Actions_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
       CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
    begin
@@ -1152,7 +1152,7 @@ package body MainWindow is
          when 10 =>
             Post(SubMenu, False);
             Delete(SubMenu);
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             Show_Preview;
             case CurrentIndex is

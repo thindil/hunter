@@ -67,7 +67,7 @@ package body ProgramsMenu.UI is
       Refresh(ProgramsWindow);
    end ShowProgramsMenu;
 
-   function Programs_Keys(Key: Key_Code) return UI_Locations is
+   function Programs_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
    begin
       case Key is
@@ -111,7 +111,7 @@ package body ProgramsMenu.UI is
                   end loop Set_New_Application_Loop;
                end;
             end if;
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             ShowInfo;
             return DIRECTORY_VIEW;

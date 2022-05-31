@@ -144,7 +144,7 @@ package body ActivateItems.UI is
       end Create_Execute_With_Dialog_Block;
    end Show_Execute_With_Dialog;
 
-   function Execute_Form_Keys(Key: Key_Code) return UI_Locations is
+   function Execute_Form_Keys(Key: Key_Code) return Ui_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
       Field_Index: constant Positive :=
@@ -158,21 +158,21 @@ package body ActivateItems.UI is
       Space_Index: Natural range 0 .. Value'Length := 0;
       Arguments: Argument_List_Access;
       function Hide_Dialog
-        (With_Message: Boolean := False) return UI_Locations is
+        (With_Message: Boolean := False) return Ui_Locations is
          Visibility: Cursor_Visibility := Invisible;
       begin
          Post(Frm => Dialog_Frm, Post => False);
          Delete(Frm => Dialog_Frm);
          Set_Dialog_Form(New_Form => Dialog_Frm);
          if With_Message then
-            UILocation := MESSAGE_FORM;
+            Ui_Location := MESSAGE_FORM;
          else
             Set_Cursor_Visibility(Visibility => Visibility);
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List(Clear => True);
             Show_Preview;
          end if;
-         return UILocation;
+         return Ui_Location;
       end Hide_Dialog;
    begin
       case Key is

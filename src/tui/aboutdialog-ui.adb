@@ -214,14 +214,14 @@ package body AboutDialog.UI is
       end Create_About_Dialog_Block;
    end Show_About_Dialog;
 
-   function About_View_Keys(Key: Key_Code) return UI_Locations is
+   function About_View_Keys(Key: Key_Code) return Ui_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       Field_Index: constant Positive :=
         Get_Index(Fld => Current(Frm => Get_Dialog_Form));
       Visibility: Cursor_Visibility := Invisible;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
       function Hide_About_Dialog
-        (With_Message: Boolean := False) return UI_Locations is
+        (With_Message: Boolean := False) return Ui_Locations is
          use ShowItems;
 
       begin
@@ -230,13 +230,13 @@ package body AboutDialog.UI is
          Delete(Frm => Dialog_Frm);
          Set_Dialog_Form(New_Form => Dialog_Frm);
          if With_Message then
-            UILocation := MESSAGE_FORM;
+            Ui_Location := MESSAGE_FORM;
          else
             Show_Preview;
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
          end if;
-         return UILocation;
+         return Ui_Location;
       end Hide_About_Dialog;
       procedure Show_Developers_Dialog(Developers: Boolean := True) is
          About_Fields: constant Field_Array_Access := new Field_Array(1 .. 3);
@@ -347,7 +347,7 @@ package body AboutDialog.UI is
       return ABOUT_FORM;
    end About_View_Keys;
 
-   function Developers_Keys(Key: Key_Code) return UI_Locations is
+   function Developers_Keys(Key: Key_Code) return Ui_Locations is
       Visibility: Cursor_Visibility := Invisible;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
    begin

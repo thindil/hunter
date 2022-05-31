@@ -66,7 +66,7 @@ package body Utils.UI is
       Post(DialogForm, False);
       Delete(DialogForm);
       Show_Preview;
-      UILocation := DIRECTORY_VIEW;
+      Ui_Location := DIRECTORY_VIEW;
       Update_Directory_List(Clear);
    end Delete_Dialog;
 

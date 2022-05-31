@@ -72,7 +72,7 @@ package body SearchItems is
       Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
    end ShowSearchForm;
 
-   function Search_Form_Keys(Key: Key_Code) return UI_Locations is
+   function Search_Form_Keys(Key: Key_Code) return Ui_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Positive := Get_Index(Current(DialogForm));
       Visibility: Cursor_Visibility := Invisible;
@@ -94,7 +94,7 @@ package body SearchItems is
             Result := Driver(DialogForm, F_Delete_Previous);
          when 27 =>
             Set_Cursor_Visibility(Visibility);
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Post(DialogForm, False);
             Delete(DialogForm);
             Update_Directory_List(True);
@@ -107,7 +107,7 @@ package body SearchItems is
             end if;
             if FieldIndex /= 2 then
                Set_Cursor_Visibility(Visibility);
-               UILocation := DIRECTORY_VIEW;
+               Ui_Location := DIRECTORY_VIEW;
                if FieldIndex = 4 then
                   Update_Directory_List
                     (True, Trim(Get_Buffer(Fields(DialogForm, 2)), Both));

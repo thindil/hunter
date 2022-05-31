@@ -50,7 +50,7 @@ package Bookmarks.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Go_To_Bookmark(Bookmark: String) return UI_Locations;
+   function Go_To_Bookmark(Bookmark: String) return Ui_Locations;
    -- ****
 
    -- ****f* BUITUI/BUITUI.Bookmarks_Form_Keys
@@ -62,7 +62,7 @@ package Bookmarks.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Bookmarks_Form_Keys(Key: Key_Code) return UI_Locations;
+   function Bookmarks_Form_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* BUITUI/BUITUI.Add_Bookmark

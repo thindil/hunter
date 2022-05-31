@@ -149,10 +149,10 @@ begin
 
    -- Create the program main window
    if Argument_Count < 1 then
-      CreateMainWindow
+      Create_Main_Window
         (Directory => Ada.Environment_Variables.Value(Name => "HOME"));
    else
-      CreateMainWindow(Directory => Full_Name(Name => Argument(Number => 1)));
+      Create_Main_Window(Directory => Full_Name(Name => Argument(Number => 1)));
    end if;
 
    -- Main program loop, exit on alt+q
@@ -197,10 +197,10 @@ begin
       end if;
       -- Tab key pressed
       if Key in KEY_STAB | 9 then
-         case UILocation is
+         case Ui_Location is
             when DIRECTORY_VIEW | PATH_BUTTONS =>
-               UILocation := MAIN_MENU;
-               CreateProgramMenu(Update => True);
+               Ui_Location := MAIN_MENU;
+               Create_Program_Menu(Update => True);
                Update_Directory_List;
                if New_Action in COPY | MOVE | CREATELINK then
                   ShowDestination;
@@ -208,24 +208,24 @@ begin
             when MAIN_MENU =>
                Clear_Preview_Window;
                if New_Action in COPY | MOVE | CREATELINK then
-                  UILocation := DESTINATION_VIEW;
+                  Ui_Location := DESTINATION_VIEW;
                   ShowDestination;
                else
                   if Info_Form /= Null_Form then
                      Visibility := Normal;
                      Set_Cursor_Visibility(Visibility => Visibility);
                   end if;
-                  UILocation := PREVIEW;
+                  Ui_Location := PREVIEW;
                   Show_Preview;
                end if;
-               CreateProgramMenu(Update => True);
+               Create_Program_Menu(Update => True);
             when DESTINATION_VIEW | DESTINATION_PATH =>
-               UILocation := DIRECTORY_VIEW;
+               Ui_Location := DIRECTORY_VIEW;
                Clear_Preview_Window;
                Update_Directory_List;
                ShowDestination;
             when PREVIEW =>
-               UILocation := DIRECTORY_VIEW;
+               Ui_Location := DIRECTORY_VIEW;
                Clear_Preview_Window;
                Show_Preview;
                Update_Directory_List;
@@ -260,77 +260,77 @@ begin
             use SearchItems;
             use Shortcuts;
 
-            Old_Ui_Location: constant UI_Locations := UILocation;
+            Old_Ui_Location: constant Ui_Locations := Ui_Location;
          begin
-            UILocation :=
+            Ui_Location :=
               Shortcuts_Keys
-                (Key => Key, AltKey => Alt_Key, Old_Location => UILocation);
-            if UILocation = Old_Ui_Location then
-               case UILocation is
+                (Key => Key, AltKey => Alt_Key, Old_Location => Ui_Location);
+            if Ui_Location = Old_Ui_Location then
+               case Ui_Location is
                   when DIRECTORY_VIEW =>
-                     UILocation := Directory_Keys(Key => Key);
+                     Ui_Location := Directory_Keys(Key => Key);
                   when PATH_BUTTONS =>
-                     UILocation := Path_Keys(Key => Key);
+                     Ui_Location := Path_Keys(Key => Key);
                   when MAIN_MENU =>
-                     UILocation := Menu_Keys(Key => Key);
-                     exit Main_Program_Loop when UILocation = PATH_BUTTONS;
+                     Ui_Location := Menu_Keys(Key => Key);
+                     exit Main_Program_Loop when Ui_Location = PATH_BUTTONS;
                   when ACTIONS_MENU =>
-                     UILocation := Actions_Keys(Key => Key);
+                     Ui_Location := Actions_Keys(Key => Key);
                   when CREATE_FORM =>
-                     UILocation := Create_Keys(Key => Key);
+                     Ui_Location := Create_Keys(Key => Key);
                   when DELETE_FORM =>
-                     UILocation := Delete_Keys(Key => Key);
+                     Ui_Location := Delete_Keys(Key => Key);
                   when MESSAGE_FORM =>
-                     UILocation := Message_Keys(Key => Key);
+                     Ui_Location := Message_Keys(Key => Key);
                   when RENAME_FORM =>
-                     UILocation := Rename_Keys(Key => Key);
+                     Ui_Location := Rename_Keys(Key => Key);
                   when DESTINATION_VIEW =>
                      Destination_Keys(Key => Key);
                   when DESTINATION_PATH =>
-                     UILocation := Destination_Path_Keys(Key => Key);
+                     Ui_Location := Destination_Path_Keys(Key => Key);
                   when BOOKMARKS_MENU =>
-                     UILocation := Bookmarks_Keys(Key => Key);
+                     Ui_Location := Bookmarks_Keys(Key => Key);
                   when BOOKMARKS_FORM =>
-                     UILocation := Bookmarks_Form_Keys(Key => Key);
+                     Ui_Location := Bookmarks_Form_Keys(Key => Key);
                   when CREATELINK_FORM =>
-                     UILocation := Create_Link_Keys(Key => Key);
+                     Ui_Location := Create_Link_Keys(Key => Key);
                   when SELECTED_MENU =>
-                     UILocation := Selected_Keys(Key => Key);
+                     Ui_Location := Selected_Keys(Key => Key);
                   when PREVIEW =>
                      Preview_Keys(Key => Key);
                   when PROGRAMS_MENU =>
-                     UILocation := Programs_Keys(Key => Key);
+                     Ui_Location := Programs_Keys(Key => Key);
                   when VIEW_MENU =>
-                     UILocation := View_Keys(Key => Key);
+                     Ui_Location := View_Keys(Key => Key);
                   when SEARCH_FORM =>
-                     UILocation := Search_Form_Keys(Key => Key);
+                     Ui_Location := Search_Form_Keys(Key => Key);
                   when EXECUTE_FORM =>
-                     UILocation := Execute_Form_Keys(Key => Key);
+                     Ui_Location := Execute_Form_Keys(Key => Key);
                   when ABOUT_MENU =>
-                     UILocation := About_Keys(Key => Key);
+                     Ui_Location := About_Keys(Key => Key);
                   when ABOUT_FORM =>
-                     UILocation := About_View_Keys(Key => Key);
+                     Ui_Location := About_View_Keys(Key => Key);
                   when DEVELOPERS_VIEW =>
-                     UILocation := Developers_Keys(Key => Key);
+                     Ui_Location := Developers_Keys(Key => Key);
                   when OPTIONS_VIEW =>
-                     UILocation := Select_Preferences_Keys(Key => Key);
+                     Ui_Location := Select_Preferences_Keys(Key => Key);
                   when SECONDS_MENU =>
-                     UILocation := Select_Seconds_Keys(Key => Key);
+                     Ui_Location := Select_Seconds_Keys(Key => Key);
                   when COLORS_MENU =>
-                     UILocation := Select_Colors_Keys(Key => Key);
+                     Ui_Location := Select_Colors_Keys(Key => Key);
                   when SHORTCUT_FORM =>
-                     UILocation :=
+                     Ui_Location :=
                        Set_Shortcut_Keys(Key => Key, AltKey => Alt_Key);
                   when COMMAND_FORM =>
-                     UILocation := Add_Command_Keys(Key => Key);
+                     Ui_Location := Add_Command_Keys(Key => Key);
                   when COMMANDS_MENU =>
-                     UILocation := User_Commands_Keys(Key => Key);
+                     Ui_Location := User_Commands_Keys(Key => Key);
                   when T_ACTIONS_MENU =>
-                     UILocation := Trash_Actions_Keys(Key => Key);
+                     Ui_Location := Trash_Actions_Keys(Key => Key);
                   when QUIT_PROGRAM =>
                      exit Main_Program_Loop;
                end case;
-            elsif UILocation = QUIT_PROGRAM then
+            elsif Ui_Location = QUIT_PROGRAM then
                exit Main_Program_Loop;
             end if;
          end Handle_Keys_Block;

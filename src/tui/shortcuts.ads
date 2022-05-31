@@ -34,7 +34,7 @@ package Shortcuts is
    -- The currently selected UI element of the program
    -- SOURCE
    function Shortcuts_Keys
-     (Key: Key_Code; AltKey: Boolean; Old_Location: UI_Locations) return UI_Locations;
+     (Key: Key_Code; AltKey: Boolean; Old_Location: Ui_Locations) return Ui_Locations;
    -- ****
 
 end Shortcuts;

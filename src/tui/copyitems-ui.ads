@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -34,7 +34,7 @@ package CopyItems.UI is
    -- directory view, if message about overwrite file was shown, it will be
    -- message form
    -- SOURCE
-   function CopySelected(Overwrite: in out Boolean) return UI_Locations;
+   function CopySelected(Overwrite: in out Boolean) return Ui_Locations;
    -- ****
 
    -- ****f* CopyItems/CUITUI.SkipCopying
@@ -45,7 +45,7 @@ package CopyItems.UI is
    -- directory view, if message about overwrite file was shown, it will be
    -- message form
    -- SOURCE
-   function SkipCopying return UI_Locations;
+   function SkipCopying return Ui_Locations;
    -- ****
 
 end CopyItems.UI;

@@ -273,7 +273,7 @@ package body DeleteItems.UI is
       Refresh(Win => Get_Form_Window);
    end Show_Delete_Form;
 
-   function Delete_Keys(Key: Key_Code) return UI_Locations is
+   function Delete_Keys(Key: Key_Code) return Ui_Locations is
       use LoadData;
       use LoadData.UI;
       use ShowItems;

@@ -104,7 +104,7 @@ package body Bookmarks.UI is
    Form_Window: Window; --## rule line off DIRECTLY_ACCESSED_GLOBALS
    -- ****
 
-   function Go_To_Bookmark(Bookmark: String) return UI_Locations is
+   function Go_To_Bookmark(Bookmark: String) return Ui_Locations is
       procedure Show_Bookmarks_Form is
          Create_Fields: constant Field_Array_Access := new Field_Array(1 .. 5);
          Visibility: Cursor_Visibility := Normal;
@@ -207,18 +207,18 @@ package body Bookmarks.UI is
       end if;
       if Bookmark = Mc(Interp => Interpreter, Src_String => "Close") then
          Show_Preview;
-         UILocation := DIRECTORY_VIEW;
+         Ui_Location := DIRECTORY_VIEW;
          Update_Directory_List;
          return DIRECTORY_VIEW;
       end if;
       if Bookmarks_List.Contains(Key => Bookmark) then
          New_Action := Default_Item_Action;
-         CreateProgramMenu(Update => True);
+         Create_Program_Menu(Update => True);
          Common.Current_Directory :=
            To_Unbounded_String(Source => Bookmarks_List(Bookmark));
       elsif Bookmark = Mc(Interp => Interpreter, Src_String => "{Home}") then
          New_Action := Default_Item_Action;
-         CreateProgramMenu(Update => True);
+         Create_Program_Menu(Update => True);
          Common.Current_Directory :=
            To_Unbounded_String(Source => Value(Name => "HOME"));
       else
@@ -229,7 +229,7 @@ package body Bookmarks.UI is
       end if;
       Load_Directory
         (Directory_Name => To_String(Source => Common.Current_Directory));
-      UILocation := DIRECTORY_VIEW;
+      Ui_Location := DIRECTORY_VIEW;
       Clear_Preview_Window;
       Update_Directory_List(Clear => True);
       Show_Preview;
@@ -241,7 +241,7 @@ package body Bookmarks.UI is
       return DIRECTORY_VIEW;
    end Go_To_Bookmark;
 
-   function Bookmarks_Form_Keys(Key: Key_Code) return UI_Locations is
+   function Bookmarks_Form_Keys(Key: Key_Code) return Ui_Locations is
       use Ada.Strings;
       use Ada.Strings.Fixed;
       use Messages.UI;
@@ -251,7 +251,7 @@ package body Bookmarks.UI is
       Field_Index: constant Positive :=
         Get_Index(Fld => Current(Frm => Dialog_Frm));
       Visibility: Cursor_Visibility := Invisible;
-      function Hide_Dialog return UI_Locations is
+      function Hide_Dialog return Ui_Locations is
       begin
          Set_Cursor_Visibility(Visibility => Visibility);
          Post(Frm => Dialog_Frm, Post => False);
@@ -259,7 +259,7 @@ package body Bookmarks.UI is
          Set_Dialog_Form(New_Form => Dialog_Frm);
          if New_Action not in MOVE | COPY then
             Show_Preview;
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List(Clear => True);
             return DIRECTORY_VIEW;
          else

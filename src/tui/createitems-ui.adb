@@ -284,7 +284,7 @@ package body CreateItems.UI is
       end Create_Create_New_Dialog_Block;
    end Show_Create_Form;
 
-   function Create_Keys(Key: Key_Code) return UI_Locations is
+   function Create_Keys(Key: Key_Code) return Ui_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
       Field_Index: constant Positive :=
@@ -429,7 +429,7 @@ package body CreateItems.UI is
       end Create_Create_New_Dialog_Block;
    end Show_Create_Link_Form;
 
-   function Create_Link_Keys(Key: Key_Code) return UI_Locations is
+   function Create_Link_Keys(Key: Key_Code) return Ui_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       Dialog_Frm: Forms.Form := Get_Dialog_Form;
       Field_Index: constant Positive :=
@@ -457,7 +457,7 @@ package body CreateItems.UI is
             Delete_Dialog(DialogForm => Dialog_Frm, Clear => True);
             Set_Dialog_Form(New_Form => Dialog_Frm);
             Show_Preview;
-            CreateProgramMenu(Update => True);
+            Create_Program_Menu(Update => True);
             return DIRECTORY_VIEW;
          when 10 =>
             if Field_Index = 2 then
@@ -485,7 +485,7 @@ package body CreateItems.UI is
                Delete_Dialog(DialogForm => Dialog_Frm, Clear => True);
                Set_Dialog_Form(New_Form => Dialog_Frm);
                Show_Preview;
-               CreateProgramMenu(Update => True);
+               Create_Program_Menu(Update => True);
                return DIRECTORY_VIEW;
             end if;
          when others =>

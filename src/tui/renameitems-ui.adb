@@ -123,7 +123,7 @@ package body RenameItems.UI is
       Create_Dialog(DialogForm, FormWindow, FormHeight, FormLength);
    end ShowRenameForm;
 
-   function Rename_Keys(Key: Key_Code) return UI_Locations is
+   function Rename_Keys(Key: Key_Code) return Ui_Locations is
       Result: Forms.Driver_Result := Unknown_Request;
       FieldIndex: constant Positive := Get_Index(Current(DialogForm));
       Visibility: Cursor_Visibility := Invisible;

@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ package Preferences.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Select_Preferences_Keys(Key: Key_Code) return UI_Locations;
+   function Select_Preferences_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* PreferencesUITUI/PreferencesUITUI.Select_Seconds_Keys
@@ -51,7 +51,7 @@ package Preferences.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Select_Seconds_Keys(Key: Key_Code) return UI_Locations;
+   function Select_Seconds_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* PreferencesUITUI/PreferencesUITUI.Select_Colors_Keys
@@ -63,7 +63,7 @@ package Preferences.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Select_Colors_Keys(Key: Key_Code) return UI_Locations;
+   function Select_Colors_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* PreferencesUITUI/PreferencesUITUI.Set_Shortcut_Keys
@@ -77,7 +77,7 @@ package Preferences.UI is
    -- The currently selected UI element of the program
    -- SOURCE
    function Set_Shortcut_Keys
-     (Key: Key_Code; AltKey: Boolean) return UI_Locations;
+     (Key: Key_Code; AltKey: Boolean) return Ui_Locations;
    -- ****
 
    -- ****f* PreferencesUITUI/PreferencesUITUI.Add_Command_Keys
@@ -89,7 +89,7 @@ package Preferences.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Add_Command_Keys(Key: Key_Code) return UI_Locations;
+   function Add_Command_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
 end Preferences.UI;

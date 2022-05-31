@@ -149,15 +149,15 @@ package body Messages.UI is
       Refresh(FormWindow);
    end Show_Message;
 
-   function Message_Keys(Key: Key_Code) return UI_Locations is
+   function Message_Keys(Key: Key_Code) return Ui_Locations is
       Visibility: Cursor_Visibility := Invisible;
       Option: constant String := Get_Buffer(Current(DialogForm));
       Overwrite: Boolean := True;
       Result: Forms.Driver_Result := Unknown_Request;
-      function Hide_Dialog return UI_Locations is
+      function Hide_Dialog return Ui_Locations is
       begin
          New_Action := Default_Item_Action;
-         CreateProgramMenu(True);
+         Create_Program_Menu(True);
          Update_Directory_List(True);
          Show_Preview;
          return DIRECTORY_VIEW;
@@ -176,7 +176,7 @@ package body Messages.UI is
             Set_Cursor_Visibility(Visibility);
             Post(DialogForm, False);
             Delete(DialogForm);
-            UILocation := DIRECTORY_VIEW;
+            Ui_Location := DIRECTORY_VIEW;
             if Option in "[" & Mc(Interpreter, "Close") & "]" |
                   "[" & Mc(Interpreter, "{No for all}") & "]" then
                return Hide_Dialog;

@@ -124,7 +124,7 @@ package ShowItems is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Destination_Path_Keys(Key: Key_Code) return UI_Locations;
+   function Destination_Path_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* ShowItemsTUI/ShowItemsTUI.Preview_Keys

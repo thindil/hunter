@@ -1,4 +1,4 @@
--- Copyright (c) 2021 Bartek thindil Jasicki <thindil@laeran.pl>
+-- Copyright (c) 2021-2022 Bartek thindil Jasicki <thindil@laeran.pl>
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ with Utils.UI; use Utils.UI;
 
 package body MoveItems.UI is
 
-   function MoveSelected(Overwrite: in out Boolean) return UI_Locations is
+   function MoveSelected(Overwrite: in out Boolean) return Ui_Locations is
       ItemType: Unbounded_String;
       Success: Boolean := True;
       NewName, FileExtension: Unbounded_String;
@@ -113,7 +113,7 @@ package body MoveItems.UI is
             "message");
          return MESSAGE_FORM;
       end if;
-      UILocation := DIRECTORY_VIEW;
+      Ui_Location := DIRECTORY_VIEW;
       Common.Current_Directory :=
         (if Settings.Stay_In_Old then Common.Current_Directory
          else Destination_Directory);
@@ -129,7 +129,7 @@ package body MoveItems.UI is
       return DIRECTORY_VIEW;
    end MoveSelected;
 
-   function SkipMoving return UI_Locations is
+   function SkipMoving return Ui_Locations is
       OverwriteItem: Boolean := False;
    begin
       Move_Items_List.Delete(Index => 1);

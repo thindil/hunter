@@ -48,7 +48,7 @@ package CreateItems.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Create_Keys(Key: Key_Code) return UI_Locations;
+   function Create_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* CreateItemsTUI/CreateItemsTUI.Show_Create_Link_Form
@@ -66,7 +66,7 @@ package CreateItems.UI is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Create_Link_Keys(Key: Key_Code) return UI_Locations;
+   function Create_Link_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
 end CreateItems.UI;
