@@ -61,7 +61,7 @@ package MainWindow is
    -- T_ACTIONS_MENU   - The menu with actions in trash
    -- QUIT_PROGRAM     - Quitting from the program
    -- SOURCE
-   type UI_Locations is
+   type Ui_Locations is
      (DIRECTORY_VIEW, PATH_BUTTONS, MAIN_MENU, PREVIEW, ACTIONS_MENU,
       CREATE_FORM, DELETE_FORM, MESSAGE_FORM, RENAME_FORM, DESTINATION_VIEW,
       DESTINATION_PATH, BOOKMARKS_MENU, BOOKMARKS_FORM, CREATELINK_FORM,
@@ -71,38 +71,45 @@ package MainWindow is
       QUIT_PROGRAM);
    -- ****
 
-   -- ****v* MainWindowTUI/MainWindowTUI.UILocation
+   -- ****d* MainWindowTUI/MainWindowTUI.Default_Ui_Location
+   -- FUNCTION
+   -- Default UI location
+   -- SOURCE
+   Default_Ui_Location: constant Ui_Locations := DIRECTORY_VIEW;
+   -- ****
+
+   -- ****v* MainWindowTUI/MainWindowTUI.Ui_Location
    -- FUNCTION
    -- Currently active element of UI
    -- SOURCE
-   UILocation: UI_Locations := DIRECTORY_VIEW;
+   Ui_Location: Ui_Locations := Default_Ui_Location;
    -- ****
 
-   -- ****v* MainWindowTUI/MainWindowTUI.DirectoryList
+   -- ****v* MainWindowTUI/MainWindowTUI.Directory_List
    -- FUNCTION
    -- Menu with list of all items in the current viewed directory
    -- SOURCE
-   DirectoryList: Menu;
+   Directory_List: Menu;
    -- ****
 
-   -- ****f* MainWindow/CreateProgramMenu
+   -- ****f* MainWindow/Create_Program_Menu
    -- FUNCTION
    -- Create the main program menu, the menu content depends on the program
    -- state
    -- PARAMETERS
    -- Update - If True also update the menu window. Default value is False.
    -- SOURCE
-   procedure CreateProgramMenu(Update: Boolean := False);
+   procedure Create_Program_Menu(Update: Boolean := False);
    -- ****
 
-   -- ****f* MainWindowTUI/MainWindowTUI.CreateMainWindow
+   -- ****f* MainWindowTUI/MainWindowTUI.Create_Main_Window
    -- FUNCTION
    -- Create main window and show content of selected directory
    -- PARAMETERS
    -- Directory  - Full path to the directory which will be show at the
    --              program start
    -- SOURCE
-   procedure CreateMainWindow(Directory: String);
+   procedure Create_Main_Window(Directory: String);
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Update_Directory_List
@@ -125,7 +132,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Directory_Keys(Key: Key_Code) return UI_Locations;
+   function Directory_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Path_Keys
@@ -136,7 +143,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Path_Keys(Key: Key_Code) return UI_Locations;
+   function Path_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Draw_Menu
@@ -145,7 +152,7 @@ package MainWindow is
    -- PARAMETERS
    -- Menu_Type - The type of the menu to show
    -- SOURCE
-   procedure Draw_Menu(Menu_Type: UI_Locations);
+   procedure Draw_Menu(Menu_Type: Ui_Locations);
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Menu_Keys
@@ -156,7 +163,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Menu_Keys(Key: Key_Code) return UI_Locations;
+   function Menu_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Actions_Keys
@@ -167,7 +174,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Actions_Keys(Key: Key_Code) return UI_Locations;
+   function Actions_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Bookmarks_Keys
@@ -178,7 +185,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Bookmarks_Keys(Key: Key_Code) return UI_Locations;
+   function Bookmarks_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Selected_Keys
@@ -189,7 +196,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Selected_Keys(Key: Key_Code) return UI_Locations;
+   function Selected_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.View_Keys
@@ -200,7 +207,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function View_Keys(Key: Key_Code) return UI_Locations;
+   function View_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.About_Keys
@@ -211,7 +218,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function About_Keys(Key: Key_Code) return UI_Locations;
+   function About_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Show_Main_Window
@@ -229,7 +236,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function User_Commands_Keys(Key: Key_Code) return UI_Locations;
+   function User_Commands_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
    -- ****f* MainWindowTUI/MainWindowTUI.Trash_Actions_Keys
@@ -240,7 +247,7 @@ package MainWindow is
    -- RESULT
    -- The currently selected UI element of the program
    -- SOURCE
-   function Trash_Actions_Keys(Key: Key_Code) return UI_Locations;
+   function Trash_Actions_Keys(Key: Key_Code) return Ui_Locations;
    -- ****
 
 end MainWindow;
