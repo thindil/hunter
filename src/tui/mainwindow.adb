@@ -59,30 +59,31 @@ package body MainWindow is
    Path: Menu;
    Program_Menu: Menu;
    Menu_Window: Window;
-   SubMenuWindow: Window;
-   SubMenu: Menu;
+   Sub_Menu_Window: Window;
+   Sub_Menu: Menu;
 
    procedure Create_Program_Menu(Update: Boolean := False) is
    begin
-      Terminal_Interface.Curses.Clear(Menu_Window);
+      Terminal_Interface.Curses.Clear(Win => Menu_Window);
       case New_Action is
          when CREATELINK =>
+            Set_Create_Menu_Block:
             declare
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 4);
             begin
-               Menu_Items.all(1) := New_Item(Mc(Interpreter, "Quit"));
-               Menu_Items.all(2) := New_Item(Mc(Interpreter, "{Create link}"));
-               Menu_Items.all(3) := New_Item(Mc(Interpreter, "Cancel"));
+               Menu_Items.all(1) := New_Item(Name => Mc(Interp => Interpreter, Src_String => "Quit"));
+               Menu_Items.all(2) := New_Item(Name => Mc(Interp => Interpreter, Src_String => "{Create link}"));
+               Menu_Items.all(3) := New_Item(Name => Mc(Interp => Interpreter, Src_String => "Cancel"));
                Menu_Items.all(4) := Null_Item;
-               Program_Menu := New_Menu(Menu_Items);
-               Set_Format(Program_Menu, 1, 3);
-               Set_Mark(Program_Menu, "");
+               Program_Menu := New_Menu(Items => Menu_Items);
+               Set_Format(Men => Program_Menu, Lines => 1, Columns => 3);
+               Set_Mark(Men => Program_Menu, Mark => "");
                Set_Window(Program_Menu, Menu_Window);
                Set_Sub_Window
                  (Program_Menu, Derived_Window(Menu_Window, 1, Columns, 0, 0));
                Post(Program_Menu);
-            end;
+            end Set_Create_Menu_Block;
          when COPY | MOVE =>
             declare
                Menu_Items: constant Item_Array_Access :=
@@ -621,20 +622,20 @@ package body MainWindow is
       Menu_Items.all(Menu_Items'Last - 1) :=
         New_Item(Mc(Interpreter, "Close"));
       Menu_Items.all(Menu_Items'Last) := Null_Item;
-      SubMenu := New_Menu(Menu_Items);
-      Set_Options(SubMenu, (Non_Cyclic => False, others => <>));
-      Set_Format(SubMenu, Lines - 5, 1);
-      Set_Mark(SubMenu, "");
-      Scale(SubMenu, MenuHeight, MenuLength);
-      SubMenuWindow :=
+      Sub_Menu := New_Menu(Menu_Items);
+      Set_Options(Sub_Menu, (Non_Cyclic => False, others => <>));
+      Set_Format(Sub_Menu, Lines - 5, 1);
+      Set_Mark(Sub_Menu, "");
+      Scale(Sub_Menu, MenuHeight, MenuLength);
+      Sub_Menu_Window :=
         Create(MenuHeight + 2, MenuLength + 2, Lines / 3, Columns / 3);
-      Set_Window(SubMenu, SubMenuWindow);
+      Set_Window(Sub_Menu, Sub_Menu_Window);
       Set_Sub_Window
-        (SubMenu, Derived_Window(SubMenuWindow, MenuHeight, MenuLength, 1, 1));
-      Box(SubMenuWindow, Default_Character, Default_Character);
-      Post(SubMenu);
+        (Sub_Menu, Derived_Window(Sub_Menu_Window, MenuHeight, MenuLength, 1, 1));
+      Box(Sub_Menu_Window, Default_Character, Default_Character);
+      Post(Sub_Menu);
       Refresh;
-      Refresh(SubMenuWindow);
+      Refresh(Sub_Menu_Window);
    end Draw_Menu;
 
    function Menu_Keys(Key: Key_Code) return Ui_Locations is
@@ -768,27 +769,27 @@ package body MainWindow is
 
    function Actions_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
-      CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
-      CurrentName: constant String := Name(Current(SubMenu));
+      CurrentIndex: constant Positive := Get_Index(Current(Sub_Menu));
+      CurrentName: constant String := Name(Current(Sub_Menu));
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(SubMenu, M_Up_Item);
+            Result := Driver(Sub_Menu, M_Up_Item);
          when KEY_DOWN =>
-            Result := Driver(SubMenu, M_Down_Item);
+            Result := Driver(Sub_Menu, M_Down_Item);
          when Key_Home =>
-            Result := Driver(SubMenu, M_First_Item);
+            Result := Driver(Sub_Menu, M_First_Item);
          when Key_End =>
-            Result := Driver(SubMenu, M_Last_Item);
+            Result := Driver(Sub_Menu, M_Last_Item);
          when 27 =>
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
          when 10 =>
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             Update_Directory_List;
             Show_Preview;
             case CurrentIndex is
@@ -852,39 +853,39 @@ package body MainWindow is
             null;
       end case;
       if Result = Menu_Ok then
-         Refresh(SubMenuWindow);
+         Refresh(Sub_Menu_Window);
       end if;
       return ACTIONS_MENU;
    end Actions_Keys;
 
    function Bookmarks_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
-      Bookmark: constant String := Name(Current(SubMenu));
+      Bookmark: constant String := Name(Current(Sub_Menu));
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(SubMenu, M_Up_Item);
+            Result := Driver(Sub_Menu, M_Up_Item);
          when KEY_DOWN =>
-            Result := Driver(SubMenu, M_Down_Item);
+            Result := Driver(Sub_Menu, M_Down_Item);
          when Key_Home =>
-            Result := Driver(SubMenu, M_First_Item);
+            Result := Driver(Sub_Menu, M_First_Item);
          when Key_End =>
-            Result := Driver(SubMenu, M_Last_Item);
+            Result := Driver(Sub_Menu, M_Last_Item);
          when 27 =>
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
          when 10 =>
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             return Go_To_Bookmark(Bookmark);
          when others =>
             null;
       end case;
       if Result = Menu_Ok then
-         Refresh(SubMenuWindow);
+         Refresh(Sub_Menu_Window);
       end if;
       return BOOKMARKS_MENU;
    end Bookmarks_Keys;
@@ -896,22 +897,22 @@ package body MainWindow is
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(SubMenu, M_Up_Item);
+            Result := Driver(Sub_Menu, M_Up_Item);
          when KEY_DOWN =>
-            Result := Driver(SubMenu, M_Down_Item);
+            Result := Driver(Sub_Menu, M_Down_Item);
          when Key_Home =>
-            Result := Driver(SubMenu, M_First_Item);
+            Result := Driver(Sub_Menu, M_First_Item);
          when Key_End =>
-            Result := Driver(SubMenu, M_Last_Item);
+            Result := Driver(Sub_Menu, M_Last_Item);
          when 27 =>
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
          when 10 =>
             Ui_Location := New_Location;
-            case Get_Index(Current(SubMenu)) is
+            case Get_Index(Current(Sub_Menu)) is
                when 1 =>
                   Show_Preview;
                when 2 =>
@@ -922,10 +923,10 @@ package body MainWindow is
                   Update_Directory_List;
                   Show_Execute_With_Dialog;
                when 4 =>
-                  if Name(Current(SubMenu)) =
+                  if Name(Current(Sub_Menu)) =
                     Mc(Interpreter, "{Add bookmark}") then
                      Add_Bookmark;
-                  elsif Name(Current(SubMenu)) =
+                  elsif Name(Current(Sub_Menu)) =
                     Mc(Interpreter, "{Remove bookmark}") then
                      Remove_Bookmark;
                   end if;
@@ -933,8 +934,8 @@ package body MainWindow is
                when others =>
                   New_Location := DIRECTORY_VIEW;
             end case;
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             if New_Location /= EXECUTE_FORM then
                Ui_Location := New_Location;
                Update_Directory_List;
@@ -944,27 +945,27 @@ package body MainWindow is
             null;
       end case;
       if Result = Menu_Ok then
-         Refresh(SubMenuWindow);
+         Refresh(Sub_Menu_Window);
       end if;
       return SELECTED_MENU;
    end Selected_Keys;
 
    function View_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
-      Current_Menu: constant String := Name(Current(SubMenu));
+      Current_Menu: constant String := Name(Current(Sub_Menu));
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(SubMenu, M_Up_Item);
+            Result := Driver(Sub_Menu, M_Up_Item);
          when KEY_DOWN =>
-            Result := Driver(SubMenu, M_Down_Item);
+            Result := Driver(Sub_Menu, M_Down_Item);
          when Key_Home =>
-            Result := Driver(SubMenu, M_First_Item);
+            Result := Driver(Sub_Menu, M_First_Item);
          when Key_End =>
-            Result := Driver(SubMenu, M_Last_Item);
+            Result := Driver(Sub_Menu, M_Last_Item);
          when 27 =>
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
@@ -984,50 +985,50 @@ package body MainWindow is
                end if;
             elsif Current_Menu = Mc(Interpreter, "{Search for}") then
                Update_Directory_List;
-               Post(SubMenu, False);
-               Delete(SubMenu);
+               Post(Sub_Menu, False);
+               Delete(Sub_Menu);
                ShowSearchForm;
                return SEARCH_FORM;
             elsif Current_Menu = Mc(Interpreter, "{Show Trash}") then
                New_Action := SHOWTRASH;
                Create_Program_Menu(True);
-               Post(SubMenu, False);
-               Delete(SubMenu);
+               Post(Sub_Menu, False);
+               Delete(Sub_Menu);
                Clear_Preview_Window;
                Tcl_Eval(Interpreter, "ShowTrash");
                Update_Directory_List(True);
                return DIRECTORY_VIEW;
             end if;
             Update_Directory_List;
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             return DIRECTORY_VIEW;
          when others =>
             null;
       end case;
       if Result = Menu_Ok then
-         Refresh(SubMenuWindow);
+         Refresh(Sub_Menu_Window);
       end if;
       return VIEW_MENU;
    end View_Keys;
 
    function About_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
-      CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
+      CurrentIndex: constant Positive := Get_Index(Current(Sub_Menu));
       FileName: Unbounded_String := Null_Unbounded_String;
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(SubMenu, M_Up_Item);
+            Result := Driver(Sub_Menu, M_Up_Item);
          when KEY_DOWN =>
-            Result := Driver(SubMenu, M_Down_Item);
+            Result := Driver(Sub_Menu, M_Down_Item);
          when Key_Home =>
-            Result := Driver(SubMenu, M_First_Item);
+            Result := Driver(Sub_Menu, M_First_Item);
          when Key_End =>
-            Result := Driver(SubMenu, M_Last_Item);
+            Result := Driver(Sub_Menu, M_Last_Item);
          when 27 =>
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             return DIRECTORY_VIEW;
@@ -1036,8 +1037,8 @@ package body MainWindow is
                when 1 =>
                   Update_Directory_List;
                   Show_Preview;
-                  Post(SubMenu, False);
-                  Delete(SubMenu);
+                  Post(Sub_Menu, False);
+                  Delete(Sub_Menu);
                   Show_About_Dialog;
                   return ABOUT_FORM;
                when 2 =>
@@ -1077,14 +1078,14 @@ package body MainWindow is
             Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List(True);
             Show_Preview;
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             return DIRECTORY_VIEW;
          when others =>
             null;
       end case;
       if Result = Menu_Ok then
-         Refresh(SubMenuWindow);
+         Refresh(Sub_Menu_Window);
       end if;
       return ABOUT_MENU;
    end About_Keys;
@@ -1107,22 +1108,22 @@ package body MainWindow is
 
    function User_Commands_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
-      Current_Option: constant String := Name(Current(SubMenu));
+      Current_Option: constant String := Name(Current(Sub_Menu));
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(SubMenu, M_Up_Item);
+            Result := Driver(Sub_Menu, M_Up_Item);
          when KEY_DOWN =>
-            Result := Driver(SubMenu, M_Down_Item);
+            Result := Driver(Sub_Menu, M_Down_Item);
          when Key_Home =>
-            Result := Driver(SubMenu, M_First_Item);
+            Result := Driver(Sub_Menu, M_First_Item);
          when Key_End =>
-            Result := Driver(SubMenu, M_Last_Item);
+            Result := Driver(Sub_Menu, M_Last_Item);
          when 10 =>
             Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             if Current_Option /= "Close" then
                Tcl_Eval(Interpreter, "ExecuteCommand " & Current_Option);
             end if;
@@ -1131,27 +1132,27 @@ package body MainWindow is
             null;
       end case;
       if Result = Menu_Ok then
-         Refresh(SubMenuWindow);
+         Refresh(Sub_Menu_Window);
       end if;
       return COMMANDS_MENU;
    end User_Commands_Keys;
 
    function Trash_Actions_Keys(Key: Key_Code) return Ui_Locations is
       Result: Menus.Driver_Result := Unknown_Request;
-      CurrentIndex: constant Positive := Get_Index(Current(SubMenu));
+      CurrentIndex: constant Positive := Get_Index(Current(Sub_Menu));
    begin
       case Key is
          when KEY_UP =>
-            Result := Driver(SubMenu, M_Up_Item);
+            Result := Driver(Sub_Menu, M_Up_Item);
          when KEY_DOWN =>
-            Result := Driver(SubMenu, M_Down_Item);
+            Result := Driver(Sub_Menu, M_Down_Item);
          when Key_Home =>
-            Result := Driver(SubMenu, M_First_Item);
+            Result := Driver(Sub_Menu, M_First_Item);
          when Key_End =>
-            Result := Driver(SubMenu, M_Last_Item);
+            Result := Driver(Sub_Menu, M_Last_Item);
          when 10 =>
-            Post(SubMenu, False);
-            Delete(SubMenu);
+            Post(Sub_Menu, False);
+            Delete(Sub_Menu);
             Ui_Location := DIRECTORY_VIEW;
             Update_Directory_List;
             Show_Preview;
@@ -1178,7 +1179,7 @@ package body MainWindow is
             null;
       end case;
       if Result = Menu_Ok then
-         Refresh(SubMenuWindow);
+         Refresh(Sub_Menu_Window);
       end if;
       return T_ACTIONS_MENU;
    end Trash_Actions_Keys;
