@@ -67,34 +67,62 @@ package body MainWindow is
       Terminal_Interface.Curses.Clear(Win => Menu_Window);
       case New_Action is
          when CREATELINK =>
-            Set_Create_Menu_Block:
+            Set_Create_Menu_Block :
             declare
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 4);
             begin
-               Menu_Items.all(1) := New_Item(Name => Mc(Interp => Interpreter, Src_String => "Quit"));
-               Menu_Items.all(2) := New_Item(Name => Mc(Interp => Interpreter, Src_String => "{Create link}"));
-               Menu_Items.all(3) := New_Item(Name => Mc(Interp => Interpreter, Src_String => "Cancel"));
+               Menu_Items.all(1) :=
+                 New_Item
+                   (Name => Mc(Interp => Interpreter, Src_String => "Quit"));
+               Menu_Items.all(2) :=
+                 New_Item
+                   (Name =>
+                      Mc
+                        (Interp => Interpreter,
+                         Src_String => "{Create link}"));
+               Menu_Items.all(3) :=
+                 New_Item
+                   (Name => Mc(Interp => Interpreter, Src_String => "Cancel"));
                Menu_Items.all(4) := Null_Item;
                Program_Menu := New_Menu(Items => Menu_Items);
                Set_Format(Men => Program_Menu, Lines => 1, Columns => 3);
                Set_Mark(Men => Program_Menu, Mark => "");
-               Set_Window(Program_Menu, Menu_Window);
+               Set_Window(Men => Program_Menu, Win => Menu_Window);
                Set_Sub_Window
-                 (Program_Menu, Derived_Window(Menu_Window, 1, Columns, 0, 0));
-               Post(Program_Menu);
+                 (Men => Program_Menu,
+                  Win =>
+                    Derived_Window
+                      (Win => Menu_Window, Number_Of_Lines => 1,
+                       Number_Of_Columns => Columns, First_Line_Position => 0,
+                       First_Column_Position => 0));
+               Post(Men => Program_Menu);
             end Set_Create_Menu_Block;
          when COPY | MOVE =>
+            Set_Copy_Move_Menu_Block :
             declare
                Menu_Items: constant Item_Array_Access :=
                  new Item_Array(1 .. 5);
             begin
-               Menu_Items.all(1) := New_Item(Mc(Interpreter, "Quit"));
-               Menu_Items.all(2) := New_Item(Mc(Interpreter, "Bookmarks"));
+               Menu_Items.all(1) :=
+                 New_Item
+                   (Name => Mc(Interp => Interpreter, Src_String => "Quit"));
+               Menu_Items.all(2) :=
+                 New_Item
+                   (Name =>
+                      Mc(Interp => Interpreter, Src_String => "Bookmarks"));
                Menu_Items.all(3) :=
                  (if New_Action = COPY then
-                    New_Item(Mc(Interpreter, "{Copy selected}"))
-                  else New_Item(Mc(Interpreter, "{Move selected}")));
+                    New_Item
+                      (Name =>
+                         Mc
+                           (Interp => Interpreter,
+                            Src_String => "{Copy selected}"))
+                  else New_Item
+                      (Name =>
+                         Mc
+                           (Interp => Interpreter,
+                            Src_String => "{Move selected}")));
                Menu_Items.all(4) := New_Item(Mc(Interpreter, "Cancel"));
                Menu_Items.all(5) := Null_Item;
                Program_Menu := New_Menu(Menu_Items);
@@ -104,7 +132,7 @@ package body MainWindow is
                Set_Sub_Window
                  (Program_Menu, Derived_Window(Menu_Window, 1, Columns, 0, 0));
                Post(Program_Menu);
-            end;
+            end Set_Copy_Move_Menu_Block;
          when SHOWTRASH | DELETETRASH =>
             declare
                Main_Menu_Array: constant array(1 .. 4) of Unbounded_String :=
@@ -158,7 +186,8 @@ package body MainWindow is
             end;
       end case;
       if Ui_Location = MAIN_MENU then
-         Set_Foreground(Program_Menu, (Reverse_Video => True, others => False));
+         Set_Foreground
+           (Program_Menu, (Reverse_Video => True, others => False));
       else
          Set_Foreground(Program_Menu, Normal_Video);
       end if;
@@ -273,7 +302,8 @@ package body MainWindow is
       Set_Mark(Path, "");
       Set_Window(Path, Path_Buttons_Window);
       Get_Size(List_Window, Height, Width);
-      Set_Sub_Window(Path, Derived_Window(Path_Buttons_Window, 1, Width - 2, 0, 1));
+      Set_Sub_Window
+        (Path, Derived_Window(Path_Buttons_Window, 1, Width - 2, 0, 1));
       Post(Path);
       Set_Current(Path, Path_Items.all(Index));
       Terminal_Interface.Curses.Clear(List_Window);
@@ -631,7 +661,8 @@ package body MainWindow is
         Create(MenuHeight + 2, MenuLength + 2, Lines / 3, Columns / 3);
       Set_Window(Sub_Menu, Sub_Menu_Window);
       Set_Sub_Window
-        (Sub_Menu, Derived_Window(Sub_Menu_Window, MenuHeight, MenuLength, 1, 1));
+        (Sub_Menu,
+         Derived_Window(Sub_Menu_Window, MenuHeight, MenuLength, 1, 1));
       Box(Sub_Menu_Window, Default_Character, Default_Character);
       Post(Sub_Menu);
       Refresh;
